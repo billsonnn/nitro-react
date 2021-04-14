@@ -12,15 +12,17 @@ export function CreateEventDispatcherHook(type: string, eventDispatcher: IEventD
 
     useEffect(() =>
     {
-        const eventListener = (event: NitroEvent) => handlerRef.current(event);
+        console.log('register', type);
 
-        eventDispatcher.addEventListener(type, eventListener);
+        eventDispatcher.addEventListener(type, handlerRef.current);
 
         return () =>
         {
-            eventDispatcher.removeEventListener(type, eventListener);
+            console.log('unregister', type);
+
+            eventDispatcher.removeEventListener(type, handlerRef.current);
         }
-    }, [ type, eventDispatcher ]);
+    }, [ type, eventDispatcher, handler ]);
 }
 
 export function DispatchEventHook(eventDispatcher: IEventDispatcher, event: NitroEvent): void
