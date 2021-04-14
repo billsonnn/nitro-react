@@ -1,0 +1,99 @@
+.nitro-toolbar {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    z-index: $toolbar-zindex;
+    pointer-events: all;
+
+    .list-group {
+        align-items: center;
+
+        .list-group-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: unset;
+            min-width: 50px;
+            width: 50px;
+            margin: 0 5px;
+
+
+            &:active {
+                -webkit-transform: translate(0, 1px);
+                transform: translate(0, 1px);
+            }
+
+            &.avatar-image {
+                width: 65px;
+                height: 60px;
+
+                img {
+                    position: relative;
+                    top: 12px;
+                    right: 5px;
+                }
+            }
+
+            .icon,
+            .avatar-image {
+                position: relative;
+                filter: drop-shadow(0px 2px 0px black);
+            }
+
+            .count {
+                top: 0rem;
+                right: 5px;
+                font-size: 10px;
+            }
+        }
+    }
+
+    .nitro-toolbar-me-menu {
+        bottom: 77px;
+        left: 200px;
+        position: absolute;
+        font-size: 12px;
+        z-index: $toolbar-memenu-zindex;
+    
+        .list-group {
+    
+            .list-group-item {
+                min-width: 70px;
+                transition: all .3s;
+                font-size: 10px;
+                text-align: center;
+    
+                i {
+                    filter: grayscale(1);
+                }
+    
+                &:hover {
+                    color: $cyan;
+                    text-decoration: underline;
+    
+                    i {
+                        filter: grayscale(0);
+                    }
+                }
+    
+                .count {
+                    top: 0px;
+                    right: 5px;
+                    font-size: 10px;
+                }
+            }
+        }
+    }
+}
+
+.toolbar-icon-animation {
+    position: absolute;
+    object-fit: cover;
+    height: auto;
+    width: auto;
+    max-width: 120px;
+    max-height: 150px;
+    z-index: 500;
+    filter: drop-shadow(2px 1px 0 rgba($white, 1)) drop-shadow(-2px 1px 0 rgba($white, 1)) drop-shadow(0 -2px 0 rgba($white, 1));
+}

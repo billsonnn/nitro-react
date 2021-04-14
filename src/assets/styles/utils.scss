@@ -1,0 +1,44 @@
+.scale-0-5 {
+    transform: scale(0.5) translateZ(0);
+}
+
+.scale-0-75 {
+    transform: scale(0.75) translateZ(0);
+}
+
+.scale-1 {
+    transform: scale(1) translateZ(0);
+}
+
+.scale-2 {
+    transform: scale(2) translateZ(0);
+}
+
+ul {
+
+    &.columns-3 {
+        display: block;
+        columns: 3;
+        font-size: 0;
+    }
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+.t-0 {
+    top: 0 !important;
+}
+
+.b-0 {
+    bottom: 0 !important;
+}
+
+.l-0 {
+    left: 0 !important;
+}
+
+.r-0 {
+    right: 0 !important;
+}

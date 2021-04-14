@@ -1,4 +1,3 @@
-import './LoadingView.scss';
 import { LoadingViewProps } from './LoadingView.types';
 
 export function LoadingView(props: LoadingViewProps): JSX.Element

@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500&display=swap');
-@import './styles';
+@import './assets/styles';
 
 html,
 body {
@@ -15,3 +15,15 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+$chatinput-zindex: 80;
+$toolbar-zindex: 70;
+$rightside-zindex: 69;
+$toolbar-memenu-zindex: 60;
+$roomtools-zindex: 50;
+$context-menu-zindex: 40;
+$infostand-zindex: 30;
+$chat-zindex: 20;
+$highscore-zindex: 19;
+
+@import './views/Styles.scss';
