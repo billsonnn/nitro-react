@@ -1,13 +1,28 @@
+import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
+import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
 import { useState } from 'react';
+import { CreateMessageHook } from '../../hooks/messages/message-event';
+import { AvatarImageView } from '../avatar-image/AvatarImageView';
 import { ToolbarViewProps } from './ToolbarView.types';
 
 export function ToolbarView(props: ToolbarViewProps): JSX.Element
 {
     const [ isInRoom, setIsInRoom ] = useState(false);
 
+    const [ userInfo, setUserInfo ] = useState<UserInfoDataParser>(null);
+
     const unseenInventoryCount = 0;
     const unseenFriendListCount = 0;
     const unseenAchievementsCount = 0;
+
+    const onUserInfoEvent = (event: UserInfoEvent) =>
+    {
+        const parser = event.getParser();
+
+        setUserInfo(parser.userInfo);
+    };
+
+    CreateMessageHook(new UserInfoEvent(onUserInfoEvent));
 
     return (
         <div className="nitro-toolbar">
@@ -38,6 +53,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
                     </li>
                     <li className="list-group-item avatar-image">
+                        { userInfo && <AvatarImageView figure={ userInfo.figure } direction={ 2 } headOnly={ true } /> }
                         { (unseenAchievementsCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenAchievementsCount }</div>) }
                     </li>
