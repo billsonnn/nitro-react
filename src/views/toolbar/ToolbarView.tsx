@@ -52,7 +52,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                         { (unseenFriendListCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
                     </li>
-                    <li className="list-group-item avatar-image">
+                    <li className="list-group-item">
                         { userInfo && <AvatarImageView figure={ userInfo.figure } direction={ 2 } headOnly={ true } /> }
                         { (unseenAchievementsCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenAchievementsCount }</div>) }

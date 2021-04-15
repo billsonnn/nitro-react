@@ -15,24 +15,20 @@
             cursor: pointer;
             padding: unset;
             min-width: 50px;
+            min-height: 60px;
             width: 50px;
+            height: 60px;
             margin: 0 5px;
-
+            overflow: hidden;
 
             &:active {
                 -webkit-transform: translate(0, 1px);
                 transform: translate(0, 1px);
             }
 
-            &.avatar-image {
-                width: 65px;
-                height: 60px;
-
-                img {
-                    position: relative;
-                    top: 12px;
-                    right: 5px;
-                }
+            .avatar-image {
+                top: 20px;
+                left: -5px;
             }
 
             .icon,
