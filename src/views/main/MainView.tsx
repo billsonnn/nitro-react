@@ -4,6 +4,7 @@ import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-ev
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { FadeTransition } from '../../transitions/FadeTransition';
 import { HotelView } from '../hotel-view/HotelView';
+import { RightSideView } from '../right-side/RightSideView';
 import { ToolbarView } from '../toolbar/ToolbarView';
 import { MainViewProps } from './MainView.types';
 
@@ -110,6 +111,7 @@ export function MainView(props: MainViewProps): JSX.Element
     return (
         <div>
             <HotelView />
+            <RightSideView />
             <FadeTransition inProp={ isReady } timeout={ 300 }>
                 <ToolbarView />
             </FadeTransition>

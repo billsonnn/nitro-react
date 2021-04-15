@@ -12,14 +12,10 @@ export function CreateEventDispatcherHook(type: string, eventDispatcher: IEventD
 
     useEffect(() =>
     {
-        console.log('register', type);
-
         eventDispatcher.addEventListener(type, handlerRef.current);
 
         return () =>
         {
-            console.log('unregister', type);
-
             eventDispatcher.removeEventListener(type, handlerRef.current);
         }
     }, [ type, eventDispatcher, handler ]);
