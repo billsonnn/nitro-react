@@ -1,37 +1,40 @@
 import { Nitro, RoomBackgroundColorEvent, RoomEngineDimmerStateEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomObjectHSLColorEnabledEvent, RoomObjectWidgetRequestEvent, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomZoomEvent } from 'nitro-renderer';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
+import { FadeTransition } from '../../transitions/FadeTransition';
 import { HotelView } from '../hotel-view/HotelView';
 import { ToolbarView } from '../toolbar/ToolbarView';
 import { MainViewProps } from './MainView.types';
 
 export function MainView(props: MainViewProps): JSX.Element
 {
-    const onInterstitialEvent = (event: RoomEngineEvent) =>
-    {
-        console.log(event);
-    };
+    const [ isReady, setIsReady ] = useState(false);
 
-    const onRoomEngineEvent = (event: RoomEngineEvent) =>
+    const onInterstitialEvent = useCallback((event: RoomEngineEvent) =>
     {
         console.log(event);
-    };
+    }, []);
 
-    const onRoomEngineObjectEvent = (event: RoomEngineObjectEvent) =>
+    const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
     {
         console.log(event);
-    };
+    }, []);
 
-    const onRoomSessionEvent = (event: RoomSessionEvent) =>
+    const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
         console.log(event);
-    }
+    }, []);
 
-    const onRoomSessionErrorMessageEvent = (event: RoomSessionErrorMessageEvent) =>
+    const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
         console.log(event);
-    }
+    }, []);
+
+    const onRoomSessionErrorMessageEvent = useCallback((event: RoomSessionErrorMessageEvent) =>
+    {
+        console.log(event);
+    }, []);
 
     useRoomEngineEvent(RoomEngineEvent.ENGINE_INITIALIZED, onInterstitialEvent);
     useRoomEngineEvent(RoomEngineEvent.OBJECTS_INITIALIZED, onInterstitialEvent);
@@ -99,13 +102,17 @@ export function MainView(props: MainViewProps): JSX.Element
 
     useEffect(() =>
     {
+        setIsReady(true);
+
         Nitro.instance.communication.connection.onReady();
-    });
+    }, []);
 
     return (
         <div>
             <HotelView />
-            <ToolbarView />
+            <FadeTransition inProp={ isReady } timeout={ 300 }>
+                <ToolbarView />
+            </FadeTransition>
         </div>
     );
 }
