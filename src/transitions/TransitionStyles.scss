@@ -1,0 +1,26 @@
+@keyframes slideDown {
+    from {
+        top: -100%;
+    }
+    to {
+        top: 0;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        bottom: -100%;
+    }
+    to {
+        bottom: 0;
+    }
+}
+
+@keyframes slideRight {
+    from {
+        right: -100%;
+    }
+    to {
+        right: 0;
+    }
+}

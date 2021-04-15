@@ -1,11 +1,5 @@
-import { ConfigurationEvent, NitroEvent } from 'nitro-renderer';
-import { NitroCommunicationDemoEvent } from 'nitro-renderer/src/nitro/communication/demo/NitroCommunicationDemoEvent';
-import { LegacyExternalInterface } from 'nitro-renderer/src/nitro/externalInterface/LegacyExternalInterface';
-import { NitroLocalizationEvent } from 'nitro-renderer/src/nitro/localization/NitroLocalizationEvent';
-import { Nitro } from 'nitro-renderer/src/nitro/Nitro';
-import { RoomEngineEvent } from 'nitro-renderer/src/nitro/room/events/RoomEngineEvent';
-import { WebGL } from 'nitro-renderer/src/nitro/utils/WebGL';
-import { useState } from 'react';
+import { ConfigurationEvent, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, RoomEngineEvent, WebGL } from 'nitro-renderer';
+import { useCallback, useState } from 'react';
 import { useConfigurationEvent } from './hooks/events/core/configuration/configuration-event';
 import { useLocalizationEvent } from './hooks/events/nitro/localization/localization-event';
 import { dispatchMainEvent, useMainEvent } from './hooks/events/nitro/main-event';
@@ -41,7 +35,7 @@ export function App(): JSX.Element
         return urls;
     }
 
-    const handler = (event: NitroEvent) =>
+    const handler = useCallback((event: NitroEvent) =>
     {
         switch(event.type)
         {
@@ -105,7 +99,7 @@ export function App(): JSX.Element
                 });
                 return;
         }
-    };
+    }, []);
 
     useMainEvent(Nitro.WEBGL_UNAVAILABLE, handler);
     useMainEvent(Nitro.WEBGL_CONTEXT_LOST, handler);

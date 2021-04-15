@@ -45,8 +45,8 @@
         "sun": "${asset.url}/images/reception/sun.png",
         "drape": "${asset.url}/images/reception/drape.png",
         "left": "${asset.url}/images/reception/ts.png",
-        "right": "${asset.url}/images/reception/us_right.png",
-        "right.repeat": "${asset.url}/images/reception/us_top_right.png"
+        "right": "${asset.url}/images/reception/US_right.png",
+        "right.repeat": "${asset.url}/images/reception/US_top_right.png"
     },
     "achievements.unseen.ignored": ["ACH_AllTimeHotelPresence"],
     "avatareditor.show.clubitems.dimmed": true,
@@ -54,7 +54,7 @@
     "chat.history.max.items": 100,
     "animation.fps": 24,
     "limits.fps": true,
-    "system.dispatcher.log": false,
+    "system.dispatcher.log": true,
     "system.currency.types": [
         -1,
         0,
