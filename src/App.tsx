@@ -116,11 +116,11 @@ export function App(): JSX.Element
     if(!WebGL.isWebGLAvailable())
     {
         dispatchMainEvent(new NitroEvent(Nitro.WEBGL_UNAVAILABLE));
-
-        return;
     }
-
-    Nitro.instance.core.configuration.init();
+    else
+    {
+        Nitro.instance.core.configuration.init();
+    }
     
     return (
         <div>

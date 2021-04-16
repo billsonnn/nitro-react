@@ -1,6 +1,5 @@
 import { Map } from 'immutable';
-import { UserCreditsEvent, UserCurrencyEvent, UserCurrencyUpdateEvent } from 'nitro-renderer';
-import { UserCurrencyComposer } from 'nitro-renderer/src/nitro/communication/messages/outgoing/user/inventory/currency/UserCurrencyComposer';
+import { Nitro, UserCreditsEvent, UserCurrencyComposer, UserCurrencyEvent, UserCurrencyUpdateEvent } from 'nitro-renderer';
 import { useEffect, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { FadeTransition } from '../../transitions/FadeTransition';
@@ -50,12 +49,16 @@ export function PurseView(props: PurseViewProps): JSX.Element
         SendMessageHook(new UserCurrencyComposer());
     }, []);
 
+    const displayedCurrencies = Nitro.instance.getConfiguration<number[]>('system.currency.types', []);
+
     return (
         <FadeTransition inProp={ isReady } timeout={ 300 }>
-            <div className="grid-container mb-1">
-                <div className="grid-items grid-2">
+            <div className="nitro-purse position-relative mb-1">
+                <div className="row px-0 mx-0">
                     { currencies && currencies.entrySeq().map(([ key, value ]) =>
                         {
+                            if(displayedCurrencies.indexOf(parseInt(key)) === -1) return null;
+
                             return <CurrencyView key={ key } type={ parseInt(key) } amount={ value } />
                         }) }
                 </div>

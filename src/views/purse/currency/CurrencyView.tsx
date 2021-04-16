@@ -1,3 +1,4 @@
+import { CurrencyIcon } from '../../../utils/currency-icon/CurrencyIcon';
 import { CurrencyViewProps } from './CurrencyView.types';
 
 export function CurrencyView(props: CurrencyViewProps): JSX.Element
@@ -5,9 +6,9 @@ export function CurrencyView(props: CurrencyViewProps): JSX.Element
     const { type = -1, amount = 0 } = props;
 
     return (
-        <div className="d-flex item-detail bg-primary rounded border border-black shadow p-1">
-            <div className="flex-grow-1 item-value">{ amount }</div>
-            <div className="item-icon p-1 rounded bg-secondary">{ type }</div>
+        <div className="d-flex bg-primary rounded shadow border border-black mb-1 p-1 nitro-purse-item">
+            <div className="d-flex flex-grow-1 align-items-center justify-content-end detail-value">{ amount }</div>
+            <div className="bg-secondary rounded ml-1"><CurrencyIcon type={ type } /></div>
         </div>
     );
 }
