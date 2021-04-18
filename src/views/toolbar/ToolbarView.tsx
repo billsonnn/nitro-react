@@ -1,7 +1,8 @@
+import { RoomInfoComposer } from 'nitro-renderer';
 import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
-import { useState } from 'react';
-import { CreateMessageHook } from '../../hooks/messages/message-event';
+import { KeyboardEvent, useState } from 'react';
+import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { AvatarImageView } from '../avatar-image/AvatarImageView';
 import { ToolbarViewProps } from './ToolbarView.types';
 
@@ -21,6 +22,17 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
 
         setUserInfo(parser.userInfo);
     };
+
+    function onKeyUp(event: KeyboardEvent<HTMLInputElement>)
+    {
+        if(event.key !== "Enter") return;
+
+        const roomId = (event.target as HTMLInputElement).value;
+
+        if(roomId.length === 0) return;
+
+        SendMessageHook(new RoomInfoComposer(parseInt(roomId), false, true));
+    }
 
     CreateMessageHook(new UserInfoEvent(onUserInfoEvent));
 
@@ -51,6 +63,9 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                         <i className="icon icon-friendall"></i>
                         { (unseenFriendListCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
+                    </li>
+                    <li>
+                        <input type="number" onKeyUp={ onKeyUp } />
                     </li>
                     <li className="list-group-item">
                         { userInfo && <AvatarImageView figure={ userInfo.figure } direction={ 2 } headOnly={ true } /> }

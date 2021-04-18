@@ -7,7 +7,7 @@ export function CurrencyView(props: CurrencyViewProps): JSX.Element
 
     return (
         <div className="d-flex bg-primary rounded shadow border border-black mb-1 p-1 nitro-purse-item">
-            <div className="d-flex flex-grow-1 align-items-center justify-content-end detail-value">{ amount }</div>
+            <div className="d-flex flex-grow-1 align-items-center justify-content-end">{ amount }</div>
             <div className="bg-secondary rounded ml-1"><CurrencyIcon type={ type } /></div>
         </div>
     );
