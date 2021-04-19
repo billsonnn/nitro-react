@@ -4,5 +4,5 @@ export interface FadeTransitionProps
 {
     inProp: boolean;
     timeout?: number;
-    children?: ReactNode
+    children?: ReactNode;
 }

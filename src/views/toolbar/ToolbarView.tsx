@@ -1,14 +1,16 @@
 import { RoomInfoComposer } from 'nitro-renderer';
 import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
-import { KeyboardEvent, useState } from 'react';
+import { KeyboardEvent, MouseEvent, useState } from 'react';
+import { NavigatorEvent } from '../../events';
+import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { AvatarImageView } from '../avatar-image/AvatarImageView';
-import { ToolbarViewProps } from './ToolbarView.types';
+import { ToolbarViewItems, ToolbarViewProps } from './ToolbarView.types';
 
 export function ToolbarView(props: ToolbarViewProps): JSX.Element
 {
-    const [ isInRoom, setIsInRoom ] = useState(false);
+    const { isInRoom } = props;
 
     const [ userInfo, setUserInfo ] = useState<UserInfoDataParser>(null);
 
@@ -34,6 +36,18 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
         SendMessageHook(new RoomInfoComposer(parseInt(roomId), false, true));
     }
 
+    function handleToolbarItemClick(event: MouseEvent, item: string): void
+    {
+        event.preventDefault();
+
+        switch(item)
+        {
+            case ToolbarViewItems.NAVIGATOR_ITEM:
+                dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_NAVIGATOR));
+                return;
+        }
+    }
+
     CreateMessageHook(new UserInfoEvent(onUserInfoEvent));
 
     return (
@@ -48,7 +62,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                         <li className="list-group-item">
                             <i className="icon icon-house"></i>
                         </li>) }
-                    <li className="list-group-item">
+                    <li className="list-group-item" onClick={ event => handleToolbarItemClick(event, ToolbarViewItems.NAVIGATOR_ITEM) }>
                         <i className="icon icon-rooms"></i>
                     </li>
                     <li className="list-group-item">

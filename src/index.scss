@@ -26,6 +26,7 @@ $infostand-zindex: 30;
 $chat-zindex: 20;
 $highscore-zindex: 19;
 
-@import './transitions/TransitionStyles.scss';
-@import './utils/Styles.scss';
-@import './views/Styles.scss';
+@import './transitions/TransitionStyles';
+@import './utils/Styles';
+@import './App';
+@import './views/Styles';

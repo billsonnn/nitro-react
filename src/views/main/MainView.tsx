@@ -38,14 +38,14 @@ export function MainView(props: MainViewProps): JSX.Element
     }, []);
 
     return (
-        <div>
+        <div className="nitro-main">
             { landingViewVisible && <HotelView /> }
             <RoomHostView />
+            <FadeTransition inProp={ isReady } timeout={ 300 }>
+                <ToolbarView isInRoom={ !landingViewVisible } />
+            </FadeTransition>
             <NavigatorView />
             <RightSideView />
-            <FadeTransition inProp={ isReady } timeout={ 300 }>
-                <ToolbarView />
-            </FadeTransition>
         </div>
     );
 }

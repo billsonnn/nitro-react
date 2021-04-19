@@ -6,13 +6,15 @@ export function CreateMessageHook(event: IMessageEvent): void
 {
     useEffect(() =>
     {
+        console.log('register', event);
         Nitro.instance.communication.registerMessageEvent(event);
         
         return () =>
         {
+            console.log('unregister', event);
             Nitro.instance.communication.removeMessageEvent(event);
         }
-    });
+    }, []);
 }
 
 export function SendMessageHook(event: IMessageComposer<unknown[]>): void

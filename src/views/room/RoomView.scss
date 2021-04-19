@@ -1,0 +1,12 @@
+.nitro-room {
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+
+    .nitro-room-container {
+
+        .client-canvas {
+            position: absolute;
+        }
+    }
+}

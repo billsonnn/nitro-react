@@ -123,7 +123,7 @@ export function App(): JSX.Element
     }
     
     return (
-        <div>
+        <div className="nitro-app">
             { (!isReady || isError) && <LoadingView isError={ isError } message={ message } /> }
             { (isReady && !isError) && <MainView /> }
         </div>

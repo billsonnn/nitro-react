@@ -31,11 +31,9 @@ export function RoomHostView(props: RoomHostViewProps): JSX.Element
             case RoomEngineEvent.INITIALIZED:
                 SetActiveRoomId(event.roomId);
                 setRoomSession(session);
-                setEventDispatcher(new EventDispatcher());
                 return;
             case RoomEngineEvent.DISPOSED:
                 setRoomSession(null);
-                setEventDispatcher(null);
                 return;
         }
     }, []);
@@ -118,10 +116,12 @@ export function RoomHostView(props: RoomHostViewProps): JSX.Element
         switch(event.type)
         {
             case RoomSessionEvent.CREATED:
+                setEventDispatcher(new EventDispatcher());
                 StartRoomSession(event.session);
                 return;
             case RoomSessionEvent.ENDED:
                 setRoomSession(null);
+                setEventDispatcher(null);
                 return;
         }
     }, []);
@@ -147,7 +147,7 @@ export function RoomHostView(props: RoomHostViewProps): JSX.Element
     useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
     return (
-        <div>
+        <div className="nitro-room-host">
             <RoomErrorHandler />
             <RoomView events={ eventDispatcher } roomSession={ roomSession } />
         </div>

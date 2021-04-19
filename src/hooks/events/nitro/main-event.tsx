@@ -1,5 +1,4 @@
-import { NitroEvent } from 'nitro-renderer';
-import { Nitro } from 'nitro-renderer/src/nitro/Nitro';
+import { Nitro, NitroEvent } from 'nitro-renderer';
 import { CreateEventDispatcherHook, DispatchEventHook } from '../event-dispatcher.base';
 
 export function useMainEvent(type: string, handler: (event: NitroEvent) => void): void

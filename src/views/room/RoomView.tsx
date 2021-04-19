@@ -6,10 +6,7 @@ import { WindowResizeEvent } from '../../api/nitro/room/DispatchResizeEvent';
 import { DispatchTouchEvent } from '../../api/nitro/room/DispatchTouchEvent';
 import { GetRoomEngine } from '../../api/nitro/room/GetRoomEngine';
 import { RoomViewProps } from './RoomView.types';
-import { FurnitureHighScoreView } from './widgets/furniture/high-score/FurnitureHighScoreView';
-import { FurnitureMannequinView } from './widgets/furniture/mannequin/FurnitureMannequinView';
-import { FurniturePresentView } from './widgets/furniture/present/FurniturePresentView';
-import { FurnitureStickieView } from './widgets/furniture/stickie/FurnitureStickieView';
+import { FurnitureWidgetsView } from './widgets/furniture/FurnitureWidgetsView';
 
 export function RoomView(props: RoomViewProps): JSX.Element
 {
@@ -84,16 +81,11 @@ export function RoomView(props: RoomViewProps): JSX.Element
     if(!roomSession) return null;
 
     return (
-        <div>
-            { roomSession && <div id="room-view"></div> }
+        <div className="nitro-room">
+            { roomSession && <div id="room-view" className="nitro-room-container"></div> }
             { roomSession && events && roomCanvas &&
                 createPortal(props.children, document.getElementById('room-view').appendChild(roomCanvas)) &&
-                <div className="nitro-room-widgets">
-                    <FurnitureHighScoreView events={ events } />
-                    <FurnitureMannequinView events={ events } />
-                    <FurniturePresentView events={ events } />
-                    <FurnitureStickieView events={ events } />
-                </div> }
+                <FurnitureWidgetsView events={ events } /> }
         </div>
     );
 }

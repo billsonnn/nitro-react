@@ -61,7 +61,7 @@
         5,
         101
     ],
-    "communication.packet.log": false,
+    "communication.packet.log": true,
     "communication.pong.manually": true,
     "communication.pong.interval.ms": 20000,
     "avatar.mandatory.libraries": [
