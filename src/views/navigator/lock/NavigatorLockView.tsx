@@ -15,7 +15,6 @@ export function NavigatorLockView(props: NavigatorLockViewProps): JSX.Element
     }
 
     return (
-        <>
         <DraggableWindow handle=".drag-handler">
             <div className="nitro-navigator-lock d-flex flex-column bg-primary border border-black shadow rounded position-absolute">
                 <div className="drag-handler d-flex justify-content-between align-items-center px-3 pt-3">
@@ -32,7 +31,6 @@ export function NavigatorLockView(props: NavigatorLockViewProps): JSX.Element
                     </> }
                 </div>
             </div>
-            </DraggableWindow>
-        </>
+        </DraggableWindow>
     );
 }
