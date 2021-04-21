@@ -1,3 +1,11 @@
-.nitro-navigator-result:nth-child(even) {
-    background: $secondary;
+.nitro-navigator-result {
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &:nth-child(even) {
+        border-radius: $border-radius;
+        background: $secondary !important;
+    }
 }

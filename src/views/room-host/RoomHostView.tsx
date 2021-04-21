@@ -147,7 +147,7 @@ export function RoomHostView(props: RoomHostViewProps): JSX.Element
     useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
     return (
-        <div className="nitro-room-host">
+        <div className="nitro-room-host w-100 h-100">
             <RoomErrorHandler />
             <RoomView events={ eventDispatcher } roomSession={ roomSession } />
         </div>

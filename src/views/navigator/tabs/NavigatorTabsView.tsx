@@ -8,7 +8,7 @@ export function NavigatorTabsView(props: NavigatorTabsViewProps): JSX.Element
     return (
         <div className="d-flex flex-column p-3">
             { topLevelContexts && topLevelContexts.length && 
-                <div className="btn-group w-100 mb-2">
+                <div className="btn-group w-100">
                     { topLevelContexts.map((context, index) =>
                         {
                             return <NavigatorTabView key={ index } context={ context } isActive={ context === topLevelContext } setTopLevelContext={ setTopLevelContext } />

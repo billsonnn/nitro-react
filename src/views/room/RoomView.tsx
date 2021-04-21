@@ -81,7 +81,7 @@ export function RoomView(props: RoomViewProps): JSX.Element
     if(!roomSession) return null;
 
     return (
-        <div className="nitro-room">
+        <div className="nitro-room w-100 h-100">
             { roomSession && <div id="room-view" className="nitro-room-container"></div> }
             { roomSession && events && roomCanvas &&
                 createPortal(props.children, document.getElementById('room-view').appendChild(roomCanvas)) &&

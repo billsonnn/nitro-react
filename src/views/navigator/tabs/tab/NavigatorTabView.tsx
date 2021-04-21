@@ -13,6 +13,6 @@ export function NavigatorTabView(props: NavigatorTabViewProps): JSX.Element
     }
 
     return (
-        <button type="button" className={classNames({ 'btn': true, 'btn-primary': true, 'active': isActive })} onClick={ onClick }>{ LocalizeText(('navigator.toplevelview.' + context.code)) }</button>
+        <button type="button" className={ "btn btn-secondary btn-sm " + classNames({ 'active': isActive })} onClick={ onClick }>{ LocalizeText(('navigator.toplevelview.' + context.code)) }</button>
     );
 }

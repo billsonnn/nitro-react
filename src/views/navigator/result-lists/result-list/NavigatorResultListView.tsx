@@ -37,17 +37,16 @@ export function NavigatorResultListView(props: NavigatorResultListViewProps): JS
     }
 
     return (
-        <div>
-            <div className="d-flex">
-                <div className=" mr-2" onClick={ toggleList }><i className={classNames({ 'fas': true, 'fa-plus': !isExtended, 'fa-minus': isExtended })}></i></div>
-                <div className="align-self-center w-100">{ LocalizeText(getListCode()) }</div>
+        <div className="p-2">
+            <div className="d-flex mb-2">
+                <i className={ "fas " + classNames({ 'fa-plus': !isExtended, 'fa-minus': isExtended })} onClick={ toggleList }></i>
+                <div className="align-self-center w-100 ml-2">{ LocalizeText(getListCode()) }</div>
             </div>
             { isExtended && resultList && resultList.rooms.map((room, index) =>
                 {
                     return <NavigatorResultView key={ index } result={ room }  />
                 })
             }
-            { !isLast && <hr className="mb-2" /> }
         </div>
     );
 }

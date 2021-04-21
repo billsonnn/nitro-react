@@ -6,7 +6,7 @@ export function NavigatorResultListsView(props: NavigatorResultListsViewProps): 
     const { resultLists = null } = props;
 
     return (
-        <div className="nitro-navigator-result-lists px-3 pb-3">
+        <div className="nitro-navigator-result-lists w-100">
             { resultLists && resultLists.length &&  resultLists.map((resultList, index) =>
                 {
                     return <NavigatorResultListView key={ index } resultList={ resultList } isLast={ index + 1 === resultLists.length }  />

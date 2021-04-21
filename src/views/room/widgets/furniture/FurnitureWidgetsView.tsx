@@ -9,7 +9,7 @@ export function FurnitureWidgetsView(props: FurnitureWidgetsViewProps): JSX.Elem
     const { events } = props;
 
     return (
-        <div className="nitro-room-widgets">
+        <div className="position-absolute nitro-room-widgets t-0 l-0">
             <FurnitureHighScoreView events={ events } />
             <FurnitureMannequinView events={ events } />
             <FurniturePresentView events={ events } />

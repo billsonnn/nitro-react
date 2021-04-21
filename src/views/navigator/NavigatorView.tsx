@@ -6,6 +6,8 @@ import { DraggableWindow } from '../../hooks/draggable-window/DraggableWindow';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
+import { TransitionAnimation } from '../../transitions/TransitionAnimation';
+import { TransitionAnimationTypes } from '../../transitions/TransitionAnimation.types';
 import { LocalizeText } from '../../utils/LocalizeText';
 import { NavigatorLockView } from './lock/NavigatorLockView';
 import { NavigatorLockViewStage } from './lock/NavigatorLockView.types';
@@ -127,23 +129,23 @@ export function NavigatorView(props: NavigatorViewProps): JSX.Element
     useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
     
     return (
-        <>
-            <NavigatorContext.Provider value={{ onTryVisitRoom: tryVisitRoom }}>
-                <NavigatorMessageHandler setTopLevelContext={ setTopLevelContext } setTopLevelContexts={ setTopLevelContexts } setSearchResults={ setSearchResults } showLock={ showLock } hideLock={ hideLock } />
-                { isVisible && <DraggableWindow handle=".drag-handler">
-                    <div className="nitro-navigator d-flex flex-column bg-primary border border-black shadow rounded position-absolute">
-                        <div className="drag-handler d-flex justify-content-between align-items-center px-3 pt-3">
-                            <div className="h6 m-0">{ LocalizeText((isLoading || isSearching) ? 'navigator.title.is.busy' : 'navigator.title') }</div>
-                            <button type="button" className="close" onClick={ hideNavigator }>
-                                <i className="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <NavigatorTabsView topLevelContext={ topLevelContext } topLevelContexts={ topLevelContexts } setTopLevelContext={ setTopLevelContext } />
-                        <NavigatorResultListsView resultLists={ searchResults } />
+        <NavigatorContext.Provider value={{ onTryVisitRoom: tryVisitRoom }}>
+            <NavigatorMessageHandler setTopLevelContext={ setTopLevelContext } setTopLevelContexts={ setTopLevelContexts } setSearchResults={ setSearchResults } showLock={ showLock } hideLock={ hideLock } />
+            { isVisible && <DraggableWindow handle=".drag-handler">
+                <div className="nitro-navigator d-flex flex-column bg-primary border border-black shadow rounded">
+                    <div className="drag-handler d-flex justify-content-between align-items-center px-3 pt-3">
+                        <div className="h6 m-0">{ LocalizeText((isLoading || isSearching) ? 'navigator.title.is.busy' : 'navigator.title') }</div>
+                        <button type="button" className="close" onClick={ hideNavigator }>
+                            <i className="fas fa-times"></i>
+                        </button>
                     </div>
-                </DraggableWindow> }
-                { isLockVisible && <NavigatorLockView roomData={ lastRoomVisited } stage={ lockStage } onHideLock={ hideLock } onVisitRoom={ visitRoom }></NavigatorLockView> }
-            </NavigatorContext.Provider>
-        </>
+                    <NavigatorTabsView topLevelContext={ topLevelContext } topLevelContexts={ topLevelContexts } setTopLevelContext={ setTopLevelContext } />
+                    <TransitionAnimation className="d-flex px-3 pb-3" type={ TransitionAnimationTypes.FADE_IN } inProp={ (!isSearching && !!searchResults) } timeout={ 300 }>
+                        <NavigatorResultListsView resultLists={ searchResults } />
+                    </TransitionAnimation>
+                </div>
+            </DraggableWindow> }
+            { isLockVisible && <NavigatorLockView roomData={ lastRoomVisited } stage={ lockStage } onHideLock={ hideLock } onVisitRoom={ visitRoom }></NavigatorLockView> }
+        </NavigatorContext.Provider>
     );
 }

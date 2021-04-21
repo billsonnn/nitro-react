@@ -1,7 +1,7 @@
 .nitro-navigator-result-lists {
     height: 400px;
     max-height: 400px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 @import './result-list/NavigatorResultListView';

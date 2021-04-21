@@ -1,6 +1,9 @@
 .nitro-stickie {
+    position: relative;
     width: 185px;
     height: 178px;
+    top: 25px;
+    left: 25px;
     padding: 1px;
 
     .stickie-header {
@@ -42,6 +45,7 @@
             outline: none;
             box-shadow: none;
             resize: none;
+            font-style: italic;
 
             &:active {
                 border: 0;

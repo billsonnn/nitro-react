@@ -67,6 +67,21 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
                         animationDuration: `${ timeout }ms`
                     }
             }
+        case TransitionAnimationTypes.FADE_IN:
+            switch(transition)
+            {
+                default:
+                case ENTERING:
+                    return {
+                        animationName: `fadeIn`,
+                        animationDuration: `${ timeout }ms`
+                    }
+                case EXITING:
+                    return {
+                        animationName: `fadeOut`,
+                        animationDuration: `${ timeout }ms`
+                    }
+            }
         case TransitionAnimationTypes.FADE_DOWN:
             switch(transition)
             {
