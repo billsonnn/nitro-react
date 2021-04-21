@@ -9,7 +9,7 @@ export function NavigatorResultListsView(props: NavigatorResultListsViewProps): 
         <div className="nitro-navigator-result-lists px-3 pb-3">
             { resultLists && resultLists.length &&  resultLists.map((resultList, index) =>
                 {
-                    return <NavigatorResultListView key={ index } resultList={ resultList }  />
+                    return <NavigatorResultListView key={ index } resultList={ resultList } isLast={ index + 1 === resultLists.length }  />
                 })
             }
         </div>

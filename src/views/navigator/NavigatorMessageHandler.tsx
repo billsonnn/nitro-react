@@ -1,12 +1,13 @@
-import { NavigatorCategoriesComposer, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomDataParser, RoomForwardEvent, RoomInfoComposer, RoomInfoEvent, RoomInfoOwnerEvent, UserInfoEvent } from 'nitro-renderer';
+import { GenericErrorEvent, NavigatorCategoriesComposer, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomForwardEvent, RoomInfoComposer, RoomInfoEvent, RoomInfoOwnerEvent, UserInfoEvent } from 'nitro-renderer';
 import { useCallback } from 'react';
 import { GetRoomSessionManager, GetSessionDataManager } from '../../api';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
+import { NavigatorLockViewStage } from './lock/NavigatorLockView.types';
 import { NavigatorMessageHandlerProps } from './NavigatorMessageHandler.types';
 
 export function NavigatorMessageHandler(props: NavigatorMessageHandlerProps): JSX.Element
 {
-    const { setTopLevelContext = null, setTopLevelContexts = null, setSearchResults = null } = props;
+    const { setTopLevelContext = null, setTopLevelContexts = null, setSearchResults = null, showLock = null, hideLock = null } = props;
 
     const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
     {
@@ -48,7 +49,6 @@ export function NavigatorMessageHandler(props: NavigatorMessageHandlerProps): JS
 
             // this._data.createdRoomId = 0;
         }
-
         else if(parser.roomForward)
         {
             if((parser.data.ownerName !== GetSessionDataManager().userName) && !parser.isGroupMember)
@@ -56,21 +56,62 @@ export function NavigatorMessageHandler(props: NavigatorMessageHandlerProps): JS
                 switch(parser.data.doorMode)
                 {
                     case RoomDataParser.DOORBELL_STATE:
-                        console.log('open doorbell');
-                        return;
                     case RoomDataParser.PASSWORD_STATE:
-                        console.log('open password');
+                        showLock();
                         return;
                 }
             }
 
             GetRoomSessionManager().createSession(parser.data.roomId);
         }
-
         else
         {
             // this._data.enteredGuestRoom = parser.data;
             // this._data.staffPick        = parser.data.roomPicker;
+        }
+    }, []);
+
+    const onRoomDoorbellEvent = useCallback((event: RoomDoorbellEvent) =>
+    {
+        if(!event) return;
+
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        if(!parser.userName || (parser.userName.length === 0))
+        {
+            showLock(NavigatorLockViewStage.WAITING);
+        }
+    }, []);
+
+    const onRoomDoorbellAcceptedEvent = useCallback((event: RoomDoorbellAcceptedEvent) =>
+    {
+        if(!event) return;
+
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        if(!parser.userName || (parser.userName.length === 0))
+        {
+            hideLock();
+        }
+    }, []);
+
+    const onGenericErrorEvent = useCallback((event: GenericErrorEvent) =>
+    {
+        if(!event) return;
+
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        switch(parser.errorCode)
+        {
+            case -100002:
+                showLock(NavigatorLockViewStage.FAILED);
+                break;
         }
     }, []);
 
@@ -96,6 +137,9 @@ export function NavigatorMessageHandler(props: NavigatorMessageHandlerProps): JS
     CreateMessageHook(new RoomForwardEvent(onRoomForwardEvent));
     CreateMessageHook(new RoomInfoOwnerEvent(onRoomInfoOwnerEvent));
     CreateMessageHook(new RoomInfoEvent(onRoomInfoEvent));
+    CreateMessageHook(new RoomDoorbellEvent(onRoomDoorbellEvent));
+    CreateMessageHook(new RoomDoorbellAcceptedEvent(onRoomDoorbellAcceptedEvent));
+    CreateMessageHook(new GenericErrorEvent(onGenericErrorEvent));
     CreateMessageHook(new NavigatorMetadataEvent(onNavigatorMetadataEvent));
     CreateMessageHook(new NavigatorSearchEvent(onNavigatorSearchEvent));
 

@@ -6,7 +6,7 @@ import { NavigatorResultView } from './result/NavigatorResultView';
 
 export function NavigatorResultListView(props: NavigatorResultListViewProps): JSX.Element
 {
-    const { resultList = null }         = props;
+    const { resultList = null, isLast = false } = props;
 
     const [ isExtended, setIsExtended ] = useState(true);
 
@@ -37,7 +37,7 @@ export function NavigatorResultListView(props: NavigatorResultListViewProps): JS
     }
 
     return (
-        <div className="mb-2">
+        <div>
             <div className="d-flex">
                 <div className=" mr-2" onClick={ toggleList }><i className={classNames({ 'fas': true, 'fa-plus': !isExtended, 'fa-minus': isExtended })}></i></div>
                 <div className="align-self-center w-100">{ LocalizeText(getListCode()) }</div>
@@ -47,7 +47,7 @@ export function NavigatorResultListView(props: NavigatorResultListViewProps): JS
                     return <NavigatorResultView key={ index } result={ room }  />
                 })
             }
-            <hr />
+            { !isLast && <hr className="mb-2" /> }
         </div>
     );
 }
