@@ -15,7 +15,6 @@ export function FurnitureStickieView(props: FurnitureStickieViewProps): JSX.Elem
     const { events = null } = props;
 
     const [ stickieData, setStickieData ] = useState<FurnitureStickieData>(null);
-    const [ isEditing, setIsEditing ] = useState(false);
 
     const textAreaRef = createRef<HTMLTextAreaElement>();
 
@@ -47,14 +46,12 @@ export function FurnitureStickieView(props: FurnitureStickieViewProps): JSX.Elem
                     color = data;
                 }
 
-                setStickieData(new FurnitureStickieData(widgetEvent.objectId, widgetEvent.category, color, text, (GetRoomSession(widgetEvent.roomId).isRoomOwner || GetSessionDataManager().isModerator)));
-                setIsEditing(false);
+                setStickieData(new FurnitureStickieData(widgetEvent.objectId, widgetEvent.category, color, text, (GetRoomSession(widgetEvent.roomId).isRoomOwner || GetSessionDataManager().isModerator), false));
                 return;
             }
             case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED: {
                 const widgetEvent = (event as RoomWidgetRoomObjectUpdateEvent);
 
-                setIsEditing(false);
                 setStickieData(prevState =>
                     {
                         if(!prevState || (widgetEvent.id !== prevState.objectId) || (widgetEvent.category !== prevState.category)) return prevState;
@@ -65,6 +62,9 @@ export function FurnitureStickieView(props: FurnitureStickieViewProps): JSX.Elem
             }
         }
     }, []);
+
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_STICKIE, onNitroEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, events, onNitroEvent);
 
     const processAction = useCallback((type: string, value: string = null) =>
     {
@@ -94,7 +94,6 @@ export function FurnitureStickieView(props: FurnitureStickieViewProps): JSX.Elem
                     });
                 return;
             case 'changeText': {
-                setIsEditing(false);
                 setStickieData(prevState =>
                     {
                         const newStickieData = new FurnitureStickieData(prevState.objectId, prevState.category, prevState.color, value, prevState.canModify);
@@ -108,30 +107,31 @@ export function FurnitureStickieView(props: FurnitureStickieViewProps): JSX.Elem
         }
     }, []);
 
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_STICKIE, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, events, onNitroEvent);
+    const onDocumentMouseDown = useCallback((event: MouseEvent) =>
+    {
+        if(event.target === textAreaRef.current) return;
+
+        processAction('changeText', textAreaRef.current.value);
+    }, [ textAreaRef, processAction ]);
 
     useEffect(() =>
     {
-        if(!isEditing) return;
+        if(!stickieData || !stickieData.isEditing) return;
 
-        const event = (mouseEvent: MouseEvent) =>
-        {
-            if(mouseEvent.target === textAreaRef.current) return;
+        document.addEventListener(MouseEventType.MOUSE_DOWN, onDocumentMouseDown);
 
-            console.log('change it');
-
-            processAction('changeText', textAreaRef.current.value);
-        }
-
-        document.addEventListener(MouseEventType.MOUSE_DOWN, event);
-
-        return () => document.removeEventListener(MouseEventType.MOUSE_DOWN, event);
-    }, [ isEditing, textAreaRef, processAction ]);
+        return () => document.removeEventListener(MouseEventType.MOUSE_DOWN, onDocumentMouseDown);
+    }, [ stickieData, onDocumentMouseDown ]);
 
     if(!stickieData) return null;
 
-    console.log('rerender stickie')
+    function setIsEditing(): void
+    {
+        setStickieData(prevValue =>
+            {
+                return new FurnitureStickieData(prevValue.objectId, prevValue.category, prevValue.color, prevValue.text, prevValue.canModify, true);
+            });
+    }
 
     return (
         <DraggableWindow handle=".drag-handler">
@@ -150,7 +150,7 @@ export function FurnitureStickieView(props: FurnitureStickieViewProps): JSX.Elem
                     <div className="d-flex align-items-center nitro-stickie-image stickie-close header-close" onClick={ event => processAction('close') }></div>
                 </div>
                 <div className="stickie-context">
-                    { !isEditing ? <div className="context-text" onClick={ event => stickieData.canModify && setIsEditing(true) }>{ stickieData.text }</div> : <textarea className="context-text" ref={ textAreaRef } defaultValue={ stickieData.text || '' } autoFocus></textarea> }
+                    { !stickieData.isEditing ? <div className="context-text" onClick={ event => stickieData.canModify && setIsEditing() }>{ stickieData.text }</div> : <textarea className="context-text" ref={ textAreaRef } defaultValue={ stickieData.text || '' } autoFocus></textarea> }
                 </div>
             </div>
         </DraggableWindow>

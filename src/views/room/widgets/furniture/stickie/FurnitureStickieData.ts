@@ -5,5 +5,6 @@ export class FurnitureStickieData
         public category: number,
         public color: string,
         public text: string,
-        public canModify: boolean) {}
+        public canModify: boolean = false,
+        public isEditing: boolean = false) {}
 }
