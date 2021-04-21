@@ -8,6 +8,7 @@ import { SendMessageHook } from '../../hooks/messages/message-event';
 import { LocalizeText } from '../../utils/LocalizeText';
 import { NavigatorMessageHandler } from './NavigatorMessageHandler';
 import { NavigatorViewProps } from './NavigatorView.types';
+import { NavigatorResultListsView } from './result-lists/NavigatorResultListsView';
 import { NavigatorTabsView } from './tabs/NavigatorTabsView';
 
 export function NavigatorView(props: NavigatorViewProps): JSX.Element
@@ -95,7 +96,7 @@ export function NavigatorView(props: NavigatorViewProps): JSX.Element
         <>
             <NavigatorMessageHandler setTopLevelContext={ setTopLevelContext } setTopLevelContexts={ setTopLevelContexts } setSearchResults={ setSearchResults } />
             { isVisible && <DraggableWindow handle=".drag-handler">
-                <div className="nitro-navigator d-flex flex-column bg-primary border border-black shadow rounded">
+                <div className="nitro-navigator d-flex flex-column bg-primary border border-black shadow rounded position-absolute">
                     <div className="drag-handler d-flex justify-content-between align-items-center px-3 pt-3">
                         <div className="h6 m-0">{ LocalizeText((isLoading || isSearching) ? 'navigator.title.is.busy' : 'navigator.title') }</div>
                         <button type="button" className="close" onClick={ hideNavigator }>
@@ -103,6 +104,7 @@ export function NavigatorView(props: NavigatorViewProps): JSX.Element
                         </button>
                     </div>
                     <NavigatorTabsView topLevelContext={ topLevelContext } topLevelContexts={ topLevelContexts } setTopLevelContext={ setTopLevelContext } />
+                    <NavigatorResultListsView resultLists={ searchResults } />
                 </div>
             </DraggableWindow> }
         </>
