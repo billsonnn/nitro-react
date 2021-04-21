@@ -51,7 +51,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
     CreateMessageHook(new UserInfoEvent(onUserInfoEvent));
 
     return (
-        <div className="nitro-toolbar">
+        <>
             <div className="card p-0 overflow-hidden">
                 <ul className="list-group list-group-horizontal p-1">
                     { isInRoom && (
@@ -88,6 +88,6 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                     </li>
                 </ul>
             </div>
-        </div>
+        </>
     );
 }

@@ -1,7 +1,7 @@
 import { Nitro, RoomSessionEvent } from 'nitro-renderer';
 import { useCallback, useEffect, useState } from 'react';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
-import { FadeTransition } from '../../transitions/FadeTransition';
+import { TransitionAnimation } from '../../transitions/TransitionAnimation';
 import { HotelView } from '../hotel-view/HotelView';
 import { NavigatorView } from '../navigator/NavigatorView';
 import { RightSideView } from '../right-side/RightSideView';
@@ -41,9 +41,9 @@ export function MainView(props: MainViewProps): JSX.Element
         <div className="nitro-main">
             { landingViewVisible && <HotelView /> }
             <RoomHostView />
-            <FadeTransition inProp={ isReady } timeout={ 300 }>
+            <TransitionAnimation className="nitro-toolbar" type={ 'fadeUp' } inProp={ isReady } timeout={ 300 }>
                 <ToolbarView isInRoom={ !landingViewVisible } />
-            </FadeTransition>
+            </TransitionAnimation>
             <NavigatorView />
             <RightSideView />
         </div>

@@ -1,5 +1,6 @@
+import { CurrencySet } from './CurrencySet';
+
 export interface CurrencyViewProps
 {
-    type: number;
-    amount: number;
+    currencySet: CurrencySet;
 }

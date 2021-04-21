@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500&display=swap');
+@import '../node_modules/animate.css/animate.css';
 @import './assets/styles';
 
 html,
@@ -26,7 +27,6 @@ $infostand-zindex: 30;
 $chat-zindex: 20;
 $highscore-zindex: 19;
 
-@import './transitions/TransitionStyles';
 @import './utils/Styles';
 @import './App';
 @import './views/Styles';

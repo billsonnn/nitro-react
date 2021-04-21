@@ -4,7 +4,7 @@ import { DraggableWindowProps } from './DraggableWindow.types';
 export function DraggableWindow(props: DraggableWindowProps): JSX.Element
 {
     return (
-        <Draggable handle={ props.handle } bounds="parent" { ...props.draggableOptions }>
+        <Draggable handle={ props.handle } { ...props.draggableOptions }>
             { props.children }
         </Draggable>
     );

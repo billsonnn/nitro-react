@@ -1,44 +1,69 @@
-import { Map } from 'immutable';
 import { Nitro, UserCreditsEvent, UserCurrencyComposer, UserCurrencyEvent, UserCurrencyUpdateEvent } from 'nitro-renderer';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
-import { FadeTransition } from '../../transitions/FadeTransition';
+import { TransitionAnimation } from '../../transitions/TransitionAnimation';
+import { TransitionAnimationTypes } from '../../transitions/TransitionAnimation.types';
+import { CurrencySet } from './currency/CurrencySet';
 import { CurrencyView } from './currency/CurrencyView';
 import { PurseViewProps } from './PurseView.types';
 
 export function PurseView(props: PurseViewProps): JSX.Element
 {
-    const [ currencies, setCurrencies ] = useState(Map({ '-1': 0 }));
+    const [ currencies, setCurrencies ] = useState<CurrencySet[]>([ new CurrencySet(-1, 0) ]);
     const [ isReady, setIsReady ] = useState(false);
 
-    const onUserCreditsEvent = (event: UserCreditsEvent) =>
+    const displayedCurrencies = Nitro.instance.getConfiguration<number[]>('system.currency.types', []);
+
+    const onUserCreditsEvent = useCallback((event: UserCreditsEvent) =>
     {
         const parser = event.getParser();
 
-        setCurrencies(currencies.set('-1', parseFloat(parser.credits)));
-    };
+        updateCurrency(-1, parseFloat(parser.credits));
+    }, []);
 
-    const onUserCurrencyEvent = (event: UserCurrencyEvent) =>
+    const onUserCurrencyEvent = useCallback((event: UserCurrencyEvent) =>
     {
         const parser = event.getParser();
 
-        const map = {};
+        for(const [ key, value ] of parser.currencies.entries()) updateCurrency(key, value);
 
-        for(const [ key, value ] of parser.currencies.entries())
-        {
-            map[key.toString()] = value;
-        }
-
-        setCurrencies(currencies.merge(map));
         setIsReady(true);
-    };
+    }, []);
 
-    const onUserCurrencyUpdateEvent = (event: UserCurrencyUpdateEvent) =>
+    const onUserCurrencyUpdateEvent = useCallback((event: UserCurrencyUpdateEvent) =>
     {
         const parser = event.getParser();
 
-        setCurrencies(currencies.set(parser.type.toString(), parser.amount));
-    };
+        updateCurrency(parser.type, parser.amount)
+    }, []);
+
+    function updateCurrency(type: number, amount: number): void
+    {
+        setCurrencies(oldState =>
+            {
+                const newState: CurrencySet[] = [];
+
+                let found = false;
+
+                for(const set of oldState)
+                {
+                    if(set.type !== type)
+                    {
+                        newState.push(set);
+
+                        continue;
+                    }
+
+                    newState.push(new CurrencySet(set.type, amount));
+
+                    found = true;
+                }
+
+                if(!found) newState.push(new CurrencySet(type, amount));
+
+                return newState;
+            });
+    }
 
     CreateMessageHook(new UserCreditsEvent(onUserCreditsEvent));
     CreateMessageHook(new UserCurrencyEvent(onUserCurrencyEvent));
@@ -49,20 +74,16 @@ export function PurseView(props: PurseViewProps): JSX.Element
         SendMessageHook(new UserCurrencyComposer());
     }, []);
 
-    const displayedCurrencies = Nitro.instance.getConfiguration<number[]>('system.currency.types', []);
-
     return (
-        <FadeTransition inProp={ isReady } timeout={ 300 }>
-            <div className="nitro-purse position-relative mb-1">
-                <div className="row px-0 mx-0">
-                    { currencies && currencies.entrySeq().map(([ key, value ]) =>
-                        {
-                            if(displayedCurrencies.indexOf(parseInt(key)) === -1) return null;
+        <TransitionAnimation className="nitro-purse position-relative mb-1" type={ TransitionAnimationTypes.FADE_DOWN } inProp={ isReady } timeout={ 300 }>
+            <div className="row px-0 mx-0">
+                { currencies && currencies.map((set, index) =>
+                    {
+                        if(displayedCurrencies.indexOf(set.type) === -1) return null;
 
-                            return <CurrencyView key={ key } type={ parseInt(key) } amount={ value } />
-                        }) }
-                </div>
+                        return <CurrencyView key={ index } currencySet={ set } />
+                    }) }
             </div>
-        </FadeTransition>
+        </TransitionAnimation>
     );
 }
