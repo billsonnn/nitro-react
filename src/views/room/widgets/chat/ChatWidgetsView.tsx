@@ -7,9 +7,9 @@ export function ChatWidgetsView(props: ChatWidgetsViewProps): JSX.Element
     const {} = props;
 
     return (
-        <>
+        <div className="nitro-chat-widget">
             <ChatMessagesWidgetView />
             <ChatFormWidgetView />
-        </>
+        </div>
     );
 }
