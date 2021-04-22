@@ -6,7 +6,7 @@ import { NavigatorResultView } from './result/NavigatorResultView';
 
 export function NavigatorResultListView(props: NavigatorResultListViewProps): JSX.Element
 {
-    const { resultList = null, isLast = false } = props;
+    const { resultList = null } = props;
 
     const [ isExtended, setIsExtended ]     = useState(true);
     const [ displayMode, setDisplayMode ]   = useState<number>(0);

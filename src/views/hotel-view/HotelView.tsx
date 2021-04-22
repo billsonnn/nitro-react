@@ -8,8 +8,8 @@ export function HotelView(props: HotelViewProps): JSX.Element
     const sun             = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['sun']);
     const drape           = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['drape']);
     const left            = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['left']);
-    const rightRepeat     = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['right.repeat']);
-    const right           = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['right']);
+    //const rightRepeat     = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['right.repeat']);
+    //const right           = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['right']);
     
     return (
         <div className="nitro-hotel-view" style={ (backgroundColor && backgroundColor) ? { background: backgroundColor } : {} }>
