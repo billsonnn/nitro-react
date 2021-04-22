@@ -12,7 +12,7 @@ export const InventoryTabsContentView: FC<InventoryTabsContentViewProps> = props
     const inventoryContext = useContext(InventoryContext);
     
     return (
-        <div className="p-3">
+        <div className="px-3 pb-3">
             { inventoryContext && inventoryContext.currentTab && inventoryContext.currentTab === InventoryTabs.FURNITURE && <InventoryTabFurnitureView /> }
             { inventoryContext && inventoryContext.currentTab && inventoryContext.currentTab === InventoryTabs.BOTS && <InventoryTabBotsView /> }
             { inventoryContext && inventoryContext.currentTab && inventoryContext.currentTab === InventoryTabs.PETS && <InventoryTabPetsView /> }
