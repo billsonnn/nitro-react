@@ -4,6 +4,7 @@ import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/roo
 import { TransitionAnimation } from '../../transitions/TransitionAnimation';
 import { TransitionAnimationTypes } from '../../transitions/TransitionAnimation.types';
 import { CatalogView } from '../catalog/CatalogView';
+import { FriendListView } from '../friend-list/FriendListView';
 import { HotelView } from '../hotel-view/HotelView';
 import { InventoryView } from '../inventory/InventoryView';
 import { NavigatorView } from '../navigator/NavigatorView';
@@ -50,6 +51,7 @@ export function MainView(props: MainViewProps): JSX.Element
             <NavigatorView />
             <InventoryView />
             <CatalogView />
+            <FriendListView />
             <RightSideView />
         </div>
     );

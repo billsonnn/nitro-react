@@ -1,4 +1,4 @@
 export interface InventoryTabViewProps
 {
-    tab?: string;
+    tab: string;
 }

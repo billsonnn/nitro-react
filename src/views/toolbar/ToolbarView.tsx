@@ -1,7 +1,7 @@
 import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
 import { MouseEvent, useCallback, useState } from 'react';
-import { CatalogEvent, InventoryEvent, NavigatorEvent } from '../../events';
+import { CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent } from '../../events';
 import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { AvatarImageView } from '../avatar-image/AvatarImageView';
@@ -39,6 +39,9 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
             case ToolbarViewItems.CATALOG_ITEM:
                 dispatchUiEvent(new CatalogEvent(CatalogEvent.TOGGLE_CATALOG));
                 return;
+            case ToolbarViewItems.FRIEND_LIST_ITEM:
+                dispatchUiEvent(new CatalogEvent(FriendListEvent.TOGGLE_FRIEND_LIST));
+                return;
         }
     }
 
@@ -67,7 +70,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                         { (unseenInventoryCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenInventoryCount }</div>) }
                     </li>
-                    <li className="list-group-item">
+                    <li className="list-group-item" onClick={ event => handleToolbarItemClick(event, ToolbarViewItems.FRIEND_LIST_ITEM) }>
                         <i className="icon icon-friendall"></i>
                         { (unseenFriendListCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
