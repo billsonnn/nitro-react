@@ -58,7 +58,7 @@ export function NavigatorResultListView(props: NavigatorResultListViewProps): JS
             <div className={ 'row row-grid row-cols-' + classNames({ '1': displayMode === NavigatorResultListViewDisplayMode.LIST, '2': displayMode >= NavigatorResultListViewDisplayMode.THUMBNAILS }) }>
                 { isExtended && resultList && resultList.rooms.map((room, index) =>
                     {
-                        return <div className="col">
+                        return <div className={'col ' + classNames({ 'mb-1': displayMode >= NavigatorResultListViewDisplayMode.THUMBNAILS })}>
                             <NavigatorResultView key={ index } result={ room } />
                         </div>
                     })
