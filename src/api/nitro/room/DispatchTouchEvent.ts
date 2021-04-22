@@ -7,6 +7,7 @@ let clickCount = 0;
 
 export function DispatchTouchEvent(roomId: number, canvasId: number, event: TouchEvent)
 {
+    console.log(event);
     let eventType = event.type;
 
     if(eventType === TouchEventType.TOUCH_END && !didMouseMove)

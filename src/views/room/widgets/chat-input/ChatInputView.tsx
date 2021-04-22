@@ -1,10 +1,9 @@
-import { LocalizeText } from '../../../../../utils/LocalizeText';
-import { ChatFormWidgetViewProps } from './ChatFormWidgetView.types';
+import { FC } from 'react';
+import { LocalizeText } from '../../../../utils/LocalizeText';
+import { ChatInputViewProps } from './ChatInputView.types';
 
-export function ChatFormWidgetView(props: ChatFormWidgetViewProps): JSX.Element
+export const ChatInputView: FC<ChatInputViewProps> = props =>
 {
-    const {} = props;
-
     return (
         <div className="nitro-chat-form fixed-bottom mb-4 d-flex justify-content-center">
             <div className="nitro-chat-form-input">

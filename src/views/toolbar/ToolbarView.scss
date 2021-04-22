@@ -1,7 +1,8 @@
 .nitro-toolbar {
     position: absolute;
+    width: 70px;
+    top: 10px;
     left: 10px;
-    bottom: 10px;
     z-index: $toolbar-zindex;
     pointer-events: all;
 
@@ -19,7 +20,6 @@
             width: 50px;
             height: 60px;
             margin: 0 5px;
-            overflow: hidden;
 
             &:active {
                 -webkit-transform: translate(0, 1px);
@@ -28,13 +28,16 @@
 
             .avatar-image {
                 top: 20px;
-                left: -5px;
             }
 
             .icon,
             .avatar-image {
                 position: relative;
                 filter: drop-shadow(0px 2px 0px black);
+            }
+
+            .chat-input-container {
+                left: 60px;
             }
 
             .count {

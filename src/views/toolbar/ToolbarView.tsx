@@ -46,8 +46,8 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
 
     return (
         <>
-            <div className="card p-0 overflow-hidden">
-                <ul className="list-group list-group-horizontal p-1">
+            <div className="d-flex flex-column bg-primary rounded shadow border border-black p-0 h-100">
+                <ul className="flex-grow-1 list-group p-1">
                     { isInRoom && (
                         <li className="list-group-item">
                         <i className="icon icon-hotelview icon-nitro-light"></i>
@@ -72,7 +72,9 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                         { (unseenFriendListCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
                     </li>
-                    <li className="list-group-item">
+                </ul>
+                <ul className="list-group p-1">
+                    <li className="position-relative list-group-item">
                         { userInfo && <AvatarImageView figure={ userInfo.figure } direction={ 2 } headOnly={ true } /> }
                         { (unseenAchievementsCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenAchievementsCount }</div>) }

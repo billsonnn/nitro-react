@@ -1,6 +1,8 @@
+import { RoomSessionEvent } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { InventoryEvent } from '../../events';
 import { DraggableWindow } from '../../hooks/draggable-window/DraggableWindow';
+import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { LocalizeText } from '../../utils/LocalizeText';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
@@ -25,6 +27,22 @@ export const InventoryView: FC<InventoryViewProps> = props =>
 
     useUiEvent(InventoryEvent.SHOW_INVENTORY, onInventoryEvent);
     useUiEvent(InventoryEvent.TOGGLE_INVENTORY, onInventoryEvent);
+
+    const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
+    {
+        switch(event.type)
+        {
+            case RoomSessionEvent.CREATED:
+                //
+                return;
+            case RoomSessionEvent.ENDED:
+                setIsVisible(false);
+                return;
+        }
+    }, []);
+
+    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
     function hideInventory(): void
     {
