@@ -1,26 +1,24 @@
+import { MessengerInitComposer } from 'nitro-renderer';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { FriendListEvent } from '../../events';
 import { DraggableWindow } from '../../hooks/draggable-window/DraggableWindow';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
+import { SendMessageHook } from '../../hooks/messages/message-event';
 import { LocalizeText } from '../../utils/LocalizeText';
 import { FriendListMessageHandler } from './FriendListMessageHandler';
 import { FriendListTabs, FriendListViewProps, IFriendListContext } from './FriendListView.types';
 import { FriendListTabsContentView } from './tabs-content/FriendListTabsContentView';
 import { FriendListTabsSelectorView } from './tabs-selector/FriendListTabsSelectorView';
+import { MessengerSettings } from './utils/MessengerSettings';
 
 export const FriendListContext = React.createContext<IFriendListContext>(null);
 
 export const FriendListView: FC<FriendListViewProps> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
-    const [ currentTab, setCurrentTab ] = useState<string>(null);
-    const [ tabs, setTabs ]             = useState<string[]>([ 
-        FriendListTabs.FRIENDS, FriendListTabs.REQUESTS, FriendListTabs.SEARCH
-     ]);
-
-    useEffect(() => {
-        setCurrentTab(tabs[0]);
-    }, [ tabs ]);
+    const [ isVisible, setIsVisible ]                   = useState(false);
+    const [ currentTab, setCurrentTab ]                 = useState<string>(null);
+    const [ tabs, setTabs ]                             = useState<string[]>([  FriendListTabs.FRIENDS, FriendListTabs.REQUESTS, FriendListTabs.SEARCH ]);
+    const [ messengerSettings, setMessengerSettings ]   = useState<MessengerSettings>(null);
 
     const onFriendListEvent = useCallback((event: FriendListEvent) =>
     {
@@ -38,6 +36,23 @@ export const FriendListView: FC<FriendListViewProps> = props =>
     useUiEvent(FriendListEvent.SHOW_FRIEND_LIST, onFriendListEvent);
     useUiEvent(FriendListEvent.TOGGLE_FRIEND_LIST, onFriendListEvent);
 
+    useEffect(() =>
+    {
+        setCurrentTab(tabs[0]);
+    }, [ tabs ]);
+
+    useEffect(() =>
+    {
+        if(!messengerSettings) return;
+        
+        console.log(messengerSettings);
+    }, [ messengerSettings ]);
+
+    useEffect(() =>
+    {
+        SendMessageHook(new MessengerInitComposer());
+    }, []);
+
     function hideFriendList(): void
     {
         setIsVisible(false);
@@ -45,7 +60,7 @@ export const FriendListView: FC<FriendListViewProps> = props =>
 
     return (
         <FriendListContext.Provider value={{ currentTab: currentTab, onSetCurrentTab: setCurrentTab }}>
-            <FriendListMessageHandler  />
+            <FriendListMessageHandler setMessengerSettings={ setMessengerSettings }  />
             { isVisible && <DraggableWindow handle=".drag-handler">
                 <div className="nitro-friend-list d-flex flex-column bg-primary border border-black shadow rounded">
                     <div className="drag-handler d-flex justify-content-between align-items-center px-3 pt-3">
