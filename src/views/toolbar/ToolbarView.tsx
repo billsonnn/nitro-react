@@ -1,7 +1,7 @@
 import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
 import { MouseEvent, useCallback, useState } from 'react';
-import { InventoryEvent, NavigatorEvent } from '../../events';
+import { CatalogEvent, InventoryEvent, NavigatorEvent } from '../../events';
 import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { AvatarImageView } from '../avatar-image/AvatarImageView';
@@ -36,6 +36,9 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
             case ToolbarViewItems.INVENTORY_ITEM:
                 dispatchUiEvent(new InventoryEvent(InventoryEvent.TOGGLE_INVENTORY));
                 return;
+            case ToolbarViewItems.CATALOG_ITEM:
+                dispatchUiEvent(new CatalogEvent(CatalogEvent.TOGGLE_CATALOG));
+                return;
         }
     }
 
@@ -56,7 +59,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                     <li className="list-group-item" onClick={ event => handleToolbarItemClick(event, ToolbarViewItems.NAVIGATOR_ITEM) }>
                         <i className="icon icon-rooms"></i>
                     </li>
-                    <li className="list-group-item">
+                    <li className="list-group-item" onClick={ event => handleToolbarItemClick(event, ToolbarViewItems.CATALOG_ITEM) }>
                         <i className="icon icon-catalog"></i>
                     </li>
                     <li className="list-group-item" onClick={ event => handleToolbarItemClick(event, ToolbarViewItems.INVENTORY_ITEM) }>

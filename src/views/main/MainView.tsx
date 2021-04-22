@@ -2,6 +2,7 @@ import { Nitro, RoomSessionEvent } from 'nitro-renderer';
 import { useCallback, useEffect, useState } from 'react';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { TransitionAnimation } from '../../transitions/TransitionAnimation';
+import { CatalogView } from '../catalog/CatalogView';
 import { HotelView } from '../hotel-view/HotelView';
 import { InventoryView } from '../inventory/InventoryView';
 import { NavigatorView } from '../navigator/NavigatorView';
@@ -47,6 +48,7 @@ export function MainView(props: MainViewProps): JSX.Element
             </TransitionAnimation>
             <NavigatorView />
             <InventoryView />
+            <CatalogView />
             <RightSideView />
         </div>
     );
