@@ -1,20 +1,23 @@
-import { IMessageComposer, IMessageEvent } from 'nitro-renderer';
+import { IMessageComposer, IMessageEvent, MessageEvent } from 'nitro-renderer';
 import { Nitro } from 'nitro-renderer/src/nitro/Nitro';
 import { useEffect } from 'react';
 
-export function CreateMessageHook(event: IMessageEvent): void
+export function CreateMessageHook(eventType: typeof MessageEvent, handler: (event: IMessageEvent) => void): void
 {
     useEffect(() =>
     {
-        console.log('register', event);
+        //@ts-ignore
+        const event = new eventType(handler);
+        
+        console.log('register', eventType.name);
         Nitro.instance.communication.registerMessageEvent(event);
         
         return () =>
         {
-            console.log('unregister', event);
+            console.log('unregister', eventType.name);
             Nitro.instance.communication.removeMessageEvent(event);
         }
-    }, []);
+    }, [ eventType, handler ]);
 }
 
 export function SendMessageHook(event: IMessageComposer<unknown[]>): void

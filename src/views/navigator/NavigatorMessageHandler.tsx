@@ -133,15 +133,15 @@ export function NavigatorMessageHandler(props: NavigatorMessageHandlerProps): JS
         setSearchResults(parser.result.results);
     }, [ setSearchResults ]);
 
-    CreateMessageHook(new UserInfoEvent(onUserInfoEvent));
-    CreateMessageHook(new RoomForwardEvent(onRoomForwardEvent));
-    CreateMessageHook(new RoomInfoOwnerEvent(onRoomInfoOwnerEvent));
-    CreateMessageHook(new RoomInfoEvent(onRoomInfoEvent));
-    CreateMessageHook(new RoomDoorbellEvent(onRoomDoorbellEvent));
-    CreateMessageHook(new RoomDoorbellAcceptedEvent(onRoomDoorbellAcceptedEvent));
-    CreateMessageHook(new GenericErrorEvent(onGenericErrorEvent));
-    CreateMessageHook(new NavigatorMetadataEvent(onNavigatorMetadataEvent));
-    CreateMessageHook(new NavigatorSearchEvent(onNavigatorSearchEvent));
+    CreateMessageHook(UserInfoEvent, onUserInfoEvent);
+    CreateMessageHook(RoomForwardEvent, onRoomForwardEvent);
+    CreateMessageHook(RoomInfoOwnerEvent, onRoomInfoOwnerEvent);
+    CreateMessageHook(RoomInfoEvent, onRoomInfoEvent);
+    CreateMessageHook(RoomDoorbellEvent, onRoomDoorbellEvent);
+    CreateMessageHook(RoomDoorbellAcceptedEvent, onRoomDoorbellAcceptedEvent);
+    CreateMessageHook(GenericErrorEvent, onGenericErrorEvent);
+    CreateMessageHook(NavigatorMetadataEvent, onNavigatorMetadataEvent);
+    CreateMessageHook(NavigatorSearchEvent, onNavigatorSearchEvent);
 
     return null;
 }

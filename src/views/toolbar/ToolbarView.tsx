@@ -1,7 +1,7 @@
 import { RoomInfoComposer } from 'nitro-renderer';
 import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
-import { KeyboardEvent, MouseEvent, useState } from 'react';
+import { KeyboardEvent, MouseEvent, useCallback, useState } from 'react';
 import { NavigatorEvent } from '../../events';
 import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
@@ -18,12 +18,12 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
     const unseenFriendListCount = 0;
     const unseenAchievementsCount = 0;
 
-    const onUserInfoEvent = (event: UserInfoEvent) =>
+    const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
     {
         const parser = event.getParser();
 
         setUserInfo(parser.userInfo);
-    };
+    }, []);
 
     function onKeyUp(event: KeyboardEvent<HTMLInputElement>)
     {
@@ -48,7 +48,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
         }
     }
 
-    CreateMessageHook(new UserInfoEvent(onUserInfoEvent));
+    CreateMessageHook(UserInfoEvent, onUserInfoEvent);
 
     return (
         <>

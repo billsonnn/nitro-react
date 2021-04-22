@@ -65,9 +65,9 @@ export function PurseView(props: PurseViewProps): JSX.Element
             });
     }
 
-    CreateMessageHook(new UserCreditsEvent(onUserCreditsEvent));
-    CreateMessageHook(new UserCurrencyEvent(onUserCurrencyEvent));
-    CreateMessageHook(new UserCurrencyUpdateEvent(onUserCurrencyUpdateEvent));
+    CreateMessageHook(UserCreditsEvent, onUserCreditsEvent);
+    CreateMessageHook(UserCurrencyEvent, onUserCurrencyEvent);
+    CreateMessageHook(UserCurrencyUpdateEvent, onUserCurrencyUpdateEvent);
 
     useEffect(() =>
     {
