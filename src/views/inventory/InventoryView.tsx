@@ -1,14 +1,23 @@
-import { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { InventoryEvent } from '../../events';
 import { DraggableWindow } from '../../hooks/draggable-window/DraggableWindow';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { LocalizeText } from '../../utils/LocalizeText';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
-import { InventoryViewProps } from './InventoryView.types';
+import { IInventoryContext, InventoryViewProps } from './InventoryView.types';
+import { InventoryTabsView } from './tabs/InventoryTabsView';
+
+export const InventoryContext = React.createContext<IInventoryContext>(null);
 
 export const InventoryView: FC<InventoryViewProps> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
+    const [ isVisible, setIsVisible ]   = useState(false);
+    const [ currentTab, setCurrentTab ] = useState<string>(null);
+    const [ tabs, setTabs ]             = useState<string[]>([ 'inventory.furni', 'inventory.bots', 'inventory.furni.tab.pets', 'inventory.badges' ]);
+
+    useEffect(() => {
+        setCurrentTab(tabs[0]);
+    }, [ tabs ]);
 
     const onInventoryEvent = useCallback((event: InventoryEvent) =>
     {
@@ -32,7 +41,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
     }
 
     return (
-        <>
+        <InventoryContext.Provider value={{ currentTab: currentTab, onSetCurrentTab: setCurrentTab }}>
             <InventoryMessageHandler  />
             { isVisible && <DraggableWindow handle=".drag-handler">
                 <div className="nitro-inventory d-flex flex-column bg-primary border border-black shadow rounded">
@@ -42,11 +51,9 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                             <i className="fas fa-times"></i>
                         </button>
                     </div>
-                    <div className="d-flex p-3">
-                        content
-                    </div>
+                    <InventoryTabsView tabs={ tabs } />
                 </div>
             </DraggableWindow> }
-        </>
+        </InventoryContext.Provider>
     );
 }
