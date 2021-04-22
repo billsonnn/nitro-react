@@ -12,8 +12,6 @@ export function DraggableWindow(props: DraggableWindowProps): JSX.Element
     {
         let zIndex = 400;
 
-        console.log(currentWindows);
-
         for(const existingWindow of currentWindows)
         {
             zIndex += 1;

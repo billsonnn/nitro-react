@@ -19,7 +19,7 @@ export function NavigatorResultListView(props: NavigatorResultListViewProps): JS
     {
         let name = resultList.code;
 
-        if((!name || name.length == 0) && (resultList.data && resultList.data.length > 0))
+        if((!name || name.length === 0) && (resultList.data && resultList.data.length > 0))
         {
             return resultList.data;
         }
