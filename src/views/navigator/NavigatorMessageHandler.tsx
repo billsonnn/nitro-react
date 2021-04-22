@@ -11,7 +11,7 @@ export function NavigatorMessageHandler(props: NavigatorMessageHandlerProps): JS
 
     const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
     {
-        const parser = event.getParser();
+        //const parser = event.getParser();
 
         SendMessageHook(new NavigatorCategoriesComposer());
         SendMessageHook(new NavigatorSettingsComposer());

@@ -6,7 +6,7 @@ export function NavigatorTabsView(props: NavigatorTabsViewProps): JSX.Element
     const { topLevelContext = null, topLevelContexts = null, setTopLevelContext = null } = props;
 
     return (
-        <div className="d-flex flex-column p-3">
+        <div className="p-3">
             { topLevelContexts && topLevelContexts.length && 
                 <div className="btn-group w-100">
                     { topLevelContexts.map((context, index) =>
