@@ -3,9 +3,26 @@
     &:hover {
         cursor: pointer;
     }
+}
 
-    &:nth-child(even) {
-        border-radius: $border-radius;
-        background: $secondary !important;
+.nitro-navigator-result-list {
+    .row {
+        &.row-cols-1 {
+            .col:nth-child(odd) {
+                .nitro-navigator-result {
+                    border-radius: $border-radius;
+                    background: $secondary !important;
+                }
+            } 
+        }
+
+        &.row-cols-2 {
+            .col {
+                .nitro-navigator-result {
+                    border-radius: $border-radius;
+                    background: $secondary !important;
+                }
+            }
+        }
     }
 }
