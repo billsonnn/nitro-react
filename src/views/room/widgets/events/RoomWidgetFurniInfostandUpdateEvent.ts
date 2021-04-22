@@ -1,4 +1,4 @@
-﻿import { IObjectData, RoomWidgetUpdateEvent } from 'nitro-renderer';
+import { IObjectData, RoomWidgetUpdateEvent } from 'nitro-renderer';
 
 export class RoomWidgetFurniInfostandUpdateEvent extends RoomWidgetUpdateEvent
 {

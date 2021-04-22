@@ -1,4 +1,4 @@
-﻿export class _Str_3801
+export class _Str_3801
 {
     public stuffId: number;
     public _Str_2706: number;

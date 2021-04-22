@@ -1,4 +1,4 @@
-﻿export class RoomObjectItem
+export class RoomObjectItem
 {
     private readonly _id: number;
     private readonly _category: number;

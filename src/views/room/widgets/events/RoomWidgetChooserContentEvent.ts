@@ -1,4 +1,4 @@
-﻿import { RoomWidgetUpdateEvent } from 'nitro-renderer';
+import { RoomWidgetUpdateEvent } from 'nitro-renderer';
 import { RoomObjectItem } from './RoomObjectItem';
 
 export class RoomWidgetChooserContentEvent extends RoomWidgetUpdateEvent

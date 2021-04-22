@@ -1,4 +1,4 @@
-﻿export class ConfirmPetBreedingPetData
+export class ConfirmPetBreedingPetData
 {
     public name: string;
     public level: number;

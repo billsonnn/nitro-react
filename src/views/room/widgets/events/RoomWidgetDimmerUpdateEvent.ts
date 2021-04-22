@@ -1,4 +1,4 @@
-﻿import { RoomWidgetUpdateEvent } from 'nitro-renderer';
+import { RoomWidgetUpdateEvent } from 'nitro-renderer';
 import { RoomDimmerPreset } from './roomDimmerPreset';
 
 export class RoomWidgetDimmerUpdateEvent extends RoomWidgetUpdateEvent

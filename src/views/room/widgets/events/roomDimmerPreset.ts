@@ -1,4 +1,4 @@
-﻿// see _Str_6094
+// see _Str_6094
 export class RoomDimmerPreset
 {
     private _id: number = 0;

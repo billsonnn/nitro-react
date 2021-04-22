@@ -1,4 +1,4 @@
-﻿import { RoomWidgetUpdateEvent } from 'nitro-renderer';
+import { RoomWidgetUpdateEvent } from 'nitro-renderer';
 
 export class RoomWidgetStickieDataUpdateEvent extends RoomWidgetUpdateEvent
 {

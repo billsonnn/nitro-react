@@ -1,4 +1,4 @@
-﻿import { NitroEvent } from 'nitro-renderer';
+import { NitroEvent } from 'nitro-renderer';
 
 export class HideRoomWidgetEvent extends NitroEvent
 {

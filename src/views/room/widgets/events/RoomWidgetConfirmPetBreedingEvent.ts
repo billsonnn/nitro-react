@@ -1,4 +1,4 @@
-﻿import { RoomWidgetUpdateEvent } from 'nitro-renderer';
+import { RoomWidgetUpdateEvent } from 'nitro-renderer';
 import { ConfirmPetBreedingPetData } from './ConfirmPetBreedingPetData';
 
 export class RoomWidgetConfirmPetBreedingEvent extends RoomWidgetUpdateEvent
