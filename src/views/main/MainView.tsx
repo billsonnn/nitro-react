@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { TransitionAnimation } from '../../transitions/TransitionAnimation';
 import { HotelView } from '../hotel-view/HotelView';
+import { InventoryView } from '../inventory/InventoryView';
 import { NavigatorView } from '../navigator/NavigatorView';
 import { RightSideView } from '../right-side/RightSideView';
 import { RoomHostView } from '../room-host/RoomHostView';
@@ -45,6 +46,7 @@ export function MainView(props: MainViewProps): JSX.Element
                 <ToolbarView isInRoom={ !landingViewVisible } />
             </TransitionAnimation>
             <NavigatorView />
+            <InventoryView />
             <RightSideView />
         </div>
     );

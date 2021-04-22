@@ -1,7 +1,7 @@
 import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
 import { MouseEvent, useCallback, useState } from 'react';
-import { NavigatorEvent } from '../../events';
+import { InventoryEvent, NavigatorEvent } from '../../events';
 import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { AvatarImageView } from '../avatar-image/AvatarImageView';
@@ -33,6 +33,9 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
             case ToolbarViewItems.NAVIGATOR_ITEM:
                 dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_NAVIGATOR));
                 return;
+            case ToolbarViewItems.INVENTORY_ITEM:
+                dispatchUiEvent(new InventoryEvent(InventoryEvent.TOGGLE_INVENTORY));
+                return;
         }
     }
 
@@ -56,7 +59,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                     <li className="list-group-item">
                         <i className="icon icon-catalog"></i>
                     </li>
-                    <li className="list-group-item">
+                    <li className="list-group-item" onClick={ event => handleToolbarItemClick(event, ToolbarViewItems.INVENTORY_ITEM) }>
                         <i className="icon icon-inventory"></i>
                         { (unseenInventoryCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenInventoryCount }</div>) }
