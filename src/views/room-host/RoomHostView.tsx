@@ -40,6 +40,8 @@ export function RoomHostView(props: RoomHostViewProps): JSX.Element
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
+        if(!eventDispatcher) return;
+
         const objectId  = event.objectId;
         const category  = event.category;
 
@@ -116,12 +118,22 @@ export function RoomHostView(props: RoomHostViewProps): JSX.Element
         switch(event.type)
         {
             case RoomSessionEvent.CREATED:
-                setEventDispatcher(new EventDispatcher());
+                setEventDispatcher(prevValue =>
+                    {
+                        if(prevValue) prevValue.removeAllListeners();
+
+                        return new EventDispatcher();
+                    });
                 StartRoomSession(event.session);
                 return;
             case RoomSessionEvent.ENDED:
                 setRoomSession(null);
-                setEventDispatcher(null);
+                setEventDispatcher(prevValue =>
+                    {
+                        if(prevValue) prevValue.removeAllListeners();
+
+                        return null;
+                    });
                 return;
         }
     }, []);

@@ -18,7 +18,7 @@ export function CreateEventDispatcherHook(type: string, eventDispatcher: IEventD
         {
             eventDispatcher.removeEventListener(type, handlerRef.current);
         }
-    }, [ type, eventDispatcher, handler ]);
+    }, [ type, eventDispatcher ]);
 }
 
 export function DispatchEventHook(eventDispatcher: IEventDispatcher, event: NitroEvent): void

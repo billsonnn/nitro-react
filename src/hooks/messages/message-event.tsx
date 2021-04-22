@@ -9,14 +9,9 @@ export function CreateMessageHook(eventType: typeof MessageEvent, handler: (even
         //@ts-ignore
         const event = new eventType(handler);
         
-        console.log('register', eventType.name);
         Nitro.instance.communication.registerMessageEvent(event);
         
-        return () =>
-        {
-            console.log('unregister', eventType.name);
-            Nitro.instance.communication.removeMessageEvent(event);
-        }
+        return () => Nitro.instance.communication.removeMessageEvent(event);
     }, [ eventType, handler ]);
 }
 
