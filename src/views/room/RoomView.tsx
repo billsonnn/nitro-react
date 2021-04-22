@@ -6,6 +6,7 @@ import { WindowResizeEvent } from '../../api/nitro/room/DispatchResizeEvent';
 import { DispatchTouchEvent } from '../../api/nitro/room/DispatchTouchEvent';
 import { GetRoomEngine } from '../../api/nitro/room/GetRoomEngine';
 import { RoomViewProps } from './RoomView.types';
+import { ChatWidgetsView } from './widgets/chat/ChatWidgetsView';
 import { FurnitureWidgetsView } from './widgets/furniture/FurnitureWidgetsView';
 
 export function RoomView(props: RoomViewProps): JSX.Element
@@ -85,7 +86,10 @@ export function RoomView(props: RoomViewProps): JSX.Element
             { roomSession && <div id="room-view" className="nitro-room-container"></div> }
             { roomSession && events && roomCanvas &&
                 createPortal(props.children, document.getElementById('room-view').appendChild(roomCanvas)) &&
-                <FurnitureWidgetsView events={ events } /> }
+                <>
+                    <FurnitureWidgetsView events={ events } />
+                    <ChatWidgetsView />
+                </> }
         </div>
     );
 }

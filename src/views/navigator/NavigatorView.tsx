@@ -140,7 +140,7 @@ export function NavigatorView(props: NavigatorViewProps): JSX.Element
                         </button>
                     </div>
                     <NavigatorTabsView topLevelContext={ topLevelContext } topLevelContexts={ topLevelContexts } setTopLevelContext={ setTopLevelContext } />
-                    <TransitionAnimation className="d-flex px-3 pb-3" type={ TransitionAnimationTypes.FADE_IN } inProp={ (!isSearching && !!searchResults) } timeout={ 300 }>
+                    <TransitionAnimation className="d-flex px-3 pb-3" type={ TransitionAnimationTypes.FADE_IN } inProp={ (!isSearching && !!searchResults) } timeout={ 200 }>
                         <NavigatorResultListsView resultLists={ searchResults } />
                     </TransitionAnimation>
                 </div>
