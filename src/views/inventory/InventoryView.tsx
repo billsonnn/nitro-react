@@ -15,7 +15,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
     const [ isVisible, setIsVisible ]   = useState(false);
     const [ currentTab, setCurrentTab ] = useState<string>(null);
     const [ tabs, setTabs ]             = useState<string[]>([ 
-        InventoryTabs.FURNITURE, InventoryTabs.BOTS, InventoryTabs.PETS, InventoryTabs.PETS
+        InventoryTabs.FURNITURE, InventoryTabs.BOTS, InventoryTabs.PETS, InventoryTabs.BADGES
      ]);
 
     useEffect(() => {

@@ -13,10 +13,10 @@ export const InventoryTabsContentView: FC<InventoryTabsContentViewProps> = props
     
     return (
         <div className="p-3">
-            { inventoryContext && inventoryContext.currentTab && inventoryContext.currentTab === InventoryTabs.FURNITURE } <InventoryTabFurnitureView />
-            { inventoryContext && inventoryContext.currentTab && inventoryContext.currentTab === InventoryTabs.BOTS } <InventoryTabBotsView />
-            { inventoryContext && inventoryContext.currentTab && inventoryContext.currentTab === InventoryTabs.PETS } <InventoryTabPetsView />
-            { inventoryContext && inventoryContext.currentTab && inventoryContext.currentTab === InventoryTabs.BADGES } <InventoryTabBadgesView />
+            { inventoryContext && inventoryContext.currentTab && inventoryContext.currentTab === InventoryTabs.FURNITURE && <InventoryTabFurnitureView /> }
+            { inventoryContext && inventoryContext.currentTab && inventoryContext.currentTab === InventoryTabs.BOTS && <InventoryTabBotsView /> }
+            { inventoryContext && inventoryContext.currentTab && inventoryContext.currentTab === InventoryTabs.PETS && <InventoryTabPetsView /> }
+            { inventoryContext && inventoryContext.currentTab && inventoryContext.currentTab === InventoryTabs.BADGES && <InventoryTabBadgesView /> }
         </div>
     );
 }

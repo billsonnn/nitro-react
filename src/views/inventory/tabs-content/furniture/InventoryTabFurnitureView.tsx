@@ -7,6 +7,6 @@ export const InventoryTabFurnitureView: FC<InventoryTabFurnitureViewProps> = pro
     const inventoryContext = useContext(InventoryContext);
 
     return (
-        <></>
+        <>Furniture content</>
     );
 }

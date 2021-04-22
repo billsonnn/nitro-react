@@ -7,6 +7,6 @@ export const InventoryTabBadgesView: FC<InventoryTabBadgesViewProps> = props =>
     const inventoryContext = useContext(InventoryContext);
 
     return (
-        <></>
+        <>Badges content</>
     );
 }

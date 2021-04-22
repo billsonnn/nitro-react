@@ -7,6 +7,6 @@ export const InventoryTabPetsView: FC<InventoryTabPetsViewProps> = props =>
     const inventoryContext = useContext(InventoryContext);
 
     return (
-        <></>
+        <>Pets content</>
     );
 }
