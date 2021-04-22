@@ -6,21 +6,32 @@
 }
 
 .nitro-navigator-result-list {
+
+    .nitro-navigator-result {
+        border-radius: $border-radius;
+        background: $secondary;
+    }
+
     .row {
+
         &.row-cols-1 {
-            .col:nth-child(odd) {
+
+            .col:nth-child(even) {
+
                 .nitro-navigator-result {
                     border-radius: $border-radius;
-                    background: $secondary !important;
+                    background: $primary !important;
                 }
             } 
         }
 
         &.row-cols-2 {
-            .col {
+
+            .col:nth-child(4n+3),
+            .col:nth-child(4n+4) {
                 .nitro-navigator-result {
                     border-radius: $border-radius;
-                    background: $secondary !important;
+                    background: $primary !important;
                 }
             }
         }

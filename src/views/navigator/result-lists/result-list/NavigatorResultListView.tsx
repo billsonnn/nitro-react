@@ -6,7 +6,7 @@ import { NavigatorResultView } from './result/NavigatorResultView';
 
 export function NavigatorResultListView(props: NavigatorResultListViewProps): JSX.Element
 {
-    const { resultList = null, isLast = false } = props;
+    const { resultList = null } = props;
 
     const [ isExtended, setIsExtended ]     = useState(true);
     const [ displayMode, setDisplayMode ]   = useState<number>(0);
@@ -55,12 +55,10 @@ export function NavigatorResultListView(props: NavigatorResultListViewProps): JS
                 <div className="align-self-center w-100 ml-2">{ LocalizeText(getListCode()) }</div>
                 <i className={ "fas " + classNames({ 'fa-bars': displayMode === NavigatorResultListViewDisplayMode.LIST, 'fa-th': displayMode >= NavigatorResultListViewDisplayMode.THUMBNAILS })} onClick={ toggleDisplayMode }></i>
             </div>
-            <div className={ 'row row-grid row-cols-' + classNames({ '1': displayMode === NavigatorResultListViewDisplayMode.LIST, '2': displayMode >= NavigatorResultListViewDisplayMode.THUMBNAILS }) }>
+            <div className={ 'row mx-n2 row-cols-' + classNames({ '1': displayMode === NavigatorResultListViewDisplayMode.LIST, '2': displayMode >= NavigatorResultListViewDisplayMode.THUMBNAILS }) }>
                 { isExtended && resultList && resultList.rooms.map((room, index) =>
                     {
-                        return <div className="col">
-                            <NavigatorResultView key={ index } result={ room } />
-                        </div>
+                        return <NavigatorResultView key={ index } result={ room } />
                     })
                 }
             </div>
