@@ -4,8 +4,9 @@ import { DraggableWindow } from '../../hooks/draggable-window/DraggableWindow';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { LocalizeText } from '../../utils/LocalizeText';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
-import { IInventoryContext, InventoryViewProps } from './InventoryView.types';
-import { InventoryTabsView } from './tabs/InventoryTabsView';
+import { IInventoryContext, InventoryTabs, InventoryViewProps } from './InventoryView.types';
+import { InventoryTabsContentView } from './tabs-content/InventoryTabsContentView';
+import { InventoryTabsSelectorView } from './tabs-selector/InventoryTabsSelectorView';
 
 export const InventoryContext = React.createContext<IInventoryContext>(null);
 
@@ -13,7 +14,9 @@ export const InventoryView: FC<InventoryViewProps> = props =>
 {
     const [ isVisible, setIsVisible ]   = useState(false);
     const [ currentTab, setCurrentTab ] = useState<string>(null);
-    const [ tabs, setTabs ]             = useState<string[]>([ 'inventory.furni', 'inventory.bots', 'inventory.furni.tab.pets', 'inventory.badges' ]);
+    const [ tabs, setTabs ]             = useState<string[]>([ 
+        InventoryTabs.FURNITURE, InventoryTabs.BOTS, InventoryTabs.PETS, InventoryTabs.PETS
+     ]);
 
     useEffect(() => {
         setCurrentTab(tabs[0]);
@@ -51,7 +54,8 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                             <i className="fas fa-times"></i>
                         </button>
                     </div>
-                    <InventoryTabsView tabs={ tabs } />
+                    <InventoryTabsSelectorView tabs={ tabs } />
+                    <InventoryTabsContentView />
                 </div>
             </DraggableWindow> }
         </InventoryContext.Provider>

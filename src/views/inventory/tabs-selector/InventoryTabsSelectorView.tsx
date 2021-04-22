@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { InventoryTabsViewProps } from './InventoryTabsView.types';
+import { InventoryTabsSelectorViewProps } from './InventoryTabsSelectorView.types';
 import { InventoryTabView } from './tab/InventoryTabView';
 
-export const InventoryTabsView: FC<InventoryTabsViewProps> = props =>
+export const InventoryTabsSelectorView: FC<InventoryTabsSelectorViewProps> = props =>
 {
     return (
         <div className="p-3">
