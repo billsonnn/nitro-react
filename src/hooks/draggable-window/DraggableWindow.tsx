@@ -22,6 +22,22 @@ export function DraggableWindow(props: DraggableWindowProps): JSX.Element
 
     function onMouseDown(event: MouseEvent): void
     {
+        const index = currentWindows.indexOf(elementRef.current);
+
+        if(index === -1)
+        {
+            currentWindows.push(elementRef.current);
+        }
+
+        else if(index === (currentWindows.length - 1)) return;
+
+        else if(index >= 0)
+        {
+            currentWindows.splice(index, 1);
+
+            currentWindows.push(elementRef.current);
+        }
+
         bringToTop();
     }
 
@@ -43,7 +59,7 @@ export function DraggableWindow(props: DraggableWindowProps): JSX.Element
 
     return (
         <Draggable handle={ props.handle } { ...props.draggableOptions }>
-            <div ref={ elementRef } className="position-absolute t-0 l-0" onMouseDown={ onMouseDown }>
+            <div ref={ elementRef } className="position-absolute t-0 l-0" onMouseDownCapture={ onMouseDown }>
                 { props.children }
             </div>
         </Draggable>
