@@ -43,6 +43,8 @@ export function DraggableWindow(props: DraggableWindowProps): JSX.Element
 
     useEffect(() =>
     {
+        if(!elementRef) return;
+        
         const element = elementRef.current;
 
         currentWindows.push(element);

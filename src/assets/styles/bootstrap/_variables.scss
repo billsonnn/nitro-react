@@ -263,6 +263,10 @@ $box-shadow-inset:            inset 0px 0px 0px 2px rgba($white, 0.1) !default;
 $box-shadow-outset:           0px 2px 0px rgba($black, 0.45) !default;
 $box-shadow:                  $box-shadow-outset, $box-shadow-inset !default;
 
+$box-shadow-right-inset:      inset -2px 0px 0px 0px rgba($white, 0.1) !default;
+$box-shadow-right-outset:     0px 0px 0px 2px rgba($black, 0.45) !default;
+$box-shadow-right:            $box-shadow-right-outset, $box-shadow-right-inset !default;
+
 $box-shadow-lg:               0 1rem 3rem rgba($black, .175) !default;
 
 $component-active-color:      $white !default;

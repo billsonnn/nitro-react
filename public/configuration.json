@@ -1,5 +1,5 @@
 {
-    "socket.url": "wss://arcturus.habborw.com",
+    "socket.url": "wss://ws.nitrots.co:2096",
     "asset.url": "https://nitro-assets.hrw.pw",
     "image.library.url": "https://swf.hrw.pw/c_images/",
     "external.samples.url": "https://swf.hrw.pw/dcr/hof_furni/mp3/sound_machine_sample_%sample%.mp3",

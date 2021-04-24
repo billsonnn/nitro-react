@@ -23,6 +23,13 @@ ul {
     }
 }
 
+.cursor-pointer {
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
 .pointer-events-none {
     pointer-events: none;
 }
