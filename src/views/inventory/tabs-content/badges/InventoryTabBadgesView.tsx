@@ -1,10 +1,10 @@
-import { FC, useContext } from 'react';
-import { InventoryContext } from '../../InventoryView';
+import { FC } from 'react';
+import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryTabBadgesViewProps } from './InventoryTabBadgesView.types';
 
 export const InventoryTabBadgesView: FC<InventoryTabBadgesViewProps> = props =>
 {
-    const inventoryContext = useContext(InventoryContext);
+    const inventoryContext = useInventoryContext();
 
     return (
         <>Badges content</>

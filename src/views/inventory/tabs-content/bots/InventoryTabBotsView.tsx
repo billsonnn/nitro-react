@@ -1,10 +1,10 @@
-import { FC, useContext } from 'react';
-import { InventoryContext } from '../../InventoryView';
+import { FC } from 'react';
+import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryTabBotsViewProps } from './InventoryTabBotsView.types';
 
 export const InventoryTabBotsView: FC<InventoryTabBotsViewProps> = props =>
 {
-    const inventoryContext = useContext(InventoryContext);
+    const inventoryContext = useInventoryContext();
 
     return (
         <>Bots content</>

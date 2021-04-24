@@ -1,18 +1,21 @@
 import classNames from 'classnames';
-import { FC, useContext } from 'react';
+import { FC, MouseEvent } from 'react';
 import { LocalizeText } from '../../../../utils/LocalizeText';
-import { InventoryContext } from '../../InventoryView';
+import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryTabViewProps } from './InventoryTabView.types';
 
 export const InventoryTabView: FC<InventoryTabViewProps> = props =>
 {
-    const inventoryContext = useContext(InventoryContext);
+    const { tab = null } = props;
 
-    return (
-        <button type="button" 
-        className={ 'btn btn-secondary btn-sm ' + classNames({ 'active': inventoryContext.currentTab === props.tab })}
-        onClick={ () => inventoryContext.onSetCurrentTab(props.tab) }>
-            { LocalizeText(props.tab) }
-        </button>
-    );
+    const inventoryContext = useInventoryContext();
+
+    function selectTab(event: MouseEvent = null): void
+    {
+        inventoryContext.setCurrentTab(tab);
+    }
+
+    if(!tab) return null;
+
+    return <button type="button" className={ 'btn btn-secondary btn-sm ' + classNames({ 'active': (inventoryContext.currentTab === tab) })} onClick={ selectTab }>{ LocalizeText(tab) }</button>;
 }
