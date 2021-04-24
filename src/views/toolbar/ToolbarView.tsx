@@ -49,7 +49,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
 
     return (
         <>
-            <div className="d-flex flex-column bg-primary rounded shadow border border-black p-0 h-100">
+            <div className="d-flex flex-column bg-primary border border-black p-0 h-100 nitro-toolbar">
                 <ul className="flex-grow-1 list-group p-1">
                     { isInRoom && (
                         <li className="list-group-item">

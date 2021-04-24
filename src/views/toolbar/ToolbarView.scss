@@ -1,10 +1,28 @@
-.nitro-toolbar {
+.nitro-toolbar-container {
     position: absolute;
     width: 70px;
     top: 10px;
     left: 10px;
     z-index: $toolbar-zindex;
+
+    // @include media-breakpoint-up(sm) {
+    //     top: 0;
+    //     left: 0;
+    //     height: 100%;
+    //     box-shadow: $box-shadow-right !important;
+    //     border-radius: 0 !important;
+
+    //     .nitro-toolbar {
+    //         box-shadow: $box-shadow-right !important;
+    //         border-radius: 0 !important;
+    //     }
+    // }
+}
+
+.nitro-toolbar {
     pointer-events: all;
+    box-shadow: $box-shadow;
+    border-radius: $border-radius;
 
     .list-group {
         align-items: center;
