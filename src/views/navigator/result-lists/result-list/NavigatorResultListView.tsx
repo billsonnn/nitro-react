@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { NavigatorResultListViewDisplayMode, NavigatorResultListViewProps } from './NavigatorResultListView.types';
 import { NavigatorResultView } from './result/NavigatorResultView';
@@ -21,8 +21,10 @@ export function NavigatorResultListView(props: NavigatorResultListViewProps): JS
         setDisplayMode(resultList.mode);
     }, [ resultList ]);
 
-    function toggleDisplayMode(): void
+    function toggleDisplayMode(event: MouseEvent): void
     {
+        if(event) event.stopPropagation();
+        
         const newDisplayMode = displayMode === NavigatorResultListViewDisplayMode.LIST ? NavigatorResultListViewDisplayMode.THUMBNAILS : NavigatorResultListViewDisplayMode.LIST;
         setDisplayMode(newDisplayMode);
     }
@@ -50,12 +52,12 @@ export function NavigatorResultListView(props: NavigatorResultListViewProps): JS
 
     return (
         <div className="nitro-navigator-result-list p-2">
-            <div className="d-flex mb-2 small">
-                <i className={ "fas " + classNames({ 'fa-plus': !isExtended, 'fa-minus': isExtended })} onClick={ toggleList }></i>
+            <div className="d-flex mb-2 small cursor-pointer" onClick={ toggleList }>
+                <i className={ "fas " + classNames({ 'fa-plus': !isExtended, 'fa-minus': isExtended })}></i>
                 <div className="align-self-center w-100 ml-2">{ LocalizeText(getListCode()) }</div>
                 <i className={ "fas " + classNames({ 'fa-bars': displayMode === NavigatorResultListViewDisplayMode.LIST, 'fa-th': displayMode >= NavigatorResultListViewDisplayMode.THUMBNAILS })} onClick={ toggleDisplayMode }></i>
             </div>
-            <div className={ 'row mx-n2 row-cols-' + classNames({ '1': displayMode === NavigatorResultListViewDisplayMode.LIST, '2': displayMode >= NavigatorResultListViewDisplayMode.THUMBNAILS }) }>
+            <div className={ 'row mr-n2 row-cols-' + classNames({ '1': displayMode === NavigatorResultListViewDisplayMode.LIST, '2': displayMode >= NavigatorResultListViewDisplayMode.THUMBNAILS }) }>
                 { isExtended && resultList && resultList.rooms.map((room, index) =>
                     {
                         return <NavigatorResultView key={ index } result={ room } />

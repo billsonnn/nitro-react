@@ -1,5 +1,5 @@
 import { NavigatorInitComposer, NavigatorSearchComposer, NavigatorSearchResultList, NavigatorTopLevelContext, RoomDataParser, RoomInfoComposer, RoomSessionEvent } from 'nitro-renderer';
-import React, { MouseEvent, useCallback, useEffect, useState } from 'react';
+import { createContext, FC, MouseEvent, useCallback, useEffect, useState } from 'react';
 import { GetRoomSessionManager } from '../../api';
 import { NavigatorEvent } from '../../events';
 import { DraggableWindow } from '../../hooks/draggable-window/DraggableWindow';
@@ -14,11 +14,12 @@ import { NavigatorLockViewStage } from './lock/NavigatorLockView.types';
 import { NavigatorMessageHandler } from './NavigatorMessageHandler';
 import { INavigatorContext, NavigatorViewProps } from './NavigatorView.types';
 import { NavigatorResultListsView } from './result-lists/NavigatorResultListsView';
+import { NavigatorSearchView } from './search/NavigatorSearchView';
 import { NavigatorTabsView } from './tabs/NavigatorTabsView';
 
-export const NavigatorContext = React.createContext<INavigatorContext>(null);
+export const NavigatorContext = createContext<INavigatorContext>(null);
 
-export function NavigatorView(props: NavigatorViewProps): JSX.Element
+export const NavigatorView: FC<NavigatorViewProps> = props =>
 {
     const [ isVisible, setIsVisible ]           = useState(false);
     const [ isLoaded, setIsLoaded ]             = useState(false);
@@ -140,6 +141,7 @@ export function NavigatorView(props: NavigatorViewProps): JSX.Element
                         </button>
                     </div>
                     <NavigatorTabsView topLevelContext={ topLevelContext } topLevelContexts={ topLevelContexts } setTopLevelContext={ setTopLevelContext } />
+                    <NavigatorSearchView />
                     <TransitionAnimation className="d-flex px-3 pb-3" type={ TransitionAnimationTypes.FADE_IN } inProp={ (!isSearching && !!searchResults) } timeout={ 150 }>
                         <NavigatorResultListsView resultLists={ searchResults } />
                     </TransitionAnimation>
