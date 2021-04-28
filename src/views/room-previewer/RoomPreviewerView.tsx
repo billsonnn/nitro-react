@@ -40,7 +40,8 @@ export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
         const displayObject = roomPreviewer.getRoomCanvas(width, height);
         const renderingCanvas = roomPreviewer.getRenderingCanvas();
 
-        elementRef.current.style.height = `${ renderingCanvas.height }px`;
+        elementRef.current.style.width = `${ width }px`;
+        elementRef.current.style.height = `${ height }px`;
 
         setRenderingCanvas(renderingCanvas);
 
