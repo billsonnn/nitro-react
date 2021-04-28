@@ -155,9 +155,7 @@ export function processFragment(set: GroupItem[], fragment: Map<number, Furnitur
 
     const emptyExistingSet = (existingIds.length === 0);
 
-    const newSet = [ ...set ];
-
-    for(const id of removedIds) removeItemById(id, newSet);
+    for(const id of removedIds) removeItemById(id, set);
 
     for(const id of addedIds)
     {
@@ -167,10 +165,10 @@ export function processFragment(set: GroupItem[], fragment: Map<number, Furnitur
 
         const item = new FurnitureItem(parser);
 
-        addFurnitureItem(newSet, item, true);
+        addFurnitureItem(set, item, true);
     }
 
-    return newSet;
+    return set;
 }
 
 export function removeItemById(id: number, set: GroupItem[]): GroupItem

@@ -1,7 +1,3 @@
-.item-container {
-    height: 216px;
-    max-height: 216px;
-    overflow-y: auto;
-}
-
 @import './item/InventoryFurnitureItemView';
+@import './results/InventoryFurnitureResultsView';
+@import './search/InventoryFurnitureSearchView';

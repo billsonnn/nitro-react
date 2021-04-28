@@ -420,4 +420,9 @@ export class GroupItem
     {
         return this._items;
     }
+
+    public set items(items: FurnitureItem[])
+    {
+        this._items = items;
+    }
 }

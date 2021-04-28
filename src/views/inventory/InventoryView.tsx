@@ -1,15 +1,18 @@
 import classNames from 'classnames';
-import { IRoomSession, RoomPreviewer, RoomSessionEvent } from 'nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent } from 'nitro-renderer';
+import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { GetRoomEngine } from '../../api';
 import { InventoryEvent } from '../../events';
 import { DraggableWindow } from '../../hooks/draggable-window/DraggableWindow';
+import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { LocalizeText } from '../../utils/LocalizeText';
+import { InventoryContextProvider } from './context/InventoryContext';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
 import { InventoryTabs, InventoryViewProps } from './InventoryView.types';
-import { GroupItem } from './utils/GroupItem';
+import { initialInventoryFurniture, inventoryFurnitureReducer } from './reducers/InventoryFurnitureReducer';
+import { isObjectMoverRequested, setObjectMoverRequested } from './utils/FurnitureUtilities';
 import { InventoryFurnitureView } from './views/furniture/InventoryFurnitureView';
 
 export const InventoryView: FC<InventoryViewProps> = props =>
@@ -18,12 +21,9 @@ export const InventoryView: FC<InventoryViewProps> = props =>
 
     const [ isVisible, setIsVisible ]   = useState(false);
     const [ currentTab, setCurrentTab ] = useState<string>(tabs[0]);
-
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
-    const [ needsFurniUpdate, setNeedsFurniUpdate ] = useState(true);
-    const [ groupItem, setGroupItem ] = useState<GroupItem>(null);
-    const [ groupItems, setGroupItems ] = useState<GroupItem[]>([]);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
+    const [ furnitureState, dispatchFurnitureState ] = useReducer(inventoryFurnitureReducer, initialInventoryFurniture);
 
     const onInventoryEvent = useCallback((event: InventoryEvent) =>
     {
@@ -44,6 +44,17 @@ export const InventoryView: FC<InventoryViewProps> = props =>
     useUiEvent(InventoryEvent.SHOW_INVENTORY, onInventoryEvent);
     useUiEvent(InventoryEvent.HIDE_INVENTORY, onInventoryEvent);
     useUiEvent(InventoryEvent.TOGGLE_INVENTORY, onInventoryEvent);
+
+    const onRoomEngineObjectPlacedEvent = useCallback((event: RoomEngineObjectPlacedEvent) =>
+    {
+        if(!isObjectMoverRequested()) return;
+
+        setObjectMoverRequested(false);
+
+        if(!event._Str_4057) setIsVisible(true);
+    }, []);
+
+    useRoomEngineEvent(RoomEngineObjectEvent.PLACED, onRoomEngineObjectPlacedEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
@@ -83,10 +94,8 @@ export const InventoryView: FC<InventoryViewProps> = props =>
     }
 
     return (
-        <>
-            <InventoryMessageHandler
-                setNeedsFurniUpdate={ setNeedsFurniUpdate }
-                setGroupItems={ setGroupItems }  />
+        <InventoryContextProvider value={ { furnitureState, dispatchFurnitureState } }>
+            <InventoryMessageHandler />
             { isVisible && <DraggableWindow handle=".drag-handler">
                 <div className="nitro-inventory d-flex flex-column">
                     <div className="drag-handler d-flex align-items-center bg-primary border border-bottom-0 rounded-top px-3 py-1">
@@ -107,16 +116,11 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                     </ul>
                     <div className="bg-light rounded-bottom border border-top-0 px-3 py-2 h-100 shadow overflow-hidden">
                         { (currentTab === InventoryTabs.FURNITURE ) && <InventoryFurnitureView
-                            needsFurniUpdate={ needsFurniUpdate }
-                            setNeedsFurniUpdate={ setNeedsFurniUpdate }
-                            groupItem={ groupItem }
-                            setGroupItem={ setGroupItem }
-                            groupItems={ groupItems }
                             roomSession={ roomSession }
                             roomPreviewer={ roomPreviewer } /> }
                     </div>
                 </div>
             </DraggableWindow> }
-        </>
+        </InventoryContextProvider>
     );
 }

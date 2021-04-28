@@ -1,16 +1,48 @@
-import { FC } from 'react';
+import { MouseEventType } from 'nitro-renderer';
+import { FC, MouseEvent, useCallback, useState } from 'react';
+import { useInventoryContext } from '../../../context/InventoryContext';
+import { InventoryFurnitureActions } from '../../../reducers/InventoryFurnitureReducer';
+import { attemptItemPlacement } from '../../../utils/FurnitureUtilities';
 import { InventoryFurnitureItemViewProps } from './InventoryFurnitureItemView.types';
 
 export const InventoryFurnitureItemView: FC<InventoryFurnitureItemViewProps> = props =>
 {
-    const { groupItem = null, isActive = false, setGroupItem = null } = props;
+    const { groupItem } = props;
+    const { furnitureState, dispatchFurnitureState } = useInventoryContext();
+    const [ isMouseDown, setMouseDown ] = useState(false);
+    const isActive = (furnitureState.groupItem === groupItem);
+
+    const onMouseEvent = useCallback((event: MouseEvent) =>
+    {
+        switch(event.type)
+        {
+            case MouseEventType.MOUSE_DOWN:
+                dispatchFurnitureState({
+                    type: InventoryFurnitureActions.SET_GROUP_ITEM,
+                    payload: {
+                        groupItem
+                    }
+                });
+
+                setMouseDown(true);
+                return;
+            case MouseEventType.MOUSE_UP:
+                setMouseDown(false);
+                return;
+            case MouseEventType.ROLL_OUT:
+                if(!isMouseDown || !isActive) return;
+
+                attemptItemPlacement(groupItem);
+                return;
+        }
+    }, [ isActive, isMouseDown, groupItem, dispatchFurnitureState ]);
 
     const imageUrl = `url(${ groupItem.iconUrl })`;
 
     return (
-        <div className="col pe-1 pb-1">
-            <div className={ 'position-relative border border-2 rounded inventory-furniture-item cursor-pointer ' + (isActive && 'active') } style={ { backgroundImage: imageUrl }} onClick={ event => setGroupItem(groupItem) }>
-                <span className="position-absolute badge border bg-secondary p-1">{ groupItem.getUnlockedCount() }</span>
+        <div className="col pe-1 pb-1 inventory-furniture-item-container">
+            <div className={ 'position-relative border border-2 rounded inventory-furniture-item cursor-pointer ' + (isActive && 'active') } style={ { backgroundImage: imageUrl }} onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
+                <span className="position-absolute badge border bg-danger px-1 rounded-circle">{ groupItem.getUnlockedCount() }</span>
             </div>
         </div>
     );

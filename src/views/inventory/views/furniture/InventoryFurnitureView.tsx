@@ -4,45 +4,45 @@ import { GetRoomEngine } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { RoomPreviewerView } from '../../../room-previewer/RoomPreviewerView';
+import { useInventoryContext } from '../../context/InventoryContext';
+import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
 import { FurniCategory } from '../../utils/FurniCategory';
 import { attemptItemPlacement } from '../../utils/FurnitureUtilities';
 import { InventoryFurnitureViewProps } from './InventoryFurnitureView.types';
-import { InventoryFurnitureItemView } from './item/InventoryFurnitureItemView';
+import { InventoryFurnitureResultsView } from './results/InventoryFurnitureResultsView';
+import { InventoryFurnitureSearchView } from './search/InventoryFurnitureSearchView';
 
 export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 {
-    const { needsFurniUpdate = false, setNeedsFurniUpdate = null, groupItem = null, setGroupItem = null, groupItems = null, roomSession = null, roomPreviewer = null } = props;
+    const { roomSession = null, roomPreviewer = null } = props;
 
-    console.log(props);
+    const { furnitureState = null, dispatchFurnitureState = null } = useInventoryContext();
+    const { needsFurniUpdate = false, groupItem = null, groupItems = [] } = furnitureState;
 
     useEffect(() =>
     {
         if(needsFurniUpdate)
         {
-            setNeedsFurniUpdate(false);
+            dispatchFurnitureState({
+                type: InventoryFurnitureActions.SET_NEEDS_UPDATE,
+                payload: {
+                    flag: false
+                }
+            });
 
             SendMessageHook(new FurnitureListComposer());
         }
         else
         {
-            setGroupItem(prevValue =>
-                {
-                    if(!groupItems || !groupItems.length) return null;
-                    
-                    let index = 0;
-
-                    if(prevValue)
-                    {
-                        const foundIndex = groupItems.indexOf(prevValue);
-
-                        if(foundIndex > -1) index = foundIndex;
-                    }
-
-                    return groupItems[index];
-                });
+            dispatchFurnitureState({
+                type: InventoryFurnitureActions.SET_GROUP_ITEM,
+                payload: {
+                    groupItem: null
+                }
+            });
         }
 
-    }, [ needsFurniUpdate, setNeedsFurniUpdate, groupItems, setGroupItem ]);
+    }, [ needsFurniUpdate, groupItems, dispatchFurnitureState ]);
 
     useEffect(() =>
     {
@@ -97,18 +97,13 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
     return (
         <div className="row h-100">
             <div className="col col-7">
-                <div className="row row-cols-5 g-0 item-container">
-                    { groupItems && groupItems.length && groupItems.map((item, index) =>
-                        {
-                            return <InventoryFurnitureItemView key={ index } groupItem={ item } isActive={ groupItem === item } setGroupItem={ setGroupItem } />
-                        })
-                    }
-                </div>
+                <InventoryFurnitureSearchView />
+                <InventoryFurnitureResultsView groupItems={ groupItems } />
             </div>
             <div className="d-flex flex-column col col-5 justify-space-between">
-                <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 130 } />
-                { groupItem && <div className="flex-grow-1 py-2">
-                    <p className="fs-6 text-black">{ groupItem.name }</p>
+                <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                { groupItem && <div className="d-flex flex-column flex-grow-1">
+                    <p className="flex-grow-1 fs-6 text-black my-2">{ groupItem.name }</p>
                     { !!roomSession && <button type="button" className="btn btn-success" onClick={ event => attemptItemPlacement(groupItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
                 </div> }
             </div>

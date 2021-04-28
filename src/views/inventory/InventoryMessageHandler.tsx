@@ -1,50 +1,28 @@
 import { FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
+import { useInventoryContext } from './context/InventoryContext';
 import { InventoryMessageHandlerProps } from './InventoryMessageHandler.types';
-import { FurnitureItem } from './utils/FurnitureItem';
-import { addFurnitureItem, getGroupItemForFurnitureId, mergeFragments, processFragment, removeItemById } from './utils/FurnitureUtilities';
+import { InventoryFurnitureActions } from './reducers/InventoryFurnitureReducer';
+import { mergeFragments } from './utils/FurnitureUtilities';
 
 let furniMsgFragments: Map<number, FurnitureListItemParser>[] = null;
  
 export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =>
 {
-    const { setNeedsFurniUpdate = null, setGroupItems = null } = props;
+    const { dispatchFurnitureState = null } = useInventoryContext();
 
     const onFurnitureListAddOrUpdateEvent = useCallback((event: FurnitureListAddOrUpdateEvent) =>
     {
         const parser = event.getParser();
 
-        setGroupItems(prevValue =>
-            {
-                const newSet = [ ...prevValue ];
-
-                for(const item of parser.items)
-                {
-                    const groupItem = getGroupItemForFurnitureId(newSet, item.itemId);
-
-                    if(groupItem)
-                    {
-                        const furniture = groupItem.getItemById(item.itemId);
-
-                        if(furniture)
-                        {
-                            furniture.update(item);
-
-                            groupItem.hasUnseenItems = true;
-                        }
-                    }
-                    else
-                    {
-                        const furniture = new FurnitureItem(item);
-
-                        addFurnitureItem(newSet, furniture, false);
-                    }
-                }
-
-                return newSet;
-            });
-    }, [ setGroupItems ]);
+        dispatchFurnitureState({
+            type: InventoryFurnitureActions.ADD_OR_UPDATE_FURNITURE,
+            payload: {
+                parsers: parser.items
+            }
+        });
+    }, [ dispatchFurnitureState ]);
 
     const onFurnitureListEvent = useCallback((event: FurnitureListEvent) =>
     {
@@ -52,41 +30,37 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
         
         if(!furniMsgFragments) furniMsgFragments = new Array(parser.totalFragments);
 
-        const merged = mergeFragments(parser.fragment, parser.totalFragments, parser.fragmentNumber, furniMsgFragments);
+        const fragment = mergeFragments(parser.fragment, parser.totalFragments, parser.fragmentNumber, furniMsgFragments);
 
-        if(!merged) return;
+        if(!fragment) return;
 
-        setGroupItems(prevValue =>
-            {
-                return processFragment(prevValue, merged);
-            });
-    }, [ setGroupItems ]);
+        dispatchFurnitureState({
+            type: InventoryFurnitureActions.PROCESS_FRAGMENT,
+            payload: { fragment }
+        });
+    }, [ dispatchFurnitureState ]);
 
     const onFurnitureListInvalidateEvent = useCallback((event: FurnitureListInvalidateEvent) =>
     {
-        setNeedsFurniUpdate(true);
-    }, [ setNeedsFurniUpdate ]);
+        dispatchFurnitureState({
+            type: InventoryFurnitureActions.SET_NEEDS_UPDATE,
+            payload: { 
+                flag: true
+            }
+        });
+    }, [ dispatchFurnitureState ]);
 
     const onFurnitureListRemovedEvent = useCallback((event: FurnitureListRemovedEvent) =>
     {
         const parser = event.getParser();
 
-        setGroupItems(prevValue =>
-            {
-                const newSet = [ ...prevValue ];
-
-                const groupItem = removeItemById(parser.itemId, newSet);
-
-                if(groupItem)
-                {
-                    // set all seen
-
-                    return newSet;
-                }
-
-                return prevValue;
-            });
-    }, [ setGroupItems ]);
+        dispatchFurnitureState({
+            type: InventoryFurnitureActions.REMOVE_FURNITURE,
+            payload: { 
+                itemId: parser.itemId
+            }
+        });
+    }, [ dispatchFurnitureState ]);
 
     const onFurniturePostItPlacedEvent = useCallback((event: FurniturePostItPlacedEvent) =>
     {

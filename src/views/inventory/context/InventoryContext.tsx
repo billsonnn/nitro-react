@@ -2,8 +2,8 @@ import { createContext, FC, useContext } from 'react';
 import { IInventoryContext, InventoryContextProps } from './InventoryContext.types';
 
 const InventoryContext = createContext<IInventoryContext>({
-    currentTab: null,
-    setCurrentTab: null,
+    furnitureState: null,
+    dispatchFurnitureState: null
 });
 
 export const InventoryContextProvider: FC<InventoryContextProps> = props =>

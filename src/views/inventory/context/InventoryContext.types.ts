@@ -1,9 +1,10 @@
-import { ProviderProps } from 'react';
+import { Dispatch, ProviderProps } from 'react';
+import { IInventoryFurnitureAction, IInventoryFurnitureState } from '../reducers/InventoryFurnitureReducer';
 
 export interface IInventoryContext
 {
-    currentTab: string;
-    setCurrentTab: (tab: string) => void;
+    furnitureState: IInventoryFurnitureState;
+    dispatchFurnitureState: Dispatch<IInventoryFurnitureAction>;
 }
 
 export interface InventoryContextProps extends ProviderProps<IInventoryContext>
