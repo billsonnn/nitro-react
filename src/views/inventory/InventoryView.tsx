@@ -105,7 +105,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                                 </li>;
                             }) }
                     </ul>
-                    <div className="bg-light rounded-bottom border border-top-0 px-3 py-2 h-100 overflow-hidden">
+                    <div className="bg-light rounded-bottom border border-top-0 px-3 py-2 h-100 shadow overflow-hidden">
                         { (currentTab === InventoryTabs.FURNITURE ) && <InventoryFurnitureView
                             needsFurniUpdate={ needsFurniUpdate }
                             setNeedsFurniUpdate={ setNeedsFurniUpdate }
