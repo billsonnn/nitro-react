@@ -1,0 +1,19 @@
+.inventory-furniture-item {
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 50px;
+    max-height: 50px;
+    border-color: $muted !important;
+    background-color: #CDD3D9;
+
+    &.active {
+        border-color: $white !important;
+        background-color: #ECECEC;
+    }
+
+    .badge {
+        top: 3px;
+        right: 3px;
+        font-size: 10px;
+    }
+}

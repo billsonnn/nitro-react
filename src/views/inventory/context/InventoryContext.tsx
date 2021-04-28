@@ -3,7 +3,7 @@ import { IInventoryContext, InventoryContextProps } from './InventoryContext.typ
 
 const InventoryContext = createContext<IInventoryContext>({
     currentTab: null,
-    setCurrentTab: null
+    setCurrentTab: null,
 });
 
 export const InventoryContextProvider: FC<InventoryContextProps> = props =>

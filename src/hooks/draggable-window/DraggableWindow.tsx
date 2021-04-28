@@ -61,7 +61,7 @@ export function DraggableWindow(props: DraggableWindowProps): JSX.Element
 
     return (
         <Draggable handle={ props.handle } { ...props.draggableOptions }>
-            <div ref={ elementRef } className="position-absolute t-0 l-0" onMouseDownCapture={ onMouseDown }>
+            <div ref={ elementRef } className="position-absolute t-0 l-0 draggable-window" onMouseDownCapture={ onMouseDown }>
                 { props.children }
             </div>
         </Draggable>
