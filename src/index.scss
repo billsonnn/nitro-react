@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Condensed:wght@300;400;500&display=swap');
 @import '../node_modules/animate.css/animate.css';
 @import './assets/styles';
 
 html,
 body {
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Ubuntu Condensed', sans-serif;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -29,4 +29,5 @@ $highscore-zindex: 19;
 
 @import './utils/Styles';
 @import './App';
+@import './hooks/Styles';
 @import './views/Styles';
