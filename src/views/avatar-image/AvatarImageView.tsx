@@ -1,111 +1,48 @@
-import { AdvancedMap } from 'nitro-renderer';
-import { AvatarScaleType } from 'nitro-renderer/src/nitro/avatar/enum/AvatarScaleType';
-import { AvatarSetType } from 'nitro-renderer/src/nitro/avatar/enum/AvatarSetType';
-import { IAvatarImageListener } from 'nitro-renderer/src/nitro/avatar/IAvatarImageListener';
-import { Nitro } from 'nitro-renderer/src/nitro/Nitro';
-import { Component } from 'react';
-import { AvatarImageViewProps, AvatarImageViewState } from './AvatarImageView.types';
+import { AvatarScaleType, AvatarSetType } from 'nitro-renderer';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { GetAvatarRenderManager } from '../../api';
+import { AvatarImageViewProps } from './AvatarImageView.types';
 
-export class AvatarImageView extends Component<AvatarImageViewProps, AvatarImageViewState> implements IAvatarImageListener
+export const AvatarImageView: FC<AvatarImageViewProps> = props =>
 {
-    private static _maxAvatarCacheSize = 10;
-    private static _avatarCache: AdvancedMap<string, string> = new AdvancedMap();
+    const { figure = '', gender = 'M', headOnly = false, direction = 0, scale = 1 } = props;
 
-    private static defaultProps: AvatarImageViewProps = {
-        figure: '',
-        gender: 'M',
-        headOnly: false,
-        direction: 0,
-        scale: 1
-    };
+    const [ avatarUrl, setAvatarUrl ] = useState<string>(null);
 
-    constructor(props: AvatarImageViewProps)
-    {;
-        super(props);
-
-        this.state = {
-            avatarUrl: null
-        };
-    }
-
-    public dispose(): void
+    const getUserImageUrl = useCallback(() =>
     {
+        let url = null;
 
-    }
+        const avatarImage = GetAvatarRenderManager().createAvatarImage(figure, AvatarScaleType.LARGE, gender, {
+            resetFigure: (figure) => setAvatarUrl(getUserImageUrl()),
+            dispose: () => {},
+            disposed: false
+        }, null);
 
-    public componentDidMount(): void
-    {
-        this.buildAvatar();
-    }
-
-    private buildAvatar(): void
-    {
-        const imageUrl = this.getUserImageUrl();
-
-        if(imageUrl && imageUrl.length) this.setState({ avatarUrl: imageUrl });
-    }
-
-    private getUserImageUrl(): string
-    {
-        const build = this.getAvatarBuildString();
-
-        let existing = AvatarImageView._avatarCache.getValue(build);
-
-        if(!existing)
+        if(avatarImage)
         {
-            const avatarImage = Nitro.instance.avatar.createAvatarImage(this.props.figure, AvatarScaleType.LARGE, this.props.gender, this, null);
+            let setType = AvatarSetType.FULL;
 
-            if(avatarImage)
-            {
-                let setType = AvatarSetType.FULL;
+            if(headOnly) setType = AvatarSetType.HEAD;
 
-                if(this.props.headOnly) setType = AvatarSetType.HEAD;
+            avatarImage.setDirection(setType, direction);
 
-                avatarImage.setDirection(setType, this.props.direction);
+            const image = avatarImage.getCroppedImage(setType);
 
-                const image = avatarImage.getCroppedImage(setType);
+            if(image) url = image.src;
 
-                if(image) existing = image.src;
-
-                avatarImage.dispose();
-            }
-
-            if(existing) this.putInCache(build, existing);
+            avatarImage.dispose();
         }
 
-        return existing;
-    }
+        return url;
+    }, [ figure, gender, direction, headOnly ]);
 
-    public resetFigure(figure: string): void
+    useEffect(() =>
     {
-        AvatarImageView._avatarCache.remove(this.getAvatarBuildString());
+        setAvatarUrl(getUserImageUrl());
+    }, [ getUserImageUrl ]);
 
-        this.buildAvatar();
-    }
-
-    public getAvatarBuildString(): string
-    {
-        return (`${ this.props.figure }:${ this.props.gender }:${ this.props.direction }:${ this.props.headOnly }`);
-    }
-
-    private putInCache(build: string, url: string): void
-    {
-        if(AvatarImageView._avatarCache.length === AvatarImageView._maxAvatarCacheSize) AvatarImageView._avatarCache.remove(AvatarImageView._avatarCache.getKey(0));
-
-        AvatarImageView._avatarCache.add(build, url);
-    }
-
-    public render(): JSX.Element
-    {
-        const url = `url('${ this.state.avatarUrl }')`;
+    const url = `url('${ avatarUrl }')`;
         
-        return (
-            <div className="avatar-image" style={ (url && url.length) ? { backgroundImage: url } : {} }></div>
-        );
-    }
-
-    public get disposed(): boolean
-    {
-        return false;
-    }
+    return <div className={ 'avatar-image scale-' + scale } style={ (avatarUrl && url.length) ? { backgroundImage: url } : {} }></div>;
 }
