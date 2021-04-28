@@ -51,6 +51,12 @@ export function DraggableWindow(props: DraggableWindowProps): JSX.Element
 
         bringToTop();
 
+        const left = ((document.body.clientWidth - element.clientWidth) / 2);
+        const top = ((document.body.clientHeight - element.clientHeight) / 2);
+
+        element.style.left = `${ left }px`;
+        element.style.top = `${ top }px`;
+
         return () =>
         {
             const index = currentWindows.indexOf(element);
@@ -61,7 +67,7 @@ export function DraggableWindow(props: DraggableWindowProps): JSX.Element
 
     return (
         <Draggable handle={ props.handle } { ...props.draggableOptions }>
-            <div ref={ elementRef } className="position-absolute t-0 l-0 draggable-window" onMouseDownCapture={ onMouseDown }>
+            <div ref={ elementRef } className="position-absolute draggable-window" onMouseDownCapture={ onMouseDown }>
                 { props.children }
             </div>
         </Draggable>
