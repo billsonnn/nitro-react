@@ -1,33 +1,43 @@
-import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { InventoryFurnitureSearchViewProps } from './InventoryFurnitureSearchView.types';
 
 export const InventoryFurnitureSearchView: FC<InventoryFurnitureSearchViewProps> = props =>
 {
+    const { groupItems = [], setGroupItems = null } = props;
     const [ searchValue, setSearchValue ] = useState('');
-
-    function onChange(event: ChangeEvent<HTMLInputElement>): void
-    {
-        setSearchValue(event.target.value);
-    }
-
-    function handleSubmit(event: FormEvent<HTMLFormElement>): void
-    {
-        event.preventDefault();
-    }
 
     useEffect(() =>
     {
-        
-    }, [ searchValue ]);
+        let filteredGroupItems = [ ...groupItems ];
+
+        if(searchValue && searchValue.length)
+        {
+            const comparison = searchValue.toLocaleLowerCase();
+
+            filteredGroupItems = filteredGroupItems.filter(item =>
+                {
+                    if(comparison && comparison.length)
+                    {
+                        if(item.name.toLocaleLowerCase().includes(comparison)) return item;
+                    }
+
+                    return null;
+                });
+        }
+
+        setGroupItems(filteredGroupItems);
+    }, [ groupItems, setGroupItems, searchValue ]);
 
     return (
-        <form className="d-flex mb-1" onSubmit={ handleSubmit }>
+        <div className="d-flex me-1 mb-1">
             <div className="d-flex flex-grow-1 me-1">
-                <input type="text" className="form-control form-control-sm" placeholder="search" />
+                <input type="text" className="form-control form-control-sm" placeholder="search" value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
             </div>
             <div className="d-flex">
-                <button type="submit" className="btn btn-primary btn-sm"><i className="fas fa-search"></i></button>
+                <button type="button" className="btn btn-primary btn-sm">
+                    <i className="fas fa-search"></i>
+                </button>
             </div>
-        </form>
+        </div>
     );
 }

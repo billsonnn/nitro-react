@@ -1,5 +1,5 @@
 import { FurnitureListComposer, RoomObjectVariable, Vector3d } from 'nitro-renderer';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
 import { LocalizeText } from '../../../../utils/LocalizeText';
@@ -8,6 +8,7 @@ import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
 import { FurniCategory } from '../../utils/FurniCategory';
 import { attemptItemPlacement } from '../../utils/FurnitureUtilities';
+import { GroupItem } from '../../utils/GroupItem';
 import { InventoryFurnitureViewProps } from './InventoryFurnitureView.types';
 import { InventoryFurnitureResultsView } from './results/InventoryFurnitureResultsView';
 import { InventoryFurnitureSearchView } from './search/InventoryFurnitureSearchView';
@@ -18,6 +19,8 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 
     const { furnitureState = null, dispatchFurnitureState = null } = useInventoryContext();
     const { needsFurniUpdate = false, groupItem = null, groupItems = [] } = furnitureState;
+
+    const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(groupItems);
 
     useEffect(() =>
     {
@@ -34,6 +37,8 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
         }
         else
         {
+            setFilteredGroupItems(groupItems);
+
             dispatchFurnitureState({
                 type: InventoryFurnitureActions.SET_GROUP_ITEM,
                 payload: {
@@ -97,8 +102,8 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
     return (
         <div className="row h-100">
             <div className="col col-7">
-                <InventoryFurnitureSearchView />
-                <InventoryFurnitureResultsView groupItems={ groupItems } />
+                <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
+                <InventoryFurnitureResultsView groupItems={ filteredGroupItems }  />
             </div>
             <div className="d-flex flex-column col col-5 justify-space-between">
                 <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
