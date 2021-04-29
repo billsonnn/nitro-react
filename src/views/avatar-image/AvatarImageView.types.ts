@@ -6,8 +6,3 @@ export interface AvatarImageViewProps
     direction?: number;
     scale?: number;
 }
-
-export interface AvatarImageViewState
-{
-    avatarUrl: string;
-}
