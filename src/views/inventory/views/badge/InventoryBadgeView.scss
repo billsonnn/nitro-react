@@ -1,0 +1,9 @@
+.current-badge-container {
+
+    .badge-image {
+        width: 45px;
+        height: 45px;
+    }
+}
+@import './item/InventoryBadgeItemView';
+@import './results/InventoryBadgeResultsView';

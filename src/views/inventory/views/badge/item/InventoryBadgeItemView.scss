@@ -1,0 +1,17 @@
+.inventory-badge-item-container {
+    height: 48px;
+    max-height: 48px;
+
+    .inventory-badge-item {
+        width: 100%;
+        height: 100%;
+        border-color: $muted !important;
+        background-color: #CDD3D9;
+        overflow: hidden;
+    
+        &.active {
+            border-color: $white !important;
+            background-color: #ECECEC;
+        }
+    }
+}
