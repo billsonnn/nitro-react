@@ -1,5 +1,5 @@
 import { Dispatch, ProviderProps } from 'react';
-import { IInventoryBadgeAction, IInventoryBadgeState } from '../reducers/InventortBadgeReducer';
+import { IInventoryBadgeAction, IInventoryBadgeState } from '../reducers/InventoryBadgeReducer';
 import { IInventoryBotAction, IInventoryBotState } from '../reducers/InventoryBotReducer';
 import { IInventoryFurnitureAction, IInventoryFurnitureState } from '../reducers/InventoryFurnitureReducer';
 import { IInventoryPetAction, IInventoryPetState } from '../reducers/InventoryPetReducer';

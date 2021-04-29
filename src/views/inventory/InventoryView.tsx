@@ -11,7 +11,7 @@ import { LocalizeText } from '../../utils/LocalizeText';
 import { InventoryContextProvider } from './context/InventoryContext';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
 import { InventoryTabs, InventoryViewProps } from './InventoryView.types';
-import { initialInventoryBadge, inventoryBadgeReducer } from './reducers/InventortBadgeReducer';
+import { initialInventoryBadge, inventoryBadgeReducer } from './reducers/InventoryBadgeReducer';
 import { initialInventoryBot, inventoryBotReducer } from './reducers/InventoryBotReducer';
 import { initialInventoryFurniture, inventoryFurnitureReducer } from './reducers/InventoryFurnitureReducer';
 import { initialInventoryPet, inventoryPetReducer } from './reducers/InventoryPetReducer';
