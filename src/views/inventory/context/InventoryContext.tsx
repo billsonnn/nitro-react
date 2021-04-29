@@ -3,7 +3,13 @@ import { IInventoryContext, InventoryContextProps } from './InventoryContext.typ
 
 const InventoryContext = createContext<IInventoryContext>({
     furnitureState: null,
-    dispatchFurnitureState: null
+    dispatchFurnitureState: null,
+    botState: null,
+    dispatchBotState: null,
+    petState: null,
+    dispatchPetState: null,
+    badgeState: null,
+    dispatchBadgeState: null
 });
 
 export const InventoryContextProvider: FC<InventoryContextProps> = props =>

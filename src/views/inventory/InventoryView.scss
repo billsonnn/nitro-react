@@ -2,6 +2,18 @@
     width: 475px;
     // height: 300px;
     // max-height: 300px;
+
+    .content-area {
+        height: 243.5px;
+        max-height: 243.5px;
+    }
+
+    .empty-image {
+        background: url('../../assets/images/inventory/empty.png');
+        width: 129px;
+        height: 181px;
+    }
 }
+
 
 @import './views/InventoryViews';

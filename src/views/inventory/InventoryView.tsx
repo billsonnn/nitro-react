@@ -11,9 +11,15 @@ import { LocalizeText } from '../../utils/LocalizeText';
 import { InventoryContextProvider } from './context/InventoryContext';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
 import { InventoryTabs, InventoryViewProps } from './InventoryView.types';
+import { initialInventoryBadge, inventoryBadgeReducer } from './reducers/InventortBadgeReducer';
+import { initialInventoryBot, inventoryBotReducer } from './reducers/InventoryBotReducer';
 import { initialInventoryFurniture, inventoryFurnitureReducer } from './reducers/InventoryFurnitureReducer';
-import { isObjectMoverRequested, setObjectMoverRequested } from './utils/FurnitureUtilities';
+import { initialInventoryPet, inventoryPetReducer } from './reducers/InventoryPetReducer';
+import { isObjectMoverRequested, setObjectMoverRequested } from './utils/InventoryUtilities';
+import { InventoryBadgeView } from './views/badge/InventoryBadgeView';
+import { InventoryBotView } from './views/bot/InventoryBotView';
 import { InventoryFurnitureView } from './views/furniture/InventoryFurnitureView';
+import { InventoryPetView } from './views/pet/InventoryPetView';
 
 export const InventoryView: FC<InventoryViewProps> = props =>
 {
@@ -24,6 +30,9 @@ export const InventoryView: FC<InventoryViewProps> = props =>
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
     const [ furnitureState, dispatchFurnitureState ] = useReducer(inventoryFurnitureReducer, initialInventoryFurniture);
+    const [ botState, dispatchBotState ] = useReducer(inventoryBotReducer, initialInventoryBot);
+    const [ petState, dispatchPetState ] = useReducer(inventoryPetReducer, initialInventoryPet);
+    const [ badgeState, dispatchBadgeState ] = useReducer(inventoryBadgeReducer, initialInventoryBadge);
 
     const onInventoryEvent = useCallback((event: InventoryEvent) =>
     {
@@ -94,7 +103,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
     }
 
     return (
-        <InventoryContextProvider value={ { furnitureState, dispatchFurnitureState } }>
+        <InventoryContextProvider value={ { furnitureState, dispatchFurnitureState, botState, dispatchBotState, petState, dispatchPetState, badgeState, dispatchBadgeState } }>
             <InventoryMessageHandler />
             { isVisible && <DraggableWindow handle=".drag-handler">
                 <div className="nitro-inventory d-flex flex-column">
@@ -114,10 +123,15 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                                 </li>;
                             }) }
                     </ul>
-                    <div className="bg-light rounded-bottom border border-top-0 px-3 py-2 h-100 shadow overflow-hidden">
-                        { (currentTab === InventoryTabs.FURNITURE ) && <InventoryFurnitureView
-                            roomSession={ roomSession }
-                            roomPreviewer={ roomPreviewer } /> }
+                    <div className="bg-light rounded-bottom border border-top-0 px-3 py-2 shadow overflow-hidden content-area">
+                        { (currentTab === InventoryTabs.FURNITURE ) &&
+                            <InventoryFurnitureView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
+                        { (currentTab === InventoryTabs.BOTS ) &&
+                            <InventoryBotView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
+                        { (currentTab === InventoryTabs.PETS ) && 
+                            <InventoryPetView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
+                        { (currentTab === InventoryTabs.BADGES ) && 
+                            <InventoryBadgeView /> }
                     </div>
                 </div>
             </DraggableWindow> }
