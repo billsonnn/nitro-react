@@ -1,4 +1,6 @@
+import { SetActivatedBadgesComposer } from 'nitro-renderer';
 import { Reducer } from 'react';
+import { SendMessageHook } from '../../../hooks/messages/message-event';
 
 export interface IInventoryBadgeState
 {
@@ -24,6 +26,8 @@ export class InventoryBadgeActions
     public static SET_NEEDS_UPDATE: string = 'IBDA_SET_NEEDS_UPDATE';
     public static SET_BADGE: string = 'IBDA_SET_BADGE';
     public static SET_BADGES: string = 'IBDA_SET_BADGES';
+    public static ADD_ACTIVE_BADGE: string = 'IBDA_ADD_ACTIVE_BADGE';
+    public static REMOVE_ACTIVE_BADGE: string = 'IBDA_REMOVE_ACTIVE_BADGE';
 }
 
 export const initialInventoryBadge: IInventoryBadgeState = {
@@ -65,12 +69,55 @@ export const inventoryBadgeReducer: Reducer<IInventoryBadgeState, IInventoryBadg
             for(const badgeCode of badgeCodes)
             {
                 const wearingIndex = activeBadgeCodes.indexOf(badgeCode);
+                
+                badges.push(badgeCode);
 
-                if(wearingIndex === -1) badges.push(badgeCode);
-                else activeBadges.push(badgeCode);
+                if(wearingIndex >= 0) activeBadges.push(badgeCode);
             }
 
             return { ...state, badges, activeBadges };
+        }
+        case InventoryBadgeActions.ADD_ACTIVE_BADGE: {
+            const badgeCode = action.payload.badgeCode;
+
+            if(state.activeBadges.indexOf(badgeCode) >= 0) return state;
+
+            const activeBadges = [ ...state.activeBadges ];
+
+            activeBadges.push(badgeCode);
+
+            const composer = new SetActivatedBadgesComposer();
+
+            for(const badgeCode of activeBadges)
+            {
+                composer.addActivatedBadge(badgeCode);
+            }
+
+            SendMessageHook(composer);
+
+            return { ...state, activeBadges };
+        }
+        case InventoryBadgeActions.REMOVE_ACTIVE_BADGE: {
+            const badgeCode = action.payload.badgeCode;
+
+            const index = state.activeBadges.indexOf(badgeCode);
+
+            if(index === -1) return state;
+
+            const activeBadges = [ ...state.activeBadges ];
+
+            activeBadges.splice(index, 1);
+
+            const composer = new SetActivatedBadgesComposer();
+
+            for(const badgeCode of activeBadges)
+            {
+                composer.addActivatedBadge(badgeCode);
+            }
+
+            SendMessageHook(composer);
+
+            return { ...state, activeBadges };
         }
         default:
             return state;
