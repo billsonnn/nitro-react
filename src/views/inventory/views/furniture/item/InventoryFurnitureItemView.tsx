@@ -19,9 +19,7 @@ export const InventoryFurnitureItemView: FC<InventoryFurnitureItemViewProps> = p
             case MouseEventType.MOUSE_DOWN:
                 dispatchFurnitureState({
                     type: InventoryFurnitureActions.SET_GROUP_ITEM,
-                    payload: {
-                        groupItem
-                    }
+                    payload: { groupItem }
                 });
 
                 setMouseDown(true);

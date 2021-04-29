@@ -1,7 +1,7 @@
 import { FurnitureListItemParser } from 'nitro-renderer';
 import { Reducer } from 'react';
 import { FurnitureItem } from '../utils/FurnitureItem';
-import { addFurnitureItem, processFragment, removeItemById } from '../utils/FurnitureUtilities';
+import { addFurnitureItem, processFurniFragment, removeFurniItemById } from '../utils/FurnitureUtilities';
 import { GroupItem } from '../utils/GroupItem';
 
 export interface IInventoryFurnitureState
@@ -27,9 +27,9 @@ export class InventoryFurnitureActions
 {
     public static SET_NEEDS_UPDATE: string = 'IFA_SET_NEEDS_UPDATE';
     public static SET_GROUP_ITEM: string = 'IFA_SET_GROUP_ITEM';
+    public static PROCESS_FRAGMENT: string = 'IFA_PROCESS_FRAGMENT';
     public static ADD_OR_UPDATE_FURNITURE: string = 'IFA_ADD_OR_UPDATE_FURNITURE';
     public static REMOVE_FURNITURE: string = 'IFA_REMOVE_FURNITURE';
-    public static PROCESS_FRAGMENT: string = 'IFA_PROCESS_FRAGMENT';
 }
 
 export const initialInventoryFurniture: IInventoryFurnitureState = {
@@ -59,6 +59,13 @@ export const inventoryFurnitureReducer: Reducer<IInventoryFurnitureState, IInven
             groupItem = (state.groupItems[index] || null);
 
             return { ...state, groupItem };
+        }
+        case InventoryFurnitureActions.PROCESS_FRAGMENT: {
+            const groupItems = [ ...state.groupItems ];
+
+            processFurniFragment(groupItems, (action.payload.fragment || null));
+
+            return { ...state, groupItems };
         }
         case InventoryFurnitureActions.ADD_OR_UPDATE_FURNITURE: {
             const groupItems = [ ...state.groupItems ];
@@ -120,14 +127,7 @@ export const inventoryFurnitureReducer: Reducer<IInventoryFurnitureState, IInven
         case InventoryFurnitureActions.REMOVE_FURNITURE: {
             const groupItems = [ ...state.groupItems ];
 
-            removeItemById(action.payload.itemId, groupItems);
-
-            return { ...state, groupItems };
-        }
-        case InventoryFurnitureActions.PROCESS_FRAGMENT: {
-            const groupItems = [ ...state.groupItems ];
-
-            processFragment(groupItems, (action.payload.fragment || null));
+            removeFurniItemById(action.payload.itemId, groupItems);
 
             return { ...state, groupItems };
         }

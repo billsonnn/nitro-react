@@ -16,10 +16,8 @@ import { InventoryFurnitureSearchView } from './search/InventoryFurnitureSearchV
 export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
-
     const { furnitureState = null, dispatchFurnitureState = null } = useInventoryContext();
     const { needsFurniUpdate = false, groupItem = null, groupItems = [] } = furnitureState;
-
     const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(groupItems);
 
     useEffect(() =>
@@ -98,6 +96,23 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
             }
         }
     }, [ roomPreviewer, groupItem ]);
+
+    if(!groupItems || !groupItems.length)
+    {
+        return (
+            <div className="row h-100">
+                <div className="col-5 d-flex justify-content-center align-items-center">
+                    <div className="empty-image"></div>
+                </div>
+                <div className="d-flex flex-column col justify-content-center">
+                    <div className="h5 m-0 text-black fw-bold m-0 mb-2">
+                        { LocalizeText('inventory.empty.title') }
+                    </div>
+                    <div className="h6 text-black">{ LocalizeText('inventory.empty.desc') }</div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="row h-100">

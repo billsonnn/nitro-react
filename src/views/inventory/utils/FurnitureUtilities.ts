@@ -6,29 +6,7 @@ import { SendMessageHook } from '../../../hooks/messages/message-event';
 import { FurniCategory } from './FurniCategory';
 import { FurnitureItem } from './FurnitureItem';
 import { GroupItem } from './GroupItem';
-
-let objectMoverRequested = false;
-let itemIdInFurniPlacing = -1;
-
-export function isObjectMoverRequested(): boolean
-{
-    return objectMoverRequested;
-}
-
-export function setObjectMoverRequested(flag: boolean)
-{
-    objectMoverRequested = flag;
-}
-
-export function getPlacingFurnitureId(): number
-{
-    return itemIdInFurniPlacing;
-}
-
-export function setPlacingFurnitureId(id: number)
-{
-    itemIdInFurniPlacing = id;
-}
+import { getPlacingItemId, setObjectMoverRequested, setPlacingItemId } from './InventoryUtilities';
 
 export function attemptItemPlacement(groupItem: GroupItem, flag: boolean = false): boolean
 {
@@ -67,7 +45,7 @@ export function attemptItemPlacement(groupItem: GroupItem, flag: boolean = false
 
         if(isMoving)
         {
-            setPlacingFurnitureId(item.ref);
+            setPlacingItemId(item.ref);
             setObjectMoverRequested(true);
         }
     }
@@ -77,11 +55,11 @@ export function attemptItemPlacement(groupItem: GroupItem, flag: boolean = false
 
 function cancelRoomObjectPlacement(): void
 {
-    if(getPlacingFurnitureId() === -1) return;
+    if(getPlacingItemId() === -1) return;
     
     GetRoomEngine().cancelRoomObjectPlacement();
 
-    setPlacingFurnitureId(-1);
+    setPlacingItemId(-1);
     setObjectMoverRequested(false);
 }
 
@@ -95,7 +73,7 @@ export function getGroupItemForFurnitureId(set: GroupItem[], id: number): GroupI
     return null;
 }
 
-export function mergeFragments(fragment: Map<number, FurnitureListItemParser>, totalFragments: number, fragmentNumber: number, fragments: Map<number, FurnitureListItemParser>[])
+export function mergeFurniFragments(fragment: Map<number, FurnitureListItemParser>, totalFragments: number, fragmentNumber: number, fragments: Map<number, FurnitureListItemParser>[])
 {
     if(totalFragments === 1) return fragment;
 
@@ -120,7 +98,7 @@ export function mergeFragments(fragment: Map<number, FurnitureListItemParser>, t
     return merged;
 }
 
-export function getAllItemIds(groupItems: GroupItem[]): number[]
+function getAllItemIds(groupItems: GroupItem[]): number[]
 {
     const itemIds: number[] = [];
 
@@ -143,7 +121,7 @@ export function getAllItemIds(groupItems: GroupItem[]): number[]
     return itemIds;
 }
 
-export function processFragment(set: GroupItem[], fragment: Map<number, FurnitureListItemParser>): GroupItem[]
+export function processFurniFragment(set: GroupItem[], fragment: Map<number, FurnitureListItemParser>): GroupItem[]
 {
     const existingIds = getAllItemIds(set);
     const addedIds: number[] = [];
@@ -155,7 +133,7 @@ export function processFragment(set: GroupItem[], fragment: Map<number, Furnitur
 
     const emptyExistingSet = (existingIds.length === 0);
 
-    for(const id of removedIds) removeItemById(id, set);
+    for(const id of removedIds) removeFurniItemById(id, set);
 
     for(const id of addedIds)
     {
@@ -171,7 +149,7 @@ export function processFragment(set: GroupItem[], fragment: Map<number, Furnitur
     return set;
 }
 
-export function removeItemById(id: number, set: GroupItem[]): GroupItem
+export function removeFurniItemById(id: number, set: GroupItem[]): GroupItem
 {
     let index = 0;
 
@@ -182,7 +160,7 @@ export function removeItemById(id: number, set: GroupItem[]): GroupItem
 
         if(item)
         {
-            if(getPlacingFurnitureId() === item.ref)
+            if(getPlacingItemId() === item.ref)
             {
                 cancelRoomObjectPlacement();
 
@@ -224,7 +202,7 @@ export function addFurnitureItem(set: GroupItem[], item: FurnitureItem, flag: bo
     if(!flag) groupItem.hasUnseenItems = true;
 }
 
-export function addSingleFurnitureItem(set: GroupItem[], item: FurnitureItem, flag: boolean): GroupItem
+function addSingleFurnitureItem(set: GroupItem[], item: FurnitureItem, flag: boolean): GroupItem
 {
     const groupItems: GroupItem[] = [];
 
@@ -257,7 +235,7 @@ export function addSingleFurnitureItem(set: GroupItem[], item: FurnitureItem, fl
     return groupItem;
 }
 
-export function addGroupableFurnitureItem(set: GroupItem[], item: FurnitureItem, unseen: boolean): GroupItem
+function addGroupableFurnitureItem(set: GroupItem[], item: FurnitureItem, unseen: boolean): GroupItem
 {
     let existingGroup: GroupItem = null;
 
@@ -332,7 +310,7 @@ export function addGroupableFurnitureItem(set: GroupItem[], item: FurnitureItem,
     return existingGroup;
 }
 
-export function createGroupItem(type: number, category: number, stuffData: IObjectData, extra: number = NaN, flag: boolean = false): GroupItem
+function createGroupItem(type: number, category: number, stuffData: IObjectData, extra: number = NaN, flag: boolean = false): GroupItem
 {
     // const iconImage: HTMLImageElement = null;
 
