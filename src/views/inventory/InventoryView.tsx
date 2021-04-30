@@ -11,10 +11,10 @@ import { LocalizeText } from '../../utils/LocalizeText';
 import { InventoryContextProvider } from './context/InventoryContext';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
 import { InventoryTabs, InventoryViewProps } from './InventoryView.types';
-import { initialInventoryBadge, inventoryBadgeReducer } from './reducers/InventoryBadgeReducer';
-import { initialInventoryBot, inventoryBotReducer } from './reducers/InventoryBotReducer';
-import { initialInventoryFurniture, inventoryFurnitureReducer } from './reducers/InventoryFurnitureReducer';
-import { initialInventoryPet, inventoryPetReducer } from './reducers/InventoryPetReducer';
+import { initialInventoryBadge, InventoryBadgeReducer } from './reducers/InventoryBadgeReducer';
+import { initialInventoryBot, InventoryBotReducer } from './reducers/InventoryBotReducer';
+import { initialInventoryFurniture, InventoryFurnitureReducer } from './reducers/InventoryFurnitureReducer';
+import { initialInventoryPet, InventoryPetReducer } from './reducers/InventoryPetReducer';
 import { isObjectMoverRequested, setObjectMoverRequested } from './utils/InventoryUtilities';
 import { InventoryBadgeView } from './views/badge/InventoryBadgeView';
 import { InventoryBotView } from './views/bot/InventoryBotView';
@@ -29,10 +29,10 @@ export const InventoryView: FC<InventoryViewProps> = props =>
     const [ currentTab, setCurrentTab ] = useState<string>(tabs[0]);
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
-    const [ furnitureState, dispatchFurnitureState ] = useReducer(inventoryFurnitureReducer, initialInventoryFurniture);
-    const [ botState, dispatchBotState ] = useReducer(inventoryBotReducer, initialInventoryBot);
-    const [ petState, dispatchPetState ] = useReducer(inventoryPetReducer, initialInventoryPet);
-    const [ badgeState, dispatchBadgeState ] = useReducer(inventoryBadgeReducer, initialInventoryBadge);
+    const [ furnitureState, dispatchFurnitureState ] = useReducer(InventoryFurnitureReducer, initialInventoryFurniture);
+    const [ botState, dispatchBotState ] = useReducer(InventoryBotReducer, initialInventoryBot);
+    const [ petState, dispatchPetState ] = useReducer(InventoryPetReducer, initialInventoryPet);
+    const [ badgeState, dispatchBadgeState ] = useReducer(InventoryBadgeReducer, initialInventoryBadge);
 
     const onInventoryEvent = useCallback((event: InventoryEvent) =>
     {
@@ -97,11 +97,6 @@ export const InventoryView: FC<InventoryViewProps> = props =>
         }
     }, []);
 
-    function hideInventory(): void
-    {
-        setIsVisible(false);
-    }
-
     return (
         <InventoryContextProvider value={ { furnitureState, dispatchFurnitureState, botState, dispatchBotState, petState, dispatchPetState, badgeState, dispatchBadgeState } }>
             <InventoryMessageHandler />
@@ -111,7 +106,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                         <div className="d-flex flex-grow-1 justify-content-center align-items-center">
                             <div className="h4 m-0 text-white text-shadow">{ LocalizeText('inventory.title') }</div>
                         </div>
-                        <div className="cursor-pointer" onClick={ hideInventory }>
+                        <div className="cursor-pointer" onClick={ event => setIsVisible(false) }>
                             <i className="fas fa-times"></i>
                         </div>
                     </div>

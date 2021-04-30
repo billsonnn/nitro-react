@@ -37,7 +37,7 @@ export const initialInventoryPet: IInventoryPetState = {
     petItems: []
 }
 
-export const inventoryPetReducer: Reducer<IInventoryPetState, IInventoryPetAction> = (state, action) =>
+export const InventoryPetReducer: Reducer<IInventoryPetState, IInventoryPetAction> = (state, action) =>
 {
     switch(action.type)
     {

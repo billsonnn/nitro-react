@@ -37,7 +37,7 @@ export const initialInventoryBot: IInventoryBotState = {
     botItems: []
 }
 
-export const inventoryBotReducer: Reducer<IInventoryBotState, IInventoryBotAction> = (state, action) =>
+export const InventoryBotReducer: Reducer<IInventoryBotState, IInventoryBotAction> = (state, action) =>
 {
     switch(action.type)
     {

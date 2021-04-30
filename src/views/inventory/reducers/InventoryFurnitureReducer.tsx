@@ -38,7 +38,7 @@ export const initialInventoryFurniture: IInventoryFurnitureState = {
     groupItems: []
 }
 
-export const inventoryFurnitureReducer: Reducer<IInventoryFurnitureState, IInventoryFurnitureAction> = (state, action) =>
+export const InventoryFurnitureReducer: Reducer<IInventoryFurnitureState, IInventoryFurnitureAction> = (state, action) =>
 {
     switch(action.type)
     {

@@ -37,7 +37,7 @@ export const initialInventoryBadge: IInventoryBadgeState = {
     activeBadges: []
 }
 
-export const inventoryBadgeReducer: Reducer<IInventoryBadgeState, IInventoryBadgeAction> = (state, action) =>
+export const InventoryBadgeReducer: Reducer<IInventoryBadgeState, IInventoryBadgeAction> = (state, action) =>
 {
     switch(action.type)
     {
