@@ -10,8 +10,8 @@
         overflow: hidden;
     
         &.active {
-            border-color: $white !important;
-            background-color: $grid-active-border-color;
+            border-color: $grid-active-border-color !important;
+            background-color: $grid-active-bg-color;
         }
 
         .avatar-image {
