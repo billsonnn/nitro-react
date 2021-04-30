@@ -5,13 +5,13 @@
     .inventory-bot-item {
         width: 100%;
         height: 100%;
-        border-color: $muted !important;
-        background-color: #CDD3D9;
+        border-color: $grid-border-color !important;
+        background-color: $grid-bg-color;
         overflow: hidden;
     
         &.active {
             border-color: $white !important;
-            background-color: #ECECEC;
+            background-color: $grid-active-border-color;
         }
 
         .avatar-image {

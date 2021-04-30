@@ -78,7 +78,7 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
         <>
             <div className="row">
                 <div className="col-7">
-                    <InventoryBadgeResultsView badges={ badges } activeBadges={ activeBadges } cols={ 5 }  />
+                    <InventoryBadgeResultsView badges={ badges } activeBadges={ activeBadges }  />
                 </div>
                 <div className="col-5">
                     <p className="mb-1 text-black">{ LocalizeText('inventory.badges.activebadges') }</p>

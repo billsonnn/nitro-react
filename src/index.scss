@@ -27,6 +27,11 @@ $infostand-zindex: 30;
 $chat-zindex: 20;
 $highscore-zindex: 19;
 
+$grid-bg-color: #CDD3D9;
+$grid-border-color: $muted;
+$grid-active-bg-color: #ECECEC;
+$grid-active-border-color: $white;
+
 @import './utils/Styles';
 @import './App';
 @import './hooks/Styles';
