@@ -1,12 +1,11 @@
-import classNames from 'classnames';
 import { IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { GetRoomEngine } from '../../api';
 import { InventoryEvent } from '../../events';
-import { DraggableWindow } from '../../hooks/draggable-window/DraggableWindow';
 import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
 import { LocalizeText } from '../../utils/LocalizeText';
 import { InventoryContextProvider } from './context/InventoryContext';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
@@ -100,25 +99,16 @@ export const InventoryView: FC<InventoryViewProps> = props =>
     return (
         <InventoryContextProvider value={ { furnitureState, dispatchFurnitureState, botState, dispatchBotState, petState, dispatchPetState, badgeState, dispatchBadgeState } }>
             <InventoryMessageHandler />
-            { isVisible && <DraggableWindow handle=".drag-handler">
-                <div className="nitro-inventory d-flex flex-column">
-                    <div className="drag-handler d-flex align-items-center bg-primary border border-bottom-0 rounded-top px-3 py-1">
-                        <div className="d-flex flex-grow-1 justify-content-center align-items-center">
-                            <div className="h4 m-0 text-white text-shadow">{ LocalizeText('inventory.title') }</div>
-                        </div>
-                        <div className="cursor-pointer" onClick={ event => setIsVisible(false) }>
-                            <i className="fas fa-times"></i>
-                        </div>
-                    </div>
-                    <ul className="nav nav-tabs justify-content-center bg-secondary border-start border-end px-3 pt-1">
+            { isVisible &&
+                <NitroCardView className="nitro-inventory">
+                    <NitroCardHeaderView headerText={ LocalizeText('inventory.title') } onCloseClick={ event => setIsVisible(false) } />
+                    <NitroCardTabsView>
                         { tabs.map((name, index) =>
                             {
-                                return <li key={ index } className="nav-item me-1 cursor-pointer" onClick={ event => setCurrentTab(name) } >
-                                    <span className={ 'nav-link ' + classNames({ 'active': (currentTab === name) }) }>{ LocalizeText(name) }</span>
-                                </li>;
+                                return <NitroCardTabsItemView key={ index } tabText={ LocalizeText(name) } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) } />
                             }) }
-                    </ul>
-                    <div className="bg-light rounded-bottom border border-top-0 px-3 py-2 shadow overflow-hidden content-area">
+                    </NitroCardTabsView>
+                    <NitroCardContentView>
                         { (currentTab === InventoryTabs.FURNITURE ) &&
                             <InventoryFurnitureView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
                         { (currentTab === InventoryTabs.BOTS ) &&
@@ -127,9 +117,8 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                             <InventoryPetView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
                         { (currentTab === InventoryTabs.BADGES ) && 
                             <InventoryBadgeView /> }
-                    </div>
-                </div>
-            </DraggableWindow> }
+                    </NitroCardContentView>
+                </NitroCardView> }
         </InventoryContextProvider>
     );
 }

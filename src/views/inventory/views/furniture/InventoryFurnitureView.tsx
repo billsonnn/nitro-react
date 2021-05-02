@@ -116,11 +116,11 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 
     return (
         <div className="row h-100">
-            <div className="col col-7">
+            <div className="col-7">
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                 <InventoryFurnitureResultsView groupItems={ filteredGroupItems }  />
             </div>
-            <div className="d-flex flex-column col col-5 justify-space-between">
+            <div className="d-flex flex-column col justify-space-between">
                 <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                 { groupItem && <div className="d-flex flex-column flex-grow-1">
                     <p className="flex-grow-1 fs-6 text-black my-2">{ groupItem.name }</p>
