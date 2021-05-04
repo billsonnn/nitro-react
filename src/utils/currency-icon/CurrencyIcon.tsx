@@ -1,9 +1,9 @@
-import { Nitro } from 'nitro-renderer';
+import { GetConfiguration } from '../GetConfiguration';
 import { CurrencyIconProps } from './CurrencyIcon.types';
 
 export function CurrencyIcon(props: CurrencyIconProps): JSX.Element
 {
-    let url = Nitro.instance.getConfiguration<string>('currency.asset.icon.url', '');
+    let url = GetConfiguration<string>('currency.asset.icon.url', '');
     
     url = url.replace('%type%', props.type.toString());
 

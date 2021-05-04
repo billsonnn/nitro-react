@@ -44,8 +44,6 @@ export const FriendListView: FC<FriendListViewProps> = props =>
     useEffect(() =>
     {
         if(!messengerSettings) return;
-        
-        console.log(messengerSettings);
     }, [ messengerSettings ]);
 
     useEffect(() =>

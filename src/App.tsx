@@ -4,6 +4,7 @@ import { useConfigurationEvent } from './hooks/events/core/configuration/configu
 import { useLocalizationEvent } from './hooks/events/nitro/localization/localization-event';
 import { dispatchMainEvent, useMainEvent } from './hooks/events/nitro/main-event';
 import { useRoomEngineEvent } from './hooks/events/nitro/room/room-engine-event';
+import { GetConfiguration } from './utils/GetConfiguration';
 import { LoadingView } from './views/loading/LoadingView';
 import { MainView } from './views/main/MainView';
 
@@ -22,7 +23,7 @@ export function App(): JSX.Element
     {
         const urls: string[] = [];
 
-        const assetUrls = Nitro.instance.getConfiguration<string[]>('preload.assets.urls');
+        const assetUrls = GetConfiguration<string[]>('preload.assets.urls');
 
         if(assetUrls && assetUrls.length)
         {

@@ -1,8 +1,9 @@
-import { Nitro, UserCreditsEvent, UserCurrencyComposer, UserCurrencyEvent, UserCurrencyUpdateEvent } from 'nitro-renderer';
+import { UserCreditsEvent, UserCurrencyComposer, UserCurrencyEvent, UserCurrencyUpdateEvent } from 'nitro-renderer';
 import { useCallback, useEffect, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { TransitionAnimation } from '../../transitions/TransitionAnimation';
 import { TransitionAnimationTypes } from '../../transitions/TransitionAnimation.types';
+import { GetConfiguration } from '../../utils/GetConfiguration';
 import { CurrencySet } from './currency/CurrencySet';
 import { CurrencyView } from './currency/CurrencyView';
 import { PurseViewProps } from './PurseView.types';
@@ -12,7 +13,7 @@ export function PurseView(props: PurseViewProps): JSX.Element
     const [ currencies, setCurrencies ] = useState<CurrencySet[]>([ new CurrencySet(-1, 0) ]);
     const [ isReady, setIsReady ] = useState(false);
 
-    const displayedCurrencies = Nitro.instance.getConfiguration<number[]>('system.currency.types', []);
+    const displayedCurrencies = GetConfiguration<number[]>('system.currency.types', []);
 
     const onUserCreditsEvent = useCallback((event: UserCreditsEvent) =>
     {
@@ -76,7 +77,7 @@ export function PurseView(props: PurseViewProps): JSX.Element
 
     return (
         <TransitionAnimation className="nitro-purse position-relative mb-1" type={ TransitionAnimationTypes.FADE_DOWN } inProp={ isReady } timeout={ 300 }>
-            <div className="row px-0 mx-0">
+            <div className="row row-cols-2 g-0">
                 { currencies && currencies.map((set, index) =>
                     {
                         if(displayedCurrencies.indexOf(set.type) === -1) return null;

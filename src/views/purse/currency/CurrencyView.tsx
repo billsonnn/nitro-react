@@ -7,21 +7,39 @@ import { CurrencyViewProps } from './CurrencyView.types';
 export function CurrencyView(props: CurrencyViewProps): JSX.Element
 {
     const { currencySet = null } = props;
+
+    const [ firstRender, setFirstRender ] = useState(true);
     const [ isAnimating, setIsAnimating ] = useState(false);
 
     useEffect(() =>
     {
+        if(firstRender)
+        {
+            setFirstRender(false);
+
+            return;
+        }
+
         setIsAnimating(true);
 
-        const timeout = setTimeout(() => setIsAnimating(false), 1000);
+        let timeout = setTimeout(() =>
+        {
+            setIsAnimating(false)
+            
+            timeout = null
+        }, 300);
 
         return () => clearTimeout(timeout);
-    }, []);
+    }, [ firstRender, currencySet ]);
 
     return (
-        <TransitionAnimation className="d-flex bg-primary rounded shadow border border-black mb-1 p-1 nitro-currency" type={ TransitionAnimationTypes.HEAD_SHAKE } inProp={ isAnimating } timeout={ 300 }>
-            <div className="d-flex flex-grow-1 align-items-center justify-content-end">{ currencySet.amount }</div>
-            <div className="bg-secondary rounded ml-1"><CurrencyIcon type={ currencySet.type } /></div>
+        <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isAnimating } timeout={ 300 }>
+            <div className="col pe-1 pb-1">
+                <div className="d-flex bg-primary rounded border overflow-hidden">
+                    <div className="d-flex flex-grow-1 align-items-center justify-content-end pe-1">{ currencySet.amount }</div>
+                    <div className="bg-secondary"><CurrencyIcon type={ currencySet.type } /></div>
+                </div>
+            </div>
         </TransitionAnimation>
     );
 }

@@ -22,7 +22,7 @@ export function RoomHostView(props: RoomHostViewProps): JSX.Element
     {
         if(RoomId.isRoomPreviewerId(event.roomId)) return;
 
-        const session = GetRoomSession(event.roomId);
+        const session = GetRoomSession();
 
         if(!session) return;
 

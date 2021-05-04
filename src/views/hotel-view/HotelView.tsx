@@ -1,15 +1,16 @@
 import { Nitro } from 'nitro-renderer';
+import { GetConfiguration } from '../../utils/GetConfiguration';
 import { HotelViewProps } from './HotelView.types';
 
 export function HotelView(props: HotelViewProps): JSX.Element
 {
-    const backgroundColor = Nitro.instance.getConfiguration('hotelview.images')['background.colour'];
-    const background      = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['background']);
-    const sun             = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['sun']);
-    const drape           = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['drape']);
-    const left            = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['left']);
-    //const rightRepeat     = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['right.repeat']);
-    //const right           = Nitro.instance.core.configuration.interpolate(Nitro.instance.getConfiguration('hotelview.images')['right']);
+    const backgroundColor = GetConfiguration('hotelview.images')['background.colour'];
+    const background      = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview.images')['background']);
+    const sun             = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview.images')['sun']);
+    const drape           = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview.images')['drape']);
+    const left            = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview.images')['left']);
+    //const rightRepeat     = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview.images')['right.repeat']);
+    //const right           = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview.images')['right']);
     
     return (
         <div className="nitro-hotel-view" style={ (backgroundColor && backgroundColor) ? { background: backgroundColor } : {} }>

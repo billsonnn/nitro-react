@@ -1,13 +1,15 @@
 ::-webkit-scrollbar {
     width: 4px;
-
+    height: 4px;
 }
 
 ::-webkit-scrollbar-track {
+    border-radius: $border-radius;
     background: rgba(transparent, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
+    border-radius: $border-radius;
     background: rgba($white, 0.7);
     width: 4px;
 }

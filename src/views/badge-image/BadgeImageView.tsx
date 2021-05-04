@@ -1,5 +1,5 @@
-import { Nitro } from 'nitro-renderer';
 import { FC } from 'react';
+import { GetConfiguration } from '../../utils/GetConfiguration';
 import { BadgeImageViewProps } from './BadgeImageView.types';
 
 export const BadgeImageView: FC<BadgeImageViewProps> = props =>
@@ -10,11 +10,11 @@ export const BadgeImageView: FC<BadgeImageViewProps> = props =>
     {
         if(isGroup)
         {
-            return ((Nitro.instance.getConfiguration<string>('badge.asset.group.url')).replace('%badgedata%', badgeCode));
+            return ((GetConfiguration<string>('badge.asset.group.url')).replace('%badgedata%', badgeCode));
         }
         else
         {
-            return ((Nitro.instance.getConfiguration<string>('badge.asset.url')).replace('%badgename%', badgeCode));
+            return ((GetConfiguration<string>('badge.asset.url')).replace('%badgename%', badgeCode));
         }
     }
 

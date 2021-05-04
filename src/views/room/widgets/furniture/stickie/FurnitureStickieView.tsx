@@ -44,7 +44,7 @@ export function FurnitureStickieView(props: FurnitureStickieViewProps): JSX.Elem
                     color = data;
                 }
 
-                setStickieData(new FurnitureStickieData(widgetEvent.objectId, widgetEvent.category, color, text, (GetRoomSession(widgetEvent.roomId).isRoomOwner || GetSessionDataManager().isModerator), false));
+                setStickieData(new FurnitureStickieData(widgetEvent.objectId, widgetEvent.category, color, text, (GetRoomSession().isRoomOwner || GetSessionDataManager().isModerator), false));
                 return;
             }
             case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED: {
@@ -124,7 +124,7 @@ export function FurnitureStickieView(props: FurnitureStickieViewProps): JSX.Elem
                             <div className="nitro-stickie-image stickie-trash header-trash" onClick={ event => processAction('trash') }></div>
                             { STICKIE_COLORS.map((color, index) =>
                                 {
-                                    return <div className="stickie-color ml-1" key={ index } onClick={ event => processAction('changeColor', color) } style={ {backgroundColor: ColorUtils.makeColorHex(color) } } />
+                                    return <div className="stickie-color ms-1" key={ index } onClick={ event => processAction('changeColor', color) } style={ {backgroundColor: ColorUtils.makeColorHex(color) } } />
                                 })}
                         </> }
                     </div>
