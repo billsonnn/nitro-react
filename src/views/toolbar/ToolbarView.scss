@@ -1,103 +1,90 @@
 .nitro-toolbar-container {
     position: absolute;
-    width: 70px;
-    top: 10px;
-    left: 10px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35px;
     z-index: $toolbar-zindex;
+    
+    .nitro-toolbar {
+        height: 100%;
+        pointer-events: all;
+        background-color: rgba(#33312C, 1);
 
-    // @include media-breakpoint-up(sm) {
-    //     top: 0;
-    //     left: 0;
-    //     height: 100%;
-    //     box-shadow: $box-shadow-right !important;
-    //     border-radius: 0 !important;
-
-    //     .nitro-toolbar {
-    //         box-shadow: $box-shadow-right !important;
-    //         border-radius: 0 !important;
-    //     }
-    // }
-}
-
-.nitro-toolbar {
-    pointer-events: all;
-    box-shadow: $box-shadow;
-    border-radius: $border-radius;
-
-    .list-group {
-        align-items: center;
-
-        .list-group-item {
+        .navigation-items {
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            padding: unset;
-            min-width: 50px;
-            min-height: 60px;
-            width: 50px;
-            height: 60px;
-            margin: 0 5px;
 
-            &:active {
-                -webkit-transform: translate(0, 1px);
-                transform: translate(0, 1px);
-            }
+            .navigation-item {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                width: 50px;
+                margin: 0 1px;
 
-            .avatar-image {
-                top: 20px;
-            }
+                .icon,
+                .avatar-image {
+                    position: relative;
+                    top: -12px;
+                    filter: drop-shadow(2px 1px 0 rgba($white, 1)) drop-shadow(-2px 1px 0 rgba($white, 1)) drop-shadow(0 -2px 0 rgba($white, 1));
 
-            .icon,
-            .avatar-image {
-                position: relative;
-                filter: drop-shadow(0px 2px 0px black);
-            }
-
-            .chat-input-container {
-                left: 60px;
-            }
-
-            .count {
-                top: 0rem;
-                right: 5px;
-                font-size: 10px;
-            }
-        }
-    }
-
-    .nitro-toolbar-me-menu {
-        bottom: 77px;
-        left: 200px;
-        position: absolute;
-        font-size: 12px;
-        z-index: $toolbar-memenu-zindex;
-    
-        .list-group {
-    
-            .list-group-item {
-                min-width: 70px;
-                transition: all .3s;
-                font-size: 10px;
-                text-align: center;
-    
-                i {
-                    filter: grayscale(1);
-                }
-    
-                &:hover {
-                    color: $cyan;
-                    text-decoration: underline;
-    
-                    i {
-                        filter: grayscale(0);
+                    &:active {
+                        -webkit-transform: translate(0, 1px);
+                        transform: translate(0, 1px);
                     }
                 }
-    
+
+                .avatar-image {
+                    top: -40px;
+                    pointer-events: none;
+                }
+
+                .chat-input-container {
+                    left: 60px;
+                }
+
                 .count {
-                    top: 0px;
+                    top: 0rem;
                     right: 5px;
                     font-size: 10px;
+                }
+            }
+        }
+
+        .nitro-toolbar-me-menu {
+            bottom: 77px;
+            left: 200px;
+            position: absolute;
+            font-size: 12px;
+            z-index: $toolbar-memenu-zindex;
+        
+            .list-group {
+        
+                .list-group-item {
+                    min-width: 70px;
+                    transition: all .3s;
+                    font-size: 10px;
+                    text-align: center;
+        
+                    i {
+                        filter: grayscale(1);
+                    }
+        
+                    &:hover {
+                        color: $cyan;
+                        text-decoration: underline;
+        
+                        i {
+                            filter: grayscale(0);
+                        }
+                    }
+        
+                    .count {
+                        top: 0px;
+                        right: 5px;
+                        font-size: 10px;
+                    }
                 }
             }
         }

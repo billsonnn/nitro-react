@@ -45,7 +45,7 @@ export function MainView(props: MainViewProps): JSX.Element
         <div className="nitro-main">
             { landingViewVisible && <HotelView /> }
             <RoomHostView />
-            <TransitionAnimation className="nitro-toolbar-container" type={ TransitionAnimationTypes.SLIDE_LEFT } inProp={ isReady } timeout={ 300 }>
+            <TransitionAnimation className="nitro-toolbar-container" type={ TransitionAnimationTypes.FADE_UP } inProp={ isReady } timeout={ 300 }>
                 <ToolbarView isInRoom={ !landingViewVisible } />
             </TransitionAnimation>
             <NavigatorView />
