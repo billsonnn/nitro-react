@@ -2,7 +2,4 @@
     width: 400px;
 }
 
-@import './lock/NavigatorLockView';
-@import './result-lists/NavigatorResultListsView';
-@import './search/NavigatorSearchView';
-@import './tabs/NavigatorTabsView';
+@import './views/NavigatorViews';

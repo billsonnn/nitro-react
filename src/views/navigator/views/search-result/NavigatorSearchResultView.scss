@@ -1,26 +1,17 @@
-.nitro-navigator-result {
-
-    &:hover {
-        cursor: pointer;
-    }
-}
-
 .nitro-navigator-result-list {
 
     .nitro-navigator-result {
-        border-radius: $border-radius;
-        background: $secondary;
+        background: $grid-active-bg-color;
     }
 
-    .row {
+    &.row {
 
         &.row-cols-1 {
 
             .col:nth-child(even) {
 
                 .nitro-navigator-result {
-                    border-radius: $border-radius;
-                    background: $primary !important;
+                    background: $white !important;
                 }
             } 
         }
@@ -29,9 +20,9 @@
 
             .col:nth-child(4n+3),
             .col:nth-child(4n+4) {
+                
                 .nitro-navigator-result {
-                    border-radius: $border-radius;
-                    background: $primary !important;
+                    background: $white !important;
                 }
             }
         }

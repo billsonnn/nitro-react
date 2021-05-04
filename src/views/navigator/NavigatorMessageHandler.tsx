@@ -2,17 +2,16 @@ import { GenericErrorEvent, NavigatorCategoriesComposer, NavigatorMetadataEvent,
 import { useCallback } from 'react';
 import { GetRoomSessionManager, GetSessionDataManager } from '../../api';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
-import { NavigatorLockViewStage } from './lock/NavigatorLockView.types';
+import { useNavigatorContext } from './context/NavigatorContext';
 import { NavigatorMessageHandlerProps } from './NavigatorMessageHandler.types';
+import { NavigatorActions } from './reducers/NavigatorReducer';
 
 export function NavigatorMessageHandler(props: NavigatorMessageHandlerProps): JSX.Element
 {
-    const { setTopLevelContext = null, setTopLevelContexts = null, setSearchResults = null, showLock = null, hideLock = null } = props;
+    const { dispatchNavigatorState = null } = useNavigatorContext();
 
     const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
     {
-        //const parser = event.getParser();
-
         SendMessageHook(new NavigatorCategoriesComposer());
         SendMessageHook(new NavigatorSettingsComposer());
     }, []);
@@ -57,7 +56,7 @@ export function NavigatorMessageHandler(props: NavigatorMessageHandlerProps): JS
                 {
                     case RoomDataParser.DOORBELL_STATE:
                     case RoomDataParser.PASSWORD_STATE:
-                        showLock();
+                        //showLock();
                         return;
                 }
             }
@@ -73,65 +72,59 @@ export function NavigatorMessageHandler(props: NavigatorMessageHandlerProps): JS
 
     const onRoomDoorbellEvent = useCallback((event: RoomDoorbellEvent) =>
     {
-        if(!event) return;
-
         const parser = event.getParser();
 
-        if(!parser) return;
-
-        if(!parser.userName || (parser.userName.length === 0))
-        {
-            showLock(NavigatorLockViewStage.WAITING);
-        }
+        // if(!parser.userName || (parser.userName.length === 0))
+        // {
+        //     showLock(NavigatorLockViewStage.WAITING);
+        // }
     }, []);
 
     const onRoomDoorbellAcceptedEvent = useCallback((event: RoomDoorbellAcceptedEvent) =>
     {
-        if(!event) return;
-
         const parser = event.getParser();
 
-        if(!parser) return;
-
-        if(!parser.userName || (parser.userName.length === 0))
-        {
-            hideLock();
-        }
+        // if(!parser.userName || (parser.userName.length === 0))
+        // {
+        //     hideLock();
+        // }
     }, []);
 
     const onGenericErrorEvent = useCallback((event: GenericErrorEvent) =>
     {
-        if(!event) return;
-
         const parser = event.getParser();
 
-        if(!parser) return;
-
-        switch(parser.errorCode)
-        {
-            case -100002:
-                showLock(NavigatorLockViewStage.FAILED);
-                break;
-        }
+        // switch(parser.errorCode)
+        // {
+        //     case -100002:
+        //         showLock(NavigatorLockViewStage.FAILED);
+        //         break;
+        // }
     }, []);
 
     const onNavigatorMetadataEvent = useCallback((event: NavigatorMetadataEvent) =>
     {
         const parser = event.getParser();
 
-        setTopLevelContexts(parser.topLevelContexts);
-
-        if(parser.topLevelContexts.length > 0) setTopLevelContext(parser.topLevelContexts[0]);
-
-        // clear search
-    }, [ setTopLevelContext, setTopLevelContexts ]);
+        dispatchNavigatorState({
+            type: NavigatorActions.SET_TOP_LEVEL_CONTEXTS,
+            payload: {
+                topLevelContexts: parser.topLevelContexts
+            }
+        });
+    }, [ dispatchNavigatorState ]);
 
     const onNavigatorSearchEvent = useCallback((event: NavigatorSearchEvent) =>
     {
         const parser = event.getParser();
 
-        setSearchResults(parser.result.results);
-    }, [ setSearchResults ]);
+        dispatchNavigatorState({
+            type: NavigatorActions.SET_SEARCH_RESULT,
+            payload: {
+                searchResult: parser.result
+            }
+        });
+    }, [ dispatchNavigatorState ]);
 
     CreateMessageHook(UserInfoEvent, onUserInfoEvent);
     CreateMessageHook(RoomForwardEvent, onRoomForwardEvent);
