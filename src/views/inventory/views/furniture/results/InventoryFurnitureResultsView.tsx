@@ -7,11 +7,11 @@ export const InventoryFurnitureResultsView: FC<InventoryFurnitureResultsViewProp
     const { groupItems = [] } = props;
 
     return (
-        <div className="row row-cols-5 align-content-start g-0 fruni-item-container">
-            { (groupItems && groupItems.length && groupItems.map((item, index) =>
+        <div className="row row-cols-5 align-content-start g-0 furni-item-container">
+            { groupItems && (groupItems.length > 0) && groupItems.map((item, index) =>
                 {
                     return <InventoryFurnitureItemView key={ index } groupItem={ item } />
-                })) || null }
+                }) }
         </div>
     );
 }

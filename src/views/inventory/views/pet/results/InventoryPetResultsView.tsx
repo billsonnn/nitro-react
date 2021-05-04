@@ -8,10 +8,10 @@ export const InventoryPetResultsView: FC<InventoryPetResultsViewProps> = props =
     
     return (
         <div className="row row-cols-5 align-content-start g-0 pet-item-container">
-            { (petItems && petItems.length && petItems.map((item, index) =>
+            { petItems && (petItems.length > 0) && petItems.map((item, index) =>
                 {
                     return <InventoryPetItemView key={ index } petItem={ item } />
-                })) || null }
+                }) }
         </div>
     );
 }

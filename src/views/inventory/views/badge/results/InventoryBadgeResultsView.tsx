@@ -8,12 +8,12 @@ export const InventoryBadgeResultsView: FC<InventoryBadgeResultsViewProps> = pro
     
     return (
         <div className="row row-cols-5 align-content-start g-0 badge-item-container">
-            { (badges && badges.length && badges.map((code, index) =>
+            { badges && (badges.length > 0) && badges.map((code, index) =>
                 {
                     if(activeBadges.indexOf(code) >= 0) return null;
                     
                     return <InventoryBadgeItemView key={ index } badge={ code } />
-                })) || null }
+                }) }
         </div>
     );
 }
