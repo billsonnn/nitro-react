@@ -1,0 +1,13 @@
+.nitro-catalog-navigation {
+    border-color: $grid-border-color !important;
+    background-color: $grid-bg-color !important;
+
+    .navigation-container {
+        height: 275px;
+        max-height: 275px;
+        overflow-y: auto;
+    }
+}
+
+@import './item/CatalogNavigationItemView';
+@import './set/CatalogNavigationSetView';
