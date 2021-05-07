@@ -1,74 +1,22 @@
-import { UserCreditsEvent, UserCurrencyComposer, UserCurrencyEvent, UserCurrencyUpdateEvent } from 'nitro-renderer';
-import { useCallback, useEffect, useState } from 'react';
-import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
-import { TransitionAnimation } from '../../transitions/TransitionAnimation';
-import { TransitionAnimationTypes } from '../../transitions/TransitionAnimation.types';
+import { UserCurrencyComposer } from 'nitro-renderer';
+import { FC, useEffect, useMemo, useReducer } from 'react';
+import { SendMessageHook } from '../../hooks/messages/message-event';
 import { GetConfiguration } from '../../utils/GetConfiguration';
-import { CurrencySet } from './currency/CurrencySet';
+import { PurseContextProvider } from './context/PurseContext';
 import { CurrencyView } from './currency/CurrencyView';
+import { PurseMessageHandler } from './PurseMessageHandler';
 import { PurseViewProps } from './PurseView.types';
+import { initialPurse, PurseReducer } from './reducers/PurseReducer';
 
-export function PurseView(props: PurseViewProps): JSX.Element
+export const PurseView: FC<PurseViewProps> = props =>
 {
-    const [ currencies, setCurrencies ] = useState<CurrencySet[]>([ new CurrencySet(-1, 0) ]);
-    const [ isReady, setIsReady ] = useState(false);
-
-    const displayedCurrencies = GetConfiguration<number[]>('system.currency.types', []);
-
-    const onUserCreditsEvent = useCallback((event: UserCreditsEvent) =>
+    const [ purseState, dispatchPurseState ] = useReducer(PurseReducer, initialPurse);
+    const { currencies = [] } = purseState;
+    
+    const displayedCurrencies = useMemo(() =>
     {
-        const parser = event.getParser();
-
-        updateCurrency(-1, parseFloat(parser.credits));
+        return GetConfiguration<number[]>('system.currency.types', []);
     }, []);
-
-    const onUserCurrencyEvent = useCallback((event: UserCurrencyEvent) =>
-    {
-        const parser = event.getParser();
-
-        for(const [ key, value ] of parser.currencies.entries()) updateCurrency(key, value);
-
-        setIsReady(true);
-    }, []);
-
-    const onUserCurrencyUpdateEvent = useCallback((event: UserCurrencyUpdateEvent) =>
-    {
-        const parser = event.getParser();
-
-        updateCurrency(parser.type, parser.amount)
-    }, []);
-
-    function updateCurrency(type: number, amount: number): void
-    {
-        setCurrencies(oldState =>
-            {
-                const newState: CurrencySet[] = [];
-
-                let found = false;
-
-                for(const set of oldState)
-                {
-                    if(set.type !== type)
-                    {
-                        newState.push(set);
-
-                        continue;
-                    }
-
-                    newState.push(new CurrencySet(set.type, amount));
-
-                    found = true;
-                }
-
-                if(!found) newState.push(new CurrencySet(type, amount));
-
-                return newState;
-            });
-    }
-
-    CreateMessageHook(UserCreditsEvent, onUserCreditsEvent);
-    CreateMessageHook(UserCurrencyEvent, onUserCurrencyEvent);
-    CreateMessageHook(UserCurrencyUpdateEvent, onUserCurrencyUpdateEvent);
 
     useEffect(() =>
     {
@@ -76,15 +24,16 @@ export function PurseView(props: PurseViewProps): JSX.Element
     }, []);
 
     return (
-        <TransitionAnimation className="nitro-purse position-relative mb-1" type={ TransitionAnimationTypes.FADE_DOWN } inProp={ isReady } timeout={ 300 }>
+        <PurseContextProvider value={ { purseState, dispatchPurseState }}>
+            <PurseMessageHandler />
             <div className="row row-cols-2 g-0">
-                { currencies && currencies.map((set, index) =>
+                { currencies && currencies.map((currency, index) =>
                     {
-                        if(displayedCurrencies.indexOf(set.type) === -1) return null;
+                        if(displayedCurrencies.indexOf(currency.type) === -1) return null;
 
-                        return <CurrencyView key={ index } currencySet={ set } />
+                        return <CurrencyView key={ index } currency={ currency } />
                     }) }
             </div>
-        </TransitionAnimation>
+        </PurseContextProvider>
     );
 }

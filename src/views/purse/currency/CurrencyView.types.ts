@@ -1,6 +1,6 @@
-import { CurrencySet } from './CurrencySet';
+import { Currency } from '../utils/Currency';
 
 export interface CurrencyViewProps
 {
-    currencySet: CurrencySet;
+    currency: Currency;
 }
