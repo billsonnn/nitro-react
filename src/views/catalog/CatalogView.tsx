@@ -1,5 +1,6 @@
-import { CatalogModeComposer, ICatalogPageData } from 'nitro-renderer';
+import { CatalogModeComposer, ICatalogPageData, RoomPreviewer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
+import { GetRoomEngine } from '../../api';
 import { CatalogEvent } from '../../events';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
@@ -8,16 +9,17 @@ import { LocalizeText } from '../../utils/LocalizeText';
 import { CatalogMessageHandler } from './CatalogMessageHandler';
 import { CatalogMode, CatalogViewProps } from './CatalogView.types';
 import { CatalogContextProvider } from './context/CatalogContext';
-import { CatalogReducer, initialCatalog } from './reducers/CatalogReducer';
+import { CatalogActions, CatalogReducer, initialCatalog } from './reducers/CatalogReducer';
 import { CatalogNavigationView } from './views/navigation/CatalogNavigationView';
 import { CatalogPageView } from './views/page/CatalogPageView';
+import { CatalogSearchView } from './views/search/CatalogSearchView';
 
 export const CatalogView: FC<CatalogViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
-    const [ currentTab, setCurrentTab ] = useState<ICatalogPageData>(null);
+    const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
     const [ catalogState, dispatchCatalogState ] = useReducer(CatalogReducer, initialCatalog);
-    const { root = null } = catalogState;
+    const { root = null, currentTab = null, searchResult = null } = catalogState;
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
@@ -26,6 +28,9 @@ export const CatalogView: FC<CatalogViewProps> = props =>
             case CatalogEvent.SHOW_CATALOG:
                 setIsVisible(true);
                 return;
+            case CatalogEvent.HIDE_CATALOG:
+                setIsVisible(false);
+                return;   
             case CatalogEvent.TOGGLE_CATALOG:
                 setIsVisible(value => !value);
                 return;
@@ -33,6 +38,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
     }, []);
 
     useUiEvent(CatalogEvent.SHOW_CATALOG, onCatalogEvent);
+    useUiEvent(CatalogEvent.HIDE_CATALOG, onCatalogEvent);
     useUiEvent(CatalogEvent.TOGGLE_CATALOG, onCatalogEvent);
 
     useEffect(() =>
@@ -43,11 +49,34 @@ export const CatalogView: FC<CatalogViewProps> = props =>
         {
             SendMessageHook(new CatalogModeComposer(CatalogMode.MODE_NORMAL));
         }
-        else
-        {
-            setCurrentTab(catalogState.root.children[0]);
-        }
     }, [ isVisible, catalogState.root ]);
+
+    useEffect(() =>
+    {
+        setRoomPreviewer(new RoomPreviewer(GetRoomEngine(), ++RoomPreviewer.PREVIEW_COUNTER));
+
+        return () =>
+        {
+            setRoomPreviewer(prevValue =>
+                {
+                    prevValue.dispose();
+
+                    return null;
+                });
+        }
+    }, []);
+
+    function setCurrentTab(page: ICatalogPageData): void
+    {
+        dispatchCatalogState({
+            type: CatalogActions.SET_CATALOG_CURRENT_TAB,
+            payload: {
+                currentTab: page
+            }
+        });
+    }
+
+    const currentNavigationPage = ((searchResult && searchResult.page) || currentTab);
 
     return (
         <CatalogContextProvider value={ { catalogState, dispatchCatalogState } }>
@@ -62,12 +91,13 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                             }) }
                     </NitroCardTabsView>
                     <NitroCardContentView>
-                        <div className="row">
+                        <div className="row h-100">
                             <div className="col-3">
-                                <CatalogNavigationView page={ currentTab } />
+                                <CatalogSearchView />
+                                <CatalogNavigationView page={ currentNavigationPage } />
                             </div>
                             <div className="col">
-                                <CatalogPageView />
+                                <CatalogPageView roomPreviewer={ roomPreviewer } />
                             </div>
                         </div>
                     </NitroCardContentView>

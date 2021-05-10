@@ -12,17 +12,19 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
 
     useEffect(() =>
     {
-        if(!isActive) return;
+        if(!isActive || !page) return;
 
         SendMessageHook(GetCatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
     }, [ isActive, page ]);
 
     function select(): void
     {
+        if(!page) return;
+        
         setActiveChild(prevValue =>
             {
                 if(prevValue === page) return null;
-
+                
                 return page;
             });
     }
@@ -31,7 +33,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
         <div className="col pe-1 pb-1 catalog-navigation-item-container">
             <div className="d-flex align-items-center cursor-pointer catalog-navigation-item" onClick={ select }>
                 <CatalogIconView icon={ page.icon } />
-                <div className="flex-grow-1 text-black text-nowrap text-truncate overflow-hidden px-1">{ page.localization }</div>
+                <div className="flex-grow-1 text-black text-truncate px-1">{ page.localization }</div>
                 { (page.children.length > 0) && <i className={ 'fas fa-caret-' + (isActive ? 'up' : 'down') } /> }
             </div>
             { isActive && page.children && (page.children.length > 0) &&

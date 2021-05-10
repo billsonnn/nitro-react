@@ -1,7 +1,7 @@
-import { ICatalogPageParser } from 'nitro-renderer';
+import { ICatalogPageParser, RoomPreviewer } from 'nitro-renderer';
 import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
 
-export function GetCatalogLayout(pageParser: ICatalogPageParser): JSX.Element
+export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: RoomPreviewer): JSX.Element
 {
     switch(pageParser.catalogType)
     {
@@ -37,6 +37,6 @@ export function GetCatalogLayout(pageParser: ICatalogPageParser): JSX.Element
             return null;
         case 'default_3x3':
         default:
-            return <CatalogLayoutDefaultView pageParser={ pageParser } />
+            return <CatalogLayoutDefaultView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />
     }
 }

@@ -1,12 +1,14 @@
-import { createRef, MouseEvent, useEffect } from 'react';
+import { FC, MouseEvent, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
 import { DraggableWindowProps } from './DraggableWindow.types';
 
 const currentWindows: HTMLDivElement[] = [];
 
-export function DraggableWindow(props: DraggableWindowProps): JSX.Element
+export const DraggableWindow: FC<DraggableWindowProps> = props =>
 {
-    const elementRef = createRef<HTMLDivElement>();
+    const { disableDrag = false } = props;
+
+    const elementRef = useRef<HTMLDivElement>();
 
     function bringToTop(): void
     {
@@ -51,8 +53,8 @@ export function DraggableWindow(props: DraggableWindowProps): JSX.Element
 
         bringToTop();
 
-        const left = ((document.body.clientWidth - element.clientWidth) / 2);
-        const top = ((document.body.clientHeight - element.clientHeight) / 2);
+        const left = ((element.parentElement.clientWidth - element.clientWidth) / 2);
+        const top = ((element.parentElement.clientHeight - element.clientHeight) / 2);
 
         element.style.left = `${ left }px`;
         element.style.top = `${ top }px`;
@@ -65,11 +67,20 @@ export function DraggableWindow(props: DraggableWindowProps): JSX.Element
         }
     }, [ elementRef ]);
 
-    return (
-        <Draggable handle={ props.handle } { ...props.draggableOptions }>
+    function getWindowContent(): JSX.Element
+    {
+        return (
             <div ref={ elementRef } className="position-absolute draggable-window" onMouseDownCapture={ onMouseDown }>
                 { props.children }
             </div>
+        );
+    }
+
+    if(disableDrag) return getWindowContent();
+
+    return (
+        <Draggable handle={ props.handle } { ...props.draggableOptions }>
+            { getWindowContent() }
         </Draggable>
     );
 }

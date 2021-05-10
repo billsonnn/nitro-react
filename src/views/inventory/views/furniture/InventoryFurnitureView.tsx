@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
 import { LocalizeText } from '../../../../utils/LocalizeText';
+import { LimitedEditionCompactPlateView } from '../../../limited-edition/compact-plate/LimitedEditionCompactPlateView';
 import { RoomPreviewerView } from '../../../room-previewer/RoomPreviewerView';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
@@ -120,8 +121,12 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                 <InventoryFurnitureResultsView groupItems={ filteredGroupItems }  />
             </div>
-            <div className="d-flex flex-column col justify-space-between">
+            <div className="position-relative d-flex flex-column col justify-space-between">
                 <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                { groupItem && groupItem.stuffData.isUnique &&
+                    <div className="position-absolute limited-edition-info-container">
+                        <LimitedEditionCompactPlateView uniqueNumber={ groupItem.stuffData.uniqueNumber } uniqueSeries={ groupItem.stuffData.uniqueSeries } />
+                    </div> }
                 { groupItem && <div className="d-flex flex-column flex-grow-1">
                     <p className="flex-grow-1 fs-6 text-black my-2">{ groupItem.name }</p>
                     { !!roomSession && <button type="button" className="btn btn-success" onClick={ event => attemptItemPlacement(groupItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }

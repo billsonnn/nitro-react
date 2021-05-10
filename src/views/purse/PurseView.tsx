@@ -7,6 +7,7 @@ import { CurrencyView } from './currency/CurrencyView';
 import { PurseMessageHandler } from './PurseMessageHandler';
 import { PurseViewProps } from './PurseView.types';
 import { initialPurse, PurseReducer } from './reducers/PurseReducer';
+import { SetLastCurrencies } from './utils/CurrencyHelper';
 
 export const PurseView: FC<PurseViewProps> = props =>
 {
@@ -22,6 +23,8 @@ export const PurseView: FC<PurseViewProps> = props =>
     {
         SendMessageHook(new UserCurrencyComposer());
     }, []);
+
+    SetLastCurrencies(currencies);
 
     return (
         <PurseContextProvider value={ { purseState, dispatchPurseState }}>

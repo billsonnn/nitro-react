@@ -26,6 +26,8 @@ export function RoomView(props: RoomViewProps): JSX.Element
             return;
         }
 
+        Nitro.instance.renderer.resize(window.innerWidth, window.innerHeight);
+
         const canvasId = 1;
         
         const displayObject = GetRoomEngine().getRoomInstanceDisplay(roomSession.roomId, canvasId, Nitro.instance.width, Nitro.instance.height, RoomGeometry.SCALE_ZOOMED_IN);

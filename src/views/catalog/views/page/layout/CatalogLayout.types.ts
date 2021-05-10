@@ -1,6 +1,7 @@
-import { ICatalogPageParser } from 'nitro-renderer';
+import { ICatalogPageParser, RoomPreviewer } from 'nitro-renderer';
 
 export interface CatalogLayoutProps
 {
-    pageParser: ICatalogPageParser;
+    roomPreviewer: RoomPreviewer;
+    pageParser?: ICatalogPageParser;
 }

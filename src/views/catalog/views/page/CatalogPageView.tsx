@@ -2,20 +2,18 @@ import { FC } from 'react';
 import { useCatalogContext } from '../../context/CatalogContext';
 import { CatalogPageViewProps } from './CatalogPageView.types';
 import { GetCatalogLayout } from './layout/GetCatalogLayout';
+import { CatalogLayoutSearchResultView } from './search-result/CatalogLayoutSearchResultView';
 
 export const CatalogPageView: FC<CatalogPageViewProps> = props =>
 {
+    const { roomPreviewer = null } = props;
     const { catalogState = null } = useCatalogContext();
-    const { pageParser = null } = catalogState;
+    const { pageParser = null, searchResult = null } = catalogState;
 
-    return (
-        <div className="row h-100">
-            <div className="col-7">
-                { pageParser && GetCatalogLayout(pageParser) }
-            </div>
-            <div className="col">
-                preview area
-            </div>
-        </div>
-    );
+    if(searchResult && searchResult.furniture)
+    {
+        return <CatalogLayoutSearchResultView roomPreviewer={ roomPreviewer } furnitureDatas={ searchResult.furniture } />;
+    }
+
+    return ((pageParser && GetCatalogLayout(pageParser, roomPreviewer)) || null);
 }

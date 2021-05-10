@@ -1,5 +1,10 @@
 .nitro-catalog {
-    width: 600px;
+    width: 620px;
+
+    .content-area {
+        height: 330px;
+        max-height: 330px;
+    }
 }
 
 @import './views/CatalogViews';
