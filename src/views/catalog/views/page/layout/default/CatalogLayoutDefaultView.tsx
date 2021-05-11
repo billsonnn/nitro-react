@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { LimitedEditionCompletePlateView } from '../../../../../limited-edition/complete-plate/LimitedEditionCompletePlateView';
 import { RoomPreviewerView } from '../../../../../room-previewer/RoomPreviewerView';
 import { useCatalogContext } from '../../../../context/CatalogContext';
-import { GetOfferName } from '../../../../utils/CatalogUtilities';
+import { GetCatalogPageImage, GetCatalogPageText, GetOfferName } from '../../../../utils/CatalogUtilities';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
 import { CatalogPurchaseView } from '../../purchase/CatalogPurchaseView';
 import { CatalogLayoutDefaultViewProps } from './CatalogLayoutDefaultView.types';
@@ -20,6 +20,13 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutDefaultViewProps> = props
             <div className="col-7">
                 <CatalogPageOffersView offers={ pageParser.offers } />
             </div>
+            { !product &&
+                <div className="position-relative d-flex flex-column col justify-content-center align-items-center">
+                    <div className="d-block mb-2">
+                        <img alt="" src={ GetCatalogPageImage(pageParser, 1) } />
+                    </div>
+                    <span className="text-center text-black lh-sm">{ GetCatalogPageText(pageParser, 0) }</span>
+                </div> }
             { product &&
                 <div className="position-relative d-flex flex-column col">
                     <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />

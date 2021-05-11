@@ -1,6 +1,5 @@
 import { FC, useEffect } from 'react';
 import { useCatalogContext } from '../../../context/CatalogContext';
-import { CatalogActions } from '../../../reducers/CatalogReducer';
 import { CatalogPageOfferView } from '../offer/CatalogPageOfferView';
 import { CatalogPageOffersViewProps } from './CatalogPageOffersView.types';
 
@@ -14,12 +13,12 @@ export const CatalogPageOffersView: FC<CatalogPageOffersViewProps> = props =>
     {
         if(!offers || !offers.length) return;
 
-        dispatchCatalogState({
-            type: CatalogActions.SET_CATALOG_ACTIVE_OFFER,
-            payload: {
-                activeOffer: offers[0]
-            }
-        })
+        // dispatchCatalogState({
+        //     type: CatalogActions.SET_CATALOG_ACTIVE_OFFER,
+        //     payload: {
+        //         activeOffer: offers[0]
+        //     }
+        // });
     }, [ offers, dispatchCatalogState ]);
 
     return (

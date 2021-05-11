@@ -1,5 +1,6 @@
-import { CatalogPageOfferData, ICatalogPageData, IFurnitureData } from 'nitro-renderer';
+import { CatalogPageOfferData, ICatalogPageData, ICatalogPageParser, IFurnitureData } from 'nitro-renderer';
 import { GetProductDataForLocalization } from '../../../api/nitro/session/GetProductDataForLocalization';
+import { GetConfiguration } from '../../../utils/GetConfiguration';
 
 export interface ICatalogOffers
 {
@@ -64,4 +65,26 @@ export function SetOffersToNodes(offers: ICatalogOffers, pageData: ICatalogPageD
     {
         for(const child of pageData.children) SetOffersToNodes(offers, child);
     }
+}
+
+export function GetCatalogPageImage(page: ICatalogPageParser, index: number = 0): string
+{
+    const imageName = page.localization.images && page.localization.images[index];
+
+    if(!imageName || !imageName.length) return null;
+
+    let assetUrl = GetConfiguration<string>('catalog.asset.image.url');
+
+    assetUrl = assetUrl.replace('%name%', imageName);
+
+    return assetUrl;
+}
+
+export function GetCatalogPageText(page: ICatalogPageParser, index: number = 0): string
+{
+    let message = (page.localization.texts[index] || '');
+
+    if(message && message.length) message = message.replace(/\r\n|\r|\n/g, '<br />');
+
+    return (message || '');
 }

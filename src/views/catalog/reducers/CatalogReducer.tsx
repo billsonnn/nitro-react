@@ -65,6 +65,7 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
         }
         case CatalogActions.SET_CATALOG_PAGE_PARSER: {
             const pageParser = action.payload.pageParser;
+            const activeOffer = null;
 
             const searchResult = state.searchResult;
 
@@ -73,7 +74,7 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
                 searchResult.furniture = null;
             }
 
-            return { ...state, pageParser, searchResult };
+            return { ...state, pageParser, activeOffer, searchResult };
         }
         case CatalogActions.SET_CATALOG_ACTIVE_OFFER: {
             const activeOffer = (action.payload.activeOffer || state.activeOffer || null);
