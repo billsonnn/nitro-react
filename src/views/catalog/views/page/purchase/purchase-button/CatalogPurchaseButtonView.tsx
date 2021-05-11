@@ -29,17 +29,17 @@ export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = pro
     useUiEvent(CatalogEvent.PURCHASE_SUCCESS, onCatalogEvent);
     useUiEvent(CatalogEvent.SOLD_OUT, onCatalogEvent);
 
-    useEffect(() =>
-    {
-        setPurchaseState(CatalogPurchaseState.NONE);
-    }, [ offer, quantity ]);
-
     const purchase = useCallback(() =>
     {
         setPurchaseState(CatalogPurchaseState.PURCHASE);
 
         SendMessageHook(new CatalogPurchaseComposer(pageId, offer.offerId, extra, quantity));
     }, [ pageId, offer, extra, quantity ]);
+
+    useEffect(() =>
+    {
+        setPurchaseState(CatalogPurchaseState.NONE);
+    }, [ offer, quantity ]);
 
     const product = offer.products[0];
 

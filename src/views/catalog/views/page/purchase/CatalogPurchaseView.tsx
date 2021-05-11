@@ -6,7 +6,7 @@ import { CatalogPurchaseButtonView } from './purchase-button/CatalogPurchaseButt
 
 export const CatalogPurchaseView: FC<CatalogPurchaseViewProps> = props =>
 {
-    const { offer = null, pageId = -1 } = props;
+    const { offer = null, pageId = -1, extra = '' } = props;
     const [ quantity, setQuantity ] = useState(1);
 
     useEffect(() =>
@@ -41,7 +41,7 @@ export const CatalogPurchaseView: FC<CatalogPurchaseViewProps> = props =>
         setQuantity(amount);
     }
 
-    const extra = (offer?.products[0]?.extraParam || null);
+    const extraData = ((extra && extra.length) ? extra : (offer?.products[0]?.extraParam || null));
     
     return (
         <div className="d-flex flex-column flex-grow-1 justify-content-end">
@@ -69,7 +69,7 @@ export const CatalogPurchaseView: FC<CatalogPurchaseViewProps> = props =>
                 </div>
             </div>
             <div className="d-flex flex-column mt-1">
-                <CatalogPurchaseButtonView className="btn-sm w-100" offer={ offer } pageId={ pageId } extra={ extra } quantity={ quantity } />
+                <CatalogPurchaseButtonView className="btn-sm w-100" offer={ offer } pageId={ pageId } extra={ extraData } quantity={ quantity } />
                 { offer.giftable && <button type="button" className="btn btn-secondary btn-sm w-100 mt-1">{ LocalizeText('catalog.purchase_confirmation.gift') }</button> }
             </div>
         </div>

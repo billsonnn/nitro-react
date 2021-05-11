@@ -19,7 +19,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
     const [ isVisible, setIsVisible ] = useState(false);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
     const [ catalogState, dispatchCatalogState ] = useReducer(CatalogReducer, initialCatalog);
-    const { root = null, currentTab = null, searchResult = null } = catalogState;
+    const { root = null, currentTab = null, activeOffer = null, searchResult = null } = catalogState;
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {

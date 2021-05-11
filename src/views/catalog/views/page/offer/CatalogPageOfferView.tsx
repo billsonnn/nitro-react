@@ -1,22 +1,27 @@
 import { FurnitureType, MouseEventType } from 'nitro-renderer';
-import { FC, MouseEvent, useCallback } from 'react';
+import { FC, MouseEvent, useCallback, useState } from 'react';
 import { GetRoomEngine, GetSessionDataManager } from '../../../../../api';
 import { GetConfiguration } from '../../../../../utils/GetConfiguration';
+import { AvatarImageView } from '../../../../avatar-image/AvatarImageView';
 import { LimitedEditionStyledNumberView } from '../../../../limited-edition/styled-number/LimitedEditionStyledNumberView';
 import { useCatalogContext } from '../../../context/CatalogContext';
+import { ProductTypeEnum } from '../../../enums/ProductTypeEnum';
 import { CatalogActions } from '../../../reducers/CatalogReducer';
 import { CatalogPageOfferViewProps } from './CatalogPageOfferView.types';
 
 export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
 {
     const { isActive = false, offer = null } = props;
+    const [ isMouseDown, setMouseDown ] = useState(false);
     const { dispatchCatalogState = null } = useCatalogContext();
 
     const onMouseEvent = useCallback((event: MouseEvent) =>
     {
         switch(event.type)
         {
-            case MouseEventType.MOUSE_DOWN:
+            case MouseEventType.MOUSE_CLICK:
+                if(isActive) return;
+
                 dispatchCatalogState({
                     type: CatalogActions.SET_CATALOG_ACTIVE_OFFER,
                     payload: {
@@ -24,12 +29,8 @@ export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
                     }
                 });
                 return;
-            case MouseEventType.MOUSE_UP:
-                return;
-            case MouseEventType.ROLL_OUT:
-                return;
         }
-    }, [ offer, dispatchCatalogState ]);
+    }, [ isActive, offer, dispatchCatalogState ]);
 
     const product = ((offer.products && offer.products[0]) || null);
 
@@ -43,6 +44,8 @@ export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
         {
             case FurnitureType.BADGE:
                 return GetSessionDataManager().getBadgeUrl(product.extraParam);
+            case FurnitureType.ROBOT:
+                return null;
             case FurnitureType.FLOOR:
                 return GetRoomEngine().getFurnitureFloorIconUrl(product.furniClassId);
             case FurnitureType.WALL: {
@@ -80,11 +83,14 @@ export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
         return '';
     }
 
-    const imageUrl = `url(${ getIconUrl() })`;
+    const iconUrl = getIconUrl();
+    const imageUrl = (iconUrl && iconUrl.length) ? `url(${ iconUrl })` : null;
 
     return (
         <div className="col pe-1 pb-1 catalog-offer-item-container">
-            <div className={ 'position-relative border border-2 rounded catalog-offer-item cursor-pointer ' + (isActive ? 'active ' : '') + (product.uniqueLimitedItem ? 'unique-item ' : '') + ((product.uniqueLimitedItem && !product.uniqueLimitedItemsLeft) ? 'sold-out ' : '') } style={ { backgroundImage: imageUrl }} onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
+            <div className={ 'position-relative border border-2 rounded catalog-offer-item cursor-pointer ' + (isActive ? 'active ' : '') + (product.uniqueLimitedItem ? 'unique-item ' : '') + ((product.uniqueLimitedItem && !product.uniqueLimitedItemsLeft) ? 'sold-out ' : '') } style={ { backgroundImage: imageUrl }} onClick={ onMouseEvent }>
+                { !imageUrl && (product.productType === ProductTypeEnum.ROBOT) &&
+                    <AvatarImageView figure={ product.extraParam } direction={ 3 } headOnly={ true } /> }
                 { (product.productCount > 1) && <span className="position-absolute badge border bg-danger px-1 rounded-circle">{ product.productCount }</span> }
                 { product.uniqueLimitedItem && 
                     <div className="position-absolute unique-item-counter">

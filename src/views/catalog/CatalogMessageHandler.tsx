@@ -11,7 +11,7 @@ import { CatalogActions } from './reducers/CatalogReducer';
 
 export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
 {
-    const { dispatchCatalogState = null } = useCatalogContext();
+    const { catalogState = null, dispatchCatalogState = null } = useCatalogContext();
 
     const onCatalogPagesEvent = useCallback((event: CatalogPagesEvent) =>
     {

@@ -28,7 +28,7 @@ export const CatalogPageView: FC<CatalogPageViewProps> = props =>
             
             const furniData = GetFurnitureDataForProductOffer(product);
 
-            if(!furniData) return;
+            if(!furniData && (product.productType !== ProductTypeEnum.ROBOT)) return;
 
             switch(product.productType)
             {
