@@ -89,7 +89,7 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
                 <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                 { petItem && <div className="d-flex flex-column flex-grow-1">
                     <p className="flex-grow-1 fs-6 text-black my-2">{ petItem.petData.name }</p>
-                    { !!roomSession && <button type="button" className="btn btn-success" onClick={ event => attemptPetPlacement(petItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
+                    { !!roomSession && <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptPetPlacement(petItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
                 </div> }
             </div>
         </div>

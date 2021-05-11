@@ -129,7 +129,7 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                     </div> }
                 { groupItem && <div className="d-flex flex-column flex-grow-1">
                     <p className="flex-grow-1 fs-6 text-black my-2">{ groupItem.name }</p>
-                    { !!roomSession && <button type="button" className="btn btn-success" onClick={ event => attemptItemPlacement(groupItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
+                    { !!roomSession && <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptItemPlacement(groupItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
                 </div> }
             </div>
         </div>
