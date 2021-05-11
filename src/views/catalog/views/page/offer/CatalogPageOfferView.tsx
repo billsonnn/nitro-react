@@ -1,6 +1,7 @@
 import { FurnitureType, MouseEventType } from 'nitro-renderer';
 import { FC, MouseEvent, useCallback } from 'react';
 import { GetRoomEngine, GetSessionDataManager } from '../../../../../api';
+import { GetConfiguration } from '../../../../../utils/GetConfiguration';
 import { LimitedEditionStyledNumberView } from '../../../../limited-edition/styled-number/LimitedEditionStyledNumberView';
 import { useCatalogContext } from '../../../context/CatalogContext';
 import { CatalogActions } from '../../../reducers/CatalogReducer';
@@ -44,8 +45,36 @@ export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
                 return GetSessionDataManager().getBadgeUrl(product.extraParam);
             case FurnitureType.FLOOR:
                 return GetRoomEngine().getFurnitureFloorIconUrl(product.furniClassId);
-            case FurnitureType.WALL:
+            case FurnitureType.WALL: {
+                const furniData = GetSessionDataManager().getWallItemData(product.furniClassId);
+                
+                let iconName = '';
+
+                if(furniData)
+                {
+                    switch(furniData.className)
+                    {
+                        case 'floor':
+                            iconName = ['th', furniData.className, product.extraParam].join('_');
+                            break;
+                        case 'wallpaper':
+                            iconName = ['th', 'wall', product.extraParam].join('_');
+                            break;
+                        case 'landscape':
+                            iconName = ['th', furniData.className, product.extraParam.replace('.', '_'), '001'].join('_');
+                            break;
+                    }
+
+                    if(iconName !== '')
+                    {
+                        const assetUrl = GetConfiguration<string>('catalog.asset.url');
+
+                        return `${ assetUrl }/${ iconName }.png`;
+                    }
+                }
+
                 return GetRoomEngine().getFurnitureWallIconUrl(product.furniClassId, product.extraParam);
+            }
         }
 
         return '';

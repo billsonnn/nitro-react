@@ -2,6 +2,7 @@ import { CatalogSearchComposer, FurnitureType, MouseEventType } from 'nitro-rend
 import { FC, MouseEvent, useCallback } from 'react';
 import { GetRoomEngine, GetSessionDataManager } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
+import { GetConfiguration } from '../../../../../../utils/GetConfiguration';
 import { CatalogSearchResultOfferViewProps } from './CatalogSearchResultOfferView.types';
 
 export const CatalogSearchResultOfferView: FC<CatalogSearchResultOfferViewProps> = props =>
@@ -33,6 +34,33 @@ export const CatalogSearchResultOfferView: FC<CatalogSearchResultOfferViewProps>
             case FurnitureType.FLOOR:
                 return GetRoomEngine().getFurnitureFloorIconUrl(offer.id);
             case FurnitureType.WALL:
+                const furniData = GetSessionDataManager().getWallItemData(offer.id);
+                
+                let iconName = '';
+
+                if(furniData)
+                {
+                    switch(furniData.className)
+                    {
+                        case 'floor':
+                            iconName = ['th', furniData.className, offer.customParams].join('_');
+                            break;
+                        case 'wallpaper':
+                            iconName = ['th', 'wall', offer.customParams].join('_');
+                            break;
+                        case 'landscape':
+                            iconName = ['th', furniData.className, offer.customParams.replace('.', '_'), '001'].join('_');
+                            break;
+                    }
+
+                    if(iconName !== '')
+                    {
+                        const assetUrl = GetConfiguration<string>('catalog.asset.url');
+
+                        return `${ assetUrl }/${ iconName }.png`;
+                    }
+                }
+
                 return GetRoomEngine().getFurnitureWallIconUrl(offer.id, offer.customParams);
         }
 

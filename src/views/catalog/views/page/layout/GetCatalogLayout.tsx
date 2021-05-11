@@ -1,9 +1,10 @@
 import { ICatalogPageParser, RoomPreviewer } from 'nitro-renderer';
 import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
+import { CatalogLayoutSpacesView } from './spaces-new/CatalogLayoutSpacesView';
 
 export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: RoomPreviewer): JSX.Element
 {
-    switch(pageParser.catalogType)
+    switch(pageParser.layoutCode)
     {
         case 'frontpage_featured':
             return null;
@@ -18,7 +19,7 @@ export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: 
         case 'pets3':
             return null;
         case 'spaces_new':
-            return null;
+            return <CatalogLayoutSpacesView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'vip_buy':
             return null;
         case 'guild_frontpage':
@@ -37,6 +38,6 @@ export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: 
             return null;
         case 'default_3x3':
         default:
-            return <CatalogLayoutDefaultView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />
+            return <CatalogLayoutDefaultView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
     }
 }

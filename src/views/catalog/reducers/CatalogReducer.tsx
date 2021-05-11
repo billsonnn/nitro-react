@@ -66,22 +66,6 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
         case CatalogActions.SET_CATALOG_PAGE_PARSER: {
             const pageParser = action.payload.pageParser;
 
-            let activeOffer = null;
-
-            if(state.activeOffer)
-            {
-                for(const offer of pageParser.offers)
-                {
-                    if(offer.offerId !== state.activeOffer.offerId) continue;
-
-                    activeOffer = offer;
-
-                    break;
-                }
-            }
-
-            if(!activeOffer) activeOffer = ((pageParser && (pageParser.offers.length > 0) && pageParser.offers[0]) || null);
-
             const searchResult = state.searchResult;
 
             if(searchResult)
@@ -89,7 +73,7 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
                 searchResult.furniture = null;
             }
 
-            return { ...state, pageParser, activeOffer, searchResult };
+            return { ...state, pageParser, searchResult };
         }
         case CatalogActions.SET_CATALOG_ACTIVE_OFFER: {
             const activeOffer = (action.payload.activeOffer || state.activeOffer || null);
