@@ -115,7 +115,7 @@ export function FurnitureStickieView(props: FurnitureStickieViewProps): JSX.Elem
     if(!stickieData) return null;
 
     return (
-        <DraggableWindow handle=".drag-handler">
+        <DraggableWindow handle=".drag-handler" noCenter={ true }>
             <div className={ "nitro-stickie nitro-stickie-image stickie-" + getStickieColorName(stickieData.color) }>
                 <div className="d-flex align-items-center stickie-header drag-handler">
                     <div className="d-flex align-items-center flex-grow-1 h-100">
