@@ -31,7 +31,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
     
     return (
         <div className="col pe-1 pb-1 catalog-navigation-item-container">
-            <div className="d-flex align-items-center cursor-pointer catalog-navigation-item" onClick={ select }>
+            <div className={ 'd-flex align-items-center cursor-pointer catalog-navigation-item ' + (isActive ? 'active ': '') } onClick={ select }>
                 <CatalogIconView icon={ page.icon } />
                 <div className="flex-grow-1 text-black text-truncate px-1">{ page.localization }</div>
                 { (page.children.length > 0) && <i className={ 'fas fa-caret-' + (isActive ? 'up' : 'down') } /> }
