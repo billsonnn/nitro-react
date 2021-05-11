@@ -6,5 +6,6 @@ export interface DraggableWindowProps
     handle: string;
     draggableOptions?: Partial<DraggableProps>;
     disableDrag?: boolean;
+    noCenter?: boolean;
     children?: ReactNode;
 }

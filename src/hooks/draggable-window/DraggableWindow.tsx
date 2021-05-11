@@ -6,7 +6,7 @@ const currentWindows: HTMLDivElement[] = [];
 
 export const DraggableWindow: FC<DraggableWindowProps> = props =>
 {
-    const { disableDrag = false } = props;
+    const { disableDrag = false, noCenter = false } = props;
 
     const elementRef = useRef<HTMLDivElement>();
 
@@ -53,11 +53,14 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
 
         bringToTop();
 
-        const left = ((element.parentElement.clientWidth - element.clientWidth) / 2);
-        const top = ((element.parentElement.clientHeight - element.clientHeight) / 2);
+        if(!noCenter)
+        {
+            const left = ((document.body.clientWidth / 2) - (element.clientWidth / 2));
+            const top = ((document.body.clientHeight / 2) - (element.clientHeight / 2));
 
-        element.style.left = `${ left }px`;
-        element.style.top = `${ top }px`;
+            element.style.left = `${ left }px`;
+            element.style.top = `${ top }px`;
+        }
 
         return () =>
         {
@@ -65,7 +68,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
 
             if(index >= 0) currentWindows.splice(index, 1);
         }
-    }, [ elementRef ]);
+    }, [ elementRef, noCenter ]);
 
     function getWindowContent(): JSX.Element
     {
