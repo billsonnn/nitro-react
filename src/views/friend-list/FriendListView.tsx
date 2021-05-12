@@ -1,23 +1,25 @@
 import { MessengerInitComposer } from 'nitro-renderer';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { FriendListEvent } from '../../events';
-import { DraggableWindow } from '../../hooks/draggable-window/DraggableWindow';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
+import { NitroCardHeaderView, NitroCardView } from '../../layout';
+import { NitroCardAccordionItemView } from '../../layout/card/accordion/item/NitroCardAccordionItemView';
+import { NitroCardAccordionView } from '../../layout/card/accordion/NitroCardAccordionView';
 import { LocalizeText } from '../../utils/LocalizeText';
 import { FriendListMessageHandler } from './FriendListMessageHandler';
 import { FriendListTabs, FriendListViewProps, IFriendListContext } from './FriendListView.types';
-import { FriendListTabsContentView } from './tabs-content/FriendListTabsContentView';
-import { FriendListTabsSelectorView } from './tabs-selector/FriendListTabsSelectorView';
+import { FriendListFriendsView } from './friends/FriendListFriendsView';
 import { MessengerSettings } from './utils/MessengerSettings';
 
 export const FriendListContext = React.createContext<IFriendListContext>(null);
 
 export const FriendListView: FC<FriendListViewProps> = props =>
 {
+    const tabs = [  FriendListTabs.FRIENDS, FriendListTabs.REQUESTS, FriendListTabs.SEARCH ];
+
     const [ isVisible, setIsVisible ]                   = useState(false);
     const [ currentTab, setCurrentTab ]                 = useState<string>(null);
-    const [ tabs, setTabs ]                             = useState<string[]>([  FriendListTabs.FRIENDS, FriendListTabs.REQUESTS, FriendListTabs.SEARCH ]);
     const [ messengerSettings, setMessengerSettings ]   = useState<MessengerSettings>(null);
 
     const onFriendListEvent = useCallback((event: FriendListEvent) =>
@@ -51,26 +53,24 @@ export const FriendListView: FC<FriendListViewProps> = props =>
         SendMessageHook(new MessengerInitComposer());
     }, []);
 
-    function hideFriendList(): void
-    {
-        setIsVisible(false);
-    }
-
     return (
         <FriendListContext.Provider value={{ currentTab: currentTab, onSetCurrentTab: setCurrentTab }}>
             <FriendListMessageHandler setMessengerSettings={ setMessengerSettings }  />
-            { isVisible && <DraggableWindow handle=".drag-handler">
-                <div className="nitro-friend-list d-flex flex-column bg-primary border border-black shadow rounded">
-                    <div className="drag-handler d-flex justify-content-between align-items-center px-3 pt-3">
-                        <div className="h6 m-0">{ LocalizeText('friendlist.friends') }</div>
-                        <button type="button" className="close" onClick={ hideFriendList }>
-                            <i className="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <FriendListTabsSelectorView tabs={ tabs } />
-                    <FriendListTabsContentView />
-                </div>
-            </DraggableWindow> }
+            { isVisible &&
+                <NitroCardView className="nitro-friend-list">
+                    <NitroCardHeaderView headerText={ LocalizeText('friendlist.friends') } onCloseClick={ event => setIsVisible(false) } />
+                    <NitroCardAccordionView>
+                        <NitroCardAccordionItemView headerText="Friends" contentClassName="ps-3">
+                            <FriendListFriendsView />
+                        </NitroCardAccordionItemView>
+                        <NitroCardAccordionItemView headerText="Friend Requests" contentClassName="ps-3">
+                            abc
+                        </NitroCardAccordionItemView>
+                        <NitroCardAccordionItemView headerText="Search" contentClassName="ps-3">
+                            abc
+                        </NitroCardAccordionItemView>
+                    </NitroCardAccordionView>
+                </NitroCardView> }
         </FriendListContext.Provider>
     );
 }

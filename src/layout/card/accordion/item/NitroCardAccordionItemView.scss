@@ -1,0 +1,15 @@
+.nitro-card-accordion-item {
+    .nitro-card-accordion-item-header {
+        border-bottom: 1px solid rgba($black, 0.2);
+    }
+
+    &.active {
+        > .nitro-card-accordion-item-header {
+            background: rgba($white, 0.5);
+        }
+    }
+
+    .nitro-card-accordion-item-content {
+        background: rgba($black, 0.1);
+    }
+}
