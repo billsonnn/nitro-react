@@ -59,9 +59,9 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
 
     return (
         <>
-            { expandMeToolbar && <TransitionAnimation className="" type={ TransitionAnimationTypes.FADE_UP } inProp={ false } timeout={ 300 }>
+            { <TransitionAnimation className="" type={ TransitionAnimationTypes.FADE_UP } inProp={ expandMeToolbar } timeout={ 300 }>
                 <ToolbarMeView />
-                </TransitionAnimation> }
+            </TransitionAnimation> }
             <div className="d-flex nitro-toolbar py-1 px-3">
                 <div className="navigation-items navigation-avatar pe-1 me-2">
                     <div className="navigation-item">
