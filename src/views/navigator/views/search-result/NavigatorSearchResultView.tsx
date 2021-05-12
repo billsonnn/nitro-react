@@ -49,22 +49,16 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
     }
     
     return (
-        <div className="bg-white rounded mb-1 overflow-hidden">
+        <div className="bg-white rounded mb-2 overflow-hidden">
             <div className="d-flex flex-column">
-                <div className="d-flex align-items-center p-2 pb-0 mb-2">
-                    <div className="d-flex flex-grow-1">
-                        <button type="button" className="btn btn-primary btn-sm p-0 px-1 me-1" onClick={ toggleExtended }>
-                            <i className={ "fas " + (isExtended ? 'fa-minus' : 'fa-plus') }></i>
-                        </button>
-                        <div className="h5 m-0 text-black">{ LocalizeText(getResultTitle()) }</div>
-                    </div>
-                    <button type="button" className="btn btn-primary btn-sm p-0 px-1 ms-1" onClick={ toggleDisplayMode }>
-                        <i className={ "fas " + classNames({ 'fa-bars': (displayMode === NavigatorSearchResultViewDisplayMode.LIST), 'fa-th': displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS })}></i>
-                    </button>
+                <div className="d-flex align-items-center px-2 py-1 text-black">
+                    <i className={ 'text-secondary fas ' + (isExtended ? 'fa-minus' : 'fa-plus') } onClick={ toggleExtended }></i>
+                    <div className="ms-2 flex-grow-1">{ LocalizeText(getResultTitle()) }</div>
+                    <i className={ 'text-secondary fas ' + classNames({ 'fa-bars': (displayMode === NavigatorSearchResultViewDisplayMode.LIST), 'fa-th': displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS })}></i>
                 </div>
                 { isExtended &&
-                    <div className={ 'nitro-navigator-result-list row row-cols-' + classNames({ '1': (displayMode === NavigatorSearchResultViewDisplayMode.LIST), '2': (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) }) }>
-                        { searchResult.rooms.length && searchResult.rooms.map((room, index) =>
+                    <div className={ 'nitro-navigator-result-list mt-1 row row-cols-' + classNames({ '1': (displayMode === NavigatorSearchResultViewDisplayMode.LIST), '2': (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) }) }>
+                        { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) =>
                             {
                                 return <NavigatorSearchResultItemView key={ index } roomData={ room } />
                             }) }

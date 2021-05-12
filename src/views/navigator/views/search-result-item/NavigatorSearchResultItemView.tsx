@@ -56,7 +56,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
                         </div>
                     </div>
                     <div className="d-flex flex-row-reverse align-items-center">
-                        <i className="fas fa-info-circle" onClick={ openInfo }></i>
+                        <i className="fas fa-info-circle text-secondary" onClick={ openInfo }></i>
                         { roomData.habboGroupId > 0 && <i className="fas fa-users mr-2"></i> }
                         { roomData.doorMode !== RoomDataParser.OPEN_STATE && 
                             <i className={ 'mr-2 fas ' + classNames( {'fa-lock': roomData.doorMode === RoomDataParser.DOORBELL_STATE, 'fa-key': roomData.doorMode === RoomDataParser.PASSWORD_STATE })}></i>
