@@ -44,7 +44,7 @@ export const CatalogPurchaseView: FC<CatalogPurchaseViewProps> = props =>
     const extraData = ((extra && extra.length) ? extra : (offer?.products[0]?.extraParam || null));
     
     return (
-        <div className="d-flex flex-column flex-grow-1 justify-content-end">
+        <div className="d-flex flex-column flex-grow-1 justify-content-end w-100">
             <div className="d-flex align-items-end">
                 <div className="flex-grow-1 align-items-end">
                     <span className="text-black">{ LocalizeText('catalog.bundlewidget.price') }</span>

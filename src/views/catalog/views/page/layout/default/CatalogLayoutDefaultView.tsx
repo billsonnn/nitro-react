@@ -10,7 +10,7 @@ import { CatalogLayoutDefaultViewProps } from './CatalogLayoutDefaultView.types'
 export const CatalogLayoutDefaultView: FC<CatalogLayoutDefaultViewProps> = props =>
 {
     const { roomPreviewer = null, pageParser = null } = props;
-    const { catalogState } = useCatalogContext();
+    const { catalogState = null } = useCatalogContext();
     const { activeOffer = null } = catalogState;
 
     const product = ((activeOffer && activeOffer.products[0]) || null);
@@ -25,7 +25,7 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutDefaultViewProps> = props
                     <div className="d-block mb-2">
                         <img alt="" src={ GetCatalogPageImage(pageParser, 1) } />
                     </div>
-                    <span className="text-center text-black lh-sm">{ GetCatalogPageText(pageParser, 0) }</span>
+                    <div className="fs-6 text-center text-black lh-sm overflow-hidden">{ GetCatalogPageText(pageParser, 0) }</div>
                 </div> }
             { product &&
                 <div className="position-relative d-flex flex-column col">

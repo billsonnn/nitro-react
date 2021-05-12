@@ -65,7 +65,12 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
         }
         case CatalogActions.SET_CATALOG_PAGE_PARSER: {
             const pageParser = action.payload.pageParser;
-            const activeOffer = null;
+            let activeOffer = null;
+
+            if(pageParser.layoutCode === 'single_bundle')
+            {
+                activeOffer = ((pageParser.offers && pageParser.offers[0]) || null);
+            }
 
             const searchResult = state.searchResult;
 

@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { GetCatalogPageComposer } from '../../../../../api/catalog/GetCatalogPageComposer';
 import { SendMessageHook } from '../../../../../hooks/messages/message-event';
 import { CatalogIconView } from '../../../../catalog-icon/CatalogIconView';
@@ -9,10 +9,13 @@ import { CatalogNavigationItemViewProps } from './CatalogNavigationItemView.type
 export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = props =>
 {
     const { page = null, isActive = false, setActiveChild = null } = props;
+    const [ isExpanded, setIsExpanded ] = useState(false);
 
     useEffect(() =>
     {
         if(!isActive || !page) return;
+
+        setIsExpanded(true);
 
         SendMessageHook(GetCatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
     }, [ isActive, page ]);
@@ -21,12 +24,15 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
     {
         if(!page) return;
         
-        setActiveChild(prevValue =>
-            {
-                if(prevValue === page) return null;
-                
-                return page;
-            });
+        setActiveChild(page);
+
+        if(page.children && page.children.length)
+        {
+            setIsExpanded(prevValue =>
+                {
+                    return !prevValue;
+                });
+        }
     }
     
     return (
@@ -34,9 +40,9 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
             <div className={ 'd-flex align-items-center cursor-pointer catalog-navigation-item ' + (isActive ? 'active ': '') } onClick={ select }>
                 <CatalogIconView icon={ page.icon } />
                 <div className="flex-grow-1 text-black text-truncate px-1">{ page.localization }</div>
-                { (page.children.length > 0) && <i className={ 'fas fa-caret-' + (isActive ? 'up' : 'down') } /> }
+                { (page.children.length > 0) && <i className={ 'fas fa-caret-' + (isExpanded ? 'up' : 'down') } /> }
             </div>
-            { isActive && page.children && (page.children.length > 0) &&
+            { isActive && isExpanded && page.children && (page.children.length > 0) &&
                 <div className="d-flex flex-column mt-1">
                     <CatalogNavigationSetView page={ page } />
                 </div> }
