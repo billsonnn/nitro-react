@@ -112,7 +112,7 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                             }) }
                     </NitroCardTabsView>
                     <NitroCardContentView>
-                        <NavigatorSearchView />
+                        <NavigatorSearchView onSendSearch={ sendSearch } />
                         <NavigatorSearchResultSetView />
                     </NitroCardContentView>
                 </NitroCardView> }

@@ -1,30 +1,35 @@
-.nitro-navigator-result-list {
+.nitro-navigator-search-result {
+    border: 1px solid #ced4da;
 
-    .nitro-navigator-result {
-        background: $grid-active-bg-color;
-    }
+    .nitro-navigator-result-list {
 
-    &.row {
-
-        &.row-cols-1 {
-
-            .col:nth-child(even) {
-
-                .nitro-navigator-result {
-                    background: $white !important;
-                }
-            } 
+        .nitro-navigator-result {
+            background: $grid-active-bg-color;
         }
-
-        &.row-cols-2 {
-
-            .col:nth-child(4n+3),
-            .col:nth-child(4n+4) {
-                
-                .nitro-navigator-result {
-                    background: $white !important;
+    
+        &.row {
+    
+            &.row-cols-1 {
+    
+                .col:nth-child(even) {
+    
+                    .nitro-navigator-result {
+                        background: $white !important;
+                    }
+                } 
+            }
+    
+            &.row-cols-2 {
+    
+                .col:nth-child(4n+3),
+                .col:nth-child(4n+4) {
+                    
+                    .nitro-navigator-result {
+                        background: $white !important;
+                    }
                 }
             }
         }
     }
+    
 }

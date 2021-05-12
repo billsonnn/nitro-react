@@ -49,7 +49,7 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
     }
     
     return (
-        <div className="bg-white rounded mb-2 overflow-hidden">
+        <div className="nitro-navigator-search-result bg-white rounded mb-2 overflow-hidden">
             <div className="d-flex flex-column">
                 <div className="d-flex align-items-center px-2 py-1 text-black">
                     <i className={ 'text-secondary fas ' + (isExtended ? 'fa-minus' : 'fa-plus') } onClick={ toggleExtended }></i>
@@ -57,7 +57,7 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
                     <i className={ 'text-secondary fas ' + classNames({ 'fa-bars': (displayMode === NavigatorSearchResultViewDisplayMode.LIST), 'fa-th': displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS })}></i>
                 </div>
                 { isExtended &&
-                    <div className={ 'nitro-navigator-result-list mt-1 row row-cols-' + classNames({ '1': (displayMode === NavigatorSearchResultViewDisplayMode.LIST), '2': (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) }) }>
+                    <div className={ 'nitro-navigator-result-list row row-cols-' + classNames({ '1': (displayMode === NavigatorSearchResultViewDisplayMode.LIST), '2': (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) }) }>
                         { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) =>
                             {
                                 return <NavigatorSearchResultItemView key={ index } roomData={ room } />

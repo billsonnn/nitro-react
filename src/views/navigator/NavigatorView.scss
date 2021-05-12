@@ -1,5 +1,10 @@
 .nitro-navigator {
     width: 400px;
+
+    .content-area {
+        height: 450px;
+        max-height: 450px;
+    }
 }
 
 @import './views/NavigatorViews';
