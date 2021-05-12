@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { TransitionAnimation } from '../../transitions/TransitionAnimation';
 import { TransitionAnimationTypes } from '../../transitions/TransitionAnimation.types';
+import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CatalogView } from '../catalog/CatalogView';
 import { FriendListView } from '../friend-list/FriendListView';
 import { HotelView } from '../hotel-view/HotelView';
@@ -48,6 +49,7 @@ export function MainView(props: MainViewProps): JSX.Element
             <TransitionAnimation className="nitro-toolbar-container" type={ TransitionAnimationTypes.FADE_UP } inProp={ isReady } timeout={ 300 }>
                 <ToolbarView isInRoom={ !landingViewVisible } />
             </TransitionAnimation>
+            <AvatarEditorView />
             <NavigatorView />
             <InventoryView />
             <CatalogView />

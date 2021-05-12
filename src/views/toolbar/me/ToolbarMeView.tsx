@@ -1,10 +1,11 @@
 import { MouseEventType } from 'nitro-renderer';
 import { useEffect, useRef } from 'react';
+import { ToolbarViewItems } from '../ToolbarView.types';
 import { ToolbarMeViewProps } from './ToolbarMeView.types';
 
 export function ToolbarMeView(props: ToolbarMeViewProps): JSX.Element
 {
-    const { setMeExpanded = null } = props;
+    const { setMeExpanded = null, handleToolbarItemClick = null } = props;
 
     const elementRef = useRef<HTMLDivElement>();
 
@@ -46,7 +47,7 @@ export function ToolbarMeView(props: ToolbarMeViewProps): JSX.Element
                 <div className="navigation-item">
                     <i className="icon icon-me-rooms"></i>
                 </div>
-                <div className="navigation-item">
+                <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CLOTHING_ITEM) }>
                     <i className="icon icon-me-clothing"></i>
                 </div>
                 <div className="navigation-item">

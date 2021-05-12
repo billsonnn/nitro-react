@@ -1,7 +1,7 @@
 import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
-import { MouseEvent, useCallback, useState } from 'react';
-import { CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent } from '../../events';
+import { useCallback, useState } from 'react';
+import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent } from '../../events';
 import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { TransitionAnimation } from '../../transitions/TransitionAnimation';
@@ -28,7 +28,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
         setUserInfo(parser.userInfo);
     }, []);
 
-    function handleToolbarItemClick(event: MouseEvent, item: string): void
+    const handleToolbarItemClick = useCallback((item: string) =>
     {
         switch(item)
         {
@@ -44,8 +44,11 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
             case ToolbarViewItems.FRIEND_LIST_ITEM:
                 dispatchUiEvent(new CatalogEvent(FriendListEvent.TOGGLE_FRIEND_LIST));
                 return;
+            case ToolbarViewItems.CLOTHING_ITEM:
+                dispatchUiEvent(new AvatarEditorEvent(AvatarEditorEvent.TOGGLE_EDITOR));
+                return;
         }
-    }
+    }, []);
 
     function toggleMeToolbar(): void
     {
@@ -60,7 +63,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
     return (
         <>
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isMeExpanded } timeout={ 300 }>
-                <ToolbarMeView setMeExpanded={ setMeExpanded } />
+                <ToolbarMeView setMeExpanded={ setMeExpanded } handleToolbarItemClick={ handleToolbarItemClick } />
             </TransitionAnimation>
             <div className="d-flex nitro-toolbar py-1 px-3">
                 <div className="navigation-items navigation-avatar pe-1 me-2">
@@ -81,18 +84,18 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                         <div className="navigation-item">
                             <i className="icon icon-house"></i>
                         </div>) }
-                    <div className="navigation-item" onClick={ event => handleToolbarItemClick(event, ToolbarViewItems.NAVIGATOR_ITEM) }>
+                    <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.NAVIGATOR_ITEM) }>
                         <i className="icon icon-rooms"></i>
                     </div>
-                    <div className="navigation-item" onClick={ event => handleToolbarItemClick(event, ToolbarViewItems.CATALOG_ITEM) }>
+                    <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CATALOG_ITEM) }>
                         <i className="icon icon-catalog"></i>
                     </div>
-                    <div className="navigation-item" onClick={ event => handleToolbarItemClick(event, ToolbarViewItems.INVENTORY_ITEM) }>
+                    <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.INVENTORY_ITEM) }>
                         <i className="icon icon-inventory"></i>
                         { (unseenInventoryCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenInventoryCount }</div>) }
                     </div>
-                    <div className="navigation-item" onClick={ event => handleToolbarItemClick(event, ToolbarViewItems.FRIEND_LIST_ITEM) }>
+                    <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_LIST_ITEM) }>
                         <i className="icon icon-friendall"></i>
                         { (unseenFriendListCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
