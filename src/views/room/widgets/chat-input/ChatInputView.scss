@@ -1,20 +1,27 @@
+@media only screen and (max-width: 600px) {
+    .nitro-chat-input {
+        bottom: 65px !important;
+    }
+}
+
 .nitro-chat-input {
     position: fixed;
     display: flex;
-    bottom: 57px;
-    left: 55px;
+    bottom: 9px;
+    left: 50%;
+    transform: translateX(-50%);
     pointer-events: none;
     z-index: $chatinput-zindex;
 
     .chatinput-container {
         position: relative;
-        height: 30px;
+        height: 40px;
         border-radius: 8px;
-        border: 1.5px solid rgb(0, 0, 0);
+        border: 2px solid rgb(0, 0, 0);
         background: #EDEDED;
         pointer-events: all;
-        padding-right:30px;
-        width:100%;
+        padding-right: 30px;
+        width: 100%;
 
         .input-sizer {
             display: inline-grid;
@@ -22,7 +29,7 @@
             align-items: center;
             position: relative;
             height: 100%;
-            padding:0 10px;
+            padding: 0 10px;
             
             &::after,
             input,
@@ -30,14 +37,12 @@
               width: auto;
               min-width: 1em;
               grid-area: 1 / 2;
-              font: inherit;
               margin: 0;
               resize: none;
               background: none;
               appearance: none;
               border: none;
             }
-            
             
             &::after {
               content: attr(data-value) '  ';
@@ -53,21 +58,6 @@
             border: 0;
             position: relative;
             background: transparent;
-        }
-
-        &:after {
-            content: "";
-            position: absolute;
-            top:0;
-            bottom:0;
-            margin: auto;
-            left: -5.5px;
-            height: 9px;
-            width: 9px;
-            background: #EDEDED;
-            transform: rotate(45deg);
-            border-left: 1.5px solid $black;
-            border-bottom: 1.5px solid $black;
         }
 
         &:before {

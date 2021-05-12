@@ -74,10 +74,28 @@ i {
             height: 21px;
         }
 
+        &.icon-me-talents {
+            background-image: url('../images/toolbar/icons/me-menu/talents.png');
+            width: 32px;
+            height: 30px;
+        }
+
+        &.icon-me-helper-tool {
+            background-image: url('../images/toolbar/icons/me-menu/helper-tool.png');
+            width: 32px;
+            height: 30px;
+        }
+
         &.icon-me-profile {
             background-image: url('../images/toolbar/icons/me-menu/profile.png');
-            width: 21px;
-            height: 21px;
+            width: 32px;
+            height: 30px;
+        }
+
+        &.icon-me-forums {
+            background-image: url('../images/toolbar/icons/me-menu/forums.png');
+            width: 32px;
+            height: 30px;
         }
 
         &.icon-me-rooms {
