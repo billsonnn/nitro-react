@@ -1,15 +1,13 @@
 @media only screen and (max-width: 600px) {
     .nitro-chat-input {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
         bottom: 65px !important;
     }
 }
 
 .nitro-chat-input {
-    position: fixed;
-    display: flex;
-    bottom: 9px;
-    left: 50%;
-    transform: translateX(-50%);
     pointer-events: none;
     z-index: $chatinput-zindex;
 

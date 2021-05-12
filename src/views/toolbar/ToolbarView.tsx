@@ -98,6 +98,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
                     </div>
                 </div>
+                <div id="toolbar-chat-input-container" className="d-flex align-items-center" />
             </div>
         </>
     );

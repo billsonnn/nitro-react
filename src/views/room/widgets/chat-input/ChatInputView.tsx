@@ -1,4 +1,5 @@
 import { createRef, FC, MouseEvent, useCallback, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { SendChatTypingMessage } from '../../../../api/nitro/session/SendChatTypingMessage';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { ChatInputViewProps } from './ChatInputView.types';
@@ -136,6 +137,7 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
     }, [ chatValue ]);
 
     return (
+        createPortal(
         <div className="nitro-chat-input">
             <div className="chatinput-container">
                 <div className="input-sizer">
@@ -143,6 +145,6 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
                     {/* <input #chatInputView type="text" class="chat-input" placeholder="{{ 'widgets.chatinput.default' | translate }}" (input)="chatInputView.parentElement.dataset.value = chatInputView.value" [disabled]="floodBlocked" [maxLength]="inputMaxLength" /> */}
                 </div>
             </div>
-        </div>
+        </div>, document.getElementById('toolbar-chat-input-container'))
     );
 }
