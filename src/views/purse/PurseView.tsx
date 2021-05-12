@@ -29,7 +29,7 @@ export const PurseView: FC<PurseViewProps> = props =>
     return (
         <PurseContextProvider value={ { purseState, dispatchPurseState }}>
             <PurseMessageHandler />
-            <div className="row row-cols-2 g-0">
+            <div className="nitro-purse row row-cols-2 g-0">
                 { currencies && currencies.map((currency, index) =>
                     {
                         if(displayedCurrencies.indexOf(currency.type) === -1) return null;

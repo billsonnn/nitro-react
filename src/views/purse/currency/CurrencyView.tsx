@@ -18,9 +18,9 @@ export function CurrencyView(props: CurrencyViewProps): JSX.Element
     return (
         <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ showUp }>
             <div className="col pe-1 pb-1">
-                <div className="d-flex bg-primary rounded border overflow-hidden">
-                    <div className="d-flex flex-grow-1 align-items-center justify-content-end pe-1">{ currency.amount }</div>
-                    <div className="bg-secondary"><CurrencyIcon type={ currency.type } /></div>
+                <div className="nitro-currency p-1 d-flex rounded overflow-hidden">
+                    <div className="flex-grow-1 px-1 me-1 text-end">{ currency.amount }</div>
+                    <div className="icon px-1"><CurrencyIcon type={ currency.type } /></div>
                 </div>
             </div>
         </TransitionAnimation>
