@@ -11,6 +11,7 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
             switch(transition)
             {
                 default:
+                    return {}
                 case ENTERING:
                     return {
                         animationName: `bounceIn`,
@@ -26,6 +27,7 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
             switch(transition)
             {
                 default:
+                    return {}
                 case ENTERING:
                     return {
                         animationName: `slideInLeft`,
@@ -41,6 +43,7 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
             switch(transition)
             {
                 default:
+                    return {}
                 case ENTERING:
                     return {
                         animationName: `flipInX`,
@@ -56,6 +59,7 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
             switch(transition)
             {
                 default:
+                    return {}
                 case ENTERING:
                     return {
                         animationName: `fadeInUp`,
@@ -71,6 +75,7 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
             switch(transition)
             {
                 default:
+                    return {}
                 case ENTERING:
                     return {
                         animationName: `fadeIn`,
@@ -86,6 +91,7 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
             switch(transition)
             {
                 default:
+                    return {}
                 case ENTERING:
                     return {
                         animationName: `fadeInDown`,
@@ -101,6 +107,7 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
             switch(transition)
             {
                 default:
+                    return {}
                 case ENTERING:
                     return {
                         animationName: `headShake`,
