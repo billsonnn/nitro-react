@@ -34,7 +34,7 @@ export const PurseView: FC<PurseViewProps> = props =>
                     {
                         if(displayedCurrencies.indexOf(currency.type) === -1) return null;
 
-                        return <CurrencyView key={ index } currency={ currency } />
+                        return <CurrencyView key={ index } currency={ currency } />;
                     }) }
             </div>
         </PurseContextProvider>

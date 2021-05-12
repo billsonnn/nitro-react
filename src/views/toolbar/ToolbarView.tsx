@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
 import { MouseEvent, useCallback, useState } from 'react';
@@ -15,8 +14,8 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
 {
     const { isInRoom } = props;
 
-    const [ userInfo, setUserInfo ]                 = useState<UserInfoDataParser>(null);
-    const [ expandMeToolbar, setExpandMeToolbar ]   = useState(false);
+    const [ userInfo, setUserInfo ] = useState<UserInfoDataParser>(null);
+    const [ isMeExpanded, setMeExpanded ] = useState(false);
 
     const unseenInventoryCount = 0;
     const unseenFriendListCount = 0;
@@ -31,8 +30,6 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
 
     function handleToolbarItemClick(event: MouseEvent, item: string): void
     {
-        event.preventDefault();
-
         switch(item)
         {
             case ToolbarViewItems.NAVIGATOR_ITEM:
@@ -52,20 +49,23 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
 
     function toggleMeToolbar(): void
     {
-        setExpandMeToolbar((value) => !value);
+        setMeExpanded(prevValue =>
+            {
+                return !prevValue;
+            });
     }
 
     CreateMessageHook(UserInfoEvent, onUserInfoEvent);
 
     return (
         <>
-            { <TransitionAnimation className="" type={ TransitionAnimationTypes.FADE_IN } inProp={ expandMeToolbar } timeout={ 300 }>
-                <ToolbarMeView />
-            </TransitionAnimation> }
+            <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isMeExpanded } timeout={ 300 }>
+                <ToolbarMeView setMeExpanded={ setMeExpanded } />
+            </TransitionAnimation>
             <div className="d-flex nitro-toolbar py-1 px-3">
                 <div className="navigation-items navigation-avatar pe-1 me-2">
                     <div className="navigation-item">
-                        <div className={"toolbar-avatar" + classNames({ ' active': expandMeToolbar })} onClick={ toggleMeToolbar }>
+                        <div className={ 'toolbar-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ toggleMeToolbar }>
                             { userInfo && <AvatarImageView figure={ userInfo.figure } direction={ 2 } /> }
                         </div>
                     </div>

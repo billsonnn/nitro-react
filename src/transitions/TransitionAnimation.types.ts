@@ -1,12 +1,9 @@
-import { ReactNode } from 'react';
-
 export interface TransitionAnimationProps
 {
     type: string;
     inProp: boolean;
     timeout?: number;
     className?: string;
-    children?: ReactNode;
 }
 
 export class TransitionAnimationTypes

@@ -1,36 +1,42 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Transition } from 'react-transition-group';
 import { TransitionAnimationProps } from './TransitionAnimation.types';
 import { getTransitionAnimationStyle } from './TransitionAnimationStyles';
 
-export function TransitionAnimation(props: TransitionAnimationProps): JSX.Element
+export const TransitionAnimation: FC<TransitionAnimationProps> = props =>
 {
     const { type = null, inProp = false, timeout = 300, className = null, children = null } = props;
 
-    const [ showChild, setShowChild ] = useState(false);
-    const [ timeoutInstance, setTimeoutInstance ] = useState<any>(null);
+    const [ isChildrenVisible, setChildrenVisible ] = useState(false);
 
     useEffect(() =>
     {
+        let timeoutData: ReturnType<typeof setTimeout> = null;
+
         if(inProp)
         {
-            clearTimeout(timeoutInstance);
-            setShowChild(true);
+            setChildrenVisible(true);
         }
         else
         {
-            setTimeoutInstance(setTimeout(() => {
-                setShowChild(false);
-                clearTimeout(timeoutInstance);
-            }, timeout));
+            timeoutData = setTimeout(() =>
+            {
+                setChildrenVisible(false);
+                clearTimeout(timeout);
+            }, timeout);
         }
-    }, [ inProp ])
+
+        return () =>
+        {
+            if(timeoutData) clearTimeout(timeoutData);
+        }
+    }, [ inProp, timeout ]);
 
     return (
         <Transition in={ inProp } timeout={ timeout }>
-            {state => (
+            { state => (
                 <div className={ className + " animate__animated" } style={ { ...getTransitionAnimationStyle(type, state, timeout) } }>
-                    { showChild && children }
+                    { isChildrenVisible && children }
                 </div>
             )}
         </Transition>
