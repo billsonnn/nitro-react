@@ -14,6 +14,7 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
     const [ chatValue, setChatValue ] = useState<string>('');
     const [ selectedUsername, setSelectedUsername ] = useState('');
     const [ isTyping, setIsTyping ] = useState(false);
+    const [ maxCharacters, setMaxCharacters ] = useState<number>(100);
 
     const inputRef = createRef<HTMLInputElement>();
 
@@ -138,7 +139,7 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
         <div className="nitro-chat-input">
             <div className="chatinput-container">
                 <div className="input-sizer">
-                    <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } onChange={ event => { event.target.parentElement.dataset.value = event.target.value; setChatValue(event.target.value) } } onMouseDown={ onInputMouseDownEvent } />
+                    <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxCharacters } onChange={ event => { event.target.parentElement.dataset.value = event.target.value; setChatValue(event.target.value) } } onMouseDown={ onInputMouseDownEvent } />
                     {/* <input #chatInputView type="text" class="chat-input" placeholder="{{ 'widgets.chatinput.default' | translate }}" (input)="chatInputView.parentElement.dataset.value = chatInputView.value" [disabled]="floodBlocked" [maxLength]="inputMaxLength" /> */}
                 </div>
             </div>
