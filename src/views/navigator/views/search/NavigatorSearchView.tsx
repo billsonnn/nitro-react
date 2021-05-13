@@ -32,6 +32,8 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
     const search = useCallback(() =>
     {
+        if(!searchFilters[searchFilter]) return;
+        
         props.onSendSearch(searchFilters[searchFilter].query, searchString);
     }, [ searchFilter, searchString ]);
 
@@ -42,10 +44,7 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) =>
     {
-        if (event.key === 'Enter')
-        {
-            search();
-        }
+        if(event.key === 'Enter') search();
     };
 
     return (
