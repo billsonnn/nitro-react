@@ -12,49 +12,80 @@ export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 
     const update = useCallback((time: number) =>
     {
-        if(!roomPreviewer || !renderingCanvas || !elementRef || !elementRef.current) return;
+        if(!roomPreviewer || !renderingCanvas || !elementRef.current) return;
         
         roomPreviewer.updatePreviewRoomView();
 
         if(!renderingCanvas.canvasUpdated) return;
 
-        elementRef.current.style.backgroundImage = `url(${ Nitro.instance.renderer.extract.base64(renderingCanvas.master) })`
-
+        elementRef.current.style.backgroundImage = `url(${ Nitro.instance.renderer.extract.base64(renderingCanvas.master) })`;
     }, [ roomPreviewer, renderingCanvas, elementRef ]);
 
-    useEffect(() =>
+    const setupPreviewer = useCallback(() =>
     {
-        if(!roomPreviewer) return;
+        if(!elementRef.current || !roomPreviewer) return;
 
         const computed = document.defaultView.getComputedStyle(elementRef.current, null);
 
-        const width = parseInt(computed.width.replace('px', ''));
-
         let backgroundColor = computed.backgroundColor;
-        
+
         backgroundColor = ColorConverter.rgbStringToHex(backgroundColor);
         backgroundColor = backgroundColor.replace('#', '0x');
 
         roomPreviewer.backgroundColor = parseInt(backgroundColor, 16);
 
-        const displayObject = roomPreviewer.getRoomCanvas(width, height);
-        const renderingCanvas = roomPreviewer.getRenderingCanvas();
+        const width = elementRef.current.parentElement.clientWidth;
+        
+        roomPreviewer.getRoomCanvas(width, height);
+
+        const canvas = roomPreviewer.getRenderingCanvas();
 
         elementRef.current.style.width = `${ width }px`;
         elementRef.current.style.height = `${ height }px`;
 
-        setRenderingCanvas(renderingCanvas);
+        setRenderingCanvas(canvas);
 
-        renderingCanvas.canvasUpdated = true;
+        canvas.canvasUpdated = true;
+
+        update(-1);
+    }, [ elementRef, height, roomPreviewer, update ]);
+
+    useEffect(() =>
+    {
+        if(!roomPreviewer) return;
+
+        if(!renderingCanvas) setupPreviewer();
 
         Nitro.instance.ticker.add(update);
+
+        function resize(): void
+        {
+            if(!roomPreviewer) return;
+
+            const width = elementRef.current.parentElement.offsetWidth;
+
+            elementRef.current.style.width = `${ width }px`;
+            elementRef.current.style.height = `${ height }px`;
+
+            roomPreviewer.modifyRoomCanvas(width, height);
+
+            update(-1);
+        }
+
+        window.addEventListener('resize', resize);
 
         return () =>
         {
             Nitro.instance.ticker.remove(update);
+
+            window.removeEventListener('resize', resize);
         }
 
-    }, [ roomPreviewer, height, elementRef, update ]);
+    }, [ renderingCanvas, roomPreviewer, elementRef, height, setupPreviewer, update ]);
 
-    return <div ref={ elementRef } className="room-preview-image" />
+    return (
+        <div className="room-preview-container">
+            <div ref={ elementRef } className="room-preview-image" />
+        </div>
+    );
 }
