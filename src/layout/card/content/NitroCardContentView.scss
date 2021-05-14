@@ -1,0 +1,12 @@
+.content-area {
+    padding-top: $container-padding-x;
+    padding-bottom: $container-padding-x;
+}
+
+@include media-breakpoint-down(md) {
+        
+    .content-area {
+        height: 100% !important;
+        max-height: 100% !important;
+    }
+}

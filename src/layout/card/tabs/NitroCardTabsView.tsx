@@ -4,8 +4,10 @@ import { NitroCardTabsViewProps } from './NitroCardTabsView.types';
 export const NitroCardTabsView: FC<NitroCardTabsViewProps> = props =>
 {
     return (
-        <ul className="nav nav-tabs justify-content-center bg-secondary px-2 pt-1 nitro-card-tabs">
-            { props.children }
-        </ul>
+        <div className="container-fluid d-flex bg-secondary pt-1 nitro-card-tabs justify-content-center">
+            <ul className="nav nav-tabs">
+                { props.children }
+            </ul>
+        </div>
     );
 }

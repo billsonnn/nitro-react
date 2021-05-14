@@ -1,6 +1,6 @@
 .nitro-card-tabs {
     min-height: $nitro-card-tabs-height;
     max-height: $nitro-card-tabs-height;
-}
 
-@import './tabs-item/NitroCardTabsItemView';
+    @import './tabs-item/NitroCardTabsItemView';
+}

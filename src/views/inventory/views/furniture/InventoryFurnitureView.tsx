@@ -105,7 +105,7 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                 <div className="col-5 d-flex justify-content-center align-items-center">
                     <div className="empty-image"></div>
                 </div>
-                <div className="d-flex flex-column col justify-content-center">
+                <div className="d-flex flex-column col-7 justify-content-center">
                     <div className="h5 m-0 text-black fw-bold m-0 mb-2">
                         { LocalizeText('inventory.empty.title') }
                     </div>
@@ -116,12 +116,12 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
     }
 
     return (
-        <div className="row h-100">
+        <div className="row">
             <div className="col-7">
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                 <InventoryFurnitureResultsView groupItems={ filteredGroupItems }  />
             </div>
-            <div className="position-relative d-flex flex-column col justify-space-between">
+            <div className="position-relative d-flex flex-column col-5 justify-space-between">
                 <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                 { groupItem && groupItem.stuffData.isUnique &&
                     <div className="position-absolute limited-edition-info-container">

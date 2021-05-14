@@ -33,6 +33,8 @@ $grid-border-color: $muted;
 $grid-active-bg-color: #ECECEC;
 $grid-active-border-color: $white;
 
+$toolbar-height: 55px;
+
 @import './utils/Styles';
 @import './App';
 @import './hooks/Styles';

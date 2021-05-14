@@ -21,14 +21,14 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutDefaultViewProps> = props
                 <CatalogPageOffersView offers={ pageParser.offers } />
             </div>
             { !product &&
-                <div className="position-relative d-flex flex-column col justify-content-center align-items-center">
+                <div className="position-relative d-flex flex-column col-5 justify-content-center align-items-center">
                     <div className="d-block mb-2">
                         <img alt="" src={ GetCatalogPageImage(pageParser, 1) } />
                     </div>
                     <div className="fs-6 text-center text-black lh-sm overflow-hidden">{ GetCatalogPageText(pageParser, 0) }</div>
                 </div> }
             { product &&
-                <div className="position-relative d-flex flex-column col">
+                <div className="position-relative d-flex flex-column col-5">
                     <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                     { product.uniqueLimitedItem &&
                         <LimitedEditionCompletePlateView uniqueLimitedItemsLeft={ product.uniqueLimitedItemsLeft } uniqueLimitedSeriesSize={ product.uniqueLimitedSeriesSize } /> }

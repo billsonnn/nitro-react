@@ -4,13 +4,15 @@ import { NitroCardViewProps } from './NitroCardView.types';
 
 export const NitroCardView: FC<NitroCardViewProps> = props =>
 {
-    const { className = '', disableDrag = false } = props;
+    const { className = '', disableDrag = false, children = null } = props;
 
     return (
-        <DraggableWindow handle=".drag-handler" disableDrag= { disableDrag }>
-            <div className={ 'nitro-card d-flex flex-column rounded border shadow overflow-hidden ' + className }>
-                { props.children }
-            </div>
-        </DraggableWindow>
+        <div className="nitro-card-responsive">
+            <DraggableWindow handle=".drag-handler" disableDrag= { disableDrag }>
+                <div className={ 'nitro-card d-flex flex-column rounded border shadow overflow-hidden ' + className }>
+                    { children }
+                </div>
+            </DraggableWindow>
+        </div>
     );
 }

@@ -2,8 +2,8 @@
     width: 475px;
 
     .content-area {
-        height: 243.5px;
-        max-height: 243.5px;
+        height: calc(220px + (#{$container-padding-x} * 2));
+        max-height: calc(220px + (#{$container-padding-x} * 2));
     }
 
     .empty-image {

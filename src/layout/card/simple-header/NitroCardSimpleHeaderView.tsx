@@ -6,7 +6,7 @@ export const NitroCardSimpleHeaderView: FC<NitroCardSimpleHeaderViewProps> = pro
     const { headerText = null, onCloseClick = null } = props;
 
     return (
-        <div className="d-flex align-items-center bg-light">
+        <div className="d-flex container-fluid align-items-center bg-light">
             <div className="col-1"></div>
             <div className="d-flex bg-primary-split flex-grow-1 justify-content-center align-items-center border border-top-0 rounded-bottom px-2 py-1">
                 <div className="h5 m-0 text-white text-shadow">{ headerText }</div>

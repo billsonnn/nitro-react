@@ -4,7 +4,7 @@ import { NitroCardContentViewProps } from './NitroCardContextView.types';
 export const NitroCardContentView: FC<NitroCardContentViewProps> = props =>
 {
     return (
-        <div className="bg-light p-2 content-area">
+        <div className="container-fluid bg-light content-area">
             { props.children }
         </div>
     );

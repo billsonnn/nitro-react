@@ -70,7 +70,7 @@ export const InventoryBotView: FC<InventoryBotViewProps> = props =>
                 <div className="col-5 d-flex justify-content-center align-items-center">
                     <div className="empty-image"></div>
                 </div>
-                <div className="d-flex flex-column col justify-content-center">
+                <div className="d-flex flex-column col-7 justify-content-center">
                     <div className="h5 m-0 text-black fw-bold m-0 mb-2">
                         { LocalizeText('inventory.empty.bots.title') }
                     </div>
@@ -81,11 +81,11 @@ export const InventoryBotView: FC<InventoryBotViewProps> = props =>
     }
 
     return (
-        <div className="row h-100">
+        <div className="row">
             <div className="col-7">
                 <InventoryBotResultsView botItems={ botItems }  />
             </div>
-            <div className="d-flex flex-column col justify-space-between">
+            <div className="d-flex flex-column col-5 justify-space-between">
                 <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                 { botItem && <div className="d-flex flex-column flex-grow-1">
                     <p className="flex-grow-1 fs-6 text-black my-2">{ botItem.botData.name }</p>
