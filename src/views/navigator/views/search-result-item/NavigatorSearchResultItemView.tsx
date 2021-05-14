@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import { RoomDataParser } from 'nitro-renderer';
 import { FC, MouseEvent } from 'react';
-import { NavigatorEvent } from '../../../../events';
-import { dispatchUiEvent } from '../../../../hooks/events/ui/ui-event';
+import { TryVisitRoom } from '../../../../api/navigator/TryVisitRoom';
 import { NavigatorSearchResultItemViewProps } from './NavigatorSearchResultItemView.types';
 
 export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProps> = props =>
@@ -39,7 +38,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
 
     function visitRoom(): void
     {
-        dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TRY_VISIT_ROOM, roomData.roomId));
+        TryVisitRoom(roomData.roomId);
     }
 
     return (

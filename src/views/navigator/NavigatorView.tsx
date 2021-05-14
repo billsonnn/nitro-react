@@ -1,6 +1,5 @@
-import { NavigatorInitComposer, NavigatorSearchComposer, RoomInfoComposer, RoomSessionEvent } from 'nitro-renderer';
+import { NavigatorInitComposer, NavigatorSearchComposer, RoomSessionEvent } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
-import { GetRoomSessionManager } from '../../api';
 import { NavigatorEvent } from '../../events';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
@@ -20,16 +19,6 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
     const [ navigatorState, dispatchNavigatorState ] = useReducer(NavigatorReducer, initialNavigator);
     const { needsNavigatorUpdate = false, topLevelContext = null, topLevelContexts = null } = navigatorState;
 
-    const visitRoom = useCallback((roomId: number, password: string = null) =>
-    {
-        GetRoomSessionManager().createSession(roomId, password);
-    }, []);
-
-    const tryVisitRoom = useCallback((roomId: number) =>
-    {
-        SendMessageHook(new RoomInfoComposer(roomId, false, true));
-    }, []);
-
     const onNavigatorEvent = useCallback((event: NavigatorEvent) =>
     {
         switch(event.type)
@@ -43,20 +32,12 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
             case NavigatorEvent.TOGGLE_NAVIGATOR:
                 setIsVisible(value => !value);
                 return;
-            case NavigatorEvent.VISIT_ROOM:
-                visitRoom(event.roomId, event.password);
-                return;
-            case NavigatorEvent.TRY_VISIT_ROOM:
-                tryVisitRoom(event.roomId);
-                return;
         }
-    }, [ visitRoom, tryVisitRoom ]);
+    }, []);
 
     useUiEvent(NavigatorEvent.SHOW_NAVIGATOR, onNavigatorEvent);
     useUiEvent(NavigatorEvent.HIDE_NAVIGATOR, onNavigatorEvent);
     useUiEvent(NavigatorEvent.TOGGLE_NAVIGATOR, onNavigatorEvent);
-    useUiEvent(NavigatorEvent.VISIT_ROOM, onNavigatorEvent);
-    useUiEvent(NavigatorEvent.TRY_VISIT_ROOM, onNavigatorEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
@@ -70,6 +51,11 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
 
     useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
 
+    const sendSearch = useCallback((searchValue: string, contextCode: string) =>
+    {
+        SendMessageHook(new NavigatorSearchComposer(contextCode, searchValue));
+    }, []);
+
     useEffect(() =>
     {
         if(!isVisible || !needsNavigatorUpdate) return;
@@ -82,21 +68,13 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
         });
         
         SendMessageHook(new NavigatorInitComposer());
-
     }, [ isVisible, needsNavigatorUpdate ]);
-
-    const sendSearch = useCallback((code: string, data: string) =>
-    {
-        SendMessageHook(new NavigatorSearchComposer(code, data));
-    }, []);
 
     useEffect(() =>
     {
         if(!topLevelContexts || !topLevelContexts.length) return;
 
-        const context = topLevelContexts[0];
-
-        sendSearch(context.code, '');
+        sendSearch('', topLevelContexts[0].code);
     }, [ topLevelContexts, sendSearch ]);
 
     return (
@@ -108,11 +86,11 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                     <NitroCardTabsView>
                         { topLevelContexts.map((context, index) =>
                             {
-                                return <NitroCardTabsItemView key={ index } tabText={ LocalizeText(('navigator.toplevelview.' + context.code)) } isActive={ (topLevelContext === context) } onClick={ event => sendSearch(context.code, '') } />
+                                return <NitroCardTabsItemView key={ index } tabText={ LocalizeText(('navigator.toplevelview.' + context.code)) } isActive={ (topLevelContext === context) } onClick={ event => sendSearch('', context.code) } />
                             }) }
                     </NitroCardTabsView>
                     <NitroCardContentView>
-                        <NavigatorSearchView onSendSearch={ sendSearch } />
+                        <NavigatorSearchView sendSearch={ sendSearch } />
                         <NavigatorSearchResultSetView />
                     </NitroCardContentView>
                 </NitroCardView> }

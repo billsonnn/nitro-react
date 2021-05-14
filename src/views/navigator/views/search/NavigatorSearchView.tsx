@@ -1,67 +1,55 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, KeyboardEvent, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../utils/LocalizeText';
-import { INavigatorSearchFilter, NavigatorSearchViewProps } from './NavigatorSearchView.types';
+import { useNavigatorContext } from '../../context/NavigatorContext';
+import { NavigatorSearchViewProps, SearchFilterOptions } from './NavigatorSearchView.types';
 
 export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 {
-    const searchFilters: INavigatorSearchFilter[] = [
-        {
-            name: 'anything',
-            query: null
-        },
-        {
-            name: 'room.name',
-            query: 'roomname'
-        },
-        {
-            name: 'owner',
-            query: 'owner'
-        },
-        {
-            name: 'tag',
-            query: 'tag'
-        },
-        {
-            name: 'group',
-            query: 'group'
-        }
-    ];
+    const { sendSearch = null } = props;
+    const [ searchFilterIndex, setSearchFilterIndex ] = useState(0);
+    const [ searchValue, setSearchValue ] = useState('');
+    const [ lastSearchQuery, setLastSearchQuery ] = useState('');
+    const { navigatorState = null } = useNavigatorContext();
+    const { topLevelContext = null } = navigatorState;
 
-    const [ searchFilter, setSearchFilter ] = useState<number>(0);
-    const [ searchString, setSearchString ] = useState<string>('');
-
-    const search = useCallback(() =>
+    const processSearch = useCallback(() =>
     {
-        if(!searchFilters[searchFilter]) return;
-        
-        props.onSendSearch(searchFilters[searchFilter].query, searchString);
-    }, [ searchFilter, searchString ]);
+        if(!topLevelContext) return;
 
-    useEffect(() =>
-    {
-        search();
-    }, [ searchFilter ]);
+        let searchFilter = SearchFilterOptions[searchFilterIndex];
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) =>
+        if(!searchFilter) searchFilter = SearchFilterOptions[0];
+
+        const searchQuery = ((searchFilter.query ? (searchFilter.query + ':') : '') + searchValue);
+
+        if(lastSearchQuery === searchQuery) return;
+
+        setLastSearchQuery(searchQuery);
+        sendSearch((searchQuery || ''), topLevelContext.code);
+    }, [ lastSearchQuery, searchFilterIndex, searchValue, topLevelContext, sendSearch ]);
+
+    const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) =>
     {
-        if(event.key === 'Enter') search();
+        if(event.key !== 'Enter') return;
+
+        processSearch();
     };
 
     return (
         <div className="d-flex w-100 mb-2">
             <div>
-                <select className="form-select form-select-sm flex-shrink-1" value={ searchFilter } onChange={ event => setSearchFilter(parseInt(event.target.value)) }>
-                    { searchFilters.map((filter, index) =>
+                <select className="form-select form-select-sm flex-shrink-1" value={ searchFilterIndex } onChange={ event => setSearchFilterIndex(parseInt(event.target.value)) }>
+                    { SearchFilterOptions.map((filter, index) =>
                     {
-                        return <option value={ index }>{ LocalizeText('navigator.filter.' + filter.name) }</option>
+                        return <option key={ index } value={ index }>{ LocalizeText('navigator.filter.' + filter.name) }</option>
                     }) }
                 </select>
             </div>
             <div className="ms-2 flex-grow-1">
-                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('navigator.filter.input.placeholder') } value={ searchString }  onChange={ event => setSearchString(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
+                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('navigator.filter.input.placeholder') } value={ searchValue }  onChange={ event => setSearchValue(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
             </div>
             <div className="ms-2">
-                <button type="button" className="btn btn-primary btn-sm" onClick={ search }>
+                <button type="button" className="btn btn-primary btn-sm" onClick={ processSearch }>
                     <i className="fas fa-search"></i>
                 </button>
             </div>
