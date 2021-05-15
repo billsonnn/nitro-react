@@ -1,0 +1,16 @@
+.nitro-chat-widget {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    top: 0;
+    height: 270px;
+    z-index: $chat-zindex;
+    background-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    pointer-events: none;
+
+    @import './message/ChatWidgetMessageView';
+}

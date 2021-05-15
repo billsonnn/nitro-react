@@ -1,12 +1,10 @@
-import { createRef, FC, MouseEvent, useCallback, useEffect, useState } from 'react';
+import { FC, MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { GetRoomSession } from '../../../../api';
 import { SendChatTypingMessage } from '../../../../api/nitro/session/SendChatTypingMessage';
+import { GetConfiguration } from '../../../../utils/GetConfiguration';
 import { LocalizeText } from '../../../../utils/LocalizeText';
-import { ChatInputViewProps } from './ChatInputView.types';
-
-// const chatModeIdShout   = LocalizeText('widgets.chatinput.mode.shout');
-// const chatModeIdSpeak   = LocalizeText('widgets.chatinput.mode.speak');
-// const maxChatLength     = GetConfiguration<number>('chat.input.maxlength', 100);
+import { ChatInputMessageType, ChatInputViewProps } from './ChatInputView.types';
 
 let lastContent = '';
 
@@ -15,9 +13,27 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
     const [ chatValue, setChatValue ] = useState<string>('');
     const [ selectedUsername, setSelectedUsername ] = useState('');
     const [ isTyping, setIsTyping ] = useState(false);
-    const [ maxCharacters, setMaxCharacters ] = useState<number>(100);
+    const inputRef = useRef<HTMLInputElement>();
 
-    const inputRef = createRef<HTMLInputElement>();
+    const chatModeIdWhisper = useMemo(() =>
+    {
+        return LocalizeText('widgets.chatinput.mode.whisper');
+    }, []);
+
+    const chatModeIdShout = useMemo(() =>
+    {
+        return LocalizeText('widgets.chatinput.mode.shout');
+    }, []);
+
+    const chatModeIdSpeak = useMemo(() =>
+    {
+        return LocalizeText('widgets.chatinput.mode.speak');
+    }, []);
+
+    const maxChatLength = useMemo(() =>
+    {
+        return GetConfiguration<number>('chat.input.maxlength', 100);
+    }, []);
 
     const anotherInputHasFocus = useCallback(() =>
     {
@@ -49,16 +65,78 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
             });
     }, [ selectedUsername ]);
 
-    const sendChatValue = useCallback((shiftKey: boolean = false) =>
+    const sendChat = useCallback((text: string, chatType: number, recipientName: string = '', styleId: number = 0) =>
     {
-        if(!chatValue || (chatValue === '')) return;
-    }, [ chatValue ]);
+        setChatValue('');
+
+        switch(chatType)
+        {
+            case ChatInputMessageType.CHAT_DEFAULT:
+                GetRoomSession().sendChatMessage(text, styleId);
+                return;
+            case ChatInputMessageType.CHAT_WHISPER:
+                GetRoomSession().sendWhisperMessage(recipientName, text, styleId);
+                return;
+            case ChatInputMessageType.CHAT_SHOUT:
+                GetRoomSession().sendShoutMessage(text, styleId);
+                return;
+        }
+    }, []);
+
+    const sendChatValue = useCallback((value: string, shiftKey: boolean = false) =>
+    {
+        if(!value || (value === '')) return;
+
+        let chatType = (shiftKey ? ChatInputMessageType.CHAT_SHOUT : ChatInputMessageType.CHAT_DEFAULT);
+        let text = value;
+
+        const parts = text.split(' ');
+
+        let recipientName = '';
+        let append = '';
+
+        switch(parts[0])
+        {
+            case chatModeIdWhisper:
+                chatType = ChatInputMessageType.CHAT_WHISPER;
+                recipientName = parts[1];
+                append = (chatModeIdWhisper + ' ' + recipientName + ' ');
+
+                parts.shift();
+                parts.shift();
+                break;
+            case chatModeIdShout:
+                chatType = ChatInputMessageType.CHAT_SHOUT;
+
+                parts.shift();
+                break;
+            case chatModeIdSpeak:
+                chatType = ChatInputMessageType.CHAT_DEFAULT;
+
+                parts.shift();
+                break;
+        }
+
+        text = parts.join(' ');
+
+        if(text.length <= maxChatLength)
+        {
+            // if(this.needsStyleUpdate)
+            // {
+            //     Nitro.instance.sessionDataManager.sendChatStyleUpdate(this.currentStyle);
+
+            //     this.needsStyleUpdate = false;
+            // }
+
+            let currentStyle = 1;
+
+            sendChat(text, chatType, recipientName, currentStyle);
+        }
+    }, [ chatModeIdWhisper, chatModeIdShout, chatModeIdSpeak, maxChatLength, sendChat ]);
 
     const onKeyDownEvent = useCallback((event: KeyboardEvent) =>
     {
-        if(!inputRef.current) return;
-
-        if(anotherInputHasFocus()) return;
+        if(!inputRef.current || anotherInputHasFocus()) return;
 
         if(document.activeElement !== inputRef.current) setInputFocus();
 
@@ -68,7 +146,7 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
                 checkSpecialKeywordForInput();
                 return;
             case 'Enter':
-                sendChatValue(event.shiftKey);
+                sendChatValue((event.target as HTMLInputElement).value, event.shiftKey);
                 return;
             case 'Backspace':
                 return;
@@ -141,8 +219,7 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
         <div className="nitro-chat-input">
             <div className="chatinput-container">
                 <div className="input-sizer">
-                    <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxCharacters } onChange={ event => { event.target.parentElement.dataset.value = event.target.value; setChatValue(event.target.value) } } onMouseDown={ onInputMouseDownEvent } />
-                    {/* <input #chatInputView type="text" class="chat-input" placeholder="{{ 'widgets.chatinput.default' | translate }}" (input)="chatInputView.parentElement.dataset.value = chatInputView.value" [disabled]="floodBlocked" [maxLength]="inputMaxLength" /> */}
+                    <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxChatLength } onChange={ event => { event.target.parentElement.dataset.value = event.target.value; setChatValue(event.target.value) } } onMouseDown={ onInputMouseDownEvent } />
                 </div>
             </div>
         </div>, document.getElementById('toolbar-chat-input-container'))
