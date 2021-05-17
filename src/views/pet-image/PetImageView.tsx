@@ -5,7 +5,7 @@ import { PetImageViewProps } from './PetImageView.types';
 
 export const PetImageView: FC<PetImageViewProps> = props =>
 {
-    const { figure = '', headOnly = false, direction = 0, scale = 1 } = props;
+    const { figure = '', typeId = -1, paletteId = -1, color = 0xFFFFFF, customParts = [], headOnly = false, direction = 0, scale = 1 } = props;
 
     const [ petUrl, setPetUrl ] = useState<string>(null);
 
@@ -13,9 +13,22 @@ export const PetImageView: FC<PetImageViewProps> = props =>
     {
         let url = null;
 
-        const petFigureData = new PetFigureData(figure);
+        let petTypeId = typeId;
+        let petPaletteId = paletteId;
+        let petColor = color;
+        let petCustomParts = customParts;
 
-        const imageResult = GetRoomEngine().getRoomObjectPetImage(petFigureData.typeId, petFigureData.paletteId, petFigureData.color, new Vector3d((direction * 45)), 64, {
+        if(figure && figure.length)
+        {
+            const petFigureData = new PetFigureData(figure);
+
+            petTypeId = petFigureData.typeId;
+            petPaletteId = petFigureData.paletteId;
+            petColor = petFigureData.color;
+            petCustomParts = petFigureData.customParts;
+        }
+
+        const imageResult = GetRoomEngine().getRoomObjectPetImage(petTypeId, petPaletteId, petColor, new Vector3d((direction * 45)), 64, {
             imageReady: (id, texture, image) =>
             {
                 if(image) setPetUrl(image.src);
@@ -25,7 +38,7 @@ export const PetImageView: FC<PetImageViewProps> = props =>
             {
 
             }
-        }, headOnly, 0, petFigureData.customParts, 'std');
+        }, headOnly, 0, petCustomParts, 'std');
 
         if(imageResult)
         {
@@ -35,7 +48,7 @@ export const PetImageView: FC<PetImageViewProps> = props =>
         }
 
         return url;
-    }, [ figure, headOnly, direction ]);
+    }, [ figure, typeId, paletteId, color, customParts, headOnly, direction ]);
 
     useEffect(() =>
     {
