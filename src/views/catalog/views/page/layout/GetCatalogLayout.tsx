@@ -1,5 +1,6 @@
 import { ICatalogPageParser, RoomPreviewer } from 'nitro-renderer';
 import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
+import { CatalogLayoutPetView } from './pets/CatalogLayoutPetView';
 import { CatalogLayoutSingleBundleView } from './single-bundle/CatalogLayoutSingleBundleView';
 import { CatalogLayoutSpacesView } from './spaces-new/CatalogLayoutSpacesView';
 import { CatalogLayoutTrophiesView } from './trophies/CatalogLayoutTrophiesView';
@@ -13,7 +14,7 @@ export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: 
         case 'frontpage4':
             return null;
         case 'pets':
-            return null;
+            return <CatalogLayoutPetView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'pets2':
             return null;
         case 'pets3':

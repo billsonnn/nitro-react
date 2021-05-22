@@ -57,5 +57,5 @@ export const PetImageView: FC<PetImageViewProps> = props =>
 
     const url = `url('${ petUrl }')`;
         
-    return <div className={ 'pet-image scale-' + scale } style={ (petUrl && url.length) ? { backgroundImage: url } : {} }></div>;
+    return <div className={ 'pet-image scale-' + scale.toString().replace('.', '-') } style={ (petUrl && url.length) ? { backgroundImage: url } : {} }></div>;
 }

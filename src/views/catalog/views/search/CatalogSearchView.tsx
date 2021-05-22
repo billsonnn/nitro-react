@@ -113,7 +113,7 @@ export const CatalogSearchView: FC<CatalogSearchViewProps> = props =>
     return (
         <div className="d-flex mb-1">
             <div className="d-flex flex-grow-1 me-1">
-                <input type="text" className="form-control form-control-sm" placeholder="search" value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
+                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
             </div>
             <div className="d-flex">
                 <button type="button" className="btn btn-primary btn-sm">

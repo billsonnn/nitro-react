@@ -8,4 +8,5 @@ export class CatalogEvent extends NitroEvent
     public static PURCHASE_SUCCESS: string = 'CE_PURCHASE_SUCCESS';
     public static PURCHASE_FAILED: string = 'CE_PURCHASE_FAILED';
     public static SOLD_OUT: string = 'CE_SOLD_OUT';
+    public static APPROVE_NAME_RESULT: string = 'CE_APPROVE_NAME_RESULT';
 }

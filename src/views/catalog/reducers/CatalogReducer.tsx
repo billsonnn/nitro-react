@@ -1,5 +1,6 @@
 import { CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from 'nitro-renderer';
 import { Reducer } from 'react';
+import { CatalogPetPalette } from '../utils/CatalogPetPalette';
 import { ICatalogOffers, ICatalogSearchResult, SetOffersToNodes } from '../utils/CatalogUtilities';
 
 export interface ICatalogState
@@ -10,6 +11,7 @@ export interface ICatalogState
     pageParser: ICatalogPageParser;
     activeOffer: CatalogPageOfferData;
     searchResult: ICatalogSearchResult;
+    petPalettes: CatalogPetPalette[];
 }
 
 export interface ICatalogAction
@@ -22,6 +24,7 @@ export interface ICatalogAction
         pageParser?: ICatalogPageParser;
         activeOffer?: CatalogPageOfferData;
         searchResult?: ICatalogSearchResult;
+        petPalette?: CatalogPetPalette;
     }
 }
 
@@ -32,6 +35,7 @@ export class CatalogActions
     public static SET_CATALOG_PAGE_PARSER: string = 'CA_SET_CATALOG_PAGE';
     public static SET_CATALOG_ACTIVE_OFFER: string = 'CA_SET_ACTIVE_OFFER';
     public static SET_SEARCH_RESULT: string = 'CA_SET_SEARCH_RESULT';
+    public static SET_PET_PALETTE: string = 'CA_SET_PET_PALETTE';
 }
 
 export const initialCatalog: ICatalogState = {
@@ -40,7 +44,8 @@ export const initialCatalog: ICatalogState = {
     currentTab: null,
     pageParser: null,
     activeOffer: null,
-    searchResult: null
+    searchResult: null,
+    petPalettes: []
 }
 
 export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, action) =>
@@ -64,7 +69,7 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
             return { ...state, currentTab, searchResult };
         }
         case CatalogActions.SET_CATALOG_PAGE_PARSER: {
-            const pageParser = action.payload.pageParser;
+            let pageParser = Object.create(action.payload.pageParser);
             let activeOffer = null;
 
             if(pageParser.layoutCode === 'single_bundle')
@@ -90,6 +95,27 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
             const searchResult = (action.payload.searchResult || null);
 
             return { ...state, searchResult };
+        }
+        case CatalogActions.SET_PET_PALETTE: {
+            const petPalette = (action.payload.petPalette || null);
+
+            let petPalettes = [ ...state.petPalettes ];
+
+            for(let i = 0; i < petPalettes.length; i++)
+            {
+                const palette = petPalettes[i];
+
+                if(palette.breed === petPalette.breed)
+                {
+                    petPalettes.splice(i, 1);
+
+                    break;
+                }
+            }
+
+            petPalettes.push(petPalette);
+
+            return { ...state, petPalettes };
         }
         default:
             return state;
