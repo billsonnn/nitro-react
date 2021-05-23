@@ -7,6 +7,8 @@ export interface CatalogPurchaseButtonViewProps
     pageId: number;
     extra?: string;
     quantity?: number;
+    isPurchaseAllowed?: boolean;
+    beforePurchase?: () => void;
 }
 
 export class CatalogPurchaseState

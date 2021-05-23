@@ -10,8 +10,9 @@ import { CatalogPurchaseButtonViewProps, CatalogPurchaseState } from './CatalogP
 
 export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = props =>
 {
-    const { className = '', offer = null, pageId = -1, extra = null, quantity = 1 } = props;
+    const { className = '', offer = null, pageId = -1, extra = null, quantity = 1, isPurchaseAllowed = true, beforePurchase = null } = props;
     const [ purchaseState, setPurchaseState ] = useState(CatalogPurchaseState.NONE);
+    const [ pendingApproval, setPendingApproval ] = useState(false);
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
@@ -31,15 +32,42 @@ export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = pro
 
     const purchase = useCallback(() =>
     {
-        setPurchaseState(CatalogPurchaseState.PURCHASE);
-
         SendMessageHook(new CatalogPurchaseComposer(pageId, offer.offerId, extra, quantity));
     }, [ pageId, offer, extra, quantity ]);
+
+    const attemptPurchase = useCallback(() =>
+    {
+        setPurchaseState(CatalogPurchaseState.PURCHASE);
+
+        if(beforePurchase) beforePurchase();
+
+        if(!isPurchaseAllowed)
+        {
+            setPendingApproval(true);
+            setPurchaseState(CatalogPurchaseState.NONE);
+
+            return;
+        }
+
+        purchase();
+    }, [ isPurchaseAllowed, beforePurchase, purchase ]);
 
     useEffect(() =>
     {
         setPurchaseState(CatalogPurchaseState.NONE);
     }, [ offer, quantity ]);
+
+    useEffect(() =>
+    {
+        if(pendingApproval && isPurchaseAllowed)
+        {
+            setPendingApproval(false);
+            
+            purchase();
+
+            return;
+        }
+    }, [ purchaseState, pendingApproval, isPurchaseAllowed, purchase ]);
 
     const product = offer.products[0];
 
@@ -61,7 +89,7 @@ export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = pro
     switch(purchaseState)
     {
         case CatalogPurchaseState.CONFIRM:
-            return <button type="button" className={ 'btn btn-warning ' + className } onClick={ purchase }>{ LocalizeText('catalog.marketplace.confirm_title') }</button>;
+            return <button type="button" className={ 'btn btn-warning ' + className } onClick={ attemptPurchase }>{ LocalizeText('catalog.marketplace.confirm_title') }</button>;
         case CatalogPurchaseState.PURCHASE:
             return <button type="button" className={ 'btn btn-primary ' + className } disabled><LoadingSpinnerView /></button>;
         case CatalogPurchaseState.SOLD_OUT:

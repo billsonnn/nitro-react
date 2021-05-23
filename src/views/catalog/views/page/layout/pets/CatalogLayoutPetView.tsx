@@ -112,6 +112,31 @@ export const CatalogLayoutPetView: FC<CatalogLayoutPetViewProps> = props =>
         return LocalizeText(`pet.breed.${ petIndex }.${ sellablePalettes[selectedPaletteIndex].breedId }`);
     }, [ petIndex, sellablePalettes, selectedPaletteIndex ]);
 
+    const petPurchaseString = useMemo(() =>
+    {
+        if(!sellablePalettes.length || (selectedPaletteIndex === -1)) return '';
+
+        const paletteId = sellablePalettes[selectedPaletteIndex].paletteId;
+
+        let color = 0xFFFFFF;
+
+        if(petIndex <= 7)
+        {
+            if(selectedColorIndex === -1) return '';
+
+            color = sellableColors[selectedColorIndex][0];
+        }
+
+        let colorString = color.toString(16).toUpperCase();
+
+        while(colorString.length < 6)
+        {
+            colorString = ('0' + colorString);
+        }
+
+        return `${ paletteId }\n${ colorString }`;
+    }, [ sellablePalettes, selectedPaletteIndex, petIndex, sellableColors, selectedColorIndex ]);
+
     if(!activeOffer) return null;
 
     return (
@@ -143,7 +168,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutPetViewProps> = props =>
                         </button> }
                 </RoomPreviewerView>
                 <div className="fs-6 text-black mt-1 overflow-hidden">{ petBreedName }</div>
-                <CatalogLayoutPetPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } />
+                <CatalogLayoutPetPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ petPurchaseString } />
             </div>
         </div>
     );
