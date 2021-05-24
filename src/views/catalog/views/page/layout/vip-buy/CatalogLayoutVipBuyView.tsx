@@ -20,8 +20,6 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
 
             return;
         }
-
-        console.log(clubOffers);
     }, [ clubOffers ]);
 
     const getOfferText = useCallback((offer: CatalogClubOfferData) =>
