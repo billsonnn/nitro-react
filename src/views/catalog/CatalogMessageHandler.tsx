@@ -1,4 +1,4 @@
-import { CatalogApproveNameResultEvent, CatalogPageEvent, CatalogPagesEvent, CatalogPurchaseEvent, CatalogPurchaseFailedEvent, CatalogPurchaseUnavailableEvent, CatalogSearchEvent, CatalogSoldOutEvent, SellablePetPalettesEvent } from 'nitro-renderer';
+import { CatalogApproveNameResultEvent, CatalogClubEvent, CatalogPageEvent, CatalogPagesEvent, CatalogPurchaseEvent, CatalogPurchaseFailedEvent, CatalogPurchaseUnavailableEvent, CatalogSearchEvent, CatalogSoldOutEvent, SellablePetPalettesEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CatalogNameResultEvent, CatalogPurchaseFailureEvent } from '../../events';
 import { CatalogPurchasedEvent } from '../../events/catalog/CatalogPurchasedEvent';
@@ -94,6 +94,18 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         dispatchUiEvent(new CatalogNameResultEvent(parser.result, parser.validationInfo));
     }, []);
 
+    const onCatalogClubEvent = useCallback((event: CatalogClubEvent) =>
+    {
+        const parser = event.getParser();
+
+        dispatchCatalogState({
+            type: CatalogActions.SET_CLUB_OFFERS,
+            payload: {
+                clubOffers: parser.offers
+            }
+        });
+    }, [ dispatchCatalogState ]);
+
     CreateMessageHook(CatalogPagesEvent, onCatalogPagesEvent);
     CreateMessageHook(CatalogPageEvent, onCatalogPageEvent);
     CreateMessageHook(CatalogPurchaseEvent, onCatalogPurchaseEvent);
@@ -103,6 +115,7 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
     CreateMessageHook(CatalogSearchEvent, onCatalogSearchEvent);
     CreateMessageHook(SellablePetPalettesEvent, onSellablePetPalettesEvent);
     CreateMessageHook(CatalogApproveNameResultEvent, onCatalogApproveNameResultEvent);
+    CreateMessageHook(CatalogClubEvent, onCatalogClubEvent);
 
     return null;
 }

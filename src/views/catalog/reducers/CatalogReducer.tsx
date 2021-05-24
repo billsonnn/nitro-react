@@ -1,4 +1,4 @@
-import { CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from 'nitro-renderer';
+import { CatalogClubOfferData, CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from 'nitro-renderer';
 import { Reducer } from 'react';
 import { CatalogPetPalette } from '../utils/CatalogPetPalette';
 import { ICatalogOffers, ICatalogSearchResult, SetOffersToNodes } from '../utils/CatalogUtilities';
@@ -12,6 +12,7 @@ export interface ICatalogState
     activeOffer: CatalogPageOfferData;
     searchResult: ICatalogSearchResult;
     petPalettes: CatalogPetPalette[];
+    clubOffers: CatalogClubOfferData[];
 }
 
 export interface ICatalogAction
@@ -25,6 +26,7 @@ export interface ICatalogAction
         activeOffer?: CatalogPageOfferData;
         searchResult?: ICatalogSearchResult;
         petPalette?: CatalogPetPalette;
+        clubOffers?: CatalogClubOfferData[];
     }
 }
 
@@ -36,6 +38,7 @@ export class CatalogActions
     public static SET_CATALOG_ACTIVE_OFFER: string = 'CA_SET_ACTIVE_OFFER';
     public static SET_SEARCH_RESULT: string = 'CA_SET_SEARCH_RESULT';
     public static SET_PET_PALETTE: string = 'CA_SET_PET_PALETTE';
+    public static SET_CLUB_OFFERS: string = 'CA_SET_CLUB_OFFERS';
 }
 
 export const initialCatalog: ICatalogState = {
@@ -45,7 +48,8 @@ export const initialCatalog: ICatalogState = {
     pageParser: null,
     activeOffer: null,
     searchResult: null,
-    petPalettes: []
+    petPalettes: [],
+    clubOffers: null
 }
 
 export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, action) =>
@@ -116,6 +120,11 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
             petPalettes.push(petPalette);
 
             return { ...state, petPalettes };
+        }
+        case CatalogActions.SET_CLUB_OFFERS: {
+            const clubOffers = (action.payload.clubOffers || null);
+
+            return { ...state, clubOffers };
         }
         default:
             return state;

@@ -4,6 +4,7 @@ import { CatalogLayoutPetView } from './pets/CatalogLayoutPetView';
 import { CatalogLayoutSingleBundleView } from './single-bundle/CatalogLayoutSingleBundleView';
 import { CatalogLayoutSpacesView } from './spaces-new/CatalogLayoutSpacesView';
 import { CatalogLayoutTrophiesView } from './trophies/CatalogLayoutTrophiesView';
+import { CatalogLayoutVipBuyView } from './vip-buy/CatalogLayoutVipBuyView';
 
 export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: RoomPreviewer): JSX.Element
 {
@@ -20,7 +21,7 @@ export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: 
         case 'pets3':
             return null;
         case 'vip_buy':
-            return null;
+            return <CatalogLayoutVipBuyView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'guild_frontpage':
             return null;
         case 'guild_custom_furni':

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { GetCatalogPageComposer } from '../../../../../api/catalog/GetCatalogPageComposer';
 import { SendMessageHook } from '../../../../../hooks/messages/message-event';
 import { CatalogIconView } from '../../../../catalog-icon/CatalogIconView';
@@ -20,11 +20,19 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
         SendMessageHook(GetCatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
     }, [ isActive, page ]);
 
-    function select(): void
+    const select = useCallback(() =>
     {
         if(!page) return;
         
-        setActiveChild(page);
+        setActiveChild(prevValue =>
+            {
+                if(prevValue === page)
+                {
+                    SendMessageHook(GetCatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
+                }
+                
+                return page;
+            });
 
         if(page.children && page.children.length)
         {
@@ -33,7 +41,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
                     return !prevValue;
                 });
         }
-    }
+    }, [ page, setActiveChild ]);
     
     return (
         <div className="col pe-1 pb-1 catalog-navigation-item-container">
