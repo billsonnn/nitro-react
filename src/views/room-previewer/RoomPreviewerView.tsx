@@ -86,6 +86,7 @@ export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
     return (
         <div className="room-preview-container">
             <div ref={ elementRef } className="room-preview-image" />
+            { props.children }
         </div>
     );
 }
