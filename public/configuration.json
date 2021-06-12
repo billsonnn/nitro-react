@@ -53,7 +53,7 @@
     "avatareditor.show.clubitems.first": true,
     "chat.history.max.items": 100,
     "animation.fps": 24,
-    "limits.fps": true,
+    "limits.fps": false,
     "system.dispatcher.log": false,
     "system.currency.types": [
         -1,

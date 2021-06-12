@@ -81,8 +81,8 @@ export const InventoryBotView: FC<InventoryBotViewProps> = props =>
     }
 
     return (
-        <div className="row">
-            <div className="col-7">
+        <div className="row h-100">
+            <div className="d-flex flex-column col-7">
                 <InventoryBotResultsView botItems={ botItems }  />
             </div>
             <div className="d-flex flex-column col-5 justify-space-between">

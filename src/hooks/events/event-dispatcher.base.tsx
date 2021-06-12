@@ -1,24 +1,17 @@
 import { IEventDispatcher, NitroEvent } from 'nitro-renderer';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 export function CreateEventDispatcherHook(type: string, eventDispatcher: IEventDispatcher, handler: (event: NitroEvent) => void): void
 {
-    const handlerRef = useRef<(event: NitroEvent) => void>();
-
     useEffect(() =>
     {
-        handlerRef.current = handler;
-    }, [ handler ]);
-
-    useEffect(() =>
-    {
-        eventDispatcher.addEventListener(type, handlerRef.current);
+        eventDispatcher.addEventListener(type, handler);
 
         return () =>
         {
-            eventDispatcher.removeEventListener(type, handlerRef.current);
+            eventDispatcher.removeEventListener(type, handler);
         }
-    }, [ type, eventDispatcher ]);
+    }, [ type, eventDispatcher, handler ]);
 }
 
 export function DispatchEventHook(eventDispatcher: IEventDispatcher, event: NitroEvent): void

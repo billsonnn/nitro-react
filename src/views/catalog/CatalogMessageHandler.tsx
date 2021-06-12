@@ -1,4 +1,4 @@
-import { CatalogApproveNameResultEvent, CatalogClubEvent, CatalogPageEvent, CatalogPagesEvent, CatalogPurchaseEvent, CatalogPurchaseFailedEvent, CatalogPurchaseUnavailableEvent, CatalogSearchEvent, CatalogSoldOutEvent, SellablePetPalettesEvent } from 'nitro-renderer';
+import { CatalogApproveNameResultEvent, CatalogClubEvent, CatalogPageEvent, CatalogPagesEvent, CatalogPurchaseEvent, CatalogPurchaseFailedEvent, CatalogPurchaseUnavailableEvent, CatalogSearchEvent, CatalogSoldOutEvent, CatalogUpdatedEvent, SellablePetPalettesEvent, UserSubscriptionEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CatalogNameResultEvent, CatalogPurchaseFailureEvent } from '../../events';
 import { CatalogPurchasedEvent } from '../../events/catalog/CatalogPurchasedEvent';
@@ -9,6 +9,7 @@ import { CatalogMessageHandlerProps } from './CatalogMessageHandler.types';
 import { useCatalogContext } from './context/CatalogContext';
 import { CatalogActions } from './reducers/CatalogReducer';
 import { CatalogPetPalette } from './utils/CatalogPetPalette';
+import { SubscriptionInfo } from './utils/SubscriptionInfo';
 
 export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
 {
@@ -106,6 +107,32 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
+    const onUserSubscriptionEvent = useCallback((event: UserSubscriptionEvent) =>
+    {
+        const parser = event.getParser();
+
+        dispatchCatalogState({
+            type: CatalogActions.SET_SUBSCRIPTION_INFO,
+            payload: {
+                subscriptionInfo: new SubscriptionInfo(
+                    Math.max(0, parser.days),
+                    Math.max(0, parser.months),
+                    parser.isVip,
+                    parser.pastClubDays,
+                    parser.pastVIPDays
+                )
+            }
+        });
+    }, [ dispatchCatalogState ]);
+
+    const onCatalogUpdatedEvent = useCallback((event: CatalogUpdatedEvent) =>
+    {
+        dispatchCatalogState({
+            type: CatalogActions.RESET_STATE,
+            payload: {}
+        });
+    }, [ dispatchCatalogState ]);
+
     CreateMessageHook(CatalogPagesEvent, onCatalogPagesEvent);
     CreateMessageHook(CatalogPageEvent, onCatalogPageEvent);
     CreateMessageHook(CatalogPurchaseEvent, onCatalogPurchaseEvent);
@@ -116,6 +143,8 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
     CreateMessageHook(SellablePetPalettesEvent, onSellablePetPalettesEvent);
     CreateMessageHook(CatalogApproveNameResultEvent, onCatalogApproveNameResultEvent);
     CreateMessageHook(CatalogClubEvent, onCatalogClubEvent);
+    CreateMessageHook(UserSubscriptionEvent, onUserSubscriptionEvent);
+    CreateMessageHook(CatalogUpdatedEvent, onCatalogUpdatedEvent);
 
     return null;
 }

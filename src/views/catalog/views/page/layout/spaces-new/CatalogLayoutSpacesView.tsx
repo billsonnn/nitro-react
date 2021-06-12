@@ -5,7 +5,7 @@ import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { RoomPreviewerView } from '../../../../../room-previewer/RoomPreviewerView';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { ProductTypeEnum } from '../../../../enums/ProductTypeEnum';
-import { GetOfferName } from '../../../../utils/CatalogUtilities';
+import { GetCatalogPageImage, GetCatalogPageText, GetOfferName } from '../../../../utils/CatalogUtilities';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
 import { CatalogPurchaseView } from '../../purchase/CatalogPurchaseView';
 import { CatalogLayoutSpacesViewProps } from './CatalogLayoutSpacesView.types';
@@ -81,6 +81,13 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutSpacesViewProps> = props =
                 </div>
                 <CatalogPageOffersView offers={ groups[activeGroupIndex] } />
             </div>
+            { !product &&
+                <div className="position-relative d-flex flex-column col-5 justify-content-center align-items-center">
+                    <div className="d-block mb-2">
+                        <img alt="" src={ GetCatalogPageImage(pageParser, 1) } />
+                    </div>
+                    <div className="fs-6 text-center text-black lh-sm overflow-hidden">{ GetCatalogPageText(pageParser, 0) }</div>
+                </div> }
             { product &&
                 <div className="position-relative d-flex flex-column col">
                     <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />

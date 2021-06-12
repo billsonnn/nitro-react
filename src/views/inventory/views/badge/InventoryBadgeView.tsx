@@ -76,8 +76,8 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
 
     return (
         <>
-            <div className="row">
-                <div className="col-7">
+            <div className="row h-100">
+                <div className="d-flex flex-column col-7">
                     <InventoryBadgeResultsView badges={ badges } activeBadges={ activeBadges }  />
                 </div>
                 <div className="col">

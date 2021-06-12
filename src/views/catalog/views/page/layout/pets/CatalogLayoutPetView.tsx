@@ -7,7 +7,7 @@ import { PetImageView } from '../../../../../pet-image/PetImageView';
 import { RoomPreviewerView } from '../../../../../room-previewer/RoomPreviewerView';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogActions } from '../../../../reducers/CatalogReducer';
-import { GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../utils/CatalogUtilities';
+import { GetCatalogPageImage, GetCatalogPageText, GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../utils/CatalogUtilities';
 import { CatalogLayoutPetViewProps } from './CatalogLayoutPetView.types';
 import { CatalogLayoutPetPurchaseView } from './purchase/CatalogLayoutPetPurchaseView';
 
@@ -160,16 +160,24 @@ export const CatalogLayoutPetView: FC<CatalogLayoutPetViewProps> = props =>
                         }) }
                 </div>
             </div>
-            <div className="position-relative d-flex flex-column col-5">
-                <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 }>
-                    { (petIndex > -1 && petIndex <= 7) &&
-                        <button type="button" className= { 'btn btn-primary btn-sm color-button ' + (colorsShowing ? 'active ' : '') } onClick={ event => setColorsShowing(!colorsShowing) }>
-                            <i className="fas fa-fill-drip" />
-                        </button> }
-                </RoomPreviewerView>
-                <div className="fs-6 text-black mt-1 overflow-hidden">{ petBreedName }</div>
-                <CatalogLayoutPetPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ petPurchaseString } />
-            </div>
+            { (petIndex === -1) &&
+                <div className="position-relative d-flex flex-column col-5 justify-content-center align-items-center">
+                    <div className="d-block mb-2">
+                        <img alt="" src={ GetCatalogPageImage(pageParser, 1) } />
+                    </div>
+                    <div className="fs-6 text-center text-black lh-sm overflow-hidden">{ GetCatalogPageText(pageParser, 0) }</div>
+                </div> }
+            { (petIndex >= 0) &&
+                <div className="position-relative d-flex flex-column col-5">
+                    <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 }>
+                        { (petIndex > -1 && petIndex <= 7) &&
+                            <button type="button" className= { 'btn btn-primary btn-sm color-button ' + (colorsShowing ? 'active ' : '') } onClick={ event => setColorsShowing(!colorsShowing) }>
+                                <i className="fas fa-fill-drip" />
+                            </button> }
+                    </RoomPreviewerView>
+                    <div className="fs-6 text-black mt-1 overflow-hidden">{ petBreedName }</div>
+                    <CatalogLayoutPetPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ petPurchaseString } />
+                </div> }
         </div>
     );
 }

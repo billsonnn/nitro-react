@@ -1,5 +1,6 @@
 import { ICatalogPageData } from 'nitro-renderer';
 import { FC, useEffect } from 'react';
+import { CatalogSearchView } from '../search/CatalogSearchView';
 import { CatalogNavigationViewProps } from './CatalogNavigationView.types';
 import { CatalogNavigationSetView } from './set/CatalogNavigationSetView';
 
@@ -17,10 +18,13 @@ export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
     }, [ page ]);
     
     return (
-        <div className="border border-2 rounded overflow-hidden nitro-catalog-navigation">
-            <div className="navigation-container m-1">
-                <CatalogNavigationSetView page={ page } isFirstSet={ true } />
+        <>
+            <CatalogSearchView />
+            <div className="border border-2 rounded overflow-hidden nitro-catalog-navigation">
+                <div className="navigation-container m-1">
+                    <CatalogNavigationSetView page={ page } isFirstSet={ true } />
+                </div>
             </div>
-        </div>
+        </>
     );
 }

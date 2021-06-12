@@ -16,6 +16,7 @@ import { NavigatorSearchView } from './views/search/NavigatorSearchView';
 export const NavigatorView: FC<NavigatorViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
+    const [ isCreatorOpen, setCreatorOpen ] = useState(false);
     const [ navigatorState, dispatchNavigatorState ] = useReducer(NavigatorReducer, initialNavigator);
     const { needsNavigatorUpdate = false, topLevelContext = null, topLevelContexts = null } = navigatorState;
 
@@ -86,8 +87,15 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                     <NitroCardTabsView>
                         { topLevelContexts.map((context, index) =>
                             {
-                                return <NitroCardTabsItemView key={ index } tabText={ LocalizeText(('navigator.toplevelview.' + context.code)) } isActive={ (topLevelContext === context) } onClick={ event => sendSearch('', context.code) } />
+                                return (
+                                    <NitroCardTabsItemView key={ index } isActive={ ((topLevelContext === context) && !isCreatorOpen) } onClick={ event => sendSearch('', context.code) }>
+                                        { LocalizeText(('navigator.toplevelview.' + context.code)) }
+                                    </NitroCardTabsItemView>
+                                );
                             }) }
+                        <NitroCardTabsItemView>
+                            
+                        </NitroCardTabsItemView>
                     </NitroCardTabsView>
                     <NitroCardContentView>
                         <NavigatorSearchView sendSearch={ sendSearch } />

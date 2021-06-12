@@ -62,6 +62,8 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
             element.style.top = `${ top }px`;
         }
 
+        element.style.visibility = 'visible';
+
         return () =>
         {
             const index = currentWindows.indexOf(element);

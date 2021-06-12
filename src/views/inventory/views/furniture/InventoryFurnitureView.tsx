@@ -116,8 +116,8 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
     }
 
     return (
-        <div className="row">
-            <div className="col-7">
+        <div className="row h-100">
+            <div className="d-flex flex-column col-7">
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                 <InventoryFurnitureResultsView groupItems={ filteredGroupItems }  />
             </div>

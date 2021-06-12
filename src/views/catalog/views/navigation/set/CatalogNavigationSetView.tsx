@@ -13,7 +13,12 @@ export const CatalogNavigationSetView: FC<CatalogNavigationSetViewProps> = props
     {
         if(!isFirstSet || !page || (page.pageId === -1)) return;
 
-        if(page && page.children.length) setActiveChild(page.children[0]);
+        if(page && page.children.length)
+        {
+            const child = page.children[0];
+
+            setActiveChild(child);
+        }
     }, [ page, isFirstSet ]);
 
     useEffect(() =>

@@ -3,7 +3,7 @@
     padding-bottom: $container-padding-x;
 }
 
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down(lg) {
         
     .content-area {
         height: 100% !important;
