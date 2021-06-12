@@ -4,6 +4,7 @@ import { FurnitureManipulationMenuView } from './manipulation-menu/FurnitureMani
 import { FurnitureMannequinView } from './mannequin/FurnitureMannequinView';
 import { FurniturePresentView } from './present/FurniturePresentView';
 import { FurnitureStickieView } from './stickie/FurnitureStickieView';
+import { FurnitureTrophyView } from './trophy/FurnitureTrophyView';
 
 export function FurnitureWidgetsView(props: FurnitureWidgetsViewProps): JSX.Element
 {
@@ -16,6 +17,7 @@ export function FurnitureWidgetsView(props: FurnitureWidgetsViewProps): JSX.Elem
             <FurnitureMannequinView events={ events } />
             <FurniturePresentView events={ events } />
             <FurnitureStickieView events={ events } />
+            <FurnitureTrophyView events={ events } />
         </div>
     );
 }
