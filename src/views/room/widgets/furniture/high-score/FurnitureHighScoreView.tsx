@@ -1,8 +1,9 @@
 import { RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent } from 'nitro-renderer';
+import { FC } from 'react';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { FurnitureHighScoreViewProps } from './FurnitureHighScoreView.types';
 
-export function FurnitureHighScoreView(props: FurnitureHighScoreViewProps): JSX.Element
+export const FurnitureHighScoreView: FC<FurnitureHighScoreViewProps> = props =>
 {
     const onRoomEngineObjectEvent = (event: RoomEngineObjectEvent) =>
     {

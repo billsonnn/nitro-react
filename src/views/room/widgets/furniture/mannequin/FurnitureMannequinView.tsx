@@ -1,8 +1,9 @@
 import { RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent } from 'nitro-renderer';
+import { FC } from 'react';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { FurnitureMannequinViewProps } from './FurnitureMannequinView.types';
 
-export function FurnitureMannequinView(props: FurnitureMannequinViewProps): JSX.Element
+export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
 {
     const onRoomEngineObjectEvent = (event: RoomEngineObjectEvent) =>
     {
