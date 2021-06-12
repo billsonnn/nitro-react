@@ -1,3 +1,4 @@
+import { FurnitureExchangeCreditView } from './exchange-credit/FurnitureExchangeCreditView';
 import { FurnitureWidgetsViewProps } from './FurnitureWidgetsView.types';
 import { FurnitureHighScoreView } from './high-score/FurnitureHighScoreView';
 import { FurnitureManipulationMenuView } from './manipulation-menu/FurnitureManipulationMenuView';
@@ -12,6 +13,7 @@ export function FurnitureWidgetsView(props: FurnitureWidgetsViewProps): JSX.Elem
 
     return (
         <div className="position-absolute nitro-room-widgets t-0 l-0">
+            <FurnitureExchangeCreditView events={ events } />
             <FurnitureHighScoreView events={ events } />
             <FurnitureManipulationMenuView events={ events } />
             <FurnitureMannequinView events={ events } />

@@ -4,6 +4,7 @@ import { GetRoomEngine } from '../../../../../api';
 import { DraggableWindow } from '../../../../../hooks/draggable-window/DraggableWindow';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
+import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { RoomWidgetRoomObjectUpdateEvent } from '../../events';
 import { FurnitureTrophyData } from './FurnitureTrophyData';
 import { FurnitureTrophyViewProps } from './FurnitureTrophyView.types';
@@ -74,7 +75,7 @@ export const FurnitureTrophyView: FC<FurnitureTrophyViewProps> = props =>
                 <div className="trophy-header drag-handler">
                     <div className="float-end trophy-close" onClick={ event => processAction('close') }></div>
                     <div className="trophy-title fw-bold text-center">
-                        Trophy
+                        { LocalizeText('widget.furni.trophy.title') }
                     </div>
                 </div>
                 <div className="trophy-content">
