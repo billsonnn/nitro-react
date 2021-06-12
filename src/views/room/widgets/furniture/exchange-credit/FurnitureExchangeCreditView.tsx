@@ -63,7 +63,7 @@ export const FurnitureExchangeCreditView: FC<FurnitureExchangeCreditProps> = pro
     if(!exchangeCreditData) return null;
 
     return (
-        <NitroCardView className="nitro-friend-list">
+        <NitroCardView className="nitro-exchange-credit">
             <NitroCardHeaderView headerText={ LocalizeText('catalog.redeem.dialog.title') } onCloseClick={ event => processAction('close') } />
             <NitroCardContentView>
                 <div className="text-black mb-2">
