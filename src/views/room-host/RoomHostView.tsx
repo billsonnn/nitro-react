@@ -1,5 +1,5 @@
 import { EventDispatcher, IEventDispatcher, IRoomSession, RoomBackgroundColorEvent, RoomEngineDimmerStateEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomId, RoomObjectCategory, RoomObjectHSLColorEnabledEvent, RoomObjectOperationType, RoomSessionEvent, RoomZoomEvent } from 'nitro-renderer';
-import { useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { ProcessRoomObjectOperation } from '../../api/nitro/room/ProcessRoomObjectOperation';
 import { SetActiveRoomId } from '../../api/nitro/room/SetActiveRoomId';
 import { GetRoomSession } from '../../api/nitro/session/GetRoomSession';
@@ -13,7 +13,7 @@ import { RoomHostViewProps } from './RoomHostView.types';
 import { CanManipulateFurniture } from './utils/CanManipulateFurniture';
 import { IsFurnitureSelectionDisabled } from './utils/IsFurnitureSelectionDisabled';
 
-export function RoomHostView(props: RoomHostViewProps): JSX.Element
+export const RoomHostView: FC<RoomHostViewProps> = props =>
 {
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
     const [ eventDispatcher, setEventDispatcher ] = useState<IEventDispatcher>(null);
@@ -40,7 +40,7 @@ export function RoomHostView(props: RoomHostViewProps): JSX.Element
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
-        if(!eventDispatcher) return;
+        if(!roomSession || !eventDispatcher) return;
 
         const objectId  = event.objectId;
         const category  = event.category;
@@ -101,6 +101,10 @@ export function RoomHostView(props: RoomHostViewProps): JSX.Element
             case RoomEngineObjectEvent.REQUEST_ROTATE:
                 if(CanManipulateFurniture(roomSession, objectId, category)) ProcessRoomObjectOperation(objectId, category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE);
                 break;
+            case RoomEngineObjectEvent.REQUEST_MANIPULATION:
+                console.log('yaaa')
+                if(CanManipulateFurniture(roomSession, objectId, category)) updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_REQUEST_MANIPULATION, objectId, category, event.roomId);
+                break;
         }
 
         if(updateEvent)
@@ -152,6 +156,7 @@ export function RoomHostView(props: RoomHostViewProps): JSX.Element
     useRoomEngineEvent(RoomEngineObjectEvent.PLACED, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineObjectEvent.REQUEST_MOVE, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineObjectEvent.REQUEST_ROTATE, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineObjectEvent.REQUEST_MANIPULATION, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineObjectEvent.MOUSE_ENTER, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineObjectEvent.MOUSE_LEAVE, onRoomEngineObjectEvent);
 

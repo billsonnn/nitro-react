@@ -1,7 +1,8 @@
-import { GetConfiguration } from '../GetConfiguration';
+import { FC } from 'react';
+import { GetConfiguration } from '../../utils/GetConfiguration';
 import { CurrencyIconProps } from './CurrencyIcon.types';
 
-export function CurrencyIcon(props: CurrencyIconProps): JSX.Element
+export const CurrencyIcon: FC<CurrencyIconProps> = props =>
 {
     let url = GetConfiguration<string>('currency.asset.icon.url', '');
     

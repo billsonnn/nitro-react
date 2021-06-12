@@ -24,8 +24,6 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
         chat.width = width;
         chat.height = height;
         chat.elementRef = element;
-
-        if(isVisible || !chat) return;
         
         let left = chat.lastLeft;
         let top = chat.lastTop;
@@ -34,22 +32,27 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
         {
             left = (chat.location.x - (width / 2));
             top = (element.parentElement.offsetHeight - height);
+            
+            chat.lastLeft = left;
+            chat.lastTop = top;
         }
-
-        chat.lastLeft = left;
-        chat.lastTop = top;
 
         element.style.left = (left + 'px');
         element.style.top = (top + 'px');
 
-        makeRoom(0, true);
-        setIsVisible(true);
+        if(!chat.visible)
+        {
+            makeRoom(chat);
+        }
+
+        chat.visible = true;
+        //setIsVisible(true);
 
         return () =>
         {
             chat.elementRef = null;
         }
-    }, [ isVisible, elementRef, chat, makeRoom ]);
+    }, [ elementRef, isVisible, chat, makeRoom ]);
 
     return (
         <div ref={ elementRef } className="bubble-container" style={ { visibility: (isVisible ? 'visible' : 'hidden') } }>

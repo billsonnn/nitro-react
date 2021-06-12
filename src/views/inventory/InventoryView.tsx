@@ -105,7 +105,11 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                     <NitroCardTabsView>
                         { tabs.map((name, index) =>
                             {
-                                return <NitroCardTabsItemView key={ index } tabText={ LocalizeText(name) } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) } />
+                                return (
+                                    <NitroCardTabsItemView key={ index } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) }>
+                                        { LocalizeText(name) }
+                                    </NitroCardTabsItemView>
+                                );
                             }) }
                     </NitroCardTabsView>
                     <NitroCardContentView>

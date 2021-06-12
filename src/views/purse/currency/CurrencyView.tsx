@@ -1,4 +1,4 @@
-import { CurrencyIcon } from '../../../utils/currency-icon/CurrencyIcon';
+import { CurrencyIcon } from '../../currency-icon/CurrencyIcon';
 import { CurrencyViewProps } from './CurrencyView.types';
 
 export function CurrencyView(props: CurrencyViewProps): JSX.Element

@@ -1,6 +1,4 @@
-import { IEventDispatcher } from 'nitro-renderer';
+import { RoomWidgetProps } from '../RoomWidgets.types';
 
-export interface FurnitureWidgetProps
-{
-    events: IEventDispatcher;
-}
+export interface FurnitureWidgetProps extends RoomWidgetProps
+{}

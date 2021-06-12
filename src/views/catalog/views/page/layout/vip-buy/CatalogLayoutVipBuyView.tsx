@@ -1,16 +1,16 @@
 import { CatalogClubOfferData, CatalogRequestVipOffersComposer } from 'nitro-renderer';
-import { FC, useCallback, useEffect } from 'react';
+import { FC, useCallback, useEffect, useMemo } from 'react';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
-import { CurrencyIcon } from '../../../../../../utils/currency-icon/CurrencyIcon';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
+import { CurrencyIcon } from '../../../../../currency-icon/CurrencyIcon';
 import { useCatalogContext } from '../../../../context/CatalogContext';
-import { GetCatalogPageImage, GetCatalogPageText } from '../../../../utils/CatalogUtilities';
+import { GetCatalogPageImage } from '../../../../utils/CatalogUtilities';
 import { CatalogLayoutVipBuyViewProps } from './CatalogLayoutVipBuyView.types';
 
 export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =>
 {
     const { catalogState = null } = useCatalogContext();
-    const { pageParser = null, clubOffers = null } = catalogState;
+    const { pageParser = null, clubOffers = null, subscriptionInfo = null } = catalogState;
 
     useEffect(() =>
     {
@@ -40,6 +40,17 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
 
         return offerText;
     }, []);
+
+    const getSubscriptionDetails = useMemo(() =>
+    {
+        if(!subscriptionInfo) return '';
+
+        const clubDays = subscriptionInfo.clubDays;
+        const clubPeriods = subscriptionInfo.clubPeriods;
+        const totalDays = (clubPeriods * 31) + clubDays;
+
+        return LocalizeText('catalog.vip.extend.info', [ 'days' ], [ totalDays.toString() ]);
+    }, [ subscriptionInfo ]);
 
     return (
         <div className="row h-100 nitro-catalog-layout-vip-buy">
@@ -74,7 +85,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
                 <div className="d-block mb-2">
                     <img alt="" src={ GetCatalogPageImage(pageParser, 1) } />
                 </div>
-                <div className="fs-6 text-center text-black lh-sm overflow-hidden">{ GetCatalogPageText(pageParser, 0) }</div>
+                <div className="fs-6 text-center text-black lh-sm overflow-hidden" dangerouslySetInnerHTML={ {__html: getSubscriptionDetails } }></div>
             </div>
         </div>
     );

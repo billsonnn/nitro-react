@@ -2,14 +2,15 @@ import { RoomWidgetUpdateEvent } from 'nitro-renderer';
 
 export class RoomWidgetRoomObjectUpdateEvent extends RoomWidgetUpdateEvent
 {
-    public static OBJECT_SELECTED: string   = 'RWROUE_OBJECT_SELECTED';
-    public static OBJECT_DESELECTED: string = 'RWROUE_OBJECT_DESELECTED';
-    public static USER_REMOVED: string      = 'RWROUE_USER_REMOVED';
-    public static FURNI_REMOVED: string     = 'RWROUE_FURNI_REMOVED';
-    public static FURNI_ADDED: string       = 'RWROUE_FURNI_ADDED';
-    public static USER_ADDED: string        = 'RWROUE_USER_ADDED';
-    public static OBJECT_ROLL_OVER: string  = 'RWROUE_OBJECT_ROLL_OVER';
-    public static OBJECT_ROLL_OUT: string   = 'RWROUE_OBJECT_ROLL_OUT';
+    public static OBJECT_SELECTED: string               = 'RWROUE_OBJECT_SELECTED';
+    public static OBJECT_DESELECTED: string             = 'RWROUE_OBJECT_DESELECTED';
+    public static USER_REMOVED: string                  = 'RWROUE_USER_REMOVED';
+    public static FURNI_REMOVED: string                 = 'RWROUE_FURNI_REMOVED';
+    public static FURNI_ADDED: string                   = 'RWROUE_FURNI_ADDED';
+    public static USER_ADDED: string                    = 'RWROUE_USER_ADDED';
+    public static OBJECT_ROLL_OVER: string              = 'RWROUE_OBJECT_ROLL_OVER';
+    public static OBJECT_ROLL_OUT: string               = 'RWROUE_OBJECT_ROLL_OUT';
+    public static OBJECT_REQUEST_MANIPULATION: string   = 'RWROUE_OBJECT_REQUEST_MANIPULATION';
 
     private _id: number;
     private _category: number;

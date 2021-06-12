@@ -10,6 +10,7 @@ export class ChatBubbleMessage
     public lastTop: number = 0;
     public lastLeft: number = 0;
     public elementRef: HTMLDivElement = null;
+    public visible: boolean = false;
     
     constructor(
         public text: string = '',

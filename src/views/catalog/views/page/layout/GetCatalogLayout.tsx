@@ -1,6 +1,8 @@
 import { ICatalogPageParser, RoomPreviewer } from 'nitro-renderer';
 import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
+import { CatalogLayoutFrontpage4View } from './frontpage4/CatalogLayoutFrontpage4View';
 import { CatalogLayoutPetView } from './pets/CatalogLayoutPetView';
+import { CatalogLayoutPets3View } from './pets3/CatalogLayoutPets3View';
 import { CatalogLayoutSingleBundleView } from './single-bundle/CatalogLayoutSingleBundleView';
 import { CatalogLayoutSpacesView } from './spaces-new/CatalogLayoutSpacesView';
 import { CatalogLayoutTrophiesView } from './trophies/CatalogLayoutTrophiesView';
@@ -13,13 +15,13 @@ export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: 
         case 'frontpage_featured':
             return null;
         case 'frontpage4':
-            return null;
+            return <CatalogLayoutFrontpage4View roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'pets':
             return <CatalogLayoutPetView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'pets2':
             return null;
         case 'pets3':
-            return null;
+            return <CatalogLayoutPets3View roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'vip_buy':
             return <CatalogLayoutVipBuyView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'guild_frontpage':

@@ -4,10 +4,13 @@ import { GetRoomEngine } from './GetRoomEngine';
 let didMouseMove = false;
 let lastClick = 0;
 let clickCount = 0;
+let touchTimer: ReturnType<typeof setTimeout> = null;
 
-export function DispatchTouchEvent(roomId: number, canvasId: number, event: TouchEvent)
+export function DispatchTouchEvent(roomId: number, canvasId: number, event: TouchEvent, longTouch: boolean = false, altKey: boolean = false, ctrlKey: boolean = false, shiftKey: boolean = false)
 {
     let eventType = event.type;
+
+    if(longTouch) eventType = TouchEventType.TOUCH_LONG;
 
     if(eventType === TouchEventType.TOUCH_END && !didMouseMove)
     {
@@ -17,7 +20,7 @@ export function DispatchTouchEvent(roomId: number, canvasId: number, event: Touc
         {
             clickCount = 1;
 
-            if(lastClick >= Date.now() - 300) clickCount++;
+            if(lastClick >= (Date.now() - 300)) clickCount++;
         }
 
         lastClick = Date.now();
@@ -31,24 +34,7 @@ export function DispatchTouchEvent(roomId: number, canvasId: number, event: Touc
         }
     }
 
-    switch(eventType)
-    {
-        case MouseEventType.MOUSE_CLICK:
-            break;
-        case MouseEventType.DOUBLE_CLICK:
-            break;
-        case TouchEventType.TOUCH_START:
-            eventType = MouseEventType.MOUSE_DOWN;
-
-            didMouseMove = false;
-            break;
-        case TouchEventType.TOUCH_MOVE:
-            eventType = MouseEventType.MOUSE_MOVE;
-
-            didMouseMove = true;
-            break;
-        default: return;
-    }
+    if(touchTimer) clearTimeout(touchTimer);
 
     let x = 0;
     let y = 0;
@@ -66,5 +52,38 @@ export function DispatchTouchEvent(roomId: number, canvasId: number, event: Touc
     }
 
     GetRoomEngine().setActiveRoomId(roomId);
-    GetRoomEngine().dispatchMouseEvent(canvasId, x, y, eventType, event.altKey, (event.ctrlKey || event.metaKey), event.shiftKey, false);
+
+    switch(eventType)
+    {
+        case MouseEventType.MOUSE_CLICK:
+            break;
+        case MouseEventType.DOUBLE_CLICK:
+            break;
+        case TouchEventType.TOUCH_START:
+            touchTimer = setTimeout(() =>
+            {
+                if(didMouseMove) return;
+
+                DispatchTouchEvent(roomId, canvasId, event, true);
+            }, 300);
+            
+            eventType = MouseEventType.MOUSE_DOWN;
+
+            didMouseMove = false;
+            break;
+        case TouchEventType.TOUCH_MOVE:
+            eventType = MouseEventType.MOUSE_MOVE;
+
+            didMouseMove = true;
+            break;
+        case TouchEventType.TOUCH_END:
+            eventType = MouseEventType.MOUSE_UP;
+            break;
+        case TouchEventType.TOUCH_LONG:
+            eventType = MouseEventType.MOUSE_DOWN_LONG;
+            break;
+        default: return;
+    }
+
+    GetRoomEngine().dispatchMouseEvent(canvasId, x, y, eventType, altKey, ctrlKey, shiftKey, false);
 }
