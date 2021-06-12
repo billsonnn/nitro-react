@@ -1,6 +1,6 @@
 import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
-import { useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent } from '../../events';
 import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
@@ -10,7 +10,7 @@ import { AvatarImageView } from '../avatar-image/AvatarImageView';
 import { ToolbarMeView } from './me/ToolbarMeView';
 import { ToolbarViewItems, ToolbarViewProps } from './ToolbarView.types';
 
-export function ToolbarView(props: ToolbarViewProps): JSX.Element
+export const ToolbarView: FC<ToolbarViewProps> = props =>
 {
     const { isInRoom } = props;
 
@@ -46,6 +46,7 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                 return;
             case ToolbarViewItems.CLOTHING_ITEM:
                 dispatchUiEvent(new AvatarEditorEvent(AvatarEditorEvent.TOGGLE_EDITOR));
+                setMeExpanded(false);
                 return;
         }
     }, []);
