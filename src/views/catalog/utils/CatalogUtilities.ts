@@ -137,13 +137,13 @@ export function GetPetAvailableColors(petIndex: number, palettes: SellablePetPal
 
                 if(!petColorResult) continue;
 
-                if(petColorResult._Str_5845 === petColorResult._Str_6659)
+                if(petColorResult.primaryColor === petColorResult.secondaryColor)
                 {
-                    colors.push([ petColorResult._Str_5845 ]);
+                    colors.push([ petColorResult.primaryColor ]);
                 }
                 else
                 {
-                    colors.push([ petColorResult._Str_5845, petColorResult._Str_6659 ]);
+                    colors.push([ petColorResult.primaryColor, petColorResult.secondaryColor ]);
                 }
             }
 
