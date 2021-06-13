@@ -8,7 +8,7 @@ import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-ev
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { RoomErrorHandler } from '../room-error-handler/RoomErrorHandler';
 import { RoomView } from '../room/RoomView';
-import { RoomWidgetRoomObjectUpdateEvent } from '../room/widgets/events';
+import { RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../room/widgets/events';
 import { RoomHostViewProps } from './RoomHostView.types';
 import { CanManipulateFurniture } from './utils/CanManipulateFurniture';
 import { IsFurnitureSelectionDisabled } from './utils/IsFurnitureSelectionDisabled';
@@ -35,8 +35,14 @@ export const RoomHostView: FC<RoomHostViewProps> = props =>
             case RoomEngineEvent.DISPOSED:
                 setRoomSession(null);
                 return;
+            case RoomEngineEvent.NORMAL_MODE:
+                eventDispatcher.dispatchEvent(new RoomWidgetRoomEngineUpdateEvent(RoomWidgetRoomEngineUpdateEvent.RWREUE_NORMAL_MODE, event.roomId));
+                return;
+            case RoomEngineEvent.GAME_MODE:
+                eventDispatcher.dispatchEvent(new RoomWidgetRoomEngineUpdateEvent(RoomWidgetRoomEngineUpdateEvent.RWREUE_GAME_MODE, event.roomId));
+                return;
         }
-    }, []);
+    }, [ eventDispatcher ]);
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
@@ -102,7 +108,6 @@ export const RoomHostView: FC<RoomHostViewProps> = props =>
                 if(CanManipulateFurniture(roomSession, objectId, category)) ProcessRoomObjectOperation(objectId, category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE);
                 break;
             case RoomEngineObjectEvent.REQUEST_MANIPULATION:
-                console.log('yaaa')
                 if(CanManipulateFurniture(roomSession, objectId, category)) updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_REQUEST_MANIPULATION, objectId, category, event.roomId);
                 break;
         }
@@ -144,6 +149,10 @@ export const RoomHostView: FC<RoomHostViewProps> = props =>
 
     useRoomEngineEvent(RoomEngineEvent.INITIALIZED, onRoomEngineEvent);
     useRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
+    useRoomEngineEvent(RoomEngineEvent.ENGINE_INITIALIZED, onRoomEngineEvent);
+    useRoomEngineEvent(RoomEngineEvent.OBJECTS_INITIALIZED, onRoomEngineEvent);
+    useRoomEngineEvent(RoomEngineEvent.NORMAL_MODE, onRoomEngineEvent);
+    useRoomEngineEvent(RoomEngineEvent.GAME_MODE, onRoomEngineEvent);
     useRoomEngineEvent(RoomZoomEvent.ROOM_ZOOM, onRoomEngineEvent);
     useRoomEngineEvent(RoomObjectHSLColorEnabledEvent.ROOM_BACKGROUND_COLOR, onRoomEngineEvent);
     useRoomEngineEvent(RoomBackgroundColorEvent.ROOM_COLOR, onRoomEngineEvent);
