@@ -83,7 +83,7 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
     {  
         for(const item of figureContainer.getPartTypeIds())
         {
-            if(parts.indexOf(item) == -1)
+            if(parts.indexOf(item) === -1)
             {
                 figureContainer.removePart(item);
             }

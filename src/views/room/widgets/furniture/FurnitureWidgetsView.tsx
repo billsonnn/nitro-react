@@ -1,3 +1,4 @@
+import { FurnitureDimmerView } from './dimmer/FurnitureDimmerView';
 import { FurnitureEngravingLockView } from './engraving-lock/FurnitureEngravingLockView';
 import { FurnitureExchangeCreditView } from './exchange-credit/FurnitureExchangeCreditView';
 import { FurnitureWidgetsViewProps } from './FurnitureWidgetsView.types';
@@ -14,6 +15,7 @@ export function FurnitureWidgetsView(props: FurnitureWidgetsViewProps): JSX.Elem
 
     return (
         <div className="position-absolute nitro-room-widgets t-0 l-0">
+            <FurnitureDimmerView events={ events } />
             <FurnitureEngravingLockView events={ events } />
             <FurnitureExchangeCreditView events={ events } />
             <FurnitureHighScoreView events={ events } />

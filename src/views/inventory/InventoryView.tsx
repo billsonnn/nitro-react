@@ -59,7 +59,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
 
         setObjectMoverRequested(false);
 
-        if(!event._Str_4057) setIsVisible(true);
+        if(!event.placedInRoom) setIsVisible(true);
     }, []);
 
     useRoomEngineEvent(RoomEngineObjectEvent.PLACED, onRoomEngineObjectPlacedEvent);

@@ -32,7 +32,7 @@ export const FurnitureEngravingLockView: FC<FurnitureEngravingLockViewProps> = p
                 if(!roomObject) return;
                 
                 const data = roomObject.model.getValue<string[]>(RoomObjectVariable.FURNITURE_DATA);
-                const type = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_FRIENDFURNI_ENGRAVING)
+                const type = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_FRIENDFURNI_ENGRAVING);
                 
                 if(data[0] === '1')
                 {
