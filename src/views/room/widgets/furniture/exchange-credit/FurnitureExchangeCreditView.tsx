@@ -23,6 +23,8 @@ export const FurnitureExchangeCreditView: FC<FurnitureExchangeCreditProps> = pro
 
                 const roomObject = GetRoomEngine().getRoomObject(widgetEvent.roomId, widgetEvent.objectId, widgetEvent.category);
 
+                if(!roomObject) return;
+
                 const value = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_CREDIT_VALUE);
 
                 setExchangeCreditData(new FurnitureExchangeCreditData(widgetEvent.objectId, widgetEvent.category, value));
