@@ -8,10 +8,10 @@ export const CatalogLayoutPets3View: FC<CatalogLayoutPets3ViewProps> = props =>
     
     return (
         <div className="row h-100 nitro-catalog-layout-pets3">
-            <div className="col-7">
-                <div className="" dangerouslySetInnerHTML={ {__html: GetCatalogPageText(pageParser, 1) } } />
-                <div className="" dangerouslySetInnerHTML={ {__html: GetCatalogPageText(pageParser, 2) } } />
-                <div className="" dangerouslySetInnerHTML={ {__html: GetCatalogPageText(pageParser, 3) } } />
+            <div className="col-7 text-black">
+                <div dangerouslySetInnerHTML={ {__html: GetCatalogPageText(pageParser, 1) } } />
+                <div dangerouslySetInnerHTML={ {__html: GetCatalogPageText(pageParser, 2) } } />
+                <div dangerouslySetInnerHTML={ {__html: GetCatalogPageText(pageParser, 3) } } />
             </div>
             <div className="position-relative d-flex flex-column col-5 justify-content-center align-items-center">
                 <div className="d-block mb-2">

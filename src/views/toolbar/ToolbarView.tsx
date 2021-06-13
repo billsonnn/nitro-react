@@ -1,7 +1,8 @@
 import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
-import { useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent } from '../../events';
+import { RoomWidgetCameraEvent } from '../../events/room-widgets/camera/RoomWidgetCameraEvent';
 import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { TransitionAnimation } from '../../transitions/TransitionAnimation';
@@ -10,7 +11,7 @@ import { AvatarImageView } from '../avatar-image/AvatarImageView';
 import { ToolbarMeView } from './me/ToolbarMeView';
 import { ToolbarViewItems, ToolbarViewProps } from './ToolbarView.types';
 
-export function ToolbarView(props: ToolbarViewProps): JSX.Element
+export const ToolbarView: FC<ToolbarViewProps> = props =>
 {
     const { isInRoom } = props;
 
@@ -44,8 +45,12 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
             case ToolbarViewItems.FRIEND_LIST_ITEM:
                 dispatchUiEvent(new CatalogEvent(FriendListEvent.TOGGLE_FRIEND_LIST));
                 return;
+            case ToolbarViewItems.CAMERA_ITEM:
+                dispatchUiEvent(new RoomWidgetCameraEvent(RoomWidgetCameraEvent.TOGGLE_CAMERA));
+                return;
             case ToolbarViewItems.CLOTHING_ITEM:
                 dispatchUiEvent(new AvatarEditorEvent(AvatarEditorEvent.TOGGLE_EDITOR));
+                setMeExpanded(false);
                 return;
         }
     }, []);
@@ -100,6 +105,10 @@ export function ToolbarView(props: ToolbarViewProps): JSX.Element
                         { (unseenFriendListCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
                     </div>
+                    { isInRoom && (
+                         <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CAMERA_ITEM) }>
+                         <i className="icon icon-camera"></i>
+                    </div>) }
                 </div>
                 <div id="toolbar-chat-input-container" className="d-flex align-items-center" />
             </div>

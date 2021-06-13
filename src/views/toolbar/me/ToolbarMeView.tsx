@@ -1,9 +1,9 @@
 import { MouseEventType } from 'nitro-renderer';
-import { useEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { ToolbarViewItems } from '../ToolbarView.types';
 import { ToolbarMeViewProps } from './ToolbarMeView.types';
 
-export function ToolbarMeView(props: ToolbarMeViewProps): JSX.Element
+export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
 {
     const { setMeExpanded = null, handleToolbarItemClick = null } = props;
 

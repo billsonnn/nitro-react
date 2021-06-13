@@ -10,4 +10,5 @@ export class ToolbarViewItems
     public static CATALOG_ITEM: string      = 'TVI_CATALOG_ITEM';
     public static FRIEND_LIST_ITEM: string  = 'TVI_FRIEND_LIST_ITEM';
     public static CLOTHING_ITEM: string     = 'TVI_CLOTHING_ITEM';
+    public static CAMERA_ITEM: string       = 'TVI_CAMERA_ITEM';
 }
