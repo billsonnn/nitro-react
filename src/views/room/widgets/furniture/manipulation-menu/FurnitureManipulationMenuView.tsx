@@ -57,7 +57,7 @@ export const FurnitureManipulationMenuView: FC<FurnitureManipulationMenuViewProp
     if(!isVisible) return null;
 
     return (
-        <ObjectLocationView objectId={ objectId } objectType={ objectType }>
+        <ObjectLocationView objectId={ objectId } category={ objectType }>
             <div className="btn-group">
                 <button type="button" className="btn btn-primary btn-sm">
                     <i className="fas fa-times" />

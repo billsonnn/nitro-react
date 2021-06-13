@@ -1,91 +1,95 @@
-import { IFurnitureData, RoomObjectCategory, RoomObjectVariable } from 'nitro-renderer';
-import { FC, useCallback } from 'react';
-import { GetRoomEngine, GetRoomSession, GetSessionDataManager } from '../../../../api';
+import { RoomObjectCategory } from 'nitro-renderer';
+import { FC, useCallback, useState } from 'react';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
-import { RoomObjectNameEvent, RoomWidgetRoomObjectUpdateEvent } from '../events';
+import { RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../events';
 import { AvatarInfoWidgetViewProps } from './AvatarInfoWidgetView.types';
+import { GetRoomObjectNameData } from './utils/GetRoomObjectNameData';
+import { RoomObjectNameData } from './utils/RoomObjectNameData';
+import { AvatarInfoWidgetNameView } from './views/name/AvatarInfoWidgetNameView';
 
 export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
 {
     const { events = null } = props;
-
-    const processObjectName = useCallback((roomId: number, objectId: number, category: number) =>
-    {
-        let id = -1;
-        let name: string = null;
-        let type = 0;
-        let roomIndex = 0;
-
-        switch(category)
-        {
-            case RoomObjectCategory.FLOOR:
-            case RoomObjectCategory.WALL:
-                const roomObject = GetRoomEngine().getRoomObject(roomId, id, category);
-
-                if(!roomObject) return;
-
-                if(roomObject.type.indexOf('poster') === 0)
-                {
-                    name = ('${poster_' + parseInt(roomObject.type.replace('poster', '')) + '_name}');
-                    roomIndex = roomObject.id;
-                }
-                else
-                {
-                    let furniData: IFurnitureData = null;
-
-                    const typeId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_TYPE_ID);
-
-                    if(category === RoomObjectCategory.FLOOR)
-                    {
-                        furniData = GetSessionDataManager().getFloorItemData(typeId);
-                    }
-
-                    else if(category === RoomObjectCategory.WALL)
-                    {
-                        furniData = GetSessionDataManager().getWallItemData(typeId);
-                    }
-
-                    if(!furniData) return;
-
-                    id = furniData.id;
-                    name = furniData.name;
-                    roomIndex = roomObject.id;
-                }
-                break;
-            case RoomObjectCategory.UNIT:
-                const userData = GetRoomSession().userDataManager.getUserDataByIndex(id);
-
-                if(!userData) return;
-
-                id = userData.webID;
-                name = userData.name;
-                type = userData.type;
-                roomIndex = userData.roomIndex;
-                break;
-        }
-
-        if(!name) return;
-
-        events.dispatchEvent(new RoomObjectNameEvent(id, category, name, type, roomIndex));
-    }, [ events ]);
+    const [ names, setNames ] = useState<RoomObjectNameData[]>([]);
+    const [ isGameMode, setGameMode ] = useState(false);
 
     const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
     {
         switch(event.type)
         {
+            case RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED: {
+                return;
+            }
+            case RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED: {
+                return;
+            }
             case RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER: {
-                processObjectName(event.roomId, event.id, event.category);
+                if(isGameMode) return;
+
+                if(event.category !== RoomObjectCategory.UNIT) return;
+
+                const nameData = GetRoomObjectNameData(event.roomId, event.id, event.category);
+
+                if(nameData)
+                {
+                    setNames(prevValue =>
+                        {
+                            const existing = prevValue.filter(value =>
+                                {
+                                    if(value.objectId === nameData.id) return null;
+            
+                                    return value;
+                                });
+            
+                            return [ ...existing, new RoomObjectNameData(nameData.objectId, nameData.category, nameData.id, nameData.name, nameData.type) ]
+                        });
+                }
                 return;
             }
             case RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT: {
-                console.log('out');
+                if(isGameMode) return;
+                
+                setNames(prevValue =>
+                    {
+                        return prevValue.filter(value =>
+                            {
+                                if(value.objectId === event.id) return null;
+
+                                return value;
+                            });
+                    });
                 return;
             }
         }
+    }, [ isGameMode ]);
+
+    const onRoomWidgetRoomEngineUpdateEvent = useCallback((event: RoomWidgetRoomEngineUpdateEvent) =>
+    {
+        switch(event.type)
+        {
+            case RoomWidgetRoomEngineUpdateEvent.RWREUE_NORMAL_MODE:
+                setGameMode(false);
+                break;
+            case RoomWidgetRoomEngineUpdateEvent.RWREUE_GAME_MODE:
+                setGameMode(true);
+                break;
+        }
     }, []);
 
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED, events, onRoomWidgetRoomObjectUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, events, onRoomWidgetRoomObjectUpdateEvent);
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER, events, onRoomWidgetRoomObjectUpdateEvent);
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT, events, onRoomWidgetRoomObjectUpdateEvent);
 
-    return null;
+    CreateEventDispatcherHook(RoomWidgetRoomEngineUpdateEvent.RWREUE_NORMAL_MODE, events, onRoomWidgetRoomEngineUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomEngineUpdateEvent.RWREUE_GAME_MODE, events, onRoomWidgetRoomEngineUpdateEvent);
+
+    return (
+        <>
+            { names && (names.length > 0) && names.map((data, index) =>
+                {
+                    return <AvatarInfoWidgetNameView key={ index } nameData={ data } />
+                }) }
+        </>
+    )
 }
