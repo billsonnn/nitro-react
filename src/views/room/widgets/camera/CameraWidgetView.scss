@@ -1,0 +1,24 @@
+.nitro-camera {
+    width: 340px;
+    height: 462px;
+
+    background-image: url('../../../../assets/images/room-widgets/camera-widget/camera-spritesheet.png');
+
+    .camera-button {
+        width: 94px;
+        height: 94px;
+        cursor: pointer;
+        margin-top: 334px;
+
+        background-image: url('../../../../assets/images/room-widgets/camera-widget/camera-spritesheet.png');
+        background-position: -340px 0px;
+
+        &:hover {
+            background-position: -340px -94px;
+        }
+
+        &:active {
+            background-position: -340px -188px;
+        }
+    }
+}
