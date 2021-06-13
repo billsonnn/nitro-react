@@ -1,5 +1,5 @@
 export interface ObjectLocationViewProps
 {
     objectId: number;
-    objectType: number;
+    category: number;
 }
