@@ -1,7 +1,9 @@
 import { EventDispatcher, IEventDispatcher, IRoomSession, RoomBackgroundColorEvent, RoomEngineDimmerStateEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomId, RoomObjectCategory, RoomObjectHSLColorEnabledEvent, RoomObjectOperationType, RoomSessionEvent, RoomZoomEvent } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
+import { IsFurnitureSelectionDisabled } from '../../api/nitro/room/IsFurnitureSelectionDisabled';
 import { ProcessRoomObjectOperation } from '../../api/nitro/room/ProcessRoomObjectOperation';
 import { SetActiveRoomId } from '../../api/nitro/room/SetActiveRoomId';
+import { CanManipulateFurniture } from '../../api/nitro/session/CanManipulateFurniture';
 import { GetRoomSession } from '../../api/nitro/session/GetRoomSession';
 import { StartRoomSession } from '../../api/nitro/session/StartRoomSession';
 import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
@@ -10,8 +12,6 @@ import { RoomErrorHandler } from '../room-error-handler/RoomErrorHandler';
 import { RoomView } from '../room/RoomView';
 import { RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../room/widgets/events';
 import { RoomHostViewProps } from './RoomHostView.types';
-import { CanManipulateFurniture } from './utils/CanManipulateFurniture';
-import { IsFurnitureSelectionDisabled } from './utils/IsFurnitureSelectionDisabled';
 
 export const RoomHostView: FC<RoomHostViewProps> = props =>
 {

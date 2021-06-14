@@ -1,5 +1,7 @@
 import { IFurnitureData, RoomObjectCategory, RoomObjectVariable } from 'nitro-renderer';
-import { GetRoomEngine, GetRoomSession, GetSessionDataManager } from '../../../../../api';
+import { GetRoomEngine } from '../room';
+import { GetRoomSession } from './GetRoomSession';
+import { GetSessionDataManager } from './GetSessionDataManager';
 import { RoomObjectNameData } from './RoomObjectNameData';
 
 export function GetRoomObjectNameData(roomId: number, objectId: number, category: number): RoomObjectNameData

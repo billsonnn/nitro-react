@@ -1,7 +1,9 @@
 import { IFurnitureData, Nitro, ObjectDataFactory, RoomObjectCategory, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, Vector3d } from 'nitro-renderer';
-import { GetRoomEngine, GetRoomSession, GetSessionDataManager } from '../../../../../api';
-import { IsOwnerOfFurniture } from '../../../../room-host/utils/IsOwnerOfFurniture';
+import { GetRoomEngine } from '../room';
 import { FurnitureInfoData } from './FurnitureInfoData';
+import { GetRoomSession } from './GetRoomSession';
+import { GetSessionDataManager } from './GetSessionDataManager';
+import { IsOwnerOfFurniture } from './IsOwnerOfFurniture';
 
 export function GetFurnitureInfoData(roomId: number, objectId: number, category: number): FurnitureInfoData
 {

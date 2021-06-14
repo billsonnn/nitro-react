@@ -1,5 +1,7 @@
 import { RoomControllerLevel, RoomModerationParser, RoomObjectType, RoomObjectVariable, RoomTradingLevelEnum, RoomUserData } from 'nitro-renderer';
-import { GetRoomEngine, GetRoomSession, GetSessionDataManager } from '../../../../../api';
+import { GetRoomEngine } from '../room';
+import { GetRoomSession } from './GetRoomSession';
+import { GetSessionDataManager } from './GetSessionDataManager';
 import { UserInfoData } from './UserInfoData';
 
 export const _Str_18400: number = 0;
@@ -8,9 +10,11 @@ export const _Str_13798: number = 3;
 
 export function GetUserInfoData(roomId: number, objectId: number, category: number, userData: RoomUserData): UserInfoData
 {
-    const isOwnUser = false;
+    let userDataType = UserInfoData.OWN_USER;
 
-    const userInfoData = new UserInfoData();
+    if(userData.webID !== GetSessionDataManager().userId) userDataType = UserInfoData.PEER;
+
+    const userInfoData = new UserInfoData(userDataType);
 
     userInfoData.isSpectatorMode = GetRoomSession().isSpectator;
     userInfoData.name = userData.name;
@@ -24,7 +28,7 @@ export function GetUserInfoData(roomId: number, objectId: number, category: numb
 
     if(roomObject) userInfoData.carryItem = roomObject.model.getValue<number>(RoomObjectVariable.FIGURE_CARRY_OBJECT);
 
-    if(isOwnUser)
+    if(userDataType === UserInfoData.OWN_USER)
     {
         userInfoData.realName = GetSessionDataManager().realName;
         userInfoData.allowNameChange = GetSessionDataManager().canChangeName;
@@ -36,7 +40,7 @@ export function GetUserInfoData(roomId: number, objectId: number, category: numb
     userInfoData.amIAnyRoomController = GetSessionDataManager().isModerator;
     userInfoData.isAmbassador = GetSessionDataManager().isAmbassador;
 
-    if(!isOwnUser)
+    if(userDataType === UserInfoData.PEER)
     {
         // userInfoData.canBeAskedAsFriend = this._container.friendService.canBeAskedForAFriend(userData.webID);
 

@@ -1,6 +1,11 @@
 export class UserInfoData
 {
+    public static OWN_USER: string = 'UID_OWN_USER';
+    public static PEER: string = 'UID_PEER';
+    public static BOT: string = 'UID_BOT';
+
     constructor(
+        public type: string,
         public name: string = '',
         public motto: string = '',
         public achievementScore: number = 0,
