@@ -4,6 +4,11 @@
 
     background-image: url('../../../../assets/images/room-widgets/camera-widget/camera-spritesheet.png');
 
+    .camera-frame {
+        width: 300px;
+        height: 300px;
+    }
+
     .camera-button {
         width: 94px;
         height: 94px;

@@ -1,4 +1,6 @@
-import { FC, useCallback, useState } from 'react';
+import { NitroRectangle } from 'nitro-renderer';
+import { FC, useCallback, useRef, useState } from 'react';
+import { GetRoomEngine, GetRoomSession } from '../../../../api';
 import { RoomWidgetCameraEvent } from '../../../../events/room-widgets/camera/RoomWidgetCameraEvent';
 import { DraggableWindow } from '../../../../hooks/draggable-window/DraggableWindow';
 import { useUiEvent } from '../../../../hooks/events/ui/ui-event';
@@ -7,6 +9,7 @@ import { CameraWidgetViewProps } from './CameraWidgetView.types';
 export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
+    const cameraFrameRef = useRef<HTMLDivElement>();
 
     const onRoomWidgetCameraEvent = useCallback((event: RoomWidgetCameraEvent) =>
     {
@@ -37,6 +40,19 @@ export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
                 return;
         }
     }, []);
+
+    const takePicture = useCallback(() =>
+    {
+        const frameBounds = cameraFrameRef.current.getBoundingClientRect();
+
+        if(!frameBounds) return;
+
+        const rectangle = new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height));
+
+        console.log(rectangle);
+
+        GetRoomEngine().createRoomScreenshot(GetRoomSession().roomId, 1, rectangle);
+    }, []);
     
     if(!isVisible) return null;
 
@@ -49,7 +65,8 @@ export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
                     </div>
                 </div>
                 <div className="d-flex justify-content-center">
-                    <div className="camera-button"></div>
+                    <div ref={ cameraFrameRef } className="camera-frame"></div>
+                    <div className="camera-button" onClick={ takePicture }></div>
                 </div>
             </div>
         </DraggableWindow>
