@@ -402,6 +402,226 @@
             "isAmbassadorOnly": false
         }
     ],
+    "camera.available.effects": [
+        {
+            "name":"dark_sepia",
+            "colorMatrix": [0.4, 0.4, 0.1, 0, 110, 0.3, 0.4, 0.1, 0, 30, 0.3, 0.2, 0.1, 0, 0, 0, 0, 0, 1, 0],
+            "minLevel": 0,
+            "enabled": true
+        },
+        {
+            "name":"increase_saturation",
+            "colorMatrix": [2, -0.5, -0.5, 0, 0, -0.5, 2, -0.5, 0, 0, -0.5, -0.5, 2, 0, 0, 0, 0, 0, 1, 0],
+            "minLevel": 0,
+            "enabled": true
+        },
+        {
+            "name":"increase_contrast",
+            "colorMatrix": [1.5, 0, 0, 0, -50, 0, 1.5, 0, 0, -50, 0, 0, 1.5, 0, -50, 0, 0, 0, 1.5, 0],
+            "minLevel": 0,
+            "enabled": true
+        },
+        {
+            "name":"shadow_multiply_02",
+            "minLevel": 0,
+            "enabled": true
+        },
+        {
+            "name":"color_1",
+            "colorMatrix": [0.393, 0.769, 0.189, 0, 0, 0.349, 0.686, 0.168, 0, 0, 0.272, 0.534, 0.131, 0, 0, 0, 0, 0, 1, 0],
+            "minlevel": 1,
+            "enabled": true
+        },
+        {
+            "name":"hue_bright_sat",
+            "colorMatrix": [1, 0.6, 0.2, 0, -50, 0.2, 1, 0.6, 0, -50, 0.6, 0.2, 1, 0, -50, 0, 0, 0, 1, 0],
+            "minlevel": 1,
+            "enabled": true
+        },
+        {
+            "name":"hearts_hardlight_02",
+            "minlevel": 1,
+            "enabled": true
+        },
+        {
+            "name":"texture_overlay",
+            "minlevel": 1,
+            "enabled": true
+        },
+        {
+            "name":"pinky_nrm",
+            "minlevel": 1,
+            "enabled": true
+        },
+        {
+            "name":"color_2", "colorMatrix": [0.333, 0.333, 0.333, 0, 0, 0.333, 0.333, 0.333, 0, 0, 0.333, 0.333, 0.333, 0, 0, 0, 0, 0, 1, 0],
+            "minlevel": 2,
+            "enabled": true
+        },
+        {
+            "name":"night_vision", "colorMatrix": [0, 0, 0, 0, 0, 0, 1.1, 0, 0, -50, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+            "minlevel": 2,
+            "enabled": true
+        },
+        {
+            "name":"stars_hardlight_02",
+            "minlevel": 2,
+            "enabled": true
+        },
+        {
+            "name":"coffee_mpl",
+            "minlevel": 2,
+            "enabled": true
+        },
+        {
+            "name":"security_hardlight",
+            "minlevel": 3,
+            "enabled": true
+        },
+        {
+            "name":"bluemood_mpl",
+            "minlevel": 3,
+            "enabled": true
+        },
+        {
+            "name":"rusty_mpl",
+            "minlevel": 3,
+            "enabled": true
+        },
+        {
+            "name":"decr_conrast",
+            "colorMatrix": [0.5, 0, 0, 0, 50, 0, 0.5, 0, 0, 50, 0, 0, 0.5, 0, 50, 0, 0, 0, 1, 0],
+            "minlevel": 4,
+            "enabled": true
+        },
+        {
+            "name":"green_2",
+            "colorMatrix": [0.5, 0.5, 0.5, 0, 0, 0.5, 0.5, 0.5, 0, 90, 0.5, 0.5, 0.5, 0, 0, 0, 0, 0, 1, 0],
+            "minlevel": 4,
+            "enabled": true
+        },
+        {
+            "name":"alien_hrd",
+            "minlevel": 4,
+            "enabled": true
+        },
+        {
+            "name":"color_3",
+            "colorMatrix": [0.609, 0.609, 0.082, 0, 0, 0.309, 0.609, 0.082, 0, 0, 0.309, 0.609, 0.082, 0, 0, 0, 0, 0, 1, 0],
+            "minlevel": 5,
+            "enabled": true
+        },
+        {
+            "name":"color_4",
+            "colorMatrix": [0.8, -0.8, 1, 0, 70, 0.8, -0.8, 1, 0, 70, 0.8, -0.8, 1, 0, 70, 0, 0, 0, 1, 0],
+            "minlevel": 5,
+            "enabled": true
+        },
+        {
+            "name":"toxic_hrd",
+            "minlevel": 5,
+            "enabled": true
+        },
+        {
+            "name":"hypersaturated",
+            "colorMatrix": [2, -1, 0, 0, 0, -1, 2, 0, 0, 0, 0, -1, 2, 0, 0, 0, 0, 0, 1, 0],
+            "minlevel": 6,
+            "enabled": true
+        },
+        {
+            "name":"Yellow",
+            "colorMatrix": [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+            "minlevel": 6,
+            "enabled": true
+        },
+        {
+            "name":"misty_hrd",
+            "minlevel": 6,
+            "enabled": true
+        },
+        {
+            "name":"x_ray",
+            "colorMatrix": [0, 1.2, 0, 0, -100, 0, 2, 0, 0, -120, 0, 2, 0, 0, -120, 0, 0, 0, 1, 0],
+            "minlevel": 7,
+            "enabled": true
+        },
+        {
+            "name":"decrease_saturation",
+            "colorMatrix": [0.7, 0.2, 0.2, 0, 0, 0.2, 0.7, 0.2, 0, 0, 0.2, 0.2, 0.7, 0, 0, 0, 0, 0, 1, 0],
+            "minlevel": 7,
+            "enabled": true
+        },
+        {
+            "name":"drops_mpl",
+            "minlevel": 8,
+            "enabled": true
+        },
+        {
+            "name":"shiny_hrd",
+            "minlevel": 9,
+            "enabled": true
+        },
+        {
+            "name":"glitter_hrd",
+            "minlevel": 10,
+            "enabled": true
+        },
+        {
+            "name":"frame_gold",
+            "minlevel": 10,
+            "enabled": true
+        },
+        {
+            "name":"frame_gray_4",
+            "minlevel": 10,
+            "enabled": true
+        },
+        {
+            "name":"frame_black_2",
+            "minlevel": 10,
+            "enabled": true
+        },
+        {
+            "name":"frame_wood_2",
+            "minlevel": 10,
+            "enabled": true
+        },
+        {
+            "name":"finger_nrm",
+            "minlevel": 10,
+            "enabled": true
+        },
+        {
+            "name":"color_5",
+            "colorMatrix": [3.309, 0.609, 1.082, 0.2, 0, 0.309, 0.609, 0.082, 0, 0, 1.309, 0.609, 0.082, 0, 0, 0, 0, 0, 1, 0],
+            "minlevel": 10,
+            "enabled": true
+        },
+        {
+            "name":"black_white_negative",
+            "colorMatrix": [-0.5, -0.5, -0.5, 0, 0, -0.5, -0.5, -0.5, 0, 0, -0.5, -0.5, -0.5, 0, 0, 0, 0, 0, 1, 0],
+            "minlevel": 10,
+            "enabled": true
+        },
+        {
+            "name":"blue",
+            "colorMatrix": [0.5, 0.5, 0.5, 0, -255, 0.5, 0.5, 0.5, 0, -170, 0.5, 0.5, 0.5, 0, 0, 0, 0, 0, 1, 0],
+            "minlevel": 10,
+            "enabled": true
+        },
+        {
+            "name":"red",
+            "colorMatrix": [0.5, 0.5, 0.5, 0, 0, 0.5, 0.5, 0.5, 0, -170, 0.5, 0.5, 0.5, 0, -170, 0, 0, 0, 1, 0],
+            "minlevel": 10,
+            "enabled": true
+        },
+        {
+            "name":"green",
+            "colorMatrix": [0.5, 0.5, 0.5, 0, -170, 0.5, 0.5, 0.5, 0, 0, 0.5, 0.5, 0.5, 0, -170, 0, 0, 0, 1, 0],
+            "minlevel": 10,
+            "enabled": true
+        }
+    ],
     "avatar.default.figuredata": "<?xml version='1.0' encoding='UTF-8'?><figuredata>    <colors>        <palette id='1'>            <color id='99999' index='1001' club='0' selectable='0'>DDDDDD</color>            <color id='99998' index='1001' club='0' selectable='0'>FAFAFA</color>        </palette>        <palette id='3'>            <color id='10001' index='1001' club='0' selectable='0'>EEEEEE</color>            <color id='10002' index='1002' club='0' selectable='0'>FA3831</color>            <color id='10003' index='1003' club='0' selectable='0'>FD92A0</color>            <color id='10004' index='1004' club='0' selectable='0'>2AC7D2</color>            <color id='10005' index='1005' club='0' selectable='0'>35332C</color>            <color id='10006' index='1006' club='0' selectable='0'>EFFF92</color>            <color id='10007' index='1007' club='0' selectable='0'>C6FF98</color>            <color id='10008' index='1008' club='0' selectable='0'>FF925A</color>            <color id='10009' index='1009' club='0' selectable='0'>9D597E</color>            <color id='10010' index='1010' club='0' selectable='0'>B6F3FF</color>            <color id='10011' index='1011' club='0' selectable='0'>6DFF33</color>            <color id='10012' index='1012' club='0' selectable='0'>3378C9</color>            <color id='10013' index='1013' club='0' selectable='0'>FFB631</color>            <color id='10014' index='1014' club='0' selectable='0'>DFA1E9</color>            <color id='10015' index='1015' club='0' selectable='0'>F9FB32</color>            <color id='10016' index='1016' club='0' selectable='0'>CAAF8F</color>            <color id='10017' index='1017' club='0' selectable='0'>C5C6C5</color>            <color id='10018' index='1018' club='0' selectable='0'>47623D</color>            <color id='10019' index='1019' club='0' selectable='0'>8A8361</color>            <color id='10020' index='1020' club='0' selectable='0'>FF8C33</color>            <color id='10021' index='1021' club='0' selectable='0'>54C627</color>            <color id='10022' index='1022' club='0' selectable='0'>1E6C99</color>            <color id='10023' index='1023' club='0' selectable='0'>984F88</color>            <color id='10024' index='1024' club='0' selectable='0'>77C8FF</color>            <color id='10025' index='1025' club='0' selectable='0'>FFC08E</color>            <color id='10026' index='1026' club='0' selectable='0'>3C4B87</color>            <color id='10027' index='1027' club='0' selectable='0'>7C2C47</color>            <color id='10028' index='1028' club='0' selectable='0'>D7FFE3</color>            <color id='10029' index='1029' club='0' selectable='0'>8F3F1C</color>            <color id='10030' index='1030' club='0' selectable='0'>FF6393</color>            <color id='10031' index='1031' club='0' selectable='0'>1F9B79</color>            <color id='10032' index='1032' club='0' selectable='0'>FDFF33</color>        </palette>    </colors>    <sets>        <settype type='hd' paletteid='1' mand_m_0='1' mand_f_0='1' mand_m_1='1' mand_f_1='1'>            <set id='99999' gender='U' club='0' colorable='1' selectable='0'>            <part id='1' type='bd' colorable='1' index='0' colorindex='1' />            <part id='1' type='hd' colorable='1' index='0' colorindex='1' />            <part id='1' type='lh' colorable='1' index='0' colorindex='1' />            <part id='1' type='rh' colorable='1' index='0' colorindex='1' />            </set>        </settype>        <settype type='bds' paletteid='1' mand_m_0='0' mand_f_0='0' mand_m_1='0' mand_f_1='0'>            <set id='10001' gender='U' club='0' colorable='1' selectable='0'>                <part id='10001' type='bds' colorable='1' index='0' colorindex='1'/>                <part id='10001' type='lhs' colorable='1' index='0' colorindex='1'/>                <part id='10001' type='rhs' colorable='1' index='0' colorindex='1'/>                <hiddenlayers>                    <layer parttype='bd'/>                    <layer parttype='rh'/>                    <layer parttype='lh'/>                </hiddenlayers>            </set>        </settype>        <settype type='ss' paletteid='3' mand_m_0='0' mand_f_0='0' mand_m_1='0' mand_f_1='0'>            <set id='10010' gender='F' club='0' colorable='1' selectable='0'>                <part id='10001' type='ss' colorable='1' index='0' colorindex='1'/>                <hiddenlayers>                    <layer parttype='ch'/>                    <layer parttype='lg'/>                    <layer parttype='ca'/>                    <layer parttype='wa'/>                    <layer parttype='sh'/>                    <layer parttype='ls'/>                    <layer parttype='rs'/>                    <layer parttype='lc'/>                    <layer parttype='rc'/>                    <layer parttype='cc'/>                    <layer parttype='cp'/>                </hiddenlayers>            </set>            <set id='10011' gender='M' club='0' colorable='1' selectable='0'>                <part id='10002' type='ss' colorable='1' index='0' colorindex='1'/>                <hiddenlayers>                    <layer parttype='ch'/>                    <layer parttype='lg'/>                    <layer parttype='ca'/>                    <layer parttype='wa'/>                    <layer parttype='sh'/>                    <layer parttype='ls'/>                    <layer parttype='rs'/>                    <layer parttype='lc'/>                    <layer parttype='rc'/>                    <layer parttype='cc'/>                    <layer parttype='cp'/>                </hiddenlayers>            </set>        </settype>    </sets></figuredata>",
     "avatar.default.actions": {
         "actions": [

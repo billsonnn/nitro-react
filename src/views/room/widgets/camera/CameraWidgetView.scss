@@ -1,29 +1,94 @@
-.nitro-camera {
-    width: 340px;
-    height: 462px;
+.nitro-camera-capture {
+    .camera-canvas {
+        width: 340px;
+        height: 462px;
+    
+        background-image: url('../../../../assets/images/room-widgets/camera-widget/camera-spritesheet.png');
 
-    background-image: url('../../../../assets/images/room-widgets/camera-widget/camera-spritesheet.png');
+        .camera-frame {
+            position: absolute;
+            width: 318px;
+            height: 318px;
+            margin-top: 9px;
+            margin-left: 11.4px;
 
-    .camera-frame {
-        width: 300px;
-        height: 300px;
+            &.bg {
+                background: black;
+            }
+
+            .camera-frame-preview-actions {
+                background: rgba(0, 0, 0, .5);
+            }
+        }
+    
+        .camera-button {
+            width: 94px;
+            height: 94px;
+            cursor: pointer;
+            margin-top: 334px;
+    
+            background-image: url('../../../../assets/images/room-widgets/camera-widget/camera-spritesheet.png');
+            background-position: -340px 0px;
+    
+            &:hover {
+                background-position: -340px -94px;
+            }
+    
+            &:active {
+                background-position: -340px -188px;
+            }
+        }
     }
 
-    .camera-button {
-        width: 94px;
-        height: 94px;
-        cursor: pointer;
-        margin-top: 334px;
+    .camera-roll {
+        width: 330px;
+        background: #bab8b4;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border: 1px solid black;
+        box-shadow: inset 1px 0px white, inset -1px -1px white;
 
-        background-image: url('../../../../assets/images/room-widgets/camera-widget/camera-spritesheet.png');
-        background-position: -340px 0px;
-
-        &:hover {
-            background-position: -340px -94px;
+        img {
+            width: 56px;
+            height: 56px;
+            border: 1px solid black;
         }
+    }
+}
 
-        &:active {
-            background-position: -340px -188px;
+.nitro-camera-editor {
+    width: 600px;
+
+    .effects {
+        max-height: 354px;
+
+        .effect-thumbnail {
+            border-color: $grid-border-color !important;
+            background-color: $grid-bg-color;
+    
+            &.active {
+                border-color: $grid-active-border-color !important;
+                background-color: $grid-active-bg-color;
+            }
+    
+            .effect-thumbnail-image {
+                background: black;
+    
+                img {
+                    width: 56px;
+                    height: 56px;
+                }
+            }
+        }
+    }
+
+    .picture-preview {
+        width: 318px;
+        height: 318px;
+
+        &.zoomed {
+            background-size: 636px;
+            background-position: center;
         }
     }
 }

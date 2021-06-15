@@ -1,4 +1,4 @@
 export interface NitroCardContentViewProps
 {
-    isDark?: boolean;
+    className?: string;
 }

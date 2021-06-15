@@ -34,7 +34,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
                                     return value;
                                 });
             
-                            return [ ...existing, new RoomObjectNameData(nameData.objectId, nameData.category, nameData.id, nameData.name, nameData.type) ]
+                            return [ ...existing, nameData ]
                         });
                 }
                 return;
