@@ -1,4 +1,4 @@
-import { RoomObjectNameData } from '../../utils/RoomObjectNameData';
+import { RoomObjectNameData } from '../../../../../../api/nitro/session/RoomObjectNameData';
 
 export interface AvatarInfoWidgetNameViewProps
 {

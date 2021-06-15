@@ -1,74 +1,75 @@
-import { NitroRectangle } from 'nitro-renderer';
-import { FC, useCallback, useRef, useState } from 'react';
-import { GetRoomEngine, GetRoomSession } from '../../../../api';
+import { RoomCameraWidgetEditorEffect } from 'nitro-renderer/src/nitro/room/camera-widget/RoomCameraWidgetEditorEffect';
+import { RoomCameraWidgetManagerEvent } from 'nitro-renderer/src/nitro/room/events/RoomCameraWidgetManagerEvent';
+import { FC, useCallback, useState } from 'react';
+import { GetRoomEngine } from '../../../../api';
 import { RoomWidgetCameraEvent } from '../../../../events/room-widgets/camera/RoomWidgetCameraEvent';
-import { DraggableWindow } from '../../../../hooks/draggable-window/DraggableWindow';
+import { useRoomEngineEvent } from '../../../../hooks/events/nitro/room/room-engine-event';
 import { useUiEvent } from '../../../../hooks/events/ui/ui-event';
 import { CameraWidgetViewProps } from './CameraWidgetView.types';
+import { CameraWidgetCaptureView } from './views/capture/CameraWidgetCaptureView';
+import { CameraWidgetEditorView } from './views/editor/CameraWidgetEditorView';
 
 export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
-    const cameraFrameRef = useRef<HTMLDivElement>();
+    const [ isCaptureVisible, setIsCaptureVisible ] = useState(false);
+    const [ isEditorVisible, setIsEditorVisible ]   = useState(false);
+    const [ chosenPicture, setChosenPicture ]       = useState<HTMLImageElement>(null);
+    const [ availableEffects, setAvailableEffects ] = useState<RoomCameraWidgetEditorEffect[]>(null);
 
-    const onRoomWidgetCameraEvent = useCallback((event: RoomWidgetCameraEvent) =>
+    const getAvailableEffects = useCallback(() =>
+    {
+        if(GetRoomEngine().roomCameraWidgetManager.isLoaded)
+        {
+            setAvailableEffects(Array.from(GetRoomEngine().roomCameraWidgetManager.loadedEffects.values()));
+        }
+    }, []);
+
+    const onNitroEvent = useCallback((event: RoomWidgetCameraEvent) =>
     {
         switch(event.type)
         {
             case RoomWidgetCameraEvent.SHOW_CAMERA:
-                setIsVisible(true);
+                setIsCaptureVisible(true);
+                getAvailableEffects();
                 return;
             case RoomWidgetCameraEvent.HIDE_CAMERA:
-                setIsVisible(false);
+                setIsCaptureVisible(false);
+                setIsEditorVisible(false);
                 return;   
             case RoomWidgetCameraEvent.TOGGLE_CAMERA:
-                setIsVisible(value => !value);
+                setIsEditorVisible(false);
+                setIsCaptureVisible(value => !value);
+                getAvailableEffects();
+                return;
+            case RoomCameraWidgetManagerEvent.INITIALIZED:
+                getAvailableEffects();
                 return;
         }
     }, []);
 
-    useUiEvent(RoomWidgetCameraEvent.SHOW_CAMERA, onRoomWidgetCameraEvent);
-    useUiEvent(RoomWidgetCameraEvent.HIDE_CAMERA, onRoomWidgetCameraEvent);
-    useUiEvent(RoomWidgetCameraEvent.TOGGLE_CAMERA, onRoomWidgetCameraEvent);
+    useUiEvent(RoomWidgetCameraEvent.SHOW_CAMERA, onNitroEvent);
+    useUiEvent(RoomWidgetCameraEvent.HIDE_CAMERA, onNitroEvent);
+    useUiEvent(RoomWidgetCameraEvent.TOGGLE_CAMERA, onNitroEvent);
+    useRoomEngineEvent(RoomCameraWidgetManagerEvent.INITIALIZED, onNitroEvent);
 
-    const processAction = useCallback((type: string, value: string = null) =>
+    const processAction = useCallback((type: string, value: any = null) =>
     {
         switch(type)
         {
             case 'close':
-                setIsVisible(false);
+                setIsCaptureVisible(false);
+                setIsEditorVisible(false);
+                return;
+            case 'capture_choose_picture':
+                setChosenPicture(value);
+                setIsCaptureVisible(false);
+                setIsEditorVisible(true);
                 return;
         }
     }, []);
 
-    const takePicture = useCallback(() =>
-    {
-        const frameBounds = cameraFrameRef.current.getBoundingClientRect();
-
-        if(!frameBounds) return;
-
-        const rectangle = new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height));
-
-        console.log(rectangle);
-
-        GetRoomEngine().createRoomScreenshot(GetRoomSession().roomId, 1, rectangle);
-    }, []);
-    
-    if(!isVisible) return null;
-
     return (
-        <DraggableWindow handle=".nitro-camera">
-            <div className="nitro-camera">
-                <div className="overflow-auto">
-                    <div className="cursor-pointer float-end me-3 mt-2" onClick={ event => processAction('close') }>
-                        <i className="fas fa-times"></i>
-                    </div>
-                </div>
-                <div className="d-flex justify-content-center">
-                    <div ref={ cameraFrameRef } className="camera-frame"></div>
-                    <div className="camera-button" onClick={ takePicture }></div>
-                </div>
-            </div>
-        </DraggableWindow>
+        ( isCaptureVisible && <CameraWidgetCaptureView onCloseClick={ () => processAction('close') } onChoosePicture={ (picture) => processAction('capture_choose_picture', picture) } /> ) ||
+        ( isEditorVisible && <CameraWidgetEditorView onCloseClick={ () => processAction('close') } picture={ chosenPicture } availableEffects={ availableEffects } /> )
     );
 }

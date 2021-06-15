@@ -1,10 +1,10 @@
 import { RoomObjectCategory } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
+import { GetRoomObjectNameData } from '../../../../api/nitro/session/GetRoomObjectNameData';
+import { RoomObjectNameData } from '../../../../api/nitro/session/RoomObjectNameData';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../events';
 import { AvatarInfoWidgetViewProps } from './AvatarInfoWidgetView.types';
-import { GetRoomObjectNameData } from './utils/GetRoomObjectNameData';
-import { RoomObjectNameData } from './utils/RoomObjectNameData';
 import { AvatarInfoWidgetNameView } from './views/name/AvatarInfoWidgetNameView';
 
 export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>

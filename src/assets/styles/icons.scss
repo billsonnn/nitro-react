@@ -446,6 +446,18 @@ i {
             height: 20px;
         }
 
+        &.icon-camera-colormatrix {
+            background: url('../images/icons/camera-colormatrix.png');
+            width: 32px;
+            height: 14px;
+        }
+
+        &.icon-camera-composite {
+            background: url('../images/icons/camera-composite.png');
+            width: 32px;
+            height: 14px;
+        }
+
         &.spin {
             animation: rotating 1s linear infinite;
         }
