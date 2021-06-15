@@ -1,7 +1,8 @@
 import classNames from 'classnames';
-import { RoomCameraWidgetEditorSelectedEffect } from 'nitro-renderer/src/nitro/room/camera-widget/RoomCameraWidgetEditorSelectedEffect';
+import { IRoomCameraWidgetSelectedEffect } from 'nitro-renderer/src/nitro/camera/IRoomCameraWidgetSelectedEffect';
+import { RoomCameraWidgetSelectedEffect } from 'nitro-renderer/src/nitro/camera/RoomCameraWidgetSelectedEffect';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetRoomEngine } from '../../../../../../api';
+import { GetRoomCameraWidgetManager } from '../../../../../../api';
 import { NitroCardContentView } from '../../../../../../layout/card/content/NitroCardContentView';
 import { NitroCardHeaderView } from '../../../../../../layout/card/header/NitroCardHeaderView';
 import { NitroCardView } from '../../../../../../layout/card/NitroCardView';
@@ -12,29 +13,30 @@ import { CameraWidgetEditorTabs, CameraWidgetEditorViewProps } from './CameraWid
 
 export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 {
+    const { picture = null, availableEffects = null, onCloseClick = null } = props;
     const TABS: string[] = [ CameraWidgetEditorTabs.COLORMATRIX, CameraWidgetEditorTabs.COMPOSITE ];
     const MY_LEVEL: number = 0;
     
-    const [ currentTab, setCurrentTab ]             = useState(CameraWidgetEditorTabs.COLORMATRIX);
-    const [ isZoomed, setIsZoomed ]                 = useState(false);
-    const [ selectedEffects, setSelectedEffects ]   = useState<RoomCameraWidgetEditorSelectedEffect[]>([]);
+    const [ currentTab, setCurrentTab ] = useState(CameraWidgetEditorTabs.COLORMATRIX);
+    const [ isZoomed, setIsZoomed ] = useState(false);
+    const [ selectedEffects, setSelectedEffects ] = useState<IRoomCameraWidgetSelectedEffect[]>([]);
     const [ effectsThumbnails, setEffectThumbnails ] = useState<{name: string, image: HTMLImageElement}[]>([]);
 
     useEffect(() =>
     {
         const thumbnails = [];
 
-        for(const effect of props.availableEffects)
+        for(const effect of availableEffects)
         {
             let alpha = 126;
 
-            if(effect.colorMatrix.length > 0) alpha = 0.5;
+            if(effect.colorMatrix) alpha = 0.5;
 
-            thumbnails.push({name: effect.name, image: GetRoomEngine().roomCameraWidgetManager.editImage(props.picture, [new RoomCameraWidgetEditorSelectedEffect(effect, alpha)])});
+            thumbnails.push({name: effect.name, image: GetRoomCameraWidgetManager().applyEffects(picture, [ new RoomCameraWidgetSelectedEffect(effect, alpha) ])});
         }
 
         setEffectThumbnails(thumbnails);
-    }, [ props.availableEffects ]);
+    }, [ picture, availableEffects ]);
 
     const getEffectThumbnail = useCallback((effectName: string) =>
     {
@@ -49,20 +51,20 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
     {
         if(currentTab === CameraWidgetEditorTabs.COLORMATRIX)
         {
-            return props.availableEffects.filter(effect => effect.colorMatrix.length > 0);
+            return availableEffects.filter(effect => effect.colorMatrix);
         }
         else
         {
-            return props.availableEffects.filter(effect => effect.colorMatrix.length === 0);
+            return availableEffects.filter(effect => effect.texture);
         }
-    }, [ currentTab, props.availableEffects ]);
+    }, [ currentTab, availableEffects ]);
 
     const processAction = useCallback((type: string, value: string | number = null) =>
     {
         switch(type)
         {
             case 'close':
-                props.onCloseClick();
+                onCloseClick();
                 return;
             case 'change_tab':
                 setCurrentTab(String(value));
@@ -71,7 +73,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 setIsZoomed(isZoomed => !isZoomed);
                 return;
         }
-    }, []);
+    }, [ onCloseClick ]);
 
     return (
         <NitroCardView className="nitro-camera-editor">
@@ -93,7 +95,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                                             <div key={ effect.name } className="col mb-3">
                                                 <div title={ LocalizeText('camera.effect.name.' + effect.name) } className="effect-thumbnail cursor-pointer position-relative border border-2 rounded d-flex flex-column justify-content-center align-items-center py-1">
                                                     <div className="effect-thumbnail-image rounded">
-                                                        <img className="rounded" src={ getEffectThumbnail(effect.name) } />
+                                                        <img alt="" className="rounded" src={ getEffectThumbnail(effect.name) } />
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,7 +109,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                     <NitroCardTabsView></NitroCardTabsView>
                     <NitroCardContentView>
                         <div className="bg-black rounded">
-                            <div className={ 'picture-preview rounded' + classNames({ ' zoomed': isZoomed }) } style={ { backgroundImage: 'url(' + props.picture.src + ')' } }></div>
+                            <div className={ 'picture-preview rounded' + classNames({ ' zoomed': isZoomed }) } style={ { backgroundImage: 'url(' + picture.src + ')' } }></div>
                         </div>
                         <div className="d-flex mt-2">
                             <button className="btn btn-primary btn-sm me-2">{ LocalizeText('save') }</button>

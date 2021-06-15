@@ -423,6 +423,7 @@
         },
         {
             "name":"shadow_multiply_02",
+            "colorMatrix": [],
             "minLevel": 0,
             "enabled": true
         },
@@ -440,51 +441,61 @@
         },
         {
             "name":"hearts_hardlight_02",
+            "colorMatrix": [],
             "minlevel": 1,
             "enabled": true
         },
         {
             "name":"texture_overlay",
+            "colorMatrix": [],
             "minlevel": 1,
             "enabled": true
         },
         {
             "name":"pinky_nrm",
+            "colorMatrix": [],
             "minlevel": 1,
             "enabled": true
         },
         {
-            "name":"color_2", "colorMatrix": [0.333, 0.333, 0.333, 0, 0, 0.333, 0.333, 0.333, 0, 0, 0.333, 0.333, 0.333, 0, 0, 0, 0, 0, 1, 0],
+            "name":"color_2",
+            "colorMatrix": [0.333, 0.333, 0.333, 0, 0, 0.333, 0.333, 0.333, 0, 0, 0.333, 0.333, 0.333, 0, 0, 0, 0, 0, 1, 0],
             "minlevel": 2,
             "enabled": true
         },
         {
-            "name":"night_vision", "colorMatrix": [0, 0, 0, 0, 0, 0, 1.1, 0, 0, -50, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+            "name":"night_vision",
+            "colorMatrix": [0, 0, 0, 0, 0, 0, 1.1, 0, 0, -50, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
             "minlevel": 2,
             "enabled": true
         },
         {
             "name":"stars_hardlight_02",
+            "colorMatrix": [],
             "minlevel": 2,
             "enabled": true
         },
         {
             "name":"coffee_mpl",
+            "colorMatrix": [],
             "minlevel": 2,
             "enabled": true
         },
         {
             "name":"security_hardlight",
+            "colorMatrix": [],
             "minlevel": 3,
             "enabled": true
         },
         {
             "name":"bluemood_mpl",
+            "colorMatrix": [],
             "minlevel": 3,
             "enabled": true
         },
         {
             "name":"rusty_mpl",
+            "colorMatrix": [],
             "minlevel": 3,
             "enabled": true
         },
@@ -502,6 +513,7 @@
         },
         {
             "name":"alien_hrd",
+            "colorMatrix": [],
             "minlevel": 4,
             "enabled": true
         },
@@ -519,6 +531,7 @@
         },
         {
             "name":"toxic_hrd",
+            "colorMatrix": [],
             "minlevel": 5,
             "enabled": true
         },
@@ -536,6 +549,7 @@
         },
         {
             "name":"misty_hrd",
+            "colorMatrix": [],
             "minlevel": 6,
             "enabled": true
         },
@@ -553,41 +567,49 @@
         },
         {
             "name":"drops_mpl",
+            "colorMatrix": [],
             "minlevel": 8,
             "enabled": true
         },
         {
             "name":"shiny_hrd",
+            "colorMatrix": [],
             "minlevel": 9,
             "enabled": true
         },
         {
             "name":"glitter_hrd",
+            "colorMatrix": [],
             "minlevel": 10,
             "enabled": true
         },
         {
             "name":"frame_gold",
+            "colorMatrix": [],
             "minlevel": 10,
             "enabled": true
         },
         {
             "name":"frame_gray_4",
+            "colorMatrix": [],
             "minlevel": 10,
             "enabled": true
         },
         {
             "name":"frame_black_2",
+            "colorMatrix": [],
             "minlevel": 10,
             "enabled": true
         },
         {
             "name":"frame_wood_2",
+            "colorMatrix": [],
             "minlevel": 10,
             "enabled": true
         },
         {
             "name":"finger_nrm",
+            "colorMatrix": [],
             "minlevel": 10,
             "enabled": true
         },

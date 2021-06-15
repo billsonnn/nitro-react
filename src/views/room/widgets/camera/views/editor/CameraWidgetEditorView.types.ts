@@ -1,10 +1,10 @@
-import { RoomCameraWidgetEditorEffect } from '../../../../../../../../nitro-renderer/src/nitro/room/camera-widget/RoomCameraWidgetEditorEffect';
+import { IRoomCameraWidgetEffect } from 'nitro-renderer/src/nitro/camera/IRoomCameraWidgetEffect';
 
 export interface CameraWidgetEditorViewProps
 {
-    onCloseClick: () => void;
     picture: HTMLImageElement;
-    availableEffects: RoomCameraWidgetEditorEffect[];
+    availableEffects: IRoomCameraWidgetEffect[];
+    onCloseClick: () => void;
 }
 
 export class CameraWidgetEditorTabs

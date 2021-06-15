@@ -1,9 +1,8 @@
-import { RoomCameraWidgetEditorEffect } from 'nitro-renderer/src/nitro/room/camera-widget/RoomCameraWidgetEditorEffect';
-import { RoomCameraWidgetManagerEvent } from 'nitro-renderer/src/nitro/room/events/RoomCameraWidgetManagerEvent';
-import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine } from '../../../../api';
+import { RoomCameraWidgetManagerEvent } from 'nitro-renderer/src/nitro/camera/events/RoomCameraWidgetManagerEvent';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { GetRoomCameraWidgetManager } from '../../../../api';
 import { RoomWidgetCameraEvent } from '../../../../events/room-widgets/camera/RoomWidgetCameraEvent';
-import { useRoomEngineEvent } from '../../../../hooks/events/nitro/room/room-engine-event';
+import { useCameraEvent } from '../../../../hooks/events/nitro/camera/camera-event';
 import { useUiEvent } from '../../../../hooks/events/ui/ui-event';
 import { CameraWidgetViewProps } from './CameraWidgetView.types';
 import { CameraWidgetCaptureView } from './views/capture/CameraWidgetCaptureView';
@@ -11,18 +10,10 @@ import { CameraWidgetEditorView } from './views/editor/CameraWidgetEditorView';
 
 export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
 {
+    const [ effectsReady, setEffectsReady ] = useState(false);
     const [ isCaptureVisible, setIsCaptureVisible ] = useState(false);
-    const [ isEditorVisible, setIsEditorVisible ]   = useState(false);
-    const [ chosenPicture, setChosenPicture ]       = useState<HTMLImageElement>(null);
-    const [ availableEffects, setAvailableEffects ] = useState<RoomCameraWidgetEditorEffect[]>(null);
-
-    const getAvailableEffects = useCallback(() =>
-    {
-        if(GetRoomEngine().roomCameraWidgetManager.isLoaded)
-        {
-            setAvailableEffects(Array.from(GetRoomEngine().roomCameraWidgetManager.loadedEffects.values()));
-        }
-    }, []);
+    const [ isEditorVisible, setIsEditorVisible ] = useState(false);
+    const [ chosenPicture, setChosenPicture ] = useState<HTMLImageElement>(null);
 
     const onNitroEvent = useCallback((event: RoomWidgetCameraEvent) =>
     {
@@ -30,7 +21,6 @@ export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
         {
             case RoomWidgetCameraEvent.SHOW_CAMERA:
                 setIsCaptureVisible(true);
-                getAvailableEffects();
                 return;
             case RoomWidgetCameraEvent.HIDE_CAMERA:
                 setIsCaptureVisible(false);
@@ -39,10 +29,6 @@ export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
             case RoomWidgetCameraEvent.TOGGLE_CAMERA:
                 setIsEditorVisible(false);
                 setIsCaptureVisible(value => !value);
-                getAvailableEffects();
-                return;
-            case RoomCameraWidgetManagerEvent.INITIALIZED:
-                getAvailableEffects();
                 return;
         }
     }, []);
@@ -50,7 +36,32 @@ export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
     useUiEvent(RoomWidgetCameraEvent.SHOW_CAMERA, onNitroEvent);
     useUiEvent(RoomWidgetCameraEvent.HIDE_CAMERA, onNitroEvent);
     useUiEvent(RoomWidgetCameraEvent.TOGGLE_CAMERA, onNitroEvent);
-    useRoomEngineEvent(RoomCameraWidgetManagerEvent.INITIALIZED, onNitroEvent);
+
+    const availableEffects = useMemo(() =>
+    {
+        if(!effectsReady) return null;
+
+        return Array.from(GetRoomCameraWidgetManager().effects.values());
+    }, [ effectsReady ]);
+
+    const onRoomCameraWidgetManagerEvent = useCallback((event: RoomCameraWidgetManagerEvent) =>
+    {
+        setEffectsReady(true);
+    }, []);
+
+    useCameraEvent(RoomCameraWidgetManagerEvent.INITIALIZED, onRoomCameraWidgetManagerEvent);
+
+    useEffect(() =>
+    {
+        if(!GetRoomCameraWidgetManager().isLoaded)
+        {
+            GetRoomCameraWidgetManager().init();
+
+            return;
+        }
+
+        setEffectsReady(true);
+    }, []);
 
     const processAction = useCallback((type: string, value: any = null) =>
     {
