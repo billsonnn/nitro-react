@@ -4,7 +4,7 @@ import { GetRoomSession } from './GetRoomSession';
 import { GetSessionDataManager } from './GetSessionDataManager';
 import { RoomObjectNameData } from './RoomObjectNameData';
 
-export function GetRoomObjectNameData(roomId: number, objectId: number, category: number): RoomObjectNameData
+export function GetObjectName(roomId: number, objectId: number, category: number): RoomObjectNameData
 {
     let id = -1;
     let name: string = null;

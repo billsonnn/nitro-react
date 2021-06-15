@@ -9,7 +9,9 @@ export const AvatarInfoWidgetNameView: FC<AvatarInfoWidgetNameViewProps> = props
 
     return (
         <ObjectLocationView objectId={ objectId } category={ category }>
-            { name }
+            <div className="d-flex justify-content-center align-items-center bg-dark border border-dark">
+                { name }
+            </div>
         </ObjectLocationView>
     );
 }

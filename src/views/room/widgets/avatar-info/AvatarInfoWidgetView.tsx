@@ -1,10 +1,9 @@
 import { RoomObjectCategory } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
+import { GetObjectName, RoomObjectNameData } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../events';
 import { AvatarInfoWidgetViewProps } from './AvatarInfoWidgetView.types';
-import { GetRoomObjectNameData } from './utils/GetRoomObjectNameData';
-import { RoomObjectNameData } from './utils/RoomObjectNameData';
 import { AvatarInfoWidgetNameView } from './views/name/AvatarInfoWidgetNameView';
 
 export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
@@ -17,18 +16,12 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
     {
         switch(event.type)
         {
-            case RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED: {
-                return;
-            }
-            case RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED: {
-                return;
-            }
             case RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER: {
                 if(isGameMode) return;
 
                 if(event.category !== RoomObjectCategory.UNIT) return;
 
-                const nameData = GetRoomObjectNameData(event.roomId, event.id, event.category);
+                const nameData = GetObjectName(event.roomId, event.id, event.category);
 
                 if(nameData)
                 {
@@ -76,8 +69,6 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
         }
     }, []);
 
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED, events, onRoomWidgetRoomObjectUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, events, onRoomWidgetRoomObjectUpdateEvent);
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER, events, onRoomWidgetRoomObjectUpdateEvent);
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT, events, onRoomWidgetRoomObjectUpdateEvent);
 

@@ -11,6 +11,7 @@ import { CameraWidgetView } from './widgets/camera/CameraWidgetView';
 import { ChatInputView } from './widgets/chat-input/ChatInputView';
 import { ChatWidgetView } from './widgets/chat/ChatWidgetView';
 import { FurnitureWidgetsView } from './widgets/furniture/FurnitureWidgetsView';
+import { InfoStandWidgetView } from './widgets/infostand/InfoStandWidgetView';
 
 export function RoomView(props: RoomViewProps): JSX.Element
 {
@@ -97,6 +98,7 @@ export function RoomView(props: RoomViewProps): JSX.Element
                     <ChatWidgetView />
                     <ChatInputView />
                     <FurnitureWidgetsView events={ events } />
+                    <InfoStandWidgetView events={ events } />
                 </> }
         </div>
     );

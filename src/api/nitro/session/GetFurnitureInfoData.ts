@@ -47,12 +47,12 @@ export function GetFurnitureInfoData(roomId: number, objectId: number, category:
 
         if(category === RoomObjectCategory.FLOOR)
         {
-            furnitureData = this._container.sessionDataManager.getFloorItemData(typeId);
+            furnitureData = GetSessionDataManager().getFloorItemData(typeId);
         }
 
         else if(category === RoomObjectCategory.WALL)
         {
-            furnitureData = this._container.sessionDataManager.getWallItemData(typeId);
+            furnitureData = GetSessionDataManager().getWallItemData(typeId);
         }
 
         if(furnitureData)

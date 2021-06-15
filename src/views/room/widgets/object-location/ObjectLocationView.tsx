@@ -6,8 +6,7 @@ import { ObjectLocationViewProps } from './ObjectLocationView.types';
 export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
 {
     const { objectId = -1, category = -1, children = null } = props;
-    const [ posX, setPosX ] = useState(0);
-    const [ posY, setPosY ] = useState(0);
+    const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: -1, y: -1});
     const elementRef = useRef<HTMLDivElement>();
 
     const updatePosition = useCallback(() =>
@@ -17,8 +16,10 @@ export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
 
         if(!objectBounds || !elementRef.current) return;
 
-        setPosX(Math.round(((objectBounds.left + (objectBounds.width / 2)) - (elementRef.current.offsetWidth / 2))));
-        setPosY(Math.round((objectBounds.top - elementRef.current.offsetHeight) + 10));
+        setPos({
+            x: Math.round(((objectBounds.left + (objectBounds.width / 2)) - (elementRef.current.offsetWidth / 2))),
+            y: Math.round((objectBounds.top - elementRef.current.offsetHeight) + 10)
+        });
     }, [ objectId, category ]);
 
     useEffect(() =>
@@ -32,7 +33,7 @@ export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
     }, [ updatePosition ]);
 
     return (
-        <div ref={ elementRef } className="position-absolute" style={ { left: posX, top: posY } }>
+        <div ref={ elementRef } className={ 'position-absolute ' + (pos.x > -1 ? 'visible' : 'invisible') } style={ { left: pos.x, top: pos.y } }>
             { children }
         </div>
     );

@@ -49,8 +49,6 @@ export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
 
         const rectangle = new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height));
 
-        console.log(rectangle);
-
         GetRoomEngine().createRoomScreenshot(GetRoomSession().roomId, 1, rectangle);
     }, []);
     

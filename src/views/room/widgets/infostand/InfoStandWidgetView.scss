@@ -1,0 +1,110 @@
+.nitro-infostand-container {
+    position: absolute;
+    right: 10px;
+    bottom: $toolbar-height + 10px;
+    pointer-events: none;
+    z-index: $infostand-zindex;
+
+    .nitro-infostand {
+        position: relative;
+        min-width: 200px;
+        max-width: 200px;
+        z-index: $infostand-zindex;
+	    pointer-events: auto;
+
+        .avatar-image {
+            position: relative;
+            width: 90px;
+            height: 130px;
+            background-repeat: no-repeat;
+            background-position-x: center;
+            background-position-y: -8px !important;
+        }
+
+        .pet-image {
+            position: relative;
+            width: 100%;
+            height: 130px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .body-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba($secondary, 1);
+            width: 100%;
+            max-width: 68px;
+            border-radius: 3px;
+            margin-right: 5px;
+
+            &.bot {
+                background-image: url('../../../../assets/images/infostand/bot_background.png');
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            &.furni {
+                background-color: transparent;
+                margin-right: 0;
+            }
+        }
+
+        .grid-container {
+    
+            .grid-items {
+        
+                .item-detail {
+                    height: 40px;
+                    max-height: 40px;
+                }
+            }
+        }
+
+        .motto-container {
+            display: flex;
+            align-items: center;
+            min-height: 28px;
+            width: 100%;
+            padding: 5px 8px;
+            background-color: rgba($secondary, 1);
+            border-radius: 3px;
+
+            i.icon {
+                margin-right: 5px;
+            }
+
+            .motto {
+                font-size: 12px;
+                width: 100%;
+                word-break: break-word;
+            }
+
+            .motto-input {
+                width: 100%;
+                height: 100%;
+                font-size: 12px;
+                padding: 0;
+                outline: 0;
+                border: 0;
+                color: rgba($white, 1);
+                position: relative;
+                background: transparent;
+                resize: none;
+
+                &:focus {
+                    font-style: italic;
+                }
+            }
+        }
+
+        p {
+            display: block;
+        }
+    }
+
+    .button-container {
+	    pointer-events: auto;
+    }
+}
