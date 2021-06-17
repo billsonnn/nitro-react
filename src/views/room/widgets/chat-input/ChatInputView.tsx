@@ -4,12 +4,14 @@ import { GetRoomSession } from '../../../../api';
 import { SendChatTypingMessage } from '../../../../api/nitro/session/SendChatTypingMessage';
 import { GetConfiguration } from '../../../../utils/GetConfiguration';
 import { LocalizeText } from '../../../../utils/LocalizeText';
+import { useRoomContext } from '../../context/RoomContext';
 import { ChatInputMessageType, ChatInputViewProps } from './ChatInputView.types';
 
 let lastContent = '';
 
 export const ChatInputView: FC<ChatInputViewProps> = props =>
 {
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ chatValue, setChatValue ] = useState<string>('');
     const [ selectedUsername, setSelectedUsername ] = useState('');
     const [ isTyping, setIsTyping ] = useState(false);

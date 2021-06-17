@@ -10,12 +10,15 @@ import { NitroCardHeaderView } from '../../../../../layout/card/header/NitroCard
 import { NitroCardView } from '../../../../../layout/card/NitroCardView';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../avatar-image/AvatarImageView';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../events';
+import { useRoomContext } from '../../../context/RoomContext';
+import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureMannequinData } from './FurnitureMannequinData';
 import { FurnitureMannequinViewMode, FurnitureMannequinViewProps } from './FurnitureMannequinView.types';
 
 export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
 {
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
+
     const parts = [
         AvatarFigurePartType.CHEST_ACCESSORY,
         AvatarFigurePartType.COAT_CHEST,
@@ -77,7 +80,7 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
     }, []);
 
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, props.events, onNitroEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onNitroEvent);
 
     const loadMannequinFigure = useCallback((figureContainer: IAvatarFigureContainer) =>
     {  

@@ -1,8 +1,8 @@
 import { Nitro, RoomSessionEvent } from 'nitro-renderer';
 import { useCallback, useEffect, useState } from 'react';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
-import { TransitionAnimation } from '../../transitions/TransitionAnimation';
-import { TransitionAnimationTypes } from '../../transitions/TransitionAnimation.types';
+import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
+import { TransitionAnimationTypes } from '../../layout/transitions/TransitionAnimation.types';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CatalogView } from '../catalog/CatalogView';
 import { FriendListView } from '../friend-list/FriendListView';

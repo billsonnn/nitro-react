@@ -3,7 +3,7 @@ import { InfoStandWidgetRentableBotViewProps } from './InfoStandWidgetRentableBo
 
 export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewProps> = props =>
 {
-    const { rentableBotInfoData = null, close = null } = props;
+    const { rentableBotData = null, close = null } = props;
 
     return null;
 }

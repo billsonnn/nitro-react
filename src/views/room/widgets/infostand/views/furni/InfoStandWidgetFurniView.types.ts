@@ -1,7 +1,7 @@
-import { FurnitureInfoData } from '../../../../../../api';
+import { RoomWidgetUpdateInfostandFurniEvent } from '../../../../events';
 
 export interface InfoStandWidgetFurniViewProps
 {
-    furnitureInfoData: FurnitureInfoData;
+    furniData: RoomWidgetUpdateInfostandFurniEvent;
     close: () => void;
 }

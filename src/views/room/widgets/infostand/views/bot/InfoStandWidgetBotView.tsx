@@ -3,7 +3,7 @@ import { InfoStandWidgetBotViewProps } from './InfoStandWidgetBotView.types';
 
 export const InfoStandWidgetBotView: FC<InfoStandWidgetBotViewProps> = props =>
 {
-    const { botInfoData = null } = props;
+    const { botData = null, close = null } = props;
 
     return null;
 }

@@ -2,13 +2,14 @@ import { RoomObjectOperationType } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { ProcessRoomObjectOperation } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../events';
+import { useRoomContext } from '../../../context/RoomContext';
+import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { ObjectLocationView } from '../../object-location/ObjectLocationView';
 import { FurnitureManipulationMenuViewProps } from './FurnitureManipulationMenuView.types';
 
 export const FurnitureManipulationMenuView: FC<FurnitureManipulationMenuViewProps> = props =>
 {
-    const { events = null } = props;
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ isVisible, setIsVisible ] = useState(false);
     const [ objectId, setObjectId ] = useState(-1);
     const [ objectType, setObjectType ] = useState(-1);
@@ -27,7 +28,6 @@ export const FurnitureManipulationMenuView: FC<FurnitureManipulationMenuViewProp
                 return;
             }
             case RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED: {
-                console.log('tru')
                 setIsVisible(false);
                 return;
             }
@@ -51,8 +51,8 @@ export const FurnitureManipulationMenuView: FC<FurnitureManipulationMenuViewProp
         moveFurniture();
     }, [ isVisible, moveFurniture ]);
 
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_REQUEST_MANIPULATION, events, onRoomWidgetRoomObjectUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, events, onRoomWidgetRoomObjectUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_REQUEST_MANIPULATION, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
 
     if(!isVisible) return null;
 

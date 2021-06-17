@@ -1,7 +1,7 @@
-import { RentableBotInfoData } from '../../../../../../api';
+import { RoomWidgetUpdateInfostandRentableBotEvent } from '../../../../events';
 
 export interface InfoStandWidgetRentableBotViewProps
 {
-    rentableBotInfoData: RentableBotInfoData;
+    rentableBotData: RoomWidgetUpdateInfostandRentableBotEvent;
     close: () => void;
 }

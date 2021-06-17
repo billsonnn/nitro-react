@@ -1,86 +1,135 @@
 import { RoomObjectCategory } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetObjectName, RoomObjectNameData } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
-import { RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../events';
+import { useRoomContext } from '../../context/RoomContext';
+import { RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../../events';
+import { RoomWidgetRoomObjectMessage } from '../../messages';
 import { AvatarInfoWidgetViewProps } from './AvatarInfoWidgetView.types';
 import { AvatarInfoWidgetNameView } from './views/name/AvatarInfoWidgetNameView';
 
 export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
 {
-    const { events = null } = props;
-    const [ names, setNames ] = useState<RoomObjectNameData[]>([]);
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
+    const [ name, setName ] = useState<RoomWidgetObjectNameEvent>(null);
+    const [ infoStandEvent, setInfoStandEvent ] = useState<RoomWidgetUpdateInfostandEvent>(null);
     const [ isGameMode, setGameMode ] = useState(false);
 
-    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    const onRoomWidgetUpdateEvent = useCallback((event: RoomWidgetUpdateEvent) =>
     {
         switch(event.type)
         {
-            case RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER: {
-                if(isGameMode) return;
+            case RoomWidgetRoomEngineUpdateEvent.NORMAL_MODE: {
+                const roomEngineEvent = (event as RoomWidgetRoomEngineUpdateEvent);
 
-                if(event.category !== RoomObjectCategory.UNIT) return;
+                setGameMode(false);
+                return;
+            }
+            case RoomWidgetRoomEngineUpdateEvent.GAME_MODE: {
+                const roomEngineEvent = (event as RoomWidgetRoomEngineUpdateEvent);
 
-                const nameData = GetObjectName(event.roomId, event.id, event.category);
+                setGameMode(true);
+                return;
+            }
+            case RoomWidgetRoomObjectUpdateEvent.USER_ADDED: {
+                const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
 
-                if(nameData)
-                {
-                    setNames(prevValue =>
+                return;
+            }
+            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED:
+            case RoomWidgetRoomObjectUpdateEvent.USER_REMOVED: {
+                const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+
+                setName(prevValue =>
+                    {
+                        if(!prevValue || (roomObjectEvent.id === prevValue.id)) return null;
+
+                        return prevValue;
+                    })
+
+                setInfoStandEvent(prevValue =>
+                    {
+                        if(!prevValue) return null;
+
+                        switch(event.type)
                         {
-                            const existing = prevValue.filter(value =>
+                            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED:
+                                if(prevValue instanceof RoomWidgetUpdateInfostandFurniEvent)
                                 {
-                                    if(value.objectId === nameData.id) return null;
-            
-                                    return value;
-                                });
-            
-                            return [ ...existing, nameData ]
-                        });
-                }
+                                    if(prevValue.id === roomObjectEvent.id) return null;
+                                }
+                                break;
+                            case RoomWidgetRoomObjectUpdateEvent.USER_REMOVED:
+                                if(prevValue instanceof RoomWidgetUpdateInfostandUserEvent || prevValue instanceof RoomWidgetUpdateInfostandRentableBotEvent)
+                                {
+                                    if(prevValue.webID === roomObjectEvent.id) return null;
+                                }
+
+                                else if(prevValue instanceof RoomWidgetUpdateInfostandPetEvent)
+                                {
+                                    // room index
+                                }
+                                break;
+                        }
+
+                        return prevValue;
+                    });
+
+                return;
+            }
+            case RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER: {
+                const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+                
+                widgetHandler.processWidgetMessage(new RoomWidgetRoomObjectMessage(RoomWidgetRoomObjectMessage.GET_OBJECT_NAME, roomObjectEvent.id, roomObjectEvent.category));
                 return;
             }
             case RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT: {
-                if(isGameMode) return;
-                
-                setNames(prevValue =>
-                    {
-                        return prevValue.filter(value =>
-                            {
-                                if(value.objectId === event.id) return null;
+                const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
 
-                                return value;
-                            });
-                    });
+                setName(null);
                 return;
             }
+            case RoomWidgetObjectNameEvent.TYPE: {
+                const objectNameEvent = (event as RoomWidgetObjectNameEvent);
+
+                if(objectNameEvent.category !== RoomObjectCategory.UNIT) return;
+
+                setName(objectNameEvent);
+
+                return;
+            }
+            case RoomWidgetUpdateInfostandFurniEvent.FURNI:
+            case RoomWidgetUpdateInfostandUserEvent.OWN_USER:
+            case RoomWidgetUpdateInfostandUserEvent.PEER:
+            case RoomWidgetUpdateInfostandUserEvent.BOT:
+            case RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT: {
+                const infostandEvent = (event as RoomWidgetUpdateInfostandFurniEvent);
+
+                setInfoStandEvent(infostandEvent);
+                return;
+            }
+            default:
+                console.log(event);
+                return;
         }
-    }, [ isGameMode ]);
+    }, [ widgetHandler ]);
 
-    const onRoomWidgetRoomEngineUpdateEvent = useCallback((event: RoomWidgetRoomEngineUpdateEvent) =>
-    {
-        switch(event.type)
-        {
-            case RoomWidgetRoomEngineUpdateEvent.RWREUE_NORMAL_MODE:
-                setGameMode(false);
-                break;
-            case RoomWidgetRoomEngineUpdateEvent.RWREUE_GAME_MODE:
-                setGameMode(true);
-                break;
-        }
-    }, []);
-
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER, events, onRoomWidgetRoomObjectUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT, events, onRoomWidgetRoomObjectUpdateEvent);
-
-    CreateEventDispatcherHook(RoomWidgetRoomEngineUpdateEvent.RWREUE_NORMAL_MODE, events, onRoomWidgetRoomEngineUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomEngineUpdateEvent.RWREUE_GAME_MODE, events, onRoomWidgetRoomEngineUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomEngineUpdateEvent.NORMAL_MODE, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomEngineUpdateEvent.GAME_MODE, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_ADDED, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_REMOVED, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetObjectNameEvent.TYPE, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateInfostandFurniEvent.FURNI, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.OWN_USER, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.BOT, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT, eventDispatcher, onRoomWidgetUpdateEvent);
 
     return (
         <>
-            { names && (names.length > 0) && names.map((data, index) =>
-                {
-                    return <AvatarInfoWidgetNameView key={ index } nameData={ data } />
-                }) }
+            { name && <AvatarInfoWidgetNameView event={ name } /> }
         </>
     )
 }

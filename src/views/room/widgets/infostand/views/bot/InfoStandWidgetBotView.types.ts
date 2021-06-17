@@ -1,7 +1,7 @@
-import { UserInfoData } from '../../../../../../api';
+import { RoomWidgetUpdateInfostandUserEvent } from '../../../../events';
 
 export interface InfoStandWidgetBotViewProps
 {
-    botInfoData: UserInfoData;
+    botData: RoomWidgetUpdateInfostandUserEvent;
     close: () => void;
 }

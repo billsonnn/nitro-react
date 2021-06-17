@@ -1,6 +1,6 @@
-import { RoomObjectNameData } from '../../../../../../api';
+import { RoomWidgetObjectNameEvent } from '../../../../events';
 
 export interface AvatarInfoWidgetNameViewProps
 {
-    nameData: RoomObjectNameData;
+    event: RoomWidgetObjectNameEvent;
 }

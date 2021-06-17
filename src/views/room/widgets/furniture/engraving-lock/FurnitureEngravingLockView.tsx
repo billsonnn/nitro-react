@@ -11,12 +11,14 @@ import { NitroCardHeaderView } from '../../../../../layout/card/header/NitroCard
 import { NitroCardView } from '../../../../../layout/card/NitroCardView';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../avatar-image/AvatarImageView';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../events/RoomWidgetRoomObjectUpdateEvent';
+import { useRoomContext } from '../../../context/RoomContext';
+import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureEngravingLockData } from './FurnitureEngravingLockData';
 import { FurnitureEngravingLockViewProps } from './FurnitureEngravingLockView.types';
 
 export const FurnitureEngravingLockView: FC<FurnitureEngravingLockViewProps> = props =>
 {
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ engravingLockData, setEngravingLockData ]   = useState<FurnitureEngravingLockData>(null);
     const [ engravingStage, setEngravingStage ]         = useState(0);
     
@@ -57,7 +59,7 @@ export const FurnitureEngravingLockView: FC<FurnitureEngravingLockViewProps> = p
     };
 
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, props.events, onNitroEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onNitroEvent);
 
     const onLoveLockFurniStartEvent = useCallback((event: LoveLockFurniStartEvent) =>
     {
@@ -70,16 +72,9 @@ export const FurnitureEngravingLockView: FC<FurnitureEngravingLockViewProps> = p
         else
             setEngravingStage(2);
 
-    }, [ engravingStage ]);
-
-    const onLoveLockDoneEvent = useCallback((event: LoveLockFurniFinishedEvent | LoveLockFurniFriendConfirmedEvent) =>
-    {
-        processAction('close_request');
     }, []);
 
     CreateMessageHook(LoveLockFurniStartEvent, onLoveLockFurniStartEvent);
-    CreateMessageHook(LoveLockFurniFinishedEvent, onLoveLockDoneEvent);
-    CreateMessageHook(LoveLockFurniFriendConfirmedEvent, onLoveLockDoneEvent);
 
     const processAction = useCallback((type: string, value: string = null) =>
     {
@@ -101,6 +96,14 @@ export const FurnitureEngravingLockView: FC<FurnitureEngravingLockViewProps> = p
                 return;
         }
     }, [ engravingLockData ]);
+
+    const onLoveLockDoneEvent = useCallback((event: LoveLockFurniFinishedEvent | LoveLockFurniFriendConfirmedEvent) =>
+    {
+        processAction('close_request');
+    }, [ processAction ]);
+
+    CreateMessageHook(LoveLockFurniFinishedEvent, onLoveLockDoneEvent);
+    CreateMessageHook(LoveLockFurniFriendConfirmedEvent, onLoveLockDoneEvent);
 
     return (
         <>

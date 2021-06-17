@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { FurnitureDimmerView } from './dimmer/FurnitureDimmerView';
 import { FurnitureEngravingLockView } from './engraving-lock/FurnitureEngravingLockView';
 import { FurnitureExchangeCreditView } from './exchange-credit/FurnitureExchangeCreditView';
@@ -9,21 +10,19 @@ import { FurniturePresentView } from './present/FurniturePresentView';
 import { FurnitureStickieView } from './stickie/FurnitureStickieView';
 import { FurnitureTrophyView } from './trophy/FurnitureTrophyView';
 
-export function FurnitureWidgetsView(props: FurnitureWidgetsViewProps): JSX.Element
+export const FurnitureWidgetsView: FC<FurnitureWidgetsViewProps> = props =>
 {
-    const { events } = props;
-
     return (
         <div className="position-absolute nitro-room-widgets t-0 l-0">
-            <FurnitureDimmerView events={ events } />
-            <FurnitureEngravingLockView events={ events } />
-            <FurnitureExchangeCreditView events={ events } />
-            <FurnitureHighScoreView events={ events } />
-            <FurnitureManipulationMenuView events={ events } />
-            <FurnitureMannequinView events={ events } />
-            <FurniturePresentView events={ events } />
-            <FurnitureStickieView events={ events } />
-            <FurnitureTrophyView events={ events } />
+            <FurnitureDimmerView />
+            <FurnitureEngravingLockView />
+            <FurnitureExchangeCreditView />
+            <FurnitureHighScoreView />
+            <FurnitureManipulationMenuView />
+            <FurnitureMannequinView />
+            <FurniturePresentView />
+            <FurnitureStickieView />
+            <FurnitureTrophyView />
         </div>
     );
 }

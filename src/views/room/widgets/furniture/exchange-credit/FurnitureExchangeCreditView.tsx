@@ -6,12 +6,14 @@ import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-
 import { NitroCardContentView, NitroCardHeaderView } from '../../../../../layout';
 import { NitroCardView } from '../../../../../layout/card/NitroCardView';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../events';
+import { useRoomContext } from '../../../context/RoomContext';
+import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureExchangeCreditData } from './FurnitureExchangeCreditData';
 import { FurnitureExchangeCreditProps } from './FurnitureExchangeCreditView.types';
 
 export const FurnitureExchangeCreditView: FC<FurnitureExchangeCreditProps> = props =>
 {
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ exchangeCreditData, setExchangeCreditData ] = useState<FurnitureExchangeCreditData>(null);
 
     const onNitroEvent = useCallback((event: NitroEvent) =>
@@ -45,7 +47,7 @@ export const FurnitureExchangeCreditView: FC<FurnitureExchangeCreditProps> = pro
     }, []);
 
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_CREDITFURNI, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, props.events, onNitroEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onNitroEvent);
 
     const processAction = useCallback((type: string, value: string = null) =>
     {

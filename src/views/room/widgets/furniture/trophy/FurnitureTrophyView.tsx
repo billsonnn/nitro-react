@@ -5,12 +5,14 @@ import { DraggableWindow } from '../../../../../hooks/draggable-window/Draggable
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../events';
+import { useRoomContext } from '../../../context/RoomContext';
+import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureTrophyData } from './FurnitureTrophyData';
 import { FurnitureTrophyViewProps } from './FurnitureTrophyView.types';
 
 export const FurnitureTrophyView: FC<FurnitureTrophyViewProps> = props =>
 {
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ trophyData, setTrophyData ] = useState<FurnitureTrophyData>(null);
 
     const onNitroEvent = useCallback((event: NitroEvent) =>
@@ -55,7 +57,7 @@ export const FurnitureTrophyView: FC<FurnitureTrophyViewProps> = props =>
     }, []);
 
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_TROPHY, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, props.events, onNitroEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, widgetHandler.eventDispatcher, onNitroEvent);
 
     const processAction = useCallback((type: string, value: string = null) =>
     {

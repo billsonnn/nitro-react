@@ -4,12 +4,14 @@ import { GetRoomCameraWidgetManager } from '../../../../api';
 import { RoomWidgetCameraEvent } from '../../../../events/room-widgets/camera/RoomWidgetCameraEvent';
 import { useCameraEvent } from '../../../../hooks/events/nitro/camera/camera-event';
 import { useUiEvent } from '../../../../hooks/events/ui/ui-event';
+import { useRoomContext } from '../../context/RoomContext';
 import { CameraWidgetViewProps } from './CameraWidgetView.types';
 import { CameraWidgetCaptureView } from './views/capture/CameraWidgetCaptureView';
 import { CameraWidgetEditorView } from './views/editor/CameraWidgetEditorView';
 
 export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
 {
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ effectsReady, setEffectsReady ] = useState(false);
     const [ isCaptureVisible, setIsCaptureVisible ] = useState(false);
     const [ isEditorVisible, setIsEditorVisible ] = useState(false);

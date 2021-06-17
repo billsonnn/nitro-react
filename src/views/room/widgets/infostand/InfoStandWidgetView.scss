@@ -7,10 +7,11 @@
 
     .nitro-infostand {
         position: relative;
-        min-width: 200px;
-        max-width: 200px;
+        min-width: 170px;
+        max-width: 170px;
         z-index: $infostand-zindex;
 	    pointer-events: auto;
+        box-shadow: inset 0 2px 0 rgba($white, .15), 0 1px 1px rgba($black, .1);
 
         .avatar-image {
             position: relative;
