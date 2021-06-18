@@ -1,7 +1,7 @@
-import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, RoomControllerLevel, RoomModerationParser, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomTradingLevelEnum, RoomUserData, RoomWidgetEnumItemExtradataParameter, Vector3d } from 'nitro-renderer';
+import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, PetType, RoomControllerLevel, RoomModerationParser, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomTradingLevelEnum, RoomUserData, RoomWidgetEnumItemExtradataParameter, Vector3d } from 'nitro-renderer';
 import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../api';
 import { LocalizeText } from '../../../utils/LocalizeText';
-import { RoomWidgetObjectNameEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
+import { RoomWidgetObjectNameEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
 import { RoomWidgetChangeMottoMessage, RoomWidgetFurniActionMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUserActionMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
 
@@ -9,7 +9,13 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 {
     public processEvent(event: NitroEvent): void
     {
-        return;
+        switch(event.type)
+        {
+            case RoomSessionPetInfoUpdateEvent.PET_INFO:
+                this.processPetInfoEvent((event as RoomSessionPetInfoUpdateEvent));
+                return;
+
+        }
     }
 
     public processWidgetMessage(message: RoomWidgetMessage): RoomWidgetUpdateEvent
@@ -62,7 +68,6 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 return this.processObjectNameMessage((message as RoomWidgetRoomObjectMessage));
             case RoomWidgetRoomObjectMessage.GET_OBJECT_INFO:
                 return this.processObjectInfoMessage((message as RoomWidgetRoomObjectMessage));
-
         }
 
         return null;
@@ -431,6 +436,86 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         this.eventDispatcher.dispatchEvent(event);
     }
 
+    private processPetInfoEvent(event: RoomSessionPetInfoUpdateEvent): void
+    {
+        const petData = event._Str_24727;
+
+        if(!petData) return;
+
+        const roomPetData = this.roomSession.userDataManager.getPetData(petData.id);
+
+        if(!roomPetData) return;
+
+        const figure = roomPetData.figure;
+
+        const petType = this.getPetType(figure);
+        const petBreed = this.getPetBreed(figure);
+
+        let posture: string = null;
+
+        if(petType === PetType.MONSTERPLANT)
+        {
+            if(petData.level >= petData._Str_20651) posture = 'std';
+            else posture = ('grw' + petData.level);
+        }
+
+        // var _local_8:String = (_local_4 + ((_local_7 != null) ? ("/posture=" + _local_7) : ""));
+        // var _local_9:BitmapData = (this._cachedPetImages.getValue(_local_8) as BitmapData);
+        // if (_local_9 == null)
+        // {
+        //     _local_9 = this._Str_2641(_local_4, _local_7);
+        //     this._cachedPetImages.add(_local_8, _local_9);
+        // }
+
+        const isOwner = (petData.ownerId === GetSessionDataManager().userId);
+        const infostandEvent = new RoomWidgetUpdateInfostandPetEvent(RoomWidgetUpdateInfostandPetEvent.PET_INFO);
+
+        infostandEvent.name = roomPetData.name;
+        infostandEvent.id = petData.id;
+        infostandEvent.ownerId = petData.ownerId;
+        infostandEvent.ownerName = petData.ownerName;
+        infostandEvent.rarityLevel = petData.rarityLevel;
+        infostandEvent.petType = petType;
+        infostandEvent.petBreed = petBreed;
+        infostandEvent.isOwner = isOwner;
+        infostandEvent.roomIndex = roomPetData.roomIndex;
+        infostandEvent.level = petData.level;
+        infostandEvent.maximumLevel = petData.maximumLevel;
+        infostandEvent.experience = petData.experience;
+        infostandEvent.levelExperienceGoal = petData.levelExperienceGoal;
+        infostandEvent.energy = petData.energy;
+        infostandEvent.maximumEnergy = petData.maximumEnergy;
+        infostandEvent.happyness = petData.happyness;
+        infostandEvent.maximumHappyness = petData.maximumHappyness;
+        infostandEvent.respect = petData.respect;
+        infostandEvent.respectsPetLeft = GetSessionDataManager().respectsPetLeft;
+        infostandEvent.age = petData.age;
+        infostandEvent.saddle = petData.saddle;
+        infostandEvent.rider = petData.rider;
+        infostandEvent.breedable = petData.breedable;
+        infostandEvent.fullyGrown = petData.fullyGrown;
+        infostandEvent.dead = petData.dead;
+        infostandEvent.rarityLevel = petData.rarityLevel;
+        infostandEvent.Str_4460 = petData._Str_3307;
+        infostandEvent.canRemovePet = false;
+        infostandEvent.publiclyRideable = petData.publiclyRideable;
+        infostandEvent.maximumTimeToLive = petData.maximumTimeToLive;
+        infostandEvent.remainingTimeToLive = petData.remainingTimeToLive;
+        infostandEvent.remainingGrowTime = petData.remainingGrowTime;
+        infostandEvent.publiclyBreedable = petData.publiclyBreedable;
+
+        if(isOwner)
+        {
+            infostandEvent.canRemovePet = true;
+        }
+        else
+        {
+            if(this.roomSession.isRoomOwner || GetSessionDataManager().isModerator || (this.roomSession.controllerLevel >= RoomControllerLevel.GUEST)) infostandEvent.canRemovePet = true;
+        }
+
+        this.eventDispatcher.dispatchEvent(infostandEvent);
+    }
+
     private checkGuildSetting(event: RoomWidgetUpdateInfostandUserEvent): boolean
     {
         if(event.isGuildRoom) return (event.roomControllerLevel >= RoomControllerLevel.GUILD_ADMIN);
@@ -501,10 +586,31 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         return (flag && (event.roomControllerLevel < RoomControllerLevel.ROOM_OWNER));
     }
 
+    private getPetType(figure: string): number
+    {
+        return this.getPetFigurePart(figure, 0);
+    }
+
+    private getPetBreed(figure: string): number
+    {
+        return this.getPetFigurePart(figure, 1);
+    }
+
+    private getPetFigurePart(figure: string, index: number): number
+    {
+        if(!figure || !figure.length) return -1;
+
+        const parts = figure.split(' ');
+
+        if(parts.length > 0) return parseInt(parts[index]);
+
+        return -1;
+    }
+
     public get eventTypes(): string[]
     {
         return [
-
+            RoomSessionPetInfoUpdateEvent.PET_INFO
         ];
     }
 

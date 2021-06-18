@@ -1,4 +1,4 @@
-import { RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent } from 'nitro-renderer';
+import { RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { useRoomSessionManagerEvent } from '../../../hooks/events';
 import { LocalizeText } from '../../../utils/LocalizeText';
@@ -32,6 +32,7 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
     useRoomSessionManagerEvent(RoomSessionDimmerPresetsEvent.RSDPE_PRESETS, onRoomSessionEvent);
     useRoomSessionManagerEvent(RoomSessionFriendRequestEvent.RSFRE_FRIEND_REQUEST, onRoomSessionEvent);
     useRoomSessionManagerEvent(RoomSessionPresentEvent.RSPE_PRESENT_OPENED, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionPetInfoUpdateEvent.PET_INFO, onRoomSessionEvent);
 
     const onRoomErrorEvent = useCallback((event: RoomSessionEvent) =>
     {

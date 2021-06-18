@@ -70,7 +70,7 @@ export class RoomWidgetHandlerManager implements IRoomWidgetHandlerManager
 
     public processEvent(event: NitroEvent): void
     {
-        const handlers = this._messageMap.get(event.type);
+        const handlers = this._eventMap.get(event.type);
 
         if(!handlers || !handlers.length) return null;
 
