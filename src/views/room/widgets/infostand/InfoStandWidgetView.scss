@@ -13,13 +13,8 @@
 	    pointer-events: auto;
         box-shadow: inset 0 2px 0 rgba($white, .15), 0 1px 1px rgba($black, .1);
 
-        .avatar-image {
-            position: relative;
-            width: 90px;
-            height: 130px;
-            background-repeat: no-repeat;
-            background-position-x: center;
-            background-position-y: -8px !important;
+        &.nitro-infostand-user {
+            max-width: 180px;
         }
 
         .pet-image {
@@ -52,56 +47,30 @@
             }
         }
 
-        .grid-container {
-    
-            .grid-items {
-        
-                .item-detail {
-                    height: 40px;
-                    max-height: 40px;
-                }
-            }
+        .badge-image {
+            width: 45px;
+            height: 45px;
         }
 
-        .motto-container {
-            display: flex;
-            align-items: center;
-            min-height: 28px;
+        .motto-content {
+            min-height: 18px;
+        }
+
+        .motto-input {
             width: 100%;
-            padding: 5px 8px;
-            background-color: rgba($secondary, 1);
-            border-radius: 3px;
+            height: 100%;
+            font-size: 12px;
+            padding: 0;
+            outline: 0;
+            border: 0;
+            color: rgba($white, 1);
+            position: relative;
+            background: transparent;
+            resize: none;
 
-            i.icon {
-                margin-right: 5px;
+            &:focus {
+                font-style: italic;
             }
-
-            .motto {
-                font-size: 12px;
-                width: 100%;
-                word-break: break-word;
-            }
-
-            .motto-input {
-                width: 100%;
-                height: 100%;
-                font-size: 12px;
-                padding: 0;
-                outline: 0;
-                border: 0;
-                color: rgba($white, 1);
-                position: relative;
-                background: transparent;
-                resize: none;
-
-                &:focus {
-                    font-style: italic;
-                }
-            }
-        }
-
-        p {
-            display: block;
         }
     }
 

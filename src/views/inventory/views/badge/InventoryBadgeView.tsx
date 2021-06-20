@@ -95,7 +95,7 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
                                     <p className="mb-0">{ LocalizeBadgeName(badge) }</p>
                                 </div>
                             </div>
-                            <button type="button" className={ 'btn btn-' + (isWearingBadge(badge) ? 'danger' : 'success') } disabled={ !canWearBadges() } onClick={ toggleBadge }>{ LocalizeText(isWearingBadge(badge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge')}</button>
+                            <button type="button" className={ 'btn btn-' + (isWearingBadge(badge) ? 'danger' : 'success') } disabled={ !isWearingBadge(badge) && !canWearBadges() } onClick={ toggleBadge }>{ LocalizeText(isWearingBadge(badge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge')}</button>
                         </div> }
                     <div className="d-flex justify-content-center align-items-center bg-primary rounded p-1">
                         <div className="h6 m-0 text-white">{ LocalizeText('achievements_score_description', [ 'score' ], [ '0' ]) }</div>

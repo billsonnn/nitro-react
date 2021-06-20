@@ -13,6 +13,7 @@ const PICKUP_MODE_FULL: number = 2;
 export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props =>
 {
     const { furniData = null, close = null } = props;
+    
     const [ pickupMode, setPickupMode ] = useState(0);
     const [ canMove, setCanMove ] = useState(false);
     const [ canRotate, setCanRotate ] = useState(false);
@@ -180,7 +181,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
             <div className="d-flex flex-column bg-dark nitro-card nitro-infostand rounded">
                 <div className="container-fluid content-area">
                     <div className="d-flex justify-content-between align-items-center">
-                        <div className="">{ furniData.name }</div>
+                        <div>{ furniData.name }</div>
                         <i className="fas fa-times cursor-pointer" onClick={ close }></i>
                     </div>
                     <hr className="m-0 my-1"/>
