@@ -1,4 +1,9 @@
 .nitro-camera-capture {
+    .nitro-card-close-parent {
+        top: 7px;
+        right: 10px;
+    }
+    
     .camera-canvas {
         width: 340px;
         height: 462px;
@@ -9,7 +14,7 @@
             position: absolute;
             width: 320px;
             height: 320px;
-            margin-top: 9px;
+            margin-top: 37px;
             margin-left: 11.4px;
 
             &.bg {
@@ -25,7 +30,7 @@
             width: 94px;
             height: 94px;
             cursor: pointer;
-            margin-top: 334px;
+            margin-top: 362px;
     
             background-image: url('../../../../assets/images/room-widgets/camera-widget/camera-spritesheet.png');
             background-position: -340px 0px;
@@ -94,10 +99,19 @@
         width: 320px;
         height: 320px;
 
-        &.zoomed {
-            background-size: 636px;
-            background-position: center;
+        .slider {
+            background: linear-gradient(180deg, transparent, black);
+            text-shadow: 1px 1px rgba(0, 0, 0, .5);
         }
+    }
+}
+
+.nitro-camera-checkout {
+    width: 336px;
+
+    .picture-preview {
+        width: 320px;
+        height: 320px;
 
         .slider {
             background: linear-gradient(180deg, transparent, black);

@@ -7,7 +7,9 @@ const CameraWidgetContext = createContext<ICameraWidgetContext>({
     selectedPictureIndex: null,
     setSelectedPictureIndex: null,
     selectedEffects: null,
-    setSelectedEffects: null
+    setSelectedEffects: null,
+    isZoomed: null,
+    setIsZoomed: null
 });
 
 export const CameraWidgetContextProvider: FC<CameraWidgetContextProps> = props =>

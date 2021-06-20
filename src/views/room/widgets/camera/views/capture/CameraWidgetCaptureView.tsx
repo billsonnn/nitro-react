@@ -79,22 +79,22 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
         <DraggableWindow handle=".nitro-camera-capture">
             <div className="nitro-camera-capture d-flex flex-column justify-content-center align-items-center">
                <div className="camera-canvas">
-                    <div className="overflow-auto">
-                        <div className="cursor-pointer float-end me-3 mt-2" onClick={ event => processAction('close') }>
-                            <i className="fas fa-times"></i>
+                    <div className="nitro-card-close-parent">
+                        <div className="nitro-card-close" onClick={ event => processAction('close') }>
+                            <i className="fas fa-times"/>
                         </div>
                     </div>
                     <div ref={ cameraFrameRef } className={'camera-frame ' + classNames({'bg': cameraWidgetContext.selectedPictureIndex > -1}) }>
                         { cameraWidgetContext.selectedPictureIndex > -1 && <div>
                             <img src={ cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex].src } />
                             <div className="camera-frame-preview-actions w-100 position-absolute bottom-0 py-2 text-center">
-                                <button className="btn btn-success me-3" onClick={ event => processAction('edit_picture') }>{ LocalizeText('camera.editor.button.text') }</button>
+                                <button className="btn btn-success me-3" title={ LocalizeText('camera.editor.button.tooltip') } onClick={ event => processAction('edit_picture') }>{ LocalizeText('camera.editor.button.text') }</button>
                                 <button className="btn btn-danger" onClick={ event => processAction('discard_picture') }>{ LocalizeText('camera.delete.button.text') }</button>
                             </div>
                         </div> }
                     </div>
                     <div className="d-flex justify-content-center">
-                        <div className="camera-button" onClick={ takePicture }></div>
+                        <div className="camera-button" title={ LocalizeText('camera.take.photo.button.tooltip') } onClick={ takePicture }></div>
                     </div>
                </div>
                { cameraWidgetContext.cameraRoll.length > 0 && <div className="camera-roll d-flex justify-content-center py-2">

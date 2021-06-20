@@ -8,7 +8,9 @@ export interface ICameraWidgetContext
     selectedPictureIndex: number,
     setSelectedPictureIndex: (index: number) => void,
     selectedEffects: IRoomCameraWidgetSelectedEffect[],
-    setSelectedEffects: (selectedEffects: IRoomCameraWidgetSelectedEffect[]) => void
+    setSelectedEffects: (selectedEffects: IRoomCameraWidgetSelectedEffect[]) => void,
+    isZoomed: boolean,
+    setIsZoomed: (isZoomed: boolean) => void
 }
 
 export interface CameraWidgetContextProps extends ProviderProps<ICameraWidgetContext>

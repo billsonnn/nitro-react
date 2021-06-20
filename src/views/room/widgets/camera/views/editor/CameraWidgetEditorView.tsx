@@ -13,17 +13,15 @@ import { CameraWidgetEditorTabs, CameraWidgetEditorViewProps } from './CameraWid
 
 export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 {
-    const { availableEffects = null, onCloseClick = null, onCancelClick = null } = props;
+    const { availableEffects = null, myLevel = null, onCloseClick = null, onCancelClick = null, onCheckoutClick = null } = props;
     
     const TABS: string[] = [ CameraWidgetEditorTabs.COLORMATRIX, CameraWidgetEditorTabs.COMPOSITE ];
-    const MY_LEVEL: number = 6;
 
     const cameraWidgetContext = useCameraWidgetContext();
     
     const [ currentTab, setCurrentTab ]                 = useState(CameraWidgetEditorTabs.COLORMATRIX);
     const [ selectedEffectName, setSelectedEffectName ] = useState(null);
     const [ effectsThumbnails, setEffectsThumbnails ]   = useState<{ name: string, image: HTMLImageElement }[]>([]);
-    const [ isZoomed, setIsZoomed ]                     = useState(false);
 
     useEffect(() =>
     {
@@ -60,8 +58,8 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 
     const getCurrentPicture = useCallback(() =>
     {
-        return GetRoomCameraWidgetManager().applyEffects(cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex], cameraWidgetContext.selectedEffects, isZoomed);
-    }, [ cameraWidgetContext.selectedEffects, isZoomed ]);
+        return GetRoomCameraWidgetManager().applyEffects(cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex], cameraWidgetContext.selectedEffects, cameraWidgetContext.isZoomed);
+    }, [ cameraWidgetContext.selectedEffects, cameraWidgetContext.isZoomed ]);
 
     const getCurrentEffectAlpha = useCallback(() =>
     {
@@ -106,6 +104,9 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
             case 'cancel':
                 onCancelClick();
                 return;
+            case 'checkout':
+                onCheckoutClick();
+                return;
             case 'change_tab':
                 setCurrentTab(String(value));
                 return;
@@ -124,12 +125,12 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                     {
                         effect = availableEffects.find(effect => effect.name === value);
                         
-                        if(effect.minLevel > MY_LEVEL) return;
+                        if(effect.minLevel > myLevel) return;
                         
                         cameraWidgetContext.setSelectedEffects([...cameraWidgetContext.selectedEffects, new RoomCameraWidgetSelectedEffect(effect, 0.5)]);
                     }
                     
-                    if(effect && effect.minLevel > MY_LEVEL) return;
+                    if(effect && effect.minLevel > myLevel) return;
 
                     if(selectedEffectName !== value)
                     {
@@ -169,7 +170,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 window.open(getCurrentPicture().src, '_blank');
                 return;
             case 'zoom':
-                setIsZoomed(isZoomed => !isZoomed);
+                cameraWidgetContext.setIsZoomed(!cameraWidgetContext.isZoomed);
                 return;
         }
     }, [ onCloseClick, onCancelClick, availableEffects, cameraWidgetContext.selectedEffects, selectedEffectName ]);
@@ -193,11 +194,11 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                                         return (
                                             <div key={ effect.name } className="col mb-3 position-relative">
                                                 { getEffectIndex(effect.name) > -1 && <button className="btn btn-danger btn-sm p-0 position-absolute btn-remove-effect" onClick={ event => processAction('remove_effect', effect.name) }><i className="fas fa-times"></i></button> }
-                                                <div title={ effect.minLevel <= MY_LEVEL ? LocalizeText('camera.effect.name.' + effect.name) : LocalizeText('camera.effect.required.level') + ' ' + effect.minLevel } onClick={ event => processAction('select_effect', effect.name) } className={"effect-thumbnail cursor-pointer position-relative border border-2 rounded d-flex flex-column justify-content-center align-items-center py-1" + classNames({' active': selectedEffectName === effect.name})}>
-                                                    { effect.minLevel <= MY_LEVEL && <div className="effect-thumbnail-image border">
+                                                <div title={ effect.minLevel <= myLevel ? LocalizeText('camera.effect.name.' + effect.name) : LocalizeText('camera.effect.required.level') + ' ' + effect.minLevel } onClick={ event => processAction('select_effect', effect.name) } className={"effect-thumbnail cursor-pointer position-relative border border-2 rounded d-flex flex-column justify-content-center align-items-center py-1" + classNames({' active': selectedEffectName === effect.name})}>
+                                                    { effect.minLevel <= myLevel && <div className="effect-thumbnail-image border">
                                                         <img alt="" src={ getEffectThumbnail(effect.name) } />
                                                     </div> }
-                                                    { effect.minLevel > MY_LEVEL && <div className="text-center text-black">
+                                                    { effect.minLevel > myLevel && <div className="text-center text-black">
                                                         <div><i className="fas fa-lock"></i></div>
                                                         <div className="fw-bold">{ effect.minLevel }</div>
                                                     </div> }
@@ -212,7 +213,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 <div className="w-100">
                     <NitroCardTabsView></NitroCardTabsView>
                     <NitroCardContentView>
-                        <div className="d-flex align-items-end picture-preview" style={ { backgroundImage: 'url(' + getCurrentPicture().src + ')' } }>
+                        <div className="d-flex align-items-end picture-preview border" style={ { backgroundImage: 'url(' + getCurrentPicture().src + ')' } }>
                             { selectedEffectName && <div className="w-100 p-2 d-flex flex-column justify-content-center slider">
                                 <div className="w-100 text-center">{ LocalizeText('camera.effect.name.' + selectedEffectName) + ' - ' + getCurrentEffectAlpha() }</div>
                                 <input type="range" min="0" max="1" step="0.01" value={ getCurrentEffectAlpha() } onChange={ event => setSelectedEffectAlpha(Number(event.target.value)) } className="form-range w-100" />
@@ -222,11 +223,11 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                             <div className="btn-group">
                                 <button className="btn btn-primary" onClick={ event => processAction('clear_effects') }><i className="fas fa-trash"></i></button>
                                 <button className="btn btn-primary" onClick={ event => processAction('download') }><i className="fas fa-save"></i></button>
-                                <button className="btn btn-primary" onClick={ event => processAction('zoom') }><i className={"fas " + classNames({'fa-search-plus': !isZoomed, 'fa-search-minus': isZoomed})}></i></button>
+                                <button className="btn btn-primary" onClick={ event => processAction('zoom') }><i className={"fas " + classNames({'fa-search-plus': !cameraWidgetContext.isZoomed, 'fa-search-minus': cameraWidgetContext.isZoomed})}></i></button>
                             </div>
                             <div className="d-flex justify-content-end">
                                 <button className="btn btn-primary me-2" onClick={ event => processAction('cancel') }>{ LocalizeText('generic.cancel') }</button>
-                                <button className="btn btn-success">{ LocalizeText('camera.preview.button.text') }</button>
+                                <button className="btn btn-success" onClick={ event => processAction('checkout') }>{ LocalizeText('camera.preview.button.text') }</button>
                             </div>
                         </div>
                     </NitroCardContentView>
