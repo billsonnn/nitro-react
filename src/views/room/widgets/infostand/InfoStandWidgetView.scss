@@ -29,7 +29,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: rgba($secondary, 1);
+            background-color: rgba($light-dark, 1);
             width: 100%;
             max-width: 68px;
             border-radius: 3px;
@@ -76,5 +76,9 @@
 
     .button-container {
 	    pointer-events: auto;
+    }
+
+    .pet-stats {
+        height: 21px;
     }
 }

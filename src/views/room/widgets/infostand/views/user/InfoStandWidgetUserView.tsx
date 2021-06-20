@@ -94,7 +94,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                         </div>
                     </div>
                     <hr className="m-0 my-1"/>
-                    <div className="bg-secondary rounded py-1 px-2 small">
+                    <div className="bg-light-dark rounded py-1 px-2 small">
                         { userData.type !== RoomWidgetUpdateInfostandUserEvent.OWN_USER && <div className="motto-content">{ motto }</div> }
                         { userData.type === RoomWidgetUpdateInfostandUserEvent.OWN_USER && <div className="d-flex justify-content-between align-items-center">
                             <div className="me-2">
