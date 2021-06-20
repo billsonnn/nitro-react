@@ -22,19 +22,32 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
     const [ isCrackable, setIsCrackable ] = useState(false);
     const [ crackableHits, setCrackableHits ] = useState(0);
     const [ crackableTarget, setCrackableTarget ] = useState(0);
+    const [ godMode, setGodMode ] = useState(false);
 
     useEffect(() =>
     {
+        setFurniSettingsKeys([]);
+        setFurniSettingsValues([]);
+        
         const isValidController = (furniData.roomControllerLevel >= RoomControllerLevel.GUEST);
-
-        let godMode = false;
 
         if(isValidController || furniData.isOwner || furniData.isRoomOwner || furniData.isAnyRoomController)
         {
             setCanMove(true);
             setCanRotate(!furniData.isWallItem);
 
-            if(furniData.roomControllerLevel >= RoomControllerLevel.MODERATOR) godMode = true;
+            if(furniData.roomControllerLevel >= RoomControllerLevel.MODERATOR)
+            {
+                setGodMode(true);
+            }
+            else
+            {
+                setGodMode(false);
+            }
+        }
+        else
+        {
+            setGodMode(false);
         }
 
         if((((furniData.usagePolicy === RoomWidgetFurniInfoUsagePolicyEnum.EVERYBODY) || ((furniData.usagePolicy === RoomWidgetFurniInfoUsagePolicyEnum.CONTROLLER) && isValidController)) || ((furniData.extraParam === RoomWidgetEnumItemExtradataParameter.JUKEBOX) && isValidController)) || ((furniData.extraParam === RoomWidgetEnumItemExtradataParameter.USABLE_PRODUCT) && isValidController)) setCanUse(true);
@@ -92,12 +105,42 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         }
 
         else if(furniData.isStickie) setPickupMode(PICKUP_MODE_NONE);
-    }, [ furniData ]);
+    }, [ furniData, godMode ]);
 
     const openFurniGroupInfo = useCallback(() =>
     {
 
     }, []);
+
+    const onFurniSettingChange = useCallback((index: number, value: string) =>
+    {
+        const clone = Array.from(furniSettingsValues);
+
+        clone[index] = value;
+
+        setFurniSettingsValues(clone);
+    }, [ furniSettingsValues ]);
+
+    const getFurniSettingsAsString = useCallback(() =>
+    {
+        if(furniSettingsKeys.length === 0 || furniSettingsValues.length === 0) return '';
+
+        let data = '';
+
+        let i = 0;
+
+        while(i < furniSettingsKeys.length)
+        {
+            const key   = furniSettingsKeys[i];
+            const value = furniSettingsValues[i];
+
+            data = (data + (key + '=' + value + '\t'));
+
+            i++;
+        }
+
+        return data;
+    }, [ furniSettingsKeys, furniSettingsValues ]);
 
     const processButtonAction = useCallback((action: string) =>
     {
@@ -121,10 +164,10 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
             case 'use':
                 messageType = FurniAction.USE;
                 break;
-            // case 'save_branding_configuration':
-            //     messageType = RoomWidgetFurniActionMessage.RWFAM_SAVE_STUFF_DATA;
-            //     objectData = this.getSettingsAsString();
-            //     break;
+            case 'save_branding_configuration':
+                messageType = FurniAction.SAVE_STUFF_DATA;
+                objectData = getFurniSettingsAsString();
+                break;
         }
 
         if(!messageType) return;
@@ -151,9 +194,9 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                     </div>
                     <hr className="m-0 my-1"/>
                     <div className="d-flex flex-column">
-                        <p className="badge badge-secondary mb-0 text-wrap">{furniData.description}</p>
+                        <div className="small text-center text-wrap">{furniData.description}</div>
                         <hr className="m-0 my-1"/>
-                        <p className="badge badge-secondary mb-0 text-wrap">{ LocalizeText('furni.owner', [ 'name' ], [ furniData.ownerName ]) }</p>
+                        <div className="small text-center text-wrap">{ LocalizeText('furni.owner', [ 'name' ], [ furniData.ownerName ]) }</div>
                         {isCrackable && <div>
                             <hr className="m-0 my-1"/>
                             <p className="badge badge-secondary mb-0 text-wrap">{LocalizeText('infostand.crackable_furni.hits_remaining', ['hits', 'target'], [crackableHits.toString(), crackableTarget.toString()])}</p>
@@ -163,12 +206,20 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                                 <BadgeImageView badgeCode={ (furniData.stuffData as StringDataType).getValue(2) } />
                             </div> }
                     </div>
-                    {/* <div className="mt-3" *ngIf="((furniSettingsKeys.length && furniSettingsValues.length) && (furniSettingsKeys.length === furniSettingsValues.length))">
-                        <ng-container *ngFor="let setting of furniSettingsKeys; let i = index">
-                            <p className="badge badge-secondary mb-2">{{ furniSettingsKeys[i] }}</p>
-                            <input type="text" className="form-control rounded mb-2" [(ngModel)]="furniSettingsValues[i]">
-                        </ng-container>
-                    </div> */}
+                    { godMode && <>
+                        <hr className="m-0 my-1"/>
+                        <div className="small text-center text-wrap">ID: { furniData.id }</div>
+                        {furniSettingsKeys.length > 0 && <>
+                            <hr className="m-0 my-1"/>
+                            { furniSettingsKeys.map((key, index) =>
+                            {
+                                return <div key={ index } className="mb-1">
+                                            <div>{ key }</div>
+                                            <input type="text" className="form-control form-control-sm" value={ furniSettingsValues[index] } onChange={ (event) => onFurniSettingChange(index, event.target.value) }/>
+                                        </div>;
+                            }) }
+                        </> }
+                    </> }
                 </div>
             </div>
             <div className="button-container mt-2">
@@ -192,7 +243,11 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                         <i className={"me-1 " + (pickupMode === PICKUP_MODE_EJECT ? "fas fa-eject" : "fas fa-box-open")}></i>
                         {LocalizeText((pickupMode === PICKUP_MODE_EJECT) ? 'infostand.button.eject' : 'infostand.button.pickup')}
                     </button>}
-                {/* <button *ngIf="((furniSettingsKeys.length && furniSettingsValues.length) && (furniSettingsKeys.length === furniSettingsValues.length))" className="btn btn-primary" (click)="processButtonAction('save_branding_configuration')">{{ 'save' | translate }}</button> */}
+                { ((furniSettingsKeys.length > 0 && furniSettingsValues.length > 0) && (furniSettingsKeys.length === furniSettingsValues.length)) &&
+                    <button className="btn btn-sm btn-success ms-1" onClick={ () => processButtonAction('save_branding_configuration')}>
+                        <i className="fas fa-save me-1"></i>
+                        { LocalizeText('save') }
+                    </button> }
             </div>
         </>
     );
