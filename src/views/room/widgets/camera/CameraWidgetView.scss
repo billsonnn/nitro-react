@@ -7,8 +7,8 @@
 
         .camera-frame {
             position: absolute;
-            width: 318px;
-            height: 318px;
+            width: 320px;
+            height: 320px;
             margin-top: 9px;
             margin-left: 11.4px;
 
@@ -60,7 +60,7 @@
     width: 600px;
 
     .effects {
-        max-height: 354px;
+        max-height: 363px;
 
         .effect-thumbnail {
             border-color: $grid-border-color !important;
@@ -72,8 +72,6 @@
             }
     
             .effect-thumbnail-image {
-                background: black;
-    
                 img {
                     width: 56px;
                     height: 56px;
@@ -83,8 +81,8 @@
     }
 
     .picture-preview {
-        width: 318px;
-        height: 318px;
+        width: 320px;
+        height: 320px;
 
         &.zoomed {
             background-size: 636px;

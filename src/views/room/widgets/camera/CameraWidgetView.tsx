@@ -1,21 +1,24 @@
 import { RoomCameraWidgetManagerEvent } from 'nitro-renderer/src/nitro/camera/events/RoomCameraWidgetManagerEvent';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { IRoomCameraWidgetSelectedEffect } from '../../../../../../nitro-renderer/src/nitro/camera/IRoomCameraWidgetSelectedEffect';
 import { GetRoomCameraWidgetManager } from '../../../../api';
 import { RoomWidgetCameraEvent } from '../../../../events/room-widgets/camera/RoomWidgetCameraEvent';
 import { useCameraEvent } from '../../../../hooks/events/nitro/camera/camera-event';
 import { useUiEvent } from '../../../../hooks/events/ui/ui-event';
-import { useRoomContext } from '../../context/RoomContext';
 import { CameraWidgetViewProps } from './CameraWidgetView.types';
+import { CameraWidgetContextProvider } from './context/CameraWidgetContext';
 import { CameraWidgetCaptureView } from './views/capture/CameraWidgetCaptureView';
 import { CameraWidgetEditorView } from './views/editor/CameraWidgetEditorView';
 
 export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
 {
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ effectsReady, setEffectsReady ] = useState(false);
     const [ isCaptureVisible, setIsCaptureVisible ] = useState(false);
     const [ isEditorVisible, setIsEditorVisible ] = useState(false);
-    const [ chosenPicture, setChosenPicture ] = useState<HTMLImageElement>(null);
+
+    const [ cameraRoll, setCameraRoll ]                     = useState<HTMLImageElement[]>([]);
+    const [ selectedPictureIndex, setSelectedPictureIndex ] = useState(-1);
+    const [ selectedEffects, setSelectedEffects ]           = useState<IRoomCameraWidgetSelectedEffect[]>([]);
 
     const onNitroEvent = useCallback((event: RoomWidgetCameraEvent) =>
     {
@@ -73,16 +76,21 @@ export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
                 setIsCaptureVisible(false);
                 setIsEditorVisible(false);
                 return;
-            case 'capture_choose_picture':
-                setChosenPicture(value);
+            case 'capture_edit':
                 setIsCaptureVisible(false);
                 setIsEditorVisible(true);
+                return;
+            case 'editor_cancel':
+                setIsCaptureVisible(true);
+                setIsEditorVisible(false);
                 return;
         }
     }, []);
 
     return (
-        ( isCaptureVisible && <CameraWidgetCaptureView onCloseClick={ () => processAction('close') } onChoosePicture={ (picture) => processAction('capture_choose_picture', picture) } /> ) ||
-        ( isEditorVisible && <CameraWidgetEditorView onCloseClick={ () => processAction('close') } picture={ chosenPicture } availableEffects={ availableEffects } /> )
+        <CameraWidgetContextProvider value={ { cameraRoll, setCameraRoll, selectedPictureIndex, setSelectedPictureIndex, selectedEffects, setSelectedEffects } }>
+            { ( isCaptureVisible && <CameraWidgetCaptureView onCloseClick={ () => processAction('close') } onEditClick={ () => processAction('capture_edit') } /> ) ||
+            ( isEditorVisible && <CameraWidgetEditorView onCloseClick={ () => processAction('close') } onCancelClick={ () => processAction('editor_cancel') } availableEffects={ availableEffects } /> ) }
+        </CameraWidgetContextProvider>
     );
 }

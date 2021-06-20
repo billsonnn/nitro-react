@@ -2,9 +2,9 @@ import { IRoomCameraWidgetEffect } from 'nitro-renderer/src/nitro/camera/IRoomCa
 
 export interface CameraWidgetEditorViewProps
 {
-    picture: HTMLImageElement;
     availableEffects: IRoomCameraWidgetEffect[];
     onCloseClick: () => void;
+    onCancelClick: () => void;
 }
 
 export class CameraWidgetEditorTabs
