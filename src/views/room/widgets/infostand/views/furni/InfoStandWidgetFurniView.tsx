@@ -142,19 +142,24 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                         <div className="">{ furniData.name }</div>
                         <i className="fas fa-times cursor-pointer" onClick={ close }></i>
                     </div>
+                    <hr className="m-0 my-1"/>
                     <div className="w-100">
                         { furniData.stuffData.isUnique &&
                             <LimitedEditionCompactPlateView uniqueNumber={ furniData.stuffData.uniqueNumber } uniqueSeries={ furniData.stuffData.uniqueSeries } /> }
                         { furniData.image.src.length && 
                             <img className="d-block mx-auto" src={ furniData.image.src } alt="" /> }
                     </div>
-                    <div className="d-flex flex-column mt-2">
-                        <p className="badge badge-secondary mb-0 text-wrap">{ furniData.description }</p>
-                        <p className="badge badge-secondary mt-2 mb-0 text-wrap">{ LocalizeText('furni.owner', [ 'name' ], [ furniData.ownerName ]) }</p>
-                        { isCrackable &&
-                            <p className="badge badge-secondary mt-2 mb-0 text-wrap">{ LocalizeText('infostand.crackable_furni.hits_remaining', ['hits', 'target'], [ crackableHits.toString(), crackableTarget.toString() ]) }</p> }
+                    <hr className="m-0 my-1"/>
+                    <div className="d-flex flex-column">
+                        <p className="badge badge-secondary mb-0 text-wrap">{furniData.description}</p>
+                        <hr className="m-0 my-1"/>
+                        <p className="badge badge-secondary mb-0 text-wrap">{ LocalizeText('furni.owner', [ 'name' ], [ furniData.ownerName ]) }</p>
+                        {isCrackable && <div>
+                            <hr className="m-0 my-1"/>
+                            <p className="badge badge-secondary mb-0 text-wrap">{LocalizeText('infostand.crackable_furni.hits_remaining', ['hits', 'target'], [crackableHits.toString(), crackableTarget.toString()])}</p>
+                            </div>}
                         { (furniData.groupId > 0) &&
-                            <div className="badge badge-secondary mt-2 mb-0" onClick={ openFurniGroupInfo }>
+                            <div className="badge badge-secondary mb-0" onClick={ openFurniGroupInfo }>
                                 <BadgeImageView badgeCode={ (furniData.stuffData as StringDataType).getValue(2) } />
                             </div> }
                     </div>
@@ -168,13 +173,25 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
             </div>
             <div className="button-container mt-2">
                 { canMove &&
-                    <button type="button" className="btn btn-sm btn-dark" onClick={ event => processButtonAction('move') }>{ LocalizeText('infostand.button.move') }</button> }
+                    <button type="button" className="btn btn-sm btn-secondary" onClick={event => processButtonAction('move')}>
+                        <i className="fas fa-arrows-alt me-1"></i>
+                        {LocalizeText('infostand.button.move')}
+                    </button>}
                 { canRotate &&
-                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={ event => processButtonAction('rotate') }>{ LocalizeText('infostand.button.rotate') }</button> }
-                { (pickupMode !== PICKUP_MODE_NONE) &&
-                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={ event => processButtonAction('pickup') }>{ LocalizeText((pickupMode === PICKUP_MODE_EJECT) ? 'infostand.button.eject' : 'infostand.button.pickup') }</button> }
+                    <button type="button" className="btn btn-sm btn-secondary ms-1" onClick={event => processButtonAction('rotate')}>
+                        <i className="fas fa-sync-alt me-1"></i>
+                        {LocalizeText('infostand.button.rotate')}
+                    </button>}
                 { canUse &&
-                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={ event => processButtonAction('use') }>{ LocalizeText('infostand.button.use') }</button> }
+                    <button type="button" className="btn btn-sm btn-success ms-1" onClick={event => processButtonAction('use')}>
+                        <i className="fas fa-mouse me-1"></i>
+                        {LocalizeText('infostand.button.use')}
+                    </button>}
+                { (pickupMode !== PICKUP_MODE_NONE) &&
+                    <button type="button" className="btn btn-sm btn-danger ms-1" onClick={event => processButtonAction('pickup')}>
+                        <i className={"me-1 " + (pickupMode === PICKUP_MODE_EJECT ? "fas fa-eject" : "fas fa-box-open")}></i>
+                        {LocalizeText((pickupMode === PICKUP_MODE_EJECT) ? 'infostand.button.eject' : 'infostand.button.pickup')}
+                    </button>}
                 {/* <button *ngIf="((furniSettingsKeys.length && furniSettingsValues.length) && (furniSettingsKeys.length === furniSettingsValues.length))" className="btn btn-primary" (click)="processButtonAction('save_branding_configuration')">{{ 'save' | translate }}</button> */}
             </div>
         </>
