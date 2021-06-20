@@ -249,13 +249,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             roomObjectImage = GetRoomEngine().getRoomObjectImage(roomId, message.id, message.category, new Vector3d(180), 1, null);
         }
 
-        if(roomObjectImage && roomObjectImage.data)
-        {
-            const image = Nitro.instance.renderer.extract.image(roomObjectImage.data);
-
-            if(image) event.image = image;
-        }
-
+        event.image = roomObjectImage.getImage();
         event.isWallItem = (message.category === RoomObjectCategory.WALL);
         event.isRoomOwner = this.roomSession.isRoomOwner;
         event.roomControllerLevel = this.roomSession.controllerLevel;
