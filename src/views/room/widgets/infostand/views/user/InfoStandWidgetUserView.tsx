@@ -51,6 +51,8 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
         
     }, []);
 
+    if(!userData) return null;
+
     return (
         <>
             <div className="d-flex flex-column bg-dark nitro-card nitro-infostand rounded nitro-infostand-user">
