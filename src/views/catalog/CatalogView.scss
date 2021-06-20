@@ -2,8 +2,11 @@
     width: 620px;
 
     .content-area {
-        height: 330px;
-        max-height: 330px;
+        min-height: 350px;
+        height: 350px;
+        max-height: 700px;
+        resize: vertical;
+        overflow:auto;
     }
 }
 

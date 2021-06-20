@@ -82,7 +82,7 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
 
     return (
         <div className="row h-100">
-            <div className="d-flex flex-column col-7">
+            <div className="col-7 d-flex flex-column h-100">
                 <InventoryPetResultsView petItems={ petItems }  />
             </div>
             <div className="d-flex flex-column col-5 justify-space-between">

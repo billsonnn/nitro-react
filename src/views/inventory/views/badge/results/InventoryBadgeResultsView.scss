@@ -3,3 +3,7 @@
     max-height: 139px;
     overflow-y: auto;
 }
+
+.inventory-badge-overflow {
+    height:calc(100% - 86px)
+}

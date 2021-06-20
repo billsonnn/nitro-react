@@ -105,10 +105,10 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                     <NitroCardContentView>
                         <div className="row h-100">
                             { pageParser && !pageParser.frontPageItems.length &&
-                                <div className="col-3">
+                                <div className="col-3 d-flex flex-column h-100">
                                     <CatalogNavigationView page={ currentNavigationPage } />
                                 </div> }
-                            <div className="col">
+                            <div className="col h-100">
                                 <CatalogPageView roomPreviewer={ roomPreviewer } />
                             </div>
                         </div>

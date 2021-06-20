@@ -2,8 +2,11 @@
     width: 475px;
 
     .content-area {
-        height: calc(220px + (#{$container-padding-x} * 2));
-        max-height: calc(220px + (#{$container-padding-x} * 2));
+        min-height: 240px;
+        height: 240px;
+        max-height: 430px;
+        resize: vertical;
+        overflow:auto;
     }
 
     .empty-image {

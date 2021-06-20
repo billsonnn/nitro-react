@@ -1,20 +1,26 @@
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 7px;
     height: 5px;
 }
 
 ::-webkit-scrollbar-track {
     border-radius: $border-radius;
-    background: rgba(transparent, 0.1);
+    background: rgba($primary,.4);
+    box-shadow:inset 1px 0 rgba($black,.2);
 }
 
 ::-webkit-scrollbar-thumb {
     border-radius: $border-radius;
-    background: rgba($white, 0.7);
+    background: #DCDCDC;
+    box-shadow:inset 1px 4px $white, inset -1px -4px rgba($black,.2), 0 1px rgba($black,.2);
     width: 4px;
-    border-left: 1px solid transparent;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba($white, 1);
+}
+
+::-webkit-scrollbar-thumb:active {
+    box-shadow: inset 1px 4px rgba($white,.4), inset -1px -4px rgba($black,.2), 0 1px rgba($black,.2);
+    background:#C4C4C4;
 }
