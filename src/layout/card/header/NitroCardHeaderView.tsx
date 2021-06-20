@@ -13,8 +13,8 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
                 <div className="col-10 offset-1 d-flex justify-content-center align-items-center">
                     <div className="h4 m-0 text-white text-shadow">{ headerText }</div>
                 </div>
-                <div className="d-flex col-1 justify-content-center align-items-center">
-                    <div className="cursor-pointer" onClick={ onCloseClick }>
+                <div className="nitro-card-close-parent">
+                    <div className="nitro-card-close" onClick={ onCloseClick }>
                         <i className="fas fa-times"></i>
                     </div>
                 </div>
