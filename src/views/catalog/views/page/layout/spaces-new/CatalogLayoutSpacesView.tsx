@@ -70,7 +70,7 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutSpacesViewProps> = props =
 
     return (
         <div className="row h-100 nitro-catalog-layout-spaces">
-            <div className="col-7">
+            <div className="col-7 h-100 d-flex flex-column">
                 <div className="d-flex">
                     <div className="btn-group mx-auto mb-1 w-100">
                         { groupNames.map((name, index) =>

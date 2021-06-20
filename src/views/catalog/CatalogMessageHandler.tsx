@@ -31,6 +31,8 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
     {
         const parser = event.getParser();
 
+        console.log(parser)
+
         dispatchCatalogState({
             type: CatalogActions.SET_CATALOG_PAGE_PARSER,
             payload: {

@@ -141,8 +141,8 @@ export const CatalogLayoutPetView: FC<CatalogLayoutPetViewProps> = props =>
 
     return (
         <div className="row h-100 nitro-catalog-layout-pets">
-            <div className="col-7">
-                <div className="row row-cols-5 align-content-start g-0 mb-n1 w-100 catalog-offers-container single-bundle-items-container">
+            <div className="col-7 h-100">
+                <div className="row row-cols-5 align-content-start g-0 mb-n1 w-100 h-100 overflow-auto catalog-offers-container single-bundle-items-container">
                     { colorsShowing && (sellableColors.length > 0) && sellableColors.map((colorSet, index) =>
                         {
                             return <div key={ index } className="col pe-1 pb-1 catalog-offer-item-container">

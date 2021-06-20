@@ -1,7 +1,9 @@
 import { ICatalogPageParser, RoomPreviewer } from 'nitro-renderer';
 import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
 import { CatalogLayoutFrontpage4View } from './frontpage4/CatalogLayoutFrontpage4View';
+import { CatalogLayoutInfoLoyaltyView } from './info-loyalty/CatalogLayoutInfoLoyaltyView';
 import { CatalogLayoutPetView } from './pets/CatalogLayoutPetView';
+import { CatalogLayoutPets2View } from './pets2/CatalogLayoutPets2View';
 import { CatalogLayoutPets3View } from './pets3/CatalogLayoutPets3View';
 import { CatalogLayoutSingleBundleView } from './single-bundle/CatalogLayoutSingleBundleView';
 import { CatalogLayoutSpacesView } from './spaces-new/CatalogLayoutSpacesView';
@@ -10,16 +12,17 @@ import { CatalogLayoutVipBuyView } from './vip-buy/CatalogLayoutVipBuyView';
 
 export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: RoomPreviewer): JSX.Element
 {
+
     switch(pageParser.layoutCode)
     {
         case 'frontpage_featured':
-            return null;
+            return null
         case 'frontpage4':
             return <CatalogLayoutFrontpage4View roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'pets':
             return <CatalogLayoutPetView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'pets2':
-            return null;
+            return <CatalogLayoutPets2View roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'pets3':
             return <CatalogLayoutPets3View roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'vip_buy':
@@ -41,7 +44,9 @@ export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: 
         case 'spaces_new':
             return <CatalogLayoutSpacesView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'trophies':
-            return <CatalogLayoutTrophiesView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutTrophiesView roomPreviewer={roomPreviewer} pageParser={pageParser} />;
+        case 'info_loyalty':
+            return <CatalogLayoutInfoLoyaltyView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'bots':
         case 'default_3x3':
         default:

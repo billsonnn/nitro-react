@@ -13,8 +13,8 @@ export const CatalogLayoutSingleBundleView: FC<CatalogLayoutSingleBundleViewProp
 
     return (
         <div className="row h-100 nitro-catalog-layout-single-bundle">
-            <div className="col-7">
-                <div className="row row-cols-5 align-content-start g-0 mb-n1 w-100 catalog-offers-container single-bundle-items-container">
+            <div className="col-7 h-100">
+                <div className="row row-cols-5 align-content-start g-0 mb-n1 w-100 catalog-offers-container single-bundle-items-container h-100 overflow-auto">
                     { activeOffer && activeOffer.products && (activeOffer.products.length > 0) && activeOffer.products.map((product, index) =>
                         {
                             return <CatalogProductView key={ index } isActive={ false } product={ product } />

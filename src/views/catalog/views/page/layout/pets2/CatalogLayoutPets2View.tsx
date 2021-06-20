@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { GetCatalogPageImage, GetCatalogPageText } from '../../../../utils/CatalogUtilities';
-import { CatalogLayoutPets3ViewProps } from './CatalogLayoutPets3View.types';
+import { CatalogLayoutPets2ViewProps } from './CatalogLayoutPets2View.types';
 
-export const CatalogLayoutPets3View: FC<CatalogLayoutPets3ViewProps> = props =>
+export const CatalogLayoutPets2View: FC<CatalogLayoutPets2ViewProps> = props =>
 {
     const { pageParser = null } = props;
     

@@ -54,8 +54,8 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
 
     return (
         <div className="row h-100 nitro-catalog-layout-vip-buy">
-            <div className="col-7">
-                <div className="row row-cols-1 align-content-start g-0 mb-n1 w-100 catalog-offers-container">
+            <div className="col-7 h-100">
+                <div className="row row-cols-1 align-content-start g-0 mb-n1 w-100 catalog-offers-container h-100 overflow-auto">
                     { clubOffers && (clubOffers.length > 0) && clubOffers.map((offer, index) =>
                         {
                             return <div key={ index } className="col pe-1 pb-1 catalog-offer-item-container">

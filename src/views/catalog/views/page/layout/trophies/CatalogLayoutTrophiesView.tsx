@@ -17,7 +17,7 @@ export const CatalogLayoutTrophiesView: FC<CatalogLayoutTrophiesViewProps> = pro
 
     return (
         <div className="row h-100 nitro-catalog-layout-trophies">
-            <div className="d-flex flex-column col-7">
+            <div className="d-flex flex-column col-7 h-100">
                 <CatalogPageOffersView offers={ pageParser.offers } />
                 <div className="d-flex mt-2">
                     <textarea className="form-control w-100" defaultValue={ trophyText || '' } onChange={ event => setTrophyText(event.target.value) }></textarea>
