@@ -26,8 +26,16 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
     useEffect(() =>
     {
+        setPickupMode(0);
+        setCanMove(false);
+        setCanRotate(false);
+        setCanUse(false);
         setFurniSettingsKeys([]);
         setFurniSettingsValues([]);
+        setIsCrackable(false);
+        setCrackableHits(0);
+        setCrackableTarget(0);
+        setGodMode(false);
         
         const isValidController = (furniData.roomControllerLevel >= RoomControllerLevel.GUEST);
 
@@ -36,19 +44,9 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
             setCanMove(true);
             setCanRotate(!furniData.isWallItem);
 
-            if(furniData.roomControllerLevel >= RoomControllerLevel.MODERATOR)
-            {
-                setGodMode(true);
-            }
-            else
-            {
-                setGodMode(false);
-            }
+            if(furniData.roomControllerLevel >= RoomControllerLevel.MODERATOR) setGodMode(true);
         }
         else
-        {
-            setGodMode(false);
-        }
 
         if((((furniData.usagePolicy === RoomWidgetFurniInfoUsagePolicyEnum.EVERYBODY) || ((furniData.usagePolicy === RoomWidgetFurniInfoUsagePolicyEnum.CONTROLLER) && isValidController)) || ((furniData.extraParam === RoomWidgetEnumItemExtradataParameter.JUKEBOX) && isValidController)) || ((furniData.extraParam === RoomWidgetEnumItemExtradataParameter.USABLE_PRODUCT) && isValidController)) setCanUse(true);
 
@@ -105,7 +103,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         }
 
         else if(furniData.isStickie) setPickupMode(PICKUP_MODE_NONE);
-    }, [ furniData, godMode ]);
+    }, [ furniData ]);
 
     const openFurniGroupInfo = useCallback(() =>
     {
