@@ -6,8 +6,8 @@ import { GetSessionDataManager } from '../../../../../api/nitro/session/GetSessi
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { NitroCardContentView } from '../../../../../layout/card/content/NitroCardContentView';
-import { NitroCardHeaderView } from '../../../../../layout/card/header/NitroCardHeaderView';
 import { NitroCardView } from '../../../../../layout/card/NitroCardView';
+import { NitroCardSimpleHeaderView } from '../../../../../layout/card/simple-header';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../avatar-image/AvatarImageView';
 import { useRoomContext } from '../../../context/RoomContext';
@@ -172,7 +172,7 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
 
     return (
         <NitroCardView className="nitro-mannequin">
-            <NitroCardHeaderView headerText={ LocalizeText('mannequin.widget.title') } onCloseClick={ event => processAction('close') } />
+            <NitroCardSimpleHeaderView headerText={ LocalizeText('mannequin.widget.title') } onCloseClick={ event => processAction('close') }/>
             <NitroCardContentView>
                 <div className="row">
                     <div className="col-4">
