@@ -60,11 +60,21 @@
     width: 600px;
 
     .effects {
+        height: 363px;
+        min-height: 363px;
         max-height: 363px;
+
+        .btn-remove-effect {
+            z-index: 10;
+            min-height: 0px;
+            border-radius: 100px;
+            width: 20px;
+        }
 
         .effect-thumbnail {
             border-color: $grid-border-color !important;
             background-color: $grid-bg-color;
+            height: 60px;
     
             &.active {
                 border-color: $grid-active-border-color !important;
@@ -73,8 +83,8 @@
     
             .effect-thumbnail-image {
                 img {
-                    width: 56px;
-                    height: 56px;
+                    width: 40px;
+                    height: 40px;
                 }
             }
         }
@@ -87,6 +97,11 @@
         &.zoomed {
             background-size: 636px;
             background-position: center;
+        }
+
+        .slider {
+            background: linear-gradient(180deg, transparent, black);
+            text-shadow: 1px 1px rgba(0, 0, 0, .5);
         }
     }
 }

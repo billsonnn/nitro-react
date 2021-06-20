@@ -16,7 +16,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
     const { availableEffects = null, onCloseClick = null, onCancelClick = null } = props;
     
     const TABS: string[] = [ CameraWidgetEditorTabs.COLORMATRIX, CameraWidgetEditorTabs.COMPOSITE ];
-    const MY_LEVEL: number = 0;
+    const MY_LEVEL: number = 6;
 
     const cameraWidgetContext = useCameraWidgetContext();
     
@@ -31,11 +31,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 
         for(const effect of availableEffects)
         {
-            let alpha = 126;
-
-            if(effect.colorMatrix) alpha = 0.5;
-
-            thumbnails.push({name: effect.name, image: GetRoomCameraWidgetManager().applyEffects(cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex], [ new RoomCameraWidgetSelectedEffect(effect, alpha) ])});
+            thumbnails.push({name: effect.name, image: GetRoomCameraWidgetManager().applyEffects(cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex], [ new RoomCameraWidgetSelectedEffect(effect, 1) ], false)});
         }
 
         setEffectsThumbnails(thumbnails);
@@ -64,36 +60,30 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 
     const getCurrentPicture = useCallback(() =>
     {
-        return GetRoomCameraWidgetManager().applyEffects(cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex], cameraWidgetContext.selectedEffects);
-    }, [ cameraWidgetContext.selectedEffects ]);
+        return GetRoomCameraWidgetManager().applyEffects(cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex], cameraWidgetContext.selectedEffects, isZoomed);
+    }, [ cameraWidgetContext.selectedEffects, isZoomed ]);
 
-    const getEffectRangeConfig = useCallback(() =>
+    const getCurrentEffectAlpha = useCallback(() =>
     {
-        if(!selectedEffectName) return [0, 0];
+        if(!selectedEffectName) return 0;
 
         const selectedEffect = cameraWidgetContext.selectedEffects.find(effect => effect.effect.name === selectedEffectName);
 
-        if(!selectedEffect) return [0, 0];
+        if(!selectedEffect) return 0;
 
-        let isColormatrix = selectedEffect.effect.colorMatrix != null;
-
-        let max = 255;
-        let step = 1;
-
-        if(isColormatrix)
-        {
-            max = 1;
-            step = 0.01;
-        }
-
-        return [max, step, selectedEffect.alpha];
+        return selectedEffect.alpha;
     }, [ selectedEffectName, cameraWidgetContext.selectedEffects ]);
+
+    const getEffectIndex = useCallback((effectName) =>
+    {
+        return cameraWidgetContext.selectedEffects.findIndex(effect => effect.effect.name === effectName);
+    }, [ cameraWidgetContext.selectedEffects ])
 
     const setSelectedEffectAlpha = useCallback((newAlpha: number) =>
     {
         if(!selectedEffectName) return;
 
-        const selectedEffectIndex = cameraWidgetContext.selectedEffects.findIndex(effect => effect.effect.name === selectedEffectName);
+        const selectedEffectIndex = getEffectIndex(selectedEffectName);
 
         if(selectedEffectIndex === -1) return;
 
@@ -120,39 +110,55 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 setCurrentTab(String(value));
                 return;
             case 'select_effect':
-                let existingIndex = -1;
-
-                if(cameraWidgetContext.selectedEffects.length > 0)
                 {
-                    existingIndex = cameraWidgetContext.selectedEffects.findIndex(effect => effect.effect.name === value);
+                    let existingIndex = -1;
 
-                    /*if(existingIndex > -1)
+                    if(cameraWidgetContext.selectedEffects.length > 0)
                     {
+                        existingIndex = getEffectIndex(value);
+                    }
+                    
+                    let effect = null;
+
+                    if(existingIndex === -1)
+                    {
+                        effect = availableEffects.find(effect => effect.name === value);
+                        
+                        if(effect.minLevel > MY_LEVEL) return;
+                        
+                        cameraWidgetContext.setSelectedEffects([...cameraWidgetContext.selectedEffects, new RoomCameraWidgetSelectedEffect(effect, 0.5)]);
+                    }
+                    
+                    if(effect && effect.minLevel > MY_LEVEL) return;
+
+                    if(selectedEffectName !== value)
+                    {
+                        setSelectedEffectName(value);
+                    }
+                    else
+                    {
+                        setSelectedEffectName(null);
+                    }
+                }
+                return;
+            case 'remove_effect':
+                {
+                    const existingIndex = getEffectIndex(value);
+
+                    if(existingIndex > -1)
+                    {
+                        const effect = cameraWidgetContext.selectedEffects[existingIndex];
+
+                        if(effect.effect.name === selectedEffectName)
+                        {
+                            setSelectedEffectName(null);
+                        }
+
                         const clone = Array.from(cameraWidgetContext.selectedEffects);
                         clone.splice(existingIndex, 1);
                         
                         cameraWidgetContext.setSelectedEffects(clone);
-                    }*/
-                }
-                
-                if(existingIndex === -1)
-                {
-                    const effect = availableEffects.find(effect => effect.name === value);
-
-                    let alpha = 126;
-
-                    if(effect.colorMatrix) alpha = 0.5;
-                    
-                    cameraWidgetContext.setSelectedEffects([...cameraWidgetContext.selectedEffects, new RoomCameraWidgetSelectedEffect(effect, alpha)]);
-                }
-                
-                if(selectedEffectName !== value)
-                {
-                    setSelectedEffectName(value);
-                }
-                else
-                {
-                    setSelectedEffectName(null);
+                    }
                 }
                 return;
             case 'clear_effects':
@@ -185,11 +191,16 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                                 { getEffectList().map(effect =>
                                     {
                                         return (
-                                            <div key={ effect.name } className="col mb-3" onClick={ event => processAction('select_effect', effect.name) }>
-                                                <div title={ LocalizeText('camera.effect.name.' + effect.name) } className="effect-thumbnail cursor-pointer position-relative border border-2 rounded d-flex flex-column justify-content-center align-items-center py-1">
-                                                    <div className="effect-thumbnail-image rounded">
-                                                        <img alt="" className="rounded" src={ getEffectThumbnail(effect.name) } />
-                                                    </div>
+                                            <div key={ effect.name } className="col mb-3 position-relative">
+                                                { getEffectIndex(effect.name) > -1 && <button className="btn btn-danger btn-sm p-0 position-absolute btn-remove-effect" onClick={ event => processAction('remove_effect', effect.name) }><i className="fas fa-times"></i></button> }
+                                                <div title={ effect.minLevel <= MY_LEVEL ? LocalizeText('camera.effect.name.' + effect.name) : LocalizeText('camera.effect.required.level') + ' ' + effect.minLevel } onClick={ event => processAction('select_effect', effect.name) } className={"effect-thumbnail cursor-pointer position-relative border border-2 rounded d-flex flex-column justify-content-center align-items-center py-1" + classNames({' active': selectedEffectName === effect.name})}>
+                                                    { effect.minLevel <= MY_LEVEL && <div className="effect-thumbnail-image border">
+                                                        <img alt="" src={ getEffectThumbnail(effect.name) } />
+                                                    </div> }
+                                                    { effect.minLevel > MY_LEVEL && <div className="text-center text-black">
+                                                        <div><i className="fas fa-lock"></i></div>
+                                                        <div className="fw-bold">{ effect.minLevel }</div>
+                                                    </div> }
                                                 </div>
                                             </div>
                                         );
@@ -201,10 +212,10 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 <div className="w-100">
                     <NitroCardTabsView></NitroCardTabsView>
                     <NitroCardContentView>
-                        <div className={ 'd-flex align-items-end picture-preview' + classNames({ ' zoomed': isZoomed }) } style={ { backgroundImage: 'url(' + getCurrentPicture().src + ')' } }>
-                            { selectedEffectName && <div className="w-100 p-2 d-flex flex-column justify-content-center bg-black">
-                                <div className="w-100 text-center">{ LocalizeText('camera.effect.name.' + selectedEffectName) + ' - ' + getEffectRangeConfig()[2] }</div>
-                                <input type="range" min="0" max={ getEffectRangeConfig()[0] } step={ getEffectRangeConfig()[1] } value={ getEffectRangeConfig()[2] } onChange={ event => setSelectedEffectAlpha(Number(event.target.value)) } className="form-range w-100" />
+                        <div className="d-flex align-items-end picture-preview" style={ { backgroundImage: 'url(' + getCurrentPicture().src + ')' } }>
+                            { selectedEffectName && <div className="w-100 p-2 d-flex flex-column justify-content-center slider">
+                                <div className="w-100 text-center">{ LocalizeText('camera.effect.name.' + selectedEffectName) + ' - ' + getCurrentEffectAlpha() }</div>
+                                <input type="range" min="0" max="1" step="0.01" value={ getCurrentEffectAlpha() } onChange={ event => setSelectedEffectAlpha(Number(event.target.value)) } className="form-range w-100" />
                             </div> }
                         </div>
                         <div className="d-flex justify-content-between mt-2">
