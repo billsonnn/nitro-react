@@ -1,25 +1,27 @@
 import classNames from 'classnames';
 import { NitroRectangle } from 'nitro-renderer';
-import { FC, useCallback, useRef, useState } from 'react';
+import { FC, useCallback, useRef } from 'react';
 import { GetRoomEngine } from '../../../../../../api/nitro/room/GetRoomEngine';
 import { GetRoomSession } from '../../../../../../api/nitro/session/GetRoomSession';
 import { DraggableWindow } from '../../../../../../hooks/draggable-window/DraggableWindow';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
+import { useCameraWidgetContext } from '../../context/CameraWidgetContext';
 import { CameraWidgetCaptureViewProps } from './CameraWidgetCaptureView.types';
 
 export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =>
 {
-    const CAMERA_ROLL_LIMIT: number = 5;
+    const { onCloseClick = null, onEditClick = null } = props;
 
-    const [ picturesTaken, setPicturesTaken ]               = useState<HTMLImageElement[]>([]);
-    const [ selectedPictureIndex, setSelectedPictureIndex ] = useState(-1);
-    const cameraFrameRef                                    = useRef<HTMLDivElement>();
+    const CAMERA_ROLL_LIMIT: number = 5;
+    const cameraFrameRef = useRef<HTMLDivElement>();
+
+    const cameraWidgetContext = useCameraWidgetContext();
 
     const takePicture = useCallback(() =>
     {
-        if(selectedPictureIndex > -1)
+        if(cameraWidgetContext.selectedPictureIndex > -1)
         {
-            setSelectedPictureIndex(-1);
+            cameraWidgetContext.setSelectedPictureIndex(-1);
             return;
         }
         
@@ -31,20 +33,20 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
 
         const image = GetRoomEngine().createRoomScreenshot(GetRoomSession().roomId, 1, rectangle);
 
-        if(picturesTaken.length + 1 === CAMERA_ROLL_LIMIT)
+        if(cameraWidgetContext.cameraRoll.length + 1 === CAMERA_ROLL_LIMIT)
         {
             alert(LocalizeText('camera.full.body'));
         }
 
-        if(picturesTaken.length === CAMERA_ROLL_LIMIT)
+        let remainingRoll = cameraWidgetContext.cameraRoll;
+
+        if(cameraWidgetContext.cameraRoll.length === CAMERA_ROLL_LIMIT)
         {
-            setPicturesTaken(picturesTaken => [ ...picturesTaken.slice(0, CAMERA_ROLL_LIMIT - 1), image ]);
+            remainingRoll = remainingRoll.slice(0, CAMERA_ROLL_LIMIT - 1);
         }
-        else
-        {
-            setPicturesTaken(picturesTaken => [ ...picturesTaken, image ]);
-        }
-    }, [ picturesTaken, selectedPictureIndex ]);
+
+        cameraWidgetContext.setCameraRoll([ ...remainingRoll, image ]);
+    }, [ cameraWidgetContext.cameraRoll, cameraWidgetContext.selectedPictureIndex ]);
 
     const processAction = useCallback((type: string, value: string | number = null) =>
     {
@@ -54,32 +56,37 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
                 takePicture();
                 return;
             case 'preview_picture':
-                setSelectedPictureIndex(Number(value));
+                cameraWidgetContext.setSelectedPictureIndex(Number(value));
                 return;
             case 'discard_picture':
-                setSelectedPictureIndex(-1);
-                const newPicturesTaken = picturesTaken;
-                picturesTaken.splice(selectedPictureIndex, 1);
-                setPicturesTaken(newPicturesTaken);
+                cameraWidgetContext.setSelectedPictureIndex(-1);
+
+                const clone = Array.from(cameraWidgetContext.cameraRoll);
+                clone.splice(cameraWidgetContext.selectedPictureIndex, 1);
+                
+                cameraWidgetContext.setCameraRoll(clone);
                 return;
             case 'edit_picture':
-                props.onChoosePicture(picturesTaken[selectedPictureIndex]);
+                onEditClick();
+                return;
+            case 'close':
+                onCloseClick();
                 return;
         }
-    }, [ picturesTaken, selectedPictureIndex ]);
+    }, [ cameraWidgetContext.selectedPictureIndex, cameraWidgetContext.cameraRoll, onEditClick, onCloseClick ]);
 
     return (
         <DraggableWindow handle=".nitro-camera-capture">
             <div className="nitro-camera-capture d-flex flex-column justify-content-center align-items-center">
                <div className="camera-canvas">
                     <div className="overflow-auto">
-                        <div className="cursor-pointer float-end me-3 mt-2" onClick={ props.onCloseClick }>
+                        <div className="cursor-pointer float-end me-3 mt-2" onClick={ event => processAction('close') }>
                             <i className="fas fa-times"></i>
                         </div>
                     </div>
-                    <div ref={ cameraFrameRef } className={'camera-frame ' + classNames({'bg': selectedPictureIndex > -1}) }>
-                        { selectedPictureIndex > -1 && <div>
-                            <img src={ picturesTaken[selectedPictureIndex].src } />
+                    <div ref={ cameraFrameRef } className={'camera-frame ' + classNames({'bg': cameraWidgetContext.selectedPictureIndex > -1}) }>
+                        { cameraWidgetContext.selectedPictureIndex > -1 && <div>
+                            <img src={ cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex].src } />
                             <div className="camera-frame-preview-actions w-100 position-absolute bottom-0 py-2 text-center">
                                 <button className="btn btn-success me-3" onClick={ event => processAction('edit_picture') }>{ LocalizeText('camera.editor.button.text') }</button>
                                 <button className="btn btn-danger" onClick={ event => processAction('discard_picture') }>{ LocalizeText('camera.delete.button.text') }</button>
@@ -90,10 +97,10 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
                         <div className="camera-button" onClick={ takePicture }></div>
                     </div>
                </div>
-               { picturesTaken.length > 0 && <div className="camera-roll d-flex justify-content-center py-2">
-                    { picturesTaken.map((picture, index) =>
+               { cameraWidgetContext.cameraRoll.length > 0 && <div className="camera-roll d-flex justify-content-center py-2">
+                    { cameraWidgetContext.cameraRoll.map((picture, index) =>
                         {
-                            return <img key={ index } className={ (index < picturesTaken.length - 1 ? 'me-2' : '') } src={ picture.src } onClick={ event => processAction('preview_picture', index) } />;
+                            return <img key={ index } className={ (index < cameraWidgetContext.cameraRoll.length - 1 ? 'me-2' : '') } src={ picture.src } onClick={ event => processAction('preview_picture', index) } />;
                         }) }
                </div> }
             </div>
