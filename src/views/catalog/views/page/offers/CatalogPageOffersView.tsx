@@ -27,18 +27,6 @@ export const CatalogPageOffersView: FC<CatalogPageOffersViewProps> = props =>
                 {
                     return <CatalogPageOfferView key={ index } isActive={ (activeOffer === offer) } offer={ offer } />
             })}
-                        { offers && (offers.length > 0) && offers.map((offer, index) =>
-                {
-                    return <CatalogPageOfferView key={ index } isActive={ (activeOffer === offer) } offer={ offer } />
-                        })}
-                        { offers && (offers.length > 0) && offers.map((offer, index) =>
-                {
-                    return <CatalogPageOfferView key={ index } isActive={ (activeOffer === offer) } offer={ offer } />
-                        })}
-                        { offers && (offers.length > 0) && offers.map((offer, index) =>
-                {
-                    return <CatalogPageOfferView key={ index } isActive={ (activeOffer === offer) } offer={ offer } />
-                }) }
         </div>
     );
 }
