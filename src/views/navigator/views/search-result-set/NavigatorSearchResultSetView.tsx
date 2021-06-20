@@ -12,10 +12,12 @@ export const NavigatorSearchResultSetView: FC<NavigatorSearchResultSetViewProps>
 
     return (
         <>
-            { (searchResult.results.map((result, index) =>
-                {
-                    return <NavigatorSearchResultView key={ index } searchResult={ result } />
-                })) }
+            <div className="h-100 overflow-auto">
+                { (searchResult.results.map((result, index) =>
+                    {
+                        return <NavigatorSearchResultView key={ index } searchResult={ result } />
+                    })) }
+            </div>
         </>
     );
 }

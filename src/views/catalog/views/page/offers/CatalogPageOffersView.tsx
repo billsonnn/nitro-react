@@ -22,7 +22,7 @@ export const CatalogPageOffersView: FC<CatalogPageOffersViewProps> = props =>
     }, [ offers, dispatchCatalogState ]);
 
     return (
-        <div className="row row-cols-5 align-content-start g-0 mb-n1 w-100 catalog-offers-container">
+        <div className="row row-cols-5 align-content-start g-0 mb-n1 w-100 catalog-offers-container h-100">
             { offers && (offers.length > 0) && offers.map((offer, index) =>
                 {
                     return <CatalogPageOfferView key={ index } isActive={ (activeOffer === offer) } offer={ offer } />

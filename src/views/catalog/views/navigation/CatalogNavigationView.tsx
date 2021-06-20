@@ -20,8 +20,8 @@ export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
     return (
         <>
             <CatalogSearchView />
-            <div className="border border-2 rounded overflow-hidden nitro-catalog-navigation">
-                <div className="navigation-container m-1">
+            <div className="border border-2 rounded overflow-hidden nitro-catalog-navigation p-1 h-100">
+                <div className="navigation-container h-100">
                     <CatalogNavigationSetView page={ page } isFirstSet={ true } />
                 </div>
             </div>

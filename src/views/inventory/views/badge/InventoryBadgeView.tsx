@@ -76,27 +76,31 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
 
     return (
         <>
-            <div className="row h-100">
-                <div className="d-flex flex-column col-7">
-                    <InventoryBadgeResultsView badges={ badges } activeBadges={ activeBadges }  />
-                </div>
-                <div className="col">
-                    <p className="mb-1 text-black">{ LocalizeText('inventory.badges.activebadges') }</p>
-                    <InventoryActiveBadgeResultsView badges={ activeBadges }  />
-                </div>
-            </div>
-            { badge && badge.length &&
-                <div className="d-flex justify-content-between align-items-center bg-secondary rounded px-2 py-1 mb-1">
-                    <div className="d-flex flex-grow-1 current-badge-container">
-                        <BadgeImageView badgeCode={ badge } />
-                        <div className="d-flex flex-column justify-content-center flex-grow-1 ms-2">
-                            <p className="mb-0">{ LocalizeBadgeName(badge) }</p>
-                        </div>
+            <div className="d-flex flex-column h-100 overflow-hidden">
+                <div className="row inventory-badge-overflow">
+                    <div className="col-7 d-flex flex-column h-100">
+                        <InventoryBadgeResultsView badges={ badges } activeBadges={ activeBadges }  />
                     </div>
-                    <button type="button" className={ 'btn btn-' + (isWearingBadge(badge) ? 'danger' : 'success') } disabled={ !canWearBadges() } onClick={ toggleBadge }>{ LocalizeText(isWearingBadge(badge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge')}</button>
-                </div> }
-            <div className="d-flex justify-content-center align-items-center bg-primary rounded p-1">
-                <div className="h6 m-0 text-white">{ LocalizeText('achievements_score_description', [ 'score' ], [ '0' ]) }</div>
+                    <div className="col">
+                        <p className="mb-1 text-black">{ LocalizeText('inventory.badges.activebadges') }</p>
+                        <InventoryActiveBadgeResultsView badges={ activeBadges }  />
+                    </div>
+                </div>
+                <div className="my-auto">
+                    { badge && badge.length &&
+                        <div className="d-flex justify-content-between align-items-center bg-secondary rounded px-2 py-1 mb-1 mt-1">
+                            <div className="d-flex flex-grow-1 current-badge-container">
+                                <BadgeImageView badgeCode={ badge } />
+                                <div className="d-flex flex-column justify-content-center flex-grow-1 ms-2">
+                                    <p className="mb-0">{ LocalizeBadgeName(badge) }</p>
+                                </div>
+                            </div>
+                            <button type="button" className={ 'btn btn-' + (isWearingBadge(badge) ? 'danger' : 'success') } disabled={ !canWearBadges() } onClick={ toggleBadge }>{ LocalizeText(isWearingBadge(badge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge')}</button>
+                        </div> }
+                    <div className="d-flex justify-content-center align-items-center bg-primary rounded p-1">
+                        <div className="h6 m-0 text-white">{ LocalizeText('achievements_score_description', [ 'score' ], [ '0' ]) }</div>
+                    </div>
+                </div>
             </div>
         </>
     );

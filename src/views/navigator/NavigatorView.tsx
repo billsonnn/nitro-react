@@ -98,8 +98,10 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                         </NitroCardTabsItemView>
                     </NitroCardTabsView>
                     <NitroCardContentView>
+                    <div className="d-flex flex-column h-100">
                         <NavigatorSearchView sendSearch={ sendSearch } />
                         <NavigatorSearchResultSetView />
+                    </div>
                     </NitroCardContentView>
                 </NitroCardView> }
         </NavigatorContextProvider>

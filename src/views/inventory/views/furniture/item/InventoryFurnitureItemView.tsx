@@ -41,7 +41,8 @@ export const InventoryFurnitureItemView: FC<InventoryFurnitureItemViewProps> = p
     return (
         <div className="col pe-1 pb-1 inventory-furniture-item-container">
             <div className={ 'position-relative border border-2 rounded inventory-furniture-item cursor-pointer ' + (isActive ? 'active ' : '') + (groupItem.stuffData.isUnique ? 'unique-item ' : '') } style={ { backgroundImage: imageUrl }} onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
-                <span className="position-absolute badge border bg-danger px-1 rounded-circle">{ groupItem.getUnlockedCount() }</span>
+                {groupItem.getUnlockedCount() > 1 &&
+                    <span className="position-absolute badge border bg-danger px-1 rounded-circle">{groupItem.getUnlockedCount()}</span> }
                 { groupItem.stuffData.isUnique && 
                     <div className="position-absolute unique-item-counter">
                         <LimitedEditionStyledNumberView value={ groupItem.stuffData.uniqueNumber } />

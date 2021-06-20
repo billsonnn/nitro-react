@@ -17,7 +17,7 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutDefaultViewProps> = props
 
     return (
         <div className="row h-100">
-            <div className="col-7">
+            <div className="col-7 h-100">
                 <CatalogPageOffersView offers={ pageParser.offers } />
             </div>
             { !product &&
