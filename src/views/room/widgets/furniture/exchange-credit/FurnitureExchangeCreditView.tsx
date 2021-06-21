@@ -63,7 +63,7 @@ export const FurnitureExchangeCreditView: FC<FurnitureExchangeCreditProps> = pro
                 GetRoomSession().connection.send(new FurnitureExchangeComposer(exchangeCreditData.objectId));
                 return;
         }
-    }, []);
+    }, [exchangeCreditData]);
 
     if(!exchangeCreditData) return null;
 
