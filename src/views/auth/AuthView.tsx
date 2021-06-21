@@ -45,6 +45,21 @@ export const AuthView: FC<AuthViewProps> = props =>
         setFields(fieldsClone);
     }, [ fields ]);
 
+    const handleAuthentication = useCallback((data: any) =>
+    {
+        setIsLoading(false);
+
+        if(!data) return;
+
+        let ssoFieldName = 'sso';
+
+        if(GetConfiguration<boolean>('auth.system.http.enabled')) ssoFieldName = GetConfiguration<string>('auth.system.sso_field_name', 'sso');
+        
+        if(!data[ssoFieldName]) return;
+
+        window.location.href = window.location.origin + '/?sso=' + data[ssoFieldName];
+    }, []);
+
     const sendHttpAuthentication = useCallback((body: string) =>
     {
         const endpoint = (GetConfiguration('auth.system.http.endpoint.' + (showLogin ? 'login' : 'register')) as string);
@@ -66,7 +81,7 @@ export const AuthView: FC<AuthViewProps> = props =>
                     return null;
                 })
             .then(data => handleAuthentication(data));
-    }, [ showLogin ]);
+    }, [handleAuthentication, showLogin]);
 
     const sendPacketAuthentication = useCallback((keys: string[], values: string[]) =>
     {
@@ -74,21 +89,6 @@ export const AuthView: FC<AuthViewProps> = props =>
     }, [ showLogin ]);
 
     CreateMessageHook(AuthenticationEvent, event => handleAuthentication(Object.entries(event.parser)));
-
-    const handleAuthentication = useCallback((data: any) =>
-    {
-        setIsLoading(false);
-
-        if(!data) return;
-
-        let ssoFieldName = 'sso';
-
-        if(GetConfiguration<boolean>('auth.system.http.enabled')) ssoFieldName = GetConfiguration<string>('auth.system.sso_field_name', 'sso');
-        
-        if(!data[ssoFieldName]) return;
-
-        window.location.href = window.location.origin + '/?sso=' + data[ssoFieldName];
-    }, []);
 
     const sendAuthentication = useCallback(() =>
     {
@@ -137,7 +137,7 @@ export const AuthView: FC<AuthViewProps> = props =>
         {
             sendPacketAuthentication(requestKeys, requestValues);
         }
-    }, [ fields, recaptchaPublicKey, recaptchaAnswer ]);
+    }, [recaptchaPublicKey, recaptchaAnswer, fields, sendHttpAuthentication, sendPacketAuthentication]);
 
     const handleAction = useCallback((action: string, value?: string) =>
     {
@@ -155,7 +155,7 @@ export const AuthView: FC<AuthViewProps> = props =>
                 sendAuthentication();
                 return;
         }
-    }, [ fields, recaptchaAnswer ]);
+    }, [sendAuthentication]);
 
     if(!fields) return null;
 
