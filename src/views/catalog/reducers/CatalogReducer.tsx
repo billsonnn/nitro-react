@@ -1,4 +1,4 @@
-import { CatalogClubOfferData, CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from 'nitro-renderer';
+import { CatalogClubOfferData, CatalogGroupData, CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from 'nitro-renderer';
 import { Reducer } from 'react';
 import { CatalogPetPalette } from '../utils/CatalogPetPalette';
 import { ICatalogOffers, ICatalogSearchResult, SetOffersToNodes } from '../utils/CatalogUtilities';
@@ -13,6 +13,7 @@ export interface ICatalogState
     pageParser: ICatalogPageParser;
     activeOffer: CatalogPageOfferData;
     searchResult: ICatalogSearchResult;
+    groups: CatalogGroupData[];
     petPalettes: CatalogPetPalette[];
     clubOffers: CatalogClubOfferData[];
     subscriptionInfo: SubscriptionInfo;
@@ -29,6 +30,7 @@ export interface ICatalogAction
         pageParser?: ICatalogPageParser;
         activeOffer?: CatalogPageOfferData;
         searchResult?: ICatalogSearchResult;
+        groups?: CatalogGroupData[];
         petPalette?: CatalogPetPalette;
         clubOffers?: CatalogClubOfferData[];
         subscriptionInfo?: SubscriptionInfo;
@@ -37,16 +39,17 @@ export interface ICatalogAction
 
 export class CatalogActions
 {
+    public static RESET_STATE: string = 'CA_RESET_STATE';
     public static SET_CATALOG_ROOT: string = 'CA_SET_CATALOG_ROOT';
     public static SET_CATALOG_CURRENT_TAB: string = 'CA_SET_CATALOG_CURRENT_TAB';
     public static SET_CATALOG_CURRENT_PAGE: string = 'CA_SET_CATALOG_CURRENT_PAGE';
     public static SET_CATALOG_PAGE_PARSER: string = 'CA_SET_CATALOG_PAGE';
     public static SET_CATALOG_ACTIVE_OFFER: string = 'CA_SET_ACTIVE_OFFER';
-    public static SET_SEARCH_RESULT: string = 'CA_SET_SEARCH_RESULT';
-    public static SET_PET_PALETTE: string = 'CA_SET_PET_PALETTE';
     public static SET_CLUB_OFFERS: string = 'CA_SET_CLUB_OFFERS';
+    public static SET_GROUPS: string = 'CA_SET_GROUPS';
+    public static SET_PET_PALETTE: string = 'CA_SET_PET_PALETTE';
+    public static SET_SEARCH_RESULT: string = 'CA_SET_SEARCH_RESULT';
     public static SET_SUBSCRIPTION_INFO: string = 'CA_SET_SUBSCRIPTION_INFO';
-    public static RESET_STATE = 'CA_RESET_STATE';
 }
 
 export const initialCatalog: ICatalogState = {
@@ -57,6 +60,7 @@ export const initialCatalog: ICatalogState = {
     pageParser: null,
     activeOffer: null,
     searchResult: null,
+    groups: [],
     petPalettes: [],
     clubOffers: null,
     subscriptionInfo: new SubscriptionInfo()
@@ -114,6 +118,11 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
             const searchResult = (action.payload.searchResult || null);
 
             return { ...state, searchResult };
+        }
+        case CatalogActions.SET_GROUPS: {
+            const groups = (action.payload.groups || null);
+
+            return { ...state, groups };
         }
         case CatalogActions.SET_PET_PALETTE: {
             const petPalette = (action.payload.petPalette || null);

@@ -1,4 +1,4 @@
-import { CatalogApproveNameResultEvent, CatalogClubEvent, CatalogPageEvent, CatalogPagesEvent, CatalogPurchaseEvent, CatalogPurchaseFailedEvent, CatalogPurchaseUnavailableEvent, CatalogSearchEvent, CatalogSoldOutEvent, CatalogUpdatedEvent, SellablePetPalettesEvent, UserSubscriptionEvent } from 'nitro-renderer';
+import { CatalogApproveNameResultEvent, CatalogClubEvent, CatalogGroupsEvent, CatalogPageEvent, CatalogPagesEvent, CatalogPurchaseEvent, CatalogPurchaseFailedEvent, CatalogPurchaseUnavailableEvent, CatalogSearchEvent, CatalogSoldOutEvent, CatalogUpdatedEvent, SellablePetPalettesEvent, UserSubscriptionEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CatalogNameResultEvent, CatalogPurchaseFailureEvent } from '../../events';
 import { CatalogPurchasedEvent } from '../../events/catalog/CatalogPurchasedEvent';
@@ -30,8 +30,6 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
     const onCatalogPageEvent = useCallback((event: CatalogPageEvent) =>
     {
         const parser = event.getParser();
-
-        console.log(parser)
 
         dispatchCatalogState({
             type: CatalogActions.SET_CATALOG_PAGE_PARSER,
@@ -109,6 +107,18 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
+    const onCatalogGroupsEvent = useCallback((event: CatalogGroupsEvent) =>
+    {
+        const parser = event.getParser();
+
+        dispatchCatalogState({
+            type: CatalogActions.SET_GROUPS,
+            payload: {
+                groups: parser.groups
+            }
+        });
+    }, [ dispatchCatalogState ]);
+
     const onUserSubscriptionEvent = useCallback((event: UserSubscriptionEvent) =>
     {
         const parser = event.getParser();
@@ -142,6 +152,7 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
     CreateMessageHook(CatalogPurchaseUnavailableEvent, onCatalogPurchaseUnavailableEvent);
     CreateMessageHook(CatalogSoldOutEvent, onCatalogSoldOutEvent);
     CreateMessageHook(CatalogSearchEvent, onCatalogSearchEvent);
+    CreateMessageHook(CatalogGroupsEvent, onCatalogGroupsEvent);
     CreateMessageHook(SellablePetPalettesEvent, onSellablePetPalettesEvent);
     CreateMessageHook(CatalogApproveNameResultEvent, onCatalogApproveNameResultEvent);
     CreateMessageHook(CatalogClubEvent, onCatalogClubEvent);
