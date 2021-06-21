@@ -5,6 +5,7 @@ import { useLocalizationEvent } from './hooks/events/nitro/localization/localiza
 import { dispatchMainEvent, useMainEvent } from './hooks/events/nitro/main-event';
 import { useRoomEngineEvent } from './hooks/events/nitro/room/room-engine-event';
 import { GetConfiguration } from './utils/GetConfiguration';
+import { AuthView } from './views/auth/AuthView';
 import { LoadingView } from './views/loading/LoadingView';
 import { MainView } from './views/main/MainView';
 
@@ -12,6 +13,7 @@ export function App(): JSX.Element
 {
     const [ isReady, setIsReady ]   = useState(false);
     const [ isError, setIsError ]   = useState(false);
+    const [ isAuth, setIsAuth ]     = useState(false);
     const [ message, setMessage ]   = useState('Getting Ready');
 
     //@ts-ignore
@@ -60,8 +62,17 @@ export function App(): JSX.Element
 			case NitroCommunicationDemoEvent.CONNECTION_HANDSHAKING:
 				return;
 			case NitroCommunicationDemoEvent.CONNECTION_HANDSHAKE_FAILED:
-                setIsError(true);
-                setMessage('Handshake Failed');
+                const authEnabled = (GetConfiguration('auth.system.enabled') as boolean);
+
+                if(authEnabled)
+                {
+                    setIsAuth(true);
+                }
+                else
+                {
+                    setIsError(true);
+                    setMessage('Handshake Failed');
+                }
 				return;
 			case NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED:
                 setMessage('Finishing Up');
@@ -125,8 +136,9 @@ export function App(): JSX.Element
     
     return (
         <div className="nitro-app">
-            { (!isReady || isError) && <LoadingView isError={ isError } message={ message } /> }
-            { (isReady && !isError) && <MainView /> }
+            { (!isReady || isError) && !isAuth && <LoadingView isError={ isError } message={ message } /> }
+            { (isReady && !isError && !isAuth) && <MainView /> }
+            { isAuth && <AuthView /> }
         </div>
     );
 }
