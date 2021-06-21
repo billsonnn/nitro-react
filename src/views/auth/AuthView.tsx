@@ -11,6 +11,7 @@ import { AuthFormView } from './views/form/AuthFormView';
 export const AuthView: FC<AuthViewProps> = props =>
 {
     const [ showLogin, setShowLogin ]                       = useState(true);
+    const [ registerEnabled, setRegisterEnabled ]           = useState(false);
     const [ isLoading, setIsLoading ]                       = useState(false);
     const [ fields, setFields ]                             = useState<AuthField[]>(null);
     const [ recaptchaPublicKey, setRecaptchaPublicKey ]     = useState(null);
@@ -22,9 +23,13 @@ export const AuthView: FC<AuthViewProps> = props =>
         
         if(configFields.length > 0) setFields(configFields);
 
-        const recaptchaKey = GetConfiguration('auth.system.recaptcha.public_key');
+        const recaptchaKey = GetConfiguration<string>('auth.system.recaptcha.public_key');
 
         if(recaptchaKey) setRecaptchaPublicKey(recaptchaKey);
+
+        const registerEnabledConfig = GetConfiguration<boolean>('auth.system.register.enabled');
+
+        if(registerEnabledConfig) setRegisterEnabled(true);
     }, [ showLogin ]);
 
     const setFieldValue = useCallback((key: string, value: string) =>
@@ -161,7 +166,7 @@ export const AuthView: FC<AuthViewProps> = props =>
             { recaptchaPublicKey && <ReCAPTCHA sitekey={ recaptchaPublicKey }  onChange={ (event) => handleAction('recaptcha_load', event) } /> }
             <div className="d-flex justify-content-center mt-3">
                 <button className="btn btn-success btn-lg me-2" disabled={ isLoading } onClick={ () => handleAction('send') }><i className={ 'fas ' + classNames({'fa-paper-plane': !isLoading, 'fa-spinner fa-spin': isLoading })}></i></button>
-                <button className="btn btn-primary btn-lg" disabled={ isLoading } onClick={ () => handleAction('toggle_login') }><i className={'fas ' + classNames({'fa-user-plus': showLogin, 'fa-chevron-left': !showLogin})}></i></button>
+                { registerEnabled && <button className="btn btn-primary btn-lg" disabled={ isLoading } onClick={ () => handleAction('toggle_login') }><i className={'fas ' + classNames({'fa-user-plus': showLogin, 'fa-chevron-left': !showLogin})}></i></button> }
             </div>
         </div>
     );

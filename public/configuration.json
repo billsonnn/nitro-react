@@ -42,6 +42,7 @@
             "col": 12
         }
     ],
+    "auth.system.register.enabled": true,
     "auth.system.register.fields": [
         {
             "name": "username",
