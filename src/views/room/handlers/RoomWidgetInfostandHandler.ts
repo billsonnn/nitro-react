@@ -1,4 +1,4 @@
-import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, PetType, RoomAdsUpdateComposer, RoomControllerLevel, RoomModerationParser, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnumItemExtradataParameter, SecurityLevel, Vector3d } from 'nitro-renderer';
+import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, PetFigureData, PetType, RoomAdsUpdateComposer, RoomControllerLevel, RoomModerationParser, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnumItemExtradataParameter, SecurityLevel, Vector3d } from 'nitro-renderer';
 import { GetConnection, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../api';
 import { LocalizeText } from '../../../utils/LocalizeText';
 import { RoomWidgetObjectNameEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
@@ -598,26 +598,15 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         if(!roomPetData) return;
 
-        const figure = roomPetData.figure;
-
-        const petType = this.getPetType(figure);
-        const petBreed = this.getPetBreed(figure);
+        const figure = new PetFigureData(roomPetData.figure);
 
         let posture: string = null;
 
-        if(petType === PetType.MONSTERPLANT)
+        if(figure.typeId === PetType.MONSTERPLANT)
         {
             if(petData.level >= petData._Str_20651) posture = 'std';
             else posture = ('grw' + petData.level);
         }
-
-        // var _local_8:String = (_local_4 + ((_local_7 != null) ? ("/posture=" + _local_7) : ""));
-        // var _local_9:BitmapData = (this._cachedPetImages.getValue(_local_8) as BitmapData);
-        // if (_local_9 == null)
-        // {
-        //     _local_9 = this._Str_2641(_local_4, _local_7);
-        //     this._cachedPetImages.add(_local_8, _local_9);
-        // }
 
         const isOwner = (petData.ownerId === GetSessionDataManager().userId);
         const infostandEvent = new RoomWidgetUpdateInfostandPetEvent(RoomWidgetUpdateInfostandPetEvent.PET_INFO);
@@ -627,8 +616,10 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         infostandEvent.ownerId = petData.ownerId;
         infostandEvent.ownerName = petData.ownerName;
         infostandEvent.rarityLevel = petData.rarityLevel;
-        infostandEvent.petType = petType;
-        infostandEvent.petBreed = petBreed;
+        infostandEvent.petType = figure.typeId;
+        infostandEvent.petBreed = figure.paletteId;
+        infostandEvent.petFigure = figure;
+        infostandEvent.posture = posture;
         infostandEvent.isOwner = isOwner;
         infostandEvent.roomIndex = roomPetData.roomIndex;
         infostandEvent.level = petData.level;
@@ -746,6 +737,11 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
     private getPetBreed(figure: string): number
     {
         return this.getPetFigurePart(figure, 1);
+    }
+
+    private getPetColor(figure: string): number
+    {
+        return this.getPetFigurePart(figure, 2);
     }
 
     private getPetFigurePart(figure: string, index: number): number
