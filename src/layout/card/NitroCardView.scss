@@ -11,30 +11,6 @@ $nitro-card-top-height: $nitro-card-header-height + $nitro-card-tabs-height;
     @import './tabs/NitroCardTabsView';
 }
 
-.nitro-card-close-parent {
-    top: 5px;
-    position: absolute;
-    width: auto;
-
-    .nitro-card-close {
-        cursor: pointer;
-        border-radius: $border-radius;
-        box-shadow: inset 0 0 0 1px #921911, inset 0 2px rgba($white,.2);
-        padding:2px 6px 0 6px;
-        border:1px solid $white;
-        background: rgb(245,80,65);
-        background: linear-gradient(180deg, rgba(245,80,65,1) 0%, rgba(245,80,65,1) 50%, rgba(194,48,39,1) 50%, rgba(194,48,39,1) 100%);
-
-        &:hover {
-            filter: brightness(1.2);
-        }
-
-        &:active {
-            filter: brightness(0.8);
-        }
-    }
-}
-
 .nitro-card-responsive {
     position: absolute;
     top: 0;
