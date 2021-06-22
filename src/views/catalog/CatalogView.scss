@@ -8,6 +8,10 @@
         resize: vertical;
         overflow:auto;
     }
+
+    font[size="16"] {
+        font-size: 20px;
+    }
 }
 
 @import './views/CatalogViews';

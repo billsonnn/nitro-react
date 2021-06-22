@@ -1,6 +1,8 @@
 import { ICatalogPageParser, RoomPreviewer } from 'nitro-renderer';
 import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
 import { CatalogLayoutFrontpage4View } from './frontpage4/CatalogLayoutFrontpage4View';
+import { CatalogLayouGuildCustomFurniView } from './guild-custom-furni/CatalogLayoutGuildCustomFurniView';
+import { CatalogLayouGuildForumView } from './guild-forum/CatalogLayoutGuildForumView';
 import { CatalogLayoutInfoLoyaltyView } from './info-loyalty/CatalogLayoutInfoLoyaltyView';
 import { CatalogLayoutPetView } from './pets/CatalogLayoutPetView';
 import { CatalogLayoutPets2View } from './pets2/CatalogLayoutPets2View';
@@ -12,7 +14,6 @@ import { CatalogLayoutVipBuyView } from './vip-buy/CatalogLayoutVipBuyView';
 
 export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: RoomPreviewer): JSX.Element
 {
-
     switch(pageParser.layoutCode)
     {
         case 'frontpage_featured':
@@ -29,8 +30,10 @@ export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: 
             return <CatalogLayoutVipBuyView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'guild_frontpage':
             return null;
+        case 'guild_forum':
+            return <CatalogLayouGuildForumView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'guild_custom_furni':
-            return null;
+            return <CatalogLayouGuildCustomFurniView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'search_results':
             return null;
         case 'club_gifts':
