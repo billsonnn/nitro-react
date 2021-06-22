@@ -5,5 +5,6 @@ export interface NotificationCenterViewProps
 
 export class NotificationViewProps
 {
-    onCloseClick: () => void;
+    inTray?: boolean = false;
+    onButtonClick: (action: string) => void;
 }
