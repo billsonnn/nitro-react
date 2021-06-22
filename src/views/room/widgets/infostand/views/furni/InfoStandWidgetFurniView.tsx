@@ -1,9 +1,10 @@
 import { CrackableDataType, RoomControllerLevel, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, StringDataType } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { FurniAction, ProcessFurniAction } from '../../../../../../api';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { BadgeImageView } from '../../../../../badge-image/BadgeImageView';
 import { LimitedEditionCompactPlateView } from '../../../../../limited-edition/compact-plate/LimitedEditionCompactPlateView';
+import { useRoomContext } from '../../../../context/RoomContext';
+import { RoomWidgetFurniActionMessage } from '../../../../messages';
 import { InfoStandWidgetFurniViewProps } from './InfoStandWidgetFurniView.types';
 
 const PICKUP_MODE_NONE: number = 0;
@@ -13,6 +14,7 @@ const PICKUP_MODE_FULL: number = 2;
 export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props =>
 {
     const { furniData = null, close = null } = props;
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     
     const [ pickupMode, setPickupMode ] = useState(0);
     const [ canMove, setCanMove ] = useState(false);
@@ -27,29 +29,28 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
     useEffect(() =>
     {
-        setPickupMode(0);
-        setCanMove(false);
-        setCanRotate(false);
-        setCanUse(false);
-        setFurniSettingsKeys([]);
-        setFurniSettingsValues([]);
-        setIsCrackable(false);
-        setCrackableHits(0);
-        setCrackableTarget(0);
-        setGodMode(false);
+        let pickupMode = PICKUP_MODE_NONE;
+        let canMove = false;
+        let canRotate = false;
+        let canUse = false;
+        let furniSettings: string[] = [];
+        let furniValues: string[] = [];
+        let isCrackable = false;
+        let crackableHits = 0;
+        let crackableTarget = 0;
+        let godMode = false;
         
         const isValidController = (furniData.roomControllerLevel >= RoomControllerLevel.GUEST);
 
         if(isValidController || furniData.isOwner || furniData.isRoomOwner || furniData.isAnyRoomController)
         {
-            setCanMove(true);
-            setCanRotate(!furniData.isWallItem);
+            canMove = true;
+            canRotate = !furniData.isWallItem;
 
-            if(furniData.roomControllerLevel >= RoomControllerLevel.MODERATOR) setGodMode(true);
+            if(furniData.roomControllerLevel >= RoomControllerLevel.MODERATOR) godMode = true;
         }
-        else
-
-        if((((furniData.usagePolicy === RoomWidgetFurniInfoUsagePolicyEnum.EVERYBODY) || ((furniData.usagePolicy === RoomWidgetFurniInfoUsagePolicyEnum.CONTROLLER) && isValidController)) || ((furniData.extraParam === RoomWidgetEnumItemExtradataParameter.JUKEBOX) && isValidController)) || ((furniData.extraParam === RoomWidgetEnumItemExtradataParameter.USABLE_PRODUCT) && isValidController)) setCanUse(true);
+        
+        if((((furniData.usagePolicy === RoomWidgetFurniInfoUsagePolicyEnum.EVERYBODY) || ((furniData.usagePolicy === RoomWidgetFurniInfoUsagePolicyEnum.CONTROLLER) && isValidController)) || ((furniData.extraParam === RoomWidgetEnumItemExtradataParameter.JUKEBOX) && isValidController)) || ((furniData.extraParam === RoomWidgetEnumItemExtradataParameter.USABLE_PRODUCT) && isValidController)) canUse = true;
 
         if(furniData.extraParam)
         {
@@ -57,10 +58,10 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
             {
                 const stuffData = (furniData.stuffData as CrackableDataType);
 
-                setCanUse(true);
-                setIsCrackable(true);
-                setCrackableHits(stuffData.hits);
-                setCrackableTarget(stuffData.target);
+                canUse = true;
+                isCrackable = true;
+                crackableHits = stuffData.hits;
+                crackableTarget = stuffData.target;
             }
 
             if(godMode)
@@ -71,39 +72,36 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                 {
                     const parts = extraParam.split('\t');
 
-                    let keys: string[] = [];
-                    let values: string[] = [];
-
                     for(const part of parts)
                     {
                         const value = part.split('=');
 
                         if(value && (value.length === 2))
                         {
-                            keys.push(value[0]);
-                            values.push(value[1]);
+                            furniSettings.push(value[0]);
+                            furniValues.push(value[1]);
                         }
                     }
-
-                    setFurniSettingsKeys(keys);
-                    setFurniSettingsValues(values);
                 }
             }
         }
 
-        setPickupMode(PICKUP_MODE_NONE);
+        if(furniData.isOwner || furniData.isAnyRoomController) pickupMode = PICKUP_MODE_FULL;
 
-        if(furniData.isOwner || furniData.isAnyRoomController)
-        {
-            setPickupMode(PICKUP_MODE_FULL);
-        }
+        else if(furniData.isRoomOwner || (furniData.roomControllerLevel >= RoomControllerLevel.GUILD_ADMIN)) pickupMode = PICKUP_MODE_EJECT;
 
-        else if(furniData.isRoomOwner || (furniData.roomControllerLevel >= RoomControllerLevel.GUILD_ADMIN))
-        {
-            setPickupMode(PICKUP_MODE_EJECT);
-        }
+        if(furniData.isStickie) pickupMode = PICKUP_MODE_NONE;
 
-        else if(furniData.isStickie) setPickupMode(PICKUP_MODE_NONE);
+        setPickupMode(pickupMode);
+        setCanMove(canMove);
+        setCanRotate(canRotate);
+        setCanUse(canUse);
+        setFurniSettingsKeys(furniSettings);
+        setFurniSettingsValues(furniValues);
+        setIsCrackable(isCrackable);
+        setCrackableHits(crackableHits);
+        setCrackableTarget(crackableTarget);
+        setGodMode(godMode);
     }, [ furniData ]);
 
     const openFurniGroupInfo = useCallback(() =>
@@ -151,28 +149,28 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         switch(action)
         {
             case 'move':
-                messageType = FurniAction.MOVE;
+                messageType = RoomWidgetFurniActionMessage.MOVE;
                 break;
             case 'rotate':
-                messageType = FurniAction.ROTATE;
+                messageType = RoomWidgetFurniActionMessage.ROTATE;
                 break;
             case 'pickup':
-                if(pickupMode === PICKUP_MODE_FULL) messageType = FurniAction.PICKUP;
-                else messageType = FurniAction.EJECT;
+                if(pickupMode === PICKUP_MODE_FULL) messageType = RoomWidgetFurniActionMessage.PICKUP;
+                else messageType = RoomWidgetFurniActionMessage.EJECT;
                 break;
             case 'use':
-                messageType = FurniAction.USE;
+                messageType = RoomWidgetFurniActionMessage.USE;
                 break;
             case 'save_branding_configuration':
-                messageType = FurniAction.SAVE_STUFF_DATA;
+                messageType = RoomWidgetFurniActionMessage.SAVE_STUFF_DATA;
                 objectData = getFurniSettingsAsString();
                 break;
         }
 
         if(!messageType) return;
 
-        ProcessFurniAction(messageType, furniData.id, furniData.category, furniData.purchaseOfferId, objectData);
-    }, [ furniData, pickupMode ]);
+        widgetHandler.processWidgetMessage(new RoomWidgetFurniActionMessage(messageType, furniData.id, furniData.category, furniData.purchaseOfferId, objectData));
+    }, [ furniData, pickupMode, widgetHandler, getFurniSettingsAsString ]);
 
     if(!furniData) return null;
 
@@ -181,44 +179,54 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
             <div className="d-flex flex-column bg-dark nitro-card nitro-infostand rounded">
                 <div className="container-fluid content-area">
                     <div className="d-flex justify-content-between align-items-center">
-                        <div>{ furniData.name }</div>
+                        <div className="small text-wrap">{ furniData.name }</div>
                         <i className="fas fa-times cursor-pointer" onClick={ close }></i>
                     </div>
-                    <hr className="m-0 my-1"/>
-                    <div className="w-100">
+                    <hr className="m-0 my-1" />
+                    <div className="position-relative w-100">
                         { furniData.stuffData.isUnique &&
-                            <LimitedEditionCompactPlateView uniqueNumber={ furniData.stuffData.uniqueNumber } uniqueSeries={ furniData.stuffData.uniqueSeries } /> }
+                            <div className="position-absolute r-0">
+                                <LimitedEditionCompactPlateView uniqueNumber={ furniData.stuffData.uniqueNumber } uniqueSeries={ furniData.stuffData.uniqueSeries } />
+                            </div> }
                         { furniData.image.src.length && 
                             <img className="d-block mx-auto" src={ furniData.image.src } alt="" /> }
                     </div>
-                    <hr className="m-0 my-1"/>
-                    <div className="d-flex flex-column">
-                        <div className="small text-center text-wrap">{furniData.description}</div>
-                        <hr className="m-0 my-1"/>
-                        <div className="small text-center text-wrap">{ LocalizeText('furni.owner', [ 'name' ], [ furniData.ownerName ]) }</div>
-                        {isCrackable && <div>
-                            <hr className="m-0 my-1"/>
-                            <p className="badge badge-secondary mb-0 text-wrap">{LocalizeText('infostand.crackable_furni.hits_remaining', ['hits', 'target'], [crackableHits.toString(), crackableTarget.toString()])}</p>
-                            </div>}
-                        { (furniData.groupId > 0) &&
+                    <hr className="m-0 my-1" />
+                    <div className="small text-wrap">{ furniData.description }</div>
+                    <hr className="m-0 my-1" />
+                    <div className="d-flex align-items-center">
+                        <i className="icon icon-user-profile me-1 cursor-pointer" />
+                        <div className="small text-wrap">{ LocalizeText('furni.owner', [ 'name' ], [ furniData.ownerName ]) }</div>
+                    </div>
+                    { isCrackable &&
+                        <>
+                            <hr className="m-0 my-1" />
+                            <div className="small text-wrap">{ LocalizeText('infostand.crackable_furni.hits_remaining', [ 'hits', 'target' ], [ crackableHits.toString(), crackableTarget.toString() ]) }</div>
+                        </> }
+                    { (furniData.groupId > 0) &&
+                        <>
+                            <hr className="m-0 my-1" />
                             <div className="badge badge-secondary mb-0" onClick={ openFurniGroupInfo }>
                                 <BadgeImageView badgeCode={ (furniData.stuffData as StringDataType).getValue(2) } />
-                            </div> }
-                    </div>
-                    { godMode && <>
-                        <hr className="m-0 my-1"/>
-                        <div className="small text-center text-wrap">ID: { furniData.id }</div>
-                        {furniSettingsKeys.length > 0 && <>
-                            <hr className="m-0 my-1"/>
-                            { furniSettingsKeys.map((key, index) =>
-                            {
-                                return <div key={ index } className="mb-1">
-                                            <div>{ key }</div>
-                                            <input type="text" className="form-control form-control-sm" value={ furniSettingsValues[index] } onChange={ (event) => onFurniSettingChange(index, event.target.value) }/>
-                                        </div>;
-                            }) }
+                            </div>
                         </> }
-                    </> }
+                    { godMode &&
+                        <>
+                            <hr className="m-0 my-1" />
+                            <div className="small text-wrap">ID: { furniData.id }</div>
+                            { (furniSettingsKeys.length > 0) &&
+                                <>
+                                    <hr className="m-0 my-1"/>
+                                    { furniSettingsKeys.map((key, index) =>
+                                        {
+                                            return (
+                                                <div key={ index } className="mb-1">
+                                                    <div className="small text-wrap">{ key }</div>
+                                                    <input type="text" className="form-control form-control-sm" value={ furniSettingsValues[index] } onChange={ event => onFurniSettingChange(index, event.target.value) }/>
+                                                </div>);
+                                        }) }
+                                </> }
+                        </> }
                 </div>
             </div>
             <div className="button-container mt-2">

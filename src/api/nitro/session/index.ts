@@ -5,7 +5,5 @@ export * from './GetRoomSession';
 export * from './GetRoomSessionManager';
 export * from './GetSessionDataManager';
 export * from './IsOwnerOfFurniture';
-export * from './ProcessFurniAction';
-export * from './ProcessUserAction';
 export * from './SendChatTypingMessage';
 export * from './StartRoomSession';

@@ -61,12 +61,12 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
                             case RoomWidgetRoomObjectUpdateEvent.USER_REMOVED:
                                 if(prevValue instanceof RoomWidgetUpdateInfostandUserEvent || prevValue instanceof RoomWidgetUpdateInfostandRentableBotEvent)
                                 {
-                                    if(prevValue.webID === roomObjectEvent.id) return null;
+                                    if(prevValue.roomIndex === roomObjectEvent.id) return null;
                                 }
 
                                 else if(prevValue instanceof RoomWidgetUpdateInfostandPetEvent)
                                 {
-                                    // room index
+                                    if(prevValue.roomIndex === roomObjectEvent.id) return null;
                                 }
                                 break;
                         }
@@ -102,9 +102,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
             case RoomWidgetUpdateInfostandUserEvent.PEER:
             case RoomWidgetUpdateInfostandUserEvent.BOT:
             case RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT: {
-                const infostandEvent = (event as RoomWidgetUpdateInfostandFurniEvent);
-
-                setInfoStandEvent(infostandEvent);
+                setInfoStandEvent((event as RoomWidgetUpdateInfostandFurniEvent));
                 return;
             }
             default:
