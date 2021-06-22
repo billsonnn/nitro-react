@@ -2,6 +2,7 @@ import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/i
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
 import { FC, useCallback, useState } from 'react';
 import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
+import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
@@ -50,6 +51,9 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
             case ToolbarViewItems.CLOTHING_ITEM:
                 dispatchUiEvent(new AvatarEditorEvent(AvatarEditorEvent.TOGGLE_EDITOR));
                 setMeExpanded(false);
+                return;
+            case ToolbarViewItems.MOD_TOOLS_ITEM:
+                dispatchUiEvent(new ModToolsEvent(ModToolsEvent.TOGGLE_MOD_TOOLS));
                 return;
         }
     }, []);
@@ -108,6 +112,9 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                          <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CAMERA_ITEM) }>
                          <i className="icon icon-camera"></i>
                     </div>) }
+                    <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.MOD_TOOLS_ITEM) }>
+                        <i className="icon icon-modtools"></i>
+                    </div>
                 </div>
                 <div id="toolbar-chat-input-container" className="d-flex align-items-center" />
             </div>

@@ -8,6 +8,7 @@ import { CatalogView } from '../catalog/CatalogView';
 import { FriendListView } from '../friend-list/FriendListView';
 import { HotelView } from '../hotel-view/HotelView';
 import { InventoryView } from '../inventory/InventoryView';
+import { ModToolsView } from '../mod-tools/ModToolsView';
 import { NavigatorView } from '../navigator/NavigatorView';
 import { RightSideView } from '../right-side/RightSideView';
 import { RoomHostView } from '../room-host/RoomHostView';
@@ -45,6 +46,7 @@ export function MainView(props: MainViewProps): JSX.Element
     return (
         <div className="nitro-main">
             { landingViewVisible && <HotelView /> }
+            <ModToolsView />
             <RoomHostView />
             <TransitionAnimation className="nitro-toolbar-container" type={ TransitionAnimationTypes.FADE_UP } inProp={ isReady } timeout={ 300 }>
                 <ToolbarView isInRoom={ !landingViewVisible } />

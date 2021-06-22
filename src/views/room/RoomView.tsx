@@ -1,4 +1,4 @@
-import { EventDispatcher, Nitro, RoomEngineEvent, RoomEngineObjectEvent, RoomGeometry, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomVariableEnum, Vector3d } from 'nitro-renderer';
+import { EventDispatcher, Nitro, RoomEngineEvent, RoomEngineObjectEvent, RoomGeometry, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomVariableEnum, Vector3d } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { CanManipulateFurniture, IsFurnitureSelectionDisabled, ProcessRoomObjectOperation } from '../../api';
@@ -6,7 +6,8 @@ import { DispatchMouseEvent } from '../../api/nitro/room/DispatchMouseEvent';
 import { WindowResizeEvent } from '../../api/nitro/room/DispatchResizeEvent';
 import { DispatchTouchEvent } from '../../api/nitro/room/DispatchTouchEvent';
 import { GetRoomEngine } from '../../api/nitro/room/GetRoomEngine';
-import { useRoomEngineEvent } from '../../hooks/events';
+import { ModToolsSelectUserEvent } from '../../events/mod-tools/ModToolsSelectUserEvent';
+import { dispatchUiEvent, useRoomEngineEvent } from '../../hooks/events';
 import { RoomContextProvider } from './context/RoomContext';
 import { RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from './events';
 import { IRoomWidgetHandlerManager, RoomWidgetHandlerManager, RoomWidgetInfostandHandler } from './handlers';
@@ -123,6 +124,16 @@ export const RoomView: FC<RoomViewProps> = props =>
         {
             case RoomEngineObjectEvent.SELECTED:
                 if(!IsFurnitureSelectionDisabled(event)) updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED, objectId, category, event.roomId);
+                
+                if(category === RoomObjectCategory.UNIT)
+                {
+                    const user = roomSession.userDataManager.getUserDataByIndex(objectId);
+
+                    if(user && user.type === RoomObjectType.USER)
+                    {
+                        dispatchUiEvent(new ModToolsSelectUserEvent(user.webID, user.name));
+                    }
+                }
                 break;
             case RoomEngineObjectEvent.DESELECTED:
                 updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, objectId, category, event.roomId);
