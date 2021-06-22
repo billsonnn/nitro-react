@@ -7,6 +7,7 @@ export interface PetImageViewProps
     paletteId?: number;
     color?: number;
     customParts?: PetCustomPart[];
+    posture?: string;
     headOnly?: boolean;
     direction?: number;
     scale?: number;

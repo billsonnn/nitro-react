@@ -5,7 +5,7 @@ import { PetImageViewProps } from './PetImageView.types';
 
 export const PetImageView: FC<PetImageViewProps> = props =>
 {
-    const { figure = '', typeId = -1, paletteId = -1, color = 0xFFFFFF, customParts = [], headOnly = false, direction = 0, scale = 1 } = props;
+    const { figure = '', typeId = -1, paletteId = -1, color = 0xFFFFFF, customParts = [], posture = 'std', headOnly = false, direction = 0, scale = 1 } = props;
 
     const [ petUrl, setPetUrl ] = useState<string>(null);
 
@@ -38,7 +38,7 @@ export const PetImageView: FC<PetImageViewProps> = props =>
             {
 
             }
-        }, headOnly, 0, petCustomParts, 'std');
+        }, headOnly, 0, petCustomParts, posture);
 
         if(imageResult)
         {
@@ -48,7 +48,7 @@ export const PetImageView: FC<PetImageViewProps> = props =>
         }
 
         return url;
-    }, [ figure, typeId, paletteId, color, customParts, headOnly, direction ]);
+    }, [ figure, typeId, paletteId, color, customParts, posture, headOnly, direction ]);
 
     useEffect(() =>
     {
