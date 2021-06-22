@@ -1,5 +1,7 @@
 import { UserCurrencyComposer } from 'nitro-renderer';
-import { FC, useEffect, useMemo, useReducer } from 'react';
+import { FC, useCallback, useEffect, useMemo, useReducer } from 'react';
+import { NotificationCenterEvent } from '../../events';
+import { dispatchUiEvent } from '../../hooks/events';
 import { SendMessageHook } from '../../hooks/messages/message-event';
 import { GetConfiguration } from '../../utils/GetConfiguration';
 import { PurseContextProvider } from './context/PurseContext';
@@ -26,6 +28,11 @@ export const PurseView: FC<PurseViewProps> = props =>
 
     SetLastCurrencies(currencies);
 
+    const toggleNotificationCenter = useCallback(() =>
+    {
+        dispatchUiEvent(new NotificationCenterEvent(NotificationCenterEvent.TOGGLE_NOTIFICATION_CENTER));
+    }, []);
+
     return (
         <PurseContextProvider value={ { purseState, dispatchPurseState }}>
             <PurseMessageHandler />
@@ -36,7 +43,9 @@ export const PurseView: FC<PurseViewProps> = props =>
 
                         return <CurrencyView key={ index } currency={ currency } />;
                     }) }
-                <div className="notification-button px-2"><i className="fas fa-bars"/></div> 
+                <div className="notification-button px-2" onClick={ toggleNotificationCenter }>
+                    <i className="fas fa-bars" />
+                </div> 
             </div>
         </PurseContextProvider>
     );

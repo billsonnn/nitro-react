@@ -1,5 +1,5 @@
 import { Nitro, RoomSessionEvent } from 'nitro-renderer';
-import { useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
 import { TransitionAnimationTypes } from '../../layout/transitions/TransitionAnimation.types';
@@ -9,12 +9,13 @@ import { FriendListView } from '../friend-list/FriendListView';
 import { HotelView } from '../hotel-view/HotelView';
 import { InventoryView } from '../inventory/InventoryView';
 import { NavigatorView } from '../navigator/NavigatorView';
+import { NotificationCenterView } from '../notification-center/NotificationCenterView';
 import { RightSideView } from '../right-side/RightSideView';
 import { RoomHostView } from '../room-host/RoomHostView';
 import { ToolbarView } from '../toolbar/ToolbarView';
 import { MainViewProps } from './MainView.types';
 
-export function MainView(props: MainViewProps): JSX.Element
+export const MainView: FC<MainViewProps> = props =>
 {
     const [ isReady, setIsReady ] = useState(false);
     const [ landingViewVisible, setLandingViewVisible ] = useState(true);
@@ -55,6 +56,7 @@ export function MainView(props: MainViewProps): JSX.Element
             <CatalogView />
             <FriendListView />
             <RightSideView />
+            <NotificationCenterView />
         </div>
     );
 }

@@ -39,6 +39,22 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
                         animationDuration: `${ timeout }ms`
                     }
             }
+        case TransitionAnimationTypes.SLIDE_RIGHT:
+            switch(transition)
+            {
+                default:
+                    return {}
+                case ENTERING:
+                    return {
+                        animationName: `slideInRight`,
+                        animationDuration: `${ timeout }ms`
+                    }
+                case EXITING:
+                    return {
+                        animationName: `slideOutRight`,
+                        animationDuration: `${ timeout }ms`
+                    }
+            }
         case TransitionAnimationTypes.FLIP_X:
             switch(transition)
             {

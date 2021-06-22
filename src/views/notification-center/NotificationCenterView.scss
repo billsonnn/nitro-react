@@ -1,0 +1,13 @@
+.nitro-notification-center-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: calc(100% - #{$toolbar-height});
+    z-index: $notification-center-zindex;
+
+    .nitro-notification-center {
+        background-color: $dark;
+        height: 100%;
+    }
+}
