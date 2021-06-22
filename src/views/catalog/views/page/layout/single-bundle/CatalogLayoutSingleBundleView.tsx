@@ -21,7 +21,7 @@ export const CatalogLayoutSingleBundleView: FC<CatalogLayoutSingleBundleViewProp
                         }) }
                 </div>
             </div>
-            <div className="position-relative d-flex flex-column col-5 justify-content-center align-items-center">
+            <div className="position-relative d-flex flex-column col-5 justify-content-center align-items-center h-100 overflow-auto">
                 <div className="d-block mb-2">
                     <img alt="" src={ GetCatalogPageImage(pageParser, 1) } />
                 </div>

@@ -46,7 +46,7 @@ $yellow:  #ffc107 !default;
 $green:   #198754 !default;
 $teal:    #20c997 !default;
 $cyan:    #0dcaf0 !default;
-$muted:     #B6BEC5 !default;
+$muted:   #B6BEC5 !default;
 // scss-docs-end color-variables
 
 // scss-docs-start colors-map
@@ -79,9 +79,11 @@ $success:       #008026 !default;
 $info:          $cyan !default;
 $warning:       $yellow !default;
 $danger:        #C23027 !default;
+
 $light:         #DFDFDF !default;
-$dark:          $gray-900 !default;
+$dark:          #24211c !default;
 $light-dark:    $gray-800 !default;
+
 
 
 // scss-docs-end theme-color-variables

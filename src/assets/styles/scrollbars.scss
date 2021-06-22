@@ -5,23 +5,21 @@
 
 ::-webkit-scrollbar-track {
     border-radius: $border-radius;
-    background: rgba($primary,.4);
-    box-shadow:inset 1px 0 rgba($black,.2);
+    background: rgba($black,.1);
+    box-shadow:inset 0 0 1px 1px rgba($black,.1);
     padding-top:3px;
 }
 
 ::-webkit-scrollbar-thumb {
     border-radius: $border-radius;
-    background: #DCDCDC;
-    box-shadow:inset 0px 4px $white, inset 0px -4px rgba($black,.2), 0 1px rgba($black,.2);
+    background: rgba($primary,.4);
     width: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba($white, 1);
+    background: rgba($primary,.8);
 }
 
 ::-webkit-scrollbar-thumb:active {
-    box-shadow: inset 1px 4px rgba($white,.4), inset -1px -4px rgba($black,.2), 0 1px rgba($black,.2);
-    background:#C4C4C4;
+    background: $secondary;
 }

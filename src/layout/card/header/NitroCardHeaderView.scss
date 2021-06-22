@@ -1,4 +1,8 @@
 .nitro-card-header {
     min-height: $nitro-card-header-height;
     max-height: $nitro-card-header-height;
+
+    .nitro-card-close-parent {
+        right:-3px;
+    }
 }

@@ -1,9 +1,10 @@
 .nitro-currency {
-    background: rgba(20, 20, 20, .95);
-    border: 1px solid #101010;
-    box-shadow: inset 2px 2px rgba(255, 255, 255, .1), inset -2px -2px rgba(255, 255, 255, .1);
-
-    .icon {
-        border-left: 1px solid rgba(255, 255, 255, .1);
+    pointer-events: all;
+    .nitro-currency-text {
+        max-width: 60px;
+    }
+    &:not(:last-child) {
+        border-right:1px solid #000;
+        box-shadow: 1px 0 lighten($dark,8.3)
     }
 }

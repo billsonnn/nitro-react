@@ -1,5 +1,14 @@
 .nitro-purse {
-    
+    background: rgba($dark,.95);
+    border: 1px solid lighten($dark,8.3);
+    box-shadow: inset 0px 3px lighten(rgba($dark,.6),2.5), inset 0 -2px darken(rgba($dark,.6),4);
+    font-weight: bolder;
+
+    .notification-button {
+        color:lighten($dark,20);
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
 }
 
 @import './currency/CurrencyView';
