@@ -6,9 +6,9 @@ export class RoomWidgetChangeMottoMessage extends RoomWidgetMessage
 
     private _motto: string;
 
-    constructor(type: string, motto: string)
+    constructor(motto: string)
     {
-        super(type);
+        super(RoomWidgetChangeMottoMessage.CHANGE_MOTTO);
 
         this._motto = motto;
     }

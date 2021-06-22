@@ -14,7 +14,7 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
                     <div className="h4 m-0 text-white text-shadow">{ headerText }</div>
                 </div>
                 <div className="nitro-card-close-parent">
-                    <div className="nitro-card-close" onClick={ onCloseClick }>
+                    <div className="nitro-card-close cursor-pointer" onMouseDown={ event => event.stopPropagation() } onClick={ onCloseClick }>
                         <i className="fas fa-times"></i>
                     </div>
                 </div>

@@ -53,12 +53,12 @@ export const InfoStandWidgetView: FC<InfoStandWidgetViewProps> = props =>
                             case RoomWidgetRoomObjectUpdateEvent.USER_REMOVED:
                                 if(prevValue instanceof RoomWidgetUpdateInfostandUserEvent || prevValue instanceof RoomWidgetUpdateInfostandRentableBotEvent)
                                 {
-                                    if(prevValue.webID === roomObjectEvent.id) return null;
+                                    if(prevValue.roomIndex === roomObjectEvent.id) return null;
                                 }
 
                                 else if(prevValue instanceof RoomWidgetUpdateInfostandPetEvent)
                                 {
-                                    // room index
+                                    if(prevValue.roomIndex === roomObjectEvent.id) return null;
                                 }
                                 break;
                         }
@@ -73,11 +73,7 @@ export const InfoStandWidgetView: FC<InfoStandWidgetViewProps> = props =>
             case RoomWidgetUpdateInfostandUserEvent.BOT:
             case RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT:
             case RoomWidgetUpdateInfostandPetEvent.PET_INFO: {
-                const infostandEvent = (event as RoomWidgetUpdateInfostandEvent);
-
-                console.log(infostandEvent);
-
-                setInfoStandEvent(infostandEvent);
+                setInfoStandEvent((event as RoomWidgetUpdateInfostandEvent));
                 return;
             }
             default:

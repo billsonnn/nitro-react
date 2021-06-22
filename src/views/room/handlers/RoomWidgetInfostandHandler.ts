@@ -1,5 +1,5 @@
-import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, PetType, RoomControllerLevel, RoomModerationParser, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomTradingLevelEnum, RoomUserData, RoomWidgetEnumItemExtradataParameter, Vector3d } from 'nitro-renderer';
-import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../api';
+import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, PetType, RoomAdsUpdateComposer, RoomControllerLevel, RoomModerationParser, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnumItemExtradataParameter, SecurityLevel, Vector3d } from 'nitro-renderer';
+import { GetConnection, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../api';
 import { LocalizeText } from '../../../utils/LocalizeText';
 import { RoomWidgetObjectNameEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
 import { RoomWidgetChangeMottoMessage, RoomWidgetFurniActionMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUserActionMessage } from '../messages';
@@ -14,7 +14,9 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             case RoomSessionPetInfoUpdateEvent.PET_INFO:
                 this.processPetInfoEvent((event as RoomSessionPetInfoUpdateEvent));
                 return;
-
+            case RoomSessionUserBadgesEvent.RSUBE_BADGES:
+                this.eventDispatcher.dispatchEvent(event);
+                return;
         }
     }
 
@@ -68,6 +70,162 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 return this.processObjectNameMessage((message as RoomWidgetRoomObjectMessage));
             case RoomWidgetRoomObjectMessage.GET_OBJECT_INFO:
                 return this.processObjectInfoMessage((message as RoomWidgetRoomObjectMessage));
+            case RoomWidgetUserActionMessage.SEND_FRIEND_REQUEST:
+                //this._container.friendService.sendFriendRequest(userId, userData.name);
+                break;
+            case RoomWidgetUserActionMessage.RESPECT_USER:
+                GetSessionDataManager().giveRespect(userId);
+                break;
+            case RoomWidgetUserActionMessage.RESPECT_PET:
+                GetSessionDataManager().givePetRespect(userId);
+                break;
+            case RoomWidgetUserActionMessage.WHISPER_USER:
+                //this.eventDispatcher.dispatchEvent(new RoomWidgetChatInputContentUpdateEvent(RoomWidgetChatInputContentUpdateEvent.WHISPER, userData.name));
+                break;
+            case RoomWidgetUserActionMessage.IGNORE_USER:
+                GetSessionDataManager().ignoreUser(userData.name);
+                break;
+            case RoomWidgetUserActionMessage.UNIGNORE_USER:
+                GetSessionDataManager().unignoreUser(userData.name);
+                break;
+            case RoomWidgetUserActionMessage.KICK_USER:
+                this.roomSession.sendKickMessage((message as RoomWidgetUserActionMessage).userId);
+                break;
+            case RoomWidgetUserActionMessage.BAN_USER_DAY:
+            case RoomWidgetUserActionMessage.BAN_USER_HOUR:
+            case RoomWidgetUserActionMessage.BAN_USER_PERM:
+                this.roomSession.sendBanMessage((message as RoomWidgetUserActionMessage).userId, message.type);
+                break;
+            case RoomWidgetUserActionMessage.MUTE_USER_2MIN:
+                this.roomSession.sendMuteMessage((message as RoomWidgetUserActionMessage).userId, 2);
+                break;
+            case RoomWidgetUserActionMessage.MUTE_USER_5MIN:
+                this.roomSession.sendMuteMessage((message as RoomWidgetUserActionMessage).userId, 5);
+                break;
+            case RoomWidgetUserActionMessage.MUTE_USER_10MIN:
+                this.roomSession.sendMuteMessage((message as RoomWidgetUserActionMessage).userId, 10);
+                break;
+            case RoomWidgetUserActionMessage.GIVE_RIGHTS:
+                this.roomSession.sendGiveRightsMessage((message as RoomWidgetUserActionMessage).userId);
+                break;
+            case RoomWidgetUserActionMessage.TAKE_RIGHTS:
+                this.roomSession.sendTakeRightsMessage((message as RoomWidgetUserActionMessage).userId);
+                break;
+            case RoomWidgetUserActionMessage.START_TRADING:
+                //if(userData) this._widget.inventoryTrading.startTrade(userData.roomIndex, userData.name);
+                break;
+            // case RoomWidgetUserActionMessage.RWUAM_OPEN_HOME_PAGE:
+            //     this._container.sessionDataManager._Str_21275((message as RoomWidgetUserActionMessage).userId, _local_3.name);
+            //     break;
+            // case RoomWidgetUserActionMessage.RWUAM_PICKUP_PET:
+            //     this._container.roomSession._Str_13781(_local_2);
+            //     break;
+            // case RoomWidgetUserActionMessage.RWUAM_MOUNT_PET:
+            //     this._container.roomSession._Str_21066(_local_2);
+            //     break;
+            // case RoomWidgetUserActionMessage.RWUAM_TOGGLE_PET_RIDING_PERMISSION:
+            //     this._container.roomSession._Str_21025(_local_2);
+            //     break;
+            // case RoomWidgetUserActionMessage.RWUAM_TOGGLE_PET_BREEDING_PERMISSION:
+            //     this._container.roomSession._Str_21562(_local_2);
+            //     break;
+            // case RoomWidgetUserActionMessage.RWUAM_DISMOUNT_PET:
+            //     this._container.roomSession._Str_19075(_local_2);
+            //     break;
+            // case RoomWidgetUserActionMessage.RWUAM_SADDLE_OFF:
+            //     this._container.roomSession._Str_21635(_local_2);
+            //     break;
+            case RoomWidgetUserActionMessage.PASS_CARRY_ITEM:
+                GetConnection().send(new RoomUnitGiveHandItemComposer(userId));
+                break;
+            case RoomWidgetUserActionMessage.GIVE_CARRY_ITEM_TO_PET:
+                GetConnection().send(new RoomUnitGiveHandItemPetComposer(userId));
+                break;
+            case RoomWidgetUserActionMessage.GIVE_WATER_TO_PET:
+                //this._container.connection.send(new _Str_7251(_local_2, PetSupplementEnum._Str_9473));
+                break;
+            case RoomWidgetUserActionMessage.GIVE_LIGHT_TO_PET:
+                //this._container.connection.send(new _Str_7251(_local_2, PetSupplementEnum._Str_8421));
+                break;
+            case RoomWidgetUserActionMessage.TREAT_PET:
+                //this._container.connection.send(new _Str_8184(_local_2));
+                break;
+            case RoomWidgetUserActionMessage.DROP_CARRY_ITEM:
+                GetConnection().send(new RoomUnitDropHandItemComposer());
+                break;
+            case RoomWidgetUserActionMessage.REQUEST_PET_UPDATE:
+                this.roomSession.userDataManager.requestPetInfo(userId);
+                return;
+            case RoomWidgetUserActionMessage.REPORT:
+                return;
+            case RoomWidgetUserActionMessage.REPORT_CFH_OTHER:
+                return;
+            case RoomWidgetUserActionMessage.AMBASSADOR_ALERT_USER:
+                this.roomSession.sendAmbassadorAlertMessage(userId);
+                return;
+            case RoomWidgetUserActionMessage.AMBASSADOR_KICK_USER:
+                this.roomSession.sendKickMessage(userId);
+                return;
+            case RoomWidgetUserActionMessage.AMBASSADOR_MUTE_USER_2MIN:
+                this.roomSession.sendMuteMessage(userId, 2);
+                return;
+            case RoomWidgetUserActionMessage.AMBASSADOR_MUTE_USER_10MIN:
+                this.roomSession.sendMuteMessage(userId, 10);
+                return;
+            case RoomWidgetUserActionMessage.AMBASSADOR_MUTE_USER_60MIN:
+                this.roomSession.sendMuteMessage(userId, 60);
+                return;
+            case RoomWidgetUserActionMessage.AMBASSADOR_MUTE_USER_18HOUR:
+                this.roomSession.sendMuteMessage(userId, 1080);
+                return;
+            case RoomWidgetFurniActionMessage.ROTATE:
+                GetRoomEngine().processRoomObjectOperation(objectId, category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE);
+                return;
+            case RoomWidgetFurniActionMessage.MOVE:
+                GetRoomEngine().processRoomObjectOperation(objectId, category, RoomObjectOperationType.OBJECT_MOVE);
+                return;
+            case RoomWidgetFurniActionMessage.PICKUP:
+                GetRoomEngine().processRoomObjectOperation(objectId, category, RoomObjectOperationType.OBJECT_PICKUP);
+                return;
+            case RoomWidgetFurniActionMessage.EJECT:
+                GetRoomEngine().processRoomObjectOperation(objectId, category, RoomObjectOperationType.OBJECT_EJECT);
+                return;
+            case RoomWidgetFurniActionMessage.USE:
+                GetRoomEngine().useRoomObject(objectId, category);
+                return;
+            case RoomWidgetFurniActionMessage.SAVE_STUFF_DATA: {
+                const furniMessage = (message as RoomWidgetFurniActionMessage);
+
+                if(!furniMessage.objectData) return;
+                
+                const mapData = new Map<string, string>();
+                const dataParts = furniMessage.objectData.split('\t');
+
+                if(dataParts)
+                {
+                    for(const part of dataParts)
+                    {
+                        const partPieces = part.split('=', 2);
+
+                        if(partPieces && partPieces.length === 2)
+                        {
+                            const piece1 = partPieces[0];
+                            const piece2 = partPieces[1];
+
+                            mapData.set(piece1, piece2);
+                        }
+                    }
+                }
+
+                GetRoomEngine().processRoomObjectWallOperation(objectId, category, RoomObjectOperationType.OBJECT_SAVE_STUFF_DATA, mapData);
+                    
+                if(GetSessionDataManager().hasSecurity(SecurityLevel.MODERATOR)) GetConnection().send(new RoomAdsUpdateComposer(objectId, mapData));
+
+                return;
+            }
+            case RoomWidgetChangeMottoMessage.CHANGE_MOTTO:
+                this.roomSession.sendMottoMessage((message as RoomWidgetChangeMottoMessage).motto);
+                return;
         }
 
         return null;
@@ -604,7 +762,8 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
     public get eventTypes(): string[]
     {
         return [
-            RoomSessionPetInfoUpdateEvent.PET_INFO
+            RoomSessionPetInfoUpdateEvent.PET_INFO,
+            RoomSessionUserBadgesEvent.RSUBE_BADGES
         ];
     }
 

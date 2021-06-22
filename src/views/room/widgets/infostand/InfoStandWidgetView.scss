@@ -7,14 +7,16 @@
 
     .nitro-infostand {
         position: relative;
-        min-width: 170px;
-        max-width: 170px;
+        min-width: 190px;
+        max-width: 190px;
         z-index: $infostand-zindex;
 	    pointer-events: auto;
         box-shadow: inset 0 2px 0 rgba($white, .15), 0 1px 1px rgba($black, .1);
 
-        &.nitro-infostand-user {
-            max-width: 180px;
+        .form-control-sm {
+            height: 25px;
+            min-height: 25px;
+            padding: 0.1rem 0.25rem;
         }
 
         .pet-image {

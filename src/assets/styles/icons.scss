@@ -458,6 +458,16 @@ i {
             height: 14px;
         }
 
+        &.icon-user-profile {
+            background: url('../images/icons/user-profile.png');
+            width: 13px;
+            height: 11px;
+
+            &:hover {
+                background: url('../images/icons/user-profile-hover.png');
+            }
+        }
+
         &.spin {
             animation: rotating 1s linear infinite;
         }

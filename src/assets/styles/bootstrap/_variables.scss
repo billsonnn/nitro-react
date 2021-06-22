@@ -524,9 +524,9 @@ $blockquote-footer-color:     $gray-600 !default;
 $blockquote-footer-font-size: $small-font-size !default;
 
 $hr-margin-y:                 $spacer !default;
-$hr-color:                    inherit !default;
+$hr-color:                    rgba($white, 0.1) !default;
 $hr-height:                   $border-width !default;
-$hr-opacity:                  .25 !default;
+$hr-opacity:                  0.5 !default;
 
 $legend-margin-bottom:        .5rem !default;
 $legend-font-size:            1.5rem !default;
