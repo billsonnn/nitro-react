@@ -6,15 +6,13 @@ export const NitroCardSimpleHeaderView: FC<NitroCardSimpleHeaderViewProps> = pro
     const { headerText = null, onCloseClick = null } = props;
 
     return (
-        <div className="d-flex container-fluid align-items-center bg-light pb-1">
-            <div className="col-1"/>
-            <div className="d-flex bg-tertiary-split flex-grow-1 justify-content-center align-items-center border-top-0 rounded-bottom px-2 py-1 drag-handler">
-                <div className="h5 m-0 text-white text-shadow">{ headerText }</div>
-            </div>
-            <div className="col-1"/>
-            <div className="nitro-card-close-parent">
-                <div className="nitro-card-close" onClick={ onCloseClick }>
-                    <i className="fas fa-times"/>
+        <div className='container-fluid bg-light'>
+            <div className="row nitro-card-header">
+                <div className="d-flex justify-content-center align-items-center w-100 position-relative">
+                    <div className="h5 text-white text-center text-shadow bg-tertiary-split border-top-0 rounded-bottom px-2 py-1 drag-handler">{ headerText }</div>
+                    <div className="position-absolute header-close" onMouseDown={ event => event.stopPropagation() } onClick={ onCloseClick }>
+                        <i className="fas fa-times" />
+                    </div>
                 </div>
             </div>
         </div>
