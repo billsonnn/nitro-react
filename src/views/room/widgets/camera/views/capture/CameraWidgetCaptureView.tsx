@@ -46,7 +46,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
         }
 
         cameraWidgetContext.setCameraRoll([ ...remainingRoll, image ]);
-    }, [ cameraWidgetContext.cameraRoll, cameraWidgetContext.selectedPictureIndex ]);
+    }, [ cameraWidgetContext ]);
 
     const processAction = useCallback((type: string, value: string | number = null) =>
     {
@@ -73,16 +73,14 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
                 onCloseClick();
                 return;
         }
-    }, [ cameraWidgetContext.selectedPictureIndex, cameraWidgetContext.cameraRoll, onEditClick, onCloseClick ]);
+    }, [ takePicture, cameraWidgetContext, onEditClick, onCloseClick ]);
 
     return (
         <DraggableWindow handle=".nitro-camera-capture">
             <div className="nitro-camera-capture d-flex flex-column justify-content-center align-items-center">
                <div className="camera-canvas">
-                    <div className="nitro-card-close-parent">
-                        <div className="nitro-card-close" onClick={ event => processAction('close') }>
-                            <i className="fas fa-times"/>
-                        </div>
+                    <div className="position-absolute nitro-close" onClick={ event => processAction('close') }>
+                        <i className="fas fa-times"/>
                     </div>
                     <div ref={ cameraFrameRef } className={'camera-frame ' + classNames({'bg': cameraWidgetContext.selectedPictureIndex > -1}) }>
                         { cameraWidgetContext.selectedPictureIndex > -1 && <div>

@@ -11,3 +11,12 @@
         height: 100%;
     }
 }
+
+.nitro-notification {
+    width: 350px;
+
+    .content-area {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+}
