@@ -79,10 +79,8 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
         <DraggableWindow handle=".nitro-camera-capture">
             <div className="nitro-camera-capture d-flex flex-column justify-content-center align-items-center">
                <div className="camera-canvas">
-                    <div className="nitro-card-close-parent">
-                        <div className="nitro-card-close" onClick={ event => processAction('close') }>
-                            <i className="fas fa-times"/>
-                        </div>
+                    <div className="position-absolute header-close" onClick={ event => processAction('close') }>
+                        <i className="fas fa-times"/>
                     </div>
                     <div ref={ cameraFrameRef } className={'camera-frame ' + classNames({'bg': cameraWidgetContext.selectedPictureIndex > -1}) }>
                         { cameraWidgetContext.selectedPictureIndex > -1 && <div>
