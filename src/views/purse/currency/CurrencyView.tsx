@@ -1,6 +1,6 @@
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { LocalizeShortNumber } from '../../../utils/LocalizeShortNumber';
-import { CurrencyIcon } from '../../currency-icon/CurrencyIcon';
+import { CurrencyIcon } from '../../shared/currency-icon/CurrencyIcon';
 import { CurrencyViewProps } from './CurrencyView.types';
 
 export function CurrencyView(props: CurrencyViewProps): JSX.Element

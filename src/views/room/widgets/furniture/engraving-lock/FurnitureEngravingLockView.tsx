@@ -10,7 +10,7 @@ import { NitroCardContentView } from '../../../../../layout/card/content/NitroCa
 import { NitroCardHeaderView } from '../../../../../layout/card/header/NitroCardHeaderView';
 import { NitroCardView } from '../../../../../layout/card/NitroCardView';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
-import { AvatarImageView } from '../../../../avatar-image/AvatarImageView';
+import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureEngravingLockData } from './FurnitureEngravingLockData';

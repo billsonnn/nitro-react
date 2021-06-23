@@ -1,6 +1,6 @@
 import { MouseEventType } from 'nitro-renderer';
 import { FC, MouseEvent, useCallback } from 'react';
-import { BadgeImageView } from '../../../../badge-image/BadgeImageView';
+import { BadgeImageView } from '../../../../shared/badge-image/BadgeImageView';
 import { useInventoryContext } from '../../../context/InventoryContext';
 import { InventoryBadgeActions } from '../../../reducers/InventoryBadgeReducer';
 import { InventoryBadgeItemViewProps } from './InventoryBadgeItemView.types';

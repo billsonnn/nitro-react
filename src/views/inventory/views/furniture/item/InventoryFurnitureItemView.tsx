@@ -1,6 +1,6 @@
 import { MouseEventType } from 'nitro-renderer';
 import { FC, MouseEvent, useCallback, useState } from 'react';
-import { LimitedEditionStyledNumberView } from '../../../../limited-edition/styled-number/LimitedEditionStyledNumberView';
+import { LimitedEditionStyledNumberView } from '../../../../shared/limited-edition/styled-number/LimitedEditionStyledNumberView';
 import { useInventoryContext } from '../../../context/InventoryContext';
 import { InventoryFurnitureActions } from '../../../reducers/InventoryFurnitureReducer';
 import { attemptItemPlacement } from '../../../utils/FurnitureUtilities';

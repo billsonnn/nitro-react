@@ -1,6 +1,6 @@
 import { PetFigureData, TextureUtils, Vector3d } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetRoomEngine } from '../../api';
+import { GetRoomEngine } from '../../../api';
 import { PetImageViewProps } from './PetImageView.types';
 
 export const PetImageView: FC<PetImageViewProps> = props =>

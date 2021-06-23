@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { CatalogIconView } from '../../../../catalog-icon/CatalogIconView';
 import { useCatalogContext } from '../../../context/CatalogContext';
+import { CatalogIconView } from '../../catalog-icon/CatalogIconView';
 import { CatalogPageHeaderViewProps } from './CatalogPageHeaderView.types';
 
 export const CatalogPageHeaderView: FC<CatalogPageHeaderViewProps> = props =>

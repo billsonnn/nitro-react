@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { GetConfiguration } from '../../utils/GetConfiguration';
+import { GetConfiguration } from '../../../utils/GetConfiguration';
 import { BadgeImageViewProps } from './BadgeImageView.types';
 
 export const BadgeImageView: FC<BadgeImageViewProps> = props =>

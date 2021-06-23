@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
-import { CurrencyIcon } from '../../../../currency-icon/CurrencyIcon';
+import { CurrencyIcon } from '../../../../shared/currency-icon/CurrencyIcon';
 import { CatalogPurchaseViewProps } from './CatalogPurchaseView.types';
 import { CatalogPurchaseButtonView } from './purchase-button/CatalogPurchaseButtonView';
 

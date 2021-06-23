@@ -3,7 +3,7 @@ import { FC, useEffect } from 'react';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
 import { LocalizeBadgeName } from '../../../../utils/LocalizeBageName';
 import { LocalizeText } from '../../../../utils/LocalizeText';
-import { BadgeImageView } from '../../../badge-image/BadgeImageView';
+import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryBadgeActions } from '../../reducers/InventoryBadgeReducer';
 import { InventoryActiveBadgeResultsView } from './active-results/InventoryActiveBadgeResultsView';

@@ -1,10 +1,10 @@
 import { FriendListFragmentEvent, GetFriendRequestsComposer, MessengerInitEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
+import { MessengerSettings } from './common/MessengerSettings';
 import { useFriendListContext } from './context/FriendListContext';
 import { FriendListMessageHandlerProps } from './FriendListMessageHandler.types';
 import { FriendListActions } from './reducers/FriendListReducer';
-import { MessengerSettings } from './utils/MessengerSettings';
 
 export const FriendListMessageHandler: FC<FriendListMessageHandlerProps> = props =>
 {

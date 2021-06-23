@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { LimitedEditionCompletePlateView } from '../../../../../limited-edition/complete-plate/LimitedEditionCompletePlateView';
+import { LimitedEditionCompletePlateView } from '../../../../../shared/limited-edition/complete-plate/LimitedEditionCompletePlateView';
 import { RoomPreviewerView } from '../../../../../room-previewer/RoomPreviewerView';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { GetCatalogPageImage, GetCatalogPageText, GetOfferName } from '../../../../utils/CatalogUtilities';
@@ -21,7 +21,7 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutDefaultViewProps> = props
                 <CatalogPageOffersView offers={ pageParser.offers } />
             </div>
             { !product &&
-                <div className="position-relative d-flex flex-column col-5 justify-content-center align-items-center">
+                <div className="position-relative d-flex flex-column col-5 justify-content-center align-items-center overflow-hidden">
                     <div className="d-block mb-2">
                         <img alt="" src={ GetCatalogPageImage(pageParser, 1) } />
                     </div>

@@ -1,6 +1,6 @@
 import { MouseEventType } from 'nitro-renderer';
 import { FC, MouseEvent, useCallback, useState } from 'react';
-import { AvatarImageView } from '../../../../avatar-image/AvatarImageView';
+import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { useInventoryContext } from '../../../context/InventoryContext';
 import { InventoryBotActions } from '../../../reducers/InventoryBotReducer';
 import { attemptBotPlacement } from '../../../utils/BotUtilities';

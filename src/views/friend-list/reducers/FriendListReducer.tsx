@@ -1,7 +1,7 @@
 import { FriendParser } from 'nitro-renderer';
 import { Reducer } from 'react';
 import { MessengerFriend } from '../common/MessengerFriend';
-import { MessengerSettings } from '../utils/MessengerSettings';
+import { MessengerSettings } from '../common/MessengerSettings';
 
 export interface IFriendListState
 {

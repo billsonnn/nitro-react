@@ -1,6 +1,6 @@
 import { MouseEventType } from 'nitro-renderer';
 import { FC, MouseEvent, useCallback, useState } from 'react';
-import { PetImageView } from '../../../../pet-image/PetImageView';
+import { PetImageView } from '../../../../shared/pet-image/PetImageView';
 import { useInventoryContext } from '../../../context/InventoryContext';
 import { InventoryPetActions } from '../../../reducers/InventoryPetReducer';
 import { attemptPetPlacement } from '../../../utils/PetUtilities';

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
-import { PetImageView } from '../../../../../pet-image/PetImageView';
+import { PetImageView } from '../../../../../shared/pet-image/PetImageView';
 import { InfoStandWidgetPetViewProps } from './InfoStandWidgetPetView.types';
 
 export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>

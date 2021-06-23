@@ -1,8 +1,8 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetCatalogPageComposer } from '../../../../../api/catalog/GetCatalogPageComposer';
 import { SendMessageHook } from '../../../../../hooks/messages/message-event';
-import { CatalogIconView } from '../../../../catalog-icon/CatalogIconView';
 import { CatalogMode } from '../../../CatalogView.types';
+import { CatalogIconView } from '../../catalog-icon/CatalogIconView';
 import { CatalogNavigationSetView } from '../set/CatalogNavigationSetView';
 import { CatalogNavigationItemViewProps } from './CatalogNavigationItemView.types';
 

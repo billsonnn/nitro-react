@@ -6,7 +6,7 @@ import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
 import { TransitionAnimationTypes } from '../../layout/transitions/TransitionAnimation.types';
-import { AvatarImageView } from '../avatar-image/AvatarImageView';
+import { AvatarImageView } from '../shared/avatar-image/AvatarImageView';
 import { ToolbarMeView } from './me/ToolbarMeView';
 import { ToolbarViewItems, ToolbarViewProps } from './ToolbarView.types';
 

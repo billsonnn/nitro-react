@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { LimitedEditionCompletePlateView } from '../../../../limited-edition/complete-plate/LimitedEditionCompletePlateView';
 import { RoomPreviewerView } from '../../../../room-previewer/RoomPreviewerView';
+import { LimitedEditionCompletePlateView } from '../../../../shared/limited-edition/complete-plate/LimitedEditionCompletePlateView';
 import { useCatalogContext } from '../../../context/CatalogContext';
 import { GetOfferName } from '../../../utils/CatalogUtilities';
 import { CatalogPurchaseView } from '../purchase/CatalogPurchaseView';

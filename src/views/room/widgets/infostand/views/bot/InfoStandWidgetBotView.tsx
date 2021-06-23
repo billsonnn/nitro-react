@@ -1,7 +1,7 @@
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
-import { AvatarImageView } from '../../../../../avatar-image/AvatarImageView';
-import { BadgeImageView } from '../../../../../badge-image/BadgeImageView';
+import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
+import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { InfoStandWidgetBotViewProps } from './InfoStandWidgetBotView.types';
 
 export const InfoStandWidgetBotView: FC<InfoStandWidgetBotViewProps> = props =>

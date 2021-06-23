@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { GetConfiguration } from '../../utils/GetConfiguration';
+import { GetConfiguration } from '../../../utils/GetConfiguration';
 import { CurrencyIconProps } from './CurrencyIcon.types';
 
 export const CurrencyIcon: FC<CurrencyIconProps> = props =>

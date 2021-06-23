@@ -2,8 +2,8 @@ import { BotRemoveComposer } from 'nitro-renderer';
 import { FC, useCallback, useMemo } from 'react';
 import { GetConnection } from '../../../../../../api';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
-import { AvatarImageView } from '../../../../../avatar-image/AvatarImageView';
-import { BadgeImageView } from '../../../../../badge-image/BadgeImageView';
+import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
+import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { BotSkillsEnum } from '../../../avatar-info/utils/BotSkillsEnum';
 import { InfoStandWidgetRentableBotViewProps } from './InfoStandWidgetRentableBotView.types';
 

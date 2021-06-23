@@ -1,8 +1,8 @@
 import { CrackableDataType, RoomControllerLevel, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, StringDataType } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
-import { BadgeImageView } from '../../../../../badge-image/BadgeImageView';
-import { LimitedEditionCompactPlateView } from '../../../../../limited-edition/compact-plate/LimitedEditionCompactPlateView';
+import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
+import { LimitedEditionCompactPlateView } from '../../../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { RoomWidgetFurniActionMessage } from '../../../../messages';
 import { InfoStandWidgetFurniViewProps } from './InfoStandWidgetFurniView.types';

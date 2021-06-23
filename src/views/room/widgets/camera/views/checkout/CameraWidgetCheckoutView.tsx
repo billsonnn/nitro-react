@@ -6,7 +6,7 @@ import { NitroCardContentView } from '../../../../../../layout/card/content/Nitr
 import { NitroCardView } from '../../../../../../layout/card/NitroCardView';
 import { NitroCardSimpleHeaderView } from '../../../../../../layout/card/simple-header/NitroCardSimpleHeaderView';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
-import { CurrencyIcon } from '../../../../../currency-icon/CurrencyIcon';
+import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
 import { useCameraWidgetContext } from '../../context/CameraWidgetContext';
 import { CameraWidgetCheckoutViewProps } from './CameraWidgetCheckoutView.types';
 

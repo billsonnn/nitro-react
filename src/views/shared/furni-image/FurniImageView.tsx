@@ -1,8 +1,8 @@
 import { IGetImageListener, ImageResult, TextureUtils, Vector3d } from 'nitro-renderer';
 import { RenderTexture } from 'pixi.js';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetRoomEngine } from '../../api';
-import { ProductTypeEnum } from '../catalog/enums/ProductTypeEnum';
+import { GetRoomEngine } from '../../../api';
+import { ProductTypeEnum } from '../../catalog/enums/ProductTypeEnum';
 import { FurniImageViewProps } from './FurniImageView.types';
 
 export const FurniImageView: FC<FurniImageViewProps> = props =>

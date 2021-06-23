@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { GetConfiguration } from '../../utils/GetConfiguration';
+import { GetConfiguration } from '../../../../utils/GetConfiguration';
 import { CatalogIconViewProps } from './CatalogIconView.types';
 
 export const CatalogIconView: FC<CatalogIconViewProps> = props =>
