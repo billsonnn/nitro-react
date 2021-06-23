@@ -1,6 +1,11 @@
 .content-area {
     padding-top: $container-padding-x;
     padding-bottom: $container-padding-x;
+
+    &.simple {
+        padding-left: ($container-padding-x + 25px);
+        padding-right: ($container-padding-x + 25px);
+    }
 }
 
 @include media-breakpoint-down(lg) {

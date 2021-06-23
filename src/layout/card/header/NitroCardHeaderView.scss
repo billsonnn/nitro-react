@@ -1,4 +1,16 @@
 .nitro-card-header {
-    min-height: $nitro-card-header-height;
-    max-height: $nitro-card-header-height;
+    min-height: 33px;
+    max-height: 33px;
+
+    &.simple-header {
+        min-height: 28px;
+        max-height: 28px;
+    }
+
+    .bg-tertiary-split {
+        border: 2px solid darken($quaternary, 4);
+        box-shadow: 0 0 0 2px $white;
+        width: 100%;
+        margin: 0 25px;
+    }
 }

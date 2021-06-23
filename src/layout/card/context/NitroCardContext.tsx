@@ -2,7 +2,8 @@ import { createContext, FC, useContext } from 'react';
 import { INitroCardContext, NitroCardContextProps } from './NitroCardContext.types';
 
 const NitroCardContext = createContext<INitroCardContext>({
-    theme: null
+    theme: null,
+    simple: false
 });
 
 export const NitroCardContextProvider: FC<NitroCardContextProps> = props =>

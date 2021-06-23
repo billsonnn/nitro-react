@@ -3,9 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, GetRoomSession } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
-import { NitroCardContentView } from '../../../../../layout';
-import { NitroCardView } from '../../../../../layout/card/NitroCardView';
-import { NitroCardSimpleHeaderView } from '../../../../../layout/card/simple-header';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
@@ -68,8 +66,8 @@ export const FurnitureExchangeCreditView: FC<FurnitureExchangeCreditProps> = pro
     if(!exchangeCreditData) return null;
 
     return (
-        <NitroCardView className="nitro-exchange-credit">
-            <NitroCardSimpleHeaderView headerText={ LocalizeText('catalog.redeem.dialog.title') } onCloseClick={ event => processAction('close') } />
+        <NitroCardView className="nitro-exchange-credit" simple={ true }>
+            <NitroCardHeaderView headerText={ LocalizeText('catalog.redeem.dialog.title') } onCloseClick={ event => processAction('close') } />
             <NitroCardContentView>
                 <div className="text-black mb-2">
                     { LocalizeText('widgets.furniture.credit.redeem.value', [ 'value' ], [ exchangeCreditData.value.toString() ]) }

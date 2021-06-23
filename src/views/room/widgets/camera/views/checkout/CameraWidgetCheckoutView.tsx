@@ -2,9 +2,7 @@ import { RoomWidgetCameraPublishComposer, RoomWidgetCameraPublishedEvent, RoomWi
 import { FC, useCallback, useState } from 'react';
 import { GetRoomCameraWidgetManager } from '../../../../../../api/nitro/camera/GetRoomCameraWidgetManager';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks/messages/message-event';
-import { NitroCardContentView } from '../../../../../../layout/card/content/NitroCardContentView';
-import { NitroCardView } from '../../../../../../layout/card/NitroCardView';
-import { NitroCardSimpleHeaderView } from '../../../../../../layout/card/simple-header/NitroCardSimpleHeaderView';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../../layout';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
 import { useCameraWidgetContext } from '../../context/CameraWidgetContext';
@@ -72,8 +70,8 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
     if(!price) return null;
 
     return (
-        <NitroCardView className="nitro-camera-checkout">
-            <NitroCardSimpleHeaderView headerText={ LocalizeText('camera.confirm_phase.title') } onCloseClick={ event => processAction('close') } />
+        <NitroCardView className="nitro-camera-checkout" simple={ true }>
+            <NitroCardHeaderView headerText={ LocalizeText('camera.confirm_phase.title') } onCloseClick={ event => processAction('close') } />
             <NitroCardContentView>
                 <div className="picture-preview border mb-2" style={ { backgroundImage: 'url(' + getCurrentPicture().src + ')' } }></div>
                 <div className="bg-muted rounded p-2 text-black mb-2 d-flex justify-content-between align-items-center">

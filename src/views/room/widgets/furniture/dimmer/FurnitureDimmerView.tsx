@@ -1,7 +1,5 @@
 import { FC, useCallback, useState } from 'react';
-import { NitroCardContentView } from '../../../../../layout/card/content/NitroCardContentView';
-import { NitroCardHeaderView } from '../../../../../layout/card/header/NitroCardHeaderView';
-import { NitroCardView } from '../../../../../layout/card/NitroCardView';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../context/RoomContext';
 import { FurnitureDimmerData } from './FurnitureDimmerData';

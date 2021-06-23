@@ -1,6 +1,5 @@
 import { FC } from 'react';
-import { NitroCardContentView, NitroCardView } from '../../../../layout';
-import { NitroCardSimpleHeaderView } from '../../../../layout/card/simple-header';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { NotificationTrayItemView } from '../tray-item/NotificationTrayItemView';
 import { BroadcastMessageViewProps } from './BroadcastMessageView.types';
@@ -19,8 +18,8 @@ export const BroadcastMessageView: FC<BroadcastMessageViewProps> = props =>
         );
         
     return (
-        <NitroCardView className="nitro-notification">
-            <NitroCardSimpleHeaderView headerText={ LocalizeText('mod.alert.title') } onCloseClick={ () => onButtonClick('dismiss_notification') } />
+        <NitroCardView className="nitro-notification" simple={ true }>
+            <NitroCardHeaderView headerText={ LocalizeText('mod.alert.title') } onCloseClick={ () => onButtonClick('dismiss_notification') } />
             <NitroCardContentView className="text-black">
                 { content }
             </NitroCardContentView>
