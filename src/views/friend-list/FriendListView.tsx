@@ -1,5 +1,6 @@
 import { MessengerInitComposer } from 'nitro-renderer';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useReducer, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { FriendListEvent } from '../../events';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
@@ -7,20 +8,19 @@ import { NitroCardHeaderView, NitroCardView } from '../../layout';
 import { NitroCardAccordionItemView } from '../../layout/card/accordion/item/NitroCardAccordionItemView';
 import { NitroCardAccordionView } from '../../layout/card/accordion/NitroCardAccordionView';
 import { LocalizeText } from '../../utils/LocalizeText';
+import { FriendListContextProvider } from './context/FriendListContext';
 import { FriendListMessageHandler } from './FriendListMessageHandler';
-import { FriendListTabs, FriendListViewProps, IFriendListContext } from './FriendListView.types';
-import { FriendListFriendsView } from './friends/FriendListFriendsView';
-import { MessengerSettings } from './utils/MessengerSettings';
-
-export const FriendListContext = React.createContext<IFriendListContext>(null);
+import { FriendListViewProps } from './FriendListView.types';
+import { FriendListReducer, initialFriendList } from './reducers/FriendListReducer';
+import { FriendBarView } from './views/friend-bar/FriendBarView';
+import { FriendListFriendsView } from './views/friends/FriendListFriendsView';
 
 export const FriendListView: FC<FriendListViewProps> = props =>
 {
-    const tabs = [  FriendListTabs.FRIENDS, FriendListTabs.REQUESTS, FriendListTabs.SEARCH ];
-
-    const [ isVisible, setIsVisible ]                   = useState(false);
-    const [ currentTab, setCurrentTab ]                 = useState<string>(null);
-    const [ messengerSettings, setMessengerSettings ]   = useState<MessengerSettings>(null);
+    const [ isVisible, setIsVisible ] = useState(false);
+    const [ isReady, setIsReady ] = useState(false);
+    const [ friendListState, dispatchFriendListState ] = useReducer(FriendListReducer, initialFriendList);
+    const { settings = null } = friendListState;
 
     const onFriendListEvent = useCallback((event: FriendListEvent) =>
     {
@@ -40,13 +40,10 @@ export const FriendListView: FC<FriendListViewProps> = props =>
 
     useEffect(() =>
     {
-        setCurrentTab(tabs[0]);
-    }, [ tabs ]);
+        if(!settings) return;
 
-    useEffect(() =>
-    {
-        if(!messengerSettings) return;
-    }, [ messengerSettings ]);
+        setIsReady(true);
+    }, [ settings ]);
 
     useEffect(() =>
     {
@@ -54,8 +51,9 @@ export const FriendListView: FC<FriendListViewProps> = props =>
     }, []);
 
     return (
-        <FriendListContext.Provider value={{ currentTab: currentTab, onSetCurrentTab: setCurrentTab }}>
-            <FriendListMessageHandler setMessengerSettings={ setMessengerSettings }  />
+        <FriendListContextProvider value={ { friendListState, dispatchFriendListState } }>
+            <FriendListMessageHandler />
+            { isReady && createPortal(<FriendBarView />, document.getElementById('toolbar-friend-bar-container')) }
             { isVisible &&
                 <NitroCardView className="nitro-friend-list">
                     <NitroCardHeaderView headerText={ LocalizeText('friendlist.friends') } onCloseClick={ event => setIsVisible(false) } />
@@ -71,6 +69,6 @@ export const FriendListView: FC<FriendListViewProps> = props =>
                         </NitroCardAccordionItemView>
                     </NitroCardAccordionView>
                 </NitroCardView> }
-        </FriendListContext.Provider>
+        </FriendListContextProvider>
     );
 }

@@ -1,25 +1,32 @@
 import { GetFriendRequestsComposer, MessengerInitEvent } from 'nitro-renderer';
-import { useCallback } from 'react';
+import { FC, useCallback } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
+import { useFriendListContext } from './context/FriendListContext';
 import { FriendListMessageHandlerProps } from './FriendListMessageHandler.types';
+import { FriendListActions } from './reducers/FriendListReducer';
 import { MessengerSettings } from './utils/MessengerSettings';
 
-export function FriendListMessageHandler(props: FriendListMessageHandlerProps): JSX.Element
+export const FriendListMessageHandler: FC<FriendListMessageHandlerProps> = props =>
 {
-    const { setMessengerSettings = null } = props;
+    const { friendListState = null, dispatchFriendListState = null } = useFriendListContext();
 
     const onMessengerInitEvent = useCallback((event: MessengerInitEvent) =>
-        {
-            const parser = event.getParser();
+    {
+        const parser = event.getParser();
 
-            setMessengerSettings(new MessengerSettings(
-                parser.userFriendLimit,
-                parser.normalFriendLimit,
-                parser.extendedFriendLimit,
-                parser.categories));
+        dispatchFriendListState({
+            type: FriendListActions.UPDATE_SETTINGS,
+            payload: {
+                settings: new MessengerSettings(
+                    parser.userFriendLimit,
+                    parser.normalFriendLimit,
+                    parser.extendedFriendLimit,
+                    parser.categories)
+            }
+        });
 
-            SendMessageHook(new GetFriendRequestsComposer());
-        }, [ setMessengerSettings ]);
+        SendMessageHook(new GetFriendRequestsComposer());
+    }, [ dispatchFriendListState ]);
 
     CreateMessageHook(MessengerInitEvent, onMessengerInitEvent);
 

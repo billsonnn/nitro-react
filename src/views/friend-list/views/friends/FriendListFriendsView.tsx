@@ -1,12 +1,12 @@
-import { FC, useContext, useState } from 'react';
-import { NitroCardAccordionItemView } from '../../../layout/card/accordion/item/NitroCardAccordionItemView';
-import { NitroCardAccordionView } from '../../../layout/card/accordion/NitroCardAccordionView';
-import { FriendListContext } from '../FriendListView';
+import { FC, useState } from 'react';
+import { NitroCardAccordionItemView } from '../../../../layout/card/accordion/item/NitroCardAccordionItemView';
+import { NitroCardAccordionView } from '../../../../layout/card/accordion/NitroCardAccordionView';
+import { useFriendListContext } from '../../context/FriendListContext';
 import { FriendListFriendsViewProps } from './FriendListFriendsView.types';
 
 export const FriendListFriendsView: FC<FriendListFriendsViewProps> = props =>
 {
-    const friendListContext = useContext(FriendListContext);
+    const { friendListState = null } = useFriendListContext();
 
     const [ isOnlineFriendsExtended, setIsOnlineFriendsExtended ] = useState(false);
     const [ isOfflineFriendsExtended, setIsOfflineFriendsExtended ] = useState(false);

@@ -1,8 +1,6 @@
 import { Nitro, RoomSessionEvent } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
-import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
-import { TransitionAnimationTypes } from '../../layout/transitions/TransitionAnimation.types';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CatalogView } from '../catalog/CatalogView';
 import { FriendListView } from '../friend-list/FriendListView';
@@ -46,10 +44,8 @@ export const MainView: FC<MainViewProps> = props =>
     return (
         <div className="nitro-main">
             { landingViewVisible && <HotelView /> }
+            <ToolbarView isInRoom={ !landingViewVisible } />
             <RoomHostView />
-            <TransitionAnimation className="nitro-toolbar-container" type={ TransitionAnimationTypes.FADE_UP } inProp={ isReady } timeout={ 300 }>
-                <ToolbarView isInRoom={ !landingViewVisible } />
-            </TransitionAnimation>
             <AvatarEditorView />
             <NavigatorView />
             <InventoryView />
