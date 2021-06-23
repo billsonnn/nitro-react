@@ -1,9 +1,9 @@
 import { UserCurrencyComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useReducer } from 'react';
+import { GetConfiguration } from '../../api';
 import { NotificationCenterEvent } from '../../events';
 import { dispatchUiEvent } from '../../hooks/events';
 import { SendMessageHook } from '../../hooks/messages/message-event';
-import { GetConfiguration } from '../../utils/GetConfiguration';
 import { SetLastCurrencies } from './common/CurrencyHelper';
 import { PurseContextProvider } from './context/PurseContext';
 import { CurrencyView } from './currency/CurrencyView';

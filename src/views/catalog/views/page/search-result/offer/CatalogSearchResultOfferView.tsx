@@ -1,8 +1,7 @@
 import { CatalogSearchComposer, FurnitureType, MouseEventType } from 'nitro-renderer';
 import { FC, MouseEvent, useCallback } from 'react';
-import { GetRoomEngine, GetSessionDataManager } from '../../../../../../api';
+import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
-import { GetConfiguration } from '../../../../../../utils/GetConfiguration';
 import { CatalogSearchResultOfferViewProps } from './CatalogSearchResultOfferView.types';
 
 export const CatalogSearchResultOfferView: FC<CatalogSearchResultOfferViewProps> = props =>

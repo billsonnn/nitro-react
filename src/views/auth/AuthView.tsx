@@ -3,8 +3,8 @@ import { AuthenticationMessageComposer } from 'nitro-renderer';
 import { AuthenticationEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/handshake/AuthenticationEvent';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
+import { GetConfiguration } from '../../api';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages';
-import { GetConfiguration } from '../../utils/GetConfiguration';
 import { AuthField, AuthViewProps } from './AuthView.types';
 import { AuthFormView } from './views/form/AuthFormView';
 

@@ -1,4 +1,26 @@
+$toolbar-me-zindex: 90;
+$chatinput-zindex: 80;
+$toolbar-zindex: 70;
+$rightside-zindex: 69;
+$notification-center-zindex: 68;
+$toolbar-memenu-zindex: 60;
+$roomtools-zindex: 50;
+$context-menu-zindex: 40;
+$infostand-zindex: 30;
+$chat-zindex: 20;
+$highscore-zindex: 19;
+
+$grid-bg-color: #CDD3D9;
+$grid-border-color: $muted;
+$grid-active-bg-color: #ECECEC;
+$grid-active-border-color: $white;
+
+$toolbar-height: 55px;
+
 .nitro-app {
     width: 100%;
     height: 100%;
 }
+
+@import './layout/Layout';
+@import './views/Styles';

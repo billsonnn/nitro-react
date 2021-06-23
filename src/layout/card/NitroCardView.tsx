@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { DraggableWindow } from '../../hooks/draggable-window/DraggableWindow';
+import { DraggableWindow } from '../draggable-window/DraggableWindow';
 import { NitroCardContextProvider } from './context/NitroCardContext';
 import { NitroCardViewProps } from './NitroCardView.types';
 

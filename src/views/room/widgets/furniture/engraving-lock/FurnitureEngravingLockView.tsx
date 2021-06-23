@@ -2,13 +2,13 @@ import { LoveLockFurniFinishedEvent, LoveLockFurniFriendConfirmedEvent, LoveLock
 import { FC, useCallback, useState } from 'react';
 import { GetRoomSession } from '../../../../../api';
 import { GetRoomEngine } from '../../../../../api/nitro/room/GetRoomEngine';
-import { DraggableWindow } from '../../../../../hooks/draggable-window/DraggableWindow';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { CreateMessageHook } from '../../../../../hooks/messages/message-event';
 import { NitroCardContentView } from '../../../../../layout/card/content/NitroCardContentView';
 import { NitroCardHeaderView } from '../../../../../layout/card/header/NitroCardHeaderView';
 import { NitroCardView } from '../../../../../layout/card/NitroCardView';
+import { DraggableWindow } from '../../../../../layout/draggable-window/DraggableWindow';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../../context/RoomContext';

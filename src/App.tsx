@@ -1,15 +1,15 @@
 import { ConfigurationEvent, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, RoomEngineEvent, WebGL } from 'nitro-renderer';
-import { useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { GetConfiguration } from './api';
 import { useConfigurationEvent } from './hooks/events/core/configuration/configuration-event';
 import { useLocalizationEvent } from './hooks/events/nitro/localization/localization-event';
 import { dispatchMainEvent, useMainEvent } from './hooks/events/nitro/main-event';
 import { useRoomEngineEvent } from './hooks/events/nitro/room/room-engine-event';
-import { GetConfiguration } from './utils/GetConfiguration';
 import { AuthView } from './views/auth/AuthView';
 import { LoadingView } from './views/loading/LoadingView';
 import { MainView } from './views/main/MainView';
 
-export function App(): JSX.Element
+export const App: FC<{}> = props =>
 {
     const [ isReady, setIsReady ]   = useState(false);
     const [ isError, setIsError ]   = useState(false);
@@ -21,22 +21,18 @@ export function App(): JSX.Element
 
     if(!Nitro.instance) Nitro.bootstrap();
 
-    function getPreloadAssetUrls(): string[]
+    const getPreloadAssetUrls = useMemo(() =>
     {
         const urls: string[] = [];
-
         const assetUrls = GetConfiguration<string[]>('preload.assets.urls');
 
         if(assetUrls && assetUrls.length)
         {
-            for(const url of assetUrls)
-            {
-                urls.push(Nitro.instance.core.configuration.interpolate(url));
-            }
+            for(const url of assetUrls) urls.push(Nitro.instance.core.configuration.interpolate(url));
         }
 
         return urls;
-    }
+    }, []);
 
     const handler = useCallback((event: NitroEvent) =>
     {
@@ -95,7 +91,7 @@ export function App(): JSX.Element
                 setIsReady(true);
                 return;
             case NitroLocalizationEvent.LOADED:
-                Nitro.instance.core.asset.downloadAssets(getPreloadAssetUrls(), (status: boolean) =>
+                Nitro.instance.core.asset.downloadAssets(getPreloadAssetUrls, (status: boolean) =>
                 {
                     if(status)
                     {

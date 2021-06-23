@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useEffect, useRef } from 'react';
+import { FC, MouseEvent, useCallback, useEffect, useMemo, useRef } from 'react';
 import Draggable from 'react-draggable';
 import { DraggableWindowProps } from './DraggableWindow.types';
 
@@ -6,11 +6,10 @@ const currentWindows: HTMLDivElement[] = [];
 
 export const DraggableWindow: FC<DraggableWindowProps> = props =>
 {
-    const { disableDrag = false, noCenter = false } = props;
-
+    const { disableDrag = false, noCenter = false, handle = '.drag-handler', draggableOptions = {}, children = null } = props;
     const elementRef = useRef<HTMLDivElement>();
 
-    function bringToTop(): void
+    const bringToTop = useCallback(() =>
     {
         let zIndex = 400;
 
@@ -20,9 +19,9 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
 
             existingWindow.style.zIndex = zIndex.toString();
         }
-    }
+    }, []);
 
-    function onMouseDown(event: MouseEvent): void
+    const onMouseDown = useCallback((event: MouseEvent) =>
     {
         const index = currentWindows.indexOf(elementRef.current);
 
@@ -41,7 +40,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
         }
 
         bringToTop();
-    }
+    }, [ bringToTop ]);
 
     useEffect(() =>
     {
@@ -70,22 +69,16 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
 
             if(index >= 0) currentWindows.splice(index, 1);
         }
-    }, [ elementRef, noCenter ]);
+    }, [ elementRef, noCenter, bringToTop ]);
 
-    function getWindowContent(): JSX.Element
+    const getWindowContent = useMemo(() =>
     {
         return (
             <div ref={ elementRef } className="position-absolute draggable-window" onMouseDownCapture={ onMouseDown }>
-                { props.children }
+                { children }
             </div>
         );
-    }
+    }, [ children, onMouseDown ]);
 
-    if(disableDrag) return getWindowContent();
-
-    return (
-        <Draggable handle={ props.handle } { ...props.draggableOptions }>
-            { getWindowContent() }
-        </Draggable>
-    );
+    return disableDrag ? getWindowContent : <Draggable handle={ handle } { ...draggableOptions }>{ getWindowContent }</Draggable>;
 }

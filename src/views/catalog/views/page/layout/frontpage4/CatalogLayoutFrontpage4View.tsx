@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo } from 'react';
-import { GetConfiguration } from '../../../../../../utils/GetConfiguration';
+import { GetConfiguration } from '../../../../../../api';
 import { CatalogLayoutFrontpage4ViewProps } from './CatalogLayoutFrontpage4View.types';
 
 export const CatalogLayoutFrontpage4View: FC<CatalogLayoutFrontpage4ViewProps> = props =>

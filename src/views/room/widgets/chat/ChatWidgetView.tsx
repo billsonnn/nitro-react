@@ -1,5 +1,5 @@
 import { RoomObjectCategory, RoomSessionChatEvent } from 'nitro-renderer';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { GetRoomEngine, GetRoomSession } from '../../../../api';
 import { useRoomSessionManagerEvent } from '../../../../hooks/events/nitro/session/room-session-manager-event';
 import { useRoomContext } from '../../context/RoomContext';
@@ -8,7 +8,7 @@ import { ChatWidgetMessageView } from './message/ChatWidgetMessageView';
 import { ChatBubbleMessage } from './utils/ChatBubbleMessage';
 import { GetBubbleLocation } from './utils/ChatWidgetUtilities';
 
-export function ChatWidgetView(props: ChatWidgetViewProps): JSX.Element
+export const ChatWidgetView: FC<ChatWidgetViewProps> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ chatMessages, setChatMessages ] = useState<ChatBubbleMessage[]>([]);

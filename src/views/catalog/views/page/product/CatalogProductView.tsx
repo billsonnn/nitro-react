@@ -1,7 +1,6 @@
 import { FurnitureType } from 'nitro-renderer';
 import { FC, useMemo } from 'react';
-import { GetRoomEngine, GetSessionDataManager } from '../../../../../api';
-import { GetConfiguration } from '../../../../../utils/GetConfiguration';
+import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../../../../../api';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { LimitedEditionStyledNumberView } from '../../../../shared/limited-edition/styled-number/LimitedEditionStyledNumberView';
 import { ProductTypeEnum } from '../../../common/ProductTypeEnum';

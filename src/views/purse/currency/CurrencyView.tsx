@@ -1,9 +1,10 @@
+import { FC } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { LocalizeShortNumber } from '../../../utils/LocalizeShortNumber';
 import { CurrencyIcon } from '../../shared/currency-icon/CurrencyIcon';
 import { CurrencyViewProps } from './CurrencyView.types';
 
-export function CurrencyView(props: CurrencyViewProps): JSX.Element
+export const CurrencyView: FC<CurrencyViewProps> = props =>
 {
     const { currency = null } = props;
 

@@ -1,6 +1,7 @@
+import { FC } from 'react';
 import { LoadingViewProps } from './LoadingView.types';
 
-export function LoadingView(props: LoadingViewProps): JSX.Element
+export const LoadingView: FC<LoadingViewProps> = props =>
 {
     const { isError = false, message = '' } = props;
     

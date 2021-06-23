@@ -1,7 +1,5 @@
 import { CatalogPageOfferData, ICatalogPageData, ICatalogPageParser, IFurnitureData, SellablePetPaletteData } from 'nitro-renderer';
-import { GetRoomEngine } from '../../../api';
-import { GetProductDataForLocalization } from '../../../api/nitro/session/GetProductDataForLocalization';
-import { GetConfiguration } from '../../../utils/GetConfiguration';
+import { GetConfiguration, GetProductDataForLocalization, GetRoomEngine } from '../../../api';
 
 export interface ICatalogOffers
 {

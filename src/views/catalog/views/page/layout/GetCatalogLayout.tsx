@@ -12,7 +12,7 @@ import { CatalogLayoutSpacesView } from './spaces-new/CatalogLayoutSpacesView';
 import { CatalogLayoutTrophiesView } from './trophies/CatalogLayoutTrophiesView';
 import { CatalogLayoutVipBuyView } from './vip-buy/CatalogLayoutVipBuyView';
 
-export function GetCatalogLayout(pageParser: ICatalogPageParser, roomPreviewer: RoomPreviewer): JSX.Element
+export const GetCatalogLayout = (pageParser: ICatalogPageParser, roomPreviewer: RoomPreviewer) =>
 {
     switch(pageParser.layoutCode)
     {

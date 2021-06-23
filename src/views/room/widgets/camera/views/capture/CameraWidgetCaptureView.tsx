@@ -3,7 +3,7 @@ import { NitroRectangle } from 'nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
 import { GetRoomEngine } from '../../../../../../api/nitro/room/GetRoomEngine';
 import { GetRoomSession } from '../../../../../../api/nitro/session/GetRoomSession';
-import { DraggableWindow } from '../../../../../../hooks/draggable-window/DraggableWindow';
+import { DraggableWindow } from '../../../../../../layout/draggable-window/DraggableWindow';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { useCameraWidgetContext } from '../../context/CameraWidgetContext';
 import { CameraWidgetCaptureViewProps } from './CameraWidgetCaptureView.types';

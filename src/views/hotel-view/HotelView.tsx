@@ -1,10 +1,10 @@
 import { Nitro, RoomSessionEvent } from 'nitro-renderer';
-import { useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
+import { GetConfiguration } from '../../api';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
-import { GetConfiguration } from '../../utils/GetConfiguration';
 import { HotelViewProps } from './HotelView.types';
 
-export function HotelView(props: HotelViewProps): JSX.Element
+export const HotelView: FC<HotelViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(true);
 

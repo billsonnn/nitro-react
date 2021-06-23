@@ -1,12 +1,12 @@
 import { GenericErrorEvent, NavigatorCategoriesComposer, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomForwardEvent, RoomInfoComposer, RoomInfoEvent, RoomInfoOwnerEvent, UserInfoEvent } from 'nitro-renderer';
-import { useCallback } from 'react';
+import { FC, useCallback } from 'react';
 import { GetRoomSessionManager, GetSessionDataManager } from '../../api';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { useNavigatorContext } from './context/NavigatorContext';
 import { NavigatorMessageHandlerProps } from './NavigatorMessageHandler.types';
 import { NavigatorActions } from './reducers/NavigatorReducer';
 
-export function NavigatorMessageHandler(props: NavigatorMessageHandlerProps): JSX.Element
+export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =>
 {
     const { dispatchNavigatorState = null } = useNavigatorContext();
 

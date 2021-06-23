@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { PurseView } from '../purse/PurseView';
 import { RightSideProps } from './RightSideView.types';
 
-export function RightSideView(props: RightSideProps): JSX.Element
+export const RightSideView: FC<RightSideProps> = props =>
 {
     return (
         <div className="nitro-right-side">

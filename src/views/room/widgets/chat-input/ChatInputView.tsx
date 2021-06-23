@@ -1,8 +1,6 @@
 import { FC, MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { GetRoomSession } from '../../../../api';
-import { SendChatTypingMessage } from '../../../../api/nitro/session/SendChatTypingMessage';
-import { GetConfiguration } from '../../../../utils/GetConfiguration';
+import { GetConfiguration, GetRoomSession, SendChatTypingMessage } from '../../../../api';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { useRoomContext } from '../../context/RoomContext';
 import { ChatInputMessageType, ChatInputViewProps } from './ChatInputView.types';

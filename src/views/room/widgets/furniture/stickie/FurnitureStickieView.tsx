@@ -1,9 +1,9 @@
 import { NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, GetRoomSession, GetSessionDataManager } from '../../../../../api';
-import { DraggableWindow } from '../../../../../hooks/draggable-window/DraggableWindow';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
+import { DraggableWindow } from '../../../../../layout/draggable-window/DraggableWindow';
 import { ColorUtils } from '../../../../../utils/ColorUtils';
 import { useRoomContext } from '../../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
