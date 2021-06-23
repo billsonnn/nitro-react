@@ -233,13 +233,13 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                 { canMove &&
                     <button type="button" className="btn btn-sm btn-secondary" onClick={event => processButtonAction('move')}>
                         <i className="fas fa-arrows-alt me-1"></i>
-                        {LocalizeText('infostand.button.move')}
-                    </button>}
+                        { LocalizeText('infostand.button.move') }
+                    </button> }
                 { canRotate &&
                     <button type="button" className="btn btn-sm btn-secondary ms-1" onClick={event => processButtonAction('rotate')}>
                         <i className="fas fa-sync-alt me-1"></i>
-                        {LocalizeText('infostand.button.rotate')}
-                    </button>}
+                        { LocalizeText('infostand.button.rotate') }
+                    </button> }
                 { canUse &&
                     <button type="button" className="btn btn-sm btn-success ms-1" onClick={event => processButtonAction('use')}>
                         <i className="fas fa-mouse me-1"></i>
@@ -247,11 +247,11 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                     </button>}
                 { (pickupMode !== PICKUP_MODE_NONE) &&
                     <button type="button" className="btn btn-sm btn-danger ms-1" onClick={event => processButtonAction('pickup')}>
-                        <i className={"me-1 " + (pickupMode === PICKUP_MODE_EJECT ? "fas fa-eject" : "fas fa-box-open")}></i>
-                        {LocalizeText((pickupMode === PICKUP_MODE_EJECT) ? 'infostand.button.eject' : 'infostand.button.pickup')}
-                    </button>}
+                        <i className={ "me-1 " + (pickupMode === PICKUP_MODE_EJECT ? "fas fa-eject" : "fas fa-box-open") }></i>
+                        { LocalizeText((pickupMode === PICKUP_MODE_EJECT) ? 'infostand.button.eject' : 'infostand.button.pickup') }
+                    </button> }
                 { ((furniSettingsKeys.length > 0 && furniSettingsValues.length > 0) && (furniSettingsKeys.length === furniSettingsValues.length)) &&
-                    <button className="btn btn-sm btn-success ms-1" onClick={ () => processButtonAction('save_branding_configuration')}>
+                    <button className="btn btn-sm btn-success ms-1" onClick={ () => processButtonAction('save_branding_configuration') }>
                         <i className="fas fa-save me-1"></i>
                         { LocalizeText('save') }
                     </button> }

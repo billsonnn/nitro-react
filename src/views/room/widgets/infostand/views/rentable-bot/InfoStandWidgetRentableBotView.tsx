@@ -66,7 +66,7 @@ export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewPr
             { canPickup &&
                 <div className="button-container mt-2">
                     <button type="button" className="btn btn-sm btn-danger ms-1" onClick={ pickupBot }>
-                        <i className="me-1 fas fa-eject"></i>
+                        <i className="me-1 fas fa-box-open"></i>
                         { LocalizeText('infostand.button.pickup') }
                     </button>
                 </div> }
