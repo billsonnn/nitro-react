@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import { NitroRectangle } from 'nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
-import { GetRoomEngine } from '../../../../../../api/nitro/room/GetRoomEngine';
-import { GetRoomSession } from '../../../../../../api/nitro/session/GetRoomSession';
+import { GetRoomEngine, GetRoomSession } from '../../../../../../api';
 import { DraggableWindow } from '../../../../../../layout/draggable-window/DraggableWindow';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { useCameraWidgetContext } from '../../context/CameraWidgetContext';
@@ -46,7 +45,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
         }
 
         cameraWidgetContext.setCameraRoll([ ...remainingRoll, image ]);
-    }, [ cameraWidgetContext.cameraRoll, cameraWidgetContext.selectedPictureIndex ]);
+    }, [ cameraWidgetContext ]);
 
     const processAction = useCallback((type: string, value: string | number = null) =>
     {
@@ -73,7 +72,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
                 onCloseClick();
                 return;
         }
-    }, [ cameraWidgetContext.selectedPictureIndex, cameraWidgetContext.cameraRoll, onEditClick, onCloseClick ]);
+    }, [ takePicture, cameraWidgetContext, onEditClick, onCloseClick ]);
 
     return (
         <DraggableWindow handle=".nitro-camera-capture">

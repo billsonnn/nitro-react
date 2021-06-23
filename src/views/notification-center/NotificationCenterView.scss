@@ -13,3 +13,12 @@
         pointer-events: all;
     }
 }
+
+.nitro-notification {
+    width: 350px;
+
+    .content-area {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+}
