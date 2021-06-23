@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
-import { RoomPreviewerView } from '../../../../../room-previewer/RoomPreviewerView';
+import { RoomPreviewerView } from '../../../../../shared/room-previewer/RoomPreviewerView';
+import { GetOfferName } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
-import { GetOfferName } from '../../../../utils/CatalogUtilities';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
 import { CatalogPurchaseView } from '../../purchase/CatalogPurchaseView';
 import { CatalogLayoutTrophiesViewProps } from './CatalogLayoutTrophiesView.types';

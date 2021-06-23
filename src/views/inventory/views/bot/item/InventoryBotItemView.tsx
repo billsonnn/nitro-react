@@ -1,9 +1,9 @@
 import { MouseEventType } from 'nitro-renderer';
 import { FC, MouseEvent, useCallback, useState } from 'react';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
+import { attemptBotPlacement } from '../../../common/BotUtilities';
 import { useInventoryContext } from '../../../context/InventoryContext';
 import { InventoryBotActions } from '../../../reducers/InventoryBotReducer';
-import { attemptBotPlacement } from '../../../utils/BotUtilities';
 import { InventoryBotItemViewProps } from './InventoryBotItemView.types';
 
 export const InventoryBotItemView: FC<InventoryBotItemViewProps> = props =>

@@ -1,4 +1,4 @@
-import { PetItem } from '../../../utils/PetItem';
+import { PetItem } from '../../../common/PetItem';
 
 export interface InventoryPetItemViewProps
 {

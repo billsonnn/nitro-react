@@ -7,6 +7,7 @@ import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/roo
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
 import { LocalizeText } from '../../utils/LocalizeText';
+import { isObjectMoverRequested, setObjectMoverRequested } from './common/InventoryUtilities';
 import { InventoryContextProvider } from './context/InventoryContext';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
 import { InventoryTabs, InventoryViewProps } from './InventoryView.types';
@@ -14,7 +15,6 @@ import { initialInventoryBadge, InventoryBadgeReducer } from './reducers/Invento
 import { initialInventoryBot, InventoryBotReducer } from './reducers/InventoryBotReducer';
 import { initialInventoryFurniture, InventoryFurnitureReducer } from './reducers/InventoryFurnitureReducer';
 import { initialInventoryPet, InventoryPetReducer } from './reducers/InventoryPetReducer';
-import { isObjectMoverRequested, setObjectMoverRequested } from './utils/InventoryUtilities';
 import { InventoryBadgeView } from './views/badge/InventoryBadgeView';
 import { InventoryBotView } from './views/bot/InventoryBotView';
 import { InventoryFurnitureView } from './views/furniture/InventoryFurnitureView';

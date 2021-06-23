@@ -1,8 +1,8 @@
 import { FurnitureListItemParser } from 'nitro-renderer';
 import { Reducer } from 'react';
-import { FurnitureItem } from '../utils/FurnitureItem';
-import { addFurnitureItem, processFurniFragment, removeFurniItemById } from '../utils/FurnitureUtilities';
-import { GroupItem } from '../utils/GroupItem';
+import { FurnitureItem } from '../common/FurnitureItem';
+import { addFurnitureItem, processFurniFragment, removeFurniItemById } from '../common/FurnitureUtilities';
+import { GroupItem } from '../common/GroupItem';
 
 export interface IInventoryFurnitureState
 {

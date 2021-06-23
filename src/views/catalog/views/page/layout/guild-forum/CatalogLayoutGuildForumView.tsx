@@ -2,9 +2,9 @@ import { CatalogGroupsComposer } from 'nitro-renderer';
 import { FC, useEffect } from 'react';
 import { SendMessageHook } from '../../../../../../hooks/messages';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
+import { GetCatalogPageText } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogActions } from '../../../../reducers/CatalogReducer';
-import { GetCatalogPageText } from '../../../../utils/CatalogUtilities';
 import { CatalogLayoutGuildForumViewProps } from './CatalogLayoutGuildForumView.types';
 
 export const CatalogLayouGuildForumView: FC<CatalogLayoutGuildForumViewProps> = props =>

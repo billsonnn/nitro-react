@@ -1,6 +1,6 @@
 import { FC } from 'react';
+import { GetCatalogPageImage, GetCatalogPageText } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
-import { GetCatalogPageImage, GetCatalogPageText } from '../../../../utils/CatalogUtilities';
 import { CatalogProductView } from '../../product/CatalogProductView';
 import { CatalogPurchaseView } from '../../purchase/CatalogPurchaseView';
 import { CatalogLayoutSingleBundleViewProps } from './CatalogLayoutSingleBundleView.types';

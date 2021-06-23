@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { GroupItem } from '../../../utils/GroupItem';
+import { GroupItem } from '../../../common/GroupItem';
 
 export interface InventoryFurnitureSearchViewProps
 {

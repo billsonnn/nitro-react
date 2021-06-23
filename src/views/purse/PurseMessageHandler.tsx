@@ -1,10 +1,10 @@
 import { UserCreditsEvent, UserCurrencyEvent, UserCurrencyUpdateEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
+import { Currency } from './common/Currency';
 import { usePurseContext } from './context/PurseContext';
 import { PurseMessageHandlerProps } from './PurseMessageHandler.types';
 import { PurseActions } from './reducers/PurseReducer';
-import { Currency } from './utils/Currency';
  
 export const PurseMessageHandler: FC<PurseMessageHandlerProps> = props =>
 {

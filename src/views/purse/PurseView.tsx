@@ -4,12 +4,12 @@ import { NotificationCenterEvent } from '../../events';
 import { dispatchUiEvent } from '../../hooks/events';
 import { SendMessageHook } from '../../hooks/messages/message-event';
 import { GetConfiguration } from '../../utils/GetConfiguration';
+import { SetLastCurrencies } from './common/CurrencyHelper';
 import { PurseContextProvider } from './context/PurseContext';
 import { CurrencyView } from './currency/CurrencyView';
 import { PurseMessageHandler } from './PurseMessageHandler';
 import { PurseViewProps } from './PurseView.types';
 import { initialPurse, PurseReducer } from './reducers/PurseReducer';
-import { SetLastCurrencies } from './utils/CurrencyHelper';
 
 export const PurseView: FC<PurseViewProps> = props =>
 {

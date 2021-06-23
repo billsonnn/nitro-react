@@ -1,4 +1,4 @@
-import { BotItem } from '../../../utils/BotItem';
+import { BotItem } from '../../../common/BotItem';
 
 export interface InventoryBotItemViewProps
 {

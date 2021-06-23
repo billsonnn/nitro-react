@@ -4,7 +4,7 @@ import { GetRoomEngine, GetSessionDataManager } from '../../../../../api';
 import { GetConfiguration } from '../../../../../utils/GetConfiguration';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { LimitedEditionStyledNumberView } from '../../../../shared/limited-edition/styled-number/LimitedEditionStyledNumberView';
-import { ProductTypeEnum } from '../../../enums/ProductTypeEnum';
+import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
 import { CatalogProductViewProps } from './CatalogProductView.types';
 
 export const CatalogProductView: FC<CatalogProductViewProps> = props =>

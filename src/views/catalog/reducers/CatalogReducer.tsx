@@ -1,8 +1,8 @@
 import { CatalogClubOfferData, CatalogGroupData, CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from 'nitro-renderer';
 import { Reducer } from 'react';
-import { CatalogPetPalette } from '../utils/CatalogPetPalette';
-import { ICatalogOffers, ICatalogSearchResult, SetOffersToNodes } from '../utils/CatalogUtilities';
-import { SubscriptionInfo } from '../utils/SubscriptionInfo';
+import { CatalogPetPalette } from '../common/CatalogPetPalette';
+import { ICatalogOffers, ICatalogSearchResult, SetOffersToNodes } from '../common/CatalogUtilities';
+import { SubscriptionInfo } from '../common/SubscriptionInfo';
 
 export interface ICatalogState
 {

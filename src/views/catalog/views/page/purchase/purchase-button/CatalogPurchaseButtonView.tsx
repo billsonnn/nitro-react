@@ -5,7 +5,7 @@ import { useUiEvent } from '../../../../../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { LoadingSpinnerView } from '../../../../../../layout';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
-import { GetCurrencyAmount } from '../../../../../purse/utils/CurrencyHelper';
+import { GetCurrencyAmount } from '../../../../../purse/common/CurrencyHelper';
 import { CatalogPurchaseButtonViewProps, CatalogPurchaseState } from './CatalogPurchaseButtonView.types';
 
 export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = props =>

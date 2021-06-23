@@ -1,7 +1,7 @@
 import { BotData } from 'nitro-renderer';
 import { Reducer } from 'react';
-import { BotItem } from '../utils/BotItem';
-import { addSingleBotItem, processBotFragment, removeBotItemById } from '../utils/BotUtilities';
+import { BotItem } from '../common/BotItem';
+import { addSingleBotItem, processBotFragment, removeBotItemById } from '../common/BotUtilities';
 
 export interface IInventoryBotState
 {

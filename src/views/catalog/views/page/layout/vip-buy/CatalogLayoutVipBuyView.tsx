@@ -3,8 +3,8 @@ import { FC, useCallback, useEffect, useMemo } from 'react';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
+import { GetCatalogPageImage } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
-import { GetCatalogPageImage } from '../../../../utils/CatalogUtilities';
 import { CatalogLayoutVipBuyViewProps } from './CatalogLayoutVipBuyView.types';
 
 export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =>

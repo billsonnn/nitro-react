@@ -3,11 +3,11 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { GetProductDataForLocalization } from '../../../../../../api/nitro/session/GetProductDataForLocalization';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
-import { RoomPreviewerView } from '../../../../../room-previewer/RoomPreviewerView';
 import { PetImageView } from '../../../../../shared/pet-image/PetImageView';
+import { RoomPreviewerView } from '../../../../../shared/room-previewer/RoomPreviewerView';
+import { GetCatalogPageImage, GetCatalogPageText, GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogActions } from '../../../../reducers/CatalogReducer';
-import { GetCatalogPageImage, GetCatalogPageText, GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../utils/CatalogUtilities';
 import { CatalogLayoutPetViewProps } from './CatalogLayoutPetView.types';
 import { CatalogLayoutPetPurchaseView } from './purchase/CatalogLayoutPetPurchaseView';
 

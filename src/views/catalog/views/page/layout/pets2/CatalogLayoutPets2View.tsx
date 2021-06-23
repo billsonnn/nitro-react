@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { GetCatalogPageImage, GetCatalogPageText } from '../../../../utils/CatalogUtilities';
+import { GetCatalogPageImage, GetCatalogPageText } from '../../../../common/CatalogUtilities';
 import { CatalogLayoutPets2ViewProps } from './CatalogLayoutPets2View.types';
 
 export const CatalogLayoutPets2View: FC<CatalogLayoutPets2ViewProps> = props =>

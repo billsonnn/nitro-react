@@ -2,9 +2,9 @@ import { ICatalogPageData, IFurnitureData } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager } from '../../../../api';
 import { LocalizeText } from '../../../../utils/LocalizeText';
+import { GetOfferNodes } from '../../common/CatalogUtilities';
 import { useCatalogContext } from '../../context/CatalogContext';
 import { CatalogActions } from '../../reducers/CatalogReducer';
-import { GetOfferNodes } from '../../utils/CatalogUtilities';
 import { CatalogSearchViewProps } from './CatalogSearchView.types';
 
 export const CatalogSearchView: FC<CatalogSearchViewProps> = props =>

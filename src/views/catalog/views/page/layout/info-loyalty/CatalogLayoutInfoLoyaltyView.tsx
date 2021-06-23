@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { GetCatalogPageText } from '../../../../utils/CatalogUtilities';
+import { GetCatalogPageText } from '../../../../common/CatalogUtilities';
 import { CatalogLayoutInfoLoyaltyViewProps } from './CatalogLayoutInfoLoyaltyView.types';
 
 export const CatalogLayoutInfoLoyaltyView: FC<CatalogLayoutInfoLoyaltyViewProps> = props =>

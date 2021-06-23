@@ -3,10 +3,10 @@ import { FC, useEffect } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
 import { LocalizeText } from '../../../../utils/LocalizeText';
-import { RoomPreviewerView } from '../../../room-previewer/RoomPreviewerView';
+import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerView';
+import { attemptBotPlacement } from '../../common/BotUtilities';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryBotActions } from '../../reducers/InventoryBotReducer';
-import { attemptBotPlacement } from '../../utils/BotUtilities';
 import { InventoryBotViewProps } from './InventoryBotView.types';
 import { InventoryBotResultsView } from './results/InventoryBotResultsView';
 

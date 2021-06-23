@@ -6,10 +6,10 @@ import { CatalogPurchaseSoldOutEvent } from '../../events/catalog/CatalogPurchas
 import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { CatalogMessageHandlerProps } from './CatalogMessageHandler.types';
+import { CatalogPetPalette } from './common/CatalogPetPalette';
+import { SubscriptionInfo } from './common/SubscriptionInfo';
 import { useCatalogContext } from './context/CatalogContext';
 import { CatalogActions } from './reducers/CatalogReducer';
-import { CatalogPetPalette } from './utils/CatalogPetPalette';
-import { SubscriptionInfo } from './utils/SubscriptionInfo';
 
 export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
 {

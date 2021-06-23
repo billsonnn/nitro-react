@@ -1,5 +1,5 @@
 import { Reducer } from 'react';
-import { Currency } from '../utils/Currency';
+import { Currency } from '../common/Currency';
 
 export interface IPurseState
 {

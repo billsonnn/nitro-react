@@ -1,7 +1,7 @@
 import { PetData } from 'nitro-renderer';
 import { Reducer } from 'react';
-import { PetItem } from '../utils/PetItem';
-import { addSinglePetItem, processPetFragment, removePetItemById } from '../utils/PetUtilities';
+import { PetItem } from '../common/PetItem';
+import { addSinglePetItem, processPetFragment, removePetItemById } from '../common/PetUtilities';
 
 export interface IInventoryPetState
 {

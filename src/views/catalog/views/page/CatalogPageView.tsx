@@ -1,9 +1,9 @@
 import { Vector3d } from 'nitro-renderer';
 import { FC, useEffect } from 'react';
 import { GetAvatarRenderManager, GetFurnitureDataForProductOffer, GetSessionDataManager } from '../../../../api';
+import { FurniCategory } from '../../common/FurniCategory';
+import { ProductTypeEnum } from '../../common/ProductTypeEnum';
 import { useCatalogContext } from '../../context/CatalogContext';
-import { FurniCategory } from '../../enums/FurniCategory';
-import { ProductTypeEnum } from '../../enums/ProductTypeEnum';
 import { CatalogPageViewProps } from './CatalogPageView.types';
 import { GetCatalogLayout } from './layout/GetCatalogLayout';
 import { CatalogLayoutSearchResultView } from './search-result/CatalogLayoutSearchResultView';

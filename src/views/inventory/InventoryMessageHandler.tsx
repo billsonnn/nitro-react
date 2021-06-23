@@ -1,14 +1,14 @@
 import { BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
+import { mergeFurniFragments } from './common/FurnitureUtilities';
+import { mergePetFragments } from './common/PetUtilities';
 import { useInventoryContext } from './context/InventoryContext';
 import { InventoryMessageHandlerProps } from './InventoryMessageHandler.types';
 import { InventoryBadgeActions } from './reducers/InventoryBadgeReducer';
 import { InventoryBotActions } from './reducers/InventoryBotReducer';
 import { InventoryFurnitureActions } from './reducers/InventoryFurnitureReducer';
 import { InventoryPetActions } from './reducers/InventoryPetReducer';
-import { mergeFurniFragments } from './utils/FurnitureUtilities';
-import { mergePetFragments } from './utils/PetUtilities';
 
 let furniMsgFragments: Map<number, FurnitureListItemParser>[] = null;
 let petMsgFragments: Map<number, PetData>[] = null;

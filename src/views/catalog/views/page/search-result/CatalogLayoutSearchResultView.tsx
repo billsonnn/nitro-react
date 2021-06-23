@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { RoomPreviewerView } from '../../../../room-previewer/RoomPreviewerView';
 import { LimitedEditionCompletePlateView } from '../../../../shared/limited-edition/complete-plate/LimitedEditionCompletePlateView';
+import { RoomPreviewerView } from '../../../../shared/room-previewer/RoomPreviewerView';
+import { GetOfferName } from '../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../context/CatalogContext';
-import { GetOfferName } from '../../../utils/CatalogUtilities';
 import { CatalogPurchaseView } from '../purchase/CatalogPurchaseView';
 import { CatalogLayoutSearchResultViewProps } from './CatalogLayoutSearchResultView.types';
 import { CatalogSearchResultOffersView } from './offers/CatalogSearchResultOffersView';
