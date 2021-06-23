@@ -54,14 +54,6 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
         }
     }, []);
 
-    function toggleMeToolbar(): void
-    {
-        setMeExpanded(prevValue =>
-            {
-                return !prevValue;
-            });
-    }
-
     CreateMessageHook(UserInfoEvent, onUserInfoEvent);
 
     return (
@@ -72,7 +64,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
             <div className="d-flex nitro-toolbar py-1 px-3">
                 <div className="navigation-items navigation-avatar pe-1 me-2">
                     <div className="navigation-item">
-                        <div className={ 'toolbar-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ toggleMeToolbar }>
+                        <div className={ 'toolbar-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ event => setMeExpanded(!isMeExpanded) }>
                             { userInfo && <AvatarImageView figure={ userInfo.figure } direction={ 2 } /> }
                         </div>
                     </div>
