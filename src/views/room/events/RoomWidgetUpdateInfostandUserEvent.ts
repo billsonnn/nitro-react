@@ -41,4 +41,9 @@ export class RoomWidgetUpdateInfostandUserEvent extends RoomWidgetUpdateInfostan
     public targetRoomControllerLevel: number = 0;
     public isFriend: boolean = false;
     public isAmbassador: boolean = false;
+
+    public get isOwnUser(): boolean
+    {
+        return (this.type === RoomWidgetUpdateInfostandUserEvent.OWN_USER);
+    }
 }

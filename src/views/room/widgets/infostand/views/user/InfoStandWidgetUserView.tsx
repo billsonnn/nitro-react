@@ -60,7 +60,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
     if(!userData) return null;
 
     return (
-        <div className="d-flex flex-column bg-dark nitro-card nitro-infostand rounded">
+        <div className="d-flex flex-column nitro-card nitro-infostand rounded">
             <div className="container-fluid content-area">
                 <div className="d-flex justify-content-between align-items-center">
                     <div className="small text-wrap">{ userData.name }</div>

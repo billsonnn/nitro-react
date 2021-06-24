@@ -61,8 +61,8 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isMeExpanded } timeout={ 300 }>
                 <ToolbarMeView setMeExpanded={ setMeExpanded } handleToolbarItemClick={ handleToolbarItemClick } />
             </TransitionAnimation>
-            <div className="d-flex justify-content-between nitro-toolbar py-1 px-3">
-                <div className="d-flex toolbar-left-side">
+            <div className="d-flex justify-content-between align-items-center nitro-toolbar py-1 px-3">
+                <div className="d-flex align-items-center toolbar-left-side">
                     <div className="navigation-items navigation-avatar pe-1 me-2">
                         <div className="navigation-item">
                             <div className={ 'toolbar-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ event => setMeExpanded(!isMeExpanded) }>

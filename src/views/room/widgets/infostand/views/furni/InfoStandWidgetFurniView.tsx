@@ -5,6 +5,7 @@ import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView
 import { LimitedEditionCompactPlateView } from '../../../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { RoomWidgetFurniActionMessage } from '../../../../messages';
+import { InfoStandBaseView } from '../base/InfoStandBaseView';
 import { InfoStandWidgetFurniViewProps } from './InfoStandWidgetFurniView.types';
 
 const PICKUP_MODE_NONE: number = 0;
@@ -176,83 +177,71 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
     return (
         <>
-            <div className="d-flex flex-column bg-dark nitro-card nitro-infostand rounded">
-                <div className="container-fluid content-area">
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div className="small text-wrap">{ furniData.name }</div>
-                        <i className="fas fa-times cursor-pointer" onClick={ close }></i>
-                    </div>
-                    <hr className="m-0 my-1" />
-                    <div className="position-relative w-100">
-                        { furniData.stuffData.isUnique &&
-                            <div className="position-absolute r-0">
-                                <LimitedEditionCompactPlateView uniqueNumber={ furniData.stuffData.uniqueNumber } uniqueSeries={ furniData.stuffData.uniqueSeries } />
-                            </div> }
-                        { furniData.image.src.length && 
-                            <img className="d-block mx-auto" src={ furniData.image.src } alt="" /> }
-                    </div>
-                    <hr className="m-0 my-1" />
-                    <div className="small text-wrap">{ furniData.description }</div>
-                    <hr className="m-0 my-1" />
-                    <div className="d-flex align-items-center">
-                        <i className="icon icon-user-profile me-1 cursor-pointer" />
-                        <div className="small text-wrap">{ LocalizeText('furni.owner', [ 'name' ], [ furniData.ownerName ]) }</div>
-                    </div>
-                    { isCrackable &&
-                        <>
-                            <hr className="m-0 my-1" />
-                            <div className="small text-wrap">{ LocalizeText('infostand.crackable_furni.hits_remaining', [ 'hits', 'target' ], [ crackableHits.toString(), crackableTarget.toString() ]) }</div>
-                        </> }
-                    { (furniData.groupId > 0) &&
-                        <>
-                            <hr className="m-0 my-1" />
-                            <div className="badge badge-secondary mb-0" onClick={ openFurniGroupInfo }>
-                                <BadgeImageView badgeCode={ (furniData.stuffData as StringDataType).getValue(2) } />
-                            </div>
-                        </> }
-                    { godMode &&
-                        <>
-                            <hr className="m-0 my-1" />
-                            <div className="small text-wrap">ID: { furniData.id }</div>
-                            { (furniSettingsKeys.length > 0) &&
-                                <>
-                                    <hr className="m-0 my-1"/>
-                                    { furniSettingsKeys.map((key, index) =>
-                                        {
-                                            return (
-                                                <div key={ index } className="mb-1">
-                                                    <div className="small text-wrap">{ key }</div>
-                                                    <input type="text" className="form-control form-control-sm" value={ furniSettingsValues[index] } onChange={ event => onFurniSettingChange(index, event.target.value) }/>
-                                                </div>);
-                                        }) }
-                                </> }
-                        </> }
+            <InfoStandBaseView headerText={ furniData.name } onCloseClick={ close }>
+                <div className="position-relative w-100">
+                    { furniData.stuffData.isUnique &&
+                        <div className="position-absolute r-0">
+                            <LimitedEditionCompactPlateView uniqueNumber={ furniData.stuffData.uniqueNumber } uniqueSeries={ furniData.stuffData.uniqueSeries } />
+                        </div> }
+                    { furniData.image.src.length && 
+                        <img className="d-block mx-auto" src={ furniData.image.src } alt="" /> }
                 </div>
-            </div>
+                <hr className="m-0 my-1" />
+                <div className="small text-wrap">{ furniData.description }</div>
+                <hr className="m-0 my-1" />
+                <div className="d-flex align-items-center">
+                    <i className="icon icon-user-profile me-1 cursor-pointer" />
+                    <div className="small text-wrap">{ LocalizeText('furni.owner', [ 'name' ], [ furniData.ownerName ]) }</div>
+                </div>
+                { isCrackable &&
+                    <>
+                        <hr className="m-0 my-1" />
+                        <div className="small text-wrap">{ LocalizeText('infostand.crackable_furni.hits_remaining', [ 'hits', 'target' ], [ crackableHits.toString(), crackableTarget.toString() ]) }</div>
+                    </> }
+                { (furniData.groupId > 0) &&
+                    <>
+                        <hr className="m-0 my-1" />
+                        <div className="badge badge-secondary mb-0" onClick={ openFurniGroupInfo }>
+                            <BadgeImageView badgeCode={ (furniData.stuffData as StringDataType).getValue(2) } />
+                        </div>
+                    </> }
+                { godMode &&
+                    <>
+                        <hr className="m-0 my-1" />
+                        <div className="small text-wrap">ID: { furniData.id }</div>
+                        { (furniSettingsKeys.length > 0) &&
+                            <>
+                                <hr className="m-0 my-1"/>
+                                { furniSettingsKeys.map((key, index) =>
+                                    {
+                                        return (
+                                            <div key={ index } className="mb-1">
+                                                <div className="small text-wrap">{ key }</div>
+                                                <input type="text" className="form-control form-control-sm" value={ furniSettingsValues[index] } onChange={ event => onFurniSettingChange(index, event.target.value) }/>
+                                            </div>);
+                                    }) }
+                            </> }
+                    </> }
+            </InfoStandBaseView>
             <div className="button-container mt-2">
                 { canMove &&
-                    <button type="button" className="btn btn-sm btn-secondary" onClick={event => processButtonAction('move')}>
-                        <i className="fas fa-arrows-alt me-1"></i>
+                    <button type="button" className="btn btn-sm btn-dark" onClick={event => processButtonAction('move')}>
                         { LocalizeText('infostand.button.move') }
                     </button> }
                 { canRotate &&
-                    <button type="button" className="btn btn-sm btn-secondary ms-1" onClick={event => processButtonAction('rotate')}>
-                        <i className="fas fa-sync-alt me-1"></i>
+                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={event => processButtonAction('rotate')}>
                         { LocalizeText('infostand.button.rotate') }
                     </button> }
                 { canUse &&
-                    <button type="button" className="btn btn-sm btn-success ms-1" onClick={event => processButtonAction('use')}>
-                        <i className="fas fa-mouse me-1"></i>
-                        {LocalizeText('infostand.button.use')}
+                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={event => processButtonAction('use')}>
+                        { LocalizeText('infostand.button.use') }
                     </button>}
                 { (pickupMode !== PICKUP_MODE_NONE) &&
-                    <button type="button" className="btn btn-sm btn-danger ms-1" onClick={event => processButtonAction('pickup')}>
-                        <i className={ "me-1 " + (pickupMode === PICKUP_MODE_EJECT ? "fas fa-eject" : "fas fa-box-open") }></i>
+                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={event => processButtonAction('pickup')}>
                         { LocalizeText((pickupMode === PICKUP_MODE_EJECT) ? 'infostand.button.eject' : 'infostand.button.pickup') }
                     </button> }
                 { ((furniSettingsKeys.length > 0 && furniSettingsValues.length > 0) && (furniSettingsKeys.length === furniSettingsValues.length)) &&
-                    <button className="btn btn-sm btn-success ms-1" onClick={ () => processButtonAction('save_branding_configuration') }>
-                        <i className="fas fa-save me-1"></i>
+                    <button className="btn btn-sm btn-dark ms-1" onClick={ () => processButtonAction('save_branding_configuration') }>
                         { LocalizeText('save') }
                     </button> }
             </div>

@@ -1,11 +1,18 @@
-import { RoomObjectCategory } from 'nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { RoomEnterEffect, RoomObjectCategory } from 'nitro-renderer';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { GetRoomSession, GetSessionDataManager } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../context/RoomContext';
-import { RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../../events';
+import { RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../../events';
 import { RoomWidgetRoomObjectMessage } from '../../messages';
 import { AvatarInfoWidgetViewProps } from './AvatarInfoWidgetView.types';
+import { AvatarInfoWidgetAvatarView } from './views/avatar/AvatarInfoWidgetAvatarView';
+import { AvatarInfoWidgetDecorateView } from './views/decorate/AvatarInfoWidgetDecorateView';
 import { AvatarInfoWidgetNameView } from './views/name/AvatarInfoWidgetNameView';
+import { AvatarInfoWidgetOwnAvatarView } from './views/own-avatar/AvatarInfoWidgetOwnAvatarView';
+import { AvatarInfoWidgetOwnPetView } from './views/own-pet/AvatarInfoWidgetOwnPetView';
+import { AvatarInfoWidgetPetView } from './views/pet/AvatarInfoWidgetPetView';
+import { AvatarInfoWidgetRentableBotView } from './views/rentable-bot/AvatarInfoWidgetRentableBotView';
 
 export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
 {
@@ -13,121 +20,213 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
     const [ name, setName ] = useState<RoomWidgetObjectNameEvent>(null);
     const [ infoStandEvent, setInfoStandEvent ] = useState<RoomWidgetUpdateInfostandEvent>(null);
     const [ isGameMode, setGameMode ] = useState(false);
+    const [ isDancing, setIsDancing ] = useState(false);
+    const [ isDecorating, setIsDecorating ] = useState(GetRoomSession().isDecorating);
 
-    const onRoomWidgetUpdateEvent = useCallback((event: RoomWidgetUpdateEvent) =>
+    const onRoomWidgetRoomEngineUpdateEvent = useCallback((event: RoomWidgetRoomEngineUpdateEvent) =>
     {
         switch(event.type)
         {
             case RoomWidgetRoomEngineUpdateEvent.NORMAL_MODE: {
-                const roomEngineEvent = (event as RoomWidgetRoomEngineUpdateEvent);
-
-                setGameMode(false);
+                if(isGameMode) setGameMode(false);
                 return;
             }
             case RoomWidgetRoomEngineUpdateEvent.GAME_MODE: {
-                const roomEngineEvent = (event as RoomWidgetRoomEngineUpdateEvent);
-
-                setGameMode(true);
+                if(!isGameMode) setGameMode(true);
                 return;
             }
-            case RoomWidgetRoomObjectUpdateEvent.USER_ADDED: {
-                const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+        }
+    }, [ isGameMode ]);
 
-                return;
+    CreateEventDispatcherHook(RoomWidgetRoomEngineUpdateEvent.NORMAL_MODE, eventDispatcher, onRoomWidgetRoomEngineUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomEngineUpdateEvent.GAME_MODE, eventDispatcher, onRoomWidgetRoomEngineUpdateEvent);
+
+    const onRoomObjectRemoved = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    {
+        if(name)
+        {
+            if(event.id === name.id) setName(null);
+        }
+
+        if(infoStandEvent)
+        {
+            if(infoStandEvent instanceof RoomWidgetUpdateInfostandFurniEvent)
+            {
+                if(infoStandEvent.id === event.id) setInfoStandEvent(null);
             }
-            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED:
-            case RoomWidgetRoomObjectUpdateEvent.USER_REMOVED: {
-                const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
 
-                setName(prevValue =>
-                    {
-                        if(!prevValue || (roomObjectEvent.id === prevValue.id)) return null;
-
-                        return prevValue;
-                    })
-
-                setInfoStandEvent(prevValue =>
-                    {
-                        if(!prevValue) return null;
-
-                        switch(event.type)
-                        {
-                            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED:
-                                if(prevValue instanceof RoomWidgetUpdateInfostandFurniEvent)
-                                {
-                                    if(prevValue.id === roomObjectEvent.id) return null;
-                                }
-                                break;
-                            case RoomWidgetRoomObjectUpdateEvent.USER_REMOVED:
-                                if(prevValue instanceof RoomWidgetUpdateInfostandUserEvent || prevValue instanceof RoomWidgetUpdateInfostandRentableBotEvent)
-                                {
-                                    if(prevValue.roomIndex === roomObjectEvent.id) return null;
-                                }
-
-                                else if(prevValue instanceof RoomWidgetUpdateInfostandPetEvent)
-                                {
-                                    if(prevValue.roomIndex === roomObjectEvent.id) return null;
-                                }
-                                break;
-                        }
-
-                        return prevValue;
-                    });
-
-                return;
+            else if((infoStandEvent instanceof RoomWidgetUpdateInfostandUserEvent) || (infoStandEvent instanceof RoomWidgetUpdateInfostandRentableBotEvent))
+            {
+                if(infoStandEvent.roomIndex === event.id) setInfoStandEvent(null);
             }
+
+            else if(infoStandEvent instanceof RoomWidgetUpdateInfostandPetEvent)
+            {
+                if(infoStandEvent.roomIndex === event.id) setInfoStandEvent(null);
+            }
+        }
+    }, [ name, infoStandEvent ]);
+
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_REMOVED, eventDispatcher, onRoomObjectRemoved);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onRoomObjectRemoved);
+
+    const onObjectRolled = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    {
+        switch(event.type)
+        {
             case RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER: {
                 const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
-                
+
+                if(infoStandEvent) return;
+
                 widgetHandler.processWidgetMessage(new RoomWidgetRoomObjectMessage(RoomWidgetRoomObjectMessage.GET_OBJECT_NAME, roomObjectEvent.id, roomObjectEvent.category));
+
                 return;
             }
             case RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT: {
                 const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
 
+                if(!name || (name.roomIndex !== roomObjectEvent.id)) return;
+
                 setName(null);
-                return;
-            }
-            case RoomWidgetObjectNameEvent.TYPE: {
-                const objectNameEvent = (event as RoomWidgetObjectNameEvent);
-
-                if(objectNameEvent.category !== RoomObjectCategory.UNIT) return;
-
-                setName(objectNameEvent);
 
                 return;
             }
-            case RoomWidgetUpdateInfostandFurniEvent.FURNI:
-            case RoomWidgetUpdateInfostandUserEvent.OWN_USER:
-            case RoomWidgetUpdateInfostandUserEvent.PEER:
-            case RoomWidgetUpdateInfostandUserEvent.BOT:
-            case RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT: {
-                setInfoStandEvent((event as RoomWidgetUpdateInfostandFurniEvent));
-                return;
-            }
-            default:
-                console.log(event);
-                return;
         }
-    }, [ widgetHandler ]);
+    }, [ infoStandEvent, name, widgetHandler ]);
 
-    CreateEventDispatcherHook(RoomWidgetRoomEngineUpdateEvent.NORMAL_MODE, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomEngineUpdateEvent.GAME_MODE, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_ADDED, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_REMOVED, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetObjectNameEvent.TYPE, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandFurniEvent.FURNI, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.OWN_USER, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.BOT, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER, eventDispatcher, onObjectRolled);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT, eventDispatcher, onObjectRolled);
+
+    const onObjectDeselected = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    {
+        if(!infoStandEvent) return;
+
+        setInfoStandEvent(null);
+    }, [ infoStandEvent ]);
+
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, eventDispatcher, onObjectDeselected);
+
+    const onRoomWidgetObjectNameEvent = useCallback((event: RoomWidgetObjectNameEvent) =>
+    {
+        if(event.category !== RoomObjectCategory.UNIT) return;
+
+        setName(event);
+    }, []);
+
+    CreateEventDispatcherHook(RoomWidgetObjectNameEvent.TYPE, eventDispatcher, onRoomWidgetObjectNameEvent);
+
+    const onRoomWidgetUpdateInfostandEvent = useCallback((event: RoomWidgetUpdateInfostandEvent) =>
+    {
+        if(name) setName(null);
+        setInfoStandEvent(event);
+    }, [ name ]);
+
+    CreateEventDispatcherHook(RoomWidgetUpdateInfostandFurniEvent.FURNI, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.OWN_USER, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.BOT, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
+
+    const onRoomWidgetUpdateDanceStatusEvent = useCallback((event: RoomWidgetUpdateDanceStatusEvent) =>
+    {
+        setIsDancing(event.isDancing);
+    }, []);
+
+    CreateEventDispatcherHook(RoomWidgetUpdateDanceStatusEvent.UPDATE_DANCE, eventDispatcher, onRoomWidgetUpdateDanceStatusEvent);
+
+    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    {
+        switch(event.type)
+        {
+            case RoomWidgetRoomObjectUpdateEvent.USER_ADDED: {
+                // bubble if friend
+
+                return;
+            }
+            case RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED: {
+                // set if waiting for pet
+
+                return;
+            }
+        }
+    }, []);
+
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_ADDED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+
+    const decorateView = useMemo(() =>
+    {
+        GetRoomSession().isDecorating = isDecorating;
+
+        if(!isDecorating) return null;
+
+        const userId = GetSessionDataManager().userId;
+        const userName = GetSessionDataManager().userName;
+        const roomIndex = GetRoomSession().ownRoomIndex;
+
+        return <AvatarInfoWidgetDecorateView userId={ userId } userName={ userName } roomIndex={ roomIndex } />;
+    }, [ isDecorating ]);
+
+    const clearInfoStandEvent = useCallback(() =>
+    {
+        setInfoStandEvent(null);
+    }, []);
+
+    const currentView = useMemo(() =>
+    {
+        if(isGameMode) return null;
+
+        if(decorateView) return decorateView;
+
+        if(name) return <AvatarInfoWidgetNameView event={ name } />;
+
+        if(infoStandEvent)
+        {
+            switch(infoStandEvent.type)
+            {
+                case RoomWidgetUpdateInfostandUserEvent.OWN_USER:
+                case RoomWidgetUpdateInfostandUserEvent.PEER: {
+                    const event = (infoStandEvent as RoomWidgetUpdateInfostandUserEvent);
+
+                    if(event.isSpectatorMode) return null;
+
+                    // if existing name bubble remove it
+
+                    if(event.isOwnUser)
+                    {
+                        if(RoomEnterEffect.isRunning()) return null;
+
+                        return <AvatarInfoWidgetOwnAvatarView userData={ event } isDancing={ isDancing } close={ clearInfoStandEvent } />;
+                    }
+
+                    return <AvatarInfoWidgetAvatarView userData={ event } close={ clearInfoStandEvent } />;
+                }
+                case RoomWidgetUpdateInfostandPetEvent.PET_INFO: {
+                    const event = (infoStandEvent as RoomWidgetUpdateInfostandPetEvent);
+
+                    if(event.isOwner)
+                    {
+                        return <AvatarInfoWidgetOwnPetView petData={ event } close={ clearInfoStandEvent } />;
+                    }
+
+                    return <AvatarInfoWidgetPetView petData={ event } close={ clearInfoStandEvent } />;
+                }
+                case RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT: {
+                    return <AvatarInfoWidgetRentableBotView rentableBotData={ (infoStandEvent as RoomWidgetUpdateInfostandRentableBotEvent) } close={ clearInfoStandEvent } />
+                }
+                case RoomWidgetUpdateInfostandFurniEvent.FURNI: {
+                    return null;
+                }
+            }
+        }
+
+        return null;
+    }, [ isGameMode, decorateView, name, infoStandEvent ]);
 
     return (
         <>
-            { name && <AvatarInfoWidgetNameView event={ name } /> }
+            { currentView }
         </>
     )
 }

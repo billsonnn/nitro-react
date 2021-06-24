@@ -1,5 +1,5 @@
 import { ConfigurationEvent, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, RoomEngineEvent, WebGL } from 'nitro-renderer';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { GetConfiguration } from './api';
 import { useConfigurationEvent } from './hooks/events/core/configuration/configuration-event';
 import { useLocalizationEvent } from './hooks/events/nitro/localization/localization-event';
@@ -21,7 +21,7 @@ export const App: FC<{}> = props =>
 
     if(!Nitro.instance) Nitro.bootstrap();
 
-    const getPreloadAssetUrls = useMemo(() =>
+    const getPreloadAssetUrls = useCallback(() =>
     {
         const urls: string[] = [];
         const assetUrls = GetConfiguration<string[]>('preload.assets.urls');
@@ -91,7 +91,7 @@ export const App: FC<{}> = props =>
                 setIsReady(true);
                 return;
             case NitroLocalizationEvent.LOADED:
-                Nitro.instance.core.asset.downloadAssets(getPreloadAssetUrls, (status: boolean) =>
+                Nitro.instance.core.asset.downloadAssets(getPreloadAssetUrls(), (status: boolean) =>
                 {
                     if(status)
                     {

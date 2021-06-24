@@ -1,6 +1,7 @@
 export * from './DispatchMouseEvent';
 export * from './DispatchResizeEvent';
 export * from './DispatchTouchEvent';
+export * from './GetOwnRoomObject';
 export * from './GetRoomEngine';
 export * from './GetRoomObjectBounds';
 export * from './InitializeRoomInstanceRenderingCanvas';
