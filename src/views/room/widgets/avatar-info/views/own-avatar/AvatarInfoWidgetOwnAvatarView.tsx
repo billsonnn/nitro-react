@@ -19,7 +19,7 @@ const MODE_CHANGE_LOOKS = 5;
 
 export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProps> = props =>
 {
-    const { userData = null, isDancing = false, close = null } = props;
+    const { userData = null, isDancing = false, setIsDecorating = null, close = null } = props;
     const [ mode, setMode ] = useState((isDancing && HasHabboClub()) ? MODE_CLUB_DANCES : MODE_NORMAL);
     const { roomSession = null, widgetHandler = null } = useRoomContext();
 
@@ -41,10 +41,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                 switch(name)
                 {
                     case 'decorate':
-                        // if(this.widget.hasClub)
-                        // {
-                        //     this.widget.isDecorating = true;
-                        // }
+                        setIsDecorating(true);
                         break;
                     case 'change_looks':
                         break;
@@ -104,7 +101,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
         }
 
         if(hideMenu) close();
-    }, [ roomSession, userData, widgetHandler, close ]);
+    }, [ roomSession, widgetHandler, userData, setIsDecorating, close ]);
     
     const isRidingHorse = IsRidingHorse();
 

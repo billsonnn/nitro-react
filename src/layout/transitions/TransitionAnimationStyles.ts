@@ -5,7 +5,6 @@ import { TransitionAnimationTypes } from './TransitionAnimation.types';
 
 export function getTransitionAnimationStyle(type: string, transition: TransitionStatus, timeout: number = 300): Partial<CSSProperties>
 {
-    console.log(type, transition, timeout);
     switch(type)
     {
         case TransitionAnimationTypes.BOUNCE:
@@ -94,7 +93,6 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
                 default:
                     return {}
                 case ENTERING:
-                    console.log('ya????')
                     return {
                         animationName: `fadeIn`,
                         animationDuration: `${ timeout }ms`

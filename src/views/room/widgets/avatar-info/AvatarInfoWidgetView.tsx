@@ -127,6 +127,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
     CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
     CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.BOT, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
     CreateEventDispatcherHook(RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateInfostandPetEvent.PET_INFO, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
 
     const onRoomWidgetUpdateDanceStatusEvent = useCallback((event: RoomWidgetUpdateDanceStatusEvent) =>
     {
@@ -165,7 +166,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
         const userName = GetSessionDataManager().userName;
         const roomIndex = GetRoomSession().ownRoomIndex;
 
-        return <AvatarInfoWidgetDecorateView userId={ userId } userName={ userName } roomIndex={ roomIndex } />;
+        return <AvatarInfoWidgetDecorateView userId={ userId } userName={ userName } roomIndex={ roomIndex } setIsDecorating={ setIsDecorating } />;
     }, [ isDecorating ]);
 
     const clearInfoStandEvent = useCallback(() =>
@@ -197,7 +198,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
                     {
                         if(RoomEnterEffect.isRunning()) return null;
 
-                        return <AvatarInfoWidgetOwnAvatarView userData={ event } isDancing={ isDancing } close={ clearInfoStandEvent } />;
+                        return <AvatarInfoWidgetOwnAvatarView userData={ event } isDancing={ isDancing } setIsDecorating={ setIsDecorating } close={ clearInfoStandEvent } />;
                     }
 
                     return <AvatarInfoWidgetAvatarView userData={ event } close={ clearInfoStandEvent } />;
@@ -222,7 +223,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
         }
 
         return null;
-    }, [ isGameMode, decorateView, name, infoStandEvent ]);
+    }, [ isGameMode, decorateView, name, isDancing, infoStandEvent, clearInfoStandEvent ]);
 
     return (
         <>

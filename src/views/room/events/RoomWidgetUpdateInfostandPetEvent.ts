@@ -32,7 +32,7 @@ export class RoomWidgetUpdateInfostandPetEvent extends RoomWidgetUpdateInfostand
     public saddle: boolean = false;
     public rider: boolean = false;
     public breedable: boolean = false;
-    public Str_4460: number[] = [];
+    public skillTresholds: number[] = [];
     public publiclyRideable: number = 0;
     public fullyGrown: boolean = false;
     public dead: boolean = false;

@@ -1,4 +1,4 @@
-import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, PetFigureData, PetType, RoomAdsUpdateComposer, RoomControllerLevel, RoomModerationParser, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnumItemExtradataParameter, SecurityLevel, Vector3d } from 'nitro-renderer';
+import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, PetFigureData, PetType, RoomAdsUpdateComposer, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnumItemExtradataParameter, SecurityLevel, Vector3d } from 'nitro-renderer';
 import { GetConnection, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../api';
 import { LocalizeText } from '../../../utils/LocalizeText';
 import { RoomWidgetObjectNameEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
@@ -498,14 +498,14 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             {
                 switch(tradeMode)
                 {
-                    case RoomTradingLevelEnum._Str_14475: {
+                    case RoomTradingLevelEnum.ROOM_CONTROLLER_REQUIRED: {
                         const roomController = ((event.roomControllerLevel !== RoomControllerLevel.NONE) && (event.roomControllerLevel !== RoomControllerLevel.GUILD_MEMBER));
                         const targetController = ((event.targetRoomControllerLevel !== RoomControllerLevel.NONE) && (event.targetRoomControllerLevel !== RoomControllerLevel.GUILD_MEMBER));
 
                         event.canTrade = (roomController || targetController);
                         break;
                     }
-                    case RoomTradingLevelEnum._Str_9173:
+                    case RoomTradingLevelEnum.NO_TRADING:
                         event.canTrade = true;
                         break;
                     default:
@@ -518,7 +518,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
             if(isShuttingDown) event.canTradeReason = RoomWidgetUpdateInfostandUserEvent.TRADE_REASON_SHUTDOWN;
 
-            if(tradeMode !== RoomTradingLevelEnum._Str_9173) event.canTradeReason = RoomWidgetUpdateInfostandUserEvent.TRADE_REASON_NO_TRADING;
+            if(tradeMode !== RoomTradingLevelEnum.FREE_TRADING) event.canTradeReason = RoomWidgetUpdateInfostandUserEvent.TRADE_REASON_NO_TRADING;
 
             // const _local_12 = GetSessionDataManager().userId;
             // _local_13 = GetSessionDataManager()._Str_18437(_local_12);
@@ -590,7 +590,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
     private processPetInfoEvent(event: RoomSessionPetInfoUpdateEvent): void
     {
-        const petData = event._Str_24727;
+        const petData = event.petInfo;
 
         if(!petData) return;
 
@@ -604,7 +604,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         if(figure.typeId === PetType.MONSTERPLANT)
         {
-            if(petData.level >= petData._Str_20651) posture = 'std';
+            if(petData.level >= petData.adultLevel) posture = 'std';
             else posture = ('grw' + petData.level);
         }
 
@@ -639,7 +639,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         infostandEvent.fullyGrown = petData.fullyGrown;
         infostandEvent.dead = petData.dead;
         infostandEvent.rarityLevel = petData.rarityLevel;
-        infostandEvent.Str_4460 = petData._Str_3307;
+        infostandEvent.skillTresholds = petData.skillTresholds;
         infostandEvent.canRemovePet = false;
         infostandEvent.publiclyRideable = petData.publiclyRideable;
         infostandEvent.maximumTimeToLive = petData.maximumTimeToLive;
@@ -668,11 +668,11 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
     private canBeMuted(event: RoomWidgetUpdateInfostandUserEvent): boolean
     {
-        const checkSetting = (event: RoomWidgetUpdateInfostandUserEvent, moderation: RoomModerationParser) =>
+        const checkSetting = (event: RoomWidgetUpdateInfostandUserEvent, moderation: RoomModerationSettings) =>
         {
             switch(moderation.allowMute)
             {
-                case RoomModerationParser._Str_5047:
+                case RoomModerationSettings.MODERATION_LEVEL_USER_WITH_RIGHTS:
                     return this.checkGuildSetting(event);
                 default:
                     return (event.roomControllerLevel >= RoomControllerLevel.ROOM_OWNER);
@@ -684,13 +684,13 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
     private canBeKicked(event: RoomWidgetUpdateInfostandUserEvent): boolean
     {
-        const checkSetting = (event: RoomWidgetUpdateInfostandUserEvent, moderation: RoomModerationParser) =>
+        const checkSetting = (event: RoomWidgetUpdateInfostandUserEvent, moderation: RoomModerationSettings) =>
         {
             switch(moderation.allowKick)
             {
-                case RoomModerationParser._Str_11537:
+                case RoomModerationSettings.MODERATION_LEVEL_ALL:
                     return true;
-                case RoomModerationParser._Str_5047:
+                case RoomModerationSettings.MODERATION_LEVEL_USER_WITH_RIGHTS:
                     return this.checkGuildSetting(event);
                 default:
                     return (event.roomControllerLevel >= RoomControllerLevel.ROOM_OWNER);
@@ -702,11 +702,11 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
     private canBeBanned(event: RoomWidgetUpdateInfostandUserEvent): boolean
     {
-        const checkSetting = (event: RoomWidgetUpdateInfostandUserEvent, moderation: RoomModerationParser) =>
+        const checkSetting = (event: RoomWidgetUpdateInfostandUserEvent, moderation: RoomModerationSettings) =>
         {
             switch(moderation.allowBan)
             {
-                case RoomModerationParser._Str_5047:
+                case RoomModerationSettings.MODERATION_LEVEL_USER_WITH_RIGHTS:
                     return this.checkGuildSetting(event);
                 default:
                     return (event.roomControllerLevel >= RoomControllerLevel.ROOM_OWNER);
@@ -716,7 +716,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         return this.isValidSetting(event, checkSetting);
     }
 
-    private isValidSetting(event: RoomWidgetUpdateInfostandUserEvent, checkSetting: (event: RoomWidgetUpdateInfostandUserEvent, moderation: RoomModerationParser) => boolean): boolean
+    private isValidSetting(event: RoomWidgetUpdateInfostandUserEvent, checkSetting: (event: RoomWidgetUpdateInfostandUserEvent, moderation: RoomModerationSettings) => boolean): boolean
     {
         if(!this.roomSession._Str_7411) return false;
 
