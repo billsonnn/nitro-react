@@ -110,7 +110,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
             <ContextMenuHeaderView>
                 { userData.name }
             </ContextMenuHeaderView>
-            <ContextMenuListView>
+            <ContextMenuListView columns={ (mode === MODE_SIGNS) ? 4 : 1 }>
                 { (mode === MODE_NORMAL) &&
                     <>
                         <ContextMenuListItemView onClick={ event => processAction('decorate') }>
@@ -191,6 +191,63 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         </ContextMenuListItemView>
                         <ContextMenuListItemView onClick={ event => processAction('back') }>
                             { LocalizeText('generic.back') }
+                        </ContextMenuListItemView>
+                    </> }
+                { (mode === MODE_SIGNS) &&
+                    <>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_1') }>
+                            1
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_2') }>
+                            2
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_3') }>
+                            3
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_4') }>
+                            4
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_5') }>
+                            5
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_6') }>
+                            6
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_7') }>
+                            7
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_8') }>
+                            8
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_9') }>
+                            9
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_10') }>
+                            10
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_0') }>
+                            0
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_15') }>
+                            <i className="icon icon-sign-smile" />
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_12') }>
+                            <i className="icon icon-sign-skull" />
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_14') }>
+                            <i className="icon icon-sign-soccer" />
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_17') }>
+                            <i className="icon icon-sign-yellow" />
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_16') }>
+                            <i className="icon icon-sign-red" />
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_13') }>
+                            <i className="icon icon-sign-exclamation" />
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_11') }>
+                            <i className="icon icon-sign-heart" />
                         </ContextMenuListItemView>
                     </> }
             </ContextMenuListView>

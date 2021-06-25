@@ -74,6 +74,10 @@ $primary:       #1E7295 !default;
 $secondary:     #185D79 !default;
 $tertiary:      #2DABC2 !default;
 $quaternary:    #2B91A7 !default;
+$mirage:        #131e25 !default;
+$aztec:         #0d171d !default;
+$cello-light:   #21516e !default;
+$cello-dark:    #1e465e !default;
 
 $success:       $green !default;
 $info:          $cyan !default;
@@ -86,8 +90,20 @@ $light-dark:    $gray-800 !default;
 
 // scss-docs-end theme-color-variables
 
+$bg-tertiary-split-background: repeating-linear-gradient($tertiary, $tertiary 50%, $quaternary 50%, $quaternary 100%) !default;
+$bg-mirage-split-background: repeating-linear-gradient($mirage, $mirage 50%, $aztec 50%, $aztec 100%) !default;
+$bg-cello-split-background: repeating-linear-gradient($cello-light, $cello-light 50%, $cello-dark 50%, $cello-dark 100%) !default;
+
 .bg-tertiary-split {
-  background: repeating-linear-gradient($tertiary, $tertiary 50%, $quaternary 50%, $quaternary 100%);
+  background: $bg-tertiary-split-background;
+} 
+
+.bg-mirage-split {
+  background: $bg-mirage-split-background;
+}
+
+.bg-cello-split {
+  background: $bg-cello-split-background;
 }
 
 // scss-docs-start theme-colors-map

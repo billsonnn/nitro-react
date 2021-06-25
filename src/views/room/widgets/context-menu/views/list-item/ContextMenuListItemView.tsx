@@ -6,8 +6,10 @@ export const ContextMenuListItemView: FC<ContextMenuListItemViewProps> = props =
     const { onClick = null, children = null } = props;
 
     return (
-        <div className="" onClick={ onClick }>
-            { children }
+        <div className="col menu-list-item-container" onClick={ onClick }>
+            <div className="d-flex justify-content-center align-items-center menu-list-item">
+                { children }
+            </div>
         </div>
     )
 }

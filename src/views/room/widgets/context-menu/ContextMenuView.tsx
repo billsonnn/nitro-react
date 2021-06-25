@@ -8,7 +8,7 @@ const fadeLength = 75;
 export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 {
     const { objectId = -1, category = -1, fades = false, close = null, children = null } = props;
-    const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: -1, y: -1});
+    const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: null, y: null });
     const [ opacity, setOpacity ] = useState(1);
     const [ isFading, setIsFading ] = useState(false);
     const [ fadeTime, setFadeTime ] = useState(0);
@@ -73,7 +73,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     }, [ fades ]);
 
     return (
-        <div ref={ elementRef } className={ 'nitro-context-menu position-absolute ' + (pos.x > -1 ? 'visible' : 'invisible') } style={ { left: pos.x, top: pos.y, opacity: opacity } }>
+        <div ref={ elementRef } className={ 'position-absolute nitro-context-menu ' + (pos.x !== null ? 'visible' : 'invisible') } style={ { left: (pos.x || 0), top: (pos.y || 0), opacity: opacity } }>
             { children }
         </div>
     );

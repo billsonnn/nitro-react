@@ -3,10 +3,10 @@ import { ContextMenuListViewProps } from './ContextMenuListView.types';
 
 export const ContextMenuListView: FC<ContextMenuListViewProps> = props =>
 {
-    const { children = null } = props;
+    const { columns = 1, children = null } = props;
 
     return (
-        <div>
+        <div className={ `row row-cols-${ columns } menu-list g-1` }>
             { children }
         </div>
     );

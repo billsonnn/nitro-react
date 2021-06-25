@@ -6,7 +6,7 @@ export const ContextMenuHeaderView: FC<ContextMenuHeaderViewProps> = props =>
     const { children = null } = props;
 
     return (
-        <div>
+        <div className="d-flex justify-content-center align-items-center menu-header p-1">
             { children }
         </div>
     );

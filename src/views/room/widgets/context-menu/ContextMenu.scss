@@ -1,6 +1,51 @@
 .nitro-context-menu {
-    
-    @import './views/header/ContextMenuHeaderView';
-    @import './views/list/ContextMenuListView';
-    @import './views/list-item/ContextMenuListItemView';
+    width: 150px;
+    max-width: 150px;
+    padding: 2px;
+    background-color: #1c323f;
+    border: 2px solid rgba($white, 0.5);
+    border-radius: $border-radius;
+    font-size: $font-size-sm;
+
+    &:after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        height: 10px;
+        width: 10px;
+        transform: rotate(45deg);
+        border-color: transparent rgba($white, 0.5) rgba($white, 0.5) transparent;
+        border-style: solid;
+        border-width: 6px;
+    }
+
+    .menu-header {
+        background-color: #3d5f6e;
+        color: $white;
+        height: 25px;
+        max-height: 25px;
+    }
+
+    .menu-list {
+        margin: 0;
+
+        .menu-list-item-container {
+            margin-top: 2px;
+
+            .menu-list-item {
+                height: 24px;
+                max-height: 24px;
+                padding: 3px;
+                background: $bg-mirage-split-background;
+                cursor: pointer;
+
+                &:hover {
+                    background: $bg-cello-split-background;
+                }
+            }
+        }
+    }
 }
