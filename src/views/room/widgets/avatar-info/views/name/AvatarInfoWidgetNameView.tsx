@@ -1,21 +1,23 @@
-import { FC, useCallback } from 'react';
+import { FC, useMemo } from 'react';
+import { GetSessionDataManager } from '../../../../../../api';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';
+import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
 import { AvatarInfoWidgetNameViewProps } from './AvatarInfoWidgetNameView.types';
 
 export const AvatarInfoWidgetNameView: FC<AvatarInfoWidgetNameViewProps> = props =>
 {
-    const { event = null } = props;
+    const { nameData = null, close = null } = props;
 
-    const onClose = useCallback(() =>
+    const fades = useMemo(() =>
     {
-
-    }, []);
+        return (nameData.id !== GetSessionDataManager().userId);
+    }, [ nameData ]);
 
     return (
-        <ContextMenuView objectId={ event.roomIndex } category={ event.category } onClose= { onClose }>
-            <div className="d-flex justify-content-center align-items-center bg-dark border border-dark">
-                { event.name }
-            </div>
+        <ContextMenuView objectId={ nameData.roomIndex } category={ nameData.category } fades={ fades } close= { close }>
+            <ContextMenuHeaderView>
+                { nameData.name }
+            </ContextMenuHeaderView>
         </ContextMenuView>
     );
 }

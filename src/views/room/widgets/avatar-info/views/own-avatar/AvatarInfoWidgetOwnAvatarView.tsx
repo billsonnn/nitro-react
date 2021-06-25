@@ -106,7 +106,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
     const isRidingHorse = IsRidingHorse();
 
     return (
-        <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } onClose={ close }>
+        <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } close={ close }>
             <ContextMenuHeaderView>
                 { userData.name }
             </ContextMenuHeaderView>

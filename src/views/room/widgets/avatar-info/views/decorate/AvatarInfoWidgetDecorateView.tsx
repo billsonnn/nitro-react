@@ -11,7 +11,7 @@ export const AvatarInfoWidgetDecorateView: FC<AvatarInfoWidgetDecorateViewProps>
     const { userId = -1, userName = '', roomIndex = -1, setIsDecorating = null } = props;
     
     return (
-        <ContextMenuView objectId={ roomIndex } category={ RoomObjectCategory.UNIT } onClose={ null }>
+        <ContextMenuView objectId={ roomIndex } category={ RoomObjectCategory.UNIT } close={ null }>
             <ContextMenuListView>
                 <ContextMenuListItemView onClick={ event => setIsDecorating(false) }>
                     { LocalizeText('widget.avatar.stop_decorating') }

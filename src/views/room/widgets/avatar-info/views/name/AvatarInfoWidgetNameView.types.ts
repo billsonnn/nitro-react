@@ -2,5 +2,6 @@ import { RoomWidgetObjectNameEvent } from '../../../../events';
 
 export interface AvatarInfoWidgetNameViewProps
 {
-    event: RoomWidgetObjectNameEvent;
+    nameData: RoomWidgetObjectNameEvent;
+    close: () => void;
 }

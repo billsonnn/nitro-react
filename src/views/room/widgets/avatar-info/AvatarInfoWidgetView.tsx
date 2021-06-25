@@ -174,13 +174,18 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
         setInfoStandEvent(null);
     }, []);
 
+    const clearName = useCallback(() =>
+    {
+        setName(null);
+    }, []);
+
     const currentView = useMemo(() =>
     {
         if(isGameMode) return null;
 
         if(decorateView) return decorateView;
 
-        if(name) return <AvatarInfoWidgetNameView event={ name } />;
+        if(name) return <AvatarInfoWidgetNameView nameData={ name } close={ clearName }  />;
 
         if(infoStandEvent)
         {
