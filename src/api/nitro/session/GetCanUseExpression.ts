@@ -10,5 +10,5 @@ export function GetCanUseExpression(): boolean
     const model = roomObject.model;
     const effectId = model.getValue<number>(RoomObjectVariable.FIGURE_EFFECT);
 
-    return ((effectId === 29) || (effectId === 30) || (effectId === 185));
+    return !((effectId === 29) || (effectId === 30) || (effectId === 185));
 }

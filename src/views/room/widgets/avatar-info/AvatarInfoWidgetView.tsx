@@ -102,6 +102,8 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
     {
         if(!infoStandEvent) return;
 
+        console.log('tru')
+
         setInfoStandEvent(null);
     }, [ infoStandEvent ]);
 
@@ -119,7 +121,9 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
     const onRoomWidgetUpdateInfostandEvent = useCallback((event: RoomWidgetUpdateInfostandEvent) =>
     {
         if(name) setName(null);
-        setInfoStandEvent(event);
+
+        if(event.type === RoomWidgetUpdateInfostandFurniEvent.FURNI) setInfoStandEvent(null);
+        else setInfoStandEvent(event);
     }, [ name ]);
 
     CreateEventDispatcherHook(RoomWidgetUpdateInfostandFurniEvent.FURNI, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
@@ -228,7 +232,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
         }
 
         return null;
-    }, [ isGameMode, decorateView, name, isDancing, infoStandEvent, clearInfoStandEvent ]);
+    }, [ isGameMode, decorateView, name, isDancing, infoStandEvent, clearName, clearInfoStandEvent ]);
 
     return (
         <>

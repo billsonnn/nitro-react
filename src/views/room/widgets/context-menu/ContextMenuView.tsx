@@ -1,3 +1,4 @@
+import { FixedSizeStack } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { GetRoomObjectBounds, GetRoomSession, GetTicker } from '../../../../api';
 import { ContextMenuViewProps } from './ContextMenuView.types';
@@ -7,8 +8,9 @@ const fadeLength = 75;
 
 export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 {
-    const { objectId = -1, category = -1, fades = false, close = null, children = null } = props;
+    const { objectId = -1, category = -1, fades = false, className = '', close = null, children = null } = props;
     const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: null, y: null });
+    const [ stack, setStack ] = useState<FixedSizeStack>(null);
     const [ opacity, setOpacity ] = useState(1);
     const [ isFading, setIsFading ] = useState(false);
     const [ fadeTime, setFadeTime ] = useState(0);
@@ -16,19 +18,19 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
     const update = useCallback((time: number) =>
     {
-        let fadeTime = time;
+        let newFadeTime = time;
         let newOpacity = 1;
 
         if(isFading)
         {
             setFadeTime(prevValue =>
                 {
-                    fadeTime += prevValue;
+                    newFadeTime += prevValue;
 
-                    return fadeTime;
+                    return newFadeTime;
                 });
 
-            newOpacity = ((1 - (fadeTime / fadeLength)) * 1);
+            newOpacity = ((1 - (newFadeTime / fadeLength)) * 1);
 
             if(newOpacity <= 0)
             {
@@ -49,6 +51,11 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
             y: Math.round((bounds.top - elementRef.current.offsetHeight) + 10)
         });
     }, [ objectId, category, isFading, close ]);
+
+    useEffect(() =>
+    {
+        setStack(new FixedSizeStack(25));
+    }, []);
 
     useEffect(() =>
     {
@@ -73,7 +80,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     }, [ fades ]);
 
     return (
-        <div ref={ elementRef } className={ 'position-absolute nitro-context-menu ' + (pos.x !== null ? 'visible' : 'invisible') } style={ { left: (pos.x || 0), top: (pos.y || 0), opacity: opacity } }>
+        <div ref={ elementRef } className={ `position-absolute nitro-context-menu ${ className }${ (pos.x !== null ? ' visible' : ' invisible') }` } style={ { left: (pos.x || 0), top: (pos.y || 0), opacity: opacity } }>
             { children }
         </div>
     );

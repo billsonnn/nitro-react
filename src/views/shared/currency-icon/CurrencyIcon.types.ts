@@ -1,4 +1,4 @@
 export interface CurrencyIconProps
 {
-    type: number;
+    type: number | string;
 }

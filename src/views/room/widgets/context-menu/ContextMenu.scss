@@ -7,10 +7,20 @@
     border-radius: $border-radius;
     font-size: $font-size-sm;
 
+    &.name-only {
+        background-color: rgba($black, 0.7);
+        padding: 1px 8px;
+        min-width: 60px;
+        width: unset;
+        max-width: unset;
+        text-align: center;
+        font-size: 18px;
+    }
+
     &:after {
         content: "";
         position: absolute;
-        bottom: -8px;
+        bottom: -7px;
         left: 0;
         right: 0;
         margin: auto;
@@ -19,7 +29,7 @@
         transform: rotate(45deg);
         border-color: transparent rgba($white, 0.5) rgba($white, 0.5) transparent;
         border-style: solid;
-        border-width: 6px;
+        border-width: 5px;
     }
 
     .menu-header {
@@ -27,25 +37,48 @@
         color: $white;
         height: 25px;
         max-height: 25px;
+        font-size: 16px;
     }
 
-    .menu-list {
-        margin: 0;
+    .menu-list-split-3 {
 
-        .menu-list-item-container {
-            margin-top: 2px;
+        .menu-list-item {
+            margin-right: 2px;
 
-            .menu-list-item {
-                height: 24px;
-                max-height: 24px;
-                padding: 3px;
-                background: $bg-mirage-split-background;
-                cursor: pointer;
-
-                &:hover {
-                    background: $bg-cello-split-background;
-                }
+            &:nth-child(3n+3) {
+                margin-right: unset;
             }
+        }
+    }
+
+    .menu-list-item {
+        position: relative;
+        height: 24px;
+        max-height: 24px;
+        margin-top: 2px;
+        padding: 3px;
+        background: $bg-mirage-split-background;
+        cursor: pointer;
+        overflow: hidden;
+
+        &.disabled {
+            filter: brightness(0.7);
+            cursor: not-allowed;
+        }
+
+        .fas,
+        .nitro-currency-icon {
+            position: absolute;
+            right: 8px;
+
+            &.left {
+                left: 8px;
+                right: unset;
+            }
+        }
+
+        &:not(.disabled):hover {
+            background: $bg-cello-split-background;
         }
     }
 }
