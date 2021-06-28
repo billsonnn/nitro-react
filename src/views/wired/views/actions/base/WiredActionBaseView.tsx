@@ -1,26 +1,45 @@
-import { ConditionDefinition, TriggerDefinition, WiredActionDefinition } from 'nitro-renderer';
-import { FC, useCallback } from 'react';
-import { WiredActionLayout } from '../../../utils/WiredActionLayout';
-import { WiredActionToggleFurniStateView } from '../toggle-furni-state/WiredActionToggleFurniStateView';
+import { WiredActionDefinition } from 'nitro-renderer';
+import Slider from 'rc-slider';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { LocalizeText } from '../../../../../utils/LocalizeText';
+import { GetWiredTimeLocale } from '../../../common/GetWiredTimeLocale';
+import { useWiredContext } from '../../../context/WiredContext';
+import { WiredFurniType } from '../../../WiredView.types';
+import { WiredBaseView } from '../../base/WiredBaseView';
+import { WiredActionBaseViewProps } from './WiredActionBaseView.types';
 
-export const WiredActionBaseView: FC<{ wiredDefinition: TriggerDefinition | WiredActionDefinition | ConditionDefinition }> = props =>
+export const WiredActionBaseView: FC<WiredActionBaseViewProps> = props =>
 {
-    const { wiredDefinition = null } = props;
+    const { requiresFurni = WiredFurniType._Str_5431, save = null, children = null } = props;
+    const [ delay, setDelay ] = useState(-1);
+    const { trigger = null, setActionDelay = null } = useWiredContext();
 
-    const getActionlayout = useCallback((code: number) =>
+    useEffect(() =>
     {
-        switch(code)
-        {
-            case WiredActionLayout.TOGGLE_FURNI_STATE:
-                return <WiredActionToggleFurniStateView wiredDefinition={ wiredDefinition } />;
-            default:
-                return null;
-        }
-    }, [ wiredDefinition ]);
-    
+        setDelay((trigger as WiredActionDefinition).delayInPulses);
+    }, [ trigger ]);
+
+    const onSave = useCallback(() =>
+    {
+        if(save) save();
+
+        setActionDelay(delay);
+    }, [ delay, save, setActionDelay ]);
+
     return (
-        <>
-            { wiredDefinition && getActionlayout(wiredDefinition.code) }
-        </>
+        <WiredBaseView wiredType="action" requiresFurni={ requiresFurni } save={ onSave }>
+            { children }
+            <hr className="my-1 mb-2 bg-dark" />
+            <div className="d-flex flex-column justify-content-center align-items-center">
+                { LocalizeText('wiredfurni.params.delay', [ 'seconds' ], [ GetWiredTimeLocale(delay) ]) }
+                <Slider 
+                    defaultValue={ delay }
+                    dots={ true }
+                    min={ 0 }
+                    max={ 20 }
+                    onChange={ event => setDelay(event) }
+                    />
+            </div>
+        </WiredBaseView>
     );
 }

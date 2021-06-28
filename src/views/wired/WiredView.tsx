@@ -1,81 +1,42 @@
-import { ConditionDefinition, Nitro, TriggerDefinition, WiredActionDefinition, WiredFurniActionEvent, WiredFurniConditionEvent, WiredFurniTriggerEvent } from 'nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
-import { CreateMessageHook } from '../../hooks/messages';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
-import { LocalizeText } from '../../utils/LocalizeText';
-import { WiredActionBaseView } from './views/actions/base/WiredActionBaseView';
-import { WiredConditionBaseView } from './views/conditions/base/WiredConditionBaseView';
-import { WiredTriggerBaseView } from './views/triggers/base/WiredTriggerBaseView';
+import { Triggerable, UpdateActionMessageComposer, WiredActionDefinition } from 'nitro-renderer';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { GetConnection } from '../../api';
+import { WiredEvent } from '../../events';
+import { useUiEvent } from '../../hooks/events';
+import { GetWiredLayout } from './common/GetWiredLayout';
+import { WiredContextProvider } from './context/WiredContext';
+import { WiredMessageHandler } from './WiredMessageHandler';
 import { WiredFurniSelectorViewProps } from './WiredView.types';
 
 export const WiredView: FC<WiredFurniSelectorViewProps> = props =>
 {
-    const [ wiredDefinition, setWiredDefinition ] = useState<TriggerDefinition | WiredActionDefinition | ConditionDefinition>(null);
-    const [ name, setName ] = useState(null);
-    const [ description, setDescription ] = useState(null);
+    const [ trigger, setTrigger ] = useState<Triggerable>(null);
+    const [ intParams, setIntParams ] = useState<number[]>(null);
+    const [ stringParam, setStringParam ] = useState<string>(null);
+    const [ furniIds, setFurniIds ] = useState<number[]>(null);
+    const [ actionDelay, setActionDelay ] = useState<number>(null);
 
-    useEffect(() =>
+    const wiredLayout = useMemo(() =>
     {
-        if(!wiredDefinition) return;
+        return GetWiredLayout(trigger);
+    }, [ trigger ]);
 
-        const itemData = Nitro.instance.sessionDataManager.getFloorItemData(wiredDefinition.spriteId);
-
-        if(!itemData) return;
-
-        setName(itemData.name);
-        setDescription(itemData.description);
-    }, [ wiredDefinition ]);
-
-    const getWiredType = useCallback(() =>
+    const onWiredEvent = useCallback((event: WiredEvent) =>
     {
-        if(wiredDefinition instanceof TriggerDefinition)
-            return 'trigger';
-        else if(wiredDefinition instanceof ConditionDefinition)
-            return 'condition';
-        else
-            return 'action';
+        // check if owner & warn with confirm
+        
+        if(trigger instanceof WiredActionDefinition)
+        {
+            GetConnection().send(new UpdateActionMessageComposer(trigger.id, intParams, stringParam, furniIds, actionDelay, trigger.stuffTypeSelectionCode));
+        }
+    }, [ trigger, intParams, stringParam, furniIds, actionDelay ]);
 
-    }, [ wiredDefinition ]);
-
-    const getTypeBase = useCallback(() =>
-    {
-        if(wiredDefinition instanceof TriggerDefinition)
-            return <WiredTriggerBaseView />;
-        else if(wiredDefinition instanceof ConditionDefinition)
-            return <WiredConditionBaseView />;
-        else
-            return <WiredActionBaseView wiredDefinition={ wiredDefinition } />;
-
-    }, [ wiredDefinition ]);
-
-    const onWiredFurniEvent = useCallback((event: WiredFurniTriggerEvent | WiredFurniConditionEvent | WiredFurniActionEvent) =>
-    {
-        setWiredDefinition(event.getParser().definition);
-    }, [ setWiredDefinition ]);
-
-    CreateMessageHook(WiredFurniTriggerEvent, onWiredFurniEvent);
-    CreateMessageHook(WiredFurniConditionEvent, onWiredFurniEvent);
-    CreateMessageHook(WiredFurniActionEvent, onWiredFurniEvent);
-
-    if(!wiredDefinition) return null;
+    useUiEvent(WiredEvent.SAVE_WIRED, onWiredEvent);
 
     return (
-        <NitroCardView className="nitro-wired" simple={ true }>
-            <NitroCardHeaderView headerText={ LocalizeText('wiredfurni.title') } onCloseClick={ event => {} } />
-            <NitroCardContentView className="text-black">
-                <div className="d-flex align-items-center">
-                    <i className={ 'me-2 icon icon-wired-' + getWiredType()} />
-                    <div className="fw-bold">{ name }</div>
-                </div>
-                <div>{ description }</div>
-                <div>
-                    { getTypeBase() }
-                </div>
-                <div className="d-flex mt-2">
-                    <button className="btn btn-success me-2 w-100">{ LocalizeText('wiredfurni.ready') }</button>
-                    <button className="btn btn-secondary w-100">{ LocalizeText('cancel') }</button>
-                </div>
-            </NitroCardContentView>
-        </NitroCardView>
+        <WiredContextProvider value={ { trigger, setTrigger, intParams, setIntParams, stringParam, setStringParam, furniIds, setFurniIds, actionDelay, setActionDelay }}>
+            <WiredMessageHandler />
+            { wiredLayout }
+        </WiredContextProvider>
     );
 };
