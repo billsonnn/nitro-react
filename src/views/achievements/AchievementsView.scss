@@ -1,0 +1,24 @@
+.nitro-achievements {
+    width: 600px;
+
+    .score {
+        border-color: $grid-border-color !important;
+        background-color: $grid-bg-color;
+    }
+
+    .category {
+        border-color: $grid-border-color !important;
+        background-color: $grid-bg-color;
+        cursor: pointer;
+    
+        &.active {
+            border-color: $grid-active-border-color !important;
+            background-color: $grid-active-bg-color;
+        }
+
+        .category-score {
+            margin-top: 43.5px;
+        }
+    }
+    
+}

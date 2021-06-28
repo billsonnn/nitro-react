@@ -1,6 +1,7 @@
 import { Nitro, RoomSessionEvent } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
+import { AchievementsView } from '../achievements/AchievementsView';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CatalogView } from '../catalog/CatalogView';
 import { FriendListView } from '../friend-list/FriendListView';
@@ -47,6 +48,7 @@ export const MainView: FC<MainViewProps> = props =>
             <ToolbarView isInRoom={ !landingViewVisible } />
             <RoomHostView />
             <AvatarEditorView />
+            <AchievementsView />
             <NavigatorView />
             <InventoryView />
             <CatalogView />

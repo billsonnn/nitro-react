@@ -2,6 +2,7 @@ import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/i
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
 import { FC, useCallback, useState } from 'react';
 import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
+import { AchievementsEvent } from '../../events/achievements';
 import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
@@ -49,6 +50,10 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 return;
             case ToolbarViewItems.CLOTHING_ITEM:
                 dispatchUiEvent(new AvatarEditorEvent(AvatarEditorEvent.TOGGLE_EDITOR));
+                setMeExpanded(false);
+                return;
+            case ToolbarViewItems.ACHIEVEMENTS_ITEM:
+                dispatchUiEvent(new AchievementsEvent(AchievementsEvent.TOGGLE_ACHIEVEMENTS));
                 setMeExpanded(false);
                 return;
         }
