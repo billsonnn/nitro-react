@@ -65,10 +65,11 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                     { children }
                 </div>
                 { (requiresFurni !== WiredFurniType._Str_5431) &&
-                    <div className="d-flex">
-                        { LocalizeText('wiredfurni.pickfurnis.caption', [ 'count', 'limit' ], [ '0', '0' ]) }
-                        { LocalizeText('wiredfurni.pickfurnis.desc') }
-                    </div> }
+                    <>
+                        <hr className="my-1 mb-2 bg-dark" />
+                        <div className="fw-bold">{ LocalizeText('wiredfurni.pickfurnis.caption', [ 'count', 'limit' ], [ '0', '0' ]) }</div>
+                        <div>{ LocalizeText('wiredfurni.pickfurnis.desc') }</div>
+                    </> }
                 <div className="d-flex mt-2">
                     <button className="btn btn-success me-2 w-100" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</button>
                     <button className="btn btn-secondary w-100" onClick={ close }>{ LocalizeText('cancel') }</button>

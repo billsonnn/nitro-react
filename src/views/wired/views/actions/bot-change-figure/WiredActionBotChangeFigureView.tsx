@@ -3,10 +3,9 @@ import { GetSessionDataManager } from '../../../../../api';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { useWiredContext } from '../../../context/WiredContext';
-import { WiredFurniType } from '../../../WiredView.types';
+import { WiredFurniType, WIRED_STRING_DELIMETER } from '../../../WiredView.types';
 import { WiredActionBaseView } from '../base/WiredActionBaseView';
 
-const DELIMETER: string = '\t';
 const DEFAULT_FIGURE: string = 'hd-180-1.ch-210-66.lg-270-82.sh-290-81';
 
 export const WiredActionBotChangeFigureView: FC<{}> = props =>
@@ -17,9 +16,7 @@ export const WiredActionBotChangeFigureView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        const data = trigger.stringData.split(DELIMETER);
-
-        console.log(data);
+        const data = trigger.stringData.split(WIRED_STRING_DELIMETER);
 
         if(data.length > 0) setBotName(data[0]);
         if(data.length > 1) setFigure(data[1].length > 0 ? data[1] : DEFAULT_FIGURE);
@@ -32,7 +29,7 @@ export const WiredActionBotChangeFigureView: FC<{}> = props =>
 
     const save = useCallback(() =>
     {
-        setStringParam((botName + DELIMETER + figure));
+        setStringParam((botName + WIRED_STRING_DELIMETER + figure));
     }, [ botName, figure, setStringParam ]);
 
     return (

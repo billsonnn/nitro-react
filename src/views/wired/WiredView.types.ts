@@ -15,3 +15,5 @@ export class WiredFurniType
     public static _Str_4991: number = 2;
     public static _Str_5430: number = 3;
 }
+
+export const WIRED_STRING_DELIMETER: string = '\t';

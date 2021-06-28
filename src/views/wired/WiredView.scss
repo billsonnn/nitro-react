@@ -1,3 +1,38 @@
 .nitro-wired {
     width: 300px;
+
+    .icon {
+		width: 16px;
+		height: 9px;
+		background-repeat: no-repeat;
+		background-position: center;
+
+		&.icon-mv-1 {
+			background-image: url('../../assets/images/wired/icon_wired_around.png');
+		}
+		&.icon-mv-2 {
+			background-image: url('../../assets/images/wired/icon_wired_up_down.png');
+		}
+		&.icon-mv-3 {
+			background-image: url('../../assets/images/wired/icon_wired_left_right.png');
+		}
+		&.icon-ne {
+			background-image: url('../../assets/images/wired/icon_wired_north_east.png');
+		}
+		&.icon-se {
+			background-image: url('../../assets/images/wired/icon_wired_south_east.png');
+		}
+		&.icon-sw {
+			background-image: url('../../assets/images/wired/icon_wired_south_west.png');
+		}
+		&.icon-nw {
+			background-image: url('../../assets/images/wired/icon_wired_north_west.png');
+		}
+		&.icon-rot-1 {
+			background-image: url('../../assets/images/wired/icon_wired_rotate_clockwise.png');
+		}
+		&.icon-rot-2 {
+			background-image: url('../../assets/images/wired/icon_wired_rotate_counter_clockwise.png');
+		}
+	}
 }

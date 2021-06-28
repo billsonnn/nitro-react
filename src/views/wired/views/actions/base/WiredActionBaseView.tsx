@@ -28,8 +28,10 @@ export const WiredActionBaseView: FC<WiredActionBaseViewProps> = props =>
 
     return (
         <WiredBaseView wiredType="action" requiresFurni={ requiresFurni } save={ onSave }>
-            { children }
-            <hr className="my-1 mb-2 bg-dark" />
+            { !children ? null : <>
+                { children }
+                <hr className="my-1 mb-2 bg-dark" />
+            </> }
             <div className="d-flex flex-column justify-content-center align-items-center">
                 { LocalizeText('wiredfurni.params.delay', [ 'seconds' ], [ GetWiredTimeLocale(delay) ]) }
                 <Slider 
