@@ -5,6 +5,6 @@ import { WiredActionBaseView } from '../base/WiredActionBaseView';
 export const WiredActionFleeView: FC<{}> = props =>
 {
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType._Str_5430 } save={ null }></WiredActionBaseView>
+        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_BY_TYPE_OR_FROM_CONTEXT } save={ null }></WiredActionBaseView>
     );
 }

@@ -10,7 +10,7 @@ import { WiredActionBaseViewProps } from './WiredActionBaseView.types';
 
 export const WiredActionBaseView: FC<WiredActionBaseViewProps> = props =>
 {
-    const { requiresFurni = WiredFurniType._Str_5431, save = null, children = null } = props;
+    const { requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, children = null } = props;
     const [ delay, setDelay ] = useState(-1);
     const { trigger = null, setActionDelay = null } = useWiredContext();
 

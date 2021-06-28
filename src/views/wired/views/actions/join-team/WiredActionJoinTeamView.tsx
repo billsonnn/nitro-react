@@ -20,7 +20,7 @@ export const WiredActionJoinTeamView: FC<{}> = props =>
     }, [ selectedTeam, setIntParams ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType._Str_5431 } save={ save }>
+        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
             { [1, 2, 3, 4].map(team =>
                 {
                     return (

@@ -24,7 +24,7 @@ export const WiredActionSetFurniStateToView: FC<{}> = props =>
     }, [ directionFlag, positionFlag, setIntParams, stateFlag ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType._Str_4873 } save={ save }>
+        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } save={ save }>
             <div className="form-check">
                 <input className="form-check-input" type="checkbox" id="stateFlag" onChange={(e) => setStateFlag(e.target.checked ? 1 : 0)} />
                 <label className="form-check-label" htmlFor="stateFlag">

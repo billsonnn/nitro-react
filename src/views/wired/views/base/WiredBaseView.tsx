@@ -10,7 +10,7 @@ import { WiredBaseViewProps } from './WiredBaseView.types';
 
 export const WiredBaseView: FC<WiredBaseViewProps> = props =>
 {
-    const { wiredType = '', requiresFurni = WiredFurniType._Str_5431, save = null, children = null } = props;
+    const { wiredType = '', requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, children = null } = props;
     const [ wiredName, setWiredName ] = useState<string>(null);
     const [ wiredDescription, setWiredDescription ] = useState<string>(null);
     const { trigger = null, setTrigger = null, setIntParams = null, setStringParam = null, setFurniIds = null } = useWiredContext();
@@ -64,7 +64,7 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                 <div>
                     { children }
                 </div>
-                { (requiresFurni !== WiredFurniType._Str_5431) &&
+                { (requiresFurni !== WiredFurniType.STUFF_SELECTION_OPTION_NONE) &&
                     <>
                         <hr className="my-1 mb-2 bg-dark" />
                         <div className="fw-bold">{ LocalizeText('wiredfurni.pickfurnis.caption', [ 'count', 'limit' ], [ '0', '0' ]) }</div>

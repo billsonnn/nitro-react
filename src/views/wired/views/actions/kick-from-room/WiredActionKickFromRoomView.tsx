@@ -20,7 +20,7 @@ export const WiredActionKickFromRoomView: FC<{}> = props =>
     }, [ message, setStringParam ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType._Str_5431 } save={ save }>
+        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
             <div className="form-group">
                 <label>{ LocalizeText('wiredfurni.params.message') }</label>
                 <input type="text" className="form-control form-control-sm" value={ message } onChange={ event => setMessage(event.target.value) } />

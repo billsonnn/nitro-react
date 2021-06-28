@@ -56,7 +56,7 @@ export const WiredActionMoveFurniView: FC<{}> = props =>
     }, [ movement, rotation, setIntParams ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType._Str_4873 } save={ save }>
+        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } save={ save }>
             <div className="fw-bold">{ LocalizeText('wiredfurni.params.movefurni') }</div>
             <div className="form-check">
                 <input className="form-check-input" type="radio" name="selectedTeam" id="movement0" checked={ movement === 0 } onChange={() => setMovement(0)} />

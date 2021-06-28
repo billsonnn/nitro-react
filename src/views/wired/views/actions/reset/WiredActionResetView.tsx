@@ -5,6 +5,6 @@ import { WiredActionBaseView } from '../base/WiredActionBaseView';
 export const WiredActionResetView: FC<{}> = props =>
 {
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType._Str_5431 } save={ null }></WiredActionBaseView>
+        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ null }></WiredActionBaseView>
     );
 }
