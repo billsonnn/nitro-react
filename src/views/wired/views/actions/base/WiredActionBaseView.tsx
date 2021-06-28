@@ -32,16 +32,14 @@ export const WiredActionBaseView: FC<WiredActionBaseViewProps> = props =>
                 { children }
                 <hr className="my-1 mb-2 bg-dark" />
             </> }
-            <div className="d-flex flex-column justify-content-center align-items-center">
-                { LocalizeText('wiredfurni.params.delay', [ 'seconds' ], [ GetWiredTimeLocale(delay) ]) }
-                <Slider 
-                    defaultValue={ delay }
-                    dots={ true }
-                    min={ 0 }
-                    max={ 20 }
-                    onChange={ event => setDelay(event) }
-                    />
-            </div>
+            <div className="fw-bold">{ LocalizeText('wiredfurni.params.delay', [ 'seconds' ], [ GetWiredTimeLocale(delay) ]) }</div>
+            <Slider 
+                defaultValue={ delay }
+                dots={ true }
+                min={ 0 }
+                max={ 20 }
+                onChange={ event => setDelay(event) }
+                />
         </WiredBaseView>
     );
 }

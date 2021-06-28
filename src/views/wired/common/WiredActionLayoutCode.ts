@@ -11,7 +11,7 @@ export class WiredActionLayout
     public static LEAVE_TEAM: number = 10;
     public static CHASE: number = 11;
     public static FLEE: number = 12;
-    public static MOVE_TO_DIRECTION: number = 13;
+    public static MOVE_AND_ROTATE_FURNI: number = 13;
     public static GIVE_SCORE_TO_PREDEFINED_TEAM: number = 14;
     public static TOGGLE_TO_RANDOM_STATE: number = 15;
     public static MOVE_FURNI_TO: number = 16;

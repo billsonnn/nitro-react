@@ -9,9 +9,13 @@ import { WiredActionCallAnotherStackView } from '../views/actions/call-another-s
 import { WiredActionChaseView } from '../views/actions/chase/WiredActionChaseView';
 import { WiredActionChatView } from '../views/actions/chat/WiredActionChatView';
 import { WiredActionFleeView } from '../views/actions/flee/WiredActionFleeView';
+import { WiredActionGiveScoreToPredefinedTeamView } from '../views/actions/give-score-to-predefined-team/WiredActionGiveScoreToPredefinedTeamView';
+import { WiredActionGiveScoreView } from '../views/actions/give-score/WiredActionGiveScoreView';
 import { WiredActionJoinTeamView } from '../views/actions/join-team/WiredActionJoinTeamView';
 import { WiredActionKickFromRoomView } from '../views/actions/kick-from-room/WiredActionKickFromRoomView';
 import { WiredActionLeaveTeamView } from '../views/actions/leave-team/WiredActionLeaveTeamView';
+import { WiredActionMoveAndRotateFurniView } from '../views/actions/move-and-rotate-furni/WiredActionMoveAndRotateFurniView';
+import { WiredActionMoveFurniToView } from '../views/actions/move-furni-to/WiredActionMoveFurniToView';
 import { WiredActionMoveFurniView } from '../views/actions/move-furni/WiredActionMoveFurniView';
 import { WiredActionResetView } from '../views/actions/reset/WiredActionResetView';
 import { WiredActionSetFurniStateToView } from '../views/actions/set-furni-state-to/WiredActionSetFurniStateToView';
@@ -45,6 +49,10 @@ export function GetWiredActionLayout(code: number): JSX.Element
             return <WiredActionChatView />;
         case WiredActionLayout.FLEE:
             return <WiredActionFleeView />;
+        case WiredActionLayout.GIVE_SCORE:
+            return <WiredActionGiveScoreView />;
+        case WiredActionLayout.GIVE_SCORE_TO_PREDEFINED_TEAM:
+            return <WiredActionGiveScoreToPredefinedTeamView />;
         case WiredActionLayout.JOIN_TEAM:
             return <WiredActionJoinTeamView />;
         case WiredActionLayout.KICK_FROM_ROOM:
@@ -53,6 +61,10 @@ export function GetWiredActionLayout(code: number): JSX.Element
             return <WiredActionLeaveTeamView />;
         case WiredActionLayout.MOVE_FURNI:
             return <WiredActionMoveFurniView />;
+        case WiredActionLayout.MOVE_AND_ROTATE_FURNI:
+            return <WiredActionMoveAndRotateFurniView />;
+        case WiredActionLayout.MOVE_FURNI_TO:
+            return <WiredActionMoveFurniToView />;
         case WiredActionLayout.RESET:
             return <WiredActionResetView />;
         case WiredActionLayout.SET_FURNI_STATE:

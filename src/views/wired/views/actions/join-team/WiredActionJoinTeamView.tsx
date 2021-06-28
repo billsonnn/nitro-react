@@ -21,6 +21,7 @@ export const WiredActionJoinTeamView: FC<{}> = props =>
 
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+            <div className="fw-bold">{ LocalizeText('wiredfurni.params.team') }</div>
             { [1, 2, 3, 4].map(team =>
                 {
                     return (
