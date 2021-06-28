@@ -5,7 +5,8 @@ export interface IAchievementsState
 {
     categories: AchievementCategory[],
     score: number,
-    selectedCategoryName: string
+    selectedCategoryName: string,
+    selectedAchievementId: number
 }
 
 export interface IAchievementsAction
@@ -14,7 +15,8 @@ export interface IAchievementsAction
     payload: {
         categories?: AchievementCategory[],
         score?: number,
-        selectedCategoryName?: string
+        selectedCategoryName?: string,
+        selectedAchievementId?: number
     }
 }
 
@@ -23,12 +25,14 @@ export class AchievementsActions
     public static SET_CATEGORIES: string = 'AA_SET_CATEGORIES';
     public static SET_SCORE: string = 'AA_SET_SCORE';
     public static SELECT_CATEGORY: string = 'AA_SELECT_CATEGORY';
+    public static SELECT_ACHIEVEMENT: string = 'AA_SELECT_ACHIEVEMENT';
 }
 
 export const initialAchievements: IAchievementsState = {
     categories: null,
     score: null,
-    selectedCategoryName: null
+    selectedCategoryName: null,
+    selectedAchievementId: null
 }
 
 export const AchievementsReducer: Reducer<IAchievementsState, IAchievementsAction> = (state, action) =>
@@ -55,7 +59,24 @@ export const AchievementsReducer: Reducer<IAchievementsState, IAchievementsActio
         case AchievementsActions.SELECT_CATEGORY: {
             const selectedCategoryName = (action.payload.selectedCategoryName || state.selectedCategoryName || null);
 
-            return { ...state, selectedCategoryName };
+            let selectedAchievementId = null;
+
+            if(selectedCategoryName)
+            {
+                const category = state.categories.find(category => category.name === selectedCategoryName);
+
+                if(category && category.achievements.length > 0)
+                {
+                    selectedAchievementId = category.achievements[0].achievementId;    
+                }
+            }
+           
+            return { ...state, selectedCategoryName, selectedAchievementId };
+        }
+        case AchievementsActions.SELECT_ACHIEVEMENT: {
+            const selectedAchievementId = (action.payload.selectedAchievementId || state.selectedAchievementId || null);
+
+            return { ...state, selectedAchievementId };
         }
         default:
             return state;

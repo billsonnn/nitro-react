@@ -7,13 +7,14 @@ import { AchievementsMessageHandler } from './AchievementsMessageHandler';
 import { AchievementsViewProps } from './AchievementsView.types';
 import { AchievementsContextProvider } from './context/AchievementsContext';
 import { AchievementsReducer, initialAchievements } from './reducers/AchievementsReducer';
+import { AchievementCategoryView } from './views/category/AchievementCategoryView';
 import { AchievementsListView } from './views/list/AchievementsListView';
 
 export const AchievementsView: FC<AchievementsViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ achievementsState, dispatchAchievementsState ] = useReducer(AchievementsReducer, initialAchievements);
-    const { categories = null, score = null, selectedCategoryName = null } = achievementsState;
+    const { score = null } = achievementsState;
 
     const onAchievementsEvent = useCallback((event: AchievementsEvent) =>
     {
@@ -56,7 +57,7 @@ export const AchievementsView: FC<AchievementsViewProps> = props =>
                                 </div>
                             </div>
                             <div className="col-6">
-                                
+                                <AchievementCategoryView />
                             </div>
                         </div>
                     </NitroCardContentView>
