@@ -66,7 +66,7 @@ export const WiredActionMoveFurniView: FC<{}> = props =>
                     { LocalizeText('wiredfurni.params.movefurni.0') }
                 </label>
             </div>
-            <div className="row row-cold-4">
+            <div className="row row-cols-4">
                 { directionOptions.map(option =>
                     {
                         return (
