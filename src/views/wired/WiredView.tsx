@@ -1,4 +1,4 @@
-import { Triggerable, TriggerDefinition, UpdateActionMessageComposer, UpdateTriggerMessageComposer, WiredActionDefinition } from 'nitro-renderer';
+import { ConditionDefinition, Triggerable, TriggerDefinition, UpdateActionMessageComposer, UpdateConditionMessageComposer, UpdateTriggerMessageComposer, WiredActionDefinition } from 'nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { GetConnection } from '../../api';
 import { WiredEvent } from '../../events';
@@ -33,6 +33,11 @@ export const WiredView: FC<WiredFurniSelectorViewProps> = props =>
         if(trigger instanceof TriggerDefinition)
         {
             GetConnection().send(new UpdateTriggerMessageComposer(trigger.id, intParams, stringParam, furniIds, trigger.stuffTypeSelectionCode));
+        }
+
+        if(trigger instanceof ConditionDefinition)
+        {
+            GetConnection().send(new UpdateConditionMessageComposer(trigger.id, intParams, stringParam, furniIds, trigger.stuffTypeSelectionCode));
         }
     }, [ trigger, intParams, stringParam, furniIds, actionDelay ]);
 

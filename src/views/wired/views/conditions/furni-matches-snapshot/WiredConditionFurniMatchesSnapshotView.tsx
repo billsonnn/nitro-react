@@ -2,9 +2,9 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useWiredContext } from '../../../context/WiredContext';
 import { WiredFurniType } from '../../../WiredView.types';
-import { WiredActionBaseView } from '../base/WiredActionBaseView';
+import { WiredConditionBaseView } from '../base/WiredConditionBaseView';
 
-export const WiredActionSetFurniStateToView: FC<{}> = props =>
+export const WiredConditionFurniMatchesSnapshotView: FC<{}> = props =>
 {
     const [ stateFlag, setStateFlag ] = useState(-1);
     const [ directionFlag, setDirectionFlag ] = useState(-1);
@@ -22,9 +22,9 @@ export const WiredActionSetFurniStateToView: FC<{}> = props =>
     {
         setIntParams([stateFlag, directionFlag, positionFlag]);
     }, [ directionFlag, positionFlag, setIntParams, stateFlag ]);
-
+    
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } save={ save }>
+        <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } save={ save }>
             <div className="fw-bold">{ LocalizeText('wiredfurni.params.conditions') }</div>
             <div className="form-check">
                 <input className="form-check-input" type="checkbox" id="stateFlag" onChange={(e) => setStateFlag(e.target.checked ? 1 : 0)} />
@@ -44,6 +44,6 @@ export const WiredActionSetFurniStateToView: FC<{}> = props =>
                     { LocalizeText('wiredfurni.params.condition.position') }
                 </label>
             </div>
-        </WiredActionBaseView>
+        </WiredConditionBaseView>
     );
 }
