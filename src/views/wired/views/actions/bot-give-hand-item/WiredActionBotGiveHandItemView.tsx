@@ -31,7 +31,7 @@ export const WiredActionBotGiveHandItemView: FC<{}> = props =>
                 <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
             </div>
             <div className="fw-bold">{ LocalizeText('wiredfurni.params.handitem') }</div>
-            <select className="form-select" value={ handItemId } onChange={ (e) => setHandItemId(Number(e.target.value)) }>
+            <select className="form-select form-select-sm" value={ handItemId } onChange={ (e) => setHandItemId(Number(e.target.value)) }>
                 <option value="0">------</option>
                 {allowedHanditemIds && allowedHanditemIds.map(value =>
                     {

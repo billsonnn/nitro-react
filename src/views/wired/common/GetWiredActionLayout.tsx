@@ -9,6 +9,7 @@ import { WiredActionCallAnotherStackView } from '../views/actions/call-another-s
 import { WiredActionChaseView } from '../views/actions/chase/WiredActionChaseView';
 import { WiredActionChatView } from '../views/actions/chat/WiredActionChatView';
 import { WiredActionFleeView } from '../views/actions/flee/WiredActionFleeView';
+import { WiredActionGiveRewardView } from '../views/actions/give-reward/WiredActionGiveRewardView';
 import { WiredActionGiveScoreToPredefinedTeamView } from '../views/actions/give-score-to-predefined-team/WiredActionGiveScoreToPredefinedTeamView';
 import { WiredActionGiveScoreView } from '../views/actions/give-score/WiredActionGiveScoreView';
 import { WiredActionJoinTeamView } from '../views/actions/join-team/WiredActionJoinTeamView';
@@ -50,6 +51,8 @@ export function GetWiredActionLayout(code: number): JSX.Element
             return <WiredActionChatView />;
         case WiredActionLayout.FLEE:
             return <WiredActionFleeView />;
+        case WiredActionLayout.GIVE_REWARD:
+            return <WiredActionGiveRewardView />;
         case WiredActionLayout.GIVE_SCORE:
             return <WiredActionGiveScoreView />;
         case WiredActionLayout.GIVE_SCORE_TO_PREDEFINED_TEAM:

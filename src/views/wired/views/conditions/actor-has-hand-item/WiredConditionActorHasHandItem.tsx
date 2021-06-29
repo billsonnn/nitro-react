@@ -24,7 +24,7 @@ export const WiredConditionActorHasHandItemView: FC<{}> = props =>
     return (
         <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
             <div className="fw-bold">{ LocalizeText('wiredfurni.params.handitem') }</div>
-            <select className="form-select" value={ handItemId } onChange={ (e) => setHandItemId(Number(e.target.value)) }>
+            <select className="form-select form-select-sm" value={ handItemId } onChange={ (e) => setHandItemId(Number(e.target.value)) }>
                 {allowedHanditemIds && allowedHanditemIds.map(value =>
                     {
                         return <option value={ value }>{ LocalizeText('handitem' + value) }</option>
