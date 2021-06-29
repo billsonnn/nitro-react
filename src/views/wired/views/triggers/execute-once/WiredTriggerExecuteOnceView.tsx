@@ -23,12 +23,14 @@ export const WiredTriggeExecuteOnceView: FC<{}> = props =>
 
     return (
         <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.settime', [ 'seconds' ], [ GetWiredTimeLocale(time) ]) }</div>
-            <Slider 
-                value={ time }
-                min={ 1 }
-                max={ 1200 }
-                onChange={ event => setTime(event) } />
+            <div className="form-group">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.settime', [ 'seconds' ], [ GetWiredTimeLocale(time) ]) }</label>
+                <Slider 
+                    value={ time }
+                    min={ 1 }
+                    max={ 1200 }
+                    onChange={ event => setTime(event) } />
+            </div>
         </WiredTriggerBaseView>
     );
 }

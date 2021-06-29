@@ -23,12 +23,14 @@ export const WiredTriggeExecutePeriodicallyLongView: FC<{}> = props =>
 
     return (
         <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.setlongtime', [ 'time' ], [ FriendlyTime.format(time * 5).toString() ]) }</div>
-            <Slider 
-                value={ time }
-                min={ 1 }
-                max={ 120 }
-                onChange={ event => setTime(event) } />
+            <div className="form-group">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.setlongtime', [ 'time' ], [ FriendlyTime.format(time * 5).toString() ]) }</label>
+                <Slider 
+                    value={ time }
+                    min={ 1 }
+                    max={ 120 }
+                    onChange={ event => setTime(event) } />
+            </div>
         </WiredTriggerBaseView>
     );
 }
