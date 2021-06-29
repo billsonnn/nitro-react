@@ -17,20 +17,18 @@ export const WiredTriggeScoreAchievedView: FC<{}> = props =>
 
     const save = useCallback(() =>
     {
-        setIntParams([points]);
+        setIntParams([ points ]);
     }, [ points,  setIntParams ]);
 
     return (
         <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
             <div className="fw-bold">{ LocalizeText('wiredfurni.params.setscore', [ 'points' ], [ points.toString() ]) }</div>
             <Slider 
-                defaultValue={ points }
-                dots={ true }
+                value={ points }
                 min={ 1 }
                 max={ 1000 }
                 step={ 1 }
-                onChange={ event => setPoints(event) }
-                />
+                onChange={ event => setPoints(event) } />
         </WiredTriggerBaseView>
     );
 }

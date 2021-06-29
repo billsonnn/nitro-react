@@ -1,3 +1,4 @@
+import { FriendlyTime } from 'nitro-renderer';
 import Slider from 'rc-slider/lib/Slider';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
@@ -17,19 +18,17 @@ export const WiredTriggeExecutePeriodicallyLongView: FC<{}> = props =>
 
     const save = useCallback(() =>
     {
-        setIntParams([time]);
+        setIntParams([ time ]);
     }, [ time,  setIntParams ]);
 
     return (
         <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.setlongtime', [ 'time' ], [ time.toString() ]) }</div>
+            <div className="fw-bold">{ LocalizeText('wiredfurni.params.setlongtime', [ 'time' ], [ FriendlyTime.format(time * 5).toString() ]) }</div>
             <Slider 
-                defaultValue={ time }
-                dots={ true }
+                value={ time }
                 min={ 1 }
-                max={ 600 }
-                onChange={ event => setTime(event) }
-                />
+                max={ 120 }
+                onChange={ event => setTime(event) } />
         </WiredTriggerBaseView>
     );
 }

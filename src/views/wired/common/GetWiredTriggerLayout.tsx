@@ -47,4 +47,6 @@ export function GetWiredTriggerLayout(code: number): JSX.Element
         case WiredTriggerLayout.TOGGLE_FURNI:
             return <WiredTriggerToggleFurniView />;
     }
+
+    return null;
 }
