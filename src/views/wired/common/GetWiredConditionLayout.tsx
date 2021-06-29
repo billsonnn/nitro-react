@@ -11,6 +11,7 @@ import { WiredConditionFurniIsOfTypeView } from '../views/conditions/furni-is-of
 import { WiredConditionFurniMatchesSnapshotView } from '../views/conditions/furni-matches-snapshot/WiredConditionFurniMatchesSnapshotView';
 import { WiredConditionTimeElapsedLessView } from '../views/conditions/time-elapsed-less/WiredConditionTimeElapsedLessView';
 import { WiredConditionTimeElapsedMoreView } from '../views/conditions/time-elapsed-more/WiredConditionTimeElapsedMoreView';
+import { WiredConditionUserCountInRoomView } from '../views/conditions/user-count-in-room/WiredConditionUserCountInRoomView';
 import { WiredConditionlayout } from './WiredConditionLayoutCode';
 
 export function GetWiredConditionLayout(code: number): JSX.Element
@@ -51,5 +52,8 @@ export function GetWiredConditionLayout(code: number): JSX.Element
             return <WiredConditionTimeElapsedLessView />;
         case WiredConditionlayout.TIME_ELAPSED_MORE:
             return <WiredConditionTimeElapsedMoreView />;
+        case WiredConditionlayout.USER_COUNT_IN:
+        case WiredConditionlayout.NOT_USER_COUNT_IN:
+            return <WiredConditionUserCountInRoomView />;
     }
 }
