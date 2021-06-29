@@ -17,6 +17,7 @@ import { WiredActionLeaveTeamView } from '../views/actions/leave-team/WiredActio
 import { WiredActionMoveAndRotateFurniView } from '../views/actions/move-and-rotate-furni/WiredActionMoveAndRotateFurniView';
 import { WiredActionMoveFurniToView } from '../views/actions/move-furni-to/WiredActionMoveFurniToView';
 import { WiredActionMoveFurniView } from '../views/actions/move-furni/WiredActionMoveFurniView';
+import { WiredActionMuteUserView } from '../views/actions/mute-user/WiredActionMuteUserView';
 import { WiredActionResetView } from '../views/actions/reset/WiredActionResetView';
 import { WiredActionSetFurniStateToView } from '../views/actions/set-furni-state-to/WiredActionSetFurniStateToView';
 import { WiredActionTeleportView } from '../views/actions/teleport/WiredActionTeleportView';
@@ -65,6 +66,8 @@ export function GetWiredActionLayout(code: number): JSX.Element
             return <WiredActionMoveAndRotateFurniView />;
         case WiredActionLayout.MOVE_FURNI_TO:
             return <WiredActionMoveFurniToView />;
+        case WiredActionLayout.MUTE_USER:
+            return <WiredActionMuteUserView />;
         case WiredActionLayout.RESET:
             return <WiredActionResetView />;
         case WiredActionLayout.SET_FURNI_STATE:
