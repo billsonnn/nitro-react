@@ -4,7 +4,5 @@ import { WiredConditionBaseView } from '../base/WiredConditionBaseView';
 
 export const WiredConditionActorIsGroupMemberView: FC<{}> = props =>
 {
-    return (
-        <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ null }></WiredConditionBaseView>
-    );
+    return <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ null } />;
 }

@@ -16,14 +16,14 @@ export const WiredConditionActorIsWearingEffectView: FC<{}> = props =>
 
     const save = useCallback(() =>
     {
-        setIntParams([effect]);
+        setIntParams([ effect ]);
     }, [ effect, setIntParams ]);
     
     return (
         <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="form-group mb-2">
+            <div className="form-group">
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.effectid') }</label>
-                <input type="number" className="form-control form-control-sm" value={ effect } onChange={ event => setEffect(Number(event.target.value)) } />
+                <input type="number" className="form-control form-control-sm" value={ effect } onChange={ event => setEffect(parseInt(event.target.value)) } />
             </div>
         </WiredConditionBaseView>
     );

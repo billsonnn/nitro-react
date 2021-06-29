@@ -4,6 +4,8 @@ import { useWiredContext } from '../../../context/WiredContext';
 import { WiredFurniType } from '../../../WiredView.types';
 import { WiredConditionBaseView } from '../base/WiredConditionBaseView';
 
+const teamIds: number[] = [ 1, 2, 3, 4 ];
+
 export const WiredConditionActorIsTeamMemberView: FC<{}> = props =>
 {
     const [ selectedTeam, setSelectedTeam ] = useState(-1);
@@ -16,23 +18,25 @@ export const WiredConditionActorIsTeamMemberView: FC<{}> = props =>
 
     const save = useCallback(() =>
     {
-        setIntParams([selectedTeam]);
+        setIntParams([ selectedTeam ]);
     }, [ selectedTeam, setIntParams ]);
     
     return (
         <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.team') }</div>
-            { [1, 2, 3, 4].map(team =>
-                {
-                    return (
-                        <div key={ team } className="form-check">
-                            <input className="form-check-input" type="radio" name="selectedTeam" id={'selectedTeam' + team} checked={ selectedTeam === team } onChange={() => setSelectedTeam(team)} />
-                            <label className="form-check-label" htmlFor={'selectedTeam' + team}>
-                                { LocalizeText('wiredfurni.params.team.' + team) }
-                            </label>
-                        </div>
-                    )
-                }) }
+            <div className="form-group">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.team') }</label>
+                { teamIds.map((value, index) =>
+                    {
+                        return (
+                            <div key={ index } className="form-check">
+                                <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ value }` } checked={ (selectedTeam === value) } onChange={ event => setSelectedTeam(value) } />
+                                <label className="form-check-label" htmlFor={ `selectedTeam${ value }` }>
+                                    { LocalizeText(`wiredfurni.params.team.${ value }`) }
+                                </label>
+                            </div>
+                        )
+                    }) }
+            </div>
         </WiredConditionBaseView>
     );
 }

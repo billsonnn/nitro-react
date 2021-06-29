@@ -56,4 +56,6 @@ export function GetWiredConditionLayout(code: number): JSX.Element
         case WiredConditionlayout.NOT_USER_COUNT_IN:
             return <WiredConditionUserCountInRoomView />;
     }
+
+    return null;
 }

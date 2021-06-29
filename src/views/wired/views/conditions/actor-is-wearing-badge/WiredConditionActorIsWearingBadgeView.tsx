@@ -21,7 +21,7 @@ export const WiredConditionActorIsWearingBadgeView: FC<{}> = props =>
     
     return (
         <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="form-group mb-2">
+            <div className="form-group">
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.badgecode') }</label>
                 <input type="text" className="form-control form-control-sm" value={ badge } onChange={ event => setBadge(event.target.value) } />
             </div>

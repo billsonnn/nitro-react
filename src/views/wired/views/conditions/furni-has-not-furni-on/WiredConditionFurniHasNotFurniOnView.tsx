@@ -16,23 +16,25 @@ export const WiredConditionFurniHasNotFurniOnView: FC<{}> = props =>
 
     const save = useCallback(() =>
     {
-        setIntParams([requireAll]);
+        setIntParams([ requireAll ]);
     }, [ requireAll, setIntParams ]);
     
     return (
         <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } save={ save }>
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.not_requireall') }</div>
-            { [0, 1].map(option =>
-                {
-                    return (
-                        <div key={ option } className="form-check">
-                            <input className="form-check-input" type="radio" name="requireAll" id={'requireAll' + option} checked={ requireAll === option } onChange={() => setRequireAll(option)} />
-                            <label className="form-check-label" htmlFor={'requireAll' + option}>
-                                { LocalizeText('wiredfurni.params.not_requireall.' + option) }
-                            </label>
-                        </div>
-                    )
-                }) }
+            <div className="form-group">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.not_requireall') }</label>
+                { [0, 1].map(value =>
+                    {
+                        return (
+                            <div key={ value } className="form-check">
+                                <input className="form-check-input" type="radio" name="requireAll" id={ `requireAll${ value }` } checked={ (requireAll === value) } onChange={ event => setRequireAll(value) } />
+                                <label className="form-check-label" htmlFor={ `requireAll${ value }` }>
+                                    { LocalizeText(`wiredfurni.params.not_requireall.${ value }`) }
+                                </label>
+                            </div>
+                        )
+                    }) }
+            </div>
         </WiredConditionBaseView>
     );
 }
