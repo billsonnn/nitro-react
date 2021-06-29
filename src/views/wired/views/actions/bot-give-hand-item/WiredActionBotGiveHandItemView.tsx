@@ -27,10 +27,10 @@ export const WiredActionBotGiveHandItemView: FC<{}> = props =>
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
             <div className="form-group mb-2">
-                <label>{ LocalizeText('wiredfurni.params.bot.name') }</label>
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.bot.name') }</label>
                 <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
             </div>
-            <div>{ LocalizeText('wiredfurni.tooltip.handitem') }</div>
+            <div className="fw-bold">{ LocalizeText('wiredfurni.tooltip.handitem') }</div>
             <select className="form-select" value={ handItemId } onChange={ (e) => setHandItemId(Number(e.target.value)) }>
                 <option value="0">------</option>
                 {allowedHanditemIds && allowedHanditemIds.map(value =>

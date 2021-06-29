@@ -60,9 +60,11 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                     <div className="fw-bold">{ wiredName }</div>
                 </div>
                 <div>{ wiredDescription }</div>
-                <hr className="my-1 mb-2 bg-dark" />
                 <div>
-                    { children }
+                    { !children ? null : <>
+                        <hr className="my-1 mb-2 bg-dark" />
+                        { children }
+                    </> }
                 </div>
                 { (requiresFurni !== WiredFurniType.STUFF_SELECTION_OPTION_NONE) &&
                     <>

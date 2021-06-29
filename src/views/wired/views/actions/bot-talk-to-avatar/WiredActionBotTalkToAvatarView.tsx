@@ -30,11 +30,11 @@ export const WiredActionBotTalkToAvatarView: FC<{}> = props =>
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
             <div className="form-group mb-2">
-                <label>{ LocalizeText('wiredfurni.params.bot.name') }</label>
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.bot.name') }</label>
                 <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
             </div>
             <div className="form-group mb-2">
-                <label>{ LocalizeText('wiredfurni.params.message') }</label>
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.message') }</label>
                 <input type="text" className="form-control form-control-sm" maxLength={ 64 } value={ message } onChange={ event => setMessage(event.target.value) } />
             </div>
             <div className="form-check">
