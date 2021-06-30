@@ -1,5 +1,7 @@
 import classNames from 'classnames';
+import { RoomLikeRoomComposer } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
+import { SendMessageHook } from '../../../../hooks/messages';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { useRoomContext } from '../../context/RoomContext';
 import { RoomWidgetZoomToggleMessage } from '../../messages';
@@ -11,6 +13,7 @@ export const RoomToolsWidgetView: FC<RoomToolsWidgetViewProps> = props =>
 
     const [ isExpended, setIsExpanded ] = useState(false);
     const [ isZoomedIn, setIsZoomedIn ] = useState(false);
+    const [ liked, setLiked ] = useState(false);
 
     const handleToolClick = useCallback((action: string) =>
     {
@@ -25,11 +28,15 @@ export const RoomToolsWidgetView: FC<RoomToolsWidgetViewProps> = props =>
             case 'chat_history':
                 return;
             case 'like_room':
+                if(liked) return;
+
+                SendMessageHook(new RoomLikeRoomComposer(1));
+                setLiked(true);
                 return;
             case 'room_link':
                 return;
         }
-    }, [ isZoomedIn, widgetHandler ]);
+    }, [ isZoomedIn, liked, widgetHandler ]);
     
     return (
         <div className={'nitro-room-tools ps-3 d-flex' + classNames({' open': isExpended})}>
@@ -43,7 +50,7 @@ export const RoomToolsWidgetView: FC<RoomToolsWidgetViewProps> = props =>
                 <div className="list-group-item" onClick={ () => handleToolClick('chat_history') }>
                     <i className="fas fa-comment-alt me-2" />{ LocalizeText('room.chathistory.button.text') }
                 </div>
-                <div className="list-group-item" onClick={ () => handleToolClick('like_room') }>
+                <div className={ 'list-group-item' + classNames({' disabled': liked})} onClick={ () => handleToolClick('like_room') }>
                     <i className="fas fa-heart me-2" />{ LocalizeText('room.like.button.text') }
                 </div>
                 <div className="list-group-item" onClick={ () => handleToolClick('room_link') }>
