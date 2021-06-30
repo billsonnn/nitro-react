@@ -4,6 +4,7 @@ import { WiredConditionActorIsOnFurniView } from '../views/conditions/actor-is-o
 import { WiredConditionActorIsTeamMemberView } from '../views/conditions/actor-is-team-member/WiredConditionActorIsTeamMemberView';
 import { WiredConditionActorIsWearingBadgeView } from '../views/conditions/actor-is-wearing-badge/WiredConditionActorIsWearingBadgeView';
 import { WiredConditionActorIsWearingEffectView } from '../views/conditions/actor-is-wearing-effect/WiredConditionActorIsWearingEffectView';
+import { WiredConditionDateRangeView } from '../views/conditions/date-range/WiredConditionDateRangeView';
 import { WiredConditionFurniHasAvatarOnView } from '../views/conditions/furni-has-avatar-on/WiredConditionFurniHasAvatarOnView';
 import { WiredConditionFurniHasFurniOnView } from '../views/conditions/furni-has-furni-on/WiredConditionFurniHasFurniOnView';
 import { WiredConditionFurniHasNotFurniOnView } from '../views/conditions/furni-has-not-furni-on/WiredConditionFurniHasNotFurniOnView';
@@ -35,6 +36,8 @@ export function GetWiredConditionLayout(code: number): JSX.Element
         case WiredConditionlayout.ACTOR_IS_WEARING_EFFECT:
         case WiredConditionlayout.NOT_ACTOR_WEARING_EFFECT:
             return <WiredConditionActorIsWearingEffectView />;
+        case WiredConditionlayout.DATE_RANGE_ACTIVE:
+            return <WiredConditionDateRangeView />;
         case WiredConditionlayout.FURNIS_HAVE_AVATARS:
         case WiredConditionlayout.FURNI_NOT_HAVE_HABBO:
             return <WiredConditionFurniHasAvatarOnView />;
