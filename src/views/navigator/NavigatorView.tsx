@@ -10,6 +10,7 @@ import { NavigatorContextProvider } from './context/NavigatorContext';
 import { NavigatorMessageHandler } from './NavigatorMessageHandler';
 import { NavigatorViewProps } from './NavigatorView.types';
 import { initialNavigator, NavigatorActions, NavigatorReducer } from './reducers/NavigatorReducer';
+import { NavigatorRoomCreatorView } from './views/creator/NavigatorRoomCreatorView';
 import { NavigatorSearchResultSetView } from './views/search-result-set/NavigatorSearchResultSetView';
 import { NavigatorSearchView } from './views/search/NavigatorSearchView';
 
@@ -46,6 +47,7 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
         {
             case RoomSessionEvent.CREATED:
                 setIsVisible(false);
+                setCreatorOpen(false);
                 return;
         }
     }, []);
@@ -54,6 +56,7 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
 
     const sendSearch = useCallback((searchValue: string, contextCode: string) =>
     {
+        setCreatorOpen(false);
         SendMessageHook(new NavigatorSearchComposer(contextCode, searchValue));
     }, []);
 
@@ -83,7 +86,7 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
             <NavigatorMessageHandler />
             { isVisible &&
                 <NitroCardView className="nitro-navigator">
-                    <NitroCardHeaderView headerText={ LocalizeText('navigator.title') } onCloseClick={ event => setIsVisible(false) } />
+                    <NitroCardHeaderView headerText={ LocalizeText(isCreatorOpen ? 'navigator.createroom.title' : 'navigator.title') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardTabsView>
                         { topLevelContexts.map((context, index) =>
                             {
@@ -93,14 +96,17 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                                     </NitroCardTabsItemView>
                                 );
                             }) }
-                        <NitroCardTabsItemView>
-                            
+                        <NitroCardTabsItemView isActive={ isCreatorOpen } onClick={ () => setCreatorOpen(true) }>
+                            <i className="fas fa-plus" />
                         </NitroCardTabsItemView>
                     </NitroCardTabsView>
                     <NitroCardContentView>
                     <div className="d-flex flex-column h-100">
-                        <NavigatorSearchView sendSearch={ sendSearch } />
-                        <NavigatorSearchResultSetView />
+                        { !isCreatorOpen && <>
+                            <NavigatorSearchView sendSearch={ sendSearch } />
+                            <NavigatorSearchResultSetView />
+                        </> }
+                        { isCreatorOpen && <NavigatorRoomCreatorView /> }
                     </div>
                     </NitroCardContentView>
                 </NitroCardView> }

@@ -1,6 +1,7 @@
-import { GenericErrorEvent, NavigatorCategoriesComposer, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomForwardEvent, RoomInfoComposer, RoomInfoEvent, RoomInfoOwnerEvent, UserInfoEvent } from 'nitro-renderer';
+import { GenericErrorEvent, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomForwardEvent, RoomInfoComposer, RoomInfoEvent, RoomInfoOwnerEvent, UserInfoEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetRoomSessionManager, GetSessionDataManager } from '../../api';
+import { VisitRoom } from '../../api/navigator/VisitRoom';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { useNavigatorContext } from './context/NavigatorContext';
 import { NavigatorMessageHandlerProps } from './NavigatorMessageHandler.types';
@@ -126,6 +127,25 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
         });
     }, [ dispatchNavigatorState ]);
 
+    const onNavigatorCategoriesEvent = useCallback((event: NavigatorCategoriesEvent) =>
+    {
+        const parser = event.getParser();
+
+        dispatchNavigatorState({
+            type: NavigatorActions.SET_CATEGORIES,
+            payload: {
+                categories: parser.categories
+            }
+        });
+    }, [ dispatchNavigatorState ]);
+
+    const onRoomCreatedEvent = useCallback((event: RoomCreatedEvent) =>
+    {
+        const parser = event.getParser();
+
+        VisitRoom(parser.roomId);
+    }, []);
+
     CreateMessageHook(UserInfoEvent, onUserInfoEvent);
     CreateMessageHook(RoomForwardEvent, onRoomForwardEvent);
     CreateMessageHook(RoomInfoOwnerEvent, onRoomInfoOwnerEvent);
@@ -135,6 +155,8 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
     CreateMessageHook(GenericErrorEvent, onGenericErrorEvent);
     CreateMessageHook(NavigatorMetadataEvent, onNavigatorMetadataEvent);
     CreateMessageHook(NavigatorSearchEvent, onNavigatorSearchEvent);
+    CreateMessageHook(NavigatorCategoriesEvent, onNavigatorCategoriesEvent);
+    CreateMessageHook(RoomCreatedEvent, onRoomCreatedEvent);
 
     return null;
 }

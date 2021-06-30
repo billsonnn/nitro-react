@@ -1,4 +1,4 @@
-import { NavigatorSearchResultSet, NavigatorTopLevelContext } from 'nitro-renderer';
+import { NavigatorCategoryDataParser, NavigatorSearchResultSet, NavigatorTopLevelContext } from 'nitro-renderer';
 import { Reducer } from 'react';
 
 export interface INavigatorState
@@ -7,6 +7,7 @@ export interface INavigatorState
     topLevelContext: NavigatorTopLevelContext;
     topLevelContexts: NavigatorTopLevelContext[];
     searchResult: NavigatorSearchResultSet;
+    categories: NavigatorCategoryDataParser[];
 }
 
 export interface INavigatorAction
@@ -17,6 +18,7 @@ export interface INavigatorAction
         topLevelContext?: NavigatorTopLevelContext;
         topLevelContexts?: NavigatorTopLevelContext[];
         searchResult?: NavigatorSearchResultSet;
+        categories?: NavigatorCategoryDataParser[];
     }
 }
 
@@ -26,13 +28,15 @@ export class NavigatorActions
     public static SET_TOP_LEVEL_CONTEXT: string = 'NA_SET_TOP_LEVEL_CONTEXT';
     public static SET_TOP_LEVEL_CONTEXTS: string = 'NA_SET_TOP_LEVEL_CONTEXTS';
     public static SET_SEARCH_RESULT: string = 'NA_SET_SEARCH_RESULT';
+    public static SET_CATEGORIES: string = 'NA_SET_CATEGORIES';
 }
 
 export const initialNavigator: INavigatorState = {
     needsNavigatorUpdate: true,
     topLevelContext: null,
     topLevelContexts: null,
-    searchResult: null
+    searchResult: null,
+    categories: null
 }
 
 export const NavigatorReducer: Reducer<INavigatorState, INavigatorAction> = (state, action) =>
@@ -80,6 +84,11 @@ export const NavigatorReducer: Reducer<INavigatorState, INavigatorAction> = (sta
             }
 
             return { ...state, topLevelContext, searchResult };
+        }
+        case NavigatorActions.SET_CATEGORIES: {
+            const categories = (action.payload.categories || state.categories || null);
+
+            return { ...state, categories };
         }
         default:
             return state;
