@@ -1,5 +1,5 @@
 import { AvatarScaleType, AvatarSetType } from 'nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { GetAvatarRenderManager } from '../../../api';
 import { AvatarImageViewProps } from './AvatarImageView.types';
 
@@ -8,39 +8,32 @@ export const AvatarImageView: FC<AvatarImageViewProps> = props =>
     const { figure = '', gender = 'M', headOnly = false, direction = 0, scale = 1 } = props;
 
     const [ avatarUrl, setAvatarUrl ] = useState<string>(null);
+    const [ randomValue, setRandomValue ] = useState(-1);
 
-    const getUserImageUrl = useCallback(() =>
+    useEffect(() =>
     {
-        let url = null;
+        if(randomValue) {}
 
         const avatarImage = GetAvatarRenderManager().createAvatarImage(figure, AvatarScaleType.LARGE, gender, {
-            resetFigure: (figure) => setAvatarUrl(getUserImageUrl()),
+            resetFigure: figure => setRandomValue(Math.random()),
             dispose: () => {},
             disposed: false
         }, null);
 
-        if(avatarImage)
-        {
-            let setType = AvatarSetType.FULL;
+        if(!avatarImage) return;
+        
+        let setType = AvatarSetType.FULL;
 
-            if(headOnly) setType = AvatarSetType.HEAD;
+        if(headOnly) setType = AvatarSetType.HEAD;
 
-            avatarImage.setDirection(setType, direction);
+        avatarImage.setDirection(setType, direction);
 
-            const image = avatarImage.getCroppedImage(setType);
+        const image = avatarImage.getCroppedImage(setType);
 
-            if(image) url = image.src;
+        if(image) setAvatarUrl(image.src);
 
-            avatarImage.dispose();
-        }
-
-        return url;
-    }, [ figure, gender, direction, headOnly ]);
-
-    useEffect(() =>
-    {
-        setAvatarUrl(getUserImageUrl());
-    }, [ getUserImageUrl ]);
+        avatarImage.dispose();
+    }, [ figure, gender, direction, headOnly, randomValue ]);
 
     const url = `url('${ avatarUrl }')`;
         

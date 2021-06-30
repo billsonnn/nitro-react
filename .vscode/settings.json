@@ -12,5 +12,6 @@
 	"git.ignoreLimitWarning": true,
     "files.eol": "\n",
     "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true
+    "files.trimFinalNewlines": true,
+    "editor.wordWrap": "on"
 }

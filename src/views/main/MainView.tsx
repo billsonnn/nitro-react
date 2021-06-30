@@ -11,6 +11,7 @@ import { NotificationCenterView } from '../notification-center/NotificationCente
 import { RightSideView } from '../right-side/RightSideView';
 import { RoomHostView } from '../room-host/RoomHostView';
 import { ToolbarView } from '../toolbar/ToolbarView';
+import { WiredView } from '../wired/WiredView';
 import { MainViewProps } from './MainView.types';
 
 export const MainView: FC<MainViewProps> = props =>
@@ -46,6 +47,7 @@ export const MainView: FC<MainViewProps> = props =>
             { landingViewVisible && <HotelView /> }
             <ToolbarView isInRoom={ !landingViewVisible } />
             <RoomHostView />
+            <WiredView />
             <AvatarEditorView />
             <NavigatorView />
             <InventoryView />

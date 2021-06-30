@@ -5,3 +5,4 @@ export * from './inventory';
 export * from './navigator';
 export * from './notification-center';
 export * from './room-widgets';
+export * from './wired';
