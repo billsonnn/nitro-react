@@ -17,9 +17,19 @@
         padding: 3px 0px;
         color: $white;
         border-color: rgba($black, 0.3);
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        &:first-child {
+            padding-top: 8px;
+        }
 
         &:last-child {
             border-bottom: none;
+            padding-bottom: 8px;
         }
     }
 }
