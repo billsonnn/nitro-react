@@ -54,7 +54,7 @@ export const WiredActionMoveAndRotateFurniView: FC<{}> = props =>
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_BY_TYPE_OR_FROM_CONTEXT } save={ save }>
             <div className="form-group mb-2">
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.startdir') }</label>
-                <div className="row row-cold-4">
+                <div className="row row-col-4">
                     { directionOptions.map(option =>
                         {
                             return (

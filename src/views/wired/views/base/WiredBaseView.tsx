@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager } from '../../../../api';
 import { WiredEvent } from '../../../../events';
 import { dispatchUiEvent } from '../../../../hooks/events';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
+import { NitroCardContentView, NitroCardView } from '../../../../layout';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredFurniType } from '../../WiredView.types';
@@ -52,9 +52,12 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
     }, [ setTrigger ]);
 
     return (
-        <NitroCardView className="nitro-wired" simple={ true }>
-            <NitroCardHeaderView headerText={ LocalizeText('wiredfurni.title') } onCloseClick={ close } />
-            <NitroCardContentView className="text-black">
+        <NitroCardView className={`nitro-wired nitro-wired-${wiredType} ` + (wiredType == 'trigger' ? 'rounded-0' : 'rounded-2')}>
+            <div className="nitro-wired-header d-flex">
+                <div className="nitro-wired-title rounded-start w-100 drag-handler">{LocalizeText('wiredfurni.title')}</div>
+                <div className="nitro-wired-close rounded-end flex-shrink-0" onClick={ close }><i className="fas fa-times" /></div>
+            </div>
+            <NitroCardContentView>
                 <div className="d-flex align-items-center">
                     <i className={ `me-2 icon icon-wired-${ wiredType }` } />
                     <div className="fw-bold">{ wiredName }</div>
@@ -73,8 +76,8 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                         <div>{ LocalizeText('wiredfurni.pickfurnis.desc') }</div>
                     </> }
                 <div className="d-flex mt-3">
-                    <button className="btn btn-success  btn-sm me-2 w-100" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</button>
-                    <button className="btn btn-secondary btn-sm w-100" onClick={ close }>{ LocalizeText('cancel') }</button>
+                    <button className="btn btn-sm btn-success me-2 w-100" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</button>
+                    <button className="btn btn-sm btn-secondary w-100" onClick={ close }>{ LocalizeText('cancel') }</button>
                 </div>
             </NitroCardContentView>
         </NitroCardView>
