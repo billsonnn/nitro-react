@@ -4,8 +4,10 @@ import { WiredEvent } from '../../../../events';
 import { dispatchUiEvent } from '../../../../hooks/events';
 import { NitroCardContentView, NitroCardView } from '../../../../layout';
 import { LocalizeText } from '../../../../utils/LocalizeText';
+import { WiredSelectionVisualizer } from '../../common/WiredSelectionVisualizer';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredFurniType } from '../../WiredView.types';
+import { WiredFurniSelectorView } from '../furni-selector/WiredFurniSelectorView';
 import { WiredBaseViewProps } from './WiredBaseView.types';
 
 export const WiredBaseView: FC<WiredBaseViewProps> = props =>
@@ -36,7 +38,19 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
 
         setIntParams(trigger.intData);
         setStringParam(trigger.stringData);
-        setFurniIds(trigger.selectedItems);
+        setFurniIds(prevValue =>
+            {
+                if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
+
+                if(trigger.selectedItems && trigger.selectedItems.length)
+                {
+                    WiredSelectionVisualizer.applySelectionShaderToFurni(trigger.selectedItems);
+
+                    return trigger.selectedItems;
+                }
+
+                return [];
+            });
     }, [ trigger, setIntParams, setStringParam, setFurniIds ]);
 
     const onSave = useCallback(() =>
@@ -52,10 +66,12 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
     }, [ setTrigger ]);
 
     return (
-        <NitroCardView className={`nitro-wired nitro-wired-${wiredType} ` + (wiredType == 'trigger' ? 'rounded-0' : 'rounded-2')}>
+        <NitroCardView className={`nitro-wired nitro-wired-${wiredType} ` + (wiredType === 'trigger' ? 'rounded-0' : 'rounded-2')}>
             <div className="nitro-wired-header d-flex">
-                <div className="nitro-wired-title rounded-start w-100 drag-handler">{LocalizeText('wiredfurni.title')}</div>
-                <div className="nitro-wired-close rounded-end flex-shrink-0" onClick={ close }><i className="fas fa-times" /></div>
+                <div className="nitro-wired-title rounded-start w-100 drag-handler">{ LocalizeText('wiredfurni.title') }</div>
+                <div className="nitro-wired-close rounded-end flex-shrink-0" onClick={ close }>
+                    <i className="fas fa-times" />
+                </div>
             </div>
             <NitroCardContentView>
                 <div className="d-flex align-items-center">
@@ -69,11 +85,10 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                         { children }
                     </> }
                 </div>
-                { (requiresFurni !== WiredFurniType.STUFF_SELECTION_OPTION_NONE) &&
+                { (requiresFurni > WiredFurniType.STUFF_SELECTION_OPTION_NONE) &&
                     <>
                         <hr className="my-1 mb-2 bg-dark" />
-                        <div className="fw-bold">{ LocalizeText('wiredfurni.pickfurnis.caption', [ 'count', 'limit' ], [ '0', trigger.maximumItemSelectionCount.toString() ]) }</div>
-                        <div>{ LocalizeText('wiredfurni.pickfurnis.desc') }</div>
+                        <WiredFurniSelectorView />
                     </> }
                 <div className="d-flex mt-3">
                     <button className="btn btn-sm btn-success me-2 w-100" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</button>

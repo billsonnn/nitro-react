@@ -13,7 +13,7 @@ export const WiredView: FC<WiredFurniSelectorViewProps> = props =>
     const [ trigger, setTrigger ] = useState<Triggerable>(null);
     const [ intParams, setIntParams ] = useState<number[]>(null);
     const [ stringParam, setStringParam ] = useState<string>(null);
-    const [ furniIds, setFurniIds ] = useState<number[]>(null);
+    const [ furniIds, setFurniIds ] = useState<number[]>([]);
     const [ actionDelay, setActionDelay ] = useState<number>(null);
 
     const wiredLayout = useMemo(() =>

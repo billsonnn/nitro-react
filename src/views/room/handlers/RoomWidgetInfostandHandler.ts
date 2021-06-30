@@ -1,5 +1,7 @@
 import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, PetFigureData, PetType, RoomAdsUpdateComposer, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnumItemExtradataParameter, SecurityLevel, Vector3d } from 'nitro-renderer';
 import { GetConnection, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../api';
+import { WiredSelectObjectEvent } from '../../../events';
+import { dispatchUiEvent } from '../../../hooks/events';
 import { LocalizeText } from '../../../utils/LocalizeText';
 import { RoomWidgetObjectNameEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
 import { RoomWidgetChangeMottoMessage, RoomWidgetFurniActionMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUserActionMessage } from '../messages';
@@ -386,10 +388,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 event.rentCouldBeUsedForBuyout = furnitureData.rentCouldBeUsedForBuyout;
                 event.availableForBuildersClub = furnitureData.availableForBuildersClub;
 
-                // if(this._container.wiredService && (k.category === RoomObjectCategory.FLOOR))
-                // {
-                //     this._container.wiredService.selectFurniture(roomObject.id, furnitureData.name);
-                // }
+                dispatchUiEvent(new WiredSelectObjectEvent(event.id, event.category));
             }
         }
 

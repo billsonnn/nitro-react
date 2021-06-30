@@ -1,17 +1,84 @@
-import { FC } from 'react';
+import { FC, useCallback, useEffect } from 'react';
+import { WiredSelectObjectEvent } from '../../../../events';
+import { useUiEvent } from '../../../../hooks/events';
 import { LocalizeText } from '../../../../utils/LocalizeText';
+import { WiredSelectionVisualizer } from '../../common/WiredSelectionVisualizer';
+import { useWiredContext } from '../../context/WiredContext';
 import { WiredFurniSelectorViewProps } from './WiredFurniSelectorView.types';
 
 export const WiredFurniSelectorView: FC<WiredFurniSelectorViewProps> = props =>
 {
-    const { selectedItemsCount = null, maximumItemsCount = null } = props;
+    const { trigger = null, furniIds = [], setFurniIds = null } = useWiredContext();
+
+    const onWiredSelectObjectEvent = useCallback((event: WiredSelectObjectEvent) =>
+    {
+        const furniId = event.objectId;
+
+        if(furniId === -1) return;
+
+        let newFurniIds: number[] = null;
+
+        setFurniIds(prevValue =>
+            {
+                newFurniIds = [ ...prevValue ];
+
+                const index = prevValue.indexOf(furniId);
+
+                if(index >= 0)
+                {
+                    newFurniIds.splice(index, 1);
+
+                    WiredSelectionVisualizer.hide(furniId);
+                }
+                else
+                {
+                    if(newFurniIds.length < trigger.maximumItemSelectionCount)
+                    {
+                        newFurniIds.push(furniId);
+
+                        WiredSelectionVisualizer.show(furniId);
+                    }
+                }
+
+                return newFurniIds;
+            });
+    }, [ trigger, setFurniIds ]);
+
+    useUiEvent(WiredSelectObjectEvent.SELECT_OBJECT, onWiredSelectObjectEvent);
+
+    useEffect(() =>
+    {
+        if(!trigger) return;
+
+        setFurniIds(prevValue =>
+            {
+                if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
+
+                if(trigger.selectedItems && trigger.selectedItems.length)
+                {
+                    WiredSelectionVisualizer.applySelectionShaderToFurni(trigger.selectedItems);
+
+                    return trigger.selectedItems;
+                }
+
+                return [];
+            });
+
+        return () =>
+        {
+            setFurniIds(prevValue =>
+                {
+                    WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
+
+                    return [];
+                });
+        }
+    }, [ trigger, setFurniIds ]);
     
     return (
-        <>
-            <hr className="p-0 m-1" />
-            <div className="fw-bold">{ LocalizeText('wiredfurni.pickfurnis.caption', ['count', 'limit'], [selectedItemsCount.toString(), maximumItemsCount.toString()]) }</div>
-            <div>{ LocalizeText('wiredfurni.pickfurnis.desc') }</div>
-            <hr className="p-0 m-1" />
-        </>
+        <div className="d-flex flex-column">
+            <div className="fw-bold">{ LocalizeText('wiredfurni.pickfurnis.caption', ['count', 'limit'], [ furniIds.length.toString(), trigger.maximumItemSelectionCount.toString() ]) }</div>
+            { LocalizeText('wiredfurni.pickfurnis.desc') }
+        </div>
     );
 }
