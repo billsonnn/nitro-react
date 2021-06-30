@@ -69,12 +69,12 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                 { (requiresFurni !== WiredFurniType.STUFF_SELECTION_OPTION_NONE) &&
                     <>
                         <hr className="my-1 mb-2 bg-dark" />
-                        <div className="fw-bold">{ LocalizeText('wiredfurni.pickfurnis.caption', [ 'count', 'limit' ], [ '0', '0' ]) }</div>
+                        <div className="fw-bold">{ LocalizeText('wiredfurni.pickfurnis.caption', [ 'count', 'limit' ], [ '0', trigger.maximumItemSelectionCount.toString() ]) }</div>
                         <div>{ LocalizeText('wiredfurni.pickfurnis.desc') }</div>
                     </> }
                 <div className="d-flex mt-3">
-                    <button className="btn btn-success me-2 w-100" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</button>
-                    <button className="btn btn-secondary w-100" onClick={ close }>{ LocalizeText('cancel') }</button>
+                    <button className="btn btn-success  btn-sm me-2 w-100" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</button>
+                    <button className="btn btn-secondary btn-sm w-100" onClick={ close }>{ LocalizeText('cancel') }</button>
                 </div>
             </NitroCardContentView>
         </NitroCardView>

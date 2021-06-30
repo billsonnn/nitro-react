@@ -30,12 +30,13 @@ export const WiredView: FC<WiredFurniSelectorViewProps> = props =>
             GetConnection().send(new UpdateActionMessageComposer(trigger.id, intParams, stringParam, furniIds, actionDelay, trigger.stuffTypeSelectionCode));
         }
 
-        if(trigger instanceof TriggerDefinition)
+        else if(trigger instanceof TriggerDefinition)
         {
+            console.log(intParams, stringParam);
             GetConnection().send(new UpdateTriggerMessageComposer(trigger.id, intParams, stringParam, furniIds, trigger.stuffTypeSelectionCode));
         }
 
-        if(trigger instanceof ConditionDefinition)
+        else if(trigger instanceof ConditionDefinition)
         {
             GetConnection().send(new UpdateConditionMessageComposer(trigger.id, intParams, stringParam, furniIds, trigger.stuffTypeSelectionCode));
         }

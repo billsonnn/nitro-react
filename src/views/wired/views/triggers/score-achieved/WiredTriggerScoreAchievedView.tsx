@@ -28,7 +28,6 @@ export const WiredTriggeScoreAchievedView: FC<{}> = props =>
                     value={ points }
                     min={ 1 }
                     max={ 1000 }
-                    step={ 1 }
                     onChange={ event => setPoints(event) } />
             </div>
         </WiredTriggerBaseView>
