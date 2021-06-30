@@ -9,6 +9,7 @@ import { ChatInputView } from './chat-input/ChatInputView';
 import { ChatWidgetView } from './chat/ChatWidgetView';
 import { FurnitureWidgetsView } from './furniture/FurnitureWidgetsView';
 import { InfoStandWidgetView } from './infostand/InfoStandWidgetView';
+import { RoomToolsWidgetView } from './room-tools/RoomToolsWidgetView';
 import { RoomWidgetViewProps } from './RoomWidgets.types';
 
 export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
@@ -108,6 +109,7 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
             <ChatInputView />
             <FurnitureWidgetsView />
             <InfoStandWidgetView />
+            <RoomToolsWidgetView />
         </>
     );
 }

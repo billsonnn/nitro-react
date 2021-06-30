@@ -1,4 +1,4 @@
-import { EventDispatcher, Nitro, RoomEngineEvent, RoomEngineObjectEvent, RoomGeometry, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomVariableEnum, Vector3d } from 'nitro-renderer';
+import { EventDispatcher, Nitro, RoomEngineEvent, RoomEngineObjectEvent, RoomGeometry, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomVariableEnum, RoomZoomEvent, Vector3d } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { CanManipulateFurniture, IsFurnitureSelectionDisabled, ProcessRoomObjectOperation } from '../../api';
@@ -10,6 +10,7 @@ import { useRoomEngineEvent } from '../../hooks/events';
 import { RoomContextProvider } from './context/RoomContext';
 import { RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from './events';
 import { IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler } from './handlers';
+import { RoomWidgetRoomToolsHandler } from './handlers/RoomWidgetRoomToolsHandler';
 import { RoomViewProps } from './RoomView.types';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
 
@@ -35,6 +36,7 @@ export const RoomView: FC<RoomViewProps> = props =>
 
         widgetHandlerManager.registerHandler(new RoomWidgetAvatarInfoHandler());
         widgetHandlerManager.registerHandler(new RoomWidgetInfostandHandler());
+        widgetHandlerManager.registerHandler(new RoomWidgetRoomToolsHandler());
 
         setWidgetHandler(widgetHandlerManager);
 
@@ -96,7 +98,7 @@ export const RoomView: FC<RoomViewProps> = props =>
     const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
     {
         if(!widgetHandler || RoomId.isRoomPreviewerId(event.roomId)) return;
-
+        
         switch(event.type)
         {
             case RoomEngineEvent.NORMAL_MODE:
@@ -105,11 +107,23 @@ export const RoomView: FC<RoomViewProps> = props =>
             case RoomEngineEvent.GAME_MODE:
                 widgetHandler.eventDispatcher.dispatchEvent(new RoomWidgetRoomEngineUpdateEvent(RoomWidgetRoomEngineUpdateEvent.GAME_MODE, event.roomId));
                 return;
+            case RoomZoomEvent.ROOM_ZOOM:
+                const zoomEvent = (event as RoomZoomEvent);
+
+                let zoomLevel = ((zoomEvent.level < 1) ? 0.5 : (1 << (Math.floor(zoomEvent.level) - 1)));
+
+                if(zoomEvent.forceFlip || zoomEvent.asDelta) zoomLevel = zoomEvent.level;
+
+                const canvasId = 1;
+
+                GetRoomEngine().setRoomInstanceRenderingCanvasScale(GetRoomEngine().activeRoomId, canvasId, zoomLevel, null, null, false, zoomEvent.asDelta);
+                return;
         }
     }, [ widgetHandler ]);
 
     useRoomEngineEvent(RoomEngineEvent.NORMAL_MODE, onRoomEngineEvent);
     useRoomEngineEvent(RoomEngineEvent.GAME_MODE, onRoomEngineEvent);
+    useRoomEngineEvent(RoomZoomEvent.ROOM_ZOOM, onRoomEngineEvent);
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {

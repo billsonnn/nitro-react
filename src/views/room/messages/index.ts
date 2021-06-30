@@ -6,3 +6,4 @@ export * from './RoomWidgetFurniActionMessage';
 export * from './RoomWidgetMessage';
 export * from './RoomWidgetRoomObjectMessage';
 export * from './RoomWidgetUserActionMessage';
+export * from './RoomWidgetZoomToggleMessage';
