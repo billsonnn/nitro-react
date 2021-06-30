@@ -33,20 +33,20 @@ export const RoomToolsWidgetView: FC<RoomToolsWidgetViewProps> = props =>
     
     return (
         <div className={'nitro-room-tools py-2 ps-3 d-flex' + classNames({' open': isExpended})}>
-            <div className="w-100 me-1">
-                <div className="text-decoration-underline cursor-pointer" onClick={ () => handleToolClick('settings') }>
+            <div className="list-group list-group-flush w-100 me-1">
+                <div className="list-group-item text-decoration-underline cursor-pointer" onClick={ () => handleToolClick('settings') }>
                     <i className="fas fa-cog me-2" />{ LocalizeText('room.settings.button.text') }
                 </div>
-                <div className="text-decoration-underline cursor-pointer" onClick={ () => handleToolClick('zoom') }>
+                <div className="list-group-item text-decoration-underline cursor-pointer" onClick={ () => handleToolClick('zoom') }>
                     <i className={ 'fas me-2 ' +classNames({'fa-search-minus': !isZoomedIn, 'fa-search-plus': isZoomedIn}) } />{ LocalizeText('room.zoom.button.text') }
                 </div>
-                <div className="text-decoration-underline cursor-pointer" onClick={ () => handleToolClick('chat_history') }>
+                <div className="list-group-item text-decoration-underline cursor-pointer" onClick={ () => handleToolClick('chat_history') }>
                     <i className="fas fa-comment-alt me-2" />{ LocalizeText('room.chathistory.button.text') }
                 </div>
-                <div className="text-decoration-underline cursor-pointer" onClick={ () => handleToolClick('like_room') }>
+                <div className="list-group-item text-decoration-underline cursor-pointer" onClick={ () => handleToolClick('like_room') }>
                     <i className="fas fa-heart me-2" />{ LocalizeText('room.like.button.text') }
                 </div>
-                <div className="text-decoration-underline cursor-pointer" onClick={ () => handleToolClick('room_link') }>
+                <div className="list-group-item text-decoration-underline cursor-pointer" onClick={ () => handleToolClick('room_link') }>
                     <i className="fas fa-link me-2" />{ LocalizeText('navigator.embed.caption') }
                 </div>
             </div>
