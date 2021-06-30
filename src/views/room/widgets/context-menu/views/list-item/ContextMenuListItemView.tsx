@@ -13,7 +13,7 @@ export const ContextMenuListItemView: FC<ContextMenuListItemViewProps> = props =
     }, [ canSelect, onClick ]);
 
     return (
-        <div className={ `d-flex justify-content-center align-items-center w-100 menu-list-item ${ !canSelect ? 'disabled ' : '' }${ className }` } onClick={ handleClick }>
+        <div className={ `d-flex justify-content-center align-items-center w-100 menu-item list-item ${ !canSelect ? 'disabled ' : '' }${ className }` } onClick={ handleClick }>
             { children }
         </div>
     )

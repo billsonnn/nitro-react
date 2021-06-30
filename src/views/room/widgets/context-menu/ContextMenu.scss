@@ -52,34 +52,38 @@
         }
     }
 
-    .menu-list-item {
+    .menu-item {
         position: relative;
-        height: 24px;
-        max-height: 24px;
         margin-top: 2px;
         padding: 3px;
-        background: $bg-mirage-split-background;
-        cursor: pointer;
         overflow: hidden;
 
         &.disabled {
             filter: brightness(0.7);
-            cursor: not-allowed;
+            cursor: not-allowed !important;
         }
 
-        .fas,
-        .nitro-currency-icon {
-            position: absolute;
-            right: 8px;
+        &.list-item {
+            height: 24px;
+            max-height: 24px;
+            padding: 3px;
+            background: $bg-mirage-split-background;
+            cursor: pointer;
 
-            &.left {
-                left: 8px;
-                right: unset;
+            &:not(.disabled):hover {
+                background: $bg-cello-split-background;
             }
-        }
 
-        &:not(.disabled):hover {
-            background: $bg-cello-split-background;
+            .fas,
+            .nitro-currency-icon {
+                position: absolute;
+                right: 8px;
+
+                &.left {
+                    left: 8px;
+                    right: unset;
+                }
+            }
         }
     }
 }
