@@ -12,7 +12,7 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
 
     const dateToString = useCallback((date: Date) =>
     {
-        return `${date.getFullYear()}/${('0' + (date.getMonth() + 1)).slice(-2)}/${('0' + date.getDate()).slice(-2)} ` + `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}`;
+        return `${date.getFullYear()}/${('0' + (date.getMonth() + 1)).slice(-2)}/${('0' + date.getDate()).slice(-2)}${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}`;
     }, []);
 
     useEffect(() =>
@@ -31,7 +31,7 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
             setStartDate(dateToString(startDate));
             setEndDate(dateToString(endDate));
         }
-    }, [ trigger ]);
+    }, [ trigger, dateToString ]);
 
     const save = useCallback(() =>
     {

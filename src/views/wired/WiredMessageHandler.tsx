@@ -31,23 +31,27 @@ export const WiredMessageHandler: FC<{}> = props =>
     const onWiredOpenEvent = useCallback((event: WiredOpenEvent) =>
     {
         const parser = event.getParser();
+
+        console.log(parser);
     }, []);
 
     const onWiredRewardResultMessageEvent = useCallback((event: WiredRewardResultMessageEvent) =>
     {
         const parser = event.getParser();
+
+        console.log(parser);
     }, []);
 
     const onWiredSaveSuccessEvent = useCallback((event: WiredSaveSuccessEvent) =>
     {
-        const parser = event.getParser();
-
         setTrigger(null);
     }, [ setTrigger ]);
 
     const onWiredValidationErrorEvent = useCallback((event: WiredValidationErrorEvent) =>
     {
         const parser = event.getParser();
+
+        console.log(parser);
     }, []);
 
     CreateMessageHook(WiredFurniActionEvent, onWiredFurniActionEvent);

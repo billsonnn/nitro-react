@@ -107,7 +107,7 @@ export const App: FC<{}> = props =>
                 });
                 return;
         }
-    }, []);
+    }, [ getPreloadAssetUrls ]);
 
     useMainEvent(Nitro.WEBGL_UNAVAILABLE, handler);
     useMainEvent(Nitro.WEBGL_CONTEXT_LOST, handler);
