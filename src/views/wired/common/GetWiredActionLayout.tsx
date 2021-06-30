@@ -77,4 +77,6 @@ export function GetWiredActionLayout(code: number): JSX.Element
         case WiredActionLayout.TOGGLE_FURNI_STATE:
             return <WiredActionToggleFurniStateView />;
     }
+
+    return null;
 }

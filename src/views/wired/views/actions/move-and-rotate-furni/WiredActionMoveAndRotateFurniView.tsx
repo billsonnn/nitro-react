@@ -4,7 +4,7 @@ import { useWiredContext } from '../../../context/WiredContext';
 import { WiredFurniType } from '../../../WiredView.types';
 import { WiredActionBaseView } from '../base/WiredActionBaseView';
 
-const directionOptions: {value: number, icon: string}[] = [
+const directionOptions: { value: number, icon: string }[] = [
     {
         value: 0,
         icon: 'ne'
@@ -38,44 +38,52 @@ export const WiredActionMoveAndRotateFurniView: FC<{}> = props =>
             setMovement(trigger.intData[0]);
             setRotation(trigger.intData[1]);
         }
+        else
+        {
+            setMovement(-1);
+            setRotation(-1);
+        }
     }, [ trigger ]);
 
     const save = useCallback(() =>
     {
-        setIntParams([movement, rotation]);
+        setIntParams([ movement, rotation ]);
     }, [ movement, rotation, setIntParams ]);
 
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_BY_TYPE_OR_FROM_CONTEXT } save={ save }>
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.startdir') }</div>
-            <div className="row row-cold-4">
-                { directionOptions.map(option =>
-                    {
-                        return (
-                            <div key={ option.value } className="col">
-                                <div className="form-check">
-                                    <input className="form-check-input" type="radio" name="movement" id={'movement' + option.value} checked={ movement === option.value } onChange={() => setMovement(option.value)} />
-                                    <label className="form-check-label" htmlFor={'movement' + option.value}>
-                                        <i className={'icon icon-' + option.icon} />
-                                    </label>
+            <div className="form-group mb-2">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.startdir') }</label>
+                <div className="row row-cold-4">
+                    { directionOptions.map(option =>
+                        {
+                            return (
+                                <div key={ option.value } className="col">
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="radio" name="movement" id={ `movement${ option.value }` } checked={ (movement === option.value) } onChange={ event => setMovement(option.value) } />
+                                        <label className="form-check-label" htmlFor={ `movement${ option.value }` }>
+                                            <i className={ `icon icon-${ option.icon }` } />
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    }) }
+                            )
+                        }) }
+                </div>
             </div>
-            <hr className="my-1 mb-2 bg-dark" />
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.turn') }</div>
+            <div className="form-group">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.turn') }</label>
                 { rotationOptions.map(option =>
                     {
                         return (
                             <div key={ option } className="form-check">
-                                <input className="form-check-input" type="radio" name="rotation" id={'rotation' + option} checked={ rotation === option } onChange={() => setRotation(option)} />
-                                <label className="form-check-label" htmlFor={'rotation' + option}>
-                                    { LocalizeText('wiredfurni.params.turn.' + option) }
+                                <input className="form-check-input" type="radio" name="rotation" id={ `rotation${ option }` } checked={ (rotation === option) } onChange={ event => setRotation(option) } />
+                                <label className="form-check-label" htmlFor={ `rotation${ option }` }>
+                                    { LocalizeText(`wiredfurni.params.turn.${ option }`) }
                                 </label>
                             </div>
                         )
                     }) }
+            </div>
         </WiredActionBaseView>
     );
 }

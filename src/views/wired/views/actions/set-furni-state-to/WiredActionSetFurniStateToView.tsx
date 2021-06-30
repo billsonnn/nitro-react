@@ -20,29 +20,31 @@ export const WiredActionSetFurniStateToView: FC<{}> = props =>
 
     const save = useCallback(() =>
     {
-        setIntParams([stateFlag, directionFlag, positionFlag]);
-    }, [ directionFlag, positionFlag, setIntParams, stateFlag ]);
+        setIntParams([ stateFlag, directionFlag, positionFlag ]);
+    }, [ directionFlag, positionFlag, stateFlag, setIntParams ]);
 
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } save={ save }>
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.conditions') }</div>
-            <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="stateFlag" onChange={(e) => setStateFlag(e.target.checked ? 1 : 0)} />
-                <label className="form-check-label" htmlFor="stateFlag">
-                    { LocalizeText('wiredfurni.params.condition.state') }
-                </label>
-            </div>
-            <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="directionFlag" onChange={(e) => setDirectionFlag(e.target.checked ? 1 : 0)} />
-                <label className="form-check-label" htmlFor="directionFlag">
-                    { LocalizeText('wiredfurni.params.condition.direction') }
-                </label>
-            </div>
-            <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="positionFlag" onChange={(e) => setPositionFlag(e.target.checked ? 1 : 0)} />
-                <label className="form-check-label" htmlFor="positionFlag">
-                    { LocalizeText('wiredfurni.params.condition.position') }
-                </label>
+            <div className="form-group">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.conditions') }</label>
+                <div className="form-check">
+                    <input className="form-check-input" type="checkbox" id="stateFlag" onChange={ event => setStateFlag(event.target.checked ? 1 : 0) } />
+                    <label className="form-check-label" htmlFor="stateFlag">
+                        { LocalizeText('wiredfurni.params.condition.state') }
+                    </label>
+                </div>
+                <div className="form-check">
+                    <input className="form-check-input" type="checkbox" id="directionFlag" onChange={ event => setDirectionFlag(event.target.checked ? 1 : 0) } />
+                    <label className="form-check-label" htmlFor="directionFlag">
+                        { LocalizeText('wiredfurni.params.condition.direction') }
+                    </label>
+                </div>
+                <div className="form-check">
+                    <input className="form-check-input" type="checkbox" id="positionFlag" onChange={ event => setPositionFlag(event.target.checked ? 1 : 0) } />
+                    <label className="form-check-label" htmlFor="positionFlag">
+                        { LocalizeText('wiredfurni.params.condition.position') }
+                    </label>
+                </div>
             </div>
         </WiredActionBaseView>
     );

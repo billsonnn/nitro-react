@@ -4,10 +4,10 @@ import { useWiredContext } from '../../../context/WiredContext';
 import { WiredFurniType } from '../../../WiredView.types';
 import { WiredActionBaseView } from '../base/WiredActionBaseView';
 
+const allowedHanditemIds: number[] = [2, 5, 7, 8, 9, 10, 27];
+
 export const WiredActionBotGiveHandItemView: FC<{}> = props =>
 {
-    const allowedHanditemIds: number[] = [2, 5, 7, 8, 9, 10, 27];
-
     const [ botName, setBotName ] = useState('');
     const [ handItemId, setHandItemId ] = useState(-1);
     const { trigger = null, setStringParam = null, setIntParams = null } = useWiredContext();
@@ -21,7 +21,7 @@ export const WiredActionBotGiveHandItemView: FC<{}> = props =>
     const save = useCallback(() =>
     {
         setStringParam(botName);
-        setIntParams([handItemId]);
+        setIntParams([ handItemId ]);
     }, [ handItemId, botName, setStringParam, setIntParams ]);
 
     return (
@@ -30,14 +30,16 @@ export const WiredActionBotGiveHandItemView: FC<{}> = props =>
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.bot.name') }</label>
                 <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
             </div>
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.handitem') }</div>
-            <select className="form-select" value={ handItemId } onChange={ (e) => setHandItemId(Number(e.target.value)) }>
-                <option value="0">------</option>
-                {allowedHanditemIds && allowedHanditemIds.map(value =>
-                    {
-                        return <option value={ value }>{ LocalizeText('handitem' + value) }</option>
-                    })}
-            </select>
+            <div className="form-group">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.handitem') }</label>
+                <select className="form-select form-select-sm" value={ handItemId } onChange={ event => setHandItemId(parseInt(event.target.value)) }>
+                    <option value="0">------</option>
+                    { allowedHanditemIds.map(value =>
+                        {
+                            return <option key={ value } value={ value }>{ LocalizeText(`handitem${ value }`) }</option>
+                        }) }
+                </select>
+            </div>
         </WiredActionBaseView>
     );
 }

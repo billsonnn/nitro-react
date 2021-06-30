@@ -24,7 +24,7 @@ export const WiredActionBotTalkToAvatarView: FC<{}> = props =>
     const save = useCallback(() =>
     {
         setStringParam(botName + WIRED_STRING_DELIMETER + message);
-        setIntParams([talkMode]);
+        setIntParams([ talkMode ]);
     }, [ botName, message, talkMode, setStringParam, setIntParams ]);
 
     return (
@@ -37,17 +37,15 @@ export const WiredActionBotTalkToAvatarView: FC<{}> = props =>
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.message') }</label>
                 <input type="text" className="form-control form-control-sm" maxLength={ 64 } value={ message } onChange={ event => setMessage(event.target.value) } />
             </div>
-            <div className="form-check">
-                <input className="form-check-input" type="radio" name="talkMode" id="talkMode1" checked={ talkMode === 0 } onChange={() => setTalkMode(0)} />
-                <label className="form-check-label" htmlFor="talkMode1">
-                    { LocalizeText('wiredfurni.params.talk') }
-                </label>
-            </div>
-            <div className="form-check">
-                <input className="form-check-input" type="radio" name="talkMode" id="talkMode2" checked={ talkMode === 1 } onChange={() => setTalkMode(1)} />
-                <label className="form-check-label" htmlFor="talkMode2">
-                    { LocalizeText('wiredfurni.params.whisper') }
-                </label>
+            <div className="form-group">
+                <div className="form-check">
+                    <input className="form-check-input" type="radio" name="talkMode" id="talkMode1" checked={ (talkMode === 0) } onChange={ event => setTalkMode(0) } />
+                    <label className="form-check-label" htmlFor="talkMode1">{ LocalizeText('wiredfurni.params.talk') }</label>
+                </div>
+                <div className="form-check">
+                    <input className="form-check-input" type="radio" name="talkMode" id="talkMode2" checked={ (talkMode === 1) } onChange={ event => setTalkMode(1) } />
+                    <label className="form-check-label" htmlFor="talkMode2">{ LocalizeText('wiredfurni.params.whisper') }</label>
+                </div>
             </div>
         </WiredActionBaseView>
     );

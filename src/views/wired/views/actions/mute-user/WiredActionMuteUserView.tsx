@@ -19,23 +19,20 @@ export const WiredActionMuteUserView: FC<{}> = props =>
 
     const save = useCallback(() =>
     {
-        setIntParams([time]);
+        setIntParams([ time ]);
         setStringParam(message);
     }, [ time, message, setIntParams, setStringParam ]);
 
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-           
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.length.minutes', ['minutes'], [time.toString()]) }</div>
-            <Slider 
-                defaultValue={ time }
-                dots={ true }
-                min={ 1 }
-                max={ 10 }
-                step={ 1 }
-                onChange={ event => setTime(event) }
-                />
-            <hr className="my-1 mb-2 bg-dark" />
+            <div className="form-group mb-2">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.length.minutes', ['minutes'], [ time.toString() ]) }</label>
+                <Slider 
+                    value={ time }
+                    min={ 1 }
+                    max={ 10 }
+                    onChange={ event => setTime(event) } />
+            </div>
             <div className="form-group">
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.message') }</label>
                 <input type="text" className="form-control form-control-sm" value={ message } onChange={ event => setMessage(event.target.value) } />

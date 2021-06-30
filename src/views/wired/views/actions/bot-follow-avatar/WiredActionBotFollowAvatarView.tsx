@@ -28,17 +28,19 @@ export const WiredActionBotFollowAvatarView: FC<{}> = props =>
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.bot.name') }</label>
                 <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
             </div>
-            <div className="form-check">
-                <input className="form-check-input" type="radio" name="followMode" id="followMode1" checked={ followMode === 1 } onChange={() => setFollowMode(1)} />
-                <label className="form-check-label" htmlFor="followMode1">
-                    { LocalizeText('wiredfurni.params.start.following') }
-                </label>
-            </div>
-            <div className="form-check">
-                <input className="form-check-input" type="radio" name="followMode" id="followMode2" checked={ followMode === 0 } onChange={() => setFollowMode(0)} />
-                <label className="form-check-label" htmlFor="followMode2">
-                    { LocalizeText('wiredfurni.params.stop.following') }
-                </label>
+            <div className="form-group">
+                <div className="form-check">
+                    <input className="form-check-input" type="radio" name="followMode" id="followMode1" checked={ (followMode === 1) } onChange={ event => setFollowMode(1) } />
+                    <label className="form-check-label" htmlFor="followMode1">
+                        { LocalizeText('wiredfurni.params.start.following') }
+                    </label>
+                </div>
+                <div className="form-check">
+                    <input className="form-check-input" type="radio" name="followMode" id="followMode2" checked={ (followMode === 0) } onChange={ event => setFollowMode(0) } />
+                    <label className="form-check-label" htmlFor="followMode2">
+                        { LocalizeText('wiredfurni.params.stop.following') }
+                    </label>
+                </div>
             </div>
         </WiredActionBaseView>
     );

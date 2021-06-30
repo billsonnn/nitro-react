@@ -16,23 +16,25 @@ export const WiredActionJoinTeamView: FC<{}> = props =>
 
     const save = useCallback(() =>
     {
-        setIntParams([selectedTeam]);
+        setIntParams([ selectedTeam ]);
     }, [ selectedTeam, setIntParams ]);
 
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.team') }</div>
-            { [1, 2, 3, 4].map(team =>
-                {
-                    return (
-                        <div key={ team } className="form-check">
-                            <input className="form-check-input" type="radio" name="selectedTeam" id={'selectedTeam' + team} checked={ selectedTeam === team } onChange={() => setSelectedTeam(team)} />
-                            <label className="form-check-label" htmlFor={'selectedTeam' + team}>
-                                { LocalizeText('wiredfurni.params.team.' + team) }
-                            </label>
-                        </div>
-                    )
-                }) }
+            <div className="form-group">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.team') }</label>
+                { [1, 2, 3, 4].map(team =>
+                    {
+                        return (
+                            <div key={ team } className="form-check">
+                                <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ team }` } checked={ (selectedTeam === team) } onChange={ event => setSelectedTeam(team) } />
+                                <label className="form-check-label" htmlFor={ `selectedTeam${ team }` }>
+                                    { LocalizeText(`wiredfurni.params.team.${ team }`) }
+                                </label>
+                            </div>
+                        )
+                    }) }
+            </div>
         </WiredActionBaseView>
     );
 }

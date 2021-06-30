@@ -4,7 +4,5 @@ import { WiredActionBaseView } from '../base/WiredActionBaseView';
 
 export const WiredActionChaseView: FC<{}> = props =>
 {
-    return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_BY_TYPE_OR_FROM_CONTEXT } save={ null }></WiredActionBaseView>
-    );
+    return <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_BY_TYPE_OR_FROM_CONTEXT } save={ null } />;
 }

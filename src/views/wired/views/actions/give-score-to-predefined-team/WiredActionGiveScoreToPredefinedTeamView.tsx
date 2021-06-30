@@ -9,7 +9,7 @@ export const WiredActionGiveScoreToPredefinedTeamView: FC<{}> = props =>
 {
     const [ points, setPoints ] = useState(1);
     const [ time, setTime ] = useState(1);
-    const [ selectedTeam, setSelectedTeam ] = useState(-1);
+    const [ selectedTeam, setSelectedTeam ] = useState(1);
     const { trigger = null, setIntParams = null } = useWiredContext();
 
     useEffect(() =>
@@ -20,47 +20,51 @@ export const WiredActionGiveScoreToPredefinedTeamView: FC<{}> = props =>
             setTime(trigger.intData[1]);
             setSelectedTeam(trigger.intData[2]);
         }
+        else
+        {
+            setPoints(1);
+            setTime(1);
+            setSelectedTeam(1);
+        }
     }, [ trigger ]);
 
     const save = useCallback(() =>
     {
-        setIntParams([points, time, selectedTeam]);
+        setIntParams([ points, time, selectedTeam ]);
     }, [ points, time, selectedTeam, setIntParams ]);
 
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.setpoints', [ 'points' ], [ points.toString() ]) }</div>
-            <Slider 
-                defaultValue={ points }
-                dots={ true }
-                min={ 1 }
-                max={ 100 }
-                step={ 1 }
-                onChange={ event => setPoints(event) }
-                />
-            <hr className="my-1 mb-2 bg-dark" />
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.settimesingame', [ 'times' ], [ time.toString() ]) }</div>
-            <Slider 
-                defaultValue={ time }
-                dots={ true }
-                min={ 1 }
-                max={ 10 }
-                step={ 1 }
-                onChange={ event => setTime(event) }
-                />
-            <hr className="my-1 mb-2 bg-dark" />
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.team') }</div>
-            { [1, 2, 3, 4].map(team =>
-            {
-                return (
-                    <div key={ team } className="form-check">
-                        <input className="form-check-input" type="radio" name="selectedTeam" id={'selectedTeam' + team} checked={ selectedTeam === team } onChange={() => setSelectedTeam(team)} />
-                        <label className="form-check-label" htmlFor={'selectedTeam' + team}>
-                            { LocalizeText('wiredfurni.params.team.' + team) }
-                        </label>
-                    </div>
-                )
-            }) }
+            <div className="form-group mb-2">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.setpoints', [ 'points' ], [ points.toString() ]) }</label>
+                <Slider 
+                    value={ points }
+                    min={ 1 }
+                    max={ 100 }
+                    onChange={ event => setPoints(event) } />
+            </div>
+            <div className="form-group mb-2">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.settimesingame', [ 'times' ], [ time.toString() ]) }</label>
+                <Slider 
+                    value={ time }
+                    min={ 1 }
+                    max={ 10 }
+                    onChange={ event => setTime(event) } />
+            </div>
+            <div className="form-group">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.team') }</label>
+                { [1, 2, 3, 4].map(value =>
+                    {
+                        return (
+                            <div key={ value } className="form-check">
+                                <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ value }` } checked={ (selectedTeam === value) } onChange={ event => setSelectedTeam(value) } />
+                                <label className="form-check-label" htmlFor={'selectedTeam' + value}>
+                                    { LocalizeText('wiredfurni.params.team.' + value) }
+                                </label>
+                            </div>
+                        );
+                    }) }
+            </div>
         </WiredActionBaseView>
     );
 }

@@ -18,34 +18,36 @@ export const WiredActionGiveScoreView: FC<{}> = props =>
             setPoints(trigger.intData[0]);
             setTime(trigger.intData[1]);
         }
+        else
+        {
+            setPoints(1);
+            setTime(1);
+        }
     }, [ trigger ]);
 
     const save = useCallback(() =>
     {
-        setIntParams([points, time]);
+        setIntParams([ points, time ]);
     }, [ points, time, setIntParams ]);
 
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.setpoints', [ 'points' ], [ points.toString() ]) }</div>
-            <Slider 
-                defaultValue={ points }
-                dots={ true }
-                min={ 1 }
-                max={ 100 }
-                step={ 1 }
-                onChange={ event => setPoints(event) }
-                />
-            <hr className="my-1 mb-2 bg-dark" />
-            <div className="fw-bold">{ LocalizeText('wiredfurni.params.settimesingame', [ 'times' ], [ time.toString() ]) }</div>
-            <Slider 
-                defaultValue={ time }
-                dots={ true }
-                min={ 1 }
-                max={ 10 }
-                step={ 1 }
-                onChange={ event => setTime(event) }
-                />
+            <div className="form-group mb-2">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.setpoints', [ 'points' ], [ points.toString() ]) }</label>
+                <Slider 
+                    value={ points }
+                    min={ 1 }
+                    max={ 100 }
+                    onChange={ event => setPoints(event) } />
+            </div>
+            <div className="form-group">
+                <label className="fw-bold">{ LocalizeText('wiredfurni.params.settimesingame', [ 'times' ], [ time.toString() ]) }</label>
+                <Slider 
+                    value={ time }
+                    min={ 1 }
+                    max={ 10 }
+                    onChange={ event => setTime(event) } />
+            </div>
         </WiredActionBaseView>
     );
 }
