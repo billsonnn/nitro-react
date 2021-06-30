@@ -11,7 +11,6 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ avatarEditorState, dispatchAvatarEditorState ] = useReducer(AvatarEditorReducer, initialAvatarEditor);
-    const {  } = avatarEditorState;
 
     const onAvatarEditorEvent = useCallback((event: AvatarEditorEvent) =>
     {

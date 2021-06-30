@@ -79,7 +79,7 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
                     });
                     return;
         }
-    }, [ notificationCenterState, dispatchNotificationCenterState ]);
+    }, [ dispatchNotificationCenterState ]);
 
     const mapNotifications = useCallback((notifications: NitroNotification[], inTray: boolean) =>
     {

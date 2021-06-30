@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import classNames from 'classnames';
 import { HabboClubLevelEnum, RoomCreateComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
@@ -35,7 +36,7 @@ export const NavigatorRoomCreatorView: FC<NavigatorRoomCreatorViewProps> = props
             setMaxVisitorsList(list);
             setVisitorsCount(list[0]);
         }
-    }, []);
+    }, [ maxVisitorsList ]);
 
     useEffect(() =>
     {
@@ -116,7 +117,7 @@ export const NavigatorRoomCreatorView: FC<NavigatorRoomCreatorViewProps> = props
                     NAVIGATOR_ROOM_MODELS.map(model =>
                         {
                             return (<div key={ model.name } onClick={ () => selectModel(model.name) } className={ 'h-100 cursor-pointer d-flex flex-column justify-content-center align-items-center p-1 me-2 rounded border border-2' + classNames({' active': selectedModelName === model.name, ' disabled': GetSessionDataManager().clubLevel < model.clubLevel}) }>
-                                <img src={ getRoomModelImage(model.name) } />
+                                <img alt="" src={ getRoomModelImage(model.name) } />
                                 <div>{ model.tileSize } { LocalizeText('navigator.createroom.tilesize') }</div>
                                 { model.clubLevel > HabboClubLevelEnum.NO_CLUB && <CurrencyIcon type="hc" /> }
                             </div>);

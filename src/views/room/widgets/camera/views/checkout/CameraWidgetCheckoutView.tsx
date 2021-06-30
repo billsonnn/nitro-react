@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { RoomWidgetCameraPublishComposer, RoomWidgetCameraPublishedEvent, RoomWidgetCameraPurchaseComposer, RoomWidgetCameraPurchaseSuccessfulEvent } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomCameraWidgetManager } from '../../../../../../api/nitro/camera/GetRoomCameraWidgetManager';
@@ -23,7 +24,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
     {
         setPicturesBought(value => value + 1);
         setIsWaiting(false);
-    }, [ picturesBought ]);
+    }, []);
 
     const onRoomWidgetCameraPublishedEvent = useCallback((event: RoomWidgetCameraPublishedEvent) =>
     {
@@ -32,7 +33,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
         setPublishCooldown(parser.cooldownSeconds);
         setWasPicturePublished(parser.wasSuccessful);
         setIsWaiting(false);
-    }, [ wasPicturePublished, publishCooldown ]);
+    }, []);
 
     CreateMessageHook(RoomWidgetCameraPurchaseSuccessfulEvent, onCameraPurchaseSuccessfulEvent);
     CreateMessageHook(RoomWidgetCameraPublishedEvent, onRoomWidgetCameraPublishedEvent);
@@ -40,7 +41,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
     const getCurrentPicture = useCallback(() =>
     {
         return GetRoomCameraWidgetManager().applyEffects(cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex], cameraWidgetContext.selectedEffects, cameraWidgetContext.isZoomed);
-    }, [ cameraWidgetContext.selectedEffects, cameraWidgetContext.isZoomed ]);
+    }, [ cameraWidgetContext ]);
 
     const processAction = useCallback((type: string, value: string | number = null) =>
     {
@@ -65,7 +66,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                 onCancelClick();
                 return;
         }
-    }, [ onCloseClick, onCancelClick ]);
+    }, [onCloseClick, isWaiting, onCancelClick]);
 
     if(!price) return null;
 

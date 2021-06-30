@@ -13,22 +13,37 @@ import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureMannequinData } from './FurnitureMannequinData';
 import { FurnitureMannequinViewMode, FurnitureMannequinViewProps } from './FurnitureMannequinView.types';
 
+const parts = [
+    AvatarFigurePartType.CHEST_ACCESSORY,
+    AvatarFigurePartType.COAT_CHEST,
+    AvatarFigurePartType.CHEST,
+    AvatarFigurePartType.LEGS,
+    AvatarFigurePartType.SHOES,
+    AvatarFigurePartType.WAIST_ACCESSORY
+];
+const baseAvatar = ['hd', 99999, 99998];
+
 export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
 {
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
-
-    const parts = [
-        AvatarFigurePartType.CHEST_ACCESSORY,
-        AvatarFigurePartType.COAT_CHEST,
-        AvatarFigurePartType.CHEST,
-        AvatarFigurePartType.LEGS,
-        AvatarFigurePartType.SHOES,
-        AvatarFigurePartType.WAIST_ACCESSORY
-    ];
-    const baseAvatar = ['hd', 99999, 99998];
+    const { eventDispatcher = null } = useRoomContext();
         
     const [ mannequinData, setMannequinData ]   = useState<FurnitureMannequinData>(null);
     const [ viewMode, setViewMode ]             = useState('');
+
+    const loadMannequinFigure = useCallback((figureContainer: IAvatarFigureContainer) =>
+    {  
+        for(const item of figureContainer.getPartTypeIds())
+        {
+            if(parts.indexOf(item) === -1)
+            {
+                figureContainer.removePart(item);
+            }
+        }
+
+        figureContainer.updatePart(baseAvatar[0].toString(), Number(baseAvatar[1]), [ Number(baseAvatar[2]) ]);
+
+        setMannequinData(mannequinData => new FurnitureMannequinData(mannequinData.objectId, mannequinData.category, mannequinData.name, mannequinData.figure, mannequinData.gender, mannequinData.clubLevel, figureContainer.getFigureString()));
+    }, []);
 
     useEffect(() =>
     {
@@ -37,7 +52,38 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
             const figureContainer = Nitro.instance.avatar.createFigureContainer(mannequinData.figure);
             loadMannequinFigure(figureContainer);
         }
-    }, [ mannequinData ]);
+    }, [loadMannequinFigure, mannequinData]);
+
+    const loadViewMode = useCallback((mannequinData: FurnitureMannequinData) =>
+    {
+        if(!mannequinData) return;
+        
+        const userCanEdit       = (GetRoomSession().isRoomOwner || GetSessionDataManager().isModerator);
+        const userGender        = Nitro.instance.sessionDataManager.gender;
+        const userClubLevel     = Nitro.instance.sessionDataManager.clubLevel;
+
+        if(userCanEdit)
+        {
+            setViewMode(FurnitureMannequinViewMode.EDIT);
+        }
+        else
+        {
+            if(!mannequinData.figure || mannequinData.figure.length <= 1) return;
+
+            if(userGender.toUpperCase() !== mannequinData.gender.toUpperCase())
+            {
+                setViewMode(FurnitureMannequinViewMode.INCOMPATIBLE_GENDER);
+            }
+            else if(userClubLevel < mannequinData.clubLevel)
+            {
+                setViewMode(FurnitureMannequinViewMode.CLUB);
+            }
+            else
+            {
+                setViewMode(FurnitureMannequinViewMode.DEFAULT);
+            }
+        }
+    }, []);
 
     const onNitroEvent = useCallback((event: NitroEvent) =>
     {
@@ -75,57 +121,11 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
                 return;
             }
         }
-    }, []);
+    }, [loadViewMode]);
 
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN, onNitroEvent);
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onNitroEvent);
 
-    const loadMannequinFigure = useCallback((figureContainer: IAvatarFigureContainer) =>
-    {  
-        for(const item of figureContainer.getPartTypeIds())
-        {
-            if(parts.indexOf(item) === -1)
-            {
-                figureContainer.removePart(item);
-            }
-        }
-
-        figureContainer.updatePart(baseAvatar[0].toString(), Number(baseAvatar[1]), [ Number(baseAvatar[2]) ]);
-
-        setMannequinData(mannequinData => new FurnitureMannequinData(mannequinData.objectId, mannequinData.category, mannequinData.name, mannequinData.figure, mannequinData.gender, mannequinData.clubLevel, figureContainer.getFigureString()));
-    }, []);
-
-    const loadViewMode = useCallback((mannequinData: FurnitureMannequinData) =>
-    {
-        if(!mannequinData) return;
-        
-        const userCanEdit       = (GetRoomSession().isRoomOwner || GetSessionDataManager().isModerator);
-        const userGender        = Nitro.instance.sessionDataManager.gender;
-        const userClubLevel     = Nitro.instance.sessionDataManager.clubLevel;
-
-        if(userCanEdit)
-        {
-            setViewMode(FurnitureMannequinViewMode.EDIT);
-        }
-        else
-        {
-            if(!mannequinData.figure || mannequinData.figure.length <= 1) return;
-
-            if(userGender.toUpperCase() !== mannequinData.gender.toUpperCase())
-            {
-                setViewMode(FurnitureMannequinViewMode.INCOMPATIBLE_GENDER);
-            }
-            else if(userClubLevel < mannequinData.clubLevel)
-            {
-                setViewMode(FurnitureMannequinViewMode.CLUB);
-            }
-            else
-            {
-                setViewMode(FurnitureMannequinViewMode.DEFAULT);
-            }
-        }
-    }, []);
-    
     const processAction = useCallback((type: string, value: string = null) =>
     {
         switch(type)
@@ -157,7 +157,7 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
                 processAction('close');
                 return;
         }
-    }, [ mannequinData ]);
+    }, [ loadMannequinFigure, mannequinData ]);
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) =>
     {

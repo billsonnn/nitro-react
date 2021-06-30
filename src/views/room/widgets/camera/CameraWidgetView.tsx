@@ -64,7 +64,7 @@ export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
         const parser = event.getParser();
         
         setPrice({ credits: parser.credits, points: parser.points, pointsType: parser.pointsType });
-    }, [ price ]);
+    }, []);
 
     CreateMessageHook(RoomWidgetCameraConfigurationEvent, onCameraConfigurationEvent);
 

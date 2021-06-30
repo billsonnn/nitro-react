@@ -83,7 +83,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
                     </div>
                     <div ref={ cameraFrameRef } className={'camera-frame ' + classNames({'bg': cameraWidgetContext.selectedPictureIndex > -1}) }>
                         { cameraWidgetContext.selectedPictureIndex > -1 && <div>
-                            <img src={ cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex].src } />
+                            <img alt="" src={ cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex].src } />
                             <div className="camera-frame-preview-actions w-100 position-absolute bottom-0 py-2 text-center">
                                 <button className="btn btn-success me-3" title={ LocalizeText('camera.editor.button.tooltip') } onClick={ event => processAction('edit_picture') }>{ LocalizeText('camera.editor.button.text') }</button>
                                 <button className="btn btn-danger" onClick={ event => processAction('discard_picture') }>{ LocalizeText('camera.delete.button.text') }</button>
@@ -97,7 +97,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
                { cameraWidgetContext.cameraRoll.length > 0 && <div className="camera-roll d-flex justify-content-center py-2">
                     { cameraWidgetContext.cameraRoll.map((picture, index) =>
                         {
-                            return <img key={ index } className={ (index < cameraWidgetContext.cameraRoll.length - 1 ? 'me-2' : '') } src={ picture.src } onClick={ event => processAction('preview_picture', index) } />;
+                            return <img alt="" key={ index } className={ (index < cameraWidgetContext.cameraRoll.length - 1 ? 'me-2' : '') } src={ picture.src } onClick={ event => processAction('preview_picture', index) } />;
                         }) }
                </div> }
             </div>

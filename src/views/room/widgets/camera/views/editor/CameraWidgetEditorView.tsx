@@ -29,7 +29,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
         }
 
         setEffectsThumbnails(thumbnails);
-    }, [ cameraWidgetContext.selectedPictureIndex, availableEffects ]);
+    }, [ cameraWidgetContext, availableEffects ]);
 
     const getEffectThumbnail = useCallback((effectName: string) =>
     {
@@ -55,7 +55,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
     const getCurrentPicture = useCallback(() =>
     {
         return GetRoomCameraWidgetManager().applyEffects(cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex], cameraWidgetContext.selectedEffects, cameraWidgetContext.isZoomed);
-    }, [ cameraWidgetContext.selectedEffects, cameraWidgetContext.isZoomed ]);
+    }, [ cameraWidgetContext ]);
 
     const getCurrentEffectAlpha = useCallback(() =>
     {
@@ -88,7 +88,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
         clone[selectedEffectIndex] = new RoomCameraWidgetSelectedEffect(selectedEffect.effect, newAlpha);
 
         cameraWidgetContext.setSelectedEffects(clone);
-    }, [ selectedEffectName, cameraWidgetContext.selectedEffects ]);
+    }, [ selectedEffectName, getEffectIndex, cameraWidgetContext ]);
 
     const processAction = useCallback((type: string, value: string | number = null) =>
     {
@@ -169,7 +169,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 cameraWidgetContext.setIsZoomed(!cameraWidgetContext.isZoomed);
                 return;
         }
-    }, [ onCloseClick, onCancelClick, availableEffects, cameraWidgetContext.selectedEffects, selectedEffectName ]);
+    }, [onCloseClick, onCancelClick, onCheckoutClick, cameraWidgetContext, getCurrentPicture, myLevel, selectedEffectName, getEffectIndex, availableEffects]);
 
     return (
         <NitroCardView className="nitro-camera-editor">
