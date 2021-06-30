@@ -1,16 +1,50 @@
 import { FC, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { GetSessionDataManager } from '../../../../../api';
 import { ChatWidgetMessageViewProps } from './ChatWidgetMessageView.types';
 
 export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
 {
     const { chat = null, makeRoom = null } = props;
-    const [ isVisible, setIsVisible ] = useState(false);
+    const [ isVisible, setIsVisible ] = useState(true);
+    const [ messageParts, setMessageParts ] = useState<{text: string, className?: string, style?: any, onClick?: () => void}[]>(null);
     const elementRef = useRef<HTMLDivElement>();
 
     const onClick = useCallback((event: MouseEvent) =>
     {
 
     }, []);
+
+    useEffect(() =>
+    {
+        if(messageParts) return;
+
+        const userNameMention = '@' + GetSessionDataManager().userName;
+
+        const matches = [...chat.text.matchAll(new RegExp(userNameMention + '\\b', 'gi'))];
+
+        if(matches.length > 0)
+        {
+            const prevText = chat.text.substr(0, matches[0].index);
+            const postText = chat.text.substring(matches[0].index + userNameMention.length, chat.text.length);
+
+            setMessageParts(
+                [
+                    { text: prevText },
+                    { text: userNameMention, className: 'chat-mention', onClick: () => {alert('I clicked in the mention')}},
+                    { text: postText }
+                ]
+            );
+        }
+        else
+        {
+            setMessageParts(
+                [
+                    { text: chat.text }
+                ]
+            );
+        }
+        
+    }, [ chat ]);
 
     useEffect(() =>
     {
@@ -62,7 +96,12 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
                     { (chat.imageUrl && (chat.imageUrl !== '')) && <div className="user-image" style={ { backgroundImage: 'url(' + chat.imageUrl + ')' } } /> }
                 </div>
                 <div className="chat-content">
-                    <b className="username mr-1">{ chat.username }</b><span className="message"> { chat.text }</span>
+                    <b className="username mr-1">{ chat.username }</b><span className="message"> {
+                        messageParts && messageParts.map((part, index) =>
+                            {
+                                return <span key={ index } className={ part.className } style={ part.style } onClick={ part.onClick }>{ part.text }</span>
+                            })
+                    }</span>
                 </div>
                 <div className="pointer"></div>
             </div>

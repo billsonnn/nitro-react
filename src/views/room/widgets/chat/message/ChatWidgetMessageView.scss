@@ -15,6 +15,18 @@
     }
 }
 
+.chat-mention {
+    padding: 1px 5px;
+    font-weight: bold;
+    background: rgba(0, 0, 0, .2);
+    cursor: pointer;
+    border-radius: 100px;
+
+    &:hover {
+        color: blue;
+    }
+}
+
 .bubble-container {
     position: absolute;
     width: fit-content;
