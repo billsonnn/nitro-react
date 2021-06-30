@@ -5,7 +5,7 @@ import { ObjectLocationViewProps } from './ObjectLocationView.types';
 
 export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
 {
-    const { objectId = -1, category = -1, children = null } = props;
+    const { objectId = -1, category = -1, noFollow = false, children = null } = props;
     const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: -1, y: -1});
     const elementRef = useRef<HTMLDivElement>();
 
@@ -31,13 +31,24 @@ export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
 
     useEffect(() =>
     {
-        Nitro.instance.ticker.add(updatePosition);
+        let remove = false;
+
+        if(noFollow)
+        {
+            updatePosition();
+        }
+        else
+        {
+            remove = true;
+
+            Nitro.instance.ticker.add(updatePosition);
+        }
 
         return () =>
         {
-            Nitro.instance.ticker.remove(updatePosition);
+            if(remove) Nitro.instance.ticker.remove(updatePosition);
         }
-    }, [ updatePosition ]);
+    }, [ updatePosition, noFollow ]);
 
     return (
         <div ref={ elementRef } className={ 'object-location position-absolute ' + (pos.x > -1 ? 'visible' : 'invisible') } style={ { left: pos.x, top: pos.y } }>
