@@ -2,6 +2,7 @@ export * from './RoomWidgetAvatarInfoEvent';
 export * from './RoomWidgetObjectNameEvent';
 export * from './RoomWidgetRoomEngineUpdateEvent';
 export * from './RoomWidgetRoomObjectUpdateEvent';
+export * from './RoomWidgetRoomViewUpdateEvent';
 export * from './RoomWidgetUpdateDanceStatusEvent';
 export * from './RoomWidgetUpdateEvent';
 export * from './RoomWidgetUpdateInfostandEvent';
