@@ -15,22 +15,13 @@ export const ChatWidgetView: FC<ChatWidgetViewProps> = props =>
     const { roomSession = null } = useRoomContext();
     const elementRef = useRef<HTMLDivElement>();
 
-    const removeFirstHiddenChat = useCallback(() =>
+    const removeHiddenChats = useCallback(() =>
     {
         if(!chatMessages.length) return;
 
-        const lastChat = chatMessages[0];
-        
-        if((lastChat.top > (-(lastChat.height) * 2))) return;
+        const newMessages = chatMessages.filter(chat => ((chat.top > (-(chat.height) * 2))));
 
-        setChatMessages(prevValue =>
-            {
-                const newMessages = [ ...prevValue ];
-
-                newMessages.shift();
-
-                return newMessages;
-            });
+        if(newMessages.length !== chatMessages.length) setChatMessages(newMessages);
     }, [ chatMessages ]);
 
     const moveChatUp = useCallback((chat: ChatBubbleMessage, amount: number) =>
@@ -42,8 +33,8 @@ export const ChatWidgetView: FC<ChatWidgetViewProps> = props =>
     {
         chatMessages.forEach(chat => moveChatUp(chat, amount));
 
-        removeFirstHiddenChat();
-    }, [ chatMessages, moveChatUp, removeFirstHiddenChat ]);
+        removeHiddenChats();
+    }, [ chatMessages, moveChatUp, removeHiddenChats ]);
 
     const makeRoom = useCallback((chat: ChatBubbleMessage) =>
     {
@@ -142,7 +133,7 @@ export const ChatWidgetView: FC<ChatWidgetViewProps> = props =>
             {
                 if(!chat.elementRef) return;
 
-                chat.left = (chat.elementRef.offsetLeft + event.offsetX);
+                chat.left += event.offsetX;
             });
     }, [ roomSession, chatMessages ]);
 
