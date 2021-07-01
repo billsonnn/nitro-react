@@ -1,10 +1,11 @@
-import { FixedSizeStack } from 'nitro-renderer';
+import { FixedSizeStack, Nitro } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { GetRoomObjectBounds, GetRoomSession, GetTicker } from '../../../../api';
 import { ContextMenuViewProps } from './ContextMenuView.types';
 
 const fadeDelay = 3000;
 const fadeLength = 75;
+const SPACE_AROUND_EDGES = 10;
 
 export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 {
@@ -46,9 +47,21 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
         if(!bounds || !elementRef.current) return;
 
+        let left = Math.round((bounds.left + (bounds.width / 2)) - (elementRef.current.offsetWidth / 2));
+        let top = Math.round((bounds.top - elementRef.current.offsetHeight) + 20);
+
+        const maxLeft = ((Nitro.instance.width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
+        const maxTop = ((Nitro.instance.height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
+
+        if(left < SPACE_AROUND_EDGES) left = SPACE_AROUND_EDGES;
+        else if(left > maxLeft) left = maxLeft;
+
+        if(top < SPACE_AROUND_EDGES) top = SPACE_AROUND_EDGES;
+        else if(top > maxTop) top = maxTop;
+
         setPos({
-            x: Math.round(((bounds.left + (bounds.width / 2)) - (elementRef.current.offsetWidth / 2))),
-            y: Math.round((bounds.top - elementRef.current.offsetHeight) + 10)
+            x: left,
+            y: top
         });
     }, [ objectId, category, isFading, close ]);
 
