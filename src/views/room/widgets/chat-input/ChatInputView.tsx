@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { GetConfiguration } from '../../../../api';
+import { GetConfiguration, GetSessionDataManager } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks/events';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { useRoomContext } from '../../context/RoomContext';
@@ -19,6 +19,8 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
     const [ isTyping, setIsTyping ] = useState(false);
     const [ typingStartedSent, setTypingStartedSent ] = useState(false);
     const [ isIdle, setIsIdle ] = useState(false);
+    const [ chatStyleId, setChatStyleId ] = useState(GetSessionDataManager().chatStyle);
+    const [ needsChatStyleUpdate, setNeedsChatStyleUpdate ] = useState(false);
     const inputRef = useRef<HTMLInputElement>();
 
     const chatModeIdWhisper = useMemo(() =>
@@ -119,20 +121,18 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
 
         if(text.length <= maxChatLength)
         {
-            // if(this.needsStyleUpdate)
-            // {
-            //     Nitro.instance.sessionDataManager.sendChatStyleUpdate(this.currentStyle);
+            if(needsChatStyleUpdate)
+            {
+                GetSessionDataManager().sendChatStyleUpdate(chatStyleId);
 
-            //     this.needsStyleUpdate = false;
-            // }
+                setNeedsChatStyleUpdate(false);
+            }
 
-            let currentStyle = 1;
-
-            sendChat(text, chatType, recipientName, currentStyle);
+            sendChat(text, chatType, recipientName, chatStyleId);
         }
 
         setChatValue(append);
-    }, [ chatModeIdWhisper, chatModeIdShout, chatModeIdSpeak, maxChatLength, sendChat ]);
+    }, [ chatModeIdWhisper, chatModeIdShout, chatModeIdSpeak, maxChatLength, chatStyleId, needsChatStyleUpdate, sendChat ]);
 
     const updateChatInput = useCallback((value: string) =>
     {
@@ -162,6 +162,7 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
             case 'Space':
                 checkSpecialKeywordForInput();
                 return;
+            case 'NumpadEnter':
             case 'Enter':
                 sendChatValue(value, event.shiftKey);
                 return;
@@ -182,7 +183,8 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
 
     const onStyleSelected = useCallback((styleId: number) =>
     {
-
+        setChatStyleId(styleId);
+        setNeedsChatStyleUpdate(true);
     }, []);
 
     const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
