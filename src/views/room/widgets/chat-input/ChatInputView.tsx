@@ -4,7 +4,7 @@ import { GetConfiguration } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks/events';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { useRoomContext } from '../../context/RoomContext';
-import { RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateInfostandUserEvent } from '../../events';
+import { RoomWidgetChatInputContentUpdateEvent, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateInfostandUserEvent } from '../../events';
 import { RoomWidgetChatMessage, RoomWidgetChatTypingMessage } from '../../messages';
 import { ChatInputViewProps } from './ChatInputView.types';
 import { ChatInputStyleSelectorView } from './style-selector/ChatInputStyleSelectorView';
@@ -198,6 +198,21 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
     }, []);
 
     CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateInfostandUserEvent);
+
+    const onRoomWidgetChatInputContentUpdateEvent = useCallback((event: RoomWidgetChatInputContentUpdateEvent) =>
+    {
+        switch(event.chatMode)
+        {
+            case RoomWidgetChatInputContentUpdateEvent.WHISPER: {
+                setChatValue(`${ chatModeIdWhisper } ${ event.userName } `);
+                return;
+            }
+            case RoomWidgetChatInputContentUpdateEvent.SHOUT:
+                return;
+        }
+    }, [ chatModeIdWhisper ]);
+
+    CreateEventDispatcherHook(RoomWidgetChatInputContentUpdateEvent.CHAT_INPUT_CONTENT, eventDispatcher, onRoomWidgetChatInputContentUpdateEvent);
 
     useEffect(() =>
     {
