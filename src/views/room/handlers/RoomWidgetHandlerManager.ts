@@ -62,8 +62,7 @@ export class RoomWidgetHandlerManager implements IRoomWidgetHandlerManager
             }
         }
 
-        handler.roomSession = this._roomSession;
-        handler.eventDispatcher = this._eventDispatcher;
+        handler.container = this;
 
         this._handlers.push(handler);
     }

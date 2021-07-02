@@ -9,7 +9,7 @@ import { GetRoomEngine } from '../../api/nitro/room/GetRoomEngine';
 import { useRoomEngineEvent } from '../../hooks/events';
 import { RoomContextProvider } from './context/RoomContext';
 import { RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from './events';
-import { IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler } from './handlers';
+import { IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler } from './handlers';
 import { RoomViewProps } from './RoomView.types';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
 
@@ -35,6 +35,7 @@ export const RoomView: FC<RoomViewProps> = props =>
 
         widgetHandlerManager.registerHandler(new RoomWidgetAvatarInfoHandler());
         widgetHandlerManager.registerHandler(new RoomWidgetInfostandHandler());
+        widgetHandlerManager.registerHandler(new RoomWidgetChatInputHandler());
 
         setWidgetHandler(widgetHandlerManager);
 
