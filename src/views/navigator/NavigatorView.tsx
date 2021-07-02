@@ -11,6 +11,8 @@ import { NavigatorMessageHandler } from './NavigatorMessageHandler';
 import { NavigatorViewProps } from './NavigatorView.types';
 import { initialNavigator, NavigatorActions, NavigatorReducer } from './reducers/NavigatorReducer';
 import { NavigatorRoomCreatorView } from './views/creator/NavigatorRoomCreatorView';
+import { NavigatorRoomInfoView } from './views/room-info/NavigatorRoomInfoView';
+import { NavigatorRoomLinkView } from './views/room-link/NavigatorRoomLinkView';
 import { NavigatorSearchResultSetView } from './views/search-result-set/NavigatorSearchResultSetView';
 import { NavigatorSearchView } from './views/search/NavigatorSearchView';
 
@@ -18,6 +20,8 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ isCreatorOpen, setCreatorOpen ] = useState(false);
+    const [ isRoomInfoOpen, setRoomInfoOpen ] = useState(false);
+    const [ isRoomLinkOpen, setRoomLinkOpen ] = useState(false);
     const [ navigatorState, dispatchNavigatorState ] = useReducer(NavigatorReducer, initialNavigator);
     const { needsNavigatorUpdate = false, topLevelContext = null, topLevelContexts = null } = navigatorState;
 
@@ -34,12 +38,20 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
             case NavigatorEvent.TOGGLE_NAVIGATOR:
                 setIsVisible(value => !value);
                 return;
+            case NavigatorEvent.TOGGLE_ROOM_INFO:
+                setRoomInfoOpen(value => !value);
+                return;
+            case NavigatorEvent.TOGGLE_ROOM_LINK:
+                setRoomLinkOpen(value => !value);
+                return;
         }
     }, []);
 
     useUiEvent(NavigatorEvent.SHOW_NAVIGATOR, onNavigatorEvent);
     useUiEvent(NavigatorEvent.HIDE_NAVIGATOR, onNavigatorEvent);
     useUiEvent(NavigatorEvent.TOGGLE_NAVIGATOR, onNavigatorEvent);
+    useUiEvent(NavigatorEvent.TOGGLE_ROOM_INFO, onNavigatorEvent);
+    useUiEvent(NavigatorEvent.TOGGLE_ROOM_LINK, onNavigatorEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
@@ -110,6 +122,8 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                     </div>
                     </NitroCardContentView>
                 </NitroCardView> }
+            { isRoomInfoOpen && <NavigatorRoomInfoView onCloseClick={ () => setRoomInfoOpen(false) } /> }
+            { isRoomLinkOpen && <NavigatorRoomLinkView onCloseClick={ () => setRoomLinkOpen(false) } /> }
         </NavigatorContextProvider>
     );
 }

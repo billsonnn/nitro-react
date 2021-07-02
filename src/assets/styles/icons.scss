@@ -468,6 +468,24 @@ i {
             }
         }
 
+        &.icon-house-small {
+            background: url('../images/icons/house-small.png');
+            width: 19px;
+            height: 14px;
+        }
+
+        &.icon-camera-small {
+            background: url('../images/icons/camera-small.png');
+            width: 17px;
+            height: 15px;
+        }
+
+        &.icon-arrows {
+            background: url('../images/icons/arrows.png');
+            width: 17px;
+            height: 15px;
+        }
+
         &.spin {
             animation: rotating 1s linear infinite;
         }

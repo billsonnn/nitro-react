@@ -1,4 +1,4 @@
-import { GenericErrorEvent, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomForwardEvent, RoomInfoComposer, RoomInfoEvent, RoomInfoOwnerEvent, UserInfoEvent } from 'nitro-renderer';
+import { GenericErrorEvent, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomForwardEvent, RoomInfoComposer, RoomInfoEvent, RoomInfoOwnerEvent, UserInfoEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetRoomSessionManager, GetSessionDataManager } from '../../api';
 import { VisitRoom } from '../../api/navigator/VisitRoom';
@@ -9,7 +9,7 @@ import { NavigatorActions } from './reducers/NavigatorReducer';
 
 export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =>
 {
-    const { dispatchNavigatorState = null } = useNavigatorContext();
+    const { navigatorState = null, dispatchNavigatorState = null } = useNavigatorContext();
 
     const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
     {
@@ -28,8 +28,19 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
     {
         const parser = event.getParser();
 
+        const roomInfoData = navigatorState.roomInfoData;
+        roomInfoData.currentRoomOwner = parser.isOwner;
+        roomInfoData.currentRoomId = parser.roomId;
+
+        dispatchNavigatorState({
+            type: NavigatorActions.SET_ROOM_INFO_DATA,
+            payload: {
+                roomInfoData: roomInfoData
+            }
+        });
+
         SendMessageHook(new RoomInfoComposer(parser.roomId, true, false));
-    }, []);
+    }, [ navigatorState, dispatchNavigatorState ]);
 
     const onRoomInfoEvent = useCallback((event: RoomInfoEvent) =>
     {
@@ -37,17 +48,15 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
 
         if(parser.roomEnter)
         {
-            // this._data.enteredGuestRoom = parser.data;
-            // this._data.staffPick        = parser.data.roomPicker;
+            const roomInfoData = navigatorState.roomInfoData;
+            roomInfoData.enteredGuestRoom = parser.data;
 
-            // const isCreatedRoom = (this._data.createdRoomId === parser.data.roomId);
-
-            // if(!isCreatedRoom && parser.data.displayRoomEntryAd)
-            // {
-            //     // display ad
-            // }
-
-            // this._data.createdRoomId = 0;
+            dispatchNavigatorState({
+                type: NavigatorActions.SET_ROOM_INFO_DATA,
+                payload: {
+                    roomInfoData: roomInfoData
+                }
+            });
         }
         else if(parser.roomForward)
         {
@@ -66,10 +75,17 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
         }
         else
         {
-            // this._data.enteredGuestRoom = parser.data;
-            // this._data.staffPick        = parser.data.roomPicker;
+            const roomInfoData = navigatorState.roomInfoData;
+            roomInfoData.enteredGuestRoom = parser.data;
+
+            dispatchNavigatorState({
+                type: NavigatorActions.SET_ROOM_INFO_DATA,
+                payload: {
+                    roomInfoData: roomInfoData
+                }
+            });
         }
-    }, []);
+    }, [ dispatchNavigatorState, navigatorState ]);
 
     const onRoomDoorbellEvent = useCallback((event: RoomDoorbellEvent) =>
     {
@@ -146,6 +162,18 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
         VisitRoom(parser.roomId);
     }, []);
 
+    const onNavigatorHomeRoomEvent = useCallback((event: NavigatorHomeRoomEvent) =>
+    {
+        const parser = event.getParser();
+
+        dispatchNavigatorState({
+            type: NavigatorActions.SET_HOME_ROOM_ID,
+            payload: {
+                homeRoomId: parser.homeRoomId
+            }
+        });
+    }, [ dispatchNavigatorState ]);
+
     CreateMessageHook(UserInfoEvent, onUserInfoEvent);
     CreateMessageHook(RoomForwardEvent, onRoomForwardEvent);
     CreateMessageHook(RoomInfoOwnerEvent, onRoomInfoOwnerEvent);
@@ -157,6 +185,7 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
     CreateMessageHook(NavigatorSearchEvent, onNavigatorSearchEvent);
     CreateMessageHook(NavigatorCategoriesEvent, onNavigatorCategoriesEvent);
     CreateMessageHook(RoomCreatedEvent, onRoomCreatedEvent);
+    CreateMessageHook(NavigatorHomeRoomEvent, onNavigatorHomeRoomEvent);
 
     return null;
 }

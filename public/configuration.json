@@ -19,7 +19,7 @@
     "avatar.asset.url": "${asset.url}/bundled/figure/%libname%.nitro",
     "avatar.asset.effect.url": "${asset.url}/bundled/effect/%libname%.nitro",
     "furni.extras.url": "${asset.url}/images/furniextras/%image%.png",
-    "url.prefix": "",
+    "url.prefix": "http://localhost:3000",
     "chat.viewer.height.percentage": 0.40,
     "auth.system.enabled": true,
     "auth.system.http.enabled": true,
