@@ -87,16 +87,24 @@
             "roomId": 2346
         }
     ],
-    "hotelview.images": {
-        "background": "${asset.url}/images/reception/stretch_blue.png",
-        "background.colour": "#6eadc8",
-        "sun": "${asset.url}/images/reception/sun.png",
-        "drape": "${asset.url}/images/reception/drape.png",
-        "left": "${asset.url}/images/reception/ts.png",
-        "right": "${asset.url}/images/reception/US_right.png",
-        "right.repeat": "${asset.url}/images/reception/US_top_right.png"
+    "hotelview": {
+        "widgets": {
+            "types": "news,",
+            "slot1": "news"
+        },
+        "images": {
+            "background": "${asset.url}/images/reception/stretch_blue.png",
+            "background.colour": "#6eadc8",
+            "sun": "${asset.url}/images/reception/sun.png",
+            "drape": "${asset.url}/images/reception/drape.png",
+            "left": "${asset.url}/images/reception/ts.png",
+            "right": "${asset.url}/images/reception/US_right.png",
+            "right.repeat": "${asset.url}/images/reception/US_top_right.png"
+        }
     },
-    "achievements.unseen.ignored": ["ACH_AllTimeHotelPresence"],
+    "achievements.unseen.ignored": [
+        "ACH_AllTimeHotelPresence"
+    ],
     "avatareditor.show.clubitems.dimmed": true,
     "avatareditor.show.clubitems.first": true,
     "chat.history.max.items": 100,
