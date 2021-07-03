@@ -1,5 +1,5 @@
 import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomZoomEvent } from 'nitro-renderer';
-import { GetConnection, GetRoomEngine, GetSessionDataManager, SendChatTypingMessage } from '../../../api';
+import { GetConnection, GetRoomEngine, GetSessionDataManager } from '../../../api';
 import { RoomWidgetFloodControlEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetChatMessage, RoomWidgetChatSelectAvatarMessage, RoomWidgetChatTypingMessage, RoomWidgetMessage, RoomWidgetRequestWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
@@ -25,7 +25,7 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
             case RoomWidgetChatTypingMessage.TYPING_STATUS: {
                 const typingMessage = (message as RoomWidgetChatTypingMessage);
 
-                SendChatTypingMessage(typingMessage.isTyping);
+                this.container.roomSession.sendChatTypingMessage(typingMessage.isTyping);
                 break;
             }
             case RoomWidgetChatMessage.MESSAGE_CHAT: {

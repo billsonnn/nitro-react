@@ -1,20 +1,20 @@
 ﻿import { RoomWidgetUpdateEvent } from './RoomWidgetUpdateEvent';
 
-export class RoomWidgetChatInputContentUpdateEvent extends RoomWidgetUpdateEvent
+export class RoomWidgetUpdateChatInputContentEvent extends RoomWidgetUpdateEvent
 {
-    public static CHAT_INPUT_CONTENT: string = 'RWCICUE_CHAT_INPUT_CONTENT';
+    public static CHAT_INPUT_CONTENT: string = 'RWUCICE_CHAT_INPUT_CONTENT';
     public static WHISPER: string = 'whisper';
     public static SHOUT: string = 'shout';
 
     private _chatMode: string = '';
     private _userName: string = '';
 
-    constructor(k: string, _arg_2: string)
+    constructor(chatMode: string, userName: string)
     {
-        super(RoomWidgetChatInputContentUpdateEvent.CHAT_INPUT_CONTENT);
+        super(RoomWidgetUpdateChatInputContentEvent.CHAT_INPUT_CONTENT);
 
-        this._chatMode = k;
-        this._userName = _arg_2;
+        this._chatMode = chatMode;
+        this._userName = userName;
     }
 
     public get chatMode(): string

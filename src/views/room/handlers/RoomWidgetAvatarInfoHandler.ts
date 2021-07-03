@@ -1,6 +1,6 @@
 import { NitroEvent, RoomSessionDanceEvent, RoomSessionUserDataUpdateEvent } from 'nitro-renderer';
 import { GetRoomSession, GetSessionDataManager } from '../../../api';
-import { RoomWidgetAvatarInfoEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateEvent, RoomWidgetUserDataUpdateEvent } from '../events';
+import { RoomWidgetAvatarInfoEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateUserDataEvent } from '../events';
 import { RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUserActionMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
 
@@ -11,7 +11,7 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
         switch(event.type)
         {
             case RoomSessionUserDataUpdateEvent.USER_DATA_UPDATED:
-                this.container.eventDispatcher.dispatchEvent(new RoomWidgetUserDataUpdateEvent());
+                this.container.eventDispatcher.dispatchEvent(new RoomWidgetUpdateUserDataEvent());
                 return;
             case RoomSessionDanceEvent.RSDE_DANCE:
                 const danceEvent = (event as RoomSessionDanceEvent);

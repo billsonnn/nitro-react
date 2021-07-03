@@ -3,7 +3,7 @@ import { GetConnection, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture
 import { WiredSelectObjectEvent } from '../../../events';
 import { dispatchUiEvent } from '../../../hooks/events';
 import { LocalizeText } from '../../../utils/LocalizeText';
-import { RoomWidgetChatInputContentUpdateEvent, RoomWidgetObjectNameEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
+import { RoomWidgetObjectNameEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
 import { RoomWidgetChangeMottoMessage, RoomWidgetFurniActionMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUserActionMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
 
@@ -82,7 +82,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 GetSessionDataManager().givePetRespect(userId);
                 break;
             case RoomWidgetUserActionMessage.WHISPER_USER:
-                this.container.eventDispatcher.dispatchEvent(new RoomWidgetChatInputContentUpdateEvent(RoomWidgetChatInputContentUpdateEvent.WHISPER, userData.name));
+                this.container.eventDispatcher.dispatchEvent(new RoomWidgetUpdateChatInputContentEvent(RoomWidgetUpdateChatInputContentEvent.WHISPER, userData.name));
                 break;
             case RoomWidgetUserActionMessage.IGNORE_USER:
                 GetSessionDataManager().ignoreUser(userData.name);

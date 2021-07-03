@@ -1,9 +1,10 @@
 export * from './RoomWidgetAvatarInfoEvent';
-export * from './RoomWidgetChatInputContentUpdateEvent';
 export * from './RoomWidgetFloodControlEvent';
 export * from './RoomWidgetObjectNameEvent';
 export * from './RoomWidgetRoomEngineUpdateEvent';
 export * from './RoomWidgetRoomObjectUpdateEvent';
+export * from './RoomWidgetUpdateChatEvent';
+export * from './RoomWidgetUpdateChatInputContentEvent';
 export * from './RoomWidgetUpdateDanceStatusEvent';
 export * from './RoomWidgetUpdateEvent';
 export * from './RoomWidgetUpdateInfostandEvent';
@@ -12,4 +13,4 @@ export * from './RoomWidgetUpdateInfostandPetEvent';
 export * from './RoomWidgetUpdateInfostandRentableBotEvent';
 export * from './RoomWidgetUpdateInfostandUserEvent';
 export * from './RoomWidgetUpdateRentableBotChatEvent';
-export * from './RoomWidgetUserDataUpdateEvent';
+export * from './RoomWidgetUpdateUserDataEvent';

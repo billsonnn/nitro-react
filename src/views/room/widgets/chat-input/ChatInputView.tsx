@@ -4,16 +4,13 @@ import { GetConfiguration, GetSessionDataManager } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks/events';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { useRoomContext } from '../../context/RoomContext';
-import { RoomWidgetChatInputContentUpdateEvent, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateInfostandUserEvent } from '../../events';
+import { RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent } from '../../events';
 import { RoomWidgetChatMessage, RoomWidgetChatTypingMessage } from '../../messages';
 import { ChatInputViewProps } from './ChatInputView.types';
 import { ChatInputStyleSelectorView } from './style-selector/ChatInputStyleSelectorView';
 
-let lastContent = '';
-
 export const ChatInputView: FC<ChatInputViewProps> = props =>
 {
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ chatValue, setChatValue ] = useState<string>('');
     const [ selectedUsername, setSelectedUsername ] = useState('');
     const [ isTyping, setIsTyping ] = useState(false);
@@ -21,6 +18,7 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
     const [ isIdle, setIsIdle ] = useState(false);
     const [ chatStyleId, setChatStyleId ] = useState(GetSessionDataManager().chatStyle);
     const [ needsChatStyleUpdate, setNeedsChatStyleUpdate ] = useState(false);
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const inputRef = useRef<HTMLInputElement>();
 
     const chatModeIdWhisper = useMemo(() =>
@@ -201,20 +199,20 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
 
     CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateInfostandUserEvent);
 
-    const onRoomWidgetChatInputContentUpdateEvent = useCallback((event: RoomWidgetChatInputContentUpdateEvent) =>
+    const onRoomWidgetChatInputContentUpdateEvent = useCallback((event: RoomWidgetUpdateChatInputContentEvent) =>
     {
         switch(event.chatMode)
         {
-            case RoomWidgetChatInputContentUpdateEvent.WHISPER: {
+            case RoomWidgetUpdateChatInputContentEvent.WHISPER: {
                 setChatValue(`${ chatModeIdWhisper } ${ event.userName } `);
                 return;
             }
-            case RoomWidgetChatInputContentUpdateEvent.SHOUT:
+            case RoomWidgetUpdateChatInputContentEvent.SHOUT:
                 return;
         }
     }, [ chatModeIdWhisper ]);
 
-    CreateEventDispatcherHook(RoomWidgetChatInputContentUpdateEvent.CHAT_INPUT_CONTENT, eventDispatcher, onRoomWidgetChatInputContentUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateChatInputContentEvent.CHAT_INPUT_CONTENT, eventDispatcher, onRoomWidgetChatInputContentUpdateEvent);
 
     useEffect(() =>
     {

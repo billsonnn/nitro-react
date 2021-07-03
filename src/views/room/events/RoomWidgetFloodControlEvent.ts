@@ -6,11 +6,11 @@ export class RoomWidgetFloodControlEvent extends RoomWidgetUpdateEvent
 
     private _seconds: number = 0;
 
-    constructor(k: number)
+    constructor(seconds: number)
     {
         super(RoomWidgetFloodControlEvent.FLOOD_CONTROL);
 
-        this._seconds = k;
+        this._seconds = seconds;
     }
 
     public get seconds(): number
