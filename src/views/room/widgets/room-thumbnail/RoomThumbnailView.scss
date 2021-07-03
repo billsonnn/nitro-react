@@ -1,0 +1,14 @@
+.nitro-room-thumbnail {
+    width: 300px;
+
+    .option {
+        font-size: 30px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+}
+
+@import './views/builder/RoomThumbnailWidgetBuilderView';
+@import './views/camera/RoomThumbnailWidgetCameraView';

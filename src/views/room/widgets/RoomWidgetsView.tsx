@@ -9,9 +9,9 @@ import { ChatInputView } from './chat-input/ChatInputView';
 import { ChatWidgetView } from './chat/ChatWidgetView';
 import { FurnitureWidgetsView } from './furniture/FurnitureWidgetsView';
 import { InfoStandWidgetView } from './infostand/InfoStandWidgetView';
+import { RoomThumbnailWidgetView } from './room-thumbnail/RoomThumbnailWidgetView';
 import { RoomToolsWidgetView } from './room-tools/RoomToolsWidgetView';
 import { RoomWidgetViewProps } from './RoomWidgets.types';
-
 export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
@@ -110,6 +110,7 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
             <FurnitureWidgetsView />
             <InfoStandWidgetView />
             <RoomToolsWidgetView />
+            <RoomThumbnailWidgetView />
         </>
     );
 }

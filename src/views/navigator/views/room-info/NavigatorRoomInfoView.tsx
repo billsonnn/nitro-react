@@ -7,6 +7,7 @@ import { dispatchUiEvent } from '../../../../hooks/events';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { LocalizeText } from '../../../../utils/LocalizeText';
+import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { useNavigatorContext } from '../../context/NavigatorContext';
 import { NavigatorActions } from '../../reducers/NavigatorReducer';
 import { NavigatorRoomInfoViewProps } from './NavigatorRoomInfoView.types';
@@ -34,7 +35,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
         setIsRoomMuted(roomInfoData.enteredGuestRoom.allInRoomMuted);
     }, [ roomInfoData ]);
     
-    const processAction = useCallback((action: string) =>
+    const processAction = useCallback((action: string, value?: string) =>
     {
         if(!roomInfoData || !roomInfoData.enteredGuestRoom) return;
 
@@ -56,6 +57,12 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                 });
 
                 SendMessageHook(new UserHomeRoomComposer(newRoomId));
+                return;
+            case 'navigator_search_tag':
+                return;
+            case 'open_room_thumbnail_camera':
+                return;
+            case 'open_group_info':
                 return;
             case 'toggle_room_link':
                 dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK));
@@ -103,7 +110,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                     <div className="d-flex mb-1">
                         { roomInfoData.enteredGuestRoom.tags.map(tag =>
                             {
-                                return <div className="bg-muted p-1 rounded me-1 cursor-pointer">#{ tag }</div>
+                                return <div className="bg-muted p-1 rounded me-1 cursor-pointer" onClick={ () => processAction('navigator_search_tag', tag) }>#{ tag }</div>
                             }) }
                     </div>
                     <div>{ roomInfoData.enteredGuestRoom.description }</div>
@@ -111,12 +118,19 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                         <i className="icon icon-camera-small position-absolute b-0 r-0 m-1 cursor-pointer" />
                         { roomThumbnail && <img alt="" src={ roomThumbnail } /> }
                     </div>
+                    { roomInfoData.enteredGuestRoom.habboGroupId > 0 && <div className="d-flex align-items-center mb-2 cursor-pointer" onClick={ () => processAction('open_group_info') }>
+                        <div className="me-2">
+                            <BadgeImageView badgeCode={ roomInfoData.enteredGuestRoom.groupBadgeCode } isGroup={ true } />
+                        </div>
+                        <div className="text-decoration-underline">
+                            { LocalizeText('navigator.guildbase', ['groupName'], [roomInfoData.enteredGuestRoom.groupName]) }
+                        </div>
+                    </div> }
                     <div className="cursor-pointer text-decoration-underline d-flex align-items-center mb-2" onClick={ () => processAction('toggle_room_link') }>
                         <i className="icon icon-arrows me-1" />
                         <span>{ LocalizeText('navigator.embed.caption') }</span>
                     </div>
                     <button className="btn btn-sm btn-primary w-100 mb-1" disabled={ true }>{ LocalizeText('navigator.room.popup.info.room.settings') }</button>
-                    <button className="btn btn-sm btn-primary w-100 mb-1" disabled={ true }>{ LocalizeText('navigator.roomsettings.roomfilter') }</button>
                     <button className="btn btn-sm btn-primary w-100 mb-1" disabled={ true }>{ LocalizeText('open.floor.plan.editor') }</button>
                     <button className="btn btn-sm btn-primary w-100 mb-1" onClick={ () => processAction('toggle_pick') }>{ LocalizeText(isRoomPicked ? 'navigator.staffpicks.unpick' : 'navigator.staffpicks.pick') }</button>
                     <button className="btn btn-sm btn-danger w-100 mb-1" disabled={ true }>{ LocalizeText('help.emergency.main.report.room') }</button>
