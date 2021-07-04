@@ -11,5 +11,4 @@ export * from './HasHabboClub';
 export * from './HasHabboVip';
 export * from './IsOwnerOfFurniture';
 export * from './IsRidingHorse';
-export * from './SendChatTypingMessage';
 export * from './StartRoomSession';

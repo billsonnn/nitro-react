@@ -1,13 +1,13 @@
-import { IEventDispatcher, IRoomSession, NitroEvent } from 'nitro-renderer';
+import { NitroEvent } from 'nitro-renderer';
 import { RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage } from '../messages';
+import { IRoomWidgetHandlerManager } from './IRoomWidgetHandlerManager';
 
 export interface IRoomWidgetHandler
 {
     processEvent: (event: NitroEvent) => void;
     processWidgetMessage: (message: RoomWidgetMessage) => RoomWidgetUpdateEvent;
-    roomSession: IRoomSession;
-    eventDispatcher: IEventDispatcher;
+    container: IRoomWidgetHandlerManager;
     eventTypes: string[];
     messageTypes: string[];
 }

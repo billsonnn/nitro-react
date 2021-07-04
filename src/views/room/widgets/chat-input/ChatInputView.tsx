@@ -1,18 +1,24 @@
-import { FC, MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { GetConfiguration, GetRoomSession, SendChatTypingMessage } from '../../../../api';
+import { GetConfiguration, GetSessionDataManager } from '../../../../api';
+import { CreateEventDispatcherHook } from '../../../../hooks/events';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { useRoomContext } from '../../context/RoomContext';
-import { ChatInputMessageType, ChatInputViewProps } from './ChatInputView.types';
-
-let lastContent = '';
+import { RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent } from '../../events';
+import { RoomWidgetChatMessage, RoomWidgetChatTypingMessage } from '../../messages';
+import { ChatInputViewProps } from './ChatInputView.types';
+import { ChatInputStyleSelectorView } from './style-selector/ChatInputStyleSelectorView';
 
 export const ChatInputView: FC<ChatInputViewProps> = props =>
 {
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ chatValue, setChatValue ] = useState<string>('');
     const [ selectedUsername, setSelectedUsername ] = useState('');
     const [ isTyping, setIsTyping ] = useState(false);
+    const [ typingStartedSent, setTypingStartedSent ] = useState(false);
+    const [ isIdle, setIsIdle ] = useState(false);
+    const [ chatStyleId, setChatStyleId ] = useState(GetSessionDataManager().chatStyle);
+    const [ needsChatStyleUpdate, setNeedsChatStyleUpdate ] = useState(false);
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const inputRef = useRef<HTMLInputElement>();
 
     const chatModeIdWhisper = useMemo(() =>
@@ -59,35 +65,24 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
     {
         setChatValue(prevValue =>
             {
-                if((prevValue !== LocalizeText('widgets.chatinput.mode.whisper')) || !selectedUsername.length) return prevValue;
+                if((prevValue !== chatModeIdWhisper) || !selectedUsername.length) return prevValue;
 
                 return (`${ prevValue } ${ selectedUsername }`);
             });
-    }, [ selectedUsername ]);
+    }, [ selectedUsername, chatModeIdWhisper ]);
 
     const sendChat = useCallback((text: string, chatType: number, recipientName: string = '', styleId: number = 0) =>
     {
         setChatValue('');
 
-        switch(chatType)
-        {
-            case ChatInputMessageType.CHAT_DEFAULT:
-                GetRoomSession().sendChatMessage(text, styleId);
-                return;
-            case ChatInputMessageType.CHAT_WHISPER:
-                GetRoomSession().sendWhisperMessage(recipientName, text, styleId);
-                return;
-            case ChatInputMessageType.CHAT_SHOUT:
-                GetRoomSession().sendShoutMessage(text, styleId);
-                return;
-        }
-    }, []);
+        widgetHandler.processWidgetMessage(new RoomWidgetChatMessage(RoomWidgetChatMessage.MESSAGE_CHAT, text, chatType, recipientName, styleId));
+    }, [ widgetHandler ]);
 
     const sendChatValue = useCallback((value: string, shiftKey: boolean = false) =>
     {
         if(!value || (value === '')) return;
 
-        let chatType = (shiftKey ? ChatInputMessageType.CHAT_SHOUT : ChatInputMessageType.CHAT_DEFAULT);
+        let chatType = (shiftKey ? RoomWidgetChatMessage.CHAT_SHOUT : RoomWidgetChatMessage.CHAT_DEFAULT);
         let text = value;
 
         const parts = text.split(' ');
@@ -98,7 +93,7 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
         switch(parts[0])
         {
             case chatModeIdWhisper:
-                chatType = ChatInputMessageType.CHAT_WHISPER;
+                chatType = RoomWidgetChatMessage.CHAT_WHISPER;
                 recipientName = parts[1];
                 append = (chatModeIdWhisper + ' ' + recipientName + ' ');
 
@@ -106,12 +101,12 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
                 parts.shift();
                 break;
             case chatModeIdShout:
-                chatType = ChatInputMessageType.CHAT_SHOUT;
+                chatType = RoomWidgetChatMessage.CHAT_SHOUT;
 
                 parts.shift();
                 break;
             case chatModeIdSpeak:
-                chatType = ChatInputMessageType.CHAT_DEFAULT;
+                chatType = RoomWidgetChatMessage.CHAT_DEFAULT;
 
                 parts.shift();
                 break;
@@ -119,20 +114,38 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
 
         text = parts.join(' ');
 
+        setIsTyping(false);
+        setIsIdle(false);
+
         if(text.length <= maxChatLength)
         {
-            // if(this.needsStyleUpdate)
-            // {
-            //     Nitro.instance.sessionDataManager.sendChatStyleUpdate(this.currentStyle);
+            if(needsChatStyleUpdate)
+            {
+                GetSessionDataManager().sendChatStyleUpdate(chatStyleId);
 
-            //     this.needsStyleUpdate = false;
-            // }
+                setNeedsChatStyleUpdate(false);
+            }
 
-            let currentStyle = 1;
-
-            sendChat(text, chatType, recipientName, currentStyle);
+            sendChat(text, chatType, recipientName, chatStyleId);
         }
-    }, [ chatModeIdWhisper, chatModeIdShout, chatModeIdSpeak, maxChatLength, sendChat ]);
+
+        setChatValue(append);
+    }, [ chatModeIdWhisper, chatModeIdShout, chatModeIdSpeak, maxChatLength, chatStyleId, needsChatStyleUpdate, sendChat ]);
+
+    const updateChatInput = useCallback((value: string) =>
+    {
+        if(!value || !value.length)
+        {
+            setIsTyping(false);
+        }
+        else
+        {
+            setIsTyping(true);
+            setIsIdle(true);
+        }
+
+        setChatValue(value);
+    }, []);
 
     const onKeyDownEvent = useCallback((event: KeyboardEvent) =>
     {
@@ -140,24 +153,106 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
 
         if(document.activeElement !== inputRef.current) setInputFocus();
 
-        switch(event.key)
+        const value = (event.target as HTMLInputElement).value;
+
+        switch(event.code)
         {
             case 'Space':
                 checkSpecialKeywordForInput();
                 return;
+            case 'NumpadEnter':
             case 'Enter':
-                sendChatValue((event.target as HTMLInputElement).value, event.shiftKey);
+                sendChatValue(value, event.shiftKey);
                 return;
             case 'Backspace':
+                if(value)
+                {
+                    const parts = value.split(' ');
+
+                    if((parts[0] === chatModeIdWhisper) && (parts.length === 3) && (parts[2] === ''))
+                    {
+                        setChatValue('');
+                    }
+                }
                 return;
         }
         
-    }, [ inputRef, anotherInputHasFocus, setInputFocus, checkSpecialKeywordForInput, sendChatValue ]);
+    }, [ inputRef, chatModeIdWhisper, anotherInputHasFocus, setInputFocus, checkSpecialKeywordForInput, sendChatValue ]);
 
-    const onInputMouseDownEvent = useCallback((event: MouseEvent<HTMLInputElement>) =>
+    const onStyleSelected = useCallback((styleId: number) =>
     {
-        setInputFocus();
-    }, [ setInputFocus ]);
+        setChatStyleId(styleId);
+        setNeedsChatStyleUpdate(true);
+    }, []);
+
+    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    {
+        setSelectedUsername('');
+    }, []);
+
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+
+    const onRoomWidgetUpdateInfostandUserEvent = useCallback((event: RoomWidgetUpdateInfostandUserEvent) =>
+    {
+        setSelectedUsername(event.name);
+    }, []);
+
+    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateInfostandUserEvent);
+
+    const onRoomWidgetChatInputContentUpdateEvent = useCallback((event: RoomWidgetUpdateChatInputContentEvent) =>
+    {
+        switch(event.chatMode)
+        {
+            case RoomWidgetUpdateChatInputContentEvent.WHISPER: {
+                setChatValue(`${ chatModeIdWhisper } ${ event.userName } `);
+                return;
+            }
+            case RoomWidgetUpdateChatInputContentEvent.SHOUT:
+                return;
+        }
+    }, [ chatModeIdWhisper ]);
+
+    CreateEventDispatcherHook(RoomWidgetUpdateChatInputContentEvent.CHAT_INPUT_CONTENT, eventDispatcher, onRoomWidgetChatInputContentUpdateEvent);
+
+    useEffect(() =>
+    {
+        if(isTyping)
+        {
+            if(!typingStartedSent)
+            {
+                setTypingStartedSent(true);
+                
+                widgetHandler.processWidgetMessage(new RoomWidgetChatTypingMessage(isTyping));
+            }
+        }
+        else
+        {
+            if(typingStartedSent)
+            {
+                setTypingStartedSent(false);
+
+                widgetHandler.processWidgetMessage(new RoomWidgetChatTypingMessage(isTyping));
+            }
+        }
+    }, [ widgetHandler, isTyping, typingStartedSent ]);
+
+    useEffect(() =>
+    {
+        if(!isIdle) return;
+
+        let timeout: ReturnType<typeof setTimeout> = null;
+
+        if(isIdle)
+        {
+            timeout = setTimeout(() =>
+            {
+                setIsIdle(false);
+                setIsTyping(false)
+            }, 10000);
+        }
+
+        return () => clearTimeout(timeout);
+    }, [ isIdle ]);
 
     useEffect(() =>
     {
@@ -169,59 +264,13 @@ export const ChatInputView: FC<ChatInputViewProps> = props =>
         }
     }, [ onKeyDownEvent ]);
 
-    useEffect(() =>
-    {
-        let idleTimer: ReturnType<typeof setTimeout> = null;
-
-        if(!chatValue || !chatValue.length)
-        {
-            setIsTyping(prevValue =>
-                {
-                    if(!prevValue) return prevValue;
-                    
-                    if(prevValue) SendChatTypingMessage(false);
-
-                    return false;
-                });
-        }
-        else
-        {
-            setIsTyping(prevValue =>
-                {
-                    if(prevValue) return prevValue;
-                    
-                    if(!prevValue) SendChatTypingMessage(true);
-
-                    return true;
-                });
-
-            lastContent = chatValue;
-
-            idleTimer = setTimeout(() =>
-            {
-                setIsTyping(prevValue =>
-                    {
-                        if(prevValue) SendChatTypingMessage(false);
-
-                        return false;
-                    });
-            }, 3000);
-        }
-
-        return () =>
-        {
-            if(idleTimer) clearTimeout(idleTimer);
-        }
-    }, [ chatValue ]);
-
     return (
         createPortal(
-        <div className="nitro-chat-input">
-            <div className="chatinput-container">
-                <div className="input-sizer">
-                    <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxChatLength } onChange={ event => { event.target.parentElement.dataset.value = event.target.value; setChatValue(event.target.value) } } onMouseDown={ onInputMouseDownEvent } />
-                </div>
+        <div className="nitro-chat-input-container">
+            <div className="input-sizer">
+                <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxChatLength } onChange={ event => { event.target.parentElement.dataset.value = event.target.value; updateChatInput(event.target.value) } } onMouseDown={ event => setInputFocus() } />
             </div>
+            <ChatInputStyleSelectorView onStyleSelected={ onStyleSelected } />
         </div>, document.getElementById('toolbar-chat-input-container'))
     );
 }

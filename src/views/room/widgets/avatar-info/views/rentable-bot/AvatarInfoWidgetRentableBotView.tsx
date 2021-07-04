@@ -1,19 +1,19 @@
 import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, Nitro, RequestBotCommandConfigurationComposer, RoomObjectCategory } from 'nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { GetConnection } from '../../../../../../api';
 import { CreateMessageHook } from '../../../../../../hooks/messages';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../../context/RoomContext';
+import { RoomWidgetUpdateRentableBotChatEvent } from '../../../../events';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';
 import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../../context-menu/views/list-item/ContextMenuListItemView';
 import { BotSkillsEnum } from '../../utils/BotSkillsEnum';
-import { AvatarInfoWidgetRentableBotViewProps, BotChatOptions } from './AvatarInfoWidgetRentableBotView.types';
+import { AvatarInfoWidgetRentableBotViewProps } from './AvatarInfoWidgetRentableBotView.types';
 
 const MODE_NORMAL = 0;
 const MODE_CHANGE_NAME = 1;
 const MODE_CHANGE_MOTTO = 2;
-const MODE_CHANGE_SPEECH = 3;
 
 export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotViewProps> = props =>
 {
@@ -21,9 +21,12 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
     const [ mode, setMode ] = useState(MODE_NORMAL);
     const [ newName, setNewName ] = useState('');
     const [ newMotto, setNewMotto ] = useState('');
-    const [ newChat, setNewChat ] = useState('');
-    const [ chatOptions, setChatOptions ] = useState<BotChatOptions>({ automaticChat: false, chatDelay: 0, mixSentences: false });
-    const { widgetHandler = null } = useRoomContext();
+    const { eventDispatcher = null } = useRoomContext();
+
+    useEffect(() =>
+    {
+        setMode(MODE_NORMAL);
+    }, [ rentableBotData ]);
 
     const onBotCommandConfigurationEvent = useCallback((event: BotCommandConfigurationEvent) =>
     {
@@ -49,20 +52,22 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
 
                 if((pieces.length === 3) || (pieces.length === 4))
                 {
-                    setNewChat(pieces[0]);
-                    setChatOptions({
-                        automaticChat: ((pieces[1].toLowerCase() === 'true') || (pieces[1] === '1')),
-                        chatDelay: parseInt(pieces[2]),
-                        mixSentences: ((pieces[3]) ? ((pieces[3].toLowerCase() === 'true') || (pieces[3] === '1')) : false)
-                    });
-                }
+                    eventDispatcher.dispatchEvent(new RoomWidgetUpdateRentableBotChatEvent(
+                        rentableBotData.roomIndex,
+                        RoomObjectCategory.UNIT,
+                        rentableBotData.webID,
+                        pieces[0],
+                        ((pieces[1].toLowerCase() === 'true') || (pieces[1] === '1')),
+                        parseInt(pieces[2]),
+                        ((pieces[3]) ? ((pieces[3].toLowerCase() === 'true') || (pieces[3] === '1')) : false)));
 
-                setMode(MODE_CHANGE_SPEECH);
+                    close();
+                }
 
                 return;
             }
         }
-    }, [ rentableBotData ]);
+    }, [ rentableBotData, eventDispatcher, close ]);
 
     CreateMessageHook(BotCommandConfigurationEvent, onBotCommandConfigurationEvent);
 
@@ -176,14 +181,23 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
                         </ContextMenuListItemView> }
                 </> }
             { (mode === MODE_CHANGE_NAME) &&
-                <ContextMenuListItemView className="flex-column" onClick={ null }>
+                <div className="d-flex flex-column menu-item" onClick={ null }>
                     <p className="mb-1">{ LocalizeText('bot.skill.name.configuration.new.name') }</p>
                     <input type="text" className="form-control form-control-sm mb-2" value={ newName } onChange={ event => setNewName(event.target.value) } />
                     <div className="d-flex justify-content-between align-items-center">
                         <button type="button" className="btn btn-secondary btn-sm" onClick={ event => processAction(null) }>{ LocalizeText('cancel') }</button>
                         <button type="button" className="btn btn-success btn-sm"  onClick={ event => processAction('save_bot_name') }>{ LocalizeText('save') }</button>
                     </div>
-                </ContextMenuListItemView> }
+                </div> }
+            { (mode === MODE_CHANGE_MOTTO) &&
+                <div className="d-flex flex-column menu-item" onClick={ null }>
+                    <p className="mb-1">{ LocalizeText('bot.skill.name.configuration.new.motto') }</p>
+                    <input type="text" className="form-control form-control-sm mb-2" value={ newMotto } onChange={ event => setNewMotto(event.target.value) } />
+                    <div className="d-flex justify-content-between align-items-center">
+                        <button type="button" className="btn btn-secondary btn-sm" onClick={ event => processAction(null) }>{ LocalizeText('cancel') }</button>
+                        <button type="button" className="btn btn-success btn-sm"  onClick={ event => processAction('save_bot_motto') }>{ LocalizeText('save') }</button>
+                    </div>
+                </div> }
         </ContextMenuView>
     );
 }

@@ -39,7 +39,7 @@ export class ChatBubbleMessage
 
     public get left(): number
     {
-        return this._top;
+        return this._left;
     }
 
     public set left(value: number)

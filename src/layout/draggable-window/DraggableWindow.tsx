@@ -60,6 +60,11 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
             element.style.left = `${ left }px`;
             element.style.top = `${ top }px`;
         }
+        else
+        {
+            element.style.left = `0px`;
+            element.style.top = `0px`;
+        }
 
         element.style.visibility = 'visible';
 

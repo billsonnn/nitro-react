@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { FurnitureBackgroundColorView } from './background-color/FurnitureBackgroundColorView';
 import { FurnitureDimmerView } from './dimmer/FurnitureDimmerView';
 import { FurnitureEngravingLockView } from './engraving-lock/FurnitureEngravingLockView';
 import { FurnitureExchangeCreditView } from './exchange-credit/FurnitureExchangeCreditView';
@@ -14,6 +15,7 @@ export const FurnitureWidgetsView: FC<FurnitureWidgetsViewProps> = props =>
 {
     return (
         <div className="position-absolute nitro-room-widgets t-0 l-0">
+            <FurnitureBackgroundColorView />
             <FurnitureDimmerView />
             <FurnitureEngravingLockView />
             <FurnitureExchangeCreditView />

@@ -1,6 +1,6 @@
 .nitro-context-menu {
-    width: 150px;
-    max-width: 150px;
+    width: 125px;
+    max-width: 125px;
     padding: 2px;
     background-color: #1c323f;
     border: 2px solid rgba($white, 0.5);
@@ -9,16 +9,14 @@
     z-index: $context-menu-zindex;
 
     &.name-only {
-        background-color: rgba($black, 0.7);
+        background-color: rgba($black, 0.5);
         padding: 1px 8px;
-        min-width: 60px;
         width: unset;
-        max-width: unset;
         text-align: center;
         font-size: 18px;
     }
 
-    &:after {
+    &:not(.name-only):after {
         content: "";
         position: absolute;
         bottom: -7px;
@@ -39,11 +37,12 @@
         height: 25px;
         max-height: 25px;
         font-size: 16px;
+        margin-bottom: 2px;
     }
 
     .menu-list-split-3 {
 
-        .menu-list-item {
+        .menu-item {
             margin-right: 2px;
 
             &:nth-child(3n+3) {
@@ -52,34 +51,42 @@
         }
     }
 
-    .menu-list-item {
+    .menu-item {
         position: relative;
-        height: 24px;
-        max-height: 24px;
-        margin-top: 2px;
+        margin-bottom: 2px;
         padding: 3px;
-        background: $bg-mirage-split-background;
-        cursor: pointer;
         overflow: hidden;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
 
         &.disabled {
             filter: brightness(0.7);
-            cursor: not-allowed;
+            cursor: not-allowed !important;
         }
 
-        .fas,
-        .nitro-currency-icon {
-            position: absolute;
-            right: 8px;
+        &.list-item {
+            height: 24px;
+            max-height: 24px;
+            padding: 3px;
+            background: $bg-mirage-split-background;
+            cursor: pointer;
 
-            &.left {
-                left: 8px;
-                right: unset;
+            &:not(.disabled):hover {
+                background: $bg-cello-split-background;
             }
-        }
 
-        &:not(.disabled):hover {
-            background: $bg-cello-split-background;
+            .fas,
+            .nitro-currency-icon {
+                position: absolute;
+                right: 8px;
+
+                &.left {
+                    left: 8px;
+                    right: unset;
+                }
+            }
         }
     }
 }

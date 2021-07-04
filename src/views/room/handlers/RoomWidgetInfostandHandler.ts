@@ -3,7 +3,7 @@ import { GetConnection, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture
 import { WiredSelectObjectEvent } from '../../../events';
 import { dispatchUiEvent } from '../../../hooks/events';
 import { LocalizeText } from '../../../utils/LocalizeText';
-import { RoomWidgetObjectNameEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
+import { RoomWidgetObjectNameEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
 import { RoomWidgetChangeMottoMessage, RoomWidgetFurniActionMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUserActionMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
 
@@ -17,7 +17,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 this.processPetInfoEvent((event as RoomSessionPetInfoUpdateEvent));
                 return;
             case RoomSessionUserBadgesEvent.RSUBE_BADGES:
-                this.eventDispatcher.dispatchEvent(event);
+                this.container.eventDispatcher.dispatchEvent(event);
                 return;
         }
     }
@@ -50,11 +50,11 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
             if(petMessages.indexOf(message.type) >= 0)
             {
-                userData = this.roomSession.userDataManager.getPetData(userId);
+                userData = this.container.roomSession.userDataManager.getPetData(userId);
             }
             else
             {
-                userData = this.roomSession.userDataManager.getUserData(userId);
+                userData = this.container.roomSession.userDataManager.getUserData(userId);
             }
 
             if(!userData) return null;
@@ -82,7 +82,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 GetSessionDataManager().givePetRespect(userId);
                 break;
             case RoomWidgetUserActionMessage.WHISPER_USER:
-                //this.eventDispatcher.dispatchEvent(new RoomWidgetChatInputContentUpdateEvent(RoomWidgetChatInputContentUpdateEvent.WHISPER, userData.name));
+                this.container.eventDispatcher.dispatchEvent(new RoomWidgetUpdateChatInputContentEvent(RoomWidgetUpdateChatInputContentEvent.WHISPER, userData.name));
                 break;
             case RoomWidgetUserActionMessage.IGNORE_USER:
                 GetSessionDataManager().ignoreUser(userData.name);
@@ -91,27 +91,27 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 GetSessionDataManager().unignoreUser(userData.name);
                 break;
             case RoomWidgetUserActionMessage.KICK_USER:
-                this.roomSession.sendKickMessage((message as RoomWidgetUserActionMessage).userId);
+                this.container.roomSession.sendKickMessage((message as RoomWidgetUserActionMessage).userId);
                 break;
             case RoomWidgetUserActionMessage.BAN_USER_DAY:
             case RoomWidgetUserActionMessage.BAN_USER_HOUR:
             case RoomWidgetUserActionMessage.BAN_USER_PERM:
-                this.roomSession.sendBanMessage((message as RoomWidgetUserActionMessage).userId, message.type);
+                this.container.roomSession.sendBanMessage((message as RoomWidgetUserActionMessage).userId, message.type);
                 break;
             case RoomWidgetUserActionMessage.MUTE_USER_2MIN:
-                this.roomSession.sendMuteMessage((message as RoomWidgetUserActionMessage).userId, 2);
+                this.container.roomSession.sendMuteMessage((message as RoomWidgetUserActionMessage).userId, 2);
                 break;
             case RoomWidgetUserActionMessage.MUTE_USER_5MIN:
-                this.roomSession.sendMuteMessage((message as RoomWidgetUserActionMessage).userId, 5);
+                this.container.roomSession.sendMuteMessage((message as RoomWidgetUserActionMessage).userId, 5);
                 break;
             case RoomWidgetUserActionMessage.MUTE_USER_10MIN:
-                this.roomSession.sendMuteMessage((message as RoomWidgetUserActionMessage).userId, 10);
+                this.container.roomSession.sendMuteMessage((message as RoomWidgetUserActionMessage).userId, 10);
                 break;
             case RoomWidgetUserActionMessage.GIVE_RIGHTS:
-                this.roomSession.sendGiveRightsMessage((message as RoomWidgetUserActionMessage).userId);
+                this.container.roomSession.sendGiveRightsMessage((message as RoomWidgetUserActionMessage).userId);
                 break;
             case RoomWidgetUserActionMessage.TAKE_RIGHTS:
-                this.roomSession.sendTakeRightsMessage((message as RoomWidgetUserActionMessage).userId);
+                this.container.roomSession.sendTakeRightsMessage((message as RoomWidgetUserActionMessage).userId);
                 break;
             case RoomWidgetUserActionMessage.START_TRADING:
                 //if(userData) this._widget.inventoryTrading.startTrade(userData.roomIndex, userData.name);
@@ -156,29 +156,29 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 GetConnection().send(new RoomUnitDropHandItemComposer());
                 break;
             case RoomWidgetUserActionMessage.REQUEST_PET_UPDATE:
-                this.roomSession.userDataManager.requestPetInfo(userId);
+                this.container.roomSession.userDataManager.requestPetInfo(userId);
                 return;
             case RoomWidgetUserActionMessage.REPORT:
                 return;
             case RoomWidgetUserActionMessage.REPORT_CFH_OTHER:
                 return;
             case RoomWidgetUserActionMessage.AMBASSADOR_ALERT_USER:
-                this.roomSession.sendAmbassadorAlertMessage(userId);
+                this.container.roomSession.sendAmbassadorAlertMessage(userId);
                 return;
             case RoomWidgetUserActionMessage.AMBASSADOR_KICK_USER:
-                this.roomSession.sendKickMessage(userId);
+                this.container.roomSession.sendKickMessage(userId);
                 return;
             case RoomWidgetUserActionMessage.AMBASSADOR_MUTE_USER_2MIN:
-                this.roomSession.sendMuteMessage(userId, 2);
+                this.container.roomSession.sendMuteMessage(userId, 2);
                 return;
             case RoomWidgetUserActionMessage.AMBASSADOR_MUTE_USER_10MIN:
-                this.roomSession.sendMuteMessage(userId, 10);
+                this.container.roomSession.sendMuteMessage(userId, 10);
                 return;
             case RoomWidgetUserActionMessage.AMBASSADOR_MUTE_USER_60MIN:
-                this.roomSession.sendMuteMessage(userId, 60);
+                this.container.roomSession.sendMuteMessage(userId, 60);
                 return;
             case RoomWidgetUserActionMessage.AMBASSADOR_MUTE_USER_18HOUR:
-                this.roomSession.sendMuteMessage(userId, 1080);
+                this.container.roomSession.sendMuteMessage(userId, 1080);
                 return;
             case RoomWidgetFurniActionMessage.ROTATE:
                 GetRoomEngine().processRoomObjectOperation(objectId, category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE);
@@ -226,7 +226,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 return;
             }
             case RoomWidgetChangeMottoMessage.CHANGE_MOTTO:
-                this.roomSession.sendMottoMessage((message as RoomWidgetChangeMottoMessage).motto);
+                this.container.roomSession.sendMottoMessage((message as RoomWidgetChangeMottoMessage).motto);
                 return;
         }
 
@@ -243,7 +243,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         {
             case RoomObjectCategory.FLOOR:
             case RoomObjectCategory.WALL: {
-                const roomObject = GetRoomEngine().getRoomObject(this.roomSession.roomId, message.id, message.category);
+                const roomObject = GetRoomEngine().getRoomObject(this.container.roomSession.roomId, message.id, message.category);
 
                 if(!roomObject) break;
 
@@ -275,7 +275,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 break;
             }
             case RoomObjectCategory.UNIT: {
-                const userData = this.roomSession.userDataManager.getUserDataByIndex(message.id);
+                const userData = this.container.roomSession.userDataManager.getUserDataByIndex(message.id);
 
                 if(!userData) break;
 
@@ -286,14 +286,14 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             }
         }
 
-        if(name) this.eventDispatcher.dispatchEvent(new RoomWidgetObjectNameEvent(message.id, message.category, id, name, userType));
+        if(name) this.container.eventDispatcher.dispatchEvent(new RoomWidgetObjectNameEvent(message.id, message.category, id, name, userType));
 
         return null;
     }
 
     private processObjectInfoMessage(message: RoomWidgetRoomObjectMessage): RoomWidgetUpdateEvent
     {
-        const roomId = this.roomSession.roomId;
+        const roomId = this.container.roomSession.roomId;
 
         switch(message.category)
         {
@@ -302,14 +302,14 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 this.processFurniInfoMessage(message, roomId);
                 break;
             case RoomObjectCategory.UNIT: {
-                const userData = this.roomSession.userDataManager.getUserDataByIndex(message.id);
+                const userData = this.container.roomSession.userDataManager.getUserDataByIndex(message.id);
 
                 if(!userData) break;
 
                 switch(userData.type)
                 {
                     case RoomObjectType.PET:
-                        this.roomSession.userDataManager.requestPetInfo(userData.webID);
+                        this.container.roomSession.userDataManager.requestPetInfo(userData.webID);
                         break;
                     case RoomObjectType.USER:
                         this.processUserInfoMessage(message, roomId, userData);
@@ -408,8 +408,8 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         event.image = roomObjectImage.getImage();
         event.isWallItem = (message.category === RoomObjectCategory.WALL);
-        event.isRoomOwner = this.roomSession.isRoomOwner;
-        event.roomControllerLevel = this.roomSession.controllerLevel;
+        event.isRoomOwner = this.container.roomSession.isRoomOwner;
+        event.roomControllerLevel = this.container.roomSession.controllerLevel;
         event.isAnyRoomController = GetSessionDataManager().isModerator;
         event.ownerId = model.getValue<number>(RoomObjectVariable.FURNITURE_OWNER_ID);
         event.ownerName = model.getValue<string>(RoomObjectVariable.FURNITURE_OWNER_NAME);
@@ -425,7 +425,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         if(IsOwnerOfFurniture(roomObject)) event.isOwner = true;
 
-        this.eventDispatcher.dispatchEvent(event);
+        this.container.eventDispatcher.dispatchEvent(event);
     }
 
     private processUserInfoMessage(message: RoomWidgetRoomObjectMessage, roomId: number, userData: RoomUserData): void
@@ -436,7 +436,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         const event = new RoomWidgetUpdateInfostandUserEvent(eventType);
 
-        event.isSpectatorMode = this.roomSession.isSpectator;
+        event.isSpectatorMode = this.container.roomSession.isSpectator;
         event.name = userData.name;
         event.motto = userData.custom;
         event.achievementScore = userData.activityPoints;
@@ -454,9 +454,9 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             event.allowNameChange = GetSessionDataManager().canChangeName;
         }
 
-        event.amIOwner = this.roomSession.isRoomOwner;
-        event.isGuildRoom = this.roomSession.isGuildRoom;
-        event.roomControllerLevel = this.roomSession.controllerLevel;
+        event.amIOwner = this.container.roomSession.isRoomOwner;
+        event.isGuildRoom = this.container.roomSession.isGuildRoom;
+        event.roomControllerLevel = this.container.roomSession.controllerLevel;
         event.amIAnyRoomController = GetSessionDataManager().isModerator;
         event.isAmbassador = GetSessionDataManager().isAmbassador;
 
@@ -487,7 +487,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             event.respectLeft = GetSessionDataManager().respectsLeft;
 
             const isShuttingDown = GetSessionDataManager().isSystemShutdown;
-            const tradeMode = this.roomSession.tradeMode;
+            const tradeMode = this.container.roomSession.tradeMode;
 
             if(isShuttingDown)
             {
@@ -527,14 +527,14 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         event.groupId = parseInt(userData.guildId);
         //event._Str_5235 = GetSessionDataManager()._Str_17173(int(userData._Str_4592));
         event.groupName = userData.groupName;
-        event.badges = this.roomSession.userDataManager.getUserBadges(userData.webID);
+        event.badges = this.container.roomSession.userDataManager.getUserBadges(userData.webID);
         event.figure = userData.figure;
         //var _local_8:Array = GetSessionDataManager()._Str_18437(userData.webID);
         //this._Str_16287(userData._Str_2394, _local_8);
         //this._container._Str_8097._Str_14387(userData.webID);
         //this._container.connection.send(new _Str_8049(userData._Str_2394));
 
-        this.eventDispatcher.dispatchEvent(event);
+        this.container.eventDispatcher.dispatchEvent(event);
     }
 
     private processBotInfoMessage(message: RoomWidgetRoomObjectMessage, roomId: number, userData: RoomUserData): void
@@ -551,15 +551,15 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         if(roomObject) event.carryItem = (roomObject.model.getValue<number>(RoomObjectVariable.FIGURE_CARRY_OBJECT) || 0);
 
-        event.amIOwner = this.roomSession.isRoomOwner;
-        event.isGuildRoom = this.roomSession.isGuildRoom;
-        event.roomControllerLevel = this.roomSession.controllerLevel;
+        event.amIOwner = this.container.roomSession.isRoomOwner;
+        event.isGuildRoom = this.container.roomSession.isGuildRoom;
+        event.roomControllerLevel = this.container.roomSession.controllerLevel;
         event.amIAnyRoomController = GetSessionDataManager().isModerator;
         event.isAmbassador = GetSessionDataManager().isAmbassador;
         event.badges = [ RoomWidgetUpdateInfostandUserEvent.DEFAULT_BOT_BADGE_ID ];
         event.figure = userData.figure;
 
-        this.eventDispatcher.dispatchEvent(event);
+        this.container.eventDispatcher.dispatchEvent(event);
     }
 
     private processRentableBotInfoMessage(message: RoomWidgetRoomObjectMessage, roomId: number, userData: RoomUserData): void
@@ -578,13 +578,13 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         if(roomObject) event.carryItem = (roomObject.model.getValue<number>(RoomObjectVariable.FIGURE_CARRY_OBJECT) || 0);
 
-        event.amIOwner = this.roomSession.isRoomOwner;
-        event.roomControllerLevel = this.roomSession.controllerLevel;
+        event.amIOwner = this.container.roomSession.isRoomOwner;
+        event.roomControllerLevel = this.container.roomSession.controllerLevel;
         event.amIAnyRoomController = GetSessionDataManager().isModerator;
         event.badges = [ RoomWidgetUpdateInfostandUserEvent.DEFAULT_BOT_BADGE_ID ];
         event.figure = userData.figure;
 
-        this.eventDispatcher.dispatchEvent(event);
+        this.container.eventDispatcher.dispatchEvent(event);
     }
 
     private processPetInfoEvent(event: RoomSessionPetInfoUpdateEvent): void
@@ -593,7 +593,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         if(!petData) return;
 
-        const roomPetData = this.roomSession.userDataManager.getPetData(petData.id);
+        const roomPetData = this.container.roomSession.userDataManager.getPetData(petData.id);
 
         if(!roomPetData) return;
 
@@ -652,10 +652,10 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         }
         else
         {
-            if(this.roomSession.isRoomOwner || GetSessionDataManager().isModerator || (this.roomSession.controllerLevel >= RoomControllerLevel.GUEST)) infostandEvent.canRemovePet = true;
+            if(this.container.roomSession.isRoomOwner || GetSessionDataManager().isModerator || (this.container.roomSession.controllerLevel >= RoomControllerLevel.GUEST)) infostandEvent.canRemovePet = true;
         }
 
-        this.eventDispatcher.dispatchEvent(infostandEvent);
+        this.container.eventDispatcher.dispatchEvent(infostandEvent);
     }
 
     private checkGuildSetting(event: RoomWidgetUpdateInfostandUserEvent): boolean
@@ -717,9 +717,9 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
     private isValidSetting(event: RoomWidgetUpdateInfostandUserEvent, checkSetting: (event: RoomWidgetUpdateInfostandUserEvent, moderation: RoomModerationSettings) => boolean): boolean
     {
-        if(!this.roomSession._Str_7411) return false;
+        if(!this.container.roomSession._Str_7411) return false;
 
-        const moderation = this.roomSession.moderationSettings;
+        const moderation = this.container.roomSession.moderationSettings;
 
         let flag = false;
 

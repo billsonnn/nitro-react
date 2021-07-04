@@ -3,7 +3,7 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import { GetRoomSession, GetSessionDataManager } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../context/RoomContext';
-import { RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../../events';
+import { RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent } from '../../events';
 import { RoomWidgetRoomObjectMessage } from '../../messages';
 import { AvatarInfoWidgetViewProps } from './AvatarInfoWidgetView.types';
 import { AvatarInfoWidgetAvatarView } from './views/avatar/AvatarInfoWidgetAvatarView';
@@ -12,6 +12,7 @@ import { AvatarInfoWidgetNameView } from './views/name/AvatarInfoWidgetNameView'
 import { AvatarInfoWidgetOwnAvatarView } from './views/own-avatar/AvatarInfoWidgetOwnAvatarView';
 import { AvatarInfoWidgetOwnPetView } from './views/own-pet/AvatarInfoWidgetOwnPetView';
 import { AvatarInfoWidgetPetView } from './views/pet/AvatarInfoWidgetPetView';
+import { AvatarInfoRentableBotChatView } from './views/rentable-bot-chat/AvatarInfoRentableBotChatView';
 import { AvatarInfoWidgetRentableBotView } from './views/rentable-bot/AvatarInfoWidgetRentableBotView';
 
 export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
@@ -22,6 +23,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
     const [ isGameMode, setGameMode ] = useState(false);
     const [ isDancing, setIsDancing ] = useState(false);
     const [ isDecorating, setIsDecorating ] = useState(GetRoomSession().isDecorating);
+    const [ rentableBotChatEvent, setRentableBotChatEvent ] = useState<RoomWidgetUpdateRentableBotChatEvent>(null);
 
     const onRoomWidgetRoomEngineUpdateEvent = useCallback((event: RoomWidgetRoomEngineUpdateEvent) =>
     {
@@ -160,6 +162,13 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_ADDED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
 
+    const onRoomWidgetUpdateRentableBotChatEvent = useCallback((event: RoomWidgetUpdateRentableBotChatEvent) =>
+    {
+        setRentableBotChatEvent(event);
+    }, []);
+
+    CreateEventDispatcherHook(RoomWidgetUpdateRentableBotChatEvent.UPDATE_CHAT, eventDispatcher, onRoomWidgetUpdateRentableBotChatEvent);
+
     const decorateView = useMemo(() =>
     {
         GetRoomSession().isDecorating = isDecorating;
@@ -237,6 +246,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
     return (
         <>
             { currentView }
+            { rentableBotChatEvent && <AvatarInfoRentableBotChatView chatEvent={ rentableBotChatEvent } /> }
         </>
     )
 }

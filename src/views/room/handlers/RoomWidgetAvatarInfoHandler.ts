@@ -1,6 +1,6 @@
 import { NitroEvent, RoomSessionDanceEvent, RoomSessionUserDataUpdateEvent } from 'nitro-renderer';
 import { GetRoomSession, GetSessionDataManager } from '../../../api';
-import { RoomWidgetAvatarInfoEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateEvent, RoomWidgetUserDataUpdateEvent } from '../events';
+import { RoomWidgetAvatarInfoEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateUserDataEvent } from '../events';
 import { RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUserActionMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
 
@@ -11,7 +11,7 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
         switch(event.type)
         {
             case RoomSessionUserDataUpdateEvent.USER_DATA_UPDATED:
-                this.eventDispatcher.dispatchEvent(new RoomWidgetUserDataUpdateEvent());
+                this.container.eventDispatcher.dispatchEvent(new RoomWidgetUpdateUserDataEvent());
                 return;
             case RoomSessionDanceEvent.RSDE_DANCE:
                 const danceEvent = (event as RoomSessionDanceEvent);
@@ -22,7 +22,7 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
 
                 if(userData && (userData.roomIndex === danceEvent.roomIndex)) isDancing = (danceEvent.danceId !== 0);
 
-                this.eventDispatcher.dispatchEvent(new RoomWidgetUpdateDanceStatusEvent(isDancing));
+                this.container.eventDispatcher.dispatchEvent(new RoomWidgetUpdateDanceStatusEvent(isDancing));
                 return;
         }
     }
@@ -68,7 +68,7 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
         const allowNameChange = GetSessionDataManager().canChangeName;
         const userData = GetRoomSession().userDataManager.getUserData(userId);
 
-        if(userData) this.eventDispatcher.dispatchEvent(new RoomWidgetAvatarInfoEvent(userId, userName, userData.type, userData.roomIndex, allowNameChange));
+        if(userData) this.container.eventDispatcher.dispatchEvent(new RoomWidgetAvatarInfoEvent(userId, userName, userData.type, userData.roomIndex, allowNameChange));
     }
 
     public get eventTypes(): string[]

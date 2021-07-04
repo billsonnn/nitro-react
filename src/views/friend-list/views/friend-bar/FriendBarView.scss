@@ -1,0 +1,7 @@
+.friend-bar {
+    .friend-bar-button {
+        z-index: 2;
+    }
+
+    @import '../friend-bar-item/FriendBarItemView.scss';
+}
