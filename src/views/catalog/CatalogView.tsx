@@ -93,10 +93,10 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                 <NitroCardView className="nitro-catalog">
                     <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardTabsView>
-                        { root && root.children.length && root.children.map((page, index) =>
+                        { root && root.children.length && root.children.map(page =>
                             {
                                 return (
-                                    <NitroCardTabsItemView key={ index } isActive={ (currentTab === page) } onClick={ event => setCurrentTab(page) }>
+                                    <NitroCardTabsItemView key={ page.pageId } isActive={ (currentTab === page) } onClick={ event => setCurrentTab(page) }>
                                         { page.localization }
                                     </NitroCardTabsItemView>
                                 );

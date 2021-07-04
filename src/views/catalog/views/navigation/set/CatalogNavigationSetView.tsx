@@ -35,11 +35,11 @@ export const CatalogNavigationSetView: FC<CatalogNavigationSetViewProps> = props
     
     return (
         <div className="row row-cols-1 g-0 catalog-navigation-set-container w-100">
-            { page && (page.children.length > 0) && page.children.map((page, index) =>
+            { page && (page.children.length > 0) && page.children.map(page =>
                 {
                     if(!page.visible) return null;
                     
-                    return <CatalogNavigationItemView key={ index } page={ page } isActive={ (activeChild === page) } setActiveChild={ setActiveChild } />
+                    return <CatalogNavigationItemView key={ page.pageId } page={ page } isActive={ (activeChild === page) } setActiveChild={ setActiveChild } />
                 }) }
         </div>
     );

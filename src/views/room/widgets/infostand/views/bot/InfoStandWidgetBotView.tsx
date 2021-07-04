@@ -24,9 +24,9 @@ export const InfoStandWidgetBotView: FC<InfoStandWidgetBotViewProps> = props =>
                     <AvatarImageView figure={ botData.figure } direction={ 4 } />
                 </div>
                 <div className="w-100 d-flex justify-content-center align-items-center">
-                    { (botData.badges.length > 0) && botData.badges.map((result, index) =>
+                    { (botData.badges.length > 0) && botData.badges.map(result =>
                         {
-                            return <BadgeImageView key={ index } badgeCode={ result } />;
+                            return <BadgeImageView key={ result } badgeCode={ result } />;
                         }) }
                 </div>
             </div>
