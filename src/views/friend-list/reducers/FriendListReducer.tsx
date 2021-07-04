@@ -103,7 +103,7 @@ export const FriendListReducer: Reducer<IFriendListState, IFriendListAction> = (
 
                 for(const friend of update.addedFriends) processUpdate(friend);
 
-                for(const friend of update.addedFriends) processUpdate(friend);
+                for(const friend of update.updatedFriends) processUpdate(friend);
 
                 for(const removedFriendId of update.removedFriendIds)
                 {
