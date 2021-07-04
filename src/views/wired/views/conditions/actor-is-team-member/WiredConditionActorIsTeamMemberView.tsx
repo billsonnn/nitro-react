@@ -25,10 +25,10 @@ export const WiredConditionActorIsTeamMemberView: FC<{}> = props =>
         <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
             <div className="form-group">
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.team') }</label>
-                { teamIds.map((value, index) =>
+                { teamIds.map(value =>
                     {
                         return (
-                            <div key={ index } className="form-check">
+                            <div key={ value } className="form-check">
                                 <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ value }` } checked={ (selectedTeam === value) } onChange={ event => setSelectedTeam(value) } />
                                 <label className="form-check-label" htmlFor={ `selectedTeam${ value }` }>
                                     { LocalizeText(`wiredfurni.params.team.${ value }`) }

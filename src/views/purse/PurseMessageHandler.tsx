@@ -1,4 +1,4 @@
-import { UserCreditsEvent, UserCurrencyEvent, UserCurrencyUpdateEvent } from 'nitro-renderer';
+import { UserCreditsEvent, UserCurrencyEvent, UserCurrencyUpdateEvent, UserSubscriptionEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { Currency } from './common/Currency';
@@ -48,9 +48,27 @@ export const PurseMessageHandler: FC<PurseMessageHandlerProps> = props =>
         });
     }, [ dispatchPurseState ]);
 
+    const onUserSubscriptionEvent = useCallback((event: UserSubscriptionEvent) =>
+    {
+        const parser = event.getParser();
+
+        switch(parser.name)
+        {
+            case 'habbo_club':
+                dispatchPurseState({
+                    type: PurseActions.SET_CLUB_SUBSCRIPTION,
+                    payload: {
+                        clubSubscription: parser
+                    }
+                });
+                return;
+        }
+    }, [ dispatchPurseState ]);
+
     CreateMessageHook(UserCreditsEvent, onUserCreditsEvent);
     CreateMessageHook(UserCurrencyEvent, onUserCurrencyEvent);
     CreateMessageHook(UserCurrencyUpdateEvent, onUserCurrencyUpdateEvent);
+    CreateMessageHook(UserSubscriptionEvent, onUserSubscriptionEvent);
 
     return null;
 }

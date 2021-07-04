@@ -36,9 +36,9 @@ export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewPr
                         <AvatarImageView figure={ rentableBotData.figure } direction={ 4 } />
                     </div>
                     <div className="w-100 d-flex justify-content-center align-items-center">
-                        { (rentableBotData.badges.length > 0) && rentableBotData.badges.map((result, index) =>
+                        { (rentableBotData.badges.length > 0) && rentableBotData.badges.map(result =>
                             {
-                                return <BadgeImageView key={ index } badgeCode={ result } />;
+                                return <BadgeImageView key={ result } badgeCode={ result } />;
                             }) }
                     </div>
                 </div>

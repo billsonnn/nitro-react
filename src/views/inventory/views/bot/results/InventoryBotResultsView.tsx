@@ -9,9 +9,9 @@ export const InventoryBotResultsView: FC<InventoryBotResultsViewProps> = props =
     return (
         <div className="h-100 overflow-hidden">
             <div className="row row-cols-5 align-content-start g-0 w-100 h-100 overflow-auto">
-            { botItems && (botItems.length > 0) && botItems.map((item, index) =>
+            { botItems && (botItems.length > 0) && botItems.map(item =>
                     {
-                        return <InventoryBotItemView key={ index } botItem={ item } />
+                        return <InventoryBotItemView key={ item.id } botItem={ item } />
                     }) }
             </div>
         </div>
