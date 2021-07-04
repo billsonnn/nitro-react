@@ -97,13 +97,12 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
                 </div>
                 <div className="chat-content">
                     <b className="username mr-1" dangerouslySetInnerHTML={ {__html: `${ chat.username }: ` } } />
-                    { chat.text }
-                    <span className="message"> {
+                    <span className="message">{ chat.text }</span>
+                    {/* {
                         messageParts && messageParts.map((part, index) =>
                             {
                                 return <span key={ index } className={ part.className } style={ part.style } onClick={ part.onClick }>{ part.text }</span>
-                            })
-                    }</span>
+                            }) */}
                 </div>
                 <div className="pointer"></div>
             </div>
