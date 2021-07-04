@@ -2,7 +2,6 @@
     "socket.url": "wss://ws.nitrots.co:2096",
     "asset.url": "https://nitro.nitrots.co",
     "image.library.url": "https://swf.nitrots.co/c_images/",
-    "internal.samples.url": "",
     "external.samples.url": "https://swf.nitrots.co/dcr/hof_furni/mp3/sound_machine_sample_%sample%.mp3",
     "image.library.notifications.url": "${image.library.url}notifications/%image%.png",
     "achievements.images.url": "${image.library.url}Quests/%image%.png",
