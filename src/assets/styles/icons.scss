@@ -468,6 +468,24 @@ i {
             }
         }
 
+        &.icon-fb-profile {
+            background: url('../images/toolbar/icons/friend-bar/profile.png');
+            width: 21px;
+            height: 21px;
+        }
+
+        &.icon-fb-chat {
+            background: url('../images/toolbar/icons/friend-bar/chat.png');
+            width: 20px;
+            height: 21px;
+        }
+
+        &.icon-fb-visit {
+            background: url('../images/toolbar/icons/friend-bar/visit.png');
+            width: 21px;
+            height: 21px;
+        }
+
         &.spin {
             animation: rotating 1s linear infinite;
         }
