@@ -1,3 +1,4 @@
+import { Nitro } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { GetConfiguration } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
@@ -25,8 +26,7 @@ export const NavigatorRoomLinkView: FC<NavigatorRoomLinkViewProps> = props =>
             setRoomThumbnail(GetConfiguration<string>('image.library.url') + roomInfoData.enteredGuestRoom.officialRoomPicRef);
         }
 
-        const urlPrefix = GetConfiguration<string>('url.prefix');
-        const roomLinkRaw = LocalizeText('navigator.embed.src', ['roomId'], [roomInfoData.enteredGuestRoom.roomId.toString()]).replace('${url.prefix}', urlPrefix);
+        const roomLinkRaw = Nitro.instance.core.configuration.interpolate(LocalizeText('navigator.embed.src', ['roomId'], [roomInfoData.enteredGuestRoom.roomId.toString()]));
 
         setRoomLink(roomLinkRaw);
     }, [ roomInfoData ]);
