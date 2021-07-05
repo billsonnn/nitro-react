@@ -1,4 +1,4 @@
-import { GenericErrorEvent, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomForwardEvent, RoomInfoComposer, RoomInfoEvent, RoomInfoOwnerEvent, UserInfoEvent } from 'nitro-renderer';
+import { GenericErrorEvent, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomForwardEvent, RoomInfoComposer, RoomInfoEvent, RoomInfoOwnerEvent, RoomSettingsUpdatedEvent, UserInfoEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetRoomSessionManager, GetSessionDataManager } from '../../api';
 import { VisitRoom } from '../../api/navigator/VisitRoom';
@@ -174,6 +174,13 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
         });
     }, [ dispatchNavigatorState ]);
 
+    const onRoomSettingsUpdatedEvent = useCallback((event: RoomSettingsUpdatedEvent) =>
+    {
+        const parser = event.getParser();
+
+        SendMessageHook(new RoomInfoComposer(parser.roomId, false, false));
+    }, []);
+
     CreateMessageHook(UserInfoEvent, onUserInfoEvent);
     CreateMessageHook(RoomForwardEvent, onRoomForwardEvent);
     CreateMessageHook(RoomInfoOwnerEvent, onRoomInfoOwnerEvent);
@@ -186,6 +193,7 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
     CreateMessageHook(NavigatorCategoriesEvent, onNavigatorCategoriesEvent);
     CreateMessageHook(RoomCreatedEvent, onRoomCreatedEvent);
     CreateMessageHook(NavigatorHomeRoomEvent, onNavigatorHomeRoomEvent);
+    CreateMessageHook(RoomSettingsUpdatedEvent, onRoomSettingsUpdatedEvent);
 
     return null;
 }

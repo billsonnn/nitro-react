@@ -13,6 +13,7 @@ import { initialNavigator, NavigatorActions, NavigatorReducer } from './reducers
 import { NavigatorRoomCreatorView } from './views/creator/NavigatorRoomCreatorView';
 import { NavigatorRoomInfoView } from './views/room-info/NavigatorRoomInfoView';
 import { NavigatorRoomLinkView } from './views/room-link/NavigatorRoomLinkView';
+import { NavigatorRoomSettingsView } from './views/room-settings/NavigatorRoomSettingsView';
 import { NavigatorSearchResultSetView } from './views/search-result-set/NavigatorSearchResultSetView';
 import { NavigatorSearchView } from './views/search/NavigatorSearchView';
 
@@ -124,6 +125,7 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                 </NitroCardView> }
             { isRoomInfoOpen && <NavigatorRoomInfoView onCloseClick={ () => setRoomInfoOpen(false) } /> }
             { isRoomLinkOpen && <NavigatorRoomLinkView onCloseClick={ () => setRoomLinkOpen(false) } /> }
+            <NavigatorRoomSettingsView />
         </NavigatorContextProvider>
     );
 }

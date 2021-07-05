@@ -1,8 +1,9 @@
 import classNames from 'classnames';
-import { RoomMuteComposer, RoomStaffPickComposer, UserHomeRoomComposer } from 'nitro-renderer';
+import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, UserHomeRoomComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration } from '../../../../api';
 import { NavigatorEvent } from '../../../../events';
+import { RoomWidgetThumbnailEvent } from '../../../../events/room-widgets/thumbnail';
 import { dispatchUiEvent } from '../../../../hooks/events';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
@@ -61,11 +62,15 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
             case 'navigator_search_tag':
                 return;
             case 'open_room_thumbnail_camera':
+                dispatchUiEvent(new RoomWidgetThumbnailEvent(RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL));
                 return;
             case 'open_group_info':
                 return;
             case 'toggle_room_link':
                 dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK));
+                return;
+            case 'open_room_settings':
+                SendMessageHook(new RoomSettingsComposer(roomInfoData.enteredGuestRoom.roomId));
                 return;
             case 'toggle_pick':
                 setIsRoomPicked(value => !value);
@@ -115,7 +120,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                     </div>
                     <div>{ roomInfoData.enteredGuestRoom.description }</div>
                     <div className="room-thumbnail border mt-1 mb-2">
-                        <i className="icon icon-camera-small position-absolute b-0 r-0 m-1 cursor-pointer" />
+                        <i className="icon icon-camera-small position-absolute b-0 r-0 m-1 cursor-pointer" onClick={ () => processAction('open_room_thumbnail_camera') } />
                         { roomThumbnail && <img alt="" src={ roomThumbnail } /> }
                     </div>
                     { roomInfoData.enteredGuestRoom.habboGroupId > 0 && <div className="d-flex align-items-center mb-2 cursor-pointer" onClick={ () => processAction('open_group_info') }>
@@ -130,7 +135,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                         <i className="icon icon-arrows me-1" />
                         <span>{ LocalizeText('navigator.embed.caption') }</span>
                     </div>
-                    <button className="btn btn-sm btn-primary w-100 mb-1" disabled={ true }>{ LocalizeText('navigator.room.popup.info.room.settings') }</button>
+                    <button className="btn btn-sm btn-primary w-100 mb-1" onClick={ () => processAction('open_room_settings') }>{ LocalizeText('navigator.room.popup.info.room.settings') }</button>
                     <button className="btn btn-sm btn-primary w-100 mb-1" disabled={ true }>{ LocalizeText('open.floor.plan.editor') }</button>
                     <button className="btn btn-sm btn-primary w-100 mb-1" onClick={ () => processAction('toggle_pick') }>{ LocalizeText(isRoomPicked ? 'navigator.staffpicks.unpick' : 'navigator.staffpicks.pick') }</button>
                     <button className="btn btn-sm btn-danger w-100 mb-1" disabled={ true }>{ LocalizeText('help.emergency.main.report.room') }</button>
