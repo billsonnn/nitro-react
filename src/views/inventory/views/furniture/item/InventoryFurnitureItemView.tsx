@@ -10,6 +10,7 @@ export const InventoryFurnitureItemView: FC<InventoryFurnitureItemViewProps> = p
 {
     const { groupItem } = props;
     const { furnitureState, dispatchFurnitureState } = useInventoryContext();
+    const { tradeData = null } = furnitureState;
     const [ isMouseDown, setMouseDown ] = useState(false);
     const isActive = (furnitureState.groupItem === groupItem);
 
@@ -40,7 +41,7 @@ export const InventoryFurnitureItemView: FC<InventoryFurnitureItemViewProps> = p
 
     return (
         <div className="col pe-1 pb-1 inventory-furniture-item-container">
-            <div className={ 'position-relative border border-2 rounded inventory-furniture-item cursor-pointer ' + (isActive ? 'active ' : '') + (groupItem.stuffData.isUnique ? 'unique-item ' : '') } style={ { backgroundImage: imageUrl }} onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
+            <div className={ 'position-relative border border-2 rounded inventory-furniture-item cursor-pointer ' + (isActive ? 'active ' : '') + (groupItem.stuffData.isUnique ? 'unique-item ' : '') + (!groupItem.getUnlockedCount() ? 'opacity-0-5 ' : '') } style={ { backgroundImage: imageUrl }} onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
                 {groupItem.getUnlockedCount() > 1 &&
                     <span className="position-absolute badge border bg-danger px-1 rounded-circle">{groupItem.getUnlockedCount()}</span> }
                 { groupItem.stuffData.isUnique && 

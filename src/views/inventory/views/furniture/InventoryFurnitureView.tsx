@@ -1,6 +1,6 @@
-import { FurnitureListComposer, RoomObjectVariable, Vector3d } from 'nitro-renderer';
-import { FC, useEffect, useState } from 'react';
-import { GetRoomEngine } from '../../../../api';
+import { FurnitureListComposer, IObjectData, RoomObjectVariable, TradingListAddItemComposer, TradingListAddItemsComposer, Vector3d } from 'nitro-renderer';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { GetConnection, GetRoomEngine } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
@@ -8,18 +8,121 @@ import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerV
 import { FurniCategory } from '../../common/FurniCategory';
 import { attemptItemPlacement } from '../../common/FurnitureUtilities';
 import { GroupItem } from '../../common/GroupItem';
+import { IFurnitureItem } from '../../common/IFurnitureItem';
+import { TradeState } from '../../common/TradeState';
+import { _Str_16998 } from '../../common/TradingUtilities';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
 import { InventoryFurnitureViewProps } from './InventoryFurnitureView.types';
 import { InventoryFurnitureResultsView } from './results/InventoryFurnitureResultsView';
 import { InventoryFurnitureSearchView } from './search/InventoryFurnitureSearchView';
 
+const MAX_ITEMS_TO_TRADE: number = 3;
+
 export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
     const { furnitureState = null, dispatchFurnitureState = null } = useInventoryContext();
-    const { needsFurniUpdate = false, groupItem = null, groupItems = [] } = furnitureState;
+    const { needsFurniUpdate = false, groupItem = null, groupItems = [], tradeData = null } = furnitureState;
     const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(groupItems);
+
+    const isTrading = useMemo(() =>
+    {
+        if(!tradeData) return false;
+        
+        return (tradeData.state >= TradeState.TRADING_STATE_RUNNING);
+    }, [ tradeData ]);
+
+    const canTradeItem = useCallback((isWallItem: boolean, spriteId: number, category: number, groupable: boolean, stuffData: IObjectData) =>
+    {
+        if(!tradeData || !tradeData.ownUser || tradeData.ownUser.accepts || !tradeData.ownUser.items) return false;
+
+        if(tradeData.ownUser.items.length < MAX_ITEMS_TO_TRADE) return true;
+
+        if(!groupable) return false;
+
+        let type = spriteId.toString();
+
+        if(category === FurniCategory._Str_5186)
+        {
+            type = ((type + 'poster') + stuffData.getLegacyString());
+        }
+        else
+        {
+            if(category === FurniCategory._Str_12454)
+            {
+                type = _Str_16998(spriteId, stuffData);
+            }
+            else
+            {
+                type = (((isWallItem) ? 'I' : 'S') + type);
+            }
+        }
+
+        return !!tradeData.ownUser.items.getValue(type);
+    }, [ tradeData ]);
+
+    const attemptItemOffer = useCallback((count: number) =>
+    {
+        if(!tradeData || !groupItem || !isTrading) return;
+
+        const tradeItems = groupItem.getTradeItems(count);
+
+        if(!tradeItems || !tradeItems.length) return;
+
+        let coreItem: IFurnitureItem = null;
+        const itemIds: number[] = [];
+
+        for(const item of tradeItems)
+        {
+            itemIds.push(item.id);
+
+            if(!coreItem) coreItem = item;
+        }
+
+        const tradedIds: number[] = [];
+
+        if(isTrading)
+        {
+            const ownItemCount = tradeData.ownUser.items.length;
+
+            if((ownItemCount + itemIds.length) <= 1500)
+            {
+                if(!coreItem.isGroupable && (itemIds.length))
+                {
+                    GetConnection().send(new TradingListAddItemComposer(itemIds.pop()));
+                }
+                else
+                {
+                    const tradeIds: number[] = [];
+
+                    for(const itemId of itemIds)
+                    {
+                        if(canTradeItem(coreItem.isWallItem, coreItem.type, coreItem.category, coreItem.isGroupable, coreItem.stuffData))
+                        {
+                            tradedIds.push(itemId);
+                        }
+                    }
+
+                    if(tradedIds.length)
+                    {
+                        if(tradedIds.length === 1)
+                        {
+                            GetConnection().send(new TradingListAddItemComposer(tradedIds.pop()));
+                        }
+                        else
+                        {
+                            GetConnection().send(new TradingListAddItemsComposer(...tradedIds));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //this._notificationService.alert('${trading.items.too_many_items.desc}', '${trading.items.too_many_items.title}');
+            }
+        }
+    }, [ canTradeItem, groupItem, isTrading, tradeData ]);
 
     useEffect(() =>
     {
@@ -123,14 +226,18 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
             </div>
             <div className="position-relative d-flex flex-column col-5 justify-space-between">
                 <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
-                { groupItem && groupItem.stuffData.isUnique &&
+                { groupItem &&groupItem.stuffData.isUnique &&
                     <div className="position-absolute limited-edition-info-container">
                         <LimitedEditionCompactPlateView uniqueNumber={ groupItem.stuffData.uniqueNumber } uniqueSeries={ groupItem.stuffData.uniqueSeries } />
                     </div> }
-                { groupItem && <div className="d-flex flex-column flex-grow-1">
-                    <p className="flex-grow-1 fs-6 text-black my-2">{ groupItem.name }</p>
-                    { !!roomSession && <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptItemPlacement(groupItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
-                </div> }
+                { groupItem &&
+                    <div className="d-flex flex-column flex-grow-1">
+                        <p className="flex-grow-1 fs-6 text-black my-2">{ groupItem.name }</p>
+                        { !!roomSession && !isTrading &&
+                            <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptItemPlacement(groupItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
+                        { isTrading &&
+                            <button type="button" className="btn btn-primary btn-sm" onClick={ event => attemptItemOffer(1) }>{ LocalizeText('inventory.trading.offer') }</button> }
+                    </div> }
             </div>
         </div>
     );

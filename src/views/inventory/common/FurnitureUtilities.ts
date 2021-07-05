@@ -310,7 +310,7 @@ function addGroupableFurnitureItem(set: GroupItem[], item: FurnitureItem, unseen
     return existingGroup;
 }
 
-function createGroupItem(type: number, category: number, stuffData: IObjectData, extra: number = NaN, flag: boolean = false): GroupItem
+export function createGroupItem(type: number, category: number, stuffData: IObjectData, extra: number = NaN, flag: boolean = false): GroupItem
 {
     // const iconImage: HTMLImageElement = null;
 

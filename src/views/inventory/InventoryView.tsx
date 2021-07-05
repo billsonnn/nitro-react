@@ -1,7 +1,7 @@
-import { IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent } from 'nitro-renderer';
+import { IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent, TradingOpenComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
-import { GetRoomEngine } from '../../api';
-import { InventoryEvent } from '../../events';
+import { GetConnection, GetRoomEngine } from '../../api';
+import { InventoryEvent, InventoryTradeRequestEvent } from '../../events';
 import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
@@ -19,11 +19,12 @@ import { InventoryBadgeView } from './views/badge/InventoryBadgeView';
 import { InventoryBotView } from './views/bot/InventoryBotView';
 import { InventoryFurnitureView } from './views/furniture/InventoryFurnitureView';
 import { InventoryPetView } from './views/pet/InventoryPetView';
+import { InventoryTradeView } from './views/trade/InventoryTradeView';
+
+const tabs = [ InventoryTabs.FURNITURE, InventoryTabs.BOTS, InventoryTabs.PETS, InventoryTabs.BADGES ];
 
 export const InventoryView: FC<InventoryViewProps> = props =>
 {
-    const tabs = [ InventoryTabs.FURNITURE, InventoryTabs.BOTS, InventoryTabs.PETS, InventoryTabs.BADGES ];
-
     const [ isVisible, setIsVisible ]   = useState(false);
     const [ currentTab, setCurrentTab ] = useState<string>(tabs[0]);
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
@@ -46,12 +47,18 @@ export const InventoryView: FC<InventoryViewProps> = props =>
             case InventoryEvent.TOGGLE_INVENTORY:
                 setIsVisible(value => !value);
                 return;
+            case InventoryTradeRequestEvent.REQUEST_TRADE: {
+                const tradeEvent = (event as InventoryTradeRequestEvent);
+
+                GetConnection().send(new TradingOpenComposer(tradeEvent.objectId));
+            }
         }
     }, []);
 
     useUiEvent(InventoryEvent.SHOW_INVENTORY, onInventoryEvent);
     useUiEvent(InventoryEvent.HIDE_INVENTORY, onInventoryEvent);
     useUiEvent(InventoryEvent.TOGGLE_INVENTORY, onInventoryEvent);
+    useUiEvent(InventoryTradeRequestEvent.REQUEST_TRADE, onInventoryEvent);
 
     const onRoomEngineObjectPlacedEvent = useCallback((event: RoomEngineObjectPlacedEvent) =>
     {
@@ -96,6 +103,19 @@ export const InventoryView: FC<InventoryViewProps> = props =>
         }
     }, []);
 
+    useEffect(() =>
+    {
+        if(!isVisible)
+        {
+            if(furnitureState.tradeData)
+            {
+                setIsVisible(true);
+
+                if(currentTab !== InventoryTabs.FURNITURE) setCurrentTab(InventoryTabs.FURNITURE);
+            }
+        }
+    }, [ furnitureState.tradeData, isVisible, currentTab ]);
+
     return (
         <InventoryContextProvider value={ { furnitureState, dispatchFurnitureState, botState, dispatchBotState, petState, dispatchPetState, badgeState, dispatchBadgeState } }>
             <InventoryMessageHandler />
@@ -121,6 +141,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                             <InventoryPetView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
                         { (currentTab === InventoryTabs.BADGES ) && 
                             <InventoryBadgeView /> }
+                        { furnitureState.tradeData && <InventoryTradeView isInFurnitureView={ (currentTab === InventoryTabs.FURNITURE ) } /> }
                     </NitroCardContentView>
                 </NitroCardView> }
         </InventoryContextProvider>

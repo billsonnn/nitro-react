@@ -9,7 +9,7 @@ export const InventoryFurnitureResultsView: FC<InventoryFurnitureResultsViewProp
     return (
         <div className="h-100 overflow-hidden">
             <div className="row row-cols-5 align-content-start g-0 w-100 h-100 overflow-auto">
-            { groupItems && (groupItems.length > 0) && groupItems.map((item, index) =>
+                { groupItems && (groupItems.length > 0) && groupItems.map((item, index) =>
                     {
                         return <InventoryFurnitureItemView key={ index } groupItem={ item } />
                     }) }
