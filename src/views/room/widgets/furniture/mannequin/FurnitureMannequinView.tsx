@@ -178,39 +178,38 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
                             <AvatarImageView figure={ mannequinData.renderedFigure } direction={ 2 } />
                         </div>
                     </div>
-                    <div className="col">
-                        { viewMode === FurnitureMannequinViewMode.EDIT && <>
-                            <input type="text" className="form-control mb-2" value={ mannequinData.name }  onChange={ event => processAction('set_name', event.target.value) } onKeyDown={ event => handleKeyDown(event) } /> 
-                            <div className="btn btn-success mb-2 w-100" onClick={ event => processAction('load_figure') }>{ LocalizeText('mannequin.widget.style') }</div>
-                            <div className="btn btn-success w-100" onClick={ event => processAction('wear') }>{ LocalizeText('mannequin.widget.wear') }</div>
-                        </> }
-                        { viewMode === FurnitureMannequinViewMode.SAVE && <>
-                            <div className="d-flex flex-column h-100">
+                    <div className="d-flex flex-column justify-content-between col">
+                        { viewMode === FurnitureMannequinViewMode.DEFAULT &&
+                            <>
                                 <div className="h-100">
-                                    <div className="mb-2 text-black fw-bold">{ mannequinData.name }</div>
-                                    <div className="text-black">{ LocalizeText('mannequin.widget.savetext') }</div>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <div className="text-black text-decoration-underline" onClick={ event => processAction('back') }>{ LocalizeText('mannequin.widget.back') }</div>
-                                    <div className="btn btn-success" onClick={ event => processAction('save_figure') }>{ LocalizeText('mannequin.widget.save') }</div>
-                                </div>
-                            </div>
-                        </> }
-                        { viewMode === FurnitureMannequinViewMode.DEFAULT && <>
-                            <div className="d-flex flex-column h-100">
-                                <div className="h-100">
-                                    <div className="mb-2 text-black fw-bold">{ mannequinData.name }</div>
+                                    <div className="mb-1 text-black fw-bold">{ mannequinData.name }</div>
                                     <div className="text-black">{ LocalizeText('mannequin.widget.weartext') }</div>
                                 </div>
                                 <div className="btn btn-success float-end" onClick={ event => processAction('wear') }>{ LocalizeText('mannequin.widget.wear') }</div>
-                            </div>
-                        </> }
-                        { viewMode === FurnitureMannequinViewMode.CLUB && <>
-                            <div className="text-black">{ LocalizeText('mannequin.widget.clubnotification') }</div>
-                        </> }
-                        { viewMode === FurnitureMannequinViewMode.INCOMPATIBLE_GENDER && <>
-                            <div className="text-black">{ LocalizeText('mannequin.widget.wronggender') }</div>
-                        </> }
+                                </> }
+                        { viewMode === FurnitureMannequinViewMode.EDIT &&
+                            <>
+                                <input type="text" className="form-control mb-2" value={ mannequinData.name }  onChange={ event => processAction('set_name', event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
+                                <div className="d-flex flex-column w-100">
+                                    <div className="btn btn-success mb-2 w-100" onClick={ event => processAction('load_figure') }>{ LocalizeText('mannequin.widget.style') }</div>
+                                    <div className="btn btn-success w-100" onClick={ event => processAction('wear') }>{ LocalizeText('mannequin.widget.wear') }</div>
+                                </div>
+                            </> }
+                        { viewMode === FurnitureMannequinViewMode.SAVE &&
+                            <>
+                                <div className="h-100">
+                                    <div className="mb-1 text-black fw-bold">{ mannequinData.name }</div>
+                                    <div className="text-black">{ LocalizeText('mannequin.widget.savetext') }</div>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <div className="text-black text-decoration-underline cursor-pointer" onClick={ event => processAction('back') }>{ LocalizeText('mannequin.widget.back') }</div>
+                                    <div className="btn btn-success" onClick={ event => processAction('save_figure') }>{ LocalizeText('mannequin.widget.save') }</div>
+                                </div>
+                            </> }
+                        { viewMode === FurnitureMannequinViewMode.CLUB &&
+                            <div className="text-black">{ LocalizeText('mannequin.widget.clubnotification') }</div> }
+                        { viewMode === FurnitureMannequinViewMode.INCOMPATIBLE_GENDER &&
+                            <div className="text-black">{ LocalizeText('mannequin.widget.wronggender') }</div> }
                     </div>
                 </div>
             </NitroCardContentView>
