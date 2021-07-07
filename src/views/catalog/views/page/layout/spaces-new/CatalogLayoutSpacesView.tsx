@@ -70,14 +70,12 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutSpacesViewProps> = props =
 
     return (
         <div className="row h-100 nitro-catalog-layout-spaces">
-            <div className="col-7 h-100 d-flex flex-column">
-                <div className="d-flex">
-                    <div className="btn-group mx-auto mb-1 w-100">
-                        { groupNames.map((name, index) =>
-                            {
-                                return <button key={ index } type="button" className={ 'btn btn-primary btn-sm ' + ((activeGroupIndex === index) ? 'active ' : '' )} onClick={ event => setActiveGroupIndex(index) }>{ LocalizeText(`catalog.spaces.tab.${ name }`) }</button>
-                            })}
-                    </div>
+            <div className="d-flex col-7 flex-column h-100 overflow-hidden">
+                <div className="btn-group mx-auto mb-1 w-100">
+                    { groupNames.map((name, index) =>
+                        {
+                            return <button key={ index } type="button" className={ 'btn btn-primary btn-sm ' + ((activeGroupIndex === index) ? 'active ' : '' )} onClick={ event => setActiveGroupIndex(index) }>{ LocalizeText(`catalog.spaces.tab.${ name }`) }</button>
+                        })}
                 </div>
                 <CatalogPageOffersView offers={ groups[activeGroupIndex] } />
             </div>
