@@ -1,6 +1,6 @@
 import { FurnitureListComposer, RoomObjectVariable, Vector3d } from 'nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetRoomEngine } from '../../../../api';
+import { GetRoomEngine, GetSessionDataManager } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
@@ -80,9 +80,9 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 
             if(furnitureItem.category === FurniCategory._Str_3432)
             {
-                // insert a window if the type is landscape
-                //_local_19 = this._model.controller._Str_18225("ads_twi_windw", ProductTypeEnum.WALL);
-                //this._roomPreviewer._Str_12087(_local_19.id, new Vector3d(90, 0, 0), _local_19._Str_4558);
+                const data = GetSessionDataManager().getWallItemDataByName('noob_window_double');
+
+                if(data) roomPreviewer.addWallItemIntoRoom(data.id, new Vector3d(90, 0, 0), data.customParams);
             }
         }
         else

@@ -1,5 +1,5 @@
-import { FurnitureListComposer, IObjectData, TradingListAddItemComposer, TradingListAddItemsComposer, TradingListItemRemoveComposer } from 'nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FurnitureListComposer, IObjectData, TradingAcceptComposer, TradingConfirmationComposer, TradingListAddItemComposer, TradingListAddItemsComposer, TradingListItemRemoveComposer, TradingUnacceptComposer } from 'nitro-renderer';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
 import { NitroCardGridView } from '../../../../layout/card/grid/NitroCardGridView';
@@ -7,6 +7,7 @@ import { LocalizeText } from '../../../../utils/LocalizeText';
 import { FurniCategory } from '../../common/FurniCategory';
 import { GroupItem } from '../../common/GroupItem';
 import { IFurnitureItem } from '../../common/IFurnitureItem';
+import { TradeState } from '../../common/TradeState';
 import { _Str_16998 } from '../../common/TradingUtilities';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
@@ -17,16 +18,14 @@ const MAX_ITEMS_TO_TRADE: number = 9;
 
 export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 {
+    const { cancelTrade = null } = props;
+    const [ groupItem, setGroupItem ] = useState<GroupItem>(null);
+    const [ ownGroupItem, setOwnGroupItem ] = useState<GroupItem>(null);
+    const [ otherGroupItem, setOtherGroupItem ] = useState<GroupItem>(null);
+    const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(null);
+    const [ countdownTick, setCountdownTick ] = useState(3);
     const { furnitureState = null, dispatchFurnitureState = null } = useInventoryContext();
     const { needsFurniUpdate = false, groupItems = [], tradeData = null } = furnitureState;
-    const [ groupItem, setGroupItem ] = useState<GroupItem>(null);
-    const [ selectedGroupItem, setSelectedGroupItem ] = useState<GroupItem>(null);
-    const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(null);
-
-    const close = useCallback(() =>
-    {
-
-    }, []);
 
     const canTradeItem = useCallback((isWallItem: boolean, spriteId: number, category: number, groupable: boolean, stuffData: IObjectData) =>
     {
@@ -136,12 +135,93 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
             SendMessageHook(new FurnitureListComposer());
         }
-        else
-        {
-            setFilteredGroupItems(groupItems);
-        }
 
     }, [ needsFurniUpdate, groupItems, dispatchFurnitureState ]);
+
+    const progressTrade = useCallback(() =>
+    {
+        switch(tradeData.state)
+        {
+            case TradeState.TRADING_STATE_RUNNING:
+                if(!tradeData.otherUser.itemCount && !tradeData.ownUser.accepts)
+                {
+                    //this._notificationService.alert('${inventory.trading.warning.other_not_offering}');
+                }
+
+                if(tradeData.ownUser.accepts)
+                {
+                    SendMessageHook(new TradingUnacceptComposer());
+                }
+                else
+                {
+                    SendMessageHook(new TradingAcceptComposer());
+                }
+                return;
+            case TradeState.TRADING_STATE_CONFIRMING:
+                SendMessageHook(new TradingConfirmationComposer());
+
+                dispatchFurnitureState({
+                    type: InventoryFurnitureActions.SET_TRADE_STATE,
+                    payload: {
+                        tradeState: TradeState.TRADING_STATE_CONFIRMED
+                    }
+                });
+                return;
+        }
+    }, [ tradeData, dispatchFurnitureState ]);
+
+    const getTradeButton = useMemo(() =>
+    {
+        if(!tradeData) return null;
+
+        switch(tradeData.state)
+        {
+            case TradeState.TRADING_STATE_READY:
+                return <button type="button" className="btn btn-secondary" disabled={ (!tradeData.ownUser.itemCount && !tradeData.otherUser.itemCount) } onClick={ progressTrade }>{ LocalizeText('inventory.trading.accept') }</button>;
+            case TradeState.TRADING_STATE_RUNNING:
+                return <button type="button" className="btn btn-secondary" disabled={ (!tradeData.ownUser.itemCount && !tradeData.otherUser.itemCount) } onClick={ progressTrade }>{ LocalizeText(tradeData.ownUser.accepts ? 'inventory.trading.modify' : 'inventory.trading.accept') }</button>;
+            case TradeState.TRADING_STATE_COUNTDOWN:
+                return <button type="button" className="btn btn-secondary" disabled>{ LocalizeText('inventory.trading.countdown', [ 'counter' ], [ countdownTick.toString() ]) }</button>;
+            case TradeState.TRADING_STATE_CONFIRMING:
+                return <button type="button" className="btn btn-secondary" onClick={ progressTrade }>{ LocalizeText('inventory.trading.button.restore') }</button>;
+            case TradeState.TRADING_STATE_CONFIRMED:
+                return <button type="button" className="btn btn-secondary">{ LocalizeText('inventory.trading.info.waiting') }</button>;
+        }
+    }, [ tradeData, countdownTick, progressTrade ]);
+
+    useEffect(() =>
+    {
+        if(!tradeData || (tradeData.state !== TradeState.TRADING_STATE_COUNTDOWN)) return;
+
+        setCountdownTick(3);
+
+        const interval = setInterval(() =>
+        {
+            setCountdownTick(prevValue =>
+                {
+                    const newValue = (prevValue - 1);
+
+                    if(newValue === -1)
+                    {
+                        dispatchFurnitureState({
+                            type: InventoryFurnitureActions.SET_TRADE_STATE,
+                            payload: {
+                                tradeState: TradeState.TRADING_STATE_CONFIRMING
+                            }
+                        });
+
+                        clearInterval(interval);
+                    }
+
+                    return newValue;
+                });
+        }, 1000);
+
+        return () =>
+        {
+            clearInterval(interval);
+        }
+    }, [ tradeData, dispatchFurnitureState ]);
 
     return (
         <div className="row h-100">
@@ -162,10 +242,11 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                             );
                         }) }
                 </NitroCardGridView>
+                <div className="col-12 badge bg-muted w-100 mt-1">{ groupItem ? groupItem.name : LocalizeText('catalog_selectproduct') }</div>
             </div>
-            <div className="col-8 row mx-0">
+            <div className="col-8 row">
                 <div className="d-flex flex-column col-6">
-                    <div className="badge bg-primary w-100 p-1 mb-1 me-1">{ LocalizeText('inventory.trading.you') }</div>
+                    <span className="d-flex justify-content-between align-items-center text-black small mb-1">{ LocalizeText('inventory.trading.you') } { LocalizeText('inventory.trading.areoffering') }: <i className={ 'small fas ' + (tradeData.ownUser.accepts ? 'fa-lock text-success' : 'fa-unlock text-danger') } /></span>
                     <NitroCardGridView columns={ 3 }>
                         { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
                             {
@@ -174,18 +255,19 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                                 if(!item) return <NitroCardGridItemView key={ i } />;
 
                                 return (
-                                    <NitroCardGridItemView key={ i } itemActive={ (item === selectedGroupItem) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUnique={ item.stuffData.isUnique } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setSelectedGroupItem(item) }>
-                                        { (item === selectedGroupItem) &&
+                                    <NitroCardGridItemView key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUnique={ item.stuffData.isUnique } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) }>
+                                        { (ownGroupItem === item) &&
                                             <button className="btn btn-danger btn-sm trade-button left" onClick={ event => removeItem(item) }>
                                                 <i className="fas fa-chevron-left" />
                                             </button> }
                                     </NitroCardGridItemView>
                                 );
                             }) }
+                        <div className="col-12 badge bg-muted w-100">{ ownGroupItem ? ownGroupItem.name : LocalizeText('catalog_selectproduct') }</div>
                     </NitroCardGridView>
                 </div>
                 <div className="d-flex flex-column col-6">
-                    <div className="badge bg-primary w-100 p-1 mb-1 me-1">{ tradeData.otherUser.userName }</div>
+                    <span className="d-flex justify-content-between align-items-center  text-black small mb-1">{ tradeData.otherUser.userName } { LocalizeText('inventory.trading.isoffering') }: <i className={ 'small fas ' + (tradeData.otherUser.accepts ? 'fa-lock text-success' : 'fa-unlock text-danger') } /></span>
                     <NitroCardGridView columns={ 3 }>
                         { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
                             {
@@ -193,12 +275,14 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
                                 if(!item) return <NitroCardGridItemView key={ i } />;
 
-                                return <NitroCardGridItemView key={ i } itemActive={ (item === selectedGroupItem) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUnique={ item.stuffData.isUnique } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setSelectedGroupItem(item) } />;
+                                return <NitroCardGridItemView key={ i } itemActive={ (otherGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUnique={ item.stuffData.isUnique } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
                             }) }
+                        <div className="col-12 badge bg-muted w-100">{ otherGroupItem ? otherGroupItem.name : LocalizeText('catalog_selectproduct') }</div>
                     </NitroCardGridView>
                 </div>
-                <div className="d-flex col-12 bg-muted">
-                    plz
+                <div className="d-flex col-12 justify-content-between align-items-end w-100">
+                    <button type="button" className="btn btn-danger" onClick={ cancelTrade }>{ LocalizeText('generic.cancel') }</button>
+                    { getTradeButton }
                 </div>
             </div>
         </div>

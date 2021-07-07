@@ -1,13 +1,15 @@
-import { IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent, TradingOpenComposer } from 'nitro-renderer';
+import { IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent, TradingCancelComposer, TradingCloseComposer, TradingOpenComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { GetConnection, GetRoomEngine } from '../../api';
 import { InventoryEvent, InventoryTradeRequestEvent } from '../../events';
 import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
+import { SendMessageHook } from '../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
 import { LocalizeText } from '../../utils/LocalizeText';
 import { isObjectMoverRequested, setObjectMoverRequested } from './common/InventoryUtilities';
+import { TradeState } from './common/TradeState';
 import { InventoryContextProvider } from './context/InventoryContext';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
 import { InventoryTabs, InventoryViewProps } from './InventoryView.types';
@@ -34,18 +36,47 @@ export const InventoryView: FC<InventoryViewProps> = props =>
     const [ petState, dispatchPetState ] = useReducer(InventoryPetReducer, initialInventoryPet);
     const [ badgeState, dispatchBadgeState ] = useReducer(InventoryBadgeReducer, initialInventoryBadge);
 
+    const close = useCallback(() =>
+    {
+        if(furnitureState.tradeData)
+        {
+            switch(furnitureState.tradeData.state)
+            {
+                case TradeState.TRADING_STATE_RUNNING:
+                    SendMessageHook(new TradingCloseComposer());
+                    return;
+                case TradeState.TRADING_STATE_CONFIRMING:
+                    SendMessageHook(new TradingCancelComposer());
+                    return;
+            }
+        }
+        
+        setIsVisible(false);
+    }, [ furnitureState.tradeData ]);
+
     const onInventoryEvent = useCallback((event: InventoryEvent) =>
     {
         switch(event.type)
         {
             case InventoryEvent.SHOW_INVENTORY:
+                if(isVisible) return;
+
                 setIsVisible(true);
                 return;
             case InventoryEvent.HIDE_INVENTORY:
-                setIsVisible(false);
+                if(!isVisible) return;
+
+                close();
                 return;
             case InventoryEvent.TOGGLE_INVENTORY:
-                setIsVisible(value => !value);
+                if(!isVisible)
+                {
+                    setIsVisible(true);
+                }
+                else
+                {
+                    close();
+                }
                 return;
             case InventoryTradeRequestEvent.REQUEST_TRADE: {
                 const tradeEvent = (event as InventoryTradeRequestEvent);
@@ -53,7 +84,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                 GetConnection().send(new TradingOpenComposer(tradeEvent.objectId));
             }
         }
-    }, []);
+    }, [ isVisible, close ]);
 
     useUiEvent(InventoryEvent.SHOW_INVENTORY, onInventoryEvent);
     useUiEvent(InventoryEvent.HIDE_INVENTORY, onInventoryEvent);
@@ -105,19 +136,9 @@ export const InventoryView: FC<InventoryViewProps> = props =>
 
     useEffect(() =>
     {
-        if(!furnitureState.tradeData) return;
-
-        setIsVisible(true);
-    }, [ furnitureState.tradeData ]);
-
-    useEffect(() =>
-    {
         if(!isVisible)
         {
-            if(furnitureState.tradeData)
-            {
-                // cancel the trade
-            }
+            if(furnitureState.tradeData) setIsVisible(true);
         }
     }, [ furnitureState.tradeData, isVisible ]);
 
@@ -126,7 +147,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
             <InventoryMessageHandler />
             { isVisible &&
                 <NitroCardView className="nitro-inventory">
-                    <NitroCardHeaderView headerText={ LocalizeText('inventory.title') } onCloseClick={ event => setIsVisible(false) } />
+                    <NitroCardHeaderView headerText={ LocalizeText('inventory.title') } onCloseClick={ close } />
                     { !furnitureState.tradeData &&
                         <>
                             <NitroCardTabsView>
@@ -152,7 +173,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                         </> }
                     { furnitureState.tradeData &&
                         <NitroCardContentView>
-                            <InventoryTradeView />
+                            <InventoryTradeView cancelTrade={ close } />
                         </NitroCardContentView> }
                 </NitroCardView> }
         </InventoryContextProvider>

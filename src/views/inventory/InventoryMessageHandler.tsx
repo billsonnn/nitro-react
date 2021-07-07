@@ -1,4 +1,4 @@
-import { AdvancedMap, BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, TradingAcceptEvent, TradingCloseEvent, TradingCompletedEvent, TradingConfirmationEvent, TradingListItemEvent, TradingOpenEvent } from 'nitro-renderer';
+import { AdvancedMap, BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, TradingAcceptEvent, TradingCloseEvent, TradingCompletedEvent, TradingConfirmationEvent, TradingListItemEvent, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingYouAreNotAllowedEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetRoomSession, GetSessionDataManager } from '../../api';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
@@ -176,6 +176,59 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
         });
     }, [ dispatchFurnitureState ]);
 
+    const onTradingCloseEvent = useCallback((event: TradingCloseEvent) =>
+    {
+        const parser = event.getParser();
+
+        dispatchFurnitureState({
+            type: InventoryFurnitureActions.CLOSE_TRADE,
+            payload: {}
+        });
+    }, [ dispatchFurnitureState ]);
+
+    const onTradingCompletedEvent = useCallback((event: TradingCompletedEvent) =>
+    {
+        const parser = event.getParser();
+
+        dispatchFurnitureState({
+            type: InventoryFurnitureActions.CLOSE_TRADE,
+            payload: {}
+        });
+    }, [ dispatchFurnitureState ]);
+
+    const onTradingConfirmationEvent = useCallback((event: TradingConfirmationEvent) =>
+    {
+        const parser = event.getParser();
+
+        dispatchFurnitureState({
+            type: InventoryFurnitureActions.SET_TRADE_STATE,
+            payload: {
+                tradeState: TradeState.TRADING_STATE_COUNTDOWN
+            }
+        });
+    }, [ dispatchFurnitureState ]);
+
+    const onTradingListItemEvent = useCallback((event: TradingListItemEvent) =>
+    {
+        const parser = event.getParser();
+
+        console.log(parser);
+
+        dispatchFurnitureState({
+            type: InventoryFurnitureActions.UPDATE_TRADE,
+            payload: {
+                tradeParser: event.getParser()
+            }
+        });
+    }, [ dispatchFurnitureState ]);
+
+    const onTradingNotOpenEvent = useCallback((event: TradingNotOpenEvent) =>
+    {
+        const parser = event.getParser();
+
+        console.log(parser);
+    }, []);
+
     const onTradingOpenEvent = useCallback((event: TradingOpenEvent) =>
     {
         const parser = event.getParser();
@@ -220,53 +273,26 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
         });
     }, [ dispatchFurnitureState ]);
 
-    const onTradingCloseEvent = useCallback((event: TradingCloseEvent) =>
-    {
-        const parser = event.getParser();
-
-        dispatchFurnitureState({
-            type: InventoryFurnitureActions.CLOSE_TRADE,
-            payload: {}
-        });
-    }, [ dispatchFurnitureState ]);
-
-    const onTradingCompletedEvent = useCallback((event: TradingCompletedEvent) =>
-    {
-        const parser = event.getParser();
-
-        dispatchFurnitureState({
-            type: InventoryFurnitureActions.SET_TRADE_STATE,
-            payload: {
-                tradeState: TradeState.TRADING_STATE_COMPLETED
-            }
-        });
-    }, [ dispatchFurnitureState ]);
-
-    const onTradingConfirmationEvent = useCallback((event: TradingConfirmationEvent) =>
-    {
-        const parser = event.getParser();
-
-        dispatchFurnitureState({
-            type: InventoryFurnitureActions.SET_TRADE_STATE,
-            payload: {
-                tradeState: TradeState.TRADING_STATE_CONFIRMED
-            }
-        });
-    }, [ dispatchFurnitureState ]);
-
-    const onTradingListItemEvent = useCallback((event: TradingListItemEvent) =>
+    const onTradingOpenFailedEvent = useCallback((event: TradingOpenFailedEvent) =>
     {
         const parser = event.getParser();
 
         console.log(parser);
+    }, []);
 
-        dispatchFurnitureState({
-            type: InventoryFurnitureActions.UPDATE_TRADE,
-            payload: {
-                tradeParser: event.getParser()
-            }
-        });
-    }, [ dispatchFurnitureState ]);
+    const onTradingOtherNotAllowedEvent = useCallback((event: TradingOtherNotAllowedEvent) =>
+    {
+        const parser = event.getParser();
+
+        console.log(parser);
+    }, []);
+
+    const onTradingYouAreNotAllowedEvent = useCallback((event: TradingYouAreNotAllowedEvent) =>
+    {
+        const parser = event.getParser();
+
+        console.log(parser);
+    }, []);
 
     CreateMessageHook(FurnitureListAddOrUpdateEvent, onFurnitureListAddOrUpdateEvent);
     CreateMessageHook(FurnitureListEvent, onFurnitureListEvent);
@@ -281,11 +307,15 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
     CreateMessageHook(PetAddedToInventoryEvent, onPetAddedToInventoryEvent);
     CreateMessageHook(BadgesEvent, onBadgesEvent);
     CreateMessageHook(TradingAcceptEvent, onTradingAcceptEvent);
-    CreateMessageHook(TradingOpenEvent, onTradingOpenEvent);
     CreateMessageHook(TradingCloseEvent, onTradingCloseEvent);
     CreateMessageHook(TradingCompletedEvent, onTradingCompletedEvent);
     CreateMessageHook(TradingConfirmationEvent, onTradingConfirmationEvent);
     CreateMessageHook(TradingListItemEvent, onTradingListItemEvent);
+    CreateMessageHook(TradingNotOpenEvent, onTradingNotOpenEvent);
+    CreateMessageHook(TradingOpenEvent, onTradingOpenEvent);
+    CreateMessageHook(TradingOpenFailedEvent, onTradingOpenFailedEvent);
+    CreateMessageHook(TradingOtherNotAllowedEvent, onTradingOtherNotAllowedEvent);
+    CreateMessageHook(TradingYouAreNotAllowedEvent, onTradingYouAreNotAllowedEvent);
 
     return null;
 }
