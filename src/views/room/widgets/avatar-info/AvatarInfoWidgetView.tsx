@@ -276,7 +276,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
             { currentView }
             { (nameBubbles.length > 0) && nameBubbles.map((name, index) =>
                 {
-                    return <AvatarInfoWidgetNameView nameData={ name } close={ () => removeNameBubble(index) }  />;
+                    return <AvatarInfoWidgetNameView key={ index } nameData={ name } close={ () => removeNameBubble(index) }  />;
                 }) }
             { rentableBotChatEvent && <AvatarInfoRentableBotChatView chatEvent={ rentableBotChatEvent } /> }
         </>
