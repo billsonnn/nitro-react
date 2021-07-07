@@ -44,7 +44,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
     }, [ page, setActiveChild ]);
     
     return (
-        <div className="col pe-1 pb-1 catalog-navigation-item-container">
+        <div className="col pb-1 catalog-navigation-item-container">
             <div className={ 'd-flex align-items-center cursor-pointer catalog-navigation-item ' + (isActive ? 'active ': '') } onClick={ select }>
                 <CatalogIconView icon={ page.icon } />
                 <div className="flex-grow-1 text-black text-truncate px-1">{ page.localization }</div>

@@ -1,6 +1,6 @@
 import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, PetFigureData, PetType, RoomAdsUpdateComposer, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnumItemExtradataParameter, SecurityLevel, Vector3d } from 'nitro-renderer';
 import { GetConnection, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../api';
-import { WiredSelectObjectEvent } from '../../../events';
+import { InventoryTradeRequestEvent, WiredSelectObjectEvent } from '../../../events';
 import { dispatchUiEvent } from '../../../hooks/events';
 import { LocalizeText } from '../../../utils/LocalizeText';
 import { RoomWidgetObjectNameEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
@@ -114,7 +114,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 this.container.roomSession.sendTakeRightsMessage((message as RoomWidgetUserActionMessage).userId);
                 break;
             case RoomWidgetUserActionMessage.START_TRADING:
-                //if(userData) this._widget.inventoryTrading.startTrade(userData.roomIndex, userData.name);
+                dispatchUiEvent(new InventoryTradeRequestEvent(userData.roomIndex, userData.name));
                 break;
             // case RoomWidgetUserActionMessage.RWUAM_OPEN_HOME_PAGE:
             //     this._container.sessionDataManager._Str_21275((message as RoomWidgetUserActionMessage).userId, _local_3.name);
@@ -286,7 +286,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             }
         }
 
-        if(name) this.container.eventDispatcher.dispatchEvent(new RoomWidgetObjectNameEvent(message.id, message.category, id, name, userType));
+        if(name) this.container.eventDispatcher.dispatchEvent(new RoomWidgetObjectNameEvent(RoomWidgetObjectNameEvent.TYPE, message.id, message.category, id, name, userType));
 
         return null;
     }

@@ -36,7 +36,7 @@ export const FriendBarView: FC<FriendBarViewProps> = props =>
             </button>
             { Array.from(Array(maxDisplayCount), (e, i) =>
                 {
-                    return <FriendBarItemView friend={ (onlineFriends[ indexOffset + i ] || null) } />;
+                    return <FriendBarItemView key={ i } friend={ (onlineFriends[ indexOffset + i ] || null) } />;
                 }) }
             <button type="button" className="btn btn-sm btn-black align-self-center friend-bar-button" disabled={ !canIncreaseIndex } onClick={ event => setIndexOffset(indexOffset + 1) }>
                 <i className="fas fa-chevron-right" />

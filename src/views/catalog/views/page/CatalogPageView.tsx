@@ -87,12 +87,10 @@ export const CatalogPageView: FC<CatalogPageViewProps> = props =>
                             return;
                     }
 
-                    // const windowData = Nitro.instance.sessionDataManager.getWallItemDataByName('ads_twi_windw');
+                    const windowData = GetSessionDataManager().getWallItemDataByName('noob_window_double');
 
-                    // if(windowData)
-                    // {
-                    //     this._roomPreviewer.addWallItemIntoRoom(windowData.id, new Vector3d(90), windowData.customParams)
-                    // }
+                    if(windowData) roomPreviewer.addWallItemIntoRoom(windowData.id, new Vector3d(90, 0, 0), windowData.customParams);
+
                     return;
             }
         }

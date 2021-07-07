@@ -6,6 +6,7 @@ $nitro-card-tabs-height: 33px;
 
     @import './accordion/NitroCardAccordionView';
     @import './content/NitroCardContentView';
+    @import './grid/NitroCardGridView';
     @import './header/NitroCardHeaderView';
     @import './tabs/NitroCardTabsView';
 }

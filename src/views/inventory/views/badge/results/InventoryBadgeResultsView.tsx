@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { NitroCardGridView } from '../../../../../layout/card/grid/NitroCardGridView';
 import { InventoryBadgeItemView } from '../item/InventoryBadgeItemView';
 import { InventoryBadgeResultsViewProps } from './InventoryBadgeResultsView.types';
 
@@ -7,15 +8,13 @@ export const InventoryBadgeResultsView: FC<InventoryBadgeResultsViewProps> = pro
     const { badges = [], activeBadges = [] } = props;
     
     return (
-        <div className="h-100 overflow-hidden">
-            <div className="row row-cols-5 align-content-start g-0 w-100 h-100 overflow-auto">
+        <NitroCardGridView>
             { badges && (badges.length > 0) && badges.map(code =>
-                    {
-                        if(activeBadges.indexOf(code) >= 0) return null;
-                        
-                        return <InventoryBadgeItemView key={ code } badge={ code } />
-                    }) }
-            </div>
-        </div>
+                {
+                    if(activeBadges.indexOf(code) >= 0) return null;
+                    
+                    return <InventoryBadgeItemView key={ code } badge={ code } />
+                }) }
+        </NitroCardGridView>
     );
 }

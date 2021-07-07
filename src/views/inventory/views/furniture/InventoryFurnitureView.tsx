@@ -1,7 +1,7 @@
 import { FurnitureListComposer, RoomObjectVariable, Vector3d } from 'nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetRoomEngine } from '../../../../api';
-import { SendMessageHook } from '../../../../hooks/messages/message-event';
+import { GetRoomEngine, GetSessionDataManager } from '../../../../api';
+import { SendMessageHook } from '../../../../hooks/messages';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
 import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerView';
@@ -80,9 +80,9 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 
             if(furnitureItem.category === FurniCategory._Str_3432)
             {
-                // insert a window if the type is landscape
-                //_local_19 = this._model.controller._Str_18225("ads_twi_windw", ProductTypeEnum.WALL);
-                //this._roomPreviewer._Str_12087(_local_19.id, new Vector3d(90, 0, 0), _local_19._Str_4558);
+                const data = GetSessionDataManager().getWallItemDataByName('noob_window_double');
+
+                if(data) roomPreviewer.addWallItemIntoRoom(data.id, new Vector3d(90, 0, 0), data.customParams);
             }
         }
         else
@@ -123,14 +123,16 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
             </div>
             <div className="position-relative d-flex flex-column col-5 justify-space-between">
                 <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
-                { groupItem && groupItem.stuffData.isUnique &&
+                { groupItem &&groupItem.stuffData.isUnique &&
                     <div className="position-absolute limited-edition-info-container">
                         <LimitedEditionCompactPlateView uniqueNumber={ groupItem.stuffData.uniqueNumber } uniqueSeries={ groupItem.stuffData.uniqueSeries } />
                     </div> }
-                { groupItem && <div className="d-flex flex-column flex-grow-1">
-                    <p className="flex-grow-1 fs-6 text-black my-2">{ groupItem.name }</p>
-                    { !!roomSession && <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptItemPlacement(groupItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
-                </div> }
+                { groupItem &&
+                    <div className="d-flex flex-column flex-grow-1">
+                        <p className="flex-grow-1 fs-6 text-black my-2">{ groupItem.name }</p>
+                        { !!roomSession &&
+                            <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptItemPlacement(groupItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
+                    </div> }
             </div>
         </div>
     );
