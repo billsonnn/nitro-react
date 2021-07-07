@@ -25,7 +25,7 @@ export const InventoryBadgeItemView: FC<InventoryBadgeItemViewProps> = props =>
     }, [ badge, dispatchBadgeState ]);
 
     return (
-        <NitroCardGridItemView itemActive={ isActive }>
+        <NitroCardGridItemView itemActive={ isActive } onMouseDown={ onMouseEvent }> 
             <BadgeImageView badgeCode={ badge } />
         </NitroCardGridItemView>
     );
