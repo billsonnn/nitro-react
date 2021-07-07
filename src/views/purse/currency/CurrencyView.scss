@@ -1,10 +1,8 @@
 .nitro-currency {
     pointer-events: all;
+    background: $bg-mirage-split-background;
+    
     .nitro-currency-text {
         max-width: 60px;
-    }
-    &:not(:last-child) {
-        border-right:1px solid #000;
-        box-shadow: 1px 0 lighten($dark,8.3)
     }
 }

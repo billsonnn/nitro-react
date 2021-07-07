@@ -36,16 +36,18 @@ export const PurseView: FC<PurseViewProps> = props =>
     return (
         <PurseContextProvider value={ { purseState, dispatchPurseState }}>
             <PurseMessageHandler />
-            <div className="nitro-purse rounded d-flex flex-row py-1 justify-content-between">
-                { currencies && currencies.map((currency, index) =>
-                    {
-                        if(displayedCurrencies.indexOf(currency.type) === -1) return null;
+            <div className="nitro-purse rounded-bottom d-flex flex-row justify-content-between">
+                <div className="row row-cols-2 mx-0">
+                    { currencies && currencies.map((currency, index) =>
+                        {
+                            if(displayedCurrencies.indexOf(currency.type) === -1) return null;
 
-                        return <CurrencyView key={ index } currency={ currency } />;
-                    }) }
-                <div className="notification-button px-2" onClick={ toggleNotificationCenter }>
+                            return <CurrencyView key={ index } currency={ currency } />;
+                    })}
+                </div>
+                {/*<div className="notification-button px-2" onClick={toggleNotificationCenter}>
                     <i className="fas fa-bars" />
-                </div> 
+                </div>*/}
             </div>
         </PurseContextProvider>
     );
