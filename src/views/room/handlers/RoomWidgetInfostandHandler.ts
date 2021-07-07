@@ -286,7 +286,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             }
         }
 
-        if(name) this.container.eventDispatcher.dispatchEvent(new RoomWidgetObjectNameEvent(message.id, message.category, id, name, userType));
+        if(name) this.container.eventDispatcher.dispatchEvent(new RoomWidgetObjectNameEvent(RoomWidgetObjectNameEvent.TYPE, message.id, message.category, id, name, userType));
 
         return null;
     }

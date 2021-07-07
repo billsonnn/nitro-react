@@ -1,6 +1,8 @@
 import { RoomEnterEffect, RoomObjectCategory } from 'nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { GetRoomSession, GetSessionDataManager } from '../../../../api';
+import { FriendEnteredRoomEvent } from '../../../../events';
+import { useUiEvent } from '../../../../hooks/events';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../context/RoomContext';
 import { RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent } from '../../events';
@@ -19,11 +21,34 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ name, setName ] = useState<RoomWidgetObjectNameEvent>(null);
+    const [ nameBubbles, setNameBubbles ] = useState<RoomWidgetObjectNameEvent[]>([]);
     const [ infoStandEvent, setInfoStandEvent ] = useState<RoomWidgetUpdateInfostandEvent>(null);
     const [ isGameMode, setGameMode ] = useState(false);
     const [ isDancing, setIsDancing ] = useState(false);
     const [ isDecorating, setIsDecorating ] = useState(GetRoomSession().isDecorating);
     const [ rentableBotChatEvent, setRentableBotChatEvent ] = useState<RoomWidgetUpdateRentableBotChatEvent>(null);
+
+    const removeNameBubble = useCallback((index: number) =>
+    {
+        setNameBubbles(prevValue =>
+            {
+                const newValue = [ ...prevValue ];
+
+                newValue.splice(index, 1);
+
+                return newValue;
+            });
+    }, []);
+
+    const clearInfoStandEvent = useCallback(() =>
+    {
+        setInfoStandEvent(null);
+    }, []);
+
+    const clearName = useCallback(() =>
+    {
+        setName(null);
+    }, []);
 
     const onRoomWidgetRoomEngineUpdateEvent = useCallback((event: RoomWidgetRoomEngineUpdateEvent) =>
     {
@@ -50,6 +75,16 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
             if(event.id === name.id) setName(null);
         }
 
+        if(event.category === RoomObjectCategory.UNIT)
+        {
+            const nameBubbleIndex = nameBubbles.findIndex(bubble =>
+                {
+                    return (bubble.roomIndex === event.id);
+                });
+    
+            if(nameBubbleIndex > -1) removeNameBubble(nameBubbleIndex);
+        }
+
         if(infoStandEvent)
         {
             if(infoStandEvent instanceof RoomWidgetUpdateInfostandFurniEvent)
@@ -67,7 +102,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
                 if(infoStandEvent.roomIndex === event.id) setInfoStandEvent(null);
             }
         }
-    }, [ name, infoStandEvent ]);
+    }, [ name, infoStandEvent, nameBubbles, removeNameBubble ]);
 
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_REMOVED, eventDispatcher, onRoomObjectRemoved);
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onRoomObjectRemoved);
@@ -103,8 +138,6 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
     const onObjectDeselected = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
     {
         if(!infoStandEvent) return;
-
-        console.log('tru')
 
         setInfoStandEvent(null);
     }, [ infoStandEvent ]);
@@ -142,32 +175,22 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
 
     CreateEventDispatcherHook(RoomWidgetUpdateDanceStatusEvent.UPDATE_DANCE, eventDispatcher, onRoomWidgetUpdateDanceStatusEvent);
 
-    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
-    {
-        switch(event.type)
-        {
-            case RoomWidgetRoomObjectUpdateEvent.USER_ADDED: {
-                // bubble if friend
-
-                return;
-            }
-            case RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED: {
-                // set if waiting for pet
-
-                return;
-            }
-        }
-    }, []);
-
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_ADDED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
-
     const onRoomWidgetUpdateRentableBotChatEvent = useCallback((event: RoomWidgetUpdateRentableBotChatEvent) =>
     {
         setRentableBotChatEvent(event);
     }, []);
 
     CreateEventDispatcherHook(RoomWidgetUpdateRentableBotChatEvent.UPDATE_CHAT, eventDispatcher, onRoomWidgetUpdateRentableBotChatEvent);
+
+    const onFriendEnteredRoomEvent = useCallback((event: FriendEnteredRoomEvent) =>
+    {
+        setNameBubbles(prevValue =>
+            {
+                return [ ...prevValue, event  ];
+            })
+    }, []);
+
+    useUiEvent(FriendEnteredRoomEvent.ENTERED, onFriendEnteredRoomEvent);
 
     const decorateView = useMemo(() =>
     {
@@ -182,23 +205,23 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
         return <AvatarInfoWidgetDecorateView userId={ userId } userName={ userName } roomIndex={ roomIndex } setIsDecorating={ setIsDecorating } />;
     }, [ isDecorating ]);
 
-    const clearInfoStandEvent = useCallback(() =>
-    {
-        setInfoStandEvent(null);
-    }, []);
-
-    const clearName = useCallback(() =>
-    {
-        setName(null);
-    }, []);
-
     const currentView = useMemo(() =>
     {
         if(isGameMode) return null;
 
         if(decorateView) return decorateView;
 
-        if(name) return <AvatarInfoWidgetNameView nameData={ name } close={ clearName }  />;
+        if(name)
+        {
+            const nameBubbleIndex = nameBubbles.findIndex(bubble =>
+                {
+                    return (bubble.roomIndex === name.roomIndex);
+                });
+
+            if(nameBubbleIndex > -1) removeNameBubble(nameBubbleIndex);
+
+            return <AvatarInfoWidgetNameView nameData={ name } close={ clearName }  />;
+        }
 
         if(infoStandEvent)
         {
@@ -210,7 +233,12 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
 
                     if(event.isSpectatorMode) return null;
 
-                    // if existing name bubble remove it
+                    const nameBubbleIndex = nameBubbles.findIndex(bubble =>
+                        {
+                            return (bubble.roomIndex === event.roomIndex);
+                        });
+
+                    if(nameBubbleIndex > -1) removeNameBubble(nameBubbleIndex);
 
                     if(event.isOwnUser)
                     {
@@ -241,11 +269,15 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
         }
 
         return null;
-    }, [ isGameMode, decorateView, name, isDancing, infoStandEvent, clearName, clearInfoStandEvent ]);
+    }, [ isGameMode, decorateView, name, nameBubbles, isDancing, infoStandEvent, clearName, clearInfoStandEvent, removeNameBubble ]);
 
     return (
         <>
             { currentView }
+            { (nameBubbles.length > 0) && nameBubbles.map((name, index) =>
+                {
+                    return <AvatarInfoWidgetNameView nameData={ name } close={ () => removeNameBubble(index) }  />;
+                }) }
             { rentableBotChatEvent && <AvatarInfoRentableBotChatView chatEvent={ rentableBotChatEvent } /> }
         </>
     )
