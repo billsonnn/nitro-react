@@ -105,16 +105,21 @@ export const InventoryView: FC<InventoryViewProps> = props =>
 
     useEffect(() =>
     {
+        if(!furnitureState.tradeData) return;
+
+        setIsVisible(true);
+    }, [ furnitureState.tradeData ]);
+
+    useEffect(() =>
+    {
         if(!isVisible)
         {
             if(furnitureState.tradeData)
             {
-                setIsVisible(true);
-
-                if(currentTab !== InventoryTabs.FURNITURE) setCurrentTab(InventoryTabs.FURNITURE);
+                // cancel the trade
             }
         }
-    }, [ furnitureState.tradeData, isVisible, currentTab ]);
+    }, [ furnitureState.tradeData, isVisible ]);
 
     return (
         <InventoryContextProvider value={ { furnitureState, dispatchFurnitureState, botState, dispatchBotState, petState, dispatchPetState, badgeState, dispatchBadgeState } }>
@@ -122,27 +127,33 @@ export const InventoryView: FC<InventoryViewProps> = props =>
             { isVisible &&
                 <NitroCardView className="nitro-inventory">
                     <NitroCardHeaderView headerText={ LocalizeText('inventory.title') } onCloseClick={ event => setIsVisible(false) } />
-                    <NitroCardTabsView>
-                        { tabs.map((name, index) =>
-                            {
-                                return (
-                                    <NitroCardTabsItemView key={ index } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) }>
-                                        { LocalizeText(name) }
-                                    </NitroCardTabsItemView>
-                                );
-                            }) }
-                    </NitroCardTabsView>
-                    <NitroCardContentView>
-                        { (currentTab === InventoryTabs.FURNITURE ) &&
-                            <InventoryFurnitureView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
-                        { (currentTab === InventoryTabs.BOTS ) &&
-                            <InventoryBotView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
-                        { (currentTab === InventoryTabs.PETS ) && 
-                            <InventoryPetView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
-                        { (currentTab === InventoryTabs.BADGES ) && 
-                            <InventoryBadgeView /> }
-                        { furnitureState.tradeData && <InventoryTradeView isInFurnitureView={ (currentTab === InventoryTabs.FURNITURE ) } /> }
-                    </NitroCardContentView>
+                    { !furnitureState.tradeData &&
+                        <>
+                            <NitroCardTabsView>
+                                { tabs.map((name, index) =>
+                                    {
+                                        return (
+                                            <NitroCardTabsItemView key={ index } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) }>
+                                                { LocalizeText(name) }
+                                            </NitroCardTabsItemView>
+                                        );
+                                    }) }
+                            </NitroCardTabsView>
+                            <NitroCardContentView>
+                                { (currentTab === InventoryTabs.FURNITURE ) &&
+                                    <InventoryFurnitureView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
+                                { (currentTab === InventoryTabs.BOTS ) &&
+                                    <InventoryBotView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
+                                { (currentTab === InventoryTabs.PETS ) && 
+                                    <InventoryPetView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
+                                { (currentTab === InventoryTabs.BADGES ) && 
+                                    <InventoryBadgeView /> }
+                            </NitroCardContentView>
+                        </> }
+                    { furnitureState.tradeData &&
+                        <NitroCardContentView>
+                            <InventoryTradeView />
+                        </NitroCardContentView> }
                 </NitroCardView> }
         </InventoryContextProvider>
     );

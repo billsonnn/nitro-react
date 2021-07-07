@@ -261,7 +261,6 @@ export const InventoryFurnitureReducer: Reducer<IInventoryFurnitureState, IInven
                 }
 
                 for(const groupItem of groupItems) groupItem.lockItemIds(tradeIds);
-
             }
 
             return { ...state, groupItems, tradeData };

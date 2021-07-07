@@ -5,5 +5,9 @@
         height: 45px;
     }
 }
+
+.inventory-badge-overflow {
+    height: calc(100% - 86px);
+}
+
 @import './item/InventoryBadgeItemView';
-@import './results/InventoryBadgeResultsView';

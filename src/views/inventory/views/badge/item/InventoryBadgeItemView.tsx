@@ -1,5 +1,6 @@
 import { MouseEventType } from 'nitro-renderer';
 import { FC, MouseEvent, useCallback } from 'react';
+import { NitroCardGridItemView } from '../../../../../layout/card/grid/item/NitroCardGridItemView';
 import { BadgeImageView } from '../../../../shared/badge-image/BadgeImageView';
 import { useInventoryContext } from '../../../context/InventoryContext';
 import { InventoryBadgeActions } from '../../../reducers/InventoryBadgeReducer';
@@ -24,10 +25,8 @@ export const InventoryBadgeItemView: FC<InventoryBadgeItemViewProps> = props =>
     }, [ badge, dispatchBadgeState ]);
 
     return (
-        <div className="col pe-1 pb-1 inventory-badge-item-container">
-            <div className={ 'position-relative border border-2 rounded inventory-badge-item cursor-pointer ' + (isActive ? 'active' : '') } onMouseDown={ onMouseEvent }>
-                <BadgeImageView badgeCode={ badge } />
-            </div>
-        </div>
+        <NitroCardGridItemView itemActive={ isActive }>
+            <BadgeImageView badgeCode={ badge } />
+        </NitroCardGridItemView>
     );
 }

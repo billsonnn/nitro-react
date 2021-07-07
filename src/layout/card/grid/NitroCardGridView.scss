@@ -1,0 +1,26 @@
+.nitro-card-grid {
+
+    .row-cols-3 {
+
+        .col {
+            padding-right: 0.25rem;
+
+            &:nth-child(3n+3) {
+                padding-right: 0;
+            }
+        }
+    }
+    
+    .row-cols-5 {
+
+        .col {
+            padding-right: 0.25rem;
+
+            &:nth-child(5n+5) {
+                padding-right: 0;
+            }
+        }
+    }
+
+    @import './item/NitroCardGridItemView.scss';
+}
