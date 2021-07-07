@@ -163,41 +163,43 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                         }) }
                 </NitroCardGridView>
             </div>
-            <div className="d-flex flex-column col-4">
-                <div className="badge bg-primary w-100 p-1 mb-1 me-1">{ LocalizeText('inventory.trading.you') }</div>
-                <NitroCardGridView columns={ 3 }>
-                    { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
-                        {
-                            const item = (tradeData.ownUser.items.getWithIndex(i) || null);
+            <div className="col-8 row mx-0">
+                <div className="d-flex flex-column col-6">
+                    <div className="badge bg-primary w-100 p-1 mb-1 me-1">{ LocalizeText('inventory.trading.you') }</div>
+                    <NitroCardGridView columns={ 3 }>
+                        { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
+                            {
+                                const item = (tradeData.ownUser.items.getWithIndex(i) || null);
 
-                            if(!item) return <NitroCardGridItemView key={ i } />;
+                                if(!item) return <NitroCardGridItemView key={ i } />;
 
-                            return (
-                                <NitroCardGridItemView key={ i } itemActive={ (item === selectedGroupItem) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUnique={ item.stuffData.isUnique } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setSelectedGroupItem(item) }>
-                                    { (item === selectedGroupItem) &&
-                                        <button className="btn btn-danger btn-sm trade-button left" onClick={ event => removeItem(item) }>
-                                            <i className="fas fa-chevron-left" />
-                                        </button> }
-                                </NitroCardGridItemView>
-                            );
-                        }) }
-                </NitroCardGridView>
-            </div>
-            <div className="d-flex flex-column col-4">
-                <div className="badge bg-primary w-100 p-1 mb-1 me-1">{ tradeData.otherUser.userName }</div>
-                <NitroCardGridView columns={ 3 }>
-                    { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
-                        {
-                            const item = (tradeData.otherUser.items.getWithIndex(i) || null);
+                                return (
+                                    <NitroCardGridItemView key={ i } itemActive={ (item === selectedGroupItem) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUnique={ item.stuffData.isUnique } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setSelectedGroupItem(item) }>
+                                        { (item === selectedGroupItem) &&
+                                            <button className="btn btn-danger btn-sm trade-button left" onClick={ event => removeItem(item) }>
+                                                <i className="fas fa-chevron-left" />
+                                            </button> }
+                                    </NitroCardGridItemView>
+                                );
+                            }) }
+                    </NitroCardGridView>
+                </div>
+                <div className="d-flex flex-column col-6">
+                    <div className="badge bg-primary w-100 p-1 mb-1 me-1">{ tradeData.otherUser.userName }</div>
+                    <NitroCardGridView columns={ 3 }>
+                        { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
+                            {
+                                const item = (tradeData.otherUser.items.getWithIndex(i) || null);
 
-                            if(!item) return <NitroCardGridItemView key={ i } />;
+                                if(!item) return <NitroCardGridItemView key={ i } />;
 
-                            return <NitroCardGridItemView key={ i } itemActive={ (item === selectedGroupItem) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUnique={ item.stuffData.isUnique } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setSelectedGroupItem(item) } />;
-                        }) }
-                </NitroCardGridView>
-            </div>
-            <div className="d-flex col-8 offset-4">
-                plz
+                                return <NitroCardGridItemView key={ i } itemActive={ (item === selectedGroupItem) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUnique={ item.stuffData.isUnique } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setSelectedGroupItem(item) } />;
+                            }) }
+                    </NitroCardGridView>
+                </div>
+                <div className="d-flex col-12 bg-muted">
+                    plz
+                </div>
             </div>
         </div>
     );
