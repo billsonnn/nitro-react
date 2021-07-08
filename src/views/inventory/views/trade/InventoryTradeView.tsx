@@ -244,7 +244,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                 </NitroCardGridView>
                 <div className="col-12 badge bg-muted w-100 mt-1">{ groupItem ? groupItem.name : LocalizeText('catalog_selectproduct') }</div>
             </div>
-            <div className="col-8 row">
+            <div className="col-8 row mx-0">
                 <div className="d-flex flex-column col-6">
                     <span className="d-flex justify-content-between align-items-center text-black small mb-1">{ LocalizeText('inventory.trading.you') } { LocalizeText('inventory.trading.areoffering') }: <i className={ 'small fas ' + (tradeData.ownUser.accepts ? 'fa-lock text-success' : 'fa-unlock text-danger') } /></span>
                     <NitroCardGridView columns={ 3 }>
