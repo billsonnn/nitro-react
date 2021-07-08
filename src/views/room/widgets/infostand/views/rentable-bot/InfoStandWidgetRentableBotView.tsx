@@ -1,6 +1,6 @@
 import { BotRemoveComposer } from 'nitro-renderer';
 import { FC, useCallback, useMemo } from 'react';
-import { GetConnection } from '../../../../../../api';
+import { SendMessageHook } from '../../../../../../hooks/messages';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
@@ -23,7 +23,7 @@ export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewPr
 
     const pickupBot = useCallback(() =>
     {
-        GetConnection().send(new BotRemoveComposer(rentableBotData.webID));
+        SendMessageHook(new BotRemoveComposer(rentableBotData.webID));
     }, [ rentableBotData ]);
 
     if(!rentableBotData) return;

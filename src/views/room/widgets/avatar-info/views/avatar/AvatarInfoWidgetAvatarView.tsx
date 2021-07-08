@@ -103,8 +103,6 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                         return newRespectsLeft;
                     });
 
-                    //userData.respectLeft--;
-
                     messageType = RoomWidgetUserActionMessage.RESPECT_USER;
 
                     if(newRespectsLeft > 0) hideMenu = false;

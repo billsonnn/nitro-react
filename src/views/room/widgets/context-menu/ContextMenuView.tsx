@@ -48,7 +48,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         if(!bounds || !elementRef.current) return;
 
         let left = Math.round((bounds.left + (bounds.width / 2)) - (elementRef.current.offsetWidth / 2));
-        let top = Math.round((bounds.top - elementRef.current.offsetHeight) + 20);
+        let top = Math.round((bounds.top - elementRef.current.offsetHeight));
 
         const maxLeft = ((Nitro.instance.width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
         const maxTop = ((Nitro.instance.height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);

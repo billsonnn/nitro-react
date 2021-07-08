@@ -1,7 +1,6 @@
 import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, Nitro, RequestBotCommandConfigurationComposer, RoomObjectCategory } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetConnection } from '../../../../../../api';
-import { CreateMessageHook } from '../../../../../../hooks/messages';
+import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks/messages';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { RoomWidgetUpdateRentableBotChatEvent } from '../../../../events';
@@ -73,7 +72,7 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
 
     const requestBotCommandConfiguration = useCallback((skillType: number) =>
     {
-        GetConnection().send(new RequestBotCommandConfigurationComposer(rentableBotData.webID, skillType));
+        SendMessageHook(new RequestBotCommandConfigurationComposer(rentableBotData.webID, skillType));
     }, [ rentableBotData ]);
 
     const processAction = useCallback((name: string) =>
@@ -86,45 +85,45 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
             {
                 case 'donate_to_all':
                     requestBotCommandConfiguration(BotSkillsEnum.DONATE_TO_ALL);
-                    GetConnection().send(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DONATE_TO_ALL, ''));
+                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DONATE_TO_ALL, ''));
                     break;
                 case 'donate_to_user':
                     requestBotCommandConfiguration(BotSkillsEnum.DONATE_TO_USER);
-                    GetConnection().send(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DONATE_TO_USER, ''));
+                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DONATE_TO_USER, ''));
                     break;
                 case 'change_bot_name':
                     requestBotCommandConfiguration(BotSkillsEnum.CHANGE_BOT_NAME);
                     hideMenu = false;
                     break;
                 case 'save_bot_name':
-                    GetConnection().send(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.CHANGE_BOT_NAME, newName));
+                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.CHANGE_BOT_NAME, newName));
                     break;
                 case 'change_bot_motto':
                     requestBotCommandConfiguration(BotSkillsEnum.CHANGE_BOT_MOTTO);
                     hideMenu = false;
                     break;
                 case 'save_bot_motto':
-                    GetConnection().send(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.CHANGE_BOT_MOTTO, newMotto));
+                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.CHANGE_BOT_MOTTO, newMotto));
                     break;
                 case 'dress_up':
-                    GetConnection().send(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DRESS_UP, ''));
+                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DRESS_UP, ''));
                     break;
                 case 'random_walk':
-                    GetConnection().send(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.RANDOM_WALK, ''));
+                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.RANDOM_WALK, ''));
                     break;
                 case 'setup_chat':
                     requestBotCommandConfiguration(BotSkillsEnum.SETUP_CHAT);
                     hideMenu = false;
                     break;
                 case 'dance':
-                    GetConnection().send(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DANCE, ''));
+                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DANCE, ''));
                     break;
                 case 'nux_take_tour':
                     Nitro.instance.createLinkEvent('help/tour');
-                    GetConnection().send(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.NUX_TAKE_TOUR, ''));
+                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.NUX_TAKE_TOUR, ''));
                     break;
                 case 'pick':
-                    GetConnection().send(new BotRemoveComposer(rentableBotData.webID));
+                    SendMessageHook(new BotRemoveComposer(rentableBotData.webID));
                     break;
                 default:
                     break;
