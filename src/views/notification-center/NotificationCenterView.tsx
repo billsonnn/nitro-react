@@ -1,116 +1,49 @@
-import { FC, useCallback, useReducer, useState } from 'react';
-import { NotificationCenterAddNotificationEvent, NotificationCenterEvent } from '../../events';
+import { FC, useCallback, useState } from 'react';
+import { NotificationCenterAlertEvent } from '../../events';
 import { useUiEvent } from '../../hooks/events';
-import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
-import { TransitionAnimationTypes } from '../../layout/transitions/TransitionAnimation.types';
-import { NotificationCenterContextProvider } from './context/NotificationCenterContext';
 import { NotificationCenterMessageHandler } from './NotificationCenterMessageHandler';
 import { NotificationCenterViewProps } from './NotificationCenterView.types';
-import { initialNotificationCenter, NotificationCenterActions, NotificationCenterReducer } from './reducers/NotificationCenterReducer';
-import { BroadcastMessageNotification } from './utils/BroadcastMessageNotification';
-import { HotelWillShutdownNotification } from './utils/HotelWillShutdownNotification';
-import { ModeratorMessageNotification } from './utils/ModeratorMessageNotification';
-import { MOTDNotification } from './utils/MOTDNotification';
-import { NitroNotification } from './utils/Notification';
-import { BroadcastMessageView } from './views/broadcast-message/BroadcastMessageView';
-import { HotelWillShutdownView } from './views/hotel-will-shutdown/HotelWillShutdownView';
-import { ModeratorMessageView } from './views/moderator-message/ModeratorMessageView';
-import { MOTDView } from './views/motd/MOTDView';
+import { NotificationCenterBroadcastMessageView } from './views/broadcast-message/NotificationCenterBroadcastMessageView';
 
 export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
+    const [ alerts, setAlerts ] = useState<NotificationCenterAlertEvent[]>([]);
 
-    const [ notificationCenterState, dispatchNotificationCenterState ] = useReducer(NotificationCenterReducer, initialNotificationCenter);
-    const { notifications = null } = notificationCenterState;
-
-    const onNotificationCenterEvent = useCallback((event: NotificationCenterEvent) =>
+    const onNotificationCenterAlertEvent = useCallback((event: NotificationCenterAlertEvent) =>
     {
-        switch(event.type)
-        {
-            case NotificationCenterEvent.SHOW_NOTIFICATION_CENTER:
-                setIsVisible(true);
-                return;
-            case NotificationCenterEvent.HIDE_NOTIFICATION_CENTER:
-                setIsVisible(false);
-                return;
-            case NotificationCenterEvent.TOGGLE_NOTIFICATION_CENTER:
-                setIsVisible(value => !value);
-                return;
-            case NotificationCenterEvent.ADD_NOTIFICATION: {
-                const castedEvent = (event as NotificationCenterAddNotificationEvent);
-                
-                dispatchNotificationCenterState({
-                    type: NotificationCenterActions.ADD_NOTIFICATION,
-                    payload: {
-                        notification: castedEvent.notification
-                    }
-                });
-                return;
-            }
-        }
+        setAlerts(prevValue =>
+            {
+                return [ ...prevValue, event ];
+            });
     }, []);
 
-    useUiEvent(NotificationCenterEvent.SHOW_NOTIFICATION_CENTER, onNotificationCenterEvent);
-    useUiEvent(NotificationCenterEvent.HIDE_NOTIFICATION_CENTER, onNotificationCenterEvent);
-    useUiEvent(NotificationCenterEvent.TOGGLE_NOTIFICATION_CENTER, onNotificationCenterEvent);
-    useUiEvent(NotificationCenterEvent.ADD_NOTIFICATION, onNotificationCenterEvent);
+    useUiEvent(NotificationCenterAlertEvent.HOTEL_ALERT, onNotificationCenterAlertEvent);
 
-    const handleButtonClick = useCallback((action: string, value: number) =>
+    const closeAlert = useCallback((alert: NotificationCenterAlertEvent) =>
     {
-        if(!action) return;
-
-        switch(action)
-        {
-            case 'dismiss_notification':
-                dispatchNotificationCenterState({
-                    type: NotificationCenterActions.DISMISS_NOTIFICATION,
-                    payload: {
-                        id: value
-                    }
-                });
-                return;
-            case 'remove_notification':
-                    dispatchNotificationCenterState({
-                        type: NotificationCenterActions.REMOVE_NOTIFICATION,
-                        payload: {
-                            id: value
-                        }
-                    });
-                    return;
-        }
-    }, [ dispatchNotificationCenterState ]);
-
-    const mapNotifications = useCallback((notifications: NitroNotification[], inTray: boolean) =>
-    {
-        if(!notifications) return null;
-
-        return notifications.map(notification =>
+        setAlerts(prevValue =>
             {
-                if(!inTray && notification.dismissed) return null;
+                const newAlerts = [ ...prevValue ];
+                const index = newAlerts.findIndex(value => (alert === value));
 
-                if(notification instanceof BroadcastMessageNotification)
-                    return <BroadcastMessageView key={ notification.id } inTray={ inTray } notification={ notification as BroadcastMessageNotification } onButtonClick={ (action) => handleButtonClick(action, notification.id) } />
-                if(notification instanceof MOTDNotification)
-                    return <MOTDView key={ notification.id } inTray={ inTray } notification={ notification as MOTDNotification } onButtonClick={ (action) => handleButtonClick(action, notification.id) } />
-                if(notification instanceof ModeratorMessageNotification)
-                    return <ModeratorMessageView key={ notification.id } inTray={ inTray } notification={ notification as ModeratorMessageNotification } onButtonClick={ (action) => handleButtonClick(action, notification.id) } />
-                if(notification instanceof HotelWillShutdownNotification)
-                    return <HotelWillShutdownView key={ notification.id } inTray={ inTray } notification={ notification as HotelWillShutdownNotification } onButtonClick={ (action) => handleButtonClick(action, notification.id) } />
-                else
-                    return null;
+                if(index >= 0) newAlerts.splice(index, 1);
+
+                return newAlerts;
             });
-    }, [ handleButtonClick ]);
+    }, []);
 
     return (
-        <NotificationCenterContextProvider value={ { notificationCenterState, dispatchNotificationCenterState } }>
+        <>
             <NotificationCenterMessageHandler />
-            <TransitionAnimation className="nitro-notification-center-container" type={ TransitionAnimationTypes.SLIDE_RIGHT } inProp={ isVisible } timeout={ 300 }>
-                <div className="nitro-notification-center pt-5 px-2">
-                    { mapNotifications(notifications, true) }
-                </div>
-            </TransitionAnimation>
-            { mapNotifications(notifications, false) }
-        </NotificationCenterContextProvider>
+            { (alerts.length > 0) && alerts.map((alert, index) =>
+                {
+                    switch(alert.type)
+                    {
+                        case NotificationCenterAlertEvent.HOTEL_ALERT:
+                        default:
+                            return <NotificationCenterBroadcastMessageView key={ index } notification={ alert } onClose={ () => closeAlert(alert) } />;
+                    }
+                })}
+        </>
     );
 }

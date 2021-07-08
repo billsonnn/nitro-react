@@ -1,3 +1,15 @@
+.nitro-alert {
+    width: 350px;
+
+    .content-area {
+        min-height: 125px;
+        height: 125px;
+        max-height: 430px;
+        resize: vertical;
+        overflow: auto;
+    }
+}
+
 .nitro-notification-center-container {
     position: absolute;
     top: 0;
@@ -11,14 +23,5 @@
         background-color: $dark;
         height: 100%;
         pointer-events: all;
-    }
-}
-
-.nitro-notification {
-    width: 350px;
-
-    .content-area {
-        max-height: 200px;
-        overflow-y: auto;
     }
 }
