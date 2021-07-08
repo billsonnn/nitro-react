@@ -1,6 +1,6 @@
 import { IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent, TradingCancelComposer, TradingCloseComposer, TradingOpenComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
-import { GetConnection, GetRoomEngine } from '../../api';
+import { GetRoomEngine } from '../../api';
 import { InventoryEvent, InventoryTradeRequestEvent } from '../../events';
 import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
@@ -45,7 +45,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                 case TradeState.TRADING_STATE_RUNNING:
                     SendMessageHook(new TradingCloseComposer());
                     return;
-                case TradeState.TRADING_STATE_CONFIRMING:
+                default:
                     SendMessageHook(new TradingCancelComposer());
                     return;
             }
@@ -81,7 +81,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
             case InventoryTradeRequestEvent.REQUEST_TRADE: {
                 const tradeEvent = (event as InventoryTradeRequestEvent);
 
-                GetConnection().send(new TradingOpenComposer(tradeEvent.objectId));
+                SendMessageHook(new TradingOpenComposer(tradeEvent.objectId));
             }
         }
     }, [ isVisible, close ]);
