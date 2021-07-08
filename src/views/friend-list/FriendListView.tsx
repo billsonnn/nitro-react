@@ -1,8 +1,9 @@
-import { MessengerInitComposer, RoomEngineObjectEvent, RoomObjectCategory } from 'nitro-renderer';
+import { MessengerInitComposer, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectUserType } from 'nitro-renderer';
 import React, { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { GetRoomSession } from '../../api';
 import { FriendEnteredRoomEvent, FriendListEvent } from '../../events';
+import { FriendListSendFriendRequestEvent } from '../../events/friend-list/FriendListSendFriendRequestEvent';
 import { useRoomEngineEvent } from '../../hooks/events';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
@@ -32,11 +33,15 @@ export const FriendListView: FC<FriendListViewProps> = props =>
             case FriendListEvent.TOGGLE_FRIEND_LIST:
                 setIsVisible(value => !value);
                 return;
+            case FriendListSendFriendRequestEvent.SEND_FRIEND_REQUEST:
+                const requestEvent = (event as FriendListSendFriendRequestEvent);
+                return;
         }
     }, []);
 
     useUiEvent(FriendListEvent.SHOW_FRIEND_LIST, onFriendListEvent);
     useUiEvent(FriendListEvent.TOGGLE_FRIEND_LIST, onFriendListEvent);
+    useUiEvent(FriendListSendFriendRequestEvent.SEND_FRIEND_REQUEST, onFriendListEvent);
 
     useEffect(() =>
     {
@@ -60,7 +65,7 @@ export const FriendListView: FC<FriendListViewProps> = props =>
         
         const userData = roomSession.userDataManager.getUserDataByIndex(event.objectId);
 
-        if(!userData) return;
+        if(!userData || (userData.type !== RoomObjectUserType.getTypeNumber(RoomObjectUserType.USER))) return;
 
         const friend = friendListState.friends.find(friend =>
             {

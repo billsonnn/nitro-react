@@ -1,6 +1,6 @@
 import { FollowFriendComposer, MouseEventType } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { GetConnection } from '../../../../api';
+import { SendMessageHook } from '../../../../hooks/messages';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { FriendBarItemViewProps } from './FriendBarItemView.types';
@@ -13,7 +13,7 @@ export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
 
     const followFriend = useCallback(() =>
     {
-        GetConnection().send(new FollowFriendComposer(friend.id));
+        SendMessageHook(new FollowFriendComposer(friend.id));
     }, [ friend ]);
 
     const onClick = useCallback((event: MouseEvent) =>
