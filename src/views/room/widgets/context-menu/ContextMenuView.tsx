@@ -15,6 +15,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     const [ opacity, setOpacity ] = useState(1);
     const [ isFading, setIsFading ] = useState(false);
     const [ fadeTime, setFadeTime ] = useState(0);
+    const [ frozen, setFrozen ] = useState(false);
     const elementRef = useRef<HTMLDivElement>();
 
     const update = useCallback((time: number) =>
@@ -72,13 +73,20 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
     useEffect(() =>
     {
-        GetTicker().add(update);
+        let added = false;
+
+        if(!frozen)
+        {
+            added = true;
+
+            GetTicker().add(update);
+        }
 
         return () =>
         {
-            GetTicker().remove(update);
+            if(added) GetTicker().remove(update);
         }
-    }, [ update ]);
+    }, [ frozen, update ]);
 
     useEffect(() =>
     {
@@ -93,7 +101,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     }, [ fades ]);
 
     return (
-        <div ref={ elementRef } className={ `position-absolute nitro-context-menu ${ className }${ (pos.x !== null ? ' visible' : ' invisible') }` } style={ { left: (pos.x || 0), top: (pos.y || 0), opacity: opacity } }>
+        <div ref={ elementRef } className={ `position-absolute nitro-context-menu ${ className }${ (pos.x !== null ? ' visible' : ' invisible') }` } style={ { left: (pos.x || 0), top: (pos.y || 0), opacity: opacity } } onMouseEnter={ event => setFrozen(true) } onMouseLeave={ event => setFrozen(false) }>
             { children }
         </div>
     );

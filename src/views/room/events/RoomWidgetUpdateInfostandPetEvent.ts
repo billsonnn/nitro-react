@@ -1,4 +1,3 @@
-import { PetFigureData } from 'nitro-renderer';
 import { RoomWidgetUpdateInfostandEvent } from './RoomWidgetUpdateInfostandEvent';
 
 export class RoomWidgetUpdateInfostandPetEvent extends RoomWidgetUpdateInfostandEvent
@@ -21,7 +20,7 @@ export class RoomWidgetUpdateInfostandPetEvent extends RoomWidgetUpdateInfostand
     public image: HTMLImageElement = null;
     public petType: number = 0;
     public petBreed: number = 0;
-    public petFigure: PetFigureData = null;
+    public petFigure: string = '';
     public posture: string = 'std';
     public isOwner: boolean = false;
     public ownerId: number = -1;

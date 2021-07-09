@@ -2,6 +2,7 @@ export * from './CanManipulateFurniture';
 export * from './GetCanStandUp';
 export * from './GetCanUseExpression';
 export * from './GetFurnitureDataForProductOffer';
+export * from './GetFurnitureDataForRoomObject';
 export * from './GetOwnPosture';
 export * from './GetProductDataForLocalization';
 export * from './GetRoomSession';

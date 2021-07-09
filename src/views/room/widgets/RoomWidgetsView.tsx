@@ -1,6 +1,6 @@
-import { RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent } from 'nitro-renderer';
+import { NitroEvent, RoomEngineUseProductEvent, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
-import { useRoomSessionManagerEvent } from '../../../hooks/events';
+import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks/events';
 import { LocalizeText } from '../../../utils/LocalizeText';
 import { useRoomContext } from '../context/RoomContext';
 import { AvatarInfoWidgetView } from './avatar-info/AvatarInfoWidgetView';
@@ -15,24 +15,26 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
 
-    const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
+    const onNitroEvent = useCallback((event: NitroEvent) =>
     {
         if(!widgetHandler) return;
 
         widgetHandler.processEvent(event);
     }, [ widgetHandler ]);
 
-    useRoomSessionManagerEvent(RoomSessionChatEvent.CHAT_EVENT, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionChatEvent.FLOOD_EVENT, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionDanceEvent.RSDE_DANCE, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionUserBadgesEvent.RSUBE_BADGES, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionDoorbellEvent.DOORBELL, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionDoorbellEvent.RSDE_REJECTED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionDoorbellEvent.RSDE_ACCEPTED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionDimmerPresetsEvent.ROOM_DIMMER_PRESETS, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionFriendRequestEvent.RSFRE_FRIEND_REQUEST, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionPresentEvent.RSPE_PRESENT_OPENED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionPetInfoUpdateEvent.PET_INFO, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionChatEvent.CHAT_EVENT, onNitroEvent);
+    useRoomSessionManagerEvent(RoomSessionChatEvent.FLOOD_EVENT, onNitroEvent);
+    useRoomSessionManagerEvent(RoomSessionDanceEvent.RSDE_DANCE, onNitroEvent);
+    useRoomSessionManagerEvent(RoomSessionUserBadgesEvent.RSUBE_BADGES, onNitroEvent);
+    useRoomSessionManagerEvent(RoomSessionDoorbellEvent.DOORBELL, onNitroEvent);
+    useRoomSessionManagerEvent(RoomSessionDoorbellEvent.RSDE_REJECTED, onNitroEvent);
+    useRoomSessionManagerEvent(RoomSessionDoorbellEvent.RSDE_ACCEPTED, onNitroEvent);
+    useRoomSessionManagerEvent(RoomSessionDimmerPresetsEvent.ROOM_DIMMER_PRESETS, onNitroEvent);
+    useRoomSessionManagerEvent(RoomSessionFriendRequestEvent.RSFRE_FRIEND_REQUEST, onNitroEvent);
+    useRoomSessionManagerEvent(RoomSessionPresentEvent.RSPE_PRESENT_OPENED, onNitroEvent);
+    useRoomSessionManagerEvent(RoomSessionPetInfoUpdateEvent.PET_INFO, onNitroEvent);
+    useRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY, onNitroEvent);
+    useRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM, onNitroEvent);
 
     const onRoomErrorEvent = useCallback((event: RoomSessionEvent) =>
     {

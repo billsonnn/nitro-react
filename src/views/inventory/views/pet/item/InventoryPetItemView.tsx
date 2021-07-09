@@ -36,10 +36,10 @@ export const InventoryPetItemView: FC<InventoryPetItemViewProps> = props =>
                 return;
         }
     }, [ isActive, isMouseDown, petItem, dispatchPetState ]);
-
+    
     return (
         <NitroCardGridItemView itemActive={ isActive } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
-            <PetImageView figure={ petItem.petData.figureData.figuredata } direction={ 3 } headOnly={ true } />
+            <PetImageView figure={ petItem.petData.figureString } direction={ 3 } headOnly={ true } />
         </NitroCardGridItemView>
     );
 }

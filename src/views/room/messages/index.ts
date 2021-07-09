@@ -9,4 +9,5 @@ export * from './RoomWidgetFurniActionMessage';
 export * from './RoomWidgetMessage';
 export * from './RoomWidgetRequestWidgetMessage';
 export * from './RoomWidgetRoomObjectMessage';
+export * from './RoomWidgetUseProductMessage';
 export * from './RoomWidgetUserActionMessage';

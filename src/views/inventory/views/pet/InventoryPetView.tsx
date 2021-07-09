@@ -60,7 +60,7 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
         roomPreviewer.reset(false);
         roomPreviewer.updateRoomWallsAndFloorVisibility(true, true);
         roomPreviewer.updateObjectRoom(floorType, wallType, landscapeType);
-        roomPreviewer.addPetIntoRoom(petData.figureData.figuredata);
+        roomPreviewer.addPetIntoRoom(petData.figureString);
     }, [ roomPreviewer, petItem ]);
 
     if(!petItems || !petItems.length)

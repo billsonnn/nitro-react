@@ -4,7 +4,7 @@ import { SendMessageHook } from '../../../../../../hooks/messages';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
-import { BotSkillsEnum } from '../../../avatar-info/utils/BotSkillsEnum';
+import { BotSkillsEnum } from '../../../avatar-info/common/BotSkillsEnum';
 import { InfoStandBaseView } from '../base/InfoStandBaseView';
 import { InfoStandWidgetRentableBotViewProps } from './InfoStandWidgetRentableBotView.types';
 

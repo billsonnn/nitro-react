@@ -70,18 +70,15 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                     break;
                 case 'pick_up':
                     messageType = RoomWidgetUserActionMessage.PICKUP_PET;
-                    //this.widget._Str_25401();
                     break;
                 case 'mount':
                     messageType = RoomWidgetUserActionMessage.MOUNT_PET;
                     break;
                 case 'toggle_riding_permission':
                     messageType = RoomWidgetUserActionMessage.TOGGLE_PET_RIDING_PERMISSION;
-                    // update riding checkbox
                     break;
                 case 'toggle_breeding_permission':
-                    messageType = RoomWidgetUserActionMessage.TOGGLE_PET_BREEDING_PERMISSION
-                    // update breeding checkbox;
+                    messageType = RoomWidgetUserActionMessage.TOGGLE_PET_BREEDING_PERMISSION;
                     break;
                 case 'dismount':
                     messageType = RoomWidgetUserActionMessage.DISMOUNT_PET;
@@ -162,7 +159,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                         <ContextMenuListItemView onClick={ event => processAction('buy_saddle') }>
                             { LocalizeText('infostand.button.buy_saddle') }
                         </ContextMenuListItemView> }
-                    { ([ PetType.BEAR, PetType.TERRIER, PetType.CAT, PetType.DOG, PetType.PIG].indexOf(petData.petType) > -1) &&
+                    { ([ PetType.BEAR, PetType.TERRIER, PetType.CAT, PetType.DOG, PetType.PIG ].indexOf(petData.petType) > -1) &&
                         <ContextMenuListItemView onClick={ event => processAction('breed') }>
                             { LocalizeText('infostand.button.breed') }
                         </ContextMenuListItemView> }
@@ -173,6 +170,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                         { LocalizeText('infostand.button.mount') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('toggle_riding_permission') }>
+                        <input type="checkbox" className="me-1" checked={ !!petData.publiclyRideable } readOnly={ true }  />
                         { LocalizeText('infostand.button.toggle_riding_permission') }
                     </ContextMenuListItemView>
                     { (respectsLeft > 0) &&
@@ -186,7 +184,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                         { LocalizeText('infostand.button.pickup') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('saddle_off') }>
-                        { LocalizeText('infostand.button.saddle_off') }
+                        { LocalizeText('infostand.button.saddleoff') }
                     </ContextMenuListItemView>
                 </> }
             { (mode === _Str_5938) &&
@@ -219,6 +217,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                     { !petData.dead && (petData.level === petData.maximumLevel) && petData.breedable &&
                         <>
                             <ContextMenuListItemView onClick={ event => processAction('toggle_breeding_permission') }>
+                                <input type="checkbox" className="me-1" checked={ petData.publiclyBreedable } readOnly={ true }  />
                                 { LocalizeText('infostand.button.toggle_breeding_permission') }
                             </ContextMenuListItemView>
                             <ContextMenuListItemView onClick={ event => processAction('breed') }>

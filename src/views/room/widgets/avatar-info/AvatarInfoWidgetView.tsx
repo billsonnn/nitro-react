@@ -5,7 +5,7 @@ import { FriendEnteredRoomEvent } from '../../../../events';
 import { useUiEvent } from '../../../../hooks/events';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../context/RoomContext';
-import { RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent } from '../../events';
+import { RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../../events';
 import { RoomWidgetRoomObjectMessage } from '../../messages';
 import { AvatarInfoWidgetViewProps } from './AvatarInfoWidgetView.types';
 import { AvatarInfoWidgetAvatarView } from './views/avatar/AvatarInfoWidgetAvatarView';
@@ -16,12 +16,16 @@ import { AvatarInfoWidgetOwnPetView } from './views/own-pet/AvatarInfoWidgetOwnP
 import { AvatarInfoWidgetPetView } from './views/pet/AvatarInfoWidgetPetView';
 import { AvatarInfoRentableBotChatView } from './views/rentable-bot-chat/AvatarInfoRentableBotChatView';
 import { AvatarInfoWidgetRentableBotView } from './views/rentable-bot/AvatarInfoWidgetRentableBotView';
+import { AvatarInfoUseProductConfirmView } from './views/use-product-confirm/AvatarInfoUseProductConfirmView';
+import { AvatarInfoUseProductView } from './views/use-product/AvatarInfoUseProductView';
 
 export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
 {
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
+    const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ name, setName ] = useState<RoomWidgetObjectNameEvent>(null);
     const [ nameBubbles, setNameBubbles ] = useState<RoomWidgetObjectNameEvent[]>([]);
+    const [ productBubbles, setProductBubbles ] = useState<UseProductItem[]>([]);
+    const [ confirmingProduct, setConfirmingProduct ] = useState<UseProductItem>(null);
     const [ infoStandEvent, setInfoStandEvent ] = useState<RoomWidgetUpdateInfostandEvent>(null);
     const [ isGameMode, setGameMode ] = useState(false);
     const [ isDancing, setIsDancing ] = useState(false);
@@ -39,6 +43,19 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
                 return newValue;
             });
     }, []);
+
+    const removeProductBubble = useCallback((index: number) =>
+    {
+        setProductBubbles(prevValue =>
+            {
+                const newValue = [ ...prevValue ];
+                const item = newValue.splice(index, 1)[0];
+
+                if(confirmingProduct === item) setConfirmingProduct(null);
+
+                return newValue;
+            });
+    }, [ confirmingProduct ]);
 
     const clearInfoStandEvent = useCallback(() =>
     {
@@ -83,6 +100,31 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
                 });
     
             if(nameBubbleIndex > -1) removeNameBubble(nameBubbleIndex);
+
+            if(productBubbles.length)
+            {
+                setProductBubbles(prevValue =>
+                    {
+                        return prevValue.filter(bubble =>
+                            {
+                                return (bubble.id !== event.id);
+                            });
+                    });
+            }
+        }
+
+        else if(event.category === RoomObjectCategory.FLOOR)
+        {
+            if(productBubbles.length)
+            {
+                setProductBubbles(prevValue =>
+                    {
+                        return prevValue.filter(bubble =>
+                            {
+                                return (bubble.requestRoomObjectId !== event.id);
+                            });
+                    });
+            }
         }
 
         if(infoStandEvent)
@@ -102,7 +144,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
                 if(infoStandEvent.roomIndex === event.id) setInfoStandEvent(null);
             }
         }
-    }, [ name, infoStandEvent, nameBubbles, removeNameBubble ]);
+    }, [ name, infoStandEvent, nameBubbles, productBubbles, removeNameBubble ]);
 
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_REMOVED, eventDispatcher, onRoomObjectRemoved);
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onRoomObjectRemoved);
@@ -137,10 +179,9 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
 
     const onObjectDeselected = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
     {
-        if(!infoStandEvent) return;
-
-        setInfoStandEvent(null);
-    }, [ infoStandEvent ]);
+        if(infoStandEvent) setInfoStandEvent(null);
+        if(productBubbles.length) setProductBubbles([]);
+    }, [ infoStandEvent, productBubbles ]);
 
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, eventDispatcher, onObjectDeselected);
 
@@ -181,6 +222,27 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
     }, []);
 
     CreateEventDispatcherHook(RoomWidgetUpdateRentableBotChatEvent.UPDATE_CHAT, eventDispatcher, onRoomWidgetUpdateRentableBotChatEvent);
+
+    const onRoomWidgetUseProductBubbleEvent = useCallback((event: RoomWidgetUseProductBubbleEvent) =>
+    {
+        setProductBubbles(prevValue =>
+            {
+                const newBubbles = [ ...prevValue ];
+
+                for(const item of event.items)
+                {
+                    const index = newBubbles.findIndex(bubble => (bubble.id === item.id));
+
+                    if(index > -1) newBubbles.splice(index, 1);
+
+                    newBubbles.push(item);
+                }
+
+                return newBubbles;
+            });
+    }, []);
+
+    CreateEventDispatcherHook(RoomWidgetUseProductBubbleEvent.USE_PRODUCT_BUBBLES, eventDispatcher, onRoomWidgetUseProductBubbleEvent);
 
     const onFriendEnteredRoomEvent = useCallback((event: FriendEnteredRoomEvent) =>
     {
@@ -278,7 +340,12 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
                 {
                     return <AvatarInfoWidgetNameView key={ index } nameData={ name } close={ () => removeNameBubble(index) }  />;
                 }) }
+            { (productBubbles.length > 0) && productBubbles.map((item, index) =>
+                {
+                    return <AvatarInfoUseProductView key={ item.id } item={ item } setConfirmingProduct={ setConfirmingProduct } close={ () => removeProductBubble(index) }  />;
+                }) }
             { rentableBotChatEvent && <AvatarInfoRentableBotChatView chatEvent={ rentableBotChatEvent } /> }
+            { confirmingProduct && <AvatarInfoUseProductConfirmView item={ confirmingProduct } close={ () => setConfirmingProduct(null) } /> }
         </>
     )
 }

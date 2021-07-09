@@ -7,7 +7,7 @@ import { SendMessageHook } from '../../../hooks/messages';
 import { LocalizeText } from '../../../utils/LocalizeText';
 import { RoomWidgetObjectNameEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
 import { RoomWidgetChangeMottoMessage, RoomWidgetFurniActionMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUserActionMessage } from '../messages';
-import { PetSupplementEnum } from '../widgets/avatar-info/utils/PetSupplementEnum';
+import { PetSupplementEnum } from '../widgets/avatar-info/common/PetSupplementEnum';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
 
 export class RoomWidgetInfostandHandler extends RoomWidgetHandler
@@ -128,18 +128,18 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             case RoomWidgetUserActionMessage.MOUNT_PET:
                 this.container.roomSession.mountPet(userId);
                 break;
-            // case RoomWidgetUserActionMessage.RWUAM_TOGGLE_PET_RIDING_PERMISSION:
-            //     this._container.roomSession._Str_21025(_local_2);
-            //     break;
-            // case RoomWidgetUserActionMessage.RWUAM_TOGGLE_PET_BREEDING_PERMISSION:
-            //     this._container.roomSession._Str_21562(_local_2);
-            //     break;
+            case RoomWidgetUserActionMessage.TOGGLE_PET_RIDING_PERMISSION:
+                this.container.roomSession.togglePetRiding(userId);
+                break;
+            case RoomWidgetUserActionMessage.TOGGLE_PET_BREEDING_PERMISSION:
+                this.container.roomSession.togglePetBreeding(userId);
+                break;
             case RoomWidgetUserActionMessage.DISMOUNT_PET:
                 this.container.roomSession.dismountPet(userId);
                 break;
-            // case RoomWidgetUserActionMessage.RWUAM_SADDLE_OFF:
-            //     this._container.roomSession._Str_21635(_local_2);
-            //     break;
+            case RoomWidgetUserActionMessage.SADDLE_OFF:
+                this.container.roomSession.removePetSaddle(userId);
+                break;
             case RoomWidgetUserActionMessage.PASS_CARRY_ITEM:
                 SendMessageHook(new RoomUnitGiveHandItemComposer(userId));
                 break;
@@ -620,7 +620,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         infostandEvent.rarityLevel = petData.rarityLevel;
         infostandEvent.petType = figure.typeId;
         infostandEvent.petBreed = figure.paletteId;
-        infostandEvent.petFigure = figure;
+        infostandEvent.petFigure = roomPetData.figure;
         infostandEvent.posture = posture;
         infostandEvent.isOwner = isOwner;
         infostandEvent.roomIndex = roomPetData.roomIndex;

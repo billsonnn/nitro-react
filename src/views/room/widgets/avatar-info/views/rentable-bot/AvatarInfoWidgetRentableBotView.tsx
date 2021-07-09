@@ -7,7 +7,7 @@ import { RoomWidgetUpdateRentableBotChatEvent } from '../../../../events';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';
 import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../../context-menu/views/list-item/ContextMenuListItemView';
-import { BotSkillsEnum } from '../../utils/BotSkillsEnum';
+import { BotSkillsEnum } from '../../common/BotSkillsEnum';
 import { AvatarInfoWidgetRentableBotViewProps } from './AvatarInfoWidgetRentableBotView.types';
 
 const MODE_NORMAL = 0;

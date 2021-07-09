@@ -14,3 +14,5 @@ export * from './RoomWidgetUpdateInfostandRentableBotEvent';
 export * from './RoomWidgetUpdateInfostandUserEvent';
 export * from './RoomWidgetUpdateRentableBotChatEvent';
 export * from './RoomWidgetUpdateUserDataEvent';
+export * from './RoomWidgetUseProductBubbleEvent';
+export * from './UseProductItem';
