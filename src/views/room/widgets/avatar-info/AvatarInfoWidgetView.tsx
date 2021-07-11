@@ -57,6 +57,11 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
             });
     }, [ confirmingProduct ]);
 
+    const clearProductBubbles = useCallback(() =>
+    {
+        setProductBubbles([]);
+    }, []);
+
     const clearInfoStandEvent = useCallback(() =>
     {
         setInfoStandEvent(null);
@@ -65,6 +70,12 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
     const clearName = useCallback(() =>
     {
         setName(null);
+    }, []);
+
+    const updateConfirmingProduct = useCallback((product: UseProductItem) =>
+    {
+        setConfirmingProduct(product);
+        setProductBubbles([]);
     }, []);
 
     const onRoomWidgetRoomEngineUpdateEvent = useCallback((event: RoomWidgetRoomEngineUpdateEvent) =>
@@ -131,20 +142,20 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
         {
             if(infoStandEvent instanceof RoomWidgetUpdateInfostandFurniEvent)
             {
-                if(infoStandEvent.id === event.id) setInfoStandEvent(null);
+                if(infoStandEvent.id === event.id) clearInfoStandEvent();
             }
 
             else if((infoStandEvent instanceof RoomWidgetUpdateInfostandUserEvent) || (infoStandEvent instanceof RoomWidgetUpdateInfostandRentableBotEvent))
             {
-                if(infoStandEvent.roomIndex === event.id) setInfoStandEvent(null);
+                if(infoStandEvent.roomIndex === event.id) clearInfoStandEvent();
             }
 
             else if(infoStandEvent instanceof RoomWidgetUpdateInfostandPetEvent)
             {
-                if(infoStandEvent.roomIndex === event.id) setInfoStandEvent(null);
+                if(infoStandEvent.roomIndex === event.id) clearInfoStandEvent();
             }
         }
-    }, [ name, infoStandEvent, nameBubbles, productBubbles, removeNameBubble ]);
+    }, [ name, infoStandEvent, nameBubbles, productBubbles, removeNameBubble, clearInfoStandEvent ]);
 
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_REMOVED, eventDispatcher, onRoomObjectRemoved);
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onRoomObjectRemoved);
@@ -179,9 +190,9 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
 
     const onObjectDeselected = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
     {
-        if(infoStandEvent) setInfoStandEvent(null);
+        if(infoStandEvent) clearInfoStandEvent();
         if(productBubbles.length) setProductBubbles([]);
-    }, [ infoStandEvent, productBubbles ]);
+    }, [ infoStandEvent, productBubbles, clearInfoStandEvent ]);
 
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, eventDispatcher, onObjectDeselected);
 
@@ -190,7 +201,8 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
         if(event.category !== RoomObjectCategory.UNIT) return;
 
         setName(event);
-    }, []);
+        clearProductBubbles();
+    }, [ clearProductBubbles ]);
 
     CreateEventDispatcherHook(RoomWidgetObjectNameEvent.TYPE, eventDispatcher, onRoomWidgetObjectNameEvent);
 
@@ -198,9 +210,11 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
     {
         if(name) setName(null);
 
-        if(event.type === RoomWidgetUpdateInfostandFurniEvent.FURNI) setInfoStandEvent(null);
+        if(event.type === RoomWidgetUpdateInfostandFurniEvent.FURNI) clearInfoStandEvent();
         else setInfoStandEvent(event);
-    }, [ name ]);
+
+        clearProductBubbles();
+    }, [ name, clearInfoStandEvent, clearProductBubbles ]);
 
     CreateEventDispatcherHook(RoomWidgetUpdateInfostandFurniEvent.FURNI, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
     CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.OWN_USER, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
@@ -225,6 +239,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
 
     const onRoomWidgetUseProductBubbleEvent = useCallback((event: RoomWidgetUseProductBubbleEvent) =>
     {
+        setConfirmingProduct(null);
         setProductBubbles(prevValue =>
             {
                 const newBubbles = [ ...prevValue ];
@@ -342,7 +357,7 @@ export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
                 }) }
             { (productBubbles.length > 0) && productBubbles.map((item, index) =>
                 {
-                    return <AvatarInfoUseProductView key={ item.id } item={ item } setConfirmingProduct={ setConfirmingProduct } close={ () => removeProductBubble(index) }  />;
+                    return <AvatarInfoUseProductView key={ item.id } item={ item } updateConfirmingProduct={ updateConfirmingProduct } close={ () => removeProductBubble(index) }  />;
                 }) }
             { rentableBotChatEvent && <AvatarInfoRentableBotChatView chatEvent={ rentableBotChatEvent } /> }
             { confirmingProduct && <AvatarInfoUseProductConfirmView item={ confirmingProduct } close={ () => setConfirmingProduct(null) } /> }

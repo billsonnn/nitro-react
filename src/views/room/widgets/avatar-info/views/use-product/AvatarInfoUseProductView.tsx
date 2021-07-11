@@ -20,7 +20,7 @@ const _Str_14611: number = 7;
 
 export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props =>
 {
-    const { item = null, setConfirmingProduct = null, close = null } = props;
+    const { item = null, updateConfirmingProduct = null, close = null } = props;
     const [ mode, setMode ] = useState(0);
     const { roomSession = null } = useRoomContext();
 
@@ -64,30 +64,23 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
 
     const processAction = useCallback((name: string) =>
     {
-        let hideMenu = true;
-
-        if(name)
+        if(!name) return;
+        
+        switch(name)
         {
-            switch(name)
-            {
-                case 'use_product':
-                case 'use_product_shampoo':
-                case 'use_product_custom_part':
-                case 'use_product_custom_part_shampoo':
-                case 'use_product_saddle':
-                case 'replace_product_saddle':
-                case 'revive_monsterplant':
-                case 'rebreed_monsterplant':
-                case 'fertilize_monsterplant':
-                    setConfirmingProduct(item);
-                    break;
-                default:
-                    break;
-            }
+            case 'use_product':
+            case 'use_product_shampoo':
+            case 'use_product_custom_part':
+            case 'use_product_custom_part_shampoo':
+            case 'use_product_saddle':
+            case 'replace_product_saddle':
+            case 'revive_monsterplant':
+            case 'rebreed_monsterplant':
+            case 'fertilize_monsterplant':
+                updateConfirmingProduct(item);
+                break;
         }
-
-        if(hideMenu) close();
-    }, [ item, setConfirmingProduct, close ]);
+    }, [ item, updateConfirmingProduct ]);
     
     return (
         <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } close={ close }>
