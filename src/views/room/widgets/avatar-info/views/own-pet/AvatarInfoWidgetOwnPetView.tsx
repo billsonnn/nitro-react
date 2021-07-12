@@ -1,4 +1,4 @@
-import { PetType, RoomObjectCategory, RoomObjectVariable } from 'nitro-renderer';
+import { PetType, RoomObjectCategory, RoomObjectType, RoomObjectVariable } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetOwnRoomObject } from '../../../../../../api';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
@@ -139,7 +139,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
     }, []);
 
     return (
-        <ContextMenuView objectId={ petData.roomIndex } category={ RoomObjectCategory.UNIT } close={ close }>
+        <ContextMenuView objectId={ petData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close }>
             <ContextMenuHeaderView>
                 { petData.name }
             </ContextMenuHeaderView>

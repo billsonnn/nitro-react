@@ -1,4 +1,4 @@
-import { RoomObjectCategory } from 'nitro-renderer';
+import { RoomObjectCategory, RoomObjectType } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetFurnitureDataForRoomObject } from '../../../../../../api';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
@@ -83,7 +83,7 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
     }, [ item, updateConfirmingProduct ]);
     
     return (
-        <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } close={ close }>
+        <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close }>
             <ContextMenuHeaderView>
                 { item.name }
             </ContextMenuHeaderView>

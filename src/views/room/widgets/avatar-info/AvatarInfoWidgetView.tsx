@@ -7,7 +7,6 @@ import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispat
 import { useRoomContext } from '../../context/RoomContext';
 import { RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../../events';
 import { RoomWidgetRoomObjectMessage } from '../../messages';
-import { AvatarInfoWidgetViewProps } from './AvatarInfoWidgetView.types';
 import { AvatarInfoWidgetAvatarView } from './views/avatar/AvatarInfoWidgetAvatarView';
 import { AvatarInfoWidgetDecorateView } from './views/decorate/AvatarInfoWidgetDecorateView';
 import { AvatarInfoWidgetNameView } from './views/name/AvatarInfoWidgetNameView';
@@ -19,7 +18,7 @@ import { AvatarInfoWidgetRentableBotView } from './views/rentable-bot/AvatarInfo
 import { AvatarInfoUseProductConfirmView } from './views/use-product-confirm/AvatarInfoUseProductConfirmView';
 import { AvatarInfoUseProductView } from './views/use-product/AvatarInfoUseProductView';
 
-export const AvatarInfoWidgetView: FC<AvatarInfoWidgetViewProps> = props =>
+export const AvatarInfoWidgetView: FC<{}> = props =>
 {
     const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ name, setName ] = useState<RoomWidgetObjectNameEvent>(null);

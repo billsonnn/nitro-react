@@ -10,10 +10,9 @@ import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
-import { FurnitureEngravingLockData } from './FurnitureEngravingLockData';
-import { FurnitureEngravingLockViewProps } from './FurnitureEngravingLockView.types';
+import { FurnitureEngravingLockData } from './FriendFurniLockData';
 
-export const FurnitureEngravingLockView: FC<FurnitureEngravingLockViewProps> = props =>
+export const FurnitureFriendFurniView: FC<{}> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ engravingLockData, setEngravingLockData ]   = useState<FurnitureEngravingLockData>(null);

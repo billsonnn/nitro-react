@@ -1,6 +1,10 @@
 .nitro-use-product-confirmation {
+    width: 350px;
 
     .product-preview {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 122px;
         height: 130px;
         background: url('../../../../assets/images/room-widgets/avatar-info/preview-background.png') no-repeat center;
@@ -9,5 +13,21 @@
             width: 122px;
             height: 130px;
         }
+
+        .monsterplant-image {
+            width: 122px;
+            height: 130px;
+            background: url('../../../../assets/images/room-widgets/furni-context-menu/monsterplant-preview.png') no-repeat center;
+        }
+    }
+
+    .mannequin-preview {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 83px;
+        height: 130px;
+        background-image: url('../../../../assets/images/room-widgets/mannequin-widget/mannequin-spritesheet.png');
+        overflow: hidden;
     }
 }

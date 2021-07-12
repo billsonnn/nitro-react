@@ -1,4 +1,4 @@
-import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, Nitro, RequestBotCommandConfigurationComposer, RoomObjectCategory } from 'nitro-renderer';
+import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, Nitro, RequestBotCommandConfigurationComposer, RoomObjectCategory, RoomObjectType } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks/messages';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
@@ -136,7 +136,7 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
     const canControl = (rentableBotData.amIOwner || rentableBotData.amIAnyRoomController);
 
     return (
-        <ContextMenuView objectId={ rentableBotData.roomIndex } category={ RoomObjectCategory.UNIT } close={ close }>
+        <ContextMenuView objectId={ rentableBotData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.RENTABLE_BOT } close={ close }>
             <ContextMenuHeaderView>
                 { rentableBotData.name }
             </ContextMenuHeaderView>

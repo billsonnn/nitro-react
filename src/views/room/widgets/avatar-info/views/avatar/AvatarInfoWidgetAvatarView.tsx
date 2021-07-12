@@ -194,7 +194,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
     }, []);
 
     return (
-        <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } close={ close }>
+        <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ userData.userType } close={ close }>
             <ContextMenuHeaderView>
                 { userData.name }
             </ContextMenuHeaderView>

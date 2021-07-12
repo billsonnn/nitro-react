@@ -26,6 +26,13 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
     const [ furniData, setFurniData ] = useState<IFurnitureData>(null);
     const { roomSession = null, widgetHandler = null } = useRoomContext();
 
+    const selectRoomObject = useCallback(() =>
+    {
+        if(!petData) return;
+
+        GetRoomEngine().selectRoomObject(roomSession.roomId, petData.roomIndex, RoomObjectCategory.UNIT);
+    }, [ roomSession, petData ]);
+
     const useProduct = useCallback(() =>
     {
         widgetHandler.processWidgetMessage(new RoomWidgetUseProductMessage(RoomWidgetUseProductMessage.PET_PRODUCT, item.requestRoomObjectId, petData.webID));
@@ -217,49 +224,51 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
         <NitroCardView className="nitro-use-product-confirmation">
             <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title', [ 'name' ], [ petData.name ]) } onCloseClick={ close } />
             <NitroCardContentView>
-                <div className="d-flex">
-                    <div className="product-preview">
-                        { getPetImage }
+                <div className="row">
+                    <div className="w-unset">
+                        <div className="product-preview cursor-pointer" onClick={ selectRoomObject }>
+                            { getPetImage }
+                        </div>
                     </div>
-                    <div className="d-flex flex-column ms-2 mt-2">
-                        <div className="d-flex flex-column justify-content-center align-items-center w-100 h-100">
+                    <div className="col d-flex flex-column justify-content-between">
+                        <div className="d-flex flex-column">
                             { (mode === _Str_11906) && 
                                 <>
-                                    <div className="text-black mb-3">{ LocalizeText('useproduct.widget.text.shampoo', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black text-italics">{ LocalizeText('useproduct.widget.info.shampoo') }</div>
+                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.shampoo', [ 'productName' ], [ furniData.name ] ) }</div>
+                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.shampoo') }</div>
                                 </> }
                             { (mode === _Str_11214) && 
                                 <>
-                                    <div className="text-black mb-3">{ LocalizeText('useproduct.widget.text.custompart', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black text-italics">{ LocalizeText('useproduct.widget.info.custompart') }</div>
+                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.custompart', [ 'productName' ], [ furniData.name ] ) }</div>
+                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.custompart') }</div>
                                 </> }
                             { (mode === _Str_11733) && 
                                 <>
-                                    <div className="text-black mb-3">{ LocalizeText('useproduct.widget.text.custompartshampoo', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black text-italics">{ LocalizeText('useproduct.widget.info.custompartshampoo') }</div>
+                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.custompartshampoo', [ 'productName' ], [ furniData.name ] ) }</div>
+                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.custompartshampoo') }</div>
                                 </> }
                             { (mode === _Str_11369) && 
                                 <>
-                                    <div className="text-black mb-3">{ LocalizeText('useproduct.widget.text.saddle', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black text-italics">{ LocalizeText('useproduct.widget.info.saddle') }</div>
+                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.saddle', [ 'productName' ], [ furniData.name ] ) }</div>
+                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.saddle') }</div>
                                 </> }
                             { (mode === _Str_8759) && 
                                 <>
-                                    <div className="text-black mb-3">{ LocalizeText('useproduct.widget.text.revive_monsterplant', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black text-italics">{ LocalizeText('useproduct.widget.info.revive_monsterplant') }</div>
+                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.revive_monsterplant', [ 'productName' ], [ furniData.name ] ) }</div>
+                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.revive_monsterplant') }</div>
                                 </> }
                             { (mode === _Str_8432) && 
                                 <>
-                                    <div className="text-black mb-3">{ LocalizeText('useproduct.widget.text.rebreed_monsterplant', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black text-italics">{ LocalizeText('useproduct.widget.info.rebreed_monsterplant') }</div>
+                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.rebreed_monsterplant', [ 'productName' ], [ furniData.name ] ) }</div>
+                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.rebreed_monsterplant') }</div>
                                 </> }
                             { (mode === _Str_9653) && 
                                 <>
-                                    <div className="text-black mb-3">{ LocalizeText('useproduct.widget.text.fertilize_monsterplant', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black text-italics">{ LocalizeText('useproduct.widget.info.fertilize_monsterplant') }</div>
+                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.fertilize_monsterplant', [ 'productName' ], [ furniData.name ] ) }</div>
+                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.fertilize_monsterplant') }</div>
                                 </> }
                         </div>
-                        <div className="d-flex justify-content-between align-items-center w-100">
+                        <div className="d-flex justify-content-between align-items-end w-100 h-100">
                             <button type="button" className="btn btn-danger" onClick={ close }>{ LocalizeText('useproduct.widget.cancel') }</button>
                             <button type="button" className="btn btn-primary" onClick={ useProduct }>{ LocalizeText('useproduct.widget.use') }</button>
                         </div>

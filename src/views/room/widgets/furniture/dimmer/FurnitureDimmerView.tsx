@@ -3,9 +3,8 @@ import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../context/RoomContext';
 import { FurnitureDimmerData } from './FurnitureDimmerData';
-import { FurnitureDimmerViewProps } from './FurnitureDimmerView.types';
 
-export const FurnitureDimmerView: FC<FurnitureDimmerViewProps> = props =>
+export const FurnitureDimmerView: FC<{}> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ dimmerData, setDimmerData ] = useState<FurnitureDimmerData>(null);

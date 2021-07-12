@@ -6,10 +6,9 @@ import { LocalizeText } from '../../../../utils/LocalizeText';
 import { useRoomContext } from '../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent } from '../../events';
 import { RoomWidgetChatMessage, RoomWidgetChatTypingMessage } from '../../messages';
-import { ChatInputViewProps } from './ChatInputView.types';
 import { ChatInputStyleSelectorView } from './style-selector/ChatInputStyleSelectorView';
 
-export const ChatInputView: FC<ChatInputViewProps> = props =>
+export const ChatInputView: FC<{}> = props =>
 {
     const [ chatValue, setChatValue ] = useState<string>('');
     const [ selectedUsername, setSelectedUsername ] = useState('');

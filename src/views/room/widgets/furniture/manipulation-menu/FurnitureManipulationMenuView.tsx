@@ -5,9 +5,8 @@ import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dis
 import { useRoomContext } from '../../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { ObjectLocationView } from '../../object-location/ObjectLocationView';
-import { FurnitureManipulationMenuViewProps } from './FurnitureManipulationMenuView.types';
 
-export const FurnitureManipulationMenuView: FC<FurnitureManipulationMenuViewProps> = props =>
+export const FurnitureManipulationMenuView: FC<{}> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ isVisible, setIsVisible ] = useState(false);

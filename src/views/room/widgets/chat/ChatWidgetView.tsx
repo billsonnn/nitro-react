@@ -3,11 +3,10 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../../../hooks/events';
 import { useRoomContext } from '../../context/RoomContext';
 import { RoomWidgetUpdateChatEvent } from '../../events';
-import { ChatWidgetViewProps } from './ChatWidgetView.types';
 import { ChatWidgetMessageView } from './message/ChatWidgetMessageView';
 import { ChatBubbleMessage } from './utils/ChatBubbleMessage';
 
-export const ChatWidgetView: FC<ChatWidgetViewProps> = props =>
+export const ChatWidgetView: FC<{}> = props =>
 {
     const [ chatMessages, setChatMessages ] = useState<ChatBubbleMessage[]>([]);
     const { roomSession = null, eventDispatcher = null } = useRoomContext();

@@ -1,9 +1,4 @@
-import { FurnitureWidgetProps } from '../FurnitureWidget.types';
-
-export interface FurnitureMannequinViewProps extends FurnitureWidgetProps
-{}
-
-export class FurnitureMannequinViewMode
+export class MannequinViewMode
 {
     public static readonly EDIT: string = 'edit';
     public static readonly SAVE: string = 'save';

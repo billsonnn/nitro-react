@@ -10,8 +10,8 @@ import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
+import { MannequinViewMode } from './common/MannequinViewMode';
 import { FurnitureMannequinData } from './FurnitureMannequinData';
-import { FurnitureMannequinViewMode, FurnitureMannequinViewProps } from './FurnitureMannequinView.types';
 
 const parts = [
     AvatarFigurePartType.CHEST_ACCESSORY,
@@ -23,7 +23,7 @@ const parts = [
 ];
 const baseAvatar = ['hd', 99999, 99998];
 
-export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
+export const FurnitureMannequinView: FC<{}> = props =>
 {
     const { eventDispatcher = null } = useRoomContext();
         
@@ -64,7 +64,7 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
 
         if(userCanEdit)
         {
-            setViewMode(FurnitureMannequinViewMode.EDIT);
+            setViewMode(MannequinViewMode.EDIT);
         }
         else
         {
@@ -72,15 +72,15 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
 
             if(userGender.toUpperCase() !== mannequinData.gender.toUpperCase())
             {
-                setViewMode(FurnitureMannequinViewMode.INCOMPATIBLE_GENDER);
+                setViewMode(MannequinViewMode.INCOMPATIBLE_GENDER);
             }
             else if(userClubLevel < mannequinData.clubLevel)
             {
-                setViewMode(FurnitureMannequinViewMode.CLUB);
+                setViewMode(MannequinViewMode.CLUB);
             }
             else
             {
-                setViewMode(FurnitureMannequinViewMode.DEFAULT);
+                setViewMode(MannequinViewMode.DEFAULT);
             }
         }
     }, []);
@@ -138,11 +138,11 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
                 return;
             case 'load_figure':
                 loadMannequinFigure(Nitro.instance.avatar.createFigureContainer(Nitro.instance.sessionDataManager.figure));
-                setViewMode(FurnitureMannequinViewMode.SAVE);
+                setViewMode(MannequinViewMode.SAVE);
                 return;
             case 'back':
                 loadMannequinFigure(Nitro.instance.avatar.createFigureContainer(mannequinData.figure));
-                setViewMode(FurnitureMannequinViewMode.EDIT);
+                setViewMode(MannequinViewMode.EDIT);
                 return;
             case 'save_name':
                 GetRoomSession().connection.send(new FurnitureMannequinSaveNameComposer(mannequinData.objectId, mannequinData.name));
@@ -179,7 +179,7 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
                         </div>
                     </div>
                     <div className="d-flex flex-column justify-content-between col">
-                        { viewMode === FurnitureMannequinViewMode.DEFAULT &&
+                        { viewMode === MannequinViewMode.DEFAULT &&
                             <>
                                 <div className="h-100">
                                     <div className="mb-1 text-black fw-bold">{ mannequinData.name }</div>
@@ -187,7 +187,7 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
                                 </div>
                                 <div className="btn btn-success float-end" onClick={ event => processAction('wear') }>{ LocalizeText('mannequin.widget.wear') }</div>
                                 </> }
-                        { viewMode === FurnitureMannequinViewMode.EDIT &&
+                        { viewMode === MannequinViewMode.EDIT &&
                             <>
                                 <input type="text" className="form-control mb-2" value={ mannequinData.name }  onChange={ event => processAction('set_name', event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
                                 <div className="d-flex flex-column w-100">
@@ -195,7 +195,7 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
                                     <div className="btn btn-success w-100" onClick={ event => processAction('wear') }>{ LocalizeText('mannequin.widget.wear') }</div>
                                 </div>
                             </> }
-                        { viewMode === FurnitureMannequinViewMode.SAVE &&
+                        { viewMode === MannequinViewMode.SAVE &&
                             <>
                                 <div className="h-100">
                                     <div className="mb-1 text-black fw-bold">{ mannequinData.name }</div>
@@ -206,9 +206,9 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
                                     <div className="btn btn-success" onClick={ event => processAction('save_figure') }>{ LocalizeText('mannequin.widget.save') }</div>
                                 </div>
                             </> }
-                        { viewMode === FurnitureMannequinViewMode.CLUB &&
+                        { viewMode === MannequinViewMode.CLUB &&
                             <div className="text-black">{ LocalizeText('mannequin.widget.clubnotification') }</div> }
-                        { viewMode === FurnitureMannequinViewMode.INCOMPATIBLE_GENDER &&
+                        { viewMode === MannequinViewMode.INCOMPATIBLE_GENDER &&
                             <div className="text-black">{ LocalizeText('mannequin.widget.wronggender') }</div> }
                     </div>
                 </div>

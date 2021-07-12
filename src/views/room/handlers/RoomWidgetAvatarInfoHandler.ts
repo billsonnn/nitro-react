@@ -168,8 +168,7 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
             RoomWidgetDanceMessage.DANCE,
             RoomWidgetAvatarExpressionMessage.AVATAR_EXPRESSION,
             RoomWidgetChangePostureMessage.CHANGE_POSTURE,
-            RoomWidgetUseProductMessage.PET_PRODUCT,
-            RoomWidgetUseProductMessage.MONSTERPLANT_SEED
+            RoomWidgetUseProductMessage.PET_PRODUCT
         ];
     }
 }
