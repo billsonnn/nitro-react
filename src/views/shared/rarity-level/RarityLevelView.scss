@@ -1,0 +1,12 @@
+.nitro-rarity-level {
+    width: 36px;
+    height: 28px;
+    background: url("../../../assets/images/infostand/rarity-level.png");
+
+    div {
+        line-height: 28px;
+        text-align: center;
+        color: $black;
+        font-weight: bold;
+    }
+}
