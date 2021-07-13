@@ -1,15 +1,16 @@
-import { EventDispatcher, Nitro, RoomEngineEvent, RoomEngineObjectEvent, RoomGeometry, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomVariableEnum, Vector3d } from 'nitro-renderer';
+import { EventDispatcher, Nitro, NitroRectangle, RoomEngineEvent, RoomEngineObjectEvent, RoomGeometry, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomVariableEnum, RoomZoomEvent, Vector3d } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { CanManipulateFurniture, IsFurnitureSelectionDisabled, ProcessRoomObjectOperation } from '../../api';
+import { CanManipulateFurniture, InitializeRoomInstanceRenderingCanvas, IsFurnitureSelectionDisabled, ProcessRoomObjectOperation } from '../../api';
 import { DispatchMouseEvent } from '../../api/nitro/room/DispatchMouseEvent';
-import { WindowResizeEvent } from '../../api/nitro/room/DispatchResizeEvent';
 import { DispatchTouchEvent } from '../../api/nitro/room/DispatchTouchEvent';
 import { GetRoomEngine } from '../../api/nitro/room/GetRoomEngine';
 import { useRoomEngineEvent } from '../../hooks/events';
 import { RoomContextProvider } from './context/RoomContext';
 import { RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from './events';
+import { RoomWidgetUpdateRoomViewEvent } from './events/RoomWidgetUpdateRoomViewEvent';
 import { FurnitureContextMenuWidgetHandler, IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler } from './handlers';
+import { RoomColorView } from './RoomColorView';
 import { RoomViewProps } from './RoomView.types';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
 
@@ -17,6 +18,7 @@ export const RoomView: FC<RoomViewProps> = props =>
 {
     const { roomSession = null } = props;
     const [ roomCanvas, setRoomCanvas ] = useState<HTMLCanvasElement>(null);
+    const [ canvasId, setCanvasId ] = useState(-1);
     const [ widgetHandler, setWidgetHandler ] = useState<IRoomWidgetHandlerManager>(null);
 
     useEffect(() =>
@@ -26,6 +28,7 @@ export const RoomView: FC<RoomViewProps> = props =>
             window.onresize = null;
 
             setRoomCanvas(null);
+            setCanvasId(-1);
             setWidgetHandler(null);
 
             return;
@@ -91,9 +94,22 @@ export const RoomView: FC<RoomViewProps> = props =>
         canvas.ontouchend       = event => DispatchTouchEvent(roomSession.roomId, canvasId, event);
         canvas.ontouchcancel    = event => DispatchTouchEvent(roomSession.roomId, canvasId, event);
 
-        window.onresize = event => WindowResizeEvent(roomSession.roomId, canvasId);
+        window.onresize = () =>
+        {
+            Nitro.instance.renderer.resize(window.innerWidth, window.innerHeight);
+            
+            InitializeRoomInstanceRenderingCanvas(roomSession.roomId, canvasId, Nitro.instance.width, Nitro.instance.height);
+
+            const bounds = canvas.getBoundingClientRect();
+            const rectangle = new NitroRectangle((bounds.x || 0), (bounds.y || 0), (bounds.width || 0), (bounds.height || 0));
+
+            widgetHandlerManager.eventDispatcher.dispatchEvent(new RoomWidgetUpdateRoomViewEvent(RoomWidgetUpdateRoomViewEvent.SIZE_CHANGED, rectangle));
+
+            Nitro.instance.render();
+        }
 
         setRoomCanvas(canvas);
+        setCanvasId(canvasId);
     }, [ roomSession ]);
 
     const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
@@ -108,11 +124,23 @@ export const RoomView: FC<RoomViewProps> = props =>
             case RoomEngineEvent.GAME_MODE:
                 widgetHandler.eventDispatcher.dispatchEvent(new RoomWidgetRoomEngineUpdateEvent(RoomWidgetRoomEngineUpdateEvent.GAME_MODE, event.roomId));
                 return;
+            case RoomZoomEvent.ROOM_ZOOM: {
+                const zoomEvent = (event as RoomZoomEvent);
+
+                let zoomLevel = ((zoomEvent.level < 1) ? 0.5 : (1 << (Math.floor(zoomEvent.level) - 1)));
+
+                if(zoomEvent.forceFlip || zoomEvent.asDelta) zoomLevel = zoomEvent.level;
+
+                GetRoomEngine().setRoomInstanceRenderingCanvasScale(roomSession.roomId, 1, zoomLevel, null, null, false, zoomEvent.asDelta);
+
+                return;
+            }
         }
-    }, [ widgetHandler ]);
+    }, [ widgetHandler, roomSession ]);
 
     useRoomEngineEvent(RoomEngineEvent.NORMAL_MODE, onRoomEngineEvent);
     useRoomEngineEvent(RoomEngineEvent.GAME_MODE, onRoomEngineEvent);
+    useRoomEngineEvent(RoomZoomEvent.ROOM_ZOOM, onRoomEngineEvent);
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
@@ -206,11 +234,15 @@ export const RoomView: FC<RoomViewProps> = props =>
     if(!roomSession) return null;
 
     return (
-        <RoomContextProvider value={ { roomSession, eventDispatcher: (widgetHandler && widgetHandler.eventDispatcher), widgetHandler } }>
+        <RoomContextProvider value={ { roomSession, canvasId, eventDispatcher: (widgetHandler && widgetHandler.eventDispatcher), widgetHandler } }>
             <div className="nitro-room w-100 h-100">
                <div id="room-view" className="nitro-room-container"></div>
                 { roomCanvas && createPortal(null, document.getElementById('room-view').appendChild(roomCanvas)) }
-                { widgetHandler && <RoomWidgetsView /> }
+                { widgetHandler && 
+                    <>
+                        <RoomColorView />
+                        <RoomWidgetsView />
+                    </> }
             </div>
         </RoomContextProvider>
     );

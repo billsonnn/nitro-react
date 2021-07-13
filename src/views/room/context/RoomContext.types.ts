@@ -5,6 +5,7 @@ import { IRoomWidgetHandlerManager } from '../handlers';
 export interface IRoomContext
 {
     roomSession: IRoomSession;
+    canvasId: number;
     eventDispatcher: IEventDispatcher;
     widgetHandler: IRoomWidgetHandlerManager;
 }

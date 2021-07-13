@@ -3,6 +3,7 @@ import { IRoomContext, RoomContextProps } from './RoomContext.types';
 
 const RoomContext = createContext<IRoomContext>({
     roomSession: null,
+    canvasId: -1,
     eventDispatcher: null,
     widgetHandler: null
 });
