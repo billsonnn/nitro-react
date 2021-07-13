@@ -1,4 +1,4 @@
-import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomZoomEvent } from 'nitro-renderer';
+import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomWidgetEnum, RoomZoomEvent } from 'nitro-renderer';
 import { GetRoomEngine, GetSessionDataManager } from '../../../api';
 import { SendMessageHook } from '../../../hooks/messages';
 import { RoomWidgetFloodControlEvent, RoomWidgetUpdateEvent } from '../events';
@@ -179,6 +179,11 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
         }
 
         return null;
+    }
+
+    public get type(): string
+    {
+        return RoomWidgetEnum.CHAT_INPUT_WIDGET;
     }
 
     public get eventTypes(): string[]

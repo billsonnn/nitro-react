@@ -1,4 +1,4 @@
-import { NitroEvent, RoomEngineTriggerWidgetEvent } from 'nitro-renderer';
+import { NitroEvent, RoomEngineTriggerWidgetEvent, RoomWidgetEnum } from 'nitro-renderer';
 import { RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage, RoomWidgetUseProductMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
@@ -21,6 +21,11 @@ export class FurnitureContextMenuWidgetHandler extends RoomWidgetHandler
         }
 
         return null;
+    }
+
+    public get type(): string
+    {
+        return RoomWidgetEnum.FURNITURE_CONTEXT_MENU;
     }
 
     public get eventTypes(): string[]

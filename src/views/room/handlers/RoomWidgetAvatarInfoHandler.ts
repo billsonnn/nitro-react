@@ -1,4 +1,4 @@
-import { NitroEvent, RoomEngineUseProductEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionDanceEvent, RoomSessionUserDataUpdateEvent } from 'nitro-renderer';
+import { NitroEvent, RoomEngineUseProductEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionDanceEvent, RoomSessionUserDataUpdateEvent, RoomWidgetEnum } from 'nitro-renderer';
 import { GetRoomEngine, GetRoomSession, GetSessionDataManager, IsOwnerOfFurniture } from '../../../api';
 import { FurniCategory } from '../../inventory/common/FurniCategory';
 import { RoomWidgetAvatarInfoEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateUserDataEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../events';
@@ -149,6 +149,11 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
         }
 
         if(useProductBubbles.length) this.container.eventDispatcher.dispatchEvent(new RoomWidgetUseProductBubbleEvent(RoomWidgetUseProductBubbleEvent.USE_PRODUCT_BUBBLES, useProductBubbles));
+    }
+
+    public get type(): string
+    {
+        return RoomWidgetEnum.AVATAR_INFO;
     }
 
     public get eventTypes(): string[]

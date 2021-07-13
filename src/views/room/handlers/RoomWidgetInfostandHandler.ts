@@ -1,4 +1,4 @@
-import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomAdsUpdateComposer, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnumItemExtradataParameter, SecurityLevel, Vector3d } from 'nitro-renderer';
+import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomAdsUpdateComposer, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, SecurityLevel, Vector3d } from 'nitro-renderer';
 import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../api';
 import { InventoryTradeRequestEvent, WiredSelectObjectEvent } from '../../../events';
 import { FriendListSendFriendRequestEvent } from '../../../events/friend-list/FriendListSendFriendRequestEvent';
@@ -755,6 +755,11 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         if(parts.length > 0) return parseInt(parts[index]);
 
         return -1;
+    }
+
+    public get type(): string
+    {
+        return RoomWidgetEnum.INFOSTAND;
     }
 
     public get eventTypes(): string[]

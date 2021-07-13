@@ -1,4 +1,4 @@
-import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, IAvatarImageListener, INitroPoint, IVector3D, NitroEvent, NitroPoint, PetFigureData, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, SystemChatStyleEnum, TextureUtils, Vector3d } from 'nitro-renderer';
+import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, IAvatarImageListener, INitroPoint, IVector3D, NitroEvent, NitroPoint, PetFigureData, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomWidgetEnum, SystemChatStyleEnum, TextureUtils, Vector3d } from 'nitro-renderer';
 import { GetAvatarRenderManager, GetRoomEngine } from '../../../api';
 import { LocalizeText } from '../../../utils/LocalizeText';
 import { RoomWidgetUpdateChatEvent, RoomWidgetUpdateEvent } from '../events';
@@ -189,6 +189,11 @@ export class RoomWidgetChatHandler extends RoomWidgetHandler implements IAvatarI
     public get disposed(): boolean
     {
         return false;
+    }
+
+    public get type(): string
+    {
+        return RoomWidgetEnum.CHAT_WIDGET;
     }
 
     public get eventTypes(): string[]

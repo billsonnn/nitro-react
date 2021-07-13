@@ -116,9 +116,10 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
                 </ContextMenuListItemView> }
             { (mode === _Str_5818) &&
                 <>
-                    <ContextMenuListItemView onClick={ event => processAction('mount') }>
-                        { LocalizeText('infostand.button.mount') }
-                    </ContextMenuListItemView>
+                    { !!petData.publiclyRideable &&
+                        <ContextMenuListItemView onClick={ event => processAction('mount') }>
+                            { LocalizeText('infostand.button.mount') }
+                        </ContextMenuListItemView> }
                     { (respectsLeft > 0) &&
                         <ContextMenuListItemView onClick={ event => processAction('respect') }>
                             { LocalizeText('infostand.button.petrespect', [ 'count' ], [ respectsLeft.toString() ]) }

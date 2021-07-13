@@ -6,8 +6,6 @@ import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../hooks/event
 import { useRoomContext } from './context/RoomContext';
 import { RoomWidgetUpdateRoomViewEvent } from './events/RoomWidgetUpdateRoomViewEvent';
 
-const ROOM_FILTER: NitroAdjustmentFilter = new NitroAdjustmentFilter();
-
 export const RoomColorView: FC<{}> = props =>
 {
     const [ roomBackground, setRoomBackground ] = useState<NitroSprite>(null);
@@ -30,7 +28,7 @@ export const RoomColorView: FC<{}> = props =>
         if(!canvas) return null;
 
         const displayObject = (canvas.master as NitroContainer);
-        const background    = new NitroSprite(NitroTexture.WHITE);
+        const background = new NitroSprite(NitroTexture.WHITE);
 
         displayObject.addChildAt(background, 0);
 
@@ -82,11 +80,13 @@ export const RoomColorView: FC<{}> = props =>
 
         if(!display) return null;
 
-        setRoomFilter(ROOM_FILTER);
+        const filter = new NitroAdjustmentFilter();
 
-        display.filters = [ ROOM_FILTER ];
+        setRoomFilter(filter);
 
-        return ROOM_FILTER;
+        display.filters = [ filter ];
+
+        return filter;
     }, [ roomFilter, getRenderingCanvas ]);
 
     const updateRoomFilter = useCallback(() =>
@@ -113,7 +113,7 @@ export const RoomColorView: FC<{}> = props =>
 
     const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
     {
-        if(!RoomId.isRoomPreviewerId(event.roomId)) return;
+        if(RoomId.isRoomPreviewerId(event.roomId)) return;
 
         switch(event.type)
         {

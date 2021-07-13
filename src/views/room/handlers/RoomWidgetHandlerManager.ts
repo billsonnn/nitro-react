@@ -1,4 +1,4 @@
-import { IEventDispatcher, IRoomSession, NitroEvent } from 'nitro-renderer';
+import { IEventDispatcher, IRoomSession, NitroEvent, RoomEngineTriggerWidgetEvent } from 'nitro-renderer';
 import { RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage } from '../messages';
 import { IRoomWidgetHandler } from './IRoomWidgetHandler';
@@ -21,6 +21,8 @@ export class RoomWidgetHandlerManager implements IRoomWidgetHandlerManager
     public registerHandler(handler: IRoomWidgetHandler): void
     {
         const eventTypes = handler.eventTypes;
+
+        eventTypes.push(RoomEngineTriggerWidgetEvent.OPEN_WIDGET, RoomEngineTriggerWidgetEvent.CLOSE_WIDGET);
 
         if(eventTypes && eventTypes.length)
         {
@@ -76,8 +78,18 @@ export class RoomWidgetHandlerManager implements IRoomWidgetHandlerManager
         for(const handler of handlers)
         {
             if(!handler) continue;
+
+            let dispatch = true;
+
+            if((event.type === RoomEngineTriggerWidgetEvent.OPEN_WIDGET) || (event.type === RoomEngineTriggerWidgetEvent.CLOSE_WIDGET))
+            {
+                if(event instanceof RoomEngineTriggerWidgetEvent)
+                {
+                    dispatch = (handler.type === event.widget);
+                }
+            }
             
-            handler.processEvent(event);
+            if(dispatch) handler.processEvent(event);
         }
     }
 

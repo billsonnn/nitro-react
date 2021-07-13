@@ -22,6 +22,8 @@ export abstract class RoomWidgetHandler implements IRoomWidgetHandler
         this._container = container;
     }
 
+    public abstract get type(): string;
+
     public abstract get eventTypes(): string[];
 
     public abstract get messageTypes(): string[];

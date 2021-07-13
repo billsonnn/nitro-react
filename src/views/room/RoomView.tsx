@@ -1,13 +1,11 @@
-import { EventDispatcher, Nitro, NitroRectangle, RoomEngineEvent, RoomEngineObjectEvent, RoomGeometry, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomVariableEnum, RoomZoomEvent, Vector3d } from 'nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { EventDispatcher, Nitro, NitroRectangle, RoomGeometry, RoomVariableEnum, Vector3d } from 'nitro-renderer';
+import { FC, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { CanManipulateFurniture, InitializeRoomInstanceRenderingCanvas, IsFurnitureSelectionDisabled, ProcessRoomObjectOperation } from '../../api';
+import { InitializeRoomInstanceRenderingCanvas } from '../../api';
 import { DispatchMouseEvent } from '../../api/nitro/room/DispatchMouseEvent';
 import { DispatchTouchEvent } from '../../api/nitro/room/DispatchTouchEvent';
 import { GetRoomEngine } from '../../api/nitro/room/GetRoomEngine';
-import { useRoomEngineEvent } from '../../hooks/events';
 import { RoomContextProvider } from './context/RoomContext';
-import { RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from './events';
 import { RoomWidgetUpdateRoomViewEvent } from './events/RoomWidgetUpdateRoomViewEvent';
 import { FurnitureContextMenuWidgetHandler, IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler } from './handlers';
 import { RoomColorView } from './RoomColorView';
@@ -111,125 +109,6 @@ export const RoomView: FC<RoomViewProps> = props =>
         setRoomCanvas(canvas);
         setCanvasId(canvasId);
     }, [ roomSession ]);
-
-    const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
-    {
-        if(!widgetHandler || RoomId.isRoomPreviewerId(event.roomId)) return;
-
-        switch(event.type)
-        {
-            case RoomEngineEvent.NORMAL_MODE:
-                widgetHandler.eventDispatcher.dispatchEvent(new RoomWidgetRoomEngineUpdateEvent(RoomWidgetRoomEngineUpdateEvent.NORMAL_MODE, event.roomId));
-                return;
-            case RoomEngineEvent.GAME_MODE:
-                widgetHandler.eventDispatcher.dispatchEvent(new RoomWidgetRoomEngineUpdateEvent(RoomWidgetRoomEngineUpdateEvent.GAME_MODE, event.roomId));
-                return;
-            case RoomZoomEvent.ROOM_ZOOM: {
-                const zoomEvent = (event as RoomZoomEvent);
-
-                let zoomLevel = ((zoomEvent.level < 1) ? 0.5 : (1 << (Math.floor(zoomEvent.level) - 1)));
-
-                if(zoomEvent.forceFlip || zoomEvent.asDelta) zoomLevel = zoomEvent.level;
-
-                GetRoomEngine().setRoomInstanceRenderingCanvasScale(roomSession.roomId, 1, zoomLevel, null, null, false, zoomEvent.asDelta);
-
-                return;
-            }
-        }
-    }, [ widgetHandler, roomSession ]);
-
-    useRoomEngineEvent(RoomEngineEvent.NORMAL_MODE, onRoomEngineEvent);
-    useRoomEngineEvent(RoomEngineEvent.GAME_MODE, onRoomEngineEvent);
-    useRoomEngineEvent(RoomZoomEvent.ROOM_ZOOM, onRoomEngineEvent);
-
-    const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
-    {
-        if(!roomSession || !widgetHandler) return;
-
-        const objectId  = event.objectId;
-        const category  = event.category;
-
-        let updateEvent: RoomWidgetRoomObjectUpdateEvent = null;
-
-        switch(event.type)
-        {
-            case RoomEngineObjectEvent.SELECTED:
-                if(!IsFurnitureSelectionDisabled(event)) updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED, objectId, category, event.roomId);
-                break;
-            case RoomEngineObjectEvent.DESELECTED:
-                updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, objectId, category, event.roomId);
-                break;
-            case RoomEngineObjectEvent.ADDED: {
-                let addedEventType: string = null;
-
-                switch(category)
-                {
-                    case RoomObjectCategory.FLOOR:
-                    case RoomObjectCategory.WALL:
-                        addedEventType = RoomWidgetRoomObjectUpdateEvent.FURNI_ADDED;
-                        break;
-                    case RoomObjectCategory.UNIT:
-                        addedEventType = RoomWidgetRoomObjectUpdateEvent.USER_ADDED;
-                        break;
-                }
-
-                if(addedEventType) updateEvent = new RoomWidgetRoomObjectUpdateEvent(addedEventType, objectId, category, event.roomId);
-                break;
-            }
-            case RoomEngineObjectEvent.REMOVED: {
-                let removedEventType: string = null;
-
-                switch(category)
-                {
-                    case RoomObjectCategory.FLOOR:
-                    case RoomObjectCategory.WALL:
-                        removedEventType = RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED;
-                        break;
-                    case RoomObjectCategory.UNIT:
-                        removedEventType = RoomWidgetRoomObjectUpdateEvent.USER_REMOVED;
-                        break;
-                }
-
-                if(removedEventType) updateEvent = new RoomWidgetRoomObjectUpdateEvent(removedEventType, objectId, category, event.roomId);
-                break;
-            }
-            case RoomEngineObjectEvent.MOUSE_ENTER:
-                updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER, objectId, category, event.roomId);
-                break;
-            case RoomEngineObjectEvent.MOUSE_LEAVE:
-                updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT, objectId, category, event.roomId);
-                break;
-            case RoomEngineObjectEvent.REQUEST_MOVE:
-                if(CanManipulateFurniture(roomSession, objectId, category)) ProcessRoomObjectOperation(objectId, category, RoomObjectOperationType.OBJECT_MOVE);
-                break;
-            case RoomEngineObjectEvent.REQUEST_ROTATE:
-                if(CanManipulateFurniture(roomSession, objectId, category)) ProcessRoomObjectOperation(objectId, category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE);
-                break;
-            case RoomEngineObjectEvent.REQUEST_MANIPULATION:
-                if(CanManipulateFurniture(roomSession, objectId, category)) updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_REQUEST_MANIPULATION, objectId, category, event.roomId);
-                break;
-        }
-
-        if(updateEvent)
-        {
-            let dispatchEvent = true;
-
-            if(updateEvent instanceof RoomWidgetRoomObjectUpdateEvent) dispatchEvent = (!RoomId.isRoomPreviewerId(updateEvent.roomId));
-
-            if(dispatchEvent) widgetHandler.eventDispatcher.dispatchEvent(updateEvent);
-        }
-    }, [ roomSession, widgetHandler ]);
-
-    useRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.DESELECTED, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.ADDED, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.REMOVED, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.PLACED, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.MOUSE_ENTER, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.MOUSE_LEAVE, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.REQUEST_MOVE, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.REQUEST_ROTATE, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.REQUEST_MANIPULATION, onRoomEngineObjectEvent);
 
     if(!roomSession) return null;
 
