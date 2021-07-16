@@ -7,4 +7,5 @@ export interface NitroCardGridItemViewProps extends DetailsHTMLAttributes<HTMLDi
     itemCount?: number;
     itemUnique?: boolean;
     itemUniqueNumber?: number;
+    itemUnseen?: boolean;
 }

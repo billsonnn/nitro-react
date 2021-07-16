@@ -6,6 +6,7 @@ import { GroupItem } from '../common/GroupItem';
 import { TradeState } from '../common/TradeState';
 import { TradeUserData } from '../common/TradeUserData';
 import { parseTradeItems } from '../common/TradingUtilities';
+import { IUnseenItemTracker } from '../common/unseen/IUnseenItemTracker';
 
 export interface IInventoryFurnitureState
 {
@@ -33,6 +34,7 @@ export interface IInventoryFurnitureAction
         tradeState?: number;
         userId?: number;
         tradeParser?: TradingListItemParser;
+        unseenTracker?: IUnseenItemTracker;
     }
 }
 
@@ -82,7 +84,7 @@ export const InventoryFurnitureReducer: Reducer<IInventoryFurnitureState, IInven
         case InventoryFurnitureActions.PROCESS_FRAGMENT: {
             const groupItems = [ ...state.groupItems ];
 
-            processFurniFragment(groupItems, (action.payload.fragment || null));
+            processFurniFragment(groupItems, (action.payload.fragment || null), (action.payload.unseenTracker || null));
 
             return { ...state, groupItems };
         }
@@ -137,7 +139,7 @@ export const InventoryFurnitureReducer: Reducer<IInventoryFurnitureState, IInven
                 {
                     const furniture = new FurnitureItem(item);
 
-                    addFurnitureItem(groupItems, furniture, false);
+                    addFurnitureItem(groupItems, furniture, true);
                 }
             }
 

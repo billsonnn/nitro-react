@@ -1,4 +1,4 @@
-import { ColorConverter, IRoomRenderingCanvas, Nitro } from 'nitro-renderer';
+import { ColorConverter, IRoomRenderingCanvas, Nitro, TextureUtils } from 'nitro-renderer';
 import { createRef, FC, useCallback, useEffect, useState } from 'react';
 import { RoomPreviewerViewProps } from './RoomPreviewerView.types';
 
@@ -18,7 +18,7 @@ export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 
         if(!renderingCanvas.canvasUpdated) return;
 
-        elementRef.current.style.backgroundImage = `url(${ Nitro.instance.renderer.extract.base64(renderingCanvas.master) })`;
+        elementRef.current.style.backgroundImage = `url(${ TextureUtils.generateImageUrl(renderingCanvas.master) })`;
     }, [ roomPreviewer, renderingCanvas, elementRef ]);
 
     const setupPreviewer = useCallback(() =>

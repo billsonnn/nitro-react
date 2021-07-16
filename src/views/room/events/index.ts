@@ -3,6 +3,7 @@ export * from './RoomWidgetFloodControlEvent';
 export * from './RoomWidgetObjectNameEvent';
 export * from './RoomWidgetRoomEngineUpdateEvent';
 export * from './RoomWidgetRoomObjectUpdateEvent';
+export * from './RoomWidgetUpdateBackgroundColorPreviewEvent';
 export * from './RoomWidgetUpdateChatEvent';
 export * from './RoomWidgetUpdateChatInputContentEvent';
 export * from './RoomWidgetUpdateDanceStatusEvent';

@@ -3,14 +3,13 @@ import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispat
 import { useRoomContext } from '../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../../events';
 import { RoomWidgetRoomObjectMessage } from '../../messages';
-import { InfoStandWidgetViewProps } from './InfoStandWidgetView.types';
 import { InfoStandWidgetBotView } from './views/bot/InfoStandWidgetBotView';
 import { InfoStandWidgetFurniView } from './views/furni/InfoStandWidgetFurniView';
 import { InfoStandWidgetPetView } from './views/pet/InfoStandWidgetPetView';
 import { InfoStandWidgetRentableBotView } from './views/rentable-bot/InfoStandWidgetRentableBotView';
 import { InfoStandWidgetUserView } from './views/user/InfoStandWidgetUserView';
 
-export const InfoStandWidgetView: FC<InfoStandWidgetViewProps> = props =>
+export const InfoStandWidgetView: FC<{}> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ infoStandEvent, setInfoStandEvent ] = useState<RoomWidgetUpdateInfostandEvent>(null);

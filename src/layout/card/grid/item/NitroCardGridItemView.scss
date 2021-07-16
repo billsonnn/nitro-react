@@ -6,7 +6,7 @@
         width: 100%;
         height: 100%;
         border-color: $grid-border-color !important;
-        background-color: $grid-bg-color  !important;
+        background-color: $grid-bg-color;
         background-position: center;
         background-repeat: no-repeat;
         overflow: hidden;
@@ -14,6 +14,10 @@
         &.active {
             border-color: $grid-active-border-color !important;
             background-color: $grid-active-bg-color !important;
+        }
+
+        &.unseen {
+            background-color: rgba($success, 0.4);
         }
     
         .badge {

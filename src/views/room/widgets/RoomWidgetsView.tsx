@@ -1,4 +1,4 @@
-import { RoomEngineDimmerStateEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomEngineUseProductEvent, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomZoomEvent } from 'nitro-renderer';
+import { RoomEngineDimmerStateEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomZoomEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CanManipulateFurniture, GetRoomEngine, IsFurnitureSelectionDisabled, ProcessRoomObjectOperation } from '../../../api';
 import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks/events';
@@ -119,6 +119,8 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
                 break;
             case RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY:
             case RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM:
+            case RoomEngineTriggerWidgetEvent.OPEN_WIDGET:
+            case RoomEngineTriggerWidgetEvent.CLOSE_WIDGET:
                 widgetHandler.processEvent(event);
                 break;
         }
@@ -145,6 +147,8 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
     useRoomEngineEvent(RoomEngineObjectEvent.MOUSE_LEAVE, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_WIDGET, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_WIDGET, onRoomEngineObjectEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {

@@ -13,7 +13,7 @@
         box-shadow: inset 0px 5px lighten(rgba($dark,.6),2.5), inset 0 -4px darken(rgba($dark,.6),4);
 
         #toolbar-chat-input-container {
-            margin-left: 25px;
+            margin: 0 10px;
         }
 
         .navigation-items {
@@ -31,6 +31,7 @@
                 cursor: pointer;
                 width: 50px;
                 margin: 0 1px;
+                position: relative;
 
                 .toolbar-avatar {
                     height: 50px;
@@ -47,6 +48,7 @@
 
                 .icon,
                 .toolbar-avatar {
+                    position: relative;
                     transition: transform .2s ease-out;
 
                     &:hover, &.active {
@@ -119,6 +121,7 @@
     max-width: 120px;
     max-height: 150px;
     z-index: 500;
+    filter: drop-shadow(2px 1px 0 rgba($white, 1)) drop-shadow(-2px 1px 0 rgba($white, 1)) drop-shadow(0 -2px 0 rgba($white, 1));
 }
 
 @import './me/ToolbarMeView';

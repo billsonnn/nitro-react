@@ -17,7 +17,7 @@ import { InventoryFurnitureSearchView } from './search/InventoryFurnitureSearchV
 export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
-    const { furnitureState = null, dispatchFurnitureState = null } = useInventoryContext();
+    const { furnitureState = null, dispatchFurnitureState = null, unseenTracker = null } = useInventoryContext();
     const { needsFurniUpdate = false, groupItem = null, groupItems = [] } = furnitureState;
     const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(groupItems);
 

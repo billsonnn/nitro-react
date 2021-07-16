@@ -1,8 +1,10 @@
+import { Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, Wait } from 'nitro-renderer';
 import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
 import { FC, useCallback, useState } from 'react';
-import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
-import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
+import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent, UnseenItemTrackerUpdateEvent } from '../../events';
+import { useRoomEngineEvent } from '../../hooks';
+import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
 import { TransitionAnimationTypes } from '../../layout/transitions/TransitionAnimation.types';
@@ -16,8 +18,8 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
 
     const [ userInfo, setUserInfo ] = useState<UserInfoDataParser>(null);
     const [ isMeExpanded, setMeExpanded ] = useState(false);
+    const [ unseenInventoryCount, setUnseenInventoryCount ] = useState(0);
 
-    const unseenInventoryCount = 0;
     const unseenFriendListCount = 0;
     const unseenAchievementsCount = 0;
 
@@ -27,6 +29,56 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
 
         setUserInfo(parser.userInfo);
     }, []);
+
+    CreateMessageHook(UserInfoEvent, onUserInfoEvent);
+
+    const onUnseenItemTrackerUpdateEvent = useCallback((event: UnseenItemTrackerUpdateEvent) =>
+    {
+        setUnseenInventoryCount(event.count);
+    }, []);
+
+    useUiEvent(UnseenItemTrackerUpdateEvent.UPDATE_COUNT, onUnseenItemTrackerUpdateEvent);
+
+    const animationIconToToolbar = useCallback((iconName: string, image: HTMLImageElement, x: number, y: number) =>
+    {
+        const target = (document.body.getElementsByClassName(iconName)[0] as HTMLElement);
+
+        if(!target) return;
+        
+        image.className         = 'toolbar-icon-animation';
+        image.style.visibility  = 'visible';
+        image.style.left        = (x + 'px');
+        image.style.top         = (y + 'px');
+
+        document.body.append(image);
+
+        const targetBounds  = target.getBoundingClientRect();
+        const imageBounds   = image.getBoundingClientRect();
+
+        const left    = (imageBounds.x - targetBounds.x);
+        const top     = (imageBounds.y - targetBounds.y);
+        const squared = Math.sqrt(((left * left) + (top * top)));
+        const wait    = (500 - Math.abs(((((1 / squared) * 100) * 500) * 0.5)));
+        const height  = 20;
+
+        const motionName = (`ToolbarBouncing[${ iconName }]`);
+
+        if(!Motions.getMotionByTag(motionName))
+        {
+            Motions.runMotion(new Queue(new Wait((wait + 8)), new DropBounce(target, 400, 12))).tag = motionName;
+        }
+
+        const motion = new Queue(new EaseOut(new JumpBy(image, wait, ((targetBounds.x - imageBounds.x) + height), (targetBounds.y - imageBounds.y), 100, 1), 1), new Dispose(image));
+
+        Motions.runMotion(motion);
+    }, []);
+
+    const onNitroToolbarAnimateIconEvent = useCallback((event: NitroToolbarAnimateIconEvent) =>
+    {
+        animationIconToToolbar('icon-inventory', event.image, event.x, event.y);
+    }, [ animationIconToToolbar ]);
+
+    useRoomEngineEvent(NitroToolbarAnimateIconEvent.ANIMATE_ICON, onNitroToolbarAnimateIconEvent);
 
     const handleToolbarItemClick = useCallback((item: string) =>
     {
@@ -53,8 +105,6 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 return;
         }
     }, []);
-
-    CreateMessageHook(UserInfoEvent, onUserInfoEvent);
 
     return (
         <div className="nitro-toolbar-container">

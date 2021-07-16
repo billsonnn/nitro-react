@@ -4,6 +4,8 @@ import { InventoryEvent } from '../../../events';
 import { dispatchUiEvent } from '../../../hooks/events/ui/ui-event';
 import { BotItem } from './BotItem';
 import { getPlacingItemId, setObjectMoverRequested, setPlacingItemId } from './InventoryUtilities';
+import { IUnseenItemTracker } from './unseen/IUnseenItemTracker';
+import { UnseenItemCategory } from './unseen/UnseenItemCategory';
 
 export function cancelRoomObjectPlacement(): void
 {
@@ -45,7 +47,7 @@ function getAllItemIds(botItems: BotItem[]): number[]
     return itemIds;
 }
 
-export function processBotFragment(set: BotItem[], fragment: BotData[]): BotItem[]
+export function processBotFragment(set: BotItem[], fragment: BotData[], unseenTracker: IUnseenItemTracker): BotItem[]
 {
     const existingIds = getAllItemIds(set);
     const addedDatas: BotData[] = [];
@@ -55,12 +57,19 @@ export function processBotFragment(set: BotItem[], fragment: BotData[]): BotItem
 
     for(const itemId of existingIds)
     {
+        let remove = true;
+
         for(const botData of fragment)
         {
-            if(botData.id === itemId) continue;
+            if(botData.id === itemId)
+            {
+                remove = false;
 
-            removedIds.push(itemId);
+                break;
+            }
         }
+
+        if(remove) removedIds.push(itemId);
     }
 
     const emptyExistingSet = (existingIds.length === 0);
@@ -69,7 +78,7 @@ export function processBotFragment(set: BotItem[], fragment: BotData[]): BotItem
 
     for(const botData of addedDatas)
     {
-        addSingleBotItem(botData, set, true);
+        addSingleBotItem(botData, set, unseenTracker.isUnseen(UnseenItemCategory.BOT, botData.id));
     }
 
     return set;
@@ -109,6 +118,8 @@ export function addSingleBotItem(botData: BotData, set: BotItem[], unseen: boole
 
     if(unseen)
     {
+        botItem.isUnseen = true;
+
         set.unshift(botItem);
     }
     else

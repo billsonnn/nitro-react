@@ -6,9 +6,8 @@ import { StartRoomSession } from '../../api/nitro/session/StartRoomSession';
 import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { RoomView } from '../room/RoomView';
-import { RoomHostViewProps } from './RoomHostView.types';
 
-export const RoomHostView: FC<RoomHostViewProps> = props =>
+export const RoomHostView: FC<{}> = props =>
 {
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
 

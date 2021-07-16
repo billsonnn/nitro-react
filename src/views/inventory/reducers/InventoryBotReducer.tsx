@@ -2,6 +2,7 @@ import { BotData } from 'nitro-renderer';
 import { Reducer } from 'react';
 import { BotItem } from '../common/BotItem';
 import { addSingleBotItem, processBotFragment, removeBotItemById } from '../common/BotUtilities';
+import { IUnseenItemTracker } from '../common/unseen/IUnseenItemTracker';
 
 export interface IInventoryBotState
 {
@@ -19,6 +20,7 @@ export interface IInventoryBotAction
         botId?: number;
         botData?: BotData;
         fragment?: BotData[];
+        unseenTracker?: IUnseenItemTracker;
     }
 }
 
@@ -62,7 +64,7 @@ export const InventoryBotReducer: Reducer<IInventoryBotState, IInventoryBotActio
         case InventoryBotActions.PROCESS_FRAGMENT: {
             const botItems = [ ...state.botItems ];
 
-            processBotFragment(botItems, action.payload.fragment);
+            processBotFragment(botItems, action.payload.fragment, (action.payload.unseenTracker || null));
 
             return { ...state, botItems };
         }

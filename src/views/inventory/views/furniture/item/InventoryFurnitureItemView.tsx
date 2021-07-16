@@ -1,5 +1,5 @@
 import { MouseEventType } from 'nitro-renderer';
-import { FC, MouseEvent, useCallback, useState } from 'react';
+import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
 import { NitroCardGridItemView } from '../../../../../layout/card/grid/item/NitroCardGridItemView';
 import { attemptItemPlacement } from '../../../common/FurnitureUtilities';
 import { useInventoryContext } from '../../../context/InventoryContext';
@@ -37,7 +37,14 @@ export const InventoryFurnitureItemView: FC<InventoryFurnitureItemViewProps> = p
         }
     }, [ isActive, isMouseDown, groupItem, dispatchFurnitureState ]);
 
+    useEffect(() =>
+    {
+        if(!isActive) return;
+
+        groupItem.hasUnseenItems = false;
+    }, [ isActive, groupItem ]);
+
     const count = groupItem.getUnlockedCount();
 
-    return <NitroCardGridItemView className={ !count ? 'opacity-0-5 ' : '' } itemImage={ groupItem.iconUrl } itemCount={ count } itemActive={ isActive } itemUnique={ groupItem.stuffData.isUnique } itemUniqueNumber={ groupItem.stuffData.uniqueNumber } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent } />;
+    return <NitroCardGridItemView className={ !count ? 'opacity-0-5 ' : '' } itemImage={ groupItem.iconUrl } itemCount={ count } itemActive={ isActive } itemUnique={ groupItem.stuffData.isUnique } itemUniqueNumber={ groupItem.stuffData.uniqueNumber } itemUnseen={ groupItem.hasUnseenItems } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent } />;
 }

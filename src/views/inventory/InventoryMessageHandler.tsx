@@ -1,4 +1,4 @@
-import { AdvancedMap, BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, TradingAcceptEvent, TradingCloseEvent, TradingCompletedEvent, TradingConfirmationEvent, TradingListItemEvent, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingYouAreNotAllowedEvent } from 'nitro-renderer';
+import { AdvancedMap, BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, TradingAcceptEvent, TradingCloseEvent, TradingCompletedEvent, TradingConfirmationEvent, TradingListItemEvent, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingYouAreNotAllowedEvent, UnseenItemsEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetRoomSession, GetSessionDataManager } from '../../api';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
@@ -17,7 +17,7 @@ let petMsgFragments: Map<number, PetData>[] = null;
  
 export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =>
 {
-    const { dispatchFurnitureState = null, dispatchBotState = null, dispatchPetState = null, dispatchBadgeState = null } = useInventoryContext();
+    const { dispatchFurnitureState = null, dispatchBotState = null, dispatchPetState = null, dispatchBadgeState = null, unseenTracker = null } = useInventoryContext();
 
     const onFurnitureListAddOrUpdateEvent = useCallback((event: FurnitureListAddOrUpdateEvent) =>
     {
@@ -43,9 +43,9 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
 
         dispatchFurnitureState({
             type: InventoryFurnitureActions.PROCESS_FRAGMENT,
-            payload: { fragment }
+            payload: { fragment, unseenTracker }
         });
-    }, [ dispatchFurnitureState ]);
+    }, [ unseenTracker, dispatchFurnitureState ]);
 
     const onFurnitureListInvalidateEvent = useCallback((event: FurnitureListInvalidateEvent) =>
     {
@@ -82,9 +82,9 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
 
         dispatchBotState({
             type: InventoryBotActions.PROCESS_FRAGMENT,
-            payload: { fragment }
+            payload: { fragment, unseenTracker }
         });
-    }, [ dispatchBotState ]);
+    }, [ dispatchBotState, unseenTracker ]);
 
     const onBotAddedToInventoryEvent = useCallback((event: BotAddedToInventoryEvent) =>
     {
@@ -122,9 +122,9 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
 
         dispatchPetState({
             type: InventoryPetActions.PROCESS_FRAGMENT,
-            payload: { fragment }
+            payload: { fragment, unseenTracker }
         });
-    }, [dispatchPetState ]);
+    }, [ dispatchPetState, unseenTracker ]);
 
     const onPetAddedToInventoryEvent = useCallback((event: PetAddedToInventoryEvent) =>
     {
@@ -294,6 +294,20 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
         console.log(parser);
     }, []);
 
+    const onUnseenItemsEvent = useCallback((event: UnseenItemsEvent) =>
+    {
+        const parser = event.getParser();
+
+        console.log(parser);
+
+        for(const category of parser.categories)
+        {
+            const itemIds = parser.getItemsByCategory(category);
+
+            unseenTracker.addItems(category, itemIds);
+        }
+    }, [ unseenTracker ]);
+
     CreateMessageHook(FurnitureListAddOrUpdateEvent, onFurnitureListAddOrUpdateEvent);
     CreateMessageHook(FurnitureListEvent, onFurnitureListEvent);
     CreateMessageHook(FurnitureListInvalidateEvent, onFurnitureListInvalidateEvent);
@@ -316,6 +330,7 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
     CreateMessageHook(TradingOpenFailedEvent, onTradingOpenFailedEvent);
     CreateMessageHook(TradingOtherNotAllowedEvent, onTradingOtherNotAllowedEvent);
     CreateMessageHook(TradingYouAreNotAllowedEvent, onTradingYouAreNotAllowedEvent);
+    CreateMessageHook(UnseenItemsEvent, onUnseenItemsEvent);
 
     return null;
 }

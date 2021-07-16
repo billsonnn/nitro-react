@@ -117,7 +117,7 @@ export class GroupItem
         return items;
     }
 
-    public push(item: FurnitureItem, unseen: boolean = false): void
+    public push(item: FurnitureItem): void
     {
         const items = [ ...this._items ];
 

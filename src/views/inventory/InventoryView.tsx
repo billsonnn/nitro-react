@@ -10,6 +10,9 @@ import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, Nitro
 import { LocalizeText } from '../../utils/LocalizeText';
 import { isObjectMoverRequested, setObjectMoverRequested } from './common/InventoryUtilities';
 import { TradeState } from './common/TradeState';
+import { IUnseenItemTracker } from './common/unseen/IUnseenItemTracker';
+import { UnseenItemCategory } from './common/unseen/UnseenItemCategory';
+import { UnseenItemTracker } from './common/unseen/UnseenItemTracker';
 import { InventoryContextProvider } from './context/InventoryContext';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
 import { InventoryTabs, InventoryViewProps } from './InventoryView.types';
@@ -23,18 +26,20 @@ import { InventoryFurnitureView } from './views/furniture/InventoryFurnitureView
 import { InventoryPetView } from './views/pet/InventoryPetView';
 import { InventoryTradeView } from './views/trade/InventoryTradeView';
 
-const tabs = [ InventoryTabs.FURNITURE, InventoryTabs.BOTS, InventoryTabs.PETS, InventoryTabs.BADGES ];
+const TABS = [ InventoryTabs.FURNITURE, InventoryTabs.BOTS, InventoryTabs.PETS, InventoryTabs.BADGES ];
+const UNSEEN_CATEGORIES = [ UnseenItemCategory.FURNI, UnseenItemCategory.BOT, UnseenItemCategory.PET, UnseenItemCategory.BADGE ];
 
 export const InventoryView: FC<InventoryViewProps> = props =>
 {
     const [ isVisible, setIsVisible ]   = useState(false);
-    const [ currentTab, setCurrentTab ] = useState<string>(tabs[0]);
+    const [ currentTab, setCurrentTab ] = useState<string>(TABS[0]);
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
     const [ furnitureState, dispatchFurnitureState ] = useReducer(InventoryFurnitureReducer, initialInventoryFurniture);
     const [ botState, dispatchBotState ] = useReducer(InventoryBotReducer, initialInventoryBot);
     const [ petState, dispatchPetState ] = useReducer(InventoryPetReducer, initialInventoryPet);
     const [ badgeState, dispatchBadgeState ] = useReducer(InventoryBadgeReducer, initialInventoryBadge);
+    const [ unseenTracker ] = useState<IUnseenItemTracker>(new UnseenItemTracker());
 
     const close = useCallback(() =>
     {
@@ -119,6 +124,45 @@ export const InventoryView: FC<InventoryViewProps> = props =>
     useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
     useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
+    const resetTrackerForTab = useCallback((name: string) =>
+    {
+        const tabIndex = TABS.indexOf(name);
+
+        if(tabIndex === -1) return;
+
+        const unseenCategory = UNSEEN_CATEGORIES[tabIndex];
+
+        if(unseenCategory === -1) return;
+
+        const count = unseenTracker.getCount(unseenCategory);
+
+        if(!count) return;
+
+        unseenTracker.resetCategory(unseenCategory);
+
+        switch(unseenCategory)
+        {
+            case UnseenItemCategory.FURNI:
+                for(const groupItem of furnitureState.groupItems) groupItem.hasUnseenItems = false;
+
+                return;
+        }
+    }, [ furnitureState.groupItems, unseenTracker ]);
+
+    const switchTab = useCallback((prevTab: string, nextTab: string) =>
+    {
+        if(nextTab) setCurrentTab(nextTab);
+
+        resetTrackerForTab(prevTab);
+    }, [ resetTrackerForTab ]);
+
+    useEffect(() =>
+    {
+        if(isVisible) return;
+
+        if(currentTab) resetTrackerForTab(currentTab);
+    }, [ currentTab, isVisible, resetTrackerForTab ]);
+
     useEffect(() =>
     {
         setRoomPreviewer(new RoomPreviewer(GetRoomEngine(), ++RoomPreviewer.PREVIEW_COUNTER));
@@ -143,7 +187,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
     }, [ furnitureState.tradeData, isVisible ]);
 
     return (
-        <InventoryContextProvider value={ { furnitureState, dispatchFurnitureState, botState, dispatchBotState, petState, dispatchPetState, badgeState, dispatchBadgeState } }>
+        <InventoryContextProvider value={ { furnitureState, dispatchFurnitureState, botState, dispatchBotState, petState, dispatchPetState, badgeState, dispatchBadgeState, unseenTracker } }>
             <InventoryMessageHandler />
             { isVisible &&
                 <NitroCardView className="nitro-inventory">
@@ -151,10 +195,12 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                     { !furnitureState.tradeData &&
                         <>
                             <NitroCardTabsView>
-                                { tabs.map((name, index) =>
+                                { TABS.map((name, index) =>
                                     {
+                                        const unseenCount = unseenTracker.getCount(UNSEEN_CATEGORIES[index]);
+
                                         return (
-                                            <NitroCardTabsItemView key={ index } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) }>
+                                            <NitroCardTabsItemView key={ index } isActive={ (currentTab === name) } onClick={ event => switchTab(currentTab, name) } count={ unseenCount }>
                                                 { LocalizeText(name) }
                                             </NitroCardTabsItemView>
                                         );

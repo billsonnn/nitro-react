@@ -9,7 +9,8 @@ const InventoryContext = createContext<IInventoryContext>({
     petState: null,
     dispatchPetState: null,
     badgeState: null,
-    dispatchBadgeState: null
+    dispatchBadgeState: null,
+    unseenTracker: null
 });
 
 export const InventoryContextProvider: FC<InventoryContextProps> = props =>
