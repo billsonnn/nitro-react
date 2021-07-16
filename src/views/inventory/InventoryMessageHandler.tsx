@@ -298,8 +298,6 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
     {
         const parser = event.getParser();
 
-        console.log(parser);
-
         for(const category of parser.categories)
         {
             const itemIds = parser.getItemsByCategory(category);
