@@ -1,4 +1,4 @@
-import { CatalogModeComposer, ICatalogPageData, RoomPreviewer } from 'nitro-renderer';
+import { CatalogModeComposer, CatalogRequestGiftConfigurationComposer, ICatalogPageData, RoomPreviewer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { GetRoomEngine } from '../../api';
 import { GetCatalogPageComposer } from '../../api/catalog/GetCatalogPageComposer';
@@ -49,6 +49,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
         if(!catalogState.root)
         {
             SendMessageHook(new CatalogModeComposer(CatalogMode.MODE_NORMAL));
+            SendMessageHook(new CatalogRequestGiftConfigurationComposer());
         }
     }, [ isVisible, catalogState.root ]);
 

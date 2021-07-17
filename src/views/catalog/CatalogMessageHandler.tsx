@@ -1,4 +1,4 @@
-import { CatalogApproveNameResultEvent, CatalogClubEvent, CatalogGroupsEvent, CatalogPageEvent, CatalogPagesEvent, CatalogPurchaseEvent, CatalogPurchaseFailedEvent, CatalogPurchaseUnavailableEvent, CatalogSearchEvent, CatalogSoldOutEvent, CatalogUpdatedEvent, SellablePetPalettesEvent, UserSubscriptionEvent } from 'nitro-renderer';
+import { CatalogApproveNameResultEvent, CatalogClubEvent, CatalogGiftConfigurationEvent, CatalogGroupsEvent, CatalogPageEvent, CatalogPagesEvent, CatalogPurchaseEvent, CatalogPurchaseFailedEvent, CatalogPurchaseUnavailableEvent, CatalogSearchEvent, CatalogSoldOutEvent, CatalogUpdatedEvent, SellablePetPalettesEvent, UserSubscriptionEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CatalogNameResultEvent, CatalogPurchaseFailureEvent } from '../../events';
 import { CatalogPurchasedEvent } from '../../events/catalog/CatalogPurchasedEvent';
@@ -145,6 +145,20 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
+    const onCatalogGiftConfigurationEvent = useCallback((event: CatalogGiftConfigurationEvent) =>
+    {
+        const parser = event.getParser();
+
+        console.log(parser);
+
+        dispatchCatalogState({
+            type: CatalogActions.SET_GIFT_CONFIGURATION,
+            payload: {
+                giftConfiguration: parser
+            }
+        });
+    }, [ dispatchCatalogState ]);
+
     CreateMessageHook(CatalogPagesEvent, onCatalogPagesEvent);
     CreateMessageHook(CatalogPageEvent, onCatalogPageEvent);
     CreateMessageHook(CatalogPurchaseEvent, onCatalogPurchaseEvent);
@@ -158,6 +172,7 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
     CreateMessageHook(CatalogClubEvent, onCatalogClubEvent);
     CreateMessageHook(UserSubscriptionEvent, onUserSubscriptionEvent);
     CreateMessageHook(CatalogUpdatedEvent, onCatalogUpdatedEvent);
+    CreateMessageHook(CatalogGiftConfigurationEvent, onCatalogGiftConfigurationEvent);
 
     return null;
 }

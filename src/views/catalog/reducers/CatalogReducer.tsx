@@ -1,7 +1,8 @@
-import { CatalogClubOfferData, CatalogGroupData, CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from 'nitro-renderer';
+import { CatalogClubOfferData, CatalogGiftConfigurationParser, CatalogGroupData, CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from 'nitro-renderer';
 import { Reducer } from 'react';
 import { CatalogPetPalette } from '../common/CatalogPetPalette';
 import { ICatalogOffers, ICatalogSearchResult, SetOffersToNodes } from '../common/CatalogUtilities';
+import { GiftWrappingConfiguration } from '../common/GiftWrappingConfiguration';
 import { SubscriptionInfo } from '../common/SubscriptionInfo';
 
 export interface ICatalogState
@@ -17,6 +18,7 @@ export interface ICatalogState
     petPalettes: CatalogPetPalette[];
     clubOffers: CatalogClubOfferData[];
     subscriptionInfo: SubscriptionInfo;
+    giftConfiguration: GiftWrappingConfiguration;
 }
 
 export interface ICatalogAction
@@ -34,6 +36,7 @@ export interface ICatalogAction
         petPalette?: CatalogPetPalette;
         clubOffers?: CatalogClubOfferData[];
         subscriptionInfo?: SubscriptionInfo;
+        giftConfiguration?: CatalogGiftConfigurationParser;
     }
 }
 
@@ -50,6 +53,7 @@ export class CatalogActions
     public static SET_PET_PALETTE: string = 'CA_SET_PET_PALETTE';
     public static SET_SEARCH_RESULT: string = 'CA_SET_SEARCH_RESULT';
     public static SET_SUBSCRIPTION_INFO: string = 'CA_SET_SUBSCRIPTION_INFO';
+    public static SET_GIFT_CONFIGURATION: string = 'CA_SET_GIFT_CONFIGURATION';
 }
 
 export const initialCatalog: ICatalogState = {
@@ -63,7 +67,8 @@ export const initialCatalog: ICatalogState = {
     groups: [],
     petPalettes: [],
     clubOffers: null,
-    subscriptionInfo: new SubscriptionInfo()
+    subscriptionInfo: new SubscriptionInfo(),
+    giftConfiguration: null
 }
 
 export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, action) =>
@@ -157,6 +162,11 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
         }
         case CatalogActions.RESET_STATE: {
             return { ...initialCatalog };
+        }
+        case CatalogActions.SET_GIFT_CONFIGURATION: {
+            const giftConfiguration = new GiftWrappingConfiguration((action.payload.giftConfiguration || null));
+
+            return { ...state, giftConfiguration };
         }
         default:
             return state;
