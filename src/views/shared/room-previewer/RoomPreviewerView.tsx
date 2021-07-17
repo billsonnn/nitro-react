@@ -1,5 +1,5 @@
 import { ColorConverter, IRoomRenderingCanvas, Nitro, TextureUtils } from 'nitro-renderer';
-import { createRef, FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { RoomPreviewerViewProps } from './RoomPreviewerView.types';
 
 export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
@@ -8,7 +8,7 @@ export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 
     const [ renderingCanvas, setRenderingCanvas ] = useState<IRoomRenderingCanvas>(null);
 
-    const elementRef = createRef<HTMLDivElement>();
+    const elementRef = useRef<HTMLDivElement>();
 
     const update = useCallback((time: number) =>
     {

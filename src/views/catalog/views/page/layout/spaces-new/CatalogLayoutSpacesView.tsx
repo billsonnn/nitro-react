@@ -2,10 +2,10 @@ import { CatalogPageOfferData, IFurnitureData } from 'nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetSessionDataManager } from '../../../../../../api';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
-import { RoomPreviewerView } from '../../../../../shared/room-previewer/RoomPreviewerView';
 import { GetCatalogPageImage, GetCatalogPageText, GetOfferName } from '../../../../common/CatalogUtilities';
 import { ProductTypeEnum } from '../../../../common/ProductTypeEnum';
 import { useCatalogContext } from '../../../../context/CatalogContext';
+import { CatalogRoomPreviewerView } from '../../../catalog-room-previewer/CatalogRoomPreviewerView';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
 import { CatalogPurchaseView } from '../../purchase/CatalogPurchaseView';
 import { CatalogLayoutSpacesViewProps } from './CatalogLayoutSpacesView.types';
@@ -88,7 +88,7 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutSpacesViewProps> = props =
                 </div> }
             { product &&
                 <div className="position-relative d-flex flex-column col">
-                    <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                    <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                     <div className="fs-6 text-black mt-1 overflow-hidden">{ GetOfferName(activeOffer) }</div>
                     <CatalogPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } />
                 </div> }

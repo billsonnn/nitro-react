@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
-import { RoomPreviewerView } from '../../../../../shared/room-previewer/RoomPreviewerView';
 import { GetOfferName } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
+import { CatalogRoomPreviewerView } from '../../../catalog-room-previewer/CatalogRoomPreviewerView';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
 import { CatalogPurchaseView } from '../../purchase/CatalogPurchaseView';
 import { CatalogLayoutTrophiesViewProps } from './CatalogLayoutTrophiesView.types';
@@ -25,7 +25,7 @@ export const CatalogLayoutTrophiesView: FC<CatalogLayoutTrophiesViewProps> = pro
             </div>
             { product &&
                 <div className="position-relative d-flex flex-column col">
-                    <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                    <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                     <div className="fs-6 text-black mt-1 overflow-hidden">{ GetOfferName(activeOffer) }</div>
                     <CatalogPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ trophyText } />
                 </div> }
