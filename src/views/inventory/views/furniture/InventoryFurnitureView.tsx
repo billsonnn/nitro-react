@@ -4,6 +4,7 @@ import { GetRoomEngine, GetSessionDataManager } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
+import { RarityLevelView } from '../../../shared/rarity-level/RarityLevelView';
 import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerView';
 import { FurniCategory } from '../../common/FurniCategory';
 import { attemptItemPlacement } from '../../common/FurnitureUtilities';
@@ -123,9 +124,13 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
             </div>
             <div className="position-relative d-flex flex-column col-5 justify-space-between">
                 <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
-                { groupItem &&groupItem.stuffData.isUnique &&
-                    <div className="position-absolute limited-edition-info-container">
+                { groupItem && groupItem.stuffData.isUnique &&
+                    <div className="stuffdata-extra-container">
                         <LimitedEditionCompactPlateView uniqueNumber={ groupItem.stuffData.uniqueNumber } uniqueSeries={ groupItem.stuffData.uniqueSeries } />
+                    </div> }
+                { (groupItem && groupItem.stuffData.rarityLevel > -1) &&
+                    <div className="stuffdata-extra-container">
+                        <RarityLevelView level={ groupItem.stuffData.rarityLevel } />
                     </div> }
                 { groupItem &&
                     <div className="d-flex flex-column flex-grow-1">
