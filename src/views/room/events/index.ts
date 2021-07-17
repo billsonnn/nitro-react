@@ -6,6 +6,7 @@ export * from './RoomWidgetRoomObjectUpdateEvent';
 export * from './RoomWidgetUpdateBackgroundColorPreviewEvent';
 export * from './RoomWidgetUpdateChatEvent';
 export * from './RoomWidgetUpdateChatInputContentEvent';
+export * from './RoomWidgetUpdateCustomStackHeightEvent';
 export * from './RoomWidgetUpdateDanceStatusEvent';
 export * from './RoomWidgetUpdateEvent';
 export * from './RoomWidgetUpdateInfostandEvent';

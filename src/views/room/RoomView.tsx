@@ -7,7 +7,7 @@ import { DispatchTouchEvent } from '../../api/nitro/room/DispatchTouchEvent';
 import { GetRoomEngine } from '../../api/nitro/room/GetRoomEngine';
 import { RoomContextProvider } from './context/RoomContext';
 import { RoomWidgetUpdateRoomViewEvent } from './events/RoomWidgetUpdateRoomViewEvent';
-import { FurnitureContextMenuWidgetHandler, IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler } from './handlers';
+import { FurnitureContextMenuWidgetHandler, FurnitureCustomStackHeightWidgetHandler, IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler } from './handlers';
 import { RoomColorView } from './RoomColorView';
 import { RoomViewProps } from './RoomView.types';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
@@ -39,6 +39,7 @@ export const RoomView: FC<RoomViewProps> = props =>
         widgetHandlerManager.registerHandler(new RoomWidgetChatInputHandler());
         widgetHandlerManager.registerHandler(new RoomWidgetChatHandler());
         widgetHandlerManager.registerHandler(new FurnitureContextMenuWidgetHandler());
+        widgetHandlerManager.registerHandler(new FurnitureCustomStackHeightWidgetHandler());
 
         setWidgetHandler(widgetHandlerManager);
 

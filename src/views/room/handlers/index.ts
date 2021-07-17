@@ -1,4 +1,5 @@
 export * from './FurnitureContextMenuWidgetHandler';
+export * from './FurnitureCustomStackHeightWidgetHandler';
 export * from './IRoomWidgetHandler';
 export * from './IRoomWidgetHandlerManager';
 export * from './RoomWidgetAvatarInfoHandler';
