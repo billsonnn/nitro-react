@@ -176,6 +176,12 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
 
                 break;
             }
+            case RoomWidgetChatSelectAvatarMessage.MESSAGE_SELECT_AVATAR: {
+                const selectedEvent = (message as RoomWidgetChatSelectAvatarMessage);
+
+                GetRoomEngine().setSelectedAvatar(selectedEvent.roomId, selectedEvent.objectId);
+                break;
+            }
         }
 
         return null;

@@ -1,49 +1,20 @@
 import { FC, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useRoomContext } from '../../../context/RoomContext';
 import { ChatWidgetMessageViewProps } from './ChatWidgetMessageView.types';
 
 export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
 {
-    const { chat = null, makeRoom = null } = props;
+    const { chat = null, makeRoom = null, onChatClicked = null } = props;
     const [ isVisible, setIsVisible ] = useState(false);
-    const [ messageParts, setMessageParts ] = useState<{text: string, className?: string, style?: any, onClick?: () => void}[]>(null);
+    const { widgetHandler = null } = useRoomContext();
     const elementRef = useRef<HTMLDivElement>();
 
-    const onClick = useCallback((event: MouseEvent) =>
+    const onMouseDown = useCallback((event: MouseEvent<HTMLDivElement>) =>
     {
+        if(event.shiftKey) return;
 
-    }, []);
-
-    // useEffect(() =>
-    // {
-    //     if(messageParts) return;
-
-    //     const userNameMention = '@' + GetSessionDataManager().userName;
-
-    //     const matches = [...chat.text.matchAll(new RegExp(userNameMention + '\\b', 'gi'))];
-
-    //     if(matches.length > 0)
-    //     {
-    //         const prevText = chat.text.substr(0, matches[0].index);
-    //         const postText = chat.text.substring(matches[0].index + userNameMention.length, chat.text.length);
-
-    //         setMessageParts(
-    //             [
-    //                 { text: prevText },
-    //                 { text: userNameMention, className: 'chat-mention', onClick: () => {alert('I clicked in the mention')}},
-    //                 { text: postText }
-    //             ]
-    //         );
-    //     }
-    //     else
-    //     {
-    //         setMessageParts(
-    //             [
-    //                 { text: chat.text }
-    //             ]
-    //         );
-    //     }
-        
-    // }, [ chat ]);
+        onChatClicked(chat);
+    }, [ chat, onChatClicked ]);
 
     useEffect(() =>
     {
@@ -89,20 +60,15 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
     }, [ chat.visible ]);
 
     return (
-        <div ref={ elementRef } className="bubble-container" style={ { visibility: (isVisible ? 'visible' : 'hidden') } }>
+        <div ref={ elementRef } className="bubble-container" style={ { visibility: (isVisible ? 'visible' : 'hidden') } } onMouseDown={ onMouseDown }>
             { (chat.styleId === 0) && <div className="user-container-bg" style={ { backgroundColor: chat.color } } /> }
-            <div className={ 'chat-bubble bubble-' + chat.styleId + ' type-' + chat.type } onClick={ onClick }>
+            <div className={ 'chat-bubble bubble-' + chat.styleId + ' type-' + chat.type }>
                 <div className="user-container">
                     { (chat.imageUrl && (chat.imageUrl !== '')) && <div className="user-image" style={ { backgroundImage: 'url(' + chat.imageUrl + ')' } } /> }
                 </div>
                 <div className="chat-content">
                     <b className="username mr-1" dangerouslySetInnerHTML={ {__html: `${ chat.username }: ` } } />
                     <span className="message">{ chat.text }</span>
-                    {/* {
-                        messageParts && messageParts.map((part, index) =>
-                            {
-                                return <span key={ index } className={ part.className } style={ part.style } onClick={ part.onClick }>{ part.text }</span>
-                            }) */}
                 </div>
                 <div className="pointer"></div>
             </div>

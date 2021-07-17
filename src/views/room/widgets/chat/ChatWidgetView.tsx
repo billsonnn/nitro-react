@@ -3,13 +3,14 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../../../hooks/events';
 import { useRoomContext } from '../../context/RoomContext';
 import { RoomWidgetUpdateChatEvent } from '../../events';
+import { RoomWidgetChatSelectAvatarMessage, RoomWidgetRoomObjectMessage } from '../../messages';
 import { ChatWidgetMessageView } from './message/ChatWidgetMessageView';
 import { ChatBubbleMessage } from './utils/ChatBubbleMessage';
 
 export const ChatWidgetView: FC<{}> = props =>
 {
     const [ chatMessages, setChatMessages ] = useState<ChatBubbleMessage[]>([]);
-    const { roomSession = null, eventDispatcher = null } = useRoomContext();
+    const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const elementRef = useRef<HTMLDivElement>();
 
     const removeHiddenChats = useCallback(() =>
@@ -63,6 +64,9 @@ export const ChatWidgetView: FC<{}> = props =>
     const onRoomWidgetUpdateChatEvent = useCallback((event: RoomWidgetUpdateChatEvent) =>
     {
         const chatMessage = new ChatBubbleMessage(
+            event.userId,
+            event.userCategory,
+            event.roomId,
             event.text,
             event.userName,
             new NitroPoint(event.userX, event.userY),
@@ -92,6 +96,12 @@ export const ChatWidgetView: FC<{}> = props =>
 
     useRoomEngineEvent(RoomDragEvent.ROOM_DRAG, onRoomDragEvent);
 
+    const onChatClicked = useCallback((chat: ChatBubbleMessage) =>
+    {
+        widgetHandler.processWidgetMessage(new RoomWidgetRoomObjectMessage(RoomWidgetRoomObjectMessage.GET_OBJECT_INFO, chat.senderId, chat.senderCategory));
+        widgetHandler.processWidgetMessage(new RoomWidgetChatSelectAvatarMessage(RoomWidgetChatSelectAvatarMessage.MESSAGE_SELECT_AVATAR, chat.senderId, chat.username, chat.roomId));
+    }, [ widgetHandler ]);
+
     useEffect(() =>
     {
         const interval = setInterval(() => moveAllChatsUp(15), 4500);
@@ -106,7 +116,7 @@ export const ChatWidgetView: FC<{}> = props =>
         <div ref={ elementRef } className="nitro-chat-widget">
             { chatMessages.map(chat =>
                 {
-                    return <ChatWidgetMessageView key={ chat.id } chat={ chat } makeRoom={ makeRoom } />
+                    return <ChatWidgetMessageView key={ chat.id } chat={ chat } makeRoom={ makeRoom } onChatClicked={ onChatClicked } />
                 })}
         </div>
     );
