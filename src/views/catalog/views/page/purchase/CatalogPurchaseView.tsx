@@ -3,6 +3,7 @@ import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { CurrencyIcon } from '../../../../shared/currency-icon/CurrencyIcon';
 import { CatalogPurchaseViewProps } from './CatalogPurchaseView.types';
 import { CatalogPurchaseButtonView } from './purchase-button/CatalogPurchaseButtonView';
+import { CatalogPurchaseGiftButtonView } from './purchase-gift-button/CatalogPurchaseGiftButtonView';
 
 export const CatalogPurchaseView: FC<CatalogPurchaseViewProps> = props =>
 {
@@ -70,7 +71,7 @@ export const CatalogPurchaseView: FC<CatalogPurchaseViewProps> = props =>
             </div>
             <div className="d-flex flex-column mt-1">
                 <CatalogPurchaseButtonView className="btn-sm w-100" offer={ offer } pageId={ pageId } extra={ extraData } quantity={ quantity } />
-                { offer.giftable && <button type="button" className="btn btn-secondary btn-sm w-100 mt-1">{ LocalizeText('catalog.purchase_confirmation.gift') }</button> }
+                { offer.giftable && <CatalogPurchaseGiftButtonView className="btn-sm w-100 mt-1" offer={ offer } pageId={ pageId } extra={ extraData } quantity={ quantity } /> }
             </div>
         </div>
     );
