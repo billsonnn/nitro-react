@@ -266,7 +266,7 @@ export class CategoryData
 
         if(!partItem) return null;
 
-        return colorIds.slice(0, Math.max(partItem.colorLayerCount, 1));
+        return colorIds.slice(0, Math.max(partItem.maxColorIndex, 1));
     }
 
     private getSelectedColors(): IPartColor[]
@@ -333,7 +333,7 @@ export class CategoryData
 
         for(const partItem of this._parts)
         {
-            if(partItem) partItem.colors = partColors;
+            if(partItem) partItem.partColors = partColors;
         }
     }
 

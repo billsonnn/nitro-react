@@ -1,8 +1,51 @@
 .nitro-avatar-editor {
-    width: 550px;
+    width: 600px;
 
     .content-area {
-        height: 300px;
-        max-height: 300px;
+        height: 330px;
+        max-height: 330px;
+    }
+
+    .figure-preview-container {
+        position: relative;
+        height: 100%;
+        background-color: $pale-sky;
+        overflow: hidden;
+        z-index: 1;
+
+        .avatar-image {
+            margin: 45px auto 0;
+            z-index: 2;
+        }
+
+        .arrow-container {
+            position: absolute;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            bottom: 12px;
+            z-index: 3;
+    
+            .icon {
+                cursor: pointer;
+            }
+    
+            .arrow-left-icon {
+                margin-right: 10px;
+            }
+        }
+
+        &:after {
+            position: absolute;
+            content: '';
+            top: 75%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-radius: 50%;
+            background-color: red;
+            transform: scale(2);
+        }
     }
 }

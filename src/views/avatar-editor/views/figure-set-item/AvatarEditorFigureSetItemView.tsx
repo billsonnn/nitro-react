@@ -1,16 +1,31 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
+import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
 import { AvatarEditorFigureSetItemViewProps } from './AvatarEditorFigureSetItemView.types';
 
 export const AvatarEditorFigureSetItemView: FC<AvatarEditorFigureSetItemViewProps> = props =>
 {
     const { partItem = null, onClick = null } = props;
-    const [ imageUrl, setImageUrl ] = useState<string>(null);
+    const [ updateId, setUpdateId ] = useState(-1);
+
+    const rerender = useCallback(() =>
+    {
+        setUpdateId(prevValue => (prevValue + 1));
+    }, []);
 
     useEffect(() =>
     {
-        setImageUrl(partItem.imageUrl);
-    }, [ partItem.imageUrl ]);
+        partItem.notify = rerender;
 
-    return <NitroCardGridItemView itemImage={ imageUrl } onClick={ () => onClick(partItem) } />
+        return () =>
+        {
+            partItem.notify = null;
+        }
+    })
+
+    return (
+        <NitroCardGridItemView itemImage={ partItem.imageUrl } itemActive={ partItem.isSelected } onClick={ () => onClick(partItem) }>
+            { partItem.isHC && <CurrencyIcon type={ 'hc' } /> }
+        </NitroCardGridItemView>
+    );
 }

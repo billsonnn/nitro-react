@@ -1,5 +1,6 @@
 import { AvatarEditorFigureCategory } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
+import { GetSessionDataManager } from '../../api';
 import { AvatarEditorEvent } from '../../events/avatar-editor';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
@@ -7,6 +8,7 @@ import { LocalizeText } from '../../utils/LocalizeText';
 import { AvatarEditorViewProps } from './AvatarEditorView.types';
 import { AvatarEditor } from './common/AvatarEditor';
 import { BodyModel } from './common/BodyModel';
+import { FigureData } from './common/FigureData';
 import { HeadModel } from './common/HeadModel';
 import { IAvatarEditorCategoryModel } from './common/IAvatarEditorCategoryModel';
 import { LegModel } from './common/LegModel';
@@ -24,6 +26,79 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
     const [ activeCategory, setActiveCategory ] = useState<IAvatarEditorCategoryModel>(null);
     const [ isInitalized, setIsInitalized ] = useState(false);
 
+    const selectCategory = useCallback((name: string) =>
+    {
+        setActiveCategory(categories.get(name));
+    }, [ categories ]);
+
+    const resetCategories = useCallback((editor: AvatarEditor) =>
+    {
+        const categories = new Map();
+
+        categories.set(AvatarEditorFigureCategory.GENERIC, new BodyModel(editor));
+        categories.set(AvatarEditorFigureCategory.HEAD, new HeadModel(editor));
+        categories.set(AvatarEditorFigureCategory.TORSO, new TorsoModel(editor));
+        categories.set(AvatarEditorFigureCategory.LEGS, new LegModel(editor));
+
+        setCategories(categories);
+        setActiveCategory(categories.get(AvatarEditorFigureCategory.GENERIC));
+    }, []);
+
+    const selectGender = useCallback((gender: string) =>
+    {
+        if(gender === avatarEditor.gender) return;
+        
+        avatarEditor.gender = gender;
+
+        resetCategories(avatarEditor);
+    }, [ avatarEditor, resetCategories ]);
+
+    const loadAvatarInEditor = useCallback((figure: string, gender: string, reset: boolean = true) =>
+    {
+        if(!avatarEditor) return;
+        
+        switch(gender)
+        {
+            case FigureData.MALE:
+            case 'm':
+            case 'M':
+                gender = FigureData.MALE;
+                break;
+            case FigureData.FEMALE:
+            case 'f':
+            case 'F':
+                gender = FigureData.FEMALE;
+                break;
+            default:
+                gender = FigureData.MALE;
+        }
+
+        let update = false;
+
+        if(gender !== avatarEditor.gender)
+        {
+            avatarEditor.gender = gender;
+
+            update = true;
+        }
+
+        const figureData = avatarEditor.figureData;
+
+        if(!figureData) return;
+
+        if(figure !== figureData.getFigureString())
+        {
+            update = true;
+        }
+
+        figureData.loadAvatarData(figure, gender);
+
+        if(update)
+        {
+            resetCategories(avatarEditor);
+        }
+    }, [ avatarEditor, resetCategories ]);
+
     const onAvatarEditorEvent = useCallback((event: AvatarEditorEvent) =>
     {
         switch(event.type)
@@ -35,7 +110,7 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
                 setIsVisible(false);
                 return;   
             case AvatarEditorEvent.TOGGLE_EDITOR:
-                setIsVisible(value => !value);
+                setIsVisible(prevValue => !prevValue);
                 return;
         }
     }, []);
@@ -44,11 +119,6 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
     useUiEvent(AvatarEditorEvent.HIDE_EDITOR, onAvatarEditorEvent);
     useUiEvent(AvatarEditorEvent.TOGGLE_EDITOR, onAvatarEditorEvent);
 
-    const selectCategory = useCallback((name: string) =>
-    {
-        setActiveCategory(categories.get(name));
-    }, [ categories ]);
-
     useEffect(() =>
     {
         if(!isVisible || isInitalized) return;
@@ -56,18 +126,15 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
         const newEditor = new AvatarEditor();
 
         setAvatarEditor(newEditor);
-
-        const categories = new Map();
-
-        categories.set(AvatarEditorFigureCategory.GENERIC, new BodyModel(newEditor));
-        categories.set(AvatarEditorFigureCategory.HEAD, new HeadModel(newEditor));
-        categories.set(AvatarEditorFigureCategory.TORSO, new TorsoModel(newEditor));
-        categories.set(AvatarEditorFigureCategory.LEGS, new LegModel(newEditor));
-
-        setCategories(categories);
-        setActiveCategory(categories.get(AvatarEditorFigureCategory.GENERIC));
         setIsInitalized(true);
     }, [ isVisible, isInitalized ]);
+
+    useEffect(() =>
+    {
+        if(!isVisible || !avatarEditor) return;
+
+        loadAvatarInEditor(GetSessionDataManager().figure, GetSessionDataManager().gender);
+    }, [ isVisible, avatarEditor, loadAvatarInEditor ]);
 
     return (
         <AvatarEditorContextProvider value={ { avatarEditorState, dispatchAvatarEditorState } }>
@@ -75,7 +142,7 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
                 <NitroCardView className="nitro-avatar-editor">
                     <NitroCardHeaderView headerText={ LocalizeText('avatareditor.title') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardTabsView>
-                        { categories && Array.from(categories.keys()).map(category =>
+                        { categories && (categories.size > 0) && Array.from(categories.keys()).map(category =>
                             {
                                 return (
                                     <NitroCardTabsItemView key={ category } isActive={ (activeCategory.name === category) } onClick={ event => selectCategory(category) }>
@@ -85,7 +152,7 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
                             })}
                     </NitroCardTabsView>
                     <NitroCardContentView>
-                        { activeCategory && <AvatarEditorModelView model={ activeCategory } editor={ avatarEditor } /> }
+                        { activeCategory && <AvatarEditorModelView model={ activeCategory } editor={ avatarEditor } selectGender={ selectGender } /> }
                     </NitroCardContentView>
                 </NitroCardView> }
         </AvatarEditorContextProvider>

@@ -1,5 +1,6 @@
-﻿import { AvatarFigurePartType, FigureData, IAvatarImageListener, IAvatarRenderManager, IFigurePart, IFigurePartSet, IGraphicAsset, IPartColor, NitroContainer, NitroSprite, TextureUtils } from 'nitro-renderer';
+﻿import { AvatarFigurePartType, IAvatarImageListener, IAvatarRenderManager, IFigurePart, IFigurePartSet, IGraphicAsset, IPartColor, NitroContainer, NitroSprite, TextureUtils } from 'nitro-renderer';
 import { GetAvatarRenderManager } from '../../../api';
+import { FigureData } from './FigureData';
 
 export class AvatarEditorGridPartItem implements IAvatarImageListener
 {
@@ -47,6 +48,7 @@ export class AvatarEditorGridPartItem implements IAvatarImageListener
     private _isSelected: boolean;
     private _disposed: boolean;
     private _isInitalized: boolean;
+    private _notifier: () => void;
 
     constructor(partSet: IFigurePartSet, partColors: IPartColor[], useColors: boolean = true, isDisabled: boolean = false)
     {
@@ -210,6 +212,8 @@ export class AvatarEditorGridPartItem implements IAvatarImageListener
         if(this._isDisabled) this.setAlpha(container, 0.2);
 
         this._imageUrl = TextureUtils.generateImageUrl(container);
+        
+        if(this.notify) this.notify();
     }
 
     private setAlpha(container: NitroContainer, alpha: number): NitroContainer
@@ -259,21 +263,21 @@ export class AvatarEditorGridPartItem implements IAvatarImageListener
         return this._partSet;
     }
 
-    public set colors(partColors: IPartColor[])
+    public set partColors(partColors: IPartColor[])
     {
         this._partColors = partColors;
 
         this.update();
     }
 
-    public get isDisabledForWearing(): boolean
+    public get isDisabled(): boolean
     {
         return this._isDisabled;
     }
 
-    public set iconImage(k: NitroContainer)
+    public set thumbContainer(container: NitroContainer)
     {
-        this._thumbContainer = k;
+        this._thumbContainer = container;
 
         this.update();
     }
@@ -283,7 +287,7 @@ export class AvatarEditorGridPartItem implements IAvatarImageListener
         return this._imageUrl;
     }
 
-    public get colorLayerCount(): number
+    public get maxColorIndex(): number
     {
         return this._maxColorIndex;
     }
@@ -316,5 +320,17 @@ export class AvatarEditorGridPartItem implements IAvatarImageListener
     public set isSelected(flag: boolean)
     {
         this._isSelected = flag;
+
+        if(this.notify) this.notify();
+    }
+
+    public get notify(): () => void
+    {
+        return this._notifier;
+    }
+
+    public set notify(notifier: () => void)
+    {
+        this._notifier = notifier;
     }
 }

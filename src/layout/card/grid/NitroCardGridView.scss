@@ -10,6 +10,17 @@
             }
         }
     }
+
+    .row-cols-4 {
+
+        .col {
+            padding-right: 0.25rem;
+
+            &:nth-child(4n+4) {
+                padding-right: 0;
+            }
+        }
+    }
     
     .row-cols-5 {
 

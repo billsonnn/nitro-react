@@ -1,10 +1,11 @@
-import { Dispatch, SetStateAction } from 'react';
+import { AvatarEditorGridColorItem } from '../../common/AvatarEditorGridColorItem';
 import { CategoryData } from '../../common/CategoryData';
 import { IAvatarEditorCategoryModel } from '../../common/IAvatarEditorCategoryModel';
 
-export interface AvatarEditorFigureSetViewProps
+export interface AvatarEditorPaletteSetViewProps
 {
     model: IAvatarEditorCategoryModel;
     category: CategoryData;
-    setMaxPaletteCount: Dispatch<SetStateAction<number>>;
+    paletteSet: AvatarEditorGridColorItem[];
+    paletteIndex: number;
 }

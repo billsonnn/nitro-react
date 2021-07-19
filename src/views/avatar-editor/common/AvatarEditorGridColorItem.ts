@@ -6,6 +6,7 @@ export class AvatarEditorGridColorItem
     private _isDisabled: boolean;
     private _isHC: boolean;
     private _isSelected: boolean;
+    private _notifier: () => void;
 
     constructor(partColor: IPartColor, isDisabled: boolean = false)
     {
@@ -48,5 +49,17 @@ export class AvatarEditorGridColorItem
     public set isSelected(flag: boolean)
     {
         this._isSelected = flag;
+
+        if(this.notify) this.notify();
+    }
+
+    public get notify(): () => void
+    {
+        return this._notifier;
+    }
+
+    public set notify(notifier: () => void)
+    {
+        this._notifier = notifier;
     }
 }

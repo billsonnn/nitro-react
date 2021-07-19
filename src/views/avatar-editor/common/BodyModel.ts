@@ -1,6 +1,7 @@
-import { AvatarEditorFigureCategory, AvatarScaleType, AvatarSetType, FigureData, IAvatarImageListener } from 'nitro-renderer';
+import { AvatarEditorFigureCategory, AvatarScaleType, AvatarSetType, IAvatarImageListener } from 'nitro-renderer';
 import { GetAvatarRenderManager } from '../../../api';
 import { CategoryBaseModel } from './CategoryBaseModel';
+import { FigureData } from './FigureData';
 
 export class BodyModel extends CategoryBaseModel implements IAvatarImageListener
 {
@@ -50,7 +51,7 @@ export class BodyModel extends CategoryBaseModel implements IAvatarImageListener
             {
                 sprite.y = 10;
 
-                part.iconImage = sprite;
+                part.thumbContainer = sprite;
 
                 setTimeout(() => avatarImage.dispose(), 0);
             }

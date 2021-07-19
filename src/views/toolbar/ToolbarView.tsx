@@ -1,4 +1,4 @@
-import { Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, Wait } from 'nitro-renderer';
+import { Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserFigureEvent, Wait } from 'nitro-renderer';
 import { UserInfoEvent } from 'nitro-renderer/src/nitro/communication/messages/incoming/user/data/UserInfoEvent';
 import { UserInfoDataParser } from 'nitro-renderer/src/nitro/communication/messages/parser/user/data/UserInfoDataParser';
 import { FC, useCallback, useState } from 'react';
@@ -17,6 +17,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     const { isInRoom } = props;
 
     const [ userInfo, setUserInfo ] = useState<UserInfoDataParser>(null);
+    const [ userFigure, setUserFigure ] = useState<string>(null);
     const [ isMeExpanded, setMeExpanded ] = useState(false);
     const [ unseenInventoryCount, setUnseenInventoryCount ] = useState(0);
 
@@ -28,9 +29,19 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
         const parser = event.getParser();
 
         setUserInfo(parser.userInfo);
+        setUserFigure(parser.userInfo.figure);
     }, []);
 
     CreateMessageHook(UserInfoEvent, onUserInfoEvent);
+
+    const onUserFigureEvent = useCallback((event: UserFigureEvent) =>
+    {
+        const parser = event.getParser();
+
+        setUserFigure(parser.figure);
+    }, []);
+    
+    CreateMessageHook(UserFigureEvent, onUserFigureEvent);
 
     const onUnseenItemTrackerUpdateEvent = useCallback((event: UnseenItemTrackerUpdateEvent) =>
     {
@@ -116,7 +127,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                     <div className="navigation-items navigation-avatar pe-1 me-2">
                         <div className="navigation-item">
                             <div className={ 'toolbar-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ event => setMeExpanded(!isMeExpanded) }>
-                                { userInfo && <AvatarImageView figure={ userInfo.figure } direction={ 2 } /> }
+                                { userFigure && <AvatarImageView figure={ userFigure } direction={ 2 } /> }
                             </div>
                         </div>
                         { (unseenAchievementsCount > 0) && (

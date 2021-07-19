@@ -5,4 +5,5 @@ export interface AvatarEditorModelViewProps
 {
     model: IAvatarEditorCategoryModel;
     editor: AvatarEditor;
+    selectGender: (gender: string) => void;
 }

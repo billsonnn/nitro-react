@@ -1,5 +1,6 @@
-import { AvatarEditorFigureCategory, FigureData } from 'nitro-renderer';
+import { AvatarEditorFigureCategory } from 'nitro-renderer';
 import { CategoryBaseModel } from './CategoryBaseModel';
+import { FigureData } from './FigureData';
 
 export class TorsoModel extends CategoryBaseModel
 {

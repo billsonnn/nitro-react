@@ -1,9 +1,10 @@
-import { FigureData, IPalette, IPartColor, ISetType, IStructureData } from 'nitro-renderer';
+import { IPalette, IPartColor, ISetType, IStructureData } from 'nitro-renderer';
 import { GetAvatarRenderManager, GetConfiguration, GetSessionDataManager } from '../../../api';
 import { AvatarEditorGridColorItem } from './AvatarEditorGridColorItem';
 import { AvatarEditorGridPartItem } from './AvatarEditorGridPartItem';
 import { CategoryBaseModel } from './CategoryBaseModel';
 import { CategoryData } from './CategoryData';
+import { FigureData } from './FigureData';
 
 const MAX_PALETTES: number = 2;
 const DEFAULT_MALE_FIGURE: string = 'hr-100.hd-180-7.ch-215-66.lg-270-79.sh-305-62.ha-1002-70.wa-2007';
@@ -11,16 +12,13 @@ const DEFAULT_FEMALE_FIGURE: string = 'hr-515-33.hd-600-1.ch-635-70.lg-716-66-62
 
 export class AvatarEditor
 {
-    private _figureStructureData: IStructureData;
-    private _figures: Map<string, FigureData>;
-    private _gender: string;
+    private _figureStructureData: IStructureData = GetAvatarRenderManager().structureData;
+    private _figures: Map<string, FigureData> = new Map();
+    private _gender: string = FigureData.MALE;
+    private _notifier: () => void = null;
 
     constructor()
     {
-        this._figureStructureData = GetAvatarRenderManager().structureData;
-        this._figures = new Map();
-        this._gender = FigureData.MALE;
-
         const maleFigure = new FigureData();
         const femaleFigure = new FigureData();
 
@@ -160,6 +158,7 @@ export class AvatarEditor
 
                 if(partSet.isSellable)
                 {
+                    isValid = false;
                     //isValid = (this._inventoryService && this._inventoryService.hasFigureSetId(partSet.id));
                 }
 
@@ -284,6 +283,24 @@ export class AvatarEditor
 
     public set gender(gender: string)
     {
+        if(this._gender === gender) return;
+
         this._gender = gender;
+
+        if(this.figureData) this.figureData.notify = this.notify;
+
+        if(this.notify) this.notify();
+    }
+
+    public get notify(): () => void
+    {
+        return this._notifier;
+    }
+
+    public set notify(notifier: () => void)
+    {
+        if(this.figureData) this.figureData.notify = notifier;
+        
+        this._notifier = notifier;
     }
 }

@@ -174,7 +174,7 @@ export class CategoryBaseModel implements IAvatarEditorCategoryModel
 
         if(!partItem) return;
 
-        if(partItem.isDisabledForWearing)
+        if(partItem.isDisabled)
         {
             categoryData.selectPartIndex(selectedPartIndex);
 
@@ -183,7 +183,7 @@ export class CategoryBaseModel implements IAvatarEditorCategoryModel
             return;
         }
 
-        this._maxPaletteCount = partItem.colorLayerCount;
+        this._maxPaletteCount = partItem.maxColorIndex;
 
         this._editor.figureData.savePartData(category, partItem.id, categoryData.getSelectedColorIds(), true);
     }
@@ -233,7 +233,7 @@ export class CategoryBaseModel implements IAvatarEditorCategoryModel
 
     public get maxPaletteCount(): number
     {
-        return this._maxPaletteCount;
+        return (this._maxPaletteCount || 1);
     }
 
     public set maxPaletteCount(count: number)
