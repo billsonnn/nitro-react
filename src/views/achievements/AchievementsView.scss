@@ -1,0 +1,52 @@
+.nitro-achievements {
+    width: 650px;
+    height: 376px;
+
+    .score {
+        border-color: $grid-border-color !important;
+        background-color: $grid-bg-color;
+    }
+
+    .category {
+        border-color: $grid-border-color !important;
+        background-color: $grid-bg-color;
+        cursor: pointer;
+    
+        &.active {
+            border-color: $grid-active-border-color !important;
+            background-color: $grid-active-bg-color;
+        }
+
+        .category-score {
+            margin-top: 43.5px;
+        }
+    }
+
+    .achievements {
+        height: 230px;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        .achievement {
+            border-color: $grid-border-color !important;
+            background-color: $grid-bg-color;
+            cursor: pointer;
+        
+            &.active {
+                border-color: $grid-active-border-color !important;
+                background-color: $grid-active-bg-color;
+            }
+    
+            &.gray {
+                div {
+                    filter: grayscale(1);
+                    opacity: .5;
+                }
+            }
+    
+            div {
+                height: 40px;
+            }
+        }
+    }
+}

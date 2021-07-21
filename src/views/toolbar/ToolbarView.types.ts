@@ -12,4 +12,5 @@ export class ToolbarViewItems
     public static CLOTHING_ITEM: string     = 'TVI_CLOTHING_ITEM';
     public static CAMERA_ITEM: string       = 'TVI_CAMERA_ITEM';
     public static MOD_TOOLS_ITEM: string    = 'TVI_MOD_TOOLS_ITEM';
+    public static ACHIEVEMENTS_ITEM: string = 'TVI_ACHIEVEMENTS_ITEM';
 }

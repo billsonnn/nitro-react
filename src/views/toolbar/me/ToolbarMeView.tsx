@@ -38,7 +38,7 @@ export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
                 <div className="navigation-item">
                     <i className="icon icon-me-helper-tool"></i>
                 </div>
-                <div className="navigation-item">
+                <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.ACHIEVEMENTS_ITEM) }>
                     <i className="icon icon-me-achievements"></i>
                 </div>
                 <div className="navigation-item">

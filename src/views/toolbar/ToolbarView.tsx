@@ -1,10 +1,10 @@
 import { Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserFigureEvent, UserInfoDataParser, UserInfoEvent, Wait } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
+import { AchievementsUIEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
-import { useRoomEngineEvent } from '../../hooks';
-import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
+import { dispatchUiEvent, useRoomEngineEvent, useUiEvent } from '../../hooks';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
 import { TransitionAnimationTypes } from '../../layout/transitions/TransitionAnimation.types';
@@ -116,6 +116,10 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 return;
             case ToolbarViewItems.MOD_TOOLS_ITEM:
                 dispatchUiEvent(new ModToolsEvent(ModToolsEvent.TOGGLE_MOD_TOOLS));
+                return;
+            case ToolbarViewItems.ACHIEVEMENTS_ITEM:
+                dispatchUiEvent(new AchievementsUIEvent(AchievementsUIEvent.TOGGLE_ACHIEVEMENTS));
+                setMeExpanded(false);
                 return;
         }
     }, []);
