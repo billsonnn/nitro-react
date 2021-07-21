@@ -442,11 +442,35 @@
         width: 7px;
         height: 14px;
     }
-
+    
     &.icon-sign-soccer {
         background: url('../images/icons/sign-soccer.png');
         width: 20px;
         height: 20px;
+    }
+    
+    &.icon-house-small {
+        background: url('../images/icons/house-small.png');
+        width: 19px;
+        height: 14px;
+    }
+
+    &.icon-camera-small {
+        background: url('../images/icons/camera-small.png');
+        width: 17px;
+        height: 15px;
+    }
+
+    &.icon-arrows {
+        background: url('../images/icons/arrows.png');
+        width: 17px;
+        height: 15px;
+    }
+    
+    &.icon-fb-profile {
+        background: url('../images/toolbar/icons/friend-bar/profile.png');
+        width: 21px;
+        height: 21px;
     }
 
     &.icon-camera-colormatrix {

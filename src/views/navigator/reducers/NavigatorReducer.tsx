@@ -1,5 +1,6 @@
 import { NavigatorCategoryDataParser, NavigatorSearchResultSet, NavigatorTopLevelContext } from 'nitro-renderer';
 import { Reducer } from 'react';
+import { RoomInfoData } from '../common/RoomInfoData';
 
 export interface INavigatorState
 {
@@ -8,6 +9,8 @@ export interface INavigatorState
     topLevelContexts: NavigatorTopLevelContext[];
     searchResult: NavigatorSearchResultSet;
     categories: NavigatorCategoryDataParser[];
+    roomInfoData: RoomInfoData;
+    homeRoomId: number;
 }
 
 export interface INavigatorAction
@@ -19,6 +22,8 @@ export interface INavigatorAction
         topLevelContexts?: NavigatorTopLevelContext[];
         searchResult?: NavigatorSearchResultSet;
         categories?: NavigatorCategoryDataParser[];
+        roomInfoData?: RoomInfoData;
+        homeRoomId?: number;
     }
 }
 
@@ -29,6 +34,8 @@ export class NavigatorActions
     public static SET_TOP_LEVEL_CONTEXTS: string = 'NA_SET_TOP_LEVEL_CONTEXTS';
     public static SET_SEARCH_RESULT: string = 'NA_SET_SEARCH_RESULT';
     public static SET_CATEGORIES: string = 'NA_SET_CATEGORIES';
+    public static SET_ROOM_INFO_DATA: string = 'NA_SET_ROOM_INFO_DATA';
+    public static SET_HOME_ROOM_ID: string = 'NA_SET_HOME_ROOM_ID';
 }
 
 export const initialNavigator: INavigatorState = {
@@ -36,7 +43,9 @@ export const initialNavigator: INavigatorState = {
     topLevelContext: null,
     topLevelContexts: null,
     searchResult: null,
-    categories: null
+    categories: null,
+    roomInfoData: new RoomInfoData(),
+    homeRoomId: null
 }
 
 export const NavigatorReducer: Reducer<INavigatorState, INavigatorAction> = (state, action) =>
@@ -89,6 +98,16 @@ export const NavigatorReducer: Reducer<INavigatorState, INavigatorAction> = (sta
             const categories = (action.payload.categories || state.categories || null);
 
             return { ...state, categories };
+        }
+        case NavigatorActions.SET_ROOM_INFO_DATA: {
+            const roomInfoData = (action.payload.roomInfoData || state.roomInfoData || null);
+
+            return { ...state, roomInfoData };
+        }
+        case NavigatorActions.SET_HOME_ROOM_ID: {
+            const homeRoomId = (action.payload.homeRoomId || state.homeRoomId || null);
+
+            return { ...state, homeRoomId };
         }
         default:
             return state;
