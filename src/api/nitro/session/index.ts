@@ -1,6 +1,7 @@
 export * from './CanManipulateFurniture';
 export * from './GetCanStandUp';
 export * from './GetCanUseExpression';
+export * from './GetClubMemberLevel';
 export * from './GetFurnitureDataForProductOffer';
 export * from './GetFurnitureDataForRoomObject';
 export * from './GetOwnPosture';

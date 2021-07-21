@@ -1,6 +1,6 @@
-import { AvatarEditor } from '../../common/AvatarEditor';
+import { FigureData } from '../../common/FigureData';
 
 export interface AvatarEditorFigurePreviewViewProps
 {
-    editor: AvatarEditor;
+    figureData: FigureData;
 }

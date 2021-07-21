@@ -1,5 +1,9 @@
-﻿export class FigureData
+﻿import { AvatarEditorUtilities } from './AvatarEditorUtilities';
+
+export class FigureData
 {
+    private static DEFAULT_DIRECTION: number = 4;
+
     public static MALE: string = 'M';
     public static FEMALE: string = 'F';
     public static UNISEX: string = 'U';
@@ -24,6 +28,7 @@
     private _data: Map<string, number>;
     private _colors: Map<string, number[]>;
     private _gender: string = 'M';
+    private _direction: number = FigureData.DEFAULT_DIRECTION;
     private _avatarEffectType: number = -1;
     private _notifier: () => void = null;
 
@@ -80,14 +85,13 @@
         return -1;
     }
 
-    public getColourIds(colorId: string): number[]
+    public getColorIds(setType: string): number[]
     {
-        const existing = this._colors.get(colorId);
+        const existing = this._colors.get(setType);
 
         if(existing !== undefined) return existing;
 
-        return [];
-        // return [this._avatarEditor._Str_24919(k)];
+        return [ AvatarEditorUtilities.avatarSetFirstSelectableColor(setType) ];
     }
 
     public getFigureString(): string
@@ -167,9 +171,9 @@
         if(_arg_3) this.updateView();
     }
 
-    public savePartSetColourId(k: string, _arg_2: number[], _arg_3: boolean = true): void
+    public savePartSetColourId(setType: string, colorIds: number[], update: boolean = true): void
     {
-        switch(k)
+        switch(setType)
         {
             case FigureData.FACE:
             case FigureData.HAIR:
@@ -184,11 +188,11 @@
             case FigureData.TROUSERS:
             case FigureData.SHOES:
             case FigureData.TROUSER_ACCESSORIES:
-                this._colors.set(k, _arg_2);
+                this._colors.set(setType, colorIds);
                 break;
         }
 
-        if(_arg_3) this.updateView();
+        if(update) this.updateView();
     }
 
     public getFigureStringWithFace(k: number, override = true): string
@@ -247,6 +251,18 @@
     public get gender(): string
     {
         return this._gender;
+    }
+
+    public get direction(): number
+    {
+        return this._direction;
+    }
+
+    public set direction(direction: number)
+    {
+        this._direction = direction;
+
+        this.updateView();
     }
 
     public set avatarEffectType(k: number)

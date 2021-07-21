@@ -1,4 +1,6 @@
-export interface NitroCardGridViewProps
+import { DetailsHTMLAttributes } from 'react';
+
+export interface NitroCardGridViewProps extends DetailsHTMLAttributes<HTMLDivElement>
 {
     columns?: number;
     theme?: string;

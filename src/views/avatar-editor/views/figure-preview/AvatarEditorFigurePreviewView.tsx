@@ -4,7 +4,7 @@ import { AvatarEditorFigurePreviewViewProps } from './AvatarEditorFigurePreviewV
 
 export const AvatarEditorFigurePreviewView: FC<AvatarEditorFigurePreviewViewProps> = props =>
 {
-    const { editor = null } = props;
+    const { figureData = null } = props;
     const [ updateId, setUpdateId ] = useState(-1);
 
     const rerender = useCallback(() =>
@@ -14,15 +14,15 @@ export const AvatarEditorFigurePreviewView: FC<AvatarEditorFigurePreviewViewProp
 
     useEffect(() =>
     {
-        if(!editor) return;
+        if(!figureData) return;
 
-        editor.notify = rerender;
+        figureData.notify = rerender;
 
         return () =>
         {
-            editor.notify = null;
+            figureData.notify = null;
         }
-    }, [ editor, rerender ] );
+    }, [ figureData, rerender ] );
 
-    return <AvatarImageView figure={ editor.figureData.getFigureString() } direction={ 4 } scale={ 2 } />
+    return <AvatarImageView figure={ figureData.getFigureString() } direction={ figureData.direction } scale={ 2 } />
 }

@@ -1,88 +1,79 @@
-import { IPalette, IPartColor, ISetType, IStructureData } from 'nitro-renderer';
-import { GetAvatarRenderManager, GetConfiguration, GetSessionDataManager } from '../../../api';
+import { IPartColor } from 'nitro-renderer';
+import { GetAvatarPalette, GetAvatarRenderManager, GetAvatarSetType, GetClubMemberLevel, GetConfiguration } from '../../../api';
 import { AvatarEditorGridColorItem } from './AvatarEditorGridColorItem';
 import { AvatarEditorGridPartItem } from './AvatarEditorGridPartItem';
 import { CategoryBaseModel } from './CategoryBaseModel';
 import { CategoryData } from './CategoryData';
 import { FigureData } from './FigureData';
 
-const MAX_PALETTES: number = 2;
-const DEFAULT_MALE_FIGURE: string = 'hr-100.hd-180-7.ch-215-66.lg-270-79.sh-305-62.ha-1002-70.wa-2007';
-const DEFAULT_FEMALE_FIGURE: string = 'hr-515-33.hd-600-1.ch-635-70.lg-716-66-62.sh-735-68';
-
-export class AvatarEditor
+export class AvatarEditorUtilities
 {
-    private _figureStructureData: IStructureData = GetAvatarRenderManager().structureData;
-    private _figures: Map<string, FigureData> = new Map();
-    private _gender: string = FigureData.MALE;
-    private _notifier: () => void = null;
+    private static MAX_PALETTES: number = 2;
 
-    constructor()
+    public static CURRENT_FIGURE: FigureData = null;
+
+    public static getGender(gender: string): string
     {
-        const maleFigure = new FigureData();
-        const femaleFigure = new FigureData();
+        switch(gender)
+        {
+            case FigureData.MALE:
+            case 'm':
+            case 'M':
+                gender = FigureData.MALE;
+                break;
+            case FigureData.FEMALE:
+            case 'f':
+            case 'F':
+                gender = FigureData.FEMALE;
+                break;
+            default:
+                gender = FigureData.MALE;
+        }
 
-        maleFigure.loadAvatarData(DEFAULT_MALE_FIGURE, FigureData.MALE);
-        femaleFigure.loadAvatarData(DEFAULT_FEMALE_FIGURE, FigureData.FEMALE);
-
-        this._figures.set(FigureData.MALE, maleFigure);
-        this._figures.set(FigureData.FEMALE, femaleFigure);
+        return gender;
     }
 
-    public getSetType(setType: string): ISetType
+    public static createCategory(model: CategoryBaseModel, name: string): CategoryData
     {
-        if(!this._figureStructureData) return null;
-
-        return this._figureStructureData.getSetType(setType);
-    }
-
-    public getPalette(paletteId: number): IPalette
-    {
-        if(!this._figureStructureData) return null;
-
-        return this._figureStructureData.getPalette(paletteId);
-    }
-
-    public createCategory(model: CategoryBaseModel, name: string): CategoryData
-    {
-        if(!model || !name) return null;
+        if(!model || !name || !this.CURRENT_FIGURE) return null;
 
         const partItems: AvatarEditorGridPartItem[] = [];
         const colorItems: AvatarEditorGridColorItem[][] = [];
 
         let i = 0;
 
-        while(i < MAX_PALETTES)
+        while(i < this.MAX_PALETTES)
         {
             colorItems.push([]);
 
             i++;
         }
 
-        const setType = this.getSetType(name);
+        const setType = GetAvatarSetType(name);
 
         if(!setType) return null;
 
-        const palette = this.getPalette(setType.paletteID);
+        const palette = GetAvatarPalette(setType.paletteID);
 
         if(!palette) return null;
 
-        let colorIds = this.figureData.getColourIds(name);
+        let colorIds = this.CURRENT_FIGURE.getColorIds(name);
 
         if(!colorIds) colorIds = [];
 
         const partColors: IPartColor[] = new Array(colorIds.length);
         const clubItemsDimmed = this.clubItemsDimmed;
+        const clubMemberLevel = GetClubMemberLevel();
 
         for(const partColor of palette.colors.values())
         {
-            if(partColor.isSelectable && (clubItemsDimmed || (this.clubMemberLevel >= partColor.clubLevel)))
+            if(partColor.isSelectable && (clubItemsDimmed || (clubMemberLevel >= partColor.clubLevel)))
             {
                 let i = 0;
 
-                while(i < MAX_PALETTES)
+                while(i < this.MAX_PALETTES)
                 {
-                    const isDisabled = (this.clubMemberLevel < partColor.clubLevel);
+                    const isDisabled = (clubMemberLevel < partColor.clubLevel);
                     const colorItem = new AvatarEditorGridColorItem(partColor, isDisabled);
 
                     colorItems[i].push(colorItem);
@@ -108,11 +99,11 @@ export class AvatarEditor
 
         if(clubItemsDimmed)
         {
-            mandatorySetIds = GetAvatarRenderManager().getMandatoryAvatarPartSetIds(this._gender, 2);
+            mandatorySetIds = GetAvatarRenderManager().getMandatoryAvatarPartSetIds(this.CURRENT_FIGURE.gender, 2);
         }
         else
         {
-            mandatorySetIds = GetAvatarRenderManager().getMandatoryAvatarPartSetIds(this._gender, this.clubMemberLevel);
+            mandatorySetIds = GetAvatarRenderManager().getMandatoryAvatarPartSetIds(this.CURRENT_FIGURE.gender, clubMemberLevel);
         }
 
         const isntMandatorySet = (mandatorySetIds.indexOf(name) === -1);
@@ -142,17 +133,15 @@ export class AvatarEditor
             {
                 isValidGender = true;
             }
-            else
+
+            else if(partSet.gender === this.CURRENT_FIGURE.gender)
             {
-                if(partSet.gender === this._gender)
-                {
-                    isValidGender = true;
-                }
+                isValidGender = true;
             }
 
-            if(partSet.isSelectable && isValidGender && (clubItemsDimmed || (this.clubMemberLevel >= partSet.clubLevel)))
+            if(partSet.isSelectable && isValidGender && (clubItemsDimmed || (clubMemberLevel >= partSet.clubLevel)))
             {
-                const isDisabled = (this.clubMemberLevel < partSet.clubLevel);
+                const isDisabled = (clubMemberLevel < partSet.clubLevel);
 
                 let isValid = true;
 
@@ -186,7 +175,7 @@ export class AvatarEditor
 
         i = 0;
 
-        while(i < MAX_PALETTES)
+        while(i < this.MAX_PALETTES)
         {
             colorItems[i].sort(this.colorSorter);
 
@@ -196,7 +185,7 @@ export class AvatarEditor
         return new CategoryData(name, partItems, colorItems);
     }
 
-    private clubSorter(a: AvatarEditorGridPartItem, b: AvatarEditorGridPartItem): number
+    public static clubSorter(a: AvatarEditorGridPartItem, b: AvatarEditorGridPartItem): number
     {
         const clubLevelA = (!a.partSet ? 9999999999 : a.partSet.clubLevel);
         const clubLevelB = (!b.partSet ? 9999999999 : b.partSet.clubLevel);
@@ -218,7 +207,23 @@ export class AvatarEditor
         return 0;
     }
 
-    private noobSorter(a: AvatarEditorGridPartItem, b: AvatarEditorGridPartItem): number
+    public static colorSorter(a: AvatarEditorGridColorItem, b: AvatarEditorGridColorItem): number
+    {
+        const clubLevelA = (!a.partColor ? -1 : a.partColor.clubLevel);
+        const clubLevelB = (!b.partColor ? -1 : b.partColor.clubLevel);
+
+        if(clubLevelA < clubLevelB) return -1;
+
+        if(clubLevelA > clubLevelB) return 1;
+
+        if(a.partColor.index < b.partColor.index) return -1;
+
+        if(a.partColor.index > b.partColor.index) return 1;
+
+        return 0;
+    }
+
+    public static noobSorter(a: AvatarEditorGridPartItem, b: AvatarEditorGridPartItem): number
     {
         const clubLevelA = (!a.partSet ? -1 : a.partSet.clubLevel);
         const clubLevelB = (!b.partSet ? -1 : b.partSet.clubLevel);
@@ -240,67 +245,33 @@ export class AvatarEditor
         return 0;
     }
 
-    private colorSorter(a: AvatarEditorGridColorItem, b: AvatarEditorGridColorItem): number
+    public static avatarSetFirstSelectableColor(name: string): number
     {
-        const clubLevelA = (!a.partColor ? -1 : a.partColor.clubLevel);
-        const clubLevelB = (!b.partColor ? -1 : b.partColor.clubLevel);
+        const setType = GetAvatarSetType(name);
 
-        if(clubLevelA < clubLevelB) return -1;
+        if(!setType) return -1;
 
-        if(clubLevelA > clubLevelB) return 1;
+        const palette = GetAvatarPalette(setType.paletteID);
 
-        if(a.partColor.index < b.partColor.index) return -1;
+        if(!palette) return -1;
 
-        if(a.partColor.index > b.partColor.index) return 1;
+        for(const color of palette.colors.values())
+        {
+            if(!color.isSelectable || (GetClubMemberLevel() < color.clubLevel)) continue;
 
-        return 0;
+            return color.id;
+        }
+
+        return -1;
     }
 
-    public get clubMemberLevel(): number
-    {
-        return GetSessionDataManager().clubLevel;
-    }
-
-    private get clubItemsFirst(): boolean
+    public static get clubItemsFirst(): boolean
     {
         return GetConfiguration<boolean>('avatareditor.show.clubitems.first', true);
     }
 
-    private get clubItemsDimmed(): boolean
+    public static get clubItemsDimmed(): boolean
     {
         return GetConfiguration<boolean>('avatareditor.show.clubitems.dimmed', true);
-    }
-
-    public get figureData(): FigureData
-    {
-        return this._figures.get(this._gender);
-    }
-
-    public get gender(): string
-    {
-        return this._gender;
-    }
-
-    public set gender(gender: string)
-    {
-        if(this._gender === gender) return;
-
-        this._gender = gender;
-
-        if(this.figureData) this.figureData.notify = this.notify;
-
-        if(this.notify) this.notify();
-    }
-
-    public get notify(): () => void
-    {
-        return this._notifier;
-    }
-
-    public set notify(notifier: () => void)
-    {
-        if(this.figureData) this.figureData.notify = notifier;
-        
-        this._notifier = notifier;
     }
 }

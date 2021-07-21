@@ -4,7 +4,7 @@ import { AvatarEditorPaletteSetItemProps } from './AvatarEditorPaletteSetItem.ty
 
 export const AvatarEditorPaletteSetItem: FC<AvatarEditorPaletteSetItemProps> = props =>
 {
-    const { colorItem = null, onClick = null } = props;
+    const { colorItem = null, ...rest } = props;
     const [ updateId, setUpdateId ] = useState(-1);
 
     const rerender = useCallback(() =>
@@ -22,5 +22,5 @@ export const AvatarEditorPaletteSetItem: FC<AvatarEditorPaletteSetItemProps> = p
         }
     })
 
-    return <NitroCardGridItemView itemColor={ colorItem.color } itemActive={ colorItem.isSelected } onClick={ () => onClick(colorItem) } />
+    return <NitroCardGridItemView itemColor={ colorItem.color } itemActive={ colorItem.isSelected } { ...rest } />
 }

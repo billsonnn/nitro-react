@@ -7,7 +7,7 @@ import { AvatarEditorPaletteSetViewProps } from './AvatarEditorPaletteSetView.ty
 
 export const AvatarEditorPaletteSetView: FC<AvatarEditorPaletteSetViewProps> = props =>
 {
-    const { model = null, category = null, paletteSet = [], paletteIndex = -1 } = props;
+    const { model = null, category = null, paletteSet = [], paletteIndex = -1, ...rest } = props;
 
     const selectColor = useCallback((item: AvatarEditorGridColorItem) =>
     {
@@ -19,10 +19,10 @@ export const AvatarEditorPaletteSetView: FC<AvatarEditorPaletteSetViewProps> = p
     }, [ model, category, paletteSet, paletteIndex ]);
 
     return (
-        <NitroCardGridView columns={ 3 } theme={ NitroCardGridThemes.THEME_SHADOWED }>
+        <NitroCardGridView columns={ 4 } theme={ NitroCardGridThemes.THEME_SHADOWED } { ...rest }>
             { (paletteSet.length > 0) && paletteSet.map((item, index) =>
                 {
-                    return <AvatarEditorPaletteSetItem key={ index } colorItem={ item } onClick={ selectColor } />;
+                    return <AvatarEditorPaletteSetItem key={ index } colorItem={ item } onClick={ event => selectColor(item) } />;
                 }) }
         </NitroCardGridView>
     );

@@ -1,9 +1,9 @@
-import { AvatarEditor } from '../../common/AvatarEditor';
+import { Dispatch, SetStateAction } from 'react';
 import { IAvatarEditorCategoryModel } from '../../common/IAvatarEditorCategoryModel';
 
 export interface AvatarEditorModelViewProps
 {
     model: IAvatarEditorCategoryModel;
-    editor: AvatarEditor;
-    selectGender: (gender: string) => void;
+    gender: string;
+    setGender: Dispatch<SetStateAction<string>>;
 }

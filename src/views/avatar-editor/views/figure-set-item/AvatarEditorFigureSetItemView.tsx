@@ -24,8 +24,9 @@ export const AvatarEditorFigureSetItemView: FC<AvatarEditorFigureSetItemViewProp
     })
 
     return (
-        <NitroCardGridItemView itemImage={ partItem.imageUrl } itemActive={ partItem.isSelected } onClick={ () => onClick(partItem) }>
+        <NitroCardGridItemView itemImage={ (partItem.isClear ? undefined : partItem.imageUrl) } itemActive={ partItem.isSelected } onClick={ () => onClick(partItem) }>
             { partItem.isHC && <CurrencyIcon type={ 'hc' } /> }
+            { partItem.isClear && <i className="icon clear-icon" /> }
         </NitroCardGridItemView>
     );
 }

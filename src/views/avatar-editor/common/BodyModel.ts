@@ -1,5 +1,6 @@
 import { AvatarEditorFigureCategory, AvatarScaleType, AvatarSetType, IAvatarImageListener } from 'nitro-renderer';
 import { GetAvatarRenderManager } from '../../../api';
+import { AvatarEditorUtilities } from './AvatarEditorUtilities';
 import { CategoryBaseModel } from './CategoryBaseModel';
 import { FigureData } from './FigureData';
 
@@ -25,15 +26,15 @@ export class BodyModel extends CategoryBaseModel implements IAvatarImageListener
 
     protected updateSelectionsFromFigure(name: string): void
     {
-        if(!this._categories || !this._editor || !this._editor.figureData) return;
+        if(!this._categories || !AvatarEditorUtilities.CURRENT_FIGURE) return;
 
         const category = this._categories.get(name);
 
         if(!category) return;
 
-        const setId = this._editor.figureData.getPartSetId(name);
+        const setId = AvatarEditorUtilities.CURRENT_FIGURE.getPartSetId(name);
 
-        let colorIds = this._editor.figureData.getColourIds(name);
+        let colorIds = AvatarEditorUtilities.CURRENT_FIGURE.getColorIds(name);
 
         if(!colorIds) colorIds = [];
 
@@ -42,7 +43,7 @@ export class BodyModel extends CategoryBaseModel implements IAvatarImageListener
 
         for(const part of category.parts)
         {
-            const figure = this._editor.figureData.getFigureStringWithFace(part.id);
+            const figure = AvatarEditorUtilities.CURRENT_FIGURE.getFigureStringWithFace(part.id);
             const avatarImage = GetAvatarRenderManager().createAvatarImage(figure, AvatarScaleType.LARGE, null, this);
 
             const sprite = avatarImage.getImageAsSprite(AvatarSetType.HEAD);

@@ -1,18 +1,16 @@
-﻿import { AvatarEditor } from './AvatarEditor';
+﻿import { AvatarEditorUtilities } from './AvatarEditorUtilities';
 import { CategoryData } from './CategoryData';
 import { IAvatarEditorCategoryModel } from './IAvatarEditorCategoryModel';
 
 export class CategoryBaseModel implements IAvatarEditorCategoryModel
 {
-    protected _editor: AvatarEditor;
     protected _categories: Map<string, CategoryData>;
     protected _isInitalized: boolean;
     protected _maxPaletteCount: number;
     private _disposed: boolean;
 
-    constructor(editor: AvatarEditor)
+    constructor()
     {
-        this._editor = editor;
         this._isInitalized  = false;
         this._maxPaletteCount = 0;
     }
@@ -51,7 +49,7 @@ export class CategoryBaseModel implements IAvatarEditorCategoryModel
 
         if(existing) return;
 
-        existing = this._editor.createCategory(this, name);
+        existing = AvatarEditorUtilities.createCategory(this, name);
 
         if(!existing) return;
 
@@ -66,9 +64,9 @@ export class CategoryBaseModel implements IAvatarEditorCategoryModel
 
         if(!category) return;
 
-        const setId = this._editor.figureData.getPartSetId(figure);
+        const setId = AvatarEditorUtilities.CURRENT_FIGURE.getPartSetId(figure);
 
-        let colorIds = this._editor.figureData.getColourIds(figure);
+        let colorIds = AvatarEditorUtilities.CURRENT_FIGURE.getColorIds(figure);
 
         if(!colorIds) colorIds = [];
 
@@ -120,9 +118,9 @@ export class CategoryBaseModel implements IAvatarEditorCategoryModel
             {
                 const partItem = category.getCurrentPart();
 
-                if(partItem && this._editor && this._editor.figureData)
+                if(partItem && AvatarEditorUtilities.CURRENT_FIGURE)
                 {
-                    this._editor.figureData.savePartData(name, partItem.id, category.getSelectedColorIds(), true);
+                    AvatarEditorUtilities.CURRENT_FIGURE.savePartData(name, partItem.id, category.getSelectedColorIds(), true);
                 }
 
                 didStrip = true;
@@ -148,9 +146,9 @@ export class CategoryBaseModel implements IAvatarEditorCategoryModel
             {
                 const partItem = category.getCurrentPart();
 
-                if(partItem && this._editor && this._editor.figureData)
+                if(partItem && AvatarEditorUtilities.CURRENT_FIGURE)
                 {
-                    this._editor.figureData.savePartData(name, partItem.id, category.getSelectedColorIds(), true);
+                    AvatarEditorUtilities.CURRENT_FIGURE.savePartData(name, partItem.id, category.getSelectedColorIds(), true);
                 }
 
                 didStrip = true;
@@ -185,7 +183,7 @@ export class CategoryBaseModel implements IAvatarEditorCategoryModel
 
         this._maxPaletteCount = partItem.maxColorIndex;
 
-        this._editor.figureData.savePartData(category, partItem.id, categoryData.getSelectedColorIds(), true);
+        AvatarEditorUtilities.CURRENT_FIGURE.savePartData(category, partItem.id, categoryData.getSelectedColorIds(), true);
     }
 
     public selectColor(category: string, colorIndex: number, paletteId: number): void
@@ -209,7 +207,7 @@ export class CategoryBaseModel implements IAvatarEditorCategoryModel
             return;
         }
         
-        this._editor.figureData.savePartSetColourId(category, categoryData.getSelectedColorIds(), true);
+        AvatarEditorUtilities.CURRENT_FIGURE.savePartSetColourId(category, categoryData.getSelectedColorIds(), true);
     }
 
     public getCategoryData(category: string): CategoryData
