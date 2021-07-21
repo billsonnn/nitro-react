@@ -1,4 +1,4 @@
-import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, UserFigureComposer } from 'nitro-renderer';
+import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, UserFigureComposer, UserWardrobePageComposer, UserWardrobePageEvent } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager } from '../../api';
 import { AvatarEditorEvent } from '../../events/avatar-editor';
@@ -16,9 +16,11 @@ import { LegModel } from './common/LegModel';
 import { TorsoModel } from './common/TorsoModel';
 import { AvatarEditorFigurePreviewView } from './views/figure-preview/AvatarEditorFigurePreviewView';
 import { AvatarEditorModelView } from './views/model/AvatarEditorModelView';
+import { AvatarEditorWardrobeView } from './views/wardrobe/AvatarEditorWardrobeView';
 
 const DEFAULT_MALE_FIGURE: string = 'hr-100.hd-180-7.ch-215-66.lg-270-79.sh-305-62.ha-1002-70.wa-2007';
 const DEFAULT_FEMALE_FIGURE: string = 'hr-515-33.hd-600-1.ch-635-70.lg-716-66-62.sh-735-68';
+const MAX_SAVED_FIGURES: number = 10;
 
 export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
 {
@@ -29,6 +31,8 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
     const [ activeCategory, setActiveCategory ] = useState<IAvatarEditorCategoryModel>(null);
     const [ figureSetIds, setFigureSetIds ] = useState<number[]>([]);
     const [ boundFurnitureNames, setBoundFurnitureNames ] = useState<string[]>([]);
+    const [ savedFigures, setSavedFigures ] = useState<[ string, string ][]>(new Array(MAX_SAVED_FIGURES));
+    const [ isWardrobeVisible, setIsWardrobeVisible ] = useState(false);
     const [ lastFigure, setLastFigure ] = useState<string>(null);
     const [ lastGender, setLastGender ] = useState<string>(null);
     const [ needsReset, setNeedsReset ] = useState(false);
@@ -61,6 +65,32 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
     useUiEvent(AvatarEditorEvent.SHOW_EDITOR, onAvatarEditorEvent);
     useUiEvent(AvatarEditorEvent.HIDE_EDITOR, onAvatarEditorEvent);
     useUiEvent(AvatarEditorEvent.TOGGLE_EDITOR, onAvatarEditorEvent);
+
+    const onFigureSetIdsMessageEvent = useCallback((event: FigureSetIdsMessageEvent) =>
+    {
+        const parser = event.getParser();
+
+        setFigureSetIds(parser.figureSetIds);
+        setBoundFurnitureNames(parser.boundsFurnitureNames);
+    }, []);
+
+    CreateMessageHook(FigureSetIdsMessageEvent, onFigureSetIdsMessageEvent);
+
+    const onUserWardrobePageEvent = useCallback((event: UserWardrobePageEvent) =>
+    {
+        const parser = event.getParser();
+
+        const savedFigures: [ string, string ][] = new Array(MAX_SAVED_FIGURES);
+
+        for(const value of parser.looks.values())
+        {
+            console.log(value);
+        }
+
+        setSavedFigures(savedFigures)
+    }, []);
+
+    CreateMessageHook(UserWardrobePageEvent, onUserWardrobePageEvent);
 
     const selectCategory = useCallback((name: string) =>
     {
@@ -157,17 +187,20 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
         setFigureData(figures.get(gender));
     }, [ figures ]);
 
-    const onFigureSetIdsMessageEvent = useCallback((event: FigureSetIdsMessageEvent) =>
+    useEffect(() =>
     {
-        const parser = event.getParser();
+        if(!isWardrobeVisible) return;
 
-        setFigureSetIds(parser.figureSetIds);
-        setBoundFurnitureNames(parser.boundsFurnitureNames);
+        setActiveCategory(null);
+        SendMessageHook(new UserWardrobePageComposer());
+    }, [ isWardrobeVisible ]);
 
-        resetCategories();
-    }, [ resetCategories ]);
+    useEffect(() =>
+    {
+        if(!activeCategory) return;
 
-    CreateMessageHook(FigureSetIdsMessageEvent, onFigureSetIdsMessageEvent);
+        setIsWardrobeVisible(false);
+    }, [ activeCategory ]);
 
     useEffect(() =>
     {
@@ -192,12 +225,14 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
         AvatarEditorUtilities.FIGURE_SET_IDS = figureSetIds;
         AvatarEditorUtilities.BOUND_FURNITURE_NAMES = boundFurnitureNames;
 
+        resetCategories();
+
         return () =>
         {
             AvatarEditorUtilities.FIGURE_SET_IDS = null;
             AvatarEditorUtilities.BOUND_FURNITURE_NAMES = null;
         }
-    }, [ figureSetIds, boundFurnitureNames ]);
+    }, [ figureSetIds, boundFurnitureNames, resetCategories ]);
 
     useEffect(() =>
     {
@@ -227,19 +262,25 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
         <NitroCardView className="nitro-avatar-editor">
             <NitroCardHeaderView headerText={ LocalizeText('avatareditor.title') } onCloseClick={ event => setIsVisible(false) } />
             <NitroCardTabsView>
-                { categories && (categories.size > 0) && activeCategory && Array.from(categories.keys()).map(category =>
+                { categories && (categories.size > 0) && Array.from(categories.keys()).map(category =>
                     {
+                        const isActive = (activeCategory && (activeCategory.name === category));
+
                         return (
-                            <NitroCardTabsItemView key={ category } isActive={ (activeCategory.name === category) } onClick={ event => selectCategory(category) }>
+                            <NitroCardTabsItemView key={ category } isActive={ isActive } onClick={ event => selectCategory(category) }>
                                 { LocalizeText(`avatareditor.category.${ category }`) }
                             </NitroCardTabsItemView>
                         );
                     })}
+                <NitroCardTabsItemView isActive={ isWardrobeVisible } onClick={ event => setIsWardrobeVisible(true) }>
+                    { LocalizeText(`avatareditor.category.wardrobe`) }
+                </NitroCardTabsItemView>
             </NitroCardTabsView>
             <NitroCardContentView>
                 <div className="row h-100">
                     <div className="col-9 d-flex flex-column h-100">
-                        { activeCategory && <AvatarEditorModelView model={ activeCategory } gender={ figureData.gender } setGender={ setGender } /> }
+                        { (activeCategory && !isWardrobeVisible) && <AvatarEditorModelView model={ activeCategory } gender={ figureData.gender } setGender={ setGender } /> }
+                        { isWardrobeVisible && <AvatarEditorWardrobeView figures={ savedFigures } /> }
                     </div>
                     <div className="col-3 d-flex flex-column h-100">
                         <div className="figure-preview-container">

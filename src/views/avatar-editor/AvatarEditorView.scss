@@ -79,4 +79,12 @@
             transform: scale(2);
         }
     }
+
+    .wardrobe-grid {
+
+        .grid-item-container {
+            height: 100% !important;
+            max-height: 100% !important;
+        }
+    }
 }
