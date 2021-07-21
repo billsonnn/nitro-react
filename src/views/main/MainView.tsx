@@ -6,6 +6,7 @@ import { CatalogView } from '../catalog/CatalogView';
 import { FriendListView } from '../friend-list/FriendListView';
 import { HotelView } from '../hotel-view/HotelView';
 import { InventoryView } from '../inventory/InventoryView';
+import { ModToolsView } from '../mod-tools/ModToolsView';
 import { NavigatorView } from '../navigator/NavigatorView';
 import { NotificationCenterView } from '../notification-center/NotificationCenterView';
 import { RightSideView } from '../right-side/RightSideView';
@@ -46,6 +47,7 @@ export const MainView: FC<MainViewProps> = props =>
         <div className="nitro-main">
             { landingViewVisible && <HotelView /> }
             <ToolbarView isInRoom={ !landingViewVisible } />
+            <ModToolsView />
             <RoomHostView />
             <WiredView />
             <AvatarEditorView />

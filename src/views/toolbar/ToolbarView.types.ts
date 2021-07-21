@@ -11,4 +11,5 @@ export class ToolbarViewItems
     public static FRIEND_LIST_ITEM: string  = 'TVI_FRIEND_LIST_ITEM';
     public static CLOTHING_ITEM: string     = 'TVI_CLOTHING_ITEM';
     public static CAMERA_ITEM: string       = 'TVI_CAMERA_ITEM';
+    public static MOD_TOOLS_ITEM: string    = 'TVI_MOD_TOOLS_ITEM';
 }
