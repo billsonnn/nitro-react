@@ -329,6 +329,12 @@
         }
     }
 
+    &.sellable-icon {
+        background-image: url('../images/avatareditor/sellable-icon.png');
+        width: 17px;
+        height: 15px;
+    }
+
     &.chatstyles-icon {
         background-image: url('../images/chat/styles-icon.png');
         width: 17px;

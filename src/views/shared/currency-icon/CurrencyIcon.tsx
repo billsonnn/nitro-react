@@ -1,16 +1,21 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { GetConfiguration } from '../../../api';
 import { CurrencyIconProps } from './CurrencyIcon.types';
 
 export const CurrencyIcon: FC<CurrencyIconProps> = props =>
 {
-    let url = GetConfiguration<string>('currency.asset.icon.url', '');
-    
-    url = url.replace('%type%', props.type.toString());
+    const { type = '', className = '', style = {}, ...rest } = props;
 
-    url = `url(${ url })`;
+    const urlString = useMemo(() =>
+    {
+        let url = GetConfiguration<string>('currency.asset.icon.url', '');
+    
+        url = url.replace('%type%', type.toString());
+
+        return `url(${ url })`;
+    }, [ type ]);
 
     return (
-        <div className="nitro-currency-icon" style={ (url && url.length) ? { backgroundImage: url } : {} } />
+        <div className={ 'nitro-currency-icon ' + className } style={ { ...style, backgroundImage: urlString } } { ...rest } />
     );
 }

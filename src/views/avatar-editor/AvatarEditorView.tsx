@@ -1,8 +1,8 @@
-import { AvatarDirectionAngle, AvatarEditorFigureCategory, UserFigureComposer } from 'nitro-renderer';
+import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, UserFigureComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager } from '../../api';
 import { AvatarEditorEvent } from '../../events/avatar-editor';
-import { SendMessageHook } from '../../hooks';
+import { CreateMessageHook, SendMessageHook } from '../../hooks';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
 import { LocalizeText } from '../../utils/LocalizeText';
@@ -27,10 +27,40 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
     const [ figureData, setFigureData ] = useState<FigureData>(null);
     const [ categories, setCategories ] = useState<Map<string, IAvatarEditorCategoryModel>>(null);
     const [ activeCategory, setActiveCategory ] = useState<IAvatarEditorCategoryModel>(null);
+    const [ figureSetIds, setFigureSetIds ] = useState<number[]>([]);
+    const [ boundFurnitureNames, setBoundFurnitureNames ] = useState<string[]>([]);
     const [ lastFigure, setLastFigure ] = useState<string>(null);
     const [ lastGender, setLastGender ] = useState<string>(null);
     const [ needsReset, setNeedsReset ] = useState(false);
     const [ isInitalized, setIsInitalized ] = useState(false);
+
+    const onAvatarEditorEvent = useCallback((event: AvatarEditorEvent) =>
+    {
+        switch(event.type)
+        {
+            case AvatarEditorEvent.SHOW_EDITOR:
+                setIsVisible(true);
+                setNeedsReset(true);
+                return;
+            case AvatarEditorEvent.HIDE_EDITOR:
+                setIsVisible(false);
+                return;   
+            case AvatarEditorEvent.TOGGLE_EDITOR:
+                setIsVisible(prevValue =>
+                    {
+                        const flag = !prevValue;
+
+                        if(flag) setNeedsReset(true);
+                        
+                        return flag;
+                    });
+                return;
+        }
+    }, []);
+
+    useUiEvent(AvatarEditorEvent.SHOW_EDITOR, onAvatarEditorEvent);
+    useUiEvent(AvatarEditorEvent.HIDE_EDITOR, onAvatarEditorEvent);
+    useUiEvent(AvatarEditorEvent.TOGGLE_EDITOR, onAvatarEditorEvent);
 
     const selectCategory = useCallback((name: string) =>
     {
@@ -87,34 +117,6 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
         }
     }, [ figures, figureData ]);
 
-    const onAvatarEditorEvent = useCallback((event: AvatarEditorEvent) =>
-    {
-        switch(event.type)
-        {
-            case AvatarEditorEvent.SHOW_EDITOR:
-                setIsVisible(true);
-                setNeedsReset(true);
-                return;
-            case AvatarEditorEvent.HIDE_EDITOR:
-                setIsVisible(false);
-                return;   
-            case AvatarEditorEvent.TOGGLE_EDITOR:
-                setIsVisible(prevValue =>
-                    {
-                        const flag = !prevValue;
-
-                        if(flag) setNeedsReset(true);
-                        
-                        return flag;
-                    });
-                return;
-        }
-    }, []);
-
-    useUiEvent(AvatarEditorEvent.SHOW_EDITOR, onAvatarEditorEvent);
-    useUiEvent(AvatarEditorEvent.HIDE_EDITOR, onAvatarEditorEvent);
-    useUiEvent(AvatarEditorEvent.TOGGLE_EDITOR, onAvatarEditorEvent);
-
     const clearFigure = useCallback(() =>
     {
         loadAvatarInEditor(figureData.getFigureStringWithFace(0, false), figureData.gender, false);
@@ -145,6 +147,7 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
     const saveFigure = useCallback(() =>
     {
         SendMessageHook(new UserFigureComposer(figureData.gender, figureData.getFigureString()));
+        setIsVisible(false);
     }, [ figureData ]);
 
     const setGender = useCallback((gender: string) =>
@@ -153,6 +156,18 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
 
         setFigureData(figures.get(gender));
     }, [ figures ]);
+
+    const onFigureSetIdsMessageEvent = useCallback((event: FigureSetIdsMessageEvent) =>
+    {
+        const parser = event.getParser();
+
+        setFigureSetIds(parser.figureSetIds);
+        setBoundFurnitureNames(parser.boundsFurnitureNames);
+
+        resetCategories();
+    }, [ resetCategories ]);
+
+    CreateMessageHook(FigureSetIdsMessageEvent, onFigureSetIdsMessageEvent);
 
     useEffect(() =>
     {
@@ -171,6 +186,18 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
 
         return () => AvatarEditorUtilities.CURRENT_FIGURE = null;
     }, [ figureData, resetCategories ]);
+
+    useEffect(() =>
+    {
+        AvatarEditorUtilities.FIGURE_SET_IDS = figureSetIds;
+        AvatarEditorUtilities.BOUND_FURNITURE_NAMES = boundFurnitureNames;
+
+        return () =>
+        {
+            AvatarEditorUtilities.FIGURE_SET_IDS = null;
+            AvatarEditorUtilities.BOUND_FURNITURE_NAMES = null;
+        }
+    }, [ figureSetIds, boundFurnitureNames ]);
 
     useEffect(() =>
     {
@@ -194,7 +221,7 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
         setNeedsReset(false);
     }, [ isVisible, isInitalized, needsReset, loadAvatarInEditor ]);
 
-    if(!isVisible) return null;
+    if(!isVisible || !figureData) return null;
 
     return (
         <NitroCardView className="nitro-avatar-editor">
@@ -215,16 +242,15 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
                         { activeCategory && <AvatarEditorModelView model={ activeCategory } gender={ figureData.gender } setGender={ setGender } /> }
                     </div>
                     <div className="col-3 d-flex flex-column h-100">
-                        { figureData &&
-                            <div className="figure-preview-container">
-                                <AvatarEditorFigurePreviewView figureData={ figureData } />
-                                <div className="avatar-spotlight" />
-                                <div className="avatar-shadow" />
-                                <div className="arrow-container">
-                                    <i className="icon arrow-left-icon" onClick={ event => rotateFigure(figureData.direction + 1) }  />
-                                    <i className="icon arrow-right-icon" onClick={ event => rotateFigure(figureData.direction - 1) } />
-                                </div>
-                            </div> }
+                        <div className="figure-preview-container">
+                            <AvatarEditorFigurePreviewView figureData={ figureData } />
+                            <div className="avatar-spotlight" />
+                            <div className="avatar-shadow" />
+                            <div className="arrow-container">
+                                <i className="icon arrow-left-icon" onClick={ event => rotateFigure(figureData.direction + 1) }  />
+                                <i className="icon arrow-right-icon" onClick={ event => rotateFigure(figureData.direction - 1) } />
+                            </div>
+                        </div>
                         <div className="d-flex flex-column mt-1">
                             <div className="btn-group mb-1">
                                 <button type="button" className="btn btn-sm btn-secondary" onClick={ resetFigure }>

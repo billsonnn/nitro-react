@@ -11,6 +11,8 @@ export class AvatarEditorUtilities
     private static MAX_PALETTES: number = 2;
 
     public static CURRENT_FIGURE: FigureData = null;
+    public static FIGURE_SET_IDS: number[] = [];
+    public static BOUND_FURNITURE_NAMES: string[] = [];
 
     public static getGender(gender: string): string
     {
@@ -31,6 +33,11 @@ export class AvatarEditorUtilities
         }
 
         return gender;
+    }
+
+    public static hasFigureSetId(setId: number): boolean
+    {
+        return (this.FIGURE_SET_IDS.indexOf(setId) >= 0);
     }
 
     public static createCategory(model: CategoryBaseModel, name: string): CategoryData
@@ -145,16 +152,9 @@ export class AvatarEditorUtilities
 
                 let isValid = true;
 
-                if(partSet.isSellable)
-                {
-                    isValid = false;
-                    //isValid = (this._inventoryService && this._inventoryService.hasFigureSetId(partSet.id));
-                }
+                if(partSet.isSellable) isValid = this.hasFigureSetId(partSet.id);
 
-                if(isValid)
-                {
-                    partItems.push(new AvatarEditorGridPartItem(partSet, partColors, usesColors, isDisabled));
-                }
+                if(isValid) partItems.push(new AvatarEditorGridPartItem(partSet, partColors, usesColors, isDisabled));
             }
 
             i--;
