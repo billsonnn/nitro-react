@@ -165,19 +165,14 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                             <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CAMERA_ITEM) }>
                                 <i className="icon icon-camera"></i>
                             </div>) }
+                        <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.MOD_TOOLS_ITEM) }>
+                            <i className="icon icon-modtools"></i>
+                        </div>
                     </div>
                     <div id="toolbar-chat-input-container" className="d-flex align-items-center" />
                 </div>
                 <div className="d-flex toolbar-right-side">
                     <div id="toolbar-friend-bar-container" />
-                    <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_LIST_ITEM) }>
-                        <i className="icon icon-friendall"></i>
-                        { (unseenFriendListCount > 0) && (
-                            <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
-                    </div>
-                    <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.MOD_TOOLS_ITEM) }>
-                        <i className="icon icon-modtools"></i>
-                    </div>
                 </div>
             </div>
         </div>
