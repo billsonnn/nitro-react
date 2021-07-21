@@ -15,7 +15,7 @@ import { FurnitureTrophyView } from './trophy/FurnitureTrophyView';
 export const FurnitureWidgetsView: FC<{}> = props =>
 {
     return (
-        <div className="position-absolute nitro-room-widgets t-0 l-0">
+        <div className="position-absolute nitro-room-widgets top-0 start-0">
             <FurnitureBackgroundColorView />
             <FurnitureContextMenuView />
             <FurnitureCustomStackHeightView />
