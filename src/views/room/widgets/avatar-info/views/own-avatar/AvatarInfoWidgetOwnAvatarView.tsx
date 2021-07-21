@@ -111,6 +111,10 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
             </ContextMenuHeaderView>
             { (mode === MODE_NORMAL) &&
                 <>
+                    { userData.allowNameChange &&
+                        <ContextMenuListItemView onClick={ event => processAction('change_name') }>
+                            { LocalizeText('widget.avatar.change_name') }
+                        </ContextMenuListItemView> }
                     <ContextMenuListItemView onClick={ event => processAction('decorate') }>
                         { LocalizeText('widget.avatar.decorate') }
                     </ContextMenuListItemView>
