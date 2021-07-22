@@ -3,10 +3,12 @@ import { FC, useCallback, useState } from 'react';
 import { GetConfiguration } from '../../api';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { HotelViewProps } from './HotelView.types';
+import { WidgetSlotView } from './views/widget-slot/WidgetSlotView';
 
 export const HotelView: FC<HotelViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(true);
+    const widgetSlotCount = 7;
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
@@ -36,6 +38,8 @@ export const HotelView: FC<HotelViewProps> = props =>
 
     return (
         <div className="nitro-hotel-view" style={ (backgroundColor && backgroundColor) ? { background: backgroundColor } : {} }>
+            {Array.from(Array(widgetSlotCount)).map((x, index) => <WidgetSlotView slot={index} 
+            widgetType={GetConfiguration('hotelview')['widgets']['slot.' + index]} />)}
             <div className="background position-absolute" style={ (background && background.length) ? { backgroundImage: `url(${ background })` } : {} } />
             <div className="sun position-absolute" style={ (sun && sun.length) ? { backgroundImage: `url(${ sun })` } : {} } />
             <div className="drape position-absolute" style={ (drape && drape.length) ? { backgroundImage: `url(${ drape })` } : {} } />

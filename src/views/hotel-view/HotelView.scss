@@ -73,4 +73,58 @@
         background-repeat: no-repeat;
 		background-position: right top;
 	}
+
+	.widget-slot {
+		position:absolute;
+		z-index: 4;
+		overflow: hidden;
+	}
+
+	.slot-0 {
+		top: 5px;
+		width: 600px;
+		height: 100px;
+	}
+
+	.slot-1 {
+		top: 100px;
+		left: 100px;
+		width: 100px;
+		height:100px;
+	}
+
+	.slot-2 {
+		top: 300px;
+		left: 100px;
+		width: 100px;
+		height: 100px;
+	}
+
+	.slot-3 {
+		top: 100px;
+		left: 600px;
+		width: 100px;
+		height: 100px;
+	}
+
+	.slot-4 {
+		top: 300px;
+		left: 600px;
+		width: 100px;
+		height: 100px;
+	}
+
+	.slot-5 {
+		bottom: 5px;
+		width: 600px;
+		height: 100px;
+	}
+
+	.slot-6 {
+		width: 100px;
+		height: 600px;
+		right: 5px;
+	}
 }
+
+@import './views/widgets/promo-article/PromoArticleWidgetView.scss';
