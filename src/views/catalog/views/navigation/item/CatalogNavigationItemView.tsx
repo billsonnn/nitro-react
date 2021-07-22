@@ -1,5 +1,5 @@
+import { CatalogPageComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetCatalogPageComposer } from '../../../../../api/catalog/GetCatalogPageComposer';
 import { SendMessageHook } from '../../../../../hooks/messages/message-event';
 import { CatalogMode } from '../../../CatalogView.types';
 import { CatalogIconView } from '../../catalog-icon/CatalogIconView';
@@ -17,7 +17,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
 
         setIsExpanded(true);
 
-        SendMessageHook(GetCatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
+        SendMessageHook(new CatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
     }, [ isActive, page ]);
 
     const select = useCallback(() =>
@@ -28,7 +28,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
             {
                 if(prevValue === page)
                 {
-                    SendMessageHook(GetCatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
+                    SendMessageHook(new CatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
                 }
                 
                 return page;

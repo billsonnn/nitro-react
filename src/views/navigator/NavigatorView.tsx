@@ -1,5 +1,6 @@
-import { NavigatorInitComposer, NavigatorSearchComposer, RoomSessionEvent } from 'nitro-renderer';
+import { ILinkEventTracker, NavigatorInitComposer, NavigatorSearchComposer, RoomSessionEvent } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
+import { AddEventLinkTracker, RemoveLinkEventTracker } from '../../api';
 import { NavigatorEvent } from '../../events';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
@@ -72,6 +73,45 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
         setCreatorOpen(false);
         SendMessageHook(new NavigatorSearchComposer(contextCode, searchValue));
     }, []);
+
+    const linkReceived = useCallback((url: string) =>
+    {
+        const parts = url.split('/');
+
+        if(parts.length < 2) return;
+
+        switch(parts[1])
+        {
+            case 'goto':
+                if(parts.length > 2)
+                {
+                    switch(parts[2])
+                    {
+                        case 'home':
+                            //goToHomeRoom();
+                            break;
+                        default: {
+                            const roomId = parseInt(parts[2]);
+
+                            //if(roomId > 0) this.goToPrivateRoom(roomId);
+                        }
+                    }
+                }
+                return;
+        }
+    }, []);
+
+    useEffect(() =>
+    {
+        const linkTracker: ILinkEventTracker = {
+            linkReceived,
+            eventUrlPrefix: 'navigator'
+        };
+
+        AddEventLinkTracker(linkTracker);
+
+        return () => RemoveLinkEventTracker(linkTracker);
+    }, [ linkReceived]);
 
     useEffect(() =>
     {

@@ -162,7 +162,7 @@ export class AvatarEditorUtilities
 
         partItems.sort(this.clubItemsFirst ? this.clubSorter : this.noobSorter);
 
-        // if(this._forceSellableClothingVisibility || Nitro.instance.getConfiguration<boolean>("avatareditor.support.sellablefurni", false))
+        // if(this._forceSellableClothingVisibility || GetNitroInstance().getConfiguration<boolean>("avatareditor.support.sellablefurni", false))
         // {
         //     _local_31 = (this._manager.windowManager.assets.getAssetByName("camera_zoom_in") as BitmapDataAsset);
         //     _local_32 = (_local_31.content as BitmapData).clone();
