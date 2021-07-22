@@ -1,6 +1,6 @@
-import { Nitro } from 'nitro-renderer';
+import { GetNitroInstance } from './GetNitroInstance';
 
 export function GetTicker()
 {
-    return Nitro.instance.ticker;
+    return GetNitroInstance().ticker;
 }
