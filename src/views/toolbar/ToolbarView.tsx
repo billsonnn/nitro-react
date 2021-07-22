@@ -1,11 +1,12 @@
-import { Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserFigureEvent, UserInfoDataParser, UserInfoEvent, Wait } from 'nitro-renderer';
+import { DesktopViewComposer, Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserFigureEvent, UserInfoDataParser, UserInfoEvent, Wait } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
+import { GetRoomSession, GetRoomSessionManager } from '../../api';
 import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
 import { AchievementsUIEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { dispatchUiEvent, useRoomEngineEvent, useUiEvent } from '../../hooks';
-import { CreateMessageHook } from '../../hooks/messages/message-event';
+import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
 import { TransitionAnimationTypes } from '../../layout/transitions/TransitionAnimation.types';
 import { AvatarImageView } from '../shared/avatar-image/AvatarImageView';
@@ -124,6 +125,14 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
         }
     }, []);
 
+    const visitDesktop = useCallback(() =>
+    {
+        if(!GetRoomSession()) return;
+        
+        SendMessageHook(new DesktopViewComposer());
+        GetRoomSessionManager().removeSession(-1);
+    }, []);
+
     return (
         <div className="nitro-toolbar-container">
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isMeExpanded } timeout={ 300 }>
@@ -134,17 +143,17 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                     <div className="navigation-items navigation-avatar pe-1 me-2">
                         <div className="navigation-item">
                             <div className={ 'toolbar-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ event => setMeExpanded(!isMeExpanded) }>
-                                { userFigure && <AvatarImageView figure={ userFigure } direction={ 2 } /> }
+                                <AvatarImageView figure={ userFigure } direction={ 2 } />
                             </div>
                         </div>
                         { (unseenAchievementsCount > 0) && (
                             <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenAchievementsCount }</div>) }
                     </div>
                     <div className="navigation-items">
-                        {/* { isInRoom && (
-                            <div className="navigation-item">
-                                <i className="icon icon-hotelview icon-nitro-light filter-none"></i>
-                            </div>) } */}
+                        { isInRoom && (
+                            <div className="navigation-item" onClick={ visitDesktop }>
+                                <i className="icon icon-hotelview icon-nitro-light"></i>
+                            </div>) }
                         { !isInRoom && (
                             <div className="navigation-item">
                                 <i className="icon icon-house"></i>
