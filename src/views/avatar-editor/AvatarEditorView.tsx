@@ -79,13 +79,24 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
     const onUserWardrobePageEvent = useCallback((event: UserWardrobePageEvent) =>
     {
         const parser = event.getParser();
+        const savedFigures: [ string, string ][] = [];
 
-        const savedFigures: [ string, string ][] = new Array(MAX_SAVED_FIGURES);
+        let i = 0;
 
-        for(const value of parser.looks.values())
+        while(i < MAX_SAVED_FIGURES)
         {
-            console.log(value);
+            savedFigures.push([ null, null ]);
+
+            i++;
         }
+
+        for(let [ index, value ] of parser.looks.entries())
+        {
+            console.log(index, value);
+            savedFigures[(index - 1)] = [ value[0], value[1] ];
+        }
+
+        console.log(savedFigures);
 
         setSavedFigures(savedFigures)
     }, []);
@@ -280,7 +291,7 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
                 <div className="row h-100">
                     <div className="col-9 d-flex flex-column h-100">
                         { (activeCategory && !isWardrobeVisible) && <AvatarEditorModelView model={ activeCategory } gender={ figureData.gender } setGender={ setGender } /> }
-                        { isWardrobeVisible && <AvatarEditorWardrobeView figures={ savedFigures } /> }
+                        { isWardrobeVisible && <AvatarEditorWardrobeView figureData={ figureData } savedFigures={ savedFigures } setSavedFigures={ setSavedFigures } loadAvatarInEditor={ loadAvatarInEditor } /> }
                     </div>
                     <div className="col-3 d-flex flex-column h-100">
                         <div className="figure-preview-container">
