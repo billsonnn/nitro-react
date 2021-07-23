@@ -1,6 +1,7 @@
 import { ILinkEventTracker, NavigatorInitComposer, NavigatorSearchComposer, RoomSessionEvent } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { AddEventLinkTracker, RemoveLinkEventTracker } from '../../api';
+import { TryVisitRoom } from '../../api/navigator/TryVisitRoom';
 import { NavigatorEvent } from '../../events';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
@@ -93,7 +94,7 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                         default: {
                             const roomId = parseInt(parts[2]);
 
-                            //if(roomId > 0) this.goToPrivateRoom(roomId);
+                            TryVisitRoom(roomId);
                         }
                     }
                 }
@@ -105,7 +106,7 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
     {
         const linkTracker: ILinkEventTracker = {
             linkReceived,
-            eventUrlPrefix: 'navigator'
+            eventUrlPrefix: 'navigator/'
         };
 
         AddEventLinkTracker(linkTracker);
