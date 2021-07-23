@@ -1,6 +1,12 @@
 .nitro-card-header {
     min-height: 33px;
     max-height: 33px;
+    white-space: nowrap;
+    overflow: hidden;
+
+    .header-text {
+        margin: 0 35px;
+    }
 
     &.simple-header {
         min-height: 28px;

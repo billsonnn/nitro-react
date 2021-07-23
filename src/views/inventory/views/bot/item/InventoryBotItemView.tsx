@@ -1,5 +1,6 @@
 import { MouseEventType } from 'nitro-renderer';
-import { FC, MouseEvent, useCallback, useState } from 'react';
+import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
+import { NitroCardGridItemView } from '../../../../../layout/card/grid/item/NitroCardGridItemView';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { attemptBotPlacement } from '../../../common/BotUtilities';
 import { useInventoryContext } from '../../../context/InventoryContext';
@@ -36,11 +37,16 @@ export const InventoryBotItemView: FC<InventoryBotItemViewProps> = props =>
         }
     }, [ isActive, isMouseDown, botItem, dispatchBotState ]);
 
+    useEffect(() =>
+    {
+        if(!isActive) return;
+
+        botItem.isUnseen = false;
+    }, [ isActive, botItem ]);
+
     return (
-        <div className="col pe-1 pb-1 inventory-bot-item-container">
-            <div className={ 'position-relative border border-2 rounded inventory-bot-item cursor-pointer ' + (isActive ? 'active' : '') } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
-                <AvatarImageView figure={ botItem.botData.figure } direction={ 3 } headOnly={ true } />
-            </div>
-        </div>
+        <NitroCardGridItemView itemActive={ isActive } itemUnseen={ botItem.isUnseen } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
+            <AvatarImageView figure={ botItem.botData.figure } direction={ 3 } headOnly={ true } />
+        </NitroCardGridItemView>
     );
 }

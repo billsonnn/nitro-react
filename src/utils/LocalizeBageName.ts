@@ -1,6 +1,6 @@
-import { Nitro } from 'nitro-renderer';
+import { GetNitroInstance } from '../api';
 
 export function LocalizeBadgeName(key: string): string
 {
-    return Nitro.instance.localization.getBadgeName(key);
+    return GetNitroInstance().localization.getBadgeName(key);
 }

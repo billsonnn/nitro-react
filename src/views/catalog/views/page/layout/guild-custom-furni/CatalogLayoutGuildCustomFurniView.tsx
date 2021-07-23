@@ -2,9 +2,9 @@ import { CatalogGroupsComposer } from 'nitro-renderer';
 import { FC, useEffect } from 'react';
 import { SendMessageHook } from '../../../../../../hooks/messages';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
-import { RoomPreviewerView } from '../../../../../shared/room-previewer/RoomPreviewerView';
 import { GetOfferName } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
+import { CatalogRoomPreviewerView } from '../../../catalog-room-previewer/CatalogRoomPreviewerView';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
 import { CatalogPurchaseView } from '../../purchase/CatalogPurchaseView';
 import { CatalogLayoutGuildCustomFurniViewProps } from './CatalogLayoutGuildCustomFurniView.types';
@@ -30,7 +30,7 @@ export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutGuildCustomFurniV
             </div>
             { product &&
             <div className="col position-relative d-flex flex-column">
-                <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                 <div className="fs-6 text-black mt-1 overflow-hidden">{ GetOfferName(activeOffer) }</div>
                 { groups.length === 0 && <div className="bg-muted text-center rounded p-1 text-black mt-auto">
                     { LocalizeText('catalog.guild_selector.members_only') }

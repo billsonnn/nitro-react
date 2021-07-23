@@ -5,6 +5,9 @@ export class NavigatorEvent extends NitroEvent
     public static SHOW_NAVIGATOR: string = 'NE_SHOW_NAVIGATOR';
     public static HIDE_NAVIGATOR: string = 'NE_HIDE_NAVIGATOR';
     public static TOGGLE_NAVIGATOR: string = 'NE_TOGGLE_NAVIGATOR';
+    public static TOGGLE_ROOM_INFO: string = 'NE_TOGGLE_ROOM_INFO';
+    public static TOGGLE_ROOM_LINK: string = 'NE_TOGGLE_ROOM_LINK';
+    public static TOGGLE_ROOM_SETTINGS: string = 'NE_TOGGLE_ROOM_SETTINGS';
 
     private _roomId: number;
     private _password: string;

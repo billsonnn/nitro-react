@@ -14,6 +14,9 @@ export class ChatBubbleMessage
     private _left: number = 0;
     
     constructor(
+        public senderId: number = -1,
+        public senderCategory: number = -1,
+        public roomId: number = -1,
         public text: string = '',
         public username: string = '',
         public location: INitroPoint = null,

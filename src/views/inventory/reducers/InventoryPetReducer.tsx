@@ -2,6 +2,7 @@ import { PetData } from 'nitro-renderer';
 import { Reducer } from 'react';
 import { PetItem } from '../common/PetItem';
 import { addSinglePetItem, processPetFragment, removePetItemById } from '../common/PetUtilities';
+import { IUnseenItemTracker } from '../common/unseen/IUnseenItemTracker';
 
 export interface IInventoryPetState
 {
@@ -19,6 +20,7 @@ export interface IInventoryPetAction
         petId?: number;
         petData?: PetData;
         fragment?: Map<number, PetData>;
+        unseenTracker?: IUnseenItemTracker;
     }
 }
 
@@ -62,7 +64,7 @@ export const InventoryPetReducer: Reducer<IInventoryPetState, IInventoryPetActio
         case InventoryPetActions.PROCESS_FRAGMENT: {
             const petItems = [ ...state.petItems ];
 
-            processPetFragment(petItems, (action.payload.fragment || null));
+            processPetFragment(petItems, (action.payload.fragment || null), (action.payload.unseenTracker || null));
 
             return { ...state, petItems };
         }

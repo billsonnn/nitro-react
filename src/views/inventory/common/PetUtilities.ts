@@ -4,6 +4,8 @@ import { InventoryEvent } from '../../../events';
 import { dispatchUiEvent } from '../../../hooks/events/ui/ui-event';
 import { getPlacingItemId, setObjectMoverRequested, setPlacingItemId } from './InventoryUtilities';
 import { PetItem } from './PetItem';
+import { IUnseenItemTracker } from './unseen/IUnseenItemTracker';
+import { UnseenItemCategory } from './unseen/UnseenItemCategory';
 
 export function cancelRoomObjectPlacement(): void
 {
@@ -75,7 +77,7 @@ function getAllItemIds(petItems: PetItem[]): number[]
     return itemIds;
 }
 
-export function processPetFragment(set: PetItem[], fragment: Map<number, PetData>): PetItem[]
+export function processPetFragment(set: PetItem[], fragment: Map<number, PetData>, unseenTracker: IUnseenItemTracker): PetItem[]
 {
     const existingIds = getAllItemIds(set);
     const addedIds: number[] = [];
@@ -95,7 +97,7 @@ export function processPetFragment(set: PetItem[], fragment: Map<number, PetData
 
         if(!parser) continue;
 
-        addSinglePetItem(parser, set, true);
+        addSinglePetItem(parser, set, unseenTracker.isUnseen(UnseenItemCategory.PET, parser.id));
     }
 
     return set;
@@ -135,6 +137,8 @@ export function addSinglePetItem(petData: PetData, set: PetItem[], unseen: boole
 
     if(unseen)
     {
+        petItem.isUnseen = true;
+        
         set.unshift(petItem);
     }
     else

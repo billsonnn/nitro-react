@@ -7,13 +7,12 @@ import { RoomWidgetCameraEvent } from '../../../../events/room-widgets/camera/Ro
 import { useCameraEvent } from '../../../../hooks/events/nitro/camera/camera-event';
 import { useUiEvent } from '../../../../hooks/events/ui/ui-event';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages/message-event';
-import { CameraWidgetViewProps } from './CameraWidgetView.types';
 import { CameraWidgetContextProvider } from './context/CameraWidgetContext';
 import { CameraWidgetCaptureView } from './views/capture/CameraWidgetCaptureView';
 import { CameraWidgetCheckoutView } from './views/checkout/CameraWidgetCheckoutView';
 import { CameraWidgetEditorView } from './views/editor/CameraWidgetEditorView';
 
-export const CameraWidgetView: FC<CameraWidgetViewProps> = props =>
+export const CameraWidgetView: FC<{}> = props =>
 {
     const [ effectsReady, setEffectsReady ] = useState(false);
    

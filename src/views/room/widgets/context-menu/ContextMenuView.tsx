@@ -1,23 +1,43 @@
-import { FixedSizeStack, Nitro } from 'nitro-renderer';
+import { FixedSizeStack, NitroPoint, NitroRectangle, RoomObjectType } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { GetRoomObjectBounds, GetRoomSession, GetTicker } from '../../../../api';
+import { GetNitroInstance, GetRoomEngine, GetRoomObjectBounds, GetRoomSession, GetTicker } from '../../../../api';
 import { ContextMenuViewProps } from './ContextMenuView.types';
 
+const LOCATION_STACK_SIZE: number = 25;
+const BUBBLE_DROP_SPEED: number = 3;
 const fadeDelay = 3000;
 const fadeLength = 75;
 const SPACE_AROUND_EDGES = 10;
 
 export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 {
-    const { objectId = -1, category = -1, fades = false, className = '', close = null, children = null } = props;
+    const { objectId = -1, category = -1, userType = -1, fades = false, className = '', close = null, children = null } = props;
     const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: null, y: null });
-    const [ stack, setStack ] = useState<FixedSizeStack>(null);
+    const [ deltaYStack, setDeltaYStack ] = useState<FixedSizeStack>(null);
+    const [ currentDeltaY, setCurrentDeltaY ] = useState(-1000000);
     const [ opacity, setOpacity ] = useState(1);
     const [ isFading, setIsFading ] = useState(false);
     const [ fadeTime, setFadeTime ] = useState(0);
+    const [ frozen, setFrozen ] = useState(false);
     const elementRef = useRef<HTMLDivElement>();
 
-    const update = useCallback((time: number) =>
+    const getOffset = useCallback((bounds: NitroRectangle) =>
+    {
+        let height = -(elementRef.current.offsetHeight);
+
+        if((userType > -1) && ((userType === RoomObjectType.USER) || (userType === RoomObjectType.BOT) || (userType === RoomObjectType.RENTABLE_BOT)))
+        {
+            height = (height + ((bounds.height > 50) ? 15 : 0));
+        }
+        else
+        {
+            height = (height - 14);
+        }
+
+        return height;
+    }, [ userType ]);
+
+    const updateFade = useCallback((time: number) =>
     {
         let newFadeTime = time;
         let newOpacity = 1;
@@ -37,48 +57,77 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
             {
                 close();
 
-                return;
+                return false;
             }
 
             setOpacity(newOpacity);
         }
 
+        return true;
+    }, [ isFading, close ]);
+
+    const updatePosition = useCallback((bounds: NitroRectangle, location: NitroPoint) =>
+    {
+        if(!bounds || !location || !deltaYStack) return;
+
+        const offset = getOffset(bounds);
+
+        deltaYStack.addValue((location.y - bounds.top));
+
+        let maxStack = deltaYStack.getMax();
+
+        if(maxStack < (currentDeltaY - BUBBLE_DROP_SPEED)) maxStack = (currentDeltaY - BUBBLE_DROP_SPEED);
+        
+        const deltaY = (location.y - maxStack);
+
+        let x = (location.x - (elementRef.current.offsetWidth / 2));
+        let y = (deltaY + offset);
+
+        const maxLeft = ((GetNitroInstance().width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
+        const maxTop = ((GetNitroInstance().height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
+
+        if(x < SPACE_AROUND_EDGES) x = SPACE_AROUND_EDGES;
+        else if(x > maxLeft) x = maxLeft;
+
+        if(y < SPACE_AROUND_EDGES) y = SPACE_AROUND_EDGES;
+        else if(y > maxTop) y = maxTop;
+
+        setCurrentDeltaY(maxStack);
+        setPos({ x, y });
+    }, [ deltaYStack, currentDeltaY, getOffset ]);
+
+    const update = useCallback((time: number) =>
+    {
+        if(!elementRef.current || !updateFade(time)) return;
+
         const bounds = GetRoomObjectBounds(GetRoomSession().roomId, objectId, category);
+        const location = GetRoomEngine().getRoomObjectScreenLocation(GetRoomSession().roomId, objectId, category);
 
-        if(!bounds || !elementRef.current) return;
-
-        let left = Math.round((bounds.left + (bounds.width / 2)) - (elementRef.current.offsetWidth / 2));
-        let top = Math.round((bounds.top - elementRef.current.offsetHeight) + 20);
-
-        const maxLeft = ((Nitro.instance.width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
-        const maxTop = ((Nitro.instance.height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
-
-        if(left < SPACE_AROUND_EDGES) left = SPACE_AROUND_EDGES;
-        else if(left > maxLeft) left = maxLeft;
-
-        if(top < SPACE_AROUND_EDGES) top = SPACE_AROUND_EDGES;
-        else if(top > maxTop) top = maxTop;
-
-        setPos({
-            x: left,
-            y: top
-        });
-    }, [ objectId, category, isFading, close ]);
+        updatePosition(bounds, location);
+    }, [ objectId, category, updateFade, updatePosition ]);
 
     useEffect(() =>
     {
-        setStack(new FixedSizeStack(25));
+        setDeltaYStack(new FixedSizeStack(LOCATION_STACK_SIZE));
+        setCurrentDeltaY(-1000000);
     }, []);
 
     useEffect(() =>
     {
-        GetTicker().add(update);
+        let added = false;
+
+        if(!frozen)
+        {
+            added = true;
+
+            GetTicker().add(update);
+        }
 
         return () =>
         {
-            GetTicker().remove(update);
+            if(added) GetTicker().remove(update);
         }
-    }, [ update ]);
+    }, [ frozen, update ]);
 
     useEffect(() =>
     {

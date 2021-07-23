@@ -1,5 +1,6 @@
-import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomZoomEvent } from 'nitro-renderer';
-import { GetConnection, GetRoomEngine, GetSessionDataManager } from '../../../api';
+import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomWidgetEnum, RoomZoomEvent } from 'nitro-renderer';
+import { GetRoomEngine, GetSessionDataManager } from '../../../api';
+import { SendMessageHook } from '../../../hooks/messages';
 import { RoomWidgetFloodControlEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetChatMessage, RoomWidgetChatSelectAvatarMessage, RoomWidgetChatTypingMessage, RoomWidgetMessage, RoomWidgetRequestWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
@@ -148,7 +149,7 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
                         case ':settings':
                             if(this.container.roomSession.isRoomOwner || GetSessionDataManager().isModerator)
                             {
-                                GetConnection().send(new RoomSettingsComposer(this.container.roomSession.roomId));
+                                SendMessageHook(new RoomSettingsComposer(this.container.roomSession.roomId));
                             }
 
                             return null;
@@ -175,9 +176,20 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
 
                 break;
             }
+            case RoomWidgetChatSelectAvatarMessage.MESSAGE_SELECT_AVATAR: {
+                const selectedEvent = (message as RoomWidgetChatSelectAvatarMessage);
+
+                GetRoomEngine().setSelectedAvatar(selectedEvent.roomId, selectedEvent.objectId);
+                break;
+            }
         }
 
         return null;
+    }
+
+    public get type(): string
+    {
+        return RoomWidgetEnum.CHAT_INPUT_WIDGET;
     }
 
     public get eventTypes(): string[]

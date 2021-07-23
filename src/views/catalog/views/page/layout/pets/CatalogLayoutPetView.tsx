@@ -4,10 +4,10 @@ import { GetProductDataForLocalization } from '../../../../../../api/nitro/sessi
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { PetImageView } from '../../../../../shared/pet-image/PetImageView';
-import { RoomPreviewerView } from '../../../../../shared/room-previewer/RoomPreviewerView';
 import { GetCatalogPageImage, GetCatalogPageText, GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogActions } from '../../../../reducers/CatalogReducer';
+import { CatalogRoomPreviewerView } from '../../../catalog-room-previewer/CatalogRoomPreviewerView';
 import { CatalogLayoutPetViewProps } from './CatalogLayoutPetView.types';
 import { CatalogLayoutPetPurchaseView } from './purchase/CatalogLayoutPetPurchaseView';
 
@@ -169,12 +169,12 @@ export const CatalogLayoutPetView: FC<CatalogLayoutPetViewProps> = props =>
                 </div> }
             { (petIndex >= 0) &&
                 <div className="position-relative d-flex flex-column col-5">
-                    <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 }>
+                    <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 }>
                         { (petIndex > -1 && petIndex <= 7) &&
                             <button type="button" className= { 'btn btn-primary btn-sm color-button ' + (colorsShowing ? 'active ' : '') } onClick={ event => setColorsShowing(!colorsShowing) }>
                                 <i className="fas fa-fill-drip" />
                             </button> }
-                    </RoomPreviewerView>
+                    </CatalogRoomPreviewerView>
                     <div className="fs-6 text-black mt-1 overflow-hidden">{ petBreedName }</div>
                     <CatalogLayoutPetPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ petPurchaseString } />
                 </div> }

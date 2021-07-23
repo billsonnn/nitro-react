@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { LimitedEditionCompletePlateView } from '../../../../../shared/limited-edition/complete-plate/LimitedEditionCompletePlateView';
-import { RoomPreviewerView } from '../../../../../shared/room-previewer/RoomPreviewerView';
 import { GetCatalogPageImage, GetCatalogPageText, GetOfferName } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
+import { CatalogRoomPreviewerView } from '../../../catalog-room-previewer/CatalogRoomPreviewerView';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
 import { CatalogPurchaseView } from '../../purchase/CatalogPurchaseView';
 import { CatalogLayoutDefaultViewProps } from './CatalogLayoutDefaultView.types';
@@ -29,7 +29,7 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutDefaultViewProps> = props
                 </div> }
             { product &&
                 <div className="position-relative d-flex flex-column col-5">
-                    <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                    <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                     { product.uniqueLimitedItem &&
                         <LimitedEditionCompletePlateView uniqueLimitedItemsLeft={ product.uniqueLimitedItemsLeft } uniqueLimitedSeriesSize={ product.uniqueLimitedSeriesSize } /> }
                     <div className="fs-6 text-black mt-1 overflow-hidden">{ GetOfferName(activeOffer) }</div>

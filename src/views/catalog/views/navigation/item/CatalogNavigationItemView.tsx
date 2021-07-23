@@ -1,5 +1,5 @@
+import { CatalogPageComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetCatalogPageComposer } from '../../../../../api/catalog/GetCatalogPageComposer';
 import { SendMessageHook } from '../../../../../hooks/messages/message-event';
 import { CatalogMode } from '../../../CatalogView.types';
 import { CatalogIconView } from '../../catalog-icon/CatalogIconView';
@@ -17,7 +17,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
 
         setIsExpanded(true);
 
-        SendMessageHook(GetCatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
+        SendMessageHook(new CatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
     }, [ isActive, page ]);
 
     const select = useCallback(() =>
@@ -28,7 +28,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
             {
                 if(prevValue === page)
                 {
-                    SendMessageHook(GetCatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
+                    SendMessageHook(new CatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
                 }
                 
                 return page;
@@ -44,7 +44,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
     }, [ page, setActiveChild ]);
     
     return (
-        <div className="col pe-1 pb-1 catalog-navigation-item-container">
+        <div className="col pb-1 catalog-navigation-item-container">
             <div className={ 'd-flex align-items-center cursor-pointer catalog-navigation-item ' + (isActive ? 'active ': '') } onClick={ select }>
                 <CatalogIconView icon={ page.icon } />
                 <div className="flex-grow-1 text-black text-truncate px-1">{ page.localization }</div>

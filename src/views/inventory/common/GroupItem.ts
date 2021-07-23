@@ -20,21 +20,42 @@ export class GroupItem
     private _hasUnseenItems: boolean;
     private _items: FurnitureItem[];
 
-    constructor(type: number, category: number, roomEngine: IRoomEngine, stuffData: IObjectData, extra: number)
+    constructor(type: number = -1, category: number = -1, roomEngine: IRoomEngine = null, stuffData: IObjectData = null, extra: number = -1)
     {
-        this._type              = type;
-        this._category          = category;
-        this._roomEngine        = roomEngine;
-        this._stuffData         = stuffData;
-        this._extra             = extra;
-        this._isWallItem        = false;
-        this._iconUrl           = null;
-        this._name              = null;
-        this._description       = null;
-        this._locked            = false;
-        this._selected          = false;
-        this._hasUnseenItems    = false;
-        this._items             = [];
+        this._type = type;
+        this._category = category;
+        this._roomEngine = roomEngine;
+        this._stuffData = stuffData;
+        this._extra = extra;
+        this._isWallItem = false;
+        this._iconUrl = null;
+        this._name = null;
+        this._description = null;
+        this._locked = false;
+        this._selected = false;
+        this._hasUnseenItems = false;
+        this._items = [];
+    }
+
+    public clone(): GroupItem
+    {
+        const groupItem = new GroupItem();
+
+        groupItem._type = this._type;
+        groupItem._category = this._category;
+        groupItem._roomEngine = this._roomEngine;
+        groupItem._stuffData = this._stuffData;
+        groupItem._extra = this._extra;
+        groupItem._isWallItem = this._isWallItem;
+        groupItem._iconUrl = this._iconUrl;
+        groupItem._name = this._name;
+        groupItem._description = this._description;
+        groupItem._locked = this._locked;
+        groupItem._selected = this._selected;
+        groupItem._hasUnseenItems = this._hasUnseenItems;
+        groupItem._items = this._items;
+
+        return groupItem;
     }
 
     public prepareGroup(): void
@@ -96,7 +117,7 @@ export class GroupItem
         return items;
     }
 
-    public push(item: FurnitureItem, unseen: boolean = false): void
+    public push(item: FurnitureItem): void
     {
         const items = [ ...this._items ];
 
@@ -251,11 +272,12 @@ export class GroupItem
         this._items = items;
     }
 
-    public lockItemIds(itemIds: number[]): void
+    public lockItemIds(itemIds: number[]): boolean
     {
         const items = [ ...this._items ];
 
         let index = 0;
+        let updated = false;
 
         while(index < items.length)
         {
@@ -264,6 +286,8 @@ export class GroupItem
 
             if(item.locked !== locked)
             {
+                updated = true;
+
                 const newItem = item.clone();
 
                 newItem.locked = locked;
@@ -275,6 +299,8 @@ export class GroupItem
         }
 
         this._items = items;
+
+        return updated;
     }
 
     private setName(): void

@@ -1,5 +1,6 @@
-import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, IAvatarFigureContainer, Nitro, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from 'nitro-renderer';
+import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, IAvatarFigureContainer, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from 'nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import { GetNitroInstance } from '../../../../../api';
 import { GetRoomEngine } from '../../../../../api/nitro/room/GetRoomEngine';
 import { GetRoomSession } from '../../../../../api/nitro/session/GetRoomSession';
 import { GetSessionDataManager } from '../../../../../api/nitro/session/GetSessionDataManager';
@@ -10,8 +11,8 @@ import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
+import { MannequinViewMode } from './common/MannequinViewMode';
 import { FurnitureMannequinData } from './FurnitureMannequinData';
-import { FurnitureMannequinViewMode, FurnitureMannequinViewProps } from './FurnitureMannequinView.types';
 
 const parts = [
     AvatarFigurePartType.CHEST_ACCESSORY,
@@ -23,7 +24,7 @@ const parts = [
 ];
 const baseAvatar = ['hd', 99999, 99998];
 
-export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
+export const FurnitureMannequinView: FC<{}> = props =>
 {
     const { eventDispatcher = null } = useRoomContext();
         
@@ -49,7 +50,7 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
     {
         if(mannequinData && !mannequinData.renderedFigure)
         {
-            const figureContainer = Nitro.instance.avatar.createFigureContainer(mannequinData.figure);
+            const figureContainer = GetNitroInstance().avatar.createFigureContainer(mannequinData.figure);
             loadMannequinFigure(figureContainer);
         }
     }, [loadMannequinFigure, mannequinData]);
@@ -59,12 +60,12 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
         if(!mannequinData) return;
         
         const userCanEdit       = (GetRoomSession().isRoomOwner || GetSessionDataManager().isModerator);
-        const userGender        = Nitro.instance.sessionDataManager.gender;
-        const userClubLevel     = Nitro.instance.sessionDataManager.clubLevel;
+        const userGender        = GetNitroInstance().sessionDataManager.gender;
+        const userClubLevel     = GetNitroInstance().sessionDataManager.clubLevel;
 
         if(userCanEdit)
         {
-            setViewMode(FurnitureMannequinViewMode.EDIT);
+            setViewMode(MannequinViewMode.EDIT);
         }
         else
         {
@@ -72,15 +73,15 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
 
             if(userGender.toUpperCase() !== mannequinData.gender.toUpperCase())
             {
-                setViewMode(FurnitureMannequinViewMode.INCOMPATIBLE_GENDER);
+                setViewMode(MannequinViewMode.INCOMPATIBLE_GENDER);
             }
             else if(userClubLevel < mannequinData.clubLevel)
             {
-                setViewMode(FurnitureMannequinViewMode.CLUB);
+                setViewMode(MannequinViewMode.CLUB);
             }
             else
             {
-                setViewMode(FurnitureMannequinViewMode.DEFAULT);
+                setViewMode(MannequinViewMode.DEFAULT);
             }
         }
     }, []);
@@ -100,8 +101,8 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
                 const gender            = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_MANNEQUIN_GENDER);
                 const name              = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_MANNEQUIN_NAME);
 
-                const figureContainer   = Nitro.instance.avatar.createFigureContainer(figure);
-                const clubLevel         = Nitro.instance.avatar.getFigureClubLevel(figureContainer, gender, parts);
+                const figureContainer   = GetNitroInstance().avatar.createFigureContainer(figure);
+                const clubLevel         = GetNitroInstance().avatar.getFigureClubLevel(figureContainer, gender, parts);
                 
                 const mannequinData     = new FurnitureMannequinData(widgetEvent.objectId, widgetEvent.category, name, figure, gender, clubLevel);
                 
@@ -137,12 +138,12 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
                 setMannequinData(mannequinData => new FurnitureMannequinData(mannequinData.objectId, mannequinData.category, value, mannequinData.figure, mannequinData.gender, mannequinData.clubLevel, mannequinData.renderedFigure));
                 return;
             case 'load_figure':
-                loadMannequinFigure(Nitro.instance.avatar.createFigureContainer(Nitro.instance.sessionDataManager.figure));
-                setViewMode(FurnitureMannequinViewMode.SAVE);
+                loadMannequinFigure(GetNitroInstance().avatar.createFigureContainer(GetNitroInstance().sessionDataManager.figure));
+                setViewMode(MannequinViewMode.SAVE);
                 return;
             case 'back':
-                loadMannequinFigure(Nitro.instance.avatar.createFigureContainer(mannequinData.figure));
-                setViewMode(FurnitureMannequinViewMode.EDIT);
+                loadMannequinFigure(GetNitroInstance().avatar.createFigureContainer(mannequinData.figure));
+                setViewMode(MannequinViewMode.EDIT);
                 return;
             case 'save_name':
                 GetRoomSession().connection.send(new FurnitureMannequinSaveNameComposer(mannequinData.objectId, mannequinData.name));
@@ -178,39 +179,38 @@ export const FurnitureMannequinView: FC<FurnitureMannequinViewProps> = props =>
                             <AvatarImageView figure={ mannequinData.renderedFigure } direction={ 2 } />
                         </div>
                     </div>
-                    <div className="col">
-                        { viewMode === FurnitureMannequinViewMode.EDIT && <>
-                            <input type="text" className="form-control mb-2" value={ mannequinData.name }  onChange={ event => processAction('set_name', event.target.value) } onKeyDown={ event => handleKeyDown(event) } /> 
-                            <div className="btn btn-success mb-2 w-100" onClick={ event => processAction('load_figure') }>{ LocalizeText('mannequin.widget.style') }</div>
-                            <div className="btn btn-success w-100" onClick={ event => processAction('wear') }>{ LocalizeText('mannequin.widget.wear') }</div>
-                        </> }
-                        { viewMode === FurnitureMannequinViewMode.SAVE && <>
-                            <div className="d-flex flex-column h-100">
+                    <div className="d-flex flex-column justify-content-between col">
+                        { viewMode === MannequinViewMode.DEFAULT &&
+                            <>
                                 <div className="h-100">
-                                    <div className="mb-2 text-black fw-bold">{ mannequinData.name }</div>
-                                    <div className="text-black">{ LocalizeText('mannequin.widget.savetext') }</div>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <div className="text-black text-decoration-underline" onClick={ event => processAction('back') }>{ LocalizeText('mannequin.widget.back') }</div>
-                                    <div className="btn btn-success" onClick={ event => processAction('save_figure') }>{ LocalizeText('mannequin.widget.save') }</div>
-                                </div>
-                            </div>
-                        </> }
-                        { viewMode === FurnitureMannequinViewMode.DEFAULT && <>
-                            <div className="d-flex flex-column h-100">
-                                <div className="h-100">
-                                    <div className="mb-2 text-black fw-bold">{ mannequinData.name }</div>
+                                    <div className="mb-1 text-black fw-bold">{ mannequinData.name }</div>
                                     <div className="text-black">{ LocalizeText('mannequin.widget.weartext') }</div>
                                 </div>
                                 <div className="btn btn-success float-end" onClick={ event => processAction('wear') }>{ LocalizeText('mannequin.widget.wear') }</div>
-                            </div>
-                        </> }
-                        { viewMode === FurnitureMannequinViewMode.CLUB && <>
-                            <div className="text-black">{ LocalizeText('mannequin.widget.clubnotification') }</div>
-                        </> }
-                        { viewMode === FurnitureMannequinViewMode.INCOMPATIBLE_GENDER && <>
-                            <div className="text-black">{ LocalizeText('mannequin.widget.wronggender') }</div>
-                        </> }
+                                </> }
+                        { viewMode === MannequinViewMode.EDIT &&
+                            <>
+                                <input type="text" className="form-control mb-2" value={ mannequinData.name }  onChange={ event => processAction('set_name', event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
+                                <div className="d-flex flex-column w-100">
+                                    <div className="btn btn-success mb-2 w-100" onClick={ event => processAction('load_figure') }>{ LocalizeText('mannequin.widget.style') }</div>
+                                    <div className="btn btn-success w-100" onClick={ event => processAction('wear') }>{ LocalizeText('mannequin.widget.wear') }</div>
+                                </div>
+                            </> }
+                        { viewMode === MannequinViewMode.SAVE &&
+                            <>
+                                <div className="h-100">
+                                    <div className="mb-1 text-black fw-bold">{ mannequinData.name }</div>
+                                    <div className="text-black">{ LocalizeText('mannequin.widget.savetext') }</div>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <div className="text-black text-decoration-underline cursor-pointer" onClick={ event => processAction('back') }>{ LocalizeText('mannequin.widget.back') }</div>
+                                    <div className="btn btn-success" onClick={ event => processAction('save_figure') }>{ LocalizeText('mannequin.widget.save') }</div>
+                                </div>
+                            </> }
+                        { viewMode === MannequinViewMode.CLUB &&
+                            <div className="text-black">{ LocalizeText('mannequin.widget.clubnotification') }</div> }
+                        { viewMode === MannequinViewMode.INCOMPATIBLE_GENDER &&
+                            <div className="text-black">{ LocalizeText('mannequin.widget.wronggender') }</div> }
                     </div>
                 </div>
             </NitroCardContentView>

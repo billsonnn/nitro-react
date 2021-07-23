@@ -19,7 +19,7 @@
     "avatar.asset.url": "${asset.url}/bundled/figure/%libname%.nitro",
     "avatar.asset.effect.url": "${asset.url}/bundled/effect/%libname%.nitro",
     "furni.extras.url": "${asset.url}/images/furniextras/%image%.png",
-    "url.prefix": "",
+    "url.prefix": "http://localhost:3000",
     "chat.viewer.height.percentage": 0.40,
     "auth.system.enabled": true,
     "auth.system.http.enabled": true,
@@ -1169,6 +1169,7 @@
         "${images.url}/additions/number_3.png",
         "${images.url}/additions/number_4.png",
         "${images.url}/additions/number_5.png",
+        "${images.url}/additions/pet_experience_bubble.png",
         "${images.url}/loading_icon.png",
         "${images.url}/clear_icon.png",
         "${images.url}/big_arrow.png"

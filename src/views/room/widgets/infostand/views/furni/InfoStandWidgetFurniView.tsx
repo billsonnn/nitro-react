@@ -3,6 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { LimitedEditionCompactPlateView } from '../../../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
+import { RarityLevelView } from '../../../../../shared/rarity-level/RarityLevelView';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { RoomWidgetFurniActionMessage } from '../../../../messages';
 import { InfoStandBaseView } from '../base/InfoStandBaseView';
@@ -180,8 +181,12 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
             <InfoStandBaseView headerText={ furniData.name } onCloseClick={ close }>
                 <div className="position-relative w-100">
                     { furniData.stuffData.isUnique &&
-                        <div className="position-absolute r-0">
+                        <div className="position-absolute end-0">
                             <LimitedEditionCompactPlateView uniqueNumber={ furniData.stuffData.uniqueNumber } uniqueSeries={ furniData.stuffData.uniqueSeries } />
+                        </div> }
+                    { (furniData.stuffData.rarityLevel > -1) &&
+                        <div className="position-absolute end-0">
+                            <RarityLevelView level={ furniData.stuffData.rarityLevel } />
                         </div> }
                     { furniData.image.src.length && 
                         <img className="d-block mx-auto" src={ furniData.image.src } alt="" /> }

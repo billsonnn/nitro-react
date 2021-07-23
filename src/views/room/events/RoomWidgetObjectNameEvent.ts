@@ -10,9 +10,9 @@ export class RoomWidgetObjectNameEvent extends RoomWidgetUpdateEvent
     private _name: string;
     private _userType: number;
 
-    constructor(roomIndex: number, category: number, id: number, name: string, userType: number)
+    constructor(type: string, roomIndex: number, category: number, id: number, name: string, userType: number)
     {
-        super(RoomWidgetObjectNameEvent.TYPE);
+        super(type);
 
         this._roomIndex = roomIndex;
         this._category = category;

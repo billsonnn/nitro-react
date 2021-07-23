@@ -1,11 +1,14 @@
-import { Nitro, RoomSessionEvent } from 'nitro-renderer';
+import { RoomSessionEvent } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { GetCommunication } from '../../api';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
+import { AchievementsView } from '../achievements/AchievementsView';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CatalogView } from '../catalog/CatalogView';
 import { FriendListView } from '../friend-list/FriendListView';
 import { HotelView } from '../hotel-view/HotelView';
 import { InventoryView } from '../inventory/InventoryView';
+import { ModToolsView } from '../mod-tools/ModToolsView';
 import { NavigatorView } from '../navigator/NavigatorView';
 import { NotificationCenterView } from '../notification-center/NotificationCenterView';
 import { RightSideView } from '../right-side/RightSideView';
@@ -39,16 +42,18 @@ export const MainView: FC<MainViewProps> = props =>
     {
         setIsReady(true);
 
-        Nitro.instance.communication.connection.onReady();
+        GetCommunication().connection.onReady();
     }, []);
 
     return (
         <div className="nitro-main">
             { landingViewVisible && <HotelView /> }
             <ToolbarView isInRoom={ !landingViewVisible } />
+            <ModToolsView />
             <RoomHostView />
             <WiredView />
             <AvatarEditorView />
+            <AchievementsView />
             <NavigatorView />
             <InventoryView />
             <CatalogView />

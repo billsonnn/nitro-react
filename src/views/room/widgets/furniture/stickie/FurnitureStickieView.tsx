@@ -9,9 +9,8 @@ import { useRoomContext } from '../../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureStickieData } from './FurnitureStickieData';
 import { getStickieColorName, STICKIE_COLORS } from './FurnitureStickieUtils';
-import { FurnitureStickieViewProps } from './FurnitureStickieView.types';
 
-export const FurnitureStickieView: FC<FurnitureStickieViewProps> = props =>
+export const FurnitureStickieView: FC<{}> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ stickieData, setStickieData ] = useState<FurnitureStickieData>(null);
@@ -122,9 +121,9 @@ export const FurnitureStickieView: FC<FurnitureStickieViewProps> = props =>
                         { stickieData.canModify && 
                         <>
                             <div className="nitro-stickie-image stickie-trash header-trash" onClick={ event => processAction('trash') }></div>
-                            { STICKIE_COLORS.map((color, index) =>
+                            { STICKIE_COLORS.map(color =>
                                 {
-                                    return <div className="stickie-color ms-1" key={ index } onClick={ event => processAction('changeColor', color) } style={ {backgroundColor: ColorUtils.makeColorHex(color) } } />
+                                    return <div key={ color } className="stickie-color ms-1" onClick={ event => processAction('changeColor', color) } style={ {backgroundColor: ColorUtils.makeColorHex(color) } } />
                                 })}
                         </> }
                     </div>

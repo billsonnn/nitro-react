@@ -8,9 +8,8 @@ import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureExchangeCreditData } from './FurnitureExchangeCreditData';
-import { FurnitureExchangeCreditProps } from './FurnitureExchangeCreditView.types';
 
-export const FurnitureExchangeCreditView: FC<FurnitureExchangeCreditProps> = props =>
+export const FurnitureExchangeCreditView: FC<{}> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ exchangeCreditData, setExchangeCreditData ] = useState<FurnitureExchangeCreditData>(null);

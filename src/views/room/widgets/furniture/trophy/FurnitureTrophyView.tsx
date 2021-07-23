@@ -8,9 +8,8 @@ import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureTrophyData } from './FurnitureTrophyData';
-import { FurnitureTrophyViewProps } from './FurnitureTrophyView.types';
 
-export const FurnitureTrophyView: FC<FurnitureTrophyViewProps> = props =>
+export const FurnitureTrophyView: FC<{}> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ trophyData, setTrophyData ] = useState<FurnitureTrophyData>(null);

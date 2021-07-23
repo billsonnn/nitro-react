@@ -1,20 +1,28 @@
-import { NitroEvent, RoomControllerLevel, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from 'nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { ApplyTonerComposer, RoomControllerLevel, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from 'nitro-renderer';
+import { FC, useCallback, useEffect, useState } from 'react';
+import ReactSlider from 'react-slider';
 import { GetRoomEngine, GetSessionDataManager } from '../../../../../api';
+import { SendMessageHook } from '../../../../../hooks';
 import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../../../../hooks/events';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../context/RoomContext';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
+import { RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateBackgroundColorPreviewEvent } from '../../../events';
 
 export const FurnitureBackgroundColorView: FC<{}> = props =>
 {
-    const [ furniId, setFurniId ] = useState(-1);
     const [ objectId, setObjectId ] = useState(-1);
     const [ hue, setHue ] = useState(0);
     const [ saturation, setSaturation ] = useState(0);
-    const [ light, setLight ] = useState(0);
+    const [ lightness, setLightness ] = useState(0);
     const { roomSession = null, eventDispatcher = null } = useRoomContext();
+
+    const close = useCallback(() =>
+    {
+        eventDispatcher.dispatchEvent(new RoomWidgetUpdateBackgroundColorPreviewEvent(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW));
+
+        setObjectId(-1);
+    }, [ eventDispatcher ]);
 
     const canOpenBackgroundToner = useCallback(() =>
     {
@@ -25,49 +33,98 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
         return (isRoomOwner || hasLevel || isGodMode);
     }, [ roomSession ]);
 
-    const onNitroEvent = useCallback((event: NitroEvent) =>
+    const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
         switch(event.type)
         {
             case RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR: {
                 if(!canOpenBackgroundToner()) return;
-
-                const roomEngineObjectEvent = (event as RoomEngineObjectEvent);
-                const roomObject = GetRoomEngine().getRoomObject(roomEngineObjectEvent.roomId, roomEngineObjectEvent.objectId, roomEngineObjectEvent.category);
+                
+                const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
                 const model = roomObject.model;
                 
-                setFurniId(roomObject.id);
-                setObjectId(roomObject.instanceId);
-                setHue(parseInt(model.getValue(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_HUE)));
-                setSaturation(parseInt(model.getValue(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_SATURATION)));
-                setLight(parseInt(model.getValue(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_LIGHTNESS)));
+                setObjectId(roomObject.id);
+                setHue(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_HUE)));
+                setSaturation(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_SATURATION)));
+                setLightness(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_LIGHTNESS)));
                 
                 return;
             }
             case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED: {
-                const widgetEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+                if(objectId !== event.objectId) return;
 
-                setObjectId(prevValue =>
-                    {
-                        if(prevValue === widgetEvent.id) return null;
-
-                        return prevValue;
-                    });
+                close();
                 return;
             }
         }
-    }, [ canOpenBackgroundToner ]);
+    }, [ objectId, canOpenBackgroundToner, close ]);
 
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onNitroEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, onRoomEngineObjectEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onRoomEngineObjectEvent);
+
+    const processAction = useCallback((name: string) =>
+    {
+        switch(name)
+        {
+            case 'apply':
+                SendMessageHook(new ApplyTonerComposer(objectId, hue, saturation, lightness));
+                break;
+            case 'toggle':
+                roomSession.useMultistateItem(objectId);
+                break;
+        }
+    }, [ roomSession, objectId, hue, saturation, lightness ]);
+
+    useEffect(() =>
+    {
+        if(objectId === -1) return;
+        
+        eventDispatcher.dispatchEvent(new RoomWidgetUpdateBackgroundColorPreviewEvent(RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW, hue, saturation, lightness));
+    }, [ eventDispatcher, objectId, hue, saturation, lightness ]);
 
     if(objectId === -1) return null;
 
     return (
-        <NitroCardView simple={ true }>
-            <NitroCardHeaderView headerText={ LocalizeText('widget.backgroundcolor.title') } onCloseClick={ event => setObjectId(-1) } />
+        <NitroCardView>
+            <NitroCardHeaderView headerText={ LocalizeText('widget.backgroundcolor.title') } onCloseClick={ close } />
             <NitroCardContentView>
-                background toner
+                <div className="form-group">
+                    <label className="fw-bold text-black">{ LocalizeText('widget.backgroundcolor.hue') }</label>
+                    <ReactSlider
+                        className={ 'nitro-slider' }
+                        min={ 0 }
+                        max={ 360 }
+                        value={ hue }
+                        onChange={ event => setHue(event) }
+                        thumbClassName={ 'thumb degree' }
+                        renderThumb={ (props, state) => <div {...props}>{ state.valueNow }</div> } />
+                </div>
+                <div className="form-group">
+                    <label className="fw-bold text-black">{ LocalizeText('widget.backgroundcolor.saturation') }</label>
+                    <ReactSlider
+                        className={ 'nitro-slider' }
+                        min={ 0 }
+                        max={ 100 }
+                        value={ saturation }
+                        onChange={ event => setSaturation(event) }
+                        thumbClassName={ 'thumb percent' }
+                        renderThumb={ (props, state) => <div {...props}>{ state.valueNow }</div> } />
+                </div>
+                <div className="form-group mb-2">
+                    <label className="fw-bold text-black">{ LocalizeText('widget.backgroundcolor.lightness') }</label>
+                    <ReactSlider
+                        className={ 'nitro-slider' }
+                        min={ 0 }
+                        max={ 100 }
+                        value={ lightness }
+                        onChange={ event => setLightness(event) }
+                        thumbClassName={ 'thumb percent' }
+                        renderThumb={ (props, state) => <div {...props}>{ state.valueNow }</div> } />
+                </div>
+                <div className="d-flex form-group justify-content-between align-items-center">
+                    <button type="button" className="btn btn-primary" onClick={ event => processAction('toggle') }>{ LocalizeText('widget.backgroundcolor.button.on') }</button>
+                    <button type="button" className="btn btn-primary" onClick={ event => processAction('apply') }>{ LocalizeText('widget.backgroundcolor.button.apply') }</button>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
     );

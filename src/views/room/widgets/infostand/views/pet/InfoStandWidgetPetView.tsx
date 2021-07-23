@@ -14,7 +14,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
         <InfoStandBaseView headerText={ <>{ petData.name }<br />{ LocalizeText('pet.breed.' + petData.petType + '.' + petData.petBreed) }</> } onCloseClick={ close }>
             <div className="d-flex">
                 <div className="body-image pet w-100">
-                    <PetImageView typeId={ petData.petType } paletteId={ petData.petBreed } color={ petData.petFigure.color } posture={ petData.posture } direction={ 4 } />
+                    <PetImageView figure={ petData.petFigure } posture={ petData.posture } direction={ 4 } />
                 </div>
                 <div className="w-100 d-flex flex-column align-items-center">
                     <div className="small text-center mb-1">{ LocalizeText('pet.level', ['level', 'maxlevel'], [petData.level.toString(), petData.maximumLevel.toString()]) }</div>

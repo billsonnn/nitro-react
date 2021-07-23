@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { LimitedEditionCompletePlateView } from '../../../../shared/limited-edition/complete-plate/LimitedEditionCompletePlateView';
-import { RoomPreviewerView } from '../../../../shared/room-previewer/RoomPreviewerView';
 import { GetOfferName } from '../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../context/CatalogContext';
+import { CatalogRoomPreviewerView } from '../../catalog-room-previewer/CatalogRoomPreviewerView';
 import { CatalogPurchaseView } from '../purchase/CatalogPurchaseView';
 import { CatalogLayoutSearchResultViewProps } from './CatalogLayoutSearchResultView.types';
 import { CatalogSearchResultOffersView } from './offers/CatalogSearchResultOffersView';
@@ -22,7 +22,7 @@ export const CatalogLayoutSearchResultView: FC<CatalogLayoutSearchResultViewProp
             </div>
             { product &&
                 <div className="position-relative d-flex flex-column col">
-                    <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                    <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                     { product.uniqueLimitedItem &&
                         <LimitedEditionCompletePlateView uniqueLimitedItemsLeft={ product.uniqueLimitedItemsLeft } uniqueLimitedSeriesSize={ product.uniqueLimitedSeriesSize } /> }
                     <div className="fs-6 text-black mt-1 overflow-hidden">{ GetOfferName(activeOffer) }</div>

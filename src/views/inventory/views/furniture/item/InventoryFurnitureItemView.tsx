@@ -1,6 +1,6 @@
 import { MouseEventType } from 'nitro-renderer';
-import { FC, MouseEvent, useCallback, useState } from 'react';
-import { LimitedEditionStyledNumberView } from '../../../../shared/limited-edition/styled-number/LimitedEditionStyledNumberView';
+import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
+import { NitroCardGridItemView } from '../../../../../layout/card/grid/item/NitroCardGridItemView';
 import { attemptItemPlacement } from '../../../common/FurnitureUtilities';
 import { useInventoryContext } from '../../../context/InventoryContext';
 import { InventoryFurnitureActions } from '../../../reducers/InventoryFurnitureReducer';
@@ -10,6 +10,7 @@ export const InventoryFurnitureItemView: FC<InventoryFurnitureItemViewProps> = p
 {
     const { groupItem } = props;
     const { furnitureState, dispatchFurnitureState } = useInventoryContext();
+    const { tradeData = null } = furnitureState;
     const [ isMouseDown, setMouseDown ] = useState(false);
     const isActive = (furnitureState.groupItem === groupItem);
 
@@ -36,18 +37,14 @@ export const InventoryFurnitureItemView: FC<InventoryFurnitureItemViewProps> = p
         }
     }, [ isActive, isMouseDown, groupItem, dispatchFurnitureState ]);
 
-    const imageUrl = `url(${ groupItem.iconUrl })`;
+    useEffect(() =>
+    {
+        if(!isActive) return;
 
-    return (
-        <div className="col pe-1 pb-1 inventory-furniture-item-container">
-            <div className={ 'position-relative border border-2 rounded inventory-furniture-item cursor-pointer ' + (isActive ? 'active ' : '') + (groupItem.stuffData.isUnique ? 'unique-item ' : '') } style={ { backgroundImage: imageUrl }} onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
-                {groupItem.getUnlockedCount() > 1 &&
-                    <span className="position-absolute badge border bg-danger px-1 rounded-circle">{groupItem.getUnlockedCount()}</span> }
-                { groupItem.stuffData.isUnique && 
-                    <div className="position-absolute unique-item-counter">
-                        <LimitedEditionStyledNumberView value={ groupItem.stuffData.uniqueNumber } />
-                    </div> }
-            </div>
-        </div>
-    );
+        groupItem.hasUnseenItems = false;
+    }, [ isActive, groupItem ]);
+
+    const count = groupItem.getUnlockedCount();
+
+    return <NitroCardGridItemView className={ !count ? 'opacity-0-5 ' : '' } itemImage={ groupItem.iconUrl } itemCount={ count } itemActive={ isActive } itemUnique={ groupItem.stuffData.isUnique } itemUniqueNumber={ groupItem.stuffData.uniqueNumber } itemUnseen={ groupItem.hasUnseenItems } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent } />;
 }

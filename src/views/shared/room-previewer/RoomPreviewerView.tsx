@@ -1,5 +1,6 @@
-import { ColorConverter, IRoomRenderingCanvas, Nitro } from 'nitro-renderer';
-import { createRef, FC, useCallback, useEffect, useState } from 'react';
+import { ColorConverter, IRoomRenderingCanvas, TextureUtils } from 'nitro-renderer';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { GetNitroInstance } from '../../../api';
 import { RoomPreviewerViewProps } from './RoomPreviewerView.types';
 
 export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
@@ -8,7 +9,7 @@ export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 
     const [ renderingCanvas, setRenderingCanvas ] = useState<IRoomRenderingCanvas>(null);
 
-    const elementRef = createRef<HTMLDivElement>();
+    const elementRef = useRef<HTMLDivElement>();
 
     const update = useCallback((time: number) =>
     {
@@ -18,7 +19,7 @@ export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 
         if(!renderingCanvas.canvasUpdated) return;
 
-        elementRef.current.style.backgroundImage = `url(${ Nitro.instance.renderer.extract.base64(renderingCanvas.master) })`;
+        elementRef.current.style.backgroundImage = `url(${ TextureUtils.generateImageUrl(renderingCanvas.master) })`;
     }, [ roomPreviewer, renderingCanvas, elementRef ]);
 
     const setupPreviewer = useCallback(() =>
@@ -56,7 +57,7 @@ export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 
         if(!renderingCanvas) setupPreviewer();
 
-        Nitro.instance.ticker.add(update);
+        GetNitroInstance().ticker.add(update);
 
         function resize(): void
         {
@@ -76,7 +77,7 @@ export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 
         return () =>
         {
-            Nitro.instance.ticker.remove(update);
+            GetNitroInstance().ticker.remove(update);
 
             window.removeEventListener('resize', resize);
         }

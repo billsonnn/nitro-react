@@ -1,6 +1,8 @@
 import { AvatarAction, AvatarExpressionEnum, RoomObjectCategory } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, HasHabboClub, HasHabboVip, IsRidingHorse } from '../../../../../../api';
+import { AvatarEditorEvent } from '../../../../../../events';
+import { dispatchUiEvent } from '../../../../../../hooks';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
 import { useRoomContext } from '../../../../context/RoomContext';
@@ -43,6 +45,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         setIsDecorating(true);
                         break;
                     case 'change_looks':
+                        dispatchUiEvent(new AvatarEditorEvent(AvatarEditorEvent.SHOW_EDITOR));
                         break;
                     case 'expressions':
                         hideMenu = false;
@@ -105,12 +108,16 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
     const isRidingHorse = IsRidingHorse();
 
     return (
-        <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } close={ close }>
+        <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ userData.userType } close={ close }>
             <ContextMenuHeaderView>
                 { userData.name }
             </ContextMenuHeaderView>
             { (mode === MODE_NORMAL) &&
                 <>
+                    { userData.allowNameChange &&
+                        <ContextMenuListItemView onClick={ event => processAction('change_name') }>
+                            { LocalizeText('widget.avatar.change_name') }
+                        </ContextMenuListItemView> }
                     <ContextMenuListItemView onClick={ event => processAction('decorate') }>
                         { LocalizeText('widget.avatar.decorate') }
                     </ContextMenuListItemView>

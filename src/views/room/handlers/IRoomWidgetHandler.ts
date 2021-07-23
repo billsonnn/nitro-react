@@ -8,6 +8,7 @@ export interface IRoomWidgetHandler
     processEvent: (event: NitroEvent) => void;
     processWidgetMessage: (message: RoomWidgetMessage) => RoomWidgetUpdateEvent;
     container: IRoomWidgetHandlerManager;
+    type: string;
     eventTypes: string[];
     messageTypes: string[];
 }

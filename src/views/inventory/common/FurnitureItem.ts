@@ -1,4 +1,5 @@
-﻿import { IFurnitureItemData, IObjectData, Nitro } from 'nitro-renderer';
+﻿import { IFurnitureItemData, IObjectData } from 'nitro-renderer';
+import { GetNitroInstance } from '../../../api';
 import { IFurnitureItem } from './IFurnitureItem';
 
 export class FurnitureItem implements IFurnitureItem
@@ -28,6 +29,8 @@ export class FurnitureItem implements IFurnitureItem
 
     constructor(parser: IFurnitureItemData)
     {
+        if(!parser) return;
+        
         this._locked                = false;
         this._id                    = parser.itemId;
         this._type                  = parser.spriteId;
@@ -120,7 +123,7 @@ export class FurnitureItem implements IFurnitureItem
 
         if(this._hasRentPeriodStarted)
         {
-            time = (this._secondsToExpiration - ((Nitro.instance.time - this._expirationTimeStamp) / 1000));
+            time = (this._secondsToExpiration - ((GetNitroInstance().time - this._expirationTimeStamp) / 1000));
 
             if(time < 0) time = 0;
         }
@@ -189,26 +192,26 @@ export class FurnitureItem implements IFurnitureItem
 
     public update(parser: IFurnitureItemData): void
     {
-        this._type                  = parser.spriteId;
-        this._ref                   = parser.ref;
-        this._category              = parser.category;
-        this._groupable             = (parser.isGroupable && !parser.rentable);
-        this._tradeable             = parser.tradable;
-        this._recyclable            = parser.isRecycleable;
-        this._sellable              = parser.sellable;
-        this._stuffData             = parser.stuffData;
-        this._extra                 = parser.extra;
-        this._secondsToExpiration   = parser.secondsToExpiration;
-        this._expirationTimeStamp   = parser.expirationTimeStamp;
-        this._hasRentPeriodStarted  = parser.hasRentPeriodStarted;
-        this._creationDay           = parser.creationDay;
-        this._creationMonth         = parser.creationMonth;
-        this._creationYear          = parser.creationYear;
-        this._slotId                = parser.slotId;
-        this._songId                = parser.songId;
-        this._flatId                = parser.flatId;
-        this._isRented              = parser.rentable;
-        this._isWallItem            = parser.isWallItem;
+        this._type = parser.spriteId;
+        this._ref = parser.ref;
+        this._category = parser.category;
+        this._groupable = (parser.isGroupable && !parser.rentable);
+        this._tradeable = parser.tradable;
+        this._recyclable = parser.isRecycleable;
+        this._sellable = parser.sellable;
+        this._stuffData = parser.stuffData;
+        this._extra = parser.extra;
+        this._secondsToExpiration = parser.secondsToExpiration;
+        this._expirationTimeStamp = parser.expirationTimeStamp;
+        this._hasRentPeriodStarted = parser.hasRentPeriodStarted;
+        this._creationDay = parser.creationDay;
+        this._creationMonth = parser.creationMonth;
+        this._creationYear = parser.creationYear;
+        this._slotId = parser.slotId;
+        this._songId = parser.songId;
+        this._flatId = parser.flatId;
+        this._isRented = parser.rentable;
+        this._isWallItem = parser.isWallItem;
     }
 
     public clone(): FurnitureItem

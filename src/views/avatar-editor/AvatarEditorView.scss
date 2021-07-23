@@ -1,8 +1,118 @@
 .nitro-avatar-editor {
-    width: 550px;
+    width: 620px;
 
     .content-area {
+        min-height: 300px;
         height: 300px;
-        max-height: 300px;
+    }
+
+    .category-item {
+        height: 40px;
+    }
+
+    .figure-preview-container {
+        position: relative;
+        height: 100%;
+        background-color: $pale-sky;
+        overflow: hidden;
+        z-index: 1;
+
+        .arrow-container {
+            position: absolute;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-between;
+            bottom: 12px;
+            z-index: 5;
+    
+            .icon {
+                cursor: pointer;
+            }
+        }
+
+        .avatar-image {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 50px;
+            margin: 0 auto;
+            z-index: 4;
+        }
+
+        .avatar-spotlight {
+            position: absolute;
+            top: -10px;
+            width: 100%;
+            height: 305px;
+            margin: 0 auto;
+            background: transparent url('../../assets/images/avatareditor/spotlight.png') no-repeat center;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .avatar-shadow {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 15px;
+            width: 70px;
+            height: 30px;
+            margin: 0 auto;
+            border-radius: 100%;
+            background-color: rgba(0, 0, 0, 0.20);
+            z-index: 2;
+        }
+
+        &:after {
+            position: absolute;
+            content: '';
+            top: 75%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-radius: 50%;
+            background-color: $pale-sky;
+            box-shadow: 0 0 8px 2px rgba($white,.6);
+            transform: scale(2);
+        }
+    }
+
+    .wardrobe-grid {
+
+        .grid-item-container {
+            height: 142px !important;
+            max-height: 142px !important;
+
+            .grid-item {
+                background-color: $ghost;
+
+                .avatar-image {
+                    position: absolute;
+                    bottom: 0;
+                    background-position-y: -23px !important;
+                    z-index: 3;
+                }
+
+                .figure-button-container {
+                    background-color: $gray-chateau;
+                    z-index: 2;
+                }
+
+                &:after {
+                    position: absolute;
+                    content: '';
+                    height: 50%;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    background-color: $gray-chateau;
+                    box-shadow: 0 0 8px 2px rgba($white,.6);
+                    z-index: 1;
+                }
+            }
+        }
     }
 }
