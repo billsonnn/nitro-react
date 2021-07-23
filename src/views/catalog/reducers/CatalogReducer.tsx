@@ -19,6 +19,7 @@ export interface ICatalogState
     clubOffers: CatalogClubOfferData[];
     subscriptionInfo: SubscriptionInfo;
     giftConfiguration: GiftWrappingConfiguration;
+    pendingPageId: number;
 }
 
 export interface ICatalogAction
@@ -37,6 +38,7 @@ export interface ICatalogAction
         clubOffers?: CatalogClubOfferData[];
         subscriptionInfo?: SubscriptionInfo;
         giftConfiguration?: CatalogGiftConfigurationParser;
+        pendingPageId?: number;
     }
 }
 
@@ -54,6 +56,7 @@ export class CatalogActions
     public static SET_SEARCH_RESULT: string = 'CA_SET_SEARCH_RESULT';
     public static SET_SUBSCRIPTION_INFO: string = 'CA_SET_SUBSCRIPTION_INFO';
     public static SET_GIFT_CONFIGURATION: string = 'CA_SET_GIFT_CONFIGURATION';
+    public static SET_PENDING_PAGE_ID: string = 'CA_SET_PENDING_PAGE_ID';
 }
 
 export const initialCatalog: ICatalogState = {
@@ -68,7 +71,8 @@ export const initialCatalog: ICatalogState = {
     petPalettes: [],
     clubOffers: null,
     subscriptionInfo: new SubscriptionInfo(),
-    giftConfiguration: null
+    giftConfiguration: null,
+    pendingPageId: -1
 }
 
 export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, action) =>
@@ -167,6 +171,11 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
             const giftConfiguration = new GiftWrappingConfiguration((action.payload.giftConfiguration || null));
 
             return { ...state, giftConfiguration };
+        }
+        case CatalogActions.SET_PENDING_PAGE_ID: {
+            const pendingPageId = (action.payload.pendingPageId || -1);
+
+            return { ...state, pendingPageId };
         }
         default:
             return state;

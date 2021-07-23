@@ -1,7 +1,8 @@
-import { CatalogPageComposer } from 'nitro-renderer';
+import { CatalogPageComposer, ICatalogPageData } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageHook } from '../../../../../hooks/messages/message-event';
 import { CatalogMode } from '../../../CatalogView.types';
+import { useCatalogContext } from '../../../context/CatalogContext';
 import { CatalogIconView } from '../../catalog-icon/CatalogIconView';
 import { CatalogNavigationSetView } from '../set/CatalogNavigationSetView';
 import { CatalogNavigationItemViewProps } from './CatalogNavigationItemView.types';
@@ -10,42 +11,44 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
 {
     const { page = null, isActive = false, setActiveChild = null } = props;
     const [ isExpanded, setIsExpanded ] = useState(false);
+    const [ myTree, setMyTree ] = useState<ICatalogPageData[]>(null);
+    const { dispatchCatalogState = null } = useCatalogContext();
 
-    useEffect(() =>
+    const select = useCallback((selectPage: ICatalogPageData) =>
     {
-        if(!isActive || !page) return;
-
-        setIsExpanded(true);
-
-        SendMessageHook(new CatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
-    }, [ isActive, page ]);
-
-    const select = useCallback(() =>
-    {
-        if(!page) return;
+        if(!selectPage) return;
         
         setActiveChild(prevValue =>
             {
-                if(prevValue === page)
+                if(prevValue === selectPage)
                 {
-                    SendMessageHook(new CatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
+                    SendMessageHook(new CatalogPageComposer(selectPage.pageId, -1, CatalogMode.MODE_NORMAL));
                 }
                 
-                return page;
+                return selectPage;
             });
 
-        if(page.children && page.children.length)
+        if(selectPage.children && selectPage.children.length)
         {
             setIsExpanded(prevValue =>
                 {
                     return !prevValue;
                 });
         }
-    }, [ page, setActiveChild ]);
+    }, [ setActiveChild ]);
+
+    useEffect(() =>
+    {
+        if(!isActive || !page) return;
+
+        setIsExpanded(true);
+        
+        SendMessageHook(new CatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
+    }, [ isActive, page, select, dispatchCatalogState ]);
     
     return (
         <div className="col pb-1 catalog-navigation-item-container">
-            <div className={ 'd-flex align-items-center cursor-pointer catalog-navigation-item ' + (isActive ? 'active ': '') } onClick={ select }>
+            <div className={ 'd-flex align-items-center cursor-pointer catalog-navigation-item ' + (isActive ? 'active ': '') } onClick={ event => select(page) }>
                 <CatalogIconView icon={ page.icon } />
                 <div className="flex-grow-1 text-black text-truncate px-1">{ page.localization }</div>
                 { (page.children.length > 0) && <i className={ 'fas fa-caret-' + (isExpanded ? 'up' : 'down') } /> }

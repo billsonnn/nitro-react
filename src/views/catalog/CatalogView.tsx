@@ -18,8 +18,10 @@ export const CatalogView: FC<CatalogViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
+    const [ pendingPageId, setPendingPageId ] = useState(-1);
+    const [ pendingTree, setPendingTree ] = useState<ICatalogPageData[]>(null);
     const [ catalogState, dispatchCatalogState ] = useReducer(CatalogReducer, initialCatalog);
-    const { root = null, currentTab = null, pageParser = null, activeOffer = null, searchResult = null } = catalogState;
+    const { root = null, currentTab = null, pageParser = null, activeOffer = null, searchResult = null} = catalogState;
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
@@ -52,23 +54,16 @@ export const CatalogView: FC<CatalogViewProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
-    const navigateThroughTree = useCallback((tree: ICatalogPageData[]) =>
-    {
-        setCurrentTab(tree.shift());
-    }, [ setCurrentTab ]);
-
-    const navigateToPage = useCallback((pageId: number) =>
+    const buildCatalogPageTree = useCallback((page: ICatalogPageData, targetPageId: number) =>
     {
         const pageTree: ICatalogPageData[] = [];
 
-        GetCatalogPageTree(root, pageId, pageTree);
+        GetCatalogPageTree(page, targetPageId, pageTree);
 
-        if(!pageTree.length) return;
+        if(pageTree.length) pageTree.reverse();
 
-        pageTree.reverse();
-
-        navigateThroughTree(pageTree);
-    }, [ root, navigateThroughTree ]);
+        return pageTree;
+    }, []);
 
     const linkReceived = useCallback((url: string) =>
     {
@@ -81,7 +76,12 @@ export const CatalogView: FC<CatalogViewProps> = props =>
             case 'open':
                 if(parts.length > 2)
                 {
-                    navigateToPage(parseInt(parts[2]));
+                    dispatchCatalogState({
+                        type: CatalogActions.SET_PENDING_PAGE_ID,
+                        payload: {
+                            pendingPageId: parseInt(parts[2])
+                        }
+                    });
                 }
                 else
                 {
@@ -89,7 +89,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                 }
                 return;
         }
-    }, [ navigateToPage ]);
+    }, [ dispatchCatalogState ]);
 
     useEffect(() =>
     {
@@ -105,16 +105,32 @@ export const CatalogView: FC<CatalogViewProps> = props =>
 
     useEffect(() =>
     {
-        if(!isVisible) return;
-        
-        if(!catalogState.root)
+        const loadCatalog = (((pendingPageId > -1) && !catalogState.root) || (isVisible && !catalogState.root));
+
+        if(loadCatalog)
         {
             SendMessageHook(new CatalogModeComposer(CatalogMode.MODE_NORMAL));
             SendMessageHook(new CatalogRequestGiftConfigurationComposer());
         }
 
-        console.log(catalogState.root)
-    }, [ isVisible, catalogState.root ]);
+        if(catalogState.root)
+        {
+            if(!isVisible && (pendingPageId > -1))
+            {
+                setIsVisible(true);
+
+                return;
+            }
+
+            if(pendingPageId > -1)
+            {
+                const tree = buildCatalogPageTree(catalogState.root, pendingPageId);
+
+                setCurrentTab(tree.shift());
+                setPendingTree(tree);
+            }
+        }
+    }, [ isVisible, pendingPageId, catalogState.root, buildCatalogPageTree, setCurrentTab ]);
 
     useEffect(() =>
     {
@@ -158,7 +174,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                     </NitroCardTabsView>
                     <NitroCardContentView>
                         <div className="row h-100">
-                            { pageParser && !pageParser.frontPageItems.length &&
+                            { (!pageParser || (pageParser && !pageParser.frontPageItems.length)) &&
                                 <div className="col-3 d-flex flex-column h-100">
                                     <CatalogNavigationView page={ currentNavigationPage } />
                                 </div> }
