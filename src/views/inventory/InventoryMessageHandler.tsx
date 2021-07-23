@@ -1,7 +1,10 @@
-import { AdvancedMap, BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, TradingAcceptEvent, TradingCloseEvent, TradingCompletedEvent, TradingConfirmationEvent, TradingListItemEvent, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingYouAreNotAllowedEvent, UnseenItemsEvent } from 'nitro-renderer';
+import { AdvancedMap, BadgeReceivedEvent, BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, RequestBadgesComposer, TradingAcceptEvent, TradingCloseEvent, TradingCompletedEvent, TradingConfirmationEvent, TradingListItemEvent, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingYouAreNotAllowedEvent, UnseenItemsEvent } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetRoomSession, GetSessionDataManager } from '../../api';
-import { CreateMessageHook } from '../../hooks/messages/message-event';
+import { InventoryBadgesUpdatedEvent } from '../../events';
+import { InventoryBadgesRequestEvent } from '../../events/inventory/InventoryBadgesRequestEvent';
+import { dispatchUiEvent, useUiEvent } from '../../hooks';
+import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { mergeFurniFragments } from './common/FurnitureUtilities';
 import { mergePetFragments } from './common/PetUtilities';
 import { TradeState } from './common/TradeState';
@@ -17,7 +20,7 @@ let petMsgFragments: Map<number, PetData>[] = null;
  
 export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =>
 {
-    const { dispatchFurnitureState = null, dispatchBotState = null, dispatchPetState = null, dispatchBadgeState = null, unseenTracker = null } = useInventoryContext();
+    const { dispatchFurnitureState = null, dispatchBotState = null, dispatchPetState = null, badgeState = null, dispatchBadgeState = null, unseenTracker = null } = useInventoryContext();
 
     const onFurnitureListAddOrUpdateEvent = useCallback((event: FurnitureListAddOrUpdateEvent) =>
     {
@@ -159,6 +162,18 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
             payload: {
                 badgeCodes: parser.getAllBadgeCodes(),
                 activeBadgeCodes: parser.getActiveBadgeCodes()
+            }
+        });
+    }, [ dispatchBadgeState ]);
+
+    const onBadgeReceivedEvent = useCallback((event: BadgeReceivedEvent) =>
+    {
+        const parser = event.getParser();
+
+        dispatchBadgeState({
+            type: InventoryBadgeActions.ADD_BADGE,
+            payload: {
+                badgeCode: parser.badgeCode
             }
         });
     }, [ dispatchBadgeState ]);
@@ -318,6 +333,7 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
     CreateMessageHook(PetRemovedFromInventory, onPetRemovedFromInventory);
     CreateMessageHook(PetAddedToInventoryEvent, onPetAddedToInventoryEvent);
     CreateMessageHook(BadgesEvent, onBadgesEvent);
+    CreateMessageHook(BadgeReceivedEvent, onBadgeReceivedEvent);
     CreateMessageHook(TradingAcceptEvent, onTradingAcceptEvent);
     CreateMessageHook(TradingCloseEvent, onTradingCloseEvent);
     CreateMessageHook(TradingCompletedEvent, onTradingCompletedEvent);
@@ -329,6 +345,20 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
     CreateMessageHook(TradingOtherNotAllowedEvent, onTradingOtherNotAllowedEvent);
     CreateMessageHook(TradingYouAreNotAllowedEvent, onTradingYouAreNotAllowedEvent);
     CreateMessageHook(UnseenItemsEvent, onUnseenItemsEvent);
+
+    const onInventoryBadgesRequestEvent = useCallback((event: InventoryBadgesRequestEvent) =>
+    {
+        if(badgeState.needsBadgeUpdate)
+        {
+            SendMessageHook(new RequestBadgesComposer());
+
+            return;
+        }
+
+        dispatchUiEvent(new InventoryBadgesUpdatedEvent(InventoryBadgesUpdatedEvent.BADGES_UPDATED, badgeState.badges));
+    }, [ badgeState ])
+
+    useUiEvent(InventoryBadgesRequestEvent.REQUEST_BADGES, onInventoryBadgesRequestEvent);
 
     return null;
 }
