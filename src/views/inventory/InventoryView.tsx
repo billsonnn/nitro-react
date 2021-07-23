@@ -1,10 +1,10 @@
 import { IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent, TradingCancelComposer, TradingCloseComposer, TradingOpenComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { GetRoomEngine } from '../../api';
-import { InventoryEvent, InventoryTradeRequestEvent } from '../../events';
+import { InventoryBadgesUpdatedEvent, InventoryEvent, InventoryTradeRequestEvent } from '../../events';
 import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
-import { useUiEvent } from '../../hooks/events/ui/ui-event';
+import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
 import { LocalizeText } from '../../utils/LocalizeText';
@@ -185,6 +185,13 @@ export const InventoryView: FC<InventoryViewProps> = props =>
             if(furnitureState.tradeData) setIsVisible(true);
         }
     }, [ furnitureState.tradeData, isVisible ]);
+
+    useEffect(() =>
+    {
+        if(!badgeState.badges) return;
+        
+        dispatchUiEvent(new InventoryBadgesUpdatedEvent(InventoryBadgesUpdatedEvent.BADGES_UPDATED, badgeState.badges));
+    }, [ badgeState.badges ]);
 
     return (
         <InventoryContextProvider value={ { furnitureState, dispatchFurnitureState, botState, dispatchBotState, petState, dispatchPetState, badgeState, dispatchBadgeState, unseenTracker } }>
