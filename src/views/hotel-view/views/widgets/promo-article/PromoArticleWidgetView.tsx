@@ -6,14 +6,14 @@ import { PromoArticleWidgetViewProps } from './PromoArticleWidgetView.types';
 
 export const PromoArticleWidgetView: FC<PromoArticleWidgetViewProps> = props =>
 {
-  const [ articles, setArticles ] = useState<PromoArticleData[]>(null);
+  const [articles, setArticles] = useState<PromoArticleData[]>(null);
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex, e) => 
   {
     setIndex(selectedIndex);
   };
-  
+
   useEffect(() =>
   {
     SendMessageHook(new GetPromoArticlesComposer());
@@ -27,22 +27,24 @@ export const PromoArticleWidgetView: FC<PromoArticleWidgetViewProps> = props =>
 
   CreateMessageHook(PromoArticlesMessageEvent, onPromoArticlesMessageEvent);
 
+  if (!articles) return null;
+
   return (
     <div className="promo-article widget">
       <Carousel activeIndex={index} onSelect={handleSelect}>
-        { articles && (articles.length > 0) && articles.map(article => 
-            <Carousel.Item>
-        <img
-          className="d-block"
-          src= {article.imageUrl}
-          alt= {article.title}
-        />
-        <Carousel.Caption>
-          <h3>{article.title}</h3>
-          <p>{article.bodyText}</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-        ) }
+        {articles && (articles.length > 0) && articles.map(article =>
+          <Carousel.Item key={article.id.toString()}>
+            <img
+              className="d-block"
+              src={article.imageUrl}
+              alt={article.title}
+            />
+            <Carousel.Caption>
+              <h3>{article.title}</h3>
+              <p>{article.bodyText}</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+        )}
       </Carousel>
     </div>
   );

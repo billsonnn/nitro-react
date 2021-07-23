@@ -6,7 +6,7 @@ export const WidgetSlotView: FC<WidgetSlotViewProps> = props =>
 {
   return (
     <div className={"widget-slot slot-" + props.slot}>
-      <GetWidgetLayout widgetType={props.widgetType} />
+      <GetWidgetLayout widgetType={props.widgetType} slot={props.slot} widgetConf={props.widgetConf} />
     </div>
   );
 }

@@ -7,12 +7,12 @@ import { WidgetSlotView } from './views/widget-slot/WidgetSlotView';
 
 export const HotelView: FC<HotelViewProps> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(true);
+    const [isVisible, setIsVisible] = useState(true);
     const widgetSlotCount = 7;
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
-        switch(event.type)
+        switch (event.type)
         {
             case RoomSessionEvent.CREATED:
                 setIsVisible(false);
@@ -26,26 +26,31 @@ export const HotelView: FC<HotelViewProps> = props =>
     useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
     useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
-    if(!isVisible) return null;
+    if (!isVisible) return null;
 
     const backgroundColor = GetConfiguration('hotelview')['images']['background.colour'];
-    const background      = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview')['images']['background']);
-    const sun             = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview')['images']['sun']);
-    const drape           = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview')['images']['drape']);
-    const left            = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview')['images']['left']);
-    const rightRepeat     = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview')['images']['right.repeat']);
-    const right           = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview')['images']['right']);
+    const background = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview')['images']['background']);
+    const sun = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview')['images']['sun']);
+    const drape = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview')['images']['drape']);
+    const left = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview')['images']['left']);
+    const rightRepeat = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview')['images']['right.repeat']);
+    const right = Nitro.instance.core.configuration.interpolate(GetConfiguration('hotelview')['images']['right']);
 
     return (
-        <div className="nitro-hotel-view" style={ (backgroundColor && backgroundColor) ? { background: backgroundColor } : {} }>
-            {Array.from(Array(widgetSlotCount)).map((x, index) => <WidgetSlotView slot={index} 
-            widgetType={GetConfiguration('hotelview')['widgets']['slot.' + index]} />)}
-            <div className="background position-absolute" style={ (background && background.length) ? { backgroundImage: `url(${ background })` } : {} } />
-            <div className="sun position-absolute" style={ (sun && sun.length) ? { backgroundImage: `url(${ sun })` } : {} } />
-            <div className="drape position-absolute" style={ (drape && drape.length) ? { backgroundImage: `url(${ drape })` } : {} } />
-            <div className="left position-absolute" style={ (left && left.length) ? { backgroundImage: `url(${ left })` } : {} } />
-            <div className="right-repeat position-absolute" style={ (rightRepeat && rightRepeat.length) ? { backgroundImage: `url(${ rightRepeat })` } : {} } />
-            <div className="right position-absolute" style={ (right && right.length) ? { backgroundImage: `url(${ right })` } : {} } />
+        <div className="nitro-hotel-view" style={(backgroundColor && backgroundColor) ? { background: backgroundColor } : {}}>
+            {Array.from(Array(widgetSlotCount)).map((x, index) =>
+                <WidgetSlotView
+                    slot={index + 1}
+                    widgetType={GetConfiguration('hotelview')['widgets']['slot.' + (index + 1) + '.widget']}
+                    widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + (index + 1) +'.conf']}
+                    key={index.toString()}
+                />)}
+            <div className="background position-absolute" style={(background && background.length) ? { backgroundImage: `url(${background})` } : {}} />
+            <div className="sun position-absolute" style={(sun && sun.length) ? { backgroundImage: `url(${sun})` } : {}} />
+            <div className="drape position-absolute" style={(drape && drape.length) ? { backgroundImage: `url(${drape})` } : {}} />
+            <div className="left position-absolute" style={(left && left.length) ? { backgroundImage: `url(${left})` } : {}} />
+            <div className="right-repeat position-absolute" style={(rightRepeat && rightRepeat.length) ? { backgroundImage: `url(${rightRepeat})` } : {}} />
+            <div className="right position-absolute" style={(right && right.length) ? { backgroundImage: `url(${right})` } : {}} />
         </div>
     );
 }
