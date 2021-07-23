@@ -5,6 +5,8 @@
     border-top:0;
     font-size: $font-size-sm;
     z-index: $context-menu-zindex;
+    pointer-events: all;
+    margin-bottom:5px;
     
 
     .notification-button {
@@ -14,6 +16,24 @@
         pointer-events: all;
         display: none
     }
+
+    .nitro-purse-hc {
+        background-color: #3d5f6e;
+        margin:0 2px;
+    }
+
+    .nitro-purse-button {
+        background: $bg-mirage-split-background;
+
+        &:not(:first-child) {
+            margin-top:2px;
+        }
+
+        &:hover {
+            background: $bg-cello-split-background;
+        }
+    }
 }
 
 @import './currency/CurrencyView';
+@import './seasonal/SeasonalView';

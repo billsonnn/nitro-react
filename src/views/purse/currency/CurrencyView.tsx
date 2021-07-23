@@ -16,11 +16,9 @@ export const CurrencyView: FC<CurrencyViewProps> = props =>
                 { currency.amount }
             </Tooltip>
         }>
-            <div className="nitro-currency px-1 d-flex">
-                <div className="px-1 text-end text-truncate nitro-currency-text">{LocalizeShortNumber(currency.amount)}</div>
-                <div className="icon">
-                    <CurrencyIcon type={ currency.type } />
-                </div>
+            <div className="nitro-currency d-flex justify-content-end nitro-purse-button">
+                <div className="px-1 text-end text-truncate nitro-currency-text align-self-center">{LocalizeShortNumber(currency.amount)}</div>
+                <CurrencyIcon className="flex-shrink-0" type={ currency.type } />
             </div>
         </OverlayTrigger>
     );
