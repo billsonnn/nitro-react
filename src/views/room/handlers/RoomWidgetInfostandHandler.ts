@@ -390,6 +390,8 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 event.rentOfferId = furnitureData.rentOfferId;
                 event.rentCouldBeUsedForBuyout = furnitureData.rentCouldBeUsedForBuyout;
                 event.availableForBuildersClub = furnitureData.availableForBuildersClub;
+                event.tileSizeX = furnitureData.tileSizeX;
+                event.tileSizeY = furnitureData.tileSizeY;
 
                 dispatchUiEvent(new WiredSelectObjectEvent(event.id, event.category));
             }
