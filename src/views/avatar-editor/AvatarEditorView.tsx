@@ -92,11 +92,8 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
 
         for(let [ index, value ] of parser.looks.entries())
         {
-            console.log(index, value);
             savedFigures[(index - 1)] = [ value[0], value[1] ];
         }
-
-        console.log(savedFigures);
 
         setSavedFigures(savedFigures)
     }, []);
