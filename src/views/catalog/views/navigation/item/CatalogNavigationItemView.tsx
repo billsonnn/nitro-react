@@ -45,6 +45,8 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
         
         SendMessageHook(new CatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
     }, [ isActive, page, select, dispatchCatalogState ]);
+
+    if(!page.visible) return null;
     
     return (
         <div className="col pb-1 catalog-navigation-item-container">
