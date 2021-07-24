@@ -2,9 +2,8 @@
     padding: 2px;
     background-color: #1c323f;
     border: 2px solid rgba($white, 0.5);
-    border-top:0;
+    border-top: 0;
     font-size: $font-size-sm;
-    z-index: $context-menu-zindex;
     pointer-events: all;
     margin-bottom:5px;
     
@@ -35,5 +34,4 @@
     }
 }
 
-@import './currency/CurrencyView';
-@import './seasonal/SeasonalView';
+@import './views';

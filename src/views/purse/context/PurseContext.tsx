@@ -2,8 +2,7 @@ import { createContext, FC, useContext } from 'react';
 import { IPurseContext, PurseContextProps } from './PurseContext.types';
 
 const PurseContext = createContext<IPurseContext>({
-    purseState: null,
-    dispatchPurseState: null
+    purse: null
 });
 
 export const PurseContextProvider: FC<PurseContextProps> = props =>

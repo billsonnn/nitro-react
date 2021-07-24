@@ -1,19 +1,16 @@
-import { Currency } from './Currency';
-
-let lastCurrencies: Currency[] = [];
-
-export function SetLastCurrencies(currencies: Currency[]): void
-{
-    lastCurrencies = currencies;
-}
+import { GLOBAL_PURSE } from '../PurseView';
 
 export function GetCurrencyAmount(type: number): number
 {
-    for(const currency of lastCurrencies)
-    {
-        if(currency.type !== type) continue;
+    const purse = GLOBAL_PURSE;
 
-        return currency.amount;
+    if(type === -1) return purse.credits;
+
+    for(const [ key, value ] of purse.activityPoints.entries())
+    {
+        if(key !== type) continue;
+
+        return value;
     }
 
     return 0;

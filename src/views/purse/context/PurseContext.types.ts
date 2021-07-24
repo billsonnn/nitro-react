@@ -1,10 +1,9 @@
-import { Dispatch, ProviderProps } from 'react';
-import { IPurseAction, IPurseState } from '../reducers/PurseReducer';
+import { ProviderProps } from 'react';
+import { IPurse } from '../common/IPurse';
 
 export interface IPurseContext
 {
-    purseState: IPurseState;
-    dispatchPurseState: Dispatch<IPurseAction>;
+    purse: IPurse;
 }
 
 export interface PurseContextProps extends ProviderProps<IPurseContext>

@@ -1,62 +1,130 @@
-import { UserCurrencyComposer } from 'nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useReducer } from 'react';
+import { FriendlyTime, HabboClubLevelEnum, UserCurrencyComposer, UserSubscriptionComposer } from 'nitro-renderer';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetConfiguration } from '../../api';
-import { NotificationCenterEvent } from '../../events';
-import { dispatchUiEvent } from '../../hooks/events';
 import { SendMessageHook } from '../../hooks/messages/message-event';
 import { LocalizeText } from '../../utils/LocalizeText';
 import { CurrencyIcon } from '../shared/currency-icon/CurrencyIcon';
-import { SetLastCurrencies } from './common/CurrencyHelper';
+import { IPurse } from './common/IPurse';
+import { Purse } from './common/Purse';
 import { PurseContextProvider } from './context/PurseContext';
-import { CurrencyView } from './currency/CurrencyView';
 import { PurseMessageHandler } from './PurseMessageHandler';
-import { PurseViewProps } from './PurseView.types';
-import { initialPurse, PurseReducer } from './reducers/PurseReducer';
-import { SeasonalView } from './seasonal/SeasonalView';
+import { CurrencyView } from './views/currency/CurrencyView';
+import { SeasonalView } from './views/seasonal/SeasonalView';
 
-export const PurseView: FC<PurseViewProps> = props =>
+export let GLOBAL_PURSE: IPurse = null;
+
+export const PurseView: FC<{}> = props =>
 {
-    const [ purseState, dispatchPurseState ] = useReducer(PurseReducer, initialPurse);
-    const { currencies = [] } = purseState;
+    const [ purse, setPurse ] = useState<IPurse>(new Purse());
+    const [ updateId, setUpdateId ] = useState(-1);
     
     const displayedCurrencies = useMemo(() =>
     {
         return GetConfiguration<number[]>('system.currency.types', []);
     }, []);
 
+    const getCurrencyElements = useCallback((offset: number, limit: number = -1, seasonal: boolean = false) =>
+    {
+        if(!purse.activityPoints.size) return null;
+
+        const types = Array.from(purse.activityPoints.keys()).filter(type => (displayedCurrencies.indexOf(type) >= 0));
+
+        let count = 0;
+
+        while(count < offset)
+        {
+            types.shift();
+
+            count++;
+        }
+
+        count = 0;
+
+        const elements: JSX.Element[] = [];
+
+        for(const type of types)
+        {
+            if((limit > -1) && (count === limit)) break;
+
+            if(seasonal) elements.push(<SeasonalView key={ type } type={ type } amount={ purse.activityPoints.get(type) } />);
+            else elements.push(<CurrencyView key={ type } type={ type } amount={ purse.activityPoints.get(type) } />);
+
+            count++;
+        }
+
+        return elements;
+    }, [ purse, displayedCurrencies ]);
+
+    const getClubText = useCallback(() =>
+    {
+        const totalDays = ((purse.clubPeriods * 31) + purse.clubDays);
+        const minutesUntilExpiration = purse.minutesUntilExpiration;
+
+        if(purse.clubLevel === HabboClubLevelEnum.NO_CLUB)
+        {
+            return LocalizeText('purse.clubdays.zero.amount.text');
+        }
+
+        else if((minutesUntilExpiration > -1) && (minutesUntilExpiration < (60 * 24)))
+        {
+            return FriendlyTime.shortFormat(minutesUntilExpiration * 60);
+        }
+
+        else
+        {
+            return FriendlyTime.shortFormat(totalDays * 86400);
+        }
+    }, [ purse ]);
+
     useEffect(() =>
     {
-        SendMessageHook(new UserCurrencyComposer());
+        const purse = new Purse();
+
+        GLOBAL_PURSE = purse;
+
+        purse.notifier = () => setUpdateId(prevValue => (prevValue + 1));
+
+        setPurse(purse);
+
+        return () => (purse.notifier = null);
     }, []);
 
-    SetLastCurrencies(currencies);
-
-    const toggleNotificationCenter = useCallback(() =>
+    useEffect(() =>
     {
-        dispatchUiEvent(new NotificationCenterEvent(NotificationCenterEvent.TOGGLE_NOTIFICATION_CENTER));
-    }, []);
+        if(!purse) return;
+
+        SendMessageHook(new UserCurrencyComposer());
+    }, [ purse ]);
+
+    useEffect(() =>
+    {
+        SendMessageHook(new UserSubscriptionComposer('habbo_club'));
+
+        const interval = setInterval(() =>
+        {
+            SendMessageHook(new UserSubscriptionComposer('habbo_club'));
+        }, 50000);
+
+        return () => clearInterval(interval);
+    }, [ purse ]);
+
+    if(!purse) return null;
 
     return (
-        <PurseContextProvider value={ { purseState, dispatchPurseState }}>
+        <PurseContextProvider value={ { purse } }>
             <PurseMessageHandler />
             <div className="nitro-purse rounded-bottom d-flex flex-row justify-content-between">
                 <div className="row mx-0 w-100">
                     <div className="col-6 px-0">
                         <div className="d-flex flex-column nitro-currencies">
-                            { currencies && currencies.map((currency, index) =>
-                                {
-                                if (displayedCurrencies.indexOf(currency.type) === -1) return null;
-                                
-                                if (currency.type === -1 || currency.type === 0 || currency.type === 5) return <CurrencyView key={index} currency={currency} />;
-
-                                return null;
-                            })}
+                            <CurrencyView type={ -1 } amount={ purse.credits } />
+                            { getCurrencyElements(0, 2) }
                         </div>
                     </div>
                     <div className="col-4 px-0">
                         <div className="nitro-purse-hc p-1 d-flex flex-column justify-content-center align-items-center h-100">
                             <CurrencyIcon className="flex-shrink-0" type="hc" />
-                            <span>{LocalizeText('purse.clubdays.zero.amount.text')}</span>
+                            <span>{ getClubText() }</span>
                         </div>
                     </div>
                     <div className="col-2 px-0">
@@ -70,14 +138,7 @@ export const PurseView: FC<PurseViewProps> = props =>
                     <i className="fas fa-bars" />
                 </div>*/}
             </div>
-            { currencies && currencies.map((currency, index) =>
-                {
-                    if (displayedCurrencies.indexOf(currency.type) === -1) return null;
-                                
-                    if (currency.type === -1 || currency.type === 0 || currency.type === 5) return null;
-
-                    return <SeasonalView key={index} currency={ currency } />;
-                })}
+            { getCurrencyElements(2, -1, true) }
         </PurseContextProvider>
     );
 }
