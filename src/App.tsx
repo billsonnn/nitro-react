@@ -1,6 +1,6 @@
 import { ConfigurationEvent, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, RoomEngineEvent, WebGL } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetConfiguration } from './api';
+import { GetCommunication, GetConfiguration, GetNitroInstance } from './api';
 import { useConfigurationEvent } from './hooks/events/core/configuration/configuration-event';
 import { useLocalizationEvent } from './hooks/events/nitro/localization/localization-event';
 import { dispatchMainEvent, useMainEvent } from './hooks/events/nitro/main-event';
@@ -19,7 +19,7 @@ export const App: FC<{}> = props =>
     //@ts-ignore
     if(!NitroConfig) throw new Error('NitroConfig is not defined!');
 
-    if(!Nitro.instance) Nitro.bootstrap();
+    if(!GetNitroInstance()) Nitro.bootstrap();
 
     const getPreloadAssetUrls = useCallback(() =>
     {
@@ -28,7 +28,7 @@ export const App: FC<{}> = props =>
 
         if(assetUrls && assetUrls.length)
         {
-            for(const url of assetUrls) urls.push(Nitro.instance.core.configuration.interpolate(url));
+            for(const url of assetUrls) urls.push(GetNitroInstance().core.configuration.interpolate(url));
         }
 
         return urls;
@@ -39,7 +39,7 @@ export const App: FC<{}> = props =>
         switch(event.type)
         {
             case ConfigurationEvent.LOADED:
-                Nitro.instance.localization.init();
+                GetNitroInstance().localization.init();
                 return;
             case ConfigurationEvent.FAILED:
                 setIsError(true);
@@ -73,14 +73,14 @@ export const App: FC<{}> = props =>
 			case NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED:
                 setMessage('Finishing Up');
 
-                Nitro.instance.init();
+                GetNitroInstance().init();
 				return;
 			case NitroCommunicationDemoEvent.CONNECTION_ERROR:
                 setIsError(true);
                 setMessage('Connection Error');
 				return;
 			case NitroCommunicationDemoEvent.CONNECTION_CLOSED:
-                if(Nitro.instance.roomEngine) Nitro.instance.roomEngine.dispose();
+                if(GetNitroInstance().roomEngine) GetNitroInstance().roomEngine.dispose();
 
                 setIsError(true);
                 setMessage('Connection Error');
@@ -91,13 +91,13 @@ export const App: FC<{}> = props =>
                 setIsReady(true);
                 return;
             case NitroLocalizationEvent.LOADED:
-                Nitro.instance.core.asset.downloadAssets(getPreloadAssetUrls(), (status: boolean) =>
+                GetNitroInstance().core.asset.downloadAssets(getPreloadAssetUrls(), (status: boolean) =>
                 {
                     if(status)
                     {
                         setMessage('Connecting');
                         
-                        Nitro.instance.communication.init();
+                        GetCommunication().init();
                     }
                     else
                     {
@@ -127,7 +127,7 @@ export const App: FC<{}> = props =>
     }
     else
     {
-        Nitro.instance.core.configuration.init();
+        GetNitroInstance().core.configuration.init();
     }
     
     return (

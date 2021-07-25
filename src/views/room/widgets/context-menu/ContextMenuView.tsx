@@ -1,6 +1,6 @@
-import { FixedSizeStack, Nitro, NitroPoint, NitroRectangle, RoomObjectType } from 'nitro-renderer';
+import { FixedSizeStack, NitroPoint, NitroRectangle, RoomObjectType } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { GetRoomEngine, GetRoomObjectBounds, GetRoomSession, GetTicker } from '../../../../api';
+import { GetNitroInstance, GetRoomEngine, GetRoomObjectBounds, GetRoomSession, GetTicker } from '../../../../api';
 import { ContextMenuViewProps } from './ContextMenuView.types';
 
 const LOCATION_STACK_SIZE: number = 25;
@@ -83,8 +83,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         let x = (location.x - (elementRef.current.offsetWidth / 2));
         let y = (deltaY + offset);
 
-        const maxLeft = ((Nitro.instance.width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
-        const maxTop = ((Nitro.instance.height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
+        const maxLeft = ((GetNitroInstance().width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
+        const maxTop = ((GetNitroInstance().height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
 
         if(x < SPACE_AROUND_EDGES) x = SPACE_AROUND_EDGES;
         else if(x > maxLeft) x = maxLeft;

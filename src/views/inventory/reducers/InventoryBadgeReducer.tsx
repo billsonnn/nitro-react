@@ -23,11 +23,12 @@ export interface IInventoryBadgeAction
 
 export class InventoryBadgeActions
 {
-    public static SET_NEEDS_UPDATE: string = 'IBDA_SET_NEEDS_UPDATE';
-    public static SET_BADGE: string = 'IBDA_SET_BADGE';
-    public static SET_BADGES: string = 'IBDA_SET_BADGES';
-    public static ADD_ACTIVE_BADGE: string = 'IBDA_ADD_ACTIVE_BADGE';
-    public static REMOVE_ACTIVE_BADGE: string = 'IBDA_REMOVE_ACTIVE_BADGE';
+    public static SET_NEEDS_UPDATE: string = 'IBA_SET_NEEDS_UPDATE';
+    public static SET_BADGE: string = 'IBA_SET_BADGE';
+    public static SET_BADGES: string = 'IBA_SET_BADGES';
+    public static ADD_BADGE: string = 'IBA_ADD_BADGE';
+    public static ADD_ACTIVE_BADGE: string = 'IBA_ADD_ACTIVE_BADGE';
+    public static REMOVE_ACTIVE_BADGE: string = 'IBA_REMOVE_ACTIVE_BADGE';
 }
 
 export const initialInventoryBadge: IInventoryBadgeState = {
@@ -76,6 +77,14 @@ export const InventoryBadgeReducer: Reducer<IInventoryBadgeState, IInventoryBadg
             }
 
             return { ...state, badges, activeBadges };
+        }
+        case InventoryBadgeActions.ADD_BADGE: {
+            const badges = [ ...state.badges ];
+            const badge = (action.payload.badgeCode);
+
+            if(badges.indexOf(badge) === -1) badges.push(badge);
+
+            return { ...state, badges };
         }
         case InventoryBadgeActions.ADD_ACTIVE_BADGE: {
             const badgeCode = action.payload.badgeCode;

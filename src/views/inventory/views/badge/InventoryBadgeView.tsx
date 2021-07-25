@@ -19,6 +19,7 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
     {
         if(needsBadgeUpdate)
         {
+            console.log('yee')
             dispatchBadgeState({
                 type: InventoryBadgeActions.SET_NEEDS_UPDATE,
                 payload: {

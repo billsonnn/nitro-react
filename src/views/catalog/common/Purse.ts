@@ -1,4 +1,4 @@
-import { Nitro } from 'nitro-renderer';
+import { GetNitroInstance } from '../../../api';
 import { IPurse } from './IPurse';
 
 export class Purse implements IPurse
@@ -22,7 +22,7 @@ export class Purse implements IPurse
 
     public set credits(k: number)
     {
-        this._lastUpdated = Nitro.instance.time;
+        this._lastUpdated = GetNitroInstance().time;
         this._credits = k;
     }
 
@@ -33,7 +33,7 @@ export class Purse implements IPurse
 
     public set clubDays(k: number)
     {
-        this._lastUpdated = Nitro.instance.time;
+        this._lastUpdated = GetNitroInstance().time;
         this._clubDays = k;
     }
 
@@ -44,7 +44,7 @@ export class Purse implements IPurse
 
     public set clubPeriods(k: number)
     {
-        this._lastUpdated = Nitro.instance.time;
+        this._lastUpdated = GetNitroInstance().time;
         this._clubPeriods = k;
     }
 
@@ -80,7 +80,7 @@ export class Purse implements IPurse
 
     public set _Str_6288(k: number)
     {
-        this._lastUpdated = Nitro.instance.time;
+        this._lastUpdated = GetNitroInstance().time;
         this._pastClubDays = k;
     }
 
@@ -91,7 +91,7 @@ export class Purse implements IPurse
 
     public set _Str_4605(k: number)
     {
-        this._lastUpdated = Nitro.instance.time;
+        this._lastUpdated = GetNitroInstance().time;
         this._pastVipDays = k;
     }
 
@@ -102,7 +102,7 @@ export class Purse implements IPurse
 
     public set _Str_18527(k: Map<number, number>)
     {
-        this._lastUpdated = Nitro.instance.time;
+        this._lastUpdated = GetNitroInstance().time;
         this._activityPoints = k;
     }
 
@@ -113,14 +113,14 @@ export class Purse implements IPurse
 
     public set _Str_4458(k: number)
     {
-        this._lastUpdated = Nitro.instance.time;
+        this._lastUpdated = GetNitroInstance().time;
         
         this._minutesUntilExpiration = k;
     }
 
     public get _Str_4458(): number
     {
-        const k = ((Nitro.instance.time - this._lastUpdated) / (1000 * 60));
+        const k = ((GetNitroInstance().time - this._lastUpdated) / (1000 * 60));
         const _local_2 = (this._minutesUntilExpiration - k);
 
         return (_local_2 > 0) ? _local_2 : 0;
@@ -128,7 +128,7 @@ export class Purse implements IPurse
 
     public set _Str_6312(k: number)
     {
-        this._lastUpdated = Nitro.instance.time;
+        this._lastUpdated = GetNitroInstance().time;
         this._minutesSinceLastModified = k;
     }
 

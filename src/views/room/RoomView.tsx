@@ -1,7 +1,7 @@
-import { EventDispatcher, Nitro, NitroRectangle, RoomGeometry, RoomVariableEnum, Vector3d } from 'nitro-renderer';
+import { EventDispatcher, NitroRectangle, RoomGeometry, RoomVariableEnum, Vector3d } from 'nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { InitializeRoomInstanceRenderingCanvas } from '../../api';
+import { GetNitroInstance, InitializeRoomInstanceRenderingCanvas } from '../../api';
 import { DispatchMouseEvent } from '../../api/nitro/room/DispatchMouseEvent';
 import { DispatchTouchEvent } from '../../api/nitro/room/DispatchTouchEvent';
 import { GetRoomEngine } from '../../api/nitro/room/GetRoomEngine';
@@ -47,11 +47,11 @@ export const RoomView: FC<RoomViewProps> = props =>
 
         setWidgetHandler(widgetHandlerManager);
 
-        Nitro.instance.renderer.resize(window.innerWidth, window.innerHeight);
+        GetNitroInstance().renderer.resize(window.innerWidth, window.innerHeight);
 
         const canvasId = 1;
         
-        const displayObject = GetRoomEngine().getRoomInstanceDisplay(roomSession.roomId, canvasId, Nitro.instance.width, Nitro.instance.height, RoomGeometry.SCALE_ZOOMED_IN);
+        const displayObject = GetRoomEngine().getRoomInstanceDisplay(roomSession.roomId, canvasId, GetNitroInstance().width, GetNitroInstance().height, RoomGeometry.SCALE_ZOOMED_IN);
 
         if(!displayObject) return;
 
@@ -77,13 +77,13 @@ export const RoomView: FC<RoomViewProps> = props =>
             geometry.location = new Vector3d(x, y, z);
         }
 
-        const stage = Nitro.instance.stage;
+        const stage = GetNitroInstance().stage;
 
         if(!stage) return;
 
         stage.addChild(displayObject);
 
-        const canvas = Nitro.instance.renderer.view;
+        const canvas = GetNitroInstance().renderer.view;
 
         if(!canvas) return;
 
@@ -99,16 +99,16 @@ export const RoomView: FC<RoomViewProps> = props =>
 
         window.onresize = () =>
         {
-            Nitro.instance.renderer.resize(window.innerWidth, window.innerHeight);
+            GetNitroInstance().renderer.resize(window.innerWidth, window.innerHeight);
             
-            InitializeRoomInstanceRenderingCanvas(roomSession.roomId, canvasId, Nitro.instance.width, Nitro.instance.height);
+            InitializeRoomInstanceRenderingCanvas(roomSession.roomId, canvasId, GetNitroInstance().width, GetNitroInstance().height);
 
             const bounds = canvas.getBoundingClientRect();
             const rectangle = new NitroRectangle((bounds.x || 0), (bounds.y || 0), (bounds.width || 0), (bounds.height || 0));
 
             widgetHandlerManager.eventDispatcher.dispatchEvent(new RoomWidgetUpdateRoomViewEvent(RoomWidgetUpdateRoomViewEvent.SIZE_CHANGED, rectangle));
 
-            Nitro.instance.render();
+            GetNitroInstance().render();
         }
 
         setRoomCanvas(canvas);

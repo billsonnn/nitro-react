@@ -1,6 +1,6 @@
-import { Nitro } from 'nitro-renderer';
+import { GetNitroInstance } from './GetNitroInstance';
 
 export function GetConfiguration<T>(key: string, value: T = null): T
 {
-    return Nitro.instance.getConfiguration(key, value);
+    return GetNitroInstance().getConfiguration(key, value);
 }

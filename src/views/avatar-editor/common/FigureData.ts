@@ -206,7 +206,7 @@ export class FigureData
         {
             const colors = this._colors.get(setType);
 
-            if(colors === undefined) continue;
+            if(!colors) continue;
 
             let setId = this._data.get(setType);
 
