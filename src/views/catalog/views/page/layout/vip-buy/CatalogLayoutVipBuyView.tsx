@@ -99,27 +99,44 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
                                 return (
                                     <NitroCardGridItemView key={ index } className="justify-content-between p-1">
                                         { (pendingOffer === offer) &&
-                                            <div className="d-flex flex-column justify-content-center align-items-center w-100">
-                                                <div className="text-black text-small">{ getPurchaseHeader() }</div>
-                                                <div className="text-black text-small">{ getPurchaseValidUntil() }</div>
+                                            <>
+                                                <div className="d-flex flex-column text-black text-small m-1">
+                                                    <div className="d-flex align-items-center">
+                                                        <i className="icon icon-catalogue-hc_small me-1"></i>
+                                                        { getPurchaseHeader() }
+                                                    </div>
+                                                    <div className="text-black text-small">{ getPurchaseValidUntil() }</div>
+                                                    <div className="d-flex">
+                                                        { (offer.priceCredits > 0) &&
+                                                            <div className="d-flex align-items-center justify-content-end">
+                                                                <span className="text-black">{ offer.priceCredits }</span>
+                                                                <CurrencyIcon type={ -1 } />
+                                                            </div> }
+                                                        { (offer.priceActivityPoints > 0) &&
+                                                            <div className="d-flex align-items-center justify-content-end">
+                                                                <span className="text-black">{ offer.priceActivityPoints }</span>
+                                                                <CurrencyIcon type={ offer.priceActivityPointsType } />
+                                                            </div> }
+                                                    </div>
+                                                </div>
                                                 <Button variant="primary" size="sm" onClick={ purchaseSubscription }>{ LocalizeText('buy') }</Button>
-                                            </div> }
+                                            </> }
                                         { (pendingOffer !== offer) &&
                                             <>
                                                 <div className="d-flex flex-column text-black text-small m-1">
-                                                    <div>
+                                                    <div className="d-flex align-items-center">
                                                         <i className="icon icon-catalogue-hc_small me-1"></i>
                                                         { getOfferText(offer) }
                                                     </div>
                                                     <div className="d-flex">
                                                         { (offer.priceCredits > 0) &&
                                                             <div className="d-flex align-items-center justify-content-end">
-                                                                <span className="text-black ms-1">{ offer.priceCredits }</span>
+                                                                <span className="text-black">{ offer.priceCredits }</span>
                                                                 <CurrencyIcon type={ -1 } />
                                                             </div> }
                                                         { (offer.priceActivityPoints > 0) &&
                                                             <div className="d-flex align-items-center justify-content-end">
-                                                                <span className="text-black ms-1">{ offer.priceActivityPoints }</span>
+                                                                <span className="text-black">{ offer.priceActivityPoints }</span>
                                                                 <CurrencyIcon type={ offer.priceActivityPointsType } />
                                                             </div> }
                                                     </div>
