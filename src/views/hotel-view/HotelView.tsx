@@ -38,13 +38,56 @@ export const HotelView: FC<HotelViewProps> = props =>
 
     return (
         <div className="nitro-hotel-view" style={(backgroundColor && backgroundColor) ? { background: backgroundColor } : {}}>
-            {Array.from(Array(widgetSlotCount)).map((x, index) =>
-                <WidgetSlotView
-                    slot={index + 1}
-                    widgetType={GetConfiguration('hotelview')['widgets']['slot.' + (index + 1) + '.widget']}
-                    widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + (index + 1) +'.conf']}
-                    key={index.toString()}
-                />)}
+            <div className="container h-100 py-3 overflow-hidden landing-widgets">
+                <div className="row h-100">
+                    <div className="col-9 h-100 d-flex flex-column">
+                        <WidgetSlotView
+                            widgetSlot={ 1 }
+                            widgetType={GetConfiguration('hotelview')['widgets']['slot.' + 1 + '.widget']}
+                            widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + 1 +'.conf']}
+                        />
+                        <div className="row mx-0">
+                            <WidgetSlotView
+                                widgetSlot={ 2 }
+                                widgetType={GetConfiguration('hotelview')['widgets']['slot.' + 2 + '.widget']}
+                                widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + 2 + '.conf']}
+                                className="col-6"
+                            />
+                            <WidgetSlotView
+                                widgetSlot={ 3 }
+                                widgetType={GetConfiguration('hotelview')['widgets']['slot.' + 3 + '.widget']}
+                                widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + 3 + '.conf']}
+                                className="col-6"
+                            />
+                            <WidgetSlotView
+                                widgetSlot={ 4 }
+                                widgetType={GetConfiguration('hotelview')['widgets']['slot.' + 4 + '.widget']}
+                                widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + 4 + '.conf']}
+                                className="col-6"
+                            />
+                            <WidgetSlotView
+                                widgetSlot={ 5 }
+                                widgetType={GetConfiguration('hotelview')['widgets']['slot.' + 5 + '.widget']}
+                                widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + 5 + '.conf']}
+                                className="col-6"
+                            />
+                        </div>
+                        <WidgetSlotView
+                            widgetSlot={ 6 }
+                            widgetType={GetConfiguration('hotelview')['widgets']['slot.' + 6 + '.widget']}
+                            widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + 6 + '.conf']}
+                            className="mt-auto"
+                        />
+                    </div>
+                    <div className="col-3 h-100">
+                        <WidgetSlotView
+                            widgetSlot={ 7 }
+                            widgetType={GetConfiguration('hotelview')['widgets']['slot.' + 7 + '.widget']}
+                            widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + 7 +'.conf']}
+                        />
+                    </div>
+                </div>
+            </div>
             <div className="background position-absolute" style={(background && background.length) ? { backgroundImage: `url(${background})` } : {}} />
             <div className="sun position-absolute" style={(sun && sun.length) ? { backgroundImage: `url(${sun})` } : {}} />
             <div className="drape position-absolute" style={(drape && drape.length) ? { backgroundImage: `url(${drape})` } : {}} />

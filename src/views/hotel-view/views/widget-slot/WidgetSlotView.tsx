@@ -4,9 +4,11 @@ import { WidgetSlotViewProps } from './WidgetSlotView.types';
 
 export const WidgetSlotView: FC<WidgetSlotViewProps> = props =>
 {
-  return (
-    <div className={"widget-slot slot-" + props.slot}>
-      <GetWidgetLayout widgetType={props.widgetType} slot={props.slot} widgetConf={props.widgetConf} />
-    </div>
-  );
+    const { widgetType = null, widgetSlot = 0, widgetConf = null, className= '', ...rest } = props;
+    
+    return (
+        <div className={`widget-slot slot-${widgetSlot} ${(className || '')}`}  { ...rest }>
+            <GetWidgetLayout widgetType={widgetType} slot={widgetSlot} widgetConf={widgetConf} />
+        </div>
+    );
 }

@@ -1,6 +1,8 @@
-export interface WidgetSlotViewProps
+import { DetailsHTMLAttributes } from 'react';
+
+export interface WidgetSlotViewProps extends DetailsHTMLAttributes<HTMLDivElement>
 {
-  widgetType: string;
-  slot: number;
-  widgetConf: string;
+    widgetType: string;
+    widgetSlot: number;
+    widgetConf: string;
 }
