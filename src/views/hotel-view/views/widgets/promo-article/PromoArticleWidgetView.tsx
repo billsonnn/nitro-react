@@ -30,7 +30,7 @@ export const PromoArticleWidgetView: FC<PromoArticleWidgetViewProps> = props =>
   	if (!articles) return null;
 
   	return (
-		<div className="promo-articles widget">
+		<div className="promo-articles widget mb-2">
 			<div className="d-flex flex-row align-items-center w-100 mb-1">
 				<small className="flex-shrink-0 pe-1">{ LocalizeText('landing.view.promo.article.header') }</small>
 			  	<hr className="w-100 my-0"/>

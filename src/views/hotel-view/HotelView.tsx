@@ -52,25 +52,25 @@ export const HotelView: FC<HotelViewProps> = props =>
                                 widgetSlot={ 2 }
                                 widgetType={GetConfiguration('hotelview')['widgets']['slot.' + 2 + '.widget']}
                                 widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + 2 + '.conf']}
-                                className="col-6"
+                                className="col-7"
                             />
                             <WidgetSlotView
                                 widgetSlot={ 3 }
                                 widgetType={GetConfiguration('hotelview')['widgets']['slot.' + 3 + '.widget']}
                                 widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + 3 + '.conf']}
-                                className="col-6"
+                                className="col-5"
                             />
                             <WidgetSlotView
                                 widgetSlot={ 4 }
                                 widgetType={GetConfiguration('hotelview')['widgets']['slot.' + 4 + '.widget']}
                                 widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + 4 + '.conf']}
-                                className="col-6"
+                                className="col-7"
                             />
                             <WidgetSlotView
                                 widgetSlot={ 5 }
                                 widgetType={GetConfiguration('hotelview')['widgets']['slot.' + 5 + '.widget']}
                                 widgetConf={GetConfiguration('hotelview')['widgets']['slot.' + 5 + '.conf']}
-                                className="col-6"
+                                className="col-5"
                             />
                         </div>
                         <WidgetSlotView

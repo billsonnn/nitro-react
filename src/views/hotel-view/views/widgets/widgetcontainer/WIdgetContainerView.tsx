@@ -1,5 +1,6 @@
 import { FC, useCallback, useMemo } from 'react';
 import { GetConfigurationManager } from '../../../../../api/core/';
+import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { WidgetContainerViewProps } from './WidgetContainerView.types';
 
 export const WidgetContainerView: FC<WidgetContainerViewProps> = props =>
@@ -40,8 +41,13 @@ export const WidgetContainerView: FC<WidgetContainerViewProps> = props =>
     }, [ config ]);
 
   	return (
-        <div className="widgetcontainer widget">
-            { getOption('image') }
+        <div className="widgetcontainer widget d-flex flex-row overflow-hidden">
+            <div className="widgetcontainer-image flex-shrink-0" style={{ backgroundImage: `url(${getOption('image')})` }} />
+            <div className="d-flex flex-column align-self-center">
+                <h3 className="my-0">{LocalizeText(`landing.view.${getOption('texts')}.header`)}</h3>
+                <i>{ LocalizeText(`landing.view.${getOption('texts')}.body`) }</i>
+                <button className="btn btn-sm btn-gainsboro align-self-start px-3 mt-auto">{ LocalizeText(`landing.view.${getOption('texts')}.button`) }</button>
+            </div>
     	</div>
   	);
 }
