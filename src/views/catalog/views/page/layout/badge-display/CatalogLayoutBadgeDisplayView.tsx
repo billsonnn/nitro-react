@@ -5,6 +5,7 @@ import { InventoryBadgesRequestEvent } from '../../../../../../events/inventory/
 import { dispatchUiEvent, useUiEvent } from '../../../../../../hooks';
 import { NitroCardGridItemView } from '../../../../../../layout/card/grid/item/NitroCardGridItemView';
 import { NitroCardGridView } from '../../../../../../layout/card/grid/NitroCardGridView';
+import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { GetOfferName } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
@@ -18,8 +19,8 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutBadgeDisplayViewProp
     const { roomPreviewer = null, pageParser = null } = props;
     const { catalogState = null, dispatchCatalogState = null } = useCatalogContext();
     const { activeOffer = null } = catalogState;
-    const [ currentBadge, setCurrentBadge ] = useState<string>(null);
     const [ badges, setBadges ] = useState<string[]>([]);
+    const [ currentBadge, setCurrentBadge ] = useState<string>(null);
 
     const product = ((activeOffer && activeOffer.products[0]) || null);
 
@@ -63,7 +64,8 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutBadgeDisplayViewProp
         <div className="row h-100 nitro-catalog-layout-badge-display">
             <div className="d-flex flex-column col-7 h-100">
                 <CatalogPageOffersView offers={ pageParser.offers } />
-                <div className="d-flex mt-2">
+                <div className="d-flex flex-column mt-2">
+                    <div className="text-black fw-bold">{ LocalizeText('catalog_selectbadge') }</div>
                     <NitroCardGridView className="inventory-badge-grid">
                         { badgeElements }
                     </NitroCardGridView>
@@ -73,7 +75,7 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutBadgeDisplayViewProp
                 <div className="position-relative d-flex flex-column col">
                     <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                     <div className="fs-6 text-black mt-1 overflow-hidden">{ GetOfferName(activeOffer) }</div>
-                    <CatalogPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ 'Bill	22-7-2021	ADM' } />
+                    <CatalogPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ currentBadge } disabled={ !currentBadge } />
                 </div> }
         </div>
     );

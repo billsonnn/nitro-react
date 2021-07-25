@@ -8,6 +8,7 @@ export interface CatalogPurchaseButtonViewProps
     extra?: string;
     quantity?: number;
     isPurchaseAllowed?: boolean;
+    disabled?: boolean;
     beforePurchase?: () => void;
 }
 
