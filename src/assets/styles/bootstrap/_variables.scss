@@ -80,6 +80,7 @@ $cello-light:   #21516e !default;
 $cello-dark:    #1e465e !default;
 $pale-sky:      #677181 !default;
 $oslo-gray:     #8F9297 !default;
+$gainsboro:     #d9d9d9 !default;
 
 $success:       $green !default;
 $info:          $cyan !default;
@@ -122,7 +123,8 @@ $theme-colors: (
   "white":      $white,
   "black":      $black,
   "muted":      $muted,
-  "purple":     $purple
+  "purple":     $purple,
+  "gainsboro":  $gainsboro
 ) !default;
 // scss-docs-end theme-colors-map
 
