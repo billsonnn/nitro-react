@@ -76,12 +76,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
             case 'open':
                 if(parts.length > 2)
                 {
-                    dispatchCatalogState({
-                        type: CatalogActions.SET_PENDING_PAGE_ID,
-                        payload: {
-                            pendingPageId: parseInt(parts[2])
-                        }
-                    });
+                    setPendingPageId(parseInt(parts[2]));
                 }
                 else
                 {
@@ -89,7 +84,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                 }
                 return;
         }
-    }, [ dispatchCatalogState ]);
+    }, []);
 
     useEffect(() =>
     {
@@ -128,6 +123,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
 
                 setCurrentTab(tree.shift());
                 setPendingTree(tree);
+                setPendingPageId(-1);
             }
         }
     }, [ isVisible, pendingPageId, catalogState.root, buildCatalogPageTree, setCurrentTab ]);
@@ -176,7 +172,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                         <div className="row h-100">
                             { (!pageParser || (pageParser && !pageParser.frontPageItems.length)) &&
                                 <div className="col-3 d-flex flex-column h-100">
-                                    <CatalogNavigationView page={ currentNavigationPage } />
+                                    <CatalogNavigationView page={ currentNavigationPage } pendingTree={ pendingTree } setPendingTree={ setPendingTree } />
                                 </div> }
                             <div className="col h-100">
                                 <CatalogPageView roomPreviewer={ roomPreviewer } />

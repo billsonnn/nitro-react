@@ -9,9 +9,8 @@ import { CatalogNavigationItemViewProps } from './CatalogNavigationItemView.type
 
 export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = props =>
 {
-    const { page = null, isActive = false, setActiveChild = null } = props;
+    const { page = null, isActive = false, pendingTree = null, setPendingTree = null, setActiveChild = null } = props;
     const [ isExpanded, setIsExpanded ] = useState(false);
-    const [ myTree, setMyTree ] = useState<ICatalogPageData[]>(null);
     const { dispatchCatalogState = null } = useCatalogContext();
 
     const select = useCallback((selectPage: ICatalogPageData) =>
@@ -46,7 +45,18 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
         SendMessageHook(new CatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
     }, [ isActive, page, select, dispatchCatalogState ]);
 
-    if(!page.visible) return null;
+    useEffect(() =>
+    {
+        if(!page || !pendingTree || !pendingTree.length) return;
+
+        const index = pendingTree.indexOf(page);
+
+        if(index === -1) return;
+
+        //if(!pendingTree.length) setPendingTree(null);
+
+        select(page);
+    }, [ pendingTree, page, select, setPendingTree ]);
     
     return (
         <div className="col pb-1 catalog-navigation-item-container">
@@ -57,7 +67,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
             </div>
             { isActive && isExpanded && page.children && (page.children.length > 0) &&
                 <div className="d-flex flex-column mt-1">
-                    <CatalogNavigationSetView page={ page } />
+                    <CatalogNavigationSetView page={ page } pendingTree={ pendingTree } setPendingTree={ setPendingTree } />
                 </div> }
         </div>
     );
