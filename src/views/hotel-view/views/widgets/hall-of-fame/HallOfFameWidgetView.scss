@@ -1,0 +1,15 @@
+.hall-of-fame {
+  .hof-user-container {
+    display:inline-flex;
+    height: 100%;
+
+    .hof-tooltip {
+      position: absolute;
+      display: inline;
+    }
+    .avatar-image {
+      position:relative;
+      display:inline;
+    }
+  }
+}

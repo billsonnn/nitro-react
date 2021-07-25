@@ -1,6 +1,7 @@
 import { CommunityGoalHallOfFameData, CommunityGoalHallOfFameMessageEvent, GetCommunityGoalHallOfFameMessageComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../../../../hooks/messages/message-event';
+import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { HallOfFameWidgetViewProps } from './HallOfFameWidgetView.types';
 
 export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props =>
@@ -19,12 +20,17 @@ export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props =>
   }, []);
 
   CreateMessageHook(CommunityGoalHallOfFameMessageEvent, onCommunityGoalHallOfFameMessageEvent);
-  
-  if(!data) return null;
-  
+
+  if (!data) return null;
+
   return (
     <div className="hall-of-fame widget">
-      <h1>showing hall of fame for event: {data ? data.goalCode : 'empty'}</h1>
+      {data.hof && (data.hof.length > 0) && data.hof.map((entry, ind) =>
+      <div className="hof-user-container">
+        <div className="hof-tooltip">{entry.userName}</div>
+        <AvatarImageView figure={entry.figure} direction={2} key={ind} />
+      </div>
+      )}
     </div>
   );
 }
