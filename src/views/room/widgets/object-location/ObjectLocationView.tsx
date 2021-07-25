@@ -1,6 +1,5 @@
-import { Nitro } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { GetRoomEngine, GetRoomSession } from '../../../../api';
+import { GetNitroInstance, GetRoomEngine, GetRoomSession } from '../../../../api';
 import { ObjectLocationViewProps } from './ObjectLocationView.types';
 
 export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
@@ -41,12 +40,12 @@ export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
         {
             remove = true;
 
-            Nitro.instance.ticker.add(updatePosition);
+            GetNitroInstance().ticker.add(updatePosition);
         }
 
         return () =>
         {
-            if(remove) Nitro.instance.ticker.remove(updatePosition);
+            if(remove) GetNitroInstance().ticker.remove(updatePosition);
         }
     }, [ updatePosition, noFollow ]);
 

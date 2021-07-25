@@ -3,6 +3,7 @@ import { BonusRareWidgetView } from './bonus-rare/BonusRareWidgetView';
 import { GetWidgetLayoutProps } from './GetWidgetLayout.types';
 import { HallOfFameWidgetView } from './hall-of-fame/HallOfFameWidgetView';
 import { PromoArticleWidgetView } from './promo-article/PromoArticleWidgetView';
+import { WidgetContainerView } from './widgetcontainer/WIdgetContainerView';
 
 export const GetWidgetLayout: FC<GetWidgetLayoutProps> = props =>
 {
@@ -14,6 +15,8 @@ export const GetWidgetLayout: FC<GetWidgetLayoutProps> = props =>
       return <HallOfFameWidgetView slot={props.slot} conf={props.widgetConf} />;
     case "bonusrare":
       return <BonusRareWidgetView />;
+    case "widgetcontainer":
+      return <WidgetContainerView conf={props.widgetConf} />
     default:
       return null;
   }

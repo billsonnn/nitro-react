@@ -1,5 +1,6 @@
-import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, Nitro, RequestBotCommandConfigurationComposer, RoomObjectCategory, RoomObjectType } from 'nitro-renderer';
+import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, RequestBotCommandConfigurationComposer, RoomObjectCategory, RoomObjectType } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { GetNitroInstance } from '../../../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks/messages';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../../context/RoomContext';
@@ -119,7 +120,7 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
                     SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DANCE, ''));
                     break;
                 case 'nux_take_tour':
-                    Nitro.instance.createLinkEvent('help/tour');
+                    GetNitroInstance().createLinkEvent('help/tour');
                     SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.NUX_TAKE_TOUR, ''));
                     break;
                 case 'pick':

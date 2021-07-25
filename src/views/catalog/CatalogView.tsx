@@ -1,7 +1,6 @@
-import { CatalogModeComposer, CatalogRequestGiftConfigurationComposer, ICatalogPageData, RoomPreviewer } from 'nitro-renderer';
+import { CatalogModeComposer, CatalogPageComposer, CatalogRequestGiftConfigurationComposer, ICatalogPageData, ILinkEventTracker, RoomPreviewer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
-import { GetRoomEngine } from '../../api';
-import { GetCatalogPageComposer } from '../../api/catalog/GetCatalogPageComposer';
+import { AddEventLinkTracker, GetRoomEngine, RemoveLinkEventTracker } from '../../api';
 import { CatalogEvent } from '../../events';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
@@ -9,6 +8,7 @@ import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, Nitro
 import { LocalizeText } from '../../utils/LocalizeText';
 import { CatalogMessageHandler } from './CatalogMessageHandler';
 import { CatalogMode, CatalogViewProps } from './CatalogView.types';
+import { GetCatalogPageTree } from './common/CatalogUtilities';
 import { CatalogContextProvider } from './context/CatalogContext';
 import { CatalogActions, CatalogReducer, initialCatalog } from './reducers/CatalogReducer';
 import { CatalogNavigationView } from './views/navigation/CatalogNavigationView';
@@ -18,8 +18,10 @@ export const CatalogView: FC<CatalogViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
+    const [ pendingPageId, setPendingPageId ] = useState(-1);
+    const [ pendingTree, setPendingTree ] = useState<ICatalogPageData[]>(null);
     const [ catalogState, dispatchCatalogState ] = useReducer(CatalogReducer, initialCatalog);
-    const { root = null, currentTab = null, pageParser = null, activeOffer = null, searchResult = null } = catalogState;
+    const { root = null, currentTab = null, pageParser = null, activeOffer = null, searchResult = null} = catalogState;
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
@@ -42,22 +44,99 @@ export const CatalogView: FC<CatalogViewProps> = props =>
     useUiEvent(CatalogEvent.TOGGLE_CATALOG, onCatalogEvent);
     useUiEvent(CatalogEvent.CATALOG_RESET, onCatalogEvent);
 
+    const setCurrentTab = useCallback((page: ICatalogPageData) =>
+    {
+        dispatchCatalogState({
+            type: CatalogActions.SET_CATALOG_CURRENT_TAB,
+            payload: {
+                currentTab: page
+            }
+        });
+    }, [ dispatchCatalogState ]);
+
+    const buildCatalogPageTree = useCallback((page: ICatalogPageData, targetPageId: number) =>
+    {
+        const pageTree: ICatalogPageData[] = [];
+
+        GetCatalogPageTree(page, targetPageId, pageTree);
+
+        if(pageTree.length) pageTree.reverse();
+
+        return pageTree;
+    }, []);
+
+    const linkReceived = useCallback((url: string) =>
+    {
+        const parts = url.split('/');
+
+        if(parts.length < 2) return;
+
+        switch(parts[1])
+        {
+            case 'open':
+                if(parts.length > 2)
+                {
+                    dispatchCatalogState({
+                        type: CatalogActions.SET_PENDING_PAGE_ID,
+                        payload: {
+                            pendingPageId: parseInt(parts[2])
+                        }
+                    });
+                }
+                else
+                {
+                    setIsVisible(true);
+                }
+                return;
+        }
+    }, [ dispatchCatalogState ]);
+
     useEffect(() =>
     {
-        if(!isVisible) return;
-        
-        if(!catalogState.root)
+        const linkTracker: ILinkEventTracker = {
+            linkReceived,
+            eventUrlPrefix: 'catalog/'
+        };
+
+        AddEventLinkTracker(linkTracker);
+
+        return () => RemoveLinkEventTracker(linkTracker);
+    }, [ linkReceived]);
+
+    useEffect(() =>
+    {
+        const loadCatalog = (((pendingPageId > -1) && !catalogState.root) || (isVisible && !catalogState.root));
+
+        if(loadCatalog)
         {
             SendMessageHook(new CatalogModeComposer(CatalogMode.MODE_NORMAL));
             SendMessageHook(new CatalogRequestGiftConfigurationComposer());
         }
-    }, [ isVisible, catalogState.root ]);
+
+        if(catalogState.root)
+        {
+            if(!isVisible && (pendingPageId > -1))
+            {
+                setIsVisible(true);
+
+                return;
+            }
+
+            if(pendingPageId > -1)
+            {
+                const tree = buildCatalogPageTree(catalogState.root, pendingPageId);
+
+                setCurrentTab(tree.shift());
+                setPendingTree(tree);
+            }
+        }
+    }, [ isVisible, pendingPageId, catalogState.root, buildCatalogPageTree, setCurrentTab ]);
 
     useEffect(() =>
     {
         if(!currentTab) return;
 
-        SendMessageHook(GetCatalogPageComposer(currentTab.pageId, -1, CatalogMode.MODE_NORMAL));
+        SendMessageHook(new CatalogPageComposer(currentTab.pageId, -1, CatalogMode.MODE_NORMAL));
     }, [ currentTab ]);
 
     useEffect(() =>
@@ -74,16 +153,6 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                 });
         }
     }, []);
-
-    const setCurrentTab = useCallback((page: ICatalogPageData) =>
-    {
-        dispatchCatalogState({
-            type: CatalogActions.SET_CATALOG_CURRENT_TAB,
-            payload: {
-                currentTab: page
-            }
-        });
-    }, [ dispatchCatalogState ]);
 
     const currentNavigationPage = ((searchResult && searchResult.page) || currentTab);
 
@@ -105,7 +174,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                     </NitroCardTabsView>
                     <NitroCardContentView>
                         <div className="row h-100">
-                            { pageParser && !pageParser.frontPageItems.length &&
+                            { (!pageParser || (pageParser && !pageParser.frontPageItems.length)) &&
                                 <div className="col-3 d-flex flex-column h-100">
                                     <CatalogNavigationView page={ currentNavigationPage } />
                                 </div> }

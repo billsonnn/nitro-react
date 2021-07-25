@@ -1,4 +1,4 @@
-export interface Currency
+export interface CurrencyViewProps
 {
     type: number;
     amount: number;

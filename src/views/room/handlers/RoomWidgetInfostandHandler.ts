@@ -1,5 +1,5 @@
-import { IFurnitureData, Nitro, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomAdsUpdateComposer, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, SecurityLevel, Vector3d } from 'nitro-renderer';
-import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../api';
+import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomAdsUpdateComposer, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, SecurityLevel, Vector3d } from 'nitro-renderer';
+import { GetNitroInstance, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../api';
 import { InventoryTradeRequestEvent, WiredSelectObjectEvent } from '../../../events';
 import { FriendListSendFriendRequestEvent } from '../../../events/friend-list/FriendListSendFriendRequestEvent';
 import { dispatchUiEvent } from '../../../hooks/events';
@@ -390,6 +390,8 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 event.rentOfferId = furnitureData.rentOfferId;
                 event.rentCouldBeUsedForBuyout = furnitureData.rentCouldBeUsedForBuyout;
                 event.availableForBuildersClub = furnitureData.availableForBuildersClub;
+                event.tileSizeX = furnitureData.tileSizeX;
+                event.tileSizeY = furnitureData.tileSizeY;
 
                 dispatchUiEvent(new WiredSelectObjectEvent(event.id, event.category));
             }
@@ -400,7 +402,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         const expiryTime = model.getValue<number>(RoomObjectVariable.FURNITURE_EXPIRY_TIME);
         const expiryTimestamp = model.getValue<number>(RoomObjectVariable.FURNITURE_EXPIRTY_TIMESTAMP);
 
-        event.expiration = ((expiryTime < 0) ? expiryTime : Math.max(0, (expiryTime - ((Nitro.instance.time - expiryTimestamp) / 1000))));
+        event.expiration = ((expiryTime < 0) ? expiryTime : Math.max(0, (expiryTime - ((GetNitroInstance().time - expiryTimestamp) / 1000))));
 
         let roomObjectImage = GetRoomEngine().getRoomObjectImage(roomId, message.id, message.category, new Vector3d(180), 64, null);
 

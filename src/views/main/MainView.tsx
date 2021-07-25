@@ -1,5 +1,6 @@
-import { Nitro, RoomSessionEvent } from 'nitro-renderer';
+import { RoomSessionEvent } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { GetCommunication } from '../../api';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { AchievementsView } from '../achievements/AchievementsView';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
@@ -41,7 +42,7 @@ export const MainView: FC<MainViewProps> = props =>
     {
         setIsReady(true);
 
-        Nitro.instance.communication.connection.onReady();
+        GetCommunication().connection.onReady();
     }, []);
 
     return (

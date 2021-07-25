@@ -1,6 +1,6 @@
-import { ColorConverter, Nitro, NitroAdjustmentFilter, NitroContainer, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineEvent, RoomId, RoomObjectHSLColorEnabledEvent } from 'nitro-renderer';
+import { ColorConverter, NitroAdjustmentFilter, NitroContainer, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineEvent, RoomId, RoomObjectHSLColorEnabledEvent } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine } from '../../api';
+import { GetNitroInstance, GetRoomEngine } from '../../api';
 import { UseMountEffect } from '../../hooks';
 import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../hooks/events';
 import { useRoomContext } from './context/RoomContext';
@@ -48,8 +48,8 @@ export const RoomColorView: FC<{}> = props =>
         if(color === undefined) color = 0x000000;
 
         background.tint = color;
-        background.width = Nitro.instance.width;
-        background.height = Nitro.instance.height;
+        background.width = GetNitroInstance().width;
+        background.height = GetNitroInstance().height;
     }, [ getRoomBackground ]);
 
     const updateRoomBackgroundColor = useCallback((hue: number, saturation: number, lightness: number, original: boolean = false) =>

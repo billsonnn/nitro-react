@@ -1,6 +1,5 @@
-import { Nitro } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { GetConfiguration } from '../../../../api';
+import { GetConfiguration, GetNitroInstance } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { useNavigatorContext } from '../../context/NavigatorContext';
@@ -26,7 +25,7 @@ export const NavigatorRoomLinkView: FC<NavigatorRoomLinkViewProps> = props =>
             setRoomThumbnail(GetConfiguration<string>('image.library.url') + roomInfoData.enteredGuestRoom.officialRoomPicRef);
         }
 
-        const roomLinkRaw = Nitro.instance.core.configuration.interpolate(LocalizeText('navigator.embed.src', ['roomId'], [roomInfoData.enteredGuestRoom.roomId.toString()]));
+        const roomLinkRaw = GetNitroInstance().core.configuration.interpolate(LocalizeText('navigator.embed.src', ['roomId'], [roomInfoData.enteredGuestRoom.roomId.toString()]));
 
         setRoomLink(roomLinkRaw);
     }, [ roomInfoData ]);

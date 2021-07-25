@@ -30,4 +30,6 @@ export class RoomWidgetUpdateInfostandFurniEvent extends RoomWidgetUpdateInfosta
     public purchaseCouldBeUsedForBuyout: boolean = false;
     public rentCouldBeUsedForBuyout: boolean = false;
     public availableForBuildersClub: boolean = false;
+    public tileSizeX: number = 1;
+    public tileSizeY: number = 1;
 }

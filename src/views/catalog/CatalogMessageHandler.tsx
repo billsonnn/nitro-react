@@ -127,11 +127,11 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
             type: CatalogActions.SET_SUBSCRIPTION_INFO,
             payload: {
                 subscriptionInfo: new SubscriptionInfo(
-                    Math.max(0, parser.days),
-                    Math.max(0, parser.months),
+                    Math.max(0, parser.daysToPeriodEnd),
+                    Math.max(0, parser.periodsSubscribedAhead),
                     parser.isVip,
                     parser.pastClubDays,
-                    parser.pastVIPDays
+                    parser.pastVipDays
                 )
             }
         });
@@ -148,8 +148,6 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
     const onCatalogGiftConfigurationEvent = useCallback((event: CatalogGiftConfigurationEvent) =>
     {
         const parser = event.getParser();
-
-        console.log(parser);
 
         dispatchCatalogState({
             type: CatalogActions.SET_GIFT_CONFIGURATION,

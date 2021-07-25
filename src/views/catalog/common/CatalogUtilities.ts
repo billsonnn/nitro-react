@@ -149,3 +149,20 @@ export function GetPetAvailableColors(petIndex: number, palettes: SellablePetPal
         }
     }
 }
+
+export function GetCatalogPageTree(page: ICatalogPageData, targetPageId: number, tree: ICatalogPageData[])
+{
+    if(page.pageId === targetPageId) return page;
+
+    for(const pageData of page.children)
+    {
+        const foundPageData = GetCatalogPageTree(pageData, targetPageId, tree);
+
+        if(foundPageData)
+        {
+            tree.push(pageData);
+
+            return pageData;
+        }
+    }
+}

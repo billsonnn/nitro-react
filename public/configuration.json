@@ -91,8 +91,8 @@
         "widgets": {
             "slot.1.widget": "promoarticle",
             "slot.1.conf": "",
-            "slot.2.widget": "",
-            "slot.2.conf": "",
+            "slot.2.widget": "widgetcontainer",
+            "slot.2.conf": "image:${image.library.url}web_promo_small/spromo_Canal_Bundle.png,btn:HelloHELLO,btnLink:https://google.com/",
             "slot.3.widget": "",
             "slot.3.conf": "",
             "slot.4.widget": "",
