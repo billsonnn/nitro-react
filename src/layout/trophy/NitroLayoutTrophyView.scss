@@ -1,4 +1,4 @@
-.nitro-trophy {
+.nitro-layout-trophy {
     position: relative;
     width: 340px;
     height: 173px;
@@ -7,7 +7,7 @@
     color: black;
     
     background-position: 0px 0px;
-    background-image: url('../../../../../assets/images/room-widgets/trophy-widget/trophy-spritesheet.png');
+    background-image: url('../../assets/images/room-widgets/trophy-widget/trophy-spritesheet.png');
     
     &.trophy-2 {
         background-position: 0px 173px;

@@ -3,8 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
-import { DraggableWindow } from '../../../../../layout/draggable-window/DraggableWindow';
-import { LocalizeText } from '../../../../../utils/LocalizeText';
+import { NitroLayoutTrophyView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
 import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureTrophyData } from './FurnitureTrophyData';
@@ -70,23 +69,5 @@ export const FurnitureTrophyView: FC<{}> = props =>
 
     if(!trophyData) return null;
 
-    return (
-        <DraggableWindow handle=".drag-handler">
-            <div className={ "nitro-trophy trophy-" + trophyData.color }>
-                <div className="trophy-header drag-handler">
-                    <div className="float-end trophy-close" onClick={ event => processAction('close') }></div>
-                    <div className="trophy-title fw-bold text-center">
-                        { LocalizeText('widget.furni.trophy.title') }
-                    </div>
-                </div>
-                <div className="trophy-content">
-                    { trophyData.message }
-                </div>
-                <div className="trophy-footer d-flex justify-content-between fw-bold">
-                    <div>{ trophyData.date }</div>
-                    <div>{ trophyData.ownerName }</div>
-                </div>
-            </div>
-        </DraggableWindow>
-    );
+    return <NitroLayoutTrophyView color={ trophyData.color } message={ trophyData.message } date={ trophyData.date } senderName={ trophyData.ownerName } onCloseClick={ () => processAction('close') } />;
 }
