@@ -122,8 +122,8 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                 const tree = buildCatalogPageTree(catalogState.root, pendingPageId);
 
                 setCurrentTab(tree.shift());
-                setPendingTree(tree);
                 setPendingPageId(-1);
+                setPendingTree(tree);
             }
         }
     }, [ isVisible, pendingPageId, catalogState.root, buildCatalogPageTree, setCurrentTab ]);

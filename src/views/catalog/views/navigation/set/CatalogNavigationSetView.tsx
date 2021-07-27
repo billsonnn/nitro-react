@@ -7,7 +7,7 @@ export const CatalogNavigationSetView: FC<CatalogNavigationSetViewProps> = props
 {
     const { page = null, isFirstSet = false, pendingTree = null, setPendingTree = null } = props;
     const [ activeChild, setActiveChild ] = useState<ICatalogPageData>(null);
-
+    
     useEffect(() =>
     {
         if(!isFirstSet || !page || (page.pageId === -1) || pendingTree) return;
@@ -16,9 +16,14 @@ export const CatalogNavigationSetView: FC<CatalogNavigationSetViewProps> = props
         {
             const child = page.children[0];
 
-            setActiveChild(child);
+            //if(child) setActiveChild(child);
         }
     }, [ page, isFirstSet, pendingTree ]);
+
+    useEffect(() =>
+    {
+        console.log('activeChild', activeChild, page);
+    }, [ page, activeChild ]);
     
     return (
         <div className="row row-cols-1 g-0 catalog-navigation-set-container w-100">

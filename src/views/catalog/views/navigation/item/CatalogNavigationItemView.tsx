@@ -2,8 +2,8 @@ import { CatalogPageComposer, ICatalogPageData } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageHook } from '../../../../../hooks/messages/message-event';
 import { CatalogMode } from '../../../CatalogView.types';
-import { useCatalogContext } from '../../../context/CatalogContext';
 import { CatalogIconView } from '../../catalog-icon/CatalogIconView';
+import { ACTIVE_PAGES } from '../CatalogNavigationView';
 import { CatalogNavigationSetView } from '../set/CatalogNavigationSetView';
 import { CatalogNavigationItemViewProps } from './CatalogNavigationItemView.types';
 
@@ -11,9 +11,8 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
 {
     const { page = null, isActive = false, pendingTree = null, setPendingTree = null, setActiveChild = null } = props;
     const [ isExpanded, setIsExpanded ] = useState(false);
-    const { dispatchCatalogState = null } = useCatalogContext();
 
-    const select = useCallback((selectPage: ICatalogPageData) =>
+    const select = useCallback((selectPage: ICatalogPageData, expand: boolean = false) =>
     {
         if(!selectPage) return;
         
@@ -21,7 +20,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
             {
                 if(prevValue === selectPage)
                 {
-                    SendMessageHook(new CatalogPageComposer(selectPage.pageId, -1, CatalogMode.MODE_NORMAL));
+                    if(selectPage.pageId > -1) SendMessageHook(new CatalogPageComposer(selectPage.pageId, -1, CatalogMode.MODE_NORMAL));
                 }
                 
                 return selectPage;
@@ -31,6 +30,8 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
         {
             setIsExpanded(prevValue =>
                 {
+                    if(expand) return true;
+                    
                     return !prevValue;
                 });
         }
@@ -38,25 +39,41 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
 
     useEffect(() =>
     {
-        if(!isActive || !page) return;
+        if(!pendingTree || !pendingTree.length) return;
 
-        setIsExpanded(true);
-        
-        SendMessageHook(new CatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
-    }, [ isActive, page, select, dispatchCatalogState ]);
+        if(page !== pendingTree[0]) return;
+
+        if(pendingTree.length > 1)
+        {
+            const newTree = [ ...pendingTree ];
+
+            newTree.shift();
+
+            setPendingTree(newTree);
+        }
+        else
+        {
+            setPendingTree(null);
+        }
+
+        select(page, true);
+    }, [ page, pendingTree, setPendingTree, select ]);
 
     useEffect(() =>
     {
-        if(!page || !pendingTree || !pendingTree.length) return;
+        if(!isActive || !page) return;
 
-        const index = pendingTree.indexOf(page);
+        setIsExpanded(true);
 
-        if(index === -1) return;
+        if(page.pageId > -1) SendMessageHook(new CatalogPageComposer(page.pageId, -1, CatalogMode.MODE_NORMAL));
 
-        //if(!pendingTree.length) setPendingTree(null);
+        const index = (ACTIVE_PAGES.push(page) - 1);
 
-        select(page);
-    }, [ pendingTree, page, select, setPendingTree ]);
+        return () =>
+        {
+            ACTIVE_PAGES.length = index;
+        }
+    }, [ isActive, page ]);
     
     return (
         <div className="col pb-1 catalog-navigation-item-container">
