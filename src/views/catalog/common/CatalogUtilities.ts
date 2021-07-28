@@ -150,13 +150,13 @@ export function GetPetAvailableColors(petIndex: number, palettes: SellablePetPal
     }
 }
 
-export function GetCatalogPageTree(page: ICatalogPageData, targetPageId: number, tree: ICatalogPageData[])
+export function GetCatalogPageTreeByName(page: ICatalogPageData, lookup: string, tree: ICatalogPageData[])
 {
-    if(page.pageId === targetPageId) return page;
+    if(page.pageName === lookup) return page;
 
     for(const pageData of page.children)
     {
-        const foundPageData = GetCatalogPageTree(pageData, targetPageId, tree);
+        const foundPageData = GetCatalogPageTreeByName(pageData, lookup, tree);
 
         if(foundPageData)
         {
@@ -167,11 +167,35 @@ export function GetCatalogPageTree(page: ICatalogPageData, targetPageId: number,
     }
 }
 
-export function BuildCatalogPageTree(page: ICatalogPageData, targetPageId: number)
+export function GetCatalogPageTreeById(page: ICatalogPageData, lookup: number, tree: ICatalogPageData[])
+{
+    if(page.pageId === lookup) return page;
+
+    for(const pageData of page.children)
+    {
+        const foundPageData = GetCatalogPageTreeById(pageData, lookup, tree);
+
+        if(foundPageData)
+        {
+            tree.push(pageData);
+
+            return pageData;
+        }
+    }
+}
+
+export function BuildCatalogPageTree(page: ICatalogPageData, lookup: string)
 {
     const pageTree: ICatalogPageData[] = [];
 
-    GetCatalogPageTree(page, targetPageId, pageTree);
+    if(isNaN((lookup as unknown) as number))
+    {
+        GetCatalogPageTreeByName(page, lookup, pageTree);
+    }
+    else
+    {
+        GetCatalogPageTreeById(page, parseInt(lookup), pageTree);
+    }
 
     if(pageTree.length) pageTree.reverse();
 

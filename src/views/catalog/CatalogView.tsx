@@ -18,7 +18,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
-    const [ pendingPageId, setPendingPageId ] = useState(-1);
+    const [ pendingPageLookup, setPendingPageLookup ] = useState<string>(null);
     const [ pendingTree, setPendingTree ] = useState<ICatalogPageData[]>(null);
     const [ catalogState, dispatchCatalogState ] = useReducer(CatalogReducer, initialCatalog);
     const [ currentTab, setCurrentTab ] = useState<ICatalogPageData>(null);
@@ -56,7 +56,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
             case 'open':
                 if(parts.length > 2)
                 {
-                    setPendingPageId(parseInt(parts[2]));
+                    setPendingPageLookup(parts[2]);
                 }
                 else
                 {
@@ -80,7 +80,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
 
     useEffect(() =>
     {
-        const loadCatalog = (((pendingPageId > -1) && !catalogState.root) || (isVisible && !catalogState.root));
+        const loadCatalog = (((pendingPageLookup !== null) && !catalogState.root) || (isVisible && !catalogState.root));
 
         if(loadCatalog)
         {
@@ -92,24 +92,23 @@ export const CatalogView: FC<CatalogViewProps> = props =>
 
         if(catalogState.root)
         {
-            if(!isVisible && (pendingPageId > -1))
+            if(!isVisible && (pendingPageLookup !== null))
             {
                 setIsVisible(true);
 
                 return;
             }
 
-            if(pendingPageId > -1)
+            if(pendingPageLookup !== null)
             {
-                const tree = BuildCatalogPageTree(catalogState.root, pendingPageId);
+                const tree = BuildCatalogPageTree(catalogState.root, pendingPageLookup);
 
                 setCurrentTab(tree.shift());
-                setPendingPageId(-1);
+                setPendingPageLookup(null);
                 setPendingTree(tree);
             }
             else
             {
-
                 setCurrentTab(prevValue =>
                     {
                         if(catalogState.root.children.length)
@@ -126,7 +125,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                     });
             }
         }
-    }, [ isVisible, pendingPageId, catalogState.root, setCurrentTab ]);
+    }, [ isVisible, pendingPageLookup, catalogState.root, setCurrentTab ]);
 
     useEffect(() =>
     {
