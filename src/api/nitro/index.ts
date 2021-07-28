@@ -1,6 +1,7 @@
 export * from './AddLinkEventTracker';
 export * from './avatar';
 export * from './camera';
+export * from './CreateLinkEvent';
 export * from './GetCommunication';
 export * from './GetConfiguration';
 export * from './GetConnection';
