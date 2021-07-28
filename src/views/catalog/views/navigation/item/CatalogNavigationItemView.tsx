@@ -43,18 +43,12 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
 
         if(page !== pendingTree[0]) return;
 
-        if(pendingTree.length > 1)
-        {
-            const newTree = [ ...pendingTree ];
+        const newTree = [ ...pendingTree ];
 
-            newTree.shift();
+        newTree.shift();
 
-            setPendingTree(newTree);
-        }
-        else
-        {
-            setPendingTree(null);
-        }
+        if(newTree.length) setPendingTree(newTree);
+        else setPendingTree(null);
 
         select(page, true);
     }, [ page, pendingTree, setPendingTree, select ]);

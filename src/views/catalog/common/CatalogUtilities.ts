@@ -166,3 +166,14 @@ export function GetCatalogPageTree(page: ICatalogPageData, targetPageId: number,
         }
     }
 }
+
+export function BuildCatalogPageTree(page: ICatalogPageData, targetPageId: number)
+{
+    const pageTree: ICatalogPageData[] = [];
+
+    GetCatalogPageTree(page, targetPageId, pageTree);
+
+    if(pageTree.length) pageTree.reverse();
+
+    return pageTree;
+}

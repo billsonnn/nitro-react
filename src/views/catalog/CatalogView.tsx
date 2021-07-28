@@ -8,9 +8,9 @@ import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, Nitro
 import { LocalizeText } from '../../utils/LocalizeText';
 import { CatalogMessageHandler } from './CatalogMessageHandler';
 import { CatalogMode, CatalogViewProps } from './CatalogView.types';
-import { GetCatalogPageTree } from './common/CatalogUtilities';
+import { BuildCatalogPageTree } from './common/CatalogUtilities';
 import { CatalogContextProvider } from './context/CatalogContext';
-import { CatalogActions, CatalogReducer, initialCatalog } from './reducers/CatalogReducer';
+import { CatalogReducer, initialCatalog } from './reducers/CatalogReducer';
 import { CatalogNavigationView } from './views/navigation/CatalogNavigationView';
 import { CatalogPageView } from './views/page/CatalogPageView';
 
@@ -21,7 +21,8 @@ export const CatalogView: FC<CatalogViewProps> = props =>
     const [ pendingPageId, setPendingPageId ] = useState(-1);
     const [ pendingTree, setPendingTree ] = useState<ICatalogPageData[]>(null);
     const [ catalogState, dispatchCatalogState ] = useReducer(CatalogReducer, initialCatalog);
-    const { root = null, currentTab = null, pageParser = null, activeOffer = null, searchResult = null} = catalogState;
+    const [ currentTab, setCurrentTab ] = useState<ICatalogPageData>(null);
+    const { root = null, pageParser = null, activeOffer = null, searchResult = null} = catalogState;
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
@@ -43,27 +44,6 @@ export const CatalogView: FC<CatalogViewProps> = props =>
     useUiEvent(CatalogEvent.HIDE_CATALOG, onCatalogEvent);
     useUiEvent(CatalogEvent.TOGGLE_CATALOG, onCatalogEvent);
     useUiEvent(CatalogEvent.CATALOG_RESET, onCatalogEvent);
-
-    const setCurrentTab = useCallback((page: ICatalogPageData) =>
-    {
-        dispatchCatalogState({
-            type: CatalogActions.SET_CATALOG_CURRENT_TAB,
-            payload: {
-                currentTab: page
-            }
-        });
-    }, [ dispatchCatalogState ]);
-
-    const buildCatalogPageTree = useCallback((page: ICatalogPageData, targetPageId: number) =>
-    {
-        const pageTree: ICatalogPageData[] = [];
-
-        GetCatalogPageTree(page, targetPageId, pageTree);
-
-        if(pageTree.length) pageTree.reverse();
-
-        return pageTree;
-    }, []);
 
     const linkReceived = useCallback((url: string) =>
     {
@@ -106,6 +86,8 @@ export const CatalogView: FC<CatalogViewProps> = props =>
         {
             SendMessageHook(new CatalogModeComposer(CatalogMode.MODE_NORMAL));
             SendMessageHook(new CatalogRequestGiftConfigurationComposer());
+
+            return;
         }
 
         if(catalogState.root)
@@ -119,14 +101,32 @@ export const CatalogView: FC<CatalogViewProps> = props =>
 
             if(pendingPageId > -1)
             {
-                const tree = buildCatalogPageTree(catalogState.root, pendingPageId);
+                const tree = BuildCatalogPageTree(catalogState.root, pendingPageId);
 
                 setCurrentTab(tree.shift());
                 setPendingPageId(-1);
                 setPendingTree(tree);
             }
+            else
+            {
+
+                setCurrentTab(prevValue =>
+                    {
+                        if(catalogState.root.children.length)
+                        {
+                            if(prevValue)
+                            {
+                                if(catalogState.root.children.indexOf(prevValue) >= 0) return prevValue;
+                            }
+
+                            return ((catalogState.root.children.length && catalogState.root.children[0]) || null);
+                        }
+
+                        return null;
+                    });
+            }
         }
-    }, [ isVisible, pendingPageId, catalogState.root, buildCatalogPageTree, setCurrentTab ]);
+    }, [ isVisible, pendingPageId, catalogState.root, setCurrentTab ]);
 
     useEffect(() =>
     {
@@ -151,6 +151,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
     }, []);
 
     const currentNavigationPage = ((searchResult && searchResult.page) || currentTab);
+    const navigationHidden = (pageParser && pageParser.frontPageItems.length);
 
     return (
         <CatalogContextProvider value={ { catalogState, dispatchCatalogState } }>
@@ -170,7 +171,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                     </NitroCardTabsView>
                     <NitroCardContentView>
                         <div className="row h-100">
-                            { (!pageParser || (pageParser && !pageParser.frontPageItems.length)) &&
+                            { currentNavigationPage && !navigationHidden &&
                                 <div className="col-3 d-flex flex-column h-100">
                                     <CatalogNavigationView page={ currentNavigationPage } pendingTree={ pendingTree } setPendingTree={ setPendingTree } />
                                 </div> }

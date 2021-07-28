@@ -7,23 +7,23 @@ export const CatalogNavigationSetView: FC<CatalogNavigationSetViewProps> = props
 {
     const { page = null, isFirstSet = false, pendingTree = null, setPendingTree = null } = props;
     const [ activeChild, setActiveChild ] = useState<ICatalogPageData>(null);
-    
+
     useEffect(() =>
     {
-        if(!isFirstSet || !page || (page.pageId === -1) || pendingTree) return;
+        if(!page || (page.pageId === -1) || !isFirstSet || pendingTree) return;
 
-        if(page && page.children.length)
+        if(page.children.length)
         {
-            const child = page.children[0];
-
-            //if(child) setActiveChild(child);
+            if(activeChild)
+            {
+                if(page.children.indexOf(activeChild) === -1) setActiveChild(null);
+                
+                return;
+            }
+            
+            setActiveChild(page.children[0]);
         }
-    }, [ page, isFirstSet, pendingTree ]);
-
-    useEffect(() =>
-    {
-        console.log('activeChild', activeChild, page);
-    }, [ page, activeChild ]);
+    }, [ page, isFirstSet, activeChild, pendingTree ]);
     
     return (
         <div className="row row-cols-1 g-0 catalog-navigation-set-container w-100">
