@@ -1,3 +1,5 @@
+import { RoomSettingsParser } from 'nitro-renderer';
+
 export default class RoomSettingsData
 {
     public roomId: number;
@@ -35,40 +37,42 @@ export default class RoomSettingsData
     public bannedUsers: Map<number, string>;
     public selectedUserToUnban: number;
 
-    constructor()
+    constructor(parser: RoomSettingsParser)
     {
-        this.roomId                 = 0;
-        this.roomName               = null;
-        this.roomOriginalName       = null;
-        this.roomDescription        = null;
-        this.categoryId             = 0;
-        this.userCount              = 0;
-        this.tags                   = [];
-        this.tradeState             = 0;
-        this.allowWalkthrough       = false;
+        if(!parser) throw new Error('invalid_parser');
 
-        this.lockState              = 0;
-        this.originalLockState      = 0;
+        this.roomId                 = parser.roomId;
+        this.roomName               = parser.name;
+        this.roomOriginalName       = parser.name;
+        this.roomDescription        = parser.description;
+        this.categoryId             = parser.categoryId;
+        this.userCount              = parser.userCount;
+        this.tags                   = parser.tags;
+        this.tradeState             = parser.tradeMode;
+        this.allowWalkthrough       = parser.allowWalkthrough;
+
+        this.lockState              = parser.state;
+        this.originalLockState      = parser.state;
         this.password               = null;
         this.confirmPassword        = null;
-        this.allowPets              = false;
-        this.allowPetsEat           = false;
+        this.allowPets              = parser.allowPets;
+        this.allowPetsEat           = parser.allowPetsEat;
 
         this.usersWithRights        = new Map<number, string>();
         this.friendsWithoutRights   = new Map<number, string>();
 
-        this.hideWalls              = false;
-        this.wallThickness          = 0;
-        this.floorThickness         = 0;
-        this.chatBubbleMode         = 0;
-        this.chatBubbleWeight       = 0;
-        this.chatBubbleSpeed        = 0;
-        this.chatFloodProtection    = 0;
-        this.chatDistance           = 0;
+        this.hideWalls              = parser.hideWalls;
+        this.wallThickness          = parser.thicknessWall;
+        this.floorThickness         = parser.thicknessFloor;
+        this.chatBubbleMode         = parser.chatSettings.mode;
+        this.chatBubbleWeight       = parser.chatSettings.weight;
+        this.chatBubbleSpeed        = parser.chatSettings.speed;
+        this.chatFloodProtection    = parser.chatSettings.protection;
+        this.chatDistance           = parser.chatSettings.distance;
 
-        this.muteState              = 0;
-        this.kickState              = 0;
-        this.banState               = 0;
+        this.muteState              = parser.moderationSettings.allowMute;
+        this.kickState              = parser.moderationSettings.allowKick;
+        this.banState               = parser.moderationSettings.allowBan;
         this.bannedUsers            = new Map<number, string>();
         this.selectedUserToUnban    = 0;
     }
