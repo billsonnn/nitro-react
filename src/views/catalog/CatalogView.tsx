@@ -18,7 +18,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
-    const [ pendingPageLookup, setPendingPageLookup ] = useState<string>(null);
+    const [ pendingPageLookup, setPendingPageLookup ] = useState<{ value: string, isOffer: boolean }>(null);
     const [ pendingTree, setPendingTree ] = useState<ICatalogPageData[]>(null);
     const [ catalogState, dispatchCatalogState ] = useReducer(CatalogReducer, initialCatalog);
     const [ currentTab, setCurrentTab ] = useState<ICatalogPageData>(null);
@@ -56,12 +56,24 @@ export const CatalogView: FC<CatalogViewProps> = props =>
             case 'open':
                 if(parts.length > 2)
                 {
-                    setPendingPageLookup(parts[2]);
+                    if(parts.length === 4)
+                    {
+                        switch(parts[2])
+                        {
+                            case 'offerId':
+                                setPendingPageLookup({ value: parts[3], isOffer: true });
+
+                                return;
+                        }
+                    }
+
+                    setPendingPageLookup({ value: parts[2], isOffer: false });
                 }
                 else
                 {
                     setIsVisible(true);
                 }
+
                 return;
         }
     }, []);
@@ -101,7 +113,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
 
             if(pendingPageLookup !== null)
             {
-                const tree = BuildCatalogPageTree(catalogState.root, pendingPageLookup);
+                const tree = BuildCatalogPageTree(catalogState.root, pendingPageLookup.value, pendingPageLookup.isOffer);
 
                 setCurrentTab(tree.shift());
                 setPendingPageLookup(null);

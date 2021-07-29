@@ -184,11 +184,33 @@ export function GetCatalogPageTreeById(page: ICatalogPageData, lookup: number, t
     }
 }
 
-export function BuildCatalogPageTree(page: ICatalogPageData, lookup: string)
+export function GetCatalogPageTreeByOfferId(page: ICatalogPageData, lookup: number, tree: ICatalogPageData[])
+{
+    if(page.offerIds.indexOf(lookup) >= 0) return page;
+
+    for(const pageData of page.children)
+    {
+        const foundPageData = GetCatalogPageTreeByOfferId(pageData, lookup, tree);
+
+        if(foundPageData)
+        {
+            tree.push(pageData);
+
+            return pageData;
+        }
+    }
+}
+
+export function BuildCatalogPageTree(page: ICatalogPageData, lookup: string, isOffer: boolean = false)
 {
     const pageTree: ICatalogPageData[] = [];
 
-    if(isNaN((lookup as unknown) as number))
+    if(isOffer)
+    {
+        GetCatalogPageTreeByOfferId(page, parseInt(lookup), pageTree);
+    }
+
+    else if(isNaN((lookup as unknown) as number))
     {
         GetCatalogPageTreeByName(page, lookup, pageTree);
     }
