@@ -11,7 +11,7 @@ import { CatalogMode, CatalogViewProps } from './CatalogView.types';
 import { BuildCatalogPageTree } from './common/CatalogUtilities';
 import { CatalogContextProvider } from './context/CatalogContext';
 import { CatalogReducer, initialCatalog } from './reducers/CatalogReducer';
-import { CatalogNavigationView } from './views/navigation/CatalogNavigationView';
+import { ACTIVE_PAGES, CatalogNavigationView } from './views/navigation/CatalogNavigationView';
 import { CatalogPageView } from './views/page/CatalogPageView';
 
 export const CatalogView: FC<CatalogViewProps> = props =>
@@ -20,25 +20,37 @@ export const CatalogView: FC<CatalogViewProps> = props =>
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
     const [ pendingPageLookup, setPendingPageLookup ] = useState<{ value: string, isOffer: boolean }>(null);
     const [ pendingTree, setPendingTree ] = useState<ICatalogPageData[]>(null);
+    const [ pendingOpenTree, setPendingOpenTree ] = useState<ICatalogPageData[]>(null);
     const [ catalogState, dispatchCatalogState ] = useReducer(CatalogReducer, initialCatalog);
     const [ currentTab, setCurrentTab ] = useState<ICatalogPageData>(null);
     const { root = null, pageParser = null, activeOffer = null, searchResult = null} = catalogState;
 
+    const saveActivePages = useCallback(() =>
+    {
+        setPendingOpenTree(ACTIVE_PAGES.slice());
+    }, []);
+
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
+        let save = false;
+
         switch(event.type)
         {
             case CatalogEvent.SHOW_CATALOG:
                 setIsVisible(true);
                 return;
             case CatalogEvent.HIDE_CATALOG:
+                save = true;
                 setIsVisible(false);
                 return;   
             case CatalogEvent.TOGGLE_CATALOG:
+                save = true;
                 setIsVisible(value => !value);
                 return;
         }
-    }, []);
+
+        if(save) saveActivePages();
+    }, [ saveActivePages ]);
 
     useUiEvent(CatalogEvent.SHOW_CATALOG, onCatalogEvent);
     useUiEvent(CatalogEvent.HIDE_CATALOG, onCatalogEvent);
@@ -88,7 +100,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
         AddEventLinkTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
-    }, [ linkReceived]);
+    }, [ linkReceived ]);
 
     useEffect(() =>
     {
@@ -111,11 +123,21 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                 return;
             }
 
-            if(pendingPageLookup !== null)
+            if(pendingPageLookup !== null || pendingOpenTree)
             {
-                const tree = BuildCatalogPageTree(catalogState.root, pendingPageLookup.value, pendingPageLookup.isOffer);
+                let tree: ICatalogPageData[] = [];
+
+                if(pendingPageLookup !== null)
+                {
+                    tree = BuildCatalogPageTree(catalogState.root, pendingPageLookup.value, pendingPageLookup.isOffer);
+                }
+                else
+                {
+                    tree = pendingOpenTree.slice();
+                }
 
                 setCurrentTab(tree.shift());
+                setPendingOpenTree(null);
                 setPendingPageLookup(null);
                 setPendingTree(tree);
             }
@@ -137,7 +159,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                     });
             }
         }
-    }, [ isVisible, pendingPageLookup, catalogState.root, setCurrentTab ]);
+    }, [ isVisible, pendingPageLookup, pendingOpenTree, catalogState.root, setCurrentTab ]);
 
     useEffect(() =>
     {
@@ -169,7 +191,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
             <CatalogMessageHandler />
             { isVisible &&
                 <NitroCardView className="nitro-catalog">
-                    <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => setIsVisible(false) } />
+                    <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => { saveActivePages(); setIsVisible(false); } } />
                     <NitroCardTabsView>
                         { root && root.children.length && root.children.map((page, index) =>
                             {

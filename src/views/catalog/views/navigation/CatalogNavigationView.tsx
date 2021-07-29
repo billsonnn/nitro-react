@@ -4,7 +4,7 @@ import { CatalogSearchView } from '../search/CatalogSearchView';
 import { CatalogNavigationViewProps } from './CatalogNavigationView.types';
 import { CatalogNavigationSetView } from './set/CatalogNavigationSetView';
 
-export const ACTIVE_PAGES: ICatalogPageData[] = [];
+export let ACTIVE_PAGES: ICatalogPageData[] = [];
 
 export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
 {
@@ -14,11 +14,11 @@ export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
     {
         if(!page) return;
 
-        const index = (ACTIVE_PAGES.push(page) - 1);
+        ACTIVE_PAGES = [ page ];
 
         return () =>
         {
-            ACTIVE_PAGES.splice(index, 1);
+            ACTIVE_PAGES = [];
         }
     }, [ page ]);
     
