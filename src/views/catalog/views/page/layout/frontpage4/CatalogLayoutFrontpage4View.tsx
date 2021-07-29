@@ -19,6 +19,9 @@ export const CatalogLayoutFrontpage4View: FC<CatalogLayoutFrontpage4ViewProps> =
             case CatalogFrontPageItem.ITEM_CATALOGUE_PAGE:
                 CreateLinkEvent(`catalog/open/${ item.catalogPageLocation }`);
                 return;
+            case CatalogFrontPageItem.ITEM_PRODUCT_OFFER:
+                CreateLinkEvent(`catalog/open/${ item.productOfferId }`);
+                return;
         }
     }, []);
 
