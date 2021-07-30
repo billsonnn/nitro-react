@@ -30,7 +30,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
 
         const rectangle = new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height));
 
-        const image = GetRoomEngine().createRoomScreenshot(GetRoomSession().roomId, 1, rectangle);
+        const image = GetRoomEngine().createRoomScreenshot(GetRoomSession().roomId, 1, rectangle, true);
 
         if(cameraWidgetContext.cameraRoll.length + 1 === CAMERA_ROLL_LIMIT)
         {
