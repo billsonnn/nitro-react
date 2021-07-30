@@ -18,7 +18,7 @@
     <div id="root" class="w-100 h-100"></div>
     <script>
       var NitroConfig = {
-          configurationUrl: '/configuration.json',
+          configurationUrls: [ '/renderer-config.json', '/ui-config.json' ],
           sso: (new URLSearchParams(window.location.search).get('sso') || null)
       };
     </script>
