@@ -1,7 +1,7 @@
 {
     "image.library.notifications.url": "${image.library.url}notifications/%image%.png",
     "achievements.images.url": "${image.library.url}Quests/%image%.png",
-    "thumbnails.url": "${image.library.url}camera/thumbnails/%thumbnail%.png",
+    "thumbnails.url": "https://nitro.nitrots.co/camera/thumbnail/%thumbnail%.png",
     "url.prefix": "http://localhost:3000",
     "chat.viewer.height.percentage": 0.40,
     "auth.system.enabled": true,
