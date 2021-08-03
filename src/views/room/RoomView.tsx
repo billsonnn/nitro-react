@@ -10,6 +10,7 @@ import { RoomWidgetUpdateRoomViewEvent } from './events/RoomWidgetUpdateRoomView
 import { IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler } from './handlers';
 import { FurnitureContextMenuWidgetHandler } from './handlers/FurnitureContextMenuWidgetHandler';
 import { FurnitureCustomStackHeightWidgetHandler } from './handlers/FurnitureCustomStackHeightWidgetHandler';
+import { FurnitureExternalImageWidgetHandler } from './handlers/FurnitureExternalImageWidgetHandler';
 import { RoomWidgetRoomToolsHandler } from './handlers/RoomWidgetRoomToolsHandler';
 import { RoomColorView } from './RoomColorView';
 import { RoomViewProps } from './RoomView.types';
@@ -44,6 +45,7 @@ export const RoomView: FC<RoomViewProps> = props =>
         widgetHandlerManager.registerHandler(new RoomWidgetChatHandler());
         widgetHandlerManager.registerHandler(new FurnitureContextMenuWidgetHandler());
         widgetHandlerManager.registerHandler(new FurnitureCustomStackHeightWidgetHandler());
+        widgetHandlerManager.registerHandler(new FurnitureExternalImageWidgetHandler());
 
         setWidgetHandler(widgetHandlerManager);
 
