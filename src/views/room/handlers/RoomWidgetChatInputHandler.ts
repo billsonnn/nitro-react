@@ -1,4 +1,4 @@
-import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomWidgetEnum, RoomZoomEvent } from 'nitro-renderer';
+import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomWidgetEnum, RoomZoomEvent, TextureUtils } from 'nitro-renderer';
 import { GetRoomEngine, GetSessionDataManager } from '../../../api';
 import { SendMessageHook } from '../../../hooks/messages';
 import { RoomWidgetFloodControlEvent, RoomWidgetUpdateEvent } from '../events';
@@ -114,8 +114,11 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
 
                             return null;
                         case ':screenshot':
-                            GetRoomEngine().createRoomScreenshot(this.container.roomSession.roomId, 1);
-
+                            const texture = GetRoomEngine().createTextureFromRoom(this.container.roomSession.roomId, 1);
+                            
+                            const newWindow = window.open('');
+                            
+                            newWindow.document.write(TextureUtils.generateImageUrl(texture));
                             return null;
                         case ':pickall':
                             // this.container.notificationService.alertWithConfirm('${room.confirm.pick_all}', '${generic.alert.title}', () =>
