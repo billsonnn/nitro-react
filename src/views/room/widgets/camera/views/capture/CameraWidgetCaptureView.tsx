@@ -30,7 +30,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
 
         const rectangle = new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height));
 
-        const image = GetRoomEngine().createRoomScreenshot(GetRoomSession().roomId, 1, rectangle, true);
+        const texture = GetRoomEngine().createTextureFromRoom(GetRoomSession().roomId, 1, rectangle);
 
         if(cameraWidgetContext.cameraRoll.length + 1 === CAMERA_ROLL_LIMIT)
         {
@@ -44,7 +44,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
             remainingRoll = remainingRoll.slice(0, CAMERA_ROLL_LIMIT - 1);
         }
 
-        cameraWidgetContext.setCameraRoll([ ...remainingRoll, image ]);
+        //cameraWidgetContext.setCameraRoll([ ...remainingRoll, image ]);
     }, [ cameraWidgetContext ]);
 
     const processAction = useCallback((type: string, value: string | number = null) =>
