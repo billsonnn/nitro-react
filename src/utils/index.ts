@@ -3,3 +3,4 @@ export * from './LocalizeBadgeDescription';
 export * from './LocalizeBageName';
 export * from './LocalizeShortNumber';
 export * from './LocalizeText';
+export * from './Randomizer';

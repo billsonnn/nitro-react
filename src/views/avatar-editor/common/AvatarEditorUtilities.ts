@@ -72,7 +72,7 @@ export class AvatarEditorUtilities
         const clubItemsDimmed = this.clubItemsDimmed;
         const clubMemberLevel = GetClubMemberLevel();
 
-        for(const partColor of palette.colors.values())
+        for(const partColor of palette.colors.getValues())
         {
             if(partColor.isSelectable && (clubItemsDimmed || (clubMemberLevel >= partColor.clubLevel)))
             {
@@ -255,7 +255,7 @@ export class AvatarEditorUtilities
 
         if(!palette) return -1;
 
-        for(const color of palette.colors.values())
+        for(const color of palette.colors.getValues())
         {
             if(!color.isSelectable || (GetClubMemberLevel() < color.clubLevel)) continue;
 
