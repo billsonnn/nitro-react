@@ -26,12 +26,19 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
     useEffect(() =>
     {
         if(!roomInfoData || !roomInfoData.enteredGuestRoom) return;
+
+        let thumbnailUrl: string = null;
         
         if(roomInfoData.enteredGuestRoom.officialRoomPicRef)
         {
-            setRoomThumbnail(GetConfiguration<string>('image.library.url') + roomInfoData.enteredGuestRoom.officialRoomPicRef);
+            thumbnailUrl = (GetConfiguration<string>('image.library.url') + roomInfoData.enteredGuestRoom.officialRoomPicRef);
+        }
+        else
+        {
+            thumbnailUrl = (GetConfiguration<string>('thumbnails.url').replace('%thumbnail%', roomInfoData.enteredGuestRoom.roomId.toString()));
         }
 
+        setRoomThumbnail(thumbnailUrl);
         setIsRoomPicked(roomInfoData.enteredGuestRoom.roomPicker);
         setIsRoomMuted(roomInfoData.enteredGuestRoom.allInRoomMuted);
     }, [ roomInfoData ]);

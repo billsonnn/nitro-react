@@ -9,6 +9,8 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
 {
     const [ alerts, setAlerts ] = useState<NotificationCenterAlertEvent[]>([]);
 
+
+
     const onNotificationCenterAlertEvent = useCallback((event: NotificationCenterAlertEvent) =>
     {
         setAlerts(prevValue =>

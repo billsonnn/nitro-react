@@ -3,6 +3,7 @@ import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { NotificationCenterAlertBaseProps } from './NotificationCenterAlertBase.types';
 
+
 export const NotificationCenterAlertBase: FC<NotificationCenterAlertBaseProps> = props =>
 {
     const { headerText = LocalizeText('mod.alert.title'), onClose = null, children = null } = props;

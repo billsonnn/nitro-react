@@ -1,4 +1,4 @@
-import { NitroNotification } from '../../views/notification-center/utils/Notification';
+import { NitroNotification } from '../../views/notification-center/common/Notification';
 import { NotificationCenterEvent } from './NotificationCenterEvent';
 
 export class NotificationCenterAddNotificationEvent extends NotificationCenterEvent
