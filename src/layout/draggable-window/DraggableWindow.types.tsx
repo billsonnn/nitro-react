@@ -3,7 +3,7 @@ import { DraggableProps } from 'react-draggable';
 
 export interface DraggableWindowProps
 {
-    handle: string;
+    handle?: string;
     draggableOptions?: Partial<DraggableProps>;
     disableDrag?: boolean;
     noCenter?: boolean;
