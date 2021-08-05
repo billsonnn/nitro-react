@@ -7,7 +7,7 @@ import { FriendListSendFriendRequestEvent } from '../../events/friend-list/Frien
 import { useRoomEngineEvent } from '../../hooks/events';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
-import { NitroCardAccordionItemView, NitroCardAccordionView, NitroCardHeaderView, NitroCardView } from '../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
 import { LocalizeText } from '../../utils/LocalizeText';
 import { FriendListContextProvider } from './context/FriendListContext';
 import { FriendListMessageHandler } from './FriendListMessageHandler';
@@ -43,18 +43,6 @@ export const FriendListView: FC<FriendListViewProps> = props =>
     useUiEvent(FriendListEvent.TOGGLE_FRIEND_LIST, onFriendListEvent);
     useUiEvent(FriendListSendFriendRequestEvent.SEND_FRIEND_REQUEST, onFriendListEvent);
 
-    useEffect(() =>
-    {
-        if(!settings) return;
-
-        setIsReady(true);
-    }, [ settings ]);
-
-    useEffect(() =>
-    {
-        SendMessageHook(new MessengerInitComposer());
-    }, []);
-
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
         const roomSession = GetRoomSession();
@@ -79,6 +67,18 @@ export const FriendListView: FC<FriendListViewProps> = props =>
 
     useRoomEngineEvent(RoomEngineObjectEvent.ADDED, onRoomEngineObjectEvent);
 
+    useEffect(() =>
+    {
+        if(!settings) return;
+
+        setIsReady(true);
+    }, [ settings ]);
+
+    useEffect(() =>
+    {
+        SendMessageHook(new MessengerInitComposer());
+    }, []);
+
     return (
         <FriendListContextProvider value={ { friendListState, dispatchFriendListState } }>
             <FriendListMessageHandler />
@@ -86,17 +86,14 @@ export const FriendListView: FC<FriendListViewProps> = props =>
             { isVisible &&
                 <NitroCardView className="nitro-friend-list">
                     <NitroCardHeaderView headerText={ LocalizeText('friendlist.friends') } onCloseClick={ event => setIsVisible(false) } />
-                    <NitroCardAccordionView>
-                        <NitroCardAccordionItemView headerText="Friends" contentClassName="ps-3">
-                            <FriendListFriendsView />
-                        </NitroCardAccordionItemView>
-                        <NitroCardAccordionItemView headerText="Friend Requests" contentClassName="ps-3">
-                            abc
-                        </NitroCardAccordionItemView>
-                        <NitroCardAccordionItemView headerText="Search" contentClassName="ps-3">
-                            abc
-                        </NitroCardAccordionItemView>
-                    </NitroCardAccordionView>
+                    <NitroCardContentView>
+                        <div className="text-black fw-bold">{ LocalizeText('friendlist.search.friendscaption') }</div>
+                        <FriendListFriendsView online={ true } />
+                        <div className="text-black fw-bold">{ LocalizeText('friendlist.search.friendscaption') }</div>
+                        <FriendListFriendsView online={ true } />
+                        <div className="text-black fw-bold">{ LocalizeText('friendlist.friends.offlinecaption') }</div>
+                        <FriendListFriendsView online={ false } />
+                    </NitroCardContentView>
                 </NitroCardView> }
         </FriendListContextProvider>
     );
