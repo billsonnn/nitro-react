@@ -7,17 +7,15 @@ import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { useCameraWidgetContext } from '../../context/CameraWidgetContext';
 import { CameraWidgetEditorTabs, CameraWidgetEditorViewProps } from './CameraWidgetEditorView.types';
 
+const TABS: string[] = [ CameraWidgetEditorTabs.COLORMATRIX, CameraWidgetEditorTabs.COMPOSITE ];
+
 export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 {
-    const { availableEffects = null, myLevel = null, onCloseClick = null, onCancelClick = null, onCheckoutClick = null } = props;
-    
-    const TABS: string[] = [ CameraWidgetEditorTabs.COLORMATRIX, CameraWidgetEditorTabs.COMPOSITE ];
-
-    const cameraWidgetContext = useCameraWidgetContext();
-    
-    const [ currentTab, setCurrentTab ]                 = useState(CameraWidgetEditorTabs.COLORMATRIX);
+    const { availableEffects = null, myLevel = 1, onClose = null, onCancel = null, onCheckout = null } = props;
+    const [ currentTab, setCurrentTab ] = useState(TABS[0]);
     const [ selectedEffectName, setSelectedEffectName ] = useState(null);
     const [ effectsThumbnails, setEffectsThumbnails ]   = useState<{ name: string, image: HTMLImageElement }[]>([]);
+    const { cameraRoll = null, selectedPictureIndex = -1, selectedEffects = null, isZoomed = false, setSelectedEffects = null, setIsZoomed = null } = useCameraWidgetContext();
 
     useEffect(() =>
     {
@@ -25,11 +23,11 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 
         for(const effect of availableEffects)
         {
-            thumbnails.push({name: effect.name, image: GetRoomCameraWidgetManager().applyEffects(cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex], [ new RoomCameraWidgetSelectedEffect(effect, 1) ], false)});
+            thumbnails.push({name: effect.name, image: GetRoomCameraWidgetManager().applyEffects(cameraRoll[selectedPictureIndex].texture, [ new RoomCameraWidgetSelectedEffect(effect, 1) ], false)});
         }
 
         setEffectsThumbnails(thumbnails);
-    }, [ cameraWidgetContext, availableEffects ]);
+    }, [ cameraRoll, selectedPictureIndex, availableEffects ]);
 
     const getEffectThumbnail = useCallback((effectName: string) =>
     {
@@ -54,24 +52,24 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 
     const getCurrentPicture = useCallback(() =>
     {
-        return GetRoomCameraWidgetManager().applyEffects(cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex], cameraWidgetContext.selectedEffects, cameraWidgetContext.isZoomed);
-    }, [ cameraWidgetContext ]);
+        return GetRoomCameraWidgetManager().applyEffects(cameraRoll[selectedPictureIndex].texture, selectedEffects, isZoomed);
+    }, [ cameraRoll, selectedPictureIndex, selectedEffects, isZoomed ]);
 
     const getCurrentEffectAlpha = useCallback(() =>
     {
         if(!selectedEffectName) return 0;
 
-        const selectedEffect = cameraWidgetContext.selectedEffects.find(effect => effect.effect.name === selectedEffectName);
+        const selectedEffect = selectedEffects.find(effect => effect.effect.name === selectedEffectName);
 
         if(!selectedEffect) return 0;
 
         return selectedEffect.alpha;
-    }, [ selectedEffectName, cameraWidgetContext.selectedEffects ]);
+    }, [ selectedEffectName, selectedEffects ]);
 
     const getEffectIndex = useCallback((effectName) =>
     {
-        return cameraWidgetContext.selectedEffects.findIndex(effect => effect.effect.name === effectName);
-    }, [ cameraWidgetContext.selectedEffects ])
+        return selectedEffects.findIndex(effect => effect.effect.name === effectName);
+    }, [ selectedEffects ])
 
     const setSelectedEffectAlpha = useCallback((newAlpha: number) =>
     {
@@ -81,27 +79,27 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 
         if(selectedEffectIndex === -1) return;
 
-        const clone = Array.from(cameraWidgetContext.selectedEffects);
+        const clone = Array.from(selectedEffects);
 
         const selectedEffect = clone[selectedEffectIndex];
 
         clone[selectedEffectIndex] = new RoomCameraWidgetSelectedEffect(selectedEffect.effect, newAlpha);
 
-        cameraWidgetContext.setSelectedEffects(clone);
-    }, [ selectedEffectName, getEffectIndex, cameraWidgetContext ]);
+        setSelectedEffects(clone);
+    }, [ selectedEffectName, getEffectIndex, selectedEffects, setSelectedEffects ]);
 
     const processAction = useCallback((type: string, value: string | number = null) =>
     {
         switch(type)
         {
             case 'close':
-                onCloseClick();
+                onClose();
                 return;
             case 'cancel':
-                onCancelClick();
+                onCancel();
                 return;
             case 'checkout':
-                onCheckoutClick();
+                onCheckout();
                 return;
             case 'change_tab':
                 setCurrentTab(String(value));
@@ -110,7 +108,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 {
                     let existingIndex = -1;
 
-                    if(cameraWidgetContext.selectedEffects.length > 0)
+                    if(selectedEffects.length > 0)
                     {
                         existingIndex = getEffectIndex(value);
                     }
@@ -123,7 +121,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                         
                         if(effect.minLevel > myLevel) return;
                         
-                        cameraWidgetContext.setSelectedEffects([...cameraWidgetContext.selectedEffects, new RoomCameraWidgetSelectedEffect(effect, 0.5)]);
+                        setSelectedEffects([...selectedEffects, new RoomCameraWidgetSelectedEffect(effect, 0.5)]);
                     }
                     
                     if(effect && effect.minLevel > myLevel) return;
@@ -144,32 +142,32 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 
                     if(existingIndex > -1)
                     {
-                        const effect = cameraWidgetContext.selectedEffects[existingIndex];
+                        const effect = selectedEffects[existingIndex];
 
                         if(effect.effect.name === selectedEffectName)
                         {
                             setSelectedEffectName(null);
                         }
 
-                        const clone = Array.from(cameraWidgetContext.selectedEffects);
+                        const clone = Array.from(selectedEffects);
                         clone.splice(existingIndex, 1);
                         
-                        cameraWidgetContext.setSelectedEffects(clone);
+                        setSelectedEffects(clone);
                     }
                 }
                 return;
             case 'clear_effects':
                 setSelectedEffectName(null);
-                cameraWidgetContext.setSelectedEffects([]);
+                setSelectedEffects([]);
                 return;
             case 'download':
                 window.open(getCurrentPicture().src, '_blank');
                 return;
             case 'zoom':
-                cameraWidgetContext.setIsZoomed(!cameraWidgetContext.isZoomed);
+                setIsZoomed(!isZoomed);
                 return;
         }
-    }, [onCloseClick, onCancelClick, onCheckoutClick, cameraWidgetContext, getCurrentPicture, myLevel, selectedEffectName, getEffectIndex, availableEffects]);
+    }, [ onClose, onCancel, onCheckout, getCurrentPicture, myLevel, selectedEffectName, getEffectIndex, availableEffects, isZoomed, setIsZoomed, selectedEffects, setSelectedEffects ]);
 
     return (
         <NitroCardView className="nitro-camera-editor">
@@ -219,7 +217,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                             <div className="btn-group">
                                 <button className="btn btn-primary" onClick={ event => processAction('clear_effects') }><i className="fas fa-trash"></i></button>
                                 <button className="btn btn-primary" onClick={ event => processAction('download') }><i className="fas fa-save"></i></button>
-                                <button className="btn btn-primary" onClick={ event => processAction('zoom') }><i className={"fas " + classNames({'fa-search-plus': !cameraWidgetContext.isZoomed, 'fa-search-minus': cameraWidgetContext.isZoomed})}></i></button>
+                                <button className="btn btn-primary" onClick={ event => processAction('zoom') }><i className={"fas " + classNames({'fa-search-plus': !isZoomed, 'fa-search-minus': isZoomed})}></i></button>
                             </div>
                             <div className="d-flex justify-content-end">
                                 <button className="btn btn-primary me-2" onClick={ event => processAction('cancel') }>{ LocalizeText('generic.cancel') }</button>

@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { RoomWidgetCameraPublishComposer, RoomWidgetCameraPublishedEvent, RoomWidgetCameraPurchaseComposer, RoomWidgetCameraPurchaseSuccessfulEvent } from 'nitro-renderer';
+import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomCameraWidgetManager } from '../../../../../../api/nitro/camera/GetRoomCameraWidgetManager';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks/messages/message-event';
@@ -12,36 +12,35 @@ import { CameraWidgetCheckoutViewProps } from './CameraWidgetCheckoutView.types'
 export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props =>
 {
     const { onCloseClick = null, onCancelClick = null, price = null } = props;
-    
-    const cameraWidgetContext = useCameraWidgetContext();
+    const [ picturesBought, setPicturesBought ] = useState(0);
+    const [ wasPicturePublished, setWasPicturePublished ] = useState(false);
+    const [ isWaiting, setIsWaiting ] = useState(false);
+    const [ publishCooldown, setPublishCooldown ] = useState(0);
+    const { cameraRoll = null, selectedPictureIndex = -1, selectedEffects = null, isZoomed = false } = useCameraWidgetContext();
 
-    const [ picturesBought, setPicturesBought ]             = useState(0);
-    const [ wasPicturePublished, setWasPicturePublished ]   = useState(false);
-    const [ isWaiting, setIsWaiting ]                       = useState(false);
-    const [ publishCooldown, setPublishCooldown ]           = useState(0);
-
-    const onCameraPurchaseSuccessfulEvent = useCallback((event: RoomWidgetCameraPurchaseSuccessfulEvent) =>
+    const onCameraPurchaseOKMessageEvent = useCallback((event: CameraPurchaseOKMessageEvent) =>
     {
         setPicturesBought(value => value + 1);
         setIsWaiting(false);
     }, []);
 
-    const onRoomWidgetCameraPublishedEvent = useCallback((event: RoomWidgetCameraPublishedEvent) =>
+    CreateMessageHook(CameraPurchaseOKMessageEvent, onCameraPurchaseOKMessageEvent);
+
+    const onCameraPublishStatusMessageEvent = useCallback((event: CameraPublishStatusMessageEvent) =>
     {
         const parser = event.getParser();
 
-        setPublishCooldown(parser.cooldownSeconds);
-        setWasPicturePublished(parser.wasSuccessful);
+        setPublishCooldown(parser.secondsToWait);
+        setWasPicturePublished(parser.ok);
         setIsWaiting(false);
     }, []);
 
-    CreateMessageHook(RoomWidgetCameraPurchaseSuccessfulEvent, onCameraPurchaseSuccessfulEvent);
-    CreateMessageHook(RoomWidgetCameraPublishedEvent, onRoomWidgetCameraPublishedEvent);
+    CreateMessageHook(CameraPublishStatusMessageEvent, onCameraPublishStatusMessageEvent);
 
     const getCurrentPicture = useCallback(() =>
     {
-        return GetRoomCameraWidgetManager().applyEffects(cameraWidgetContext.cameraRoll[cameraWidgetContext.selectedPictureIndex], cameraWidgetContext.selectedEffects, cameraWidgetContext.isZoomed);
-    }, [ cameraWidgetContext ]);
+        return GetRoomCameraWidgetManager().applyEffects(cameraRoll[selectedPictureIndex].texture, selectedEffects, isZoomed);
+    }, [ cameraRoll, selectedPictureIndex, selectedEffects, isZoomed ]);
 
     const processAction = useCallback((type: string, value: string | number = null) =>
     {
@@ -54,13 +53,13 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                 if(isWaiting) return;
 
                 setIsWaiting(true);
-                SendMessageHook(new RoomWidgetCameraPurchaseComposer());
+                SendMessageHook(new PurchasePhotoMessageComposer('1_1627697499'));
                 return;
             case 'publish':
                 if(isWaiting) return;
 
                 setIsWaiting(true);
-                SendMessageHook(new RoomWidgetCameraPublishComposer());
+                SendMessageHook(new PublishPhotoMessageComposer());
                 return;
             case 'cancel':
                 onCancelClick();
@@ -88,7 +87,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                 <div className="bg-muted rounded p-2 text-black mb-2">
                     <div className="d-flex justify-content-between align-items-center">
                         <div className="me-2">
-                            <div className="fw-bold d-flex justify-content-start">{ LocalizeText(wasPicturePublished ? 'camera.publish.successful' : 'camera.publish.explanation') }{ !wasPicturePublished && price.points > 0 && <>: { price.points } <CurrencyIcon type={ price.pointsType } /></> }</div>
+                            <div className="fw-bold d-flex justify-content-start">{ LocalizeText(wasPicturePublished ? 'camera.publish.successful' : 'camera.publish.explanation') }{ !wasPicturePublished && price.duckets > 0 && <>: { price.duckets } <CurrencyIcon type={ price.publishDucketPrice } /></> }</div>
                             <div>{ LocalizeText(wasPicturePublished ? 'camera.publish.success.short.info' : 'camera.publish.detailed.explanation') }</div>
                             { wasPicturePublished && <a href="#">{ LocalizeText('camera.link.to.published') }</a> }
                         </div>

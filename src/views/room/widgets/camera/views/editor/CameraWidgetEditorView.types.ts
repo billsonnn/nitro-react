@@ -4,9 +4,9 @@ export interface CameraWidgetEditorViewProps
 {
     availableEffects: IRoomCameraWidgetEffect[];
     myLevel: number;
-    onCloseClick: () => void;
-    onCancelClick: () => void;
-    onCheckoutClick: () => void;
+    onClose: () => void;
+    onCancel: () => void;
+    onCheckout: () => void;
 }
 
 export class CameraWidgetEditorTabs
