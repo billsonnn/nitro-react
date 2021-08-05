@@ -115,10 +115,13 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
                             return null;
                         case ':screenshot':
                             const texture = GetRoomEngine().createTextureFromRoom(this.container.roomSession.roomId, 1);
+
+                            const image = new Image();
+                            
+                            image.src = TextureUtils.generateImageUrl(texture);
                             
                             const newWindow = window.open('');
-                            
-                            newWindow.document.write(TextureUtils.generateImageUrl(texture));
+                            newWindow.document.write(image.outerHTML);
                             return null;
                         case ':pickall':
                             // this.container.notificationService.alertWithConfirm('${room.confirm.pick_all}', '${generic.alert.title}', () =>
