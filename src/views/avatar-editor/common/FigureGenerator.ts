@@ -3,8 +3,6 @@ import { GetAvatarRenderManager } from '../../../api';
 import { Randomizer } from '../../../utils';
 import { FigureData } from './FigureData';
 
-const RANDOM_TRIES: number = 20;
-
 function getTotalColors(partSet: IFigurePartSet): number
 {
     const parts = partSet.parts;
@@ -27,68 +25,32 @@ function getRandomPartSet(setType: SetType, gender: string, clubLevel: number = 
 {
     if(!setType) return null;
 
-    const options = setType.partSets.getValues();
-
-    let selectedSet: IFigurePartSet = null;
-    let randomTries = RANDOM_TRIES;
-
-    while(!selectedSet)
-    {
-        if(!randomTries) return setType.getDefaultPartSet(gender);
-
-        const randomSet = Randomizer.getRandomElement(options);
-
-        if(!randomSet.isSelectable || ((randomSet.gender !== 'U') && (randomSet.gender !== gender)) || (randomSet.clubLevel > clubLevel) || (randomSet.isSellable && (figureSetIds.indexOf(randomSet.id) === -1)))
+    const options = setType.partSets.getValues().filter(option =>
         {
-            randomTries--;
+            if(!option.isSelectable || ((option.gender !== 'U') && (option.gender !== gender)) || (option.clubLevel > clubLevel) || (option.isSellable && (figureSetIds.indexOf(option.id) === -1))) return null;
 
-            continue;
-        }
+            return option;
+        });
 
-        return randomSet;
-    }
+    if(!options || !options.length) return null;
 
-    return null;
+    return Randomizer.getRandomElement(options);
 }
 
-function getRandomColor(options: IPartColor[], clubLevel: number = 0): IPartColor
-{
-    const randomColor = Randomizer.getRandomElement(options);
-
-    if(!randomColor.isSelectable || (randomColor.clubLevel > clubLevel)) return null;
-
-    return randomColor;
-}
-
-function getRandomColors(palette: IPalette, partSet: IFigurePartSet, clubLevel: number = 0): number[]
+function getRandomColors(palette: IPalette, partSet: IFigurePartSet, clubLevel: number = 0): IPartColor[]
 {
     if(!palette) return [];
 
-    const options = palette.colors.getValues();
-
-    let totalColors = getTotalColors(partSet);
-    let selectedColors: number[] = [];
-    let randomTries = RANDOM_TRIES;
-
-    while(totalColors)
-    {
-        if(!randomTries) break;
-
-        const randomColor = getRandomColor(options, clubLevel);
-
-        if(!randomColor)
+    const options = palette.colors.getValues().filter(option =>
         {
-            randomTries--;
+            if(!option.isSelectable || (option.clubLevel > clubLevel)) return null;
 
-            continue;
-        }
+            return option;
+        });
 
-        selectedColors.push(randomColor.id);
+    if(!options || !options.length) return null;
 
-        totalColors--;
-    }
-
-    return selectedColors;
+    return Randomizer.getRandomElements(options, getTotalColors(partSet));
 }
 
 export function generateRandomFigure(figureData: FigureData, gender: string, clubLevel: number = 0, figureSetIds: number[] = [], ignoredSets: string[] = []): string
@@ -118,7 +80,7 @@ export function generateRandomFigure(figureData: FigureData, gender: string, clu
 
         if(selectedSet.isColorable)
         {
-            selectedColors = getRandomColors(structure.figureData.getPalette(setType.paletteID), selectedSet, clubLevel);
+            selectedColors = getRandomColors(structure.figureData.getPalette(setType.paletteID), selectedSet, clubLevel).map(color => color.id);
         }
 
         figureContainer.updatePart(setType.type, selectedSet.id, selectedColors);
