@@ -1,5 +1,5 @@
 import { Reducer } from 'react';
-import { AchievementCategory } from '../utils/AchievementCategory';
+import { AchievementCategory } from '../common/AchievementCategory';
 
 export interface IAchievementsState
 {

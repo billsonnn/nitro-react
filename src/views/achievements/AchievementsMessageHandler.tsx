@@ -2,9 +2,9 @@ import { AchievementEvent, AchievementsEvent, AchievementsScoreEvent } from 'nit
 import { FC, useCallback } from 'react';
 import { CreateMessageHook } from '../../hooks/messages';
 import { IAchievementsMessageHandlerProps } from './AchievementsMessageHandler.types';
+import { AchievementCategory } from './common/AchievementCategory';
 import { useAchievementsContext } from './context/AchievementsContext';
 import { AchievementsActions } from './reducers/AchievementsReducer';
-import { AchievementCategory } from './utils/AchievementCategory';
 
 export const AchievementsMessageHandler: FC<IAchievementsMessageHandlerProps> = props =>
 {

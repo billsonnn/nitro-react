@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useReducer, useState } from 'react';
+import { FC, useCallback, useReducer, useState } from 'react';
 import { AchievementsUIEvent } from '../../events/achievements';
 import { useUiEvent } from '../../hooks/events';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
@@ -7,8 +7,8 @@ import { AchievementsMessageHandler } from './AchievementsMessageHandler';
 import { AchievementsViewProps } from './AchievementsView.types';
 import { AchievementsContextProvider } from './context/AchievementsContext';
 import { AchievementsReducer, initialAchievements } from './reducers/AchievementsReducer';
+import { AchievementsListView } from './views/category-list/AchievementsListView';
 import { AchievementCategoryView } from './views/category/AchievementCategoryView';
-import { AchievementsListView } from './views/list/AchievementsListView';
 
 export const AchievementsView: FC<AchievementsViewProps> = props =>
 {
@@ -35,12 +35,6 @@ export const AchievementsView: FC<AchievementsViewProps> = props =>
     useUiEvent(AchievementsUIEvent.SHOW_ACHIEVEMENTS, onAchievementsEvent);
     useUiEvent(AchievementsUIEvent.HIDE_ACHIEVEMENTS, onAchievementsEvent);
     useUiEvent(AchievementsUIEvent.TOGGLE_ACHIEVEMENTS, onAchievementsEvent);
-    
-    useEffect(() =>
-    {
-        if(!isVisible) return;
-
-    }, [ isVisible ]);
 
     return (
         <AchievementsContextProvider value={ { achievementsState, dispatchAchievementsState } }>
