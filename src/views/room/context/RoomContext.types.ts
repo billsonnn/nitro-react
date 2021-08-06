@@ -1,4 +1,4 @@
-import { IEventDispatcher, IRoomSession } from 'nitro-renderer';
+import { IEventDispatcher, IRoomSession } from '@nitrots/nitro-renderer';
 import { ProviderProps } from 'react';
 import { IRoomWidgetHandlerManager } from '../handlers';
 

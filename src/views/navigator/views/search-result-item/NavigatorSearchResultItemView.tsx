@@ -1,5 +1,5 @@
+import { RoomDataParser } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { RoomDataParser } from 'nitro-renderer';
 import { FC, MouseEvent } from 'react';
 import { TryVisitRoom } from '../../../../api/navigator/TryVisitRoom';
 import { NavigatorSearchResultItemViewProps } from './NavigatorSearchResultItemView.types';

@@ -1,4 +1,4 @@
-import { WiredActionDefinition } from 'nitro-renderer';
+import { WiredActionDefinition } from '@nitrots/nitro-renderer';
 import Slider from 'rc-slider';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../utils/LocalizeText';

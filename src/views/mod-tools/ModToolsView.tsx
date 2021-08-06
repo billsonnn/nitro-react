@@ -1,4 +1,4 @@
-import { RoomEngineEvent } from 'nitro-renderer';
+import { RoomEngineEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRoomInfoEvent';

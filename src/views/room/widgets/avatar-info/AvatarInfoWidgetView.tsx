@@ -1,4 +1,4 @@
-import { RoomEnterEffect, RoomObjectCategory } from 'nitro-renderer';
+import { RoomEnterEffect, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { GetRoomSession, GetSessionDataManager } from '../../../../api';
 import { FriendEnteredRoomEvent } from '../../../../events';

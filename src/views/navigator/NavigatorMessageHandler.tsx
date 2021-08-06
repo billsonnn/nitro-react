@@ -1,4 +1,4 @@
-import { GenericErrorEvent, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomForwardEvent, RoomInfoComposer, RoomInfoEvent, RoomInfoOwnerEvent, RoomSettingsUpdatedEvent, UserInfoEvent } from 'nitro-renderer';
+import { GenericErrorEvent, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomForwardEvent, RoomInfoComposer, RoomInfoEvent, RoomInfoOwnerEvent, RoomSettingsUpdatedEvent, UserInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetRoomSessionManager, GetSessionDataManager } from '../../api';
 import { VisitRoom } from '../../api/navigator/VisitRoom';

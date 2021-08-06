@@ -1,4 +1,4 @@
-import { MouseEventType } from 'nitro-renderer';
+import { MouseEventType } from '@nitrots/nitro-renderer';
 import { GetRoomEngine } from './GetRoomEngine';
 import { SetActiveRoomId } from './SetActiveRoomId';
 

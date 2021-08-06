@@ -1,4 +1,4 @@
-import { FriendCategoryData } from 'nitro-renderer';
+import { FriendCategoryData } from '@nitrots/nitro-renderer';
 
 export class MessengerSettings
 {

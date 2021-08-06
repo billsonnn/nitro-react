@@ -1,4 +1,4 @@
-import { BotData } from 'nitro-renderer';
+import { BotData } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 import { BotItem } from '../common/BotItem';
 import { addSingleBotItem, processBotFragment, removeBotItemById } from '../common/BotUtilities';

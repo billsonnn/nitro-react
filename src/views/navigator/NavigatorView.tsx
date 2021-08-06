@@ -1,4 +1,4 @@
-import { ILinkEventTracker, NavigatorInitComposer, NavigatorSearchComposer, RoomSessionEvent } from 'nitro-renderer';
+import { ILinkEventTracker, NavigatorInitComposer, NavigatorSearchComposer, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { AddEventLinkTracker, RemoveLinkEventTracker } from '../../api';
 import { TryVisitRoom } from '../../api/navigator/TryVisitRoom';

@@ -1,4 +1,4 @@
-import { RedeemItemClothingComposer, RoomObjectCategory, UserFigureComposer } from 'nitro-renderer';
+import { RedeemItemClothingComposer, RoomObjectCategory, UserFigureComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetAvatarRenderManager, GetConnection, GetFurnitureDataForRoomObject, GetSessionDataManager } from '../../../../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../../../layout';

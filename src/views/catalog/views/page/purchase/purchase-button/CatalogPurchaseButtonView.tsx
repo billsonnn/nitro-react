@@ -1,4 +1,4 @@
-import { CatalogPurchaseComposer } from 'nitro-renderer';
+import { CatalogPurchaseComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CatalogEvent } from '../../../../../../events';
 import { useUiEvent } from '../../../../../../hooks/events/ui/ui-event';

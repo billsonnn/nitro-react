@@ -1,4 +1,4 @@
-import { CatalogFrontPageItem } from 'nitro-renderer';
+import { CatalogFrontPageItem } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo } from 'react';
 import { CreateLinkEvent, GetConfiguration } from '../../../../../../api';
 import { CatalogLayoutFrontpage4ViewProps } from './CatalogLayoutFrontpage4View.types';

@@ -1,4 +1,4 @@
-import { RoomSessionEvent } from 'nitro-renderer';
+import { RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetCommunication } from '../../api';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';

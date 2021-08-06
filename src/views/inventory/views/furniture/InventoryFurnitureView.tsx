@@ -1,4 +1,4 @@
-import { FurnitureListComposer, RoomObjectVariable, Vector3d } from 'nitro-renderer';
+import { FurnitureListComposer, RoomObjectVariable, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetRoomEngine, GetSessionDataManager } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';

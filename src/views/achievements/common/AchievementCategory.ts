@@ -1,4 +1,4 @@
-import { AchievementData } from 'nitro-renderer';
+import { AchievementData } from '@nitrots/nitro-renderer';
 
 export class AchievementCategory
 {

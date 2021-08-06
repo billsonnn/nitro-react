@@ -1,4 +1,4 @@
-import { IFurnitureData, RoomPreviewer } from 'nitro-renderer';
+import { IFurnitureData, RoomPreviewer } from '@nitrots/nitro-renderer';
 
 export interface CatalogLayoutSearchResultViewProps
 {

@@ -1,4 +1,4 @@
-import { FixedSizeStack, NitroPoint, NitroRectangle, RoomObjectType } from 'nitro-renderer';
+import { FixedSizeStack, NitroPoint, NitroRectangle, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { GetNitroInstance, GetRoomEngine, GetRoomObjectBounds, GetRoomSession, GetTicker } from '../../../../api';
 import { ContextMenuViewProps } from './ContextMenuView.types';

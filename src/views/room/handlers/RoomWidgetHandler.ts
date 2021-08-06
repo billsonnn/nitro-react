@@ -1,4 +1,4 @@
-import { NitroEvent } from 'nitro-renderer';
+import { NitroEvent } from '@nitrots/nitro-renderer';
 import { RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage } from '../messages';
 import { IRoomWidgetHandler } from './IRoomWidgetHandler';

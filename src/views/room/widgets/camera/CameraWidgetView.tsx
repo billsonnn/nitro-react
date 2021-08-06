@@ -1,6 +1,4 @@
-import { InitCameraMessageEvent, IRoomCameraWidgetEffect, RequestCameraConfigurationComposer } from 'nitro-renderer';
-import { RoomCameraWidgetManagerEvent } from 'nitro-renderer/src/nitro/camera/events/RoomCameraWidgetManagerEvent';
-import { IRoomCameraWidgetSelectedEffect } from 'nitro-renderer/src/nitro/camera/IRoomCameraWidgetSelectedEffect';
+import { InitCameraMessageEvent, IRoomCameraWidgetEffect, IRoomCameraWidgetSelectedEffect, RequestCameraConfigurationComposer, RoomCameraWidgetManagerEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetRoomCameraWidgetManager } from '../../../../api';
 import { RoomWidgetCameraEvent } from '../../../../events/room-widgets/camera/RoomWidgetCameraEvent';

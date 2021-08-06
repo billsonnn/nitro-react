@@ -1,5 +1,5 @@
+import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, UserHomeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, UserHomeRoomComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration } from '../../../../api';
 import { NavigatorEvent } from '../../../../events';

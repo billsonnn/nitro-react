@@ -1,4 +1,4 @@
-import { IPartColor } from 'nitro-renderer';
+import { IPartColor } from '@nitrots/nitro-renderer';
 import { GetAvatarPalette, GetAvatarRenderManager, GetAvatarSetType, GetClubMemberLevel, GetConfiguration } from '../../../api';
 import { AvatarEditorGridColorItem } from './AvatarEditorGridColorItem';
 import { AvatarEditorGridPartItem } from './AvatarEditorGridPartItem';

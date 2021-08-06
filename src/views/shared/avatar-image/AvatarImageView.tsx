@@ -1,4 +1,4 @@
-import { AvatarScaleType, AvatarSetType } from 'nitro-renderer';
+import { AvatarScaleType, AvatarSetType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetAvatarRenderManager } from '../../../api';
 import { AvatarImageViewProps } from './AvatarImageView.types';

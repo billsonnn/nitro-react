@@ -1,4 +1,4 @@
-import { CatalogGroupsComposer } from 'nitro-renderer';
+import { CatalogGroupsComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { SendMessageHook } from '../../../../../../hooks/messages';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';

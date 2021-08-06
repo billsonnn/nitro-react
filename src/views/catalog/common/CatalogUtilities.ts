@@ -1,4 +1,4 @@
-import { CatalogPageOfferData, ICatalogPageData, ICatalogPageParser, IFurnitureData, SellablePetPaletteData } from 'nitro-renderer';
+import { CatalogPageOfferData, ICatalogPageData, ICatalogPageParser, IFurnitureData, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { GetConfiguration, GetProductDataForLocalization, GetRoomEngine } from '../../../api';
 
 export interface ICatalogOffers

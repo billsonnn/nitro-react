@@ -1,4 +1,4 @@
-import { MouseEventType } from 'nitro-renderer';
+import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef } from 'react';
 import { ToolbarViewItems } from '../ToolbarView.types';
 import { ToolbarMeViewProps } from './ToolbarMeView.types';

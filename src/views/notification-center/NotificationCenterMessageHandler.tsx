@@ -1,4 +1,4 @@
-import { HabboBroadcastMessageEvent, HotelWillShutdownEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent } from 'nitro-renderer';
+import { HabboBroadcastMessageEvent, HotelWillShutdownEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { NotificationCenterAlertEvent } from '../../events';
 import { dispatchUiEvent } from '../../hooks/events';

@@ -1,4 +1,4 @@
-import { CatalogRequestPetBreedsComposer, ColorConverter, SellablePetPaletteData } from 'nitro-renderer';
+import { CatalogRequestPetBreedsComposer, ColorConverter, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { GetProductDataForLocalization } from '../../../../../../api/nitro/session/GetProductDataForLocalization';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';

@@ -1,4 +1,4 @@
-import { CatalogProductOfferData } from 'nitro-renderer';
+import { CatalogProductOfferData } from '@nitrots/nitro-renderer';
 import { MouseEventHandler } from 'react';
 
 export interface CatalogProductViewProps

@@ -1,5 +1,5 @@
+import { RoomCameraWidgetSelectedEffect } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { RoomCameraWidgetSelectedEffect } from 'nitro-renderer/src/nitro/camera/RoomCameraWidgetSelectedEffect';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetRoomCameraWidgetManager } from '../../../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../../../layout';

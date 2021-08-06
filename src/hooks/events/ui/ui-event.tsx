@@ -1,4 +1,4 @@
-import { EventDispatcher, IEventDispatcher, NitroEvent } from 'nitro-renderer';
+import { EventDispatcher, IEventDispatcher, NitroEvent } from '@nitrots/nitro-renderer';
 import { CreateEventDispatcherHook, DispatchEventHook } from '../event-dispatcher.base';
 
 const uiEventDispatcher: IEventDispatcher = new EventDispatcher();

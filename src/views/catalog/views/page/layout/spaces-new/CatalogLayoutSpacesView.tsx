@@ -1,4 +1,4 @@
-import { CatalogPageOfferData, IFurnitureData } from 'nitro-renderer';
+import { CatalogPageOfferData, IFurnitureData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetSessionDataManager } from '../../../../../../api';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';

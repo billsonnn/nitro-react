@@ -1,4 +1,4 @@
-import { ModtoolRequestRoomInfoComposer, ModtoolRoomInfoEvent } from 'nitro-renderer';
+import { ModtoolRequestRoomInfoComposer, ModtoolRoomInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';

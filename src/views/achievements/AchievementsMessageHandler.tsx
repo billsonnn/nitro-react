@@ -1,4 +1,4 @@
-import { AchievementEvent, AchievementsEvent, AchievementsScoreEvent } from 'nitro-renderer';
+import { AchievementEvent, AchievementsEvent, AchievementsScoreEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateMessageHook } from '../../hooks/messages';
 import { IAchievementsMessageHandlerProps } from './AchievementsMessageHandler.types';

@@ -1,4 +1,4 @@
-import { CatalogProductOfferData, FurnitureType, IFurnitureData } from 'nitro-renderer';
+import { CatalogProductOfferData, FurnitureType, IFurnitureData } from '@nitrots/nitro-renderer';
 import { GetSessionDataManager } from './GetSessionDataManager';
 
 export function GetFurnitureDataForProductOffer(offer: CatalogProductOfferData): IFurnitureData

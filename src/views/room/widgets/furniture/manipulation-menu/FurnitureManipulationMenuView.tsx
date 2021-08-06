@@ -1,4 +1,4 @@
-import { RoomObjectOperationType } from 'nitro-renderer';
+import { RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { ProcessRoomObjectOperation } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';

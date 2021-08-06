@@ -1,4 +1,4 @@
-import { NitroRectangle, TextureUtils } from 'nitro-renderer';
+import { NitroRectangle, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
 import { GetRoomEngine, GetRoomSession } from '../../../../../../api';
 import { DraggableWindow } from '../../../../../../layout/draggable-window/DraggableWindow';

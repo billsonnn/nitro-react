@@ -1,4 +1,4 @@
-import { DesktopViewComposer, Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserFigureEvent, UserInfoDataParser, UserInfoEvent, Wait } from 'nitro-renderer';
+import { DesktopViewComposer, Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserFigureEvent, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomSession, GetRoomSessionManager } from '../../api';
 import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';

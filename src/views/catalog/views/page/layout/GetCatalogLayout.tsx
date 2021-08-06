@@ -1,4 +1,4 @@
-import { ICatalogPageParser, RoomPreviewer } from 'nitro-renderer';
+import { ICatalogPageParser, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { CatalogLayoutBadgeDisplayView } from './badge-display/CatalogLayoutBadgeDisplayView';
 import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
 import { CatalogLayoutFrontpage4View } from './frontpage4/CatalogLayoutFrontpage4View';

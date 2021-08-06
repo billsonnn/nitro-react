@@ -1,4 +1,4 @@
-import { CatalogSearchComposer, FurnitureType, MouseEventType } from 'nitro-renderer';
+import { CatalogSearchComposer, FurnitureType, MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback } from 'react';
 import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';

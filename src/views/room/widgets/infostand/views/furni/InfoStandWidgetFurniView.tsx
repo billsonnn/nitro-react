@@ -1,4 +1,4 @@
-import { CrackableDataType, RoomControllerLevel, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, StringDataType } from 'nitro-renderer';
+import { CrackableDataType, RoomControllerLevel, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent } from '../../../../../../api';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';

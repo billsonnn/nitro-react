@@ -1,4 +1,4 @@
-import { ApplyTonerComposer, RoomControllerLevel, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from 'nitro-renderer';
+import { ApplyTonerComposer, RoomControllerLevel, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { GetRoomEngine, GetSessionDataManager } from '../../../../../api';

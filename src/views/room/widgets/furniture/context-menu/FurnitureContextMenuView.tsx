@@ -1,4 +1,4 @@
-import { ContextMenuEnum, RoomEngineTriggerWidgetEvent, RoomObjectCategory } from 'nitro-renderer';
+import { ContextMenuEnum, RoomEngineTriggerWidgetEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, IsOwnerOfFurniture } from '../../../../../api';
 import { useRoomEngineEvent } from '../../../../../hooks/events';

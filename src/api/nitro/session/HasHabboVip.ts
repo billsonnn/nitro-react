@@ -1,4 +1,4 @@
-import { HabboClubLevelEnum } from 'nitro-renderer';
+import { HabboClubLevelEnum } from '@nitrots/nitro-renderer';
 import { GetSessionDataManager } from './GetSessionDataManager';
 
 export function HasHabboVip(): boolean

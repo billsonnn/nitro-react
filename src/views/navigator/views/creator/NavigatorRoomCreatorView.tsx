@@ -1,6 +1,6 @@
 /* eslint-disable no-template-curly-in-string */
+import { HabboClubLevelEnum, RoomCreateComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { HabboClubLevelEnum, RoomCreateComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration, GetSessionDataManager } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';

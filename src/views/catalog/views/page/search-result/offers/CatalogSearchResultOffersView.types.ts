@@ -1,4 +1,4 @@
-import { IFurnitureData } from 'nitro-renderer';
+import { IFurnitureData } from '@nitrots/nitro-renderer';
 
 export interface CatalogSearchResultOffersViewProps
 {

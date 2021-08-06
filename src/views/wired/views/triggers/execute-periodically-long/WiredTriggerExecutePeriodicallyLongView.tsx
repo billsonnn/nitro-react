@@ -1,4 +1,4 @@
-import { FriendlyTime } from 'nitro-renderer';
+import { FriendlyTime } from '@nitrots/nitro-renderer';
 import Slider from 'rc-slider/lib/Slider';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../utils/LocalizeText';

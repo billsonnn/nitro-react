@@ -1,4 +1,4 @@
-import { EventDispatcher, NitroRectangle, RoomGeometry, RoomVariableEnum, Vector3d } from 'nitro-renderer';
+import { EventDispatcher, NitroRectangle, RoomGeometry, RoomVariableEnum, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { GetNitroInstance, InitializeRoomInstanceRenderingCanvas } from '../../api';

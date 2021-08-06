@@ -1,4 +1,4 @@
-import { RoomSessionUserBadgesEvent } from 'nitro-renderer';
+import { RoomSessionUserBadgesEvent } from '@nitrots/nitro-renderer';
 import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { CreateEventDispatcherHook } from '../../../../../../hooks/events';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';

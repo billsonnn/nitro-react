@@ -1,4 +1,4 @@
-import { IRoomCameraWidgetSelectedEffect } from 'nitro-renderer/src/nitro/camera/IRoomCameraWidgetSelectedEffect';
+import { IRoomCameraWidgetSelectedEffect } from '@nitrots/nitro-renderer';
 import { ProviderProps } from 'react';
 import { CameraPicture } from '../common/CameraPicture';
 

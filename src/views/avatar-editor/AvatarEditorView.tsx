@@ -1,4 +1,4 @@
-import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, UserFigureComposer, UserWardrobePageComposer, UserWardrobePageEvent } from 'nitro-renderer';
+import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, UserFigureComposer, UserWardrobePageComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetClubMemberLevel, GetSessionDataManager } from '../../api';
 import { AvatarEditorEvent } from '../../events/avatar-editor';

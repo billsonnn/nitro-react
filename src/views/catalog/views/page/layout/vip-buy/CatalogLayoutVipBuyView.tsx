@@ -1,4 +1,4 @@
-import { CatalogClubOfferData, CatalogPurchaseComposer, CatalogRequestVipOffersComposer } from 'nitro-renderer';
+import { CatalogClubOfferData, CatalogPurchaseComposer, CatalogRequestVipOffersComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';

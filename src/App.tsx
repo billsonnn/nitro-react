@@ -1,11 +1,10 @@
-import { ConfigurationEvent, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, RoomEngineEvent, WebGL } from 'nitro-renderer';
+import { ConfigurationEvent, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetCommunication, GetConfiguration, GetNitroInstance } from './api';
 import { useConfigurationEvent } from './hooks/events/core/configuration/configuration-event';
 import { useLocalizationEvent } from './hooks/events/nitro/localization/localization-event';
 import { dispatchMainEvent, useMainEvent } from './hooks/events/nitro/main-event';
 import { useRoomEngineEvent } from './hooks/events/nitro/room/room-engine-event';
-import { AuthView } from './views/auth/AuthView';
 import { LoadingView } from './views/loading/LoadingView';
 import { MainView } from './views/main/MainView';
 
@@ -13,7 +12,6 @@ export const App: FC<{}> = props =>
 {
     const [ isReady, setIsReady ]   = useState(false);
     const [ isError, setIsError ]   = useState(false);
-    const [ isAuth, setIsAuth ]     = useState(false);
     const [ message, setMessage ]   = useState('Getting Ready');
 
     //@ts-ignore
@@ -58,17 +56,8 @@ export const App: FC<{}> = props =>
 			case NitroCommunicationDemoEvent.CONNECTION_HANDSHAKING:
 				return;
 			case NitroCommunicationDemoEvent.CONNECTION_HANDSHAKE_FAILED:
-                const authEnabled = (GetConfiguration('auth.system.enabled') as boolean);
-
-                if(authEnabled)
-                {
-                    setIsAuth(true);
-                }
-                else
-                {
-                    setIsError(true);
-                    setMessage('Handshake Failed');
-                }
+                setIsError(true);
+                setMessage('Handshake Failed');
 				return;
 			case NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED:
                 setMessage('Finishing Up');
@@ -132,9 +121,8 @@ export const App: FC<{}> = props =>
     
     return (
         <div className="nitro-app">
-            { (!isReady || isError) && !isAuth && <LoadingView isError={ isError } message={ message } /> }
-            { (isReady && !isError && !isAuth) && <MainView /> }
-            { isAuth && <AuthView /> }
+            { (!isReady || isError) && <LoadingView isError={ isError } message={ message } /> }
+            { (isReady && !isError) && <MainView /> }
         </div>
     );
 }

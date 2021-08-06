@@ -1,4 +1,4 @@
-import { IRoomCameraWidgetEffect } from 'nitro-renderer/src/nitro/camera/IRoomCameraWidgetEffect';
+import { IRoomCameraWidgetEffect } from '@nitrots/nitro-renderer';
 
 export interface CameraWidgetEditorViewProps
 {

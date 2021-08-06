@@ -1,4 +1,4 @@
-import { RoomSettingsParser } from 'nitro-renderer';
+import { RoomSettingsParser } from '@nitrots/nitro-renderer';
 
 export default class RoomSettingsData
 {

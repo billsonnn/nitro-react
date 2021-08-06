@@ -1,4 +1,4 @@
-import { MessengerInitComposer, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectUserType } from 'nitro-renderer';
+import { MessengerInitComposer, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectUserType } from '@nitrots/nitro-renderer';
 import React, { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { GetRoomSession } from '../../api';

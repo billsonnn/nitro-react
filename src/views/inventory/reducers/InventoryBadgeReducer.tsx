@@ -1,4 +1,4 @@
-import { SetActivatedBadgesComposer } from 'nitro-renderer';
+import { SetActivatedBadgesComposer } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 import { SendMessageHook } from '../../../hooks/messages/message-event';
 

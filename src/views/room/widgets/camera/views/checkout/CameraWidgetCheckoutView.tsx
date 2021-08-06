@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from 'nitro-renderer';
+import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomCameraWidgetManager } from '../../../../../../api/nitro/camera/GetRoomCameraWidgetManager';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks/messages/message-event';

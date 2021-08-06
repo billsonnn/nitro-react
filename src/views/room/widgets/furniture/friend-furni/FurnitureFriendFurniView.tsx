@@ -1,4 +1,4 @@
-import { LoveLockFurniFinishedEvent, LoveLockFurniFriendConfirmedEvent, LoveLockFurniStartEvent, LoveLockStartConfirmComposer, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from 'nitro-renderer';
+import { LoveLockFurniFinishedEvent, LoveLockFurniFriendConfirmedEvent, LoveLockFurniStartEvent, LoveLockStartConfirmComposer, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomSession } from '../../../../../api';
 import { GetRoomEngine } from '../../../../../api/nitro/room/GetRoomEngine';

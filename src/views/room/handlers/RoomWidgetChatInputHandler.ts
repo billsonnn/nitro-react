@@ -1,4 +1,4 @@
-import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomWidgetEnum, RoomZoomEvent, TextureUtils } from 'nitro-renderer';
+import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomWidgetEnum, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
 import { GetRoomEngine, GetSessionDataManager } from '../../../api';
 import { SendMessageHook } from '../../../hooks/messages';
 import { RoomWidgetFloodControlEvent, RoomWidgetUpdateEvent } from '../events';

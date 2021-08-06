@@ -1,4 +1,4 @@
-import { NitroEvent, RoomEngineUseProductEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionDanceEvent, RoomSessionUserDataUpdateEvent, RoomWidgetEnum } from 'nitro-renderer';
+import { NitroEvent, RoomEngineUseProductEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionDanceEvent, RoomSessionUserDataUpdateEvent, RoomWidgetEnum } from '@nitrots/nitro-renderer';
 import { GetRoomEngine, GetRoomSession, GetSessionDataManager, IsOwnerOfFurniture } from '../../../api';
 import { FurniCategory } from '../../inventory/common/FurniCategory';
 import { RoomWidgetAvatarInfoEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateUserDataEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../events';

@@ -1,4 +1,4 @@
-import { FriendlyTime, HabboClubLevelEnum, UserCurrencyComposer, UserSubscriptionComposer } from 'nitro-renderer';
+import { FriendlyTime, HabboClubLevelEnum, UserCurrencyComposer, UserSubscriptionComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetConfiguration } from '../../api';
 import { SendMessageHook } from '../../hooks/messages/message-event';

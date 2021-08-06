@@ -1,4 +1,4 @@
-import { RoomControllerLevel, RoomObjectCategory, RoomObjectVariable } from 'nitro-renderer';
+import { RoomControllerLevel, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetOwnRoomObject } from '../../../../../../api';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
