@@ -24,7 +24,7 @@ export const CameraWidgetView: FC<{}> = props =>
     const [ selectedPictureIndex, setSelectedPictureIndex ] = useState(-1);
     const [ selectedEffects, setSelectedEffects ] = useState<IRoomCameraWidgetSelectedEffect[]>([]);
     const [ isZoomed, setIsZoomed ] = useState(false);
-    const [ myLevel, setMyLevel ] = useState(10);
+    const [ myLevel, setMyLevel ] = useState(1);
     const [ price, setPrice ] = useState<{ credits: number, duckets: number, publishDucketPrice: number }>(null);
 
     const onNitroEvent = useCallback((event: RoomWidgetCameraEvent) =>
@@ -111,7 +111,7 @@ export const CameraWidgetView: FC<{}> = props =>
     return (
         <CameraWidgetContextProvider value={ { cameraRoll, setCameraRoll, selectedPictureIndex, setSelectedPictureIndex, selectedEffects, setSelectedEffects, isZoomed, setIsZoomed } }>
             { (mode === MODE_CAPTURE) && <CameraWidgetCaptureView onClose={ () => processAction('close') } onEdit={ () => processAction('edit') } onDelete={ () => processAction('delete') } /> }
-            { (mode === MODE_EDITOR) && <CameraWidgetEditorView myLevel={ myLevel } onClose={ () => processAction('close') } onCancel={ () => processAction('editor_cancel') } onCheckout={ () => processAction('checkout') } availableEffects={ availableEffects } /> }
+            { (mode === MODE_EDITOR) && <CameraWidgetEditorView picture={ cameraRoll[selectedPictureIndex] } myLevel={ myLevel } onClose={ () => processAction('close') } onCancel={ () => processAction('editor_cancel') } onCheckout={ () => processAction('checkout') } availableEffects={ availableEffects } /> }
             { (mode === MODE_CHECKOUT) && <CameraWidgetCheckoutView onCloseClick={ () => processAction('close') } onCancelClick={ () => processAction('editor_cancel') } price={ price }></CameraWidgetCheckoutView> }
         </CameraWidgetContextProvider>
     );

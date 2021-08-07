@@ -23,6 +23,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src",
+    "node_modules/@nitrots/nitro-renderer/src/**/*.ts",
   ]
 }
