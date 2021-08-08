@@ -1,6 +1,6 @@
 .nitro-purse {
     padding: 2px;
-    background-color: #1c323f;
+    background-color: $gable-green;
     border: 2px solid rgba($white, 0.5);
     border-top: 0;
     font-size: $font-size-sm;
@@ -17,7 +17,7 @@
     }
 
     .nitro-purse-hc {
-        background-color: #3d5f6e;
+        background-color: $william;
         margin:0 2px;
     }
 
