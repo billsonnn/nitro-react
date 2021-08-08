@@ -83,8 +83,6 @@ export const UserSettingsView: FC<{}> = props =>
     {
         if(!userSettings) return;
 
-        console.log(userSettings);
-
         dispatchMainEvent(userSettings);
     }, [ userSettings ]);
 
