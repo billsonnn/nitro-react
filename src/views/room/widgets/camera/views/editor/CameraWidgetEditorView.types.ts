@@ -8,7 +8,7 @@ export interface CameraWidgetEditorViewProps
     myLevel: number;
     onClose: () => void;
     onCancel: () => void;
-    onCheckout: () => void;
+    onCheckout: (pictureUrl: string) => void;
 }
 
 export class CameraWidgetEditorTabs

@@ -1,5 +1,6 @@
 import { IRoomCameraWidgetSelectedEffect, RoomCameraWidgetSelectedEffect } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import ReactSlider from 'react-slider';
 import { GetRoomCameraWidgetManager } from '../../../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../../../layout';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
@@ -57,7 +58,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
         return (selectedEffects[getCurrentEffectIndex] || null);
     }, [ selectedEffectName, getCurrentEffectIndex, selectedEffects ]);
 
-    const setCurrentEffectAlpha = useCallback((alpha: number) =>
+    const setSelectedEffectAlpha = useCallback((alpha: number) =>
     {
         const index = getCurrentEffectIndex;
 
@@ -90,7 +91,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 onCancel();
                 return;
             case 'checkout':
-                onCheckout();
+                onCheckout(getCurrentPictureUrl);
                 return;
             case 'change_tab':
                 setCurrentTab(String(effectName));
@@ -140,7 +141,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 setIsZoomed(!isZoomed);
                 return;
         }
-    }, [ isZoomed, availableEffects, getSelectedEffectIndex, selectedEffectName, onCancel, onCheckout, onClose, setIsZoomed, setSelectedEffects ]);
+    }, [ isZoomed, availableEffects, selectedEffectName, getCurrentPictureUrl, getSelectedEffectIndex, onCancel, onCheckout, onClose, setIsZoomed, setSelectedEffects ]);
 
     useEffect(() =>
     {
@@ -171,6 +172,35 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                     <div className="col-7 d-flex flex-column h-100">
                         <div className="picture-preview">
                             <img alt="" src={ getCurrentPictureUrl } />
+                        </div>
+                        { selectedEffectName &&
+                            <div className="w-100 p-2 d-flex flex-column justify-content-center slider">
+                                <div className="w-100 text-center">{ LocalizeText('camera.effect.name.' + selectedEffectName) }</div>
+                                <ReactSlider
+                                    className={ 'nitro-slider' }
+                                    min={ 0 }
+                                    max={ 1 }
+                                    step={ 0.01 }
+                                    value={ getCurrentEffect.alpha }
+                                    onChange={ event => setSelectedEffectAlpha(event) }
+                                    renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
+                            </div> }
+                        <div className="d-flex justify-content-between mt-2">
+                            <div className="btn-group">
+                                <button className="btn btn-primary" onClick={ event => processAction('clear_effects') }>
+                                    <i className="fas fa-trash"></i>
+                                </button>
+                                <button className="btn btn-primary" onClick={ event => processAction('download') }>
+                                    <i className="fas fa-save"></i>
+                                </button>
+                                <button className="btn btn-primary" onClick={ event => processAction('zoom') }>
+                                    <i className={ `fas fa-search-${ isZoomed ? 'minus': 'plus' }` } />
+                                </button>
+                            </div>
+                            <div className="d-flex justify-content-end">
+                                <button className="btn btn-primary me-2" onClick={ event => processAction('cancel') }>{ LocalizeText('generic.cancel') }</button>
+                                <button className="btn btn-success" onClick={ event => processAction('checkout') }>{ LocalizeText('camera.preview.button.text') }</button>
+                            </div>
                         </div>
                     </div>
                 </div>

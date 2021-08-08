@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
-import { GetRoomCameraWidgetManager } from '../../../../../../api/nitro/camera/GetRoomCameraWidgetManager';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { GetRoomEngine } from '../../../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../../layout';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
@@ -11,15 +11,25 @@ import { CameraWidgetCheckoutViewProps } from './CameraWidgetCheckoutView.types'
 
 export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props =>
 {
-    const { onCloseClick = null, onCancelClick = null, price = null } = props;
+    const { pictureUrl = null, onCloseClick = null, onCancelClick = null, price = null } = props;
     const [ picturesBought, setPicturesBought ] = useState(0);
     const [ wasPicturePublished, setWasPicturePublished ] = useState(false);
     const [ isWaiting, setIsWaiting ] = useState(false);
     const [ publishCooldown, setPublishCooldown ] = useState(0);
     const { cameraRoll = null, selectedPictureIndex = -1, selectedEffects = null, isZoomed = false } = useCameraWidgetContext();
 
+    useEffect(() =>
+    {
+        if(!pictureUrl) return;
+
+        console.log(pictureUrl);
+
+        GetRoomEngine().saveBase64AsScreenshot(pictureUrl);
+    }, [ pictureUrl ]);
+
     const onCameraPurchaseOKMessageEvent = useCallback((event: CameraPurchaseOKMessageEvent) =>
     {
+        console.log(event);
         setPicturesBought(value => value + 1);
         setIsWaiting(false);
     }, []);
@@ -30,17 +40,14 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
     {
         const parser = event.getParser();
 
+        console.log(parser);
+
         setPublishCooldown(parser.secondsToWait);
         setWasPicturePublished(parser.ok);
         setIsWaiting(false);
     }, []);
 
     CreateMessageHook(CameraPublishStatusMessageEvent, onCameraPublishStatusMessageEvent);
-
-    const getCurrentPicture = useCallback(() =>
-    {
-        return GetRoomCameraWidgetManager().applyEffects(cameraRoll[selectedPictureIndex].texture, selectedEffects, isZoomed);
-    }, [ cameraRoll, selectedPictureIndex, selectedEffects, isZoomed ]);
 
     const processAction = useCallback((type: string, value: string | number = null) =>
     {
@@ -73,7 +80,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
         <NitroCardView className="nitro-camera-checkout" simple={ true }>
             <NitroCardHeaderView headerText={ LocalizeText('camera.confirm_phase.title') } onCloseClick={ event => processAction('close') } />
             <NitroCardContentView>
-                <div className="picture-preview border mb-2" style={ { backgroundImage: 'url(' + getCurrentPicture().src + ')' } }></div>
+                <div className="picture-preview border mb-2" style={ { backgroundImage: 'url(' + null + ')' } }></div>
                 <div className="bg-muted rounded p-2 text-black mb-2 d-flex justify-content-between align-items-center">
                     <div>
                         <div className="fw-bold d-flex justify-content-start">{ LocalizeText('camera.purchase.header') }{ price.credits > 0 && <>: { price.credits } <CurrencyIcon type={ -1 } /></> }</div>
