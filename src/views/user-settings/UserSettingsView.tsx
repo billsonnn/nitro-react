@@ -1,4 +1,4 @@
-import { NitroSettingsEvent, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer } from '@nitrots/nitro-renderer';
+import { NitroSettingsEvent, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer, UserSettingsSoundComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
 import { CreateMessageHook, dispatchMainEvent, SendMessageHook, useUiEvent } from '../../hooks';
@@ -8,8 +8,8 @@ import { LocalizeText } from '../../utils';
 
 export const UserSettingsView: FC<{}> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
-    const [ userSettings, setUserSettings ] = useState<NitroSettingsEvent>(null);
+    const [isVisible, setIsVisible] = useState(false);
+    const [userSettings, setUserSettings] = useState<NitroSettingsEvent>(null);
 
     const onUserSettingsUIEvent = useCallback((event: UserSettingsUIEvent) =>
     {
@@ -50,41 +50,66 @@ export const UserSettingsView: FC<{}> = props =>
 
     CreateMessageHook(UserSettingsEvent, onUserSettingsEvent);
 
-    const processAction = useCallback((type: string, value: boolean = false) =>
+    const processAction = useCallback((type: string, value?: boolean | number | string) =>
     {
         let doUpdate = true;
 
         const clone = userSettings.clone();
 
-        switch(type)
+        switch (type)
         {
             case 'close_view':
                 setIsVisible(false);
+                doUpdate = false;
                 return;
             case 'oldchat':
-                clone.oldChat = value;
-                SendMessageHook(new UserSettingsOldChatComposer(value));
+                clone.oldChat = value as boolean;
+                SendMessageHook(new UserSettingsOldChatComposer(clone.oldChat));
                 break;
             case 'room_invites':
-                clone.roomInvites = value;
-                SendMessageHook(new UserSettingsRoomInvitesComposer(value));
+                clone.roomInvites = value as boolean;
+                SendMessageHook(new UserSettingsRoomInvitesComposer(clone.roomInvites));
                 break;
             case 'camera_follow':
-                console.log(value);
-                clone.cameraFollow = value;
-                SendMessageHook(new UserSettingsCameraFollowComposer(value));
+                clone.cameraFollow = value as boolean;
+                SendMessageHook(new UserSettingsCameraFollowComposer(clone.cameraFollow));
+                break;
+            case 'system_volume':
+                clone.volumeSystem = value as number;
+                clone.volumeSystem = Math.max(0, clone.volumeSystem);
+                clone.volumeSystem = Math.min(100, clone.volumeSystem);
+                break;
+            case 'furni_volume':
+                clone.volumeFurni = value as number;
+                clone.volumeFurni = Math.max(0, clone.volumeFurni);
+                clone.volumeFurni = Math.min(100, clone.volumeFurni);
+                break;
+            case 'trax_volume':
+                clone.volumeTrax = value as number;
+                clone.volumeTrax = Math.max(0, clone.volumeTrax);
+                clone.volumeTrax = Math.min(100, clone.volumeTrax);
                 break;
         }
 
-        if(doUpdate) setUserSettings(clone);
-    }, [ userSettings ]);
+        if (doUpdate) setUserSettings(clone);
+    }, [userSettings]);
+
+    const saveRangeSlider = useCallback((type: string) =>
+    {
+        switch(type)
+        {
+            case 'volume':
+                SendMessageHook(new UserSettingsSoundComposer(Math.round(userSettings.volumeSystem), Math.round(userSettings.volumeFurni), Math.round(userSettings.volumeTrax)));
+                break;
+        }
+    }, [userSettings]);
 
     useEffect(() =>
     {
-        if(!userSettings) return;
+        if (!userSettings) return;
 
         dispatchMainEvent(userSettings);
-    }, [ userSettings ]);
+    }, [userSettings]);
 
     if (!isVisible) return null;
 
@@ -94,22 +119,60 @@ export const UserSettingsView: FC<{}> = props =>
                 <NitroCardHeaderView headerText={LocalizeText('widget.memenu.settings.title')} onCloseClick={event => processAction('close_view')} />
                 <NitroCardContentView>
                     <div className="form-check">
-                        <input className="form-check-input" type="checkbox" checked={ userSettings.oldChat } onChange={event => processAction('oldchat', event.target.checked)} />
+                        <input className="form-check-input" type="checkbox" checked={userSettings.oldChat} onChange={event => processAction('oldchat', event.target.checked)} />
                         <label className="form-check-label">{LocalizeText('memenu.settings.chat.prefer.old.chat')}</label>
                     </div>
                     <div className="form-check">
-                        <input className="form-check-input" type="checkbox" checked={ userSettings.roomInvites } onChange={event => processAction('room_invites', event.target.checked)} />
+                        <input className="form-check-input" type="checkbox" checked={userSettings.roomInvites} onChange={event => processAction('room_invites', event.target.checked)} />
                         <label className="form-check-label">{LocalizeText('memenu.settings.other.ignore.room.invites')}</label>
                     </div>
                     <div className="form-check">
-                        <input className="form-check-input" type="checkbox" checked={ userSettings.cameraFollow } onChange={event => processAction('camera_follow', event.target.checked)} />
+                        <input className="form-check-input" type="checkbox" checked={userSettings.cameraFollow} onChange={event => processAction('camera_follow', event.target.checked)} />
                         <label className="form-check-label">{LocalizeText('memenu.settings.other.disable.room.camera.follow')}</label>
                     </div>
                     <div className="mt-3 mb-2">{LocalizeText('widget.memenu.settings.volume')}</div>
                     <div className="mb-2">
                         <label>{LocalizeText('widget.memenu.settings.volume.ui')}</label>
+                        <div className="d-flex flex-row">
+                            <div className={ 'icon-container ' + (userSettings.volumeSystem >= 50 ? 'text-muted' : '')}>
+                                <i className={'fas ' + (userSettings.volumeSystem === 0 ? 'fa-volume-mute' : '') + (userSettings.volumeSystem > 0 ? 'fa-volume-down' : '')}></i>
+                            </div>
+                            <div className="w-100 ml-2 mr-2">
+                                <input type="range" className="custom-range" min="0" max="100" step="1" id="volumeSystem" value={userSettings.volumeSystem} onChange={event => processAction("system_volume", event.target.value)} onMouseUp={ () => saveRangeSlider("volume")}/>
+                            </div>
+                            <div className={ userSettings.volumeSystem < 50 ? 'text-muted': '' }>
+                                <i className="fas fa-volume-up"></i>
+                            </div>
+                        </div>
                     </div>
-
+                    <div className="mb-2">
+                        <label>{LocalizeText('widget.memenu.settings.volume.furni')}</label>
+                        <div className="d-flex flex-row">
+                            <div className={ 'icon-container ' + (userSettings.volumeFurni >= 50 ? 'text-muted' : '')}>
+                                <i className={'fas ' + (userSettings.volumeFurni === 0 ? 'fa-volume-mute' : '') + (userSettings.volumeFurni > 0 ? 'fa-volume-down' : '')}></i>
+                            </div>
+                            <div className="w-100 ml-2 mr-2">
+                                <input type="range" className="custom-range" min="0" max="100" step="1" id="volumeSystem" value={userSettings.volumeFurni} onChange={event => processAction("furni_volume", event.target.value)} onMouseUp={ () => saveRangeSlider("volume")}/>
+                            </div>
+                            <div className={ userSettings.volumeFurni < 50 ? 'text-muted': '' }>
+                                <i className="fas fa-volume-up"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mb-2">
+                        <label>{LocalizeText('widget.memenu.settings.volume.trax')}</label>
+                        <div className="d-flex flex-row">
+                            <div className={'icon-container ' + (userSettings.volumeTrax >= 50 ? 'text-muted' : '')}>
+                                <i className={'fas ' + (userSettings.volumeTrax === 0 ? 'fa-volume-mute' : '') + (userSettings.volumeTrax > 0 ? 'fa-volume-down' : '')}></i>
+                            </div>
+                            <div className="w-100 ml-2 mr-2">
+                                <input type="range" className="custom-range" min="0" max="100" step="1" id="volumeSystem" value={userSettings.volumeTrax} onChange={event => processAction("trax_volume", event.target.value)} onMouseUp={ () => saveRangeSlider("volume")}/>
+                            </div>
+                            <div className={ userSettings.volumeTrax < 50 ? 'text-muted': '' }>
+                                <i className="fas fa-volume-up"></i>
+                            </div>
+                        </div>
+                    </div>
                 </NitroCardContentView>
             </NitroCardView>
         </div>
