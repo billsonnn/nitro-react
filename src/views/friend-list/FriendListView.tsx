@@ -84,7 +84,7 @@ export const FriendListView: FC<FriendListViewProps> = props =>
             <FriendListMessageHandler />
             { isReady && createPortal(<FriendBarView />, document.getElementById('toolbar-friend-bar-container')) }
             { isVisible &&
-                <NitroCardView className="nitro-friend-list">
+                <NitroCardView uniqueKey="friend-list" className="nitro-friend-list">
                     <NitroCardHeaderView headerText={ LocalizeText('friendlist.friends') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardContentView>
                         <div className="text-black fw-bold">{ LocalizeText('friendlist.search.friendscaption') }</div>
