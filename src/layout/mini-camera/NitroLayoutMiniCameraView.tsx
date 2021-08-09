@@ -25,7 +25,7 @@ export const NitroLayoutMiniCameraView: FC<NitroLayoutMiniCameraViewProps> = pro
     }, [ roomId, getCameraBounds, textureReceiver ]);
     
     return (
-        <DraggableWindow handle=".nitro-room-thumbnail-camera">
+        <DraggableWindow handleSelector=".nitro-room-thumbnail-camera">
             <div className="nitro-room-thumbnail-camera px-2">
                 <div ref={ elementRef } className={ 'camera-frame' } />
                 <div className="d-flex align-items-end h-100 pb-2">

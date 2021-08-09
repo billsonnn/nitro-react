@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { DraggableWindow } from '../../../../../../layout';
+import { DraggableWindow, DraggableWindowPosition } from '../../../../../../layout';
 import { ObjectLocationView } from '../../../object-location/ObjectLocationView';
 import { AvatarInfoRentableBotChatViewProps } from './AvatarInfoRentableBotChatView.types';
 
@@ -8,7 +8,7 @@ export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProp
     const { chatEvent = null } = props;
 
     return (
-        <DraggableWindow noCenter={ true } handle=".drag-handler">
+        <DraggableWindow position={ DraggableWindowPosition.NOTHING } handleSelector=".drag-handler">
             <ObjectLocationView objectId={ chatEvent.objectId } category={ chatEvent.category } noFollow={ true }>
                 <div className="nitro-context-menu">
                     <div className="drag-handler">test!!!!!</div>

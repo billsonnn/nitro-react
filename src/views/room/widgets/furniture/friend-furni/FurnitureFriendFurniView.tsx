@@ -119,7 +119,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                     </div>
                 </NitroCardContentView>
             </NitroCardView> }
-            { engravingLockData && engravingLockData.usernames.length > 0 && <DraggableWindow handle=".nitro-engraving-lock-view">
+            { engravingLockData && engravingLockData.usernames.length > 0 && <DraggableWindow handleSelector=".nitro-engraving-lock-view">
                 <div className={ "nitro-engraving-lock-view engraving-lock-" + engravingLockData.type }>
                     <div className="engraving-lock-close" onClick={ event => processAction('close_view') }></div>
                     <div className="d-flex justify-content-center">
