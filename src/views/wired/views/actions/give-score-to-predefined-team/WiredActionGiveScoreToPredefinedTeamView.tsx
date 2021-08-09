@@ -1,5 +1,5 @@
-import Slider from 'rc-slider/lib/Slider';
 import { FC, useCallback, useEffect, useState } from 'react';
+import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useWiredContext } from '../../../context/WiredContext';
 import { WiredFurniType } from '../../../WiredView.types';
@@ -37,18 +37,20 @@ export const WiredActionGiveScoreToPredefinedTeamView: FC<{}> = props =>
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
             <div className="form-group mb-2">
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.setpoints', [ 'points' ], [ points.toString() ]) }</label>
-                <Slider 
-                    value={ points }
+                <ReactSlider
+                    className={ 'nitro-slider' }
                     min={ 1 }
                     max={ 100 }
+                    value={ points }
                     onChange={ event => setPoints(event) } />
             </div>
             <div className="form-group mb-2">
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.settimesingame', [ 'times' ], [ time.toString() ]) }</label>
-                <Slider 
-                    value={ time }
+                <ReactSlider
+                    className={ 'nitro-slider' }
                     min={ 1 }
                     max={ 10 }
+                    value={ time }
                     onChange={ event => setTime(event) } />
             </div>
             <div className="form-group">
