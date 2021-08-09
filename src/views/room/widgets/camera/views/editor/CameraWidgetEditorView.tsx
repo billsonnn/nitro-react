@@ -134,9 +134,15 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 setSelectedEffectName(null);
                 setSelectedEffects([]);
                 return;
-            case 'download':
-                //window.open(getCurrentPicture().src, '_blank');
+            case 'download': {
+                const image = new Image();
+                            
+                image.src = getCurrentPictureUrl
+                            
+                const newWindow = window.open('');
+                newWindow.document.write(image.outerHTML);
                 return;
+            }
             case 'zoom':
                 setIsZoomed(!isZoomed);
                 return;
