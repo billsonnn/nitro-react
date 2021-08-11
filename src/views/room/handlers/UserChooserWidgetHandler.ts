@@ -38,15 +38,19 @@ export class UserChooserWidgetHandler extends RoomWidgetHandler
 
         const roomId = this.container.roomSession.roomId;
         const categoryId = RoomObjectCategory.UNIT;
-        const units = [];
+        const units : RoomObjectItem[] = [];
         
-        units.push(...GetRoomEngine().getRoomObjects(roomId, categoryId).map<RoomObjectItem>(roomObject => {
+        const roomObjects = GetRoomEngine().getRoomObjects(roomId, categoryId);
+
+        roomObjects.forEach(roomObject => {
+            if(!roomObject) return;
+
             const unitData = this.container.roomSession.userDataManager.getUserDataByIndex(roomObject.id);
 
-            if(!unitData) return null;
+            if(!unitData) return;
 
-            return new RoomObjectItem(unitData.roomIndex, categoryId, unitData.name);
-        }));
+            units.push(new RoomObjectItem(unitData.roomIndex, categoryId, unitData.name));
+        });
 
         units.sort(dynamicSort('name'));
         dispatchUiEvent(new RoomWidgetChooserContentEvent(RoomWidgetChooserContentEvent.USER_CHOOSER_CONTENT, units));
