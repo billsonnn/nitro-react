@@ -8,9 +8,11 @@ import { GetRoomEngine } from '../../api/nitro/room/GetRoomEngine';
 import { RoomContextProvider } from './context/RoomContext';
 import { RoomWidgetUpdateRoomViewEvent } from './events/RoomWidgetUpdateRoomViewEvent';
 import { IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler } from './handlers';
+import { FurniChooserWidgetHandler } from './handlers/FurniChooserWidgetHandler';
 import { FurnitureContextMenuWidgetHandler } from './handlers/FurnitureContextMenuWidgetHandler';
 import { FurnitureCustomStackHeightWidgetHandler } from './handlers/FurnitureCustomStackHeightWidgetHandler';
 import { RoomWidgetRoomToolsHandler } from './handlers/RoomWidgetRoomToolsHandler';
+import { UserChooserWidgetHandler } from './handlers/UserChooserWidgetHandler';
 import { RoomColorView } from './RoomColorView';
 import { RoomViewProps } from './RoomView.types';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
@@ -44,6 +46,8 @@ export const RoomView: FC<RoomViewProps> = props =>
         widgetHandlerManager.registerHandler(new RoomWidgetChatHandler());
         widgetHandlerManager.registerHandler(new FurnitureContextMenuWidgetHandler());
         widgetHandlerManager.registerHandler(new FurnitureCustomStackHeightWidgetHandler());
+        widgetHandlerManager.registerHandler(new FurniChooserWidgetHandler());
+        widgetHandlerManager.registerHandler(new UserChooserWidgetHandler());
 
         setWidgetHandler(widgetHandlerManager);
 

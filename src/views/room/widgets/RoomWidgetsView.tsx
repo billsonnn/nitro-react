@@ -9,6 +9,8 @@ import { AvatarInfoWidgetView } from './avatar-info/AvatarInfoWidgetView';
 import { CameraWidgetView } from './camera/CameraWidgetView';
 import { ChatInputView } from './chat-input/ChatInputView';
 import { ChatWidgetView } from './chat/ChatWidgetView';
+import { FurniChooserWidgetView } from './choosers/FurniChooserWidgetView';
+import { UserChooserWidgetView } from './choosers/UserChooserWidgetView';
 import { FurnitureWidgetsView } from './furniture/FurnitureWidgetsView';
 import { InfoStandWidgetView } from './infostand/InfoStandWidgetView';
 import { RoomThumbnailWidgetView } from './room-thumbnail/RoomThumbnailWidgetView';
@@ -246,6 +248,8 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
             <InfoStandWidgetView />
             <RoomToolsWidgetView />
             <RoomThumbnailWidgetView />
+            <FurniChooserWidgetView />
+            <UserChooserWidgetView />
         </>
     );
 }
