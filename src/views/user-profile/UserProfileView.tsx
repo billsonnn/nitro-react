@@ -44,13 +44,16 @@ export const UserProfileView: FC = props =>
     {
         const parser = event.getParser();
 
-        if(userProfile && userProfile.id === parser.id)
-            OnClose();
+        if(userProfile && userProfile.id !== parser.id)
+        {
+            setUserBadges([]);
+            setUserRelationships(null);
+        }
         
         setUserProfile(parser);
         SendMessageHook(new UserCurrentBadgesComposer(parser.id));
         SendMessageHook(new UserRelationshipsComposer(parser.id));
-    }, [OnClose, userProfile]);
+    }, [userProfile]);
 
     CreateMessageHook(UserProfileEvent, OnUserProfileEvent);
 
