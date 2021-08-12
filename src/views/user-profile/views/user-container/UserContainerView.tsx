@@ -21,7 +21,7 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
 
         if(requestSent) return (<span><i className="icon icon-pf-tick" />{LocalizeText('extendedprofile.friendrequestsent')}</span>);
 
-        return (<button className="btn btn-success btn-sm w-100">{LocalizeText('extendedprofile.addasafriend')}</button>)
+        return (<button className="btn btn-success btn-sm add-friend">{LocalizeText('extendedprofile.addasafriend')}</button>)
     }, [id, isFriend, requestSent]);
 
     return (

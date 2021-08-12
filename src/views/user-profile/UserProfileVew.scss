@@ -10,6 +10,11 @@
         .avatar-image {
             left: -10px;
         }
+
+        .add-friend {
+            margin: 5px;
+            margin-left: 10px;
+        }
     }
 
     .badge-container
@@ -59,6 +64,11 @@
                     display: inline-block;
                     text-decoration: underline;
                     width: 100%;
+
+                    .relationship-text
+                    {
+                        cursor: pointer;
+                    }
 
                     .avatar-image {
                         position: absolute;
