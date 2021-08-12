@@ -513,6 +513,42 @@
         height: 21px;
     }
 
+    &.icon-pf-online {
+        background: url('../images/profile/icons/online.gif');
+        width: 40px;
+        height: 16px;
+    }
+
+    &.icon-pf-offline {
+        background: url('../images/profile/icons/offline.png');
+        width: 40px;
+        height: 16px;
+    }
+
+    &.icon-pf-tick {
+        background: url('../images/profile/icons/tick.png');
+        width: 11px;
+        height: 10px;
+    }
+
+    &.icon-relationship-heart {
+        background: url('../images/profile/icons/heart.png');
+        width: 16px;
+        height: 14px;
+    }
+
+    &.icon-relationship-bobba {
+        background: url('../images/profile/icons/bobba.png');
+        width: 16px;
+        height: 14px;
+    }
+
+    &.icon-relationship-smile {
+        background: url('../images/profile/icons/smile.png');
+        width: 16px;
+        height: 14px;
+    }
+
     &.spin {
         animation: rotating 1s linear infinite;
     }

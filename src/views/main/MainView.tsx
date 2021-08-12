@@ -14,6 +14,7 @@ import { NotificationCenterView } from '../notification-center/NotificationCente
 import { RightSideView } from '../right-side/RightSideView';
 import { RoomHostView } from '../room-host/RoomHostView';
 import { ToolbarView } from '../toolbar/ToolbarView';
+import { UserProfileView } from '../user-profile/UserProfileView';
 import { WiredView } from '../wired/WiredView';
 import { MainViewProps } from './MainView.types';
 
@@ -60,6 +61,7 @@ export const MainView: FC<MainViewProps> = props =>
             <FriendListView />
             <RightSideView />
             <NotificationCenterView />
+            <UserProfileView />
         </div>
     );
 }
