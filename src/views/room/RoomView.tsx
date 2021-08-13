@@ -7,6 +7,7 @@ import { GetRoomEngine } from '../../api/nitro/room/GetRoomEngine';
 import { RoomContextProvider } from './context/RoomContext';
 import { RoomWidgetUpdateRoomViewEvent } from './events/RoomWidgetUpdateRoomViewEvent';
 import { IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler } from './handlers';
+import { DoorbellWidgetHandler } from './handlers/DoorbellWidgetHandler';
 import { FurnitureContextMenuWidgetHandler } from './handlers/FurnitureContextMenuWidgetHandler';
 import { FurnitureCustomStackHeightWidgetHandler } from './handlers/FurnitureCustomStackHeightWidgetHandler';
 import { RoomWidgetRoomToolsHandler } from './handlers/RoomWidgetRoomToolsHandler';
@@ -44,6 +45,7 @@ export const RoomView: FC<RoomViewProps> = props =>
         widgetHandlerManager.registerHandler(new RoomWidgetChatHandler());
         widgetHandlerManager.registerHandler(new FurnitureContextMenuWidgetHandler());
         widgetHandlerManager.registerHandler(new FurnitureCustomStackHeightWidgetHandler());
+        widgetHandlerManager.registerHandler(new DoorbellWidgetHandler());
 
         setWidgetHandler(widgetHandlerManager);
 
