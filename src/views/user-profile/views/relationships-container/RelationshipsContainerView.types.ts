@@ -1,6 +1,7 @@
 import { RelationshipStatusInfoMessageParser } from '@nitrots/nitro-renderer';
 
-export interface FriendsContainerViewProps {
+export interface RelationshipsContainerViewProps
+{
     relationships: RelationshipStatusInfoMessageParser;
-    friendsCount: number;
+    simple?: boolean;
 }

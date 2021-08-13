@@ -34,7 +34,7 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
                     <h5>{username}</h5>
                     <div className="mb-1">{motto}</div>
                     <div className="mb-1" dangerouslySetInnerHTML={{ __html: LocalizeText('extendedprofile.created', ['created'], [creation]) }} />
-                    <div className="mb-1" dangerouslySetInnerHTML={{ __html: LocalizeText('extendedprofile.last.login', ['lastlogin'], [FriendlyTime.format(secondsSinceLastLogin, '.ago', 1)]) }} />
+                    <div className="mb-1" dangerouslySetInnerHTML={{ __html: LocalizeText('extendedprofile.last.login', ['lastlogin'], [FriendlyTime.format(secondsSinceLastLogin, '.ago', 2)]) }} />
                     <div className="mb-1"><b>{LocalizeText('extendedprofile.achievementscore')}</b> {achievementScore}</div>
                     <OnlineIcon />
                     <FriendRequestComponent />

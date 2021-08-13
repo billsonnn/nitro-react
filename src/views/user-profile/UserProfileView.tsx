@@ -1,4 +1,4 @@
-import { UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer, UserRelationshipsEvent, UserRelationshipsParser } from '@nitrots/nitro-renderer';
+import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
@@ -11,7 +11,7 @@ export const UserProfileView: FC = props =>
 {
     const [userProfile, setUserProfile] = useState<UserProfileParser>(null);
     const [userBadges, setUserBadges] = useState<string[]>([]);
-    const [userRelationships, setUserRelationships] = useState<UserRelationshipsParser>(null);
+    const [userRelationships, setUserRelationships] = useState<RelationshipStatusInfoMessageParser>(null);
 
     const OnClose = useCallback(() =>
     {
@@ -30,15 +30,15 @@ export const UserProfileView: FC = props =>
 
     CreateMessageHook(UserCurrentBadgesEvent, OnUserCurrentBadgesEvent);
 
-    const OnUserRelationshipsEvent = useCallback((event: UserRelationshipsEvent) =>
+    const OnUserRelationshipsEvent = useCallback((event: RelationshipStatusInfoEvent) =>
     {
         const parser = event.getParser();
 
-        if (userProfile && parser.id === userProfile.id)
+        if (userProfile && parser.userId === userProfile.id)
             setUserRelationships(parser);
     }, [userProfile, setUserRelationships]);
 
-    CreateMessageHook(UserRelationshipsEvent, OnUserRelationshipsEvent);
+    CreateMessageHook(RelationshipStatusInfoEvent, OnUserRelationshipsEvent);
 
     const OnUserProfileEvent = useCallback((event: UserProfileEvent) =>
     {
@@ -65,13 +65,13 @@ export const UserProfileView: FC = props =>
                 <NitroCardHeaderView headerText={LocalizeText('extendedprofile.caption')} onCloseClick={OnClose} />
                 <NitroCardContentView>
                     <div className="row">
-                        <div className="col-sm-7 user-container">
-                            <UserContainerView id={userProfile.id} username={userProfile.username} motto={userProfile.motto} figure={userProfile.figure} secondsSinceLastLogin={userProfile.lastVisit} creation={userProfile.registration} achievementScore={userProfile.achievementPoints} isFriend={userProfile.isMyFriend} isOnline={userProfile.isOnline} requestSent={userProfile.requestSent} />
+                        <div className="col-sm-6 user-container">
+                            <UserContainerView id={userProfile.id} username={userProfile.username} motto={userProfile.motto} figure={userProfile.figure} secondsSinceLastLogin={userProfile.secondsSinceLastVisit} creation={userProfile.registration} achievementScore={userProfile.achievementPoints} isFriend={userProfile.isMyFriend} isOnline={userProfile.isOnline} requestSent={userProfile.requestSent} />
                             <BadgesContainerView badges={userBadges} />
                         </div>
-                        <div className="col-sm-5">
+                        <div className="col-sm-6">
                             {
-                                userRelationships && <FriendsContainerView relationships={new Map([['heart', userRelationships.hearts], ['smile', userRelationships.smiles], ['bobba', userRelationships.bobbas]])} friendsCount={userProfile.friendsCount} />
+                                userRelationships && <FriendsContainerView relationships={userRelationships} friendsCount={userProfile.friendsCount} />
                             }
                         </div>
                     </div>

@@ -24,11 +24,6 @@
         border-radius: 5px;
         margin: 0px;
         margin-bottom: 2px;
-
-        .badge-image {
-            margin-left: 2px;
-            margin-right: 2px;
-        }
     }
 
     .rooms-button-container
@@ -49,39 +44,5 @@
     .friends-container
     {
         height: 100%;
-
-        .relationships-container {
-
-            .relationship-container {
-                margin: 10px;
-
-                .relationship 
-                {
-                    margin-left: 10px;
-                    background-color: white;
-                    padding: 5px;
-                    border-radius: 5px;
-                    display: inline-block;
-                    text-decoration: underline;
-                    width: 100%;
-
-                    .relationship-text
-                    {
-                        cursor: pointer;
-                    }
-
-                    .avatar-image {
-                        position: absolute;
-                        width: 50px;
-                        height: 80px;
-                        right: 0;
-                        margin-top: -60px;
-                        margin-right: 10px;
-                    }
-                }
-            }
-            
-        }
-        
     }
 }
