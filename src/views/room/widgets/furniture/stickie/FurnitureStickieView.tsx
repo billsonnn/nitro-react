@@ -3,6 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, GetRoomSession, GetSessionDataManager } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
+import { DraggableWindowPosition } from '../../../../../layout';
 import { DraggableWindow } from '../../../../../layout/draggable-window/DraggableWindow';
 import { ColorUtils } from '../../../../../utils/ColorUtils';
 import { useRoomContext } from '../../../context/RoomContext';
@@ -114,7 +115,7 @@ export const FurnitureStickieView: FC<{}> = props =>
     if(!stickieData) return null;
 
     return (
-        <DraggableWindow handle=".drag-handler" noCenter={ true }>
+        <DraggableWindow handleSelector=".drag-handler" position={ DraggableWindowPosition.NOTHING }>
             <div className={ "nitro-stickie nitro-stickie-image stickie-" + getStickieColorName(stickieData.color) }>
                 <div className="d-flex align-items-center stickie-header drag-handler">
                     <div className="d-flex align-items-center flex-grow-1 h-100">

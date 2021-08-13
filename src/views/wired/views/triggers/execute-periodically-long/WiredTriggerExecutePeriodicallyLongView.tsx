@@ -1,6 +1,6 @@
 import { FriendlyTime } from '@nitrots/nitro-renderer';
-import Slider from 'rc-slider/lib/Slider';
 import { FC, useCallback, useEffect, useState } from 'react';
+import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useWiredContext } from '../../../context/WiredContext';
 import { WiredFurniType } from '../../../WiredView.types';
@@ -25,10 +25,11 @@ export const WiredTriggeExecutePeriodicallyLongView: FC<{}> = props =>
         <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
             <div className="form-group">
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.setlongtime', [ 'time' ], [ FriendlyTime.format(time * 5).toString() ]) }</label>
-                <Slider 
-                    value={ time }
+                <ReactSlider
+                    className={ 'nitro-slider' }
                     min={ 1 }
                     max={ 120 }
+                    value={ time }
                     onChange={ event => setTime(event) } />
             </div>
         </WiredTriggerBaseView>

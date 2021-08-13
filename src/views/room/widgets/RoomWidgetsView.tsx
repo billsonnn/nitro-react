@@ -11,6 +11,7 @@ import { ChatInputView } from './chat-input/ChatInputView';
 import { ChatWidgetView } from './chat/ChatWidgetView';
 import { FurniChooserWidgetView } from './choosers/FurniChooserWidgetView';
 import { UserChooserWidgetView } from './choosers/UserChooserWidgetView';
+import { DoorbellWidgetView } from './doorbell/DoorbellWidgetView';
 import { FurnitureWidgetsView } from './furniture/FurnitureWidgetsView';
 import { InfoStandWidgetView } from './infostand/InfoStandWidgetView';
 import { RoomThumbnailWidgetView } from './room-thumbnail/RoomThumbnailWidgetView';
@@ -244,6 +245,7 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
             <CameraWidgetView />
             <ChatWidgetView />
             <ChatInputView />
+            <DoorbellWidgetView />
             <FurnitureWidgetsView />
             <InfoStandWidgetView />
             <RoomToolsWidgetView />
