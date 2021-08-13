@@ -1,4 +1,5 @@
 export * from './CanManipulateFurniture';
+export * from './CreateRoomSession';
 export * from './GetCanStandUp';
 export * from './GetCanUseExpression';
 export * from './GetClubMemberLevel';
@@ -9,6 +10,7 @@ export * from './GetProductDataForLocalization';
 export * from './GetRoomSession';
 export * from './GetRoomSessionManager';
 export * from './GetSessionDataManager';
+export * from './GoToDesktop';
 export * from './HasHabboClub';
 export * from './HasHabboVip';
 export * from './IsOwnerOfFurniture';
