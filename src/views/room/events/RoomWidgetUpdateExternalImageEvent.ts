@@ -1,8 +1,9 @@
+import { IPhotoData } from './IPhotoData';
 import { RoomWidgetUpdateEvent } from './RoomWidgetUpdateEvent';
 
 export class RoomWidgetUpdateExternalImageEvent extends RoomWidgetUpdateEvent
 {
-    public static UPDATE_EXTERNAL_IMAGE: string = 'RWUCSHE_UPDATE_EXTERNAL_IMAGE';
+    public static UPDATE_EXTERNAL_IMAGE: string = 'RWUEIE_UPDATE_EXTERNAL_IMAGE';
 
     private _objectId: number;
     private _photoData: IPhotoData;
@@ -24,37 +25,4 @@ export class RoomWidgetUpdateExternalImageEvent extends RoomWidgetUpdateEvent
     {
         return this._photoData;
     }
-}
-
-export interface IPhotoData
-{
-    /**
-     * creator username
-     */
-    n?: string;
-
-    /**
-     * creator user id
-     */
-    s?: number;
-
-    /**
-     * photo unique id
-     */
-    u?: number;
-
-    /**
-     * creation timestamp
-     */
-    t?: number;
-
-    /**
-     * photo caption
-     */
-    m?: string;
-
-    /**
-     * photo image url
-     */
-    w?: string;
 }

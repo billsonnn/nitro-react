@@ -1,3 +1,4 @@
+export * from './IPhotoData';
 export * from './RoomObjectItem';
 export * from './RoomWidgetAvatarInfoEvent';
 export * from './RoomWidgetChooserContentEvent';
