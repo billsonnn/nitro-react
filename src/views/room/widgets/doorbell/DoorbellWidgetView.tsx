@@ -5,6 +5,7 @@ import { LocalizeText } from '../../../../utils';
 import { useRoomContext } from '../../context/RoomContext';
 import { RoomWidgetDoorbellEvent } from '../../events';
 import { RoomWidgetLetUserInMessage } from '../../messages';
+import { DoorbellWidgetItemView } from './doorbell-item/DoorbellWidgetItemView';
 
 export const DoorbellWidgetView: FC<{}> = props =>
 {
@@ -62,7 +63,7 @@ export const DoorbellWidgetView: FC<{}> = props =>
         removeUser(userName);
     }, [ widgetHandler, removeUser ]);
 
-    if(!users.length) return null;
+    if(!isVisible) return null;
 
     return (
         <NitroCardView className="nitro-widget-doorbell" simple={ true }>
@@ -71,15 +72,7 @@ export const DoorbellWidgetView: FC<{}> = props =>
                 <div className="row row-cols-1 doorbell-user-list">
                     { (users.length > 0) && users.map(userName =>
                         {
-                            return (
-                                <div className="d-flex col align-items-center justify-content-between" key={ userName }>
-                                    <span className="fw-bold text-black">{ userName }</span>
-                                    <div>
-                                        <button type="button" className="btn btn-success btn-sm me-1" onClick={ event => answer(userName, true) }><i className="fas fa-check" /></button>
-                                        <button type="button" className="btn btn-danger btn-sm" onClick={ event => answer(userName, false) }><i className="fas fa-times" /></button>
-                                    </div>
-                                </div>
-                            );
+                            return <DoorbellWidgetItemView key={ userName } userName={ userName } accept={ () => answer(userName, true) } deny={ () => answer(userName, false) } />;
                         }) }
                 </div>
             </NitroCardContentView>
