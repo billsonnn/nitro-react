@@ -1,5 +1,5 @@
 export interface HallOfFameWidgetViewProps
 {
-  slot: number;
-  conf: string;
+    slot: number;
+    conf: string;
 }

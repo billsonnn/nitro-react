@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo } from 'react';
-import { GetConfigurationManager } from '../../../../../api/core/';
+import { GetConfigurationManager } from '../../../../../api/core';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { WidgetContainerViewProps } from './WidgetContainerView.types';
 
