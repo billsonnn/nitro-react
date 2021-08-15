@@ -1,86 +1,65 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import List from 'react-virtualized/dist/commonjs/List';
-import { RoomObjectItem } from '../../../../events/room-widgets/choosers/RoomObjectItem';
-import { CreateEventDispatcherHook } from '../../../../hooks';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { List, ListRowProps, ListRowRenderer } from 'react-virtualized';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { LocalizeText } from '../../../../utils';
 import { useRoomContext } from '../../context/RoomContext';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../events';
-import { RoomWidgetRequestWidgetMessage, RoomWidgetRoomObjectMessage } from '../../messages';
+import { RoomObjectItem } from '../../events';
+import { RoomWidgetRoomObjectMessage } from '../../messages';
 import { ChooserWidgetViewProps } from './ChooserWidgetView.type';
 
 export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
 {
-    const [filteredItems, setFilteredItems] = useState<RoomObjectItem[]>([]);
-    const [selectedItem, setSelectedItem] = useState<RoomObjectItem>(null);
-    const [refreshTimeout, setRefreshTimeout] = useState<ReturnType<typeof setTimeout>>(null);
-    const [searchValue, setSearchValue] = useState('');
-    const { title = null, onCloseClick = null, displayItemId = false, items = null, messageType = null, roomWidgetRoomObjectUpdateEvents = null } = props;
+    const { title = null, items = null, displayItemId = false, onCloseClick = null } = props;
+    const [ selectedItem, setSelectedItem ] = useState<RoomObjectItem>(null);
+    const [ searchValue, setSearchValue ] = useState('');
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
 
-    useEffect(() =>
+    const filteredItems = useMemo(() =>
     {
-        if (!items) return;
+        if(!items) return [];
 
-        const filteredGroupItems = items.filter(item =>
-        {
-            return item.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase());
-        });
+        if(!searchValue || !searchValue.length) return items;
 
-        setFilteredItems(filteredGroupItems);
-    }, [items, searchValue, setFilteredItems]);
+        const value = searchValue.toLocaleLowerCase();
 
-    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
-    {
-        if (!event) return;
+        return items.filter(item =>
+            {
+                return item.name.toLocaleLowerCase().includes(value);
+            });
+    }, [ items, searchValue ]);
 
-        if (refreshTimeout) clearTimeout(refreshTimeout);
-
-        setRefreshTimeout(setTimeout(() =>
-        {
-            widgetHandler.processWidgetMessage(new RoomWidgetRequestWidgetMessage(messageType));
-        }, 100));
-
-    }, [refreshTimeout, messageType, widgetHandler]);
-
-    roomWidgetRoomObjectUpdateEvents.forEach(event => CreateEventDispatcherHook(event, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent));
-
-    const onClickItem = useCallback((item: RoomObjectItem) =>
+    const onItemClick = useCallback((item: RoomObjectItem) =>
     {
         setSelectedItem(item);
         widgetHandler.processWidgetMessage(new RoomWidgetRoomObjectMessage(RoomWidgetRoomObjectMessage.SELECT_OBJECT, item.id, item.category));
-    }, [setSelectedItem, widgetHandler]);
+    }, [ widgetHandler, setSelectedItem]);
 
-    const rowRenderer = function ({
-        key, // Unique key within array of rows
-        index, // Index of row within collection
-        isScrolling, // The List is currently being scrolled
-        isVisible, // This row is visible within the List (eg it is not an overscanned row)
-        style, // Style object to be applied to row (to position it)
-    })
+    const rowRenderer: ListRowRenderer = (props: ListRowProps) =>
     {
+        const item = filteredItems[props.index];
+
         return (
-            <div key={key} style={style} onClick={() => onClickItem(filteredItems[index])} className={(selectedItem === filteredItems[index] ? 'selected-item ' : '') + 'list-item'}>
-                {filteredItems[index].name}
-                {displayItemId && (' - ' + filteredItems[index].id)}
+            <div key={ props.key } className={ 'list-item' + ((selectedItem === item) ? ' selected' : '') } style={ props.style } onClick={ () => onItemClick(item) }>
+                { item.name } { displayItemId && (' - ' + item.id) }
             </div>
         );
     }
 
     return (
-        <NitroCardView>
-            <NitroCardHeaderView headerText={title} onCloseClick={onCloseClick}></NitroCardHeaderView>
+        <NitroCardView className="nitro-chooser-widget">
+            <NitroCardHeaderView headerText={ title } onCloseClick={ onCloseClick } />
             <NitroCardContentView>
                 <div className="d-flex mb-1">
                     <div className="d-flex flex-grow-1 me-1">
-                        <input type="text" className="form-control form-control-sm" placeholder={LocalizeText('generic.search')} value={searchValue} onChange={event => setSearchValue(event.target.value)} />
+                        <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={searchValue} onChange={event => setSearchValue(event.target.value)} />
                     </div>
                 </div>
-                <List width={150}
-                    height={150}
-                    rowCount={filteredItems.length}
-                    rowHeight={20}
-                    rowRenderer={rowRenderer} />
+                <List
+                    width={ 150 }
+                    height={ 150 }
+                    rowCount={ filteredItems.length }
+                    rowHeight={ 20 }
+                    rowRenderer={ rowRenderer } />
             </NitroCardContentView>
         </NitroCardView>
     );

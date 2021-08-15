@@ -1,26 +1,55 @@
 import { FC, useCallback, useState } from 'react';
-import { RoomObjectItem } from '../../../../events/room-widgets/choosers/RoomObjectItem';
-import { RoomWidgetChooserContentEvent } from '../../../../events/room-widgets/choosers/RoomWidgetChooserContentEvent';
-import { useUiEvent } from '../../../../hooks';
+import { CreateEventDispatcherHook } from '../../../../hooks';
 import { LocalizeText } from '../../../../utils';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../events';
+import { useRoomContext } from '../../context/RoomContext';
+import { RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRoomObjectUpdateEvent } from '../../events';
 import { RoomWidgetRequestWidgetMessage } from '../../messages';
 import { ChooserWidgetView } from './ChooserWidgetView';
 
-export const UserChooserWidgetView : FC = props =>
+export const UserChooserWidgetView: FC<{}> = props =>
 {
-    const [isVisible, setIsVisible] = useState(false);
-    const [items, setItems] = useState<RoomObjectItem[]>(null);
+    const [ isVisible, setIsVisible ] = useState(false);
+    const [ items, setItems ] = useState<RoomObjectItem[]>(null);
+    const [ refreshTimeout, setRefreshTimeout ] = useState<ReturnType<typeof setTimeout>>(null);
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
 
-    const onUserChooserContent = useCallback((event: RoomWidgetChooserContentEvent) =>
+    const refreshChooser = useCallback(() =>
+    {
+        if(!isVisible) return;
+
+        setRefreshTimeout(prevValue =>
+            {
+                if(prevValue) clearTimeout(prevValue);
+
+                return setTimeout(() => widgetHandler.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.FURNI_CHOOSER)), 100);
+            })
+    }, [ isVisible, widgetHandler ]);
+
+    const onRoomWidgetChooserContentEvent = useCallback((event: RoomWidgetChooserContentEvent) =>
     {
         setItems(event.items);
         setIsVisible(true);
     }, []);
 
-    useUiEvent(RoomWidgetChooserContentEvent.USER_CHOOSER_CONTENT, onUserChooserContent);
+    CreateEventDispatcherHook(RoomWidgetChooserContentEvent.USER_CHOOSER_CONTENT, eventDispatcher, onRoomWidgetChooserContentEvent);
 
-    const onClose = useCallback(() =>
+    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    {
+        if(!isVisible) return;
+
+        switch(event.type)
+        {
+            case RoomWidgetRoomObjectUpdateEvent.USER_ADDED:
+            case RoomWidgetRoomObjectUpdateEvent.USER_REMOVED:
+                refreshChooser();
+                return;
+        }
+    }, [ isVisible, refreshChooser ]);
+
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_ADDED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_REMOVED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+
+    const close = useCallback(() =>
     {
         setIsVisible(false);
         setItems(null);
@@ -28,9 +57,5 @@ export const UserChooserWidgetView : FC = props =>
     
     if(!isVisible) return null;
 
-    return (
-        <div className="chooser-widget">
-            <ChooserWidgetView title={LocalizeText('widget.chooser.user.title')} displayItemId={false} onCloseClick={onClose} items={items} messageType={RoomWidgetRequestWidgetMessage.USER_CHOOSER} roomWidgetRoomObjectUpdateEvents={[RoomWidgetRoomObjectUpdateEvent.USER_REMOVED, RoomWidgetRoomObjectUpdateEvent.USER_ADDED]}></ChooserWidgetView>
-        </div>
-    );
+    return <ChooserWidgetView title={ LocalizeText('widget.chooser.user.title') } displayItemId={ true } items={ items } onCloseClick={ close } />;
 }

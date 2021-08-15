@@ -1,12 +1,8 @@
 import { NitroEvent, RoomObjectCategory, RoomWidgetEnum } from '@nitrots/nitro-renderer';
 import { RoomWidgetHandler } from '.';
 import { GetRoomEngine } from '../../../api';
-import { RoomObjectItem } from '../../../events/room-widgets/choosers/RoomObjectItem';
-import { RoomWidgetChooserContentEvent } from '../../../events/room-widgets/choosers/RoomWidgetChooserContentEvent';
-import { dispatchUiEvent } from '../../../hooks';
-import { RoomWidgetUpdateEvent } from '../events';
+import { RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage, RoomWidgetRequestWidgetMessage, RoomWidgetRoomObjectMessage } from '../messages';
-import { dynamicSort } from '../widgets/choosers/utils/sorting';
 
 export class UserChooserWidgetHandler extends RoomWidgetHandler
 {
@@ -21,51 +17,45 @@ export class UserChooserWidgetHandler extends RoomWidgetHandler
         switch(message.type)
         {
             case RoomWidgetRequestWidgetMessage.USER_CHOOSER:
-                this.processUserChooser();
+                this.processChooser();
                 break;
             case RoomWidgetRoomObjectMessage.SELECT_OBJECT:
-                this.selectUnit(message);
+                this.selectRoomObject((message as RoomWidgetRoomObjectMessage));
                 break;
         }
 
         return null;
     }
 
-    private processUserChooser(): void
+    private processChooser(): void
     {
-
-        if(this.container == null || this.container.roomSession == null || GetRoomEngine() == null || this.container.roomSession.userDataManager == null) return;
-
         const roomId = this.container.roomSession.roomId;
-        const categoryId = RoomObjectCategory.UNIT;
-        const units : RoomObjectItem[] = [];
-        
-        const roomObjects = GetRoomEngine().getRoomObjects(roomId, categoryId);
+        const items: RoomObjectItem[] = [];
 
-        roomObjects.forEach(roomObject => {
-            if(!roomObject) return;
+        const userItems = GetRoomEngine().getRoomObjects(roomId, RoomObjectCategory.UNIT);
 
-            const unitData = this.container.roomSession.userDataManager.getUserDataByIndex(roomObject.id);
+        userItems.forEach(roomObject =>
+            {
+                const userData = this.container.roomSession.userDataManager.getUserDataByIndex(roomObject.id);
 
-            if(!unitData) return;
+                if(!userData) return;
 
-            units.push(new RoomObjectItem(unitData.roomIndex, categoryId, unitData.name));
+                items.push(new RoomObjectItem(userData.roomIndex, RoomObjectCategory.UNIT, userData.name));
+            });
+
+        items.sort((a, b) =>
+        {
+            return (a.name < b.name) ? -1 : 1;
         });
 
-        units.sort(dynamicSort('name'));
-        dispatchUiEvent(new RoomWidgetChooserContentEvent(RoomWidgetChooserContentEvent.USER_CHOOSER_CONTENT, units));
+        this.container.eventDispatcher.dispatchEvent(new RoomWidgetChooserContentEvent(RoomWidgetChooserContentEvent.USER_CHOOSER_CONTENT, items));
     }
 
-    private selectUnit(k: RoomWidgetMessage): void
+    private selectRoomObject(message: RoomWidgetRoomObjectMessage): void
     {
-        const event = k as RoomWidgetRoomObjectMessage;
-
-        if(event == null) return;
-
-        if(event.category === RoomObjectCategory.UNIT)
-        {
-            GetRoomEngine().selectRoomObject(this.container.roomSession.roomId, event.id, event.category);
-        }
+        if(message.category !== RoomObjectCategory.UNIT) return;
+        
+        GetRoomEngine().selectRoomObject(this.container.roomSession.roomId, message.id, message.category);
     }
     
     public get type(): string

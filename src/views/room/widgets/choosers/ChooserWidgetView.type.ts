@@ -1,12 +1,9 @@
-import { MouseEvent } from 'react';
-import { RoomObjectItem } from '../../../../events/room-widgets/choosers/RoomObjectItem';
+import { RoomObjectItem } from '../../events';
 
 export interface ChooserWidgetViewProps
 {
     title: string;
-    onCloseClick: (event: MouseEvent) => void;
-    displayItemId: boolean;
     items: RoomObjectItem[];
-    messageType: string;
-    roomWidgetRoomObjectUpdateEvents: string[];
+    displayItemId: boolean;
+    onCloseClick: () => void;
 }

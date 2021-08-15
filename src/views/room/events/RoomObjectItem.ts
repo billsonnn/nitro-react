@@ -1,8 +1,8 @@
 export class RoomObjectItem
 {
-    private readonly _id: number;
-    private readonly _category: number;
-    private readonly _name: string;
+    private _id: number;
+    private _category: number;
+    private _name: string;
 
     constructor(id: number, category: number, name: string)
     {

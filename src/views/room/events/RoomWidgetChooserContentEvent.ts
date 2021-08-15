@@ -1,5 +1,5 @@
-import { RoomWidgetUpdateEvent } from '../../../views/room/events';
 import { RoomObjectItem } from './RoomObjectItem';
+import { RoomWidgetUpdateEvent } from './RoomWidgetUpdateEvent';
 
 export class RoomWidgetChooserContentEvent extends RoomWidgetUpdateEvent
 {
@@ -7,23 +7,16 @@ export class RoomWidgetChooserContentEvent extends RoomWidgetUpdateEvent
     public static FURNI_CHOOSER_CONTENT: string = 'RWCCE_FURNI_CHOOSER_CONTENT';
 
     private _items: RoomObjectItem[];
-    private _isAnyRoomController: boolean;
 
-    constructor(type: string, items: RoomObjectItem[], isAnyRoomController: boolean = false)
+    constructor(type: string, items: RoomObjectItem[])
     {
         super(type);
 
-        this._items = items.slice();
-        this._isAnyRoomController = isAnyRoomController;
+        this._items = items;
     }
 
     public get items(): RoomObjectItem[]
     {
         return this._items;
-    }
-
-    public get isAnyRoomController(): boolean
-    {
-        return this._isAnyRoomController;
     }
 }

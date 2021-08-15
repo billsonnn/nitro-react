@@ -1,4 +1,6 @@
+export * from './RoomObjectItem';
 export * from './RoomWidgetAvatarInfoEvent';
+export * from './RoomWidgetChooserContentEvent';
 export * from './RoomWidgetDoorbellEvent';
 export * from './RoomWidgetFloodControlEvent';
 export * from './RoomWidgetObjectNameEvent';

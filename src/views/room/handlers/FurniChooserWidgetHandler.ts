@@ -1,11 +1,8 @@
 import { NitroEvent, RoomObjectCategory, RoomObjectVariable, RoomWidgetEnum } from '@nitrots/nitro-renderer';
-import { GetNitroInstance, GetRoomEngine, GetSessionDataManager } from '../../../api';
-import { RoomObjectItem } from '../../../events/room-widgets/choosers/RoomObjectItem';
-import { RoomWidgetChooserContentEvent } from '../../../events/room-widgets/choosers/RoomWidgetChooserContentEvent';
-import { dispatchUiEvent } from '../../../hooks';
-import { RoomWidgetUpdateEvent } from '../events';
+import { GetRoomEngine, GetSessionDataManager } from '../../../api';
+import { LocalizeText } from '../../../utils';
+import { RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage, RoomWidgetRequestWidgetMessage, RoomWidgetRoomObjectMessage } from '../messages';
-import { dynamicSort } from '../widgets/choosers/utils/sorting';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
 
 export class FurniChooserWidgetHandler extends RoomWidgetHandler
@@ -21,78 +18,68 @@ export class FurniChooserWidgetHandler extends RoomWidgetHandler
         switch(message.type)
         {
             case RoomWidgetRequestWidgetMessage.FURNI_CHOOSER:
-                this.processFurniChooser();
+                this.processChooser();
                 break;
             case RoomWidgetRoomObjectMessage.SELECT_OBJECT:
-                this.selectFurni(message);
+                this.selectRoomObject((message as RoomWidgetRoomObjectMessage));
                 break;
         }
 
         return null;
     }
 
-    private selectFurni(message: RoomWidgetMessage): void
+    private processChooser(): void
     {
-        const event = message as RoomWidgetRoomObjectMessage;
-
-        if(event == null) return;
-
-        if(event.category === RoomObjectCategory.WALL || event.category === RoomObjectCategory.FLOOR)
-        {
-            GetRoomEngine().selectRoomObject(this.container.roomSession.roomId, event.id, event.category);
-        }
-    }
-
-    private processFurniChooser(): void
-    {
-
-        if(this.container == null || this.container.roomSession == null || GetRoomEngine() == null || this.container.roomSession.userDataManager == null) return;
-
         const roomId = this.container.roomSession.roomId;
-        const furniInRoom : RoomObjectItem[] = [];
+        const items: RoomObjectItem[] = [];
 
         const wallItems = GetRoomEngine().getRoomObjects(roomId, RoomObjectCategory.WALL);
         const floorItems = GetRoomEngine().getRoomObjects(roomId, RoomObjectCategory.FLOOR);
 
-        wallItems.forEach( wallItem => {
-            if(!wallItem) return;
+        wallItems.forEach(roomObject =>
+            {
+                let name = roomObject.type;
 
-            const type = wallItem.type;
-            let name = null;
-            if(type.startsWith('poster'))
-            {
-                const posterNumber = Number.parseInt(type.replace('poster', ''));
-                name = GetNitroInstance().localization.getValue('poster_' + posterNumber + '_name');
-            }
-            else
-            {
-                const furniTypeId = Number.parseInt(wallItem.model.getValue(RoomObjectVariable.FURNITURE_TYPE_ID));
-                const wallItemData = GetSessionDataManager().getWallItemData(furniTypeId);
-                if(wallItemData != null && wallItemData.name.length > 0)
+                if(name.startsWith('poster'))
                 {
-                    name = wallItemData.name;
+                    name = LocalizeText(`poster_${ name.replace('poster', '') }_name`);
                 }
                 else
                 {
-                    name = type;
+                    const typeId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_TYPE_ID);
+                    const furniData = GetSessionDataManager().getWallItemData(typeId);
+
+                    if(furniData && furniData.name.length) name = furniData.name;
                 }
-            }
-           furniInRoom.push(new RoomObjectItem(wallItem.id, RoomObjectCategory.WALL, name));
-        });
 
-        floorItems.forEach(roomObject => {
-            if(!roomObject) return;
-            
-            const furniTypeId = Number.parseInt(roomObject.model.getValue(RoomObjectVariable.FURNITURE_TYPE_ID));
-            const floorItemData = GetSessionDataManager().getFloorItemData(furniTypeId);
-            const name = floorItemData != null ? floorItemData.name : roomObject.type;
+                items.push(new RoomObjectItem(roomObject.id, RoomObjectCategory.WALL, name));
+            });
 
-            furniInRoom.push(new RoomObjectItem(roomObject.id, RoomObjectCategory.FLOOR, name));
-        });
+        floorItems.forEach(roomObject =>
+            {
+                let name = roomObject.type;
 
-        furniInRoom.sort(dynamicSort('name'));
+                const typeId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_TYPE_ID);
+                const furniData = GetSessionDataManager().getFloorItemData(typeId);
 
-        dispatchUiEvent(new RoomWidgetChooserContentEvent(RoomWidgetChooserContentEvent.FURNI_CHOOSER_CONTENT, furniInRoom, false));
+                if(furniData && furniData.name.length) name = furniData.name;
+
+                items.push(new RoomObjectItem(roomObject.id, RoomObjectCategory.FLOOR, name));
+            });
+
+        items.sort((a, b) =>
+            {
+                return (a.name < b.name) ? -1 : 1;
+            });
+
+        this.container.eventDispatcher.dispatchEvent(new RoomWidgetChooserContentEvent(RoomWidgetChooserContentEvent.FURNI_CHOOSER_CONTENT, items));
+    }
+
+    private selectRoomObject(message: RoomWidgetRoomObjectMessage): void
+    {
+        if(message.category !== RoomObjectCategory.WALL || message.category !== RoomObjectCategory.FLOOR) return;
+        
+        GetRoomEngine().selectRoomObject(this.container.roomSession.roomId, message.id, message.category);
     }
     
     public get type(): string
