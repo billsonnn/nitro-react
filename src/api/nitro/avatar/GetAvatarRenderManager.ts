@@ -1,4 +1,4 @@
-import { IAvatarRenderManager } from 'nitro-renderer';
+import { IAvatarRenderManager } from '@nitrots/nitro-renderer';
 import { GetNitroInstance } from '../GetNitroInstance';
 
 export function GetAvatarRenderManager(): IAvatarRenderManager

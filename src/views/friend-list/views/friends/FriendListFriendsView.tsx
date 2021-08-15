@@ -1,36 +1,35 @@
-import { FC, useState } from 'react';
-import { NitroCardAccordionItemView } from '../../../../layout/card/accordion/item/NitroCardAccordionItemView';
-import { NitroCardAccordionView } from '../../../../layout/card/accordion/NitroCardAccordionView';
+import { FC, useMemo } from 'react';
 import { useFriendListContext } from '../../context/FriendListContext';
+import { FriendListFriendsItemView } from '../friends-item/FriendListFriendsItemView';
 import { FriendListFriendsViewProps } from './FriendListFriendsView.types';
 
 export const FriendListFriendsView: FC<FriendListFriendsViewProps> = props =>
 {
+    const { online = true } = props;
     const { friendListState = null } = useFriendListContext();
+    const { friends = null } = friendListState;
 
-    const [ isOnlineFriendsExtended, setIsOnlineFriendsExtended ] = useState(false);
-    const [ isOfflineFriendsExtended, setIsOfflineFriendsExtended ] = useState(false);
-
-    function toggleOnlineFriends(): void
+    const getFriendElements = useMemo(() =>
     {
-        setIsOnlineFriendsExtended(value => !value);
-    }
+        if(!friends || !friends.length) return null;
 
-    function toggleOfflineFriends(): void
-    {
-        setIsOfflineFriendsExtended(value => !value);
-    }
+        const elements: JSX.Element[] = [];
+
+        for(const friend of friends)
+        {
+            if(!friend || (friend.online !== online)) continue;
+
+            elements.push(<FriendListFriendsItemView key={ friend.id } friend={ friend } />)
+        }
+
+        console.log(elements);
+
+        return elements;
+    }, [ friends, online ]);
 
     return (
-        <>
-            <NitroCardAccordionView>
-                <NitroCardAccordionItemView headerText="Friends (0)">
-                    abc
-                </NitroCardAccordionItemView>
-                <NitroCardAccordionItemView headerText="Offline Friends (0)">
-                    abc
-                </NitroCardAccordionItemView>
-            </NitroCardAccordionView>
-        </>
+        <div className="d-flex flex-column">
+            { getFriendElements }
+        </div>
     );
 }

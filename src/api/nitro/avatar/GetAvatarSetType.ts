@@ -1,4 +1,4 @@
-import { ISetType } from 'nitro-renderer';
+import { ISetType } from '@nitrots/nitro-renderer';
 import { GetAvatarRenderManager } from './GetAvatarRenderManager';
 
 export function GetAvatarSetType(setType: string): ISetType

@@ -1,4 +1,4 @@
-import { RoomEngineObjectEvent, RoomObjectVariable } from 'nitro-renderer';
+import { RoomEngineObjectEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { GetSessionDataManager } from '../..';
 import { GetRoomEngine } from './GetRoomEngine';
 

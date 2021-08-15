@@ -1,11 +1,16 @@
-import { ReactNode } from 'react';
-import { DraggableProps } from 'react-draggable';
+import { Key } from 'react';
 
 export interface DraggableWindowProps
 {
-    handle: string;
-    draggableOptions?: Partial<DraggableProps>;
+    uniqueKey?: Key;
+    handleSelector?: string;
+    position?: string;
     disableDrag?: boolean;
-    noCenter?: boolean;
-    children?: ReactNode;
+}
+
+export class DraggableWindowPosition
+{
+    public static CENTER: string = 'DWP_CENTER';
+    public static TOP_CENTER: string = 'DWP_TOP_CENTER';
+    public static NOTHING: string = 'DWP_NOTHING';
 }

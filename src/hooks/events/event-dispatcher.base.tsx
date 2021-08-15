@@ -1,4 +1,4 @@
-import { IEventDispatcher, NitroEvent } from 'nitro-renderer';
+import { IEventDispatcher, NitroEvent } from '@nitrots/nitro-renderer';
 import { useEffect } from 'react';
 
 export function CreateEventDispatcherHook(type: string, eventDispatcher: IEventDispatcher, handler: (event: NitroEvent) => void): void

@@ -1,4 +1,4 @@
-import { StringDataType } from 'nitro-renderer';
+import { StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { InventoryBadgesUpdatedEvent } from '../../../../../../events';
 import { InventoryBadgesRequestEvent } from '../../../../../../events/inventory/InventoryBadgesRequestEvent';

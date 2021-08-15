@@ -1,5 +1,5 @@
 import { Reducer } from 'react';
-import { NitroNotification } from '../utils/Notification';
+import { NitroNotification } from '../common/Notification';
 
 export interface INotificationCenterState
 {
@@ -23,7 +23,7 @@ export class NotificationCenterActions
 }
 
 export const initialNotificationCenter: INotificationCenterState = {
-    notifications: null
+    notifications: []
 }
 
 export const NotificationCenterReducer: Reducer<INotificationCenterState, INotificationCenterAction> = (state, action) =>
@@ -35,9 +35,9 @@ export const NotificationCenterReducer: Reducer<INotificationCenterState, INotif
 
             if(!notification) return state;
 
-            if(state.notifications) return {...state, notifications: [notification, ...state.notifications]};
+            const notifications = [ ...state.notifications, notification ];
 
-            return {...state, notifications: [notification]};
+            return { ...state, notifications };
         }
         case NotificationCenterActions.REMOVE_NOTIFICATION: {
             const id = (action.payload.id || null);

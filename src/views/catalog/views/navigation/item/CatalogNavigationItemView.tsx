@@ -1,4 +1,4 @@
-import { CatalogPageComposer, ICatalogPageData } from 'nitro-renderer';
+import { CatalogPageComposer, ICatalogPageData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageHook } from '../../../../../hooks/messages/message-event';
 import { CatalogMode } from '../../../CatalogView.types';

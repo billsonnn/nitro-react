@@ -1,5 +1,6 @@
 export interface CameraWidgetCaptureViewProps
 {
-    onCloseClick: () => void;
-    onEditClick: () => void;
+    onClose: () => void;
+    onEdit: () => void;
+    onDelete: () => void;
 }

@@ -1,5 +1,5 @@
+import { AchievementData } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { AchievementData } from 'nitro-renderer';
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';

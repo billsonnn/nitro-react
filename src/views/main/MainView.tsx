@@ -1,4 +1,4 @@
-import { RoomSessionEvent } from 'nitro-renderer';
+import { RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetCommunication } from '../../api';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
@@ -14,6 +14,7 @@ import { NotificationCenterView } from '../notification-center/NotificationCente
 import { RightSideView } from '../right-side/RightSideView';
 import { RoomHostView } from '../room-host/RoomHostView';
 import { ToolbarView } from '../toolbar/ToolbarView';
+import { UserSettingsView } from '../user-settings/UserSettingsView';
 import { WiredView } from '../wired/WiredView';
 import { MainViewProps } from './MainView.types';
 
@@ -60,6 +61,7 @@ export const MainView: FC<MainViewProps> = props =>
             <FriendListView />
             <RightSideView />
             <NotificationCenterView />
+            <UserSettingsView />
         </div>
     );
 }

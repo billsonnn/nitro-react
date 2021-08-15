@@ -1,4 +1,4 @@
-import { RoomEngineEvent } from 'nitro-renderer';
+import { RoomEngineEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRoomInfoEvent';
@@ -161,7 +161,7 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
     return (
         <ModToolsContextProvider value={ { modToolsState, dispatchModToolsState } }>
             { isVisible &&
-                <NitroCardView className="nitro-mod-tools" simple={ true }>
+                <NitroCardView uniqueKey="mod-tools" className="nitro-mod-tools" simple={ true }>
                     <NitroCardHeaderView headerText={ "Mod Tools" } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardContentView className="text-black">
                         <button className="btn btn-primary w-100 mb-2" onClick={ () => handleClick('toggle_room') } disabled={ !currentRoomId }><i className="fas fa-home"></i> Room Tool</button>

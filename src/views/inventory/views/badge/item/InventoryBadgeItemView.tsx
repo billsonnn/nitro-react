@@ -1,4 +1,4 @@
-import { MouseEventType } from 'nitro-renderer';
+import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback } from 'react';
 import { NitroCardGridItemView } from '../../../../../layout/card/grid/item/NitroCardGridItemView';
 import { BadgeImageView } from '../../../../shared/badge-image/BadgeImageView';

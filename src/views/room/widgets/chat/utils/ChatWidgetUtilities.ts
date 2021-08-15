@@ -1,4 +1,4 @@
-import { INitroPoint, IVector3D, NitroPoint } from 'nitro-renderer';
+import { INitroPoint, IVector3D, NitroPoint } from '@nitrots/nitro-renderer';
 import { GetRoomEngine } from '../../../../../api';
 
 export function GetBubbleLocation(roomId: number, userLocation: IVector3D, canvasId = 1): INitroPoint

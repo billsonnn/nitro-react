@@ -1,4 +1,4 @@
-import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, RequestBotCommandConfigurationComposer, RoomObjectCategory, RoomObjectType } from 'nitro-renderer';
+import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, RequestBotCommandConfigurationComposer, RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetNitroInstance } from '../../../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks/messages';

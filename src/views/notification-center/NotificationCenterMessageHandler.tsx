@@ -1,13 +1,13 @@
-import { HabboBroadcastMessageEvent, HotelWillShutdownEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent } from 'nitro-renderer';
+import { HabboBroadcastMessageEvent, HotelWillShutdownEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { NotificationCenterAlertEvent } from '../../events';
 import { dispatchUiEvent } from '../../hooks/events';
 import { CreateMessageHook } from '../../hooks/messages';
+import { DialogMessageNotification } from './common/DialogMessageNotification';
+import { HotelWillShutdownNotification } from './common/HotelWillShutdownNotification';
 import { useNotificationCenterContext } from './context/NotificationCenterContext';
 import { INotificationCenterMessageHandlerProps } from './NotificationCenterMessageHandler.types';
 import { NotificationCenterActions } from './reducers/NotificationCenterReducer';
-import { DialogMessageNotification } from './utils/DialogMessageNotification';
-import { HotelWillShutdownNotification } from './utils/HotelWillShutdownNotification';
 
 export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHandlerProps> = props =>
 {
@@ -49,6 +49,8 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
     const onNotificationDialogMessageEvent = useCallback((event: NotificationDialogMessageEvent) =>
     {
         const parser = event.getParser();
+
+        console.log(parser);
 
         dispatchNotificationCenterState({
             type: NotificationCenterActions.ADD_NOTIFICATION,

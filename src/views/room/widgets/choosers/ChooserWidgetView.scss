@@ -1,0 +1,11 @@
+.nitro-chooser-widget {
+
+    .list-item {
+        color: black;
+        overflow: hidden;
+
+        &.selected {
+            background-color: cadetblue;
+        }
+    }
+}

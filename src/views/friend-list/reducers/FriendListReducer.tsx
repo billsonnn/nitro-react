@@ -1,4 +1,4 @@
-import { FriendListUpdateParser, FriendParser } from 'nitro-renderer';
+import { FriendListUpdateParser, FriendParser } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 import { MessengerFriend } from '../common/MessengerFriend';
 import { MessengerSettings } from '../common/MessengerSettings';

@@ -1,4 +1,4 @@
-import { CatalogApproveNameResultEvent, CatalogClubEvent, CatalogGiftConfigurationEvent, CatalogGroupsEvent, CatalogPageEvent, CatalogPagesEvent, CatalogPurchaseEvent, CatalogPurchaseFailedEvent, CatalogPurchaseUnavailableEvent, CatalogSearchEvent, CatalogSoldOutEvent, CatalogUpdatedEvent, SellablePetPalettesEvent, UserSubscriptionEvent } from 'nitro-renderer';
+import { CatalogApproveNameResultEvent, CatalogClubEvent, CatalogGiftConfigurationEvent, CatalogGroupsEvent, CatalogPageEvent, CatalogPagesEvent, CatalogPurchaseEvent, CatalogPurchaseFailedEvent, CatalogPurchaseUnavailableEvent, CatalogSearchEvent, CatalogSoldOutEvent, CatalogUpdatedEvent, SellablePetPalettesEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CatalogNameResultEvent, CatalogPurchaseFailureEvent } from '../../events';
 import { CatalogPurchasedEvent } from '../../events/catalog/CatalogPurchasedEvent';

@@ -1,4 +1,4 @@
-import { CatalogClubOfferData, CatalogGiftConfigurationParser, CatalogGroupData, CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from 'nitro-renderer';
+import { CatalogClubOfferData, CatalogGiftConfigurationParser, CatalogGroupData, CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 import { CatalogPetPalette } from '../common/CatalogPetPalette';
 import { ICatalogOffers, ICatalogSearchResult, SetOffersToNodes } from '../common/CatalogUtilities';

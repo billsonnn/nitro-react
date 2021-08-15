@@ -1,4 +1,4 @@
-import { NitroPoint, RoomDragEvent } from 'nitro-renderer';
+import { NitroPoint, RoomDragEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../../../hooks/events';
 import { useRoomContext } from '../../context/RoomContext';

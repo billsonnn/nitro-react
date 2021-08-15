@@ -1,4 +1,4 @@
-import { NitroToolbarAnimateIconEvent, TextureUtils, ToolbarIconEnum } from 'nitro-renderer';
+import { NitroToolbarAnimateIconEvent, TextureUtils, ToolbarIconEnum } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { CatalogEvent } from '../../../../events';

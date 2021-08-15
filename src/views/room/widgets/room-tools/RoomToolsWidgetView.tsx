@@ -1,5 +1,5 @@
+import { RoomLikeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { RoomLikeRoomComposer } from 'nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { NavigatorEvent } from '../../../../events';
 import { dispatchUiEvent } from '../../../../hooks/events';

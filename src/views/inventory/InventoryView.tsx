@@ -1,4 +1,4 @@
-import { IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent, TradingCancelComposer, TradingCloseComposer, TradingOpenComposer } from 'nitro-renderer';
+import { IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent, TradingCancelComposer, TradingCloseComposer, TradingOpenComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { GetRoomEngine } from '../../api';
 import { InventoryBadgesUpdatedEvent, InventoryEvent, InventoryTradeRequestEvent } from '../../events';
@@ -197,7 +197,7 @@ export const InventoryView: FC<InventoryViewProps> = props =>
         <InventoryContextProvider value={ { furnitureState, dispatchFurnitureState, botState, dispatchBotState, petState, dispatchPetState, badgeState, dispatchBadgeState, unseenTracker } }>
             <InventoryMessageHandler />
             { isVisible &&
-                <NitroCardView className="nitro-inventory">
+                <NitroCardView uniqueKey={ 'inventory' } className="nitro-inventory">
                     <NitroCardHeaderView headerText={ LocalizeText('inventory.title') } onCloseClick={ close } />
                     { !furnitureState.tradeData &&
                         <>

@@ -1,4 +1,4 @@
-import { IFurnitureData, RoomObjectCategory } from 'nitro-renderer';
+import { IFurnitureData, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetFurnitureDataForRoomObject } from '../../../../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../../../layout';

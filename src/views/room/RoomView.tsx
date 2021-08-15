@@ -1,6 +1,5 @@
-import { EventDispatcher, NitroRectangle, RoomGeometry, RoomVariableEnum, Vector3d } from 'nitro-renderer';
-import { FC, useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { EventDispatcher, NitroRectangle, RoomGeometry, RoomVariableEnum, Vector3d } from '@nitrots/nitro-renderer';
+import { FC, useEffect, useRef, useState } from 'react';
 import { GetNitroInstance, InitializeRoomInstanceRenderingCanvas } from '../../api';
 import { DispatchMouseEvent } from '../../api/nitro/room/DispatchMouseEvent';
 import { DispatchTouchEvent } from '../../api/nitro/room/DispatchTouchEvent';
@@ -8,10 +7,13 @@ import { GetRoomEngine } from '../../api/nitro/room/GetRoomEngine';
 import { RoomContextProvider } from './context/RoomContext';
 import { RoomWidgetUpdateRoomViewEvent } from './events/RoomWidgetUpdateRoomViewEvent';
 import { IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler } from './handlers';
+import { DoorbellWidgetHandler } from './handlers/DoorbellWidgetHandler';
+import { FurniChooserWidgetHandler } from './handlers/FurniChooserWidgetHandler';
 import { FurnitureContextMenuWidgetHandler } from './handlers/FurnitureContextMenuWidgetHandler';
 import { FurnitureCustomStackHeightWidgetHandler } from './handlers/FurnitureCustomStackHeightWidgetHandler';
 import { FurnitureExternalImageWidgetHandler } from './handlers/FurnitureExternalImageWidgetHandler';
 import { RoomWidgetRoomToolsHandler } from './handlers/RoomWidgetRoomToolsHandler';
+import { UserChooserWidgetHandler } from './handlers/UserChooserWidgetHandler';
 import { RoomColorView } from './RoomColorView';
 import { RoomViewProps } from './RoomView.types';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
@@ -22,6 +24,7 @@ export const RoomView: FC<RoomViewProps> = props =>
     const [ roomCanvas, setRoomCanvas ] = useState<HTMLCanvasElement>(null);
     const [ canvasId, setCanvasId ] = useState(-1);
     const [ widgetHandler, setWidgetHandler ] = useState<IRoomWidgetHandlerManager>(null);
+    const elementRef = useRef<HTMLDivElement>();
 
     useEffect(() =>
     {
@@ -46,6 +49,9 @@ export const RoomView: FC<RoomViewProps> = props =>
         widgetHandlerManager.registerHandler(new FurnitureContextMenuWidgetHandler());
         widgetHandlerManager.registerHandler(new FurnitureCustomStackHeightWidgetHandler());
         widgetHandlerManager.registerHandler(new FurnitureExternalImageWidgetHandler());
+        widgetHandlerManager.registerHandler(new FurniChooserWidgetHandler());
+        widgetHandlerManager.registerHandler(new UserChooserWidgetHandler());
+        widgetHandlerManager.registerHandler(new DoorbellWidgetHandler());
 
         setWidgetHandler(widgetHandlerManager);
 
@@ -113,6 +119,8 @@ export const RoomView: FC<RoomViewProps> = props =>
             GetNitroInstance().render();
         }
 
+        if(elementRef && elementRef.current) elementRef.current.appendChild(canvas);
+
         setRoomCanvas(canvas);
         setCanvasId(canvasId);
     }, [ roomSession ]);
@@ -121,15 +129,12 @@ export const RoomView: FC<RoomViewProps> = props =>
 
     return (
         <RoomContextProvider value={ { roomSession, canvasId, eventDispatcher: (widgetHandler && widgetHandler.eventDispatcher), widgetHandler } }>
-            <div className="nitro-room w-100 h-100">
-               <div id="room-view" className="nitro-room-container"></div>
-                { roomCanvas && createPortal(null, document.getElementById('room-view').appendChild(roomCanvas)) }
-                { widgetHandler && 
-                    <>
-                        <RoomColorView />
-                        <RoomWidgetsView />
-                    </> }
-            </div>
+            <div ref={ elementRef } id="room-view" className="nitro-room-container" />
+            { widgetHandler && 
+                <>
+                    <RoomColorView />
+                    <RoomWidgetsView />
+                </> }
         </RoomContextProvider>
     );
 }

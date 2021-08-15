@@ -1,4 +1,4 @@
-import { FurnitureType } from 'nitro-renderer';
+import { FurnitureType } from '@nitrots/nitro-renderer';
 import { FC, useMemo } from 'react';
 import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../../../../../api';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';

@@ -1,4 +1,4 @@
-import { ICatalogPageData, IFurnitureData } from 'nitro-renderer';
+import { ICatalogPageData, IFurnitureData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager } from '../../../../api';
 import { LocalizeText } from '../../../../utils/LocalizeText';

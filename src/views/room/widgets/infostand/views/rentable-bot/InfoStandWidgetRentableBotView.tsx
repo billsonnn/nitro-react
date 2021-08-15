@@ -1,4 +1,4 @@
-import { BotRemoveComposer } from 'nitro-renderer';
+import { BotRemoveComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo } from 'react';
 import { SendMessageHook } from '../../../../../../hooks/messages';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';

@@ -1,4 +1,4 @@
-import { UserWardrobeSaveComposer } from 'nitro-renderer';
+import { UserWardrobeSaveComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 import { SendMessageHook } from '../../../../hooks';

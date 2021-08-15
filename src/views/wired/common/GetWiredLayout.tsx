@@ -1,4 +1,4 @@
-import { ConditionDefinition, Triggerable, TriggerDefinition, WiredActionDefinition } from 'nitro-renderer';
+import { ConditionDefinition, Triggerable, TriggerDefinition, WiredActionDefinition } from '@nitrots/nitro-renderer';
 import { GetWiredActionLayout } from './GetWiredActionLayout';
 import { GetWiredConditionLayout } from './GetWiredConditionLayout';
 import { GetWiredTriggerLayout } from './GetWiredTriggerLayout';

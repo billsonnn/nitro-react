@@ -1,4 +1,4 @@
-import { PetCustomPart } from 'nitro-renderer';
+import { PetCustomPart } from '@nitrots/nitro-renderer';
 
 export interface PetImageViewProps
 {

@@ -1,4 +1,4 @@
-import { IRoomSession, RoomEngineEvent, RoomId, RoomSessionEvent } from 'nitro-renderer';
+import { IRoomSession, RoomEngineEvent, RoomId, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { SetActiveRoomId } from '../../api/nitro/room/SetActiveRoomId';
 import { GetRoomSession } from '../../api/nitro/session/GetRoomSession';

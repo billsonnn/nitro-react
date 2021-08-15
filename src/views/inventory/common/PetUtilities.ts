@@ -1,4 +1,4 @@
-import { PetData, RoomObjectCategory, RoomObjectPlacementSource, RoomObjectType } from 'nitro-renderer';
+import { PetData, RoomObjectCategory, RoomObjectPlacementSource, RoomObjectType } from '@nitrots/nitro-renderer';
 import { GetRoomEngine, GetRoomSessionManager } from '../../../api';
 import { InventoryEvent } from '../../../events';
 import { dispatchUiEvent } from '../../../hooks/events/ui/ui-event';

@@ -1,4 +1,4 @@
-import { RoomObjectCategory } from 'nitro-renderer';
+import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';

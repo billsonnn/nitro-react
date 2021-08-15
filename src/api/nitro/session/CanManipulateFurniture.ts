@@ -1,4 +1,4 @@
-import { IRoomSession, RoomControllerLevel } from 'nitro-renderer';
+import { IRoomSession, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { GetSessionDataManager } from '../..';
 import { GetRoomEngine } from '../room/GetRoomEngine';
 import { IsOwnerOfFurniture } from './IsOwnerOfFurniture';

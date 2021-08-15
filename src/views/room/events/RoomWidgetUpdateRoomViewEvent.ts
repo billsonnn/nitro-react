@@ -1,4 +1,4 @@
-import { NitroRectangle } from 'nitro-renderer';
+import { NitroRectangle } from '@nitrots/nitro-renderer';
 import { RoomWidgetUpdateEvent } from './RoomWidgetUpdateEvent';
 
 export class RoomWidgetUpdateRoomViewEvent extends RoomWidgetUpdateEvent

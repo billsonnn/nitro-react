@@ -1,12 +1,12 @@
-import { DesktopViewComposer, Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserFigureEvent, UserInfoDataParser, UserInfoEvent, Wait } from 'nitro-renderer';
+import { Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserFigureEvent, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomSession, GetRoomSessionManager } from '../../api';
+import { GetRoomSession, GetRoomSessionManager, GoToDesktop } from '../../api';
 import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
 import { AchievementsUIEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { dispatchUiEvent, useRoomEngineEvent, useUiEvent } from '../../hooks';
-import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
+import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
 import { TransitionAnimationTypes } from '../../layout/transitions/TransitionAnimation.types';
 import { AvatarImageView } from '../shared/avatar-image/AvatarImageView';
@@ -128,8 +128,8 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     const visitDesktop = useCallback(() =>
     {
         if(!GetRoomSession()) return;
-        
-        SendMessageHook(new DesktopViewComposer());
+
+        GoToDesktop();
         GetRoomSessionManager().removeSession(-1);
     }, []);
 

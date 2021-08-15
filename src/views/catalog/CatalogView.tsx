@@ -1,4 +1,4 @@
-import { CatalogModeComposer, CatalogPageComposer, CatalogRequestGiftConfigurationComposer, ICatalogPageData, ILinkEventTracker, RoomPreviewer } from 'nitro-renderer';
+import { CatalogModeComposer, CatalogPageComposer, CatalogRequestGiftConfigurationComposer, ICatalogPageData, ILinkEventTracker, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { AddEventLinkTracker, GetRoomEngine, RemoveLinkEventTracker } from '../../api';
 import { CatalogEvent } from '../../events';
@@ -190,7 +190,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
         <CatalogContextProvider value={ { catalogState, dispatchCatalogState } }>
             <CatalogMessageHandler />
             { isVisible &&
-                <NitroCardView className="nitro-catalog">
+                <NitroCardView uniqueKey="catalog" className="nitro-catalog">
                     <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => { saveActivePages(); setIsVisible(false); } } />
                     <NitroCardTabsView>
                         { root && root.children.length && root.children.map((page, index) =>

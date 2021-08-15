@@ -1,4 +1,4 @@
-import { RoomObjectVariable } from 'nitro-renderer';
+import { RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { GetOwnRoomObject } from '../room';
 
 export function IsRidingHorse(): boolean

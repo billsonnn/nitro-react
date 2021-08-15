@@ -1,4 +1,4 @@
-import { IRoomSession, RoomPreviewer } from 'nitro-renderer';
+import { IRoomSession, RoomPreviewer } from '@nitrots/nitro-renderer';
 
 export interface InventoryPetViewProps
 {

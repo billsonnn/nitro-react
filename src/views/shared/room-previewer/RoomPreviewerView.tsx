@@ -1,4 +1,4 @@
-import { ColorConverter, IRoomRenderingCanvas, TextureUtils } from 'nitro-renderer';
+import { ColorConverter, IRoomRenderingCanvas, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { GetNitroInstance } from '../../../api';
 import { RoomPreviewerViewProps } from './RoomPreviewerView.types';

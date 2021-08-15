@@ -1,5 +1,5 @@
-import Slider from 'rc-slider/lib/Slider';
 import { FC, useCallback, useEffect, useState } from 'react';
+import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useWiredContext } from '../../../context/WiredContext';
 import { WiredFurniType } from '../../../WiredView.types';
@@ -53,10 +53,11 @@ export const WiredActionMoveFurniToView: FC<{}> = props =>
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_OR_BY_TYPE } save={ save }>
             <div className="form-group mb-2">
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.emptytiles', [ 'tiles' ], [ spacing.toString() ]) }</label>
-                <Slider 
-                    value={ spacing }
+                <ReactSlider
+                    className={ 'nitro-slider' }
                     min={ 1 }
                     max={ 5 }
+                    value={ spacing }
                     onChange={ event => setSpacing(event) } />
             </div>
             <div className="form-group">

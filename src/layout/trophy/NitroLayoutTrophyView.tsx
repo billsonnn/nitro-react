@@ -8,7 +8,7 @@ export const NitroLayoutTrophyView: FC<NitroLayoutTrophyViewProps> = props =>
     const { color = '', message = '', date = '', senderName = '', onCloseClick = null } = props;
 
     return (
-        <DraggableWindow handle=".drag-handler">
+        <DraggableWindow handleSelector=".drag-handler">
             <div className={ `nitro-layout-trophy trophy-${ color }` }>
                 <div className="trophy-header drag-handler">
                     <div className="float-end trophy-close" onClick={ onCloseClick }></div>

@@ -1,4 +1,4 @@
-import { ICatalogPageData } from 'nitro-renderer';
+import { ICatalogPageData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { CatalogNavigationItemView } from '../item/CatalogNavigationItemView';
 import { CatalogNavigationSetViewProps } from './CatalogNavigationSetView.types';

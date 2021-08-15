@@ -1,4 +1,4 @@
-import { RoomSettingsEvent, SaveRoomSettingsComposer } from 'nitro-renderer';
+import { RoomSettingsEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';

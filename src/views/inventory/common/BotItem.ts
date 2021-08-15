@@ -1,4 +1,4 @@
-import { BotData } from 'nitro-renderer';
+import { BotData } from '@nitrots/nitro-renderer';
 
 export class BotItem
 {

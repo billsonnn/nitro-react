@@ -1,4 +1,4 @@
-import { UnseenResetCategoryComposer, UnseenResetItemsComposer } from 'nitro-renderer';
+import { UnseenResetCategoryComposer, UnseenResetItemsComposer } from '@nitrots/nitro-renderer';
 import { UnseenItemTrackerUpdateEvent } from '../../../../events';
 import { dispatchUiEvent, SendMessageHook } from '../../../../hooks';
 import { IUnseenItemTracker } from './IUnseenItemTracker';

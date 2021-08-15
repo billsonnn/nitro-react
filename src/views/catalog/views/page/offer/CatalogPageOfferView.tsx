@@ -1,4 +1,4 @@
-import { MouseEventType } from 'nitro-renderer';
+import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback } from 'react';
 import { useCatalogContext } from '../../../context/CatalogContext';
 import { CatalogActions } from '../../../reducers/CatalogReducer';

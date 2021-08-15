@@ -1,4 +1,4 @@
-import { FurnitureStackHeightComposer, FurnitureStackHeightEvent } from 'nitro-renderer';
+import { FurnitureStackHeightComposer, FurnitureStackHeightEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { CreateMessageHook, SendMessageHook } from '../../../../../hooks';
