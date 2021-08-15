@@ -1,5 +1,5 @@
-import Slider from 'rc-slider/lib/Slider';
 import { FC, useCallback, useEffect, useState } from 'react';
+import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useWiredContext } from '../../../context/WiredContext';
 import { WiredFurniType } from '../../../WiredView.types';
@@ -105,14 +105,13 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
             { !limitEnabled && <div className="bg-muted rounded small text-black p-1 text-center">
                     Reward limit not set. Make sure rewards are badges or non-tradeable items.
                 </div> }
-            { limitEnabled && <Slider 
-                defaultValue={ rewardsLimit }
-                dots={ true }
-                min={ 1 }
-                max={ 1000 }
-                step={ 1 }
-                onChange={ event => setRewardsLimit(event) }
-                /> }
+            { limitEnabled && 
+                <ReactSlider
+                    className={ 'nitro-slider' }
+                    min={ 1 }
+                    max={ 1000 }
+                    value={ rewardsLimit }
+                    onChange={ event => setRewardsLimit(event) } /> }
             <hr className="my-1 mb-2 bg-dark" />
             <div className="fw-bold">How ofter can a user be rewarded?</div>
             <div className="d-flex">

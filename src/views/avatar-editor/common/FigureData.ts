@@ -23,7 +23,7 @@ export class FigureData
     public static TROUSERS: string = 'lg';
     public static SHOES: string = 'sh';
     public static TROUSER_ACCESSORIES: string = 'wa';
-    public static PREVIEW_AVATAR_DIRECTION: number = 4;
+    public static SET_TYPES = [ FigureData.FACE, FigureData.HAIR, FigureData.HAT, FigureData.HEAD_ACCESSORIES, FigureData.EYE_ACCESSORIES, FigureData.FACE_ACCESSORIES, FigureData.JACKET, FigureData.SHIRT, FigureData.CHEST_ACCESSORIES, FigureData.CHEST_PRINTS, FigureData.TROUSERS, FigureData.SHOES, FigureData.TROUSERS ];
 
     private _data: Map<string, number>;
     private _colors: Map<string, number[]>;
@@ -76,9 +76,9 @@ export class FigureData
         }
     }
 
-    public getPartSetId(partSetId: string): number
+    public getPartSetId(setType: string): number
     {
-        const existing = this._data.get(partSetId);
+        const existing = this._data.get(setType);
 
         if(existing !== undefined) return existing;
 
@@ -134,15 +134,15 @@ export class FigureData
         return figureString;
     }
 
-    public savePartData(k: string, _arg_2: number, _arg_3: number[], _arg_4: boolean = false): void
+    public savePartData(setType: string, partId: number, colorIds: number[], update: boolean = false): void
     {
-        this.savePartSetId(k, _arg_2, _arg_4);
-        this.savePartSetColourId(k, _arg_3, _arg_4);
+        this.savePartSetId(setType, partId, update);
+        this.savePartSetColourId(setType, colorIds, update);
     }
 
-    private savePartSetId(k: string, _arg_2: number, _arg_3: boolean = true): void
+    private savePartSetId(setType: string, partId: number, update: boolean = true): void
     {
-        switch(k)
+        switch(setType)
         {
             case FigureData.FACE:
             case FigureData.HAIR:
@@ -157,18 +157,18 @@ export class FigureData
             case FigureData.TROUSERS:
             case FigureData.SHOES:
             case FigureData.TROUSER_ACCESSORIES:
-                if(_arg_2 >= 0)
+                if(partId >= 0)
                 {
-                    this._data.set(k, _arg_2);
+                    this._data.set(setType, partId);
                 }
                 else
                 {
-                    this._data.delete(k);
+                    this._data.delete(setType);
                 }
                 break;
         }
 
-        if(_arg_3) this.updateView();
+        if(update) this.updateView();
     }
 
     public savePartSetColourId(setType: string, colorIds: number[], update: boolean = true): void

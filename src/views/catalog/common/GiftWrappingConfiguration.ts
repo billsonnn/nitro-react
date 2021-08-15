@@ -1,4 +1,4 @@
-import { CatalogGiftConfigurationParser } from 'nitro-renderer';
+import { CatalogGiftConfigurationParser } from '@nitrots/nitro-renderer';
 
 export class GiftWrappingConfiguration
 {

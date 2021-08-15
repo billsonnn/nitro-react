@@ -1,5 +1,5 @@
+import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, UserHomeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, UserHomeRoomComposer } from 'nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration } from '../../../../api';
 import { NavigatorEvent } from '../../../../events';
@@ -26,12 +26,19 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
     useEffect(() =>
     {
         if(!roomInfoData || !roomInfoData.enteredGuestRoom) return;
+
+        let thumbnailUrl: string = null;
         
         if(roomInfoData.enteredGuestRoom.officialRoomPicRef)
         {
-            setRoomThumbnail(GetConfiguration<string>('image.library.url') + roomInfoData.enteredGuestRoom.officialRoomPicRef);
+            thumbnailUrl = (GetConfiguration<string>('image.library.url') + roomInfoData.enteredGuestRoom.officialRoomPicRef);
+        }
+        else
+        {
+            thumbnailUrl = (GetConfiguration<string>('thumbnails.url').replace('%thumbnail%', roomInfoData.enteredGuestRoom.roomId.toString()));
         }
 
+        setRoomThumbnail(thumbnailUrl);
         setIsRoomPicked(roomInfoData.enteredGuestRoom.roomPicker);
         setIsRoomMuted(roomInfoData.enteredGuestRoom.allInRoomMuted);
     }, [ roomInfoData ]);

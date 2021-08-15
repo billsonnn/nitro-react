@@ -1,4 +1,4 @@
-import { CatalogPageOfferData, ICatalogPageData, ICatalogPageParser, IFurnitureData, SellablePetPaletteData } from 'nitro-renderer';
+import { CatalogPageOfferData, ICatalogPageData, ICatalogPageParser, IFurnitureData, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { GetConfiguration, GetProductDataForLocalization, GetRoomEngine } from '../../../api';
 
 export interface ICatalogOffers
@@ -150,13 +150,13 @@ export function GetPetAvailableColors(petIndex: number, palettes: SellablePetPal
     }
 }
 
-export function GetCatalogPageTree(page: ICatalogPageData, targetPageId: number, tree: ICatalogPageData[])
+export function GetCatalogPageTreeByName(page: ICatalogPageData, lookup: string, tree: ICatalogPageData[])
 {
-    if(page.pageId === targetPageId) return page;
+    if(page.pageName === lookup) return page;
 
     for(const pageData of page.children)
     {
-        const foundPageData = GetCatalogPageTree(pageData, targetPageId, tree);
+        const foundPageData = GetCatalogPageTreeByName(pageData, lookup, tree);
 
         if(foundPageData)
         {
@@ -165,4 +165,61 @@ export function GetCatalogPageTree(page: ICatalogPageData, targetPageId: number,
             return pageData;
         }
     }
+}
+
+export function GetCatalogPageTreeById(page: ICatalogPageData, lookup: number, tree: ICatalogPageData[])
+{
+    if(page.pageId === lookup) return page;
+
+    for(const pageData of page.children)
+    {
+        const foundPageData = GetCatalogPageTreeById(pageData, lookup, tree);
+
+        if(foundPageData)
+        {
+            tree.push(pageData);
+
+            return pageData;
+        }
+    }
+}
+
+export function GetCatalogPageTreeByOfferId(page: ICatalogPageData, lookup: number, tree: ICatalogPageData[])
+{
+    if(page.offerIds.indexOf(lookup) >= 0) return page;
+
+    for(const pageData of page.children)
+    {
+        const foundPageData = GetCatalogPageTreeByOfferId(pageData, lookup, tree);
+
+        if(foundPageData)
+        {
+            tree.push(pageData);
+
+            return pageData;
+        }
+    }
+}
+
+export function BuildCatalogPageTree(page: ICatalogPageData, lookup: string, isOffer: boolean = false)
+{
+    const pageTree: ICatalogPageData[] = [];
+
+    if(isOffer)
+    {
+        GetCatalogPageTreeByOfferId(page, parseInt(lookup), pageTree);
+    }
+
+    else if(isNaN((lookup as unknown) as number))
+    {
+        GetCatalogPageTreeByName(page, lookup, pageTree);
+    }
+    else
+    {
+        GetCatalogPageTreeById(page, parseInt(lookup), pageTree);
+    }
+
+    if(pageTree.length) pageTree.reverse();
+
+    return pageTree;
 }

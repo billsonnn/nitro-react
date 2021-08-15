@@ -1,4 +1,4 @@
-import { PetData } from 'nitro-renderer';
+import { PetData } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 import { PetItem } from '../common/PetItem';
 import { addSinglePetItem, processPetFragment, removePetItemById } from '../common/PetUtilities';

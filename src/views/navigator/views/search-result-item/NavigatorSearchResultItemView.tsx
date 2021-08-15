@@ -1,7 +1,10 @@
+import { RoomDataParser } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { RoomDataParser } from 'nitro-renderer';
 import { FC, MouseEvent } from 'react';
+import { CreateRoomSession, GetSessionDataManager } from '../../../../api';
 import { TryVisitRoom } from '../../../../api/navigator/TryVisitRoom';
+import { UpdateDoorStateEvent } from '../../../../events';
+import { dispatchUiEvent } from '../../../../hooks';
 import { NavigatorSearchResultItemViewProps } from './NavigatorSearchResultItemView.types';
 
 export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProps> = props =>
@@ -38,7 +41,27 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
 
     function visitRoom(): void
     {
-        TryVisitRoom(roomData.roomId);
+        if(roomData.ownerId !== GetSessionDataManager().userId)
+        {
+            if(roomData.habboGroupId !== 0)
+            {
+                TryVisitRoom(roomData.roomId);
+
+                return;
+            }
+
+            switch(roomData.doorMode)
+            {
+                case RoomDataParser.DOORBELL_STATE:
+                    dispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.START_DOORBELL, roomData));
+                    return;
+                case RoomDataParser.PASSWORD_STATE:
+                    dispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.START_PASSWORD, roomData));
+                    return;
+            }
+        }
+        
+        CreateRoomSession(roomData.roomId);
     }
 
     return (
@@ -58,7 +81,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
                         <i className="fas fa-info-circle text-secondary" onClick={ openInfo }></i>
                         { roomData.habboGroupId > 0 && <i className="fas fa-users mr-2"></i> }
                         { roomData.doorMode !== RoomDataParser.OPEN_STATE && 
-                            <i className={ 'mr-2 fas ' + classNames( {'fa-lock': roomData.doorMode === RoomDataParser.DOORBELL_STATE, 'fa-key': roomData.doorMode === RoomDataParser.PASSWORD_STATE })}></i>
+                            <i className={ 'me-2 fas ' + classNames( {'fa-lock': roomData.doorMode === RoomDataParser.DOORBELL_STATE, 'fa-key': roomData.doorMode === RoomDataParser.PASSWORD_STATE })}></i>
                         }
                     </div>
                 </div>

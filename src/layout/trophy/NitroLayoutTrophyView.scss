@@ -1,0 +1,48 @@
+.nitro-layout-trophy {
+    position: relative;
+    width: 340px;
+    height: 173px;
+    top: 25px;
+    left: 25px;
+    color: black;
+    
+    background-position: 0px 0px;
+    background-image: url('../../assets/images/room-widgets/trophy-widget/trophy-spritesheet.png');
+    
+    &.trophy-2 {
+        background-position: 0px 173px;
+    }
+
+    &.trophy-3 {
+        background-position: 0px 346px;
+    }
+
+    .trophy-header {
+        .trophy-close {
+            position: absolute;
+            cursor: pointer;
+            width: 15px;
+            height: 15px;
+            top: 5px;
+            right: 5px;
+        }
+
+        .trophy-title {
+            padding-top: 3px;
+        }
+    }
+
+    .trophy-content {
+        width: 297px;
+        height: 110px;
+        margin-top: 3px;
+        margin-left: 23px;
+        white-space: pre-wrap;
+    }
+
+    .trophy-footer {
+        width: 297px;
+        margin-top: 5px;
+        margin-left: 23px;
+    }
+}

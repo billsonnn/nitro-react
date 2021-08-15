@@ -4,6 +4,7 @@ import { FurnitureContextMenuView } from './context-menu/FurnitureContextMenuVie
 import { FurnitureCustomStackHeightView } from './custom-stack-height/FurnitureCustomStackHeightView';
 import { FurnitureDimmerView } from './dimmer/FurnitureDimmerView';
 import { FurnitureExchangeCreditView } from './exchange-credit/FurnitureExchangeCreditView';
+import { FurnitureExternalImageView } from './external-image/FurnitureExternalImageView';
 import { FurnitureFriendFurniView } from './friend-furni/FurnitureFriendFurniView';
 import { FurnitureHighScoreView } from './high-score/FurnitureHighScoreView';
 import { FurnitureManipulationMenuView } from './manipulation-menu/FurnitureManipulationMenuView';
@@ -28,6 +29,7 @@ export const FurnitureWidgetsView: FC<{}> = props =>
             <FurniturePresentView />
             <FurnitureStickieView />
             <FurnitureTrophyView />
+            <FurnitureExternalImageView />
         </div>
     );
 }

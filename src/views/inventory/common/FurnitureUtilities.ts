@@ -1,4 +1,4 @@
-import { FurnitureListItemParser, FurniturePlacePaintComposer, IObjectData, RoomObjectCategory, RoomObjectPlacementSource } from 'nitro-renderer';
+import { FurnitureListItemParser, FurniturePlacePaintComposer, IObjectData, RoomObjectCategory, RoomObjectPlacementSource } from '@nitrots/nitro-renderer';
 import { GetRoomEngine } from '../../../api';
 import { InventoryEvent } from '../../../events';
 import { dispatchUiEvent } from '../../../hooks/events/ui/ui-event';

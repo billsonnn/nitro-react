@@ -1,4 +1,4 @@
-import { HabboClubLevelEnum } from 'nitro-renderer';
+import { HabboClubLevelEnum } from '@nitrots/nitro-renderer';
 import { GetNitroInstance } from '../../../api';
 import { IPurse } from './IPurse';
 

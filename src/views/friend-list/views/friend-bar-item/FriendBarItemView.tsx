@@ -1,4 +1,4 @@
-import { FollowFriendComposer, MouseEventType } from 'nitro-renderer';
+import { FollowFriendComposer, MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { LocalizeText } from '../../../../utils/LocalizeText';

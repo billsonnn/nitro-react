@@ -1,4 +1,4 @@
-import { ModtoolRequestRoomChatlogComposer, ModtoolRoomChatlogEvent, ModtoolRoomChatlogLine } from 'nitro-renderer';
+import { ModtoolRequestRoomChatlogComposer, ModtoolRoomChatlogEvent, ModtoolRoomChatlogLine } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { TryVisitRoom } from '../../../../api/navigator/TryVisitRoom';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';

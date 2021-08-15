@@ -1,4 +1,4 @@
-import { CatalogPurchaseData } from 'nitro-renderer';
+import { CatalogPurchaseData } from '@nitrots/nitro-renderer';
 import { CatalogEvent } from './CatalogEvent';
 
 export class CatalogPurchasedEvent extends CatalogEvent

@@ -1,4 +1,4 @@
-import { NitroEvent } from 'nitro-renderer';
+import { NitroEvent } from '@nitrots/nitro-renderer';
 
 export class CatalogEvent extends NitroEvent
 {

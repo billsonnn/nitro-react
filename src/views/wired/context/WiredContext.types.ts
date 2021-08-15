@@ -1,4 +1,4 @@
-import { Triggerable } from 'nitro-renderer';
+import { Triggerable } from '@nitrots/nitro-renderer';
 import { Dispatch, ProviderProps, SetStateAction } from 'react';
 
 export interface IWiredContext

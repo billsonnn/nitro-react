@@ -1,4 +1,4 @@
-import { ISessionDataManager } from 'nitro-renderer';
+import { ISessionDataManager } from '@nitrots/nitro-renderer';
 import { GetNitroInstance } from '../GetNitroInstance';
 
 export function GetSessionDataManager(): ISessionDataManager

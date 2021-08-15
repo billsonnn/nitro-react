@@ -1,4 +1,4 @@
-import { NavigatorSearchResultList } from 'nitro-renderer';
+import { NavigatorSearchResultList } from '@nitrots/nitro-renderer';
 
 export interface NavigatorSearchResultViewProps
 {

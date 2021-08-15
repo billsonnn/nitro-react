@@ -7,7 +7,7 @@ import { CatalogPurchaseGiftButtonView } from './purchase-gift-button/CatalogPur
 
 export const CatalogPurchaseView: FC<CatalogPurchaseViewProps> = props =>
 {
-    const { offer = null, pageId = -1, extra = '' } = props;
+    const { offer = null, pageId = -1, extra = '', disabled = false } = props;
     const [ quantity, setQuantity ] = useState(1);
 
     useEffect(() =>
@@ -70,7 +70,7 @@ export const CatalogPurchaseView: FC<CatalogPurchaseViewProps> = props =>
                 </div>
             </div>
             <div className="d-flex flex-column mt-1">
-                <CatalogPurchaseButtonView className="btn-sm w-100" offer={ offer } pageId={ pageId } extra={ extraData } quantity={ quantity } />
+                <CatalogPurchaseButtonView className="btn-sm w-100" offer={ offer } pageId={ pageId } extra={ extraData } quantity={ quantity } disabled={ disabled } />
                 { offer.giftable && <CatalogPurchaseGiftButtonView className="btn-sm w-100 mt-1" offer={ offer } pageId={ pageId } extra={ extraData } quantity={ quantity } /> }
             </div>
         </div>

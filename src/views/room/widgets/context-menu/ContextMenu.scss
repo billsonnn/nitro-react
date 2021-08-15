@@ -2,7 +2,7 @@
     width: 125px;
     max-width: 125px;
     padding: 2px;
-    background-color: #1c323f;
+    background-color: $gable-green;
     border: 2px solid rgba($white, 0.5);
     border-radius: $border-radius;
     font-size: $font-size-sm;
@@ -32,7 +32,7 @@
     }
 
     .menu-header {
-        background-color: #3d5f6e;
+        background-color: $william;
         color: $white;
         height: 25px;
         max-height: 25px;

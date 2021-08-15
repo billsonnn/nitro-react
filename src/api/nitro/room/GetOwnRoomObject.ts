@@ -1,4 +1,4 @@
-import { IRoomObjectController, RoomObjectCategory } from 'nitro-renderer';
+import { IRoomObjectController, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { GetRoomSession, GetSessionDataManager } from '../session';
 import { GetRoomEngine } from './GetRoomEngine';
 

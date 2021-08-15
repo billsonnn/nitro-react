@@ -1,4 +1,4 @@
-import { ApproveNameMessageComposer } from 'nitro-renderer';
+import { ApproveNameMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { CatalogEvent } from '../../../../../../../events';
 import { useUiEvent } from '../../../../../../../hooks/events/ui/ui-event';

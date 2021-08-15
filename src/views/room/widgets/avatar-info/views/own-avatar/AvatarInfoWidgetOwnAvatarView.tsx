@@ -1,4 +1,4 @@
-import { AvatarAction, AvatarExpressionEnum, RoomObjectCategory } from 'nitro-renderer';
+import { AvatarAction, AvatarExpressionEnum, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, HasHabboClub, HasHabboVip, IsRidingHorse } from '../../../../../../api';
 import { AvatarEditorEvent } from '../../../../../../events';

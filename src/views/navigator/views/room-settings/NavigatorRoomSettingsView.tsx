@@ -1,4 +1,4 @@
-import { RoomSettingsEvent, SaveRoomSettingsComposer } from 'nitro-renderer';
+import { RoomSettingsEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
@@ -30,70 +30,42 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        const roomSettingsData = new RoomSettingsData();
+        if(!parser) return;
 
-        roomSettingsData.roomId                 = parser.roomId;
-        roomSettingsData.roomName               = parser.name;
-        roomSettingsData.roomOriginalName       = parser.name;
-        roomSettingsData.roomDescription        = parser.description;
-        roomSettingsData.categoryId             = parser.categoryId;
-        roomSettingsData.userCount              = parser.userCount;
-        roomSettingsData.tradeState             = parser.tradeMode;
-        roomSettingsData.allowWalkthrough       = parser.allowWalkthrough;
-
-        roomSettingsData.lockState              = parser.state;
-        roomSettingsData.originalLockState      = parser.state;
-        roomSettingsData.allowPets              = parser.allowPets;
-
-        roomSettingsData.hideWalls              = parser.hideWalls;
-        roomSettingsData.wallThickness          = parser.thicknessWall;
-        roomSettingsData.floorThickness         = parser.thicknessFloor;
-        roomSettingsData.chatBubbleMode         = parser.chatSettings.mode;
-        roomSettingsData.chatBubbleWeight       = parser.chatSettings.weight;
-        roomSettingsData.chatBubbleSpeed        = parser.chatSettings.speed;
-        roomSettingsData.chatFloodProtection    = parser.chatSettings.protection;
-        roomSettingsData.chatDistance           = parser.chatSettings.distance;
-
-        roomSettingsData.muteState              = parser.moderationSettings.allowMute;
-        roomSettingsData.kickState              = parser.moderationSettings.allowKick;
-        roomSettingsData.banState               = parser.moderationSettings.allowBan;
-
-        setRoomSettingsData(roomSettingsData);
+        setRoomSettingsData(new RoomSettingsData(parser));
     }, []);
     
     CreateMessageHook(RoomSettingsEvent, onRoomSettingsEvent);
 
     const save = useCallback(() =>
     {
-        console.log('save', roomSettingsData)
-        const composer = new SaveRoomSettingsComposer(
-            roomSettingsData.roomId,
-            roomSettingsData.roomName,
-            roomSettingsData.roomDescription,
-            roomSettingsData.lockState,
-            roomSettingsData.password,
-            roomSettingsData.userCount,
-            roomSettingsData.categoryId,
-            roomSettingsData.tags.length,
-            roomSettingsData.tags,
-            roomSettingsData.tradeState,
-            roomSettingsData.allowPets,
-            roomSettingsData.allowPetsEat,
-            roomSettingsData.allowWalkthrough,
-            roomSettingsData.hideWalls,
-            roomSettingsData.wallThickness,
-            roomSettingsData.floorThickness,
-            roomSettingsData.muteState,
-            roomSettingsData.kickState,
-            roomSettingsData.banState,
-            roomSettingsData.chatBubbleMode,
-            roomSettingsData.chatBubbleWeight,
-            roomSettingsData.chatBubbleSpeed,
-            roomSettingsData.chatDistance,
-            roomSettingsData.chatFloodProtection
-        );
-
-        SendMessageHook(composer);
+        SendMessageHook(
+            new SaveRoomSettingsComposer(
+                roomSettingsData.roomId,
+                roomSettingsData.roomName,
+                roomSettingsData.roomDescription,
+                roomSettingsData.lockState,
+                roomSettingsData.password,
+                roomSettingsData.userCount,
+                roomSettingsData.categoryId,
+                roomSettingsData.tags.length,
+                roomSettingsData.tags,
+                roomSettingsData.tradeState,
+                roomSettingsData.allowPets,
+                roomSettingsData.allowPetsEat,
+                roomSettingsData.allowWalkthrough,
+                roomSettingsData.hideWalls,
+                roomSettingsData.wallThickness,
+                roomSettingsData.floorThickness,
+                roomSettingsData.muteState,
+                roomSettingsData.kickState,
+                roomSettingsData.banState,
+                roomSettingsData.chatBubbleMode,
+                roomSettingsData.chatBubbleWeight,
+                roomSettingsData.chatBubbleSpeed,
+                roomSettingsData.chatDistance,
+                roomSettingsData.chatFloodProtection
+            ));
     }, [ roomSettingsData ]);
 
     const processAction = useCallback((action: string) =>

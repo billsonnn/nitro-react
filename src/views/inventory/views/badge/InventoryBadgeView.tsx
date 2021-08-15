@@ -1,4 +1,4 @@
-import { RequestBadgesComposer } from 'nitro-renderer';
+import { RequestBadgesComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
 import { LocalizeBadgeName } from '../../../../utils/LocalizeBageName';

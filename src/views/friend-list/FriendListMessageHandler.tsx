@@ -1,4 +1,4 @@
-import { FriendListFragmentEvent, FriendListUpdateEvent, GetFriendRequestsComposer, MessengerInitEvent } from 'nitro-renderer';
+import { FriendListFragmentEvent, FriendListUpdateEvent, GetFriendRequestsComposer, MessengerInitEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { MessengerSettings } from './common/MessengerSettings';

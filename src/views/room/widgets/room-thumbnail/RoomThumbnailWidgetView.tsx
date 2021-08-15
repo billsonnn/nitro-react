@@ -1,33 +1,28 @@
+import { NitroRenderTexture } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
+import { GetRoomEngine } from '../../../../api';
 import { RoomWidgetThumbnailEvent } from '../../../../events/room-widgets/thumbnail';
 import { useUiEvent } from '../../../../hooks/events';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { LocalizeText } from '../../../../utils/LocalizeText';
-import { RoomThumbnailWidgetBuilderView } from './views/builder/RoomThumbnailWidgetBuilderView';
-import { RoomThumbnailWidgetCameraView } from './views/camera/RoomThumbnailWidgetCameraView';
+import { NitroLayoutMiniCameraView } from '../../../../layout';
+import { useRoomContext } from '../../context/RoomContext';
 
 export const RoomThumbnailWidgetView: FC<{}> = props =>
 {
-    const [ isSelectorVisible, setIsSelectorVisible ] = useState(false);
-    const [ isBuilderVisible, setIsBuilderVisible ] = useState(false);
-    const [ isCameraVisible, setIsCameraVisible ] = useState(false);
+    const [ isVisible, setIsVisible ] = useState(false);
+    const { roomSession = null } = useRoomContext();
 
     const onNitroEvent = useCallback((event: RoomWidgetThumbnailEvent) =>
     {
         switch(event.type)
         {
             case RoomWidgetThumbnailEvent.SHOW_THUMBNAIL:
-                setIsSelectorVisible(true);
+                setIsVisible(true);
                 return;
             case RoomWidgetThumbnailEvent.HIDE_THUMBNAIL:
-                setIsSelectorVisible(false);
-                setIsBuilderVisible(false);
-                setIsCameraVisible(false);
+                setIsVisible(false);
                 return;   
             case RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL:
-                setIsSelectorVisible(value => !value);
-                setIsBuilderVisible(false);
-                setIsCameraVisible(false);
+                setIsVisible(value => !value);
                 return;
         }
     }, []);
@@ -36,34 +31,14 @@ export const RoomThumbnailWidgetView: FC<{}> = props =>
     useUiEvent(RoomWidgetThumbnailEvent.HIDE_THUMBNAIL, onNitroEvent);
     useUiEvent(RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL, onNitroEvent);
 
-    const handleAction = useCallback((action: string) =>
+    const receiveTexture = useCallback((texture: NitroRenderTexture) =>
     {
-        switch(action)
-        {
-            case 'camera':
-                setIsSelectorVisible(false);
-                setIsCameraVisible(true);
-                return;
-            case 'builder':
-                setIsSelectorVisible(false);
-                setIsBuilderVisible(true);
-                return;
-        }
-    }, [ setIsSelectorVisible, setIsCameraVisible, setIsBuilderVisible ]);
+        GetRoomEngine().saveTextureAsScreenshot(texture, true);
 
-    return (<>
-        { isSelectorVisible && <NitroCardView className="nitro-room-thumbnail">
-            <NitroCardHeaderView headerText={ LocalizeText('navigator.thumbeditor.caption') } onCloseClick={ () => setIsSelectorVisible(false) } />
-            <NitroCardContentView className="d-flex align-items-center justify-content-center text-muted">
-                <div className="option me-5" onClick={ () => handleAction('camera') }>
-                    <i className="fas fa-camera" />
-                </div>
-                <div className="option" onClick={ () => handleAction('builder') }>
-                    <i className="fas fa-pencil-ruler" />
-                </div>
-            </NitroCardContentView>
-        </NitroCardView> }
-        { isBuilderVisible && <RoomThumbnailWidgetBuilderView onCloseClick={ () => setIsBuilderVisible(false) } /> }
-        { isCameraVisible && <RoomThumbnailWidgetCameraView onCloseClick={ () => setIsCameraVisible(false) } /> }
-    </>);
+        setIsVisible(false);
+    }, []);
+
+    if(!isVisible) return null;
+
+    return <NitroLayoutMiniCameraView roomId={ roomSession.roomId } textureReceiver={ receiveTexture } onClose={ () => setIsVisible(false) } />
 };

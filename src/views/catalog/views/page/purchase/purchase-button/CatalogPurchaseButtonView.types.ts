@@ -1,4 +1,4 @@
-import { CatalogPageOfferData } from 'nitro-renderer';
+import { CatalogPageOfferData } from '@nitrots/nitro-renderer';
 
 export interface CatalogPurchaseButtonViewProps
 {
@@ -8,6 +8,7 @@ export interface CatalogPurchaseButtonViewProps
     extra?: string;
     quantity?: number;
     isPurchaseAllowed?: boolean;
+    disabled?: boolean;
     beforePurchase?: () => void;
 }
 

@@ -1,4 +1,4 @@
-import { NavigatorCategoryDataParser, NavigatorSearchResultSet, NavigatorTopLevelContext } from 'nitro-renderer';
+import { NavigatorCategoryDataParser, NavigatorSearchResultSet, NavigatorTopLevelContext } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 import { RoomInfoData } from '../common/RoomInfoData';
 

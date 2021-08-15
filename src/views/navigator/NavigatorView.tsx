@@ -1,8 +1,8 @@
-import { ILinkEventTracker, NavigatorInitComposer, NavigatorSearchComposer, RoomSessionEvent } from 'nitro-renderer';
-import { FC, useCallback, useEffect, useReducer, useState } from 'react';
-import { AddEventLinkTracker, RemoveLinkEventTracker } from '../../api';
+import { ILinkEventTracker, NavigatorInitComposer, NavigatorSearchComposer, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { FC, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+import { AddEventLinkTracker, GoToDesktop, RemoveLinkEventTracker } from '../../api';
 import { TryVisitRoom } from '../../api/navigator/TryVisitRoom';
-import { NavigatorEvent } from '../../events';
+import { NavigatorEvent, UpdateDoorStateEvent } from '../../events';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
@@ -13,8 +13,10 @@ import { NavigatorMessageHandler } from './NavigatorMessageHandler';
 import { NavigatorViewProps } from './NavigatorView.types';
 import { initialNavigator, NavigatorActions, NavigatorReducer } from './reducers/NavigatorReducer';
 import { NavigatorRoomCreatorView } from './views/creator/NavigatorRoomCreatorView';
+import { NavigatorRoomDoorbellView } from './views/room-doorbell/NavigatorRoomDoorbellView';
 import { NavigatorRoomInfoView } from './views/room-info/NavigatorRoomInfoView';
 import { NavigatorRoomLinkView } from './views/room-link/NavigatorRoomLinkView';
+import { NavigatorRoomPasswordView } from './views/room-password/NavigatorRoomPasswordView';
 import { NavigatorRoomSettingsView } from './views/room-settings/NavigatorRoomSettingsView';
 import { NavigatorSearchResultSetView } from './views/search-result-set/NavigatorSearchResultSetView';
 import { NavigatorSearchView } from './views/search/NavigatorSearchView';
@@ -25,6 +27,7 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
     const [ isCreatorOpen, setCreatorOpen ] = useState(false);
     const [ isRoomInfoOpen, setRoomInfoOpen ] = useState(false);
     const [ isRoomLinkOpen, setRoomLinkOpen ] = useState(false);
+    const [ pendingDoorState, setPendingDoorState ] = useState<{ roomData: RoomDataParser, state: string }>(null);
     const [ navigatorState, dispatchNavigatorState ] = useReducer(NavigatorReducer, initialNavigator);
     const { needsNavigatorUpdate = false, topLevelContext = null, topLevelContexts = null } = navigatorState;
 
@@ -55,6 +58,49 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
     useUiEvent(NavigatorEvent.TOGGLE_NAVIGATOR, onNavigatorEvent);
     useUiEvent(NavigatorEvent.TOGGLE_ROOM_INFO, onNavigatorEvent);
     useUiEvent(NavigatorEvent.TOGGLE_ROOM_LINK, onNavigatorEvent);
+
+    const onUpdateDoorStateEvent = useCallback((event: UpdateDoorStateEvent) =>
+    {
+        switch(event.type)
+        {
+            case UpdateDoorStateEvent.START_DOORBELL:
+                setPendingDoorState({ roomData: event.roomData, state: event.type });
+                return;
+            case UpdateDoorStateEvent.START_PASSWORD:
+                setPendingDoorState({ roomData: event.roomData, state: event.type });
+                return;
+            case UpdateDoorStateEvent.STATE_WAITING:
+                setPendingDoorState(prevValue =>
+                    {
+                        return { roomData: prevValue.roomData, state: event.type }
+                    });
+                return;
+            case UpdateDoorStateEvent.STATE_NO_ANSWER:
+                setPendingDoorState(prevValue =>
+                    {
+                        if(prevValue.state === UpdateDoorStateEvent.STATE_WAITING) GoToDesktop();
+
+                        return { roomData: prevValue.roomData, state: event.type }
+                    });
+                return;
+            case UpdateDoorStateEvent.STATE_WRONG_PASSWORD:
+                setPendingDoorState(prevValue =>
+                    {
+                        return { roomData: prevValue.roomData, state: event.type }
+                    });
+                return;
+            case UpdateDoorStateEvent.STATE_ACCEPTED:
+                setPendingDoorState(null);
+                return;
+        }
+    }, []);
+
+    useUiEvent(UpdateDoorStateEvent.START_DOORBELL, onUpdateDoorStateEvent);
+    useUiEvent(UpdateDoorStateEvent.START_PASSWORD, onUpdateDoorStateEvent);
+    useUiEvent(UpdateDoorStateEvent.STATE_WAITING, onUpdateDoorStateEvent);
+    useUiEvent(UpdateDoorStateEvent.STATE_NO_ANSWER, onUpdateDoorStateEvent);
+    useUiEvent(UpdateDoorStateEvent.STATE_WRONG_PASSWORD, onUpdateDoorStateEvent);
+    useUiEvent(UpdateDoorStateEvent.STATE_ACCEPTED, onUpdateDoorStateEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
@@ -102,6 +148,18 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
         }
     }, []);
 
+    const closePendingDoorState = useCallback((state: string) =>
+    {
+        if(state !== null)
+        {
+            setPendingDoorState(prevValue =>
+                {
+                    return { roomData: prevValue.roomData, state };
+                });
+        }
+        else setPendingDoorState(null);
+    }, []);
+
     useEffect(() =>
     {
         const linkTracker: ILinkEventTracker = {
@@ -135,11 +193,30 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
         sendSearch('', topLevelContexts[0].code);
     }, [ topLevelContexts, sendSearch ]);
 
+    const getRoomDoorState = useMemo(() =>
+    {
+        if(!pendingDoorState) return null;
+
+        switch(pendingDoorState.state)
+        {
+            case UpdateDoorStateEvent.START_DOORBELL:
+            case UpdateDoorStateEvent.STATE_WAITING:
+            case UpdateDoorStateEvent.STATE_NO_ANSWER:
+                return <NavigatorRoomDoorbellView roomData={ pendingDoorState.roomData } state={ pendingDoorState.state } onClose={ closePendingDoorState } />;
+            case UpdateDoorStateEvent.START_PASSWORD:
+            case UpdateDoorStateEvent.STATE_WRONG_PASSWORD:
+                return <NavigatorRoomPasswordView roomData={ pendingDoorState.roomData } state={ pendingDoorState.state } onClose={ closePendingDoorState } />;
+        }
+
+        return null;
+    }, [ pendingDoorState, closePendingDoorState ]);
+
     return (
         <NavigatorContextProvider value={ { navigatorState, dispatchNavigatorState } }>
             <NavigatorMessageHandler />
+            { getRoomDoorState }
             { isVisible &&
-                <NitroCardView className="nitro-navigator">
+                <NitroCardView uniqueKey="navigator" className="nitro-navigator">
                     <NitroCardHeaderView headerText={ LocalizeText(isCreatorOpen ? 'navigator.createroom.title' : 'navigator.title') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardTabsView>
                         { topLevelContexts.map((context, index) =>

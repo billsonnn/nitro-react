@@ -1,4 +1,4 @@
-import { PetData } from 'nitro-renderer';
+import { PetData } from '@nitrots/nitro-renderer';
 
 export class PetItem
 {

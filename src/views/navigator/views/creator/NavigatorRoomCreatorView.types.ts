@@ -1,4 +1,4 @@
-import { HabboClubLevelEnum } from 'nitro-renderer';
+import { HabboClubLevelEnum } from '@nitrots/nitro-renderer';
 
 export interface NavigatorRoomCreatorViewProps
 {

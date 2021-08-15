@@ -1,4 +1,4 @@
-import { CatalogSearchComposer } from 'nitro-renderer';
+import { CatalogSearchComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { useCatalogContext } from '../../../../context/CatalogContext';

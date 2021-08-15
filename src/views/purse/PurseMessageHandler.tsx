@@ -1,4 +1,4 @@
-import { UserCreditsEvent, UserCurrencyEvent, UserCurrencyUpdateEvent, UserSubscriptionEvent, UserSubscriptionParser } from 'nitro-renderer';
+import { UserCreditsEvent, UserCurrencyEvent, UserCurrencyUpdateEvent, UserSubscriptionEvent, UserSubscriptionParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { usePurseContext } from './context/PurseContext';

@@ -4,6 +4,25 @@
     .content-area {
         min-height: 400px;
         height: 400px;
+        resize: vertical;
+    }
+}
+
+.nitro-navigator-doorbell {
+    width: 250px;
+
+    .content-area {
+        min-height: 143px;
+        height: 143px;
+    }
+}
+
+.nitro-navigator-password {
+    width: 250px;
+
+    .content-area {
+        min-height: 218px;
+        height: 218px;
     }
 }
 

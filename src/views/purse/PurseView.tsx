@@ -1,6 +1,8 @@
-import { FriendlyTime, HabboClubLevelEnum, UserCurrencyComposer, UserSubscriptionComposer } from 'nitro-renderer';
+import { FriendlyTime, HabboClubLevelEnum, UserCurrencyComposer, UserSubscriptionComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetConfiguration } from '../../api';
+import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
+import { dispatchUiEvent } from '../../hooks';
 import { SendMessageHook } from '../../hooks/messages/message-event';
 import { LocalizeText } from '../../utils/LocalizeText';
 import { CurrencyIcon } from '../shared/currency-icon/CurrencyIcon';
@@ -18,6 +20,11 @@ export const PurseView: FC<{}> = props =>
     const [ purse, setPurse ] = useState<IPurse>(new Purse());
     const [ updateId, setUpdateId ] = useState(-1);
     
+    const handleUserSettingsClick = useCallback(() =>
+    {
+        dispatchUiEvent(new UserSettingsUIEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS));
+    }, []);
+
     const displayedCurrencies = useMemo(() =>
     {
         return GetConfiguration<number[]>('system.currency.types', []);
@@ -130,7 +137,7 @@ export const PurseView: FC<{}> = props =>
                     <div className="col-2 px-0">
                         <div className="d-flex flex-column nitro-purse-buttons h-100 justify-content-center">
                             <div className="nitro-purse-button text-white h-100 text-center d-flex align-items-center justify-content-center"><i className="fas fa-life-ring"/></div>
-                            <div className="nitro-purse-button text-white h-100 text-center d-flex align-items-center justify-content-center"><i className="fas fa-cogs"/></div>
+                            <div className="nitro-purse-button text-white h-100 text-center d-flex align-items-center justify-content-center"onClick={handleUserSettingsClick} ><i className="fas fa-cogs"/></div>
                         </div>
                     </div>
                 </div>

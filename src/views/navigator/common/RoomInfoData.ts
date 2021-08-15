@@ -1,4 +1,4 @@
-import { RoomDataParser } from 'nitro-renderer';
+import { RoomDataParser } from '@nitrots/nitro-renderer';
 
 export class RoomInfoData
 {

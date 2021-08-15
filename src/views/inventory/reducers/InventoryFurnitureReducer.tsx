@@ -1,4 +1,4 @@
-import { AdvancedMap, FurnitureListItemParser, TradingListItemParser } from 'nitro-renderer';
+import { AdvancedMap, FurnitureListItemParser, TradingListItemParser } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 import { FurnitureItem } from '../common/FurnitureItem';
 import { addFurnitureItem, processFurniFragment, removeFurniItemById } from '../common/FurnitureUtilities';

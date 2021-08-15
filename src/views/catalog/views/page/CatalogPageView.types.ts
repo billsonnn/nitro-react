@@ -1,4 +1,4 @@
-import { RoomPreviewer } from 'nitro-renderer';
+import { RoomPreviewer } from '@nitrots/nitro-renderer';
 
 export interface CatalogPageViewProps
 {

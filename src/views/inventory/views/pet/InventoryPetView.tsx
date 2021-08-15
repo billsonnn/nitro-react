@@ -1,4 +1,4 @@
-import { RequestPetsComposer, RoomObjectVariable } from 'nitro-renderer';
+import { RequestPetsComposer, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';

@@ -1,4 +1,4 @@
-import { IConnection } from 'nitro-renderer';
+import { IConnection } from '@nitrots/nitro-renderer';
 import { GetCommunication } from './GetCommunication';
 
 export function GetConnection(): IConnection

@@ -1,4 +1,4 @@
-import { CatalogPurchaseComposer } from 'nitro-renderer';
+import { CatalogPurchaseComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CatalogEvent } from '../../../../../../events';
 import { useUiEvent } from '../../../../../../hooks/events/ui/ui-event';
@@ -10,7 +10,7 @@ import { CatalogPurchaseButtonViewProps, CatalogPurchaseState } from './CatalogP
 
 export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = props =>
 {
-    const { className = '', offer = null, pageId = -1, extra = null, quantity = 1, isPurchaseAllowed = true, beforePurchase = null } = props;
+    const { className = '', offer = null, pageId = -1, extra = null, quantity = 1, isPurchaseAllowed = true, disabled = false, beforePurchase = null } = props;
     const [ purchaseState, setPurchaseState ] = useState(CatalogPurchaseState.NONE);
     const [ pendingApproval, setPendingApproval ] = useState(false);
 
@@ -96,6 +96,6 @@ export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = pro
             return <button type="button" className={ 'btn btn-danger ' + className } disabled>{ LocalizeText('generic.failed') + ' - ' + LocalizeText('catalog.alert.limited_edition_sold_out.title') }</button>;
         case CatalogPurchaseState.NONE:
         default:
-            return <button type="button" className={ 'btn btn-success ' + className } onClick={ event => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('buy') }</button>
+            return <button type="button" className={ 'btn btn-success ' + className } disabled={ disabled } onClick={ event => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('buy') }</button>
     }
 }

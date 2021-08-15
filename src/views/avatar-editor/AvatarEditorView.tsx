@@ -1,6 +1,6 @@
-import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, UserFigureComposer, UserWardrobePageComposer, UserWardrobePageEvent } from 'nitro-renderer';
+import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, UserFigureComposer, UserWardrobePageComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetSessionDataManager } from '../../api';
+import { GetClubMemberLevel, GetSessionDataManager } from '../../api';
 import { AvatarEditorEvent } from '../../events/avatar-editor';
 import { CreateMessageHook, SendMessageHook } from '../../hooks';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
@@ -10,6 +10,7 @@ import { AvatarEditorViewProps } from './AvatarEditorView.types';
 import { AvatarEditorUtilities } from './common/AvatarEditorUtilities';
 import { BodyModel } from './common/BodyModel';
 import { FigureData } from './common/FigureData';
+import { generateRandomFigure } from './common/FigureGenerator';
 import { HeadModel } from './common/HeadModel';
 import { IAvatarEditorCategoryModel } from './common/IAvatarEditorCategoryModel';
 import { LegModel } from './common/LegModel';
@@ -167,6 +168,14 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
         resetCategories();
     }, [ lastFigure, lastGender, loadAvatarInEditor, resetCategories ]);
 
+    const randomizeFigure = useCallback(() =>
+    {
+        const figure = generateRandomFigure(figureData, figureData.gender, GetClubMemberLevel(), figureSetIds, [ FigureData.FACE ]);
+
+        loadAvatarInEditor(figure, figureData.gender, false);
+        resetCategories();
+    }, [ figureData, figureSetIds, loadAvatarInEditor, resetCategories ]);
+
     const rotateFigure = useCallback((direction: number) =>
     {
         if(direction < AvatarDirectionAngle.MIN_DIRECTION)
@@ -267,7 +276,7 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
     if(!isVisible || !figureData) return null;
 
     return (
-        <NitroCardView className="nitro-avatar-editor">
+        <NitroCardView uniqueKey="avatar-editor" className="nitro-avatar-editor">
             <NitroCardHeaderView headerText={ LocalizeText('avatareditor.title') } onCloseClick={ event => setIsVisible(false) } />
             <NitroCardTabsView>
                 { categories && (categories.size > 0) && Array.from(categories.keys()).map(category =>
@@ -307,6 +316,9 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
                                 </button>
                                 <button type="button" className="btn btn-sm btn-secondary" onClick={ clearFigure }>
                                     <i className="fas fa-trash" />
+                                </button>
+                                <button type="button" className="btn btn-sm btn-secondary" onClick={ randomizeFigure }>
+                                    <i className="fas fa-dice" />
                                 </button>
                             </div>
                             <button type="button" className="btn btn-success btn-sm w-100" onClick={ saveFigure }>{ LocalizeText('avatareditor.save') }</button>

@@ -1,4 +1,4 @@
-import { CatalogClubOfferData, CatalogGiftConfigurationParser, CatalogGroupData, CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from 'nitro-renderer';
+import { CatalogClubOfferData, CatalogGiftConfigurationParser, CatalogGroupData, CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 import { CatalogPetPalette } from '../common/CatalogPetPalette';
 import { ICatalogOffers, ICatalogSearchResult, SetOffersToNodes } from '../common/CatalogUtilities';
@@ -10,7 +10,6 @@ export interface ICatalogState
     root: ICatalogPageData;
     offerRoot: ICatalogOffers;
     currentTab: ICatalogPageData;
-    currentPage: ICatalogPageData;
     pageParser: ICatalogPageParser;
     activeOffer: CatalogPageOfferData;
     searchResult: ICatalogSearchResult;
@@ -19,7 +18,6 @@ export interface ICatalogState
     clubOffers: CatalogClubOfferData[];
     subscriptionInfo: SubscriptionInfo;
     giftConfiguration: GiftWrappingConfiguration;
-    pendingPageId: number;
 }
 
 export interface ICatalogAction
@@ -29,7 +27,6 @@ export interface ICatalogAction
         root?: ICatalogPageData;
         offerRoot?: ICatalogOffers;
         currentTab?: ICatalogPageData;
-        currentPage?: ICatalogPageData;
         pageParser?: ICatalogPageParser;
         activeOffer?: CatalogPageOfferData;
         searchResult?: ICatalogSearchResult;
@@ -38,7 +35,6 @@ export interface ICatalogAction
         clubOffers?: CatalogClubOfferData[];
         subscriptionInfo?: SubscriptionInfo;
         giftConfiguration?: CatalogGiftConfigurationParser;
-        pendingPageId?: number;
     }
 }
 
@@ -47,7 +43,6 @@ export class CatalogActions
     public static RESET_STATE: string = 'CA_RESET_STATE';
     public static SET_CATALOG_ROOT: string = 'CA_SET_CATALOG_ROOT';
     public static SET_CATALOG_CURRENT_TAB: string = 'CA_SET_CATALOG_CURRENT_TAB';
-    public static SET_CATALOG_CURRENT_PAGE: string = 'CA_SET_CATALOG_CURRENT_PAGE';
     public static SET_CATALOG_PAGE_PARSER: string = 'CA_SET_CATALOG_PAGE';
     public static SET_CATALOG_ACTIVE_OFFER: string = 'CA_SET_ACTIVE_OFFER';
     public static SET_CLUB_OFFERS: string = 'CA_SET_CLUB_OFFERS';
@@ -56,14 +51,12 @@ export class CatalogActions
     public static SET_SEARCH_RESULT: string = 'CA_SET_SEARCH_RESULT';
     public static SET_SUBSCRIPTION_INFO: string = 'CA_SET_SUBSCRIPTION_INFO';
     public static SET_GIFT_CONFIGURATION: string = 'CA_SET_GIFT_CONFIGURATION';
-    public static SET_PENDING_PAGE_ID: string = 'CA_SET_PENDING_PAGE_ID';
 }
 
 export const initialCatalog: ICatalogState = {
     root: null,
     offerRoot: null,
     currentTab: null,
-    currentPage: null,
     pageParser: null,
     activeOffer: null,
     searchResult: null,
@@ -71,8 +64,7 @@ export const initialCatalog: ICatalogState = {
     petPalettes: [],
     clubOffers: null,
     subscriptionInfo: new SubscriptionInfo(),
-    giftConfiguration: null,
-    pendingPageId: -1
+    giftConfiguration: null
 }
 
 export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, action) =>
@@ -94,11 +86,6 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
             const searchResult = null;
 
             return { ...state, currentTab, searchResult };
-        }
-        case CatalogActions.SET_CATALOG_CURRENT_PAGE: {
-            const currentPage = (action.payload.currentPage || state.currentPage || null);
-
-            return { ...state, currentPage };
         }
         case CatalogActions.SET_CATALOG_PAGE_PARSER: {
             let pageParser = (Object.create(action.payload.pageParser) as ICatalogPageParser);
@@ -171,11 +158,6 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
             const giftConfiguration = new GiftWrappingConfiguration((action.payload.giftConfiguration || null));
 
             return { ...state, giftConfiguration };
-        }
-        case CatalogActions.SET_PENDING_PAGE_ID: {
-            const pendingPageId = (action.payload.pendingPageId || -1);
-
-            return { ...state, pendingPageId };
         }
         default:
             return state;

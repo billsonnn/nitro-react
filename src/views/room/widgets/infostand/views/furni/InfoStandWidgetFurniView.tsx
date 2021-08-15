@@ -1,5 +1,6 @@
-import { CrackableDataType, RoomControllerLevel, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, StringDataType } from 'nitro-renderer';
+import { CrackableDataType, RoomControllerLevel, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { CreateLinkEvent } from '../../../../../../api';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { LimitedEditionCompactPlateView } from '../../../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
@@ -150,6 +151,9 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
         switch(action)
         {
+            case 'buy_one':
+                CreateLinkEvent(`catalog/open/offerId/${ furniData.purchaseOfferId }`);
+                return;
             case 'move':
                 messageType = RoomWidgetFurniActionMessage.MOVE;
                 break;
@@ -198,6 +202,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                     <i className="icon icon-user-profile me-1 cursor-pointer" />
                     <div className="small text-wrap">{ LocalizeText('furni.owner', [ 'name' ], [ furniData.ownerName ]) }</div>
                 </div>
+                { (furniData.purchaseOfferId > 0) && <button type="button" className="btn btn-primary btn-sm mt-1" onClick={ event => processButtonAction('buy_one') }>{ LocalizeText('infostand.button.buy') }</button> }
                 { isCrackable &&
                     <>
                         <hr className="m-0 my-1" />
@@ -230,19 +235,19 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
             </InfoStandBaseView>
             <div className="button-container mt-2">
                 { canMove &&
-                    <button type="button" className="btn btn-sm btn-dark" onClick={event => processButtonAction('move')}>
+                    <button type="button" className="btn btn-sm btn-dark" onClick={ event => processButtonAction('move') }>
                         { LocalizeText('infostand.button.move') }
                     </button> }
                 { canRotate &&
-                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={event => processButtonAction('rotate')}>
+                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={ event => processButtonAction('rotate') }>
                         { LocalizeText('infostand.button.rotate') }
                     </button> }
                 { canUse &&
-                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={event => processButtonAction('use')}>
+                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={ event => processButtonAction('use') }>
                         { LocalizeText('infostand.button.use') }
                     </button>}
                 { (pickupMode !== PICKUP_MODE_NONE) &&
-                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={event => processButtonAction('pickup')}>
+                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={ event => processButtonAction('pickup') }>
                         { LocalizeText((pickupMode === PICKUP_MODE_EJECT) ? 'infostand.button.eject' : 'infostand.button.pickup') }
                     </button> }
                 { ((furniSettingsKeys.length > 0 && furniSettingsValues.length > 0) && (furniSettingsKeys.length === furniSettingsValues.length)) &&
