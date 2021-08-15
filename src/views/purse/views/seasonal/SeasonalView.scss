@@ -1,7 +1,7 @@
 .nitro-seasonal-currency {
     pointer-events: all;
     padding: 2px;
-    background-color: #1c323f;
+    background-color: $gable-green;
     border: 2px solid rgba($white, 0.5);
     font-size: $font-size-sm;
     margin-bottom: 5px;
@@ -11,6 +11,6 @@
     }
 
     .nitro-seasonal-icon {
-        background-color: #3d5f6e
+        background-color: $william;
     }
 }

@@ -40,7 +40,7 @@ export const AchievementsView: FC<AchievementsViewProps> = props =>
         <AchievementsContextProvider value={ { achievementsState, dispatchAchievementsState } }>
             <AchievementsMessageHandler />
             { isVisible &&
-                <NitroCardView className="nitro-achievements">
+                <NitroCardView uniqueKey="achievements" className="nitro-achievements">
                     <NitroCardHeaderView headerText={ LocalizeText('inventory.achievements') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardContentView>
                         <div className="row">

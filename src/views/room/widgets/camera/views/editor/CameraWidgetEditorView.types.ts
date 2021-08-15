@@ -1,12 +1,14 @@
 import { IRoomCameraWidgetEffect } from '@nitrots/nitro-renderer';
+import { CameraPicture } from '../../common/CameraPicture';
 
 export interface CameraWidgetEditorViewProps
 {
+    picture: CameraPicture;
     availableEffects: IRoomCameraWidgetEffect[];
     myLevel: number;
     onClose: () => void;
     onCancel: () => void;
-    onCheckout: () => void;
+    onCheckout: (pictureUrl: string) => void;
 }
 
 export class CameraWidgetEditorTabs

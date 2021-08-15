@@ -7,6 +7,7 @@ export * from './RoomWidgetChatTypingMessage';
 export * from './RoomWidgetDanceMessage';
 export * from './RoomWidgetFurniActionMessage';
 export * from './RoomWidgetFurniToWidgetMessage';
+export * from './RoomWidgetLetUserInMessage';
 export * from './RoomWidgetMessage';
 export * from './RoomWidgetRequestWidgetMessage';
 export * from './RoomWidgetRoomObjectMessage';

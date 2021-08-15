@@ -80,8 +80,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         
         const deltaY = (location.y - maxStack);
 
-        let x = (location.x - (elementRef.current.offsetWidth / 2));
-        let y = (deltaY + offset);
+        let x = Math.round(location.x - (elementRef.current.offsetWidth / 2));
+        let y = Math.round(deltaY + offset);
 
         const maxLeft = ((GetNitroInstance().width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
         const maxTop = ((GetNitroInstance().height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);

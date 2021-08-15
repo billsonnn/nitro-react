@@ -1,17 +1,12 @@
-import { IRoomCameraWidgetSelectedEffect } from '@nitrots/nitro-renderer';
-import { ProviderProps } from 'react';
+import { Dispatch, ProviderProps, SetStateAction } from 'react';
 import { CameraPicture } from '../common/CameraPicture';
 
 export interface ICameraWidgetContext
 {
     cameraRoll: CameraPicture[],
-    setCameraRoll: (cameraRoll: CameraPicture[]) => void,
+    setCameraRoll: Dispatch<SetStateAction<CameraPicture[]>>;
     selectedPictureIndex: number,
-    setSelectedPictureIndex: (index: number) => void,
-    selectedEffects: IRoomCameraWidgetSelectedEffect[],
-    setSelectedEffects: (selectedEffects: IRoomCameraWidgetSelectedEffect[]) => void,
-    isZoomed: boolean,
-    setIsZoomed: (isZoomed: boolean) => void
+    setSelectedPictureIndex: Dispatch<SetStateAction<number>>;
 }
 
 export interface CameraWidgetContextProps extends ProviderProps<ICameraWidgetContext>

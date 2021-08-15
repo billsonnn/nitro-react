@@ -1,5 +1,5 @@
-import Slider from 'rc-slider/lib/Slider';
 import { FC, useCallback, useEffect, useState } from 'react';
+import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { GetWiredTimeLocale } from '../../../common/GetWiredTimeLocale';
 import { useWiredContext } from '../../../context/WiredContext';
@@ -25,10 +25,11 @@ export const WiredConditionTimeElapsedMoreView: FC<{}> = props =>
         <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
             <div className="form-group">
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.allowafter', [ 'seconds' ], [ GetWiredTimeLocale(time) ]) }</label>
-                <Slider 
-                    value={ time }
+                <ReactSlider
+                    className={ 'nitro-slider' }
                     min={ 1 }
                     max={ 1200 }
+                    value={ time }
                     onChange={ event => setTime(event) } />
             </div>
         </WiredConditionBaseView>

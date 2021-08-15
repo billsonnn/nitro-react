@@ -1,7 +1,8 @@
-export interface NitroCardViewProps
+import { DraggableWindowProps } from '../draggable-window';
+
+export interface NitroCardViewProps extends DraggableWindowProps
 {
     className?: string;
-    disableDrag?: boolean;
     simple?: boolean;
     theme?: string;
 }

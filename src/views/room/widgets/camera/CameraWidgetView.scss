@@ -87,6 +87,53 @@
 .nitro-camera-editor {
     width: 600px;
 
+    .content-area {
+        min-height: 441px;
+        height: 441px;
+        resize: vertical;
+
+        .picture-preview {
+            width: 320px;
+            height: 320px;
+    
+            .slider {
+                background: linear-gradient(180deg, transparent, black);
+                text-shadow: 1px 1px rgba(0, 0, 0, .5);
+            }
+        }
+    }
+
+    .effect-grid {
+
+        .grid-item-container {
+            height: 60px !important;
+            max-height: 60px !important;
+
+            .grid-item {
+                overflow: unset;
+
+                .remove-effect {
+                    position: absolute;
+                    top: -1px;
+                    right: -1px;
+                    padding: 2px;
+                    font-size: 11px;
+                    line-height: 11px;
+                    min-height: unset;
+                }
+
+                .effect-thumbnail-image {
+
+                    img {
+                        width: 40px;
+                        height: 40px;
+                        image-rendering: auto;
+                    }
+                }
+            }
+        }
+    }
+
     .effects {
         height: 363px;
         min-height: 363px;
@@ -117,28 +164,13 @@
             }
         }
     }
-
-    .picture-preview {
-        width: 320px;
-        height: 320px;
-
-        .slider {
-            background: linear-gradient(180deg, transparent, black);
-            text-shadow: 1px 1px rgba(0, 0, 0, .5);
-        }
-    }
 }
 
 .nitro-camera-checkout {
-    width: 336px;
+    width: 388px;
 
     .picture-preview {
         width: 320px;
         height: 320px;
-
-        .slider {
-            background: linear-gradient(180deg, transparent, black);
-            text-shadow: 1px 1px rgba(0, 0, 0, .5);
-        }
     }
 }

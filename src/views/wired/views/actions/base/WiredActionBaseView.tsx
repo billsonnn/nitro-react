@@ -1,6 +1,6 @@
 import { WiredActionDefinition } from '@nitrots/nitro-renderer';
-import Slider from 'rc-slider';
 import { FC, useCallback, useEffect, useState } from 'react';
+import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { GetWiredTimeLocale } from '../../../common/GetWiredTimeLocale';
 import { useWiredContext } from '../../../context/WiredContext';
@@ -34,10 +34,11 @@ export const WiredActionBaseView: FC<WiredActionBaseViewProps> = props =>
             </> }
             <div className="form-group">
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.delay', [ 'seconds' ], [ GetWiredTimeLocale(delay) ]) }</label>
-                <Slider 
-                    value={ delay }
+                <ReactSlider
+                    className={ 'nitro-slider' }
                     min={ 0 }
                     max={ 20 }
+                    value={ delay }
                     onChange={ event => setDelay(event) } />
             </div>
         </WiredBaseView>

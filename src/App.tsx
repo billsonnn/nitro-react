@@ -1,4 +1,4 @@
-import { ConfigurationEvent, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
+import { ConfigurationEvent, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetCommunication, GetConfiguration, GetNitroInstance } from './api';
 import { useConfigurationEvent } from './hooks/events/core/configuration/configuration-event';
@@ -17,7 +17,11 @@ export const App: FC<{}> = props =>
     //@ts-ignore
     if(!NitroConfig) throw new Error('NitroConfig is not defined!');
 
-    if(!GetNitroInstance()) Nitro.bootstrap();
+    if(!GetNitroInstance())
+    {
+        NitroVersion.UI_VERSION = '2.0.0';
+        Nitro.bootstrap();
+    }
 
     const getPreloadAssetUrls = useCallback(() =>
     {

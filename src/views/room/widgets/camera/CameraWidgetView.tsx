@@ -1,4 +1,4 @@
-import { InitCameraMessageEvent, IRoomCameraWidgetEffect, IRoomCameraWidgetSelectedEffect, RequestCameraConfigurationComposer, RoomCameraWidgetManagerEvent } from '@nitrots/nitro-renderer';
+import { InitCameraMessageEvent, IRoomCameraWidgetEffect, RequestCameraConfigurationComposer, RoomCameraWidgetManagerEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetRoomCameraWidgetManager } from '../../../../api';
 import { RoomWidgetCameraEvent } from '../../../../events/room-widgets/camera/RoomWidgetCameraEvent';
@@ -22,9 +22,8 @@ export const CameraWidgetView: FC<{}> = props =>
     const [ availableEffects, setAvailableEffects ] = useState<IRoomCameraWidgetEffect[]>([]);
     const [ cameraRoll, setCameraRoll ] = useState<CameraPicture[]>([]);
     const [ selectedPictureIndex, setSelectedPictureIndex ] = useState(-1);
-    const [ selectedEffects, setSelectedEffects ] = useState<IRoomCameraWidgetSelectedEffect[]>([]);
-    const [ isZoomed, setIsZoomed ] = useState(false);
     const [ myLevel, setMyLevel ] = useState(10);
+    const [ base64Url, setSavedPictureUrl ] = useState<string>(null);
     const [ price, setPrice ] = useState<{ credits: number, duckets: number, publishDucketPrice: number }>(null);
 
     const onNitroEvent = useCallback((event: RoomWidgetCameraEvent) =>
@@ -102,17 +101,20 @@ export const CameraWidgetView: FC<{}> = props =>
             case 'editor_cancel':
                 setMode(MODE_CAPTURE);
                 return;
-            case 'checkout':
-                setMode(MODE_CHECKOUT);
-                return;
         }
     }, [ selectedPictureIndex ]);
 
+    const checkoutPictureUrl = useCallback((pictureUrl: string) =>
+    {
+        setSavedPictureUrl(pictureUrl);
+        setMode(MODE_CHECKOUT);
+    }, []);
+
     return (
-        <CameraWidgetContextProvider value={ { cameraRoll, setCameraRoll, selectedPictureIndex, setSelectedPictureIndex, selectedEffects, setSelectedEffects, isZoomed, setIsZoomed } }>
+        <CameraWidgetContextProvider value={ { cameraRoll, setCameraRoll, selectedPictureIndex, setSelectedPictureIndex } }>
             { (mode === MODE_CAPTURE) && <CameraWidgetCaptureView onClose={ () => processAction('close') } onEdit={ () => processAction('edit') } onDelete={ () => processAction('delete') } /> }
-            { (mode === MODE_EDITOR) && <CameraWidgetEditorView myLevel={ myLevel } onClose={ () => processAction('close') } onCancel={ () => processAction('editor_cancel') } onCheckout={ () => processAction('checkout') } availableEffects={ availableEffects } /> }
-            { (mode === MODE_CHECKOUT) && <CameraWidgetCheckoutView onCloseClick={ () => processAction('close') } onCancelClick={ () => processAction('editor_cancel') } price={ price }></CameraWidgetCheckoutView> }
+            { (mode === MODE_EDITOR) && <CameraWidgetEditorView picture={ cameraRoll[selectedPictureIndex] } myLevel={ myLevel } onClose={ () => processAction('close') } onCancel={ () => processAction('editor_cancel') } onCheckout={ checkoutPictureUrl } availableEffects={ availableEffects } /> }
+            { (mode === MODE_CHECKOUT) && <CameraWidgetCheckoutView base64Url={ base64Url } onCloseClick={ () => processAction('close') } onCancelClick={ () => processAction('editor_cancel') } price={ price }></CameraWidgetCheckoutView> }
         </CameraWidgetContextProvider>
     );
 }

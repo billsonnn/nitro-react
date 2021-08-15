@@ -1,57 +1,10 @@
 {
     "image.library.notifications.url": "${image.library.url}notifications/%image%.png",
     "achievements.images.url": "${image.library.url}Quests/%image%.png",
+    "camera.url": "https://nitro.nitrots.co/camera",
     "thumbnails.url": "https://nitro.nitrots.co/camera/thumbnail/%thumbnail%.png",
     "url.prefix": "http://localhost:3000",
     "chat.viewer.height.percentage": 0.40,
-    "auth.system.enabled": true,
-    "auth.system.http.enabled": true,
-    "auth.system.http.endpoint.login": "https://reqres.in/api/posts",
-    "auth.system.http.endpoint.register": "https://reqres.in/api/posts",
-    "auth.system.sso_field_name": "username",
-    "auth.system.recaptcha.public_key": "",
-    "auth.system.recaptcha.field_name": "recaptcha",
-    "auth.system.login.fields": [
-        {
-            "name": "username",
-            "label": "Username",
-            "type": "text",
-            "col": 12
-        },
-        {
-            "name": "password",
-            "label": "Password",
-            "type": "password",
-            "col": 12
-        }
-    ],
-    "auth.system.register.enabled": true,
-    "auth.system.register.fields": [
-        {
-            "name": "username",
-            "label": "Username",
-            "type": "text",
-            "col": 12
-        },
-        {
-            "name": "email",
-            "label": "Email Address",
-            "type": "email",
-            "col": 12
-        },
-        {
-            "name": "password",
-            "label": "Password",
-            "type": "password",
-            "col": 6
-        },
-        {
-            "name": "confirm_password",
-            "label": "Confirm Password",
-            "type": "password",
-            "col": 6
-        }
-    ],
     "navigator.slider.enabled": true,
     "navigator.slider.content": [
         {
