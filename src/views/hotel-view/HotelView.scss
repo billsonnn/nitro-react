@@ -4,6 +4,7 @@
 	width: 100%;
 	height: calc(100% - 55px);
 	background: rgba($black, 1);
+	color:#000;
 	
 	.avatar-image {
 		bottom: 12px;
@@ -13,6 +14,7 @@
 	}
 
 	.background {
+		top:0;
 		height: 100%;
 		width: 100%;
 		background-position: left;
@@ -73,4 +75,25 @@
         background-repeat: no-repeat;
 		background-position: right top;
 	}
+
+	.landing-widgets {
+		z-index: 9;
+		position: relative;
+
+	}
+
+	.widget-slot {
+		z-index: 9;	
+	}
+
+	hr {
+		background: $black;
+		box-shadow: 0 1px rgba($white,.5);
+		opacity: 0.5
+	}
 }
+
+@import './views/widgets/promo-article/PromoArticleWidgetView.scss';
+@import './views/widgets/bonus-rare/BonusRareWidgetView.scss';
+@import './views/widgets/hall-of-fame/HallOfFameWidgetView.scss';
+@import './views/widgets/widgetcontainer/WidgetContainerView.scss'

@@ -1,0 +1,27 @@
+.promo-articles {
+    width: 100%;
+    height: 100%;
+
+	.promo-articles-bullet {
+		border-radius: 50%;
+		background-color: $white;
+		border: 1px solid $white;
+		height: 13px;
+		width: 13px;
+		margin-right: 3px;
+
+		&.promo-articles-bullet-active {
+			background: $black;
+		}
+	}
+
+	.promo-article {
+		.promo-article-image {
+			width: 150px;
+			height: 150px;
+			margin-right: 10px;
+			background-repeat: no-repeat;
+			background-position: top center;
+		}
+	}
+}
