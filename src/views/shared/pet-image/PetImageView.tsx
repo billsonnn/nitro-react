@@ -1,15 +1,15 @@
 import { PetFigureData, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { GetRoomEngine } from '../../../api';
 import { PetImageViewProps } from './PetImageView.types';
 
 export const PetImageView: FC<PetImageViewProps> = props =>
 {
     const { figure = '', typeId = -1, paletteId = -1, color = 0xFFFFFF, customParts = [], posture = 'std', headOnly = false, direction = 0, scale = 1 } = props;
-
     const [ petUrl, setPetUrl ] = useState<string>(null);
+    const isDisposed = useRef(false);
 
-    const getPetImageUrl = useCallback(() =>
+    useEffect(() =>
     {
         let url = null;
 
@@ -31,6 +31,8 @@ export const PetImageView: FC<PetImageViewProps> = props =>
         const imageResult = GetRoomEngine().getRoomObjectPetImage(petTypeId, petPaletteId, petColor, new Vector3d((direction * 45)), 64, {
             imageReady: (id, texture, image) =>
             {
+                if(isDisposed.current) return;
+
                 if(image) setPetUrl(image.src);
                 else if(texture) setPetUrl(TextureUtils.generateImageUrl(texture));
             },
@@ -44,16 +46,21 @@ export const PetImageView: FC<PetImageViewProps> = props =>
         {
             const image = imageResult.getImage();
 
-            if(image) url = image.src;
-        }
+            if(image) setPetUrl(image.src);
 
-        return url;
+
+        }
     }, [ figure, typeId, paletteId, color, customParts, posture, headOnly, direction ]);
 
     useEffect(() =>
     {
-        setPetUrl(getPetImageUrl());
-    }, [ getPetImageUrl ]);
+        isDisposed.current = false;
+
+        return () =>
+        {
+            isDisposed.current = true;
+        }
+    }, []);
 
     const url = `url('${ petUrl }')`;
         
