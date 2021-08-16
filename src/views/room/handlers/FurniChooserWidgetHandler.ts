@@ -77,7 +77,7 @@ export class FurniChooserWidgetHandler extends RoomWidgetHandler
 
     private selectRoomObject(message: RoomWidgetRoomObjectMessage): void
     {
-        if(message.category !== RoomObjectCategory.WALL || message.category !== RoomObjectCategory.FLOOR) return;
+        if((message.category !== RoomObjectCategory.WALL) && (message.category !== RoomObjectCategory.FLOOR)) return;
         
         GetRoomEngine().selectRoomObject(this.container.roomSession.roomId, message.id, message.category);
     }

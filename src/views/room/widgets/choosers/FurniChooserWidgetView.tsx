@@ -55,7 +55,7 @@ export const FurniChooserWidgetView: FC<{}> = props =>
         setItems(null);
     }, []);
 
-    if (!isVisible) return null;
+    if(!isVisible) return null;
 
-    return <ChooserWidgetView title={ LocalizeText('widget.chooser.furni.title') } displayItemId={ false } items={ items } onCloseClick={ close } />;
+    return <ChooserWidgetView title={ LocalizeText('widget.chooser.furni.title') } displayItemId={ true } items={ items } onCloseClick={ close } />;
 }

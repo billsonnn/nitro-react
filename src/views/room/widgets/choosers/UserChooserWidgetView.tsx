@@ -57,5 +57,5 @@ export const UserChooserWidgetView: FC<{}> = props =>
     
     if(!isVisible) return null;
 
-    return <ChooserWidgetView title={ LocalizeText('widget.chooser.user.title') } displayItemId={ true } items={ items } onCloseClick={ close } />;
+    return <ChooserWidgetView title={ LocalizeText('widget.chooser.user.title') } displayItemId={ false } items={ items } onCloseClick={ close } />;
 }
