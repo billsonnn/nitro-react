@@ -3,7 +3,7 @@ import { BonusRareWidgetView } from './bonus-rare/BonusRareWidgetView';
 import { GetWidgetLayoutProps } from './GetWidgetLayout.types';
 import { HallOfFameWidgetView } from './hall-of-fame/HallOfFameWidgetView';
 import { PromoArticleWidgetView } from './promo-article/PromoArticleWidgetView';
-import { WidgetContainerView } from './widgetcontainer/WIdgetContainerView';
+import { WidgetContainerView } from './widget-container/WidgetContainerView';
 
 export const GetWidgetLayout: FC<GetWidgetLayoutProps> = props =>
 {

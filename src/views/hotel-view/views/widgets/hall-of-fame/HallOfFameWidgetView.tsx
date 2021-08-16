@@ -29,7 +29,7 @@ export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props =>
         <div className="hall-of-fame widget">
             { data.hof && (data.hof.length > 0) && data.hof.map((entry, index) =>
                 {
-                    return <HallOfFameItemView data={ entry } level={ (index + 1) } />;
+                    return <HallOfFameItemView key={ index } data={ entry } level={ (index + 1) } />;
                 }
         )}
         </div>
