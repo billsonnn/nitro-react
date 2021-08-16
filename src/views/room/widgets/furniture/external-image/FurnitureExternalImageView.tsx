@@ -33,7 +33,7 @@ export const FurnitureExternalImageView: FC<{}> = props =>
 
     if((objectId === -1) || !photoData) return null;
     
-    return(
+    return (
         <NitroCardView className="nitro-external-image-widget">
             <NitroCardHeaderView headerText={ '' } onCloseClick={ close } />
             <NitroCardContentView>

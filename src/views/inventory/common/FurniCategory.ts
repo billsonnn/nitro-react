@@ -1,4 +1,4 @@
-﻿export class FurniCategory
+export class FurniCategory
 {
     public static DEFAULT: number = 1;
     public static _Str_3639: number = 2;

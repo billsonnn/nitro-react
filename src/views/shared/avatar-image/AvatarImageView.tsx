@@ -13,7 +13,8 @@ export const AvatarImageView: FC<AvatarImageViewProps> = props =>
     useEffect(() =>
     {
         const avatarImage = GetAvatarRenderManager().createAvatarImage(figure, AvatarScaleType.LARGE, gender, {
-            resetFigure: figure => {
+            resetFigure: figure => 
+{
                 if(isDisposed.current) return;
 
                 setRandomValue(Math.random());

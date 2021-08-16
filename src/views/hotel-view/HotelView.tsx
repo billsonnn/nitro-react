@@ -12,7 +12,7 @@ export const HotelView: FC<HotelViewProps> = props =>
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
-        switch (event.type)
+        switch(event.type)
         {
             case RoomSessionEvent.CREATED:
                 setIsVisible(false);
@@ -26,7 +26,7 @@ export const HotelView: FC<HotelViewProps> = props =>
     useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
     useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
-    if (!isVisible) return null;
+    if(!isVisible) return null;
 
     const backgroundColor = GetConfiguration('hotelview')['images']['background.colour'];
     const background      = GetConfigurationManager().interpolate(GetConfiguration('hotelview')['images']['background']);

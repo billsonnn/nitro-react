@@ -110,7 +110,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                         { LocalizeText('friend.furniture.confirm.lock.subtitle') }
                     </h5>
                     <div className="d-flex justify-content-center mb-2">
-                        <div className={ "engraving-lock-stage-" + engravingStage }></div>
+                        <div className={ 'engraving-lock-stage-' + engravingStage }></div>
                     </div>
                     { engravingStage === 2 && <div className="text-small text-black text-center mb-2">{ LocalizeText('friend.furniture.confirm.lock.other.locked') }</div> }
                     <div className="d-flex">
@@ -120,7 +120,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                 </NitroCardContentView>
             </NitroCardView> }
             { engravingLockData && engravingLockData.usernames.length > 0 && <DraggableWindow handleSelector=".nitro-engraving-lock-view">
-                <div className={ "nitro-engraving-lock-view engraving-lock-" + engravingLockData.type }>
+                <div className={ 'nitro-engraving-lock-view engraving-lock-' + engravingLockData.type }>
                     <div className="engraving-lock-close" onClick={ event => processAction('close_view') }></div>
                     <div className="d-flex justify-content-center">
                         <div className="engraving-lock-avatar">

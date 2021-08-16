@@ -116,7 +116,7 @@ export const FurnitureStickieView: FC<{}> = props =>
 
     return (
         <DraggableWindow handleSelector=".drag-handler" position={ DraggableWindowPosition.NOTHING }>
-            <div className={ "nitro-stickie nitro-stickie-image stickie-" + getStickieColorName(stickieData.color) }>
+            <div className={ 'nitro-stickie nitro-stickie-image stickie-' + getStickieColorName(stickieData.color) }>
                 <div className="d-flex align-items-center stickie-header drag-handler">
                     <div className="d-flex align-items-center flex-grow-1 h-100">
                         { stickieData.canModify && 
@@ -124,7 +124,7 @@ export const FurnitureStickieView: FC<{}> = props =>
                             <div className="nitro-stickie-image stickie-trash header-trash" onClick={ event => processAction('trash') }></div>
                             { STICKIE_COLORS.map(color =>
                                 {
-                                    return <div key={ color } className="stickie-color ms-1" onClick={ event => processAction('changeColor', color) } style={ {backgroundColor: ColorUtils.makeColorHex(color) } } />
+                                    return <div key={ color } className="stickie-color ms-1" onClick={ event => processAction('changeColor', color) } style={ { backgroundColor: ColorUtils.makeColorHex(color) } } />
                                 })}
                         </> }
                     </div>

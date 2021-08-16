@@ -1,4 +1,4 @@
-﻿import { RoomWidgetUpdateEvent } from './RoomWidgetUpdateEvent';
+import { RoomWidgetUpdateEvent } from './RoomWidgetUpdateEvent';
 
 export class RoomWidgetUpdateUserDataEvent extends RoomWidgetUpdateEvent
 {

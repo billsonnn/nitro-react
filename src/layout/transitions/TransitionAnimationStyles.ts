@@ -14,12 +14,12 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
                     return {}
                 case ENTERING:
                     return {
-                        animationName: `bounceIn`,
+                        animationName: 'bounceIn',
                         animationDuration: `${ timeout }ms`
                     }
                 case EXITING:
                     return {
-                        animationName: `bounceOut`,
+                        animationName: 'bounceOut',
                         animationDuration: `${ timeout }ms`
                     }
             }
@@ -30,12 +30,12 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
                     return {}
                 case ENTERING:
                     return {
-                        animationName: `slideInLeft`,
+                        animationName: 'slideInLeft',
                         animationDuration: `${ timeout }ms`
                     }
                 case EXITING:
                     return {
-                        animationName: `slideOutLeft`,
+                        animationName: 'slideOutLeft',
                         animationDuration: `${ timeout }ms`
                     }
             }
@@ -46,12 +46,12 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
                     return {}
                 case ENTERING:
                     return {
-                        animationName: `slideInRight`,
+                        animationName: 'slideInRight',
                         animationDuration: `${ timeout }ms`
                     }
                 case EXITING:
                     return {
-                        animationName: `slideOutRight`,
+                        animationName: 'slideOutRight',
                         animationDuration: `${ timeout }ms`
                     }
             }
@@ -62,12 +62,12 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
                     return {}
                 case ENTERING:
                     return {
-                        animationName: `flipInX`,
+                        animationName: 'flipInX',
                         animationDuration: `${ timeout }ms`
                     }
                 case EXITING:
                     return {
-                        animationName: `flipOutX`,
+                        animationName: 'flipOutX',
                         animationDuration: `${ timeout }ms`
                     }
             }
@@ -78,12 +78,12 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
                     return {}
                 case ENTERING:
                     return {
-                        animationName: `fadeInUp`,
+                        animationName: 'fadeInUp',
                         animationDuration: `${ timeout }ms`
                     }
                 case EXITING:
                     return {
-                        animationName: `fadeOutDown`,
+                        animationName: 'fadeOutDown',
                         animationDuration: `${ timeout }ms`
                     }
             }
@@ -94,12 +94,12 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
                     return {}
                 case ENTERING:
                     return {
-                        animationName: `fadeIn`,
+                        animationName: 'fadeIn',
                         animationDuration: `${ timeout }ms`
                     }
                 case EXITING:
                     return {
-                        animationName: `fadeOut`,
+                        animationName: 'fadeOut',
                         animationDuration: `${ timeout }ms`
                     }
             }
@@ -110,12 +110,12 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
                     return {}
                 case ENTERING:
                     return {
-                        animationName: `fadeInDown`,
+                        animationName: 'fadeInDown',
                         animationDuration: `${ timeout }ms`
                     }
                 case EXITING:
                     return {
-                        animationName: `fadeOutUp`,
+                        animationName: 'fadeOutUp',
                         animationDuration: `${ timeout }ms`
                     }
             }
@@ -126,7 +126,7 @@ export function getTransitionAnimationStyle(type: string, transition: Transition
                     return {}
                 case ENTERING:
                     return {
-                        animationName: `headShake`,
+                        animationName: 'headShake',
                         animationDuration: `${ timeout }ms`
                     }
             }

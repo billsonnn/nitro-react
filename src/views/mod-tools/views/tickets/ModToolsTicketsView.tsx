@@ -6,7 +6,7 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
 {
     return (
         <NitroCardView className="nitro-mod-tools-tickets" simple={ true }>
-            <NitroCardHeaderView headerText={ "Tickets" } onCloseClick={ event => {} } />
+            <NitroCardHeaderView headerText={ 'Tickets' } onCloseClick={ event => {} } />
             <NitroCardContentView className="text-black">
                
             </NitroCardContentView>

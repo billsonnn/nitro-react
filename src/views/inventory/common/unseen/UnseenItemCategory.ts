@@ -1,4 +1,4 @@
-﻿export class UnseenItemCategory
+export class UnseenItemCategory
 {
     public static FURNI: number         = 1;
     public static RENTABLE: number      = 2;

@@ -27,7 +27,7 @@ export const PromoArticleWidgetView: FC<PromoArticleWidgetViewProps> = props =>
     	SendMessageHook(new GetPromoArticlesComposer());
   	}, []);
 
-  	if (!articles) return null;
+  	if(!articles) return null;
 
   	return (
 		<div className="promo-articles widget mb-2">
@@ -37,12 +37,12 @@ export const PromoArticleWidgetView: FC<PromoArticleWidgetViewProps> = props =>
 			</div>
 		  	<div className="d-flex flex-row mb-1">
 				{articles && (articles.length > 0) && articles.map((article, ind) =>
-					<div className={`promo-articles-bullet cursor-pointer ` + (article === articles[index] ? 'promo-articles-bullet-active' : '')} key={article.id} onClick={event => handleSelect(ind)} />
+					<div className={'promo-articles-bullet cursor-pointer ' + (article === articles[index] ? 'promo-articles-bullet-active' : '')} key={article.id} onClick={event => handleSelect(ind)} />
 				)}
 			</div>
     		{articles && articles[index] &&
 				<div className="promo-article d-flex flex-row row mx-0">
-			  		<div className="promo-article-image" style={ {backgroundImage: `url(${articles[index].imageUrl})`} }/>
+			  		<div className="promo-article-image" style={ { backgroundImage: `url(${articles[index].imageUrl})` } }/>
 					<div className="col-3 d-flex flex-column h-100">
 						<h3 className="my-0">{articles[index].title}</h3>
 						<b>{ articles[index].bodyText }</b>

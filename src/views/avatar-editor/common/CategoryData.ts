@@ -1,4 +1,4 @@
-﻿import { IPartColor } from '@nitrots/nitro-renderer';
+import { IPartColor } from '@nitrots/nitro-renderer';
 import { AvatarEditorGridColorItem } from './AvatarEditorGridColorItem';
 import { AvatarEditorGridPartItem } from './AvatarEditorGridPartItem';
 

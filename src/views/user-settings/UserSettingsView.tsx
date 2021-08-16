@@ -13,7 +13,7 @@ export const UserSettingsView: FC<{}> = props =>
 
     const onUserSettingsUIEvent = useCallback((event: UserSettingsUIEvent) =>
     {
-        switch (event.type)
+        switch(event.type)
         {
             case UserSettingsUIEvent.SHOW_USER_SETTINGS:
                 setIsVisible(true);
@@ -56,7 +56,7 @@ export const UserSettingsView: FC<{}> = props =>
 
         const clone = userSettings.clone();
 
-        switch (type)
+        switch(type)
         {
             case 'close_view':
                 setIsVisible(false);
@@ -91,7 +91,7 @@ export const UserSettingsView: FC<{}> = props =>
                 break;
         }
 
-        if (doUpdate) setUserSettings(clone);
+        if(doUpdate) setUserSettings(clone);
     }, [userSettings]);
 
     const saveRangeSlider = useCallback((type: string) =>
@@ -106,12 +106,12 @@ export const UserSettingsView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (!userSettings) return;
+        if(!userSettings) return;
 
         dispatchMainEvent(userSettings);
     }, [userSettings]);
 
-    if (!isVisible) return null;
+    if(!isVisible) return null;
 
     return (
         <NitroCardView uniqueKey="user-settings" className="user-settings-window">
@@ -134,7 +134,7 @@ export const UserSettingsView: FC<{}> = props =>
                     <label>{ LocalizeText('widget.memenu.settings.volume.ui') }</label>
                     <div className={ 'd-flex align-items-center justify-content-center' }>
                         <i className={ 'fas' + ((userSettings.volumeSystem === 0) ? ' fa-volume-mute' : '') + ((userSettings.volumeSystem > 0) ? ' fa-volume-down' : '') + ((userSettings.volumeSystem >= 50) ? ' text-muted' : '') } />
-                        <input type="range" className="custom-range ms-2 me-2 w-100" min="0" max="100" step="1" id="volumeSystem" value={ userSettings.volumeSystem } onChange={ event => processAction("system_volume", event.target.value) } onMouseUp={ () => saveRangeSlider("volume") }/>
+                        <input type="range" className="custom-range ms-2 me-2 w-100" min="0" max="100" step="1" id="volumeSystem" value={ userSettings.volumeSystem } onChange={ event => processAction('system_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') }/>
                         <i className={ 'fas fa-volume-up' + ((userSettings.volumeSystem < 50) ? ' text-muted': '') } />
                     </div>
                 </div>
@@ -142,7 +142,7 @@ export const UserSettingsView: FC<{}> = props =>
                     <label>{ LocalizeText('widget.memenu.settings.volume.furni') }</label>
                     <div className={ 'd-flex align-items-center justify-content-center' }>
                         <i className={ 'fas' + ((userSettings.volumeFurni === 0) ? ' fa-volume-mute' : '') + ((userSettings.volumeFurni > 0) ? ' fa-volume-down' : '') + ((userSettings.volumeFurni >= 50) ? ' text-muted' : '') } />
-                        <input type="range" className="custom-range ms-2 me-2 w-100" min="0" max="100" step="1" id="volumeFurni" value={ userSettings.volumeFurni } onChange={ event => processAction("furni_volume", event.target.value) } onMouseUp={ () => saveRangeSlider("volume") }/>
+                        <input type="range" className="custom-range ms-2 me-2 w-100" min="0" max="100" step="1" id="volumeFurni" value={ userSettings.volumeFurni } onChange={ event => processAction('furni_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') }/>
                         <i className={ 'fas fa-volume-up' + ((userSettings.volumeFurni < 50) ? ' text-muted': '') } />
                     </div>
                 </div>
@@ -150,7 +150,7 @@ export const UserSettingsView: FC<{}> = props =>
                     <label>{ LocalizeText('widget.memenu.settings.volume.trax') }</label>
                     <div className={ 'd-flex align-items-center justify-content-center' }>
                         <i className={ 'fas' + ((userSettings.volumeTrax === 0) ? ' fa-volume-mute' : '') + ((userSettings.volumeTrax > 0) ? ' fa-volume-down' : '') + ((userSettings.volumeTrax >= 50) ? ' text-muted' : '') } />
-                        <input type="range" className="custom-range ms-2 me-2 w-100" min="0" max="100" step="1" id="volumeTrax" value={ userSettings.volumeTrax } onChange={ event => processAction("trax_volume", event.target.value) } onMouseUp={ () => saveRangeSlider("volume") }/>
+                        <input type="range" className="custom-range ms-2 me-2 w-100" min="0" max="100" step="1" id="volumeTrax" value={ userSettings.volumeTrax } onChange={ event => processAction('trax_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') }/>
                         <i className={ 'fas fa-volume-up' + ((userSettings.volumeTrax < 50) ? ' text-muted': '') } />
                     </div>
                 </div>

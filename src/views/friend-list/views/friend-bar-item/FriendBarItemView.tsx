@@ -46,13 +46,13 @@ export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
         return (
             <div ref={ elementRef } className="btn btn-primary friend-bar-item friend-bar-search">
                 <div className="friend-bar-item-head position-absolute"/>
-                <div className="text-truncate">{ LocalizeText("friend.bar.find.title") }</div>
+                <div className="text-truncate">{ LocalizeText('friend.bar.find.title') }</div>
             </div>
         );
     }
 
     return (
-        <div ref={ elementRef } className={"btn btn-success friend-bar-item " + (isVisible ? "friend-bar-item-active" : "")} onClick={ event => setVisible(prevValue => !prevValue) }>
+        <div ref={ elementRef } className={'btn btn-success friend-bar-item ' + (isVisible ? 'friend-bar-item-active' : '')} onClick={ event => setVisible(prevValue => !prevValue) }>
             <div className="friend-bar-item-head position-absolute">
                 <AvatarImageView headOnly={ true } figure={ friend.figure } direction={ 2 } />
             </div>

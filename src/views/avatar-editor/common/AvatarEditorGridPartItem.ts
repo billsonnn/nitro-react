@@ -1,4 +1,4 @@
-﻿import { AvatarFigurePartType, IAvatarImageListener, IAvatarRenderManager, IFigurePart, IFigurePartSet, IGraphicAsset, IPartColor, NitroContainer, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
+import { AvatarFigurePartType, IAvatarImageListener, IAvatarRenderManager, IFigurePart, IFigurePartSet, IGraphicAsset, IPartColor, NitroContainer, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
 import { GetAvatarRenderManager } from '../../../api';
 import { FigureData } from './FigureData';
 

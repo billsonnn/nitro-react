@@ -180,7 +180,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
                     <div className="d-block mb-2">
                         <img alt="" src={ GetCatalogPageImage(pageParser, 1) } />
                     </div>
-                    <div className="fs-6 text-center text-black lh-sm overflow-hidden" dangerouslySetInnerHTML={ {__html: getSubscriptionDetails } }></div>
+                    <div className="fs-6 text-center text-black lh-sm overflow-hidden" dangerouslySetInnerHTML={ { __html: getSubscriptionDetails } }></div>
                 </div>
             </div>
         </>

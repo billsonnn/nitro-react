@@ -42,18 +42,18 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     }, [ isZoomedIn, isLiked, widgetHandler ]);
     
     return (
-        <div className={'nitro-room-tools ps-3 d-flex' + classNames({' open': isExpended})}>
+        <div className={'nitro-room-tools ps-3 d-flex' + classNames({ ' open': isExpended })}>
             <div className="list-group list-group-flush w-100 me-1">
                 <div className="list-group-item" onClick={ () => handleToolClick('settings') }>
                     <i className="fas fa-cog me-2" />{ LocalizeText('room.settings.button.text') }
                 </div>
                 <div className="list-group-item" onClick={ () => handleToolClick('zoom') }>
-                    <i className={ 'fas me-2 ' +classNames({'fa-search-minus': !isZoomedIn, 'fa-search-plus': isZoomedIn}) } />{ LocalizeText('room.zoom.button.text') }
+                    <i className={ 'fas me-2 ' +classNames({ 'fa-search-minus': !isZoomedIn, 'fa-search-plus': isZoomedIn }) } />{ LocalizeText('room.zoom.button.text') }
                 </div>
                 <div className="list-group-item" onClick={ () => handleToolClick('chat_history') }>
                     <i className="fas fa-comment-alt me-2" />{ LocalizeText('room.chathistory.button.text') }
                 </div>
-                <div className={ 'list-group-item' + classNames({' disabled': isLiked})} onClick={ () => handleToolClick('like_room') }>
+                <div className={ 'list-group-item' + classNames({ ' disabled': isLiked })} onClick={ () => handleToolClick('like_room') }>
                     <i className="fas fa-heart me-2" />{ LocalizeText('room.like.button.text') }
                 </div>
                 <div className="list-group-item" onClick={ () => handleToolClick('toggle_room_link') }>
@@ -61,7 +61,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 </div>
             </div>
             <div className="cursor-pointer d-flex align-items-center px-2" onClick={() => setIsExpanded(value => !value)}>
-                <i className={ 'fas ' + classNames({'fa-chevron-left': isExpended, 'fa-chevron-right': !isExpended}) } />
+                <i className={ 'fas ' + classNames({ 'fa-chevron-left': isExpended, 'fa-chevron-right': !isExpended }) } />
             </div>
         </div>
     );

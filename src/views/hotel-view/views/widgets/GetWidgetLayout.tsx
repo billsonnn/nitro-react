@@ -7,15 +7,15 @@ import { WidgetContainerView } from './widgetcontainer/WIdgetContainerView';
 
 export const GetWidgetLayout: FC<GetWidgetLayoutProps> = props =>
 {
-  switch (props.widgetType)
+  switch(props.widgetType)
   {
-    case "promoarticle":
+    case 'promoarticle':
       return <PromoArticleWidgetView />;
-    case "achievementcompetition_hall_of_fame":
+    case 'achievementcompetition_hall_of_fame':
       return <HallOfFameWidgetView slot={props.slot} conf={props.widgetConf} />;
-    case "bonusrare":
+    case 'bonusrare':
       return <BonusRareWidgetView />;
-    case "widgetcontainer":
+    case 'widgetcontainer':
       return <WidgetContainerView conf={props.widgetConf} />
     default:
       return null;

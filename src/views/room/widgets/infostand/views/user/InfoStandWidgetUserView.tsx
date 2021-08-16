@@ -57,7 +57,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
     {
         const parser = event.getParser();
 
-        if (userData && userData.webID === parser.userId)
+        if(userData && userData.webID === parser.userId)
             setUserRelationships(parser);
     }, [userData]);
 
@@ -70,7 +70,8 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
         setMotto(userData.motto);
         SendMessageHook(new UserRelationshipsComposer(userData.webID));
 
-        return () => {
+        return () => 
+{
             setBadges([]);
             setUserRelationships(null);
         }

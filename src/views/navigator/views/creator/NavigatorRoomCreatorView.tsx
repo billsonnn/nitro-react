@@ -116,7 +116,7 @@ export const NavigatorRoomCreatorView: FC<NavigatorRoomCreatorViewProps> = props
                 {
                     NAVIGATOR_ROOM_MODELS.map(model =>
                         {
-                            return (<div key={ model.name } onClick={ () => selectModel(model.name) } className={ 'h-100 cursor-pointer d-flex flex-column justify-content-center align-items-center p-1 me-2 rounded border border-2' + classNames({' active': selectedModelName === model.name, ' disabled': GetSessionDataManager().clubLevel < model.clubLevel}) }>
+                            return (<div key={ model.name } onClick={ () => selectModel(model.name) } className={ 'h-100 cursor-pointer d-flex flex-column justify-content-center align-items-center p-1 me-2 rounded border border-2' + classNames({ ' active': selectedModelName === model.name, ' disabled': GetSessionDataManager().clubLevel < model.clubLevel }) }>
                                 <img alt="" src={ getRoomModelImage(model.name) } />
                                 <div>{ model.tileSize } { LocalizeText('navigator.createroom.tilesize') }</div>
                                 { model.clubLevel > HabboClubLevelEnum.NO_CLUB && <CurrencyIcon type="hc" /> }

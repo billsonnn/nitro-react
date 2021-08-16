@@ -1,4 +1,4 @@
-﻿export class BotSkillsEnum
+export class BotSkillsEnum
 {
     public static _Str_19584: number       = 0;
     public static DRESS_UP: number         = 1;

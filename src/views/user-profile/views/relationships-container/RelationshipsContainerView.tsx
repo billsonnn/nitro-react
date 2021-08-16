@@ -11,7 +11,7 @@ export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = p
 
     const OnUserClick = useCallback((user: RelationshipStatusInfo) =>
     {
-        if (user)
+        if(user)
             SendMessageHook(new UserProfileComposer(user.randomFriendId));
     }, []);
 
@@ -19,7 +19,7 @@ export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = p
     {
         const relationshipInfo = (relationships && relationships.relationshipStatusMap.hasKey(type)) ? relationships.relationshipStatusMap.getValue(type) : null;
 
-        if (simple && !relationshipInfo) return null;
+        if(simple && !relationshipInfo) return null;
 
         const relationshipName = RelationshipStatusEnum.RELATIONSHIP_NAMES[type].toLocaleLowerCase();
 

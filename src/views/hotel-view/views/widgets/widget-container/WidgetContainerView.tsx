@@ -13,7 +13,7 @@ export const WidgetContainerView: FC<WidgetContainerViewProps> = props =>
 
         if(!conf || !conf.length) return config;
 
-        let options = conf.split(",");
+        let options = conf.split(',');
 
         options.forEach(option =>
         {

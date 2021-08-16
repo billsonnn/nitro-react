@@ -1,4 +1,4 @@
-﻿import { AvatarEditorUtilities } from './AvatarEditorUtilities';
+import { AvatarEditorUtilities } from './AvatarEditorUtilities';
 
 export class FigureData
 {

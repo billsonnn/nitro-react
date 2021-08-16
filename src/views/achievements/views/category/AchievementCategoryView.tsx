@@ -69,7 +69,7 @@ export const AchievementCategoryView: FC<AchievementCategoryViewProps> = props =
                         {
                             return (
                             <div key={ index } className="col mb-3">
-                                <div className={'achievement border border-2 rounded d-flex flex-column justify-content-center align-items-center p-2' + classNames({' active': selectedAchievementId === achievement.achievementId, ' gray': achievement.progress === 0})} onClick={() => selectAchievement(achievement.achievementId)}>
+                                <div className={'achievement border border-2 rounded d-flex flex-column justify-content-center align-items-center p-2' + classNames({ ' active': selectedAchievementId === achievement.achievementId, ' gray': achievement.progress === 0 })} onClick={() => selectAchievement(achievement.achievementId)}>
                                     <BadgeImageView badgeCode={ getAchievementImage(achievement) } />
                                 </div>
                             </div>

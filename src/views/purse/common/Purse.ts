@@ -151,7 +151,7 @@ export class Purse implements IPurse
     {
         if(((this.clubDays === 0) && (this.clubPeriods === 0))) return HabboClubLevelEnum.NO_CLUB;
 
-        if (this.isVip) return HabboClubLevelEnum.VIP;
+        if(this.isVip) return HabboClubLevelEnum.VIP;
 
         return HabboClubLevelEnum.CLUB;
     }

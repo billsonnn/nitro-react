@@ -290,7 +290,7 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
                         );
                     })}
                 <NitroCardTabsItemView isActive={ isWardrobeVisible } onClick={ event => setIsWardrobeVisible(true) }>
-                    { LocalizeText(`avatareditor.category.wardrobe`) }
+                    { LocalizeText('avatareditor.category.wardrobe') }
                 </NitroCardTabsItemView>
             </NitroCardTabsView>
             <NitroCardContentView>

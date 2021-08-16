@@ -1,4 +1,4 @@
-﻿import { RoomWidgetMessage } from './RoomWidgetMessage';
+import { RoomWidgetMessage } from './RoomWidgetMessage';
 
 export class RoomWidgetRequestWidgetMessage extends RoomWidgetMessage
 {

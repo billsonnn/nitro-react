@@ -23,7 +23,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
     const [ pendingOpenTree, setPendingOpenTree ] = useState<ICatalogPageData[]>(null);
     const [ catalogState, dispatchCatalogState ] = useReducer(CatalogReducer, initialCatalog);
     const [ currentTab, setCurrentTab ] = useState<ICatalogPageData>(null);
-    const { root = null, pageParser = null, activeOffer = null, searchResult = null} = catalogState;
+    const { root = null, pageParser = null, activeOffer = null, searchResult = null } = catalogState;
 
     const saveActivePages = useCallback(() =>
     {

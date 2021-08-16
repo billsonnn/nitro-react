@@ -24,7 +24,7 @@ export const UserProfileView: FC = props =>
     {
         const parser = event.getParser();
 
-        if (userProfile && parser.userId === userProfile.id)
+        if(userProfile && parser.userId === userProfile.id)
             setUserBadges(parser.badges);
     }, [userProfile, setUserBadges]);
 
@@ -34,7 +34,7 @@ export const UserProfileView: FC = props =>
     {
         const parser = event.getParser();
 
-        if (userProfile && parser.userId === userProfile.id)
+        if(userProfile && parser.userId === userProfile.id)
             setUserRelationships(parser);
     }, [userProfile, setUserRelationships]);
 
@@ -57,7 +57,7 @@ export const UserProfileView: FC = props =>
 
     CreateMessageHook(UserProfileEvent, OnUserProfileEvent);
 
-    if (!userProfile) return null;
+    if(!userProfile) return null;
 
     return (
         <div className="user-profile">

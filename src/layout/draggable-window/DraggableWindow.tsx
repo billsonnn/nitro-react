@@ -141,7 +141,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
             }
         }
 
-        setDelta({ x: 0, y: 0});
+        setDelta({ x: 0, y: 0 });
         setOffset({ x: offsetX, y: offsetY });
 
         return () =>

@@ -11,7 +11,7 @@ export const ModeratorMessageView: FC<ModeratorMessageViewProps> = props =>
     if(!notification) return null;
 
     const content = <>
-        <div dangerouslySetInnerHTML={ {__html: notification.message } } />
+        <div dangerouslySetInnerHTML={ { __html: notification.message } } />
         <div className="fw-bold text-center">
             <a href={ notification.link } rel="noreferrer" target="_blank" onClick={ () => onButtonClick('dismiss_notification') }>{ LocalizeText('mod.alert.link') }</a>
         </div>

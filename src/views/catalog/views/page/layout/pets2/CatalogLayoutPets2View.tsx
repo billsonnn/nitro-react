@@ -15,7 +15,7 @@ export const CatalogLayoutPets2View: FC<CatalogLayoutPets2ViewProps> = props =>
                     </div>
                     <h6 className="align-self-center">{ GetCatalogPageText(pageParser, 1) }</h6>
                 </div>
-                <div dangerouslySetInnerHTML={ {__html: GetCatalogPageText(pageParser, 2) } } />
+                <div dangerouslySetInnerHTML={ { __html: GetCatalogPageText(pageParser, 2) } } />
                 {GetCatalogPageText(pageParser, 3) && <div className="mt-auto bg-secondary text-white rounded p-1 text-center" dangerouslySetInnerHTML={{ __html: GetCatalogPageText(pageParser, 3) }} />}
             </div>
         </div>

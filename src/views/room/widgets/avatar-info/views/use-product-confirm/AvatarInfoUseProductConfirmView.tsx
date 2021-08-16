@@ -76,8 +76,8 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                 const newCustomParts: PetCustomPart[] = [];
 
                 const _local_6 = customParts[1].split(',').map(piece => parseInt(piece));
-                const _local_7 = customParts[2].split(",").map(piece => parseInt(piece));
-                const _local_8 = customParts[3].split(",").map(piece => parseInt(piece));
+                const _local_7 = customParts[2].split(',').map(piece => parseInt(piece));
+                const _local_8 = customParts[3].split(',').map(piece => parseInt(piece));
 
                 let _local_10 = 0;
 
@@ -88,7 +88,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     
                     let _local_12 = _local_8[_local_10];
 
-                    if (_local_15 != null) _local_12 = _local_15.paletteId;
+                    if(_local_15 != null) _local_12 = _local_15.paletteId;
 
                     newCustomParts.push(new PetCustomPart(_local_13, _local_7[_local_10], _local_12));
 
@@ -102,8 +102,8 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
                 const newCustomParts: PetCustomPart[] = [];
 
-                const _local_6 = customParts[1].split(",").map(piece => parseInt(piece));
-                const _local_8 = customParts[2].split(",").map(piece => parseInt(piece));
+                const _local_6 = customParts[1].split(',').map(piece => parseInt(piece));
+                const _local_8 = customParts[2].split(',').map(piece => parseInt(piece));
 
                 let _local_10 = 0;
 
@@ -129,8 +129,8 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                 const newCustomParts: PetCustomPart[] = [];
 
                 const _local_6 = customParts[1].split(',').map(piece => parseInt(piece));
-                const _local_7 = customParts[2].split(",").map(piece => parseInt(piece));
-                const _local_8 = customParts[3].split(",").map(piece => parseInt(piece));
+                const _local_7 = customParts[2].split(',').map(piece => parseInt(piece));
+                const _local_8 = customParts[3].split(',').map(piece => parseInt(piece));
 
                 let _local_10 = 0;
 

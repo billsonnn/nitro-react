@@ -34,7 +34,7 @@ export const CatalogLayouGuildForumView: FC<CatalogLayoutGuildForumViewProps> = 
     return (
         <div className="row h-100 nitro-catalog-layout-guild-custom-furni">
             <div className="col-7 overflow-auto h-100 d-flex flex-column bg-muted rounded py-1 px-2 text-black">
-                <div dangerouslySetInnerHTML={ {__html: GetCatalogPageText(pageParser, 1) } } />
+                <div dangerouslySetInnerHTML={ { __html: GetCatalogPageText(pageParser, 1) } } />
             </div>
             <div className="col position-relative d-flex flex-column justify-content-center">
                 { groups.length === 0 && <div className="bg-muted text-center rounded p-1 text-black">

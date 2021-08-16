@@ -9,7 +9,7 @@ export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabView
 
     const handleChange = useCallback((field: string, value: string | number | boolean) =>
     {
-        const roomSettings = ({...roomSettingsData} as RoomSettingsData);
+        const roomSettings = ({ ...roomSettingsData } as RoomSettingsData);
         let save = true;
 
         switch(field)

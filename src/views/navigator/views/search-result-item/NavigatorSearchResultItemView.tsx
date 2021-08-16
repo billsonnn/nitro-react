@@ -81,7 +81,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
                         <i className="fas fa-info-circle text-secondary" onClick={ openInfo }></i>
                         { roomData.habboGroupId > 0 && <i className="fas fa-users mr-2"></i> }
                         { roomData.doorMode !== RoomDataParser.OPEN_STATE && 
-                            <i className={ 'me-2 fas ' + classNames( {'fa-lock': roomData.doorMode === RoomDataParser.DOORBELL_STATE, 'fa-key': roomData.doorMode === RoomDataParser.PASSWORD_STATE })}></i>
+                            <i className={ 'me-2 fas ' + classNames( { 'fa-lock': roomData.doorMode === RoomDataParser.DOORBELL_STATE, 'fa-key': roomData.doorMode === RoomDataParser.PASSWORD_STATE })}></i>
                         }
                     </div>
                 </div>

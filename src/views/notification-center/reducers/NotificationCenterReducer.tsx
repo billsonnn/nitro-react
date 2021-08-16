@@ -53,7 +53,7 @@ export const NotificationCenterReducer: Reducer<INotificationCenterState, INotif
 
             notifications.splice(notificationIndex, 1);
 
-            return {...state, notifications};
+            return { ...state, notifications };
         }
         case NotificationCenterActions.DISMISS_NOTIFICATION: {
             const id = (action.payload.id || null);
@@ -69,7 +69,7 @@ export const NotificationCenterReducer: Reducer<INotificationCenterState, INotif
 
             notifications[notificationIndex].dismiss();
 
-            return {...state, notifications};
+            return { ...state, notifications };
         }
         default:
             return state;

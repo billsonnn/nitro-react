@@ -35,7 +35,7 @@ export const TransitionAnimation: FC<TransitionAnimationProps> = props =>
     return (
         <Transition in={ inProp } timeout={ timeout }>
             { state => (
-                <div className={ (className ?? '') + " animate__animated" } style={ { ...getTransitionAnimationStyle(type, state, timeout) } }>
+                <div className={ (className ?? '') + ' animate__animated' } style={ { ...getTransitionAnimationStyle(type, state, timeout) } }>
                     { isChildrenVisible && children }
                 </div>
             )}

@@ -1,4 +1,4 @@
-﻿import { IFurnitureItemData, IObjectData } from '@nitrots/nitro-renderer';
+import { IFurnitureItemData, IObjectData } from '@nitrots/nitro-renderer';
 import { GetNitroInstance } from '../../../api';
 import { IFurnitureItem } from './IFurnitureItem';
 

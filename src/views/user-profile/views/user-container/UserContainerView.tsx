@@ -7,14 +7,16 @@ import { UserContainerViewProps } from './UserContainerView.types';
 
 export const UserContainerView: FC<UserContainerViewProps> = props =>
 {
-    const {figure = null, username = null, motto = null, creation = null, secondsSinceLastLogin = null, achievementScore, isFriend = null, isOnline = null, id = null, requestSent = null} = props;
+    const { figure = null, username = null, motto = null, creation = null, secondsSinceLastLogin = null, achievementScore, isFriend = null, isOnline = null, id = null, requestSent = null } = props;
 
-    const OnlineIcon = useCallback(() => {
+    const OnlineIcon = useCallback(() => 
+{
         if(isOnline) return (<i className="icon icon-pf-online" />);
         else return (<i className="icon icon-pf-offline" />);
     }, [isOnline]);
 
-    const FriendRequestComponent = useCallback(() => {
+    const FriendRequestComponent = useCallback(() => 
+{
         if(id === GetSessionDataManager().userId) return (<span><i className="icon icon-pf-tick" />{LocalizeText('extendedprofile.me')}</span> );
 
         if(isFriend) return (<span><i className="icon icon-pf-tick" />{LocalizeText('extendedprofile.friend')}</span>);
