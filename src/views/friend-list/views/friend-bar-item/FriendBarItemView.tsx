@@ -1,4 +1,4 @@
-import { FollowFriendComposer, MouseEventType } from '@nitrots/nitro-renderer';
+import { FollowFriendComposer, MouseEventType, UserProfileComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { LocalizeText } from '../../../../utils/LocalizeText';
@@ -14,6 +14,11 @@ export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
     const followFriend = useCallback(() =>
     {
         SendMessageHook(new FollowFriendComposer(friend.id));
+    }, [ friend ]);
+
+    const openProfile = useCallback(() =>
+    {
+        SendMessageHook(new UserProfileComposer(friend.id));
     }, [ friend ]);
 
     const onClick = useCallback((event: MouseEvent) =>
@@ -56,7 +61,7 @@ export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
                 <div className="d-flex justify-content-between">
                     <i className="icon icon-fb-chat cursor-pointer" />
                     { friend.followingAllowed && <i onClick={ followFriend } className="icon icon-fb-visit cursor-pointer" /> }
-                    <i className="icon icon-fb-profile cursor-pointer" />
+                    <i onClick={ openProfile } className="icon icon-fb-profile cursor-pointer" />
                 </div> }
         </div>
     );

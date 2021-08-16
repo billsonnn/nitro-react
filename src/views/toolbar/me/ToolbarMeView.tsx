@@ -1,5 +1,7 @@
-import { MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useRef } from 'react';
+import { MouseEventType, UserProfileComposer } from '@nitrots/nitro-renderer';
+import { FC, useCallback, useEffect, useRef } from 'react';
+import { GetSessionDataManager } from '../../../api';
+import { SendMessageHook } from '../../../hooks';
 import { ToolbarViewItems } from '../ToolbarView.types';
 import { ToolbarMeViewProps } from './ToolbarMeView.types';
 
@@ -29,6 +31,11 @@ export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
         }
     }, [ elementRef, setMeExpanded ]);
 
+    const openProfile = useCallback(() =>
+    {
+        SendMessageHook(new UserProfileComposer(GetSessionDataManager().userId));
+    }, []);
+
     return (
         <div ref={ elementRef } className="d-flex nitro-toolbar-me px-1 py-2">
             <div className="navigation-items">
@@ -42,7 +49,7 @@ export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
                     <i className="icon icon-me-achievements"></i>
                 </div>
                 <div className="navigation-item">
-                    <i className="icon icon-me-profile"></i>
+                    <i className="icon icon-me-profile" onClick={() => openProfile()}></i>
                 </div>
                 <div className="navigation-item">
                     <i className="icon icon-me-rooms"></i>

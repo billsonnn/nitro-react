@@ -1,9 +1,11 @@
-import { RoomSessionUserBadgesEvent } from '@nitrots/nitro-renderer';
+import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomSessionUserBadgesEvent, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../../hooks/events';
 import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
+import { RelationshipsContainerView } from '../../../../../user-profile/views/relationships-container/RelationshipsContainerView';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { RoomWidgetUpdateInfostandUserEvent } from '../../../../events/RoomWidgetUpdateInfostandUserEvent';
 import { RoomWidgetChangeMottoMessage } from '../../../../messages';
@@ -16,6 +18,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
     const [ badges, setBadges ] = useState<string[]>([]);
     const [ motto, setMotto ] = useState(null);
     const [ isEditingMotto, setIsEditingMotto ] = useState(false);
+    const [ userRelationships, setUserRelationships ] = useState<RelationshipStatusInfoMessageParser>(null);
 
     const saveMotto = useCallback((motto: string) =>
     {
@@ -50,11 +53,27 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     CreateEventDispatcherHook(RoomSessionUserBadgesEvent.RSUBE_BADGES, eventDispatcher, onRoomSessionUserBadgesEvent);
 
+    const OnUserRelationshipsEvent = useCallback((event: RelationshipStatusInfoEvent) =>
+    {
+        const parser = event.getParser();
+
+        if (userData && userData.webID === parser.userId)
+            setUserRelationships(parser);
+    }, [userData]);
+
+    CreateMessageHook(RelationshipStatusInfoEvent, OnUserRelationshipsEvent);
+
     useEffect(() =>
     {
         setBadges(userData.badges);
         setIsEditingMotto(false);
         setMotto(userData.motto);
+        SendMessageHook(new UserRelationshipsComposer(userData.webID));
+
+        return () => {
+            setBadges([]);
+            setUserRelationships(null);
+        }
     }, [ userData ]);
 
     if(!userData) return null;
@@ -122,7 +141,9 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                         <div className="small text-wrap">
                             { LocalizeText('infostand.text.handitem', [ 'item' ], [ LocalizeText('handitem' + userData.carryItem) ]) }
                         </div>
-                    </> }
+                    </> 
+                }
+                <RelationshipsContainerView relationships={userRelationships} simple={true}/>
             </div>
         </div>);
 }
