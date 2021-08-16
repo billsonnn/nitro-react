@@ -19,6 +19,7 @@ export * from './RoomWidgetUpdateInfostandPetEvent';
 export * from './RoomWidgetUpdateInfostandRentableBotEvent';
 export * from './RoomWidgetUpdateInfostandUserEvent';
 export * from './RoomWidgetUpdateRentableBotChatEvent';
+export * from './RoomWidgetUpdateSongEvent';
 export * from './RoomWidgetUpdateUserDataEvent';
 export * from './RoomWidgetUseProductBubbleEvent';
 export * from './UseProductItem';
