@@ -1,4 +1,4 @@
-import { RoomObjectItem } from '../../events';
+import { RoomObjectItem } from '../../../../api';
 
 export interface ChooserWidgetViewProps
 {

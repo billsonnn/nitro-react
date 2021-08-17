@@ -1,13 +1,11 @@
 import { ILinkEventTracker, NavigatorInitComposer, NavigatorSearchComposer, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { AddEventLinkTracker, GoToDesktop, RemoveLinkEventTracker } from '../../api';
-import { TryVisitRoom } from '../../api/navigator/TryVisitRoom';
+import { AddEventLinkTracker, GoToDesktop, LocalizeText, RemoveLinkEventTracker, TryVisitRoom } from '../../api';
 import { NavigatorEvent, UpdateDoorStateEvent } from '../../events';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
-import { LocalizeText } from '../../utils/LocalizeText';
 import { NavigatorContextProvider } from './context/NavigatorContext';
 import { NavigatorMessageHandler } from './NavigatorMessageHandler';
 import { NavigatorViewProps } from './NavigatorView.types';

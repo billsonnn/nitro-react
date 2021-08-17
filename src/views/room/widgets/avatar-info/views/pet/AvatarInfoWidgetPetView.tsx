@@ -1,9 +1,7 @@
 import { PetType, RoomControllerLevel, RoomObjectCategory, RoomObjectType, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetOwnRoomObject, GetSessionDataManager } from '../../../../../../api';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
+import { GetOwnRoomObject, GetSessionDataManager, LocalizeText, RoomWidgetMessage, RoomWidgetUserActionMessage } from '../../../../../../api';
 import { useRoomContext } from '../../../../context/RoomContext';
-import { RoomWidgetMessage, RoomWidgetUserActionMessage } from '../../../../messages';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';
 import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../../context-menu/views/list-item/ContextMenuListItemView';

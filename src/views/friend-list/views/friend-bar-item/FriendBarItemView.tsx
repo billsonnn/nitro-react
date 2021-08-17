@@ -1,7 +1,7 @@
 import { FollowFriendComposer, MouseEventType, UserProfileComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';
-import { LocalizeText } from '../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { FriendBarItemViewProps } from './FriendBarItemView.types';
 

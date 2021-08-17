@@ -1,8 +1,6 @@
 import { IRoomSession, RoomEngineEvent, RoomId, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { SetActiveRoomId } from '../../api/nitro/room/SetActiveRoomId';
-import { GetRoomSession } from '../../api/nitro/session/GetRoomSession';
-import { StartRoomSession } from '../../api/nitro/session/StartRoomSession';
+import { GetRoomSession, SetActiveRoomId, StartRoomSession } from '../../api';
 import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { RoomView } from '../room/RoomView';

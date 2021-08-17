@@ -1,8 +1,7 @@
 import { RedeemItemClothingComposer, RoomObjectCategory, UserFigureComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetAvatarRenderManager, GetConnection, GetFurnitureDataForRoomObject, GetSessionDataManager } from '../../../../../../../api';
+import { GetAvatarRenderManager, GetConnection, GetFurnitureDataForRoomObject, GetSessionDataManager, LocalizeText } from '../../../../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../../../layout';
-import { LocalizeText } from '../../../../../../../utils/LocalizeText';
 import { FigureData } from '../../../../../../avatar-editor/common/FigureData';
 import { FurniCategory } from '../../../../../../inventory/common/FurniCategory';
 import { AvatarImageView } from '../../../../../../shared/avatar-image/AvatarImageView';

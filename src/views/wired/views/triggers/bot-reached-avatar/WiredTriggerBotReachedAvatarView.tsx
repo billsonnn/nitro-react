@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../../api';
 import { useWiredContext } from '../../../context/WiredContext';
 import { WiredFurniType } from '../../../WiredView.types';
 import { WiredTriggerBaseView } from '../base/WiredTriggerBaseView';

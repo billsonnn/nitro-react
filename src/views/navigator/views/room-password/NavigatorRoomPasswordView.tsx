@@ -1,8 +1,7 @@
 import { FC, useCallback, useState } from 'react';
-import { CreateRoomSession } from '../../../../api';
+import { CreateRoomSession, LocalizeText } from '../../../../api';
 import { UpdateDoorStateEvent } from '../../../../events';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { LocalizeText } from '../../../../utils';
 import { NavigatorRoomPasswordViewProps } from './NavigatorRoomPasswordView.types';
 
 export const NavigatorRoomPasswordView: FC<NavigatorRoomPasswordViewProps> = props =>

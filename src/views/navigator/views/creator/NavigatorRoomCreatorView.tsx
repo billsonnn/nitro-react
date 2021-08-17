@@ -2,9 +2,8 @@
 import { HabboClubLevelEnum, RoomCreateComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetConfiguration, GetSessionDataManager } from '../../../../api';
+import { GetConfiguration, GetSessionDataManager, LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';
-import { LocalizeText } from '../../../../utils/LocalizeText';
 import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
 import { useNavigatorContext } from '../../context/NavigatorContext';
 import { NavigatorRoomCreatorViewProps, NAVIGATOR_ROOM_MODELS } from './NavigatorRoomCreatorView.types';

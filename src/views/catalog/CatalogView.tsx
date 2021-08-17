@@ -1,11 +1,10 @@
 import { CatalogModeComposer, CatalogPageComposer, CatalogRequestGiftConfigurationComposer, ICatalogPageData, ILinkEventTracker, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
-import { AddEventLinkTracker, GetRoomEngine, RemoveLinkEventTracker } from '../../api';
+import { AddEventLinkTracker, GetRoomEngine, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { CatalogEvent } from '../../events';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
-import { LocalizeText } from '../../utils/LocalizeText';
 import { CatalogMessageHandler } from './CatalogMessageHandler';
 import { CatalogMode, CatalogViewProps } from './CatalogView.types';
 import { BuildCatalogPageTree } from './common/CatalogUtilities';

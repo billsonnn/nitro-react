@@ -1,12 +1,10 @@
 import { IFurnitureData, PetCustomPart, PetFigureData, RoomObjectCategory, RoomObjectVariable, RoomUserData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetFurnitureDataForRoomObject, GetRoomEngine } from '../../../../../../api';
+import { GetFurnitureDataForRoomObject, GetRoomEngine, LocalizeText, RoomWidgetUseProductMessage } from '../../../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../../layout';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { FurniCategory } from '../../../../../inventory/common/FurniCategory';
 import { PetImageView } from '../../../../../shared/pet-image/PetImageView';
 import { useRoomContext } from '../../../../context/RoomContext';
-import { RoomWidgetUseProductMessage } from '../../../../messages';
 import { AvatarInfoUseProductConfirmViewProps } from './AvatarInfoUseProductConfirmView.types';
 
 const _Str_5091: number = -1;

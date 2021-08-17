@@ -1,16 +1,11 @@
 import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, IAvatarFigureContainer, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import { GetNitroInstance } from '../../../../../api';
-import { GetRoomEngine } from '../../../../../api/nitro/room/GetRoomEngine';
-import { GetRoomSession } from '../../../../../api/nitro/session/GetRoomSession';
-import { GetSessionDataManager } from '../../../../../api/nitro/session/GetSessionDataManager';
+import { GetNitroInstance, GetRoomEngine, GetRoomSession, GetSessionDataManager, LocalizeText, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
-import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../../context/RoomContext';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { MannequinViewMode } from './common/MannequinViewMode';
 import { FurnitureMannequinData } from './FurnitureMannequinData';
 

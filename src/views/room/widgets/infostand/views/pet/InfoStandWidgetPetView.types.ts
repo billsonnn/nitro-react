@@ -1,4 +1,4 @@
-import { RoomWidgetUpdateInfostandPetEvent } from '../../../../events';
+import { RoomWidgetUpdateInfostandPetEvent } from '../../../../../../api';
 
 export interface InfoStandWidgetPetViewProps
 {

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../../../api';
 import { CatalogPurchaseGiftButtonViewProps } from './CatalogPurchaseGiftButtonView.types';
 
 export const CatalogPurchaseGiftButtonView: FC<CatalogPurchaseGiftButtonViewProps> = props =>

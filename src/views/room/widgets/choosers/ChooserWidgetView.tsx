@@ -1,10 +1,9 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import { List, ListRowProps, ListRowRenderer } from 'react-virtualized';
+import { RoomObjectItem, RoomWidgetRoomObjectMessage } from '../../../../api';
+import { LocalizeText } from '../../../../api/utils';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { LocalizeText } from '../../../../utils';
 import { useRoomContext } from '../../context/RoomContext';
-import { RoomObjectItem } from '../../events';
-import { RoomWidgetRoomObjectMessage } from '../../messages';
 import { ChooserWidgetViewProps } from './ChooserWidgetView.type';
 
 export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>

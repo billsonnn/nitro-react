@@ -1,4 +1,4 @@
-import { RoomWidgetUpdateEvent } from '../../../views/room/events/RoomWidgetUpdateEvent';
+import { RoomWidgetUpdateEvent } from '../../../api';
 
 export class RoomWidgetCameraEvent extends RoomWidgetUpdateEvent
 {

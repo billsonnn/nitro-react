@@ -1,6 +1,6 @@
 import { NitroEvent, RoomObjectCategory, RoomObjectVariable, RoomWidgetEnum } from '@nitrots/nitro-renderer';
-import { GetRoomEngine, GetSessionDataManager } from '../../../api';
-import { LocalizeText } from '../../../utils';
+import { GetRoomEngine, GetSessionDataManager } from '../../../..';
+import { LocalizeText } from '../../../../utils';
 import { RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage, RoomWidgetRequestWidgetMessage, RoomWidgetRoomObjectMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';

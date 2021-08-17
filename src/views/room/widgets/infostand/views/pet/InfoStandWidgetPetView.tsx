@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../../../api';
 import { PetImageView } from '../../../../../shared/pet-image/PetImageView';
 import { InfoStandBaseView } from '../base/InfoStandBaseView';
 import { InfoStandWidgetPetViewProps } from './InfoStandWidgetPetView.types';

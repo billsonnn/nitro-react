@@ -1,7 +1,6 @@
 import { NitroRectangle } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
-import { GetRoomEngine } from '../../api';
-import { LocalizeText } from '../../utils';
+import { GetRoomEngine, LocalizeText } from '../../api';
 import { DraggableWindow } from '../draggable-window';
 import { NitroLayoutMiniCameraViewProps } from './NitroLayoutMiniCameraView.types';
 

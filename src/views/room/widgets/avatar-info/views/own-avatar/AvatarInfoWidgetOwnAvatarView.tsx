@@ -1,12 +1,10 @@
 import { AvatarAction, AvatarExpressionEnum, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, HasHabboClub, HasHabboVip, IsRidingHorse } from '../../../../../../api';
+import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUserActionMessage } from '../../../../../../api';
 import { AvatarEditorEvent } from '../../../../../../events';
 import { dispatchUiEvent } from '../../../../../../hooks';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
 import { useRoomContext } from '../../../../context/RoomContext';
-import { RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUserActionMessage } from '../../../../messages';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';
 import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../../context-menu/views/list-item/ContextMenuListItemView';

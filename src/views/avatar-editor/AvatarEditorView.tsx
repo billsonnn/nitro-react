@@ -1,11 +1,10 @@
 import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, UserFigureComposer, UserWardrobePageComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetClubMemberLevel, GetSessionDataManager } from '../../api';
+import { GetClubMemberLevel, GetSessionDataManager, LocalizeText } from '../../api';
 import { AvatarEditorEvent } from '../../events/avatar-editor';
 import { CreateMessageHook, SendMessageHook } from '../../hooks';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
-import { LocalizeText } from '../../utils/LocalizeText';
 import { AvatarEditorViewProps } from './AvatarEditorView.types';
 import { AvatarEditorUtilities } from './common/AvatarEditorUtilities';
 import { BodyModel } from './common/BodyModel';

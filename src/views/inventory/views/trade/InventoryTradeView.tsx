@@ -1,9 +1,9 @@
 import { FurnitureListComposer, IObjectData, TradingAcceptComposer, TradingConfirmationComposer, TradingListAddItemComposer, TradingListAddItemsComposer, TradingListItemRemoveComposer, TradingUnacceptComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
 import { NitroCardGridView } from '../../../../layout/card/grid/NitroCardGridView';
-import { LocalizeText } from '../../../../utils/LocalizeText';
 import { FurniCategory } from '../../common/FurniCategory';
 import { GroupItem } from '../../common/GroupItem';
 import { IFurnitureItem } from '../../common/IFurnitureItem';

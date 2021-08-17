@@ -1,14 +1,12 @@
 import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomSessionUserBadgesEvent, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import { LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent } from '../../../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../../hooks/events';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { RelationshipsContainerView } from '../../../../../user-profile/views/relationships-container/RelationshipsContainerView';
 import { useRoomContext } from '../../../../context/RoomContext';
-import { RoomWidgetUpdateInfostandUserEvent } from '../../../../events/RoomWidgetUpdateInfostandUserEvent';
-import { RoomWidgetChangeMottoMessage } from '../../../../messages';
 import { InfoStandWidgetUserViewProps } from './InfoStandWidgetUserView.types';
 
 export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =>

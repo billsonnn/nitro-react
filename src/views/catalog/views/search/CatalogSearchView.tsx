@@ -1,7 +1,6 @@
 import { ICatalogPageData, IFurnitureData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetSessionDataManager } from '../../../../api';
-import { LocalizeText } from '../../../../utils/LocalizeText';
+import { GetSessionDataManager, LocalizeText } from '../../../../api';
 import { GetOfferNodes } from '../../common/CatalogUtilities';
 import { useCatalogContext } from '../../context/CatalogContext';
 import { CatalogActions } from '../../reducers/CatalogReducer';

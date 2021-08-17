@@ -1,10 +1,10 @@
 import { CatalogPurchaseComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { LocalizeText } from '../../../../../../api';
 import { CatalogEvent } from '../../../../../../events';
 import { useUiEvent } from '../../../../../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { LoadingSpinnerView } from '../../../../../../layout';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { GetCurrencyAmount } from '../../../../../purse/common/CurrencyHelper';
 import { CatalogPurchaseButtonViewProps, CatalogPurchaseState } from './CatalogPurchaseButtonView.types';
 

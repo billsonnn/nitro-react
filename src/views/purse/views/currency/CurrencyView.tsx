@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { LocalizeShortNumber } from '../../../../utils/LocalizeShortNumber';
+import { LocalizeShortNumber } from '../../../../api';
 import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
 import { CurrencyViewProps } from './CurrencyView.types';
 

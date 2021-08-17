@@ -1,11 +1,9 @@
 import { IFurnitureData, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetFurnitureDataForRoomObject } from '../../../../../../../api';
+import { GetFurnitureDataForRoomObject, LocalizeText, RoomWidgetUseProductMessage } from '../../../../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../../../layout';
-import { LocalizeText } from '../../../../../../../utils/LocalizeText';
 import { FurniCategory } from '../../../../../../inventory/common/FurniCategory';
 import { useRoomContext } from '../../../../../context/RoomContext';
-import { RoomWidgetUseProductMessage } from '../../../../../messages';
 import { MonsterPlantSeedConfirmViewProps } from './MonsterPlantSeedConfirmView.types';
 
 const MODE_DEFAULT: number = -1;

@@ -1,8 +1,7 @@
 import { RequestBadgesComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
+import { LocalizeBadgeName, LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
-import { LocalizeBadgeName } from '../../../../utils/LocalizeBageName';
-import { LocalizeText } from '../../../../utils/LocalizeText';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryBadgeActions } from '../../reducers/InventoryBadgeReducer';

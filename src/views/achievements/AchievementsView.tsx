@@ -1,8 +1,8 @@
 import { FC, useCallback, useReducer, useState } from 'react';
+import { LocalizeText } from '../../api';
 import { AchievementsUIEvent } from '../../events/achievements';
 import { useUiEvent } from '../../hooks/events';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
-import { LocalizeText } from '../../utils/LocalizeText';
 import { AchievementsMessageHandler } from './AchievementsMessageHandler';
 import { AchievementsViewProps } from './AchievementsView.types';
 import { AchievementsContextProvider } from './context/AchievementsContext';

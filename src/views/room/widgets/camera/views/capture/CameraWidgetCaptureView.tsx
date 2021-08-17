@@ -1,8 +1,7 @@
 import { NitroRectangle, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
-import { GetRoomEngine, GetRoomSession } from '../../../../../../api';
+import { GetRoomEngine, GetRoomSession, LocalizeText } from '../../../../../../api';
 import { DraggableWindow } from '../../../../../../layout/draggable-window/DraggableWindow';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { CameraPicture } from '../../common/CameraPicture';
 import { useCameraWidgetContext } from '../../context/CameraWidgetContext';
 import { CameraWidgetCaptureViewProps } from './CameraWidgetCaptureView.types';

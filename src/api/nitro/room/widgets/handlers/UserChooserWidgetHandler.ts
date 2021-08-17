@@ -1,6 +1,6 @@
 import { NitroEvent, RoomObjectCategory, RoomWidgetEnum } from '@nitrots/nitro-renderer';
 import { RoomWidgetHandler } from '.';
-import { GetRoomEngine } from '../../../api';
+import { GetRoomEngine } from '../../../..';
 import { RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage, RoomWidgetRequestWidgetMessage, RoomWidgetRoomObjectMessage } from '../messages';
 

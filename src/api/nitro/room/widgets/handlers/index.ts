@@ -1,5 +1,8 @@
+export * from './DoorbellWidgetHandler';
+export * from './FurniChooserWidgetHandler';
 export * from './FurnitureContextMenuWidgetHandler';
 export * from './FurnitureCustomStackHeightWidgetHandler';
+export * from './FurnitureExternalImageWidgetHandler';
 export * from './IRoomWidgetHandler';
 export * from './IRoomWidgetHandlerManager';
 export * from './RoomWidgetAvatarInfoHandler';
@@ -8,3 +11,5 @@ export * from './RoomWidgetChatInputHandler';
 export * from './RoomWidgetHandler';
 export * from './RoomWidgetHandlerManager';
 export * from './RoomWidgetInfostandHandler';
+export * from './RoomWidgetRoomToolsHandler';
+export * from './UserChooserWidgetHandler';

@@ -1,12 +1,10 @@
 import { FurnitureExchangeComposer, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine, GetRoomSession } from '../../../../../api';
+import { GetRoomEngine, GetRoomSession, LocalizeText, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
-import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../context/RoomContext';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureExchangeCreditData } from './FurnitureExchangeCreditData';
 
 export const FurnitureExchangeCreditView: FC<{}> = props =>

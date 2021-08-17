@@ -1,6 +1,6 @@
 import { FC } from 'react';
+import { LocalizeText } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { LocalizeText } from '../../../../utils/LocalizeText';
 import { NotificationTrayItemView } from '../tray-item/NotificationTrayItemView';
 import { HotelWillShutdownViewProps } from './HotelWillShutdownView.types';
 

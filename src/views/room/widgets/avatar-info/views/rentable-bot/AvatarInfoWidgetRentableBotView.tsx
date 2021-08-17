@@ -1,10 +1,8 @@
 import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, RequestBotCommandConfigurationComposer, RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetNitroInstance } from '../../../../../../api';
+import { GetNitroInstance, LocalizeText, RoomWidgetUpdateRentableBotChatEvent } from '../../../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks/messages';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../../context/RoomContext';
-import { RoomWidgetUpdateRentableBotChatEvent } from '../../../../events';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';
 import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../../context-menu/views/list-item/ContextMenuListItemView';

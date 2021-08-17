@@ -1,10 +1,8 @@
 import { RoomEngineDimmerStateEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CanManipulateFurniture, GetRoomEngine, IsFurnitureSelectionDisabled, ProcessRoomObjectOperation } from '../../../api';
+import { CanManipulateFurniture, GetRoomEngine, IsFurnitureSelectionDisabled, LocalizeText, ProcessRoomObjectOperation, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../../../api';
 import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks/events';
-import { LocalizeText } from '../../../utils/LocalizeText';
 import { useRoomContext } from '../context/RoomContext';
-import { RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../events';
 import { AvatarInfoWidgetView } from './avatar-info/AvatarInfoWidgetView';
 import { CameraWidgetView } from './camera/CameraWidgetView';
 import { ChatInputView } from './chat-input/ChatInputView';

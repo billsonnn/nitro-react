@@ -1,5 +1,5 @@
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../../../api';
 import RoomSettingsData from '../../../../common/RoomSettingsData';
 import { NavigatorRoomSettingsTabViewProps } from '../../NavigatorRoomSettingsView.types';
 

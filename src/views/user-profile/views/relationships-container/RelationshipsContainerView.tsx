@@ -1,7 +1,7 @@
 import { RelationshipStatusEnum, RelationshipStatusInfo, UserProfileComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
+import { LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
-import { LocalizeText } from '../../../../utils';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { RelationshipsContainerViewProps } from './RelationshipsContainerView.types';
 

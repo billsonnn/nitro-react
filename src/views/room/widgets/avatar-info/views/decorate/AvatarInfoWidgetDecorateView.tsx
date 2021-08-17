@@ -1,6 +1,6 @@
 import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../../../api';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';
 import { ContextMenuListItemView } from '../../../context-menu/views/list-item/ContextMenuListItemView';
 import { ContextMenuListView } from '../../../context-menu/views/list/ContextMenuListView';

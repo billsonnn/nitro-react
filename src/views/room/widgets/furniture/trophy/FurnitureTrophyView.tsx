@@ -1,11 +1,10 @@
 import { NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine } from '../../../../../api';
+import { GetRoomEngine, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { NitroLayoutTrophyView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureTrophyData } from './FurnitureTrophyData';
 
 export const FurnitureTrophyView: FC<{}> = props =>

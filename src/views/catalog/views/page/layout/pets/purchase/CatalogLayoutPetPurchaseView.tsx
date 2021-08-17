@@ -1,9 +1,9 @@
 import { ApproveNameMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
+import { LocalizeText } from '../../../../../../../api';
 import { CatalogEvent } from '../../../../../../../events';
 import { useUiEvent } from '../../../../../../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../../../../../../hooks/messages/message-event';
-import { LocalizeText } from '../../../../../../../utils/LocalizeText';
 import { CurrencyIcon } from '../../../../../../shared/currency-icon/CurrencyIcon';
 import { CatalogPurchaseButtonView } from '../../../purchase/purchase-button/CatalogPurchaseButtonView';
 import { CatalogPetNameApprovalView } from '../name-approval/CatalogPetNameApprovalView';

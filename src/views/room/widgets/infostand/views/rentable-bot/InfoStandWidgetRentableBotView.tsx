@@ -1,7 +1,7 @@
 import { BotRemoveComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo } from 'react';
+import { LocalizeText } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks/messages';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { BotSkillsEnum } from '../../../avatar-info/common/BotSkillsEnum';

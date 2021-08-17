@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../../../api';
 import { GetMaxVisitorsList } from '../../../../common/RoomSettingsUtils';
 import { useNavigatorContext } from '../../../../context/NavigatorContext';
 import { NavigatorRoomSettingsTabViewProps } from '../../NavigatorRoomSettingsView.types';

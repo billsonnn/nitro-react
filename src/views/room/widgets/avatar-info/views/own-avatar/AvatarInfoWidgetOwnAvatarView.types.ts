@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { RoomWidgetUpdateInfostandUserEvent } from '../../../../events';
+import { RoomWidgetUpdateInfostandUserEvent } from '../../../../../../api';
 
 export interface AvatarInfoWidgetOwnAvatarViewProps
 {

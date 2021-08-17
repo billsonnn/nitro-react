@@ -1,14 +1,13 @@
 import { MessengerInitComposer, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectUserType } from '@nitrots/nitro-renderer';
 import React, { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { GetRoomSession } from '../../api';
+import { GetRoomSession, LocalizeText } from '../../api';
 import { FriendEnteredRoomEvent, FriendListEvent } from '../../events';
 import { FriendListSendFriendRequestEvent } from '../../events/friend-list/FriendListSendFriendRequestEvent';
 import { useRoomEngineEvent } from '../../hooks/events';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
-import { LocalizeText } from '../../utils/LocalizeText';
 import { FriendListContextProvider } from './context/FriendListContext';
 import { FriendListMessageHandler } from './FriendListMessageHandler';
 import { FriendListViewProps } from './FriendListView.types';

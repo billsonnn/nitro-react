@@ -1,8 +1,8 @@
 import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
+import { LocalizeText } from '../../api';
 import { CreateMessageHook, SendMessageHook } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
-import { LocalizeText } from '../../utils';
 import { BadgesContainerView } from './views/badges-container/BadgesContainerView';
 import { FriendsContainerView } from './views/friends-container/FriendsContainerView';
 import { UserContainerView } from './views/user-container/UserContainerView';

@@ -1,9 +1,7 @@
 import { NitroEvent, RoomEngineTriggerWidgetEvent, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { GetRoomEngine } from '../../../../../api';
+import { GetRoomEngine, LocalizeBadgeDescription, LocalizeBadgeName } from '../../../../../api';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
-import { LocalizeBadgeDescription } from '../../../../../utils';
-import { LocalizeBadgeName } from '../../../../../utils/LocalizeBageName';
 import { useRoomContext } from '../../../context/RoomContext';
 
 export const FurnitureBadgeDisplayView: FC<{}> = props =>

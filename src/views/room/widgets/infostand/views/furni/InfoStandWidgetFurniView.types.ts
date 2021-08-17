@@ -1,4 +1,4 @@
-import { RoomWidgetUpdateInfostandFurniEvent } from '../../../../events';
+import { RoomWidgetUpdateInfostandFurniEvent } from '../../../../../../api';
 
 export interface InfoStandWidgetFurniViewProps
 {

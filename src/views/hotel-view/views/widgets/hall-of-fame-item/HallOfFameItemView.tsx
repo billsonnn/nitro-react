@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { LocalizeText } from '../../../../../utils';
+import { LocalizeText } from '../../../../../api';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { HallOfFameItemViewProps } from './HallOfFameItemView.types';
 

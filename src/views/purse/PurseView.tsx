@@ -1,10 +1,9 @@
 import { FriendlyTime, HabboClubLevelEnum, UserCurrencyComposer, UserSubscriptionComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetConfiguration } from '../../api';
+import { GetConfiguration, LocalizeText } from '../../api';
 import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
 import { dispatchUiEvent } from '../../hooks';
 import { SendMessageHook } from '../../hooks/messages/message-event';
-import { LocalizeText } from '../../utils/LocalizeText';
 import { CurrencyIcon } from '../shared/currency-icon/CurrencyIcon';
 import { IPurse } from './common/IPurse';
 import { Purse } from './common/Purse';

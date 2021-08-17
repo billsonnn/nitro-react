@@ -1,5 +1,5 @@
 import { NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable, RoomWidgetEnum } from '@nitrots/nitro-renderer';
-import { GetRoomEngine } from '../../../api';
+import { GetRoomEngine } from '../../../..';
 import { IPhotoData } from '../events';
 import { RoomWidgetUpdateEvent } from '../events/RoomWidgetUpdateEvent';
 import { RoomWidgetUpdateExternalImageEvent } from '../events/RoomWidgetUpdateExternalImageEvent';

@@ -1,4 +1,4 @@
-import { RoomWidgetUpdateInfostandUserEvent } from '../../../../events';
+import { RoomWidgetUpdateInfostandUserEvent } from '../../../../../../api';
 
 export interface AvatarInfoWidgetAvatarViewProps
 {

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../../api';
 import { InventoryFurnitureSearchViewProps } from './InventoryFurnitureSearchView.types';
 
 export const InventoryFurnitureSearchView: FC<InventoryFurnitureSearchViewProps> = props =>

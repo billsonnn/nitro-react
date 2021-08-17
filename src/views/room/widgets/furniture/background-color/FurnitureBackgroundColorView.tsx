@@ -1,13 +1,11 @@
 import { ApplyTonerComposer, RoomControllerLevel, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { GetRoomEngine, GetSessionDataManager } from '../../../../../api';
+import { GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateBackgroundColorPreviewEvent } from '../../../../../api';
 import { SendMessageHook } from '../../../../../hooks';
 import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../../../../hooks/events';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
-import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../context/RoomContext';
-import { RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateBackgroundColorPreviewEvent } from '../../../events';
 
 export const FurnitureBackgroundColorView: FC<{}> = props =>
 {

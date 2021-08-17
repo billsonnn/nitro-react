@@ -1,6 +1,6 @@
 import { AvatarFigureContainer, IFigurePartSet, IPalette, IPartColor, SetType } from '@nitrots/nitro-renderer';
 import { GetAvatarRenderManager } from '../../../api';
-import { Randomizer } from '../../../utils';
+import { Randomizer } from '../../../api/utils';
 import { FigureData } from './FigureData';
 
 function getTotalColors(partSet: IFigurePartSet): number

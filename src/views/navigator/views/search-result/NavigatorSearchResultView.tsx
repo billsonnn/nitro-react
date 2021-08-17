@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../api';
 import { NavigatorSearchResultItemView } from '../search-result-item/NavigatorSearchResultItemView';
 import { NavigatorSearchResultViewDisplayMode, NavigatorSearchResultViewProps } from './NavigatorSearchResultView.types';
 

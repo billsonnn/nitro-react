@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { LocalizeText } from '../../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../../api';
 import { useWiredContext } from '../../../context/WiredContext';
 import { WiredFurniType } from '../../../WiredView.types';
 import { WiredConditionBaseView } from '../base/WiredConditionBaseView';

@@ -1,6 +1,5 @@
 import { FC } from 'react';
-import { LocalizeShortNumber } from '../../../../utils/LocalizeShortNumber';
-import { LocalizeText } from '../../../../utils/LocalizeText';
+import { LocalizeShortNumber, LocalizeText } from '../../../../api';
 import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
 import { SeasonalViewProps } from './SeasonalView.types';
 

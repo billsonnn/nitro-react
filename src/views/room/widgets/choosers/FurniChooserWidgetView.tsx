@@ -1,9 +1,7 @@
 import { FC, useCallback, useState } from 'react';
+import { LocalizeText, RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRequestWidgetMessage, RoomWidgetRoomObjectUpdateEvent } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks';
-import { LocalizeText } from '../../../../utils';
 import { useRoomContext } from '../../context/RoomContext';
-import { RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRoomObjectUpdateEvent } from '../../events';
-import { RoomWidgetRequestWidgetMessage } from '../../messages';
 import { ChooserWidgetView } from './ChooserWidgetView';
 
 export const FurniChooserWidgetView: FC<{}> = props =>

@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from 'react';
+import { LocalizeText } from '../../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
-import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../context/RoomContext';
 import { FurnitureDimmerData } from './FurnitureDimmerData';
 

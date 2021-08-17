@@ -1,9 +1,8 @@
 import { RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { ProcessRoomObjectOperation } from '../../../../../api';
+import { ProcessRoomObjectOperation, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../../context/RoomContext';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { ObjectLocationView } from '../../object-location/ObjectLocationView';
 
 export const FurnitureManipulationMenuView: FC<{}> = props =>

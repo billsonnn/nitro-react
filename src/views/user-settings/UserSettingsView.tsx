@@ -1,10 +1,10 @@
 import { NitroSettingsEvent, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer, UserSettingsSoundComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { LocalizeText } from '../../api';
 import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
 import { CreateMessageHook, dispatchMainEvent, SendMessageHook, useUiEvent } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView } from '../../layout';
 import { NitroCardView } from '../../layout/card/NitroCardView';
-import { LocalizeText } from '../../utils';
 
 export const UserSettingsView: FC<{}> = props =>
 {

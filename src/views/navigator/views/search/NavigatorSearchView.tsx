@@ -1,5 +1,5 @@
 import React, { FC, KeyboardEvent, useCallback, useState } from 'react';
-import { LocalizeText } from '../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../api';
 import { useNavigatorContext } from '../../context/NavigatorContext';
 import { NavigatorSearchViewProps, SearchFilterOptions } from './NavigatorSearchView.types';
 

@@ -1,8 +1,7 @@
 import { RoomDataParser } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, MouseEvent } from 'react';
-import { CreateRoomSession, GetSessionDataManager } from '../../../../api';
-import { TryVisitRoom } from '../../../../api/navigator/TryVisitRoom';
+import { CreateRoomSession, GetSessionDataManager, TryVisitRoom } from '../../../../api';
 import { UpdateDoorStateEvent } from '../../../../events';
 import { dispatchUiEvent } from '../../../../hooks';
 import { NavigatorSearchResultItemViewProps } from './NavigatorSearchResultItemView.types';

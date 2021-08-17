@@ -1,10 +1,10 @@
 import { CatalogClubOfferData, CatalogPurchaseComposer, CatalogRequestVipOffersComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { LocalizeText } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { NitroCardGridItemView } from '../../../../../../layout/card/grid/item/NitroCardGridItemView';
 import { NitroCardGridView } from '../../../../../../layout/card/grid/NitroCardGridView';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { GLOBAL_PURSE } from '../../../../../purse/PurseView';
 import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
 import { GetCatalogPageImage } from '../../../../common/CatalogUtilities';

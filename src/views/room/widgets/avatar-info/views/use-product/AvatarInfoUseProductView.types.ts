@@ -1,4 +1,4 @@
-import { UseProductItem } from '../../../../events';
+import { UseProductItem } from '../../../../../../api';
 
 export interface AvatarInfoUseProductViewProps
 {

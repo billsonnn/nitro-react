@@ -1,11 +1,11 @@
 import { StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { LocalizeText } from '../../../../../../api';
 import { InventoryBadgesUpdatedEvent } from '../../../../../../events';
 import { InventoryBadgesRequestEvent } from '../../../../../../events/inventory/InventoryBadgesRequestEvent';
 import { dispatchUiEvent, useUiEvent } from '../../../../../../hooks';
 import { NitroCardGridItemView } from '../../../../../../layout/card/grid/item/NitroCardGridItemView';
 import { NitroCardGridView } from '../../../../../../layout/card/grid/NitroCardGridView';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { GetOfferName } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';

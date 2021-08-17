@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { LocalizeText } from '../../../../../../../api';
 import { CatalogEvent, CatalogNameResultEvent } from '../../../../../../../events';
 import { useUiEvent } from '../../../../../../../hooks/events/ui/ui-event';
-import { LocalizeText } from '../../../../../../../utils/LocalizeText';
 import { CatalogPetNameApprovalViewProps } from './CatalogPetNameApprovalView.types';
 
 export const CatalogPetNameApprovalView: FC<CatalogPetNameApprovalViewProps> = props =>

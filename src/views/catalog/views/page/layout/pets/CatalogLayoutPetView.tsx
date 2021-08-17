@@ -1,8 +1,7 @@
 import { CatalogRequestPetBreedsComposer, ColorConverter, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { GetProductDataForLocalization } from '../../../../../../api/nitro/session/GetProductDataForLocalization';
+import { GetProductDataForLocalization, LocalizeText } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { PetImageView } from '../../../../../shared/pet-image/PetImageView';
 import { GetCatalogPageImage, GetCatalogPageText, GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';

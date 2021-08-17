@@ -1,12 +1,10 @@
 import { CrackableDataType, RoomControllerLevel, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { CreateLinkEvent } from '../../../../../../api';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
+import { CreateLinkEvent, LocalizeText, RoomWidgetFurniActionMessage } from '../../../../../../api';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { LimitedEditionCompactPlateView } from '../../../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../../../shared/rarity-level/RarityLevelView';
 import { useRoomContext } from '../../../../context/RoomContext';
-import { RoomWidgetFurniActionMessage } from '../../../../messages';
 import { InfoStandBaseView } from '../base/InfoStandBaseView';
 import { InfoStandWidgetFurniViewProps } from './InfoStandWidgetFurniView.types';
 

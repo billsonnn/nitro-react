@@ -1,4 +1,4 @@
-import { RoomWidgetUpdateRentableBotChatEvent } from '../../../../events';
+import { RoomWidgetUpdateRentableBotChatEvent } from '../../../../../../api';
 
 export interface AvatarInfoRentableBotChatViewProps
 {

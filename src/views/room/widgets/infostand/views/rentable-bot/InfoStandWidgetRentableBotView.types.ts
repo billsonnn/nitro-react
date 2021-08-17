@@ -1,4 +1,4 @@
-import { RoomWidgetUpdateInfostandRentableBotEvent } from '../../../../events';
+import { RoomWidgetUpdateInfostandRentableBotEvent } from '../../../../../../api';
 
 export interface InfoStandWidgetRentableBotViewProps
 {

@@ -1,7 +1,7 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../api';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { useAchievementsContext } from '../../context/AchievementsContext';
 import { AchievementsActions } from '../../reducers/AchievementsReducer';

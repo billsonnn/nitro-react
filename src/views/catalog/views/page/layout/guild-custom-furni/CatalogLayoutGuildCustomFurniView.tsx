@@ -1,7 +1,7 @@
 import { CatalogGroupsComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
+import { LocalizeText } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks/messages';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
 import { GetOfferName } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogRoomPreviewerView } from '../../../catalog-room-previewer/CatalogRoomPreviewerView';

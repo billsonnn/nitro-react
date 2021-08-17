@@ -1,12 +1,11 @@
 import { FurnitureStackHeightComposer, FurnitureStackHeightEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
+import { LocalizeText, RoomWidgetUpdateCustomStackHeightEvent } from '../../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
-import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { useRoomContext } from '../../../context/RoomContext';
-import { RoomWidgetUpdateCustomStackHeightEvent } from '../../../events';
 
 const MAX_HEIGHT: number = 40;
 

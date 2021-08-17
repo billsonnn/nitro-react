@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { LocalizeText } from '../../utils/LocalizeText';
+import { LocalizeText } from '../../api';
 import { DraggableWindow } from '../draggable-window';
 import { NitroLayoutTrophyViewProps } from './NitroLayoutTrophyView.types';
 

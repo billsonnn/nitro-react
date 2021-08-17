@@ -1,6 +1,5 @@
 import { FC, useCallback, useMemo } from 'react';
-import { GetConfigurationManager } from '../../../../../api/core';
-import { LocalizeText } from '../../../../../utils/LocalizeText';
+import { GetConfigurationManager, LocalizeText } from '../../../../../api';
 import { WidgetContainerViewProps } from './WidgetContainerView.types';
 
 export const WidgetContainerView: FC<WidgetContainerViewProps> = props =>

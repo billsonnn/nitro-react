@@ -1,6 +1,6 @@
 import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, IAvatarImageListener, INitroPoint, IVector3D, NitroEvent, NitroPoint, PetFigureData, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomWidgetEnum, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
-import { GetAvatarRenderManager, GetRoomEngine } from '../../../api';
-import { LocalizeText } from '../../../utils/LocalizeText';
+import { GetAvatarRenderManager, GetRoomEngine } from '../../../..';
+import { LocalizeText } from '../../../../utils/LocalizeText';
 import { RoomWidgetUpdateChatEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';

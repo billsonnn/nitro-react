@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { LocalizeText } from '../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../api';
 import { NotificationCenterAlertBase } from '../alert-base/NotificationCenterAlertBase';
 import { NotificationCenterBroadcastMessageViewProps } from './NotificationCenterBroadcastMessageView.types';
 

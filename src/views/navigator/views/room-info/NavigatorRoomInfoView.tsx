@@ -1,13 +1,12 @@
 import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, UserHomeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetConfiguration } from '../../../../api';
+import { GetConfiguration, LocalizeText } from '../../../../api';
 import { NavigatorEvent } from '../../../../events';
 import { RoomWidgetThumbnailEvent } from '../../../../events/room-widgets/thumbnail';
 import { dispatchUiEvent } from '../../../../hooks/events';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { LocalizeText } from '../../../../utils/LocalizeText';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { useNavigatorContext } from '../../context/NavigatorContext';
 import { NavigatorActions } from '../../reducers/NavigatorReducer';

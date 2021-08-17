@@ -1,12 +1,10 @@
 import { RoomEnterEffect, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { GetRoomSession, GetSessionDataManager } from '../../../../api';
+import { GetRoomSession, GetSessionDataManager, RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectMessage, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../../../../api';
 import { FriendEnteredRoomEvent } from '../../../../events';
 import { useUiEvent } from '../../../../hooks/events';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../context/RoomContext';
-import { RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../../events';
-import { RoomWidgetRoomObjectMessage } from '../../messages';
 import { AvatarInfoWidgetAvatarView } from './views/avatar/AvatarInfoWidgetAvatarView';
 import { AvatarInfoWidgetDecorateView } from './views/decorate/AvatarInfoWidgetDecorateView';
 import { AvatarInfoWidgetNameView } from './views/name/AvatarInfoWidgetNameView';

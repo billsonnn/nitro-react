@@ -1,13 +1,11 @@
 import { NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine, GetRoomSession, GetSessionDataManager } from '../../../../../api';
+import { ColorUtils, GetRoomEngine, GetRoomSession, GetSessionDataManager, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { DraggableWindowPosition } from '../../../../../layout';
 import { DraggableWindow } from '../../../../../layout/draggable-window/DraggableWindow';
-import { ColorUtils } from '../../../../../utils/ColorUtils';
 import { useRoomContext } from '../../../context/RoomContext';
-import { RoomWidgetRoomObjectUpdateEvent } from '../../../events';
 import { FurnitureStickieData } from './FurnitureStickieData';
 import { getStickieColorName, STICKIE_COLORS } from './FurnitureStickieUtils';
 

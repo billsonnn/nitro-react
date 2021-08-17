@@ -1,8 +1,7 @@
 import { RequestPetsComposer, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { GetRoomEngine } from '../../../../api';
+import { GetRoomEngine, LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
-import { LocalizeText } from '../../../../utils/LocalizeText';
 import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerView';
 import { attemptPetPlacement } from '../../common/PetUtilities';
 import { useInventoryContext } from '../../context/InventoryContext';

@@ -1,5 +1,5 @@
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../../../api';
 import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { InfoStandBaseView } from '../base/InfoStandBaseView';

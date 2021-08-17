@@ -1,7 +1,6 @@
 import { CatalogPageOfferData, IFurnitureData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetSessionDataManager } from '../../../../../../api';
-import { LocalizeText } from '../../../../../../utils/LocalizeText';
+import { GetSessionDataManager, LocalizeText } from '../../../../../../api';
 import { GetCatalogPageImage, GetCatalogPageText, GetOfferName } from '../../../../common/CatalogUtilities';
 import { ProductTypeEnum } from '../../../../common/ProductTypeEnum';
 import { useCatalogContext } from '../../../../context/CatalogContext';

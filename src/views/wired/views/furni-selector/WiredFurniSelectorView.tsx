@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect } from 'react';
+import { LocalizeText } from '../../../../api';
 import { WiredSelectObjectEvent } from '../../../../events';
 import { useUiEvent } from '../../../../hooks/events';
-import { LocalizeText } from '../../../../utils/LocalizeText';
 import { WiredSelectionVisualizer } from '../../common/WiredSelectionVisualizer';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredFurniSelectorViewProps } from './WiredFurniSelectorView.types';

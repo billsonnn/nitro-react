@@ -1,11 +1,9 @@
 import { ColorConverter, NitroAdjustmentFilter, NitroContainer, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineEvent, RoomId, RoomObjectHSLColorEnabledEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetNitroInstance, GetRoomEngine } from '../../api';
+import { GetNitroInstance, GetRoomEngine, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomViewEvent } from '../../api';
 import { UseMountEffect } from '../../hooks';
 import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../hooks/events';
 import { useRoomContext } from './context/RoomContext';
-import { RoomWidgetUpdateBackgroundColorPreviewEvent } from './events';
-import { RoomWidgetUpdateRoomViewEvent } from './events/RoomWidgetUpdateRoomViewEvent';
 
 export const RoomColorView: FC<{}> = props =>
 {

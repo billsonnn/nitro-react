@@ -1,7 +1,6 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { GetConfiguration, GetNitroInstance } from '../../../../api';
+import { GetConfiguration, GetNitroInstance, LocalizeText } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { LocalizeText } from '../../../../utils/LocalizeText';
 import { useNavigatorContext } from '../../context/NavigatorContext';
 import { NavigatorRoomLinkViewProps } from './NavigatorRoomLinkView.types';
 

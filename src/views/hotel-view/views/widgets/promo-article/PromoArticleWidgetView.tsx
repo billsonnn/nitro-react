@@ -1,7 +1,7 @@
 import { GetPromoArticlesComposer, PromoArticleData, PromoArticlesMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { LocalizeText } from '../../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../../hooks';
-import { LocalizeText } from '../../../../../utils/LocalizeText';
 import { PromoArticleWidgetViewProps } from './PromoArticleWidgetView.types';
 
 export const PromoArticleWidgetView: FC<PromoArticleWidgetViewProps> = props =>

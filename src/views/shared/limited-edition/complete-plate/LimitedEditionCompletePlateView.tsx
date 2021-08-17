@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { LocalizeText } from '../../../../utils/LocalizeText';
+import { LocalizeText } from '../../../../api';
 import { LimitedEditionStyledNumberView } from '../styled-number/LimitedEditionStyledNumberView';
 import { LimitedEditionCompletePlateViewProps } from './LimitedEditionCompletePlateView.types';
 

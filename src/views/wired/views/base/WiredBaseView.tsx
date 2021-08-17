@@ -1,9 +1,8 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetSessionDataManager } from '../../../../api';
+import { GetSessionDataManager, LocalizeText } from '../../../../api';
 import { WiredEvent } from '../../../../events';
 import { dispatchUiEvent } from '../../../../hooks/events';
 import { NitroCardContentView, NitroCardView } from '../../../../layout';
-import { LocalizeText } from '../../../../utils/LocalizeText';
 import { WiredSelectionVisualizer } from '../../common/WiredSelectionVisualizer';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredFurniType } from '../../WiredView.types';

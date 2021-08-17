@@ -1,8 +1,8 @@
 import { RoomSettingsEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
+import { LocalizeText } from '../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
-import { LocalizeText } from '../../../../utils/LocalizeText';
 import RoomSettingsData from '../../common/RoomSettingsData';
 import { NavigatorRoomSettingsAccessTabView } from './views/tab-access/NavigatorRoomSettingsAccessTabView';
 import { NavigatorRoomSettingsBasicTabView } from './views/tab-basic/NavigatorRoomSettingsBasicTabView';

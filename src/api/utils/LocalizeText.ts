@@ -1,4 +1,4 @@
-import { GetNitroInstance } from '../api';
+import { GetNitroInstance } from '..';
 
 export function LocalizeText(key: string, parameters: string[] = null, replacements: string[] = null): string
 {

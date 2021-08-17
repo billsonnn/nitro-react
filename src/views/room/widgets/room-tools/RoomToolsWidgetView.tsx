@@ -1,12 +1,11 @@
 import { RoomLikeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useState } from 'react';
+import { LocalizeText, RoomWidgetZoomToggleMessage } from '../../../../api';
 import { NavigatorEvent } from '../../../../events';
 import { dispatchUiEvent } from '../../../../hooks/events';
 import { SendMessageHook } from '../../../../hooks/messages';
-import { LocalizeText } from '../../../../utils/LocalizeText';
 import { useRoomContext } from '../../context/RoomContext';
-import { RoomWidgetZoomToggleMessage } from '../../messages';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
 {

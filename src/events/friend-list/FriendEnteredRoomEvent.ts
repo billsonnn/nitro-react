@@ -1,4 +1,4 @@
-import { RoomWidgetObjectNameEvent } from '../../views/room/events';
+import { RoomWidgetObjectNameEvent } from '../../api';
 
 export class FriendEnteredRoomEvent extends RoomWidgetObjectNameEvent
 {

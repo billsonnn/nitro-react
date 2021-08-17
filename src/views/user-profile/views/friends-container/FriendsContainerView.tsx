@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { LocalizeText } from '../../../../utils';
+import { LocalizeText } from '../../../../api';
 import { RelationshipsContainerView } from '../relationships-container/RelationshipsContainerView';
 import { FriendsContainerViewProps } from './FriendsContainerView.types';
 

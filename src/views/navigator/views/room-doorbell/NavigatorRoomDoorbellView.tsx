@@ -1,8 +1,7 @@
 import { FC, useCallback } from 'react';
-import { CreateRoomSession, GoToDesktop } from '../../../../api';
+import { CreateRoomSession, GoToDesktop, LocalizeText } from '../../../../api';
 import { UpdateDoorStateEvent } from '../../../../events';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { LocalizeText } from '../../../../utils';
 import { NavigatorRoomDoorbellViewProps } from './NavigatorRoomDoorbellView.types';
 
 export const NavigatorRoomDoorbellView: FC<NavigatorRoomDoorbellViewProps> = props =>

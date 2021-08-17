@@ -1,4 +1,4 @@
-import { GetNitroInstance } from '../api';
+import { GetNitroInstance } from '..';
 
 export function LocalizeBadgeName(key: string): string
 {

@@ -1,6 +1,6 @@
 import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomWidgetEnum, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
-import { GetRoomEngine, GetSessionDataManager } from '../../../api';
-import { SendMessageHook } from '../../../hooks/messages';
+import { GetRoomEngine, GetSessionDataManager } from '../../../..';
+import { SendMessageHook } from '../../../../../hooks/messages';
 import { RoomWidgetFloodControlEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetChatMessage, RoomWidgetChatSelectAvatarMessage, RoomWidgetChatTypingMessage, RoomWidgetMessage, RoomWidgetRequestWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';

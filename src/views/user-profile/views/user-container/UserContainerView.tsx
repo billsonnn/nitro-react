@@ -1,7 +1,6 @@
 import { FriendlyTime } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { GetSessionDataManager } from '../../../../api';
-import { LocalizeText } from '../../../../utils';
+import { GetSessionDataManager, LocalizeText } from '../../../../api';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { UserContainerViewProps } from './UserContainerView.types';
 

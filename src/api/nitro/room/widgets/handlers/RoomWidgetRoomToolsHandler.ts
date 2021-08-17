@@ -1,5 +1,5 @@
 import { NitroEvent, RoomWidgetEnum, RoomZoomEvent } from '@nitrots/nitro-renderer';
-import { GetRoomEngine } from '../../../api';
+import { GetRoomEngine } from '../../../..';
 import { RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage, RoomWidgetZoomToggleMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
