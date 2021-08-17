@@ -1,8 +1,6 @@
 import { RoomEnterEffect, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { GetRoomSession, GetSessionDataManager, RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectMessage, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../../../../api';
-import { FriendEnteredRoomEvent } from '../../../../events';
-import { useUiEvent } from '../../../../hooks/events';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../context/RoomContext';
 import { AvatarInfoWidgetAvatarView } from './views/avatar/AvatarInfoWidgetAvatarView';
@@ -256,15 +254,15 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
 
     CreateEventDispatcherHook(RoomWidgetUseProductBubbleEvent.USE_PRODUCT_BUBBLES, eventDispatcher, onRoomWidgetUseProductBubbleEvent);
 
-    const onFriendEnteredRoomEvent = useCallback((event: FriendEnteredRoomEvent) =>
-    {
-        setNameBubbles(prevValue =>
-            {
-                return [ ...prevValue, event  ];
-            })
-    }, []);
+    // const onFriendEnteredRoomEvent = useCallback((event: FriendEnteredRoomEvent) =>
+    // {
+    //     setNameBubbles(prevValue =>
+    //         {
+    //             return [ ...prevValue, event  ];
+    //         })
+    // }, []);
 
-    useUiEvent(FriendEnteredRoomEvent.ENTERED, onFriendEnteredRoomEvent);
+    // useUiEvent(FriendEnteredRoomEvent.ENTERED, onFriendEnteredRoomEvent);
 
     const decorateView = useMemo(() =>
     {
