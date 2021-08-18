@@ -20,7 +20,7 @@ export default class RoomSettingsData
     public allowPetsEat: boolean;
 
     public usersWithRights: Map<number, string>;
-    public friendsWithoutRights: Map<number, string>;
+    public friends: Map<number, string>;
 
     public hideWalls: boolean;
     public wallThickness: number;
@@ -59,7 +59,7 @@ export default class RoomSettingsData
         this.allowPetsEat           = parser.allowPetsEat;
 
         this.usersWithRights        = new Map<number, string>();
-        this.friendsWithoutRights   = new Map<number, string>();
+        this.friends   = new Map<number, string>();
 
         this.hideWalls              = parser.hideWalls;
         this.wallThickness          = parser.thicknessWall;

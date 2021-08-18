@@ -51,6 +51,8 @@ export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabView
 
     return (
         <>
+            <div className="fw-bold">{LocalizeText('navigator.roomsettings.roomaccess.caption')}</div>
+            <div className="mb-3">{ LocalizeText('navigator.roomsettings.roomaccess.info') }</div>
             <div className="fw-bold">{ LocalizeText('navigator.roomsettings.doormode') }</div>
             <div className="form-check">
                 <input className="form-check-input" type="radio" name="lockState" checked={ roomSettingsData.lockState === 0 } onChange={ (e) => handleChange('lock_state', 0) } />

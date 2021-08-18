@@ -1,8 +1,9 @@
 import { MessengerInitComposer, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectUserType } from '@nitrots/nitro-renderer';
-import React, { FC, useCallback, useEffect, useReducer, useState } from 'react';
+import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { GetRoomSession, LocalizeText } from '../../api';
 import { FriendEnteredRoomEvent, FriendListEvent } from '../../events';
+import { FriendListContentEvent } from '../../events/friend-list/FriendListContentEvent';
 import { FriendListSendFriendRequestEvent } from '../../events/friend-list/FriendListSendFriendRequestEvent';
 import { useRoomEngineEvent } from '../../hooks/events';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
@@ -35,12 +36,17 @@ export const FriendListView: FC<FriendListViewProps> = props =>
             case FriendListSendFriendRequestEvent.SEND_FRIEND_REQUEST:
                 const requestEvent = (event as FriendListSendFriendRequestEvent);
                 return;
+            case FriendListEvent.REQUEST_FRIEND_LIST:
+                console.log('requested');
+                dispatchUiEvent(new FriendListContentEvent(friendListState.friends));
+                return;
         }
-    }, []);
+    }, [friendListState.friends]);
 
     useUiEvent(FriendListEvent.SHOW_FRIEND_LIST, onFriendListEvent);
     useUiEvent(FriendListEvent.TOGGLE_FRIEND_LIST, onFriendListEvent);
     useUiEvent(FriendListSendFriendRequestEvent.SEND_FRIEND_REQUEST, onFriendListEvent);
+    useUiEvent(FriendListEvent.REQUEST_FRIEND_LIST, onFriendListEvent);
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {

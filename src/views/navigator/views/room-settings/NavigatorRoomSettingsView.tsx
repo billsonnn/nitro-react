@@ -1,6 +1,9 @@
 import { RoomBannedUsersComposer, RoomBannedUsersEvent, RoomSettingsEvent, RoomUsersWithRightsComposer, RoomUsersWithRightsEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
+import { FriendListEvent } from '../../../../events';
+import { FriendListContentEvent } from '../../../../events/friend-list/FriendListContentEvent';
+import { dispatchUiEvent, useUiEvent } from '../../../../hooks';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
 import RoomSettingsData from '../../common/RoomSettingsData';
@@ -52,6 +55,8 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
         data.usersWithRights = new Map(parser.users);
 
         setRoomSettingsData(data);
+        
+        dispatchUiEvent(new FriendListEvent(FriendListEvent.REQUEST_FRIEND_LIST));
     }, [roomSettingsData]);
 
     const onRoomBannedUsersEvent = useCallback((event: RoomBannedUsersEvent) =>
@@ -69,9 +74,21 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
         setRoomSettingsData(data);
     }, [roomSettingsData]);
 
+    const onFriendsListContentEvent = useCallback((event: FriendListContentEvent) =>
+    {
+        if(!roomSettingsData) return;
+
+        const clone = Object.assign({}, roomSettingsData);
+
+        clone.friends = event.friends;
+
+        setRoomSettingsData(clone);
+    }, [roomSettingsData]);
+
     CreateMessageHook(RoomSettingsEvent, onRoomSettingsEvent);
     CreateMessageHook(RoomUsersWithRightsEvent, onRoomUsersWithRightsEvent);
     CreateMessageHook(RoomBannedUsersEvent, onRoomBannedUsersEvent);
+    useUiEvent(FriendListContentEvent.FRIEND_LIST_CONTENT, onFriendsListContentEvent);
 
     const save = useCallback((data: RoomSettingsData) =>
     {
