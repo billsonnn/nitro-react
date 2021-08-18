@@ -6,6 +6,7 @@ import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, Nitro
 import RoomSettingsData from '../../common/RoomSettingsData';
 import { NavigatorRoomSettingsAccessTabView } from './views/tab-access/NavigatorRoomSettingsAccessTabView';
 import { NavigatorRoomSettingsBasicTabView } from './views/tab-basic/NavigatorRoomSettingsBasicTabView';
+import { NavigatorRoomSettingsVipChatTabView } from './views/tab-vipchat/NavigatorRoomSettingsVipChatTabView';
 
 const TABS: string[] = [
     'navigator.roomsettings.tab.1',
@@ -37,36 +38,36 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
     
     CreateMessageHook(RoomSettingsEvent, onRoomSettingsEvent);
 
-    const save = useCallback(() =>
+    const save = useCallback((data: RoomSettingsData) =>
     {
         SendMessageHook(
             new SaveRoomSettingsComposer(
-                roomSettingsData.roomId,
-                roomSettingsData.roomName,
-                roomSettingsData.roomDescription,
-                roomSettingsData.lockState,
-                roomSettingsData.password,
-                roomSettingsData.userCount,
-                roomSettingsData.categoryId,
-                roomSettingsData.tags.length,
-                roomSettingsData.tags,
-                roomSettingsData.tradeState,
-                roomSettingsData.allowPets,
-                roomSettingsData.allowPetsEat,
-                roomSettingsData.allowWalkthrough,
-                roomSettingsData.hideWalls,
-                roomSettingsData.wallThickness,
-                roomSettingsData.floorThickness,
-                roomSettingsData.muteState,
-                roomSettingsData.kickState,
-                roomSettingsData.banState,
-                roomSettingsData.chatBubbleMode,
-                roomSettingsData.chatBubbleWeight,
-                roomSettingsData.chatBubbleSpeed,
-                roomSettingsData.chatDistance,
-                roomSettingsData.chatFloodProtection
+                data.roomId,
+                data.roomName,
+                data.roomDescription,
+                data.lockState,
+                data.password,
+                data.userCount,
+                data.categoryId,
+                data.tags.length,
+                data.tags,
+                data.tradeState,
+                data.allowPets,
+                data.allowPetsEat,
+                data.allowWalkthrough,
+                data.hideWalls,
+                data.wallThickness,
+                data.floorThickness,
+                data.muteState,
+                data.kickState,
+                data.banState,
+                data.chatBubbleMode,
+                data.chatBubbleWeight,
+                data.chatBubbleSpeed,
+                data.chatDistance,
+                data.chatFloodProtection
             ));
-    }, [ roomSettingsData ]);
+    }, []);
 
     const processAction = useCallback((action: string) =>
     {
@@ -93,6 +94,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
             <NitroCardContentView className="text-black px-4">
                 { currentTab === TABS[0] && <NavigatorRoomSettingsBasicTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
                 { currentTab === TABS[1] && <NavigatorRoomSettingsAccessTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
+                { currentTab === TABS[3] && <NavigatorRoomSettingsVipChatTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save }/> }
             </NitroCardContentView>
         </NitroCardView>
     );
