@@ -1,4 +1,4 @@
-import { RoomSettingsEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
+import { RoomBannedUsersComposer, RoomBannedUsersEvent, RoomSettingsEvent, RoomUsersWithRightsComposer, RoomUsersWithRightsEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
@@ -6,6 +6,8 @@ import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, Nitro
 import RoomSettingsData from '../../common/RoomSettingsData';
 import { NavigatorRoomSettingsAccessTabView } from './views/tab-access/NavigatorRoomSettingsAccessTabView';
 import { NavigatorRoomSettingsBasicTabView } from './views/tab-basic/NavigatorRoomSettingsBasicTabView';
+import { NavigatorRoomSettingsModTabView } from './views/tab-mod/NavigatorRoomSettingsModTabView';
+import { NavigatorRoomSettingsRightsTabView } from './views/tab-rights/NavigatorRoomSettingsRightsTabView';
 import { NavigatorRoomSettingsVipChatTabView } from './views/tab-vipchat/NavigatorRoomSettingsVipChatTabView';
 
 const TABS: string[] = [
@@ -23,7 +25,6 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
 
     const updateSettings = useCallback((roomSettings: RoomSettingsData) =>
     {
-        console.log('update', roomSettings);
         setRoomSettingsData(roomSettings);
     }, [ setRoomSettingsData ]);
 
@@ -34,9 +35,43 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
         if(!parser) return;
 
         setRoomSettingsData(new RoomSettingsData(parser));
+        SendMessageHook(new RoomUsersWithRightsComposer(parser.roomId));
+        SendMessageHook(new RoomBannedUsersComposer(parser.roomId));
     }, []);
-    
+
+    const onRoomUsersWithRightsEvent = useCallback((event: RoomUsersWithRightsEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser || !roomSettingsData) return;
+
+        if(roomSettingsData.roomId !== parser.roomId) return;
+
+        const data = Object.assign({}, roomSettingsData);
+
+        data.usersWithRights = new Map(parser.users);
+
+        setRoomSettingsData(data);
+    }, [roomSettingsData]);
+
+    const onRoomBannedUsersEvent = useCallback((event: RoomBannedUsersEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser || !roomSettingsData) return;
+
+        if(roomSettingsData.roomId !== parser.roomId) return;
+
+        const data = Object.assign({}, roomSettingsData);
+
+        data.bannedUsers = new Map(parser.users);
+
+        setRoomSettingsData(data);
+    }, [roomSettingsData]);
+
     CreateMessageHook(RoomSettingsEvent, onRoomSettingsEvent);
+    CreateMessageHook(RoomUsersWithRightsEvent, onRoomUsersWithRightsEvent);
+    CreateMessageHook(RoomBannedUsersEvent, onRoomBannedUsersEvent);
 
     const save = useCallback((data: RoomSettingsData) =>
     {
@@ -94,7 +129,9 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
             <NitroCardContentView className="text-black px-4">
                 { currentTab === TABS[0] && <NavigatorRoomSettingsBasicTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
                 { currentTab === TABS[1] && <NavigatorRoomSettingsAccessTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
-                { currentTab === TABS[3] && <NavigatorRoomSettingsVipChatTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save }/> }
+                { currentTab === TABS[2] && <NavigatorRoomSettingsRightsTabView roomSettingsData= {roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
+                { currentTab === TABS[3] && <NavigatorRoomSettingsVipChatTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
+                { currentTab === TABS[4] && <NavigatorRoomSettingsModTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
             </NitroCardContentView>
         </NitroCardView>
     );

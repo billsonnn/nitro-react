@@ -4,4 +4,16 @@
     .content-area {
         height: 350px;
     }
+
+    .list-container {
+        max-height: 150px;
+        overflow-y: scroll;
+
+        .list-item {
+            &.selected {
+                background-color: cadetblue;
+            }
+        }
+    }
+    
 }
