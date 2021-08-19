@@ -1,5 +1,5 @@
 import { RoomBannedUsersComposer, RoomBannedUsersEvent, RoomSettingsEvent, RoomUsersWithRightsComposer, RoomUsersWithRightsEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { FriendListEvent } from '../../../../events';
 import { FriendListContentEvent } from '../../../../events/friend-list/FriendListContentEvent';
@@ -25,6 +25,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
 {
     const [ roomSettingsData, setRoomSettingsData ] = useState<RoomSettingsData>(null);
     const [ currentTab, setCurrentTab ] = useState(TABS[0]);
+    const [ friends, setFriends ] = useState<Map<number, string>>(new Map());
 
     const updateSettings = useCallback((roomSettings: RoomSettingsData) =>
     {
@@ -55,8 +56,6 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
         data.usersWithRights = new Map(parser.users);
 
         setRoomSettingsData(data);
-        
-        dispatchUiEvent(new FriendListEvent(FriendListEvent.REQUEST_FRIEND_LIST));
     }, [roomSettingsData]);
 
     const onRoomBannedUsersEvent = useCallback((event: RoomBannedUsersEvent) =>
@@ -76,19 +75,20 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
 
     const onFriendsListContentEvent = useCallback((event: FriendListContentEvent) =>
     {
-        if(!roomSettingsData) return;
+        if(!roomSettingsData || !event.friends) return;
 
-        const clone = Object.assign({}, roomSettingsData);
-
-        clone.friends = event.friends;
-
-        setRoomSettingsData(clone);
+        setFriends(event.friends);
     }, [roomSettingsData]);
 
     CreateMessageHook(RoomSettingsEvent, onRoomSettingsEvent);
     CreateMessageHook(RoomUsersWithRightsEvent, onRoomUsersWithRightsEvent);
     CreateMessageHook(RoomBannedUsersEvent, onRoomBannedUsersEvent);
     useUiEvent(FriendListContentEvent.FRIEND_LIST_CONTENT, onFriendsListContentEvent);
+
+    useEffect(() =>
+    {
+        if(roomSettingsData) dispatchUiEvent(new FriendListEvent(FriendListEvent.REQUEST_FRIEND_LIST));
+    }, [roomSettingsData])
 
     const save = useCallback((data: RoomSettingsData) =>
     {
@@ -146,7 +146,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
             <NitroCardContentView className="text-black px-4">
                 { currentTab === TABS[0] && <NavigatorRoomSettingsBasicTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
                 { currentTab === TABS[1] && <NavigatorRoomSettingsAccessTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
-                { currentTab === TABS[2] && <NavigatorRoomSettingsRightsTabView roomSettingsData= {roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
+                { currentTab === TABS[2] && <NavigatorRoomSettingsRightsTabView roomSettingsData= {roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } friends={friends} /> }
                 { currentTab === TABS[3] && <NavigatorRoomSettingsVipChatTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
                 { currentTab === TABS[4] && <NavigatorRoomSettingsModTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
             </NitroCardContentView>

@@ -3,11 +3,11 @@ import { FC, useCallback, useMemo } from 'react';
 import { LocalizeText } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks';
 import { UserProfileIconView } from '../../../../../shared/user-profile-icon/UserProfileIconView';
-import { NavigatorRoomSettingsTabViewProps } from '../../NavigatorRoomSettingsView.types';
+import { NavigatorRoomSettingsRightsTabViewProps } from './NavigatorRoomSettingsRightsTabView.types';
 
-export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>
+export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsRightsTabViewProps> = props =>
 {
-    const { roomSettingsData = null, setRoomSettingsData = null, onSave = null } = props;
+    const { roomSettingsData = null, setRoomSettingsData = null, onSave = null, friends = null } = props;
 
     const removeUserRights = useCallback( (userId: number) =>
     {
@@ -43,14 +43,14 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
     {
         const map = new Map<number, string>();
 
-        roomSettingsData.friends.forEach((name, id) =>
+        friends.forEach((name, id) =>
         {
             if(!roomSettingsData.usersWithRights.has(id))
                 map.set(id, name);
         });
 
         return map;
-    }, [roomSettingsData]);
+    }, [friends, roomSettingsData]);
 
     return (
         <div className="d-flex flex-column h-100 overflow-hidden user-rights">
