@@ -5,6 +5,16 @@
         height: 350px;
     }
 
+    .user-rights-container {
+
+        .row {
+    
+            .col:nth-child(even) {
+                //background: $light !important;
+            }
+        }
+    }
+
     .list-container {
         max-height: 100px;
         min-height: 100px;
