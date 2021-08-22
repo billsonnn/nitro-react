@@ -1024,5 +1024,114 @@
             "minLevel": 10,
             "enabled": true
         }
-    ]
+    ],
+    "notification": {
+        "notification.admin.transient": {
+            "display": "POP_UP",
+            "image": "${image.library.url}/album1358/frank_wave_001.gif"
+        },
+        "notification.builders_club.membership_expired": {
+            "display": "POP_UP"
+        },
+        "notification.builders_club.membership_expires": {
+            "display": "POP_UP",
+            "image": "${image.library.url}/notifications/builders_club_room_locked_small.png"
+        },
+        "notification.builders_club.membership_extended": {
+            "delivery": "PERSISTENT",
+            "display": "POP_UP"
+        },
+        "notification.builders_club.membership_made": {
+            "delivery": "PERSISTENT",
+            "display": "POP_UP",
+            "image": "${image.library.url}/notifications/builders_club_membership_extended.png"
+        },
+        "notification.builders_club.membership_renewed": {
+            "delivery": "PERSISTENT",
+            "display": "POP_UP",
+            "image": "${image.library.url}/notifications/builders_club_membership_extended.png"
+        },
+        "notification.builders_club.room_locked": {
+            "display": "BUBBLE",
+            "image": "${image.library.url}/notifications/builders_club_room_locked_small.png"
+        },
+        "notification.builders_club.room_unlocked": {
+            "display": "BUBBLE"
+        },
+        "notification.builders_club.visit_denied_for_owner": {
+            "display": "BUBBLE",
+            "image": "${image.library.url}/notifications/builders_club_room_locked_small.png"
+        },
+        "notification.builders_club.visit_denied_for_visitor": {
+            "display": "POP_UP",
+            "image": "${image.library.url}/notifications/builders_club_room_locked.png"
+        },
+        "notification.campaign.credit.donation": {
+            "display": "BUBBLE"
+        },
+        "notification.campaign.product.donation": {
+            "display": "BUBBLE"
+        },
+        "notification.casino.too_many_dice.placement": {
+            "display": "POP_UP"
+        },
+        "notification.casino.too_many_dice": {
+            "display": "POP_UP"
+        },
+        "notification.cfh.created": {
+            "display": "POP_UP",
+            "title": ""
+        },
+        "notification.feed.enabled": false,
+        "notification.floorplan_editor.error": {
+            "display": "POP_UP"
+        },
+        "notification.forums.delivered": {
+            "delivery": "PERSISTENT",
+            "display": "POP_UP"
+        },
+        "notification.forums.forum_settings_updated": {
+            "display": "BUBBLE"
+        },
+        "notification.forums.message.hidden": {
+            "display": "BUBBLE"
+        },
+        "notification.forums.message.restored": {
+            "display": "BUBBLE"
+        },
+        "notification.forums.thread.hidden": {
+            "display": "BUBBLE"
+        },
+        "notification.forums.thread.locked": {
+            "display": "BUBBLE"
+        },
+        "notification.forums.thread.pinned": {
+            "display": "BUBBLE"
+        },
+        "notification.forums.thread.restored": {
+            "display": "BUBBLE"
+        },
+        "notification.forums.thread.unlocked": {
+            "display": "BUBBLE"
+        },
+        "notification.forums.thread.unpinned": {
+            "display": "BUBBLE"
+        },
+        "notification.furni_placement_error": {
+            "display": "BUBBLE"
+        },
+        "notification.gifting.valentine": {
+            "delivery": "PERSISTENT",
+            "display": "BUBBLE",
+            "image": "${image.library.url}/notifications/polaroid_photo.png"
+        },
+        "notification.items.enabled": true,
+        "notification.mute.forbidden.time": {
+            "display": "BUBBLE"
+        },
+        "notification.npc.gift.received": {
+            "display": "BUBBLE",
+            "image": "${image.library.url}/album1584/X1517.gif"
+        }
+    }
 }
