@@ -10,7 +10,6 @@ import { HotelView } from '../hotel-view/HotelView';
 import { InventoryView } from '../inventory/InventoryView';
 import { ModToolsView } from '../mod-tools/ModToolsView';
 import { NavigatorView } from '../navigator/NavigatorView';
-import { NotificationCenterView } from '../notification-center/NotificationCenterView';
 import { RightSideView } from '../right-side/RightSideView';
 import { RoomHostView } from '../room-host/RoomHostView';
 import { ToolbarView } from '../toolbar/ToolbarView';
@@ -61,7 +60,6 @@ export const MainView: FC<MainViewProps> = props =>
             <CatalogView />
             <FriendListView />
             <RightSideView />
-            <NotificationCenterView />
             <UserSettingsView />
             <UserProfileView />
         </div>
