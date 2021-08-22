@@ -24,37 +24,38 @@ export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = p
         const relationshipName = RelationshipStatusEnum.RELATIONSHIP_NAMES[type].toLocaleLowerCase();
 
         return (
-            <div className="relationship-container row row-cols-2 d-flex align-items-center">
-                <i className={`icon icon-relationship-${relationshipName} col-2`} />
-                <span className={'relationship col-10' + (!simple ? ' advanced' : '')}>
-                    <span className="cursor-pointer relationship-text" onClick={() => OnUserClick(relationshipInfo)}>
+            <div className="relationship-container d-flex flex-row align-items-center w-100">
+                <i className={`icon icon-relationship-${relationshipName} flex-shrink-0 align-self-baseline mt-2`} />
+                <div className="w-100 d-flex flex-column">
+                    <span className={'relationship w-100' + (!simple ? ' advanced' : '')}>
+                        <span className="cursor-pointer relationship-text" onClick={() => OnUserClick(relationshipInfo)}>
+                            {
+                                (relationshipInfo && relationshipInfo.friendCount > 0) ? relationshipInfo.randomFriendName : LocalizeText('extendedprofile.add.friends')
+                            }
+                        </span> 
                         {
-                            (relationshipInfo && relationshipInfo.friendCount > 0) ? relationshipInfo.randomFriendName : LocalizeText('extendedprofile.add.friends')
+                            (simple && relationshipInfo && relationshipInfo.friendCount > 1) &&
+                            <span>
+                                {' ' + LocalizeText(`extendedprofile.relstatus.others.${relationshipName}`, ['count'], [(relationshipInfo.friendCount - 1).toString()])}
+                            </span>
                         }
-                    </span> 
-                    {
-                        (simple && relationshipInfo && relationshipInfo.friendCount > 1) &&
-                        <span>
-                            {' ' + LocalizeText(`extendedprofile.relstatus.others.${relationshipName}`, ['count'], [(relationshipInfo.friendCount - 1).toString()])}
-                        </span>
-                    }
-                    {
-                        (!simple && relationshipInfo && relationshipInfo.friendCount > 0) &&
-                        <AvatarImageView figure={relationshipInfo.randomFriendFigure} headOnly={true} direction={4} />
-                    }
-                </span>
+                        {
+                            (!simple && relationshipInfo && relationshipInfo.friendCount > 0) &&
+                            <AvatarImageView figure={relationshipInfo.randomFriendFigure} headOnly={true} direction={4} />
+                        }
+                    </span>
 
-                {
-                    !simple && <div className="others-text">
-                        {
-                            (relationshipInfo && relationshipInfo.friendCount > 1) ? LocalizeText(`extendedprofile.relstatus.others.${relationshipName}`, ['count'], [(relationshipInfo.friendCount - 1).toString()]) : ''
-                        }
-                        {
-                            (relationshipInfo && relationshipInfo.friendCount < 1) ? LocalizeText('extendedprofile.no.friends.in.this.category') : ''
-                        }
-                    </div>
-                }
-
+                    {
+                        !simple && <div className="others-text">
+                            {
+                                (relationshipInfo && relationshipInfo.friendCount > 1) ? LocalizeText(`extendedprofile.relstatus.others.${relationshipName}`, ['count'], [(relationshipInfo.friendCount - 1).toString()]) : ''
+                            }
+                            {
+                                (relationshipInfo && relationshipInfo.friendCount < 1) ? LocalizeText('extendedprofile.no.friends.in.this.category') : ''
+                            }
+                        </div>
+                    }
+                </div>
             </div>
         );
     }, [OnUserClick, relationships, simple]);

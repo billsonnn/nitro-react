@@ -60,23 +60,22 @@ export const UserProfileView: FC = props =>
     if(!userProfile) return null;
 
     return (
-        <div className="user-profile">
-            <NitroCardView>
+        <NitroCardView simple={ true } className="user-profile">
                 <NitroCardHeaderView headerText={LocalizeText('extendedprofile.caption')} onCloseClick={OnClose} />
                 <NitroCardContentView>
                     <div className="row">
-                        <div className="col-sm-6 user-container">
+                        <div className="col-sm-7 user-container">
                             <UserContainerView id={userProfile.id} username={userProfile.username} motto={userProfile.motto} figure={userProfile.figure} secondsSinceLastLogin={userProfile.secondsSinceLastVisit} creation={userProfile.registration} achievementScore={userProfile.achievementPoints} isFriend={userProfile.isMyFriend} isOnline={userProfile.isOnline} requestSent={userProfile.requestSent} />
                             <BadgesContainerView badges={userBadges} />
                         </div>
-                        <div className="col-sm-6">
+                        <div className="col-sm-5">
                             {
                                 userRelationships && <FriendsContainerView relationships={userRelationships} friendsCount={userProfile.friendsCount} />
                             }
                         </div>
                     </div>
-                    <div className="row rooms-button-container align-items-center">
-                        <div className="col-sm-12 d-flex align-content-center w-100">
+                    <div className="d-flex rooms-button-container align-items-center py-1">
+                        <div className="d-flex align-items-center w-100">
                             <i className="icon icon-rooms" /><span className="rooms-button">{LocalizeText('extendedprofile.rooms')}</span>
                         </div>
                     </div>
@@ -88,8 +87,7 @@ export const UserProfileView: FC = props =>
                             group info goes here
                         </div>
                     </div>
-                </NitroCardContentView>
-            </NitroCardView>
-        </div>
+            </NitroCardContentView>
+        </NitroCardView>
     )
 }

@@ -27,18 +27,20 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
 
     return (
         <div className="row">
-            <div className="col-sm-4">
+            <div className="col-sm-3 px-0 d-flex align-items-center">
                 <AvatarImageView figure={figure} direction={2} />
             </div>
             <div className="col-sm-8">
                 <div className="user-info-container">
-                    <h5>{username}</h5>
-                    <div className="mb-1">{motto}</div>
+                    <div className="fw-bold">{username}</div>
+                    <div className="mb-1 fst-italic">{motto}</div>
                     <div className="mb-1" dangerouslySetInnerHTML={{ __html: LocalizeText('extendedprofile.created', ['created'], [creation]) }} />
                     <div className="mb-1" dangerouslySetInnerHTML={{ __html: LocalizeText('extendedprofile.last.login', ['lastlogin'], [FriendlyTime.format(secondsSinceLastLogin, '.ago', 2)]) }} />
                     <div className="mb-1"><b>{LocalizeText('extendedprofile.achievementscore')}</b> {achievementScore}</div>
-                    <OnlineIcon />
-                    <FriendRequestComponent />
+                    <div className="d-flex flex-row align-items-center">
+                        <OnlineIcon />
+                        <FriendRequestComponent />
+                    </div>
                 </div>
             </div>
         </div>
