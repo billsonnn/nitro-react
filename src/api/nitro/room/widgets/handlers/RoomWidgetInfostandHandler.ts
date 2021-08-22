@@ -1,4 +1,4 @@
-import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomAdsUpdateComposer, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, SecurityLevel, Vector3d } from '@nitrots/nitro-renderer';
+import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
 import { GetNitroInstance, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
 import { InventoryTradeRequestEvent, WiredSelectObjectEvent } from '../../../../../events';
 import { FriendListSendFriendRequestEvent } from '../../../../../events/friend-list/FriendListSendFriendRequestEvent';
@@ -210,21 +210,13 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 {
                     for(const part of dataParts)
                     {
-                        const partPieces = part.split('=', 2);
-
-                        if(partPieces && partPieces.length === 2)
-                        {
-                            const piece1 = partPieces[0];
-                            const piece2 = partPieces[1];
-
-                            mapData.set(piece1, piece2);
-                        }
+                        const [ key, value ] = part.split('=', 2);
+                        
+                        mapData.set(key, value);
                     }
                 }
 
-                GetRoomEngine().processRoomObjectWallOperation(objectId, category, RoomObjectOperationType.OBJECT_SAVE_STUFF_DATA, mapData);
-                    
-                if(GetSessionDataManager().hasSecurity(SecurityLevel.MODERATOR)) SendMessageHook(new RoomAdsUpdateComposer(objectId, mapData));
+                GetRoomEngine().modifyRoomObjectDataWithMap(objectId, category, RoomObjectOperationType.OBJECT_SAVE_STUFF_DATA, mapData);
 
                 return;
             }

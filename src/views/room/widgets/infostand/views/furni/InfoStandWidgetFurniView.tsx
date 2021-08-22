@@ -1,6 +1,7 @@
-import { CrackableDataType, RoomControllerLevel, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, StringDataType } from '@nitrots/nitro-renderer';
+import { CrackableDataType, RoomControllerLevel, RoomObjectCategory, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { CreateLinkEvent, LocalizeText, RoomWidgetFurniActionMessage } from '../../../../../../api';
+import { CreateLinkEvent, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage } from '../../../../../../api';
+import { SendMessageHook } from '../../../../../../hooks';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { LimitedEditionCompactPlateView } from '../../../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../../../shared/rarity-level/RarityLevelView';
@@ -15,14 +16,16 @@ const PICKUP_MODE_FULL: number = 2;
 export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props =>
 {
     const { furniData = null, close = null } = props;
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
+    const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
     
     const [ pickupMode, setPickupMode ] = useState(0);
     const [ canMove, setCanMove ] = useState(false);
     const [ canRotate, setCanRotate ] = useState(false);
     const [ canUse, setCanUse ] = useState(false);
-    const [ furniSettingsKeys, setFurniSettingsKeys ] = useState<string[]>([]);
-    const [ furniSettingsValues, setFurniSettingsValues ] = useState<string[]>([]);
+    const [ furniKeys, setFurniKeys ] = useState<string[]>([]);
+    const [ furniValues, setFurniValues ] = useState<string[]>([]);
+    const [ customKeys, setCustomKeys ] = useState<string[]>([]);
+    const [ customValues, setCustomValues ] = useState<string[]>([]);
     const [ isCrackable, setIsCrackable ] = useState(false);
     const [ crackableHits, setCrackableHits ] = useState(0);
     const [ crackableTarget, setCrackableTarget ] = useState(0);
@@ -34,8 +37,10 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         let canMove = false;
         let canRotate = false;
         let canUse = false;
-        let furniSettings: string[] = [];
-        let furniValues: string[] = [];
+        let furniKeyss: string[] = [];
+        let furniValuess: string[] = [];
+        let customKeyss: string[] = [];
+        let customValuess: string[] = [];
         let isCrackable = false;
         let crackableHits = 0;
         let crackableTarget = 0;
@@ -79,10 +84,27 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
                         if(value && (value.length === 2))
                         {
-                            furniSettings.push(value[0]);
-                            furniValues.push(value[1]);
+                            furniKeyss.push(value[0]);
+                            furniValuess.push(value[1]);
                         }
                     }
+                }
+            }
+        }
+
+        const roomObject = GetRoomEngine().getRoomObject(roomSession.roomId, furniData.id, (furniData.isWallItem) ? RoomObjectCategory.WALL : RoomObjectCategory.FLOOR);
+
+        if(roomObject)
+        {
+            const customVariables = roomObject.model.getValue<string[]>(RoomObjectVariable.FURNITURE_CUSTOM_VARIABLES);
+            const furnitureData = roomObject.model.getValue<{ [index: string]: string }>(RoomObjectVariable.FURNITURE_DATA);
+
+            if(customVariables && customVariables.length)
+            {
+                for(const customVariable of customVariables)
+                {
+                    customKeyss.push(customVariable);
+                    customValuess.push((furnitureData[customVariable]) || '');
                 }
             }
         }
@@ -97,13 +119,15 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         setCanMove(canMove);
         setCanRotate(canRotate);
         setCanUse(canUse);
-        setFurniSettingsKeys(furniSettings);
-        setFurniSettingsValues(furniValues);
+        setFurniKeys(furniKeyss);
+        setFurniValues(furniValuess);
+        setCustomKeys(customKeyss);
+        setCustomValues(customValuess);
         setIsCrackable(isCrackable);
         setCrackableHits(crackableHits);
         setCrackableTarget(crackableTarget);
         setGodMode(godMode);
-    }, [ furniData ]);
+    }, [ roomSession, furniData ]);
 
     const openFurniGroupInfo = useCallback(() =>
     {
@@ -112,25 +136,34 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
     const onFurniSettingChange = useCallback((index: number, value: string) =>
     {
-        const clone = Array.from(furniSettingsValues);
+        const clone = Array.from(furniValues);
 
         clone[index] = value;
 
-        setFurniSettingsValues(clone);
-    }, [ furniSettingsValues ]);
+        setFurniValues(clone);
+    }, [ furniValues ]);
+
+    const onCustomVariableChange = useCallback((index: number, value: string) =>
+    {
+        const clone = Array.from(customValues);
+
+        clone[index] = value;
+
+        setCustomValues(clone);
+    }, [ customValues ]);
 
     const getFurniSettingsAsString = useCallback(() =>
     {
-        if(furniSettingsKeys.length === 0 || furniSettingsValues.length === 0) return '';
+        if(furniKeys.length === 0 || furniValues.length === 0) return '';
 
         let data = '';
 
         let i = 0;
 
-        while(i < furniSettingsKeys.length)
+        while(i < furniKeys.length)
         {
-            const key   = furniSettingsKeys[i];
-            const value = furniSettingsValues[i];
+            const key   = furniKeys[i];
+            const value = furniValues[i];
 
             data = (data + (key + '=' + value + '\t'));
 
@@ -138,7 +171,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         }
 
         return data;
-    }, [ furniSettingsKeys, furniSettingsValues ]);
+    }, [ furniKeys, furniValues ]);
 
     const processButtonAction = useCallback((action: string) =>
     {
@@ -169,12 +202,25 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                 messageType = RoomWidgetFurniActionMessage.SAVE_STUFF_DATA;
                 objectData = getFurniSettingsAsString();
                 break;
+            case 'save_custom_variables':
+                const map = new Map();
+
+                for(let i = 0; i < customKeys.length; i++)
+                {
+                    const key = customKeys[i];
+                    const value = customValues[i];
+
+                    if((key && key.length) && (value && value.length)) map.set(key, value);
+                }
+
+                SendMessageHook(new SetObjectDataMessageComposer(furniData.id, map));
+                break;
         }
 
         if(!messageType) return;
 
         widgetHandler.processWidgetMessage(new RoomWidgetFurniActionMessage(messageType, furniData.id, furniData.category, furniData.purchaseOfferId, objectData));
-    }, [ furniData, pickupMode, widgetHandler, getFurniSettingsAsString ]);
+    }, [ widgetHandler, furniData, pickupMode, customKeys, customValues, getFurniSettingsAsString ]);
 
     if(!furniData) return null;
 
@@ -217,18 +263,30 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                     <>
                         <hr className="m-0 my-1" />
                         <div className="small text-wrap">ID: { furniData.id }</div>
-                        { (furniSettingsKeys.length > 0) &&
+                        { (furniKeys.length > 0) &&
                             <>
                                 <hr className="m-0 my-1"/>
-                                { furniSettingsKeys.map((key, index) =>
+                                { furniKeys.map((key, index) =>
                                     {
                                         return (
                                             <div key={ index } className="mb-1">
                                                 <div className="small text-wrap">{ key }</div>
-                                                <input type="text" className="form-control form-control-sm" value={ furniSettingsValues[index] } onChange={ event => onFurniSettingChange(index, event.target.value) }/>
+                                                <input type="text" className="form-control form-control-sm" value={ furniValues[index] } onChange={ event => onFurniSettingChange(index, event.target.value) }/>
                                             </div>);
                                     }) }
                             </> }
+                    </> }
+                { (customKeys.length > 0) &&
+                    <>
+                        <hr className="m-0 my-1"/>
+                        { customKeys.map((key, index) =>
+                            {
+                                return (
+                                    <div key={ index } className="mb-1">
+                                        <div className="small text-wrap">{ key }</div>
+                                        <input type="text" className="form-control form-control-sm" value={ customValues[index] } onChange={ event => onCustomVariableChange(index, event.target.value) }/>
+                                    </div>);
+                            }) }
                     </> }
             </InfoStandBaseView>
             <div className="button-container mt-2">
@@ -248,9 +306,13 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                     <button type="button" className="btn btn-sm btn-dark ms-1" onClick={ event => processButtonAction('pickup') }>
                         { LocalizeText((pickupMode === PICKUP_MODE_EJECT) ? 'infostand.button.eject' : 'infostand.button.pickup') }
                     </button> }
-                { ((furniSettingsKeys.length > 0 && furniSettingsValues.length > 0) && (furniSettingsKeys.length === furniSettingsValues.length)) &&
+                { ((furniKeys.length > 0 && furniValues.length > 0) && (furniKeys.length === furniValues.length)) &&
                     <button className="btn btn-sm btn-dark ms-1" onClick={ () => processButtonAction('save_branding_configuration') }>
                         { LocalizeText('save') }
+                    </button> }
+                { ((customKeys.length > 0 && customValues.length > 0) && (customKeys.length === customValues.length)) &&
+                    <button className="btn btn-sm btn-dark ms-1" onClick={ () => processButtonAction('save_custom_variables') }>
+                        Set values
                     </button> }
             </div>
         </>
