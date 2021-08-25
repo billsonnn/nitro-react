@@ -1,4 +1,4 @@
-import { UserCreditsEvent, UserCurrencyEvent, UserCurrencyUpdateEvent, UserSubscriptionEvent, UserSubscriptionParser } from '@nitrots/nitro-renderer';
+import { ActivityPointNotificationMessageEvent, UserCreditsEvent, UserCurrencyEvent, UserSubscriptionEvent, UserSubscriptionParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { usePurseContext } from './context/PurseContext';
@@ -26,7 +26,7 @@ export const PurseMessageHandler: FC<PurseMessageHandlerProps> = props =>
         purse.notify();
     }, [ purse ]);
 
-    const onUserCurrencyUpdateEvent = useCallback((event: UserCurrencyUpdateEvent) =>
+    const onUserCurrencyUpdateEvent = useCallback((event: ActivityPointNotificationMessageEvent) =>
     {
         const parser = event.getParser();
 
@@ -57,7 +57,7 @@ export const PurseMessageHandler: FC<PurseMessageHandlerProps> = props =>
 
     CreateMessageHook(UserCreditsEvent, onUserCreditsEvent);
     CreateMessageHook(UserCurrencyEvent, onUserCurrencyEvent);
-    CreateMessageHook(UserCurrencyUpdateEvent, onUserCurrencyUpdateEvent);
+    CreateMessageHook(ActivityPointNotificationMessageEvent, onUserCurrencyUpdateEvent);
     CreateMessageHook(UserSubscriptionEvent, onUserSubscriptionEvent);
 
     return null;

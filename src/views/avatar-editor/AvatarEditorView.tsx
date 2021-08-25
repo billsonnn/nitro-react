@@ -1,4 +1,4 @@
-import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, UserFigureComposer, UserWardrobePageComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
+import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetClubMemberLevel, GetSessionDataManager, LocalizeText } from '../../api';
 import { AvatarEditorEvent } from '../../events/avatar-editor';
@@ -208,7 +208,7 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
         if(!isWardrobeVisible) return;
 
         setActiveCategory(null);
-        SendMessageHook(new UserWardrobePageComposer());
+        SendMessageHook(new GetWardrobeMessageComposer());
     }, [ isWardrobeVisible ]);
 
     useEffect(() =>

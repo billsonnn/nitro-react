@@ -1,4 +1,4 @@
-import { CatalogGiftConfigurationParser } from '@nitrots/nitro-renderer';
+import { GiftWrappingConfigurationParser } from '@nitrots/nitro-renderer';
 
 export class GiftWrappingConfiguration
 {
@@ -9,7 +9,7 @@ export class GiftWrappingConfiguration
     private _ribbonTypes: number[] = null;
     private _defaultStuffTypes: number[] = null;
 
-    constructor(parser: CatalogGiftConfigurationParser)
+    constructor(parser: GiftWrappingConfigurationParser)
     {
         this._isEnabled = parser.isEnabled;
         this._price = parser.price;

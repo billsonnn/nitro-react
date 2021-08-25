@@ -1,4 +1,4 @@
-import { UserWardrobeSaveComposer } from '@nitrots/nitro-renderer';
+import { SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 import { SendMessageHook } from '../../../../hooks';
@@ -33,7 +33,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
         newFigures[index] = [ figure, gender ];
 
         setSavedFigures(newFigures);
-        SendMessageHook(new UserWardrobeSaveComposer((index + 1), figure, gender));
+        SendMessageHook(new SaveWardrobeOutfitMessageComposer((index + 1), figure, gender));
     }, [ figureData, savedFigures, setSavedFigures ]);
 
     const figures = useMemo(() =>

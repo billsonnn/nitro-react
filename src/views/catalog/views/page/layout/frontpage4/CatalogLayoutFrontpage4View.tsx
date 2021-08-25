@@ -1,4 +1,4 @@
-import { CatalogFrontPageItem } from '@nitrots/nitro-renderer';
+import { FrontPageItem } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo } from 'react';
 import { CreateLinkEvent, GetConfiguration } from '../../../../../../api';
 import { CatalogLayoutFrontpage4ViewProps } from './CatalogLayoutFrontpage4View.types';
@@ -12,14 +12,14 @@ export const CatalogLayoutFrontpage4View: FC<CatalogLayoutFrontpage4ViewProps> =
         return GetConfiguration<string>('image.library.url');
     }, []);
 
-    const selectItem = useCallback((item: CatalogFrontPageItem) =>
+    const selectItem = useCallback((item: FrontPageItem) =>
     {
         switch(item.type)
         {
-            case CatalogFrontPageItem.ITEM_CATALOGUE_PAGE:
+            case FrontPageItem.ITEM_CATALOGUE_PAGE:
                 CreateLinkEvent(`catalog/open/${ item.catalogPageLocation }`);
                 return;
-            case CatalogFrontPageItem.ITEM_PRODUCT_OFFER:
+            case FrontPageItem.ITEM_PRODUCT_OFFER:
                 CreateLinkEvent(`catalog/open/${ item.productOfferId }`);
                 return;
         }

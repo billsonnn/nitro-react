@@ -1,6 +1,6 @@
-import { CatalogPageOfferData } from '@nitrots/nitro-renderer';
+import { CatalogPageMessageOfferData } from '@nitrots/nitro-renderer';
 
 export interface CatalogPageOffersViewProps
 {
-    offers: CatalogPageOfferData[];
+    offers: CatalogPageMessageOfferData[];
 }

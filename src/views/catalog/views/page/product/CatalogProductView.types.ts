@@ -1,9 +1,9 @@
-import { CatalogProductOfferData } from '@nitrots/nitro-renderer';
+import { CatalogPageMessageProductData } from '@nitrots/nitro-renderer';
 import { MouseEventHandler } from 'react';
 
 export interface CatalogProductViewProps
 {
     isActive: boolean;
-    product: CatalogProductOfferData;
+    product: CatalogPageMessageProductData;
     onMouseEvent?: MouseEventHandler<Element>;
 }

@@ -1,4 +1,4 @@
-import { CatalogPageOfferData, ICatalogPageData, ICatalogPageParser, IFurnitureData, SellablePetPaletteData } from '@nitrots/nitro-renderer';
+import { CatalogPageMessageOfferData, ICatalogPageData, ICatalogPageParser, IFurnitureData, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { GetConfiguration, GetProductDataForLocalization, GetRoomEngine } from '../../../api';
 
 export interface ICatalogOffers
@@ -12,7 +12,7 @@ export interface ICatalogSearchResult
     furniture: IFurnitureData[];
 }
 
-export function GetOfferName(offer: CatalogPageOfferData): string
+export function GetOfferName(offer: CatalogPageMessageOfferData): string
 {
     const productData = GetProductDataForLocalization(offer.localizationId);
 

@@ -1,4 +1,4 @@
-import { CatalogPageOfferData, IFurnitureData } from '@nitrots/nitro-renderer';
+import { CatalogPageMessageOfferData, IFurnitureData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../../../../api';
 import { GetCatalogPageImage, GetCatalogPageText, GetOfferName } from '../../../../common/CatalogUtilities';
@@ -14,7 +14,7 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutSpacesViewProps> = props =
     const { roomPreviewer = null, pageParser = null } = props;
     const { catalogState } = useCatalogContext();
     const { activeOffer = null } = catalogState;
-    const [ groups, setGroups ] = useState<CatalogPageOfferData[][]>([]);
+    const [ groups, setGroups ] = useState<CatalogPageMessageOfferData[][]>([]);
     const [ activeGroupIndex, setActiveGroupIndex ] = useState(-1);
 
     const groupNames = [ 'floors', 'walls', 'views' ];
@@ -23,7 +23,7 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutSpacesViewProps> = props =
     {
         if(!pageParser) return;
         
-        const groupedOffers: CatalogPageOfferData[][] = [ [], [], [] ];
+        const groupedOffers: CatalogPageMessageOfferData[][] = [ [], [], [] ];
         
         for(const offer of pageParser.offers)
         {

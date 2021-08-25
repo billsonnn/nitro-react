@@ -1,4 +1,4 @@
-import { Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserFigureEvent, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
+import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomSession, GetRoomSessionManager, GoToDesktop } from '../../api';
 import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
@@ -35,14 +35,14 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
 
     CreateMessageHook(UserInfoEvent, onUserInfoEvent);
 
-    const onUserFigureEvent = useCallback((event: UserFigureEvent) =>
+    const onUserFigureEvent = useCallback((event: FigureUpdateEvent) =>
     {
         const parser = event.getParser();
 
         setUserFigure(parser.figure);
     }, []);
     
-    CreateMessageHook(UserFigureEvent, onUserFigureEvent);
+    CreateMessageHook(FigureUpdateEvent, onUserFigureEvent);
 
     const onUnseenItemTrackerUpdateEvent = useCallback((event: UnseenItemTrackerUpdateEvent) =>
     {

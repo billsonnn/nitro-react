@@ -1,4 +1,4 @@
-import { CatalogClubOfferData, CatalogPurchaseComposer, CatalogRequestVipOffersComposer } from '@nitrots/nitro-renderer';
+import { CatalogPurchaseComposer, CatalogRequestVipOffersComposer, ClubOfferData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { LocalizeText } from '../../../../../../api';
@@ -15,9 +15,9 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
 {
     const { catalogState = null } = useCatalogContext();
     const { pageParser = null, clubOffers = null, subscriptionInfo = null } = catalogState;
-    const [ pendingOffer, setPendingOffer ] = useState<CatalogClubOfferData>(null);
+    const [ pendingOffer, setPendingOffer ] = useState<ClubOfferData>(null);
 
-    const getOfferText = useCallback((offer: CatalogClubOfferData) =>
+    const getOfferText = useCallback((offer: ClubOfferData) =>
     {
         let offerText = '';
 

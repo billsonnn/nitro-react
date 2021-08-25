@@ -1,4 +1,4 @@
-import { CatalogClubOfferData, CatalogGiftConfigurationParser, CatalogGroupData, CatalogPageOfferData, ICatalogPageData, ICatalogPageParser } from '@nitrots/nitro-renderer';
+import { CatalogGroupData, CatalogPageMessageOfferData, ClubOfferData, GiftWrappingConfigurationParser, ICatalogPageData, ICatalogPageParser } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 import { CatalogPetPalette } from '../common/CatalogPetPalette';
 import { ICatalogOffers, ICatalogSearchResult, SetOffersToNodes } from '../common/CatalogUtilities';
@@ -11,11 +11,11 @@ export interface ICatalogState
     offerRoot: ICatalogOffers;
     currentTab: ICatalogPageData;
     pageParser: ICatalogPageParser;
-    activeOffer: CatalogPageOfferData;
+    activeOffer: CatalogPageMessageOfferData;
     searchResult: ICatalogSearchResult;
     groups: CatalogGroupData[];
     petPalettes: CatalogPetPalette[];
-    clubOffers: CatalogClubOfferData[];
+    clubOffers: ClubOfferData[];
     subscriptionInfo: SubscriptionInfo;
     giftConfiguration: GiftWrappingConfiguration;
 }
@@ -28,13 +28,13 @@ export interface ICatalogAction
         offerRoot?: ICatalogOffers;
         currentTab?: ICatalogPageData;
         pageParser?: ICatalogPageParser;
-        activeOffer?: CatalogPageOfferData;
+        activeOffer?: CatalogPageMessageOfferData;
         searchResult?: ICatalogSearchResult;
         groups?: CatalogGroupData[];
         petPalette?: CatalogPetPalette;
-        clubOffers?: CatalogClubOfferData[];
+        clubOffers?: ClubOfferData[];
         subscriptionInfo?: SubscriptionInfo;
-        giftConfiguration?: CatalogGiftConfigurationParser;
+        giftConfiguration?: GiftWrappingConfigurationParser;
     }
 }
 

@@ -1,9 +1,9 @@
-import { CatalogPageOfferData } from '@nitrots/nitro-renderer';
+import { CatalogPageMessageOfferData } from '@nitrots/nitro-renderer';
 
 export interface CatalogPurchaseButtonViewProps
 {
     className?: string;
-    offer: CatalogPageOfferData;
+    offer: CatalogPageMessageOfferData;
     pageId: number;
     extra?: string;
     quantity?: number;
