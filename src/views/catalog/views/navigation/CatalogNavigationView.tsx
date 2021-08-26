@@ -1,10 +1,10 @@
-import { ICatalogPageData } from '@nitrots/nitro-renderer';
+import { INodeData } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { CatalogSearchView } from '../search/CatalogSearchView';
 import { CatalogNavigationViewProps } from './CatalogNavigationView.types';
 import { CatalogNavigationSetView } from './set/CatalogNavigationSetView';
 
-export let ACTIVE_PAGES: ICatalogPageData[] = [];
+export let ACTIVE_PAGES: INodeData[] = [];
 
 export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
 {

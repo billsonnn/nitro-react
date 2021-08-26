@@ -1,4 +1,4 @@
-import { ICatalogPageData, IFurnitureData } from '@nitrots/nitro-renderer';
+import { IFurnitureData, INodeData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../../api';
 import { GetOfferNodes } from '../../common/CatalogUtilities';
@@ -44,7 +44,7 @@ export const CatalogSearchView: FC<CatalogSearchViewProps> = props =>
 
         if(!furnitureData) return;
 
-        const foundPages: ICatalogPageData[] = [];
+        const foundPages: INodeData[] = [];
         const foundFurniture: IFurnitureData[] = [];
 
         for(const furniture of furnitureData)
@@ -71,7 +71,7 @@ export const CatalogSearchView: FC<CatalogSearchViewProps> = props =>
             return (self.indexOf(value) === index);
         });
 
-        const catalogPage: ICatalogPageData = {
+        const catalogPage: INodeData = {
             visible: true,
             icon: 0,
             pageId: -1,

@@ -1,4 +1,4 @@
-import { GetCatalogPageComposer, ICatalogPageData } from '@nitrots/nitro-renderer';
+import { GetCatalogPageComposer, INodeData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageHook } from '../../../../../hooks/messages/message-event';
 import { CatalogMode } from '../../../CatalogView.types';
@@ -12,7 +12,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
     const { page = null, isActive = false, pendingTree = null, setPendingTree = null, setActiveChild = null } = props;
     const [ isExpanded, setIsExpanded ] = useState(false);
 
-    const select = useCallback((selectPage: ICatalogPageData, expand: boolean = false) =>
+    const select = useCallback((selectPage: INodeData, expand: boolean = false) =>
     {
         if(!selectPage) return;
         

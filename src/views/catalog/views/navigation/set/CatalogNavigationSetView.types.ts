@@ -1,10 +1,10 @@
-import { ICatalogPageData } from '@nitrots/nitro-renderer';
+import { INodeData } from '@nitrots/nitro-renderer';
 import { Dispatch, SetStateAction } from 'react';
 
 export interface CatalogNavigationSetViewProps
 {
-    page: ICatalogPageData;
+    page: INodeData;
     isFirstSet?: boolean;
-    pendingTree: ICatalogPageData[];
-    setPendingTree: Dispatch<SetStateAction<ICatalogPageData[]>>;
+    pendingTree: INodeData[];
+    setPendingTree: Dispatch<SetStateAction<INodeData[]>>;
 }

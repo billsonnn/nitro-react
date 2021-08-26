@@ -1,4 +1,4 @@
-import { GetCatalogIndexComposer, GetCatalogPageComposer, GetGiftWrappingConfigurationComposer, ICatalogPageData, ILinkEventTracker, RoomPreviewer } from '@nitrots/nitro-renderer';
+import { GetCatalogIndexComposer, GetCatalogPageComposer, GetGiftWrappingConfigurationComposer, ILinkEventTracker, INodeData, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { AddEventLinkTracker, GetRoomEngine, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { CatalogEvent } from '../../events';
@@ -18,10 +18,10 @@ export const CatalogView: FC<CatalogViewProps> = props =>
     const [ isVisible, setIsVisible ] = useState(false);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
     const [ pendingPageLookup, setPendingPageLookup ] = useState<{ value: string, isOffer: boolean }>(null);
-    const [ pendingTree, setPendingTree ] = useState<ICatalogPageData[]>(null);
-    const [ pendingOpenTree, setPendingOpenTree ] = useState<ICatalogPageData[]>(null);
+    const [ pendingTree, setPendingTree ] = useState<INodeData[]>(null);
+    const [ pendingOpenTree, setPendingOpenTree ] = useState<INodeData[]>(null);
     const [ catalogState, dispatchCatalogState ] = useReducer(CatalogReducer, initialCatalog);
-    const [ currentTab, setCurrentTab ] = useState<ICatalogPageData>(null);
+    const [ currentTab, setCurrentTab ] = useState<INodeData>(null);
     const { root = null, pageParser = null, activeOffer = null, searchResult = null } = catalogState;
 
     const saveActivePages = useCallback(() =>
@@ -124,7 +124,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
 
             if(pendingPageLookup !== null || pendingOpenTree)
             {
-                let tree: ICatalogPageData[] = [];
+                let tree: INodeData[] = [];
 
                 if(pendingPageLookup !== null)
                 {

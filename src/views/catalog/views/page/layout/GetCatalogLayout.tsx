@@ -1,4 +1,4 @@
-import { ICatalogPageParser, RoomPreviewer } from '@nitrots/nitro-renderer';
+import { CatalogPageMessageParser, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { CatalogLayoutBadgeDisplayView } from './badge-display/CatalogLayoutBadgeDisplayView';
 import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
 import { CatalogLayoutFrontpage4View } from './frontpage4/CatalogLayoutFrontpage4View';
@@ -13,7 +13,7 @@ import { CatalogLayoutSpacesView } from './spaces-new/CatalogLayoutSpacesView';
 import { CatalogLayoutTrophiesView } from './trophies/CatalogLayoutTrophiesView';
 import { CatalogLayoutVipBuyView } from './vip-buy/CatalogLayoutVipBuyView';
 
-export const GetCatalogLayout = (pageParser: ICatalogPageParser, roomPreviewer: RoomPreviewer) =>
+export const GetCatalogLayout = (pageParser: CatalogPageMessageParser, roomPreviewer: RoomPreviewer) =>
 {
     switch(pageParser.layoutCode)
     {

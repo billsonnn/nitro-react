@@ -1,14 +1,14 @@
-import { CatalogPageMessageOfferData, ICatalogPageData, ICatalogPageParser, IFurnitureData, SellablePetPaletteData } from '@nitrots/nitro-renderer';
+import { CatalogPageMessageOfferData, CatalogPageMessageParser, IFurnitureData, INodeData, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { GetConfiguration, GetProductDataForLocalization, GetRoomEngine } from '../../../api';
 
 export interface ICatalogOffers
 {
-    [key: string]: ICatalogPageData[];
+    [key: string]: INodeData[];
 }
 
 export interface ICatalogSearchResult
 {
-    page: ICatalogPageData;
+    page: INodeData;
     furniture: IFurnitureData[];
 }
 
@@ -21,10 +21,10 @@ export function GetOfferName(offer: CatalogPageMessageOfferData): string
     return offer.localizationId;
 }
 
-export function GetOfferNodes(offers: ICatalogOffers, offerId: number): ICatalogPageData[]
+export function GetOfferNodes(offers: ICatalogOffers, offerId: number): INodeData[]
 {
     const pages = offers[offerId.toString()];
-    const allowedPages: ICatalogPageData[] = [];
+    const allowedPages: INodeData[] = [];
 
     if(pages && pages.length)
     {
@@ -39,7 +39,7 @@ export function GetOfferNodes(offers: ICatalogOffers, offerId: number): ICatalog
     return allowedPages;
 }
 
-export function SetOffersToNodes(offers: ICatalogOffers, pageData: ICatalogPageData): void
+export function SetOffersToNodes(offers: ICatalogOffers, pageData: INodeData): void
 {
     if(pageData.offerIds && pageData.offerIds.length)
     {
@@ -66,7 +66,7 @@ export function SetOffersToNodes(offers: ICatalogOffers, pageData: ICatalogPageD
     }
 }
 
-export function GetCatalogPageImage(page: ICatalogPageParser, index: number = 0): string
+export function GetCatalogPageImage(page: CatalogPageMessageParser, index: number = 0): string
 {
     const imageName = page.localization.images && page.localization.images[index];
 
@@ -79,7 +79,7 @@ export function GetCatalogPageImage(page: ICatalogPageParser, index: number = 0)
     return assetUrl;
 }
 
-export function GetCatalogPageText(page: ICatalogPageParser, index: number = 0): string
+export function GetCatalogPageText(page: CatalogPageMessageParser, index: number = 0): string
 {
     let message = (page.localization.texts[index] || '');
 
@@ -150,7 +150,7 @@ export function GetPetAvailableColors(petIndex: number, palettes: SellablePetPal
     }
 }
 
-export function GetCatalogPageTreeByName(page: ICatalogPageData, lookup: string, tree: ICatalogPageData[])
+export function GetCatalogPageTreeByName(page: INodeData, lookup: string, tree: INodeData[])
 {
     if(page.pageName === lookup) return page;
 
@@ -167,7 +167,7 @@ export function GetCatalogPageTreeByName(page: ICatalogPageData, lookup: string,
     }
 }
 
-export function GetCatalogPageTreeById(page: ICatalogPageData, lookup: number, tree: ICatalogPageData[])
+export function GetCatalogPageTreeById(page: INodeData, lookup: number, tree: INodeData[])
 {
     if(page.pageId === lookup) return page;
 
@@ -184,7 +184,7 @@ export function GetCatalogPageTreeById(page: ICatalogPageData, lookup: number, t
     }
 }
 
-export function GetCatalogPageTreeByOfferId(page: ICatalogPageData, lookup: number, tree: ICatalogPageData[])
+export function GetCatalogPageTreeByOfferId(page: INodeData, lookup: number, tree: INodeData[])
 {
     if(page.offerIds.indexOf(lookup) >= 0) return page;
 
@@ -201,9 +201,9 @@ export function GetCatalogPageTreeByOfferId(page: ICatalogPageData, lookup: numb
     }
 }
 
-export function BuildCatalogPageTree(page: ICatalogPageData, lookup: string, isOffer: boolean = false)
+export function BuildCatalogPageTree(page: INodeData, lookup: string, isOffer: boolean = false)
 {
-    const pageTree: ICatalogPageData[] = [];
+    const pageTree: INodeData[] = [];
 
     if(isOffer)
     {

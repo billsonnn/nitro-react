@@ -1,4 +1,4 @@
-import { ICatalogPageData } from '@nitrots/nitro-renderer';
+import { INodeData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { CatalogNavigationItemView } from '../item/CatalogNavigationItemView';
 import { CatalogNavigationSetViewProps } from './CatalogNavigationSetView.types';
@@ -6,7 +6,7 @@ import { CatalogNavigationSetViewProps } from './CatalogNavigationSetView.types'
 export const CatalogNavigationSetView: FC<CatalogNavigationSetViewProps> = props =>
 {
     const { page = null, isFirstSet = false, pendingTree = null, setPendingTree = null } = props;
-    const [ activeChild, setActiveChild ] = useState<ICatalogPageData>(null);
+    const [ activeChild, setActiveChild ] = useState<INodeData>(null);
 
     useEffect(() =>
     {

@@ -1,4 +1,5 @@
-import { CatalogGroupData, CatalogPageMessageOfferData, ClubOfferData, GiftWrappingConfigurationParser, ICatalogPageData, ICatalogPageParser } from '@nitrots/nitro-renderer';
+import { CatalogPageMessageOfferData, CatalogPageMessageParser, ClubOfferData, GiftWrappingConfigurationParser, INodeData } from '@nitrots/nitro-renderer';
+import { HabboGroupEntryData } from '@nitrots/nitro-renderer/src/nitro/communication/messages/parser/user/HabboGroupEntryData';
 import { Reducer } from 'react';
 import { CatalogPetPalette } from '../common/CatalogPetPalette';
 import { ICatalogOffers, ICatalogSearchResult, SetOffersToNodes } from '../common/CatalogUtilities';
@@ -7,13 +8,13 @@ import { SubscriptionInfo } from '../common/SubscriptionInfo';
 
 export interface ICatalogState
 {
-    root: ICatalogPageData;
+    root: INodeData;
     offerRoot: ICatalogOffers;
-    currentTab: ICatalogPageData;
-    pageParser: ICatalogPageParser;
+    currentTab: INodeData;
+    pageParser: CatalogPageMessageParser;
     activeOffer: CatalogPageMessageOfferData;
     searchResult: ICatalogSearchResult;
-    groups: CatalogGroupData[];
+    groups: HabboGroupEntryData[];
     petPalettes: CatalogPetPalette[];
     clubOffers: ClubOfferData[];
     subscriptionInfo: SubscriptionInfo;
@@ -24,13 +25,13 @@ export interface ICatalogAction
 {
     type: string;
     payload: {
-        root?: ICatalogPageData;
+        root?: INodeData;
         offerRoot?: ICatalogOffers;
-        currentTab?: ICatalogPageData;
-        pageParser?: ICatalogPageParser;
+        currentTab?: INodeData;
+        pageParser?: CatalogPageMessageParser;
         activeOffer?: CatalogPageMessageOfferData;
         searchResult?: ICatalogSearchResult;
-        groups?: CatalogGroupData[];
+        groups?: HabboGroupEntryData[];
         petPalette?: CatalogPetPalette;
         clubOffers?: ClubOfferData[];
         subscriptionInfo?: SubscriptionInfo;
@@ -88,7 +89,7 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
             return { ...state, currentTab, searchResult };
         }
         case CatalogActions.SET_CATALOG_PAGE_PARSER: {
-            let pageParser = (Object.create(action.payload.pageParser) as ICatalogPageParser);
+            let pageParser = (Object.create(action.payload.pageParser) as CatalogPageMessageParser);
             let activeOffer = null;
 
             if(pageParser.layoutCode === 'single_bundle')
