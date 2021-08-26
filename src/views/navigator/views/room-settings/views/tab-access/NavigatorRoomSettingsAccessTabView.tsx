@@ -1,6 +1,5 @@
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../../../../../api';
-import RoomSettingsData from '../../../../common/RoomSettingsData';
 import { NavigatorRoomSettingsTabViewProps } from '../../NavigatorRoomSettingsView.types';
 
 export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>
@@ -9,7 +8,7 @@ export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabView
 
     const handleChange = useCallback((field: string, value: string | number | boolean) =>
     {
-        const roomSettings = ({ ...roomSettingsData } as RoomSettingsData);
+        const roomSettings = Object.assign({}, roomSettingsData);
         let save = true;
 
         switch(field)
@@ -37,7 +36,7 @@ export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabView
 
         setRoomSettingsData(roomSettings);
 
-        if(save) onSave();
+        if(save) onSave(roomSettings);
     }, [ roomSettingsData, setRoomSettingsData, onSave ]);
 
     const isPasswordValid = useCallback(() =>
@@ -47,11 +46,13 @@ export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabView
 
     const trySave = useCallback(() =>
     {
-        if(isPasswordValid()) onSave();
-    }, [ isPasswordValid, onSave ]);
+        if(isPasswordValid()) onSave(roomSettingsData);
+    }, [isPasswordValid, onSave, roomSettingsData]);
 
     return (
         <>
+            <div className="fw-bold">{LocalizeText('navigator.roomsettings.roomaccess.caption')}</div>
+            <div className="mb-3">{ LocalizeText('navigator.roomsettings.roomaccess.info') }</div>
             <div className="fw-bold">{ LocalizeText('navigator.roomsettings.doormode') }</div>
             <div className="form-check">
                 <input className="form-check-input" type="radio" name="lockState" checked={ roomSettingsData.lockState === 0 } onChange={ (e) => handleChange('lock_state', 0) } />

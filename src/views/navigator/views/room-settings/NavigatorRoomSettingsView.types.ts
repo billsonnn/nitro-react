@@ -4,5 +4,5 @@ export class NavigatorRoomSettingsTabViewProps
 {
     roomSettingsData: RoomSettingsData;
     setRoomSettingsData: (roomSettings: RoomSettingsData) => void;
-    onSave: () => void;
+    onSave: (data: RoomSettingsData) => void;
 }

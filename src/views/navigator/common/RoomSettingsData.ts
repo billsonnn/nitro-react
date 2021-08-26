@@ -20,7 +20,6 @@ export default class RoomSettingsData
     public allowPetsEat: boolean;
 
     public usersWithRights: Map<number, string>;
-    public friendsWithoutRights: Map<number, string>;
 
     public hideWalls: boolean;
     public wallThickness: number;
@@ -59,7 +58,6 @@ export default class RoomSettingsData
         this.allowPetsEat           = parser.allowPetsEat;
 
         this.usersWithRights        = new Map<number, string>();
-        this.friendsWithoutRights   = new Map<number, string>();
 
         this.hideWalls              = parser.hideWalls;
         this.wallThickness          = parser.thicknessWall;
@@ -74,26 +72,5 @@ export default class RoomSettingsData
         this.kickState              = parser.moderationSettings.allowKick;
         this.banState               = parser.moderationSettings.allowBan;
         this.bannedUsers            = new Map<number, string>();
-        this.selectedUserToUnban    = 0;
-    }
-
-    public selectUserToUnban(userId: number): void
-    {
-        if(this.selectedUserToUnban === userId)
-        {
-            this.selectedUserToUnban = 0;
-        }
-        else
-        {
-            this.selectedUserToUnban = userId;
-        }
-    }
-
-    public get selectedUsernameToUnban(): string
-    {
-        if(this.selectedUserToUnban > 0)
-            return this.bannedUsers.get(this.selectedUserToUnban);
-
-        return null;
     }
 }

@@ -43,18 +43,18 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
 
         setRoomSettingsData(roomSettings);
 
-        if(save) onSave();
+        if(save) onSave(roomSettings);
     }, [ roomSettingsData, setRoomSettingsData, onSave ]);
 
     return (
         <>
             <div className="form-group mb-1">
                 <label>{ LocalizeText('navigator.roomname') }</label>
-                <input className="form-control form-control-sm" value={ roomSettingsData.roomName } onChange={ event => handleChange('name', event.target.value) } onBlur={ onSave } />
+                <input className="form-control form-control-sm" value={ roomSettingsData.roomName } onChange={ event => handleChange('name', event.target.value) } onBlur={ () => onSave(roomSettingsData) } />
             </div>
             <div className="form-group mb-1">
                 <label>{ LocalizeText('navigator.roomsettings.desc') }</label>
-                <input className="form-control form-control-sm" value={ roomSettingsData.roomDescription } onChange={ event => handleChange('description', event.target.value) } onBlur={ onSave } />
+                <input className="form-control form-control-sm" value={ roomSettingsData.roomDescription } onChange={ event => handleChange('description', event.target.value) } onBlur={ () => onSave(roomSettingsData) } />
             </div>
             <div className="form-group mb-1">
                 <label>{ LocalizeText('navigator.category') }</label>
