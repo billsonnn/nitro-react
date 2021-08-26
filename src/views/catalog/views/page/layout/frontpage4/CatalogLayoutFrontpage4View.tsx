@@ -1,6 +1,8 @@
 import { FrontPageItem } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo } from 'react';
 import { CreateLinkEvent, GetConfiguration } from '../../../../../../api';
+import { GetCatalogPageText } from '../../../../common/CatalogUtilities';
+import { CatalogRedeemVoucherView } from '../../redeem-voucher/CatalogRedeemVoucherView';
 import { CatalogLayoutFrontpage4ViewProps } from './CatalogLayoutFrontpage4View.types';
 
 export const CatalogLayoutFrontpage4View: FC<CatalogLayoutFrontpage4ViewProps> = props =>
@@ -9,6 +11,7 @@ export const CatalogLayoutFrontpage4View: FC<CatalogLayoutFrontpage4ViewProps> =
 
     const imageLibraryUrl = useMemo(() =>
     {
+        console.log(pageParser);
         return GetConfiguration<string>('image.library.url');
     }, []);
 
@@ -48,6 +51,7 @@ export const CatalogLayoutFrontpage4View: FC<CatalogLayoutFrontpage4ViewProps> =
                     <div className="front-page-item h-100" style={ { backgroundImage: `url('${ imageLibraryUrl }${ pageParser.frontPageItems[3].itemPromoImage }')` }} onClick={ event => selectItem(pageParser.frontPageItems[3]) }>
                         <div className="front-page-item-caption">{ pageParser.frontPageItems[3].itemName }</div>
                     </div> }
+                <CatalogRedeemVoucherView text={ GetCatalogPageText(pageParser, 1) } />
             </div>
         </div>
     );
