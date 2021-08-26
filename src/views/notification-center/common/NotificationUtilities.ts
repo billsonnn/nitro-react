@@ -1,10 +1,25 @@
-import { GetConfiguration, GetNitroInstance, LocalizeText } from '../../../api';
+import { HabboWebTools } from '@nitrots/nitro-renderer';
+import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText } from '../../../api';
+import { SimpleAlertUIEvent } from '../../../events';
 import { NotificationBubbleEvent } from '../../../events/notification-center/NotificationBubbleEvent';
 import { dispatchUiEvent } from '../../../hooks';
+import { CatalogPageName } from '../../catalog/common/CatalogPageName';
 import { NotificationType } from './NotificationType';
 
 export class NotificationUtilities
 {
+    private static cleanText(text: string): string
+    {
+        return text.replace(/\\r/g, '\r')
+    }
+
+    private static getTimeZeroPadded(time: number): string
+    {
+        const text = ('0' + time);
+
+        return text.substr((text.length - 2), text.length);
+    }
+
     private static getMainNotificationConfig(): { [key: string]: { delivery?: string, display?: string; title?: string; image?: string }}
     {
         return GetConfiguration<{ [key: string]: { delivery?: string, display?: string; title?: string; image?: string }}>('notification', {});
@@ -63,7 +78,7 @@ export class NotificationUtilities
             const isEventLink = (linkUrl && linkUrl.substr(0, 6) === 'event');
             const image = this.getNotificationImageUrl(options, type);
 
-            dispatchUiEvent(new NotificationBubbleEvent(message, NotificationType.INFO, image, (isEventLink ? linkUrl.substr(6) : linkUrl)));
+            dispatchUiEvent(new NotificationBubbleEvent(LocalizeText(message), NotificationType.INFO, LocalizeText(image), (isEventLink ? linkUrl.substr(6) : linkUrl)));
         }
         else
         {
@@ -74,5 +89,48 @@ export class NotificationUtilities
     public static showSingleBubble(message: string, type: string, imageUrl: string = null, internalLink: string = null): void
     {
         dispatchUiEvent(new NotificationBubbleEvent(message, type, imageUrl, internalLink));
+    }
+
+    public static simpleAlert(message: string, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
+    {
+        if(!title || !title.length) title = LocalizeText('notifications.broadcast.title');
+
+        dispatchUiEvent(new SimpleAlertUIEvent(message, clickUrl, clickUrlText, title, imageUrl));
+    }
+
+    public static alert(title: string, message: string): void
+    {
+        dispatchUiEvent(new SimpleAlertUIEvent(message, null, null, title, null));
+    }
+
+    public static showClubGiftNotification(numGifts: number): void
+    {
+        if(numGifts <= 0) return;
+
+        dispatchUiEvent(new NotificationBubbleEvent(numGifts.toString(), NotificationType.CLUBGIFT, null, 'catalog/open/' + CatalogPageName.CLUB_GIFTS));
+    }
+
+    public static showModeratorMessage(message: string, url: string = null): void
+    {
+        this.simpleAlert(this.cleanText(message), url, LocalizeText('mod.alert.link'), LocalizeText('mod.alert.title'));
+    }
+
+    public static handleHotelClosedMessage(open: number, minute: number, thrownOut: boolean): void
+    {
+        const text: string = LocalizeText(('opening.hours.' + (thrownOut ? 'disconnected' : 'closed')), [ 'h', 'm'], [ this.getTimeZeroPadded(open), this.getTimeZeroPadded(minute) ]);;
+
+        this.alert(LocalizeText('opening.hours.title'), text);
+    }
+
+    public static openUrl(url: string): void
+    {
+        if(url.startsWith('http'))
+        {
+            HabboWebTools.openWebPage(url);
+        }
+        else
+        {
+            CreateLinkEvent(url);
+        }
     }
 }

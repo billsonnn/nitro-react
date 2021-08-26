@@ -3,10 +3,11 @@ import { NotificationCenterAlertEvent } from '../../events';
 import { NotificationBubbleEvent } from '../../events/notification-center/NotificationBubbleEvent';
 import { useUiEvent } from '../../hooks/events';
 import { NotificationItem } from './common/NotificationItem';
+import { NotificationType } from './common/NotificationType';
 import { NotificationCenterMessageHandler } from './NotificationCenterMessageHandler';
 import { NotificationCenterViewProps } from './NotificationCenterView.types';
 import { NotificationCenterBroadcastMessageView } from './views/broadcast-message/NotificationCenterBroadcastMessageView';
-import { NotificationBubbleView } from './views/notification-bubble/NotificationBubbleView';
+import { GetBubbleLayout } from './views/bubble-layouts/GetBubbleLayout';
 
 export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
 {
@@ -26,7 +27,7 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
     const onNotificationBubbleEvent = useCallback((event: NotificationBubbleEvent) =>
     {
         console.log(event);
-        const notificationItem = new NotificationItem(event.message, event.notificationType, null, event.linkUrl);
+        const notificationItem = new NotificationItem(event.message, event.notificationType, event.imageUrl, event.linkUrl);
 
         setBubbleAlerts(prevValue => [ notificationItem, ...prevValue ]);
     }, []);
@@ -65,7 +66,19 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
 
         const elements: ReactNode[] = [];
 
-        for(const alert of bubbleAlerts) elements.push(<NotificationBubbleView key={ alert.id } notificationItem={ alert } close={ () => closeBubbleAlert(alert) } />);
+        for(const alert of bubbleAlerts)
+        {
+            const element = GetBubbleLayout(alert, () => closeBubbleAlert(alert));
+
+            if(alert.notificationType === NotificationType.CLUBGIFT)
+            {
+                elements.unshift(element);
+
+                continue;
+            }
+
+            elements.push(element);
+        }
 
         return elements;
     }, [ bubbleAlerts, closeBubbleAlert ]);

@@ -7,18 +7,6 @@
     }
 }
 
-.nitro-notification-center {
-
-    .notification-bubble {
-        pointer-events: all;
-        padding: 2px;
-        background-color: $gable-green;
-        border: 2px solid rgba($white, 0.5);
-        font-size: $font-size-sm;
-        margin-bottom: 5px;
-    }
-}
-
 .nitro-notification-center-container {
     position: absolute;
     top: 0;
