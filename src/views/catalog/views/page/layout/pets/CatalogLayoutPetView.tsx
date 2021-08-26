@@ -1,4 +1,4 @@
-import { CatalogRequestPetBreedsComposer, ColorConverter, SellablePetPaletteData } from '@nitrots/nitro-renderer';
+import { ColorConverter, GetSellablePetPalettesComposer, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { GetProductDataForLocalization, LocalizeText } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
@@ -69,7 +69,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutPetViewProps> = props =>
         setSelectedPaletteIndex(-1);
         setSellablePalettes([]);
 
-        SendMessageHook(new CatalogRequestPetBreedsComposer(productData.type));
+        SendMessageHook(new GetSellablePetPalettesComposer(productData.type));
     }, [ activeOffer, petPalettes ]);
 
     useEffect(() =>

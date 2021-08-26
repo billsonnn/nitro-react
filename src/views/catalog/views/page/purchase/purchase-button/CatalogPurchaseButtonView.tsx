@@ -1,4 +1,4 @@
-import { CatalogPurchaseComposer } from '@nitrots/nitro-renderer';
+import { PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../../api';
 import { CatalogEvent } from '../../../../../../events';
@@ -32,7 +32,7 @@ export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = pro
 
     const purchase = useCallback(() =>
     {
-        SendMessageHook(new CatalogPurchaseComposer(pageId, offer.offerId, extra, quantity));
+        SendMessageHook(new PurchaseFromCatalogComposer(pageId, offer.offerId, extra, quantity));
     }, [ pageId, offer, extra, quantity ]);
 
     const attemptPurchase = useCallback(() =>

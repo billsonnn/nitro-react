@@ -1,4 +1,4 @@
-import { CatalogSearchComposer } from '@nitrots/nitro-renderer';
+import { GetProductOfferComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { useCatalogContext } from '../../../../context/CatalogContext';
@@ -15,7 +15,7 @@ export const CatalogSearchResultOffersView: FC<CatalogSearchResultOffersViewProp
     {
         if(!offers || !offers.length) return;
 
-        SendMessageHook(new CatalogSearchComposer(offers[0].purchaseOfferId));
+        SendMessageHook(new GetProductOfferComposer(offers[0].purchaseOfferId));
     }, [ offers ]);
 
     return (

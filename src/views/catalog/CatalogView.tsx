@@ -1,4 +1,4 @@
-import { CatalogModeComposer, CatalogPageComposer, CatalogRequestGiftConfigurationComposer, ICatalogPageData, ILinkEventTracker, RoomPreviewer } from '@nitrots/nitro-renderer';
+import { GetCatalogIndexComposer, GetCatalogPageComposer, GetGiftWrappingConfigurationComposer, ICatalogPageData, ILinkEventTracker, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { AddEventLinkTracker, GetRoomEngine, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { CatalogEvent } from '../../events';
@@ -107,8 +107,8 @@ export const CatalogView: FC<CatalogViewProps> = props =>
 
         if(loadCatalog)
         {
-            SendMessageHook(new CatalogModeComposer(CatalogMode.MODE_NORMAL));
-            SendMessageHook(new CatalogRequestGiftConfigurationComposer());
+            SendMessageHook(new GetCatalogIndexComposer(CatalogMode.MODE_NORMAL));
+            SendMessageHook(new GetGiftWrappingConfigurationComposer());
 
             return;
         }
@@ -164,7 +164,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
     {
         if(!currentTab) return;
 
-        SendMessageHook(new CatalogPageComposer(currentTab.pageId, -1, CatalogMode.MODE_NORMAL));
+        SendMessageHook(new GetCatalogPageComposer(currentTab.pageId, -1, CatalogMode.MODE_NORMAL));
     }, [ currentTab ]);
 
     useEffect(() =>

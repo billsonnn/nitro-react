@@ -1,4 +1,4 @@
-import { CatalogSearchComposer, FurnitureType, MouseEventType } from '@nitrots/nitro-renderer';
+import { FurnitureType, GetProductOfferComposer, MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback } from 'react';
 import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
@@ -13,7 +13,7 @@ export const CatalogSearchResultOfferView: FC<CatalogSearchResultOfferViewProps>
         switch(event.type)
         {
             case MouseEventType.MOUSE_DOWN:
-                SendMessageHook(new CatalogSearchComposer(offer.purchaseOfferId));
+                SendMessageHook(new GetProductOfferComposer(offer.purchaseOfferId));
                 return;
             case MouseEventType.MOUSE_UP:
                 return;

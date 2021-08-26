@@ -1,4 +1,4 @@
-import { CatalogPurchaseComposer, CatalogRequestVipOffersComposer, ClubOfferData } from '@nitrots/nitro-renderer';
+import { ClubOfferData, GetClubOffersMessageComposer, PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { LocalizeText } from '../../../../../../api';
@@ -76,14 +76,14 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
     {
         if(!pendingOffer) return;
 
-        SendMessageHook(new CatalogPurchaseComposer(pageParser.pageId, pendingOffer.offerId, null, 1));
+        SendMessageHook(new PurchaseFromCatalogComposer(pageParser.pageId, pendingOffer.offerId, null, 1));
     }, [ pendingOffer, pageParser ])
 
     useEffect(() =>
     {
         if(clubOffers === null)
         {
-            SendMessageHook(new CatalogRequestVipOffersComposer(1));
+            SendMessageHook(new GetClubOffersMessageComposer(1));
 
             return;
         }
