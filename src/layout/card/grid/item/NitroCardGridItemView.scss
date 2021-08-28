@@ -9,8 +9,6 @@
         position: relative;
         width: 100%;
         height: 100%;
-        background-position: center;
-        background-repeat: no-repeat;
         overflow: hidden;
 
         &.theme-default {
@@ -67,6 +65,15 @@
             background-position: center;
             background-repeat: no-repeat;
             background-position-y: 12px !important;
+        }
+
+        .background {
+            background-position: center;
+            background-repeat: no-repeat;
+
+            &.disabled {
+                opacity: 0.5;
+            }
         }
 
         .trade-button {
