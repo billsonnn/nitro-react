@@ -1,4 +1,4 @@
-import { AchievementNotificationMessageEvent, ActivityPointNotificationMessageEvent, ClubGiftNotificationEvent, HabboBroadcastMessageEvent, HotelClosesAndWillOpenAtEvent, HotelWillShutdownEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent, PetAddedToInventoryEvent, RespectReceivedEvent, Vector3d } from '@nitrots/nitro-renderer';
+import { AchievementNotificationMessageEvent, ActivityPointNotificationMessageEvent, ClubGiftNotificationEvent, HabboBroadcastMessageEvent, HotelClosesAndWillOpenAtEvent, HotelWillShutdownEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent, PetAddedToInventoryEvent, RespectReceivedEvent, RoomEnterEvent, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetRoomEngine, GetSessionDataManager, LocalizeBadgeName, LocalizeText } from '../../api';
 import { NotificationCenterAlertEvent } from '../../events';
@@ -106,12 +106,23 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
 
     CreateMessageHook(PetAddedToInventoryEvent, onPetAddedToInventoryEvent);
 
+    const onRoomEnterEvent = useCallback((event: RoomEnterEvent) =>
+    {
+        const parser = event.getParser();
+
+        NotificationUtilities.showModerationDisclaimer();
+    }, []);
+
+    CreateMessageHook(RoomEnterEvent, onRoomEnterEvent);
+
     const onMOTDNotificationEvent = useCallback((event: MOTDNotificationEvent) =>
     {
         const parser = event.getParser();
 
         dispatchUiEvent(new NotificationCenterAlertEvent(NotificationCenterAlertEvent.HOTEL_ALERT, parser.messages));
     }, []);
+
+    CreateMessageHook(MOTDNotificationEvent, onMOTDNotificationEvent);
 
     const onHotelWillShutdownEvent = useCallback((event: HotelWillShutdownEvent) =>
     {
@@ -125,6 +136,8 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         });
     }, [ dispatchNotificationCenterState ]);
 
+    CreateMessageHook(HotelWillShutdownEvent, onHotelWillShutdownEvent);
+
     const onNotificationDialogMessageEvent = useCallback((event: NotificationDialogMessageEvent) =>
     {
         const parser = event.getParser();
@@ -132,8 +145,6 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.showNotification(parser.type, parser.parameters);
     }, []);
 
-    CreateMessageHook(MOTDNotificationEvent, onMOTDNotificationEvent);
-    CreateMessageHook(HotelWillShutdownEvent, onHotelWillShutdownEvent);
     CreateMessageHook(NotificationDialogMessageEvent, onNotificationDialogMessageEvent);
 
     return null;

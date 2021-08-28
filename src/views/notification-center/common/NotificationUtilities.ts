@@ -1,4 +1,4 @@
-import { HabboWebTools } from '@nitrots/nitro-renderer';
+import { HabboWebTools, RoomEnterEffect } from '@nitrots/nitro-renderer';
 import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText } from '../../../api';
 import { SimpleAlertUIEvent } from '../../../events';
 import { NotificationBubbleEvent } from '../../../events/notification-center/NotificationBubbleEvent';
@@ -8,6 +8,10 @@ import { NotificationType } from './NotificationType';
 
 export class NotificationUtilities
 {
+    private static MODERATION_DISCLAIMER_SHOWN: boolean = false;
+    private static MODERATION_DISCLAIMER_DELAY_MS: number = 5000;
+    private static MODERATION_DISCLAIMER_TIMEOUT: ReturnType<typeof setTimeout> = null;
+
     private static cleanText(text: string): string
     {
         return text.replace(/\\r/g, '\r')
@@ -131,6 +135,27 @@ export class NotificationUtilities
         else
         {
             CreateLinkEvent(url);
+        }
+    }
+
+    public static showModerationDisclaimer(): void
+    {
+        if(RoomEnterEffect.isRunning())
+        {
+            if(this.MODERATION_DISCLAIMER_TIMEOUT) return;
+
+            this.MODERATION_DISCLAIMER_TIMEOUT = setTimeout(() =>
+            {
+                this.showModerationDisclaimer();
+            }, (RoomEnterEffect.totalRunningTime + this.MODERATION_DISCLAIMER_DELAY_MS));
+        }
+        else
+        {
+            if(this.MODERATION_DISCLAIMER_SHOWN) return;
+
+            this.showSingleBubble(LocalizeText('mod.chatdisclaimer'), NotificationType.INFO);
+
+            this.MODERATION_DISCLAIMER_SHOWN = true;
         }
     }
 }
