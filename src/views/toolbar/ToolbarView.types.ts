@@ -13,4 +13,6 @@ export class ToolbarViewItems
     public static CAMERA_ITEM: string       = 'TVI_CAMERA_ITEM';
     public static MOD_TOOLS_ITEM: string    = 'TVI_MOD_TOOLS_ITEM';
     public static ACHIEVEMENTS_ITEM: string = 'TVI_ACHIEVEMENTS_ITEM';
+    public static PROFILE_ITEM: string      = 'TVI_PROFILE_ITEM';
+    public static SETTINGS_ITEM: string     = 'TVI_SETTINGS_ITEM';
 }

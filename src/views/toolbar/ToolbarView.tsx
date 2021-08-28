@@ -1,12 +1,13 @@
-import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
+import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserInfoDataParser, UserInfoEvent, UserProfileComposer, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomSession, GetRoomSessionManager, GoToDesktop } from '../../api';
+import { GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GoToDesktop } from '../../api';
 import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
 import { AchievementsUIEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
+import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
 import { dispatchUiEvent, useRoomEngineEvent, useUiEvent } from '../../hooks';
-import { CreateMessageHook } from '../../hooks/messages/message-event';
+import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
 import { TransitionAnimationTypes } from '../../layout/transitions/TransitionAnimation.types';
 import { AvatarImageView } from '../shared/avatar-image/AvatarImageView';
@@ -120,6 +121,14 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 return;
             case ToolbarViewItems.ACHIEVEMENTS_ITEM:
                 dispatchUiEvent(new AchievementsUIEvent(AchievementsUIEvent.TOGGLE_ACHIEVEMENTS));
+                setMeExpanded(false);
+                return;
+            case ToolbarViewItems.PROFILE_ITEM:
+                SendMessageHook(new UserProfileComposer(GetSessionDataManager().userId));
+                setMeExpanded(false);
+                return;
+            case ToolbarViewItems.SETTINGS_ITEM:
+                dispatchUiEvent(new UserSettingsUIEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS));
                 setMeExpanded(false);
                 return;
         }
