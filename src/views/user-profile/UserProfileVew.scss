@@ -1,5 +1,6 @@
 .user-profile {
     width: 560px;
+
     .content-area {
         color: black;
     }
@@ -44,4 +45,5 @@
     }
 }
 
-@import "./views/relationships-container/RelationshipsContainerView";
+@import './views/relationships-container/RelationshipsContainerView';
+@import './views/groups-container/GroupsContainerView';

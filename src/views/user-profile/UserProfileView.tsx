@@ -5,6 +5,7 @@ import { CreateMessageHook, SendMessageHook } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
 import { BadgesContainerView } from './views/badges-container/BadgesContainerView';
 import { FriendsContainerView } from './views/friends-container/FriendsContainerView';
+import { GroupsContainerView } from './views/groups-container/GroupsContainerView';
 import { UserContainerView } from './views/user-container/UserContainerView';
 
 export const UserProfileView: FC = props =>
@@ -51,6 +52,7 @@ export const UserProfileView: FC = props =>
         }
         
         setUserProfile(parser);
+        console.log(parser);
         SendMessageHook(new UserCurrentBadgesComposer(parser.id));
         SendMessageHook(new UserRelationshipsComposer(parser.id));
     }, [userProfile]);
@@ -79,14 +81,7 @@ export const UserProfileView: FC = props =>
                             <i className="icon icon-rooms" /><span className="rooms-button">{LocalizeText('extendedprofile.rooms')}</span>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="col-sm-4">
-                            groups list goes here
-                        </div>
-                        <div className="col-sm-8">
-                            group info goes here
-                        </div>
-                    </div>
+                    <GroupsContainerView groups={ userProfile.groups } />
             </NitroCardContentView>
         </NitroCardView>
     )

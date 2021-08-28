@@ -549,6 +549,48 @@
         height: 14px;
     }
 
+    &.icon-group-type-0 {
+        background: url('../images/groups/grouptype_icon_0.png');
+        width: 16px;
+        height: 16px;
+    }
+
+    &.icon-group-type-1 {
+        background: url('../images/groups/grouptype_icon_1.png');
+        width: 16px;
+        height: 16px;
+    }
+
+    &.icon-group-type-2 {
+        background: url('../images/groups/grouptype_icon_2.png');
+        width: 16px;
+        height: 16px;
+    }
+
+    &.icon-group-decorate {
+        background: url('../images/groups/group_decorate_icon.png');
+        width: 15px;
+        height: 15px;
+    }
+
+    &.icon-group-member {
+        background: url('../images/groups/group_icon_big_member.png');
+        width: 20px;
+        height: 20px;
+    }
+
+    &.icon-group-admin {
+        background: url('../images/groups/group_icon_big_admin.png');
+        width: 20px;
+        height: 20px;
+    }
+
+    &.icon-group-owner {
+        background: url('../images/groups/group_icon_big_owner.png');
+        width: 20px;
+        height: 20px;
+    }
+
     &.spin {
         animation: rotating 1s linear infinite;
     }

@@ -21,7 +21,7 @@
     "pet.asset.url": "${asset.url}/bundled/pet/%libname%.nitro",
     "generic.asset.url": "${asset.url}/bundled/generic/%libname%.nitro",
     "badge.asset.url": "${image.library.url}album1584/%badgename%.gif",
-    "badge.asset.group.url": "${asset.url}/group-badge/%badgedata%",
+    "badge.asset.group.url": "https://cdn.ironhotel.biz/group-badge/%badgedata%.gif",
     "furni.rotation.bounce.steps": 20,
     "furni.rotation.bounce.height": 0.0625,
     "enable.avatar.arrow": false,
