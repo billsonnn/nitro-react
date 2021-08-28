@@ -4,6 +4,7 @@ import { LocalizeText } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks/messages';
 import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
+import { UserProfileIconView } from '../../../../../shared/user-profile-icon/UserProfileIconView';
 import { BotSkillsEnum } from '../../../avatar-info/common/BotSkillsEnum';
 import { InfoStandBaseView } from '../base/InfoStandBaseView';
 import { InfoStandWidgetRentableBotViewProps } from './InfoStandWidgetRentableBotView.types';
@@ -25,7 +26,7 @@ export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewPr
     {
         SendMessageHook(new BotRemoveComposer(rentableBotData.webID));
     }, [ rentableBotData ]);
-
+    
     if(!rentableBotData) return;
 
     return (
@@ -46,7 +47,7 @@ export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewPr
                 <div className="motto-content small">{ rentableBotData.motto }</div>
                 <hr className="m-0 my-1" />
                 <div className="d-flex align-items-center">
-                    <i className="icon icon-user-profile me-1 cursor-pointer" />
+                    <UserProfileIconView userId={ rentableBotData.ownerId } />
                     <div className="small text-wrap">{ LocalizeText('infostand.text.botowner', [ 'name' ], [ rentableBotData.ownerName ]) }</div>
                 </div>
                 { (rentableBotData.carryItem > 0) &&

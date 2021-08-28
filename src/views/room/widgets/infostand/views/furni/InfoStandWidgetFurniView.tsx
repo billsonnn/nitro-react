@@ -1,10 +1,11 @@
-import { CrackableDataType, RoomControllerLevel, RoomObjectCategory, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, StringDataType } from '@nitrots/nitro-renderer';
+import { CrackableDataType, RoomControllerLevel, RoomObjectCategory, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, StringDataType, UserProfileComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { LimitedEditionCompactPlateView } from '../../../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../../../shared/rarity-level/RarityLevelView';
+import { UserProfileIconView } from '../../../../../shared/user-profile-icon/UserProfileIconView';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { InfoStandBaseView } from '../base/InfoStandBaseView';
 import { InfoStandWidgetFurniViewProps } from './InfoStandWidgetFurniView.types';
@@ -222,6 +223,11 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         widgetHandler.processWidgetMessage(new RoomWidgetFurniActionMessage(messageType, furniData.id, furniData.category, furniData.purchaseOfferId, objectData));
     }, [ widgetHandler, furniData, pickupMode, customKeys, customValues, getFurniSettingsAsString ]);
 
+    const openProfile = useCallback(() =>
+    {
+        SendMessageHook(new UserProfileComposer(furniData.ownerId));
+    }, [ furniData ]);
+
     if(!furniData) return null;
 
     return (
@@ -243,7 +249,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                 <div className="small text-wrap">{ furniData.description }</div>
                 <hr className="m-0 my-1" />
                 <div className="d-flex align-items-center">
-                    <i className="icon icon-user-profile me-1 cursor-pointer" />
+                    <UserProfileIconView userId={ furniData.ownerId } />
                     <div className="small text-wrap">{ LocalizeText('furni.owner', [ 'name' ], [ furniData.ownerName ]) }</div>
                 </div>
                 { (furniData.purchaseOfferId > 0) && <button type="button" className="btn btn-primary btn-sm mt-1" onClick={ event => processButtonAction('buy_one') }>{ LocalizeText('infostand.button.buy') }</button> }

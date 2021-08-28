@@ -1,8 +1,8 @@
-import { AvatarAction, AvatarExpressionEnum, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { AvatarAction, AvatarExpressionEnum, RoomObjectCategory, UserProfileComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUserActionMessage } from '../../../../../../api';
 import { AvatarEditorEvent } from '../../../../../../events';
-import { dispatchUiEvent } from '../../../../../../hooks';
+import { dispatchUiEvent, SendMessageHook } from '../../../../../../hooks';
 import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';
@@ -102,12 +102,17 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
 
         if(hideMenu) close();
     }, [ roomSession, widgetHandler, userData, setIsDecorating, close ]);
+
+    const openProfile = useCallback(() =>
+    {
+        SendMessageHook(new UserProfileComposer(userData.webID));
+    }, [ userData ]);
     
     const isRidingHorse = IsRidingHorse();
 
     return (
         <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ userData.userType } close={ close }>
-            <ContextMenuHeaderView>
+            <ContextMenuHeaderView className="cursor-pointer" onClick={ () => openProfile() }>
                 { userData.name }
             </ContextMenuHeaderView>
             { (mode === MODE_NORMAL) &&

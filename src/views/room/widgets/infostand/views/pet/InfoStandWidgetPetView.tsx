@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../../api';
 import { PetImageView } from '../../../../../shared/pet-image/PetImageView';
+import { UserProfileIconView } from '../../../../../shared/user-profile-icon/UserProfileIconView';
 import { InfoStandBaseView } from '../base/InfoStandBaseView';
 import { InfoStandWidgetPetViewProps } from './InfoStandWidgetPetView.types';
 
@@ -46,7 +47,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
             <div className="small text-wrap">{ LocalizeText('pet.age', ['age'], [petData.age.toString()]) }</div>
             <hr className="m-0 my-1" />
             <div className="d-flex align-items-center">
-                <i className="icon icon-user-profile me-1 cursor-pointer" />
+                <UserProfileIconView userId={ petData.ownerId } />
                 <div className="small text-wrap">{ LocalizeText('infostand.text.petowner', ['name'], [petData.ownerName]) }</div>
             </div>
         </InfoStandBaseView>

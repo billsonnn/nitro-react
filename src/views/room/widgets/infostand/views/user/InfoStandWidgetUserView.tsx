@@ -5,6 +5,7 @@ import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../../hooks/events';
 import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
+import { UserProfileIconView } from '../../../../../shared/user-profile-icon/UserProfileIconView';
 import { RelationshipsContainerView } from '../../../../../user-profile/views/relationships-container/RelationshipsContainerView';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { InfoStandWidgetUserViewProps } from './InfoStandWidgetUserView.types';
@@ -81,7 +82,10 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
         <div className="d-flex flex-column nitro-card nitro-infostand rounded">
             <div className="container-fluid content-area">
                 <div className="d-flex justify-content-between align-items-center">
-                    <div className="small text-wrap">{ userData.name }</div>
+                    <div className="small text-wrap">
+                        <UserProfileIconView userId={ userData.webID } />
+                        { userData.name }
+                    </div>
                     <i className="fas fa-times cursor-pointer" onClick={ close }></i>
                 </div>
                 <hr className="m-0 my-1" />

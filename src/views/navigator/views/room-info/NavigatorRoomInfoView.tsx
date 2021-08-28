@@ -8,6 +8,7 @@ import { dispatchUiEvent } from '../../../../hooks/events';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
+import { UserProfileIconView } from '../../../shared/user-profile-icon/UserProfileIconView';
 import { useNavigatorContext } from '../../context/NavigatorContext';
 import { NavigatorActions } from '../../reducers/NavigatorReducer';
 import { NavigatorRoomInfoViewProps } from './NavigatorRoomInfoView.types';
@@ -110,7 +111,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                         { roomInfoData.enteredGuestRoom.showOwner && <>
                             <div className="fw-bold text-muted me-1">{ LocalizeText('navigator.roomownercaption') }</div>
                             <div className="d-flex align-items-center cursor-pointer">
-                                <i className="icon icon-user-profile me-1" />
+                                <UserProfileIconView userId={ roomInfoData.enteredGuestRoom.ownerId } />
                                 <div>{ roomInfoData.enteredGuestRoom.ownerName }</div>
                             </div>
                         </> }
