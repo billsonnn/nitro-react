@@ -209,7 +209,7 @@ export class AvatarEditorGridPartItem implements IAvatarImageListener
             this._isSellable    = false;
         }
 
-        if(this._isDisabled) this.setAlpha(container, 0.2);
+        //if(this._isDisabled) this.setAlpha(container, 0.2);
 
         this._imageUrl = TextureUtils.generateImageUrl(container);
         

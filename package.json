@@ -50,22 +50,17 @@
       "keyword-spacing": [
         "error",
         {
-          "overrides":
-          {
-            "if":
-            {
+          "overrides": {
+            "if": {
               "after": false
             },
-            "for":
-            {
+            "for": {
               "after": false
             },
-            "while":
-            {
+            "while": {
               "after": false
             },
-            "switch":
-            {
+            "switch": {
               "after": false
             }
           }
@@ -96,8 +91,7 @@
       "@typescript-eslint/ban-types": [
         "error",
         {
-          "types":
-          {
+          "types": {
             "String": true,
             "Boolean": true,
             "Number": true,
