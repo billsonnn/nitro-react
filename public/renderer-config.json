@@ -24,6 +24,7 @@
     "badge.asset.group.url": "${asset.url}/group-badge/%badgedata%",
     "furni.rotation.bounce.steps": 20,
     "furni.rotation.bounce.height": 0.0625,
+    "enable.avatar.arrow": false,
     "system.animation.fps": 24,
     "system.limits.fps": false,
     "system.dispatcher.log": false,
