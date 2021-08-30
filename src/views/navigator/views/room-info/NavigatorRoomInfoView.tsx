@@ -1,7 +1,7 @@
-import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, UserHomeRoomComposer } from '@nitrots/nitro-renderer';
+import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, SecurityLevel, UserHomeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetConfiguration, LocalizeText } from '../../../../api';
+import { GetConfiguration, GetSessionDataManager, LocalizeText } from '../../../../api';
 import { NavigatorEvent } from '../../../../events';
 import { RoomWidgetThumbnailEvent } from '../../../../events/room-widgets/thumbnail';
 import { dispatchUiEvent } from '../../../../hooks/events';
@@ -41,6 +41,16 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
         setRoomThumbnail(thumbnailUrl);
         setIsRoomPicked(roomInfoData.enteredGuestRoom.roomPicker);
         setIsRoomMuted(roomInfoData.enteredGuestRoom.allInRoomMuted);
+    }, [ roomInfoData ]);
+
+    const hasPermission = useCallback((permission: string) =>
+    {
+        switch(permission)
+        {
+            case 'settings': return GetSessionDataManager().securityLevel >= SecurityLevel.MODERATOR || roomInfoData.currentRoomOwner;
+            case 'staff_pick': return GetSessionDataManager().securityLevel >= SecurityLevel.COMMUNITY;
+            default: return false;
+        }
     }, [ roomInfoData ]);
     
     const processAction = useCallback((action: string, value?: string) =>
@@ -131,7 +141,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                         { roomThumbnail && <img alt="" src={ roomThumbnail } /> }
                     </div>
                     { roomInfoData.enteredGuestRoom.habboGroupId > 0 && <div className="d-flex align-items-center mb-2 cursor-pointer" onClick={ () => processAction('open_group_info') }>
-                        <div className="group-badge flex-shrink-0 me-2">
+                        <div className="group-badge flex-shrink-0 me-1">
                             <BadgeImageView badgeCode={ roomInfoData.enteredGuestRoom.groupBadgeCode } isGroup={ true } />
                         </div>
                         <div className="text-decoration-underline small">
@@ -142,11 +152,13 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                         <i className="icon icon-arrows me-1" />
                         <span>{ LocalizeText('navigator.embed.caption') }</span>
                     </div>
-                    <button className="btn btn-sm btn-primary w-100 mb-1" onClick={ () => processAction('open_room_settings') }>{ LocalizeText('navigator.room.popup.info.room.settings') }</button>
-                    <button className="btn btn-sm btn-primary w-100 mb-1" disabled={ true }>{ LocalizeText('open.floor.plan.editor') }</button>
-                    <button className="btn btn-sm btn-primary w-100 mb-1" onClick={ () => processAction('toggle_pick') }>{ LocalizeText(isRoomPicked ? 'navigator.staffpicks.unpick' : 'navigator.staffpicks.pick') }</button>
+                    { hasPermission('settings') && <>
+                        <button className="btn btn-sm btn-primary w-100 mb-1" onClick={ () => processAction('open_room_settings') }>{ LocalizeText('navigator.room.popup.info.room.settings') }</button>
+                        <button className="btn btn-sm btn-primary w-100 mb-1" disabled={ true }>{ LocalizeText('open.floor.plan.editor') }</button>
+                    </> }
+                    {  hasPermission('staff_pick') && <button className="btn btn-sm btn-primary w-100 mb-1" onClick={ () => processAction('toggle_pick') }>{ LocalizeText(isRoomPicked ? 'navigator.staffpicks.unpick' : 'navigator.staffpicks.pick') }</button> }
                     <button className="btn btn-sm btn-danger w-100 mb-1" disabled={ true }>{ LocalizeText('help.emergency.main.report.room') }</button>
-                    <button className="btn btn-sm btn-primary w-100" onClick={ () => processAction('toggle_mute') }>{ LocalizeText(isRoomMuted ? 'navigator.muteall_on' : 'navigator.muteall_off') }</button>
+                    { hasPermission('settings') && <button className="btn btn-sm btn-primary w-100" onClick={ () => processAction('toggle_mute') }>{ LocalizeText(isRoomMuted ? 'navigator.muteall_on' : 'navigator.muteall_off') }</button> }
                 </> }
                 
             </NitroCardContentView>
