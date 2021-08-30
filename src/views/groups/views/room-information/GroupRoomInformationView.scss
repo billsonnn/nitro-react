@@ -1,0 +1,13 @@
+.nitro-group-room-information {
+    pointer-events: all;
+    padding: 2px;
+    background-color: $gable-green;
+    border: 2px solid rgba($white, 0.5);
+    font-size: $font-size-sm;
+    margin-bottom: 5px;
+
+    .group-badge {
+        width: 50px;
+        height: 50px;
+    }
+}

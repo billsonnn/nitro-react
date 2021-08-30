@@ -6,6 +6,7 @@ import { AchievementsView } from '../achievements/AchievementsView';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CatalogView } from '../catalog/CatalogView';
 import { FriendListView } from '../friend-list/FriendListView';
+import { GroupsView } from '../groups/GroupsView';
 import { HotelView } from '../hotel-view/HotelView';
 import { InventoryView } from '../inventory/InventoryView';
 import { ModToolsView } from '../mod-tools/ModToolsView';
@@ -62,6 +63,7 @@ export const MainView: FC<MainViewProps> = props =>
             <RightSideView />
             <UserSettingsView />
             <UserProfileView />
+            <GroupsView />
         </div>
     );
 }
