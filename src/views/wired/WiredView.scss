@@ -3,36 +3,52 @@
 	padding:7px;
 
     .icon {
-		width: 16px;
-		height: 9px;
 		background-repeat: no-repeat;
 		background-position: center;
 
 		&.icon-mv-1 {
+            width: 16px;
+            height: 9px;
 			background-image: url('../../assets/images/wired/icon_wired_around.png');
 		}
 		&.icon-mv-2 {
+            width: 16px;
+            height: 9px;
 			background-image: url('../../assets/images/wired/icon_wired_up_down.png');
 		}
 		&.icon-mv-3 {
+            width: 16px;
+            height: 9px;
 			background-image: url('../../assets/images/wired/icon_wired_left_right.png');
 		}
 		&.icon-ne {
+            width: 16px;
+            height: 9px;
 			background-image: url('../../assets/images/wired/icon_wired_north_east.png');
 		}
 		&.icon-se {
+            width: 16px;
+            height: 9px;
 			background-image: url('../../assets/images/wired/icon_wired_south_east.png');
 		}
 		&.icon-sw {
+            width: 16px;
+            height: 9px;
 			background-image: url('../../assets/images/wired/icon_wired_south_west.png');
 		}
 		&.icon-nw {
+            width: 16px;
+            height: 9px;
 			background-image: url('../../assets/images/wired/icon_wired_north_west.png');
 		}
 		&.icon-rot-1 {
+            width: 16px;
+            height: 9px;
 			background-image: url('../../assets/images/wired/icon_wired_rotate_clockwise.png');
 		}
 		&.icon-rot-2 {
+            width: 16px;
+            height: 9px;
 			background-image: url('../../assets/images/wired/icon_wired_rotate_counter_clockwise.png');
 		}
 	}

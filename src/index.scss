@@ -3,7 +3,7 @@
 
 html,
 body {
-    font-family: 'Ubuntu Condensed', sans-serif;
+    font-family: GameUbuntu, sans-serif;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -12,8 +12,6 @@ body {
     user-select: none;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 @import './App';

@@ -1,6 +1,6 @@
-import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
+import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileComposer, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText } from '../../api';
+import { GetSessionDataManager, LocalizeText } from '../../api';
 import { CreateMessageHook, SendMessageHook } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
 import { BadgesContainerView } from './views/badges-container/BadgesContainerView';
@@ -20,6 +20,11 @@ export const UserProfileView: FC = props =>
         setUserBadges([]);
         setUserRelationships(null);
     }, []);
+
+    const onLeaveGroup = useCallback(() =>
+    {
+        if(userProfile && userProfile.id === GetSessionDataManager().userId) SendMessageHook(new UserProfileComposer(userProfile.id));
+    }, [ userProfile ]);
     
     const OnUserCurrentBadgesEvent = useCallback((event: UserCurrentBadgesEvent) =>
     {
@@ -45,14 +50,14 @@ export const UserProfileView: FC = props =>
     {
         const parser = event.getParser();
 
-        if(userProfile && userProfile.id !== parser.id)
+        if(userProfile)
         {
+            setUserProfile(null);
             setUserBadges([]);
             setUserRelationships(null);
         }
         
         setUserProfile(parser);
-        console.log(parser);
         SendMessageHook(new UserCurrentBadgesComposer(parser.id));
         SendMessageHook(new UserRelationshipsComposer(parser.id));
     }, [userProfile]);
@@ -67,8 +72,8 @@ export const UserProfileView: FC = props =>
                 <NitroCardContentView>
                     <div className="row">
                         <div className="col-sm-7 user-container">
-                            <UserContainerView id={userProfile.id} username={userProfile.username} motto={userProfile.motto} figure={userProfile.figure} secondsSinceLastLogin={userProfile.secondsSinceLastVisit} creation={userProfile.registration} achievementScore={userProfile.achievementPoints} isFriend={userProfile.isMyFriend} isOnline={userProfile.isOnline} requestSent={userProfile.requestSent} />
-                            <BadgesContainerView badges={userBadges} />
+                            <UserContainerView userProfile={ userProfile } />
+                            <BadgesContainerView badges={ userBadges } />
                         </div>
                         <div className="col-sm-5">
                             {
@@ -81,7 +86,7 @@ export const UserProfileView: FC = props =>
                             <i className="icon icon-rooms" /><span className="rooms-button">{LocalizeText('extendedprofile.rooms')}</span>
                         </div>
                     </div>
-                    <GroupsContainerView groups={ userProfile.groups } />
+                    <GroupsContainerView groups={ userProfile.groups } onLeaveGroup={ onLeaveGroup } />
             </NitroCardContentView>
         </NitroCardView>
     )
