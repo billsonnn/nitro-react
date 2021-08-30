@@ -1,6 +1,6 @@
 import { FurnitureExchangeComposer, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine, GetRoomSession, LocalizeText, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
+import { GetRoomEngine, GetRoomSession, IsOwnerOfFurniture, LocalizeText, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
@@ -21,7 +21,7 @@ export const FurnitureExchangeCreditView: FC<{}> = props =>
 
                 const roomObject = GetRoomEngine().getRoomObject(widgetEvent.roomId, widgetEvent.objectId, widgetEvent.category);
 
-                if(!roomObject) return;
+                if(!roomObject || !IsOwnerOfFurniture(roomObject)) return;
 
                 const value = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_CREDIT_VALUE);
 
