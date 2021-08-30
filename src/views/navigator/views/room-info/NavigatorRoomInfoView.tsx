@@ -115,7 +115,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                         <div className="fw-bold">
                             { roomInfoData.enteredGuestRoom.roomName }
                         </div>
-                        <i onClick={ () => processAction('set_home_room') } className={ 'icon icon-house-small cursor-pointer' + classNames({ ' gray': homeRoomId !== roomInfoData.enteredGuestRoom.roomId }) } />
+                        <i onClick={ () => processAction('set_home_room') } className={ 'flex-shrink-0 icon icon-house-small cursor-pointer' + classNames({ ' gray': homeRoomId !== roomInfoData.enteredGuestRoom.roomId }) } />
                     </div>
                     <div className="d-flex align-items-center">
                         { roomInfoData.enteredGuestRoom.showOwner && <>
