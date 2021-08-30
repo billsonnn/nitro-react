@@ -131,10 +131,10 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                         { roomThumbnail && <img alt="" src={ roomThumbnail } /> }
                     </div>
                     { roomInfoData.enteredGuestRoom.habboGroupId > 0 && <div className="d-flex align-items-center mb-2 cursor-pointer" onClick={ () => processAction('open_group_info') }>
-                        <div className="me-2">
+                        <div className="group-badge flex-shrink-0 me-2">
                             <BadgeImageView badgeCode={ roomInfoData.enteredGuestRoom.groupBadgeCode } isGroup={ true } />
                         </div>
-                        <div className="text-decoration-underline">
+                        <div className="text-decoration-underline small">
                             { LocalizeText('navigator.guildbase', ['groupName'], [roomInfoData.enteredGuestRoom.groupName]) }
                         </div>
                     </div> }

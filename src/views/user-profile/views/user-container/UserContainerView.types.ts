@@ -1,12 +1,6 @@
-export interface UserContainerViewProps {
-    id: number;
-    username: string;
-    figure: string;
-    motto: string;
-    creation: string;
-    secondsSinceLastLogin: number;
-    achievementScore: number;
-    isFriend: boolean;
-    requestSent: boolean;
-    isOnline: boolean;
+import { UserProfileParser } from '@nitrots/nitro-renderer';
+
+export interface UserContainerViewProps
+{
+    userProfile: UserProfileParser;
 }

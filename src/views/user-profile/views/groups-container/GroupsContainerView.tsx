@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
-import { GroupInformationView } from '../../../groups/views/GroupInformationView';
+import { GroupInformationView } from '../../../groups/views/information/GroupInformationView';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { GroupsContainerViewProps } from './GroupsContainerView.types';
 
 export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
 {
-    const { groups = null } = props;
+    const { groups = null, onLeaveGroup = null } = props;
 
     const [ selectedIndex, setSelectedIndex ] = useState<number>(null);
 
@@ -30,7 +30,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
                 </div>
             </div>
             <div className="w-100">
-                { selectedIndex > -1 && <GroupInformationView group={ groups[selectedIndex] } /> }
+                { selectedIndex > -1 && <GroupInformationView group={ groups[selectedIndex] } onLeaveGroup={ onLeaveGroup } /> }
             </div>
         </div>
     );
