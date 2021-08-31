@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
+import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
 import { AvatarEditorPaletteSetItemProps } from './AvatarEditorPaletteSetItem.types';
 
 export const AvatarEditorPaletteSetItem: FC<AvatarEditorPaletteSetItemProps> = props =>
@@ -22,5 +23,9 @@ export const AvatarEditorPaletteSetItem: FC<AvatarEditorPaletteSetItemProps> = p
         }
     })
 
-    return <NitroCardGridItemView itemColor={ colorItem.color } itemActive={ colorItem.isSelected } { ...rest } />
+    return (
+        <NitroCardGridItemView itemColor={ colorItem.color } itemActive={ colorItem.isSelected } { ...rest }>
+            { colorItem.isHC && <CurrencyIcon className="position-absolute end-1 bottom-1" type={ 'hc' } /> }
+        </NitroCardGridItemView>
+    );
 }
