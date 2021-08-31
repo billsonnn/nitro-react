@@ -24,14 +24,19 @@ export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = pro
             case CatalogEvent.SOLD_OUT:
                 setPurchaseState(CatalogPurchaseState.SOLD_OUT);
                 return;
+            case CatalogEvent.PURCHASE_FAILED:
+                setPurchaseState(CatalogPurchaseState.FAILED);
+                return;
         }
     }, []);
 
     useUiEvent(CatalogEvent.PURCHASE_SUCCESS, onCatalogEvent);
     useUiEvent(CatalogEvent.SOLD_OUT, onCatalogEvent);
+    useUiEvent(CatalogEvent.PURCHASE_FAILED, onCatalogEvent);
 
     const purchase = useCallback(() =>
     {
+        console.log(pageId, offer.offerId, extra, quantity);
         SendMessageHook(new PurchaseFromCatalogComposer(pageId, offer.offerId, extra, quantity));
     }, [ pageId, offer, extra, quantity ]);
 
@@ -94,6 +99,8 @@ export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = pro
             return <button type="button" className={ 'btn btn-primary ' + className } disabled><LoadingSpinnerView /></button>;
         case CatalogPurchaseState.SOLD_OUT:
             return <button type="button" className={ 'btn btn-danger ' + className } disabled>{ LocalizeText('generic.failed') + ' - ' + LocalizeText('catalog.alert.limited_edition_sold_out.title') }</button>;
+        case CatalogPurchaseState.FAILED:
+            return <button type="button" className={ 'btn btn-danger ' + className } disabled>{ LocalizeText('generic.failed') }</button>;
         case CatalogPurchaseState.NONE:
         default:
             return <button type="button" className={ 'btn btn-success ' + className } disabled={ disabled } onClick={ event => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('buy') }</button>

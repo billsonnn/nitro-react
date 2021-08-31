@@ -20,4 +20,5 @@ export class CatalogPurchaseState
     public static NO_CREDITS = 3;
     public static NO_POINTS = 4;
     public static SOLD_OUT = 5;
+    public static FAILED = 6;
 }

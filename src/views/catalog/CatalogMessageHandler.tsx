@@ -51,12 +51,16 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
     {
         const parser = event.getParser();
 
+        console.log(parser);
+
         dispatchUiEvent(new CatalogPurchaseFailureEvent(parser.code));
     }, []);
 
     const onCatalogPurchaseUnavailableEvent = useCallback((event: PurchaseNotAllowedMessageEvent) =>
     {
         const parser = event.getParser();
+
+        console.log(parser);
     }, []);
 
     const onCatalogSoldOutEvent = useCallback((event: LimitedEditionSoldOutEvent) =>
