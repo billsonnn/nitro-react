@@ -1,6 +1,9 @@
-import { ContextMenuEnum, RoomEngineTriggerWidgetEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { ContextMenuEnum, FurnitureGroupInfoComposer, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
+import { GroupFurniContextMenuInfoMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/room/furniture/GroupFurniContextMenuInfoMessageEvent';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine, IsOwnerOfFurniture, LocalizeText, RoomWidgetFurniActionMessage } from '../../../../../api';
+import { GetRoomEngine, IsOwnerOfFurniture, LocalizeText, RoomWidgetFurniActionMessage, TryVisitRoom } from '../../../../../api';
+import { TryJoinGroup } from '../../../../../api/groups/TryJoinGroup';
+import { CreateMessageHook, SendMessageHook } from '../../../../../hooks';
 import { useRoomEngineEvent } from '../../../../../hooks/events';
 import { useRoomContext } from '../../../context/RoomContext';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
@@ -18,6 +21,9 @@ export const FurnitureContextMenuView: FC<{}> = props =>
     const [ mode, setMode ] = useState<string>(null);
     const [ confirmMode, setConfirmMode ] = useState<string>(null);
     const [ confirmingObjectId, setConfirmingObjectId ] = useState(-1);
+    const [ groupData, setGroupData ] = useState<GroupFurniContextMenuInfoMessageParser>(null);
+    const [ isGroupMember, setIsGroupMember ] = useState<boolean>(false);
+
     const { roomSession = null, widgetHandler = null } = useRoomContext();
 
     const close = useCallback(() =>
@@ -71,6 +77,9 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                     case ContextMenuEnum.PURCHASABLE_CLOTHING:
                         if(IsOwnerOfFurniture(object)) setMode(ContextMenuEnum.PURCHASABLE_CLOTHING);
                         return;
+                    case ContextMenuEnum.GROUP_FURNITURE:
+                        SendMessageHook(new FurnitureGroupInfoComposer(object.id, object.model.getValue<number>(RoomObjectVariable.FURNITURE_GUILD_CUSTOMIZED_GUILD_ID)));
+                        return;
                 }
 
                 return;
@@ -84,6 +93,18 @@ export const FurnitureContextMenuView: FC<{}> = props =>
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU, onRoomEngineTriggerWidgetEvent);
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_MONSTERPLANT_SEED_PLANT_CONFIRMATION_DIALOG, onRoomEngineTriggerWidgetEvent);
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PURCHASABLE_CLOTHING_CONFIRMATION_DIALOG, onRoomEngineTriggerWidgetEvent);
+
+    const onGroupFurniContextMenuInfoMessageEvent = useCallback((event: GroupFurniContextMenuInfoMessageEvent) =>
+    {
+        const parser = event.getParser();
+        
+        setGroupData(null);
+        setGroupData(parser);
+        setIsGroupMember(parser.userIsMember);
+        setMode(ContextMenuEnum.GROUP_FURNITURE);
+    }, []);
+
+    CreateMessageHook(GroupFurniContextMenuInfoMessageEvent, onGroupFurniContextMenuInfoMessageEvent);
 
     const processAction = useCallback((name: string) =>
     {
@@ -105,11 +126,18 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                     setConfirmMode(PURCHASABLE_CLOTHING_CONFIRMATION);
                     setConfirmingObjectId(objectId);
                     break;
+                case 'join_group':
+                    TryJoinGroup(groupData.guildId);
+                    setIsGroupMember(true);
+                    return;
+                case 'go_to_group_homeroom':
+                    if(groupData) TryVisitRoom(groupData.guildHomeRoomId);
+                    break;
             }
         }
 
         close();
-    }, [ roomSession, widgetHandler, objectId, close ]);
+    }, [ roomSession, widgetHandler, objectId, groupData, close ]);
 
     return (
         <>
@@ -151,6 +179,18 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                             </ContextMenuHeaderView>
                             <ContextMenuListItemView onClick={ event => processAction('use_purchaseable_clothing') }>
                                 { LocalizeText('widget.generic_usable.button.use') }
+                            </ContextMenuListItemView>
+                        </> }
+                    { (mode === ContextMenuEnum.GROUP_FURNITURE) && groupData &&
+                        <>
+                            <ContextMenuHeaderView>
+                                { groupData.guildName }
+                            </ContextMenuHeaderView>
+                            { !isGroupMember && <ContextMenuListItemView onClick={ event => processAction('join_group') }>
+                                { LocalizeText('widget.furniture.button.join.group') }
+                            </ContextMenuListItemView> }
+                            <ContextMenuListItemView onClick={ event => processAction('go_to_group_homeroom') }>
+                                { LocalizeText('widget.furniture.button.go.to.group.home.room') }
                             </ContextMenuListItemView>
                         </> }
                 </ContextMenuView> }

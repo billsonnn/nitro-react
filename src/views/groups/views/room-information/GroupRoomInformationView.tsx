@@ -70,9 +70,9 @@ export const GroupRoomInformationView: FC<{}> = props =>
 
     const getButtonText = useCallback(() =>
     {
-        if(groupInformation.type === GroupType.PRIVATE) return '';
+        if(isRealOwner()) return 'group.manage';
 
-        if(isRealOwner()) return 'group.youareowner';
+        if(groupInformation.type === GroupType.PRIVATE) return '';        
 
         if(groupInformation.membershipType === GroupMembershipType.MEMBER) return 'group.leave';
 
@@ -112,8 +112,8 @@ export const GroupRoomInformationView: FC<{}> = props =>
                         { groupInformation.title }
                     </div>
                 </div>
-                { groupInformation.type !== GroupType.PRIVATE && !isRealOwner() && 
-                        <button className="btn btn-sm btn-primary w-100 mt-1" disabled={ groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING || isRealOwner() } onClick={ handleButtonClick }>
+                { (groupInformation.type !== GroupType.PRIVATE || isRealOwner()) && 
+                        <button className="btn btn-sm btn-primary w-100 mt-1" disabled={ groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING } onClick={ handleButtonClick }>
                             { LocalizeText(getButtonText()) }
                         </button>
                     }

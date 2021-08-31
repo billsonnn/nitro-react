@@ -4,6 +4,7 @@ import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
 import { CatalogLayoutFrontpage4View } from './frontpage4/CatalogLayoutFrontpage4View';
 import { CatalogLayouGuildCustomFurniView } from './guild-custom-furni/CatalogLayoutGuildCustomFurniView';
 import { CatalogLayouGuildForumView } from './guild-forum/CatalogLayoutGuildForumView';
+import { CatalogLayouGuildFrontpageView } from './guild-frontpage/CatalogLayoutGuildFrontpageView';
 import { CatalogLayoutInfoLoyaltyView } from './info-loyalty/CatalogLayoutInfoLoyaltyView';
 import { CatalogLayoutPetView } from './pets/CatalogLayoutPetView';
 import { CatalogLayoutPets2View } from './pets2/CatalogLayoutPets2View';
@@ -30,7 +31,7 @@ export const GetCatalogLayout = (pageParser: CatalogPageMessageParser, roomPrevi
         case 'vip_buy':
             return <CatalogLayoutVipBuyView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'guild_frontpage':
-            return null;
+            return <CatalogLayouGuildFrontpageView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'guild_forum':
             return <CatalogLayouGuildForumView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'guild_custom_furni':

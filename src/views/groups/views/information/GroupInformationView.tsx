@@ -1,6 +1,7 @@
-import { GroupDeleteComposer, GroupInformationComposer, GroupJoinComposer, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
+import { GroupDeleteComposer, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateLinkEvent, GetSessionDataManager, LocalizeText, TryVisitRoom } from '../../../../api';
+import { TryJoinGroup } from '../../../../api/groups/TryJoinGroup';
 import { SendMessageHook } from '../../../../hooks';
 import { CatalogPageName } from '../../../catalog/common/CatalogPageName';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
@@ -12,18 +13,16 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 {
     const { groupInformation = null, onClose = null } = props;    
 
-    const tryJoinGroup = useCallback(() =>
+    const joinGroup = useCallback(() =>
     {
         if(!groupInformation) return;
 
-        SendMessageHook(new GroupJoinComposer(groupInformation.id));
-        SendMessageHook(new GroupInformationComposer(groupInformation.id, false));
+        TryJoinGroup(groupInformation.id);
     }, [ groupInformation ]);
 
-    const tryLeaveGroup = useCallback(() =>
+    const leaveGroup = useCallback(() =>
     {
         SendMessageHook(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
-        SendMessageHook(new GroupInformationComposer(groupInformation.id, false));
         if(onClose) onClose();
     }, [ groupInformation, onClose ]);
 
@@ -67,10 +66,10 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
     {
         if(groupInformation.type === GroupType.PRIVATE && groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) return;
 
-        if(groupInformation.membershipType === GroupMembershipType.MEMBER) return tryLeaveGroup();
+        if(groupInformation.membershipType === GroupMembershipType.MEMBER) return leaveGroup();
 
-        return tryJoinGroup();
-    }, [ groupInformation, tryLeaveGroup, tryJoinGroup ]);
+        return joinGroup();
+    }, [ groupInformation, leaveGroup, joinGroup ]);
 
     const handleAction = useCallback((action: string) =>
     {

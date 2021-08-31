@@ -1,7 +1,7 @@
 import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, SecurityLevel, UserHomeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetConfiguration, GetSessionDataManager, LocalizeText } from '../../../../api';
+import { GetConfiguration, GetGroupInformation, GetSessionDataManager, LocalizeText } from '../../../../api';
 import { NavigatorEvent } from '../../../../events';
 import { RoomWidgetThumbnailEvent } from '../../../../events/room-widgets/thumbnail';
 import { dispatchUiEvent } from '../../../../hooks/events';
@@ -82,6 +82,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                 dispatchUiEvent(new RoomWidgetThumbnailEvent(RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL));
                 return;
             case 'open_group_info':
+                GetGroupInformation(roomInfoData.enteredGuestRoom.habboGroupId);
                 return;
             case 'toggle_room_link':
                 dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK));
@@ -137,7 +138,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                     </div>
                     <div>{ roomInfoData.enteredGuestRoom.description }</div>
                     <div className="room-thumbnail border mt-1 mb-2">
-                        <i className="icon icon-camera-small position-absolute b-0 r-0 m-1 cursor-pointer" onClick={ () => processAction('open_room_thumbnail_camera') } />
+                        { hasPermission('settings') && <i className="icon icon-camera-small position-absolute b-0 r-0 m-1 cursor-pointer" onClick={ () => processAction('open_room_thumbnail_camera') } /> }
                         { roomThumbnail && <img alt="" src={ roomThumbnail } /> }
                     </div>
                     { roomInfoData.enteredGuestRoom.habboGroupId > 0 && <div className="d-flex align-items-center mb-2 cursor-pointer" onClick={ () => processAction('open_group_info') }>

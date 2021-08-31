@@ -1,7 +1,7 @@
-import { CrackableDataType, RoomControllerLevel, RoomObjectCategory, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, StringDataType, UserProfileComposer } from '@nitrots/nitro-renderer';
+import { CrackableDataType, GroupInformationComposer, GroupInformationEvent, RoomControllerLevel, RoomObjectCategory, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { CreateLinkEvent, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage } from '../../../../../../api';
-import { SendMessageHook } from '../../../../../../hooks';
+import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage } from '../../../../../../api';
+import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { LimitedEditionCompactPlateView } from '../../../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../../../shared/rarity-level/RarityLevelView';
@@ -31,6 +31,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
     const [ crackableHits, setCrackableHits ] = useState(0);
     const [ crackableTarget, setCrackableTarget ] = useState(0);
     const [ godMode, setGodMode ] = useState(false);
+    const [ groupName, setGroupName ] = useState<string>(null);
 
     useEffect(() =>
     {
@@ -128,12 +129,23 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         setCrackableHits(crackableHits);
         setCrackableTarget(crackableTarget);
         setGodMode(godMode);
+        setGroupName(null);
+        
+        if(furniData.groupId) SendMessageHook(new GroupInformationComposer(furniData.groupId, false));
     }, [ roomSession, furniData ]);
 
-    const openFurniGroupInfo = useCallback(() =>
+    const onGroupInformationEvent = useCallback((event: GroupInformationEvent) =>
     {
+        const parser = event.getParser();
 
-    }, []);
+        if(!furniData || furniData.groupId !== parser.id || parser.flag) return;
+
+        if(groupName) setGroupName(null);
+
+        setGroupName(parser.title);
+    }, [ furniData, groupName ]);
+
+    CreateMessageHook(GroupInformationEvent, onGroupInformationEvent);
 
     const onFurniSettingChange = useCallback((index: number, value: string) =>
     {
@@ -223,9 +235,13 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         widgetHandler.processWidgetMessage(new RoomWidgetFurniActionMessage(messageType, furniData.id, furniData.category, furniData.purchaseOfferId, objectData));
     }, [ widgetHandler, furniData, pickupMode, customKeys, customValues, getFurniSettingsAsString ]);
 
-    const openProfile = useCallback(() =>
+    const getGroupBadgeCode = useCallback(() =>
     {
-        SendMessageHook(new UserProfileComposer(furniData.ownerId));
+        const stringDataType = (furniData.stuffData as StringDataType);
+
+        if(!stringDataType || !(stringDataType instanceof StringDataType)) return null;
+
+        return stringDataType.getValue(2);
     }, [ furniData ]);
 
     if(!furniData) return null;
@@ -258,11 +274,12 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                         <hr className="m-0 my-1" />
                         <div className="small text-wrap">{ LocalizeText('infostand.crackable_furni.hits_remaining', [ 'hits', 'target' ], [ crackableHits.toString(), crackableTarget.toString() ]) }</div>
                     </> }
-                { (furniData.groupId > 0) &&
+                { furniData.groupId > 0 &&
                     <>
                         <hr className="m-0 my-1" />
-                        <div className="badge badge-secondary mb-0" onClick={ openFurniGroupInfo }>
-                            <BadgeImageView badgeCode={ (furniData.stuffData as StringDataType).getValue(2) } />
+                        <div className="d-flex align-items-center cursor-pointer text-decoration-underline gap-2" onClick={ () => GetGroupInformation(furniData.groupId) }>
+                            <BadgeImageView badgeCode={ getGroupBadgeCode() } isGroup={ true } />
+                            <div>{ groupName }</div>
                         </div>
                     </> }
                 { godMode &&

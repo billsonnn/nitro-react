@@ -5,7 +5,7 @@ import { CreateMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { GroupInformationView } from '../information/GroupInformationView';
 
-export const GroupInformationBoxView: FC<{}> = props =>
+export const GroupInformationStandaloneView: FC<{}> = props =>
 {
     const [ groupInformation, setGroupInformation ] = useState<GroupInformationParser>(null);
 
@@ -15,10 +15,9 @@ export const GroupInformationBoxView: FC<{}> = props =>
 
         if(!parser.flag) return;
 
-        if(groupInformation) setGroupInformation(null);
-
+        setGroupInformation(null);
         setGroupInformation(parser);
-    }, [ groupInformation ]);
+    }, []);
 
     CreateMessageHook(GroupInformationEvent, onGroupInformationEvent);
 
