@@ -1,36 +1,13 @@
-import { MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useRef } from 'react';
+import { FC } from 'react';
 import { ToolbarViewItems } from '../ToolbarView.types';
 import { ToolbarMeViewProps } from './ToolbarMeView.types';
 
 export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
 {
-    const { setMeExpanded = null, handleToolbarItemClick = null } = props;
-
-    const elementRef = useRef<HTMLDivElement>();
-
-    useEffect(() =>
-    {
-        function onClick(event: MouseEvent): void
-        {
-            const element = elementRef.current;
-
-            if((event.target !== element) && !element.contains((event.target as Node)))
-            {
-                setMeExpanded(false);
-            }
-        }
-
-        document.addEventListener(MouseEventType.MOUSE_CLICK, onClick);
-
-        return () =>
-        {
-            document.removeEventListener(MouseEventType.MOUSE_CLICK, onClick);
-        }
-    }, [ elementRef, setMeExpanded ]);
+    const { handleToolbarItemClick = null } = props;
 
     return (
-        <div ref={ elementRef } className="d-flex nitro-toolbar-me px-1 py-2">
+        <div className="d-flex nitro-toolbar-me px-1 py-2">
             <div className="navigation-items">
                 <div className="navigation-item">
                     <i className="icon icon-me-talents"></i>

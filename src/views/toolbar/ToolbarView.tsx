@@ -145,7 +145,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     return (
         <div className="nitro-toolbar-container">
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isMeExpanded } timeout={ 300 }>
-                <ToolbarMeView setMeExpanded={ setMeExpanded } handleToolbarItemClick={ handleToolbarItemClick } />
+                <ToolbarMeView handleToolbarItemClick={ handleToolbarItemClick } />
             </TransitionAnimation>
             <div className="d-flex justify-content-between align-items-center nitro-toolbar py-1 px-3">
                 <div className="d-flex align-items-center toolbar-left-side">
