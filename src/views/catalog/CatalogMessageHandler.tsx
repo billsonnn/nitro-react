@@ -16,7 +16,7 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
 {
     const { catalogState = null, dispatchCatalogState = null } = useCatalogContext();
 
-    const onCatalogPagesEvent = useCallback((event: CatalogPagesListEvent) =>
+    const onCatalogPagesListEvent = useCallback((event: CatalogPagesListEvent) =>
     {
         const parser = event.getParser();
 
@@ -28,7 +28,7 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
-    const onCatalogPageEvent = useCallback((event: CatalogPageMessageEvent) =>
+    const onCatalogPageMessageEvent = useCallback((event: CatalogPageMessageEvent) =>
     {
         const parser = event.getParser();
 
@@ -40,37 +40,33 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
-    const onCatalogPurchaseEvent = useCallback((event: PurchaseOKMessageEvent) =>
+    const onPurchaseOKMessageEvent = useCallback((event: PurchaseOKMessageEvent) =>
     {
         const parser = event.getParser();
 
         dispatchUiEvent(new CatalogPurchasedEvent(parser.offer));
     }, []);
 
-    const onCatalogPurchaseFailedEvent = useCallback((event: PurchaseErrorMessageEvent) =>
+    const onPurchaseErrorMessageEvent = useCallback((event: PurchaseErrorMessageEvent) =>
     {
         const parser = event.getParser();
-
-        console.log(parser);
 
         dispatchUiEvent(new CatalogPurchaseFailureEvent(parser.code));
     }, []);
 
-    const onCatalogPurchaseUnavailableEvent = useCallback((event: PurchaseNotAllowedMessageEvent) =>
+    const onPurchaseNotAllowedMessageEvent = useCallback((event: PurchaseNotAllowedMessageEvent) =>
     {
         const parser = event.getParser();
-
-        console.log(parser);
     }, []);
 
-    const onCatalogSoldOutEvent = useCallback((event: LimitedEditionSoldOutEvent) =>
+    const onLimitedEditionSoldOutEvent = useCallback((event: LimitedEditionSoldOutEvent) =>
     {
         const parser = event.getParser();
 
         dispatchUiEvent(new CatalogPurchaseSoldOutEvent());
     }, []);
 
-    const onCatalogSearchEvent = useCallback((event: ProductOfferEvent) =>
+    const onProductOfferEvent = useCallback((event: ProductOfferEvent) =>
     {
         const parser = event.getParser();
 
@@ -82,7 +78,7 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
-    const onSellablePetPalettesEvent = useCallback((event: SellablePetPalettesMessageEvent) =>
+    const onSellablePetPalettesMessageEvent = useCallback((event: SellablePetPalettesMessageEvent) =>
     {
         const parser = event.getParser();
         const petPalette = new CatalogPetPalette(parser.productCode, parser.palettes.slice());
@@ -93,14 +89,14 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
-    const onCatalogApproveNameResultEvent = useCallback((event: ApproveNameMessageEvent) =>
+    const onApproveNameMessageEvent = useCallback((event: ApproveNameMessageEvent) =>
     {
         const parser = event.getParser();
 
         dispatchUiEvent(new CatalogNameResultEvent(parser.result, parser.validationInfo));
     }, []);
 
-    const onCatalogClubEvent = useCallback((event: HabboClubOffersMessageEvent) =>
+    const onHabboClubOffersMessageEvent = useCallback((event: HabboClubOffersMessageEvent) =>
     {
         const parser = event.getParser();
 
@@ -112,7 +108,7 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
-    const onCatalogGroupsEvent = useCallback((event: GuildMembershipsMessageEvent) =>
+    const onGuildMembershipsMessageEvent = useCallback((event: GuildMembershipsMessageEvent) =>
     {
         const parser = event.getParser();
 
@@ -142,7 +138,7 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
-    const onCatalogUpdatedEvent = useCallback((event: CatalogPublishedMessageEvent) =>
+    const onCatalogPublishedMessageEvent = useCallback((event: CatalogPublishedMessageEvent) =>
     {
         dispatchCatalogState({
             type: CatalogActions.RESET_STATE,
@@ -150,7 +146,7 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
-    const onCatalogGiftConfigurationEvent = useCallback((event: GiftWrappingConfigurationEvent) =>
+    const onGiftWrappingConfigurationEvent = useCallback((event: GiftWrappingConfigurationEvent) =>
     {
         const parser = event.getParser();
 
@@ -162,20 +158,20 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
-    CreateMessageHook(CatalogPagesListEvent, onCatalogPagesEvent);
-    CreateMessageHook(CatalogPageMessageEvent, onCatalogPageEvent);
-    CreateMessageHook(PurchaseOKMessageEvent, onCatalogPurchaseEvent);
-    CreateMessageHook(PurchaseErrorMessageEvent, onCatalogPurchaseFailedEvent);
-    CreateMessageHook(PurchaseNotAllowedMessageEvent, onCatalogPurchaseUnavailableEvent);
-    CreateMessageHook(LimitedEditionSoldOutEvent, onCatalogSoldOutEvent);
-    CreateMessageHook(ProductOfferEvent, onCatalogSearchEvent);
-    CreateMessageHook(GuildMembershipsMessageEvent, onCatalogGroupsEvent);
-    CreateMessageHook(SellablePetPalettesMessageEvent, onSellablePetPalettesEvent);
-    CreateMessageHook(ApproveNameMessageEvent, onCatalogApproveNameResultEvent);
-    CreateMessageHook(HabboClubOffersMessageEvent, onCatalogClubEvent);
+    CreateMessageHook(CatalogPagesListEvent, onCatalogPagesListEvent);
+    CreateMessageHook(CatalogPageMessageEvent, onCatalogPageMessageEvent);
+    CreateMessageHook(PurchaseOKMessageEvent, onPurchaseOKMessageEvent);
+    CreateMessageHook(PurchaseErrorMessageEvent, onPurchaseErrorMessageEvent);
+    CreateMessageHook(PurchaseNotAllowedMessageEvent, onPurchaseNotAllowedMessageEvent);
+    CreateMessageHook(LimitedEditionSoldOutEvent, onLimitedEditionSoldOutEvent);
+    CreateMessageHook(ProductOfferEvent, onProductOfferEvent);
+    CreateMessageHook(GuildMembershipsMessageEvent, onGuildMembershipsMessageEvent);
+    CreateMessageHook(SellablePetPalettesMessageEvent, onSellablePetPalettesMessageEvent);
+    CreateMessageHook(ApproveNameMessageEvent, onApproveNameMessageEvent);
+    CreateMessageHook(HabboClubOffersMessageEvent, onHabboClubOffersMessageEvent);
     CreateMessageHook(UserSubscriptionEvent, onUserSubscriptionEvent);
-    CreateMessageHook(CatalogPublishedMessageEvent, onCatalogUpdatedEvent);
-    CreateMessageHook(GiftWrappingConfigurationEvent, onCatalogGiftConfigurationEvent);
+    CreateMessageHook(CatalogPublishedMessageEvent, onCatalogPublishedMessageEvent);
+    CreateMessageHook(GiftWrappingConfigurationEvent, onGiftWrappingConfigurationEvent);
 
     return null;
 }
