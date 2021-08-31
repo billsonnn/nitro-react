@@ -591,6 +591,36 @@
         height: 20px;
     }
 
+    &.icon-navigator-info {
+        background: url('../images/navigator/icons/info.png');
+        width: 18px;
+        height: 18px;
+    }
+
+    &.icon-navigator-room-locked {
+        background: url('../images/navigator/icons/room_locked.png');
+        width: 13px;
+        height: 16px;
+    }
+
+    &.icon-navigator-room-password {
+        background: url('../images/navigator/icons/room_password.png');
+        width: 13px;
+        height: 16px;
+    }
+
+    &.icon-navigator-room-invisible {
+        background: url('../images/navigator/icons/room_invisible.png');
+        width: 13px;
+        height: 16px;
+    }
+
+    &.icon-navigator-room-group {
+        background: url('../images/navigator/icons/room_group.png');
+        width: 13px;
+        height: 11px;
+    }
+
     &.spin {
         animation: rotating 1s linear infinite;
     }
