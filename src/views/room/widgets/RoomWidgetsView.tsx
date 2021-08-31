@@ -4,7 +4,6 @@ import { CanManipulateFurniture, GetRoomEngine, IsFurnitureSelectionDisabled, Lo
 import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks/events';
 import { useRoomContext } from '../context/RoomContext';
 import { AvatarInfoWidgetView } from './avatar-info/AvatarInfoWidgetView';
-import { CameraWidgetView } from './camera/CameraWidgetView';
 import { ChatInputView } from './chat-input/ChatInputView';
 import { ChatWidgetView } from './chat/ChatWidgetView';
 import { FurniChooserWidgetView } from './choosers/FurniChooserWidgetView';
@@ -240,7 +239,6 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
     return (
         <>
             <AvatarInfoWidgetView />
-            <CameraWidgetView />
             <ChatWidgetView />
             <ChatInputView />
             <DoorbellWidgetView />

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { NitroCardGridView } from '../../../../../../../layout/card/grid/NitroCardGridView';
+import { NitroCardGridView } from '../../../../../layout';
 import { CameraWidgetEffectListItemView } from '../effect-list-item/CameraWidgetEffectListItemView';
 import { CameraWidgetEffectListViewProps } from './CameraWidgetEffectListView.types';
 

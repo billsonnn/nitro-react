@@ -4,6 +4,7 @@ import { GetCommunication } from '../../api';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { AchievementsView } from '../achievements/AchievementsView';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
+import { CameraWidgetView } from '../camera/CameraWidgetView';
 import { CatalogView } from '../catalog/CatalogView';
 import { FriendListView } from '../friend-list/FriendListView';
 import { GroupsView } from '../groups/GroupsView';
@@ -64,6 +65,7 @@ export const MainView: FC<MainViewProps> = props =>
             <UserSettingsView />
             <UserProfileView />
             <GroupsView />
+            <CameraWidgetView />
         </div>
     );
 }

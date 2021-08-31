@@ -1,8 +1,8 @@
 import { IRoomCameraWidgetSelectedEffect, RoomCameraWidgetSelectedEffect } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { GetRoomCameraWidgetManager, LocalizeText } from '../../../../../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../../../layout';
+import { GetRoomCameraWidgetManager, LocalizeText } from '../../../../api';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
 import { CameraPictureThumbnail } from '../../common/CameraPictureThumbnail';
 import { CameraWidgetEditorTabs, CameraWidgetEditorViewProps } from './CameraWidgetEditorView.types';
 import { CameraWidgetEffectListView } from './effect-list/CameraWidgetEffectListView';

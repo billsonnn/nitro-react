@@ -1,6 +1,7 @@
 export * from './accordion';
 export * from './content';
 export * from './context';
+export * from './grid';
 export * from './header';
 export * from './NitroCardView';
 export * from './NitroCardView.types';

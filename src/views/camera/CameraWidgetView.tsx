@@ -1,10 +1,11 @@
-import { InitCameraMessageEvent, IRoomCameraWidgetEffect, RequestCameraConfigurationComposer, RoomCameraWidgetManagerEvent } from '@nitrots/nitro-renderer';
+import { InitCameraMessageEvent, IRoomCameraWidgetEffect, RequestCameraConfigurationComposer, RoomCameraWidgetManagerEvent, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetRoomCameraWidgetManager } from '../../../../api';
-import { RoomWidgetCameraEvent } from '../../../../events/room-widgets/camera/RoomWidgetCameraEvent';
-import { useCameraEvent } from '../../../../hooks/events/nitro/camera/camera-event';
-import { useUiEvent } from '../../../../hooks/events/ui/ui-event';
-import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages/message-event';
+import { GetRoomCameraWidgetManager } from '../../api';
+import { RoomWidgetCameraEvent } from '../../events/camera/RoomWidgetCameraEvent';
+import { useRoomSessionManagerEvent } from '../../hooks';
+import { useCameraEvent } from '../../hooks/events/nitro/camera/camera-event';
+import { useUiEvent } from '../../hooks/events/ui/ui-event';
+import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { CameraPicture } from './common/CameraPicture';
 import { CameraWidgetContextProvider } from './context/CameraWidgetContext';
 import { CameraWidgetCaptureView } from './views/capture/CameraWidgetCaptureView';
@@ -66,6 +67,13 @@ export const CameraWidgetView: FC<{}> = props =>
 
     CreateMessageHook(InitCameraMessageEvent, onCameraConfigurationEvent);
 
+    const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
+    {
+        setMode(MODE_NONE);
+    }, []);
+
+    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
+
     useEffect(() =>
     {
         if(!GetRoomCameraWidgetManager().isLoaded)
@@ -109,6 +117,8 @@ export const CameraWidgetView: FC<{}> = props =>
         setSavedPictureUrl(pictureUrl);
         setMode(MODE_CHECKOUT);
     }, []);
+
+    if(mode === MODE_NONE) return null;
 
     return (
         <CameraWidgetContextProvider value={ { cameraRoll, setCameraRoll, selectedPictureIndex, setSelectedPictureIndex } }>

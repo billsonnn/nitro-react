@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { LocalizeText } from '../../../../../../../api/utils';
-import { NitroCardGridItemView } from '../../../../../../../layout/card/grid/item/NitroCardGridItemView';
+import { LocalizeText } from '../../../../../api';
+import { NitroCardGridItemView } from '../../../../../layout';
 import { CameraWidgetEffectListItemViewProps } from './CameraWidgetEffectListItemView.types';
 
 export const CameraWidgetEffectListItemView: FC<CameraWidgetEffectListItemViewProps> = props =>
