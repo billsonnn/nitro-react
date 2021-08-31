@@ -35,6 +35,8 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     const onMottoKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) =>
     {
+        event.stopPropagation();
+        
         switch(event.key)
         {
             case 'Enter':
