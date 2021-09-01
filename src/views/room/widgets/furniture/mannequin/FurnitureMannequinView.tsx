@@ -1,6 +1,6 @@
 import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, IAvatarFigureContainer, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import { GetNitroInstance, GetRoomEngine, GetRoomSession, GetSessionDataManager, LocalizeText, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
+import { GetAvatarRenderManager, GetNitroInstance, GetRoomEngine, GetRoomSession, GetSessionDataManager, LocalizeText, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
@@ -45,7 +45,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
     {
         if(mannequinData && !mannequinData.renderedFigure)
         {
-            const figureContainer = GetNitroInstance().avatar.createFigureContainer(mannequinData.figure);
+            const figureContainer = GetAvatarRenderManager().createFigureContainer(mannequinData.figure);
             loadMannequinFigure(figureContainer);
         }
     }, [loadMannequinFigure, mannequinData]);
@@ -96,8 +96,8 @@ export const FurnitureMannequinView: FC<{}> = props =>
                 const gender            = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_MANNEQUIN_GENDER);
                 const name              = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_MANNEQUIN_NAME);
 
-                const figureContainer   = GetNitroInstance().avatar.createFigureContainer(figure);
-                const clubLevel         = GetNitroInstance().avatar.getFigureClubLevel(figureContainer, gender, parts);
+                const figureContainer   = GetAvatarRenderManager().createFigureContainer(figure);
+                const clubLevel         = GetAvatarRenderManager().getFigureClubLevel(figureContainer, gender, parts);
                 
                 const mannequinData     = new FurnitureMannequinData(widgetEvent.objectId, widgetEvent.category, name, figure, gender, clubLevel);
                 
@@ -133,11 +133,11 @@ export const FurnitureMannequinView: FC<{}> = props =>
                 setMannequinData(mannequinData => new FurnitureMannequinData(mannequinData.objectId, mannequinData.category, value, mannequinData.figure, mannequinData.gender, mannequinData.clubLevel, mannequinData.renderedFigure));
                 return;
             case 'load_figure':
-                loadMannequinFigure(GetNitroInstance().avatar.createFigureContainer(GetNitroInstance().sessionDataManager.figure));
+                loadMannequinFigure(GetAvatarRenderManager().createFigureContainer(GetNitroInstance().sessionDataManager.figure));
                 setViewMode(MannequinViewMode.SAVE);
                 return;
             case 'back':
-                loadMannequinFigure(GetNitroInstance().avatar.createFigureContainer(mannequinData.figure));
+                loadMannequinFigure(GetAvatarRenderManager().createFigureContainer(mannequinData.figure));
                 setViewMode(MannequinViewMode.EDIT);
                 return;
             case 'save_name':

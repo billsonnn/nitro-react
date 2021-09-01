@@ -21,7 +21,7 @@ export const AvatarEditorPaletteSetItem: FC<AvatarEditorPaletteSetItemProps> = p
         {
             colorItem.notify = null;
         }
-    })
+    });
 
     return (
         <NitroCardGridItemView itemColor={ colorItem.color } itemActive={ colorItem.isSelected } { ...rest }>
