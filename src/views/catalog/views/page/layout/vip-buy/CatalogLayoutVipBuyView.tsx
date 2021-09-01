@@ -5,6 +5,7 @@ import { LocalizeText } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { NitroCardGridItemView } from '../../../../../../layout/card/grid/item/NitroCardGridItemView';
 import { NitroCardGridView } from '../../../../../../layout/card/grid/NitroCardGridView';
+import { GetCurrencyAmount } from '../../../../../purse/common/CurrencyHelper';
 import { GLOBAL_PURSE } from '../../../../../purse/PurseView';
 import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
 import { GetCatalogPageImage } from '../../../../common/CatalogUtilities';
@@ -77,7 +78,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
         if(!pendingOffer) return;
 
         SendMessageHook(new PurchaseFromCatalogComposer(pageParser.pageId, pendingOffer.offerId, null, 1));
-    }, [ pendingOffer, pageParser ])
+    }, [ pendingOffer, pageParser ]);
 
     useEffect(() =>
     {
@@ -88,6 +89,25 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
             return;
         }
     }, [ clubOffers ]);
+
+    const getPurchaseButton = (offer: ClubOfferData) =>
+    {
+        if(!offer) return null;
+
+        if(offer.priceCredits > GetCurrencyAmount(-1))
+        {
+            return <Button variant="danger" size="sm">{ LocalizeText('catalog.alert.notenough.title') }</Button>;
+        }
+
+        if(offer.priceActivityPoints > GetCurrencyAmount(offer.priceActivityPointsType))
+        {
+            return <Button variant="danger" size="sm">{ LocalizeText('catalog.alert.notenough.activitypoints.title.' + offer.priceActivityPointsType) }</Button>;
+        }
+
+        return <Button variant="primary" size="sm" onClick={ event => setPendingOffer(offer) }>{ LocalizeText('buy') }</Button>;
+    }
+
+    console.log(pendingOffer)
 
     return (
         <>
@@ -119,7 +139,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
                                                             </div> }
                                                     </div>
                                                 </div>
-                                                <Button variant="primary" size="sm" onClick={ purchaseSubscription }>{ LocalizeText('buy') }</Button>
+                                                <Button variant="primary" size="sm" onClick={ purchaseSubscription }>{ LocalizeText('catalog.marketplace.confirm_title') }</Button>
                                             </> }
                                         { (pendingOffer !== offer) &&
                                             <>
@@ -141,7 +161,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
                                                             </div> }
                                                     </div>
                                                 </div>
-                                                <Button variant="primary" size="sm" onClick={ event => setPendingOffer(offer) }>{ LocalizeText('buy') }</Button>
+                                                { getPurchaseButton(offer) }
                                             </> }
                                     </NitroCardGridItemView>
                                 );
