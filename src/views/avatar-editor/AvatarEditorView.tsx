@@ -1,6 +1,6 @@
-import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
+import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, IAvatarFigureContainer, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetClubMemberLevel, GetSessionDataManager, LocalizeText } from '../../api';
+import { GetAvatarRenderManager, GetClubMemberLevel, GetSessionDataManager, LocalizeText } from '../../api';
 import { AvatarEditorEvent } from '../../events/avatar-editor';
 import { CreateMessageHook, SendMessageHook } from '../../hooks';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
@@ -31,7 +31,7 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
     const [ activeCategory, setActiveCategory ] = useState<IAvatarEditorCategoryModel>(null);
     const [ figureSetIds, setFigureSetIds ] = useState<number[]>([]);
     const [ boundFurnitureNames, setBoundFurnitureNames ] = useState<string[]>([]);
-    const [ savedFigures, setSavedFigures ] = useState<[ string, string ][]>(new Array(MAX_SAVED_FIGURES));
+    const [ savedFigures, setSavedFigures ] = useState<[ IAvatarFigureContainer, string ][]>(new Array(MAX_SAVED_FIGURES));
     const [ isWardrobeVisible, setIsWardrobeVisible ] = useState(false);
     const [ lastFigure, setLastFigure ] = useState<string>(null);
     const [ lastGender, setLastGender ] = useState<string>(null);
@@ -79,7 +79,7 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
     const onUserWardrobePageEvent = useCallback((event: UserWardrobePageEvent) =>
     {
         const parser = event.getParser();
-        const savedFigures: [ string, string ][] = [];
+        const savedFigures: [ IAvatarFigureContainer, string ][] = [];
 
         let i = 0;
 
@@ -90,9 +90,11 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
             i++;
         }
 
-        for(let [ index, value ] of parser.looks.entries())
+        for(let [ index, [ look, gender ] ] of parser.looks.entries())
         {
-            savedFigures[(index - 1)] = [ value[0], value[1] ];
+            const container = GetAvatarRenderManager().createFigureContainer(look);
+
+            savedFigures[(index - 1)] = [ container, gender ];
         }
 
         setSavedFigures(savedFigures)

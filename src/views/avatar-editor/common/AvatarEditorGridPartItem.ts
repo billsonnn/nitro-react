@@ -1,9 +1,10 @@
-import { AvatarFigurePartType, IAvatarImageListener, IAvatarRenderManager, IFigurePart, IFigurePartSet, IGraphicAsset, IPartColor, NitroContainer, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
+import { AvatarFigurePartType, IAvatarImageListener, IAvatarRenderManager, IFigurePart, IFigurePartSet, IGraphicAsset, IPartColor, NitroAlphaFilter, NitroContainer, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
 import { GetAvatarRenderManager } from '../../../api';
 import { FigureData } from './FigureData';
 
 export class AvatarEditorGridPartItem implements IAvatarImageListener
 {
+    private static ALPHA_FILTER: NitroAlphaFilter = new NitroAlphaFilter(0.2);
     private static THUMB_DIRECTIONS: number[]   = [2, 6, 0, 4, 3, 1];
     private static DRAW_ORDER: string[]         = [
         AvatarFigurePartType.LEFT_HAND_ITEM,
@@ -209,7 +210,7 @@ export class AvatarEditorGridPartItem implements IAvatarImageListener
             this._isSellable    = false;
         }
 
-        //if(this._isDisabled) this.setAlpha(container, 0.2);
+        if(this._isDisabled) this.setAlpha(container, 0.2);
 
         this._imageUrl = TextureUtils.generateImageUrl(container);
         
@@ -218,7 +219,7 @@ export class AvatarEditorGridPartItem implements IAvatarImageListener
 
     private setAlpha(container: NitroContainer, alpha: number): NitroContainer
     {
-        container.alpha = alpha;
+        container.filters = [ AvatarEditorGridPartItem.ALPHA_FILTER ];
 
         return container;
     }

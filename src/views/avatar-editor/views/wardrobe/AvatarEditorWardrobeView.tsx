@@ -1,11 +1,13 @@
 import { SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
+import { GetAvatarRenderManager } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
 import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
 import { NitroCardGridView } from '../../../../layout/card/grid/NitroCardGridView';
 import { NitroCardGridThemes } from '../../../../layout/card/grid/NitroCardGridView.types';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
+import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
 import { AvatarEditorWardrobeViewProps } from './AvatarEditorWardrobeView.types';
 
 export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props =>
@@ -18,7 +20,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
 
         const [ figure, gender ] = savedFigures[index];
 
-        loadAvatarInEditor(figure, gender);
+        loadAvatarInEditor(figure.getFigureString(), gender);
     }, [ savedFigures, loadAvatarInEditor ]);
 
     const saveFigureAtWardrobeIndex = useCallback((index: number) =>
@@ -30,7 +32,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
         const figure = figureData.getFigureString();
         const gender = figureData.gender;
 
-        newFigures[index] = [ figure, gender ];
+        newFigures[index] = [ GetAvatarRenderManager().createFigureContainer(figure), gender ];
 
         setSavedFigures(newFigures);
         SendMessageHook(new SaveWardrobeOutfitMessageComposer((index + 1), figure, gender));
@@ -42,23 +44,17 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
 
         const items: JSX.Element[] = [];
 
-        savedFigures.forEach((figure, index) =>
+        savedFigures.forEach(([ figureContainer, gender ], index) =>
             {
-                let figureString = null;
-                let gender = null;
-
-                if(figure)
-                {
-                    figureString = (figure[0] || null);
-                    gender = (figure[1] || null);
-                }
+                const clubLevel = GetAvatarRenderManager().getFigureClubLevel(figureContainer, gender);
 
                 items.push(
                     <NitroCardGridItemView key={ index } className="flex-column justify-content-end">
-                        { figureString && <AvatarImageView figure={ figureString } gender={ gender } direction={ 2 } /> }
+                        { figureContainer && <AvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } /> }
+                        { clubLevel > 0 && <CurrencyIcon type="hc" /> }
                         <div className="d-flex w-100 figure-button-container p-1">
                             <Button variant="link" size="sm" className="w-100" onClick={ event => saveFigureAtWardrobeIndex(index) }>Save</Button>
-                            { figureString && <Button variant="link" size="sm" className="w-100" onClick={ event => wearFigureAtIndex(index) }>Use</Button> }
+                            { figureContainer && <Button variant="link" size="sm" className="w-100" onClick={ event => wearFigureAtIndex(index) }>Use</Button> }
                         </div>
                     </NitroCardGridItemView>
                 );
