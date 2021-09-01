@@ -143,6 +143,10 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                     }
                 }
                 return;
+            case 'create':
+                setIsVisible(true);
+                setCreatorOpen(true);
+                return;
         }
     }, []);
 
