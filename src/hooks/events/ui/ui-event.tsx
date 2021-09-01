@@ -3,9 +3,9 @@ import { CreateEventDispatcherHook, DispatchEventHook } from '../event-dispatche
 
 const uiEventDispatcher: IEventDispatcher = new EventDispatcher();
 
-export function useUiEvent(type: string, handler: (event: NitroEvent) => void): void
+export const useUiEvent = (type: string, handler: (event: NitroEvent) => void) =>
 {
-    CreateEventDispatcherHook(type, uiEventDispatcher, handler);
+    return CreateEventDispatcherHook(type, uiEventDispatcher, handler);
 }
 
 export function dispatchUiEvent(event: NitroEvent): void

@@ -1,7 +1,7 @@
 import { StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../../../api';
-import { InventoryBadgesUpdatedEvent } from '../../../../../../events';
+import { InventoryBadgesUpdatedEvent, SetRoomPreviewerStuffDataEvent } from '../../../../../../events';
 import { InventoryBadgesRequestEvent } from '../../../../../../events/inventory/InventoryBadgesRequestEvent';
 import { dispatchUiEvent, useUiEvent } from '../../../../../../hooks';
 import { NitroCardGridItemView } from '../../../../../../layout/card/grid/item/NitroCardGridItemView';
@@ -53,11 +53,19 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutBadgeDisplayViewProp
     {
         if(!currentBadge || !activeOffer) return;
 
-        const stuffData = new StringDataType();
+        const productData = [];
+        productData.push('0');
+        productData.push(currentBadge);
+        productData.push('');
+        productData.push('');
+        productData.push('');
 
-        stuffData.setValue([ null, currentBadge ]);
+        const stringDataType = new StringDataType();
+        stringDataType.setValue(productData);
 
-        roomPreviewer.updateObjectStuffData(stuffData);
+        console.log(stringDataType);
+
+        dispatchUiEvent(new SetRoomPreviewerStuffDataEvent(activeOffer, stringDataType));
     }, [ currentBadge, activeOffer, roomPreviewer ]);
 
     return (

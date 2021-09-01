@@ -1,6 +1,8 @@
 import { CatalogGroupsComposer, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../../api';
+import { SetRoomPreviewerStuffDataEvent } from '../../../../../../events';
+import { dispatchUiEvent } from '../../../../../../hooks';
 import { SendMessageHook } from '../../../../../../hooks/messages';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { GetOfferName } from '../../../../common/CatalogUtilities';
@@ -13,13 +15,9 @@ import { CatalogLayoutGuildCustomFurniViewProps } from './CatalogLayoutGuildCust
 export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutGuildCustomFurniViewProps> = props =>
 {
     const { roomPreviewer = null, pageParser = null } = props;
-
+    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState<number>(0);
     const { catalogState = null } = useCatalogContext();
     const { activeOffer = null, groups = null } = catalogState;
-
-    const product = ((activeOffer && activeOffer.products[0]) || null);
-
-    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState<number>(0);
 
     useEffect(() =>
     {
@@ -28,7 +26,7 @@ export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutGuildCustomFurniV
 
     useEffect(() =>
     {
-        if(!groups[selectedGroupIndex]) return;
+        if(!activeOffer || !groups[selectedGroupIndex]) return;
 
         const productData = [];
         productData.push('0');
@@ -40,10 +38,12 @@ export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutGuildCustomFurniV
         const stringDataType = new StringDataType();
         stringDataType.setValue(productData);
 
-        roomPreviewer.updateObjectStuffData(stringDataType);
-    }, [ selectedGroupIndex, activeOffer ]);
+        dispatchUiEvent(new SetRoomPreviewerStuffDataEvent(activeOffer, stringDataType));
+    }, [ groups, selectedGroupIndex, activeOffer ]);
 
     if(!groups) return null;
+
+    const product = ((activeOffer && activeOffer.products[0]) || null);
     
     return (
         <div className="row h-100 nitro-catalog-layout-guild-custom-furni">

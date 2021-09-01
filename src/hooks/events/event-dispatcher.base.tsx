@@ -1,9 +1,9 @@
 import { IEventDispatcher, NitroEvent } from '@nitrots/nitro-renderer';
 import { useEffect } from 'react';
 
-export function CreateEventDispatcherHook(type: string, eventDispatcher: IEventDispatcher, handler: (event: NitroEvent) => void): void
+export const CreateEventDispatcherHook = (type: string, eventDispatcher: IEventDispatcher, handler: (event: NitroEvent) => void) =>
 {
-    useEffect(() =>
+    return useEffect(() =>
     {
         eventDispatcher.addEventListener(type, handler);
 
@@ -14,7 +14,7 @@ export function CreateEventDispatcherHook(type: string, eventDispatcher: IEventD
     }, [ type, eventDispatcher, handler ]);
 }
 
-export function DispatchEventHook(eventDispatcher: IEventDispatcher, event: NitroEvent): void
+export const DispatchEventHook = (eventDispatcher: IEventDispatcher, event: NitroEvent) =>
 {
     eventDispatcher.dispatchEvent(event);
 }
