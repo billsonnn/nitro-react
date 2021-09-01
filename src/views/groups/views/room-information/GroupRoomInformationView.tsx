@@ -67,6 +67,8 @@ export const GroupRoomInformationView: FC<{}> = props =>
         SendMessageHook(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
         SendMessageHook(new GroupInformationComposer(groupInformation.id, false));
     }, [ groupInformation ]);
+    
+    const manageGroup = useCallback(() => {}, []);
 
     const getButtonText = useCallback(() =>
     {
@@ -88,12 +90,14 @@ export const GroupRoomInformationView: FC<{}> = props =>
 
     const handleButtonClick = useCallback(() =>
     {
+        if(isRealOwner()) return manageGroup();
+
         if(groupInformation.type === GroupType.PRIVATE && groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) return;
 
         if(groupInformation.membershipType === GroupMembershipType.MEMBER) return tryLeaveGroup();
 
         return tryJoinGroup();
-    }, [ groupInformation, tryLeaveGroup, tryJoinGroup ]);
+    }, [ groupInformation, tryLeaveGroup, tryJoinGroup, isRealOwner, manageGroup ]);
 
     if(!groupInformation) return null;
 

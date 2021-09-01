@@ -550,45 +550,75 @@
     }
 
     &.icon-group-type-0 {
-        background: url('../images/groups/grouptype_icon_0.png');
+        background: url('../images/groups/icons/grouptype_icon_0.png');
         width: 16px;
         height: 16px;
     }
 
     &.icon-group-type-1 {
-        background: url('../images/groups/grouptype_icon_1.png');
+        background: url('../images/groups/icons/grouptype_icon_1.png');
         width: 16px;
         height: 16px;
     }
 
     &.icon-group-type-2 {
-        background: url('../images/groups/grouptype_icon_2.png');
+        background: url('../images/groups/icons/grouptype_icon_2.png');
         width: 16px;
         height: 16px;
     }
 
     &.icon-group-decorate {
-        background: url('../images/groups/group_decorate_icon.png');
+        background: url('../images/groups/icons/group_decorate_icon.png');
         width: 15px;
         height: 15px;
     }
 
     &.icon-group-member {
-        background: url('../images/groups/group_icon_big_member.png');
+        background: url('../images/groups/icons/group_icon_big_member.png');
         width: 20px;
         height: 20px;
     }
 
     &.icon-group-admin {
-        background: url('../images/groups/group_icon_big_admin.png');
+        background: url('../images/groups/icons/group_icon_big_admin.png');
         width: 20px;
         height: 20px;
     }
 
     &.icon-group-owner {
-        background: url('../images/groups/group_icon_big_owner.png');
+        background: url('../images/groups/icons/group_icon_big_owner.png');
         width: 20px;
         height: 20px;
+    }
+
+    &.icon-navigator-info {
+        background: url('../images/navigator/icons/info.png');
+        width: 18px;
+        height: 18px;
+    }
+
+    &.icon-navigator-room-locked {
+        background: url('../images/navigator/icons/room_locked.png');
+        width: 13px;
+        height: 16px;
+    }
+
+    &.icon-navigator-room-password {
+        background: url('../images/navigator/icons/room_password.png');
+        width: 13px;
+        height: 16px;
+    }
+
+    &.icon-navigator-room-invisible {
+        background: url('../images/navigator/icons/room_invisible.png');
+        width: 13px;
+        height: 16px;
+    }
+
+    &.icon-navigator-room-group {
+        background: url('../images/navigator/icons/room_group.png');
+        width: 13px;
+        height: 11px;
     }
 
     &.spin {

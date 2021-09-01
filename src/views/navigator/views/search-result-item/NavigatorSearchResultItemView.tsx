@@ -77,10 +77,10 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
                         </div>
                     </div>
                     <div className="d-flex flex-row-reverse align-items-center">
-                        <i className="fas fa-info-circle text-secondary" onClick={ openInfo }></i>
-                        { roomData.habboGroupId > 0 && <i className="fas fa-users mr-2"></i> }
+                        <i className="icon icon-navigator-info" onClick={ openInfo }></i>
+                        { roomData.habboGroupId > 0 && <i className="icon icon-navigator-room-group me-2"></i> }
                         { roomData.doorMode !== RoomDataParser.OPEN_STATE && 
-                            <i className={ 'me-2 fas ' + classNames( { 'fa-lock': roomData.doorMode === RoomDataParser.DOORBELL_STATE, 'fa-key': roomData.doorMode === RoomDataParser.PASSWORD_STATE })}></i>
+                            <i className={ 'me-2 icon icon-navigator-room-' + classNames( { 'locked': roomData.doorMode === RoomDataParser.DOORBELL_STATE, 'password': roomData.doorMode === RoomDataParser.PASSWORD_STATE, 'invisible': roomData.doorMode === RoomDataParser.INVISIBLE_STATE })}></i>
                         }
                     </div>
                 </div>
