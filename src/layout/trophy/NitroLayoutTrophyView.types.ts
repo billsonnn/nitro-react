@@ -4,5 +4,6 @@ export interface NitroLayoutTrophyViewProps
     message: string;
     date: string;
     senderName: string;
+    customTitle?: string;
     onCloseClick: () => void;
 }

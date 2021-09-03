@@ -6,5 +6,6 @@ export class FurnitureTrophyData
         public color: string,
         public ownerName: string,
         public date: string,
-        public message: string) {}
+        public message: string,
+        public customTitle?: string) {}
 }
