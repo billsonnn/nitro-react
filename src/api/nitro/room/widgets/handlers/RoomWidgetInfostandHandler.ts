@@ -522,7 +522,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         }
 
         event.groupId = parseInt(userData.guildId);
-        //event._Str_5235 = GetSessionDataManager()._Str_17173(int(userData._Str_4592));
+        event.groupBadgeId = GetSessionDataManager().getGroupBadge(event.groupId);
         event.groupName = userData.groupName;
         event.badges = this.container.roomSession.userDataManager.getUserBadges(userData.webID);
         event.figure = userData.figure;

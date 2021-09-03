@@ -22,6 +22,8 @@
     "generic.asset.url": "${asset.url}/bundled/generic/%libname%.nitro",
     "badge.asset.url": "${image.library.url}album1584/%badgename%.gif",
     "badge.asset.group.url": "https://cdn.ironhotel.biz/group-badge/%badgedata%.gif",
+    "badge.asset.group.external.url": "",
+    "badge.asset.grouparts.url": "https://cdn.ironhotel.biz/static_iron_active/c_images/Badgeparts/badgepart_%part%.png",
     "furni.rotation.bounce.steps": 20,
     "furni.rotation.bounce.height": 0.0625,
     "enable.avatar.arrow": false,
