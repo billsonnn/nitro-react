@@ -7,7 +7,7 @@ export const InfoStandBaseView: FC<InfoStandBaseViewProps> = props =>
 
     return (
         <div className="d-flex flex-column nitro-card nitro-infostand rounded">
-            <div className="container-fluid content-area">
+            <div className="container-fluid content-area overflow-visible">
                 <div className="d-flex justify-content-between align-items-center">
                     <div className="small text-wrap">{ headerText }</div>
                     <i className="fas fa-times cursor-pointer" onClick={ onCloseClick }></i>

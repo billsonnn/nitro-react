@@ -39,7 +39,7 @@ export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewPr
                     <div className="w-100 d-flex justify-content-center align-items-center">
                         { (rentableBotData.badges.length > 0) && rentableBotData.badges.map(result =>
                             {
-                                return <BadgeImageView key={ result } badgeCode={ result } />;
+                                return <BadgeImageView key={ result } badgeCode={ result } showInfo={ true } />;
                             }) }
                     </div>
                 </div>
