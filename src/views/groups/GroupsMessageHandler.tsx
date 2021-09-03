@@ -1,6 +1,7 @@
-import { GroupBadgePartsEvent, GroupBuyDataEvent, RoomCreatedEvent } from '@nitrots/nitro-renderer';
+import { GroupBadgePartsEvent, GroupBuyDataEvent, GroupSettingsEvent, RoomCreatedEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateMessageHook } from '../../hooks';
+import { GroupBadgePart } from './common/GroupBadgePart';
 import { useGroupsContext } from './context/GroupsContext';
 import { GroupsActions } from './context/GroupsContext.types';
 
@@ -30,8 +31,8 @@ export const GroupsMessageHandler: FC<{}> = props =>
         dispatchGroupsState({
             type: GroupsActions.SET_PURHCASE_SETTINGS,
             payload: {
-                objectArrays: rooms,
-                numberValue: parser.groupCost
+                objectValues: rooms,
+                numberValues: [ parser.groupCost ]
             }
         });
     }, [ dispatchGroupsState ]);
@@ -50,11 +51,10 @@ export const GroupsMessageHandler: FC<{}> = props =>
         dispatchGroupsState({
             type: GroupsActions.SET_PURHCASE_SETTINGS,
             payload: {
-                objectArrays: clonedRooms
+                objectValues: clonedRooms
             }
         });
-    }, []);
-
+    }, [ availableRooms, dispatchGroupsState ]);
 
     const onGroupBadgePartsEvent = useCallback((event: GroupBadgePartsEvent) =>
     {
@@ -100,14 +100,42 @@ export const GroupsMessageHandler: FC<{}> = props =>
         dispatchGroupsState({
             type: GroupsActions.SET_GROUP_BADGE_PARTS_CONFIG,
             payload: {
-                objectArrays: [ bases, symbols, partColors, colorsA, colorsB ]
+                objectValues: [ bases, symbols, partColors, colorsA, colorsB ]
             }
-        })
+        });
+    }, [ dispatchGroupsState ]);
+
+    const onGroupSettingsEvent = useCallback((event: GroupSettingsEvent) =>
+    {
+        const parser = event.getParser();
+
+        const groupBadgeParts: GroupBadgePart[] = [];
+
+        parser.badgeParts.forEach((part, id) =>
+        {
+            groupBadgeParts.push(new GroupBadgePart(
+                part.isBase ? GroupBadgePart.BASE : part.key >= 100 ? GroupBadgePart.SYMBOL_ALT : GroupBadgePart.SYMBOL,
+                part.key >= 100 ? part.key - 100 : part.key,
+                part.color,
+                part.position
+            ));
+        });
+
+        dispatchGroupsState({
+            type: GroupsActions.SET_GROUP_SETTINGS,
+            payload: {
+                stringValues: [ parser.title, parser.description ],
+                numberValues: [ parser.id, parser.state, parser.colorA, parser.colorB ],
+                boolValues: [ parser.canMembersDecorate ],
+                objectValues: groupBadgeParts
+            }
+        });
     }, [ dispatchGroupsState ]);
 
     CreateMessageHook(GroupBuyDataEvent, onGroupBuyDataEvent);
     CreateMessageHook(RoomCreatedEvent, onRoomCreatedEvent);
     CreateMessageHook(GroupBadgePartsEvent, onGroupBadgePartsEvent);
+    CreateMessageHook(GroupSettingsEvent, onGroupSettingsEvent);
 
     return null;
 };

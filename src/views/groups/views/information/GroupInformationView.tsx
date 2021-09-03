@@ -1,6 +1,7 @@
-import { GroupDeleteComposer, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
+import { GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateLinkEvent, GetSessionDataManager, LocalizeText, TryVisitRoom } from '../../../../api';
+import { GetGroupManager } from '../../../../api/groups/GetGroupManager';
 import { TryJoinGroup } from '../../../../api/groups/TryJoinGroup';
 import { SendMessageHook } from '../../../../hooks';
 import { CatalogPageName } from '../../../catalog/common/CatalogPageName';
@@ -81,13 +82,6 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
             case 'furniture':
                 CreateLinkEvent('catalog/open/' + CatalogPageName.GUILD_CUSTOM_FURNI);
                 break;
-            case 'delete':
-                if(window.confirm(LocalizeText('group.deleteconfirm.title') + ' - ' + LocalizeText('group.deleteconfirm.desc')))
-                {
-                    SendMessageHook(new GroupDeleteComposer(groupInformation.id));
-                    if(onClose) onClose();
-                }
-                break;
         }
     }, [ groupInformation, onClose ]);
     
@@ -96,25 +90,21 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
     return (
         <div className="group-information text-black p-2">
             <div>
-                <div className="group-badge text-center">
-                    <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } />
-                    <div className="mt-3">
-                        <a href="#" className="small text-black">
-                            { LocalizeText('group.membercount', ['totalMembers'], [groupInformation.membersCount.toString()]) }
-                        </a>
+                <div className="text-center d-flex flex-column h-100 small text-black text-decoration-underline">
+                    <div className="group-badge">
+                        <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } />
                     </div>
-                    <div>
-                        { groupInformation.pendingRequestsCount > 0 && <a href="#" className="small text-black">
-                            { LocalizeText('group.pendingmembercount', ['totalMembers'], [groupInformation.pendingRequestsCount.toString()]) }
-                        </a> }
+                    <div className="mt-3 cursor-pointer">
+                        { LocalizeText('group.membercount', ['totalMembers'], [groupInformation.membersCount.toString()]) }
                     </div>
-                    <div className="mt-3">
+                    { groupInformation.pendingRequestsCount > 0 && <div className="cursor-pointer">
+                        { LocalizeText('group.pendingmembercount', ['totalMembers'], [groupInformation.pendingRequestsCount.toString()]) }
+                    </div> }
+                    { groupInformation.isOwner && <div className="cursor-pointer" onClick={ () => GetGroupManager(groupInformation.id) }>
+                        { LocalizeText('group.manage') }
+                    </div> }
+                    <div className="mt-auto mb-1">
                         { getRoleIcon() }
-                    </div>
-                    <div>
-                        { groupInformation.isOwner && <a href="#" className="small text-danger" onClick={ () => handleAction('delete') }>
-                            { LocalizeText('group.delete') }
-                        </a> }
                     </div>
                 </div>
             </div>
@@ -126,20 +116,16 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                 </div>
                 <div>{ LocalizeText('group.created', ['date', 'owner'], [groupInformation.createdAt, groupInformation.ownerName]) }</div>
                 <div className="group-description small overflow-auto">{ groupInformation.description }</div>
-                <div>
-                    <a href="#" className="small text-black" onClick={ () => handleAction('homeroom') }>
+                <div className="small text-black text-decoration-underline">
+                    <div className="cursor-pointer" onClick={ () => handleAction('homeroom') }>
                         { LocalizeText('group.linktobase') }
-                    </a>
-                </div>
-                <div>
-                    <a href="#" className="small text-black" onClick={ () => handleAction('furniture') }>
+                    </div>
+                    <div className="cursor-pointer" onClick={ () => handleAction('furniture') }>
                         { LocalizeText('group.buyfurni') }
-                    </a>
-                </div>
-                <div>
-                    <a href="#" className="small text-black">
+                    </div>
+                    <div className="cursor-pointer">
                         { LocalizeText('group.showgroups') }
-                    </a>
+                    </div>
                 </div>
                 { groupInformation.type !== GroupType.PRIVATE && 
                     <button className="btn btn-primary w-100 mt-2" disabled={ groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING || isRealOwner() } onClick={ handleButtonClick }>

@@ -1,6 +1,7 @@
 import { DesktopViewEvent, GroupInformationComposer, GroupInformationEvent, GroupInformationParser, GroupJoinComposer, GroupRemoveMemberComposer, RoomInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetGroupInformation, GetSessionDataManager, LocalizeText } from '../../../../api';
+import { GetGroupManager } from '../../../../api/groups/GetGroupManager';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { GroupMembershipType } from '../../common/GroupMembershipType';
@@ -67,8 +68,6 @@ export const GroupRoomInformationView: FC<{}> = props =>
         SendMessageHook(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
         SendMessageHook(new GroupInformationComposer(groupInformation.id, false));
     }, [ groupInformation ]);
-    
-    const manageGroup = useCallback(() => {}, []);
 
     const getButtonText = useCallback(() =>
     {
@@ -90,14 +89,14 @@ export const GroupRoomInformationView: FC<{}> = props =>
 
     const handleButtonClick = useCallback(() =>
     {
-        if(isRealOwner()) return manageGroup();
+        if(isRealOwner()) return GetGroupManager(groupInformation.id);
 
         if(groupInformation.type === GroupType.PRIVATE && groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) return;
 
         if(groupInformation.membershipType === GroupMembershipType.MEMBER) return tryLeaveGroup();
 
         return tryJoinGroup();
-    }, [ groupInformation, tryLeaveGroup, tryJoinGroup, isRealOwner, manageGroup ]);
+    }, [ groupInformation, tryLeaveGroup, tryJoinGroup, isRealOwner ]);
 
     if(!groupInformation) return null;
 

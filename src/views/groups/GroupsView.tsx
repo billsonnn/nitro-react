@@ -1,4 +1,4 @@
-import { GroupBadgePartsComposer, GroupPurchasedEvent, ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { GroupBadgePartsComposer, GroupPurchasedEvent, GroupSettingsComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { AddEventLinkTracker, RemoveLinkEventTracker, TryVisitRoom } from '../../api';
 import { CreateMessageHook, SendMessageHook } from '../../hooks';
@@ -7,6 +7,7 @@ import { GroupsReducer, initialGroups } from './context/GroupsContext.types';
 import { GroupsMessageHandler } from './GroupsMessageHandler';
 import { GroupCreatorView } from './views/creator/GroupCreatorView';
 import { GroupInformationStandaloneView } from './views/information-standalone/GroupInformationStandaloneView';
+import { GroupManagerView } from './views/manager/GroupManagerView';
 
 export const GroupsView: FC<{}> = props =>
 {
@@ -29,6 +30,11 @@ export const GroupsView: FC<{}> = props =>
         {
             case 'create':
                 setIsCreatorVisible(true);
+                return;
+            case 'manage':
+                if(!parts[2]) return;
+                
+                SendMessageHook(new GroupSettingsComposer(Number(parts[2])));
                 return;
         }
     }, []);
@@ -60,6 +66,7 @@ export const GroupsView: FC<{}> = props =>
             <GroupsMessageHandler />
             <div className="nitro-groups">
                 <GroupCreatorView isVisible={ isCreatorVisible } onClose={ () => setIsCreatorVisible(false) } />
+                <GroupManagerView />
                 <GroupInformationStandaloneView />
             </div>
         </GroupsContextProvider>

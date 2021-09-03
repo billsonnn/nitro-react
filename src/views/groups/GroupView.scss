@@ -1,5 +1,53 @@
+.nitro-groups {
+    .tab-image {
+        width: 122px;
+        height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        div {
+            background-image: url('../../assets/images/groups/creator_images.png');
+            background-repeat: no-repeat;
+        }
+
+        &.tab-1 {
+            div {
+                background-position: 0px 0px;
+                width: 99px;
+                height: 50px;
+            }
+        }
+
+        &.tab-2 {
+            div {
+                background-position: -99px 0px;
+                width: 98px;
+                height: 62px;
+            }
+        }
+
+        &.tab-3 {
+            div {
+                background-position: 0px -50px;
+                width: 96px;
+                height: 45px;
+            }
+        }
+
+        &.tab-4, &.tab-5 {
+            div {
+                background-position: 0px -95px;
+                width: 114px;
+                height: 61px;
+            }
+        }
+    }
+}
+
 @import './views/creator/GroupCreatorView';
 @import './views/information/GroupInformationView';
 @import './views/information-standalone/GroupInformationStandaloneView';
+@import './views/manager/GroupManagerView';
 @import './views/room-information/GroupRoomInformationView';
 @import './views/shared-tabs/GroupSharedTabs';

@@ -4,20 +4,23 @@ import { BadgeImageView } from '../../../../shared/badge-image/BadgeImageView';
 import { GroupBadgePart } from '../../../common/GroupBadgePart';
 import { useGroupsContext } from '../../../context/GroupsContext';
 import { GroupsActions } from '../../../context/GroupsContext.types';
+import { GroupSharedTabBadgeViewProps } from './GroupSharedTabBadgeView.types';
 
 const POSITIONS: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
-export const GroupSharedTabBadgeView: FC<{}> = props =>
+export const GroupSharedTabBadgeView: FC<GroupSharedTabBadgeViewProps> = props =>
 {
     const { groupsState = null, dispatchGroupsState = null } = useGroupsContext();
     const { badgeBases = null, badgeSymbols = null, badgePartColors = null, groupBadgeParts = null } = groupsState;
+
+    const { skipDefault = null } = props;
 
     const [ editingIndex, setEditingIndex ] = useState<number>(0);
     const [ isSelectingModel, setIsSelectingModel ] = useState<boolean>(false);
 
     useEffect(() =>
     {
-        if(!badgeBases || !badgePartColors || groupBadgeParts) return;
+        if(skipDefault || !badgeBases || !badgePartColors || groupBadgeParts) return;
 
         const badgeParts: GroupBadgePart[] = [
             new GroupBadgePart(GroupBadgePart.BASE, badgeBases[0].id, badgePartColors[0].id),

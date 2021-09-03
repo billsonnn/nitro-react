@@ -9,9 +9,9 @@ import { useGroupsContext } from '../../context/GroupsContext';
 import { GroupsActions } from '../../context/GroupsContext.types';
 import { GroupSharedTabBadgeView } from '../shared-tabs/tab-badge/GroupSharedTabBadgeView';
 import { GroupSharedTabColorsView } from '../shared-tabs/tab-colors/GroupSharedTabColorsView';
+import { GroupSharedTabIdentityView } from '../shared-tabs/tab-identity/GroupSharedTabIdentityView';
 import { GroupCreatorViewProps } from './GroupCreatorView.types';
-import { GroupCreatorTabConfirmationView } from './views/tab-confirmation/GroupCreatorTabConfirmationView';
-import { GroupCreatorTabIdentityView } from './views/tab-identity/GroupCreatorTabIdentityView';
+import { GroupCreatorTabConfirmationView } from './tab-confirmation/GroupCreatorTabConfirmationView';
 
 const TABS: number[] = [1, 2, 3, 4];
 
@@ -113,7 +113,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
                     </div>
                 </div>
                 <div className="text-black creator-tab">
-                    { currentTab === 1 && <GroupCreatorTabIdentityView /> }
+                    { currentTab === 1 && <GroupSharedTabIdentityView isCreator={ true } /> }
                     { currentTab === 2 && <GroupSharedTabBadgeView /> }
                     { currentTab === 3 && <GroupSharedTabColorsView /> }
                     { currentTab === 4 && <GroupCreatorTabConfirmationView /> }

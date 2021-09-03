@@ -22,7 +22,7 @@ export const GroupSharedTabColorsView: FC<{}> = props =>
         dispatchGroupsState({
             type: GroupsActions.SET_GROUP_COLORS,
             payload: {
-                objectArrays: colors
+                objectValues: colors
             }
         });
         
@@ -44,7 +44,7 @@ export const GroupSharedTabColorsView: FC<{}> = props =>
         dispatchGroupsState({
             type: GroupsActions.SET_GROUP_COLORS,
             payload: { 
-                objectArrays: clonedGroupColors
+                objectValues: clonedGroupColors
             }
         });
     }, [ selectingColorIndex, groupColors, dispatchGroupsState ]);
