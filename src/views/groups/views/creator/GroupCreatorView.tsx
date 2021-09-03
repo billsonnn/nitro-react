@@ -1,27 +1,28 @@
-import { GroupBuyDataComposer, GroupBuyDataEvent } from '@nitrots/nitro-renderer';
+import { GroupBuyComposer, GroupBuyDataComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { LocalizeText } from '../../../../api';
-import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
+import { HasHabboClub, LocalizeText } from '../../../../api';
+import { SendMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { useGroupsContext } from '../../context/GroupsContext';
 import { GroupsActions } from '../../context/GroupsContext.types';
+import { GroupSharedTabBadgeView } from '../shared-tabs/tab-badge/GroupSharedTabBadgeView';
+import { GroupSharedTabColorsView } from '../shared-tabs/tab-colors/GroupSharedTabColorsView';
 import { GroupCreatorViewProps } from './GroupCreatorView.types';
-import { GroupCreatorTabIdentityView } from './views/creator-tab-identity/GroupCreatorTabIdentityView';
+import { GroupCreatorTabConfirmationView } from './views/tab-confirmation/GroupCreatorTabConfirmationView';
+import { GroupCreatorTabIdentityView } from './views/tab-identity/GroupCreatorTabIdentityView';
 
 const TABS: number[] = [1, 2, 3, 4];
 
 export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
 {
     const { groupsState = null, dispatchGroupsState = null } = useGroupsContext();
-    const { groupName = null, groupHomeroomId = null } = groupsState;
+    const { groupName = null, groupDescription = null, groupHomeroomId = null, groupColors = null, groupBadgeParts = null } = groupsState;
 
     const { isVisible = false, onClose = null } = props;
 
     const [ currentTab, setCurrentTab ] = useState<number>(1);
-    const [ availableRooms, setAvailableRooms ] = useState<Map<number, string>>(null);
-    const [ cost, setCost ] = useState<number>(0);
 
     useEffect(() =>
     {
@@ -38,15 +39,24 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
         }
     }, [ isVisible ]);
 
-    const onGroupBuyDataEvent = useCallback((event: GroupBuyDataEvent) =>
+    const buyGroup = useCallback(() =>
     {
-        const parser = event.getParser();
+        const badge = [];
 
-        setAvailableRooms(parser.availableRooms);
-        setCost(parser.groupCost);
-    }, []);
+        if(!groupBadgeParts) return;
 
-    CreateMessageHook(GroupBuyDataEvent, onGroupBuyDataEvent);
+        groupBadgeParts.forEach((part) =>
+        {
+            if(part.code)
+            {
+                badge.push(part.key);
+                badge.push(part.color);
+                badge.push(part.position);
+            }
+        });
+
+        SendMessageHook(new GroupBuyComposer(groupName, groupDescription, groupHomeroomId, groupColors[0], groupColors[1], badge));
+    }, [ groupName, groupDescription, groupHomeroomId, groupColors, groupBadgeParts ]);
 
     const previousStep = useCallback(() =>
     {
@@ -65,6 +75,10 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
                     alert(LocalizeText('group.edit.error.no.name.or.room.selected'));
                     return;
                 }
+                break;
+            }
+            case 4: {
+                buyGroup();
                 break;
             }
         }
@@ -98,12 +112,15 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
                         <div>{ LocalizeText('group.create.stepdesc.' + currentTab) }</div>
                     </div>
                 </div>
-                <div className="text-black">
-                    { currentTab === 1 && <GroupCreatorTabIdentityView availableRooms={ availableRooms } /> }
+                <div className="text-black creator-tab">
+                    { currentTab === 1 && <GroupCreatorTabIdentityView /> }
+                    { currentTab === 2 && <GroupSharedTabBadgeView /> }
+                    { currentTab === 3 && <GroupSharedTabColorsView /> }
+                    { currentTab === 4 && <GroupCreatorTabConfirmationView /> }
                 </div>
                 <div className="d-flex justify-content-between mt-2">
                     <Button variant="link" className="text-black" onClick={ previousStep }>{ LocalizeText(currentTab === 1 ? 'generic.cancel' : 'group.create.previousstep') }</Button>
-                    <button className="btn btn-primary" onClick={ nextStep }>{ LocalizeText('group.create.nextstep') }</button>
+                    <button disabled={ currentTab === 4 && !HasHabboClub() } className={ 'btn ' + (currentTab === 4 ? HasHabboClub() ? 'btn-success' : 'btn-danger' : 'btn-primary') } onClick={ nextStep }>{ LocalizeText(currentTab === 4 ? HasHabboClub() ? 'group.create.confirm.buy' : 'group.create.confirm.viprequired' : 'group.create.nextstep') }</button>
                 </div>
             </NitroCardContentView>
         </NitroCardView>

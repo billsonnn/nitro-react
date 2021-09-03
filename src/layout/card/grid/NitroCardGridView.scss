@@ -34,5 +34,38 @@
         }
     }
 
+    .row-cols-6 {
+
+        .col {
+            padding-right: 0.25rem;
+
+            &:nth-child(6n+6) {
+                padding-right: 0;
+            }
+        }
+    }
+
+    .row-cols-7 {
+
+        .col {
+            padding-right: 0.25rem;
+
+            &:nth-child(7n+7) {
+                padding-right: 0;
+            }
+        }
+    }
+
+    .row-cols-8 {
+
+        .col {
+            padding-right: 0.25rem;
+
+            &:nth-child(8n+8) {
+                padding-right: 0;
+            }
+        }
+    }
+
     @import './item/NitroCardGridItemView.scss';
 }
