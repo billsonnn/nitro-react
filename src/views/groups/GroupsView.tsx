@@ -8,12 +8,15 @@ import { GroupsMessageHandler } from './GroupsMessageHandler';
 import { GroupCreatorView } from './views/creator/GroupCreatorView';
 import { GroupInformationStandaloneView } from './views/information-standalone/GroupInformationStandaloneView';
 import { GroupManagerView } from './views/manager/GroupManagerView';
+import { GroupMembersView } from './views/members/GroupMembersView';
 
 export const GroupsView: FC<{}> = props =>
 {
     const [ groupsState, dispatchGroupsState ] = useReducer(GroupsReducer, initialGroups);
 
     const [ isCreatorVisible, setIsCreatorVisible ] = useState<boolean>(false);
+    const [ groupMembersId, setGroupMembersId ] = useState<number>(null);
+    const [ groupMembersLevel, setGroupMembersLevel ] = useState<number>(null);
 
     useEffect(() =>
     {
@@ -35,6 +38,13 @@ export const GroupsView: FC<{}> = props =>
                 if(!parts[2]) return;
                 
                 SendMessageHook(new GroupSettingsComposer(Number(parts[2])));
+                return;
+            case 'members':
+                if(!parts[2]) return;
+                
+                setGroupMembersId(Number(parts[2]));
+
+                if(parts[3]) setGroupMembersLevel(Number(parts[3]));
                 return;
         }
     }, []);
@@ -60,6 +70,12 @@ export const GroupsView: FC<{}> = props =>
     }, []);
 
     CreateMessageHook(GroupPurchasedEvent, onGroupPurchasedEvent);
+
+    const closeMembers = useCallback(() =>
+    {
+        setGroupMembersId(null);
+        setGroupMembersLevel(null);
+    }, []);
     
     return (
         <GroupsContextProvider value={ { groupsState, dispatchGroupsState } }>
@@ -67,6 +83,7 @@ export const GroupsView: FC<{}> = props =>
             <div className="nitro-groups">
                 <GroupCreatorView isVisible={ isCreatorVisible } onClose={ () => setIsCreatorVisible(false) } />
                 <GroupManagerView />
+                <GroupMembersView groupId={ groupMembersId } levelId={ groupMembersLevel } onClose={ closeMembers } />
                 <GroupInformationStandaloneView />
             </div>
         </GroupsContextProvider>

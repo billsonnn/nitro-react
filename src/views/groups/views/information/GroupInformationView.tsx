@@ -2,6 +2,7 @@ import { GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateLinkEvent, GetSessionDataManager, LocalizeText, TryVisitRoom } from '../../../../api';
 import { GetGroupManager } from '../../../../api/groups/GetGroupManager';
+import { GetGroupMembers } from '../../../../api/groups/GetGroupMembers';
 import { TryJoinGroup } from '../../../../api/groups/TryJoinGroup';
 import { SendMessageHook } from '../../../../hooks';
 import { CatalogPageName } from '../../../catalog/common/CatalogPageName';
@@ -76,6 +77,12 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
     {
         switch(action)
         {
+            case 'members':
+                GetGroupMembers(groupInformation.id);
+                break;
+            case 'manage':
+                GetGroupManager(groupInformation.id);
+                break;
             case 'homeroom':
                 TryVisitRoom(groupInformation.roomId);
                 break;
@@ -94,13 +101,13 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                     <div className="group-badge">
                         <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } />
                     </div>
-                    <div className="mt-3 cursor-pointer">
+                    <div className="mt-3 cursor-pointer" onClick={ () => handleAction('members') }>
                         { LocalizeText('group.membercount', ['totalMembers'], [groupInformation.membersCount.toString()]) }
                     </div>
                     { groupInformation.pendingRequestsCount > 0 && <div className="cursor-pointer">
                         { LocalizeText('group.pendingmembercount', ['totalMembers'], [groupInformation.pendingRequestsCount.toString()]) }
                     </div> }
-                    { groupInformation.isOwner && <div className="cursor-pointer" onClick={ () => GetGroupManager(groupInformation.id) }>
+                    { groupInformation.isOwner && <div className="cursor-pointer" onClick={ () => handleAction('manage') }>
                         { LocalizeText('group.manage') }
                     </div> }
                     <div className="mt-auto mb-1">
