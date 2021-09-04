@@ -74,7 +74,7 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
             </div>
             <NitroCardContentView>
                 <div className="d-flex align-items-center">
-                    <i className={ `me-2 icon icon-wired-${ wiredType }` } />
+                    <i className={ `me-2 flex-shrink-0 icon icon-wired-${ wiredType }` } />
                     <div className="fw-bold">{ wiredName }</div>
                 </div>
                 <div>{ wiredDescription }</div>
