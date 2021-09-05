@@ -71,7 +71,6 @@
     &:hover,
     &:focus {
       border-color: $nav-tabs-link-hover-border-color;
-      //background: $nav-tabs-link-hover-bg;
       // Prevents active .nav-link tab overlapping focus outline of previous/next .nav-link
       isolation: isolate;
     }
