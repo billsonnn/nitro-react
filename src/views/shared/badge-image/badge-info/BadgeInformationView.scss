@@ -1,0 +1,22 @@
+.badge-information {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    width: 210px;
+    border-radius: $border-radius;
+    background: $white;
+    left: -220px;
+    z-index: 100;
+
+    &:before {
+        position: absolute;
+        content: ' ';
+        width: 0;
+        height: 0;
+        border-left: 10px solid $white;
+        border-bottom: 10px solid transparent;
+        border-top: 10px solid transparent;
+        top: 10px;
+        right: -10px;
+    }
+}

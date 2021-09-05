@@ -4,4 +4,16 @@
     height: 100%;
     background-repeat: no-repeat;
     background-position: center;
+    
+    .badge-information {
+        display: none;
+    }
+
+    &:hover {
+        .badge-information {
+            display: block;
+        }
+    }
+
+    @import './badge-info/BadgeInformationView';
 }

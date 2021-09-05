@@ -1,4 +1,4 @@
-import { GroupInformationComposer, GroupInformationEvent, GroupInformationParser } from '@nitrots/nitro-renderer';
+import { GroupFavoriteComposer, GroupInformationComposer, GroupInformationEvent, GroupInformationParser } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
@@ -36,6 +36,11 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
         if(selectedGroupId) SendMessageHook(new GroupInformationComposer(selectedGroupId, false));
     }, [ selectedGroupId ]);
 
+    const favoriteGroup = useCallback((groupId: number) =>
+    {
+        SendMessageHook(new GroupFavoriteComposer(groupId));
+    }, []);
+
     if(!groups) return null;
     
     return (
@@ -44,7 +49,8 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
                 <div className="h-100 overflow-auto d-flex flex-column gap-1">
                     { groups.map((group, index) =>
                         {
-                            return <div key={ index } onClick={ () => setSelectedGroupId(group.id) } className={ 'profile-groups-item flex-shrink-0 d-flex align-items-center justify-content-center cursor-pointer' + classNames({ ' active': selectedGroupId === group.id }) }>
+                            return <div key={ index } onClick={ () => setSelectedGroupId(group.id) } className={ 'profile-groups-item position-relative flex-shrink-0 d-flex align-items-center justify-content-center cursor-pointer' + classNames({ ' active': selectedGroupId === group.id }) }>
+                                <i className={ 'position-absolute icon icon-group-' + (group.ownerOrFavorite ? 'favorite' : 'not-favorite') } onClick={ () => favoriteGroup(group.id) } />
                                 <BadgeImageView badgeCode={ group.badge } isGroup={ true } />
                             </div>
                         }) }

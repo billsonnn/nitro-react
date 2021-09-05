@@ -13,5 +13,11 @@
             border-color: $grid-active-border-color !important;
             background-color: $grid-active-bg-color !important;
         }
+
+        .icon {
+            z-index: 1;
+            top: 0px;
+            right: 0px;
+        }
     }
 }

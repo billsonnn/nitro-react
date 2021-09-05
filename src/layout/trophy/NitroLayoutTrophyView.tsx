@@ -5,7 +5,7 @@ import { NitroLayoutTrophyViewProps } from './NitroLayoutTrophyView.types';
 
 export const NitroLayoutTrophyView: FC<NitroLayoutTrophyViewProps> = props =>
 {
-    const { color = '', message = '', date = '', senderName = '', onCloseClick = null } = props;
+    const { color = '', message = '', date = '', senderName = '', customTitle = null, onCloseClick = null } = props;
 
     return (
         <DraggableWindow handleSelector=".drag-handler">
@@ -17,6 +17,7 @@ export const NitroLayoutTrophyView: FC<NitroLayoutTrophyViewProps> = props =>
                     </div>
                 </div>
                 <div className="trophy-content">
+                    { customTitle && <div className="mb-2 fw-bold">{ customTitle }</div> }
                     { message }
                 </div>
                 <div className="trophy-footer d-flex justify-content-between fw-bold">

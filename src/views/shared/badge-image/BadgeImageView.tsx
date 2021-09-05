@@ -1,10 +1,11 @@
 import { FC } from 'react';
-import { GetConfiguration } from '../../../api';
+import { GetConfiguration, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
+import { BadgeInformationView } from './badge-info/BadgeInformationView';
 import { BadgeImageViewProps } from './BadgeImageView.types';
 
 export const BadgeImageView: FC<BadgeImageViewProps> = props =>
 {
-    const { badgeCode = null, isGroup = false } = props;
+    const { badgeCode = null, isGroup = false, showInfo = false, customTitle = null } = props;
 
     function getBadgeUrl(): string
     {
@@ -20,5 +21,7 @@ export const BadgeImageView: FC<BadgeImageViewProps> = props =>
 
     const url = `url('${ getBadgeUrl() }')`;
 
-    return <div className="badge-image" style={ (url && url.length) ? { backgroundImage: url } : {} }></div>;
+    return <div className="badge-image" style={ (url && url.length) ? { backgroundImage: url } : {} }>
+        { showInfo && <BadgeInformationView title={ isGroup ? customTitle : LocalizeBadgeName(badgeCode) } description={ isGroup ? LocalizeText('group.badgepopup.body') : LocalizeBadgeDescription(badgeCode) } /> }
+    </div>;
 }

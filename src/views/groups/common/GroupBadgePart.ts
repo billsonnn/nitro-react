@@ -9,18 +9,23 @@ export class GroupBadgePart
     public color: number;
     public position: number;
 
-    constructor(type: string)
+    constructor(type: string, key?: number, color?: number, position?: number)
     {
         this.type = type;
-        this.key = 0;
-        this.color = 0;
-        this.position = 4;
+        this.key = key ? key : 0;
+        this.color = color ? color : 0;
+        this.position = position ? position : 4;
     }
 
     public get code(): string
     {
         if(this.key === 0) return null;
         
-        return this.type + (this.key < 10 ? '0' : '') + this.key + (this.color < 10 ? '0' : '') + this.color + (this.type === GroupBadgePart.BASE ? '' : this.position);
+        return GroupBadgePart.getCode(this.type, this.key, this.color, this.position);
+    }
+
+    public static getCode(type: string, key: number, color: number, position: number): string
+    {
+        return (type === GroupBadgePart.BASE ? type : key >= 100 ? GroupBadgePart.SYMBOL_ALT : GroupBadgePart.SYMBOL) + (key < 10 ? '0' : '') + (type === GroupBadgePart.BASE ? key : key >= 100 ? key - 100 : key) + (color < 10 ? '0' : '') + color + position;
     }
 }

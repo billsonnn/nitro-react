@@ -1,0 +1,26 @@
+.shared-tab-badge {
+    .position-swatch {
+        position: relative;
+        border-radius: $border-radius;
+        width: 16px;
+        height: 12px;
+        background: $white;
+
+        &.active {
+            background: $primary;
+        }
+    }
+
+    .color-swatch {
+        position: relative;
+        border-radius: $border-radius;
+        width: 16px;
+        height: 12px;
+    }
+
+    .selection-list {
+        height: 160px;
+        min-height: 160px;
+        max-height: 160px;
+    }
+}

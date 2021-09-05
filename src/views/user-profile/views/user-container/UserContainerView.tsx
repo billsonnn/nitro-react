@@ -33,7 +33,7 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
             <div className="col-sm-8">
                 <div className="user-info-container">
                     <div className="fw-bold">{userProfile.username}</div>
-                    <div className="fst-italic">{userProfile.motto}</div>
+                    <div className="fst-italic text-break small">{userProfile.motto}</div>
                     <div dangerouslySetInnerHTML={{ __html: LocalizeText('extendedprofile.created', ['created'], [userProfile.registration]) }} />
                     <div dangerouslySetInnerHTML={{ __html: LocalizeText('extendedprofile.last.login', ['lastlogin'], [FriendlyTime.format(userProfile.secondsSinceLastVisit, '.ago', 2)]) }} />
                     <div><b>{LocalizeText('extendedprofile.achievementscore')}</b> {userProfile.achievementPoints}</div>

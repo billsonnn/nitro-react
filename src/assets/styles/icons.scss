@@ -591,6 +591,42 @@
         height: 20px;
     }
 
+    &.icon-group-favorite {
+        background: url('../images/groups/icons/group_favorite.png');
+        width: 14px;
+        height: 14px;
+    }
+
+    &.icon-group-not-favorite {
+        background: url('../images/groups/icons/group_notfavorite.png');
+        width: 14px;
+        height: 14px;
+    }
+
+    &.icon-group-small-admin {
+        background: url('../images/groups/icons/group_icon_admin.png');
+        width: 11px;
+        height: 13px;
+    }
+
+    &.icon-group-small-not-admin {
+        background: url('../images/groups/icons/group_icon_not_admin.png');
+        width: 11px;
+        height: 13px;
+    }
+
+    &.icon-group-remove-member {
+        background: url('../images/groups/icons/group_icon_remove_member.png');
+        width: 13px;
+        height: 14px;
+    }
+
+    &.icon-group-small-owner {
+        background: url('../images/groups/icons/group_icon_small_owner.png');
+        width: 13px;
+        height: 13px;
+    }
+
     &.icon-navigator-info {
         background: url('../images/navigator/icons/info.png');
         width: 18px;

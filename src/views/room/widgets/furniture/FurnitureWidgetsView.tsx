@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { FurnitureBackgroundColorView } from './background-color/FurnitureBackgroundColorView';
+import { FurnitureBadgeDisplayView } from './badge-display/FurnitureBadgeDisplayView';
 import { FurnitureContextMenuView } from './context-menu/FurnitureContextMenuView';
 import { FurnitureCustomStackHeightView } from './custom-stack-height/FurnitureCustomStackHeightView';
 import { FurnitureDimmerView } from './dimmer/FurnitureDimmerView';
@@ -29,6 +30,7 @@ export const FurnitureWidgetsView: FC<{}> = props =>
             <FurniturePresentView />
             <FurnitureStickieView />
             <FurnitureTrophyView />
+            <FurnitureBadgeDisplayView />
             <FurnitureExternalImageView />
         </div>
     );

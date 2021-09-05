@@ -1,6 +1,7 @@
 import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomSessionUserBadgesEvent, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
+import classNames from 'classnames';
 import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import { LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent } from '../../../../../../api';
+import { GetGroupInformation, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent } from '../../../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../../hooks/events';
 import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
@@ -82,7 +83,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     return (
         <div className="d-flex flex-column nitro-card nitro-infostand rounded">
-            <div className="container-fluid content-area">
+            <div className="container-fluid content-area overflow-visible">
                 <div className="d-flex justify-content-between align-items-center">
                     <div className="small text-wrap">
                         <UserProfileIconView userId={ userData.webID } />
@@ -98,26 +99,26 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                     <div>
                         <div className="d-flex justify-content-between">
                             <div className="badge-image">
-                                { badges[0] && <BadgeImageView badgeCode={ badges[0] } /> }
+                                { badges[0] && <BadgeImageView badgeCode={ badges[0] } showInfo={ true } /> }
                             </div>
-                            <div className="badge-image">
-                                { userData.groupId > 0 && <BadgeImageView badgeCode={ userData.groupBadgeId } isGroup={ true } /> }
-                            </div>
-                        </div>
-                        <div className="d-flex justify-content-between">
-                            <div className="badge-image">
-                                { badges[1] && <BadgeImageView badgeCode={ badges[1] } /> }
-                            </div>
-                            <div className="badge-image">
-                                { badges[2] && <BadgeImageView badgeCode={ badges[2] } /> }
+                            <div className={ 'badge-image' + classNames({ ' cursor-pointer': userData.groupId > 0 }) } onClick={ () => GetGroupInformation(userData.groupId) }>
+                                { userData.groupId > 0 && <BadgeImageView badgeCode={ userData.groupBadgeId } isGroup={ true } showInfo={ true } customTitle={ userData.groupName } /> }
                             </div>
                         </div>
                         <div className="d-flex justify-content-between">
                             <div className="badge-image">
-                                { badges[3] && <BadgeImageView badgeCode={ badges[3] } /> }
+                                { badges[1] && <BadgeImageView badgeCode={ badges[1] } showInfo={ true } /> }
                             </div>
                             <div className="badge-image">
-                                { badges[4] && <BadgeImageView badgeCode={ badges[4] } /> }
+                                { badges[2] && <BadgeImageView badgeCode={ badges[2] } showInfo={ true } /> }
+                            </div>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                            <div className="badge-image">
+                                { badges[3] && <BadgeImageView badgeCode={ badges[3] } showInfo={ true } /> }
+                            </div>
+                            <div className="badge-image">
+                                { badges[4] && <BadgeImageView badgeCode={ badges[4] } showInfo={ true } /> }
                             </div>
                         </div>
                     </div>

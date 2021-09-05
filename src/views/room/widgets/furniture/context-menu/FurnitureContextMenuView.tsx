@@ -1,7 +1,7 @@
 import { ContextMenuEnum, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { GroupFurniContextMenuInfoMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/room/furniture/GroupFurniContextMenuInfoMessageEvent';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine, IsOwnerOfFurniture, LocalizeText, RoomWidgetFurniActionMessage, TryVisitRoom } from '../../../../../api';
+import { GetGroupInformation, GetRoomEngine, IsOwnerOfFurniture, LocalizeText, RoomWidgetFurniActionMessage, TryVisitRoom } from '../../../../../api';
 import { TryJoinGroup } from '../../../../../api/groups/TryJoinGroup';
 import { CreateMessageHook } from '../../../../../hooks';
 import { useRoomEngineEvent } from '../../../../../hooks/events';
@@ -183,7 +183,7 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                         </> }
                     { (mode === GROUP_FURNITURE) && groupData &&
                         <>
-                            <ContextMenuHeaderView>
+                            <ContextMenuHeaderView className="cursor-pointer" onClick={ () => GetGroupInformation(groupData.guildId) }>
                                 { groupData.guildName }
                             </ContextMenuHeaderView>
                             { !isGroupMember && <ContextMenuListItemView onClick={ event => processAction('join_group') }>

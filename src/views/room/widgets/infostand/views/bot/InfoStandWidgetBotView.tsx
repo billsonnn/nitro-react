@@ -26,7 +26,7 @@ export const InfoStandWidgetBotView: FC<InfoStandWidgetBotViewProps> = props =>
                 <div className="w-100 d-flex justify-content-center align-items-center">
                     { (botData.badges.length > 0) && botData.badges.map(result =>
                         {
-                            return <BadgeImageView key={ result } badgeCode={ result } />;
+                            return <BadgeImageView key={ result } badgeCode={ result } showInfo={ true } />;
                         }) }
                 </div>
             </div>
