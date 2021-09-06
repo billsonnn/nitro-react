@@ -137,7 +137,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                             }) }
                     </div>
                     <div>{ roomInfoData.enteredGuestRoom.description }</div>
-                    <div className="room-thumbnail border mt-1 mb-2">
+                    <div className="room-thumbnail rounded overflow-hidden border mt-1 mb-2">
                         { hasPermission('settings') && <i className="icon icon-camera-small position-absolute b-0 r-0 m-1 cursor-pointer" onClick={ () => processAction('open_room_thumbnail_camera') } /> }
                         { roomThumbnail && <img alt="" src={ roomThumbnail } /> }
                     </div>
