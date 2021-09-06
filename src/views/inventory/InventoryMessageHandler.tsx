@@ -1,6 +1,6 @@
-import { AdvancedMap, BadgeReceivedEvent, BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, RequestBadgesComposer, TradingAcceptEvent, TradingCloseEvent, TradingCompletedEvent, TradingConfirmationEvent, TradingListItemEvent, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingYouAreNotAllowedEvent, UnseenItemsEvent } from '@nitrots/nitro-renderer';
+import { AdvancedMap, BadgePointLimitsEvent, BadgeReceivedEvent, BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, RequestBadgesComposer, TradingAcceptEvent, TradingCloseEvent, TradingCompletedEvent, TradingConfirmationEvent, TradingListItemEvent, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingYouAreNotAllowedEvent, UnseenItemsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { GetRoomSession, GetSessionDataManager } from '../../api';
+import { GetLocalization, GetRoomSession, GetSessionDataManager } from '../../api';
 import { InventoryBadgesUpdatedEvent } from '../../events';
 import { InventoryBadgesRequestEvent } from '../../events/inventory/InventoryBadgesRequestEvent';
 import { dispatchUiEvent, useUiEvent } from '../../hooks';
@@ -321,6 +321,13 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
         }
     }, [ unseenTracker ]);
 
+    const onBadgePointLimitsEvent = useCallback((event: BadgePointLimitsEvent) =>
+    {
+        const parser = event.getParser();
+
+        for(const data of parser.data) GetLocalization().setBadgePointLimit(data.badgeId, data.limit);
+    }, []);
+
     CreateMessageHook(FurnitureListAddOrUpdateEvent, onFurnitureListAddOrUpdateEvent);
     CreateMessageHook(FurnitureListEvent, onFurnitureListEvent);
     CreateMessageHook(FurnitureListInvalidateEvent, onFurnitureListInvalidateEvent);
@@ -345,6 +352,7 @@ export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =
     CreateMessageHook(TradingOtherNotAllowedEvent, onTradingOtherNotAllowedEvent);
     CreateMessageHook(TradingYouAreNotAllowedEvent, onTradingYouAreNotAllowedEvent);
     CreateMessageHook(UnseenItemsEvent, onUnseenItemsEvent);
+    CreateMessageHook(BadgePointLimitsEvent, onBadgePointLimitsEvent);
 
     const onInventoryBadgesRequestEvent = useCallback((event: InventoryBadgesRequestEvent) =>
     {
