@@ -65,8 +65,11 @@ export const GroupRoomInformationView: FC<{}> = props =>
 
     const tryLeaveGroup = useCallback(() =>
     {
-        SendMessageHook(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
-        SendMessageHook(new GroupInformationComposer(groupInformation.id, false));
+        if(window.confirm(LocalizeText('group.leaveconfirm.desc')))
+        {
+            SendMessageHook(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
+            SendMessageHook(new GroupInformationComposer(groupInformation.id, false));
+        }
     }, [ groupInformation ]);
 
     const getButtonText = useCallback(() =>

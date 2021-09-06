@@ -1,7 +1,7 @@
-import { GroupMemberParser, GroupMembersComposer, GroupMembersEvent, GroupMembersParser, GroupRank } from '@nitrots/nitro-renderer';
+import { GroupAdminGiveComposer, GroupAdminTakeComposer, GroupConfirmMemberRemoveEvent, GroupConfirmRemoveMemberComposer, GroupMemberParser, GroupMembersComposer, GroupMembersEvent, GroupMembershipAcceptComposer, GroupMembershipDeclineComposer, GroupMembersParser, GroupRank, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../../../api';
+import { GetSessionDataManager, GetUserProfile, LocalizeText } from '../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
@@ -16,23 +16,40 @@ export const GroupMembersView: FC<GroupMembersViewProps> = props =>
     const [ searchQuery, setSearchQuery ] = useState<string>('');
     const [ searchLevelId, setSearchLevelId ] = useState<number>(3);
     const [ totalPages, setTotalPages ] = useState<number>(0);
+    const [ removingMemberName, setRemovingMemberName ] = useState<string>(null);
 
-    const searchMembers = useCallback((pageId: number) =>
+    const searchMembers = useCallback((pageId: number, newLevelId?: number) =>
     {
         if(!groupId) return;
         
-        SendMessageHook(new GroupMembersComposer(groupId, pageId, searchQuery, searchLevelId));
+        SendMessageHook(new GroupMembersComposer(groupId, pageId, searchQuery, newLevelId !== null ? newLevelId : searchLevelId));
     }, [ groupId, searchQuery, searchLevelId ]);
 
     const onGroupMembersEvent = useCallback((event: GroupMembersEvent) =>
     {
         const parser = event.getParser();
         
+        setPageData(null);
         setPageData(parser);
+        setSearchLevelId(parser.level);
         setTotalPages(Math.ceil(parser.totalMembersCount / parser.pageSize));
     }, []);
 
+    const onGroupConfirmMemberRemoveEvent = useCallback((event: GroupConfirmMemberRemoveEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(window.confirm(LocalizeText(parser.furnitureCount > 0 ? 'group.kickconfirm.desc' : 'group.kickconfirm_nofurni.desc', ['user', 'amount'], [removingMemberName, parser.furnitureCount.toString()])))
+        {
+            SendMessageHook(new GroupRemoveMemberComposer(pageData.groupId, parser.userId));
+            searchMembers(pageData.pageIndex);
+        }
+
+        setRemovingMemberName(null);
+    }, [ pageData, removingMemberName, searchMembers ]);
+
     CreateMessageHook(GroupMembersEvent, onGroupMembersEvent);
+    CreateMessageHook(GroupConfirmMemberRemoveEvent, onGroupConfirmMemberRemoveEvent);
 
     useEffect(() =>
     {
@@ -43,13 +60,15 @@ export const GroupMembersView: FC<GroupMembersViewProps> = props =>
         if(!groupId) return;
 
         if(levelId !== null) setSearchLevelId(levelId);
-        searchMembers(0);
+
+        searchMembers(0, levelId);
     }, [ groupId, levelId ]);
 
-    useEffect(() =>
+    const selectSearchLevelId = useCallback((level: number) =>
     {
-        searchMembers(0);
-    }, [ searchLevelId ]);
+        setSearchLevelId(level);
+        searchMembers(0, level);
+    }, [ searchMembers ]);
 
     const previousPage = useCallback(() =>
     {
@@ -82,6 +101,45 @@ export const GroupMembersView: FC<GroupMembersViewProps> = props =>
         return '';
     }, [ pageData ]);
 
+    const toggleAdmin = useCallback((member: GroupMemberParser) =>
+    {
+        if(member.rank === GroupRank.OWNER) return;
+        
+        if(member.rank !== GroupRank.ADMIN)
+        {
+            SendMessageHook(new GroupAdminGiveComposer(pageData.groupId, member.id));
+        }
+        else
+        {
+            SendMessageHook(new GroupAdminTakeComposer(pageData.groupId, member.id));
+        }
+
+        searchMembers(pageData.pageIndex);
+    }, [ pageData ]);
+
+    const acceptMembership = useCallback((member) =>
+    {
+        if(member.rank === GroupRank.REQUESTED)
+        {
+            SendMessageHook(new GroupMembershipAcceptComposer(pageData.groupId, member.id));
+            searchMembers(pageData.pageIndex);
+        }
+    }, [ pageData ]);
+
+    const removeMemberOrDeclineMembership = useCallback((member) =>
+    {
+        if(member.rank === GroupRank.REQUESTED)
+        {
+            SendMessageHook(new GroupMembershipDeclineComposer(pageData.groupId, member.id));
+            searchMembers(pageData.pageIndex);
+        }
+        else
+        {
+            setRemovingMemberName(member.name);
+            SendMessageHook(new GroupConfirmRemoveMemberComposer(pageData.groupId, member.id));
+        }
+    }, [ pageData ]);
+
     if(!pageData) return null;
 
     return (
@@ -94,7 +152,7 @@ export const GroupMembersView: FC<GroupMembersViewProps> = props =>
                     </div>
                     <div className="w-100">
                         <input type="text" className="form-control form-control-sm w-100 mb-1" placeholder={ LocalizeText('group.members.searchinfo') } value={ searchQuery } onChange={ (e) => setSearchQuery(e.target.value) } onBlur={ () => searchMembers(pageData.pageIndex) } onKeyDown={ onKeyDown } />
-                        <select className="form-select form-select-sm w-100" value={ searchLevelId } onChange={ (e) => setSearchLevelId(Number(e.target.value)) }>
+                        <select className="form-select form-select-sm w-100" value={ searchLevelId } onChange={ (e) => selectSearchLevelId(Number(e.target.value)) }>
                             <option value="0">{ LocalizeText('group.members.search.all') }</option>
                             <option value="1">{ LocalizeText('group.members.search.admins') }</option>
                             <option value="2">{ LocalizeText('group.members.search.pending') }</option>
@@ -107,19 +165,22 @@ export const GroupMembersView: FC<GroupMembersViewProps> = props =>
                         return (
                             <div key={ index } className={ 'col pb-1' + classNames({ ' pe-1': index % 2 === 0 }) }>
                                 <div className="list-member bg-white rounded d-flex text-black">
-                                    <div className="avatar-head flex-shrink-0">
+                                    <div className="avatar-head flex-shrink-0 cursor-pointer" onClick={ () => { GetUserProfile(member.id) } }>
                                         <AvatarImageView figure={ member.figure } headOnly={ true } direction={ 2 } />
                                     </div>
-                                    <div className="p-1 w-100">
-                                        <div className="fw-bold small">{ member.name }</div>
-                                        <div className="text-muted fst-italic small">{ LocalizeText('group.members.since', ['date'], [member.joinedAt]) }</div>
+                                    <div className="p-1 w-100 d-flex flex-column justify-content-center">
+                                        <div className="fw-bold small cursor-pointer" onClick={ () => { GetUserProfile(member.id) } }>{ member.name }</div>
+                                        { member.rank !== GroupRank.REQUESTED && <div className="text-muted fst-italic small">{ LocalizeText('group.members.since', ['date'], [member.joinedAt]) }</div> }
                                     </div>
                                     <div className="d-flex flex-column pe-2 align-items-center justify-content-center">
                                         <div className="d-flex align-items-center">
-                                            <i className={ 'icon icon-group-small-' + classNames({ 'owner': member.rank === GroupRank.OWNER, 'admin': member.rank === GroupRank.ADMIN, 'not-admin': member.rank === GroupRank.MEMBER, 'cursor-pointer': pageData.admin }) } title={ LocalizeText(getRankDescription(member)) } />
+                                            <i className={ 'icon icon-group-small-' + classNames({ 'owner': member.rank === GroupRank.OWNER, 'admin': member.rank === GroupRank.ADMIN, 'not-admin': member.rank === GroupRank.MEMBER, 'cursor-pointer': pageData.admin }) } title={ LocalizeText(getRankDescription(member)) } onClick={ () => toggleAdmin(member) } />
                                         </div>
+                                        { member.rank === GroupRank.REQUESTED && <div className="d-flex align-items-center">
+                                            <i className="icon cursor-pointer icon-group-accept-member" title={ LocalizeText('group.members.accept') } onClick={ () => acceptMembership(member) } />
+                                        </div> }
                                         { member.rank !== GroupRank.OWNER && pageData.admin && member.id !== GetSessionDataManager().userId &&<div className="d-flex align-items-center mt-1">
-                                            <i className="icon cursor-pointer icon-group-remove-member" title={ LocalizeText(member.rank === GroupRank.REQUESTED ? 'group.members.reject' : 'group.members.kick') } />
+                                            <i className="icon cursor-pointer icon-group-remove-member" title={ LocalizeText(member.rank === GroupRank.REQUESTED ? 'group.members.reject' : 'group.members.kick') } onClick={ () => removeMemberOrDeclineMembership(member) } />
                                         </div> }
                                     </div>
                                 </div>

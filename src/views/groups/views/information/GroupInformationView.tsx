@@ -24,8 +24,11 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 
     const leaveGroup = useCallback(() =>
     {
-        SendMessageHook(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
-        if(onClose) onClose();
+        if(window.confirm(LocalizeText('group.leaveconfirm.desc')))
+        {
+            SendMessageHook(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
+            if(onClose) onClose();
+        }       
     }, [ groupInformation, onClose ]);
 
     const isRealOwner = useCallback(() =>
@@ -80,6 +83,9 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
             case 'members':
                 GetGroupMembers(groupInformation.id);
                 break;
+            case 'members_pending':
+                GetGroupMembers(groupInformation.id, 2);
+                break;
             case 'manage':
                 GetGroupManager(groupInformation.id);
                 break;
@@ -104,8 +110,8 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                     <div className="mt-3 cursor-pointer" onClick={ () => handleAction('members') }>
                         { LocalizeText('group.membercount', ['totalMembers'], [groupInformation.membersCount.toString()]) }
                     </div>
-                    { groupInformation.pendingRequestsCount > 0 && <div className="cursor-pointer">
-                        { LocalizeText('group.pendingmembercount', ['totalMembers'], [groupInformation.pendingRequestsCount.toString()]) }
+                    { groupInformation.pendingRequestsCount > 0 && <div className="cursor-pointer" onClick={ () => handleAction('members_pending') }>
+                        { LocalizeText('group.pendingmembercount', ['amount'], [groupInformation.pendingRequestsCount.toString()]) }
                     </div> }
                     { groupInformation.isOwner && <div className="cursor-pointer" onClick={ () => handleAction('manage') }>
                         { LocalizeText('group.manage') }

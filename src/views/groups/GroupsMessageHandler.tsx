@@ -114,8 +114,8 @@ export const GroupsMessageHandler: FC<{}> = props =>
         parser.badgeParts.forEach((part, id) =>
         {
             groupBadgeParts.push(new GroupBadgePart(
-                part.isBase ? GroupBadgePart.BASE : part.key >= 100 ? GroupBadgePart.SYMBOL_ALT : GroupBadgePart.SYMBOL,
-                part.key >= 100 ? part.key - 100 : part.key,
+                part.isBase ? GroupBadgePart.BASE : GroupBadgePart.SYMBOL,
+                part.key,
                 part.color,
                 part.position
             ));
