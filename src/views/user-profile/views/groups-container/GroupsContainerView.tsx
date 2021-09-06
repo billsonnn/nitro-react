@@ -8,7 +8,7 @@ import { GroupsContainerViewProps } from './GroupsContainerView.types';
 
 export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
 {
-    const { groups = null, onLeaveGroup = null } = props;
+    const { itsMe = null, groups = null, onLeaveGroup = null } = props;
 
     const [ selectedGroupId, setSelectedGroupId ] = useState<number>(null);
     const [ groupInformation, setGroupInformation ] = useState<GroupInformationParser>(null);
@@ -50,7 +50,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
                     { groups.map((group, index) =>
                         {
                             return <div key={ index } onClick={ () => setSelectedGroupId(group.id) } className={ 'profile-groups-item position-relative flex-shrink-0 d-flex align-items-center justify-content-center cursor-pointer' + classNames({ ' active': selectedGroupId === group.id }) }>
-                                <i className={ 'position-absolute icon icon-group-' + (group.ownerOrFavorite ? 'favorite' : 'not-favorite') } onClick={ () => favoriteGroup(group.id) } />
+                                { itsMe && <i className={ 'position-absolute icon icon-group-' + (group.ownerOrFavorite ? 'favorite' : 'not-favorite') } onClick={ () => favoriteGroup(group.id) } /> }
                                 <BadgeImageView badgeCode={ group.badge } isGroup={ true } />
                             </div>
                         }) }

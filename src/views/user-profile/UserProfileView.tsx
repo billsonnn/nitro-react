@@ -86,7 +86,7 @@ export const UserProfileView: FC = props =>
                             <i className="icon icon-rooms" /><span className="rooms-button">{LocalizeText('extendedprofile.rooms')}</span>
                         </div>
                     </div>
-                    <GroupsContainerView groups={ userProfile.groups } onLeaveGroup={ onLeaveGroup } />
+                    <GroupsContainerView itsMe={ userProfile.id === GetSessionDataManager().userId } groups={ userProfile.groups } onLeaveGroup={ onLeaveGroup } />
             </NitroCardContentView>
         </NitroCardView>
     )
