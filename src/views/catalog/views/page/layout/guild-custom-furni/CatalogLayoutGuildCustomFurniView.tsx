@@ -15,9 +15,11 @@ import { CatalogLayoutGuildCustomFurniViewProps } from './CatalogLayoutGuildCust
 export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutGuildCustomFurniViewProps> = props =>
 {
     const { roomPreviewer = null, pageParser = null } = props;
-    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState<number>(0);
+
     const { catalogState = null } = useCatalogContext();
     const { activeOffer = null, groups = null } = catalogState;
+    
+    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState<number>(0);
 
     useEffect(() =>
     {
