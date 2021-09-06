@@ -19,6 +19,7 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
     const [ modToolsState, dispatchModToolsState ] = useReducer(ModToolsReducer, initialModTools);
     const { currentRoomId = null, selectedUser = null, openRooms = null, openChatlogs = null } = modToolsState;
 
+    const [ isRoomVisible, setIsRoomVisible ] = useState(false);
     const [ isUserVisible, setIsUserVisible ] = useState(false);
     const [ isTicketsVisible, setIsTicketsVisible ] = useState(false);
 
@@ -161,13 +162,13 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
     return (
         <ModToolsContextProvider value={ { modToolsState, dispatchModToolsState } }>
             { isVisible &&
-                <NitroCardView uniqueKey="mod-tools" className="nitro-mod-tools" simple={ true }>
+                <NitroCardView uniqueKey="mod-tools" className="nitro-mod-tools" simple={ false }>
                     <NitroCardHeaderView headerText={ 'Mod Tools' } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardContentView className="text-black">
-                        <button className="btn btn-primary w-100 mb-2" onClick={ () => handleClick('toggle_room') } disabled={ !currentRoomId }><i className="fas fa-home"></i> Room Tool</button>
-                        <button className="btn btn-primary w-100 mb-2" onClick={ () => {} } disabled={ !currentRoomId }><i className="fas fa-comments"></i> Chatlog Tool</button>
-                        <button className="btn btn-primary w-100 mb-2" onClick={ () => setIsUserVisible(value => !value) } disabled={ !selectedUser }><i className="fas fa-user"></i> User: { selectedUser ? selectedUser.name : '' }</button>
-                        <button className="btn btn-primary w-100" onClick={ () => setIsTicketsVisible(value => !value) }><i className="fas fa-exclamation-circle"></i> Report Tool</button>
+                        <button className="btn btn-primary btn-sm w-100 mb-2" onClick={ () => handleClick('toggle_room') } disabled={ !currentRoomId }><i className="fas fa-home"></i> Room Tool</button>
+                        <button className="btn btn-primary btn-sm w-100 mb-2" onClick={ () => {} } disabled={ !currentRoomId }><i className="fas fa-comments"></i> Chatlog Tool</button>
+                        <button className="btn btn-primary btn-sm w-100 mb-2" onClick={ () => setIsUserVisible(value => !value) } disabled={ !selectedUser }><i className="fas fa-user"></i> User: { selectedUser ? selectedUser.name : '' }</button>
+                        <button className="btn btn-primary btn-sm w-100" onClick={ () => setIsTicketsVisible(value => !value) }><i className="fas fa-exclamation-circle"></i> Report Tool</button>
                     </NitroCardContentView>
                 </NitroCardView> }
             { openRooms && openRooms.map(roomId =>
@@ -176,7 +177,7 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
                 }) }
             
             { isUserVisible && <ModToolsUserView /> }
-            { isTicketsVisible && <ModToolsTicketsView /> }
+            { isTicketsVisible && <ModToolsTicketsView onCloseClick={ () => setIsTicketsVisible(false) } /> }
         </ModToolsContextProvider>
     );
 }
