@@ -135,8 +135,8 @@ export const PurseView: FC<{}> = props =>
                     </div>
                     <div className="col-2 px-0">
                         <div className="d-flex flex-column nitro-purse-buttons h-100 justify-content-center">
-                            <div className="nitro-purse-button text-white h-100 text-center d-flex align-items-center justify-content-center"><i className="fas fa-life-ring"/></div>
-                            <div className="nitro-purse-button text-white h-100 text-center d-flex align-items-center justify-content-center"onClick={handleUserSettingsClick} ><i className="fas fa-cogs"/></div>
+                            <div className="nitro-purse-button text-white h-100 text-center d-flex align-items-center justify-content-center cursor-pointer"><i className="fas fa-life-ring"/></div>
+                            <div className="nitro-purse-button text-white h-100 text-center d-flex align-items-center justify-content-center cursor-pointer" onClick={ handleUserSettingsClick } ><i className="fas fa-cogs"/></div>
                         </div>
                     </div>
                 </div>
