@@ -192,6 +192,9 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                             <ContextMenuListItemView onClick={ event => processAction('go_to_group_homeroom') }>
                                 { LocalizeText('widget.furniture.button.go.to.group.home.room') }
                             </ContextMenuListItemView>
+                            { groupData.guildHasReadableForum && <ContextMenuListItemView onClick={ event => processAction('open_forum') }>
+                                { LocalizeText('widget.furniture.button.open_group_forum') }
+                            </ContextMenuListItemView> }
                         </> }
                 </ContextMenuView> }
         </>
