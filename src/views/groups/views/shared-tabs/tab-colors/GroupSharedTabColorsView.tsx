@@ -53,7 +53,7 @@ export const GroupSharedTabColorsView: FC<{}> = props =>
         <div className="shared-tab-colors d-flex flex-column gap-2">
             <div className="d-flex flex-column align-items-center">
                 <div className="fw-bold">{ LocalizeText('group.edit.color.guild.color') }</div>
-                { groupColors && <div className="d-flex">
+                { groupColors && <div className="d-flex rounded border overflow-hidden">
                     <div className="group-color-swatch" style={{ backgroundColor: '#' + getGroupColor(0) }}></div>
                     <div className="group-color-swatch" style={{ backgroundColor: '#' + getGroupColor(1) }}></div>
                 </div> }
