@@ -22,7 +22,7 @@ export const GroupMembersView: FC<GroupMembersViewProps> = props =>
     {
         if(!groupId) return;
         
-        SendMessageHook(new GroupMembersComposer(groupId, pageId, searchQuery, newLevelId !== null ? newLevelId : searchLevelId));
+        SendMessageHook(new GroupMembersComposer(groupId, pageId, searchQuery, newLevelId !== undefined ? newLevelId : searchLevelId));
     }, [ groupId, searchQuery, searchLevelId ]);
 
     const onGroupMembersEvent = useCallback((event: GroupMembersEvent) =>

@@ -183,7 +183,7 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                         </> }
                     { (mode === GROUP_FURNITURE) && groupData &&
                         <>
-                            <ContextMenuHeaderView className="cursor-pointer" onClick={ () => GetGroupInformation(groupData.guildId) }>
+                            <ContextMenuHeaderView className="cursor-pointer text-truncate" onClick={ () => GetGroupInformation(groupData.guildId) }>
                                 { groupData.guildName }
                             </ContextMenuHeaderView>
                             { !isGroupMember && <ContextMenuListItemView onClick={ event => processAction('join_group') }>
