@@ -1,7 +1,8 @@
 import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraStorageUrlMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration, GetRoomEngine, LocalizeText } from '../../../../api';
-import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
+import { InventoryEvent } from '../../../../events';
+import { CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
 import { CameraWidgetCheckoutViewProps } from './CameraWidgetCheckoutView.types';
@@ -108,7 +109,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                         { (picturesBought > 0) &&
                             <div>
                                 <span className="fw-bold">{ LocalizeText('camera.purchase.count.info') }</span> { picturesBought }
-                                <u className="ms-1">{ LocalizeText('camera.open.inventory') }</u>
+                                <u className="ms-1 cursor-pointer" onClick={ () => dispatchUiEvent(new InventoryEvent(InventoryEvent.SHOW_INVENTORY)) }>{ LocalizeText('camera.open.inventory') }</u>
                             </div> }
                     </div>
                     <div className="d-flex align-items-center">
