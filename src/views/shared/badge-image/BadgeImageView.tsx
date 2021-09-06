@@ -1,5 +1,6 @@
-import { FC } from 'react';
-import { GetConfiguration, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
+import { BadgeImageReadyEvent, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
 import { BadgeInformationView } from './badge-info/BadgeInformationView';
 import { BadgeImageViewProps } from './BadgeImageView.types';
 
@@ -7,19 +8,48 @@ export const BadgeImageView: FC<BadgeImageViewProps> = props =>
 {
     const { badgeCode = null, isGroup = false, showInfo = false, customTitle = null } = props;
 
-    function getBadgeUrl(): string
+    const [ badgeUrl, setBadgeUrl ] = useState<string>('');
+    const [ isListening, setIsListening ] = useState<boolean>(true);
+
+    const onBadgeImageReadyEvent = useCallback((event: BadgeImageReadyEvent) =>
     {
-        if(isGroup)
+        if(event.badgeId !== badgeCode) return;
+
+        const nitroSprite = new NitroSprite(event.image);
+        setBadgeUrl(TextureUtils.generateImageUrl(nitroSprite));
+
+        if(isListening)
         {
-            return ((GetConfiguration<string>('badge.asset.group.url')).replace('%badgedata%', badgeCode));
+            GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
+            setIsListening(false);
+        }
+    }, [ badgeCode, isListening ]);
+
+    useEffect(() =>
+    {
+        const existing = (isGroup) ? GetSessionDataManager().loadGroupBadgeImage(badgeCode) : GetSessionDataManager().loadBadgeImage(badgeCode);
+
+        if(!existing)
+        {
+            GetSessionDataManager().events.addEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
         }
         else
         {
-            return ((GetConfiguration<string>('badge.asset.url')).replace('%badgename%', badgeCode));
+            const image = (isGroup) ? GetSessionDataManager().getGroupBadgeImage(badgeCode) : GetSessionDataManager().getBadgeImage(badgeCode);
+            const nitroSprite = new NitroSprite(image);
+            setBadgeUrl(TextureUtils.generateImageUrl(nitroSprite));
         }
-    }
 
-    const url = `url('${ getBadgeUrl() }')`;
+        return (() =>
+        {
+            if(isListening)
+            {
+                GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
+            }
+        });
+    }, [ badgeCode ]);
+
+    const url = `url('${ badgeUrl }')`;
 
     return <div className="badge-image" style={ (url && url.length) ? { backgroundImage: url } : {} }>
         { showInfo && <BadgeInformationView title={ isGroup ? customTitle : LocalizeBadgeName(badgeCode) } description={ isGroup ? LocalizeText('group.badgepopup.body') : LocalizeBadgeDescription(badgeCode) } /> }

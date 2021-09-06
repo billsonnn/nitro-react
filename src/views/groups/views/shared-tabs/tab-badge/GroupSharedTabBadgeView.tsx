@@ -24,10 +24,10 @@ export const GroupSharedTabBadgeView: FC<GroupSharedTabBadgeViewProps> = props =
 
         const badgeParts: GroupBadgePart[] = [
             new GroupBadgePart(GroupBadgePart.BASE, badgeBases[0].id, badgePartColors[0].id),
-            new GroupBadgePart(GroupBadgePart.SYMBOL),
-            new GroupBadgePart(GroupBadgePart.SYMBOL),
-            new GroupBadgePart(GroupBadgePart.SYMBOL),
-            new GroupBadgePart(GroupBadgePart.SYMBOL)
+            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, badgePartColors[0].id),
+            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, badgePartColors[0].id),
+            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, badgePartColors[0].id),
+            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, badgePartColors[0].id)
         ];
 
         dispatchGroupsState({
@@ -36,6 +36,12 @@ export const GroupSharedTabBadgeView: FC<GroupSharedTabBadgeViewProps> = props =
         });
         
     }, [ badgeBases, badgePartColors, groupBadgeParts ]);
+
+    const switchIndex = useCallback((index: number) =>
+    {
+        setIsSelectingModel(false);
+        setEditingIndex(index);
+    }, []);
 
     const selectPartProperty = useCallback((property: string, key: number) =>
     {
@@ -83,7 +89,7 @@ export const GroupSharedTabBadgeView: FC<GroupSharedTabBadgeViewProps> = props =
                     { groupBadgeParts && groupBadgeParts.map((badgePart, partIndex) =>
                         {
                             return (
-                                <div key={ partIndex } className={ 'badge-preview flex-shrink-0 d-flex align-items-center justify-content-center cursor-pointer' + classNames({ ' active': editingIndex === partIndex }) } onClick={ () => setEditingIndex(partIndex) }>
+                                <div key={ partIndex } className={ 'badge-preview flex-shrink-0 d-flex align-items-center justify-content-center cursor-pointer' + classNames({ ' active': editingIndex === partIndex }) } onClick={ () => switchIndex(partIndex) }>
                                     { badgePart.code && <BadgeImageView badgeCode={ badgePart.code } isGroup={ true } /> }
                                     { !badgePart.code && <i className="fas fa-plus text-primary h4 m-0" /> }
                                 </div>
