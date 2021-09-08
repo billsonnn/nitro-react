@@ -177,10 +177,10 @@ export const GroupMembersView: FC<GroupMembersViewProps> = props =>
                                             <i className={ 'icon icon-group-small-' + classNames({ 'owner': member.rank === GroupRank.OWNER, 'admin': member.rank === GroupRank.ADMIN, 'not-admin': member.rank === GroupRank.MEMBER, 'cursor-pointer': pageData.admin }) } title={ LocalizeText(getRankDescription(member)) } onClick={ () => toggleAdmin(member) } />
                                         </div>
                                         { member.rank === GroupRank.REQUESTED && <div className="d-flex align-items-center">
-                                            <i className="icon cursor-pointer icon-group-accept-member" title={ LocalizeText('group.members.accept') } onClick={ () => acceptMembership(member) } />
+                                            <i className="icon cursor-pointer icon-accept" title={ LocalizeText('group.members.accept') } onClick={ () => acceptMembership(member) } />
                                         </div> }
                                         { member.rank !== GroupRank.OWNER && pageData.admin && member.id !== GetSessionDataManager().userId &&<div className="d-flex align-items-center mt-1">
-                                            <i className="icon cursor-pointer icon-group-remove-member" title={ LocalizeText(member.rank === GroupRank.REQUESTED ? 'group.members.reject' : 'group.members.kick') } onClick={ () => removeMemberOrDeclineMembership(member) } />
+                                            <i className="icon cursor-pointer icon-deny" title={ LocalizeText(member.rank === GroupRank.REQUESTED ? 'group.members.reject' : 'group.members.kick') } onClick={ () => removeMemberOrDeclineMembership(member) } />
                                         </div> }
                                     </div>
                                 </div>

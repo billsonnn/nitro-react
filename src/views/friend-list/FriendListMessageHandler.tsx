@@ -1,4 +1,4 @@
-import { FriendListFragmentEvent, FriendListUpdateEvent, GetFriendRequestsComposer, MessengerInitEvent } from '@nitrots/nitro-renderer';
+import { FriendListFragmentEvent, FriendListUpdateEvent, FriendRequestsEvent, GetFriendRequestsComposer, MessengerInitEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { MessengerSettings } from './common/MessengerSettings';
@@ -52,9 +52,22 @@ export const FriendListMessageHandler: FC<FriendListMessageHandlerProps> = props
         });
     }, [ dispatchFriendListState ]);
 
+    const onFriendRequestsEvent = useCallback((event: FriendRequestsEvent) =>
+    {
+        const parser = event.getParser();
+        
+        dispatchFriendListState({
+            type: FriendListActions.PROCESS_REQUESTS,
+            payload: {
+                requests: parser.requests
+            }
+        });
+    }, [ dispatchFriendListState ]);
+
     CreateMessageHook(MessengerInitEvent, onMessengerInitEvent);
     CreateMessageHook(FriendListFragmentEvent, onFriendListFragmentEvent);
     CreateMessageHook(FriendListUpdateEvent, onFriendListUpdateEvent);
+    CreateMessageHook(FriendRequestsEvent, onFriendRequestsEvent);
 
     return null;
 }

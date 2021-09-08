@@ -1,35 +1,17 @@
-import { FC, useMemo } from 'react';
-import { useFriendListContext } from '../../context/FriendListContext';
+import { FC } from 'react';
 import { FriendListFriendsItemView } from '../friends-item/FriendListFriendsItemView';
 import { FriendListFriendsViewProps } from './FriendListFriendsView.types';
 
 export const FriendListFriendsView: FC<FriendListFriendsViewProps> = props =>
 {
-    const { online = true } = props;
-    const { friendListState = null } = useFriendListContext();
-    const { friends = null } = friendListState;
+    const { list = null } = props;
 
-    const getFriendElements = useMemo(() =>
-    {
-        if(!friends || !friends.length) return null;
+    if(!list) return null;
 
-        const elements: JSX.Element[] = [];
-
-        for(const friend of friends)
+    return (<>
+        { list.map((friend, index) =>
         {
-            if(!friend || (friend.online !== online)) continue;
-
-            elements.push(<FriendListFriendsItemView key={ friend.id } friend={ friend } />)
-        }
-
-        console.log(elements);
-
-        return elements;
-    }, [ friends, online ]);
-
-    return (
-        <div className="d-flex flex-column">
-            { getFriendElements }
-        </div>
-    );
+            return <FriendListFriendsItemView key={ index } friend={ friend } />
+        }) }
+    </>);
 }

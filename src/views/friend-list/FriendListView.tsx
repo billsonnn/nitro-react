@@ -1,5 +1,5 @@
 import { MessengerInitComposer, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectUserType } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useReducer, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { GetRoomSession, LocalizeText } from '../../api';
 import { FriendEnteredRoomEvent, FriendListEvent } from '../../events';
@@ -8,20 +8,25 @@ import { FriendListSendFriendRequestEvent } from '../../events/friend-list/Frien
 import { useRoomEngineEvent } from '../../hooks/events';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
+import { NitroCardAccordionItemView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
 import { FriendListContextProvider } from './context/FriendListContext';
 import { FriendListMessageHandler } from './FriendListMessageHandler';
 import { FriendListViewProps } from './FriendListView.types';
 import { FriendListReducer, initialFriendList } from './reducers/FriendListReducer';
 import { FriendBarView } from './views/friend-bar/FriendBarView';
 import { FriendListFriendsView } from './views/friends/FriendListFriendsView';
+import { FriendListRequestsView } from './views/requests/FriendListRequestsView';
+
+const TABS: string[] = ['friendlist.friends', 'generic.search'];
 
 export const FriendListView: FC<FriendListViewProps> = props =>
 {
+    const [ friendListState, dispatchFriendListState ] = useReducer(FriendListReducer, initialFriendList);
+    const { friends = null, requests = null, settings = null } = friendListState;
+
     const [ isVisible, setIsVisible ] = useState(false);
     const [ isReady, setIsReady ] = useState(false);
-    const [ friendListState, dispatchFriendListState ] = useReducer(FriendListReducer, initialFriendList);
-    const { settings = null } = friendListState;
+    const [ currentTab, setCurrentTab ] = useState<number>(0);
 
     const onFriendListEvent = useCallback((event: FriendListEvent) =>
     {
@@ -37,7 +42,6 @@ export const FriendListView: FC<FriendListViewProps> = props =>
                 const requestEvent = (event as FriendListSendFriendRequestEvent);
                 return;
             case FriendListEvent.REQUEST_FRIEND_LIST:
-                console.log('requested');
                 dispatchUiEvent(new FriendListContentEvent(friendListState.friends));
                 return;
         }
@@ -84,20 +88,49 @@ export const FriendListView: FC<FriendListViewProps> = props =>
         SendMessageHook(new MessengerInitComposer());
     }, []);
 
+    const onlineFriends = useMemo(() =>
+    {
+        if(!friends) return [];
+
+        return friends.filter(f => f.online);
+    }, [ friends ]);
+
+    const offlineFriends = useMemo(() =>
+    {
+        if(!friends) return [];
+
+        return friends.filter(f => !f.online);
+    }, [ friends ]);
+
     return (
         <FriendListContextProvider value={ { friendListState, dispatchFriendListState } }>
             <FriendListMessageHandler />
             { isReady && createPortal(<FriendBarView />, document.getElementById('toolbar-friend-bar-container')) }
             { isVisible &&
-                <NitroCardView uniqueKey="friend-list" className="nitro-friend-list">
-                    <NitroCardHeaderView headerText={ LocalizeText('friendlist.friends') } onCloseClick={ event => setIsVisible(false) } />
-                    <NitroCardContentView>
-                        <div className="text-black fw-bold">{ LocalizeText('friendlist.search.friendscaption') }</div>
-                        <FriendListFriendsView online={ true } />
-                        <div className="text-black fw-bold">{ LocalizeText('friendlist.search.friendscaption') }</div>
-                        <FriendListFriendsView online={ true } />
-                        <div className="text-black fw-bold">{ LocalizeText('friendlist.friends.offlinecaption') }</div>
-                        <FriendListFriendsView online={ false } />
+                <NitroCardView className="nitro-friend-list">
+                    <NitroCardHeaderView headerText={ LocalizeText('friendlist.friends') } onCloseClick={ () => setIsVisible(false) } />
+                    <NitroCardContentView className="p-0">
+                        <NitroCardTabsView>
+                            { TABS.map((tab, index) =>
+                                {
+                                    return (<NitroCardTabsItemView key={ index } isActive={ currentTab === index } onClick={ () => setCurrentTab(index) }>
+                                        { LocalizeText(tab) }
+                                    </NitroCardTabsItemView>);
+                                }) }
+                        </NitroCardTabsView>
+                        <div className="text-black">
+                            { currentTab === 0 && <NitroCardAccordionView>
+                                <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.friends') + ` (${onlineFriends.length})` }>
+                                   <FriendListFriendsView list={ onlineFriends } />
+                                </NitroCardAccordionItemView>
+                                <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.friends.offlinecaption') + ` (${offlineFriends.length})` }>
+                                    <FriendListFriendsView list={ offlineFriends } />
+                                </NitroCardAccordionItemView>
+                                { requests.length > 0 && <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.tab.friendrequests') + ` (${requests.length})` }>
+                                    <FriendListRequestsView list={ requests } />
+                                </NitroCardAccordionItemView> }
+                            </NitroCardAccordionView> }
+                        </div>
                     </NitroCardContentView>
                 </NitroCardView> }
         </FriendListContextProvider>

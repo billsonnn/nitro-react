@@ -1,4 +1,5 @@
+import { MessengerFriend } from './../../common/MessengerFriend';
 export interface FriendListFriendsViewProps
 {
-    online?: boolean;
+    list: MessengerFriend[];
 }

@@ -1,12 +1,21 @@
-import { FriendListUpdateParser, FriendParser } from '@nitrots/nitro-renderer';
+import { FriendListUpdateParser, FriendParser, FriendRequestData } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 import { MessengerFriend } from '../common/MessengerFriend';
+import { MessengerRequest } from '../common/MessengerRequest';
 import { MessengerSettings } from '../common/MessengerSettings';
+
+function compareName(a, b)
+{
+    if( a.name < b.name ) return -1;
+    if( a.name > b.name ) return 1;
+    return 0;
+}
 
 export interface IFriendListState
 {
     settings: MessengerSettings;
     friends: MessengerFriend[];
+    requests: MessengerRequest[];
 }
 
 export interface IFriendListAction
@@ -16,6 +25,7 @@ export interface IFriendListAction
         settings?: MessengerSettings;
         fragment?: FriendParser[];
         update?: FriendListUpdateParser;
+        requests?: FriendRequestData[];
     }
 }
 
@@ -25,11 +35,13 @@ export class FriendListActions
     public static UPDATE_SETTINGS: string = 'FLA_UPDATE_SETTINGS';
     public static PROCESS_FRAGMENT: string = 'FLA_PROCESS_FRAGMENT';
     public static PROCESS_UPDATE: string = 'FLA_PROCESS_UPDATE';
+    public static PROCESS_REQUESTS: string = 'FLA_PROCESS_REQUESTS';
 }
 
 export const initialFriendList: IFriendListState = {
     settings: null,
-    friends: []
+    friends: [],
+    requests: []
 }
 
 export const FriendListReducer: Reducer<IFriendListState, IFriendListAction> = (state, action) =>
@@ -69,6 +81,8 @@ export const FriendListReducer: Reducer<IFriendListState, IFriendListAction> = (
                 else friends.push(newFriend);
             }
 
+            friends.sort(compareName);
+
             return { ...state, friends };
         }
         case FriendListActions.PROCESS_UPDATE: {
@@ -80,22 +94,9 @@ export const FriendListReducer: Reducer<IFriendListState, IFriendListAction> = (
                 const processUpdate = (friend: FriendParser) =>
                 {
                     const index = friends.findIndex(existingFriend => (existingFriend.id === friend.id));
-                    const newFriend = new MessengerFriend();
 
-                    newFriend.id = friend.id;
-                    newFriend.name = friend.name;
-                    newFriend.gender = friend.gender;
-                    newFriend.online = friend.online;
-                    newFriend.followingAllowed = friend.followingAllowed;
-                    newFriend.figure = friend.figure;
-                    newFriend.categoryId = friend.categoryId;
-                    newFriend.motto = friend.motto;
-                    newFriend.realName = friend.realName;
-                    newFriend.lastAccess = friend.lastAccess;
-                    newFriend.persistedMessageUser = friend.persistedMessageUser;
-                    newFriend.vipMember = friend.vipMember;
-                    newFriend.pocketHabboUser = friend.pocketHabboUser;
-                    newFriend.relationshipStatus = friend.relationshipStatus;
+                    const newFriend = new MessengerFriend();
+                    newFriend.populate(friend);
 
                     if(index > -1) friends[index] = newFriend;
                     else friends.unshift(newFriend);
@@ -112,8 +113,25 @@ export const FriendListReducer: Reducer<IFriendListState, IFriendListAction> = (
                     if(index > -1) friends.splice(index);
                 }
             }
+            
+            friends.sort(compareName);
 
             return { ...state, friends };
+        }
+        case FriendListActions.PROCESS_REQUESTS: {
+            const newRequests = (action.payload.requests || null);
+            let requests = [ ...state.requests ];
+
+            for(const request of newRequests)
+            {
+                const newRequest = new MessengerRequest();
+                newRequest.populate(request);
+                requests.push(newRequest);
+            }
+
+            requests.sort(compareName);
+
+            return { ...state, requests };
         }
         default:
             return state;

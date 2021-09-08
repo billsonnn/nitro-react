@@ -119,6 +119,12 @@
         height: 34px;
     }
 
+    &.icon-cog {
+        background: url('../images/icons/icon_cog.png');
+        width: 14px;
+        height: 15px;
+    }
+
     &.icon-joinroom {
         background-image: url('../images/toolbar/icons/joinroom.png');
         width: 21px;
@@ -145,6 +151,18 @@
         &.is-unseen {
             background-image: url('../images/toolbar/icons/message_unsee.gif');
         }
+    }
+
+    &.icon-deny {
+        background: url('../images/icons/deny.png');
+        width: 13px;
+        height: 14px;
+    }
+
+    &.icon-accept {
+        background: url('../images/icons/accept.png');
+        width: 13px;
+        height: 14px;
     }
 
     &.icon-wired-trigger {
@@ -531,6 +549,12 @@
         height: 10px;
     }
 
+    &.icon-relationship-none {
+        background: url('../images/friendlist/icons/icon_relationship_none.png');
+        width: 16px;
+        height: 14px;
+    }
+
     &.icon-relationship-heart {
         background: url('../images/profile/icons/heart.png');
         width: 16px;
@@ -615,18 +639,6 @@
         height: 13px;
     }
 
-    &.icon-group-remove-member {
-        background: url('../images/groups/icons/group_icon_remove_member.png');
-        width: 13px;
-        height: 14px;
-    }
-
-    &.icon-group-accept-member {
-        background: url('../images/groups/icons/group_icon_accept_member.png');
-        width: 13px;
-        height: 14px;
-    }
-
     &.icon-group-small-owner {
         background: url('../images/groups/icons/group_icon_small_owner.png');
         width: 13px;
@@ -661,6 +673,18 @@
         background: url('../images/navigator/icons/room_group.png');
         width: 13px;
         height: 11px;
+    }
+
+    &.icon-friendlist-follow {
+        background: url('../images/friendlist/icons/icon_follow.png');
+        width: 16px;
+        height: 14px;
+    }
+
+    &.icon-friendlist-chat {
+        background: url('../images/friendlist/icons/icon_chat.png');
+        width: 17px;
+        height: 16px;
     }
 
     &.spin {
