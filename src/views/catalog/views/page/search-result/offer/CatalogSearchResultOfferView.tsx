@@ -42,13 +42,13 @@ export const CatalogSearchResultOfferView: FC<CatalogSearchResultOfferViewProps>
                     switch(furniData.className)
                     {
                         case 'floor':
-                            iconName = ['th', furniData.className, offer.customParams].join('_');
+                            iconName = ['th', furniData.className, offer.customParams ].join('_');
                             break;
                         case 'wallpaper':
-                            iconName = ['th', 'wall', offer.customParams].join('_');
+                            iconName = ['th', 'wall', offer.customParams ].join('_');
                             break;
                         case 'landscape':
-                            iconName = ['th', furniData.className, offer.customParams.replace('.', '_'), '001'].join('_');
+                            iconName = ['th', furniData.className, ((offer.customParams && offer.customParams.replace('.', '_')) || null), '001'].join('_');
                             break;
                     }
 
