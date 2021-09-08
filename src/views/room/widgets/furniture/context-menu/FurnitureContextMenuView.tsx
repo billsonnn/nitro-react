@@ -9,12 +9,14 @@ import { useRoomContext } from '../../../context/RoomContext';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
 import { ContextMenuHeaderView } from '../../context-menu/views/header/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/views/list-item/ContextMenuListItemView';
+import { EffectBoxConfirmView } from './views/effect-box/EffectBoxConfirmView';
 import { MonsterPlantSeedConfirmView } from './views/monsterplant-seed/MonsterPlantSeedConfirmView';
 import { PurchasableClothingConfirmView } from './views/purchaseable-clothing/PurchasableClothingConfirmView';
 
 const MONSTERPLANT_SEED_CONFIRMATION: string = 'MONSTERPLANT_SEED_CONFIRMATION';
 const PURCHASABLE_CLOTHING_CONFIRMATION: string = 'PURCHASABLE_CLOTHING_CONFIRMATION';
 const GROUP_FURNITURE: string = 'GROUP_FURNITURE';
+const EFFECTBOX_OPEN: string = 'EFFECTBOX_OPEN';
 
 export const FurnitureContextMenuView: FC<{}> = props =>
 {
@@ -50,12 +52,24 @@ export const FurnitureContextMenuView: FC<{}> = props =>
         switch(event.type)
         {
             case RoomEngineTriggerWidgetEvent.REQUEST_MONSTERPLANT_SEED_PLANT_CONFIRMATION_DIALOG:
+                if(!IsOwnerOfFurniture(object)) return;
+
                 setConfirmingObjectId(object.id);
                 setConfirmMode(MONSTERPLANT_SEED_CONFIRMATION);
 
                 close();
                 return;
+            case RoomEngineTriggerWidgetEvent.REQUEST_EFFECTBOX_OPEN_DIALOG:
+                if(!IsOwnerOfFurniture(object)) return;
+                
+                setConfirmingObjectId(object.id);
+                setConfirmMode(EFFECTBOX_OPEN);
+
+                close();
+                return;
             case RoomEngineTriggerWidgetEvent.REQUEST_PURCHASABLE_CLOTHING_CONFIRMATION_DIALOG:
+                if(!IsOwnerOfFurniture(object)) return;
+
                 setConfirmingObjectId(object.id);
                 setConfirmMode(PURCHASABLE_CLOTHING_CONFIRMATION);
 
@@ -93,6 +107,7 @@ export const FurnitureContextMenuView: FC<{}> = props =>
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU, onRoomEngineTriggerWidgetEvent);
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_MONSTERPLANT_SEED_PLANT_CONFIRMATION_DIALOG, onRoomEngineTriggerWidgetEvent);
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PURCHASABLE_CLOTHING_CONFIRMATION_DIALOG, onRoomEngineTriggerWidgetEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_EFFECTBOX_OPEN_DIALOG, onRoomEngineTriggerWidgetEvent);
 
     const onGroupFurniContextMenuInfoMessageEvent = useCallback((event: GroupFurniContextMenuInfoMessageEvent) =>
     {
@@ -143,6 +158,7 @@ export const FurnitureContextMenuView: FC<{}> = props =>
         <>
             { (confirmMode === MONSTERPLANT_SEED_CONFIRMATION) && <MonsterPlantSeedConfirmView objectId={ confirmingObjectId } close={ closeConfirm } /> }
             { (confirmMode === PURCHASABLE_CLOTHING_CONFIRMATION) && <PurchasableClothingConfirmView objectId={ confirmingObjectId } close={ closeConfirm } /> }
+            { (confirmMode === EFFECTBOX_OPEN) && <EffectBoxConfirmView objectId={ confirmingObjectId } close={ closeConfirm } /> }
             { (objectId >= 0) && mode &&
                 <ContextMenuView objectId={ objectId } category={ RoomObjectCategory.FLOOR } close={ close } fades={ true }>
                     { (mode === ContextMenuEnum.FRIEND_FURNITURE) &&
