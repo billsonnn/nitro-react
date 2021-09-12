@@ -1,22 +1,43 @@
 import { ClubOfferData, GetClubOffersMessageComposer, PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { LocalizeText } from '../../../../../../api';
+import { CatalogEvent } from '../../../../../../events/catalog/CatalogEvent';
+import { useUiEvent } from '../../../../../../hooks';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { NitroCardGridItemView } from '../../../../../../layout/card/grid/item/NitroCardGridItemView';
 import { NitroCardGridView } from '../../../../../../layout/card/grid/NitroCardGridView';
+import { LoadingSpinnerView } from '../../../../../../layout/loading-spinner/LoadingSpinnerView';
 import { GetCurrencyAmount } from '../../../../../purse/common/CurrencyHelper';
 import { GLOBAL_PURSE } from '../../../../../purse/PurseView';
 import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
 import { GetCatalogPageImage } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
+import { CatalogPurchaseState } from '../../purchase/purchase-button/CatalogPurchaseButtonView.types';
 import { CatalogLayoutVipBuyViewProps } from './CatalogLayoutVipBuyView.types';
 
 export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =>
 {
     const { catalogState = null } = useCatalogContext();
     const { pageParser = null, clubOffers = null, subscriptionInfo = null } = catalogState;
+
     const [ pendingOffer, setPendingOffer ] = useState<ClubOfferData>(null);
+    const [ purchaseState, setPurchaseState ] = useState(CatalogPurchaseState.NONE);
+
+    const onCatalogEvent = useCallback((event: CatalogEvent) =>
+    {
+        switch(event.type)
+        {
+            case CatalogEvent.PURCHASE_SUCCESS:
+                setPurchaseState(CatalogPurchaseState.NONE);
+                return;
+            case CatalogEvent.PURCHASE_FAILED:
+                setPurchaseState(CatalogPurchaseState.FAILED);
+                return;
+        }
+    }, []);
+
+    useUiEvent(CatalogEvent.PURCHASE_SUCCESS, onCatalogEvent);
+    useUiEvent(CatalogEvent.PURCHASE_FAILED, onCatalogEvent);
 
     const getOfferText = useCallback((offer: ClubOfferData) =>
     {
@@ -77,130 +98,105 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
     {
         if(!pendingOffer) return;
 
+        setPurchaseState(CatalogPurchaseState.PURCHASE);
         SendMessageHook(new PurchaseFromCatalogComposer(pageParser.pageId, pendingOffer.offerId, null, 1));
     }, [ pendingOffer, pageParser ]);
 
     useEffect(() =>
     {
-        if(clubOffers === null)
-        {
-            SendMessageHook(new GetClubOffersMessageComposer(1));
-
-            return;
-        }
+        if(clubOffers === null) SendMessageHook(new GetClubOffersMessageComposer(1));
     }, [ clubOffers ]);
 
-    const getPurchaseButton = (offer: ClubOfferData) =>
+    const setOffer = useCallback((offer: ClubOfferData) =>
     {
-        if(!offer) return null;
+        setPurchaseState(CatalogPurchaseState.NONE);
+        setPendingOffer(offer);
+    }, []);
 
-        if(offer.priceCredits > GetCurrencyAmount(-1))
+    const getPurchaseButton = useCallback(() =>
+    {
+        if(!pendingOffer) return null;
+
+        if(pendingOffer.priceCredits > GetCurrencyAmount(-1))
         {
-            return <Button variant="danger" size="sm">{ LocalizeText('catalog.alert.notenough.title') }</Button>;
+            return <button className="btn btn-danger btn-sm w-100">{ LocalizeText('catalog.alert.notenough.title') }</button>;
         }
 
-        if(offer.priceActivityPoints > GetCurrencyAmount(offer.priceActivityPointsType))
+        if(pendingOffer.priceActivityPoints > GetCurrencyAmount(pendingOffer.priceActivityPointsType))
         {
-            return <Button variant="danger" size="sm">{ LocalizeText('catalog.alert.notenough.activitypoints.title.' + offer.priceActivityPointsType) }</Button>;
+            return <button className="btn btn-danger btn-sm w-100">{ LocalizeText('catalog.alert.notenough.activitypoints.title.' + pendingOffer.priceActivityPointsType) }</button>;
         }
 
-        return <Button variant="primary" size="sm" onClick={ event => setPendingOffer(offer) }>{ LocalizeText('buy') }</Button>;
-    }
-
-    console.log(pendingOffer)
+        switch(purchaseState)
+        {
+            case CatalogPurchaseState.CONFIRM:
+                return <button type="button" className="btn btn-warning w-100" onClick={ purchaseSubscription }>{ LocalizeText('catalog.marketplace.confirm_title') }</button>;
+            case CatalogPurchaseState.PURCHASE:
+                return <button type="button" className="btn btn-primary w-100" disabled><LoadingSpinnerView /></button>;
+            case CatalogPurchaseState.FAILED:
+                return <button type="button" className="btn btn-danger w-100" disabled>{ LocalizeText('generic.failed') }</button>;
+            case CatalogPurchaseState.NONE:
+            default:
+                return <button type="button" className="btn btn-success w-100" onClick={ () => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('buy') }</button>;
+        }
+    }, [ pendingOffer, purchaseState, purchaseSubscription ]);
 
     return (
         <>
             <div className="row h-100 nitro-catalog-layout-vip-buy">
-                <div className="col-7 h-100">
+                <div className="col-6 h-100">
                     <NitroCardGridView columns={ 1 } className="vip-buy-grid">
                         { clubOffers && (clubOffers.length > 0) && clubOffers.map((offer, index) =>
                             {
                                 return (
-                                    <NitroCardGridItemView key={ index } className="justify-content-between p-1">
-                                        { (pendingOffer === offer) &&
-                                            <>
-                                                <div className="d-flex flex-column text-black text-small m-1">
-                                                    <div className="d-flex align-items-center">
-                                                        <i className="icon icon-catalogue-hc_small me-1"></i>
-                                                        { getPurchaseHeader() }
-                                                    </div>
-                                                    <div className="text-black text-small">{ getPurchaseValidUntil() }</div>
-                                                    <div className="d-flex">
-                                                        { (offer.priceCredits > 0) &&
-                                                            <div className="d-flex align-items-center justify-content-end">
-                                                                <span className="text-black">{ offer.priceCredits }</span>
-                                                                <CurrencyIcon type={ -1 } />
-                                                            </div> }
-                                                        { (offer.priceActivityPoints > 0) &&
-                                                            <div className="d-flex align-items-center justify-content-end">
-                                                                <span className="text-black">{ offer.priceActivityPoints }</span>
-                                                                <CurrencyIcon type={ offer.priceActivityPointsType } />
-                                                            </div> }
-                                                    </div>
+                                    <NitroCardGridItemView key={ index } className="justify-content-between py-1 px-2 text-black" itemActive={ pendingOffer === offer } onClick={ () => setOffer(offer) }>
+                                        <div className="hc-banner"></div>
+                                            <div className="fw-bold">
+                                                <div className="text-end">{ getOfferText(offer) }</div>
+                                                <div className="d-flex gap-2 justify-content-end">
+                                                    { (offer.priceCredits > 0) &&
+                                                        <div className="d-flex align-items-center justify-content-end gap-1">
+                                                            <span className="text-black">{ offer.priceCredits }</span>
+                                                            <CurrencyIcon type={ -1 } />
+                                                        </div> }
+                                                    { (offer.priceActivityPoints > 0) &&
+                                                        <div className="d-flex align-items-center justify-content-end gap-1">
+                                                            <span className="text-black">{ offer.priceActivityPoints }</span>
+                                                            <CurrencyIcon type={ offer.priceActivityPointsType } />
+                                                        </div> }
                                                 </div>
-                                                <Button variant="primary" size="sm" onClick={ purchaseSubscription }>{ LocalizeText('catalog.marketplace.confirm_title') }</Button>
-                                            </> }
-                                        { (pendingOffer !== offer) &&
-                                            <>
-                                                <div className="d-flex flex-column text-black text-small m-1">
-                                                    <div className="d-flex align-items-center">
-                                                        <i className="icon icon-catalogue-hc_small me-1"></i>
-                                                        { getOfferText(offer) }
-                                                    </div>
-                                                    <div className="d-flex">
-                                                        { (offer.priceCredits > 0) &&
-                                                            <div className="d-flex align-items-center justify-content-end">
-                                                                <span className="text-black">{ offer.priceCredits }</span>
-                                                                <CurrencyIcon type={ -1 } />
-                                                            </div> }
-                                                        { (offer.priceActivityPoints > 0) &&
-                                                            <div className="d-flex align-items-center justify-content-end">
-                                                                <span className="text-black">{ offer.priceActivityPoints }</span>
-                                                                <CurrencyIcon type={ offer.priceActivityPointsType } />
-                                                            </div> }
-                                                    </div>
-                                                </div>
-                                                { getPurchaseButton(offer) }
-                                            </> }
+                                            </div>
                                     </NitroCardGridItemView>
                                 );
                             }) }
                     </NitroCardGridView>
-                    {/* <div className="row row-cols-1 align-content-start g-0 mb-n1 w-100 catalog-offers-container h-100 overflow-auto">
-                        { clubOffers && (clubOffers.length > 0) && clubOffers.map((offer, index) =>
-                            {
-                                return (
-                                    <div key={ index } className="col pe-1 pb-1 catalog-offer-item-container">
-                                        <div className="position-relative border border-2 rounded catalog-offer-item">
-                                            <div className="d-flex align-items-center text-black text-small m-1">
-                                                <i className="icon icon-catalogue-hc_small me-1"></i>
-                                                { getOfferText(offer) }
-                                            </div>
-                                            <div className="d-flex">
-                                                { (offer.priceCredits > 0) &&
-                                                    <div className="d-flex align-items-center justify-content-end">
-                                                        <span className="text-black ms-1">{ offer.priceCredits }</span>
-                                                        <CurrencyIcon type={ -1 } />
-                                                    </div> }
-                                                { (offer.priceActivityPoints > 0) &&
-                                                    <div className="d-flex align-items-center justify-content-end">
-                                                        <span className="text-black ms-1">{ offer.priceActivityPoints }</span>
-                                                        <CurrencyIcon type={ offer.priceActivityPointsType } />
-                                                    </div> }
-                                            </div>
-                                            <Button variant="primary" size="sm" onClick={ event => setPendingOffer(offer) } />
-                                        </div>
-                                    </div>
-                                );
-                            }) }
-                    </div> */}
                 </div>
-                <div className="position-relative d-flex flex-column col-5 justify-content-center align-items-center">
+                <div className="position-relative d-flex flex-column col-6 justify-content-center align-items-center">
                     <div className="d-block mb-2">
                         <img alt="" src={ GetCatalogPageImage(pageParser, 1) } />
                     </div>
-                    <div className="fs-6 text-center text-black lh-sm overflow-hidden" dangerouslySetInnerHTML={ { __html: getSubscriptionDetails } }></div>
+                    <div className="text-center text-black small bg-muted rounded p-1" dangerouslySetInnerHTML={ { __html: getSubscriptionDetails } }></div>
+                    { pendingOffer && <div className="mt-auto w-100 text-black">
+                        <div className="d-flex gap-2 mb-2 align-items-center">
+                            <div className="w-100">
+                                <div className="fw-bold">{ getPurchaseHeader() }</div>
+                                <div className="small">{ getPurchaseValidUntil() }</div>
+                            </div>
+                            <div>
+                                { (pendingOffer.priceCredits > 0) &&
+                                    <div className="d-flex align-items-center justify-content-end gap-1">
+                                        <span className="text-black">{ pendingOffer.priceCredits }</span>
+                                        <CurrencyIcon type={ -1 } />
+                                    </div> }
+                                { (pendingOffer.priceActivityPoints > 0) &&
+                                    <div className="d-flex align-items-center justify-content-end gap-1">
+                                        <span className="text-black">{ pendingOffer.priceActivityPoints }</span>
+                                        <CurrencyIcon type={ pendingOffer.priceActivityPointsType } />
+                                    </div> }
+                            </div>
+                        </div>
+                        { getPurchaseButton() }
+                    </div>}
                 </div>
             </div>
         </>
