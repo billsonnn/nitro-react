@@ -5,8 +5,7 @@ import { GetSessionDataManager, LocalizeText } from '../../../../api';
 import { CatalogEvent } from '../../../../events';
 import { CatalogInitGiftEvent } from '../../../../events/catalog/CatalogInitGiftEvent';
 import { SendMessageHook, useUiEvent } from '../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutGiftCardView } from '../../../../layout';
 import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
 import { FurniImageView } from '../../../shared/furni-image/FurniImageView';
 import { useCatalogContext } from '../../context/CatalogContext';
@@ -166,17 +165,8 @@ export const CatalogPageGiftView: FC<{}> = props =>
                     <label>{ LocalizeText('catalog.gift_wrapping.receiver') }</label>
                     <input type="text" className="form-control form-control-sm" value={ receiverName } onChange={ (e) => setReceiverName(e.target.value) } />
                 </div>
-                <div className="gift-tag d-flex mt-2">
-                    <div className="d-flex align-items-center justify-content-center gift-face flex-shrink-0">
-                        { !showMyFace && <div className="gift-incognito"></div> }
-                        { showMyFace && <div className="gift-avatar">
-                            <AvatarImageView figure={ GetSessionDataManager().figure } direction={ 2 } headOnly={ true } />
-                        </div> }
-                    </div>
-                    <div className="d-flex flex-column w-100 pt-4 pb-4 pe-4 ps-3">
-                        <textarea className="gift-message" maxLength={ 140 } value={ message } onChange={ (e) => setMessage(e.target.value) } placeholder={ LocalizeText('catalog.gift_wrapping_new.message_hint') }></textarea>
-                        { showMyFace && <div className="mt-auto text-end fst-italic">{ LocalizeText('catalog.gift_wrapping_new.message_from', ['name'], [GetSessionDataManager().userName]) }</div> }
-                    </div>
+                <div className="mt-2">
+                    <NitroLayoutGiftCardView figure={ GetSessionDataManager().figure } userName={ GetSessionDataManager().userName } message={ message } editable={ true } onChange={ (value) => setMessage(value) } />
                 </div>
                 <div className="form-check mt-1">
                     <input className="form-check-input" type="checkbox" name="showMyFace" checked={ showMyFace } onChange={ (e) => setShowMyFace(value => !value) } />
