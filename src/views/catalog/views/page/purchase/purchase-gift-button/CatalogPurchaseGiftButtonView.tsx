@@ -6,7 +6,7 @@ import { CatalogPurchaseGiftButtonViewProps } from './CatalogPurchaseGiftButtonV
 
 export const CatalogPurchaseGiftButtonView: FC<CatalogPurchaseGiftButtonViewProps> = props =>
 {
-    const { className = '', offer = null, pageId = -1, extra = null, quantity = 1, isPurchaseAllowed = true, beforePurchase = null } = props;
+    const { className = '', offer = null, pageId = -1, extra = null, disabled = false } = props;
     
     const initGift = useCallback(() =>
     {
@@ -14,6 +14,6 @@ export const CatalogPurchaseGiftButtonView: FC<CatalogPurchaseGiftButtonViewProp
     }, [ extra, offer, pageId ]);
 
     return (
-        <button type="button" className={ 'btn btn-secondary ' + className } onClick={ initGift }>{ LocalizeText('catalog.purchase_confirmation.gift') }</button>
+        <button type="button" className={ 'btn btn-secondary ' + className } onClick={ initGift } disabled={ disabled }>{ LocalizeText('catalog.purchase_confirmation.gift') }</button>
     );
 }

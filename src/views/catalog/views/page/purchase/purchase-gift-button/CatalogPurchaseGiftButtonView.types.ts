@@ -6,7 +6,5 @@ export interface CatalogPurchaseGiftButtonViewProps
     offer: CatalogPageMessageOfferData;
     pageId: number;
     extra?: string;
-    quantity?: number;
-    isPurchaseAllowed?: boolean;
-    beforePurchase?: () => void;
+    disabled?: boolean;
 }

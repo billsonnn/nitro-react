@@ -1,5 +1,6 @@
+import { RoomObjectCategory, RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { CreateLinkEvent, GetSessionDataManager, LocalizeText, RoomWidgetPresentOpenMessage, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdatePresentDataEvent } from '../../../../../api';
+import { CreateLinkEvent, GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetPresentOpenMessage, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdatePresentDataEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutGiftCardView } from '../../../../../layout';
 import { ProductTypeEnum } from '../../../../catalog/common/ProductTypeEnum';
@@ -11,7 +12,6 @@ const LANDSCAPE: string = 'landscape';
 
 export const FurnitureGiftOpeningView: FC<{}> = props =>
 {
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ objectId, setObjectId ] = useState(-1);
     const [ classId, setClassId ] = useState(-1);
     const [ itemType, setItemType ] = useState<string>(null);
@@ -24,6 +24,7 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
     const [ placedInRoom, setPlacedInRoom ] = useState(false);
     const [ imageUrl, setImageUrl ] = useState<string>(null);
     const [ openRequested, setOpenRequested ] = useState(false);
+    const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
 
     const clearGift = useCallback(() =>
     {
@@ -127,7 +128,12 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
     const close = useCallback(() =>
     {
         setObjectId(-1);
-    }, []);
+        setOpenRequested(false);
+        setPlacedItemId(-1);
+        setPlacedInRoom(false);
+        setText(null);
+        setIsOwnerOfFurniture(false);
+    }, [ clearGift ]);
 
     const isSpaces = useMemo(() =>
     {
@@ -166,9 +172,24 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
             case 'room':
                 return;
             case 'inventory':
+                if((placedItemId > 0) && placedInRoom)
+                {
+                    if(placedItemType === ProductTypeEnum.PET)
+                    {
+                        roomSession.pickupPet(placedItemId);
+                    }
+                    else
+                    {
+                        const roomObject = GetRoomEngine().getRoomObject(roomSession.roomId, placedItemId, RoomObjectCategory.FLOOR);
+
+                        if(roomObject) GetRoomEngine().processRoomObjectOperation(roomObject.id, RoomObjectCategory.FLOOR, RoomObjectOperationType.OBJECT_PICKUP);
+                    }
+                }
+
+                close();
                 return;
         }
-    }, [ widgetHandler, objectId ]);
+    }, [ roomSession, widgetHandler, objectId, placedInRoom, placedItemId, placedItemType, close ]);
 
     if(objectId === -1) return null;
 
