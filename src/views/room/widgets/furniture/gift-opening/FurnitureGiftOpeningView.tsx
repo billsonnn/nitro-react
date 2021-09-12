@@ -180,7 +180,7 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
                 <NitroLayoutGiftCardView userName={ senderName } figure={ senderFigure } message={ text } />
                 <div className="d-flex gap-2 mt-2">
                     { senderName && <button className="btn btn-primary w-100 text-nowrap" onClick={ () => handleAction('give_gift') }>{ LocalizeText('widget.furni.present.give_gift', ['name'], [senderName]) }</button> }
-                    <button className="btn btn-success w-100 text-nowrap" onClick={ () => handleAction('open') }>{ LocalizeText('widget.furni.present.open_gift') }</button>
+                    { isOwnerOfFurniture && <button className="btn btn-success w-100 text-nowrap" onClick={ () => handleAction('open') }>{ LocalizeText('widget.furni.present.open_gift') }</button> }
                 </div>
                 </> }
                 { placedItemId !== -1 && <>
@@ -194,7 +194,7 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
                     </div>
                     <div className="d-flex gap-2 mt-3">
                         <button className="btn btn-primary w-100 text-nowrap" onClick={ () => handleAction('inventory') }>{ LocalizeText('widget.furni.present.put_in_inventory') }</button>
-                        <button className="btn btn-success w-100 text-nowrap" onClick={ () => handleAction('room') }>{ LocalizeText(placedItemType === FLOOR ? 'widget.furni.present.keep_in_room' : 'widget.furni.present.place_in_room') }</button>
+                        <button className="btn btn-success w-100 text-nowrap" onClick={ () => handleAction('room') }>{ LocalizeText(placedInRoom ? 'widget.furni.present.keep_in_room' : 'widget.furni.present.place_in_room') }</button>
                     </div>
                     { senderName &&  <>
                         <button className="btn btn-primary w-100 text-nowrap mt-2" onClick={ () => handleAction('give_gift') }>{ LocalizeText('widget.furni.present.give_gift', ['name'], [senderName]) }</button>
