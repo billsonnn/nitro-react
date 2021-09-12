@@ -184,7 +184,7 @@ export const CatalogPageGiftView: FC<{}> = props =>
                             </div>
                             <div>
                                 <div className="fw-bold">{ LocalizeText(boxName) }</div>
-                                <div className="d-flex gap-1">{ LocalizeText(priceText, ['price'], [giftConfiguration.price.toString()]) }<CurrencyIcon type={ -1 } /></div>
+                                <div className="d-flex align-items-center gap-1">{ LocalizeText(priceText, ['price'], [giftConfiguration.price.toString()]) }<CurrencyIcon type={ -1 } /></div>
                             </div>
                         </div>
                         <div className="d-flex gap-2 align-items-center">
