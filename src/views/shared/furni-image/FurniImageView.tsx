@@ -41,7 +41,7 @@ export const FurniImageView: FC<FurniImageViewProps> = props =>
         if(imageResult)
         {
             const image = imageResult.getImage();
-
+            
             image.onload = () => setImageElement(image);
         }
     }, [ type, spriteId, direction, extras ]);

@@ -10,5 +10,6 @@ export class CatalogEvent extends NitroEvent
     public static SOLD_OUT: string = 'CE_SOLD_OUT';
     public static APPROVE_NAME_RESULT: string = 'CE_APPROVE_NAME_RESULT';
     public static PURCHASE_APPROVED: string = 'CE_PURCHASE_APPROVED';
+    public static INIT_GIFT: string = 'CE_INIT_GIFT';
     public static CATALOG_RESET: string = 'CE_RESET';
 }
