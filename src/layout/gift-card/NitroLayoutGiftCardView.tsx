@@ -8,7 +8,7 @@ export const NitroLayoutGiftCardView: FC<NitroLayoutGiftCardViewProps> = props =
     const { figure = null, userName = null, message = null, editable = false, onChange = null } = props;
     
     return (
-        <div className="nitro-gift-card d-flex">
+        <div className="nitro-gift-card d-flex text-black">
             <div className="d-flex align-items-center justify-content-center gift-face flex-shrink-0">
                 { !userName && <div className="gift-incognito"></div> }
                 { figure && <div className="gift-avatar">

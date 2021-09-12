@@ -1,8 +1,13 @@
-import { FC, useCallback, useState } from 'react';
-import { LocalizeText, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdatePresentDataEvent } from '../../../../../api';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { CreateLinkEvent, GetSessionDataManager, LocalizeText, RoomWidgetPresentOpenMessage, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdatePresentDataEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutGiftCardView } from '../../../../../layout';
+import { ProductTypeEnum } from '../../../../catalog/common/ProductTypeEnum';
 import { useRoomContext } from '../../../context/RoomContext';
+
+const FLOOR: string = 'floor';
+const WALLPAPER: string = 'wallpaper';
+const LANDSCAPE: string = 'landscape';
 
 export const FurnitureGiftOpeningView: FC<{}> = props =>
 {
@@ -124,13 +129,77 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
         setObjectId(-1);
     }, []);
 
+    const isSpaces = useMemo(() =>
+    {
+        if(itemType !== ProductTypeEnum.WALL) return false;
+
+        const furniData = GetSessionDataManager().getWallItemData(classId);
+
+        if(!furniData) return false;
+
+        const className = furniData.className;
+
+        return (className === FLOOR || className === LANDSCAPE || className === WALLPAPER);
+    }, [ classId, itemType ]);
+
+    const productName = useMemo(() =>
+    {
+        if(objectId === -1) return '';
+
+        if(isSpaces)
+            return 'widget.furni.present.spaces.message_opened';
+        
+        return 'widget.furni.present.message_opened';
+    }, [ objectId, isSpaces ]);
+
+    const handleAction = useCallback((action: string) =>
+    {
+        switch(action)
+        {
+            case 'give_gift':
+                CreateLinkEvent('catalog/open');
+                return;
+            case 'open':
+                setOpenRequested(true);
+                widgetHandler.processWidgetMessage(new RoomWidgetPresentOpenMessage(RoomWidgetPresentOpenMessage.OPEN_PRESENT, objectId));
+                return;
+            case 'room':
+                return;
+            case 'inventory':
+                return;
+        }
+    }, [ widgetHandler, objectId ]);
+
     if(objectId === -1) return null;
 
     return (
-        <NitroCardView className="nitro-exchange-credit" simple={ true }>
-            <NitroCardHeaderView headerText={ LocalizeText('catalog.redeem.dialog.title') } onCloseClick={ close } />
+        <NitroCardView className="nitro-gift-opening" simple={ true }>
+            <NitroCardHeaderView headerText={ LocalizeText(senderName ? 'widget.furni.present.window.title_from' : 'widget.furni.present.window.title', ['name'], [senderName]) } onCloseClick={ close } />
             <NitroCardContentView>
-                plz
+                { placedItemId === -1 && <>
+                <NitroLayoutGiftCardView userName={ senderName } figure={ senderFigure } message={ text } />
+                <div className="d-flex gap-2 mt-2">
+                    { senderName && <button className="btn btn-primary w-100 text-nowrap" onClick={ () => handleAction('give_gift') }>{ LocalizeText('widget.furni.present.give_gift', ['name'], [senderName]) }</button> }
+                    <button className="btn btn-success w-100 text-nowrap" onClick={ () => handleAction('open') }>{ LocalizeText('widget.furni.present.open_gift') }</button>
+                </div>
+                </> }
+                { placedItemId !== -1 && <>
+                    <div className="d-flex gap-2 align-items-center">
+                        <div>
+                            <img src={ imageUrl } alt="" />
+                        </div>
+                        <div className="bg-muted rounded p-2 text-center text-black">
+                            { LocalizeText(productName, ['product'], [text]) }
+                        </div>
+                    </div>
+                    <div className="d-flex gap-2 mt-3">
+                        <button className="btn btn-primary w-100 text-nowrap" onClick={ () => handleAction('inventory') }>{ LocalizeText('widget.furni.present.put_in_inventory') }</button>
+                        <button className="btn btn-success w-100 text-nowrap" onClick={ () => handleAction('room') }>{ LocalizeText(placedItemType === FLOOR ? 'widget.furni.present.keep_in_room' : 'widget.furni.present.place_in_room') }</button>
+                    </div>
+                    { senderName &&  <>
+                        <button className="btn btn-primary w-100 text-nowrap mt-2" onClick={ () => handleAction('give_gift') }>{ LocalizeText('widget.furni.present.give_gift', ['name'], [senderName]) }</button>
+                    </> }
+                </> }
             </NitroCardContentView>
         </NitroCardView>
     );
