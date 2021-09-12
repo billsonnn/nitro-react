@@ -178,10 +178,10 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
             <NitroCardContentView>
                 { placedItemId === -1 && <>
                 <NitroLayoutGiftCardView userName={ senderName } figure={ senderFigure } message={ text } />
-                <div className="d-flex gap-2 mt-2">
+                { isOwnerOfFurniture && <div className="d-flex gap-2 mt-2">
                     { senderName && <button className="btn btn-primary w-100 text-nowrap" onClick={ () => handleAction('give_gift') }>{ LocalizeText('widget.furni.present.give_gift', ['name'], [senderName]) }</button> }
-                    { isOwnerOfFurniture && <button className="btn btn-success w-100 text-nowrap" onClick={ () => handleAction('open') }>{ LocalizeText('widget.furni.present.open_gift') }</button> }
-                </div>
+                    <button className="btn btn-success w-100 text-nowrap" onClick={ () => handleAction('open') }>{ LocalizeText('widget.furni.present.open_gift') }</button>
+                </div> }
                 </> }
                 { placedItemId !== -1 && <>
                     <div className="d-flex gap-2 align-items-center">
