@@ -178,11 +178,6 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                             { (unseenInventoryCount > 0) && (
                                 <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenInventoryCount }</div>) }
                         </div>
-                        <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_LIST_ITEM) }>
-                            <i className="icon icon-friendall"></i>
-                            { (unseenFriendListCount > 0) && (
-                                <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
-                        </div>
                         { isInRoom && (
                             <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CAMERA_ITEM) }>
                                 <i className="icon icon-camera"></i>
@@ -194,6 +189,13 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                     <div id="toolbar-chat-input-container" className="d-flex align-items-center" />
                 </div>
                 <div className="d-flex toolbar-right-side">
+                    <div className="navigation-items">
+                        <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_LIST_ITEM) }>
+                            <i className="icon icon-friendall"></i>
+                            { (unseenFriendListCount > 0) && (
+                                <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
+                        </div>
+                    </div>
                     <div id="toolbar-friend-bar-container" />
                 </div>
             </div>
