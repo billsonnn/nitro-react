@@ -24,7 +24,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
     const [ infoStandEvent, setInfoStandEvent ] = useState<RoomWidgetUpdateInfostandEvent>(null);
     const [ isGameMode, setGameMode ] = useState(false);
     const [ isDancing, setIsDancing ] = useState(false);
-    const [ isDecorating, setIsDecorating ] = useState(GetRoomSession().isDecorating);
+    const [ isDecorating, setIsDecorating ] = useState(false);
     const [ rentableBotChatEvent, setRentableBotChatEvent ] = useState<RoomWidgetUpdateRentableBotChatEvent>(null);
 
     const removeNameBubble = useCallback((index: number) =>

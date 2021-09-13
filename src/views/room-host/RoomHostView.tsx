@@ -3,6 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { GetRoomSession, SetActiveRoomId, StartRoomSession } from '../../api';
 import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
+import { TransitionAnimation, TransitionAnimationTypes } from '../../layout';
 import { RoomView } from '../room/RoomView';
 
 export const RoomHostView: FC<{}> = props =>
@@ -49,8 +50,10 @@ export const RoomHostView: FC<{}> = props =>
     useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
     return (
-        <div className="nitro-room-host w-100 h-100">
-            <RoomView roomSession={ roomSession } />
-        </div>
+        <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ !!roomSession } timeout={ 300 }>
+            <div className="nitro-room-host w-100 h-100">
+                <RoomView roomSession={ roomSession } />
+            </div>
+        </TransitionAnimation>
     );
 }
