@@ -2,6 +2,7 @@ export * from './DoorbellWidgetHandler';
 export * from './FurniChooserWidgetHandler';
 export * from './FurnitureContextMenuWidgetHandler';
 export * from './FurnitureCustomStackHeightWidgetHandler';
+export * from './FurnitureDimmerWidgetHandler';
 export * from './FurnitureExternalImageWidgetHandler';
 export * from './FurniturePresentWidgetHandler';
 export * from './IRoomWidgetHandler';
