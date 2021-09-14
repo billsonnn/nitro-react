@@ -25,7 +25,7 @@ export class FurnitureDimmerWidgetHandler extends RoomWidgetHandler
                 {
                     const preset = presetsEvent.getPreset(i);
 
-                    if(preset) updateEvent.setPresetValues(preset.id, preset.type, preset.color, preset.light);
+                    if(preset) updateEvent.setPresetValues(preset.id, preset.bgOnly, preset.color, preset.brightness);
 
                     i++;
                 }

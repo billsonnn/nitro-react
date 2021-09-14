@@ -1,16 +1,16 @@
 export class RoomDimmerPreset
 {
-    private _id: number = 0;
-    private _type: number = 0;
-    private _color: number = 0;
-    private _intensity: number = 0;
+    private _id: number;
+    private _bgOnly: boolean;
+    private _color: string;
+    private _brightness: number;
 
-    constructor(id: number, type: number, color: number, intensity: number)
+    constructor(id: number, bgOnly: boolean, color: string, brightness: number)
     {
         this._id = id;
-        this._type = type;
+        this._bgOnly = bgOnly;
         this._color = color;
-        this._intensity = intensity;
+        this._brightness = brightness;
     }
 
     public get id(): number
@@ -18,18 +18,18 @@ export class RoomDimmerPreset
         return this._id;
     }
 
-    public get type(): number
+    public get bgOnly(): boolean
     {
-        return this._type;
+        return this._bgOnly;
     }
 
-    public get color(): number
+    public get color(): string
     {
         return this._color;
     }
 
-    public get _Str_4272(): number
+    public get brightness(): number
     {
-        return this._intensity;
+        return this._brightness;
     }
 }
