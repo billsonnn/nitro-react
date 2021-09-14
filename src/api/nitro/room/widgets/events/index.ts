@@ -2,6 +2,7 @@ export * from './IPhotoData';
 export * from './RoomObjectItem';
 export * from './RoomWidgetAvatarInfoEvent';
 export * from './RoomWidgetChooserContentEvent';
+export * from './RoomWidgetDimmerUpdateEvent';
 export * from './RoomWidgetDoorbellEvent';
 export * from './RoomWidgetFloodControlEvent';
 export * from './RoomWidgetObjectNameEvent';

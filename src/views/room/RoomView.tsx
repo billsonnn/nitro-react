@@ -1,6 +1,6 @@
 import { EventDispatcher, NitroRectangle, RoomGeometry, RoomVariableEnum, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
-import { DispatchMouseEvent, DispatchTouchEvent, DoorbellWidgetHandler, FurniChooserWidgetHandler, FurnitureContextMenuWidgetHandler, FurnitureCustomStackHeightWidgetHandler, FurnitureExternalImageWidgetHandler, FurniturePresentWidgetHandler, GetNitroInstance, GetRoomEngine, InitializeRoomInstanceRenderingCanvas, IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler, RoomWidgetRoomToolsHandler, RoomWidgetUpdateRoomViewEvent, UserChooserWidgetHandler } from '../../api';
+import { DispatchMouseEvent, DispatchTouchEvent, DoorbellWidgetHandler, FurniChooserWidgetHandler, FurnitureContextMenuWidgetHandler, FurnitureCustomStackHeightWidgetHandler, FurnitureDimmerWidgetHandler, FurnitureExternalImageWidgetHandler, FurniturePresentWidgetHandler, GetNitroInstance, GetRoomEngine, InitializeRoomInstanceRenderingCanvas, IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler, RoomWidgetRoomToolsHandler, RoomWidgetUpdateRoomViewEvent, UserChooserWidgetHandler } from '../../api';
 import { RoomContextProvider } from './context/RoomContext';
 import { RoomColorView } from './RoomColorView';
 import { RoomViewProps } from './RoomView.types';
@@ -42,6 +42,7 @@ export const RoomView: FC<RoomViewProps> = props =>
         widgetHandlerManager.registerHandler(new FurnitureCustomStackHeightWidgetHandler());
         widgetHandlerManager.registerHandler(new FurnitureExternalImageWidgetHandler());
         widgetHandlerManager.registerHandler(new FurniturePresentWidgetHandler());
+        widgetHandlerManager.registerHandler(new FurnitureDimmerWidgetHandler());
 
         setWidgetHandler(widgetHandlerManager);
 
