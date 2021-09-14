@@ -29,6 +29,13 @@ export const CatalogPageGiftView: FC<{}> = props =>
     const [ maxBoxIndex, setMaxBoxIndex ] = useState<number>(0);
     const [ maxRibbonIndex, setMaxRibbonIndex ] = useState<number>(0);
 
+    const [ receiverNotFound, setReceiverNotFound ] = useState<boolean>(false);
+
+    useEffect(() =>
+    {
+        setReceiverNotFound(false);
+    }, [ receiverName ]);
+
     useEffect(() =>
     {
         if(!giftConfiguration) return;
@@ -79,11 +86,15 @@ export const CatalogPageGiftView: FC<{}> = props =>
                 setOfferId(castedEvent.offerId);
                 setIsVisible(true);
                 return;
+            case CatalogEvent.GIFT_RECEIVER_NOT_FOUND:
+                setReceiverNotFound(true);
+                return;
         }
     }, [ close ]);
 
     useUiEvent(CatalogEvent.PURCHASE_SUCCESS, onCatalogEvent);
     useUiEvent(CatalogEvent.INIT_GIFT, onCatalogEvent);
+    useUiEvent(CatalogEvent.GIFT_RECEIVER_NOT_FOUND, onCatalogEvent);
 
     const isBoxDefault = useMemo(() =>
     {
@@ -150,6 +161,12 @@ export const CatalogPageGiftView: FC<{}> = props =>
                     });
                 return;
             case 'buy':
+                if(!receiverName || receiverName.length === 0)
+                {
+                    setReceiverNotFound(true);
+                    return;
+                }
+                
                 SendMessageHook(new PurchaseFromCatalogAsGiftComposer(pageId, offerId, extraData, receiverName, message, selectedColorId, selectedBoxIndex, selectedRibbonIndex, showMyFace));
                 return;
         }
@@ -163,7 +180,8 @@ export const CatalogPageGiftView: FC<{}> = props =>
             <NitroCardContentView className="text-black">
                 <div className="form-group">
                     <label>{ LocalizeText('catalog.gift_wrapping.receiver') }</label>
-                    <input type="text" className="form-control form-control-sm" value={ receiverName } onChange={ (e) => setReceiverName(e.target.value) } />
+                    <input type="text" className={ 'form-control form-control-sm' + classNames({ ' is-invalid': receiverNotFound }) } value={ receiverName } onChange={ (e) => setReceiverName(e.target.value) } />
+                    { receiverNotFound && <div className="invalid-feedback">{ LocalizeText('catalog.gift_wrapping.receiver_not_found.title') }</div> }
                 </div>
                 <div className="mt-2">
                     <NitroLayoutGiftCardView figure={ GetSessionDataManager().figure } userName={ GetSessionDataManager().userName } message={ message } editable={ true } onChange={ (value) => setMessage(value) } />

@@ -1,7 +1,8 @@
-import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
+import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
 import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/user/GuildMembershipsMessageEvent';
 import { FC, useCallback } from 'react';
 import { CatalogNameResultEvent, CatalogPurchaseFailureEvent } from '../../events';
+import { CatalogGiftReceiverNotFoundEvent } from '../../events/catalog/CatalogGiftReceiverNotFoundEvent';
 import { CatalogPurchasedEvent } from '../../events/catalog/CatalogPurchasedEvent';
 import { CatalogPurchaseSoldOutEvent } from '../../events/catalog/CatalogPurchaseSoldOutEvent';
 import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
@@ -96,6 +97,11 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         dispatchUiEvent(new CatalogNameResultEvent(parser.result, parser.validationInfo));
     }, []);
 
+    const onGiftReceiverNotFoundEvent = useCallback(() =>
+    {
+        dispatchUiEvent(new CatalogGiftReceiverNotFoundEvent());
+    }, []);
+
     const onHabboClubOffersMessageEvent = useCallback((event: HabboClubOffersMessageEvent) =>
     {
         const parser = event.getParser();
@@ -168,6 +174,7 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
     CreateMessageHook(GuildMembershipsMessageEvent, onGuildMembershipsMessageEvent);
     CreateMessageHook(SellablePetPalettesMessageEvent, onSellablePetPalettesMessageEvent);
     CreateMessageHook(ApproveNameMessageEvent, onApproveNameMessageEvent);
+    CreateMessageHook(GiftReceiverNotFoundEvent, onGiftReceiverNotFoundEvent);
     CreateMessageHook(HabboClubOffersMessageEvent, onHabboClubOffersMessageEvent);
     CreateMessageHook(UserSubscriptionEvent, onUserSubscriptionEvent);
     CreateMessageHook(CatalogPublishedMessageEvent, onCatalogPublishedMessageEvent);
