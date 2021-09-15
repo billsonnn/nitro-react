@@ -4,9 +4,9 @@ import { LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
 import { UserProfileIconView } from '../../../shared/user-profile-icon/UserProfileIconView';
 import { MessengerFriend } from '../../common/MessengerFriend';
-import { FriendListFriendsItemViewProps } from './FriendListFriendsItemView.types';
+import { FriendsListItemViewProps } from './FriendsListItemView.types';
 
-export const FriendListFriendsItemView: FC<FriendListFriendsItemViewProps> = props =>
+export const FriendsListItemView: FC<FriendsListItemViewProps> = props =>
 {
     const { friend = null } = props;
 

@@ -33,6 +33,7 @@
     "system.packet.log": false,
     "system.pong.manually": true,
     "system.pong.interval.ms": 20000,
+    "room.color.skip.transition": true,
     "avatar.mandatory.libraries": [
         "bd:1",
         "li:0"

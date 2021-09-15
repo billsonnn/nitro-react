@@ -1,6 +1,3 @@
-export interface FriendListViewProps
-{}
-
 export class FriendListTabs
 {
     public static readonly FRIENDS: string  = 'friendlist.friends';

@@ -7,7 +7,7 @@ import { AchievementsView } from '../achievements/AchievementsView';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CameraWidgetView } from '../camera/CameraWidgetView';
 import { CatalogView } from '../catalog/CatalogView';
-import { FriendListView } from '../friend-list/FriendListView';
+import { FriendsView } from '../friends/FriendsView';
 import { GroupsView } from '../groups/GroupsView';
 import { HotelView } from '../hotel-view/HotelView';
 import { InventoryView } from '../inventory/InventoryView';
@@ -63,7 +63,7 @@ export const MainView: FC<MainViewProps> = props =>
             <NavigatorView />
             <InventoryView />
             <CatalogView />
-            <FriendListView />
+            <FriendsView />
             <RightSideView />
             <UserSettingsView />
             <UserProfileView />

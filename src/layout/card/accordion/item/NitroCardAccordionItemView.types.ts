@@ -4,4 +4,5 @@ export interface NitroCardAccordionItemViewProps
     headerClassName?: string;
     contentClassName?: string;
     headerText: string;
+    defaultState?: boolean;
 }

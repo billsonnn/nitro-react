@@ -1,7 +1,7 @@
 import { NitroEvent, RoomEngineTriggerWidgetEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { GetRoomEngine, LocalizeText, RoomWidgetDimmerPreviewMessage, RoomWidgetDimmerSavePresetMessage, RoomWidgetDimmerUpdateEvent, RoomWidgetFurniToWidgetMessage, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
+import { GetConfiguration, GetRoomEngine, LocalizeText, RoomWidgetDimmerPreviewMessage, RoomWidgetDimmerSavePresetMessage, RoomWidgetDimmerUpdateEvent, RoomWidgetFurniToWidgetMessage, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
 import { RoomDimmerPreset } from '../../../../../api/nitro/room/widgets/events/RoomDimmerPreset';
 import { RoomWidgetDimmerStateUpdateEvent } from '../../../../../api/nitro/room/widgets/events/RoomWidgetDimmerStateUpdateEvent';
 import { RoomWidgetDimmerChangeStateMessage } from '../../../../../api/nitro/room/widgets/messages/RoomWidgetDimmerChangeStateMessage';
@@ -10,12 +10,15 @@ import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, Nitro
 import { useRoomContext } from '../../../context/RoomContext';
 import { FurnitureDimmerData } from './FurnitureDimmerData';
 
+const DEFAULT_COLORS: string[] = ['#74F5F5', '#0053F7', '#E759DE', '#EA4532', '#F2F851', '#82F349', '#000000'];
+
 export const FurnitureDimmerView: FC<{}> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ dimmerData, setDimmerData ] = useState<FurnitureDimmerData>(null);
 
     const [ isActive, setIsActive ] = useState<boolean>(false);
+    const [ isFreeColorMode, setIsFreeColorMode ] = useState<boolean>(false);
     const [ selectedPresetId, setSelectedPresetId ] = useState<number>(-1);
     const [ presets, setPresets ] = useState<RoomDimmerPreset[]>([]);
 
@@ -27,6 +30,11 @@ export const FurnitureDimmerView: FC<{}> = props =>
     {
         return parseInt(previewColor.replace('#', ''), 16);
     }, [ previewColor ]);
+
+    useEffect(() =>
+    {
+        if(GetConfiguration<boolean>('widget.dimmer.colorwheel')) setIsFreeColorMode(true);
+    }, []);
 
     useEffect(() =>
     {
@@ -132,7 +140,14 @@ export const FurnitureDimmerView: FC<{}> = props =>
                     <div className="p-2">
                         <div className="form-group mb-2">
                             <label className="fw-bold text-black">{ LocalizeText('widget.backgroundcolor.hue') }</label>
-                            <input type="color" className="form-control" value={ previewColor } onChange={ (e) => setPreviewColor(e.target.value) } />
+                            { isFreeColorMode && <input type="color" className="form-control" value={ previewColor } onChange={ (e) => setPreviewColor(e.target.value) } /> }
+                            { !isFreeColorMode && <div className="d-flex gap-2">
+                                { DEFAULT_COLORS.map((color, index) =>
+                                {
+                                    return <div key={ index } className="rounded w-100 color-swatch cursor-pointer" onClick={ () => setPreviewColor(color) } style={{ backgroundColor: color }}></div>;
+                                }) }
+                            </div> }
+                            
                         </div>
                         <div className="form-group mb-2">
                             <label className="fw-bold text-black">{ LocalizeText('widget.backgroundcolor.lightness') }</label>

@@ -5,24 +5,7 @@
     "thumbnails.url": "https://nitro.nitrots.co/camera/thumbnail/%thumbnail%.png",
     "url.prefix": "http://localhost:3000",
     "chat.viewer.height.percentage": 0.40,
-    "navigator.slider.enabled": true,
-    "navigator.slider.content": [
-        {
-            "title": "Games Hub",
-            "image": "https://i.imgur.com/TFoivxi.png",
-            "roomId": 2240
-        },
-        {
-            "title": "Help Desk",
-            "image": "https://i.imgur.com/GO981GC.png",
-            "roomId": 2351
-        },
-        {
-            "title": "The Lido",
-            "image": "https://i.imgur.com/NVH38bV.png",
-            "roomId": 2346
-        }
-    ],
+    "widget.dimmer.colorwheel": true,
     "hotelview": {
         "widgets": {
             "slot.1.widget": "promoarticle",
