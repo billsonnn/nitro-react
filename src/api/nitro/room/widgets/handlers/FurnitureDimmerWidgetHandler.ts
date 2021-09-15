@@ -1,8 +1,8 @@
 import { NitroEvent, RoomControllerLevel, RoomEngineDimmerStateEvent, RoomEngineTriggerWidgetEvent, RoomSessionDimmerPresetsEvent, RoomWidgetEnum } from '@nitrots/nitro-renderer';
 import { GetRoomEngine } from '../..';
 import { GetSessionDataManager } from '../../..';
-import { RoomWidgetDimmerUpdateEvent, RoomWidgetUpdateEvent } from '../events';
-import { RoomWidgetDimmerStateUpdateEvent } from '../events/RoomWidgetDimmerStateUpdateEvent';
+import { RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateEvent } from '../events';
+import { RoomWidgetUpdateDimmerStateEvent } from '../events/RoomWidgetUpdateDimmerStateEvent';
 import { RoomWidgetDimmerChangeStateMessage, RoomWidgetDimmerPreviewMessage, RoomWidgetFurniToWidgetMessage, RoomWidgetMessage } from '../messages';
 import { RoomWidgetDimmerSavePresetMessage } from '../messages/RoomWidgetDimmerSavePresetMessage';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
@@ -14,8 +14,8 @@ export class FurnitureDimmerWidgetHandler extends RoomWidgetHandler
         switch(event.type)
         {
             case RoomSessionDimmerPresetsEvent.ROOM_DIMMER_PRESETS: {
-                const presetsEvent  = (event as RoomSessionDimmerPresetsEvent);
-                const updateEvent   = new RoomWidgetDimmerUpdateEvent(RoomWidgetDimmerUpdateEvent.PRESETS);
+                const presetsEvent = (event as RoomSessionDimmerPresetsEvent);
+                const updateEvent = new RoomWidgetUpdateDimmerEvent(RoomWidgetUpdateDimmerEvent.PRESETS);
 
                 updateEvent.selectedPresetId = presetsEvent.selectedPresetId;
 
@@ -25,7 +25,7 @@ export class FurnitureDimmerWidgetHandler extends RoomWidgetHandler
                 {
                     const preset = presetsEvent.getPreset(i);
 
-                    if(preset) updateEvent.setPresetValues(preset.id, preset.bgOnly, preset.color, preset.brightness);
+                    if(preset) updateEvent.setPresetValues(preset.id, preset.type, preset.color, preset.brightness);
 
                     i++;
                 }
@@ -36,11 +36,11 @@ export class FurnitureDimmerWidgetHandler extends RoomWidgetHandler
             case RoomEngineDimmerStateEvent.ROOM_COLOR: {
                 const stateEvent = (event as RoomEngineDimmerStateEvent);
 
-                this.container.eventDispatcher.dispatchEvent(new RoomWidgetDimmerStateUpdateEvent(stateEvent.state, stateEvent.presetId, stateEvent.effectId, stateEvent.color, stateEvent.brightness));
+                this.container.eventDispatcher.dispatchEvent(new RoomWidgetUpdateDimmerStateEvent(stateEvent.state, stateEvent.presetId, stateEvent.effectId, stateEvent.color, stateEvent.brightness));
                 return;
             }
             case RoomEngineTriggerWidgetEvent.REMOVE_DIMMER: {
-                this.container.eventDispatcher.dispatchEvent(new RoomWidgetDimmerUpdateEvent(RoomWidgetDimmerUpdateEvent.HIDE));
+                this.container.eventDispatcher.dispatchEvent(new RoomWidgetUpdateDimmerEvent(RoomWidgetUpdateDimmerEvent.HIDE));
                 return;
             }
         }
@@ -52,27 +52,30 @@ export class FurnitureDimmerWidgetHandler extends RoomWidgetHandler
         {
             case RoomWidgetFurniToWidgetMessage.REQUEST_DIMMER: {
                 if(this.canOpenWidget()) this.container.roomSession.requestMoodlightSettings();
+
                 break;
             }
             case RoomWidgetDimmerSavePresetMessage.SAVE_PRESET: {
                 if(this.canOpenWidget())
                 {
                     const savePresetMessage = (message as RoomWidgetDimmerSavePresetMessage);
+
                     this.container.roomSession.updateMoodlightData(savePresetMessage.presetNumber, savePresetMessage.effectTypeId, savePresetMessage.color, savePresetMessage.brightness, savePresetMessage.apply);
                 }
+
                 break;
             }
             case RoomWidgetDimmerChangeStateMessage.CHANGE_STATE: {
                 if(this.canOpenWidget()) this.container.roomSession.toggleMoodlightState();
+
                 break;
             }
             case RoomWidgetDimmerPreviewMessage.PREVIEW_DIMMER_PRESET: {
-                const roomId            = this.container.roomSession.roomId;
-                const previewMessage    = (message as RoomWidgetDimmerPreviewMessage);
-
-                if(!previewMessage || !GetRoomEngine()) return null;
+                const roomId = this.container.roomSession.roomId;
+                const previewMessage = (message as RoomWidgetDimmerPreviewMessage);
 
                 GetRoomEngine().updateObjectRoomColor(roomId, previewMessage.color, previewMessage.brightness, previewMessage.bgOnly);
+                
                 break;
             }
         }

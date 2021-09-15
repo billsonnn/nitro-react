@@ -1,14 +1,14 @@
 export class RoomDimmerPreset
 {
     private _id: number;
-    private _bgOnly: boolean;
-    private _color: string;
+    private _type: number;
+    private _color: number;
     private _brightness: number;
 
-    constructor(id: number, bgOnly: boolean, color: string, brightness: number)
+    constructor(id: number, type: number, color: number, brightness: number)
     {
         this._id = id;
-        this._bgOnly = bgOnly;
+        this._type = type;
         this._color = color;
         this._brightness = brightness;
     }
@@ -18,12 +18,12 @@ export class RoomDimmerPreset
         return this._id;
     }
 
-    public get bgOnly(): boolean
+    public get type(): number
     {
-        return this._bgOnly;
+        return this._type;
     }
 
-    public get color(): string
+    public get color(): number
     {
         return this._color;
     }

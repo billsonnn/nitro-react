@@ -1,4 +1,4 @@
-import { ColorConverter, NitroAdjustmentFilter, NitroContainer, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineEvent, RoomId, RoomObjectHSLColorEnabledEvent } from '@nitrots/nitro-renderer';
+import { ColorConverter, NitroAdjustmentFilter, NitroContainer, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineDimmerStateEvent, RoomEngineEvent, RoomId, RoomObjectHSLColorEnabledEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetNitroInstance, GetRoomEngine, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomViewEvent } from '../../api';
 import { UseMountEffect } from '../../hooks';
@@ -12,7 +12,7 @@ export const RoomColorView: FC<{}> = props =>
     const [ originalRoomBackgroundColor, setOriginalRoomBackgroundColor ] = useState(0);
     const [ roomFilter, setRoomFilter ] = useState<NitroAdjustmentFilter>(null);
     const [ roomFilterColor, setRoomFilterColor ] = useState(-1);
-    const { roomSession = null, canvasId = -1, eventDispatcher = null } = useRoomContext();
+    const { roomSession = null, canvasId = -1, widgetHandler = null, eventDispatcher = null } = useRoomContext();
 
     const getRenderingCanvas = useCallback(() =>
     {
@@ -139,11 +139,15 @@ export const RoomColorView: FC<{}> = props =>
 
                 return;
             }
+            case RoomEngineDimmerStateEvent.ROOM_COLOR: {
+                widgetHandler.processEvent(event);
+            }
         }
-    }, [ updateRoomBackgroundColor, updateRoomFilterColor ]);
+    }, [ widgetHandler, updateRoomBackgroundColor, updateRoomFilterColor ]);
 
     useRoomEngineEvent(RoomObjectHSLColorEnabledEvent.ROOM_BACKGROUND_COLOR, onRoomEngineEvent);
     useRoomEngineEvent(RoomBackgroundColorEvent.ROOM_COLOR, onRoomEngineEvent);
+    useRoomEngineEvent(RoomEngineDimmerStateEvent.ROOM_COLOR, onRoomEngineEvent);
 
     const onRoomWidgetUpdateRoomViewEvent = useCallback((event: RoomWidgetUpdateRoomViewEvent) =>
     {

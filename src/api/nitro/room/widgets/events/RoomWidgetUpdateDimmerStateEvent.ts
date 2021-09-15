@@ -1,8 +1,8 @@
 import { RoomWidgetUpdateEvent } from './RoomWidgetUpdateEvent';
 
-export class RoomWidgetDimmerStateUpdateEvent extends RoomWidgetUpdateEvent
+export class RoomWidgetUpdateDimmerStateEvent extends RoomWidgetUpdateEvent
 {
-    public static DIMMER_STATE: string = 'RWDSUE_DIMMER_STATE';
+    public static DIMMER_STATE: string = 'RWUDSE_DIMMER_STATE';
 
     private _state: number;
     private _presetId: number;
@@ -12,7 +12,7 @@ export class RoomWidgetDimmerStateUpdateEvent extends RoomWidgetUpdateEvent
 
     constructor(state: number, presetId: number, effectId: number, color: number, brightness: number)
     {
-        super(RoomWidgetDimmerStateUpdateEvent.DIMMER_STATE);
+        super(RoomWidgetUpdateDimmerStateEvent.DIMMER_STATE);
 
         this._state         = state;
         this._presetId      = presetId;

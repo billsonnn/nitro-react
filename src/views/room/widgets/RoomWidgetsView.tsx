@@ -1,7 +1,6 @@
-import { RoomEngineDimmerStateEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
+import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CanManipulateFurniture, GetRoomEngine, IsFurnitureSelectionDisabled, LocalizeText, ProcessRoomObjectOperation, RoomWidgetFurniToWidgetMessage, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../../../api';
-import { RoomWidgetDimmerStateUpdateEvent } from '../../../api/nitro/room/widgets/events/RoomWidgetDimmerStateUpdateEvent';
 import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks/events';
 import { useRoomContext } from '../context/RoomContext';
 import { AvatarInfoWidgetView } from './avatar-info/AvatarInfoWidgetView';
@@ -42,19 +41,12 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
 
                 return;
             }
-            case RoomEngineDimmerStateEvent.ROOM_COLOR: {
-                const stateEvent = (event as RoomEngineDimmerStateEvent);
-
-                eventDispatcher.dispatchEvent(new RoomWidgetDimmerStateUpdateEvent(stateEvent.state, stateEvent.presetId, stateEvent.effectId, stateEvent.color, stateEvent.brightness));
-                return;
-            }
         }
     }, [ eventDispatcher ]);
 
     useRoomEngineEvent(RoomEngineEvent.NORMAL_MODE, onRoomEngineEvent);
     useRoomEngineEvent(RoomEngineEvent.GAME_MODE, onRoomEngineEvent);
     useRoomEngineEvent(RoomZoomEvent.ROOM_ZOOM, onRoomEngineEvent);
-    useRoomEngineEvent(RoomEngineDimmerStateEvent.ROOM_COLOR, onRoomEngineEvent);
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
@@ -125,6 +117,9 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
             case RoomEngineTriggerWidgetEvent.REQUEST_PRESENT:
                 widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_PRESENT, objectId, category, event.roomId));
                 break;
+            case RoomEngineTriggerWidgetEvent.REQUEST_DIMMER:
+                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_DIMMER, objectId, category, event.roomId));
+                break;
             case RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY:
             case RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM:
             case RoomEngineTriggerWidgetEvent.OPEN_WIDGET:
@@ -156,6 +151,7 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_WIDGET, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_WIDGET, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PRESENT, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_DIMMER, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM, onRoomEngineObjectEvent);
 

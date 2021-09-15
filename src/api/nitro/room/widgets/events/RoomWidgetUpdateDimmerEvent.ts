@@ -1,10 +1,10 @@
 import { RoomDimmerPreset } from './RoomDimmerPreset';
 import { RoomWidgetUpdateEvent } from './RoomWidgetUpdateEvent';
 
-export class RoomWidgetDimmerUpdateEvent extends RoomWidgetUpdateEvent
+export class RoomWidgetUpdateDimmerEvent extends RoomWidgetUpdateEvent
 {
-    public static PRESETS: string = 'RWDUE_PRESETS';
-    public static HIDE: string = 'RWDUE_HIDE';
+    public static PRESETS: string = 'RWUDE_PRESETS';
+    public static HIDE: string = 'RWUDE_HIDE';
 
     private _selectedPresetId: number = 0;
     private _presets: RoomDimmerPreset[];
@@ -36,9 +36,9 @@ export class RoomWidgetDimmerUpdateEvent extends RoomWidgetUpdateEvent
         this._selectedPresetId = k;
     }
 
-    public setPresetValues(id: number, bgOnly: boolean, color: string, brightness: number):void
+    public setPresetValues(id: number, type: number, color: number, brightness: number):void
     {
-        const preset = new RoomDimmerPreset(id, bgOnly, color, brightness);
+        const preset = new RoomDimmerPreset(id, type, color, brightness);
 
         this._presets[(id - 1)] = preset;
     }
