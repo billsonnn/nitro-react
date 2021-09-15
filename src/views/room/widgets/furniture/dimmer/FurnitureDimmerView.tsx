@@ -25,7 +25,6 @@ export const FurnitureDimmerView: FC<{}> = props =>
     const [ selectedEffectId, setSelectedEffectId ] = useState(0);
     const [ selectedColor, setSelectedColor ] = useState(0);
     const [ selectedBrightness, setSelectedBrightness ] = useState(0);
-    const [ needsUpdate, setNeedsUpdate ] = useState(true);
 
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
 

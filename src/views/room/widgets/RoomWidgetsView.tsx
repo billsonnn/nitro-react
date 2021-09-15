@@ -1,6 +1,6 @@
-import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
+import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomObjectVariable, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CanManipulateFurniture, GetRoomEngine, IsFurnitureSelectionDisabled, LocalizeText, ProcessRoomObjectOperation, RoomWidgetFurniToWidgetMessage, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../../../api';
+import { CanManipulateFurniture, GetRoomEngine, GetSessionDataManager, IsFurnitureSelectionDisabled, LocalizeText, ProcessRoomObjectOperation, RoomWidgetFurniToWidgetMessage, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../../../api';
 import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks/events';
 import { useRoomContext } from '../context/RoomContext';
 import { AvatarInfoWidgetView } from './avatar-info/AvatarInfoWidgetView';
@@ -47,6 +47,16 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
     useRoomEngineEvent(RoomEngineEvent.NORMAL_MODE, onRoomEngineEvent);
     useRoomEngineEvent(RoomEngineEvent.GAME_MODE, onRoomEngineEvent);
     useRoomEngineEvent(RoomZoomEvent.ROOM_ZOOM, onRoomEngineEvent);
+
+    const handleRoomAdClick = useCallback((event: RoomEngineRoomAdEvent) =>
+    {
+
+    }, []);
+
+    const handleRoomAdTooltip = useCallback((event: RoomEngineRoomAdEvent) =>
+    {
+
+    }, []);
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
@@ -114,17 +124,75 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
             case RoomEngineObjectEvent.MOUSE_LEAVE:
                 updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT, objectId, category, event.roomId);
                 break;
+            case RoomEngineTriggerWidgetEvent.REQUEST_CREDITFURNI:
+                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_CREDITFURNI, objectId, category, event.roomId));
+                break;
+            case RoomEngineTriggerWidgetEvent.REQUEST_STICKIE:
+                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_STICKIE, objectId, category, event.roomId));
+                break;
             case RoomEngineTriggerWidgetEvent.REQUEST_PRESENT:
                 widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_PRESENT, objectId, category, event.roomId));
+                break;
+            case RoomEngineTriggerWidgetEvent.REQUEST_TROPHY:
+                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_TROPHY, objectId, category, event.roomId));
+                break;
+            case RoomEngineTriggerWidgetEvent.REQUEST_TEASER:
+                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_TEASER, objectId, category, event.roomId));
+                break;
+            case RoomEngineTriggerWidgetEvent.REQUEST_ECOTRONBOX:
+                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_ECOTRONBOX, objectId, category, event.roomId));
                 break;
             case RoomEngineTriggerWidgetEvent.REQUEST_DIMMER:
                 widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_DIMMER, objectId, category, event.roomId));
                 break;
-            case RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY:
-            case RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM:
+            case RoomEngineTriggerWidgetEvent.REQUEST_PLACEHOLDER:
+                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_PLACEHOLDER, objectId, category, event.roomId));
+                break;
+            case RoomEngineTriggerWidgetEvent.REQUEST_CLOTHING_CHANGE:
+                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_CLOTHING_CHANGE, objectId, category, event.roomId));
+                break;
+            case RoomEngineTriggerWidgetEvent.REQUEST_PLAYLIST_EDITOR:
+                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_PLAYLIST_EDITOR, objectId, category, event.roomId));
+                break;
+            case RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING:
+                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING, objectId, category, event.roomId));
+                break;
+            case RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING:
+                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_BADGE_DISPLAY_ENGRAVING, objectId, category, event.roomId));
+                break;
+            case RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED: {
+                const roomObject = GetRoomEngine().getRoomObject(event.roomId, objectId, category);
+                const ownerId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_OWNER_ID);
+
+                if(ownerId === GetSessionDataManager().userId)
+                {
+                    widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED, objectId, category, event.roomId));
+                }
+                break;
+            }
             case RoomEngineTriggerWidgetEvent.OPEN_WIDGET:
             case RoomEngineTriggerWidgetEvent.CLOSE_WIDGET:
+            case RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU:
+            case RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU:
+            case RoomEngineTriggerWidgetEvent.REMOVE_DIMMER:
+            case RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN:
+            case RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY:
+            case RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM:
+            case RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR:
+            case RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING:
+            case RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY:
+            case RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY:
+            case RoomEngineTriggerWidgetEvent.REQUEST_INTERNAL_LINK:
+            case RoomEngineTriggerWidgetEvent.REQUEST_ROOM_LINK:
                 widgetHandler.processEvent(event);
+                break;
+            case RoomEngineRoomAdEvent.FURNI_CLICK:
+            case RoomEngineRoomAdEvent.FURNI_DOUBLE_CLICK:
+                handleRoomAdClick(event);
+                break;
+            case RoomEngineRoomAdEvent.TOOLTIP_SHOW:
+            case RoomEngineRoomAdEvent.TOOLTIP_HIDE:
+                handleRoomAdTooltip(event);
                 break;
         }
 
@@ -136,7 +204,7 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
 
             if(dispatchEvent) widgetHandler.eventDispatcher.dispatchEvent(updateEvent);
         }
-    }, [ roomSession, widgetHandler ]);
+    }, [ roomSession, widgetHandler, handleRoomAdClick, handleRoomAdTooltip ]);
 
     useRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineObjectEvent.DESELECTED, onRoomEngineObjectEvent);
@@ -148,12 +216,37 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
     useRoomEngineEvent(RoomEngineObjectEvent.REQUEST_MANIPULATION, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineObjectEvent.MOUSE_ENTER, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineObjectEvent.MOUSE_LEAVE, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_CREDITFURNI, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_STICKIE, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PRESENT, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_TROPHY, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_TEASER, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ECOTRONBOX, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_DIMMER, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PLACEHOLDER, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_CLOTHING_CHANGE, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PLAYLIST_EDITOR, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_WIDGET, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_WIDGET, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PRESENT, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_DIMMER, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REMOVE_DIMMER, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY, onRoomEngineObjectEvent);
     useRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_INTERNAL_LINK, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ROOM_LINK, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineRoomAdEvent.FURNI_CLICK, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineRoomAdEvent.FURNI_DOUBLE_CLICK, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineRoomAdEvent.TOOLTIP_SHOW, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineRoomAdEvent.TOOLTIP_HIDE, onRoomEngineObjectEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
