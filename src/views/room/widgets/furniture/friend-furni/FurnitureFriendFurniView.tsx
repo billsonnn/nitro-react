@@ -1,4 +1,4 @@
-import { LoveLockFurniFinishedEvent, LoveLockFurniFriendConfirmedEvent, LoveLockFurniStartEvent, LoveLockStartConfirmComposer, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
+import { FriendFurniConfirmLockMessageComposer, LoveLockFurniFinishedEvent, LoveLockFurniFriendConfirmedEvent, LoveLockFurniStartEvent, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, GetRoomSession, LocalizeText, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
@@ -77,10 +77,10 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                 setEngravingLockData(null);
                 return;
             case 'accept_request':
-                GetRoomSession().connection.send(new LoveLockStartConfirmComposer(engravingLockData.objectId, true));
+                GetRoomSession().connection.send(new FriendFurniConfirmLockMessageComposer(engravingLockData.objectId, true));
                 return;
             case 'reject_request':
-                GetRoomSession().connection.send(new LoveLockStartConfirmComposer(engravingLockData.objectId, false));
+                GetRoomSession().connection.send(new FriendFurniConfirmLockMessageComposer(engravingLockData.objectId, false));
                 processAction('close_request');
                 return;
             case 'close_request':

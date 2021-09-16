@@ -1,4 +1,4 @@
-import { FollowFriendComposer, MouseEventType, UserProfileComposer } from '@nitrots/nitro-renderer';
+import { FollowFriendMessageComposer, MouseEventType, UserProfileComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';
@@ -13,7 +13,7 @@ export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
 
     const followFriend = useCallback(() =>
     {
-        SendMessageHook(new FollowFriendComposer(friend.id));
+        SendMessageHook(new FollowFriendMessageComposer(friend.id));
     }, [ friend ]);
 
     const openProfile = useCallback(() =>
