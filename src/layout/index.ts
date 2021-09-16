@@ -1,5 +1,6 @@
 export * from './card';
 export * from './draggable-window';
+export * from './gift-card';
 export * from './loading-spinner';
 export * from './mini-camera';
 export * from './notification-bubble';

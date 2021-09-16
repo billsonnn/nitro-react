@@ -11,15 +11,13 @@ import { SendMessageHook } from '../../hooks/messages/message-event';
 import { NitroCardAccordionItemView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
 import { FriendListContextProvider } from './context/FriendListContext';
 import { FriendListMessageHandler } from './FriendListMessageHandler';
-import { FriendListViewProps } from './FriendListView.types';
 import { FriendListReducer, initialFriendList } from './reducers/FriendListReducer';
 import { FriendBarView } from './views/friend-bar/FriendBarView';
-import { FriendListFriendsView } from './views/friends/FriendListFriendsView';
-import { FriendListRequestsView } from './views/requests/FriendListRequestsView';
+import { FriendsListView } from './views/list/FriendsListView';
 
 const TABS: string[] = ['friendlist.friends', 'generic.search'];
 
-export const FriendListView: FC<FriendListViewProps> = props =>
+export const FriendsView: FC<{}> = props =>
 {
     const [ friendListState, dispatchFriendListState ] = useReducer(FriendListReducer, initialFriendList);
     const { friends = null, requests = null, settings = null } = friendListState;
@@ -120,14 +118,14 @@ export const FriendListView: FC<FriendListViewProps> = props =>
                         </NitroCardTabsView>
                         <div className="text-black">
                             { currentTab === 0 && <NitroCardAccordionView>
-                                <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.friends') + ` (${onlineFriends.length})` }>
-                                   <FriendListFriendsView list={ onlineFriends } />
+                                <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.friends') + ` (${onlineFriends.length})` } defaultState={ true }>
+                                   <FriendsListView list={ onlineFriends } />
                                 </NitroCardAccordionItemView>
                                 <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.friends.offlinecaption') + ` (${offlineFriends.length})` }>
-                                    <FriendListFriendsView list={ offlineFriends } />
+                                    <FriendsListView list={ offlineFriends } />
                                 </NitroCardAccordionItemView>
                                 { requests.length > 0 && <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.tab.friendrequests') + ` (${requests.length})` }>
-                                    <FriendListRequestsView list={ requests } />
+                                    <FriendsListView list={ requests } />
                                 </NitroCardAccordionItemView> }
                             </NitroCardAccordionView> }
                         </div>

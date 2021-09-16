@@ -36,7 +36,6 @@ export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = pro
 
     const purchase = useCallback(() =>
     {
-        console.log(pageId, offer.offerId, extra, quantity);
         SendMessageHook(new PurchaseFromCatalogComposer(pageId, offer.offerId, extra, quantity));
     }, [ pageId, offer, extra, quantity ]);
 

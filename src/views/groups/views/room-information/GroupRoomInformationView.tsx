@@ -12,13 +12,13 @@ export const GroupRoomInformationView: FC<{}> = props =>
     const [ groupId, setGroupId ] = useState<number>(null);
     const [ groupInformation, setGroupInformation ] = useState<GroupInformationParser>(null);
     const [ isExpended, setIsExpended ] = useState<boolean>(true);
-    
+
     const onRoomInfoEvent = useCallback((event: RoomInfoEvent) =>
     {
         const parser = event.getParser();
         
         setGroupInformation(null);
-        
+
         if(parser.data.habboGroupId)
         {
             setGroupId(parser.data.habboGroupId);
@@ -33,7 +33,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
         const parser = event.getParser();
 
         if(parser.flag || groupId !== parser.id) return;
-
+        console.log(parser);
         setGroupInformation(null);
         setGroupInformation(parser);
     }, [ groupId ]);
@@ -110,7 +110,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
                 <i className={ 'fas fa-chevron-' + (isExpended ? 'up' : 'down') } />
             </div>
             { isExpended && <>
-                <div className="d-flex cursor-pointer" onClick={ () => GetGroupInformation(groupInformation.id) }>
+                <div className="d-flex cursor-pointer" onClick={ () => GetGroupInformation(groupId) }>
                     <div className="group-badge flex-shrink-0 me-1">
                         <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } />
                     </div>

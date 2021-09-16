@@ -1,11 +1,16 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { NitroCardAccordionItemViewProps } from './NitroCardAccordionItemView.types';
 
 export const NitroCardAccordionItemView: FC<NitroCardAccordionItemViewProps> = props =>
 {
-    const { className = '', headerClassName = '', contentClassName = '', headerText = '' } = props;
+    const { className = '', headerClassName = '', contentClassName = '', headerText = '', defaultState = false } = props;
 
     const [ isExpanded, setIsExpanded ] = useState(false);
+
+    useEffect(() =>
+    {
+        setIsExpanded(defaultState);
+    }, [ defaultState ]);
 
     return (
         <div className={ 'nitro-card-accordion-item ' + className + (isExpanded ? ' active' : '') }>

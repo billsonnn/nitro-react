@@ -1,4 +1,5 @@
 import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomWidgetEnum, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
+import { GetConfiguration, GetNitroInstance } from '../../..';
 import { GetRoomEngine, GetSessionDataManager } from '../../../..';
 import { SendMessageHook } from '../../../../../hooks/messages';
 import { RoomWidgetFloodControlEvent, RoomWidgetUpdateEvent } from '../events';
@@ -146,6 +147,12 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
                             }
 
                             return null;
+                        case ':togglefps': {
+                            if(GetNitroInstance().ticker.maxFPS > 0) GetNitroInstance().ticker.maxFPS = 0;
+                            else GetNitroInstance().ticker.maxFPS = GetConfiguration('system.animation.fps');
+
+                            return null;
+                        }
                         case ':client':
                         case ':nitro':
                         case ':billsonnn':

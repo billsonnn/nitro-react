@@ -1,4 +1,4 @@
-import { MessengerFriend } from '../../views/friend-list/common/MessengerFriend';
+import { MessengerFriend } from '../../views/friends/common/MessengerFriend';
 import { FriendListEvent } from './FriendListEvent';
 
 export class FriendListContentEvent extends FriendListEvent

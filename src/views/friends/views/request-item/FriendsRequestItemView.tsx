@@ -2,9 +2,9 @@ import { AcceptFriendMessageComposer, DeclineFriendMessageComposer } from '@nitr
 import { FC, useCallback } from 'react';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
 import { UserProfileIconView } from '../../../shared/user-profile-icon/UserProfileIconView';
-import { FriendListRequestsItemViewProps } from './FriendListRequestsItemView.types';
+import { FriendsRequestItemViewProps } from './FriendsRequestItemView.types';
 
-export const FriendListRequestsItemView: FC<FriendListRequestsItemViewProps> = props =>
+export const FriendsRequestItemView: FC<FriendsRequestItemViewProps> = props =>
 {
     const { request = null } = props;
 
