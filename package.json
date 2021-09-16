@@ -2,6 +2,13 @@
   "name": "nitro-react",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts --max_old_space_size=8048 build",
+    "build:prod": "npm uninstall @nitrots/nitro-renderer && npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev && npm i && npm run build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "@nitrots/nitro-renderer": "file:../nitro-renderer",
     "animate.css": "^4.1.1",
@@ -16,112 +23,6 @@
     "react-virtualized": "^9.22.3",
     "typescript": "^4.3.5",
     "web-vitals": "^1.1.2"
-  },
-  "scripts": {
-    "postinstall": "node ./webpack-patcher.js",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "build:prod": "npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev && npm i && npm run build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "linebreak-style": [
-        "off"
-      ],
-      "quotes": [
-        "error",
-        "single"
-      ],
-      "brace-style": [
-        "error",
-        "allman",
-        {
-          "allowSingleLine": true
-        }
-      ],
-      "object-curly-spacing": [
-        "error",
-        "always"
-      ],
-      "keyword-spacing": [
-        "error",
-        {
-          "overrides": {
-            "if": {
-              "after": false
-            },
-            "for": {
-              "after": false
-            },
-            "while": {
-              "after": false
-            },
-            "switch": {
-              "after": false
-            }
-          }
-        }
-      ],
-      "@typescript-eslint/no-explicit-any": [
-        "off"
-      ],
-      "@typescript-eslint/ban-ts-comment": [
-        "off"
-      ],
-      "@typescript-eslint/no-empty-function": [
-        "error",
-        {
-          "allow": [
-            "functions",
-            "arrowFunctions",
-            "generatorFunctions",
-            "methods",
-            "generatorMethods",
-            "constructors"
-          ]
-        }
-      ],
-      "@typescript-eslint/no-unused-vars": [
-        "off"
-      ],
-      "@typescript-eslint/ban-types": [
-        "error",
-        {
-          "types": {
-            "String": true,
-            "Boolean": true,
-            "Number": true,
-            "Symbol": true,
-            "{}": false,
-            "Object": false,
-            "object": false,
-            "Function": false
-          },
-          "extendDefaults": true
-        }
-      ],
-      "no-switch-case-fall-through": [
-        "off"
-      ]
-    }
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.14.1",

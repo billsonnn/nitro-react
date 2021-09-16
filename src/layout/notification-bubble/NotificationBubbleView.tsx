@@ -21,7 +21,7 @@ export const NotificationBubbleView: FC<NotificationBubbleViewProps> = props =>
     }, [ fadesOut, close ]);
 
     return (
-        <div className={ ('nitro-notification-bubble p-1 rounded ' + (className || '')) } { ...rest } onClick={ close }>
+        <div className={ ('nitro-notification-bubble rounded ' + (className || '')) } { ...rest } onClick={ close }>
             { children }
         </div>
     )

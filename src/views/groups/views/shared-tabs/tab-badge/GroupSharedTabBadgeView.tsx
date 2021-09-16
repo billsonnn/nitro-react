@@ -113,7 +113,7 @@ export const GroupSharedTabBadgeView: FC<GroupSharedTabBadgeViewProps> = props =
                         <div className="row row-cols-8 g-0 gap-1 w-100 h-100 overflow-auto">
                             { badgePartColors && badgePartColors.map((item, index) =>
                                 {
-                                    return <div key={ index } className="color-swatch cursor-pointer" style={{ backgroundColor: '#' + item.color }} onClick={ () => selectPartProperty('color', item.id) }></div>
+                                    return <div key={ index } className={ 'color-swatch cursor-pointer' + classNames({ ' active': item.id === getCurrentPart('color') }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectPartProperty('color', item.id) }></div>
                                 }) }
                         </div>
                     </div>

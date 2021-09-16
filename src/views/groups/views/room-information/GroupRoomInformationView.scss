@@ -1,8 +1,8 @@
 .nitro-group-room-information {
     pointer-events: all;
-    padding: 2px;
-    background-color: $gable-green;
-    border: 2px solid rgba($white, 0.5);
+    padding: 6px 5px;
+    background-color: rgba($dark,.95);
+    box-shadow: inset 0px 5px lighten(rgba($dark,.6),2.5), inset 0 -4px darken(rgba($dark,.6),4);
     font-size: $font-size-sm;
     margin-bottom: 5px;
 

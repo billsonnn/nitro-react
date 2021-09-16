@@ -1,12 +1,10 @@
 .nitro-purse {
-    padding: 2px;
-    background-color: $gable-green;
-    border: 2px solid rgba($white, 0.5);
-    border-top: 0;
+    background-color: rgba($dark,.95);
     font-size: $font-size-sm;
     pointer-events: all;
-    margin-bottom:5px;
-    
+    margin-bottom: 5px;
+    padding: 6px 5px;
+    box-shadow: inset 0px 5px lighten(rgba($dark,.6),2.5), inset 0 -4px darken(rgba($dark,.6),4);
 
     .notification-button {
         color:lighten($dark,20);
@@ -17,19 +15,21 @@
     }
 
     .nitro-purse-hc {
-        background-color: $william;
-        margin:0 2px;
+        background-color: rgba($light,.1);
+        margin: 0 5px;
     }
 
     .nitro-purse-button {
-        background: $bg-mirage-split-background;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+        padding: 2px 3px;
+        border-radius: $border-radius;
 
-        &:not(:first-child) {
-            margin-top:2px;
+        &:last-child {
+            border-bottom: none;
         }
 
         &:hover {
-            background: $bg-cello-split-background;
+            background-color: rgba($light,.1);
         }
     }
 }
