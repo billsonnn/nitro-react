@@ -9,7 +9,7 @@ import { DimmerFurnitureWidgetPresetItem } from './DimmerFurnitureWidgetPresetIt
 
 const AVAILABLE_COLORS: number[] = [7665141, 21495, 15161822, 15353138, 15923281, 8581961, 0];
 const HTML_COLORS: string[] = ['#74F5F5', '#0053F7', '#E759DE', '#EA4532', '#F2F851', '#82F349', '#000000'];
-const MIN_BRIGHTNESS: number = 75;
+const MIN_BRIGHTNESS: number = 76;
 const MAX_BRIGHTNESS: number = 255;
 
 export const FurnitureDimmerView: FC<{}> = props =>
