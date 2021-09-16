@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.3.0",
     "@nitrots/nitro-renderer": "file:../nitro-renderer",
     "animate.css": "^4.1.1",
     "classnames": "^2.3.1",
@@ -18,11 +19,10 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "postinstall": "node ./webpack-patcher.js",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "craco start",
+    "build": "craco build",
     "build:prod": "npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev && npm i && npm run build",
-    "test": "react-scripts test",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -110,18 +110,6 @@
         "off"
       ]
     }
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.14.1",
