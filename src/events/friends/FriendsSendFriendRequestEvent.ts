@@ -1,6 +1,6 @@
-import { FriendListEvent } from './FriendListEvent';
+import { FriendsEvent } from './FriendsEvent';
 
-export class FriendListSendFriendRequestEvent extends FriendListEvent
+export class FriendsSendFriendRequestEvent extends FriendsEvent
 {
     public static SEND_FRIEND_REQUEST: string = 'FLSFRE_SEND_FRIEND_REQUEST';
 
@@ -8,7 +8,7 @@ export class FriendListSendFriendRequestEvent extends FriendListEvent
 
     constructor(userId: number)
     {
-        super(FriendListSendFriendRequestEvent.SEND_FRIEND_REQUEST);
+        super(FriendsSendFriendRequestEvent.SEND_FRIEND_REQUEST);
 
         this._userId = userId;
     }

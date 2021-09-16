@@ -1,7 +1,7 @@
 import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserInfoDataParser, UserInfoEvent, UserProfileComposer, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GoToDesktop } from '../../api';
-import { AvatarEditorEvent, CatalogEvent, FriendListEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
+import { AvatarEditorEvent, CatalogEvent, FriendsEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
 import { AchievementsUIEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
@@ -107,7 +107,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 dispatchUiEvent(new CatalogEvent(CatalogEvent.TOGGLE_CATALOG));
                 return;
             case ToolbarViewItems.FRIEND_LIST_ITEM:
-                dispatchUiEvent(new CatalogEvent(FriendListEvent.TOGGLE_FRIEND_LIST));
+                dispatchUiEvent(new CatalogEvent(FriendsEvent.TOGGLE_FRIEND_LIST));
                 return;
             case ToolbarViewItems.CAMERA_ITEM:
                 dispatchUiEvent(new RoomWidgetCameraEvent(RoomWidgetCameraEvent.TOGGLE_CAMERA));

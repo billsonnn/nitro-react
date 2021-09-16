@@ -1,12 +1,12 @@
 import { FC, useMemo, useState } from 'react';
-import { useFriendListContext } from '../../context/FriendListContext';
+import { useFriendsContext } from '../../context/FriendsContext';
 import { FriendBarItemView } from '../friend-bar-item/FriendBarItemView';
 import { FriendBarViewProps } from './FriendBarView.types';
 
 export const FriendBarView: FC<FriendBarViewProps> = props =>
 {
-    const { friendListState = null } = useFriendListContext();
-    const { friends = null } = friendListState;
+    const { friendsState = null } = useFriendsContext();
+    const { friends = null } = friendsState;
     const [ indexOffset, setIndexOffset ] = useState(0);
     const [ maxDisplayCount, setMaxDisplayCount ] = useState(3);
 

@@ -1,5 +1,6 @@
 import { FriendListUpdateParser, FriendParser, FriendRequestData } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
+import { MessengerChat } from '../common/MessengerChat';
 import { MessengerFriend } from '../common/MessengerFriend';
 import { MessengerRequest } from '../common/MessengerRequest';
 import { MessengerSettings } from '../common/MessengerSettings';
@@ -11,14 +12,15 @@ function compareName(a, b)
     return 0;
 }
 
-export interface IFriendListState
+export interface IFriendsState
 {
     settings: MessengerSettings;
     friends: MessengerFriend[];
     requests: MessengerRequest[];
+    activeChats: MessengerChat[];
 }
 
-export interface IFriendListAction
+export interface IFriendsAction
 {
     type: string;
     payload: {
@@ -26,34 +28,37 @@ export interface IFriendListAction
         fragment?: FriendParser[];
         update?: FriendListUpdateParser;
         requests?: FriendRequestData[];
+        chats?: MessengerChat[];
     }
 }
 
-export class FriendListActions
+export class FriendsActions
 {
-    public static RESET_STATE: string = 'FLA_RESET_STATE';
-    public static UPDATE_SETTINGS: string = 'FLA_UPDATE_SETTINGS';
-    public static PROCESS_FRAGMENT: string = 'FLA_PROCESS_FRAGMENT';
-    public static PROCESS_UPDATE: string = 'FLA_PROCESS_UPDATE';
-    public static PROCESS_REQUESTS: string = 'FLA_PROCESS_REQUESTS';
+    public static RESET_STATE: string = 'FA_RESET_STATE';
+    public static UPDATE_SETTINGS: string = 'FA_UPDATE_SETTINGS';
+    public static PROCESS_FRAGMENT: string = 'FA_PROCESS_FRAGMENT';
+    public static PROCESS_UPDATE: string = 'FA_PROCESS_UPDATE';
+    public static PROCESS_REQUESTS: string = 'FA_PROCESS_REQUESTS';
+    public static SET_ACTIVE_CHATS: string = 'FA_SET_ACTIVE_CHATS';
 }
 
-export const initialFriendList: IFriendListState = {
+export const initialFriends: IFriendsState = {
     settings: null,
     friends: [],
-    requests: []
+    requests: [],
+    activeChats: []
 }
 
-export const FriendListReducer: Reducer<IFriendListState, IFriendListAction> = (state, action) =>
+export const FriendsReducer: Reducer<IFriendsState, IFriendsAction> = (state, action) =>
 {
     switch(action.type)
     {
-        case FriendListActions.UPDATE_SETTINGS: {
+        case FriendsActions.UPDATE_SETTINGS: {
             const settings = (action.payload.settings || state.settings || null);
 
             return { ...state, settings };
         }
-        case FriendListActions.PROCESS_FRAGMENT: {
+        case FriendsActions.PROCESS_FRAGMENT: {
             const fragment = (action.payload.fragment || null);
             let friends = [ ...state.friends ];
 
@@ -85,7 +90,7 @@ export const FriendListReducer: Reducer<IFriendListState, IFriendListAction> = (
 
             return { ...state, friends };
         }
-        case FriendListActions.PROCESS_UPDATE: {
+        case FriendsActions.PROCESS_UPDATE: {
             const update = (action.payload.update || null);
             let friends = [ ...state.friends ];
 
@@ -118,7 +123,7 @@ export const FriendListReducer: Reducer<IFriendListState, IFriendListAction> = (
 
             return { ...state, friends };
         }
-        case FriendListActions.PROCESS_REQUESTS: {
+        case FriendsActions.PROCESS_REQUESTS: {
             const newRequests = (action.payload.requests || null);
             let requests = [ ...state.requests ];
 
@@ -132,6 +137,11 @@ export const FriendListReducer: Reducer<IFriendListState, IFriendListAction> = (
             requests.sort(compareName);
 
             return { ...state, requests };
+        }
+        case FriendsActions.SET_ACTIVE_CHATS: {
+            const activeChats = (action.payload.chats || []);
+            
+            return { ...state, activeChats };
         }
         default:
             return state;

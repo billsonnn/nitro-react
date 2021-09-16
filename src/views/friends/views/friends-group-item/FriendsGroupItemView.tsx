@@ -1,13 +1,12 @@
-import { SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
-import { FollowFriendMessageComposer } from '@nitrots/nitro-renderer/src/nitro/communication/messages/outgoing/friendlist/FollowFriendMessageComposer';
+import { FollowFriendMessageComposer, SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
 import { UserProfileIconView } from '../../../shared/user-profile-icon/UserProfileIconView';
 import { MessengerFriend } from '../../common/MessengerFriend';
-import { FriendsListItemViewProps } from './FriendsListItemView.types';
+import { FriendsGroupItemViewProps } from './FriendsGroupItemView.types';
 
-export const FriendsListItemView: FC<FriendsListItemViewProps> = props =>
+export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
 {
     const { friend = null } = props;
 

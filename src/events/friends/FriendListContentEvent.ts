@@ -1,7 +1,7 @@
 import { MessengerFriend } from '../../views/friends/common/MessengerFriend';
-import { FriendListEvent } from './FriendListEvent';
+import { FriendsEvent } from './FriendsEvent';
 
-export class FriendListContentEvent extends FriendListEvent
+export class FriendListContentEvent extends FriendsEvent
 {
     public static FRIEND_LIST_CONTENT: string = 'FLSFRE_FRIEND_LIST_CONTENT';
 
