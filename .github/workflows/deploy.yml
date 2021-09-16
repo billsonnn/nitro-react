@@ -15,9 +15,6 @@ jobs:
         with:
           repository: 'billsonnn/nitro-react@dev'
       - name: Install & Build
-        with:
-          node-version: '14.x'
-          registry-url: 'https://registry.npmjs.org'
         run: |
           npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev
           npm i
