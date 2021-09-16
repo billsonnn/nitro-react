@@ -5,7 +5,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts --max_old_space_size=8048 build",
-    "build:prod": "npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev && npm i && npm run build",
+    "build:prod": "npm uninstall @nitrots/nitro-renderer && npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev && npm i && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
