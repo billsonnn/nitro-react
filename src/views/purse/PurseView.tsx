@@ -29,6 +29,11 @@ export const PurseView: FC<{}> = props =>
         return GetConfiguration<number[]>('system.currency.types', []);
     }, []);
 
+    const currencyDisplayNumberShort = useMemo(() =>
+    {
+        return GetConfiguration<boolean>('currency.display.number.short', false);
+    }, []);
+
     const getCurrencyElements = useCallback((offset: number, limit: number = -1, seasonal: boolean = false) =>
     {
         if(!purse.activityPoints.size) return null;
@@ -53,13 +58,13 @@ export const PurseView: FC<{}> = props =>
             if((limit > -1) && (count === limit)) break;
 
             if(seasonal) elements.push(<SeasonalView key={ type } type={ type } amount={ purse.activityPoints.get(type) } />);
-            else elements.push(<CurrencyView key={ type } type={ type } amount={ purse.activityPoints.get(type) } />);
+            else elements.push(<CurrencyView key={ type } type={ type } amount={ purse.activityPoints.get(type) } short={ currencyDisplayNumberShort } />);
 
             count++;
         }
 
         return elements;
-    }, [ purse, displayedCurrencies ]);
+    }, [ purse, displayedCurrencies, currencyDisplayNumberShort ]);
 
     const getClubText = useCallback(() =>
     {
@@ -123,7 +128,7 @@ export const PurseView: FC<{}> = props =>
                 <div className="row mx-0 w-100">
                     <div className="col-6 px-0">
                         <div className="d-flex flex-column nitro-currencies">
-                            <CurrencyView type={ -1 } amount={ purse.credits } />
+                            <CurrencyView type={ -1 } amount={ purse.credits } short={ currencyDisplayNumberShort } />
                             { getCurrencyElements(0, 2) }
                         </div>
                     </div>

@@ -45,6 +45,7 @@
         5,
         101
     ],
+    "currency.display.number.short": false,
     "currency.asset.icon.url": "${images.url}/wallet/%type%.png",
     "catalog.asset.url": "${image.library.url}catalogue",
     "catalog.asset.image.url": "${catalog.asset.url}/%name%.gif",
