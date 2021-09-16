@@ -23,7 +23,7 @@ export const CurrencyView: FC<CurrencyViewProps> = props =>
         placement="left"
         overlay={
             <Tooltip id={`tooltip-${ type }`}>
-                { amount }
+                { LocalizeFormattedNumber(amount) }
             </Tooltip>
         }>
             { element }
