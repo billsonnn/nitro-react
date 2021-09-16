@@ -14,8 +14,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Install & Build
         run: |
-          npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev
-          npm i
           npm run build:prod
       - name: Archive Artifacts
         uses: actions/upload-artifact@v2
