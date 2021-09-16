@@ -1,4 +1,5 @@
 import { NitroEvent } from '@nitrots/nitro-renderer';
+import classNames from 'classnames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { ColorUtils, GetConfiguration, LocalizeText, RoomWidgetDimmerChangeStateMessage, RoomWidgetDimmerPreviewMessage, RoomWidgetDimmerSavePresetMessage, RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateDimmerStateEvent } from '../../../../../api';
@@ -175,7 +176,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
                                     <div className="d-flex gap-2">
                                         { AVAILABLE_COLORS.map((color, index) =>
                                         {
-                                            return <div key={ index } className="rounded w-100 color-swatch cursor-pointer" onClick={ () => setSelectedColor(color) } style={{ backgroundColor: HTML_COLORS[index] }}></div>;
+                                            return <div key={ index } className={ 'color-swatch rounded w-100 cursor-pointer' + classNames({ ' active': color === selectedColor }) } onClick={ () => setSelectedColor(color) } style={{ backgroundColor: HTML_COLORS[index] }}></div>;
                                         }) }
                                 </div> }
                             </div>

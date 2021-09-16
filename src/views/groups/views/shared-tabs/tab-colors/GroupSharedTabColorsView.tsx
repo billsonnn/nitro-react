@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { useGroupsContext } from '../../../context/GroupsContext';
@@ -64,7 +65,7 @@ export const GroupSharedTabColorsView: FC<{}> = props =>
                     <div className="row row-cols-18 g-0 gap-1 w-100 h-100 overflow-auto">
                         { groupColorsA && groupColorsA.map((item, index) =>
                             {
-                                return <div key={ index } className="color-swatch cursor-pointer" style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(item.id) }></div>
+                                return <div key={ index } className={ 'color-swatch cursor-pointer' + classNames({ ' active': groupColors[selectingColorIndex] === item.id }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(item.id) }></div>
                             }) }
                     </div>
                     <div><i className="fas fa-chevron-right h2 m-0 text-primary cursor-pointer" onClick={ () => setSelectingColorIndex(1) } /></div>
@@ -77,7 +78,7 @@ export const GroupSharedTabColorsView: FC<{}> = props =>
                     <div className="row row-cols-18 g-0 gap-1 w-100 h-100 overflow-auto">
                         { groupColorsB && groupColorsB.map((item, index) =>
                             {
-                                return <div key={ index } className="color-swatch cursor-pointer" style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(item.id) }></div>
+                                return <div key={ index } className={ 'color-swatch cursor-pointer' + classNames({ ' active': groupColors[selectingColorIndex] === item.id }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(item.id) }></div>
                             }) }
                     </div>
                 </div>
