@@ -4,6 +4,7 @@ export * from './RoomWidgetChangePostureMessage';
 export * from './RoomWidgetChatMessage';
 export * from './RoomWidgetChatSelectAvatarMessage';
 export * from './RoomWidgetChatTypingMessage';
+export * from './RoomWidgetCreditFurniRedeemMessage';
 export * from './RoomWidgetDanceMessage';
 export * from './RoomWidgetDimmerChangeStateMessage';
 export * from './RoomWidgetDimmerPreviewMessage';
