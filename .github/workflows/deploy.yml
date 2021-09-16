@@ -16,7 +16,7 @@ jobs:
         run: |
           npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev
           npm i
-          npm run build
+          node --max-old-space-size=8192 node_modules/@craco/craco/bin/craco.js build
       - name: Archive Artifacts
         uses: actions/upload-artifact@v2
         with:
