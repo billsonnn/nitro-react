@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-        with:
-          repository: 'billsonnn/nitro-react@dev'
       - name: Install & Build
         run: |
           npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev
