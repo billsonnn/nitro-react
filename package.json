@@ -21,6 +21,7 @@
     "postinstall": "node ./webpack-patcher.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:prod": "npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev && npm i && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
