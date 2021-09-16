@@ -10,16 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Build Repository
-      uses: billsonnn/nitro-react@master
-      env:
-        HOST: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-      with:
-        node-version: '14.x'
-        registry-url: 'https://registry.npmjs.org'
-        source: "."
-        target: "/var/www/nitrots.co/domains/prod.nitrots.co/html"
-      run: npm run build:prod
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          repository: 'billsonnn/nitro-react@dev'
+      - name: Install & Build
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
+        run: |
+          npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev
+          npm i
+          npm run build
+      - name: Archive Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: |
+            build
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSHKEY }}
+          path: |
+            build
+          target: "/var/www/nitrots.co/domains/prod.nitrots.co/html"
