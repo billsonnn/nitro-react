@@ -104,7 +104,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
     if(!groupInformation) return null;
 
     return (
-        <div className="nitro-group-room-information rounded py-1 px-2">
+        <div className="nitro-group-room-information rounded">
             <div className="d-flex justify-content-between align-items-center cursor-pointer" onClick={ () => setIsExpended(value => !value) }>
                 <div>{ LocalizeText('group.homeroominfo.title') }</div>
                 <i className={ 'fas fa-chevron-' + (isExpended ? 'up' : 'down') } />
@@ -119,7 +119,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
                     </div>
                 </div>
                 { (groupInformation.type !== GroupType.PRIVATE || isRealOwner()) && 
-                        <button className="btn btn-sm btn-primary w-100 mt-1" disabled={ groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING } onClick={ handleButtonClick }>
+                        <button className="btn btn-sm btn-success w-100 mt-1" disabled={ groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING } onClick={ handleButtonClick }>
                             { LocalizeText(getButtonText()) }
                         </button>
                     }
