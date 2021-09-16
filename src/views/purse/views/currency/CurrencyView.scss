@@ -1,9 +1,4 @@
 .nitro-currency {
     pointer-events: all;
-    background: $bg-mirage-split-background;
     position: relative;
-
-    &:not(:first-of-type) {
-        margin-top:2px;
-    }
 }
