@@ -10,11 +10,11 @@ export const SeasonalView: FC<SeasonalViewProps> = props =>
     return (
         <div className="nitro-seasonal-currency rounded d-flex justify-content-end">
             <div className="nitro-currency-text w-100 px-1 d-flex justify-content-between">
-                <span>{ LocalizeText(`purse.seasonal.currency.${ type }`) }</span>
+                <span className="seasonal-text">{ LocalizeText(`purse.seasonal.currency.${ type }`) }</span>
                 <span>{ LocalizeShortNumber(amount) }</span>
             </div>
-            <div className="nitro-seasonal-icon">
-                    <CurrencyIcon type={ type } />
+            <div>
+                <CurrencyIcon type={ type } />
             </div>
         </div>
     );
