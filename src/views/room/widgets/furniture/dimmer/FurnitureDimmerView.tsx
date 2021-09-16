@@ -58,7 +58,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
 
                     setDimmerState(prevValue =>
                         {
-                            prevDimmerState = prevValue;
+                            setLastDimmerState(prevValue);
 
                             return widgetEvent.state;
                         });
