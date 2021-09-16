@@ -1,4 +1,4 @@
-import { AcceptFriendComposer, DeclineFriendComposer } from '@nitrots/nitro-renderer';
+import { AcceptFriendMessageComposer, DeclineFriendMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
 import { UserProfileIconView } from '../../../shared/user-profile-icon/UserProfileIconView';
@@ -12,14 +12,14 @@ export const FriendListRequestsItemView: FC<FriendListRequestsItemViewProps> = p
     {
         if(!request) return;
         
-        SendMessageHook(new AcceptFriendComposer(request.id));
+        SendMessageHook(new AcceptFriendMessageComposer(request.id));
     }, [ request ]);
 
     const decline = useCallback(() =>
     {
         if(!request) return;
         
-        SendMessageHook(new DeclineFriendComposer(false, request.id));
+        SendMessageHook(new DeclineFriendMessageComposer(false, request.id));
     }, [ request ]);
 
     if(!request) return null;

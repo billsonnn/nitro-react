@@ -1,4 +1,4 @@
-import { FollowFriendComposer, SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
+import { FollowFriendMessageComposer, SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
@@ -16,7 +16,7 @@ export const FriendListFriendsItemView: FC<FriendListFriendsItemViewProps> = pro
     {
         if(!friend) return;
         
-        SendMessageHook(new FollowFriendComposer(friend.id));
+        SendMessageHook(new FollowFriendMessageComposer(friend.id));
     }, [ friend ]);
 
     const getCurrentRelationshipName = useCallback(() =>
