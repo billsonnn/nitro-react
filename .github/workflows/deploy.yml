@@ -1,0 +1,25 @@
+name: Deploy Bundle@dev
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Build Repository
+      uses: billsonnn/nitro-react@master
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+      with:
+        node-version: '14.x'
+        registry-url: 'https://registry.npmjs.org'
+        source: "."
+        target: "/var/www/nitrots.co/domains/prod.nitrots.co/html"
+      run: npm run build:prod
