@@ -26,13 +26,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Reinstall @nitrots/nitro-renderer
+      - name: Install dependencies
         run: |
           npm uninstall @nitrots/nitro-renderer
           npm install git+https://git@git.krews.org/nitro/nitro-renderer#dev
-      - name: Install dependencies
-        run: |
-          npm install
       - name: Build Nitro
         run: |
           npm run build
