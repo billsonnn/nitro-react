@@ -55,16 +55,8 @@ export const FurnitureDimmerView: FC<{}> = props =>
 
                 BatchUpdates(() =>
                 {
-                    let prevDimmerState = 0;
-
-                    setDimmerState(prevValue =>
-                        {
-                            setLastDimmerState(prevValue);
-
-                            return widgetEvent.state;
-                        });
-
-                    setLastDimmerState(prevDimmerState);
+                    setLastDimmerState(dimmerState);
+                    setDimmerState(widgetEvent.state);
                     setSelectedPresetId(widgetEvent.presetId);
                     setEffectId(widgetEvent.effectId);
                     setSelectedEffectId(widgetEvent.effectId);
@@ -73,10 +65,11 @@ export const FurnitureDimmerView: FC<{}> = props =>
                     setBrightness(widgetEvent.brightness);
                     setSelectedBrightness(widgetEvent.brightness);
                 });
+
                 return;
             }
         }
-    }, []);
+    }, [ dimmerState ]);
 
     CreateEventDispatcherHook(RoomWidgetUpdateDimmerEvent.PRESETS, eventDispatcher, onNitroEvent);
     CreateEventDispatcherHook(RoomWidgetUpdateDimmerEvent.HIDE, eventDispatcher, onNitroEvent);
@@ -143,6 +136,8 @@ export const FurnitureDimmerView: FC<{}> = props =>
     useEffect(() =>
     {
         if((dimmerState === 0) && (lastDimmerState === 0)) return;
+
+        console.log('ye')
 
         widgetHandler.processWidgetMessage(new RoomWidgetDimmerPreviewMessage(selectedColor, selectedBrightness, (selectedEffectId === 2)));
     }, [ widgetHandler, dimmerState, lastDimmerState, selectedColor, selectedBrightness, selectedEffectId ]);
