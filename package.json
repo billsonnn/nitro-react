@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts --max_old_space_size=8048 build",
+    "start": "craco start",
+    "build": "craco --max_old_space_size=8048 build",
     "build:prod": "npm uninstall @nitrots/nitro-renderer && npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev && npm i && npm run build",
-    "test": "react-scripts test",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@craco/craco": "^6.3.0",
     "@nitrots/nitro-renderer": "file:../nitro-renderer",
     "animate.css": "^4.1.1",
     "classnames": "^2.3.1",
