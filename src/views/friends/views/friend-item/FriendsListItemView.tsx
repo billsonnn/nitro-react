@@ -1,7 +1,7 @@
 import { SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
 import { FollowFriendMessageComposer } from '@nitrots/nitro-renderer/src/nitro/communication/messages/outgoing/friendlist/FollowFriendMessageComposer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText } from '../../../../api';
+import { LocalizeText, OpenMessengerChat } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
 import { UserProfileIconView } from '../../../shared/user-profile-icon/UserProfileIconView';
 import { MessengerFriend } from '../../common/MessengerFriend';
@@ -18,6 +18,13 @@ export const FriendsListItemView: FC<FriendsListItemViewProps> = props =>
         if(!friend) return;
         
         SendMessageHook(new FollowFriendMessageComposer(friend.id));
+    }, [ friend ]);
+
+    const openMessengerChat = useCallback(() =>
+    {
+        if(!friend) return;
+        
+        OpenMessengerChat(friend.id);
     }, [ friend ]);
 
     const getCurrentRelationshipName = useCallback(() =>
@@ -48,8 +55,8 @@ export const FriendsListItemView: FC<FriendsListItemViewProps> = props =>
             <div>{ friend.name }</div>
             <div className="ms-auto d-flex align-items-center gap-1">
                 { !isExpanded && <>
-                    { friend.followingAllowed && <i onClick={ followFriend } className="icon icon-friendlist-follow cursor-pointer" title={ LocalizeText('friendlist.tip.follow') } /> }
-                    { friend.online && <i className="icon icon-friendlist-chat cursor-pointer" title={ LocalizeText('friendlist.tip.im') } /> }
+                    { friend.followingAllowed && <i className="icon icon-friendlist-follow cursor-pointer" onClick={ followFriend } title={ LocalizeText('friendlist.tip.follow') } /> }
+                    { friend.online && <i className="icon icon-friendlist-chat cursor-pointer" onClick={ openMessengerChat } title={ LocalizeText('friendlist.tip.im') } /> }
                     <i className={ 'icon cursor-pointer icon-relationship-' + getCurrentRelationshipName() } onClick={ () => setIsExpanded(true) } title={ LocalizeText('infostand.link.relationship') } />
                     </> }
                 { isExpanded && <>

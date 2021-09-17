@@ -21,7 +21,6 @@ export const FriendsView: FC<{}> = props =>
 
     const [ isReady, setIsReady ] = useState(false);
     const [ isListVisible, setIsListVisible ] = useState(false);
-    const [ isMessengerVisible, setIsMessengerVisible ] = useState(false);
 
     useEffect(() =>
     {
@@ -44,12 +43,6 @@ export const FriendsView: FC<{}> = props =>
                 return;
             case FriendsEvent.TOGGLE_FRIEND_LIST:
                 setIsListVisible(value => !value);
-                return;
-            case FriendsEvent.SHOW_FRIEND_MESSENGER:
-                setIsMessengerVisible(true);
-                return;
-            case FriendsEvent.TOGGLE_FRIEND_MESSENGER:
-                setIsMessengerVisible(value => !value);
                 return;
             case FriendsSendFriendRequestEvent.SEND_FRIEND_REQUEST:
                 const requestEvent = (event as FriendsSendFriendRequestEvent);
@@ -104,7 +97,7 @@ export const FriendsView: FC<{}> = props =>
             <FriendsMessageHandler />
             { isReady && createPortal(<FriendBarView />, document.getElementById('toolbar-friend-bar-container')) }
             { isListVisible && <FriendsListView onlineFriends={ onlineFriends } offlineFriends={ offlineFriends } friendRequests={ requests } onCloseClick={ () => setIsListVisible(false) } /> }
-            { isMessengerVisible && <FriendsMessengerView /> }
+            <FriendsMessengerView />
         </FriendsContextProvider>
     );
 }

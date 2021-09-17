@@ -12,9 +12,9 @@ export class MessengerChat
         this._messages = [];
     }
 
-    public addMessage(): void
+    public addMessage(type: number, senderId: number, message: string, sentAt: number, extraData?: string): void
     {
-        this._messages.push();
+        this._messages.push(new MessengerChatMessage(type, senderId, message, sentAt, extraData));
     }
 
     public get friendId(): number
