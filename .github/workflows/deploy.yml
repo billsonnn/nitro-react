@@ -19,21 +19,34 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install & Build
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: '~/.npm'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Reinstall @nitrots/nitro-renderer
         run: |
-          npm run build:prod
+          npm uninstall @nitrots/nitro-renderer
+          npm install git+https://git@git.krews.org/nitro/nitro-renderer#dev
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Build Nitro
+        run: |
+          npm run build
       - name: Archive Artifacts
         uses: actions/upload-artifact@v2
         with:
           path: |
             build
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          host: ${{ secrets.HOST }}
-          port: ${{ secrets.PORT }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSHKEY }}
-          path: |
-            build
-          target: "/var/www/nitrots.co/domains/prod.nitrots.co/html"
+      - name: Deploy Artifacts
+        uses: easingthemes/ssh-deploy@main
+        env:
+          REMOTE_HOST: ${{ secrets.HOST }}
+          REMOTE_PORT: ${{ secrets.PORT }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSHKEY }}
+          SOURCE: "build/"
+          TARGET: ${{ secrets.TARGET }}
