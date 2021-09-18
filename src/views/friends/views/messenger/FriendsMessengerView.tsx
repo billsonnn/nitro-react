@@ -50,7 +50,7 @@ export const FriendsMessengerView: FC<{}> = props =>
         if(existingChatIndex === -1)
         {
             const clonedActiveChats = Array.from(activeChats);
-            clonedActiveChats.push(new MessengerChat(friendId, true));
+            clonedActiveChats.push(new MessengerChat(friendId));
 
             dispatchFriendsState({
                 type: FriendsActions.SET_ACTIVE_CHATS,
@@ -75,8 +75,24 @@ export const FriendsMessengerView: FC<{}> = props =>
         return friend.figure;
     }, [ friends ]);
 
-    const selectedChat = useMemo(() =>
+    const selectChat = useCallback((index: number) =>
     {
+        const chat = activeChats[index];
+
+        if(!chat) return;
+
+        dispatchFriendsState({
+            type: FriendsActions.SET_CHAT_READ,
+            payload: {
+                numberValue: chat.friendId
+            }
+        });
+        
+        setSelectedChatIndex(index);
+    }, [ activeChats, dispatchFriendsState ]);
+
+    const selectedChat = useMemo(() =>
+    {        
         return activeChats[selectedChatIndex];
     }, [ activeChats, selectedChatIndex ]);
 
@@ -131,7 +147,8 @@ export const FriendsMessengerView: FC<{}> = props =>
             type: FriendsActions.ADD_CHAT_MESSAGE,
             payload: {
                 chatMessage: new MessengerChatMessage(MessengerChatMessage.MESSAGE, 0, message, (new Date().getMilliseconds())),
-                numberValue: selectedChat.friendId
+                numberValue: selectedChat.friendId,
+                boolValue: false
             }
         });
         setMessage('');
@@ -152,7 +169,8 @@ export const FriendsMessengerView: FC<{}> = props =>
                     <div className="d-flex gap-2 overflow-auto pb-1">
                         { activeChats && activeChats.map((chat, index) =>
                         {
-                            return <div key={ index } className="friend-head bg-muted rounded flex-shrink-0 cursor-pointer" onClick={ () => setSelectedChatIndex(index) }>
+                            return <div key={ index } className="friend-head rounded flex-shrink-0 cursor-pointer bg-muted" onClick={ () => selectChat(index) }>
+                                { !chat.isRead && <i className="icon icon-friendlist-new-message" /> }
                                 <AvatarImageView figure={ getFriendFigure(chat.friendId) } headOnly={true} direction={3} />
                             </div>;
                         }) }
@@ -176,18 +194,31 @@ export const FriendsMessengerView: FC<{}> = props =>
                             { selectedChat.messageGroups.map((group, groupIndex) =>
                             {
                                 return <div key={ groupIndex } className={ 'd-flex gap-2 w-100 justify-content-' + (group.userId === 0 ? 'end' : 'start') }>
-                                    { group.userId !== 0 && <div className="message-avatar flex-shrink-0">
-                                        <AvatarImageView figure={ selectedChatFriend.figure } direction={ 2 } />
-                                    </div> }
-                                    <div className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (group.userId === 0 ? 'right' : 'left') }>
+                                    { group.isSystem && <>
                                         { group.messages.map((message, messageIndex) =>
-                                        {
-                                            return <div key={ messageIndex } className="text-break">{ message.message }</div>
-                                        }) }
-                                    </div>
-                                    { group.userId === 0 && <div className="message-avatar flex-shrink-0">
-                                        <AvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
-                                    </div> }
+                                            {
+                                                return <div key={ messageIndex } className="text-break">
+                                                    { message.type === MessengerChatMessage.SECURITY_ALERT && <div className="bg-light rounded mb-2 d-flex gap-2 px-2 py-1 small text-muted align-items-center">
+                                                        <i className="icon icon-friendlist-warning flex-shrink-0" />
+                                                        <div>{ LocalizeText('messenger.moderationinfo') }</div>
+                                                    </div> }
+                                                </div>
+                                            }) }
+                                    </> }
+                                    { !group.isSystem && <>
+                                        { group.userId !== 0 && <div className="message-avatar flex-shrink-0">
+                                            <AvatarImageView figure={ selectedChatFriend.figure } direction={ 2 } />
+                                        </div> }
+                                        <div className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (group.userId === 0 ? 'right' : 'left') }>
+                                            { group.messages.map((message, messageIndex) =>
+                                            {
+                                                return <div key={ messageIndex } className="text-break">{ message.message }</div>
+                                            }) }
+                                        </div>
+                                        { group.userId === 0 && <div className="message-avatar flex-shrink-0">
+                                            <AvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
+                                        </div> }
+                                    </> }
                                 </div>;
                             }) }
                         </div>

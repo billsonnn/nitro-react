@@ -6,19 +6,25 @@ export class MessengerChat
     private _isRead: boolean;
     private _messageGroups: MessengerChatMessageGroup[];
 
-    constructor(friendId: number, isRead: boolean = true)
+    constructor(friendId: number)
     {
         this._friendId = friendId;
-        this._isRead = isRead;
+        this._isRead = true;
         this._messageGroups = [];
     }
 
-    public addMessage(message: MessengerChatMessage): void
+    public addMessage(message: MessengerChatMessage, setAsNotRead: boolean = true, isSystem: boolean = false): void
     {
-        if(!this.lastMessageGroup || this.lastMessageGroup.userId !== message.senderId) this._messageGroups.push(new MessengerChatMessageGroup(message.senderId));
+        if(!this.lastMessageGroup || this.lastMessageGroup.userId !== message.senderId || isSystem || this.lastMessageGroup.isSystem) this._messageGroups.push(new MessengerChatMessageGroup(message.senderId, isSystem));
 
         this.lastMessageGroup.addMessage(message);
-        this._isRead = false;
+        
+        if(setAsNotRead) this._isRead = false;
+    }
+
+    public read(): void
+    {
+        this._isRead = true;
     }
 
     public get friendId(): number

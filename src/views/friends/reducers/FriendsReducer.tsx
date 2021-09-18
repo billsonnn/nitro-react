@@ -19,6 +19,7 @@ export interface IFriendsState
     friends: MessengerFriend[];
     requests: MessengerRequest[];
     activeChats: MessengerChat[];
+    firstChatEverOpen: boolean;
 }
 
 export interface IFriendsAction
@@ -32,6 +33,7 @@ export interface IFriendsAction
         chats?: MessengerChat[];
         chatMessage?: MessengerChatMessage;
         numberValue?: number;
+        boolValue?: boolean;
     }
 }
 
@@ -43,6 +45,7 @@ export class FriendsActions
     public static PROCESS_UPDATE: string = 'FA_PROCESS_UPDATE';
     public static PROCESS_REQUESTS: string = 'FA_PROCESS_REQUESTS';
     public static SET_ACTIVE_CHATS: string = 'FA_SET_ACTIVE_CHATS';
+    public static SET_CHAT_READ: string = 'FA_SET_CHAT_READ';
     public static ADD_CHAT_MESSAGE: string = 'FA_ADD_CHAT_MESSAGE';
 }
 
@@ -50,7 +53,8 @@ export const initialFriends: IFriendsState = {
     settings: null,
     friends: [],
     requests: [],
-    activeChats: []
+    activeChats: [],
+    firstChatEverOpen: false
 }
 
 export const FriendsReducer: Reducer<IFriendsState, IFriendsAction> = (state, action) =>
@@ -145,11 +149,25 @@ export const FriendsReducer: Reducer<IFriendsState, IFriendsAction> = (state, ac
         case FriendsActions.SET_ACTIVE_CHATS: {
             const activeChats = (action.payload.chats || []);
             
+            if(!state.firstChatEverOpen && activeChats.length > 0) activeChats[0].addMessage(new MessengerChatMessage(MessengerChatMessage.SECURITY_ALERT, 0, null, 0), false, true);
+            
+            return { ...state, activeChats, firstChatEverOpen: true };
+        }
+        case FriendsActions.SET_CHAT_READ: {
+            const friendId = action.payload.numberValue;
+            
+            const activeChats = Array.from(state.activeChats);
+
+            let activeChatIndex = activeChats.findIndex(c => c.friendId === friendId);
+
+            if(activeChatIndex > -1) activeChats[activeChatIndex].read();
+            
             return { ...state, activeChats };
         }
         case FriendsActions.ADD_CHAT_MESSAGE: {
             const message = action.payload.chatMessage;
             const toFriendId = action.payload.numberValue;
+            const setAsNotRead = action.payload.boolValue;
 
             const activeChats = Array.from(state.activeChats);
 
@@ -157,11 +175,11 @@ export const FriendsReducer: Reducer<IFriendsState, IFriendsAction> = (state, ac
 
             if(activeChatIndex === -1)
             {
-                activeChats.push(new MessengerChat(message.senderId, false));
+                activeChats.push(new MessengerChat(message.senderId));
                 activeChatIndex = activeChats.length - 1;
             }
 
-            activeChats[activeChatIndex].addMessage(message);
+            activeChats[activeChatIndex].addMessage(message, setAsNotRead);
 
             return { ...state, activeChats };
         }

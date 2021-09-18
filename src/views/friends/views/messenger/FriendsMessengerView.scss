@@ -1,11 +1,18 @@
 .nitro-friends-messenger {
-    width: 300px;
+    width: 280px;
 
     .friend-head {
         position: relative;
         width: 40px;
         height: 40px;
         overflow: hidden;
+
+        .icon {
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            z-index: 10;
+        }
 
         .avatar-image {
             position: absolute;

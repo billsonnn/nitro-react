@@ -693,6 +693,18 @@
         height: 16px;
     }
 
+    &.icon-friendlist-warning {
+        background: url('../images/friendlist/icons/icon_warning.png');
+        width: 23px;
+        height: 21px;
+    }
+
+    &.icon-friendlist-new-message {
+        background: url('../images/friendlist/icons/icon_new_message.png');
+        width: 14px;
+        height: 16px;
+    }
+
     &.spin {
         animation: rotating 1s linear infinite;
     }

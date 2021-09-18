@@ -77,7 +77,8 @@ export const FriendsMessageHandler: FC<{}> = props =>
         dispatchFriendsState({
             type: FriendsActions.ADD_CHAT_MESSAGE,
             payload: {
-                chatMessage: new MessengerChatMessage(MessengerChatMessage.MESSAGE, userId, parser.messageText, parser.secondsSinceSent, parser.extraData)
+                chatMessage: new MessengerChatMessage(MessengerChatMessage.MESSAGE, userId, parser.messageText, parser.secondsSinceSent, parser.extraData),
+                boolValue: true
             }
         });
     }, [ dispatchFriendsState ]);
