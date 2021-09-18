@@ -1,4 +1,4 @@
-import { YoutubeControlVideoMessageEvent, YoutubeDisplayPlaylistsEvent, YoutubeDisplayVideoMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/room/furniture/youtube';
+import { YoutubeControlVideoMessageEvent, YoutubeDisplayPlaylistsEvent, YoutubeDisplayVideoMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { RoomWidgetUpdateYoutubeDisplayEvent } from '../../../../../api/nitro/room/widgets/events/RoomWidgetUpdateYoutubeDisplayEvent';
 import { CreateEventDispatcherHook, CreateMessageHook } from '../../../../../hooks';
@@ -103,7 +103,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
             <NitroCardContentView>
                 <div className="row w-100">
                     <div className="youtube-video-container col-8">
-                        <iframe title="yt" width="560" height="315" src={videoUrl} frameBorder="0" allowFullScreen allow="autoplay"></iframe>
+                        <iframe title="yt" width="100%" height="100%" src={videoUrl} frameBorder="0" allowFullScreen allow="autoplay"></iframe>
                     </div>
                     <div className="playlist-container col-4">
                         lol
