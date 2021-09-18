@@ -10,7 +10,7 @@ import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
 import { FurniImageView } from '../../../shared/furni-image/FurniImageView';
 import { useCatalogContext } from '../../context/CatalogContext';
 
-export const CatalogPageGiftView: FC<{}> = props =>
+export const CatalogGiftView: FC<{}> = props =>
 {
     const { catalogState = null } = useCatalogContext();
     const { giftConfiguration = null } = catalogState;

@@ -1,6 +1,6 @@
-import { NotificationType } from './NotificationType';
+import { NotificationBubbleType } from './NotificationBubbleType';
 
-export class NotificationItem
+export class NotificationBubbleItem
 {
     private static ITEM_ID: number = -1;
 
@@ -10,11 +10,11 @@ export class NotificationItem
     private _iconUrl: string;
     private _linkUrl: string;
 
-    constructor(message: string, notificationType: string = NotificationType.INFO, iconUrl: string = null, linkUrl: string = null)
+    constructor(message: string, notificationType: string = NotificationBubbleType.INFO, iconUrl: string = null, linkUrl: string = null)
     {
-        NotificationItem.ITEM_ID += 1;
+        NotificationBubbleItem.ITEM_ID += 1;
 
-        this._id = NotificationItem.ITEM_ID;
+        this._id = NotificationBubbleItem.ITEM_ID;
         this._message = message;
         this._notificationType = notificationType;
         this._iconUrl = iconUrl;

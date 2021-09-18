@@ -63,8 +63,6 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutBadgeDisplayViewProp
         const stringDataType = new StringDataType();
         stringDataType.setValue(productData);
 
-        console.log(stringDataType);
-
         dispatchUiEvent(new SetRoomPreviewerStuffDataEvent(activeOffer, stringDataType));
     }, [ currentBadge, activeOffer, roomPreviewer ]);
 

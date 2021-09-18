@@ -1,9 +1,9 @@
-import { NotificationItem } from '../../common/NotificationItem';
-import { NotificationType } from '../../common/NotificationType';
+import { NotificationBubbleItem } from '../../common/NotificationBubbleItem';
+import { NotificationBubbleType } from '../../common/NotificationBubbleType';
 import { NotificationClubGiftBubbleView } from './club-gift/NotificationClubGiftBubbleView';
 import { NotificationDefaultBubbleView } from './default/NotificationDefaultBubbleView';
 
-export const GetBubbleLayout = (item: NotificationItem, close: () => void) =>
+export const GetBubbleLayout = (item: NotificationBubbleItem, close: () => void) =>
 {
     if(!item) return null;
 
@@ -11,7 +11,7 @@ export const GetBubbleLayout = (item: NotificationItem, close: () => void) =>
 
     switch(item.notificationType)
     {
-        case NotificationType.CLUBGIFT:
+        case NotificationBubbleType.CLUBGIFT:
             return <NotificationClubGiftBubbleView { ...props } />
         default:
             return <NotificationDefaultBubbleView { ...props } />

@@ -9,6 +9,7 @@ import { CameraWidgetView } from '../camera/CameraWidgetView';
 import { CatalogView } from '../catalog/CatalogView';
 import { FriendsView } from '../friends/FriendsView';
 import { GroupsView } from '../groups/GroupsView';
+import { HelpView } from '../help/HelpView';
 import { HotelView } from '../hotel-view/HotelView';
 import { InventoryView } from '../inventory/InventoryView';
 import { ModToolsView } from '../mod-tools/ModToolsView';
@@ -69,6 +70,7 @@ export const MainView: FC<MainViewProps> = props =>
             <UserProfileView />
             <GroupsView />
             <CameraWidgetView />
+            <HelpView />
         </div>
     );
 }

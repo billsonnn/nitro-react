@@ -1,40 +1,42 @@
 import { FC, ReactNode, useCallback, useMemo, useState } from 'react';
-import { NotificationCenterAlertEvent } from '../../events';
+import { createPortal } from 'react-dom';
+import { NotificationAlertEvent } from '../../events';
 import { NotificationBubbleEvent } from '../../events/notification-center/NotificationBubbleEvent';
 import { useUiEvent } from '../../hooks/events';
-import { NotificationItem } from './common/NotificationItem';
-import { NotificationType } from './common/NotificationType';
+import { NotificationAlertItem } from './common/NotificationAlertItem';
+import { NotificationBubbleItem } from './common/NotificationBubbleItem';
+import { NotificationBubbleType } from './common/NotificationBubbleType';
 import { NotificationCenterMessageHandler } from './NotificationCenterMessageHandler';
 import { NotificationCenterViewProps } from './NotificationCenterView.types';
-import { NotificationCenterBroadcastMessageView } from './views/broadcast-message/NotificationCenterBroadcastMessageView';
+import { GetAlertLayout } from './views/alert-layouts/GetAlertLayout';
 import { GetBubbleLayout } from './views/bubble-layouts/GetBubbleLayout';
 
 export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
 {
-    const [ alerts, setAlerts ] = useState<NotificationCenterAlertEvent[]>([]);
-    const [ bubbleAlerts, setBubbleAlerts ] = useState<NotificationItem[]>([]);
+    const [ alerts, setAlerts ] = useState<NotificationAlertItem[]>([]);
+    const [ bubbleAlerts, setBubbleAlerts ] = useState<NotificationBubbleItem[]>([]);
 
-    const onNotificationCenterAlertEvent = useCallback((event: NotificationCenterAlertEvent) =>
+    const onNotificationAlertEvent = useCallback((event: NotificationAlertEvent) =>
     {
-        setAlerts(prevValue =>
-            {
-                return [ ...prevValue, event ];
-            });
+        console.log(event);
+        const alertItem = new NotificationAlertItem(event.messages, event.alertType, event.clickUrl, event.clickUrlText, event.title, event.imageUrl);
+
+        setAlerts(prevValue => [ alertItem, ...prevValue ]);
     }, []);
 
-    useUiEvent(NotificationCenterAlertEvent.HOTEL_ALERT, onNotificationCenterAlertEvent);
+    useUiEvent(NotificationAlertEvent.ALERT, onNotificationAlertEvent);
 
     const onNotificationBubbleEvent = useCallback((event: NotificationBubbleEvent) =>
     {
         console.log(event);
-        const notificationItem = new NotificationItem(event.message, event.notificationType, event.imageUrl, event.linkUrl);
+        const notificationItem = new NotificationBubbleItem(event.message, event.notificationType, event.imageUrl, event.linkUrl);
 
         setBubbleAlerts(prevValue => [ notificationItem, ...prevValue ]);
     }, []);
 
     useUiEvent(NotificationBubbleEvent.NEW_BUBBLE, onNotificationBubbleEvent);
 
-    const closeAlert = useCallback((alert: NotificationCenterAlertEvent) =>
+    const closeAlert = useCallback((alert: NotificationAlertItem) =>
     {
         setAlerts(prevValue =>
             {
@@ -47,7 +49,7 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
             });
     }, []);
 
-    const closeBubbleAlert = useCallback((item: NotificationItem) =>
+    const closeBubbleAlert = useCallback((item: NotificationBubbleItem) =>
     {
         setBubbleAlerts(prevValue =>
             {
@@ -60,6 +62,22 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
             })
     }, []);
 
+    const getAlerts = useMemo(() =>
+    {
+        if(!alerts || !alerts.length) return null;
+
+        const elements: ReactNode[] = [];
+
+        for(const alert of alerts)
+        {
+            const element = GetAlertLayout(alert, () => closeAlert(alert));
+
+            elements.push(element);
+        }
+
+        return elements;
+    }, [ alerts, closeAlert ]);
+
     const getBubbleAlerts = useMemo(() =>
     {
         if(!bubbleAlerts || !bubbleAlerts.length) return null;
@@ -70,7 +88,7 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
         {
             const element = GetBubbleLayout(alert, () => closeBubbleAlert(alert));
 
-            if(alert.notificationType === NotificationType.CLUBGIFT)
+            if(alert.notificationType === NotificationBubbleType.CLUBGIFT)
             {
                 elements.unshift(element);
 
@@ -89,15 +107,7 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
             <div className="nitro-notification-center">
                 { getBubbleAlerts }
             </div>
-            { (alerts.length > 0) && alerts.map((alert, index) =>
-                {
-                    switch(alert.type)
-                    {
-                        case NotificationCenterAlertEvent.HOTEL_ALERT:
-                        default:
-                            return <NotificationCenterBroadcastMessageView key={ index } notification={ alert } onClose={ () => closeAlert(alert) } />;
-                    }
-                })}
+            { createPortal(getAlerts, document.getElementById('nitro-alerts-container')) }
         </>
     );
 }

@@ -1,29 +1,36 @@
 import { NitroEvent } from '@nitrots/nitro-renderer';
 
-export class SimpleAlertUIEvent extends NitroEvent
+export class NotificationAlertEvent extends NitroEvent
 {
-    public static ALERT: string = 'SAUE_ALERT';
+    public static ALERT: string = 'NAE_ALERT';
 
-    private _message: string;
+    private _messages: string[];
+    private _alertType: string;
     private _clickUrl: string;
     private _clickUrlText: string;
     private _title: string;
     private _imageUrl: string;
 
-    constructor(message: string, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null)
+    constructor(messages: string[], alertType: string = null, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null)
     {
-        super(SimpleAlertUIEvent.ALERT);
+        super(NotificationAlertEvent.ALERT);
 
-        this._message = message;
+        this._messages = messages;
+        this._alertType = alertType;
         this._clickUrl = clickUrl;
         this._clickUrlText = clickUrlText;
         this._title = title;
         this._imageUrl = imageUrl;
     }
 
-    public get message(): string
+    public get messages(): string[]
     {
-        return this._message;
+        return this._messages;
+    }
+
+    public get alertType(): string
+    {
+        return this._alertType;
     }
 
     public get clickUrl(): string

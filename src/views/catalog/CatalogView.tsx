@@ -10,7 +10,7 @@ import { CatalogMode, CatalogViewProps } from './CatalogView.types';
 import { BuildCatalogPageTree } from './common/CatalogUtilities';
 import { CatalogContextProvider } from './context/CatalogContext';
 import { CatalogReducer, initialCatalog } from './reducers/CatalogReducer';
-import { CatalogPageGiftView } from './views/gift/CatalogPageGiftView';
+import { CatalogGiftView } from './views/gift/CatalogGiftView';
 import { ACTIVE_PAGES, CatalogNavigationView } from './views/navigation/CatalogNavigationView';
 import { CatalogPageView } from './views/page/CatalogPageView';
 
@@ -214,7 +214,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                         </div>
                     </NitroCardContentView>
                 </NitroCardView> }
-                <CatalogPageGiftView />
+                <CatalogGiftView />
         </CatalogContextProvider>
     );
 }

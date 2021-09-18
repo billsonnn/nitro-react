@@ -260,11 +260,18 @@ export const ChatInputView: FC<{}> = props =>
         }
     }, [ onKeyDownEvent ]);
 
+    useEffect(() =>
+    {
+        if(!inputRef.current) return;
+
+        inputRef.current.parentElement.dataset.value = chatValue;
+    }, [ chatValue ]);
+
     return (
         createPortal(
         <div className="nitro-chat-input-container">
             <div className="input-sizer">
-                <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxChatLength } onChange={ event => { event.target.parentElement.dataset.value = event.target.value; updateChatInput(event.target.value) } } onMouseDown={ event => setInputFocus() } />
+                <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxChatLength } onChange={ event => updateChatInput(event.target.value) } onMouseDown={ event => setInputFocus() } />
             </div>
             <ChatInputStyleSelectorView onStyleSelected={ onStyleSelected } />
         </div>, document.getElementById('toolbar-chat-input-container'))

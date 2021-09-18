@@ -2,7 +2,7 @@ import { NitroEvent } from '@nitrots/nitro-renderer';
 
 export class NotificationBubbleEvent extends NitroEvent
 {
-    public static NEW_BUBBLE: string = 'NNBE_NEW_BUBBLE';
+    public static NEW_BUBBLE: string = 'NBE_NEW_BUBBLE';
 
     private _message: string;
     private _notificationType: string;
