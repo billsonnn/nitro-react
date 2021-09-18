@@ -3,6 +3,7 @@ export * from './draggable-window';
 export * from './gift-card';
 export * from './loading-spinner';
 export * from './mini-camera';
+export * from './notification-alert';
 export * from './notification-bubble';
 export * from './transitions';
 export * from './trophy';

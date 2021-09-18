@@ -1,7 +1,7 @@
-import { NotificationItem } from '../../common/NotificationItem';
+import { NotificationBubbleItem } from '../../common/NotificationBubbleItem';
 
 export interface NotificationBubbleLayoutViewProps
 {
-    item: NotificationItem;
+    item: NotificationBubbleItem;
     close: () => void;
 }

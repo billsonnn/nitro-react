@@ -126,6 +126,7 @@ export const App: FC<{}> = props =>
     
     return (
         <div className="nitro-app">
+            <div id="nitro-alerts-container" />
             { (!isReady || isError) && <LoadingView isError={ isError } message={ message } /> }
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ (isReady && !isError) } timeout={ 300 }>
                 <MainView />
