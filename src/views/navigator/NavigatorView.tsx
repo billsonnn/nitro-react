@@ -221,7 +221,7 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                 <NitroCardView uniqueKey="navigator" className="nitro-navigator">
                     <NitroCardHeaderView headerText={ LocalizeText(isCreatorOpen ? 'navigator.createroom.title' : 'navigator.title') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardTabsView>
-                        { topLevelContexts.map((context, index) =>
+                        { topLevelContexts && (topLevelContexts.length > 0) && topLevelContexts.map((context, index) =>
                             {
                                 return (
                                     <NitroCardTabsItemView key={ index } isActive={ ((topLevelContext === context) && !isCreatorOpen) } onClick={ event => sendSearch('', context.code) }>

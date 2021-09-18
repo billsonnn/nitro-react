@@ -18,8 +18,8 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
         return (
             <div className="container-fluid bg-light">
                 <div className="row nitro-card-header simple-header">
-                    <div className="d-flex justify-content-center align-items-center w-100 position-relative">
-                        <div className="h5 text-white text-center text-shadow bg-tertiary-split border-top-0 rounded-bottom drag-handler">{ headerText }</div>
+                    <div className="d-flex justify-content-center align-items-center w-100 position-relative px-0">
+                        <div className="h5 text-white text-center text-shadow bg-tertiary-split border-top-0 drag-handler">{ headerText }</div>
                         <div className="position-absolute header-close" onMouseDownCapture={ onMouseDown } onClick={ onCloseClick }>
                             <i className="fas fa-times" />
                         </div>

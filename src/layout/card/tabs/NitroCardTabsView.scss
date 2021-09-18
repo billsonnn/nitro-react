@@ -1,6 +1,7 @@
 .nitro-card-tabs {
     min-height: $nitro-card-tabs-height;
     max-height: $nitro-card-tabs-height;
+    border-bottom: $nav-tabs-border-width solid $nav-tabs-border-color;
 
     @import './tabs-item/NitroCardTabsItemView';
 }

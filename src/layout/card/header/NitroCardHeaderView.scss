@@ -2,7 +2,6 @@
     min-height: 33px;
     max-height: 33px;
     white-space: nowrap;
-    overflow: hidden;
 
     .header-text {
         margin: 0 35px;
@@ -10,19 +9,22 @@
 
     &.simple-header {
         min-height: 28px;
-        max-height: 28px;
+
+        .header-close {
+            font-size: 12px;
+        }
     }
 
     .bg-tertiary-split {
         position: relative;
-        border: 2px solid darken($quaternary, 4);
-        box-shadow: 0 0 0 2px $white;
+        border-bottom: 2px solid darken($quaternary, 5);
+        box-shadow: 0 2px white;
         width: 100%;
-        margin: 0 25px;
+        margin: 0;
 
         &:before {
             position: absolute;
-            content: ' ';
+            content: " ";
             top: 0;
             left: 0;
             width: 100%;
@@ -36,15 +38,20 @@
         border-radius: $border-radius;
         box-shadow: 0 0 0 1.5px $white;
         border: 2px solid #921911;
-        background: repeating-linear-gradient(rgba(245,80,65,1), rgba(245,80,65,1) 50%, rgba(194,48,39,1) 50%, rgba(194,48,39,1) 100%);
+        background: repeating-linear-gradient(
+            rgba(245, 80, 65, 1),
+            rgba(245, 80, 65, 1) 50%,
+            rgba(194, 48, 39, 1) 50%,
+            rgba(194, 48, 39, 1) 100%
+        );
         cursor: pointer;
         line-height: 1;
         padding: 1px 3px;
-    
+
         &:hover {
             filter: brightness(1.2);
         }
-    
+
         &:active {
             filter: brightness(0.8);
         }
