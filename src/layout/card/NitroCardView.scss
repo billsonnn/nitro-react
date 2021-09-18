@@ -19,6 +19,10 @@ $nitro-card-tabs-height: 33px;
     height: 100%;
     pointer-events: none;
 
+    .theme-primary {
+        border: $border-width solid $border-color;
+    }
+
     @include media-breakpoint-down(lg) {
         
         .draggable-window {

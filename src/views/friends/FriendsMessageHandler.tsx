@@ -1,6 +1,8 @@
 import { FriendListFragmentEvent, FriendListUpdateEvent, FriendRequestsEvent, GetFriendRequestsComposer, MessengerInitEvent, NewConsoleMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
+import { GetSessionDataManager } from '../../api';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
+import { MessengerChatMessage } from './common/MessengerChatMessage';
 import { MessengerSettings } from './common/MessengerSettings';
 import { useFriendsContext } from './context/FriendsContext';
 import { FriendsActions } from './reducers/FriendsReducer';
@@ -68,17 +70,17 @@ export const FriendsMessageHandler: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        const activeChat = activeChats.find(c => c.friendId === parser.senderId);
+        let userId = parser.senderId;
 
-        if(activeChat)
-        {
+        if(userId === GetSessionDataManager().userId) userId = 0;
 
-        }
-        else
-        {
-
-        }
-    }, [ friendsState, dispatchFriendsState ]);
+        dispatchFriendsState({
+            type: FriendsActions.ADD_CHAT_MESSAGE,
+            payload: {
+                chatMessage: new MessengerChatMessage(MessengerChatMessage.MESSAGE, userId, parser.messageText, parser.secondsSinceSent, parser.extraData)
+            }
+        });
+    }, [ dispatchFriendsState ]);
 
     CreateMessageHook(MessengerInitEvent, onMessengerInitEvent);
     CreateMessageHook(FriendListFragmentEvent, onFriendsFragmentEvent);

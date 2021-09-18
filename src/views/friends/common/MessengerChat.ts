@@ -1,20 +1,24 @@
 import { MessengerChatMessage } from './MessengerChatMessage';
+import { MessengerChatMessageGroup } from './MessengerChatMessageGroup';
 export class MessengerChat
 {
     private _friendId: number;
     private _isRead: boolean;
-    private _messages: MessengerChatMessage[];
+    private _messageGroups: MessengerChatMessageGroup[];
 
     constructor(friendId: number, isRead: boolean = true)
     {
         this._friendId = friendId;
         this._isRead = isRead;
-        this._messages = [];
+        this._messageGroups = [];
     }
 
-    public addMessage(type: number, senderId: number, message: string, sentAt: number, extraData?: string): void
+    public addMessage(message: MessengerChatMessage): void
     {
-        this._messages.push(new MessengerChatMessage(type, senderId, message, sentAt, extraData));
+        if(!this.lastMessageGroup || this.lastMessageGroup.userId !== message.senderId) this._messageGroups.push(new MessengerChatMessageGroup(message.senderId));
+
+        this.lastMessageGroup.addMessage(message);
+        this._isRead = false;
     }
 
     public get friendId(): number
@@ -27,8 +31,13 @@ export class MessengerChat
         return this._isRead;
     }
 
-    public get messages(): MessengerChatMessage[]
+    public get messageGroups(): MessengerChatMessageGroup[]
     {
-        return this._messages;
+        return this._messageGroups;
+    }
+
+    public get lastMessageGroup(): MessengerChatMessageGroup
+    {
+        return this._messageGroups[this._messageGroups.length - 1];
     }
 }

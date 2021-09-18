@@ -95,7 +95,7 @@ export const FriendsView: FC<{}> = props =>
     return (
         <FriendsContextProvider value={ { friendsState, dispatchFriendsState } }>
             <FriendsMessageHandler />
-            { isReady && createPortal(<FriendBarView />, document.getElementById('toolbar-friend-bar-container')) }
+            { isReady && createPortal(<FriendBarView onlineFriends={ onlineFriends } />, document.getElementById('toolbar-friend-bar-container')) }
             { isListVisible && <FriendsListView onlineFriends={ onlineFriends } offlineFriends={ offlineFriends } friendRequests={ requests } onCloseClick={ () => setIsListVisible(false) } /> }
             <FriendsMessengerView />
         </FriendsContextProvider>

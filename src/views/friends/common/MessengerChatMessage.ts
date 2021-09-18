@@ -1,5 +1,9 @@
 export class MessengerChatMessage
 {
+    public static MESSAGE: number = 0;
+    public static ROOM_INVITE: number = 1;
+    public static SYSTEM_NOTIFICATION: number = 2;
+
     private _type: number;
     private _senderId: number;
     private _message: string;

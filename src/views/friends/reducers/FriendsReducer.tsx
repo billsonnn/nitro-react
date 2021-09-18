@@ -1,6 +1,7 @@
 import { FriendListUpdateParser, FriendParser, FriendRequestData } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 import { MessengerChat } from '../common/MessengerChat';
+import { MessengerChatMessage } from '../common/MessengerChatMessage';
 import { MessengerFriend } from '../common/MessengerFriend';
 import { MessengerRequest } from '../common/MessengerRequest';
 import { MessengerSettings } from '../common/MessengerSettings';
@@ -29,6 +30,8 @@ export interface IFriendsAction
         update?: FriendListUpdateParser;
         requests?: FriendRequestData[];
         chats?: MessengerChat[];
+        chatMessage?: MessengerChatMessage;
+        numberValue?: number;
     }
 }
 
@@ -40,6 +43,7 @@ export class FriendsActions
     public static PROCESS_UPDATE: string = 'FA_PROCESS_UPDATE';
     public static PROCESS_REQUESTS: string = 'FA_PROCESS_REQUESTS';
     public static SET_ACTIVE_CHATS: string = 'FA_SET_ACTIVE_CHATS';
+    public static ADD_CHAT_MESSAGE: string = 'FA_ADD_CHAT_MESSAGE';
 }
 
 export const initialFriends: IFriendsState = {
@@ -141,6 +145,24 @@ export const FriendsReducer: Reducer<IFriendsState, IFriendsAction> = (state, ac
         case FriendsActions.SET_ACTIVE_CHATS: {
             const activeChats = (action.payload.chats || []);
             
+            return { ...state, activeChats };
+        }
+        case FriendsActions.ADD_CHAT_MESSAGE: {
+            const message = action.payload.chatMessage;
+            const toFriendId = action.payload.numberValue;
+
+            const activeChats = Array.from(state.activeChats);
+
+            let activeChatIndex = activeChats.findIndex(c => c.friendId === toFriendId ? toFriendId : message.senderId);
+
+            if(activeChatIndex === -1)
+            {
+                activeChats.push(new MessengerChat(message.senderId, false));
+                activeChatIndex = activeChats.length - 1;
+            }
+
+            activeChats[activeChatIndex].addMessage(message);
+
             return { ...state, activeChats };
         }
         default:
