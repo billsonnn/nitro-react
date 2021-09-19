@@ -693,6 +693,18 @@
         height: 16px;
     }
 
+    &.icon-youtube-next {
+        background: url('../images/room-widgets/youtube-widget/next.png');
+        width: 21px;
+        height: 16px;
+    }
+
+    &.icon-youtube-prev {
+        background: url('../images/room-widgets/youtube-widget/prev.png');
+        width: 21px;
+        height: 16px;
+    }
+
     &.spin {
         animation: rotating 1s linear infinite;
     }

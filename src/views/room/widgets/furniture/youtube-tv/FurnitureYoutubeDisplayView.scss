@@ -1,8 +1,10 @@
 .youtube-tv-widget {
-    min-width: 400px;
-    /*
+    min-width: 600px;
+    
     .youtube-video-container
     {
+        min-height: 315px;
+        /*
         position: relative;
         overflow: hidden;
 
@@ -21,6 +23,43 @@
             width: 100%;
             height: 100%;
         }
+        */
     }
-    */
+
+    .playlist-container
+    {
+        overflow-y: hidden;
+        margin-right: -10px;
+        .playlist-controls
+        {
+            width: 100%;
+            .icon
+            {
+                margin-right: 10px;
+            }
+        }
+
+        .playlist-list
+        {
+            margin-top: 10px;
+            width: 100%;
+            margin-bottom: 5px;
+            height: 100%;
+            overflow-y: scroll;
+
+            .playlist-entry
+            {
+                color: black;
+                background-color: beige;
+                width: 100%;
+                height: 50px;
+                border-radius: 0.5px;
+
+                &.selected
+                {
+                    background-color: #40a2c9;
+                }
+            }
+        }
+    }
 }

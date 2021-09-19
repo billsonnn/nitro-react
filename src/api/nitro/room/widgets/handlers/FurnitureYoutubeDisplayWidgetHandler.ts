@@ -1,7 +1,6 @@
 import { NitroEvent } from '@nitrots/nitro-renderer/src/core/events/NitroEvent';
 import { GetYoutubeDisplayStatusMessageComposer } from '@nitrots/nitro-renderer/src/nitro/communication/messages/outgoing/room/furniture/youtube';
 import { RoomEngineTriggerWidgetEvent } from '@nitrots/nitro-renderer/src/nitro/room/events/RoomEngineTriggerWidgetEvent';
-import { RoomObjectVariable } from '@nitrots/nitro-renderer/src/nitro/room/object/RoomObjectVariable';
 import { RoomWidgetEnum } from '@nitrots/nitro-renderer/src/nitro/ui/widget/enums/RoomWidgetEnum';
 import { RoomWidgetMessage, RoomWidgetUpdateEvent } from '..';
 import { SendMessageHook } from '../../../../../hooks';
@@ -11,6 +10,11 @@ import { RoomWidgetHandler } from './RoomWidgetHandler';
 
 export class FurnitureYoutubeDisplayWidgetHandler extends RoomWidgetHandler
 {
+    public static readonly CONTROL_COMMAND_PREVIOUS_VIDEO = 0;
+    public static readonly CONTROL_COMMAND_NEXT_VIDEO = 1;
+    public static readonly CONTROL_COMMAND_PAUSE_VIDEO = 2;
+    public static readonly CONTROL_COMMAND_CONTINUE_VIDEO = 3;
+
     private _lastFurniId: number = -1;
 
     public processEvent(event: NitroEvent): void
@@ -26,9 +30,7 @@ export class FurnitureYoutubeDisplayWidgetHandler extends RoomWidgetHandler
 
                 this._lastFurniId = widgetEvent.objectId;
                 
-                const data = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
-                
-                this.container.eventDispatcher.dispatchEvent(new RoomWidgetUpdateYoutubeDisplayEvent(roomObject.id, data));
+                this.container.eventDispatcher.dispatchEvent(new RoomWidgetUpdateYoutubeDisplayEvent(roomObject.id));
                 SendMessageHook(new GetYoutubeDisplayStatusMessageComposer(this._lastFurniId));
                 return;
             }
