@@ -1,5 +1,6 @@
 import { ControlYoutubeDisplayPlaybackMessageComposer, SetYoutubeDisplayPlaylistMessageComposer, YoutubeControlVideoMessageEvent, YoutubeDisplayPlaylist, YoutubeDisplayPlaylistsEvent, YoutubeDisplayVideoMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
+import { LocalizeText } from '../../../../../api';
 import { RoomWidgetUpdateYoutubeDisplayEvent } from '../../../../../api/nitro/room/widgets/events/RoomWidgetUpdateYoutubeDisplayEvent';
 import { FurnitureYoutubeDisplayWidgetHandler } from '../../../../../api/nitro/room/widgets/handlers/FurnitureYoutubeDisplayWidgetHandler';
 import { CreateEventDispatcherHook, CreateMessageHook, SendMessageHook } from '../../../../../hooks';
@@ -12,6 +13,8 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
     const [videoUrl, setVideoUrl] = useState<string>(null);
     const [selectedItem, setSelectedItem] = useState<string>(null);
     const [playlists, setPlaylists] = useState<YoutubeDisplayPlaylist[]>(null);
+    const [hasControl, setHasControl] = useState(false);
+    const [player, setPlayer] = useState<any>(null);
     const { eventDispatcher = null } = useRoomContext();
 
     const onRoomWidgetUpdateYoutubeDisplayEvent = useCallback((event: RoomWidgetUpdateYoutubeDisplayEvent) =>
@@ -20,6 +23,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
         {
             case RoomWidgetUpdateYoutubeDisplayEvent.UPDATE_YOUTUBE_DISPLAY: {
                 setObjectId(event.objectId);
+                setHasControl(event.hasControl);
             }
         }
     }, []);
@@ -30,6 +34,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
         setVideoUrl(null)
         setSelectedItem(null);
         setPlaylists(null);
+        setHasControl(false);
     }, []);
 
     CreateEventDispatcherHook(RoomWidgetUpdateYoutubeDisplayEvent.UPDATE_YOUTUBE_DISPLAY, eventDispatcher, onRoomWidgetUpdateYoutubeDisplayEvent);
@@ -44,11 +49,11 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 
         if(parser.endAtSeconds > 0 || parser.startAtSeconds > 0)
         {
-            setVideoUrl(`https://www.youtube.com/embed/${parser.videoId}?start=${parser.startAtSeconds}&end=${parser.endAtSeconds}?autoplay=1`);
+            setVideoUrl(`https://www.youtube.com/embed/${parser.videoId}?start=${parser.startAtSeconds}&end=${parser.endAtSeconds}&autoplay=1&disablekb=1&controls=0&origin=${window.origin}&modestbranding=1`);
         }
         else
         {
-            setVideoUrl(`https://www.youtube.com/embed/${parser.videoId}?autoplay=1`);
+            setVideoUrl(`https://www.youtube.com/embed/${parser.videoId}?autoplay=1&disablekb=1&controls=0&origin=${window.origin}&modestbranding=1`);
         }
 
     }, [objectId]);
@@ -102,15 +107,26 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
             case 'playlist_next':
                 SendMessageHook(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, FurnitureYoutubeDisplayWidgetHandler.CONTROL_COMMAND_NEXT_VIDEO));
                 break;
+            case 'video_click':
+                if(hasControl && videoUrl && videoUrl.length)
+                {
+                     // pause or play
+                }
+                break;
             default:
+                if(selectedItem === action)
+                {
+                    setSelectedItem(null);
+                    SendMessageHook(new SetYoutubeDisplayPlaylistMessageComposer(objectId, ''));
+                    return;
+                }
                 SendMessageHook(new SetYoutubeDisplayPlaylistMessageComposer(objectId, action));
                 setSelectedItem(action);
         }
-    }, [objectId]);
+    }, [hasControl, objectId, selectedItem, videoUrl]);
 
     if((objectId === -1)) return null;
 
-    console.log(objectId);
     return (
         <NitroCardView className="youtube-tv-widget">
             <NitroCardHeaderView headerText={''} onCloseClick={close} />
@@ -120,16 +136,20 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                         {videoUrl && videoUrl.length > 0 &&
                             <iframe title="yt" width="100%" height="100%" src={videoUrl} frameBorder="0" allowFullScreen allow="autoplay" />
                         }
+                        {(!videoUrl || videoUrl.length === 0) && 
+                            <div className="empty-video w-100 h-100 justify-content-center align-items-center d-flex">{LocalizeText('widget.furni.video_viewer.no_videos')}</div>
+                        }
                     </div>
                     <div className="playlist-container col-3">
                         <span className="playlist-controls justify-content-center d-flex">
-                            <i className="icon icon-youtube-prev cursor-pointer" onClick={(e) => processAction('playlist_prev')} />
-                            <i className="icon icon-youtube-next cursor-pointer" onClick={(e) => processAction('playlist_next')} />
+                            <i className="icon icon-youtube-prev cursor-pointer" onClick={() => processAction('playlist_prev')} />
+                            <i className="icon icon-youtube-next cursor-pointer" onClick={() => processAction('playlist_next')} />
                         </span>
+                        <div className="mb-1">{LocalizeText('widget.furni.video_viewer.playlists')}</div>
                         <div className="playlist-list">
                             {playlists && playlists.map(entry =>
                             {
-                                return <div className={'playlist-entry cursor-pointer ' + (entry.video === selectedItem ? 'selected' : '')}  key={entry.video} onClick={(e) => processAction(entry.video)}><b>{entry.title}</b> - {entry.description}</div>
+                                return <div className={'playlist-entry cursor-pointer ' + (entry.video === selectedItem ? 'selected' : '')}  key={entry.video} onClick={() => processAction(entry.video)}><b>{entry.title}</b> - {entry.description}</div>
                             })}
                         </div>
                     </div>

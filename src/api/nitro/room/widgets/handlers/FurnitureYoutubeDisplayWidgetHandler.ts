@@ -1,8 +1,10 @@
+import { SecurityLevel } from '@nitrots/nitro-renderer';
 import { NitroEvent } from '@nitrots/nitro-renderer/src/core/events/NitroEvent';
 import { GetYoutubeDisplayStatusMessageComposer } from '@nitrots/nitro-renderer/src/nitro/communication/messages/outgoing/room/furniture/youtube';
 import { RoomEngineTriggerWidgetEvent } from '@nitrots/nitro-renderer/src/nitro/room/events/RoomEngineTriggerWidgetEvent';
 import { RoomWidgetEnum } from '@nitrots/nitro-renderer/src/nitro/ui/widget/enums/RoomWidgetEnum';
 import { RoomWidgetMessage, RoomWidgetUpdateEvent } from '..';
+import { GetSessionDataManager, IsOwnerOfFurniture } from '../../..';
 import { SendMessageHook } from '../../../../../hooks';
 import { GetRoomEngine } from '../../GetRoomEngine';
 import { RoomWidgetUpdateYoutubeDisplayEvent } from '../events/RoomWidgetUpdateYoutubeDisplayEvent';
@@ -30,7 +32,8 @@ export class FurnitureYoutubeDisplayWidgetHandler extends RoomWidgetHandler
 
                 this._lastFurniId = widgetEvent.objectId;
                 
-                this.container.eventDispatcher.dispatchEvent(new RoomWidgetUpdateYoutubeDisplayEvent(roomObject.id));
+                const hasControl = GetSessionDataManager().hasSecurity(SecurityLevel.EMPLOYEE) || IsOwnerOfFurniture(roomObject);
+                this.container.eventDispatcher.dispatchEvent(new RoomWidgetUpdateYoutubeDisplayEvent(roomObject.id, hasControl));
                 SendMessageHook(new GetYoutubeDisplayStatusMessageComposer(this._lastFurniId));
                 return;
             }
