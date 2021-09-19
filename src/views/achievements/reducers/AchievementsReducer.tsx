@@ -48,7 +48,8 @@ export const AchievementsReducer: Reducer<IAchievementsState, IAchievementsActio
             if(categories.length > 0)
             {
                 selectedCategoryName = categories[0].name;
-                selectedAchievementId = categories[0].achievements[0].achievementId;   
+                
+                if(categories[0].achievements.length > 0) selectedAchievementId = categories[0].achievements[0].achievementId;   
             }
 
             return { ...state, categories, selectedCategoryName, selectedAchievementId };
