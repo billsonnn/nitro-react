@@ -58,7 +58,7 @@ export const AchievementCategoryView: FC<AchievementCategoryViewProps> = props =
                 <h5 className="m-0 me-2 w-100">{ LocalizeText('quests.' + selectedCategoryName + '.name') }</h5>
                 <div>IMAGE</div>
             </div>
-            <div className="bg-secondary rounded p-2 mb-3 d-flex gap-2 align-items-center">
+            { selectedAchievement && <div className="bg-secondary rounded p-2 mb-3 d-flex gap-2 align-items-center">
                 <div className="achievement-image">
                     <BadgeImageView badgeCode={ getAchievementImage(selectedAchievement) } />
                 </div>
@@ -66,7 +66,7 @@ export const AchievementCategoryView: FC<AchievementCategoryViewProps> = props =
                     <div>{ LocalizeBadgeName(selectedAchievement.badgeId) }</div>
                     <div>{ LocalizeBadgeDescription(selectedAchievement.badgeId) }</div>
                 </div>
-            </div>
+            </div> }
             <div className="achievements">
                 <div className="row row-cols-4">
                     { getSelectedCategory().achievements.map((achievement, index) =>
