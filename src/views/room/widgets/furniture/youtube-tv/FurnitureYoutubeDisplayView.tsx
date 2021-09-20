@@ -1,16 +1,21 @@
 import { ControlYoutubeDisplayPlaybackMessageComposer, SetYoutubeDisplayPlaylistMessageComposer, YoutubeControlVideoMessageEvent, YoutubeDisplayPlaylist, YoutubeDisplayPlaylistsEvent, YoutubeDisplayVideoMessageEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
+import YouTube, { Options } from 'react-youtube';
 import { LocalizeText } from '../../../../../api';
 import { RoomWidgetUpdateYoutubeDisplayEvent } from '../../../../../api/nitro/room/widgets/events/RoomWidgetUpdateYoutubeDisplayEvent';
 import { FurnitureYoutubeDisplayWidgetHandler } from '../../../../../api/nitro/room/widgets/handlers/FurnitureYoutubeDisplayWidgetHandler';
-import { CreateEventDispatcherHook, CreateMessageHook, SendMessageHook } from '../../../../../hooks';
+import { BatchUpdates, CreateEventDispatcherHook, CreateMessageHook, SendMessageHook } from '../../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
+import { YoutubeVideoPlaybackStateEnum } from './utils/YoutubeVideoPlaybackStateEnum';
 
 export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 {
     const [objectId, setObjectId] = useState(-1);
-    const [videoUrl, setVideoUrl] = useState<string>(null);
+    const [videoId, setVideoId] = useState<string>(null);
+    const [videoStart, setVideoStart] = useState<number>(null);
+    const [videoEnd, setVideoEnd] = useState<number>(null);
+    const [currentVideoState, setCurrentVideoState] = useState(-1);
     const [selectedItem, setSelectedItem] = useState<string>(null);
     const [playlists, setPlaylists] = useState<YoutubeDisplayPlaylist[]>(null);
     const [hasControl, setHasControl] = useState(false);
@@ -31,10 +36,13 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
     const close = useCallback(() =>
     {
         setObjectId(-1);
-        setVideoUrl(null)
         setSelectedItem(null);
         setPlaylists(null);
         setHasControl(false);
+        setVideoId(null);
+        setVideoEnd(null);
+        setVideoStart(null);
+        setCurrentVideoState(-1);
     }, []);
 
     CreateEventDispatcherHook(RoomWidgetUpdateYoutubeDisplayEvent.UPDATE_YOUTUBE_DISPLAY, eventDispatcher, onRoomWidgetUpdateYoutubeDisplayEvent);
@@ -47,15 +55,13 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 
         if(objectId !== parser.furniId) return;
 
-        if(parser.endAtSeconds > 0 || parser.startAtSeconds > 0)
+        BatchUpdates(() =>
         {
-            setVideoUrl(`https://www.youtube.com/embed/${parser.videoId}?start=${parser.startAtSeconds}&end=${parser.endAtSeconds}&autoplay=1&disablekb=1&controls=0&origin=${window.origin}&modestbranding=1`);
-        }
-        else
-        {
-            setVideoUrl(`https://www.youtube.com/embed/${parser.videoId}?autoplay=1&disablekb=1&controls=0&origin=${window.origin}&modestbranding=1`);
-        }
-
+            setVideoId(parser.videoId);
+            setVideoStart(parser.startAtSeconds);
+            setVideoEnd(parser.endAtSeconds);
+            setCurrentVideoState(parser.state);
+        });
     }, [objectId]);
 
     const onPlaylists = useCallback((event: YoutubeDisplayPlaylistsEvent) =>
@@ -66,9 +72,15 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 
         if(objectId !== parser.furniId) return;
 
-        setPlaylists(parser.playlists);
-        setSelectedItem(parser.selectedPlaylistId);
-        setVideoUrl(null);
+        BatchUpdates(() =>
+        {
+            setPlaylists(parser.playlists);
+            setSelectedItem(parser.selectedPlaylistId);
+            setVideoId(null);
+            setCurrentVideoState(-1);
+            setVideoEnd(null);
+            setVideoStart(null);
+        });
     }, [objectId]);
 
     const onControlVideo = useCallback((event: YoutubeControlVideoMessageEvent) =>
@@ -76,28 +88,29 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
         if(objectId === -1) return;
 
         const parser = event.getParser();
-        console.log(parser);
 
         if(objectId !== parser.furniId) return;
 
         switch(parser.commandId)
         {
             case 1:
-                //this._currentVideoPlaybackState = YoutubeVideoPlaybackStateEnum._Str_5825;
-                //this._player.playVideo();
-                return;
+                setCurrentVideoState(YoutubeVideoPlaybackStateEnum.PLAYING);
+                if(player.getPlayerState() !== YoutubeVideoPlaybackStateEnum.PLAYING)
+                    player.playVideo();
+                break;
             case 2:
-                //this._currentVideoPlaybackState = YoutubeVideoPlaybackStateEnum._Str_6168;
-                //this._player.pauseVideo();
-                return;
+                setCurrentVideoState(YoutubeVideoPlaybackStateEnum.PAUSED);
+                if(player.getPlayerState() !== YoutubeVideoPlaybackStateEnum.PAUSED)
+                    player.pauseVideo();
+                break;
         }
-    }, [objectId]);
+    }, [objectId, player]);
 
     CreateMessageHook(YoutubeDisplayVideoMessageEvent, onVideo);
     CreateMessageHook(YoutubeDisplayPlaylistsEvent, onPlaylists);
     CreateMessageHook(YoutubeControlVideoMessageEvent, onControlVideo);
 
-    const processAction = useCallback( (action: string) =>
+    const processAction = useCallback((action: string) =>
     {
         switch(action)
         {
@@ -107,10 +120,16 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
             case 'playlist_next':
                 SendMessageHook(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, FurnitureYoutubeDisplayWidgetHandler.CONTROL_COMMAND_NEXT_VIDEO));
                 break;
-            case 'video_click':
-                if(hasControl && videoUrl && videoUrl.length)
+            case 'video_pause':
+                if(hasControl && videoId && videoId.length)
                 {
-                     // pause or play
+                    SendMessageHook(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, FurnitureYoutubeDisplayWidgetHandler.CONTROL_COMMAND_PAUSE_VIDEO));
+                }
+                break;
+            case 'video_play':
+                if(hasControl && videoId && videoId.length)
+                {
+                    SendMessageHook(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, FurnitureYoutubeDisplayWidgetHandler.CONTROL_COMMAND_CONTINUE_VIDEO));
                 }
                 break;
             default:
@@ -123,7 +142,71 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                 SendMessageHook(new SetYoutubeDisplayPlaylistMessageComposer(objectId, action));
                 setSelectedItem(action);
         }
-    }, [hasControl, objectId, selectedItem, videoUrl]);
+    }, [hasControl, objectId, selectedItem, videoId]);
+
+    const onReady = useCallback((event: any) =>
+    {
+        setPlayer(event.target);
+    }, []);
+
+    const onStateChange = useCallback((event: any) =>
+    {
+        setPlayer(event.target);
+        if(objectId)
+        {
+            switch(event.target.getPlayerState())
+            {
+                case -1:
+                case 1:
+                    if(currentVideoState === 2)
+                    {
+                        //event.target.pauseVideo();
+                    }
+                    if(currentVideoState !== 1)
+                    {
+                        processAction('video_play');
+                    }
+                    return;
+                case 2:
+                    if(currentVideoState !== 2)
+                    {
+                        processAction('video_pause');
+                    }
+            }
+        }
+    }, [currentVideoState, objectId, processAction]);
+
+    const getYoutubeOpts = useMemo( () =>
+    {
+        if(!videoStart && !videoEnd)
+        {
+            return {
+                height: '390',
+                width: '435',
+                playerVars: {
+                    autoplay: 1,
+                    disablekb: 1,
+                    controls: 0,
+                    origin: window.origin,
+                    modestbranding: 1
+                }
+            }
+        }
+       
+        return {
+            height: '390',
+            width: '435',
+            playerVars: {
+                autoplay: 1,
+                disablekb: 1,
+                controls: 0,
+                origin: window.origin,
+                modestbranding: 1,
+                start: videoStart,
+                end: videoEnd
+            }
+        }
+    }, [videoEnd, videoStart]);
 
     if((objectId === -1)) return null;
 
@@ -133,10 +216,10 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
             <NitroCardContentView>
                 <div className="row w-100 h-100">
                     <div className="youtube-video-container col-9">
-                        {videoUrl && videoUrl.length > 0 &&
-                            <iframe title="yt" width="100%" height="100%" src={videoUrl} frameBorder="0" allowFullScreen allow="autoplay" />
+                        {(videoId && videoId.length > 0) &&
+                            <YouTube videoId={videoId} opts={getYoutubeOpts as Options} onReady={onReady} onStateChange={onStateChange} />
                         }
-                        {(!videoUrl || videoUrl.length === 0) && 
+                        {(!videoId || videoId.length === 0) &&
                             <div className="empty-video w-100 h-100 justify-content-center align-items-center d-flex">{LocalizeText('widget.furni.video_viewer.no_videos')}</div>
                         }
                     </div>
@@ -149,7 +232,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                         <div className="playlist-list">
                             {playlists && playlists.map(entry =>
                             {
-                                return <div className={'playlist-entry cursor-pointer ' + (entry.video === selectedItem ? 'selected' : '')}  key={entry.video} onClick={() => processAction(entry.video)}><b>{entry.title}</b> - {entry.description}</div>
+                                return <div className={'playlist-entry cursor-pointer ' + (entry.video === selectedItem ? 'selected' : '')} key={entry.video} onClick={() => processAction(entry.video)}><b>{entry.title}</b> - {entry.description}</div>
                             })}
                         </div>
                     </div>
