@@ -1,10 +1,6 @@
 .nitro-achievements {
-    width: 650px;
-
-    .content-area {
-        min-height: 376px;
-        height: 376px;
-    }
+    width: $achievement-width;
+    height: $achievement-height;
 
     .score {
         border-color: $grid-border-color !important;

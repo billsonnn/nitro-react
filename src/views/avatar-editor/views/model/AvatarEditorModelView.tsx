@@ -71,7 +71,7 @@ export const AvatarEditorModelView: FC<AvatarEditorModelViewProps> = props =>
             <div className="col-5 d-flex flex-column h-100">
                 <AvatarEditorFigureSetView model={ model } category={ activeCategory } setMaxPaletteCount={ setMaxPaletteCount } />
             </div>
-            <div className="col-5 d-flex flex-column h-100">
+            <div className="col-5 d-flex flex-column h-100 gap-2">
                 { (maxPaletteCount >= 1) &&
                     <AvatarEditorPaletteSetView model={ model } category={ activeCategory } paletteSet={ activeCategory.getPalette(0) } paletteIndex={ 0 } /> }
                 { (maxPaletteCount === 2) &&

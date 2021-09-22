@@ -3,6 +3,7 @@ $nitro-card-tabs-height: 33px;
 
 .nitro-card {
     pointer-events: all;
+    resize: both;
 
     @import './accordion/NitroCardAccordionView';
     @import './content/NitroCardContentView';

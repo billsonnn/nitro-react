@@ -233,7 +233,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                             const count = item.getUnlockedCount();
 
                             return (
-                                <NitroCardGridItemView key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUnique={ item.stuffData.isUnique } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) }>
+                                <NitroCardGridItemView key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) }>
                                     { ((count > 0) && (groupItem === item)) &&
                                         <button className="btn btn-success btn-sm trade-button" onClick={ event => attemptItemOffer(1) }>
                                             <i className="fas fa-chevron-right" />
@@ -255,7 +255,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                                 if(!item) return <NitroCardGridItemView key={ i } />;
 
                                 return (
-                                    <NitroCardGridItemView key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUnique={ item.stuffData.isUnique } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) }>
+                                    <NitroCardGridItemView key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) }>
                                         { (ownGroupItem === item) &&
                                             <button className="btn btn-danger btn-sm trade-button left" onClick={ event => removeItem(item) }>
                                                 <i className="fas fa-chevron-left" />
@@ -275,7 +275,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
                                 if(!item) return <NitroCardGridItemView key={ i } />;
 
-                                return <NitroCardGridItemView key={ i } itemActive={ (otherGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUnique={ item.stuffData.isUnique } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
+                                return <NitroCardGridItemView key={ i } itemActive={ (otherGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
                             }) }
                         <div className="col-12 badge bg-muted w-100">{ otherGroupItem ? otherGroupItem.name : LocalizeText('catalog_selectproduct') }</div>
                     </NitroCardGridView>

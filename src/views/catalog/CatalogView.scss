@@ -1,11 +1,6 @@
 .nitro-catalog {
-    width: 620px;
-
-    .content-area {
-        min-height: 350px;
-        height: 350px;
-        resize: vertical;
-    }
+    width: $catalog-width;
+    height: $catalog-height;
 
     font[size="16"] {
         font-size: 20px;

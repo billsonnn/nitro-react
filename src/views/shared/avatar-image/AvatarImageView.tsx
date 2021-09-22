@@ -14,6 +14,12 @@ export const AvatarImageView: FC<AvatarImageViewProps> = props =>
     {
         if(scale === .5) return '0-5';
 
+        if(scale === .75) return '0-75';
+
+        if(scale === 1.25) return '1-25';
+
+        if(scale === 1.50) return '1-50';
+
         return scale.toString();
     }, [ scale ]);
 
