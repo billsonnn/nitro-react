@@ -1,5 +1,5 @@
 import { AvatarScaleType, AvatarSetType } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { GetAvatarRenderManager } from '../../../api';
 import { AvatarImageViewProps } from './AvatarImageView.types';
 
@@ -9,6 +9,13 @@ export const AvatarImageView: FC<AvatarImageViewProps> = props =>
     const [ avatarUrl, setAvatarUrl ] = useState<string>(null);
     const [ randomValue, setRandomValue ] = useState(-1);
     const isDisposed = useRef(false);
+
+    const getScaleStyle = useMemo(() =>
+    {
+        if(scale === .5) return '0-5';
+
+        return scale.toString();
+    }, [ scale ]);
 
     useEffect(() =>
     {
@@ -50,5 +57,5 @@ export const AvatarImageView: FC<AvatarImageViewProps> = props =>
 
     const url = `url('${ avatarUrl }')`;
         
-    return <div className={ 'avatar-image scale-' + scale } style={ (avatarUrl && url.length) ? { backgroundImage: url } : {} }></div>;
+    return <div className={ 'avatar-image scale-' + getScaleStyle } style={ (avatarUrl && url.length) ? { backgroundImage: url } : {} }></div>;
 }

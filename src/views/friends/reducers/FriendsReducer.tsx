@@ -1,7 +1,5 @@
 import { FriendListUpdateParser, FriendParser, FriendRequestData } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
-import { MessengerChat } from '../common/MessengerChat';
-import { MessengerChatMessage } from '../common/MessengerChatMessage';
 import { MessengerFriend } from '../common/MessengerFriend';
 import { MessengerRequest } from '../common/MessengerRequest';
 import { MessengerSettings } from '../common/MessengerSettings';
@@ -18,8 +16,6 @@ export interface IFriendsState
     settings: MessengerSettings;
     friends: MessengerFriend[];
     requests: MessengerRequest[];
-    activeChats: MessengerChat[];
-    firstChatEverOpen: boolean;
 }
 
 export interface IFriendsAction
@@ -30,8 +26,6 @@ export interface IFriendsAction
         fragment?: FriendParser[];
         update?: FriendListUpdateParser;
         requests?: FriendRequestData[];
-        chats?: MessengerChat[];
-        chatMessage?: MessengerChatMessage;
         numberValue?: number;
         boolValue?: boolean;
     }
@@ -44,17 +38,12 @@ export class FriendsActions
     public static PROCESS_FRAGMENT: string = 'FA_PROCESS_FRAGMENT';
     public static PROCESS_UPDATE: string = 'FA_PROCESS_UPDATE';
     public static PROCESS_REQUESTS: string = 'FA_PROCESS_REQUESTS';
-    public static SET_ACTIVE_CHATS: string = 'FA_SET_ACTIVE_CHATS';
-    public static SET_CHAT_READ: string = 'FA_SET_CHAT_READ';
-    public static ADD_CHAT_MESSAGE: string = 'FA_ADD_CHAT_MESSAGE';
 }
 
 export const initialFriends: IFriendsState = {
     settings: null,
     friends: [],
-    requests: [],
-    activeChats: [],
-    firstChatEverOpen: false
+    requests: []
 }
 
 export const FriendsReducer: Reducer<IFriendsState, IFriendsAction> = (state, action) =>
@@ -108,11 +97,17 @@ export const FriendsReducer: Reducer<IFriendsState, IFriendsAction> = (state, ac
                 {
                     const index = friends.findIndex(existingFriend => (existingFriend.id === friend.id));
 
-                    const newFriend = new MessengerFriend();
-                    newFriend.populate(friend);
+                    if(index === -1)
+                    {
+                        const newFriend = new MessengerFriend();
+                        newFriend.populate(friend);
 
-                    if(index > -1) friends[index] = newFriend;
-                    else friends.unshift(newFriend);
+                        friends.unshift(newFriend);
+                    }
+                    else
+                    {
+                        friends[index].populate(friend);
+                    }
                 }
 
                 for(const friend of update.addedFriends) processUpdate(friend);
@@ -145,43 +140,6 @@ export const FriendsReducer: Reducer<IFriendsState, IFriendsAction> = (state, ac
             requests.sort(compareName);
 
             return { ...state, requests };
-        }
-        case FriendsActions.SET_ACTIVE_CHATS: {
-            const activeChats = (action.payload.chats || []);
-            
-            if(!state.firstChatEverOpen && activeChats.length > 0) activeChats[0].addMessage(new MessengerChatMessage(MessengerChatMessage.SECURITY_ALERT, 0, null, 0), false, true);
-            
-            return { ...state, activeChats, firstChatEverOpen: true };
-        }
-        case FriendsActions.SET_CHAT_READ: {
-            const friendId = action.payload.numberValue;
-            
-            const activeChats = Array.from(state.activeChats);
-
-            let activeChatIndex = activeChats.findIndex(c => c.friendId === friendId);
-
-            if(activeChatIndex > -1) activeChats[activeChatIndex].read();
-            
-            return { ...state, activeChats };
-        }
-        case FriendsActions.ADD_CHAT_MESSAGE: {
-            const message = action.payload.chatMessage;
-            const toFriendId = action.payload.numberValue;
-            const setAsNotRead = action.payload.boolValue;
-
-            const activeChats = Array.from(state.activeChats);
-
-            let activeChatIndex = activeChats.findIndex(c => c.friendId === toFriendId ? toFriendId : message.senderId);
-
-            if(activeChatIndex === -1)
-            {
-                activeChats.push(new MessengerChat(message.senderId));
-                activeChatIndex = activeChats.length - 1;
-            }
-
-            activeChats[activeChatIndex].addMessage(message, setAsNotRead);
-
-            return { ...state, activeChats };
         }
         default:
             return state;

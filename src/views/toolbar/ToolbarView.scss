@@ -29,31 +29,28 @@
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
-                width: 50px;
-                margin: 0 1px;
+                //margin: 0 1px;
                 position: relative;
 
-                .toolbar-avatar {
-                    height: 50px;
+                &.item-avatar {
+                    width: 50px;
+                    height: 45px;
+                    overflow: hidden;
                     
                     .avatar-image {
                         margin-left: -5px;
-                        margin-top: -30px;
-                    }
-
-                    &:hover, &.active {
-                        height: 53px;
+                        margin-top: 25px;
                     }
                 }
 
                 .icon,
-                .toolbar-avatar {
+                &.item-avatar {
                     position: relative;
-                    transition: transform .2s ease-out;
+                    //transition: transform .2s ease-out;
 
                     &:hover, &.active {
-                        -webkit-transform: translate(0, -3px);
-                        transform: translate(0, -3px);
+                        -webkit-transform: translate(-1px, -1px);
+                        transform: translate(-1px, -1px);
                         filter: drop-shadow(2px 2px 0 rgba($black, 0.8));
                     }
                 }
@@ -68,7 +65,7 @@
 
                 .count {
                     top: 0rem;
-                    right: 5px;
+                    right: 2px;
                     font-size: 10px;
                 }
             }

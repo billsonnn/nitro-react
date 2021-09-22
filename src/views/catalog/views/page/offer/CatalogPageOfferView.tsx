@@ -1,5 +1,5 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, useCallback } from 'react';
+import { FC, MouseEvent, useCallback, useState } from 'react';
 import { useCatalogContext } from '../../../context/CatalogContext';
 import { CatalogActions } from '../../../reducers/CatalogReducer';
 import { CatalogProductView } from '../product/CatalogProductView';
@@ -8,6 +8,7 @@ import { CatalogPageOfferViewProps } from './CatalogPageOfferView.types';
 export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
 {
     const { isActive = false, offer = null } = props;
+    const [ isMouseDown, setMouseDown ] = useState(false);
     const { dispatchCatalogState = null } = useCatalogContext();
 
     const onMouseEvent = useCallback((event: MouseEvent) =>
@@ -24,8 +25,18 @@ export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
                     }
                 });
                 return;
+            case MouseEventType.MOUSE_DOWN:
+                console.log('ye')
+                setMouseDown(true);
+                return;
+            case MouseEventType.MOUSE_UP:
+                setMouseDown(false);
+                return;
+            case MouseEventType.ROLL_OUT:
+                if(!isMouseDown || !isActive) return;
+                return;
         }
-    }, [ isActive, offer, dispatchCatalogState ]);
+    }, [ isActive, offer, isMouseDown, dispatchCatalogState ]);
 
     const product = ((offer.products && offer.products[0]) || null);
 

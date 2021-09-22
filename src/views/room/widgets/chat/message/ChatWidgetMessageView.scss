@@ -696,7 +696,6 @@
             justify-content: center;
             height: 100%;
             max-height: 24px;
-            image-rendering: -webkit-optimize-contrast;
             overflow: hidden;
 
             .user-image {
@@ -707,8 +706,9 @@
                 height: 130px;
                 background-repeat: no-repeat;
                 background-position: center;
-                transform: scale(0.5) translateZ(0);
+                transform: scale(0.5);
                 overflow: hidden;
+                image-rendering: -webkit-optimize-contrast;
             }
         }
 

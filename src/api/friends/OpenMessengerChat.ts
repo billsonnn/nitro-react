@@ -1,6 +1,7 @@
 import { CreateLinkEvent } from '..';
 
-export function OpenMessengerChat(friendId: number): void
+export function OpenMessengerChat(friendId: number = -1): void
 {
-    CreateLinkEvent(`friends/messenger/${friendId}`);
+    if(friendId === -1) CreateLinkEvent('friends/messenger/open');
+    else CreateLinkEvent(`friends/messenger/${friendId}`);
 }

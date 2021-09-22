@@ -1,7 +1,7 @@
 import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserInfoDataParser, UserInfoEvent, UserProfileComposer, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GoToDesktop } from '../../api';
-import { AvatarEditorEvent, CatalogEvent, FriendsEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
+import { GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GoToDesktop, OpenMessengerChat } from '../../api';
+import { AvatarEditorEvent, CatalogEvent, FriendsEvent, FriendsMessengerIconEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
 import { AchievementsUIEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
@@ -14,6 +14,10 @@ import { AvatarImageView } from '../shared/avatar-image/AvatarImageView';
 import { ToolbarMeView } from './me/ToolbarMeView';
 import { ToolbarViewItems, ToolbarViewProps } from './ToolbarView.types';
 
+const CHAT_ICON_HIDDEN: number = 0;
+const CHAT_ICON_SHOWING: number = 1;
+const CHAT_ICON_UNREAD: number = 2;
+
 export const ToolbarView: FC<ToolbarViewProps> = props =>
 {
     const { isInRoom } = props;
@@ -21,6 +25,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     const [ userInfo, setUserInfo ] = useState<UserInfoDataParser>(null);
     const [ userFigure, setUserFigure ] = useState<string>(null);
     const [ isMeExpanded, setMeExpanded ] = useState(false);
+    const [ chatIconType, setChatIconType ] = useState(CHAT_ICON_HIDDEN);
     const [ unseenInventoryCount, setUnseenInventoryCount ] = useState(0);
 
     const unseenFriendListCount = 0;
@@ -44,6 +49,13 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     }, []);
     
     CreateMessageHook(FigureUpdateEvent, onUserFigureEvent);
+
+    const onFriendsMessengerIconEvent = useCallback((event: FriendsMessengerIconEvent) =>
+    {
+        setChatIconType(event.iconType);
+    }, []);
+
+    useUiEvent(FriendsMessengerIconEvent.UPDATE_ICON, onFriendsMessengerIconEvent);
 
     const onUnseenItemTrackerUpdateEvent = useCallback((event: UnseenItemTrackerUpdateEvent) =>
     {
@@ -131,6 +143,9 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 dispatchUiEvent(new UserSettingsUIEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS));
                 setMeExpanded(false);
                 return;
+            case ToolbarViewItems.FRIEND_CHAT_ITEM:
+                OpenMessengerChat();
+                return;
         }
     }, []);
 
@@ -148,20 +163,16 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 <ToolbarMeView handleToolbarItemClick={ handleToolbarItemClick } />
             </TransitionAnimation>
             <div className="d-flex justify-content-between align-items-center nitro-toolbar py-1 px-3">
-                <div className="d-flex align-items-center toolbar-left-side">
-                    <div className="navigation-items navigation-avatar pe-1 me-2">
-                        <div className="navigation-item">
-                            <div className={ 'toolbar-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ event => setMeExpanded(!isMeExpanded) }>
-                                <AvatarImageView figure={ userFigure } direction={ 2 } />
-                            </div>
+                <div className="d-flex align-items-center">
+                    <div className="navigation-items gap-2">
+                        <div className={ 'navigation-item item-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ event => setMeExpanded(!isMeExpanded) }>
+                            <AvatarImageView figure={ userFigure } direction={ 2 } />
+                            { (unseenAchievementsCount > 0) &&
+                                <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenAchievementsCount }</div> }
                         </div>
-                        { (unseenAchievementsCount > 0) && (
-                            <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenAchievementsCount }</div>) }
-                    </div>
-                    <div className="navigation-items">
                         { isInRoom && (
                             <div className="navigation-item" onClick={ visitDesktop }>
-                                <i className="icon icon-hotelview icon-nitro-light"></i>
+                                <i className="icon icon-habbo"></i>
                             </div>) }
                         { !isInRoom && (
                             <div className="navigation-item">
@@ -188,13 +199,20 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                     </div>
                     <div id="toolbar-chat-input-container" className="d-flex align-items-center" />
                 </div>
-                <div className="d-flex toolbar-right-side">
-                    <div className="navigation-items">
+                <div className="d-flex align-items-center gap-2">
+                    <div className="navigation-items gap-2">
                         <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_LIST_ITEM) }>
                             <i className="icon icon-friendall"></i>
                             { (unseenFriendListCount > 0) && (
                                 <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
                         </div>
+                        { ((chatIconType === CHAT_ICON_SHOWING) || (chatIconType === CHAT_ICON_UNREAD)) &&
+                            <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_CHAT_ITEM) }>
+                                { (chatIconType === CHAT_ICON_SHOWING) && <i className="icon icon-message" /> }
+                                { (chatIconType === CHAT_ICON_UNREAD) && <i className="icon icon-message is-unseen" /> }
+                                { (unseenFriendListCount > 0) &&
+                                    <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div> }
+                            </div> }
                     </div>
                     <div id="toolbar-friend-bar-container" />
                 </div>

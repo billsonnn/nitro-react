@@ -1,8 +1,6 @@
-import { FriendListFragmentEvent, FriendListUpdateEvent, FriendRequestsEvent, GetFriendRequestsComposer, MessengerInitEvent, NewConsoleMessageEvent } from '@nitrots/nitro-renderer';
+import { FriendListFragmentEvent, FriendListUpdateEvent, FriendRequestsEvent, GetFriendRequestsComposer, MessengerInitEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { GetSessionDataManager } from '../../api';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
-import { MessengerChatMessage } from './common/MessengerChatMessage';
 import { MessengerSettings } from './common/MessengerSettings';
 import { useFriendsContext } from './context/FriendsContext';
 import { FriendsActions } from './reducers/FriendsReducer';
@@ -10,7 +8,6 @@ import { FriendsActions } from './reducers/FriendsReducer';
 export const FriendsMessageHandler: FC<{}> = props =>
 {
     const { friendsState = null, dispatchFriendsState = null } = useFriendsContext();
-    const { activeChats = [] } = friendsState;
 
     const onMessengerInitEvent = useCallback((event: MessengerInitEvent) =>
     {
@@ -66,28 +63,10 @@ export const FriendsMessageHandler: FC<{}> = props =>
         });
     }, [ dispatchFriendsState ]);
 
-    const onNewConsoleMessageEvent = useCallback((event: NewConsoleMessageEvent) =>
-    {
-        const parser = event.getParser();
-
-        let userId = parser.senderId;
-
-        if(userId === GetSessionDataManager().userId) userId = 0;
-
-        dispatchFriendsState({
-            type: FriendsActions.ADD_CHAT_MESSAGE,
-            payload: {
-                chatMessage: new MessengerChatMessage(MessengerChatMessage.MESSAGE, userId, parser.messageText, parser.secondsSinceSent, parser.extraData),
-                boolValue: true
-            }
-        });
-    }, [ dispatchFriendsState ]);
-
     CreateMessageHook(MessengerInitEvent, onMessengerInitEvent);
     CreateMessageHook(FriendListFragmentEvent, onFriendsFragmentEvent);
     CreateMessageHook(FriendListUpdateEvent, onFriendsUpdateEvent);
     CreateMessageHook(FriendRequestsEvent, onFriendRequestsEvent);
-    CreateMessageHook(NewConsoleMessageEvent, onNewConsoleMessageEvent);
 
     return null;
 }

@@ -6,4 +6,10 @@
     background-position-x: center;
     background-position-y: -8px !important;
     pointer-events: none;
+    image-rendering: pixelated;
+
+    &.scale-0-5,
+    &.scale-0-75 {
+        image-rendering: -webkit-optimize-contrast;
+    }
 }

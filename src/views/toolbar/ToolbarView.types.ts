@@ -9,6 +9,7 @@ export class ToolbarViewItems
     public static INVENTORY_ITEM: string    = 'TVI_INVENTORY_ITEM';
     public static CATALOG_ITEM: string      = 'TVI_CATALOG_ITEM';
     public static FRIEND_LIST_ITEM: string  = 'TVI_FRIEND_LIST_ITEM';
+    public static FRIEND_CHAT_ITEM: string  = 'TVI_FRIEND_CHAT_ITEM';
     public static CLOTHING_ITEM: string     = 'TVI_CLOTHING_ITEM';
     public static CAMERA_ITEM: string       = 'TVI_CAMERA_ITEM';
     public static MOD_TOOLS_ITEM: string    = 'TVI_MOD_TOOLS_ITEM';
