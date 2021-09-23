@@ -121,19 +121,21 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                 <InventoryFurnitureResultsView groupItems={ filteredGroupItems }  />
             </div>
-            <div className="position-relative d-flex flex-column col-5 justify-space-between">
-                <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
-                { groupItem && groupItem.stuffData.isUnique &&
-                    <div className="stuffdata-extra-container">
-                        <LimitedEditionCompactPlateView uniqueNumber={ groupItem.stuffData.uniqueNumber } uniqueSeries={ groupItem.stuffData.uniqueSeries } />
-                    </div> }
-                { (groupItem && groupItem.stuffData.rarityLevel > -1) &&
-                    <div className="stuffdata-extra-container">
-                        <RarityLevelView level={ groupItem.stuffData.rarityLevel } />
-                    </div> }
+            <div className="d-flex flex-column col-5 gap-2 h-100 overflow-hidden">
+                <div className="position-relative d-flex flex-column overflow-auto h-100">
+                    <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                    { groupItem && groupItem.stuffData.isUnique &&
+                        <div className="stuffdata-extra-container">
+                            <LimitedEditionCompactPlateView uniqueNumber={ groupItem.stuffData.uniqueNumber } uniqueSeries={ groupItem.stuffData.uniqueSeries } />
+                        </div> }
+                    { (groupItem && groupItem.stuffData.rarityLevel > -1) &&
+                        <div className="stuffdata-extra-container">
+                            <RarityLevelView level={ groupItem.stuffData.rarityLevel } />
+                        </div> }
+                </div>
                 { groupItem &&
-                    <div className="d-flex flex-column flex-grow-1">
-                        <p className="flex-grow-1 fs-6 text-black my-2">{ groupItem.name }</p>
+                    <div className="d-flex flex-column gap-2">
+                        <p className="flex-grow-1 text-black text-truncate">{ groupItem.name }</p>
                         { !!roomSession &&
                             <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptItemPlacement(groupItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
                     </div> }

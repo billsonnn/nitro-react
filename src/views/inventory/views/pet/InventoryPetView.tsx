@@ -81,15 +81,18 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
 
     return (
         <div className="row h-100">
-            <div className="col-7 d-flex flex-column h-100">
+            <div className="d-flex flex-column col-7 h-100">
                 <InventoryPetResultsView petItems={ petItems }  />
             </div>
-            <div className="d-flex flex-column col-5 justify-space-between">
-                <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
-                { petItem && <div className="d-flex flex-column flex-grow-1">
-                    <p className="flex-grow-1 fs-6 text-black my-2">{ petItem.petData.name }</p>
-                    { !!roomSession && <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptPetPlacement(petItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
-                </div> }
+            <div className="d-flex flex-column col-5 gap-2 h-100 overflow-hidden">
+                <div className="position-relative d-flex flex-column overflow-auto h-100">
+                    <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                </div>
+                { petItem &&
+                    <div className="d-flex flex-column gap-2">
+                        <p className="flex-grow-1 text-black text-truncate">{ petItem.petData.name }</p>
+                        { !!roomSession && <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptPetPlacement(petItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
+                    </div> }
             </div>
         </div>
     );
