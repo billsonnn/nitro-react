@@ -1,36 +1,17 @@
 import { RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { ProcessRoomObjectOperation, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
+import { ProcessRoomObjectOperation, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDecorateModeEvent } from '../../../../../api';
+import { BatchUpdates } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../../context/RoomContext';
 import { ObjectLocationView } from '../../object-location/ObjectLocationView';
 
 export const FurnitureManipulationMenuView: FC<{}> = props =>
 {
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ isVisible, setIsVisible ] = useState(false);
     const [ objectId, setObjectId ] = useState(-1);
     const [ objectType, setObjectType ] = useState(-1);
-
-    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
-    {
-        switch(event.type)
-        {
-            case RoomWidgetRoomObjectUpdateEvent.OBJECT_REQUEST_MANIPULATION: {
-                setIsVisible(true);
-                setObjectId(event.id);
-                setObjectType(event.category);
-                return;
-            }
-            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED: {
-                return;
-            }
-            case RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED: {
-                setIsVisible(false);
-                return;
-            }
-        }
-    }, []);
+    const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
 
     const rotateFurniture = useCallback(() =>
     {
@@ -42,22 +23,87 @@ export const FurnitureManipulationMenuView: FC<{}> = props =>
         ProcessRoomObjectOperation(objectId, objectType, RoomObjectOperationType.OBJECT_MOVE);
     }, [ objectId, objectType ]);
 
-    useEffect(() =>
+    const pickupFurniture = useCallback(() =>
     {
-        if(!isVisible) return;
+        ProcessRoomObjectOperation(objectId, objectType, RoomObjectOperationType.OBJECT_PICKUP);
+    }, [ objectId, objectType ]);
 
-        moveFurniture();
-    }, [ isVisible, moveFurniture ]);
+    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    {
+        switch(event.type)
+        {
+            case RoomWidgetRoomObjectUpdateEvent.OBJECT_REQUEST_MANIPULATION: {
+                BatchUpdates(() =>
+                {
+                    setIsVisible(true);
+                    setObjectId(event.id);
+                    setObjectType(event.category);
+                });
+                return;
+            }
+            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED: {
+                if(event.id === objectId)
+                {
+                    BatchUpdates(() =>
+                    {
+                        setIsVisible(false);
+                        setObjectId(-1);
+                        setObjectType(-1);
+                    });
+                }
+                return;
+            }
+            case RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED: {
+                BatchUpdates(() =>
+                {
+                    setIsVisible(false);
+                    setObjectId(-1);
+                    setObjectType(-1);
+                });
+                return;
+            }
+        }
+    }, [ objectId ]);
 
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_REQUEST_MANIPULATION, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
     CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+
+    const onRoomWidgetUpdateDecorateModeEvent = useCallback((event: RoomWidgetUpdateDecorateModeEvent) =>
+    {
+        if(event.isDecorating) return;
+
+        moveFurniture();
+
+        BatchUpdates(() =>
+        {
+            setIsVisible(false);
+            setObjectId(-1);
+            setObjectType(-1);
+        });
+    }, [ moveFurniture ]);
+
+    CreateEventDispatcherHook(RoomWidgetUpdateDecorateModeEvent.UPDATE_DECORATE, eventDispatcher, onRoomWidgetUpdateDecorateModeEvent);
+
+    useEffect(() =>
+    {
+        if(!isVisible)
+        {
+            eventDispatcher.dispatchEvent(new RoomWidgetUpdateDecorateModeEvent(false));
+
+            return;
+        }
+
+        eventDispatcher.dispatchEvent(new RoomWidgetUpdateDecorateModeEvent(true));
+
+        moveFurniture();
+    }, [ eventDispatcher, isVisible, moveFurniture ]);
 
     if(!isVisible) return null;
 
     return (
         <ObjectLocationView objectId={ objectId } category={ objectType }>
             <div className="btn-group">
-                <button type="button" className="btn btn-primary btn-sm">
+                <button type="button" className="btn btn-primary btn-sm" onClick={ pickupFurniture }>
                     <i className="fas fa-times" />
                 </button>
                 <button type="button" className="btn btn-primary btn-sm" onClick={ rotateFurniture }>

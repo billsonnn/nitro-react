@@ -14,6 +14,7 @@ export * from './RoomWidgetUpdateChatInputContentEvent';
 export * from './RoomWidgetUpdateCreditFurniEvent';
 export * from './RoomWidgetUpdateCustomStackHeightEvent';
 export * from './RoomWidgetUpdateDanceStatusEvent';
+export * from './RoomWidgetUpdateDecorateModeEvent';
 export * from './RoomWidgetUpdateDimmerEvent';
 export * from './RoomWidgetUpdateDimmerStateEvent';
 export * from './RoomWidgetUpdateEvent';

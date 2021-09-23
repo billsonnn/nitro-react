@@ -1,6 +1,6 @@
 import { RoomEnterEffect, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { GetRoomSession, GetSessionDataManager, RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectMessage, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../../../../api';
+import { GetRoomSession, GetSessionDataManager, RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectMessage, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../context/RoomContext';
 import { AvatarInfoWidgetAvatarView } from './views/avatar/AvatarInfoWidgetAvatarView';
@@ -264,6 +264,13 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
 
     // useUiEvent(FriendEnteredRoomEvent.ENTERED, onFriendEnteredRoomEvent);
 
+    const onRoomWidgetUpdateDecorateModeEvent = useCallback((event: RoomWidgetUpdateDecorateModeEvent) =>
+    {
+        setIsDecorating(event.isDecorating);
+    }, []);
+
+    CreateEventDispatcherHook(RoomWidgetUpdateDecorateModeEvent.UPDATE_DECORATE, eventDispatcher, onRoomWidgetUpdateDecorateModeEvent);
+
     const decorateView = useMemo(() =>
     {
         GetRoomSession().isDecorating = isDecorating;
@@ -274,7 +281,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         const userName = GetSessionDataManager().userName;
         const roomIndex = GetRoomSession().ownRoomIndex;
 
-        return <AvatarInfoWidgetDecorateView userId={ userId } userName={ userName } roomIndex={ roomIndex } setIsDecorating={ setIsDecorating } />;
+        return <AvatarInfoWidgetDecorateView userId={ userId } userName={ userName } roomIndex={ roomIndex } />;
     }, [ isDecorating ]);
 
     const currentView = useMemo(() =>
@@ -316,7 +323,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
                     {
                         if(RoomEnterEffect.isRunning()) return null;
 
-                        return <AvatarInfoWidgetOwnAvatarView userData={ event } isDancing={ isDancing } setIsDecorating={ setIsDecorating } close={ clearInfoStandEvent } />;
+                        return <AvatarInfoWidgetOwnAvatarView userData={ event } isDancing={ isDancing } close={ clearInfoStandEvent } />;
                     }
 
                     return <AvatarInfoWidgetAvatarView userData={ event } close={ clearInfoStandEvent } />;
