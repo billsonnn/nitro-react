@@ -26,7 +26,6 @@ export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
                 });
                 return;
             case MouseEventType.MOUSE_DOWN:
-                console.log('ye')
                 setMouseDown(true);
                 return;
             case MouseEventType.MOUSE_UP:
@@ -42,5 +41,5 @@ export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
 
     if(!product) return null;
 
-    return <CatalogProductView isActive={ isActive } product={ product } onMouseEvent={ onMouseEvent } />
+    return <CatalogProductView isActive={ isActive } product={ product } onClick={ onMouseEvent } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent } />
 }

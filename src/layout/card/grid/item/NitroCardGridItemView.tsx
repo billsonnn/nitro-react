@@ -4,13 +4,15 @@ import { NitroCardGridItemViewProps } from './NitroCardGridItemView.types';
 
 export const NitroCardGridItemView: FC<NitroCardGridItemViewProps> = props =>
 {
-    const { itemImage = undefined, itemColor = undefined, itemActive = false, itemCount = 1, itemUniqueNumber = 0, itemUnseen = false, className = '', style = {}, children = null, ...rest } = props;
+    const { itemImage = undefined, itemColor = undefined, itemActive = false, itemCount = 1, itemUniqueNumber = -2, itemUnseen = false, className = '', style = {}, children = null, ...rest } = props;
 
     const getClassName = useMemo(() =>
     {
         let newClassName = 'grid-item cursor-pointer overflow-hidden';
 
         if(itemActive) newClassName += ' active';
+
+        if(itemUniqueNumber === -1) newClassName += ' unique-item sold-out';
 
         if(itemUniqueNumber > 0) newClassName += ' unique-item';
 

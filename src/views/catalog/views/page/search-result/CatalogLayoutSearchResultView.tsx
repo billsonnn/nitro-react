@@ -17,7 +17,7 @@ export const CatalogLayoutSearchResultView: FC<CatalogLayoutSearchResultViewProp
 
     return (
         <div className="row h-100">
-            <div className="col-7 h-100">
+            <div className="d-flex flex-column col-7 h-100">
                 <CatalogSearchResultOffersView offers={ furnitureDatas } />
             </div>
             { product &&
