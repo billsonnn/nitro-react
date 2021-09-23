@@ -26,13 +26,13 @@ export const CatalogNavigationSetView: FC<CatalogNavigationSetViewProps> = props
     }, [ page, isFirstSet, activeChild, pendingTree ]);
     
     return (
-        <div className="row row-cols-1 g-0 catalog-navigation-set-container w-100">
+        <>
             { page && (page.children.length > 0) && page.children.map((page, index) =>
                 {
                     if(!page.visible) return null;
                     
                     return <CatalogNavigationItemView key={ index } page={ page } isActive={ (activeChild === page) } pendingTree={ pendingTree } setPendingTree={ setPendingTree } setActiveChild={ setActiveChild } />
                 }) }
-        </div>
+        </>
     );
 }

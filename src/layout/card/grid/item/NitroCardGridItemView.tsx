@@ -8,7 +8,7 @@ export const NitroCardGridItemView: FC<NitroCardGridItemViewProps> = props =>
 
     const getClassName = useMemo(() =>
     {
-        let newClassName = 'grid-item cursor-pointer overflow-hidden';
+        let newClassName = 'grid-item gap-1 cursor-pointer overflow-hidden';
 
         if(itemActive) newClassName += ' active';
 

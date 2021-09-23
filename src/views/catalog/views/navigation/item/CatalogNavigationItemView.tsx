@@ -1,6 +1,7 @@
 import { GetCatalogPageComposer, INodeData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageHook } from '../../../../../hooks/messages/message-event';
+import { NitroCardGridItemView } from '../../../../../layout';
 import { CatalogMode } from '../../../CatalogView.types';
 import { CatalogIconView } from '../../catalog-icon/CatalogIconView';
 import { ACTIVE_PAGES } from '../CatalogNavigationView';
@@ -70,16 +71,14 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
     }, [ isActive, page ]);
     
     return (
-        <div className="col pb-1 catalog-navigation-item-container">
-            <div className={ 'd-flex align-items-center cursor-pointer catalog-navigation-item ' + (isActive ? 'active ': '') } onClick={ event => select(page) }>
+        <>
+            <NitroCardGridItemView itemActive={ isActive } onClick={ event => select(page) }>
                 <CatalogIconView icon={ page.icon } />
-                <div className="flex-grow-1 text-black text-truncate px-1">{ page.localization }</div>
+                <div className="flex-grow-1 text-black text-truncate">{ page.localization }</div>
                 { (page.children.length > 0) && <i className={ 'fas fa-caret-' + (isExpanded ? 'up' : 'down') } /> }
-            </div>
+            </NitroCardGridItemView>
             { isActive && isExpanded && page.children && (page.children.length > 0) &&
-                <div className="d-flex flex-column mt-1">
-                    <CatalogNavigationSetView page={ page } pendingTree={ pendingTree } setPendingTree={ setPendingTree } />
-                </div> }
-        </div>
+                <CatalogNavigationSetView page={ page } pendingTree={ pendingTree } setPendingTree={ setPendingTree } /> }
+        </>
     );
 }
