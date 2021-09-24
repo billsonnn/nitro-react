@@ -1,7 +1,6 @@
-import { DetailsHTMLAttributes } from 'react';
-import { NitroLayoutSpacing } from '../common';
+import { NitroLayoutBaseProps } from '../base';
 
-export interface NitroLayoutGridProps extends DetailsHTMLAttributes<HTMLDivElement>
+export interface NitroLayoutGridProps extends NitroLayoutBaseProps
 {
-    gap?: NitroLayoutSpacing;
+    
 }

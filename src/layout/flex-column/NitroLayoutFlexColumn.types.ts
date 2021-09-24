@@ -1,9 +1,6 @@
-import { DetailsHTMLAttributes } from 'react';
-import { NitroLayoutOverflow, NitroLayoutPosition, NitroLayoutSpacing } from '../common';
+import { NitroLayoutFlexProps } from '../flex/NitroLayoutFlex.types';
 
-export interface NitroLayoutFlexColumnProps extends DetailsHTMLAttributes<HTMLDivElement>
+export interface NitroLayoutFlexColumnProps extends NitroLayoutFlexProps
 {
-    overflow?: NitroLayoutOverflow;
-    position?: NitroLayoutPosition;
-    gap?: NitroLayoutSpacing;
+    
 }
