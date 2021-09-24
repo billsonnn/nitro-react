@@ -7,7 +7,7 @@ export const NitroCardGridView: FC<NitroCardGridViewProps> = props =>
 
     const getClassName = useMemo(() =>
     {
-        let newClassName = `grid gap-${ gap } overflow-auto`;
+        let newClassName = `grid gap-${ gap } nitro-grid overflow-auto`;
 
         if(className && className.length) newClassName += ' ' + className;
 
@@ -18,7 +18,7 @@ export const NitroCardGridView: FC<NitroCardGridViewProps> = props =>
     {
         const newStyle = { ...style };
 
-        newStyle['--bs-columns'] = columns.toString();
+        //newStyle['--bs-columns'] = columns.toString();
 
         return newStyle;
     }, [ style, columns ]);
