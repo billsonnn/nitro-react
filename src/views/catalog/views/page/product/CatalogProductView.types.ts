@@ -1,9 +1,8 @@
 import { CatalogPageMessageProductData } from '@nitrots/nitro-renderer';
-import { MouseEventHandler } from 'react';
+import { DetailsHTMLAttributes } from 'react';
 
-export interface CatalogProductViewProps
+export interface CatalogProductViewProps extends DetailsHTMLAttributes<HTMLDivElement>
 {
     isActive: boolean;
     product: CatalogPageMessageProductData;
-    onMouseEvent?: MouseEventHandler<Element>;
 }

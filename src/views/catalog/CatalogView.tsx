@@ -205,7 +205,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                     <NitroCardContentView>
                         <div className="row h-100">
                             { currentNavigationPage && !navigationHidden &&
-                                <div className="col-3 d-flex flex-column h-100">
+                                <div className="col-3 h-100">
                                     <CatalogNavigationView page={ currentNavigationPage } pendingTree={ pendingTree } setPendingTree={ setPendingTree } />
                                 </div> }
                             <div className="col h-100">

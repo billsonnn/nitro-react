@@ -5,6 +5,23 @@ module.exports = {
     webpack: {
         configure: (webpackConfig) => ({
             ...webpackConfig,
+            optimization: {
+                ...webpackConfig.optimization,
+                splitChunks: {
+                    cacheGroups: {
+                        vendor: {
+                            name: 'vendors',
+                            test: /[\\/]node_modules[\\/]/,
+                            chunks: 'all',
+                        },
+                        renderer: {
+                            name: 'renderer',
+                            test: /[\\/]node_modules[\\/]@nitrots[\\/]nitro-renderer[\\/]/,
+                            chunks: 'all',
+                        }
+                    }
+                }
+            },
             module: {
                 ...webpackConfig.module,
                 rules: webpackConfig.module.rules.map((rule) => 

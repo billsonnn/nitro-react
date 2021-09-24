@@ -7,12 +7,15 @@
 @import '../node_modules/animate.css/animate.min.css';
 @import './scrollbars';
 @import './slider';
-@import './grid';
 @import './icons';
 @import './utils';
 
 .btn-sm {
     min-height: 28px;
+}
+
+textarea {
+  resize: none;
 }
 
 /* Chrome, Safari, Edge, Opera */

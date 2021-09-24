@@ -1,0 +1,79 @@
+.nitro-friends-messenger {
+    width: 280px;
+    resize: both;
+
+    .friend-head {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        overflow: hidden;
+
+        .icon {
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            z-index: 10;
+        }
+
+        .avatar-image {
+            position: absolute;
+            margin-left: -27px;
+            margin-top: -27px;
+        }
+    }
+
+    .chat-title {
+        margin-top: -21px;
+    }
+
+    .chat-messages {
+        height: 200px;
+        min-height: 200px;
+        overflow-y: auto;
+
+        .message-avatar {
+            position: relative;
+            overflow: hidden;
+            width: 50px;
+            height: 50px;
+
+            .avatar-image {
+                position: absolute;
+                margin-left: -22px;
+                margin-top: -25px;
+            }
+        }
+
+        .messages-group-left {
+            position: relative;
+            
+            &:before {
+                position: absolute;
+                content: ' ';
+                width: 0;
+                height: 0;
+                border-right: 8px solid rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+                border-top: 8px solid transparent;
+                border-bottom: 8px solid transparent;
+                top: 10px;
+                left: -8px;
+            }
+        }
+
+        .messages-group-right {
+            position: relative;
+            
+            &:before {
+                position: absolute;
+                content: ' ';
+                width: 0;
+                height: 0;
+                border-left: 8px solid rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+                border-top: 8px solid transparent;
+                border-bottom: 8px solid transparent;
+                top: 10px;
+                right: -8px;
+            }
+        }
+    }
+}

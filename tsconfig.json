@@ -24,6 +24,6 @@
   },
   "include": [
     "src",
-    "node_modules/@nitrots/nitro-renderer/**/*.ts",
+    "node_modules/@nitrots/nitro-renderer/src/**/*.ts",
   ]
 }

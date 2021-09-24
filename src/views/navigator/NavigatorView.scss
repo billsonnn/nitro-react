@@ -1,11 +1,6 @@
 .nitro-navigator {
-    width: 400px;
-
-    .content-area {
-        min-height: 400px;
-        height: 400px;
-        resize: vertical;
-    }
+    width: $navigator-width;
+    height: $navigator-height;
 }
 
 .nitro-navigator-doorbell {

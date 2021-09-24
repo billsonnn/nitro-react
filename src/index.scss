@@ -14,4 +14,8 @@ body {
     image-rendering: -moz-crisp-edges;
 }
 
+img {
+    object-fit: none;
+}
+
 @import './App';

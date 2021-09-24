@@ -1,11 +1,6 @@
 .nitro-inventory {
-    width: 475px;
-
-    .content-area {
-        min-height: 240px;
-        height: 240px;
-        resize: vertical;
-    }
+    width: $inventory-width;
+    height: $inventory-height;
 
     .empty-image {
         background: url('../../assets/images/inventory/empty.png');
@@ -13,6 +8,3 @@
         height: 181px;
     }
 }
-
-
-@import './views/InventoryViews';

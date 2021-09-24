@@ -3,7 +3,12 @@
     width: 90px;
     height: 130px;
     background-repeat: no-repeat;
-    background-position-x: center;
-    background-position-y: -8px !important;
+    background-position: center -8px;
     pointer-events: none;
+    image-rendering: pixelated;
+
+    &.scale-0-5,
+    &.scale-0-75 {
+        image-rendering: -webkit-optimize-contrast;
+    }
 }

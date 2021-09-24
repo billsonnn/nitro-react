@@ -1,4 +1,5 @@
 .content-area {
+    height: 100%;
     padding-top: $container-padding-x;
     padding-bottom: $container-padding-x;
     overflow: auto;
@@ -9,6 +10,5 @@
         height: 100% !important;
         min-height: auto !important;
         max-height: 100% !important;
-        resize: none !important;
     }
 }

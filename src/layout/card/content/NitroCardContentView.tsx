@@ -8,7 +8,7 @@ export const NitroCardContentView: FC<NitroCardContentViewProps> = props =>
     const { simple = false } = useNitroCardContext();
     
     return (
-        <div className={ `container-fluid bg-light content-area ${ (simple ? 'simple' : '') } ${ className || '' }` } { ...rest }>
+        <div className={ `container-fluid bg-light content-area d-flex flex-column overflow-auto ${ (simple ? 'simple' : '') } ${ className || '' }` } { ...rest }>
             { children }
         </div>
     );

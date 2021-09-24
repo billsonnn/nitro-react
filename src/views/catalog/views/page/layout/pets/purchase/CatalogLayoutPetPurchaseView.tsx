@@ -6,6 +6,7 @@ import { useUiEvent } from '../../../../../../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../../../../../../hooks/messages/message-event';
 import { CurrencyIcon } from '../../../../../../shared/currency-icon/CurrencyIcon';
 import { CatalogPurchaseButtonView } from '../../../purchase/purchase-button/CatalogPurchaseButtonView';
+import { CatalogPurchaseGiftButtonView } from '../../../purchase/purchase-gift-button/CatalogPurchaseGiftButtonView';
 import { CatalogPetNameApprovalView } from '../name-approval/CatalogPetNameApprovalView';
 import { CatalogLayoutPetPurchaseViewProps } from './CatalogLayoutPetPurchaseView.types';
 
@@ -59,6 +60,8 @@ export const CatalogLayoutPetPurchaseView: FC<CatalogLayoutPetPurchaseViewProps>
                 </div>
                 <div className="d-flex flex-column mt-1">
                     <CatalogPurchaseButtonView className="btn-sm w-100" offer={ offer } pageId={ pageId } extra={ extraData } quantity={ 1 } isPurchaseAllowed={ nameApproved } beforePurchase={ beforePurchase } />
+                    { offer.giftable &&
+                        <CatalogPurchaseGiftButtonView className="btn-sm w-100 mt-1" offer={ offer } pageId={ pageId } extra={ extraData } disabled={ nameApproved } /> }
                 </div>
             </div>
         </>

@@ -1,5 +1,6 @@
-.nitro-friend-list {
+.nitro-friends {
     width: 250px;
 }
 
 @import './views/friend-bar/FriendBarView';
+@import './views/messenger/FriendsMessengerView';

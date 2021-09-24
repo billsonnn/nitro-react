@@ -5,7 +5,6 @@ import { GetAvatarRenderManager, GetSessionDataManager } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
 import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
 import { NitroCardGridView } from '../../../../layout/card/grid/NitroCardGridView';
-import { NitroCardGridThemes } from '../../../../layout/card/grid/NitroCardGridView.types';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
 import { AvatarEditorWardrobeViewProps } from './AvatarEditorWardrobeView.types';
@@ -68,7 +67,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
     return (
         <div className="row h-100">
             <div className="col-12 d-flex h-100">
-                <NitroCardGridView className="wardrobe-grid" columns={ 5 } theme={ NitroCardGridThemes.THEME_DEFAULT }>
+                <NitroCardGridView className="wardrobe-grid" columns={ 5 }>
                     { figures }
                 </NitroCardGridView>
             </div>

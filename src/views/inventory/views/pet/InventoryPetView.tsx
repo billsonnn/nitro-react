@@ -2,10 +2,15 @@ import { RequestPetsComposer, RoomObjectVariable } from '@nitrots/nitro-renderer
 import { FC, useEffect } from 'react';
 import { GetRoomEngine, LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
+import { NitroLayoutBase } from '../../../../layout/base';
+import { NitroLayoutFlexColumn } from '../../../../layout/flex-column/NitroLayoutFlexColumn';
+import { NitroLayoutGridColumn } from '../../../../layout/grid/column/NitroLayoutGridColumn';
+import { NitroLayoutGrid } from '../../../../layout/grid/NitroLayoutGrid';
 import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerView';
 import { attemptPetPlacement } from '../../common/PetUtilities';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryPetActions } from '../../reducers/InventoryPetReducer';
+import { InventoryCategoryEmptyView } from '../category-empty/InventoryCategoryEmptyView';
 import { InventoryPetViewProps } from './InventoryPetView.types';
 import { InventoryPetResultsView } from './results/InventoryPetResultsView';
 
@@ -62,35 +67,23 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
         roomPreviewer.addPetIntoRoom(petData.figureString);
     }, [ roomPreviewer, petItem ]);
 
-    if(!petItems || !petItems.length)
-    {
-        return (
-            <div className="row h-100">
-                <div className="col-5 d-flex justify-content-center align-items-center">
-                    <div className="empty-image"></div>
-                </div>
-                <div className="d-flex flex-column col-7 justify-content-center">
-                    <div className="h5 m-0 text-black fw-bold m-0 mb-2">
-                        { LocalizeText('inventory.empty.pets.title') }
-                    </div>
-                    <div className="h6 text-black">{ LocalizeText('inventory.empty.pets.desc') }</div>
-                </div>
-            </div>
-        );
-    }
+    if(!petItems || !petItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.pets.title') } desc={ LocalizeText('inventory.empty.pets.desc') } />;
 
     return (
-        <div className="row h-100">
-            <div className="col-7 d-flex flex-column h-100">
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn size={ 7 } gap={ 2 }>
                 <InventoryPetResultsView petItems={ petItems }  />
-            </div>
-            <div className="d-flex flex-column col-5 justify-space-between">
-                <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
-                { petItem && <div className="d-flex flex-column flex-grow-1">
-                    <p className="flex-grow-1 fs-6 text-black my-2">{ petItem.petData.name }</p>
-                    { !!roomSession && <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptPetPlacement(petItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
-                </div> }
-            </div>
-        </div>
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 5 } gap={ 2 } overflow="auto">
+                <NitroLayoutFlexColumn overflow="hidden" position="relative">
+                    <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                </NitroLayoutFlexColumn>
+                { petItem &&
+                    <NitroLayoutFlexColumn className="flex-grow-1" gap={ 2 }>
+                        <NitroLayoutBase className="flex-grow-1 text-black text-truncate">{ petItem.petData.name }</NitroLayoutBase>
+                        { !!roomSession && <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptPetPlacement(petItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
+                    </NitroLayoutFlexColumn> }
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
     );
 }
