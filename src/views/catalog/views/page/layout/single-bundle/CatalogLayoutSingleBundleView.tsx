@@ -15,7 +15,7 @@ export const CatalogLayoutSingleBundleView: FC<CatalogLayoutSingleBundleViewProp
     return (
         <div className="row h-100">
             <div className="d-flex flex-column col-7 h-100">
-                <NitroCardGridView columns={ 5 }>
+                <NitroCardGridView>
                     { activeOffer && activeOffer.products && (activeOffer.products.length > 0) && activeOffer.products.map((product, index) =>
                         {
                             return <CatalogProductView key={ index } isActive={ false } product={ product } />

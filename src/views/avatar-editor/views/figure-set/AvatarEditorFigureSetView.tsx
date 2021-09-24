@@ -22,7 +22,7 @@ export const AvatarEditorFigureSetView: FC<AvatarEditorFigureSetViewProps> = pro
     }, [ model, category, setMaxPaletteCount ]);
 
     return (
-        <NitroCardGridView columns={ 3 }>
+        <NitroCardGridView>
             { (category.parts.length > 0) && category.parts.map((item, index) =>
                 {
                     return <AvatarEditorFigureSetItemView key={ index } partItem={ item } onClick={ selectPart } />;

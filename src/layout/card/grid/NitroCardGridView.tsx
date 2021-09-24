@@ -3,7 +3,7 @@ import { NitroCardGridViewProps } from './NitroCardGridView.types';
 
 export const NitroCardGridView: FC<NitroCardGridViewProps> = props =>
 {
-    const { columns = 5, gap = 2, className = '', style = null, children = null, ...rest } = props;
+    const { columns = 0, gap = 2, className = '', style = null, children = null, ...rest } = props;
 
     const getClassName = useMemo(() =>
     {
@@ -18,7 +18,11 @@ export const NitroCardGridView: FC<NitroCardGridViewProps> = props =>
     {
         const newStyle = { ...style };
 
-        //newStyle['--bs-columns'] = columns.toString();
+        if(columns && (columns >= 1))
+        {
+            newStyle['grid-template-columns'] = 'unset';
+            newStyle['--bs-columns'] = columns.toString();
+        }
 
         return newStyle;
     }, [ style, columns ]);

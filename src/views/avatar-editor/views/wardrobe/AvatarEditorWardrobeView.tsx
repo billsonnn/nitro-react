@@ -67,7 +67,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
     return (
         <div className="row h-100">
             <div className="col-12 d-flex h-100">
-                <NitroCardGridView className="wardrobe-grid" columns={ 5 }>
+                <NitroCardGridView className="wardrobe-grid">
                     { figures }
                 </NitroCardGridView>
             </div>

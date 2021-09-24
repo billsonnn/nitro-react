@@ -8,7 +8,7 @@ export const InventoryFurnitureResultsView: FC<InventoryFurnitureResultsViewProp
     const { groupItems = [], columns = 5 } = props;
 
     return (
-        <NitroCardGridView columns={ columns }>
+        <NitroCardGridView>
             { groupItems && (groupItems.length > 0) && groupItems.map((item, index) =>
                 {
                     return <InventoryFurnitureItemView key={ index } groupItem={ item } />

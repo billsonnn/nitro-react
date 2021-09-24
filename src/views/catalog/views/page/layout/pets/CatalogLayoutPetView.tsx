@@ -143,7 +143,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutPetViewProps> = props =>
     return (
         <div className="row h-100">
             <div className="d-flex flex-column col-7 h-100">
-                <NitroCardGridView columns={ 5 }>
+                <NitroCardGridView>
                     { !colorsShowing && (sellablePalettes.length > 0) && sellablePalettes.map((palette, index) =>
                         {
                             return (

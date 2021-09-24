@@ -8,7 +8,7 @@ export const InventoryActiveBadgeResultsView: FC<InventoryActiveBadgeResultsView
     const { badges = [] } = props;
     
     return (
-        <NitroCardGridView columns={ 3 }>
+        <NitroCardGridView>
             { badges && (badges.length > 0) && badges.map(code =>
                 {
                     return <InventoryBadgeItemView key={ code } badge={ code } />

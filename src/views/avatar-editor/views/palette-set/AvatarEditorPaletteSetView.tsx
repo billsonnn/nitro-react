@@ -18,7 +18,7 @@ export const AvatarEditorPaletteSetView: FC<AvatarEditorPaletteSetViewProps> = p
     }, [ model, category, paletteSet, paletteIndex ]);
 
     return (
-        <NitroCardGridView columns={ 4 } { ...rest }>
+        <NitroCardGridView { ...rest }>
             { (paletteSet.length > 0) && paletteSet.map((item, index) =>
                 {
                     return <AvatarEditorPaletteSetItem key={ index } colorItem={ item } onClick={ event => selectColor(item) } />;

@@ -158,7 +158,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     }, []);
 
     return (
-        <div className="nitro-toolbar-container overflow-hidden">
+        <div className="nitro-toolbar-container">
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isMeExpanded } timeout={ 300 }>
                 <ToolbarMeView handleToolbarItemClick={ handleToolbarItemClick } />
             </TransitionAnimation>

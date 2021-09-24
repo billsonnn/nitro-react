@@ -9,7 +9,7 @@ export const BadgesContainerView: FC<BadgesContainerViewProps> = props =>
 
     return (
         <div className="row">
-            <NitroCardGridView columns={ 5 }>
+            <NitroCardGridView>
                 { badges && (badges.length > 0) && badges.map((badge, index) =>
                         {
                             return (

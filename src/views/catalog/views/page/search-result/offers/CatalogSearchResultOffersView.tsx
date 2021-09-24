@@ -20,7 +20,7 @@ export const CatalogSearchResultOffersView: FC<CatalogSearchResultOffersViewProp
     }, [ offers ]);
 
     return (
-        <NitroCardGridView columns={ 5 } { ...rest }>
+        <NitroCardGridView { ...rest }>
             { offers && (offers.length > 0) && offers.map((offer, index) =>
                 {
                     const isActive = (activeOffer && (activeOffer.products[0].furniClassId === offer.id));
