@@ -2,6 +2,8 @@ import { GetBotInventoryComposer, RoomObjectVariable } from '@nitrots/nitro-rend
 import { FC, useEffect } from 'react';
 import { GetRoomEngine, LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
+import { NitroLayoutButton } from '../../../../layout';
+import { NitroLayoutBase } from '../../../../layout/base';
 import { NitroLayoutFlexColumn } from '../../../../layout/flex-column/NitroLayoutFlexColumn';
 import { NitroLayoutGridColumn } from '../../../../layout/grid/column/NitroLayoutGridColumn';
 import { NitroLayoutGrid } from '../../../../layout/grid/NitroLayoutGrid';
@@ -9,6 +11,7 @@ import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerV
 import { attemptBotPlacement } from '../../common/BotUtilities';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryBotActions } from '../../reducers/InventoryBotReducer';
+import { InventoryCategoryEmptyView } from '../category-empty/InventoryCategoryEmptyView';
 import { InventoryBotViewProps } from './InventoryBotView.types';
 import { InventoryBotResultsView } from './results/InventoryBotResultsView';
 
@@ -65,22 +68,7 @@ export const InventoryBotView: FC<InventoryBotViewProps> = props =>
         roomPreviewer.addAvatarIntoRoom(botData.figure, 0);
     }, [ roomPreviewer, botItem ]);
 
-    if(!botItems || !botItems.length)
-    {
-        return (
-            <div className="row h-100">
-                <div className="col-5 d-flex justify-content-center align-items-center">
-                    <div className="empty-image"></div>
-                </div>
-                <div className="d-flex flex-column col-7 justify-content-center">
-                    <div className="h5 m-0 text-black fw-bold m-0 mb-2">
-                        { LocalizeText('inventory.empty.bots.title') }
-                    </div>
-                    <div className="h6 text-black">{ LocalizeText('inventory.empty.bots.desc') }</div>
-                </div>
-            </div>
-        );
-    }
+    if(!botItems || !botItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.bots.title') } desc={ LocalizeText('inventory.empty.bots.desc') } />;
 
     return (
         <NitroLayoutGrid>
@@ -93,8 +81,11 @@ export const InventoryBotView: FC<InventoryBotViewProps> = props =>
                 </NitroLayoutFlexColumn>
                 { botItem &&
                     <NitroLayoutFlexColumn className="flex-grow-1" gap={ 2 }>
-                        <div className="flex-grow-1 text-black text-truncate">{ botItem.botData.name }</div>
-                        { !!roomSession && <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptBotPlacement(botItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
+                        <NitroLayoutBase className="flex-grow-1 text-black text-truncate">{ botItem.botData.name }</NitroLayoutBase>
+                        { !!roomSession &&
+                            <NitroLayoutButton variant="success" size="sm" onClick={ event => attemptBotPlacement(botItem) }>
+                                { LocalizeText('inventory.furni.placetoroom') }
+                            </NitroLayoutButton> }
                     </NitroLayoutFlexColumn> }
             </NitroLayoutGridColumn>
         </NitroLayoutGrid>

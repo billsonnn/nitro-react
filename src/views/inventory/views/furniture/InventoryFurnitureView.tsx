@@ -2,6 +2,8 @@ import { FurnitureListComposer, RoomObjectVariable, Vector3d } from '@nitrots/ni
 import { FC, useEffect, useState } from 'react';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';
+import { NitroLayoutButton } from '../../../../layout';
+import { NitroLayoutBase } from '../../../../layout/base';
 import { NitroLayoutFlexColumn } from '../../../../layout/flex-column/NitroLayoutFlexColumn';
 import { NitroLayoutGridColumn } from '../../../../layout/grid/column/NitroLayoutGridColumn';
 import { NitroLayoutGrid } from '../../../../layout/grid/NitroLayoutGrid';
@@ -13,6 +15,7 @@ import { attemptItemPlacement } from '../../common/FurnitureUtilities';
 import { GroupItem } from '../../common/GroupItem';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
+import { InventoryCategoryEmptyView } from '../category-empty/InventoryCategoryEmptyView';
 import { InventoryFurnitureViewProps } from './InventoryFurnitureView.types';
 import { InventoryFurnitureResultsView } from './results/InventoryFurnitureResultsView';
 import { InventoryFurnitureSearchView } from './search/InventoryFurnitureSearchView';
@@ -101,22 +104,7 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
         }
     }, [ roomPreviewer, groupItem ]);
 
-    if(!groupItems || !groupItems.length)
-    {
-        return (
-            <div className="row h-100">
-                <div className="col-5 d-flex justify-content-center align-items-center">
-                    <div className="empty-image"></div>
-                </div>
-                <div className="d-flex flex-column col-7 justify-content-center">
-                    <div className="h5 m-0 text-black fw-bold m-0 mb-2">
-                        { LocalizeText('inventory.empty.title') }
-                    </div>
-                    <div className="h6 text-black">{ LocalizeText('inventory.empty.desc') }</div>
-                </div>
-            </div>
-        );
-    }
+    if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.title') } desc={ LocalizeText('inventory.empty.desc') } />;
 
     return (
         <NitroLayoutGrid>
@@ -128,19 +116,21 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                 <NitroLayoutFlexColumn overflow="hidden" position="relative">
                     <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                     { groupItem && groupItem.stuffData.isUnique &&
-                        <div className="position-absolute top-2 end-2">
+                        <NitroLayoutBase className="top-2 end-2" position="absolute">
                             <LimitedEditionCompactPlateView uniqueNumber={ groupItem.stuffData.uniqueNumber } uniqueSeries={ groupItem.stuffData.uniqueSeries } />
-                        </div> }
+                        </NitroLayoutBase> }
                     { (groupItem && groupItem.stuffData.rarityLevel > -1) &&
-                        <div className="position-absolute top-2 end-2">
+                        <NitroLayoutBase className="top-2 end-2" position="absolute">
                             <RarityLevelView level={ groupItem.stuffData.rarityLevel } />
-                        </div> }
+                        </NitroLayoutBase> }
                 </NitroLayoutFlexColumn>
                 { groupItem &&
                     <NitroLayoutFlexColumn className="flex-grow-1" gap={ 2 }>
-                        <div className="flex-grow-1 text-black text-truncate">{ groupItem.name }</div>
+                        <NitroLayoutBase className="flex-grow-1 text-black text-truncate">{ groupItem.name }</NitroLayoutBase>
                         { !!roomSession &&
-                            <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptItemPlacement(groupItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
+                            <NitroLayoutButton variant="success" size="sm" onClick={ event => attemptItemPlacement(groupItem) }>
+                                { LocalizeText('inventory.furni.placetoroom') }
+                            </NitroLayoutButton> }
                     </NitroLayoutFlexColumn> }
             </NitroLayoutGridColumn>
         </NitroLayoutGrid>

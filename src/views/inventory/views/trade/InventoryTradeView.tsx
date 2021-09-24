@@ -2,8 +2,12 @@ import { FurnitureListComposer, IObjectData, TradingAcceptComposer, TradingConfi
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';
+import { NitroLayoutButton, NitroLayoutFlex, NitroLayoutFlexColumn } from '../../../../layout';
+import { NitroLayoutBase } from '../../../../layout/base';
 import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
 import { NitroCardGridView } from '../../../../layout/card/grid/NitroCardGridView';
+import { NitroLayoutGridColumn } from '../../../../layout/grid/column/NitroLayoutGridColumn';
+import { NitroLayoutGrid } from '../../../../layout/grid/NitroLayoutGrid';
 import { FurniCategory } from '../../common/FurniCategory';
 import { GroupItem } from '../../common/GroupItem';
 import { IFurnitureItem } from '../../common/IFurnitureItem';
@@ -224,67 +228,81 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
     }, [ tradeData, dispatchFurnitureState ]);
 
     return (
-        <div className="row h-100">
-            <div className="d-flex flex-column col-4 h-100">
-                <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
-                <NitroCardGridView columns={ 3 }>
-                    { filteredGroupItems && (filteredGroupItems.length > 0) && filteredGroupItems.map((item, index) =>
-                        {
-                            const count = item.getUnlockedCount();
-
-                            return (
-                                <NitroCardGridItemView key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) }>
-                                    { ((count > 0) && (groupItem === item)) &&
-                                        <button className="btn btn-success btn-sm trade-button" onClick={ event => attemptItemOffer(1) }>
-                                            <i className="fas fa-chevron-right" />
-                                        </button> }
-                                </NitroCardGridItemView>
-                            );
-                        }) }
-                </NitroCardGridView>
-                <div className="col-12 badge bg-muted w-100 mt-1">{ groupItem ? groupItem.name : LocalizeText('catalog_selectproduct') }</div>
-            </div>
-            <div className="col-8 row mx-0">
-                <div className="d-flex flex-column col-6">
-                    <span className="d-flex justify-content-between align-items-center text-black small mb-1">{ LocalizeText('inventory.trading.you') } { LocalizeText('inventory.trading.areoffering') }: <i className={ 'small fas ' + (tradeData.ownUser.accepts ? 'fa-lock text-success' : 'fa-unlock text-danger') } /></span>
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn size={ 4 } gap={ 2 }>
+                <NitroLayoutFlexColumn className="h-100" overflow="auto" gap={ 2 }>
+                    <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                     <NitroCardGridView columns={ 3 }>
-                        { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
+                        { filteredGroupItems && (filteredGroupItems.length > 0) && filteredGroupItems.map((item, index) =>
                             {
-                                const item = (tradeData.ownUser.items.getWithIndex(i) || null);
-
-                                if(!item) return <NitroCardGridItemView key={ i } />;
+                                const count = item.getUnlockedCount();
 
                                 return (
-                                    <NitroCardGridItemView key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) }>
-                                        { (ownGroupItem === item) &&
-                                            <button className="btn btn-danger btn-sm trade-button left" onClick={ event => removeItem(item) }>
-                                                <i className="fas fa-chevron-left" />
+                                    <NitroCardGridItemView key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) }>
+                                        { ((count > 0) && (groupItem === item)) &&
+                                            <button className="btn btn-success btn-sm trade-button" onClick={ event => attemptItemOffer(1) }>
+                                                <i className="fas fa-chevron-right" />
                                             </button> }
                                     </NitroCardGridItemView>
                                 );
                             }) }
-                        <div className="col-12 badge bg-muted w-100">{ ownGroupItem ? ownGroupItem.name : LocalizeText('catalog_selectproduct') }</div>
                     </NitroCardGridView>
-                </div>
-                <div className="d-flex flex-column col-6">
-                    <span className="d-flex justify-content-between align-items-center  text-black small mb-1">{ tradeData.otherUser.userName } { LocalizeText('inventory.trading.isoffering') }: <i className={ 'small fas ' + (tradeData.otherUser.accepts ? 'fa-lock text-success' : 'fa-unlock text-danger') } /></span>
-                    <NitroCardGridView columns={ 3 }>
-                        { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
-                            {
-                                const item = (tradeData.otherUser.items.getWithIndex(i) || null);
+                </NitroLayoutFlexColumn>
+                <NitroLayoutBase className="badge bg-muted w-100">
+                    { groupItem ? groupItem.name : LocalizeText('catalog_selectproduct') }
+                </NitroLayoutBase>
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 8 } gap={ 2 }>
+                <NitroLayoutGrid overflow="hidden">
+                    <NitroLayoutGridColumn size={ 6 } gap={ 2 }>
+                        <NitroLayoutFlexColumn className="h-100" overflow="auto" gap={ 2 }>
+                            <span className="d-flex justify-content-between align-items-center text-black small mb-1">{ LocalizeText('inventory.trading.you') } { LocalizeText('inventory.trading.areoffering') }: <i className={ 'small fas ' + (tradeData.ownUser.accepts ? 'fa-lock text-success' : 'fa-unlock text-danger') } /></span>
+                            <NitroCardGridView columns={ 3 }>
+                                { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
+                                    {
+                                        const item = (tradeData.ownUser.items.getWithIndex(i) || null);
 
-                                if(!item) return <NitroCardGridItemView key={ i } />;
+                                        if(!item) return <NitroCardGridItemView key={ i } />;
 
-                                return <NitroCardGridItemView key={ i } itemActive={ (otherGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
-                            }) }
-                        <div className="col-12 badge bg-muted w-100">{ otherGroupItem ? otherGroupItem.name : LocalizeText('catalog_selectproduct') }</div>
-                    </NitroCardGridView>
-                </div>
-                <div className="d-flex col-12 justify-content-between align-items-end w-100">
-                    <button type="button" className="btn btn-danger" onClick={ cancelTrade }>{ LocalizeText('generic.cancel') }</button>
+                                        return (
+                                            <NitroCardGridItemView key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) }>
+                                                { (ownGroupItem === item) &&
+                                                    <button className="btn btn-danger btn-sm trade-button left" onClick={ event => removeItem(item) }>
+                                                        <i className="fas fa-chevron-left" />
+                                                    </button> }
+                                            </NitroCardGridItemView>
+                                        );
+                                    }) }
+                            </NitroCardGridView>
+                        </NitroLayoutFlexColumn>
+                        <NitroLayoutBase className="badge bg-muted w-100">
+                            { ownGroupItem ? ownGroupItem.name : LocalizeText('catalog_selectproduct') }
+                        </NitroLayoutBase>
+                    </NitroLayoutGridColumn>
+                    <NitroLayoutGridColumn size={ 6 } gap={ 2 }>
+                        <NitroLayoutFlexColumn className="h-100" overflow="auto" gap={ 2 }>
+                            <span className="d-flex justify-content-between align-items-center  text-black small mb-1">{ tradeData.otherUser.userName } { LocalizeText('inventory.trading.isoffering') }: <i className={ 'small fas ' + (tradeData.otherUser.accepts ? 'fa-lock text-success' : 'fa-unlock text-danger') } /></span>
+                            <NitroCardGridView columns={ 3 }>
+                                { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
+                                    {
+                                        const item = (tradeData.otherUser.items.getWithIndex(i) || null);
+
+                                        if(!item) return <NitroCardGridItemView key={ i } />;
+
+                                        return <NitroCardGridItemView key={ i } itemActive={ (otherGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
+                                    }) }
+                            </NitroCardGridView>
+                        </NitroLayoutFlexColumn>
+                        <NitroLayoutBase className="badge bg-muted w-100">
+                            { otherGroupItem ? otherGroupItem.name : LocalizeText('catalog_selectproduct') }
+                        </NitroLayoutBase>
+                    </NitroLayoutGridColumn>
+                </NitroLayoutGrid>
+                <NitroLayoutFlex className="flex-grow-1 justify-content-between">
+                    <NitroLayoutButton variant="danger" onClick={ cancelTrade }>{ LocalizeText('generic.cancel') }</NitroLayoutButton>
                     { getTradeButton }
-                </div>
-            </div>
-        </div>
+                </NitroLayoutFlex>
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
     );
 }

@@ -2,6 +2,8 @@ import { RequestBadgesComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { LocalizeBadgeName, LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
+import { NitroLayoutButton, NitroLayoutFlex } from '../../../../layout';
+import { NitroLayoutBase } from '../../../../layout/base';
 import { NitroLayoutFlexColumn } from '../../../../layout/flex-column/NitroLayoutFlexColumn';
 import { NitroLayoutGridColumn } from '../../../../layout/grid/column/NitroLayoutGridColumn';
 import { NitroLayoutGrid } from '../../../../layout/grid/NitroLayoutGrid';
@@ -83,18 +85,18 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
             </NitroLayoutGridColumn>
             <NitroLayoutGridColumn className="justify-content-between" size={ 5 } gap={ 2 } overflow="auto">
                 <NitroLayoutFlexColumn overflow="hidden" gap={ 2 }>
-                    <div className="text-black text-truncate">{ LocalizeText('inventory.badges.activebadges') }</div>
+                    <NitroLayoutBase className="text-black text-truncate">{ LocalizeText('inventory.badges.activebadges') }</NitroLayoutBase>
                     <InventoryActiveBadgeResultsView badges={ activeBadges }  />
                 </NitroLayoutFlexColumn>
                 { badge && (badge.length > 0) &&
                     <NitroLayoutFlexColumn gap={ 2 }>
-                        <div className="d-flex justify-content-between align-items-center">
-                            <div className="d-flex flex-grow-1 gap-2 align-items-center overflow-hidden">
+                        <NitroLayoutFlex className="justify-content-between align-items-center">
+                            <NitroLayoutFlex className="flex-grow-1 align-items-center" gap={ 2 } overflow="hidden">
                                 <BadgeImageView badgeCode={ badge } />
-                                <div className="flex-grow-1 text-black text-truncate">{ LocalizeBadgeName(badge) }</div>
-                            </div>
-                        </div>
-                        <button type="button" className={ 'btn btn-sm btn-' + (isWearingBadge(badge) ? 'danger' : 'success') } disabled={ !isWearingBadge(badge) && !canWearBadges() } onClick={ toggleBadge }>{ LocalizeText(isWearingBadge(badge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge')}</button>
+                                <NitroLayoutBase className="flex-grow-1 text-black text-truncate">{ LocalizeBadgeName(badge) }</NitroLayoutBase>
+                            </NitroLayoutFlex>
+                        </NitroLayoutFlex>
+                        <NitroLayoutButton variant={ (isWearingBadge(badge) ? 'danger' : 'success') } size="sm" disabled={ !isWearingBadge(badge) && !canWearBadges() } onClick={ toggleBadge }>{ LocalizeText(isWearingBadge(badge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</NitroLayoutButton>
                     </NitroLayoutFlexColumn> }
             </NitroLayoutGridColumn>
         </NitroLayoutGrid>
