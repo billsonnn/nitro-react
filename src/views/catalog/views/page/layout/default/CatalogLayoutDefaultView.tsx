@@ -17,7 +17,7 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutDefaultViewProps> = props
             <div className="d-flex flex-column col-7 h-100">
                 <CatalogPageOffersView offers={ pageParser.offers } />
             </div>
-            <div className="position-relative d-flex flex-column col-5">
+            <div className="position-relative d-flex flex-column col-5 gap-2 h-100 overflow-hidden">
                 <CatalogProductPreviewView pageParser={ pageParser } activeOffer={ activeOffer } roomPreviewer={ roomPreviewer } />
             </div>
         </div>

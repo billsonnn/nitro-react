@@ -16,12 +16,16 @@ export const CatalogProductPreviewView: FC<CatalogProductPreviewViewProps> = pro
 
     return (
         <>
-            <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
-            { product.uniqueLimitedItem &&
-                <LimitedEditionCompletePlateView uniqueLimitedItemsLeft={ product.uniqueLimitedItemsLeft } uniqueLimitedSeriesSize={ product.uniqueLimitedSeriesSize } /> }
-            <div className="fs-6 text-black mt-1 overflow-hidden">{ GetOfferName(activeOffer) }</div>
-            { children }
-            <CatalogPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ extra } disabled={ disabled } />
+            <div className="position-relative d-flex flex-column overflow-auto h-100">
+                <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                { product.uniqueLimitedItem &&
+                    <LimitedEditionCompletePlateView uniqueLimitedItemsLeft={ product.uniqueLimitedItemsLeft } uniqueLimitedSeriesSize={ product.uniqueLimitedSeriesSize } /> }
+            </div>
+            <div className="d-flex flex-column gap-2">
+                <div className="flex-grow-1 text-black text-truncate">{ GetOfferName(activeOffer) }</div>
+                { children }
+                <CatalogPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ extra } disabled={ disabled } />
+            </div>
         </>
     );
 }

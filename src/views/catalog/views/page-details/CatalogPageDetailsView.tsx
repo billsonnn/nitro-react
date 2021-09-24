@@ -11,9 +11,9 @@ export const CatalogPageDetailsView: FC<CatalogPageDetailsViewProps> = props =>
     const imageUrl = GetCatalogPageImage(pageParser, 1);
 
     return (
-        <div className="d-flex flex-column justify-content-center align-items-center gap-2 w-100 h-100">
-            { imageUrl && <img alt="" src={ imageUrl } /> }
-            <div className="d-flex flex-column fs-6 text-center text-black lh-sm" dangerouslySetInnerHTML={ { __html: GetCatalogPageText(pageParser, 0) } } />
+        <div className="d-flex flex-column justify-content-center align-items-center overflow-hidden h-100">
+            { imageUrl && <img className="" alt="" src={ imageUrl } /> }
+            <div className="d-flex flex-column fs-6 text-center text-black lh-sm overflow-auto" dangerouslySetInnerHTML={ { __html: GetCatalogPageText(pageParser, 0) } } />
         </div>
     );
 }
