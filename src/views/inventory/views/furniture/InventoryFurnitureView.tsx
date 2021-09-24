@@ -2,6 +2,9 @@ import { FurnitureListComposer, RoomObjectVariable, Vector3d } from '@nitrots/ni
 import { FC, useEffect, useState } from 'react';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';
+import { NitroLayoutFlexColumn } from '../../../../layout/flex-column/NitroLayoutFlexColumn';
+import { NitroLayoutGridColumn } from '../../../../layout/grid/column/NitroLayoutGridColumn';
+import { NitroLayoutGrid } from '../../../../layout/grid/NitroLayoutGrid';
 import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../shared/rarity-level/RarityLevelView';
 import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerView';
@@ -116,30 +119,30 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
     }
 
     return (
-        <div className="row h-100">
-            <div className="d-flex flex-column col-7 h-100">
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn size={ 7 } gap={ 2 }>
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                 <InventoryFurnitureResultsView groupItems={ filteredGroupItems }  />
-            </div>
-            <div className="d-flex flex-column col-5 gap-2 h-100 overflow-hidden">
-                <div className="position-relative d-flex flex-column overflow-auto h-100">
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 5 } gap={ 2 } overflow="auto">
+                <NitroLayoutFlexColumn overflow="hidden" position="relative">
                     <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                     { groupItem && groupItem.stuffData.isUnique &&
-                        <div className="stuffdata-extra-container">
+                        <div className="position-absolute top-2 end-2">
                             <LimitedEditionCompactPlateView uniqueNumber={ groupItem.stuffData.uniqueNumber } uniqueSeries={ groupItem.stuffData.uniqueSeries } />
                         </div> }
                     { (groupItem && groupItem.stuffData.rarityLevel > -1) &&
-                        <div className="stuffdata-extra-container">
+                        <div className="position-absolute top-2 end-2">
                             <RarityLevelView level={ groupItem.stuffData.rarityLevel } />
                         </div> }
-                </div>
+                </NitroLayoutFlexColumn>
                 { groupItem &&
-                    <div className="d-flex flex-column gap-2">
-                        <p className="flex-grow-1 text-black text-truncate">{ groupItem.name }</p>
+                    <NitroLayoutFlexColumn className="flex-grow-1" gap={ 2 }>
+                        <div className="flex-grow-1 text-black text-truncate">{ groupItem.name }</div>
                         { !!roomSession &&
                             <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptItemPlacement(groupItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
-                    </div> }
-            </div>
-        </div>
+                    </NitroLayoutFlexColumn> }
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
     );
 }

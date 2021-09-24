@@ -2,6 +2,9 @@ import { RequestPetsComposer, RoomObjectVariable } from '@nitrots/nitro-renderer
 import { FC, useEffect } from 'react';
 import { GetRoomEngine, LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
+import { NitroLayoutFlexColumn } from '../../../../layout/flex-column/NitroLayoutFlexColumn';
+import { NitroLayoutGridColumn } from '../../../../layout/grid/column/NitroLayoutGridColumn';
+import { NitroLayoutGrid } from '../../../../layout/grid/NitroLayoutGrid';
 import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerView';
 import { attemptPetPlacement } from '../../common/PetUtilities';
 import { useInventoryContext } from '../../context/InventoryContext';
@@ -80,20 +83,20 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
     }
 
     return (
-        <div className="row h-100">
-            <div className="d-flex flex-column col-7 h-100">
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn size={ 7 } gap={ 2 }>
                 <InventoryPetResultsView petItems={ petItems }  />
-            </div>
-            <div className="d-flex flex-column col-5 gap-2 h-100 overflow-hidden">
-                <div className="position-relative d-flex flex-column overflow-auto h-100">
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 5 } gap={ 2 } overflow="auto">
+                <NitroLayoutFlexColumn overflow="hidden" position="relative">
                     <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
-                </div>
+                </NitroLayoutFlexColumn>
                 { petItem &&
-                    <div className="d-flex flex-column gap-2">
-                        <p className="flex-grow-1 text-black text-truncate">{ petItem.petData.name }</p>
+                    <NitroLayoutFlexColumn className="flex-grow-1" gap={ 2 }>
+                        <div className="flex-grow-1 text-black text-truncate">{ petItem.petData.name }</div>
                         { !!roomSession && <button type="button" className="btn btn-success btn-sm" onClick={ event => attemptPetPlacement(petItem) }>{ LocalizeText('inventory.furni.placetoroom') }</button> }
-                    </div> }
-            </div>
-        </div>
+                    </NitroLayoutFlexColumn> }
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
     );
 }
