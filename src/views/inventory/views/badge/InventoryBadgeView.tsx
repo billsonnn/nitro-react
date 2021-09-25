@@ -80,10 +80,10 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
 
     return (
         <NitroLayoutGrid>
-            <NitroLayoutGridColumn size={ 7 } gap={ 2 }>
+            <NitroLayoutGridColumn size={ 7 }>
                 <InventoryBadgeResultsView badges={ badges } activeBadges={ activeBadges } />
             </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn className="justify-content-between" size={ 5 } gap={ 2 } overflow="auto">
+            <NitroLayoutGridColumn className="justify-content-between" size={ 5 } overflow="auto">
                 <NitroLayoutFlexColumn overflow="hidden" gap={ 2 }>
                     <NitroLayoutBase className="text-black text-truncate">{ LocalizeText('inventory.badges.activebadges') }</NitroLayoutBase>
                     <InventoryActiveBadgeResultsView badges={ activeBadges }  />

@@ -72,10 +72,10 @@ export const InventoryBotView: FC<InventoryBotViewProps> = props =>
 
     return (
         <NitroLayoutGrid>
-            <NitroLayoutGridColumn size={ 7 } gap={ 2 }>
+            <NitroLayoutGridColumn size={ 7 }>
                 <InventoryBotResultsView botItems={ botItems } />
             </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn size={ 5 } gap={ 2 } overflow="auto">
+            <NitroLayoutGridColumn size={ 5 } overflow="auto">
                 <NitroLayoutFlexColumn overflow="hidden" position="relative">
                     <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                 </NitroLayoutFlexColumn>
