@@ -1,10 +1,6 @@
 .nitro-achievements {
-    width: 650px;
-
-    .content-area {
-        min-height: 376px;
-        height: 376px;
-    }
+    width: $achievement-width;
+    height: $achievement-height;
 
     .score {
         border-color: $grid-border-color !important;
@@ -12,13 +8,22 @@
     }
 
     .category {
+        border-color: $grid-border-color !important;
+        background-color: $grid-bg-color;
+        cursor: pointer;
+
+        &.active {
+            border-color: $grid-active-border-color !important;
+            background-color: $grid-active-bg-color;
+        }
+
         .category-score {
             margin-top: 43.5px;
         }
     }
 
     .achievements {
-        height: 230px;
+        height: 152px;
         overflow-y: auto;
         overflow-x: hidden;
 
@@ -42,6 +47,17 @@
             div {
                 height: 40px;
             }
+        }
+    }
+
+    .achievement-image {
+        height: 80px;
+        width: 80px;
+
+        .badge-image {
+            width: 80px;
+            height: 80px;
+            background-size: contain;
         }
     }
 }

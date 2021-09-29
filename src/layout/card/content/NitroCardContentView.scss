@@ -1,20 +1,14 @@
 .content-area {
+    height: 100%;
     padding-top: $container-padding-x;
     padding-bottom: $container-padding-x;
     overflow: auto;
-
-    &.simple {
-        padding-left: ($container-padding-x + 25px);
-        padding-right: ($container-padding-x + 25px);
-    }
 }
 
 @include media-breakpoint-down(lg) {
-        
     .content-area {
         height: 100% !important;
         min-height: auto !important;
         max-height: 100% !important;
-        resize: none !important;
     }
 }

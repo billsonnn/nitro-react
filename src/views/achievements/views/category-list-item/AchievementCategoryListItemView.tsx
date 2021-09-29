@@ -1,6 +1,6 @@
+import classNames from 'classnames';
 import { FC, useCallback, useMemo } from 'react';
 import { GetConfiguration } from '../../../../api';
-import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
 import { useAchievementsContext } from '../../context/AchievementsContext';
 import { AchievementsActions } from '../../reducers/AchievementsReducer';
 import { AchievementCategoryListItemViewProps } from './AchievementCategoryListItemView.types';
@@ -58,8 +58,11 @@ export const AchievementCategoryListItemView: FC<AchievementCategoryListItemView
     }, [ dispatchAchievementsState ]);
 
     return (
-        <NitroCardGridItemView className="d-flex flex-column justify-content-center align-items-center category border border-2 rounded p-2" itemActive={ isActive } itemImage={ getCategoryImage } onClick={ event => selectCategory(category.name) }>
-            <div className="position-absolute category-score small">{ getCategoryProgress }</div>
-        </NitroCardGridItemView>
+        <div className="col mb-3">
+            <div className={ 'd-flex flex-column justify-content-center align-items-center category border border-2 rounded p-2' + classNames({ ' active': isActive }) } onClick={ () => selectCategory(category.name) }>
+                <img src={ getCategoryImage } alt="" />
+                <div className="position-absolute category-score small">{ getCategoryProgress }</div>
+            </div>
+        </div>
     );
 }

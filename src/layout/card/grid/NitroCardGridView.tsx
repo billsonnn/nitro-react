@@ -1,18 +1,35 @@
-import { FC } from 'react';
-import { NitroCardGridContextProvider } from './context/NitroCardGridContext';
-import { NitroCardGridThemes, NitroCardGridViewProps } from './NitroCardGridView.types';
+import { FC, useMemo } from 'react';
+import { NitroCardGridViewProps } from './NitroCardGridView.types';
 
 export const NitroCardGridView: FC<NitroCardGridViewProps> = props =>
 {
-    const { columns = 5, theme = NitroCardGridThemes.THEME_DEFAULT, className = '', children = null, ...rest } = props;
+    const { columns = 0, gap = 2, className = '', style = null, children = null, ...rest } = props;
+
+    const getClassName = useMemo(() =>
+    {
+        let newClassName = `grid gap-${ gap } nitro-grid overflow-auto`;
+
+        if(className && className.length) newClassName += ' ' + className;
+
+        return newClassName;
+    }, [ className, gap ]);
+
+    const getStyle = useMemo(() =>
+    {
+        const newStyle = { ...style };
+
+        if(columns && (columns >= 1))
+        {
+            newStyle['grid-template-columns'] = 'unset';
+            newStyle['--bs-columns'] = columns.toString();
+        }
+
+        return newStyle;
+    }, [ style, columns ]);
 
     return (
-        <NitroCardGridContextProvider value={ { theme } }>
-            <div className={ `h-100 overflow-hidden nitro-card-grid ${ theme } ${ className || '' }` } { ...rest }>
-                <div className={ `row row-cols-${ columns } align-content-start g-0 w-100 h-100 overflow-auto` }>
-                    { children }
-                </div>
-            </div>
-        </NitroCardGridContextProvider>
+        <div className={ getClassName } style={ getStyle } { ...rest }>
+            { children }
+        </div>
     );
 }

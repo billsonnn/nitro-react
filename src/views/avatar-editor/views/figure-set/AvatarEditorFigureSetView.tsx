@@ -1,6 +1,5 @@
 import { FC, useCallback } from 'react';
 import { NitroCardGridView } from '../../../../layout/card/grid/NitroCardGridView';
-import { NitroCardGridThemes } from '../../../../layout/card/grid/NitroCardGridView.types';
 import { AvatarEditorGridPartItem } from '../../common/AvatarEditorGridPartItem';
 import { AvatarEditorFigureSetItemView } from '../figure-set-item/AvatarEditorFigureSetItemView';
 import { AvatarEditorFigureSetViewProps } from './AvatarEditorFigureSetView.types';
@@ -23,7 +22,7 @@ export const AvatarEditorFigureSetView: FC<AvatarEditorFigureSetViewProps> = pro
     }, [ model, category, setMaxPaletteCount ]);
 
     return (
-        <NitroCardGridView columns={ 3 } theme={ NitroCardGridThemes.THEME_SHADOWED }>
+        <NitroCardGridView>
             { (category.parts.length > 0) && category.parts.map((item, index) =>
                 {
                     return <AvatarEditorFigureSetItemView key={ index } partItem={ item } onClick={ selectPart } />;

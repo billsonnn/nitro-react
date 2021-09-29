@@ -1,7 +1,7 @@
 import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
 import { GetNitroInstance, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
 import { InventoryTradeRequestEvent, WiredSelectObjectEvent } from '../../../../../events';
-import { FriendListSendFriendRequestEvent } from '../../../../../events/friend-list/FriendListSendFriendRequestEvent';
+import { FriendsSendFriendRequestEvent } from '../../../../../events/friends/FriendsSendFriendRequestEvent';
 import { dispatchUiEvent } from '../../../../../hooks/events';
 import { SendMessageHook } from '../../../../../hooks/messages';
 import { PetSupplementEnum } from '../../../../../views/room/widgets/avatar-info/common/PetSupplementEnum';
@@ -76,7 +76,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             case RoomWidgetRoomObjectMessage.GET_OBJECT_INFO:
                 return this.processObjectInfoMessage((message as RoomWidgetRoomObjectMessage));
             case RoomWidgetUserActionMessage.SEND_FRIEND_REQUEST:
-                dispatchUiEvent(new FriendListSendFriendRequestEvent(userId));
+                dispatchUiEvent(new FriendsSendFriendRequestEvent(userId));
                 break;
             case RoomWidgetUserActionMessage.RESPECT_USER:
                 GetSessionDataManager().giveRespect(userId);

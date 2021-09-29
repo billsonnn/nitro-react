@@ -1,14 +1,15 @@
 import { GetProductOfferComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
+import { NitroCardGridView } from '../../../../../../layout';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogSearchResultOfferView } from '../offer/CatalogSearchResultOfferView';
 import { CatalogSearchResultOffersViewProps } from './CatalogSearchResultOffersView.types';
 
 export const CatalogSearchResultOffersView: FC<CatalogSearchResultOffersViewProps> = props =>
 {
-    const { offers = [] } = props;
-    const { catalogState } = useCatalogContext();
+    const { offers = [], ...rest } = props;
+    const { catalogState = null } = useCatalogContext();
     const { activeOffer = null } = catalogState;
 
     useEffect(() =>
@@ -19,13 +20,13 @@ export const CatalogSearchResultOffersView: FC<CatalogSearchResultOffersViewProp
     }, [ offers ]);
 
     return (
-        <div className="row row-cols-5 align-content-start g-0 mb-n1 w-100 catalog-offers-container h-100">
+        <NitroCardGridView { ...rest }>
             { offers && (offers.length > 0) && offers.map((offer, index) =>
                 {
                     const isActive = (activeOffer && (activeOffer.products[0].furniClassId === offer.id));
 
                     return <CatalogSearchResultOfferView key={ index } isActive={ isActive } offer={ offer } />
-                }) }
-        </div>
+                })}
+        </NitroCardGridView>
     );
 }

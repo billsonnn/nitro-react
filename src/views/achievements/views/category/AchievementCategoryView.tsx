@@ -1,7 +1,7 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../api';
+import { FC, useCallback, useMemo } from 'react';
+import { LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../../api';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { useAchievementsContext } from '../../context/AchievementsContext';
 import { AchievementsActions } from '../../reducers/AchievementsReducer';
@@ -34,7 +34,7 @@ export const AchievementCategoryView: FC<AchievementCategoryViewProps> = props =
         return badgeId;
     }, []);
 
-    const getSelectedAchievement = useCallback(() =>
+    const selectedAchievement = useMemo(() =>
     {
         if(!getSelectedCategory()) return null;
         
@@ -54,15 +54,19 @@ export const AchievementCategoryView: FC<AchievementCategoryViewProps> = props =
 
     return (
         <div className="d-flex flex-column h-100">
-            <div className="bg-primary rounded p-2 d-flex align-items-center mb-3">
+            <div className="bg-primary rounded p-2 d-flex align-items-center mb-2">
                 <h5 className="m-0 me-2 w-100">{ LocalizeText('quests.' + selectedCategoryName + '.name') }</h5>
                 <div>IMAGE</div>
             </div>
-            <div className="bg-muted rounded p-2 mb-3 d-flex">
-                <div>
-                    <BadgeImageView badgeCode={ getAchievementImage(getSelectedAchievement()) } />
+            { selectedAchievement && <div className="bg-secondary rounded p-2 mb-3 d-flex gap-2 align-items-center">
+                <div className="achievement-image">
+                    <BadgeImageView badgeCode={ getAchievementImage(selectedAchievement) } />
                 </div>
-            </div>
+                <div>
+                    <div>{ LocalizeBadgeName(selectedAchievement.badgeId) }</div>
+                    <div>{ LocalizeBadgeDescription(selectedAchievement.badgeId) }</div>
+                </div>
+            </div> }
             <div className="achievements">
                 <div className="row row-cols-4">
                     { getSelectedCategory().achievements.map((achievement, index) =>

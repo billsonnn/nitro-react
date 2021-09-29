@@ -1,11 +1,21 @@
-.nitro-catalog-navigation {
-    border-color: $grid-border-color !important;
-    background-color: $grid-bg-color !important;
+.nitro-catalog-navigation-grid {
+    border-radius: 0.25rem;
+    border-color: #B6BEC5 !important;
+    background-color: #CDD3D9;
+    border: 2px solid;
 
-    .navigation-container {
-        overflow-y: auto;
+    .grid-item {
+        font-size: $font-size-sm;
+        height: 23px !important;
+        border-color: unset !important;
+        background-color: #CDD3D9;
+        border: 0 !important;
+        padding: 1px 3px;
+
+        i.fas {
+            color: $black;
+            font-size: 10px;
+            padding: 1px;
+        }
     }
 }
-
-@import './item/CatalogNavigationItemView';
-@import './set/CatalogNavigationSetView';

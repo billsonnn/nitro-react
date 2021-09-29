@@ -1,6 +1,5 @@
 import { FC, useCallback } from 'react';
 import { NitroCardGridView } from '../../../../layout/card/grid/NitroCardGridView';
-import { NitroCardGridThemes } from '../../../../layout/card/grid/NitroCardGridView.types';
 import { AvatarEditorGridColorItem } from '../../common/AvatarEditorGridColorItem';
 import { AvatarEditorPaletteSetItem } from '../palette-set-item/AvatarEditorPaletteSetItem';
 import { AvatarEditorPaletteSetViewProps } from './AvatarEditorPaletteSetView.types';
@@ -19,7 +18,7 @@ export const AvatarEditorPaletteSetView: FC<AvatarEditorPaletteSetViewProps> = p
     }, [ model, category, paletteSet, paletteIndex ]);
 
     return (
-        <NitroCardGridView columns={ 4 } theme={ NitroCardGridThemes.THEME_SHADOWED } { ...rest }>
+        <NitroCardGridView { ...rest }>
             { (paletteSet.length > 0) && paletteSet.map((item, index) =>
                 {
                     return <AvatarEditorPaletteSetItem key={ index } colorItem={ item } onClick={ event => selectColor(item) } />;

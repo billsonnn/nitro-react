@@ -1,6 +1,6 @@
 import { AvatarAction, AvatarExpressionEnum, RoomObjectCategory, UserProfileComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUserActionMessage } from '../../../../../../api';
+import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUserActionMessage } from '../../../../../../api';
 import { AvatarEditorEvent } from '../../../../../../events';
 import { dispatchUiEvent, SendMessageHook } from '../../../../../../hooks';
 import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
@@ -18,9 +18,9 @@ const MODE_SIGNS = 4;
 
 export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProps> = props =>
 {
-    const { userData = null, isDancing = false, setIsDecorating = null, close = null } = props;
+    const { userData = null, isDancing = false, close = null } = props;
     const [ mode, setMode ] = useState((isDancing && HasHabboClub()) ? MODE_CLUB_DANCES : MODE_NORMAL);
-    const { roomSession = null, widgetHandler = null } = useRoomContext();
+    const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
 
     const processAction = useCallback((name: string) =>
     {
@@ -40,7 +40,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                 switch(name)
                 {
                     case 'decorate':
-                        setIsDecorating(true);
+                        eventDispatcher.dispatchEvent(new RoomWidgetUpdateDecorateModeEvent(true));
                         break;
                     case 'change_looks':
                         dispatchUiEvent(new AvatarEditorEvent(AvatarEditorEvent.SHOW_EDITOR));
@@ -101,7 +101,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
         }
 
         if(hideMenu) close();
-    }, [ roomSession, widgetHandler, userData, setIsDecorating, close ]);
+    }, [ roomSession, eventDispatcher, widgetHandler, userData, close ]);
 
     const openProfile = useCallback(() =>
     {

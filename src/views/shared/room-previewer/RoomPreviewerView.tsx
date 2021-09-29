@@ -6,9 +6,7 @@ import { RoomPreviewerViewProps } from './RoomPreviewerView.types';
 export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 {
     const { roomPreviewer = null, height = 0 } = props;
-
     const [ renderingCanvas, setRenderingCanvas ] = useState<IRoomRenderingCanvas>(null);
-
     const elementRef = useRef<HTMLDivElement>();
 
     const update = useCallback((time: number) =>
@@ -41,9 +39,6 @@ export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 
         const canvas = roomPreviewer.getRenderingCanvas();
 
-        elementRef.current.style.width = `${ width }px`;
-        elementRef.current.style.height = `${ height }px`;
-
         setRenderingCanvas(canvas);
 
         canvas.canvasUpdated = true;
@@ -59,34 +54,31 @@ export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 
         GetNitroInstance().ticker.add(update);
 
-        function resize(): void
-        {
-            if(!roomPreviewer) return;
+        const resizeObserver = new ResizeObserver(() =>
+            {
+                if(!roomPreviewer || !elementRef.current) return;
 
-            const width = elementRef.current.parentElement.offsetWidth;
+                const width = elementRef.current.parentElement.offsetWidth;
 
-            elementRef.current.style.width = `${ width }px`;
-            elementRef.current.style.height = `${ height }px`;
+                roomPreviewer.modifyRoomCanvas(width, height);
 
-            roomPreviewer.modifyRoomCanvas(width, height);
-
-            update(-1);
-        }
-
-        window.addEventListener('resize', resize);
+                update(-1);
+            });
+        
+        resizeObserver.observe(elementRef.current);
 
         return () =>
         {
-            GetNitroInstance().ticker.remove(update);
+            resizeObserver.disconnect();
 
-            window.removeEventListener('resize', resize);
+            GetNitroInstance().ticker.remove(update);
         }
 
     }, [ renderingCanvas, roomPreviewer, elementRef, height, setupPreviewer, update ]);
 
     return (
         <div className="room-preview-container">
-            <div ref={ elementRef } className="room-preview-image" />
+            <div ref={ elementRef } className="room-preview-image" style={ { height } } />
             { props.children }
         </div>
     );

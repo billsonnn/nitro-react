@@ -1,16 +1,19 @@
 import { HabboWebTools, RoomEnterEffect } from '@nitrots/nitro-renderer';
 import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText } from '../../../api';
-import { SimpleAlertUIEvent } from '../../../events';
+import { NotificationAlertEvent } from '../../../events';
 import { NotificationBubbleEvent } from '../../../events/notification-center/NotificationBubbleEvent';
 import { dispatchUiEvent } from '../../../hooks';
 import { CatalogPageName } from '../../catalog/common/CatalogPageName';
-import { NotificationType } from './NotificationType';
+import { NotificationAlertType } from './NotificationAlertType';
+import { NotificationBubbleType } from './NotificationBubbleType';
 
 export class NotificationUtilities
 {
     private static MODERATION_DISCLAIMER_SHOWN: boolean = false;
     private static MODERATION_DISCLAIMER_DELAY_MS: number = 5000;
     private static MODERATION_DISCLAIMER_TIMEOUT: ReturnType<typeof setTimeout> = null;
+
+    public static BUBBLES_DISABLED: boolean = false;
 
     private static cleanText(text: string): string
     {
@@ -68,62 +71,92 @@ export class NotificationUtilities
 
         const configuration = this.getNotificationConfig(('notification.' + type));
 
-        if(configuration)
-        {
-            for(const key in configuration) options.set(key, configuration[key]);
-        }
+        if(configuration) for(const key in configuration) options.set(key, configuration[key]);
 
         console.log(options);
 
+        const title = this.getNotificationPart(options, type, 'title', true);
+        const message = this.getNotificationPart(options, type, 'message', true).replace(/\\r/g, '\r');
+        const linkTitle = this.getNotificationPart(options, type, 'linkTitle', false);
+        const linkUrl = this.getNotificationPart(options, type, 'linkUrl', false);
+        const image = this.getNotificationImageUrl(options, type);
+
         if(options.get('display') === 'BUBBLE')
         {
-            const message = this.getNotificationPart(options, type, 'message', true);
-            const linkUrl = this.getNotificationPart(options, type, 'linkUrl', false);
-            const isEventLink = (linkUrl && linkUrl.substr(0, 6) === 'event');
-            const image = this.getNotificationImageUrl(options, type);
-
-            dispatchUiEvent(new NotificationBubbleEvent(LocalizeText(message), NotificationType.INFO, LocalizeText(image), (isEventLink ? linkUrl.substr(6) : linkUrl)));
+            this.showSingleBubble(LocalizeText(message), NotificationBubbleType.INFO, LocalizeText(image), linkUrl);
         }
         else
         {
-
+            this.simpleAlert(message, NotificationAlertType.EVENT, linkUrl, linkTitle, title, image);
         }
     }
 
     public static showSingleBubble(message: string, type: string, imageUrl: string = null, internalLink: string = null): void
     {
+        if(this.BUBBLES_DISABLED) return;
+
         dispatchUiEvent(new NotificationBubbleEvent(message, type, imageUrl, internalLink));
-    }
-
-    public static simpleAlert(message: string, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
-    {
-        if(!title || !title.length) title = LocalizeText('notifications.broadcast.title');
-
-        dispatchUiEvent(new SimpleAlertUIEvent(message, clickUrl, clickUrlText, title, imageUrl));
-    }
-
-    public static alert(title: string, message: string): void
-    {
-        dispatchUiEvent(new SimpleAlertUIEvent(message, null, null, title, null));
     }
 
     public static showClubGiftNotification(numGifts: number): void
     {
         if(numGifts <= 0) return;
 
-        dispatchUiEvent(new NotificationBubbleEvent(numGifts.toString(), NotificationType.CLUBGIFT, null, 'catalog/open/' + CatalogPageName.CLUB_GIFTS));
+        this.showSingleBubble(numGifts.toString(), NotificationBubbleType.CLUBGIFT, null, ('catalog/open/' + CatalogPageName.CLUB_GIFTS));
     }
 
-    public static showModeratorMessage(message: string, url: string = null): void
+    public static handleMOTD(messages: string[]): void
     {
-        this.simpleAlert(this.cleanText(message), url, LocalizeText('mod.alert.link'), LocalizeText('mod.alert.title'));
+        messages = messages.map(message => this.cleanText(message));
+
+        dispatchUiEvent(new NotificationAlertEvent(messages, NotificationAlertType.MOTD, null, null, LocalizeText('notifications.motd.title')));
+    }
+
+    public static simpleAlert(message: string, type: string, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
+    {
+        if(!title || !title.length) title = LocalizeText('notifications.broadcast.title');
+
+        dispatchUiEvent(new NotificationAlertEvent([ this.cleanText(message) ], type, clickUrl, clickUrlText, title, imageUrl));
+    }
+
+    public static showModeratorMessage(message: string, url: string = null, showHabboWay: boolean = true): void
+    {
+        this.simpleAlert(message, NotificationAlertType.MODERATION, url, LocalizeText('mod.alert.link'), LocalizeText('mod.alert.title'));
+    }
+
+    public static handleModeratorCaution(message: string, url: string = null): void
+    {
+        this.showModeratorMessage(message, url);
+    }
+
+    public static handleModeratorMessage(message: string, url: string = null): void
+    {
+        this.showModeratorMessage(message, url, false);
+    }
+
+    public static handleUserBannedMessage(message: string): void
+    {
+        this.showModeratorMessage(message);
     }
 
     public static handleHotelClosedMessage(open: number, minute: number, thrownOut: boolean): void
     {
-        const text: string = LocalizeText(('opening.hours.' + (thrownOut ? 'disconnected' : 'closed')), [ 'h', 'm'], [ this.getTimeZeroPadded(open), this.getTimeZeroPadded(minute) ]);;
+        this.simpleAlert( LocalizeText(('opening.hours.' + (thrownOut ? 'disconnected' : 'closed')), [ 'h', 'm'], [ this.getTimeZeroPadded(open), this.getTimeZeroPadded(minute) ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
+    }
 
-        this.alert(LocalizeText('opening.hours.title'), text);
+    public static handleHotelMaintenanceMessage(minutesUntilMaintenance: number, duration: number): void
+    {
+        this.simpleAlert(LocalizeText('maintenance.shutdown', [ 'm', 'd' ], [ minutesUntilMaintenance.toString(), duration.toString() ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
+    }
+
+    public static handleHotelClosingMessage(minutes: number): void
+    {
+        this.simpleAlert(LocalizeText('opening.hours.shutdown', [ 'm' ], [ minutes.toString() ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
+    }
+
+    public static handleLoginFailedHotelClosedMessage(openHour: number, openMinutes: number): void
+    {
+        this.simpleAlert(LocalizeText('opening.hours.disconnected', [ 'h', 'm' ], [ openHour.toString(), openMinutes.toString() ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
     }
 
     public static openUrl(url: string): void
@@ -134,7 +167,7 @@ export class NotificationUtilities
         }
         else
         {
-            CreateLinkEvent(url);
+            CreateLinkEvent(url.substring(6));
         }
     }
 
@@ -153,7 +186,7 @@ export class NotificationUtilities
         {
             if(this.MODERATION_DISCLAIMER_SHOWN) return;
 
-            this.showSingleBubble(LocalizeText('mod.chatdisclaimer'), NotificationType.INFO);
+            this.showSingleBubble(LocalizeText('mod.chatdisclaimer'), NotificationBubbleType.INFO);
 
             this.MODERATION_DISCLAIMER_SHOWN = true;
         }

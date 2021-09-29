@@ -1,7 +1,10 @@
-import { FurnitureType, GetProductOfferComposer, MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, useCallback } from 'react';
-import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../../../../../../api';
+import { GetProductOfferComposer, MouseEventType } from '@nitrots/nitro-renderer';
+import { FC, MouseEvent, useCallback, useMemo } from 'react';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
+import { NitroCardGridItemView } from '../../../../../../layout';
+import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
+import { GetProductIconUrl } from '../../../../common/GetProuductIconUrl';
+import { ProductTypeEnum } from '../../../../common/ProductTypeEnum';
 import { CatalogSearchResultOfferViewProps } from './CatalogSearchResultOfferView.types';
 
 export const CatalogSearchResultOfferView: FC<CatalogSearchResultOfferViewProps> = props =>
@@ -15,62 +18,22 @@ export const CatalogSearchResultOfferView: FC<CatalogSearchResultOfferViewProps>
             case MouseEventType.MOUSE_DOWN:
                 SendMessageHook(new GetProductOfferComposer(offer.purchaseOfferId));
                 return;
-            case MouseEventType.MOUSE_UP:
-                return;
-            case MouseEventType.ROLL_OUT:
-                return;
         }
     }, [ offer ]);
 
-    function getIconUrl(): string
+    const iconUrl = useMemo(() =>
     {
-        const productType = offer.type.toUpperCase();
+        if(!offer) return null;
+        
+        return GetProductIconUrl(offer.id, offer.type, offer.customParams);
+    }, [ offer ]);
 
-        switch(productType)
-        {
-            case FurnitureType.BADGE:
-                return GetSessionDataManager().getBadgeUrl(offer.customParams);
-            case FurnitureType.FLOOR:
-                return GetRoomEngine().getFurnitureFloorIconUrl(offer.id);
-            case FurnitureType.WALL:
-                const furniData = GetSessionDataManager().getWallItemData(offer.id);
-                
-                let iconName = '';
-
-                if(furniData)
-                {
-                    switch(furniData.className)
-                    {
-                        case 'floor':
-                            iconName = ['th', furniData.className, offer.customParams ].join('_');
-                            break;
-                        case 'wallpaper':
-                            iconName = ['th', 'wall', offer.customParams ].join('_');
-                            break;
-                        case 'landscape':
-                            iconName = ['th', furniData.className, ((offer.customParams && offer.customParams.replace('.', '_')) || null), '001'].join('_');
-                            break;
-                    }
-
-                    if(iconName !== '')
-                    {
-                        const assetUrl = GetConfiguration<string>('catalog.asset.url');
-
-                        return `${ assetUrl }/${ iconName }.png`;
-                    }
-                }
-
-                return GetRoomEngine().getFurnitureWallIconUrl(offer.id, offer.customParams);
-        }
-
-        return '';
-    }
-
-    const imageUrl = `url(${ getIconUrl() })`;
+    if(!offer) return null;
 
     return (
-        <div className="col pe-1 pb-1 catalog-offer-item-container">
-            <div className={ 'position-relative border border-2 rounded catalog-offer-item cursor-pointer ' + (isActive ? 'active ' : '') } style={ { backgroundImage: imageUrl }} onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent } />
-        </div>
+        <NitroCardGridItemView itemImage={ iconUrl } itemActive={ isActive } onMouseDown={ onMouseEvent }>
+            { (offer.type === ProductTypeEnum.ROBOT) &&
+                <AvatarImageView figure={ offer.customParams } direction={ 3 } headOnly={ true } /> }
+        </NitroCardGridItemView>
     );
 }

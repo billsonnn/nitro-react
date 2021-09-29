@@ -1,19 +1,13 @@
 import { FC, useMemo, useState } from 'react';
-import { useFriendListContext } from '../../context/FriendListContext';
 import { FriendBarItemView } from '../friend-bar-item/FriendBarItemView';
 import { FriendBarViewProps } from './FriendBarView.types';
 
 export const FriendBarView: FC<FriendBarViewProps> = props =>
 {
-    const { friendListState = null } = useFriendListContext();
-    const { friends = null } = friendListState;
+    const { onlineFriends = null } = props;
+
     const [ indexOffset, setIndexOffset ] = useState(0);
     const [ maxDisplayCount, setMaxDisplayCount ] = useState(3);
-
-    const onlineFriends = useMemo(() =>
-    {
-        return friends.filter(friend => friend.online);
-    }, [ friends ]);
 
     const canDecreaseIndex = useMemo(() =>
     {

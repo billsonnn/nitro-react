@@ -1,0 +1,15 @@
+.nitro-catalog-gift {
+    width: 325px;
+    
+    .gift-preview {
+        width: 80px;
+        height: 80px;
+        overflow: hidden;
+    }
+
+    .gift-color {
+        width: 15px;
+        height: 15px;
+        border-radius: $border-radius;
+    }
+}

@@ -1,86 +1,48 @@
-.grid-item-container {
+.grid-item {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 50px;
     max-height: 50px;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: $border-radius;
+    border-color: $grid-border-color !important;
+    background-color: $grid-bg-color;
+    border: nth(map-values($border-widths), 2) solid;
 
-    .grid-item {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        width: 100%;
-        height: 100%;
-        background-position: center;
-        background-repeat: no-repeat;
-        overflow: hidden;
+    &.active {
+        border-color: $grid-active-border-color !important;
+        background-color: $grid-active-bg-color !important;
+    }
 
-        &.theme-default {
-            border-radius: $border-radius;
-            border-color: $grid-border-color !important;
-            background-color: $grid-bg-color;
-            border: nth(map-values($border-widths), 2) solid;
-        }
+    &.unseen {
+        background-color: rgba($success, 0.4);
+    }
 
-        &.theme-shadowed {
-            border-radius: $border-radius;
-            background-color: $light;
+    .badge {
+        top: 2px;
+        right: 2px;
+        font-size: 8px;
+    }
 
-            &::after {
-                position: absolute;
-                content: '';
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                border-radius: $border-radius;
-                border-bottom: 2px solid white;
-                border-right: 2px solid white;
-                box-shadow: -2px -2px rgba(0, 0, 0, .4), inset 3px 3px rgba(0, 0, 0, .2);
-            }
+    .avatar-image {
+        background-position-y: 10px;
+    }
 
-            &.active {
-                border: nth(map-values($border-widths), 2) solid;
-                border-color: $oslo-gray !important;
-                background-color: #F5F5F5;
+    .trade-button {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        font-size: 5px;
+        padding: 3px;
+        min-height: unset;
 
-                &:after {
-                    content: unset;
-                }
-            }
-        }
-    
-        &.active {
-            border-color: $grid-active-border-color !important;
-            background-color: $grid-active-bg-color !important;
-        }
-
-        &.unseen {
-            background-color: rgba($success, 0.4);
-        }
-    
-        .badge {
-            top: 2px;
-            right: 2px;
-            font-size: 8px;
-        }
-
-        .avatar-image {
-            background-position: center;
-            background-repeat: no-repeat;
-            background-position-y: 12px !important;
-        }
-
-        .trade-button {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            font-size: 5px;
-            padding: 3px;
-            min-height: unset;
-
-            &.left {
-                right: unset;
-                left: 2px;
-            }
+        &.left {
+            right: unset;
+            left: 2px;
         }
     }
 }

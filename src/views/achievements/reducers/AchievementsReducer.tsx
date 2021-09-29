@@ -43,13 +43,16 @@ export const AchievementsReducer: Reducer<IAchievementsState, IAchievementsActio
             const categories = (action.payload.categories || state.categories || null);
 
             let selectedCategoryName = null;
+            let selectedAchievementId = null;
 
             if(categories.length > 0)
             {
-                selectedCategoryName = categories[0].name;    
+                selectedCategoryName = categories[0].name;
+                
+                if(categories[0].achievements.length > 0) selectedAchievementId = categories[0].achievements[0].achievementId;   
             }
 
-            return { ...state, categories, selectedCategoryName };
+            return { ...state, categories, selectedCategoryName, selectedAchievementId };
         }
         case AchievementsActions.SET_SCORE: {
             const score = (action.payload.score || state.score || null);

@@ -47,6 +47,8 @@ export function DispatchMouseEvent(roomId: number, canvasId: number, event: Mous
             break;
         case MouseEventType.MOUSE_UP:
             break;
+        case MouseEventType.RIGHT_CLICK:
+            break;
         default: return;
     }
 

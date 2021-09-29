@@ -1,54 +1,62 @@
 import { MessengerInitComposer, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectUserType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { GetRoomSession, LocalizeText } from '../../api';
-import { FriendEnteredRoomEvent, FriendListEvent } from '../../events';
-import { FriendListContentEvent } from '../../events/friend-list/FriendListContentEvent';
-import { FriendListSendFriendRequestEvent } from '../../events/friend-list/FriendListSendFriendRequestEvent';
+import { GetRoomSession } from '../../api';
+import { FriendEnteredRoomEvent, FriendListContentEvent, FriendsEvent } from '../../events';
+import { FriendsSendFriendRequestEvent } from '../../events/friends/FriendsSendFriendRequestEvent';
 import { useRoomEngineEvent } from '../../hooks/events';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
-import { NitroCardAccordionItemView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
-import { FriendListContextProvider } from './context/FriendListContext';
-import { FriendListMessageHandler } from './FriendListMessageHandler';
-import { FriendListReducer, initialFriendList } from './reducers/FriendListReducer';
+import { FriendsContextProvider } from './context/FriendsContext';
+import { FriendsMessageHandler } from './FriendsMessageHandler';
+import { FriendsReducer, initialFriends } from './reducers/FriendsReducer';
 import { FriendBarView } from './views/friend-bar/FriendBarView';
-import { FriendsListView } from './views/list/FriendsListView';
-
-const TABS: string[] = ['friendlist.friends', 'generic.search'];
+import { FriendsListView } from './views/friends-list/FriendsListView';
+import { FriendsMessengerView } from './views/messenger/FriendsMessengerView';
 
 export const FriendsView: FC<{}> = props =>
 {
-    const [ friendListState, dispatchFriendListState ] = useReducer(FriendListReducer, initialFriendList);
-    const { friends = null, requests = null, settings = null } = friendListState;
+    const [ friendsState, dispatchFriendsState ] = useReducer(FriendsReducer, initialFriends);
+    const { friends = [], requests = [], settings = null } = friendsState;
 
-    const [ isVisible, setIsVisible ] = useState(false);
     const [ isReady, setIsReady ] = useState(false);
-    const [ currentTab, setCurrentTab ] = useState<number>(0);
+    const [ isListVisible, setIsListVisible ] = useState(false);
 
-    const onFriendListEvent = useCallback((event: FriendListEvent) =>
+    useEffect(() =>
+    {
+        SendMessageHook(new MessengerInitComposer());
+    }, []);
+
+    useEffect(() =>
+    {
+        if(!settings) return;
+
+        setIsReady(true);
+    }, [ settings ]);
+
+    const onFriendsEvent = useCallback((event: FriendsEvent) =>
     {
         switch(event.type)
         {
-            case FriendListEvent.SHOW_FRIEND_LIST:
-                setIsVisible(true);
+            case FriendsEvent.SHOW_FRIEND_LIST:
+                setIsListVisible(true);
                 return;
-            case FriendListEvent.TOGGLE_FRIEND_LIST:
-                setIsVisible(value => !value);
+            case FriendsEvent.TOGGLE_FRIEND_LIST:
+                setIsListVisible(value => !value);
                 return;
-            case FriendListSendFriendRequestEvent.SEND_FRIEND_REQUEST:
-                const requestEvent = (event as FriendListSendFriendRequestEvent);
+            case FriendsSendFriendRequestEvent.SEND_FRIEND_REQUEST:
+                const requestEvent = (event as FriendsSendFriendRequestEvent);
                 return;
-            case FriendListEvent.REQUEST_FRIEND_LIST:
-                dispatchUiEvent(new FriendListContentEvent(friendListState.friends));
+            case FriendsEvent.REQUEST_FRIEND_LIST:
+                dispatchUiEvent(new FriendListContentEvent(friendsState.friends));
                 return;
         }
-    }, [friendListState.friends]);
+    }, [ friendsState.friends ]);
 
-    useUiEvent(FriendListEvent.SHOW_FRIEND_LIST, onFriendListEvent);
-    useUiEvent(FriendListEvent.TOGGLE_FRIEND_LIST, onFriendListEvent);
-    useUiEvent(FriendListSendFriendRequestEvent.SEND_FRIEND_REQUEST, onFriendListEvent);
-    useUiEvent(FriendListEvent.REQUEST_FRIEND_LIST, onFriendListEvent);
+    useUiEvent(FriendsEvent.SHOW_FRIEND_LIST, onFriendsEvent);
+    useUiEvent(FriendsEvent.TOGGLE_FRIEND_LIST, onFriendsEvent);
+    useUiEvent(FriendsSendFriendRequestEvent.SEND_FRIEND_REQUEST, onFriendsEvent);
+    useUiEvent(FriendsEvent.REQUEST_FRIEND_LIST, onFriendsEvent);
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
@@ -62,7 +70,7 @@ export const FriendsView: FC<{}> = props =>
 
         if(!userData || (userData.type !== RoomObjectUserType.getTypeNumber(RoomObjectUserType.USER))) return;
 
-        const friend = friendListState.friends.find(friend =>
+        const friend = friendsState.friends.find(friend =>
             {
                 return (friend.id === userData.webID);
             });
@@ -70,67 +78,26 @@ export const FriendsView: FC<{}> = props =>
         if(!friend) return;
 
         dispatchUiEvent(new FriendEnteredRoomEvent(userData.roomIndex, RoomObjectCategory.UNIT, userData.webID, userData.name, userData.type));
-    }, [ friendListState.friends ]);
+    }, [ friendsState.friends ]);
 
     useRoomEngineEvent(RoomEngineObjectEvent.ADDED, onRoomEngineObjectEvent);
 
-    useEffect(() =>
-    {
-        if(!settings) return;
-
-        setIsReady(true);
-    }, [ settings ]);
-
-    useEffect(() =>
-    {
-        SendMessageHook(new MessengerInitComposer());
-    }, []);
-
     const onlineFriends = useMemo(() =>
     {
-        if(!friends) return [];
-
         return friends.filter(f => f.online);
     }, [ friends ]);
 
     const offlineFriends = useMemo(() =>
     {
-        if(!friends) return [];
-
         return friends.filter(f => !f.online);
     }, [ friends ]);
 
     return (
-        <FriendListContextProvider value={ { friendListState, dispatchFriendListState } }>
-            <FriendListMessageHandler />
-            { isReady && createPortal(<FriendBarView />, document.getElementById('toolbar-friend-bar-container')) }
-            { isVisible &&
-                <NitroCardView className="nitro-friend-list">
-                    <NitroCardHeaderView headerText={ LocalizeText('friendlist.friends') } onCloseClick={ () => setIsVisible(false) } />
-                    <NitroCardContentView className="p-0">
-                        <NitroCardTabsView>
-                            { TABS.map((tab, index) =>
-                                {
-                                    return (<NitroCardTabsItemView key={ index } isActive={ currentTab === index } onClick={ () => setCurrentTab(index) }>
-                                        { LocalizeText(tab) }
-                                    </NitroCardTabsItemView>);
-                                }) }
-                        </NitroCardTabsView>
-                        <div className="text-black">
-                            { currentTab === 0 && <NitroCardAccordionView>
-                                <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.friends') + ` (${onlineFriends.length})` } defaultState={ true }>
-                                   <FriendsListView list={ onlineFriends } />
-                                </NitroCardAccordionItemView>
-                                <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.friends.offlinecaption') + ` (${offlineFriends.length})` }>
-                                    <FriendsListView list={ offlineFriends } />
-                                </NitroCardAccordionItemView>
-                                { requests.length > 0 && <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.tab.friendrequests') + ` (${requests.length})` }>
-                                    <FriendsListView list={ requests } />
-                                </NitroCardAccordionItemView> }
-                            </NitroCardAccordionView> }
-                        </div>
-                    </NitroCardContentView>
-                </NitroCardView> }
-        </FriendListContextProvider>
+        <FriendsContextProvider value={ { friendsState, dispatchFriendsState } }>
+            <FriendsMessageHandler />
+            { isReady && createPortal(<FriendBarView onlineFriends={ onlineFriends } />, document.getElementById('toolbar-friend-bar-container')) }
+            { isListVisible && <FriendsListView onlineFriends={ onlineFriends } offlineFriends={ offlineFriends } friendRequests={ requests } onCloseClick={ () => setIsListVisible(false) } /> }
+            <FriendsMessengerView />
+        </FriendsContextProvider>
     );
 }
