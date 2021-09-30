@@ -68,7 +68,7 @@
 
 .nitro-chat-style-selector-container {
     width: $chat-input-style-selector-widget-width;
-    height: $chat-input-style-selector-widget-height;
+    max-height: $chat-input-style-selector-widget-height;
 
     .grid-item {
         font-size: $font-size-sm;
