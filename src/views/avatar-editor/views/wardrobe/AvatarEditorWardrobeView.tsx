@@ -65,12 +65,8 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
     }, [ savedFigures, saveFigureAtWardrobeIndex, wearFigureAtIndex ]);
 
     return (
-        <div className="row h-100">
-            <div className="col-12 d-flex h-100">
-                <NitroCardGridView className="wardrobe-grid">
-                    { figures }
-                </NitroCardGridView>
-            </div>
-        </div>
+        <NitroCardGridView className="nitro-wardrobe-grid">
+            { figures }
+        </NitroCardGridView>
     );
 }
