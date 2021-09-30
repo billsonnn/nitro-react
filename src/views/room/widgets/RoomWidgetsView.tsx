@@ -2,6 +2,8 @@ import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngi
 import { FC, useCallback } from 'react';
 import { CanManipulateFurniture, GetRoomEngine, GetSessionDataManager, IsFurnitureSelectionDisabled, LocalizeText, ProcessRoomObjectOperation, RoomWidgetFurniToWidgetMessage, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../../../api';
 import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks/events';
+import { NotificationAlertType } from '../../notification-center/common/NotificationAlertType';
+import { NotificationUtilities } from '../../notification-center/common/NotificationUtilities';
 import { useRoomContext } from '../context/RoomContext';
 import { AvatarInfoWidgetView } from './avatar-info/AvatarInfoWidgetView';
 import { ChatInputView } from './chat-input/ChatInputView';
@@ -316,6 +318,8 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
             default:
                 return;
         }
+
+        NotificationUtilities.simpleAlert(errorMessage, NotificationAlertType.DEFAULT, null, null, errorTitle);
     }, []);
 
     useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_KICKED, onRoomSessionErrorMessageEvent);
