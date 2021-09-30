@@ -4,12 +4,6 @@ $nitro-card-tabs-height: 33px;
 .nitro-card {
     pointer-events: all;
     resize: both;
-
-    @import './accordion/NitroCardAccordionView';
-    @import './content/NitroCardContentView';
-    @import './grid/NitroCardGridView';
-    @import './header/NitroCardHeaderView';
-    @import './tabs/NitroCardTabsView';
 }
 
 .nitro-card-responsive {
@@ -46,3 +40,9 @@ $nitro-card-tabs-height: 33px;
         }
     }
 }
+
+@import './accordion/NitroCardAccordionView';
+@import './content/NitroCardContentView';
+@import './grid/NitroCardGridView';
+@import './header/NitroCardHeaderView';
+@import './tabs/NitroCardTabsView';
