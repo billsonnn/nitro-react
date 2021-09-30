@@ -1,4 +1,6 @@
 export interface ChatInputStyleSelectorViewProps
 {
-    onStyleSelected: (styleId: number) => void;
+    chatStyleId: number;
+    chatStyleIds: number[];
+    selectChatStyleId: (styleId: number) => void;
 }

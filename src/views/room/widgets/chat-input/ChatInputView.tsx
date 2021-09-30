@@ -1,3 +1,4 @@
+import { HabboClubLevelEnum, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { GetConfiguration, GetSessionDataManager, LocalizeText, RoomWidgetChatMessage, RoomWidgetChatTypingMessage, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent } from '../../../../api';
@@ -117,6 +118,7 @@ export const ChatInputView: FC<{}> = props =>
         {
             if(needsChatStyleUpdate)
             {
+                console.log('send')
                 GetSessionDataManager().sendChatStyleUpdate(chatStyleId);
 
                 setNeedsChatStyleUpdate(false);
@@ -175,12 +177,6 @@ export const ChatInputView: FC<{}> = props =>
         
     }, [ inputRef, chatModeIdWhisper, anotherInputHasFocus, setInputFocus, checkSpecialKeywordForInput, sendChatValue ]);
 
-    const onStyleSelected = useCallback((styleId: number) =>
-    {
-        setChatStyleId(styleId);
-        setNeedsChatStyleUpdate(true);
-    }, []);
-
     const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
     {
         setSelectedUsername('');
@@ -209,6 +205,61 @@ export const ChatInputView: FC<{}> = props =>
     }, [ chatModeIdWhisper ]);
 
     CreateEventDispatcherHook(RoomWidgetUpdateChatInputContentEvent.CHAT_INPUT_CONTENT, eventDispatcher, onRoomWidgetChatInputContentUpdateEvent);
+
+    const selectChatStyleId = useCallback((styleId: number) =>
+    {
+        setChatStyleId(styleId);
+        setNeedsChatStyleUpdate(true);
+    }, []);
+
+    const chatStyleIds = useMemo(() =>
+    {
+        let styleIds: number[] = [];
+
+        const styles = GetConfiguration<{ styleId: number, minRank: number, isSystemStyle: boolean, isHcOnly: boolean, isAmbassadorOnly: boolean }[]>('chat.styles');
+
+        for(const style of styles)
+        {
+            if(!style) continue;
+
+            if(style.minRank > 0)
+            {
+                if(GetSessionDataManager().hasSecurity(style.minRank)) styleIds.push(style.styleId);
+
+                continue;
+            }
+
+            if(style.isSystemStyle)
+            {
+                if(GetSessionDataManager().hasSecurity(RoomControllerLevel.MODERATOR))
+                {
+                    styleIds.push(style.styleId);
+
+                    continue;
+                }
+            }
+
+            if(GetConfiguration<number[]>('chat.styles.disabled').indexOf(style.styleId) >= 0) continue;
+
+            if(style.isHcOnly && (GetSessionDataManager().clubLevel >= HabboClubLevelEnum.CLUB))
+            {
+                styleIds.push(style.styleId);
+
+                continue;
+            }
+
+            if(style.isAmbassadorOnly && GetSessionDataManager().isAmbassador)
+            {
+                styleIds.push(style.styleId);
+
+                continue;
+            }
+
+            if(!style.isHcOnly && !style.isAmbassadorOnly) styleIds.push(style.styleId);
+        }
+
+        return styleIds;
+    }, []);
 
     useEffect(() =>
     {
@@ -273,7 +324,7 @@ export const ChatInputView: FC<{}> = props =>
             <div className="input-sizer">
                 <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxChatLength } onChange={ event => updateChatInput(event.target.value) } onMouseDown={ event => setInputFocus() } />
             </div>
-            <ChatInputStyleSelectorView onStyleSelected={ onStyleSelected } />
+            <ChatInputStyleSelectorView chatStyleId={ chatStyleId } chatStyleIds={ chatStyleIds } selectChatStyleId={ selectChatStyleId } />
         </div>, document.getElementById('toolbar-chat-input-container'))
     );
 }
