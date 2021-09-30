@@ -221,7 +221,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                                     <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div> }
                             </div> }
                     </div>
-                    <div id="toolbar-friend-bar-container" />
+                    <div id="toolbar-friend-bar-container" className="d-none d-lg-block" />
                 </div>
             </div>
         </div>
