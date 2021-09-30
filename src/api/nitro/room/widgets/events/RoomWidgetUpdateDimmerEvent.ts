@@ -36,7 +36,7 @@ export class RoomWidgetUpdateDimmerEvent extends RoomWidgetUpdateEvent
         this._selectedPresetId = k;
     }
 
-    public setPresetValues(id: number, type: number, color: number, brightness: number):void
+    public setPresetValues(id: number, type: number, color: number, brightness: number): void
     {
         const preset = new RoomDimmerPreset(id, type, color, brightness);
 
