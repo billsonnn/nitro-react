@@ -1,4 +1,5 @@
 export * from './button';
+export * from './button-group';
 export * from './card';
 export * from './common';
 export * from './draggable-window';

@@ -1,1 +1,1 @@
-export type NitroLayoutVariant = 'primary' | 'success' | 'danger';
+export type NitroLayoutVariant = 'primary' | 'success' | 'danger' | 'secondary';

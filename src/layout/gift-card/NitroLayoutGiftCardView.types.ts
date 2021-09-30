@@ -1,6 +1,6 @@
 export interface NitroLayoutGiftCardViewProps
 {
-    figure?:string;
+    figure?: string;
     userName?: string;
     message?: string;
     editable?: boolean;

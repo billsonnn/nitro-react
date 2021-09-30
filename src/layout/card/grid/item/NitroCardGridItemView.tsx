@@ -4,7 +4,7 @@ import { NitroCardGridItemViewProps } from './NitroCardGridItemView.types';
 
 export const NitroCardGridItemView: FC<NitroCardGridItemViewProps> = props =>
 {
-    const { itemImage = undefined, itemColor = undefined, itemActive = false, itemCount = 1, itemUniqueNumber = -2, itemUnseen = false, className = '', style = {}, children = null, ...rest } = props;
+    const { itemImage = undefined, itemColor = undefined, itemActive = false, itemCount = 1, itemCountMinimum = 1, itemUniqueNumber = -2, itemUnseen = false, className = '', style = {}, children = null, ...rest } = props;
 
     const getClassName = useMemo(() =>
     {
@@ -38,7 +38,7 @@ export const NitroCardGridItemView: FC<NitroCardGridItemViewProps> = props =>
 
     return (
         <div className={ getClassName } style={ getStyle } { ...rest }>
-            { (itemCount > 1) &&
+            { (itemCount > itemCountMinimum) &&
                 <span className="position-absolute badge border bg-danger px-1 rounded-circle">{ itemCount }</span> }
             { (itemUniqueNumber > 0) && 
                 <div className="position-absolute unique-item-counter">
