@@ -1,10 +1,21 @@
-import { FC } from 'react';
+import { RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { FC, useEffect } from 'react';
+import { GetRoomEngine, GetRoomSession } from '../../../api';
 import { ToolbarViewItems } from '../ToolbarView.types';
 import { ToolbarMeViewProps } from './ToolbarMeView.types';
 
 export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
 {
     const { unseenAchievementCount = 0, handleToolbarItemClick = null } = props;
+
+    useEffect(() =>
+    {
+        const roomSession = GetRoomSession();
+
+        if(!roomSession) return;
+
+        GetRoomEngine().selectRoomObject(roomSession.roomId, roomSession.ownRoomIndex, RoomObjectCategory.UNIT);
+    }, []);
 
     return (
         <div className="d-flex nitro-toolbar-me px-1 py-2">
