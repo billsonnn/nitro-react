@@ -70,6 +70,10 @@
     width: $chat-input-style-selector-widget-width;
     max-height: $chat-input-style-selector-widget-height;
 
+    .content-area {
+        max-height: $chat-input-style-selector-widget-height;
+    }
+
     .grid-item {
         font-size: $font-size-sm;
         height: 30px !important;

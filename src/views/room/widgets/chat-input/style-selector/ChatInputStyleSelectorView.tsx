@@ -48,7 +48,7 @@ export const ChatInputStyleSelectorView: FC<ChatInputStyleSelectorViewProps> = p
             <i className="icon chatstyles-icon cursor-pointer" onClick={ toggleSelector } />
             <Overlay show={ selectorVisible } target={ target } placement="top">
                 <Popover className="nitro-chat-style-selector-container" id="chat-style-selector">
-                    <NitroCardContentView className="bg-transparent">
+                    <NitroCardContentView className="bg-transparent overflow-hidden">
                         <NitroCardGridView>
                             { chatStyleIds && (chatStyleIds.length > 0) && chatStyleIds.map((styleId) =>
                                 {
