@@ -705,6 +705,12 @@
         height: 16px;
     }
 
+    &.icon-hc-banner {
+        background: url('../images/catalog/hc_big.png');
+        width: 68px;
+        height: 40px;
+    }
+
     &.spin {
         animation: rotating 1s linear infinite;
     }
