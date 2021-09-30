@@ -2,23 +2,42 @@ import { AchievementData } from '@nitrots/nitro-renderer';
 
 export class AchievementCategory
 {
-    private _name: string;
+    private _code: string;
     private _achievements: AchievementData[];
 
-    constructor(name: string)
+    constructor(code: string)
     {
-        this._name          = name;
-        this._achievements  = [];
+        this._code = code;
+        this._achievements = [];
     }
 
-    public get name(): string
+    public getProgress(): number
     {
-        return this._name;
+        let progress = 0;
+
+        for(const achievement of this._achievements)
+        {
+            progress += (achievement.finalLevel ? achievement.level : (achievement.level - 1));
+        }
+
+        return progress;
     }
 
-    public set name(name: string)
+    public getMaxProgress(): number
     {
-        this._name = name;
+        let progress = 0;
+
+        for(const achievement of this._achievements)
+        {
+            progress += achievement.levelCount;
+        }
+
+        return progress;
+    }
+
+    public get code(): string
+    {
+        return this._code;
     }
 
     public get achievements(): AchievementData[]
