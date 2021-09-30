@@ -27,7 +27,7 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
     const [ isRoomLinkOpen, setRoomLinkOpen ] = useState(false);
     const [ pendingDoorState, setPendingDoorState ] = useState<{ roomData: RoomDataParser, state: string }>(null);
     const [ navigatorState, dispatchNavigatorState ] = useReducer(NavigatorReducer, initialNavigator);
-    const { needsNavigatorUpdate = false, topLevelContext = null, topLevelContexts = null } = navigatorState;
+    const { needsNavigatorUpdate = false, topLevelContext = null, topLevelContexts = null, homeRoomId } = navigatorState;
 
     const onNavigatorEvent = useCallback((event: NavigatorEvent) =>
     {
@@ -119,6 +119,13 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
         SendMessageHook(new NavigatorSearchComposer(contextCode, searchValue));
     }, []);
 
+    const goToHomeRoom = useCallback(() =>
+    {
+        if(homeRoomId <= 0) return;
+
+        TryVisitRoom(homeRoomId);
+    }, [ homeRoomId ]);
+
     const linkReceived = useCallback((url: string) =>
     {
         const parts = url.split('/');
@@ -133,7 +140,7 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                     switch(parts[2])
                     {
                         case 'home':
-                            //goToHomeRoom();
+                            goToHomeRoom();
                             break;
                         default: {
                             const roomId = parseInt(parts[2]);
@@ -147,8 +154,8 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                 setIsVisible(true);
                 setCreatorOpen(true);
                 return;
-        }
-    }, []);
+        } 
+    }, [ goToHomeRoom ]);
 
     const closePendingDoorState = useCallback((state: string) =>
     {

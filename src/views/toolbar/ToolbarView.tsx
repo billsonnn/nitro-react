@@ -1,6 +1,6 @@
 import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserInfoDataParser, UserInfoEvent, UserProfileComposer, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GoToDesktop, OpenMessengerChat } from '../../api';
+import { CreateLinkEvent, GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GoToDesktop, OpenMessengerChat } from '../../api';
 import { AvatarEditorEvent, CatalogEvent, FriendsEvent, FriendsMessengerIconEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
 import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
@@ -182,7 +182,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                                 <i className="icon icon-habbo"></i>
                             </div>) }
                         { !isInRoom && (
-                            <div className="navigation-item">
+                            <div className="navigation-item" onClick={ event => CreateLinkEvent('navigator/goto/home') }>
                                 <i className="icon icon-house"></i>
                             </div>) }
                         <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.NAVIGATOR_ITEM) }>
