@@ -1,12 +1,13 @@
 import { CatalogGroupsComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks/messages';
-import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
+import { NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../../layout';
+import { NitroLayoutBase } from '../../../../../../layout/base';
 import { GetCatalogPageText } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogActions } from '../../../../reducers/CatalogReducer';
-import { CatalogPurchaseView } from '../../purchase/CatalogPurchaseView';
+import { CatalogSelectGroupView } from '../../../select-group/CatalogSelectGroupView';
+import { CatalogProductPreviewView } from '../../product-preview/CatalogProductPreviewView';
 import { CatalogLayoutGuildForumViewProps } from './CatalogLayoutGuildForumView.types';
 
 export const CatalogLayouGuildForumView: FC<CatalogLayoutGuildForumViewProps> = props =>
@@ -36,35 +37,15 @@ export const CatalogLayouGuildForumView: FC<CatalogLayoutGuildForumViewProps> = 
     }, [ dispatchCatalogState, pageParser ]);
     
     return (
-        <div className="row h-100 nitro-catalog-layout-guild-custom-furni">
-            <div className="col-7 overflow-auto h-100 d-flex flex-column bg-muted rounded py-1 px-2 text-black">
-                <div dangerouslySetInnerHTML={ { __html: GetCatalogPageText(pageParser, 1) } } />
-            </div>
-            { product && <div className="col position-relative d-flex flex-column justify-content-center align-items-center">
-                { groups.length === 0 && <div className="bg-muted text-center rounded p-1 text-black">
-                        { LocalizeText('catalog.guild_selector.members_only') }
-                    <button className="btn btn-sm btn-primary mt-1">{ LocalizeText('catalog.guild_selector.find_groups') }</button>
-                </div> }
-                { groups[selectedGroupIndex] && <div style={{ width: '50px', height: '50px', zIndex: 1 }}>
-                    <BadgeImageView badgeCode={ groups[selectedGroupIndex].badgeCode } isGroup={ true } />
-                    </div> }
-                { groups.length > 0 && <>
-                    <div className="d-flex mb-2 w-100">
-                        <div className="rounded d-flex overflow-hidden me-1 border">
-                            <div className="h-100" style={{ width: '20px', backgroundColor: '#' + groups[selectedGroupIndex].colorA }}></div>
-                            <div className="h-100" style={{ width: '20px', backgroundColor: '#' + groups[selectedGroupIndex].colorB }}></div>
-                        </div>
-                        <select className="form-select form-select-sm" value={ selectedGroupIndex } onChange={ (e) => setSelectedGroupIndex(parseInt(e.target.value)) }>
-                            { groups.map((group, index) =>
-                            {
-                                return <option key={ index } value={ index }>{ group.groupName }</option>;
-                            }) }
-                        </select>
-                    </div>
-                    { groups[selectedGroupIndex].hasForum && <div className="bg-primary p-1 text-center rounded">{ LocalizeText('catalog.alert.group_has_forum') }</div> }
-                    <CatalogPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ groups[selectedGroupIndex] ? groups[selectedGroupIndex].groupId.toString() : '' } />
-                </> }
-            </div> }
-        </div>
-        );
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn className="bg-muted rounded p-2 text-black overflow-hidden" size={ 7 }>
+                <NitroLayoutBase className="overflow-auto" dangerouslySetInnerHTML={ { __html: GetCatalogPageText(pageParser, 1) } } />
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 5 }>
+                <CatalogProductPreviewView pageParser={ pageParser } activeOffer={ activeOffer } roomPreviewer={ null } extra={ groups[selectedGroupIndex] ? groups[selectedGroupIndex].groupId.toString() : '' } disabled={ !(!!groups[selectedGroupIndex]) }>
+                    <CatalogSelectGroupView selectedGroupIndex={ selectedGroupIndex } setSelectedGroupIndex={ setSelectedGroupIndex } />
+                </CatalogProductPreviewView>
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
+    );
 }

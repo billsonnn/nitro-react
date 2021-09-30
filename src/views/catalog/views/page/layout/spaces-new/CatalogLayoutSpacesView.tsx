@@ -1,6 +1,7 @@
 import { CatalogPageMessageOfferData, IFurnitureData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../../../../api';
+import { NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../../layout';
 import { ProductTypeEnum } from '../../../../common/ProductTypeEnum';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
@@ -10,10 +11,10 @@ import { CatalogLayoutSpacesViewProps } from './CatalogLayoutSpacesView.types';
 export const CatalogLayoutSpacesView: FC<CatalogLayoutSpacesViewProps> = props =>
 {
     const { roomPreviewer = null, pageParser = null } = props;
-    const { catalogState } = useCatalogContext();
-    const { activeOffer = null } = catalogState;
     const [ groups, setGroups ] = useState<CatalogPageMessageOfferData[][]>([]);
     const [ activeGroupIndex, setActiveGroupIndex ] = useState(-1);
+    const { catalogState } = useCatalogContext();
+    const { activeOffer = null } = catalogState;
 
     const groupNames = [ 'floors', 'walls', 'views' ];
 
@@ -66,8 +67,8 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutSpacesViewProps> = props =
     const product = ((activeOffer && activeOffer.products[0]) || null);
 
     return (
-        <div className="row h-100">
-            <div className="d-flex flex-column col-7 gap-2 h-100">
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn size={ 7 }>
                 <div className="btn-group w-100">
                     { groupNames.map((name, index) =>
                         {
@@ -75,10 +76,10 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutSpacesViewProps> = props =
                         })}
                 </div>
                 <CatalogPageOffersView offers={ groups[activeGroupIndex] } />
-            </div>
-            <div className="position-relative d-flex flex-column col-5">
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 5 }>
                 <CatalogProductPreviewView pageParser={ pageParser } activeOffer={ activeOffer } roomPreviewer={ roomPreviewer } />
-            </div>
-        </div>
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
     );
 }

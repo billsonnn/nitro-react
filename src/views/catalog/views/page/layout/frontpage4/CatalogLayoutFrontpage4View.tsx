@@ -1,9 +1,11 @@
 import { FrontPageItem } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo } from 'react';
 import { CreateLinkEvent, GetConfiguration } from '../../../../../../api';
+import { NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../../layout';
 import { GetCatalogPageText } from '../../../../common/CatalogUtilities';
 import { CatalogRedeemVoucherView } from '../../redeem-voucher/CatalogRedeemVoucherView';
 import { CatalogLayoutFrontpage4ViewProps } from './CatalogLayoutFrontpage4View.types';
+import { CatalogLayoutFrontPageItemView } from './item/CatalogLayoutFrontPageItemView';
 
 export const CatalogLayoutFrontpage4View: FC<CatalogLayoutFrontpage4ViewProps> = props =>
 {
@@ -31,28 +33,20 @@ export const CatalogLayoutFrontpage4View: FC<CatalogLayoutFrontpage4ViewProps> =
     if(!pageParser) return null;
 
     return (
-        <div className="row h-100 nitro-catalog-layout-frontpage4">
-            <div className="col-4">
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn size={ 4 }>
                 { pageParser.frontPageItems[0] &&
-                    <div className="front-page-item h-100" style={ { backgroundImage: `url('${ imageLibraryUrl }${ pageParser.frontPageItems[0].itemPromoImage }')` }} onClick={ event => selectItem(pageParser.frontPageItems[0]) }>
-                        <div className="front-page-item-caption">{ pageParser.frontPageItems[0].itemName }</div>
-                    </div> }
-            </div>
-            <div className="d-flex col-8 flex-column">
+                    <CatalogLayoutFrontPageItemView item={ pageParser.frontPageItems[0] } onClick={ event => selectItem(pageParser.frontPageItems[0]) } /> }
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 8 }>
                 { pageParser.frontPageItems[1] &&
-                    <div className="front-page-item h-100 mb-2" style={ { backgroundImage: `url('${ imageLibraryUrl }${ pageParser.frontPageItems[1].itemPromoImage }')` }} onClick={ event => selectItem(pageParser.frontPageItems[1]) }>
-                        <div className="front-page-item-caption">{ pageParser.frontPageItems[1].itemName }</div>
-                    </div> }
+                    <CatalogLayoutFrontPageItemView item={ pageParser.frontPageItems[1] } onClick={ event => selectItem(pageParser.frontPageItems[1]) } /> }
                 { pageParser.frontPageItems[2] &&
-                    <div className="front-page-item h-100 mb-2" style={ { backgroundImage: `url('${ imageLibraryUrl }${ pageParser.frontPageItems[2].itemPromoImage }')` }} onClick={ event => selectItem(pageParser.frontPageItems[2]) }>
-                        <div className="front-page-item-caption">{ pageParser.frontPageItems[2].itemName }</div>
-                    </div> }
+                    <CatalogLayoutFrontPageItemView item={ pageParser.frontPageItems[2] } onClick={ event => selectItem(pageParser.frontPageItems[2]) } /> }
                 { pageParser.frontPageItems[3] &&
-                    <div className="front-page-item h-100" style={ { backgroundImage: `url('${ imageLibraryUrl }${ pageParser.frontPageItems[3].itemPromoImage }')` }} onClick={ event => selectItem(pageParser.frontPageItems[3]) }>
-                        <div className="front-page-item-caption">{ pageParser.frontPageItems[3].itemName }</div>
-                    </div> }
+                    <CatalogLayoutFrontPageItemView item={ pageParser.frontPageItems[3] } onClick={ event => selectItem(pageParser.frontPageItems[3]) } /> }
                 <CatalogRedeemVoucherView text={ GetCatalogPageText(pageParser, 1) } />
-            </div>
-        </div>
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
     );
 }

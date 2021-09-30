@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../../layout';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
 import { CatalogProductPreviewView } from '../../product-preview/CatalogProductPreviewView';
@@ -14,14 +15,14 @@ export const CatalogLayoutTrophiesView: FC<CatalogLayoutTrophiesViewProps> = pro
     const product = ((activeOffer && activeOffer.products[0]) || null);
 
     return (
-        <div className="row h-100">
-            <div className="d-flex flex-column col-7 gap-2 h-100">
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn size={ 7 }>
                 <CatalogPageOffersView offers={ pageParser.offers } />
                 <textarea className="flex-grow-1 form-control w-100" defaultValue={ trophyText || '' } onChange={ event => setTrophyText(event.target.value) } />
-            </div>
-            <div className="position-relative d-flex flex-column col-5">
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 5 }>
                 <CatalogProductPreviewView pageParser={ pageParser } activeOffer={ activeOffer } roomPreviewer={ roomPreviewer } extra={ trophyText } />
-            </div>
-        </div>
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
     );
 }

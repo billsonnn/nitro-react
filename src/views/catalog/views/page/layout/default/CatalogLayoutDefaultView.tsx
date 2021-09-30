@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../../layout';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
 import { CatalogProductPreviewView } from '../../product-preview/CatalogProductPreviewView';
@@ -13,13 +14,13 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutDefaultViewProps> = props
     const product = ((activeOffer && activeOffer.products[0]) || null);
 
     return (
-        <div className="row h-100">
-            <div className="d-flex flex-column col-7 h-100">
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn size={ 7 }>
                 <CatalogPageOffersView offers={ pageParser.offers } />
-            </div>
-            <div className="position-relative d-flex flex-column col-5 gap-2 h-100 overflow-hidden">
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 5 }>
                 <CatalogProductPreviewView pageParser={ pageParser } activeOffer={ activeOffer } roomPreviewer={ roomPreviewer } />
-            </div>
-        </div>
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
     );
 }

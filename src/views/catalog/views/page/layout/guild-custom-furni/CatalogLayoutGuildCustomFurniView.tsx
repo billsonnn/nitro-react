@@ -1,25 +1,28 @@
 import { CatalogGroupsComposer, StringDataType } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../../../api';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { SetRoomPreviewerStuffDataEvent } from '../../../../../../events';
 import { dispatchUiEvent } from '../../../../../../hooks';
 import { SendMessageHook } from '../../../../../../hooks/messages';
-import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
-import { GetOfferName } from '../../../../common/CatalogUtilities';
+import { NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../../layout';
 import { useCatalogContext } from '../../../../context/CatalogContext';
-import { CatalogRoomPreviewerView } from '../../../catalog-room-previewer/CatalogRoomPreviewerView';
+import { CatalogSelectGroupView } from '../../../select-group/CatalogSelectGroupView';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
-import { CatalogPurchaseView } from '../../purchase/CatalogPurchaseView';
+import { CatalogProductPreviewView } from '../../product-preview/CatalogProductPreviewView';
 import { CatalogLayoutGuildCustomFurniViewProps } from './CatalogLayoutGuildCustomFurniView.types';
 
 export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutGuildCustomFurniViewProps> = props =>
 {
     const { roomPreviewer = null, pageParser = null } = props;
-
+    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState<number>(0);
     const { catalogState = null } = useCatalogContext();
     const { activeOffer = null, groups = null } = catalogState;
-    
-    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState<number>(0);
+
+    const selectedGroup = useMemo(() =>
+    {
+        if(!groups || !groups.length) return;
+
+        return groups[selectedGroupIndex];
+    }, [ groups, selectedGroupIndex ]);
 
     useEffect(() =>
     {
@@ -44,41 +47,17 @@ export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutGuildCustomFurniV
     }, [ groups, selectedGroupIndex, activeOffer ]);
 
     if(!groups) return null;
-
-    const product = ((activeOffer && activeOffer.products[0]) || null);
     
     return (
-        <div className="row h-100 nitro-catalog-layout-guild-custom-furni">
-            <div className="d-flex flex-column col-7 h-100">
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn size={ 7 }>
                 <CatalogPageOffersView offers={ pageParser.offers } />
-            </div>
-            { product &&
-            <div className="col position-relative d-flex flex-column">
-                { groups[selectedGroupIndex] && <div className="position-absolute" style={{ width: '50px', height: '50px', zIndex: 1 }}>
-                    <BadgeImageView badgeCode={ groups[selectedGroupIndex].badgeCode } isGroup={ true } />
-                    </div> }
-                <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
-                <div className="fs-6 text-black mt-1 overflow-hidden">{ GetOfferName(activeOffer) }</div>
-                { groups.length === 0 && <div className="bg-muted text-center rounded p-1 text-black mt-auto">
-                    { LocalizeText('catalog.guild_selector.members_only') }
-                    <button className="btn btn-sm btn-primary mt-1">{ LocalizeText('catalog.guild_selector.find_groups') }</button>
-                </div> }
-                { groups.length > 0 && <>
-                    <div className="d-flex mb-2">
-                        <div className="rounded d-flex overflow-hidden me-1 border">
-                            <div className="h-100" style={{ width: '20px', backgroundColor: '#' + groups[selectedGroupIndex].colorA }}></div>
-                            <div className="h-100" style={{ width: '20px', backgroundColor: '#' + groups[selectedGroupIndex].colorB }}></div>
-                        </div>
-                        <select className="form-select form-select-sm" value={ selectedGroupIndex } onChange={ (e) => setSelectedGroupIndex(parseInt(e.target.value)) }>
-                            { groups.map((group, index) =>
-                            {
-                                return <option key={ index } value={ index }>{ group.groupName }</option>;
-                            }) }
-                        </select>
-                    </div>
-                    <CatalogPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ groups[selectedGroupIndex] ? groups[selectedGroupIndex].groupId.toString() : '' } />
-                </> }
-            </div> }
-        </div>
-        );
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 5 }>
+                <CatalogProductPreviewView pageParser={ pageParser } activeOffer={ activeOffer } roomPreviewer={ roomPreviewer } badgeCode={ ((selectedGroup && selectedGroup.badgeCode) || null) } extra={ groups[selectedGroupIndex] ? groups[selectedGroupIndex].groupId.toString() : '' } disabled={ !(!!groups[selectedGroupIndex]) }>
+                    <CatalogSelectGroupView selectedGroupIndex={ selectedGroupIndex } setSelectedGroupIndex={ setSelectedGroupIndex } />
+                </CatalogProductPreviewView>
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
+    );
 }

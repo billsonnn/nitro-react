@@ -39,7 +39,7 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
     CreateMessageHook(VoucherRedeemErrorMessageEvent, onVoucherRedeemErrorMessageEvent);
 
     return (
-        <div className="d-flex mt-1">
+        <div className="d-flex">
             <div className="d-flex flex-grow-1 me-1">
                 <input type="text" className="form-control form-control-sm" placeholder={ text } value={ voucher } onChange={ event => setVoucher(event.target.value) } />
             </div>

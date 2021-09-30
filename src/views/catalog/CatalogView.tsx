@@ -4,7 +4,7 @@ import { AddEventLinkTracker, GetRoomEngine, LocalizeText, RemoveLinkEventTracke
 import { CatalogEvent } from '../../events';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, NitroLayoutGrid, NitroLayoutGridColumn } from '../../layout';
 import { CatalogMessageHandler } from './CatalogMessageHandler';
 import { CatalogMode, CatalogViewProps } from './CatalogView.types';
 import { BuildCatalogPageTree } from './common/CatalogUtilities';
@@ -184,7 +184,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
     }, []);
 
     const currentNavigationPage = ((searchResult && searchResult.page) || currentTab);
-    const navigationHidden = (pageParser && pageParser.frontPageItems.length);
+    const navigationHidden = !!(pageParser && pageParser.frontPageItems.length);
 
     return (
         <CatalogContextProvider value={ { catalogState, dispatchCatalogState } }>
@@ -203,15 +203,15 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                             }) }
                     </NitroCardTabsView>
                     <NitroCardContentView>
-                        <div className="row h-100">
+                        <NitroLayoutGrid>
                             { currentNavigationPage && !navigationHidden &&
-                                <div className="col-3 h-100">
+                                <NitroLayoutGridColumn size={ 3 }>
                                     <CatalogNavigationView page={ currentNavigationPage } pendingTree={ pendingTree } setPendingTree={ setPendingTree } />
-                                </div> }
-                            <div className="col h-100">
+                                </NitroLayoutGridColumn> }
+                            <NitroLayoutGridColumn size={ (navigationHidden ? 12 : 9) }>
                                 <CatalogPageView roomPreviewer={ roomPreviewer } />
-                            </div>
-                        </div>
+                            </NitroLayoutGridColumn>
+                        </NitroLayoutGrid>
                     </NitroCardContentView>
                 </NitroCardView> }
                 <CatalogGiftView />

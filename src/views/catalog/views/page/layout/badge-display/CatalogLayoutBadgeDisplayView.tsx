@@ -4,6 +4,8 @@ import { LocalizeText } from '../../../../../../api';
 import { InventoryBadgesUpdatedEvent, SetRoomPreviewerStuffDataEvent } from '../../../../../../events';
 import { InventoryBadgesRequestEvent } from '../../../../../../events/inventory/InventoryBadgesRequestEvent';
 import { dispatchUiEvent, useUiEvent } from '../../../../../../hooks';
+import { NitroLayoutFlexColumn, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../../layout';
+import { NitroLayoutBase } from '../../../../../../layout/base';
 import { NitroCardGridItemView } from '../../../../../../layout/card/grid/item/NitroCardGridItemView';
 import { NitroCardGridView } from '../../../../../../layout/card/grid/NitroCardGridView';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
@@ -53,11 +55,11 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutBadgeDisplayViewProp
     }, [ currentBadge, activeOffer, roomPreviewer ]);
 
     return (
-        <div className="row h-100">
-            <div className="d-flex flex-column col-7 gap-2 h-100">
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn size={ 7 }>
                 <CatalogPageOffersView className="flex-shrink-0" offers={ pageParser.offers } />
-                <div className="d-flex flex-column overflow-hidden">
-                    <div className="text-black fw-bold">{ LocalizeText('catalog_selectbadge') }</div>
+                <NitroLayoutFlexColumn gap={ 1 } overflow="hidden">
+                    <NitroLayoutBase className="flex-shrink-0 fw-bold text-black text-truncate">{ LocalizeText('catalog_selectbadge') }</NitroLayoutBase>
                     <NitroCardGridView>
                         { badges && (badges.length > 0) && badges.map(code =>
                             {
@@ -68,11 +70,11 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutBadgeDisplayViewProp
                                 );
                             }) }
                     </NitroCardGridView>
-                </div>
-            </div>
-            <div className="position-relative d-flex flex-column col-5">
+                </NitroLayoutFlexColumn>
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 5 }>
                 <CatalogProductPreviewView pageParser={ pageParser } activeOffer={ activeOffer } roomPreviewer={ roomPreviewer } extra={ currentBadge } disabled={ !currentBadge } />
-            </div>
-        </div>
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
     );
 }
