@@ -2,7 +2,7 @@ import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, Nitro
 import { FC, useCallback, useState } from 'react';
 import { GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GoToDesktop, OpenMessengerChat } from '../../api';
 import { AvatarEditorEvent, CatalogEvent, FriendsEvent, FriendsMessengerIconEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
-import { AchievementsUIEvent } from '../../events/achievements';
+import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
@@ -27,9 +27,9 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     const [ isMeExpanded, setMeExpanded ] = useState(false);
     const [ chatIconType, setChatIconType ] = useState(CHAT_ICON_HIDDEN);
     const [ unseenInventoryCount, setUnseenInventoryCount ] = useState(0);
+    const [ unseenAchievementCount, setUnseenAchievementCount ] = useState(0);
 
     const unseenFriendListCount = 0;
-    const unseenAchievementsCount = 0;
 
     const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
     {
@@ -63,6 +63,13 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     }, []);
 
     useUiEvent(UnseenItemTrackerUpdateEvent.UPDATE_COUNT, onUnseenItemTrackerUpdateEvent);
+
+    const onAchievementsUIUnseenCountEvent = useCallback((event: AchievementsUIUnseenCountEvent) =>
+    {
+        setUnseenAchievementCount(event.count);
+    }, []);
+
+    useUiEvent(AchievementsUIUnseenCountEvent.UNSEEN_COUNT, onAchievementsUIUnseenCountEvent);
 
     const animationIconToToolbar = useCallback((iconName: string, image: HTMLImageElement, x: number, y: number) =>
     {
@@ -160,15 +167,15 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     return (
         <div className="nitro-toolbar-container">
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isMeExpanded } timeout={ 300 }>
-                <ToolbarMeView handleToolbarItemClick={ handleToolbarItemClick } />
+                <ToolbarMeView unseenAchievementCount={ unseenAchievementCount } handleToolbarItemClick={ handleToolbarItemClick } />
             </TransitionAnimation>
             <div className="d-flex justify-content-between align-items-center nitro-toolbar py-1 px-3">
                 <div className="d-flex align-items-center">
                     <div className="navigation-items gap-2">
                         <div className={ 'navigation-item item-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ event => setMeExpanded(!isMeExpanded) }>
                             <AvatarImageView figure={ userFigure } direction={ 2 } />
-                            { (unseenAchievementsCount > 0) &&
-                                <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenAchievementsCount }</div> }
+                            { (unseenAchievementCount > 0) &&
+                                <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenAchievementCount }</div> }
                         </div>
                         { isInRoom && (
                             <div className="navigation-item" onClick={ visitDesktop }>
