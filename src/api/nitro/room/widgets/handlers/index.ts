@@ -5,6 +5,7 @@ export * from './FurnitureCreditWidgetHandler';
 export * from './FurnitureCustomStackHeightWidgetHandler';
 export * from './FurnitureDimmerWidgetHandler';
 export * from './FurnitureExternalImageWidgetHandler';
+export * from './FurnitureMannequinWidgetHandler';
 export * from './FurniturePresentWidgetHandler';
 export * from './IRoomWidgetHandler';
 export * from './IRoomWidgetHandlerManager';

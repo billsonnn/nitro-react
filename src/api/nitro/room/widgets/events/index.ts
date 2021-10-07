@@ -24,6 +24,7 @@ export * from './RoomWidgetUpdateInfostandFurniEvent';
 export * from './RoomWidgetUpdateInfostandPetEvent';
 export * from './RoomWidgetUpdateInfostandRentableBotEvent';
 export * from './RoomWidgetUpdateInfostandUserEvent';
+export * from './RoomWidgetUpdateMannequinEvent';
 export * from './RoomWidgetUpdatePresentDataEvent';
 export * from './RoomWidgetUpdateRentableBotChatEvent';
 export * from './RoomWidgetUpdateRoomViewEvent';
