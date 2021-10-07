@@ -15,12 +15,9 @@ const MODE_PEER: number = 2;
 const MODE_NO_CLUB: number = 3;
 const MODE_WRONG_GENDER: number = 4;
 
-const ACTION_CLOSE: number = 0;
 const ACTION_SET_NAME: number = 1;
-const ACTION_LOAD_FIGURE: number = 2;
-const ACTION_WEAR: number = 3;
-const ACTION_SAVE: number = 4;
-const ACTION_BACK: number = 5;
+const ACTION_WEAR: number = 2;
+const ACTION_SAVE: number = 3;
 
 const MANNEQUIN_FIGURE = ['hd', 99999, [ 99998 ]];
 const MANNEQUIN_CLOTHING_PART_TYPES = [
@@ -173,16 +170,15 @@ export const FurnitureMannequinView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('mannequin.widget.title') } onCloseClick={ event => setMode(MODE_NONE) } />
             <NitroCardContentView>
                 <NitroLayoutGrid>
-                    <NitroLayoutGridColumn className="justify-content-center align-items-center" size={ 4 }>
+                    <NitroLayoutGridColumn className="justify-content-center align-items-center" overflow="hidden" size={ 4 }>
                         <FurnitureMannequinPreviewView figure={ renderedFigure } clubLevel={ renderedClubLevel } />
                     </NitroLayoutGridColumn>
-                    <NitroLayoutGridColumn size={ 8 }>
+                    <NitroLayoutGridColumn className="justify-content-between" overflow="hidden" size={ 8 }>
                         { (mode === MODE_CONTROLLER) &&
-                            <NitroLayoutFlexColumn className="justify-content-between h-100">
-                                <NitroLayoutFlex className="justify-content-between align-items-center">
-                                    {/* <i className="small fas fa-pencil-alt me-2 text-black" /> */}
+                            <>
+                                <NitroLayoutFlexColumn gap={ 1 } overflow="auto">
                                     <input type="text" className="form-control" value={ name } onChange={ event => setName(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
-                                </NitroLayoutFlex>
+                                </NitroLayoutFlexColumn>
                                 <NitroLayoutFlexColumn gap={ 1 }>
                                     <NitroLayoutButton variant="success" onClick={ event => setMode(MODE_UPDATE) }>
                                         { LocalizeText('mannequin.widget.style') }
@@ -191,10 +187,10 @@ export const FurnitureMannequinView: FC<{}> = props =>
                                         { LocalizeText('mannequin.widget.wear') }
                                     </NitroLayoutButton>
                                 </NitroLayoutFlexColumn>
-                            </NitroLayoutFlexColumn> }
+                            </> }
                         { (mode === MODE_UPDATE) &&
-                            <NitroLayoutFlexColumn className="justify-content-between h-100">
-                                <NitroLayoutFlexColumn gap={ 1 }>
+                            <>
+                                <NitroLayoutFlexColumn gap={ 1 } overflow="auto">
                                     <NitroLayoutBase className="text-black fw-bold">
                                         { name }
                                     </NitroLayoutBase>
@@ -210,10 +206,10 @@ export const FurnitureMannequinView: FC<{}> = props =>
                                         { LocalizeText('mannequin.widget.save') }
                                     </NitroLayoutButton>
                                 </NitroLayoutFlex>
-                            </NitroLayoutFlexColumn> }
+                            </> }
                         { (mode === MODE_PEER) &&
-                            <NitroLayoutFlexColumn className="justify-content-between h-100">
-                                <NitroLayoutFlexColumn gap={ 1 }>
+                            <>
+                                <NitroLayoutFlexColumn gap={ 1 } overflow="auto">
                                     <NitroLayoutBase className="text-black fw-bold">
                                         { name }
                                     </NitroLayoutBase>
@@ -224,7 +220,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
                                 <NitroLayoutButton variant="success" onClick={ event => processAction(ACTION_WEAR) }>
                                     { LocalizeText('mannequin.widget.wear') }
                                 </NitroLayoutButton>
-                            </NitroLayoutFlexColumn> }
+                            </> }
                         { (mode === MODE_NO_CLUB) &&
                             <NitroLayoutBase className="text-black">
                                 { LocalizeText('mannequin.widget.clubnotification') }
