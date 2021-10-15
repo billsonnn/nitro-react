@@ -27,9 +27,9 @@ export const ModToolsChatlogView: FC<ModToolsChatlogViewProps> = props =>
     {
         const parser = event.getParser();
 
-        setRoomName(parser.name);
-        setMessages(parser.chatlogs);
-        setLoadedRoomId(parser.id);
+        setRoomName(parser.data.roomName);
+        setMessages(parser.data.chatlog);
+        setLoadedRoomId(parser.data.roomId);
     }, [ setRoomName, setMessages ]);
 
     CreateMessageHook(ModtoolRoomChatlogEvent, onModtoolRoomChatlogEvent);
