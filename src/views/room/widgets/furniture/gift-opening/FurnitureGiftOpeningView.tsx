@@ -1,14 +1,21 @@
 import { RoomObjectCategory, RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { CreateLinkEvent, GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetPresentOpenMessage, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdatePresentDataEvent } from '../../../../../api';
+import { CreateLinkEvent, GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetPresentOpenMessage, RoomWidgetUpdatePresentDataEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
+import { BatchUpdates } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutGiftCardView } from '../../../../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutButton, NitroLayoutFlex, NitroLayoutFlexColumn, NitroLayoutGiftCardView, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../layout';
+import { NitroLayoutBase } from '../../../../../layout/base';
 import { ProductTypeEnum } from '../../../../catalog/common/ProductTypeEnum';
 import { useRoomContext } from '../../../context/RoomContext';
 
 const FLOOR: string = 'floor';
 const WALLPAPER: string = 'wallpaper';
 const LANDSCAPE: string = 'landscape';
+
+const ACTION_GIVE_GIFT = 0;
+const ACTION_OPEN = 1;
+const ACTION_PLACE = 2;
+const ACTION_INVENTORY = 3;
 
 export const FurnitureGiftOpeningView: FC<{}> = props =>
 {
@@ -44,57 +51,67 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
         switch(event.type)
         {
             case RoomWidgetUpdatePresentDataEvent.PACKAGEINFO: {
-                setOpenRequested(false);
-                setObjectId(event.objectId);
-                setText(event.giftMessage);
-                setIsOwnerOfFurniture(event.isController);
-                setSenderName(event.purchaserName);
-                setSenderFigure(event.purchaserFigure);
-                setImageUrl(event.imageUrl);
+                BatchUpdates(() =>
+                {
+                    setOpenRequested(false);
+                    setObjectId(event.objectId);
+                    setText(event.giftMessage);
+                    setIsOwnerOfFurniture(event.isController);
+                    setSenderName(event.purchaserName);
+                    setSenderFigure(event.purchaserFigure);
+                    setImageUrl(event.imageUrl);
+                });
                 return;
             }
             case RoomWidgetUpdatePresentDataEvent.CONTENTS_FLOOR:
             case RoomWidgetUpdatePresentDataEvent.CONTENTS_LANDSCAPE:
             case RoomWidgetUpdatePresentDataEvent.CONTENTS_WALLPAPER: {
-                setObjectId(event.objectId);
-                setClassId(event.classId);
-                setItemType(event.itemType);
-                setText(event.giftMessage);
-                setIsOwnerOfFurniture(event.isController);
-                setPlacedItemId(event.placedItemId);
-                setPlacedItemType(event.placedItemType);
-                setPlacedInRoom(event.placedInRoom);
-
                 let imageType: string = null;
 
                 if(event.type === RoomWidgetUpdatePresentDataEvent.CONTENTS_FLOOR) imageType = 'packagecard_icon_floor';
                 else if(event.type === RoomWidgetUpdatePresentDataEvent.CONTENTS_LANDSCAPE) imageType = 'packagecard_icon_landscape';
                 else if(event.type === RoomWidgetUpdatePresentDataEvent.CONTENTS_WALLPAPER) imageType = 'packagecard_icon_wallpaper';
 
-                setImageUrl(getGiftImageUrl(imageType));
+                BatchUpdates(() =>
+                {
+                    setObjectId(event.objectId);
+                    setClassId(event.classId);
+                    setItemType(event.itemType);
+                    setText(event.giftMessage);
+                    setIsOwnerOfFurniture(event.isController);
+                    setPlacedItemId(event.placedItemId);
+                    setPlacedItemType(event.placedItemType);
+                    setPlacedInRoom(event.placedInRoom);
+                    setImageUrl(getGiftImageUrl(imageType));
+                });
                 return;
             }
             case RoomWidgetUpdatePresentDataEvent.CONTENTS_CLUB: {
-                setObjectId(event.objectId);
-                setClassId(event.classId);
-                setItemType(event.itemType);
-                setText(event.giftMessage);
-                setIsOwnerOfFurniture(event.isController);
-                setImageUrl(getGiftImageUrl('packagecard_icon_hc'));
+                BatchUpdates(() =>
+                {
+                    setObjectId(event.objectId);
+                    setClassId(event.classId);
+                    setItemType(event.itemType);
+                    setText(event.giftMessage);
+                    setIsOwnerOfFurniture(event.isController);
+                    setImageUrl(getGiftImageUrl('packagecard_icon_hc'));
+                });
                 return;
             }
             case RoomWidgetUpdatePresentDataEvent.CONTENTS: {
                 if(!openRequested) return;
 
-                setObjectId(event.objectId);
-                setClassId(event.classId);
-                setItemType(event.itemType);
-                setText(event.giftMessage);
-                setIsOwnerOfFurniture(event.isController);
-                setPlacedItemId(event.placedItemId);
-                setPlacedItemType(event.placedItemType);
-                setPlacedInRoom(event.placedInRoom);
-
+                BatchUpdates(() =>
+                {
+                    setObjectId(event.objectId);
+                    setClassId(event.classId);
+                    setItemType(event.itemType);
+                    setText(event.giftMessage);
+                    setIsOwnerOfFurniture(event.isController);
+                    setPlacedItemId(event.placedItemId);
+                    setPlacedItemType(event.placedItemType);
+                    setPlacedInRoom(event.placedInRoom);
+                });
                 return;
             }
             case RoomWidgetUpdatePresentDataEvent.CONTENTS_IMAGE: {
@@ -113,7 +130,7 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
     CreateEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS_CLUB, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
     CreateEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS_IMAGE, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
 
-    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
     {
         if(event.id === objectId) clearGift();
 
@@ -123,17 +140,20 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
         }
     }, [ objectId, placedItemId, placedInRoom, clearGift ]);
 
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
 
     const close = useCallback(() =>
     {
-        setObjectId(-1);
-        setOpenRequested(false);
-        setPlacedItemId(-1);
-        setPlacedInRoom(false);
-        setText(null);
-        setIsOwnerOfFurniture(false);
-    }, [ clearGift ]);
+        BatchUpdates(() =>
+        {
+            setObjectId(-1);
+            setOpenRequested(false);
+            setPlacedItemId(-1);
+            setPlacedInRoom(false);
+            setText(null);
+            setIsOwnerOfFurniture(false);
+        });
+    }, []);
 
     const isSpaces = useMemo(() =>
     {
@@ -152,26 +172,25 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
     {
         if(objectId === -1) return '';
 
-        if(isSpaces)
-            return 'widget.furni.present.spaces.message_opened';
+        if(isSpaces) return 'widget.furni.present.spaces.message_opened';
         
         return 'widget.furni.present.message_opened';
     }, [ objectId, isSpaces ]);
 
-    const handleAction = useCallback((action: string) =>
+    const handleAction = useCallback((action: number) =>
     {
         switch(action)
         {
-            case 'give_gift':
+            case ACTION_GIVE_GIFT:
                 CreateLinkEvent('catalog/open');
                 return;
-            case 'open':
+            case ACTION_OPEN:
                 setOpenRequested(true);
                 widgetHandler.processWidgetMessage(new RoomWidgetPresentOpenMessage(RoomWidgetPresentOpenMessage.OPEN_PRESENT, objectId));
                 return;
-            case 'room':
+            case ACTION_PLACE:
                 return;
-            case 'inventory':
+            case ACTION_INVENTORY:
                 if((placedItemId > 0) && placedInRoom)
                 {
                     if(placedItemType === ProductTypeEnum.PET)
@@ -195,32 +214,48 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
 
     return (
         <NitroCardView className="nitro-gift-opening" simple={ true }>
-            <NitroCardHeaderView headerText={ LocalizeText(senderName ? 'widget.furni.present.window.title_from' : 'widget.furni.present.window.title', ['name'], [senderName]) } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText(senderName ? 'widget.furni.present.window.title_from' : 'widget.furni.present.window.title', [ 'name' ], [ senderName ]) } onCloseClick={ close } />
             <NitroCardContentView>
-                { placedItemId === -1 && <>
-                <NitroLayoutGiftCardView userName={ senderName } figure={ senderFigure } message={ text } />
-                { isOwnerOfFurniture && <div className="d-flex gap-2 mt-2">
-                    { senderName && <button className="btn btn-primary w-100 text-nowrap" onClick={ () => handleAction('give_gift') }>{ LocalizeText('widget.furni.present.give_gift', ['name'], [senderName]) }</button> }
-                    <button className="btn btn-success w-100 text-nowrap" onClick={ () => handleAction('open') }>{ LocalizeText('widget.furni.present.open_gift') }</button>
-                </div> }
-                </> }
-                { placedItemId !== -1 && <>
-                    <div className="d-flex gap-2 align-items-center">
-                        <div>
-                            <img src={ imageUrl } alt="" />
-                        </div>
-                        <div className="bg-muted rounded p-2 text-center text-black">
-                            { LocalizeText(productName, ['product'], [text]) }
-                        </div>
-                    </div>
-                    <div className="d-flex gap-2 mt-3">
-                        <button className="btn btn-primary w-100 text-nowrap" onClick={ () => handleAction('inventory') }>{ LocalizeText('widget.furni.present.put_in_inventory') }</button>
-                        <button className="btn btn-success w-100 text-nowrap" onClick={ () => handleAction('room') }>{ LocalizeText(placedInRoom ? 'widget.furni.present.keep_in_room' : 'widget.furni.present.place_in_room') }</button>
-                    </div>
-                    { senderName &&  <>
-                        <button className="btn btn-primary w-100 text-nowrap mt-2" onClick={ () => handleAction('give_gift') }>{ LocalizeText('widget.furni.present.give_gift', ['name'], [senderName]) }</button>
-                    </> }
-                </> }
+                <NitroLayoutGrid>
+                    { (placedItemId === -1) &&
+                        <NitroLayoutGridColumn size={ 12 }>
+                            <NitroLayoutFlex className="justify-content-center align-items-center" overflow="auto">
+                                <NitroLayoutGiftCardView userName={ senderName } figure={ senderFigure } message={ text } />
+                            </NitroLayoutFlex>
+                            <NitroLayoutFlex gap={ 2 }>
+                                { senderName &&
+                                    <NitroLayoutButton className="text-nowrap w-100" variant="primary" onClick={ event => handleAction(ACTION_GIVE_GIFT) }>
+                                        { LocalizeText('widget.furni.present.give_gift', [ 'name' ], [ senderName ]) }
+                                    </NitroLayoutButton> }
+                                <NitroLayoutButton className="text-nowrap w-100" variant="success" onClick={ event => handleAction(ACTION_OPEN) }>
+                                    { LocalizeText('widget.furni.present.open_gift') }
+                                </NitroLayoutButton>
+                            </NitroLayoutFlex>
+                        </NitroLayoutGridColumn> }
+                    { (placedItemId > -1) &&
+                        <NitroLayoutGridColumn size={ 12 }>
+                            <NitroLayoutFlex className="justify-content-center align-items-center" overflow="auto" gap={ 2 }>
+                                <img src={ imageUrl } alt="" />
+                                <NitroLayoutBase className="text-black">
+                                    { LocalizeText(productName, [ 'product' ], [ text ]) }
+                                </NitroLayoutBase>
+                            </NitroLayoutFlex>
+                            <NitroLayoutFlexColumn gap={ 2 }>
+                                <NitroLayoutFlex gap={ 2 }>
+                                    <NitroLayoutButton className="w-100" variant="primary" onClick={ event => handleAction(ACTION_INVENTORY) }>
+                                        { LocalizeText('widget.furni.present.put_in_inventory') }
+                                    </NitroLayoutButton>
+                                    <NitroLayoutButton className="w-100" variant="success" onClick={ event => handleAction(ACTION_PLACE) }>
+                                        { LocalizeText(placedInRoom ? 'widget.furni.present.keep_in_room' : 'widget.furni.present.place_in_room') }
+                                    </NitroLayoutButton>
+                                </NitroLayoutFlex>
+                                { (senderName && senderName.length) &&
+                                    <NitroLayoutButton className="w-100" variant="primary" onClick={ event => handleAction(ACTION_GIVE_GIFT) }>
+                                        { LocalizeText('widget.furni.present.give_gift', [ 'name' ], [ senderName ]) }
+                                    </NitroLayoutButton> }
+                            </NitroLayoutFlexColumn>
+                        </NitroLayoutGridColumn> }
+                </NitroLayoutGrid>
             </NitroCardContentView>
         </NitroCardView>
     );

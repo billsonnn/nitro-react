@@ -1,6 +1,6 @@
 import { RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { ProcessRoomObjectOperation, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDecorateModeEvent } from '../../../../../api';
+import { ProcessRoomObjectOperation, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { BatchUpdates } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../../context/RoomContext';
@@ -28,11 +28,11 @@ export const FurnitureManipulationMenuView: FC<{}> = props =>
         ProcessRoomObjectOperation(objectId, objectType, RoomObjectOperationType.OBJECT_PICKUP);
     }, [ objectId, objectType ]);
 
-    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
     {
         switch(event.type)
         {
-            case RoomWidgetRoomObjectUpdateEvent.OBJECT_REQUEST_MANIPULATION: {
+            case RoomWidgetUpdateRoomObjectEvent.OBJECT_REQUEST_MANIPULATION: {
                 BatchUpdates(() =>
                 {
                     setIsVisible(true);
@@ -41,7 +41,7 @@ export const FurnitureManipulationMenuView: FC<{}> = props =>
                 });
                 return;
             }
-            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED: {
+            case RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED: {
                 if(event.id === objectId)
                 {
                     BatchUpdates(() =>
@@ -53,7 +53,7 @@ export const FurnitureManipulationMenuView: FC<{}> = props =>
                 }
                 return;
             }
-            case RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED: {
+            case RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED: {
                 BatchUpdates(() =>
                 {
                     setIsVisible(false);
@@ -65,8 +65,8 @@ export const FurnitureManipulationMenuView: FC<{}> = props =>
         }
     }, [ objectId ]);
 
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_REQUEST_MANIPULATION, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_REQUEST_MANIPULATION, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
 
     const onRoomWidgetUpdateDecorateModeEvent = useCallback((event: RoomWidgetUpdateDecorateModeEvent) =>
     {

@@ -1,5 +1,5 @@
-import { MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, Key, MouseEvent as ReactMouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { MouseEventType, TouchEventType } from '@nitrots/nitro-renderer';
+import { FC, Key, MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { DraggableWindowPosition, DraggableWindowProps } from './DraggableWindow.types';
 
 const CURRENT_WINDOWS: HTMLElement[] = [];
@@ -29,7 +29,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
         }
     }, []);
 
-    const onMouseDown = useCallback((event: ReactMouseEvent) =>
+    const moveCurrentWindow = useCallback(() =>
     {
         const index = CURRENT_WINDOWS.indexOf(elementRef.current);
 
@@ -50,18 +50,47 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
         bringToTop();
     }, [ bringToTop ]);
 
-    const onDragMouseDown = useCallback((event: MouseEvent) =>
+    const onMouseDown = useCallback((event: ReactMouseEvent<HTMLDivElement>) =>
     {
-        setStart({ x: event.clientX, y: event.clientY });
+        moveCurrentWindow();
+    }, [ moveCurrentWindow ]);
+
+    const onTouchStart = useCallback((event: ReactTouchEvent<HTMLDivElement>) =>
+    {
+        moveCurrentWindow();
+    }, [ moveCurrentWindow ]);
+
+    const startDragging = useCallback((startX: number, startY: number) =>
+    {
+        setStart({ x: startX, y: startY });
         setIsDragging(true);
     }, []);
+
+    const onDragMouseDown = useCallback((event: MouseEvent) =>
+    {
+        startDragging(event.clientX, event.clientY);
+    }, [ startDragging ]);
+
+    const onTouchDown = useCallback((event: TouchEvent) =>
+    {
+        const touch = event.touches[0];
+
+        startDragging(touch.clientX, touch.clientY);
+    }, [ startDragging ]);
 
     const onDragMouseMove = useCallback((event: MouseEvent) =>
     {
         setDelta({ x: (event.clientX - start.x), y: (event.clientY - start.y) });
     }, [ start ]);
 
-    const onDragMouseUp = useCallback((event: MouseEvent) =>
+    const onDragTouchMove = useCallback((event: TouchEvent) =>
+    {
+        const touch = event.touches[0];
+
+        setDelta({ x: (touch.clientX - start.x), y: (touch.clientY - start.y) });
+    }, [ start ]);
+
+    const completeDrag = useCallback(() =>
     {
         if(!elementRef.current || !dragHandler) return;
         
@@ -97,6 +126,16 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
 
         if(uniqueKey !== null) POS_MEMORY.set(uniqueKey, { x: offsetX, y: offsetY });
     }, [ dragHandler, delta, offset, uniqueKey ]);
+
+    const onDragMouseUp = useCallback((event: MouseEvent) =>
+    {
+        completeDrag();
+    }, [ completeDrag ]);
+
+    const onDragTouchUp = useCallback((event: TouchEvent) =>
+    {
+        completeDrag();
+    }, [ completeDrag ]);
 
     useEffect(() =>
     {
@@ -169,29 +208,35 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
         if(!dragHandler) return;
 
         dragHandler.addEventListener(MouseEventType.MOUSE_DOWN, onDragMouseDown);
+        dragHandler.addEventListener(TouchEventType.TOUCH_START, onTouchDown);
 
         return () =>
         {
             dragHandler.removeEventListener(MouseEventType.MOUSE_DOWN, onDragMouseDown);
+            dragHandler.removeEventListener(TouchEventType.TOUCH_START, onTouchDown);
         }
-    }, [ dragHandler, onDragMouseDown ]);
+    }, [ dragHandler, onDragMouseDown, onTouchDown ]);
 
     useEffect(() =>
     {
         if(!isDragging) return;
 
         document.addEventListener(MouseEventType.MOUSE_UP, onDragMouseUp);
+        document.addEventListener(TouchEventType.TOUCH_END, onDragTouchUp);
         document.addEventListener(MouseEventType.MOUSE_MOVE, onDragMouseMove);
+        document.addEventListener(TouchEventType.TOUCH_MOVE, onDragTouchMove);
 
         return () =>
         {
             document.removeEventListener(MouseEventType.MOUSE_UP, onDragMouseUp);
+            document.removeEventListener(TouchEventType.TOUCH_END, onDragTouchUp);
             document.removeEventListener(MouseEventType.MOUSE_MOVE, onDragMouseMove);
+            document.removeEventListener(TouchEventType.TOUCH_MOVE, onDragTouchMove);
         }
-    }, [ isDragging, onDragMouseUp, onDragMouseMove ]);
+    }, [ isDragging, onDragMouseUp, onDragMouseMove, onDragTouchUp, onDragTouchMove ]);
 
     return (
-        <div ref={ elementRef } className="position-absolute draggable-window" onMouseDownCapture={ onMouseDown }>
+        <div ref={ elementRef } className="position-absolute draggable-window" onMouseDownCapture={ onMouseDown } onTouchStartCapture={ onTouchStart }>
             { children }
         </div>
     );

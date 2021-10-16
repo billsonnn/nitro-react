@@ -1,6 +1,6 @@
 import { NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { ColorUtils, GetRoomEngine, GetRoomSession, GetSessionDataManager, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
+import { ColorUtils, GetRoomEngine, GetRoomSession, GetSessionDataManager, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { DraggableWindowPosition } from '../../../../../layout';
@@ -45,8 +45,8 @@ export const FurnitureStickieView: FC<{}> = props =>
                 setStickieData(new FurnitureStickieData(widgetEvent.objectId, widgetEvent.category, color, text, (GetRoomSession().isRoomOwner || GetSessionDataManager().isModerator), false));
                 return;
             }
-            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED: {
-                const widgetEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+            case RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED: {
+                const widgetEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 setStickieData(prevState =>
                     {
@@ -60,7 +60,7 @@ export const FurnitureStickieView: FC<{}> = props =>
     }, []);
 
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_STICKIE, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onNitroEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onNitroEvent);
 
     const processAction = useCallback((type: string, value: string = null) =>
     {

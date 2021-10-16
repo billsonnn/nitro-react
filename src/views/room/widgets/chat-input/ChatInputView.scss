@@ -71,7 +71,7 @@
     max-height: $chat-input-style-selector-widget-height;
 
     .content-area {
-        max-height: $chat-input-style-selector-widget-height;
+        max-height: $chat-input-style-selector-widget-height !important;
     }
 
     .grid-item {

@@ -1,15 +1,26 @@
-import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, IAvatarFigureContainer, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
+import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, HabboClubLevelEnum, IAvatarFigureContainer, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import { GetAvatarRenderManager, GetNitroInstance, GetRoomEngine, GetRoomSession, GetSessionDataManager, LocalizeText, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
+import { GetAvatarRenderManager, GetSessionDataManager, LocalizeText, RoomWidgetUpdateMannequinEvent } from '../../../../../api';
+import { BatchUpdates, SendMessageHook } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
-import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
-import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutButton, NitroLayoutFlex, NitroLayoutFlexColumn, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../layout';
+import { NitroLayoutBase } from '../../../../../layout/base';
 import { useRoomContext } from '../../../context/RoomContext';
-import { MannequinViewMode } from './common/MannequinViewMode';
-import { FurnitureMannequinData } from './FurnitureMannequinData';
+import { FurnitureMannequinPreviewView } from './views/preview/FurnitureMannequinPreviewView';
 
-const parts = [
+const MODE_NONE: number = -1;
+const MODE_CONTROLLER: number = 0;
+const MODE_UPDATE: number = 1;
+const MODE_PEER: number = 2;
+const MODE_NO_CLUB: number = 3;
+const MODE_WRONG_GENDER: number = 4;
+
+const ACTION_SET_NAME: number = 1;
+const ACTION_WEAR: number = 2;
+const ACTION_SAVE: number = 3;
+
+const MANNEQUIN_FIGURE = ['hd', 99999, [ 99998 ]];
+const MANNEQUIN_CLOTHING_PART_TYPES = [
     AvatarFigurePartType.CHEST_ACCESSORY,
     AvatarFigurePartType.COAT_CHEST,
     AvatarFigurePartType.CHEST,
@@ -17,197 +28,209 @@ const parts = [
     AvatarFigurePartType.SHOES,
     AvatarFigurePartType.WAIST_ACCESSORY
 ];
-const baseAvatar = ['hd', 99999, 99998];
 
 export const FurnitureMannequinView: FC<{}> = props =>
 {
-    const { eventDispatcher = null } = useRoomContext();
-        
-    const [ mannequinData, setMannequinData ]   = useState<FurnitureMannequinData>(null);
-    const [ viewMode, setViewMode ]             = useState('');
+    const [ objectId, setObjectId ] = useState(-1);
+    const [ figure, setFigure ] = useState<string>(null);
+    const [ gender, setGender ] = useState<string>(null);
+    const [ name, setName ] = useState<string>(null);
+    const [ clubLevel, setClubLevel ] = useState(HabboClubLevelEnum.NO_CLUB);
+    const [ renderedFigure, setRenderedFigure ] = useState<string>(null);
+    const [ renderedClubLevel, setRenderedClubLevel ] = useState(HabboClubLevelEnum.NO_CLUB);
+    const [ mode, setMode ] = useState(MODE_NONE);
+    const { roomSession = null, eventDispatcher = null } = useRoomContext();
 
-    const loadMannequinFigure = useCallback((figureContainer: IAvatarFigureContainer) =>
-    {  
-        for(const item of figureContainer.getPartTypeIds())
-        {
-            if(parts.indexOf(item) === -1)
-            {
-                figureContainer.removePart(item);
-            }
-        }
-
-        figureContainer.updatePart(baseAvatar[0].toString(), Number(baseAvatar[1]), [ Number(baseAvatar[2]) ]);
-
-        setMannequinData(mannequinData => new FurnitureMannequinData(mannequinData.objectId, mannequinData.category, mannequinData.name, mannequinData.figure, mannequinData.gender, mannequinData.clubLevel, figureContainer.getFigureString()));
-    }, []);
-
-    useEffect(() =>
+    const onRoomWidgetUpdateMannequinEvent = useCallback((event: RoomWidgetUpdateMannequinEvent) =>
     {
-        if(mannequinData && !mannequinData.renderedFigure)
-        {
-            const figureContainer = GetAvatarRenderManager().createFigureContainer(mannequinData.figure);
-            loadMannequinFigure(figureContainer);
-        }
-    }, [loadMannequinFigure, mannequinData]);
+        const figureContainer = GetAvatarRenderManager().createFigureContainer(event.figure);
+        const figureClubLevel = GetAvatarRenderManager().getFigureClubLevel(figureContainer, event.gender, MANNEQUIN_CLOTHING_PART_TYPES);
 
-    const loadViewMode = useCallback((mannequinData: FurnitureMannequinData) =>
-    {
-        if(!mannequinData) return;
-        
-        const userCanEdit       = (GetRoomSession().isRoomOwner || GetSessionDataManager().isModerator);
-        const userGender        = GetNitroInstance().sessionDataManager.gender;
-        const userClubLevel     = GetNitroInstance().sessionDataManager.clubLevel;
-
-        if(userCanEdit)
+        BatchUpdates(() =>
         {
-            setViewMode(MannequinViewMode.EDIT);
-        }
-        else
-        {
-            if(!mannequinData.figure || mannequinData.figure.length <= 1) return;
+            setObjectId(event.objectId);
+            setFigure(event.figure);
+            setGender(event.gender);
+            setName(event.name);
+            setClubLevel(figureClubLevel);
 
-            if(userGender.toUpperCase() !== mannequinData.gender.toUpperCase())
+            if(roomSession.isRoomOwner || (roomSession.controllerLevel >= RoomControllerLevel.GUEST) || GetSessionDataManager().isModerator)
             {
-                setViewMode(MannequinViewMode.INCOMPATIBLE_GENDER);
+                setMode(MODE_CONTROLLER);
             }
-            else if(userClubLevel < mannequinData.clubLevel)
+
+            else if(GetSessionDataManager().gender.toLowerCase() !== event.gender.toLowerCase())
             {
-                setViewMode(MannequinViewMode.CLUB);
+                setMode(MODE_WRONG_GENDER);
+            }
+
+            else if(GetSessionDataManager().clubLevel < figureClubLevel)
+            {
+                setMode(MODE_NO_CLUB);
             }
             else
             {
-                setViewMode(MannequinViewMode.DEFAULT);
+                setMode(MODE_PEER);
             }
-        }
-    }, []);
+        });
+    }, [ roomSession ]);
 
-    const onNitroEvent = useCallback((event: NitroEvent) =>
+    CreateEventDispatcherHook(RoomWidgetUpdateMannequinEvent.MANNEQUIN_UPDATE, eventDispatcher, onRoomWidgetUpdateMannequinEvent);
+
+    const getMergedFigureContainer = (figure: string, targetFigure: string) =>
     {
-        switch(event.type)
+        const figureContainer = GetAvatarRenderManager().createFigureContainer(figure);
+        const targetFigureContainer = GetAvatarRenderManager().createFigureContainer(targetFigure);
+
+        for(const part of MANNEQUIN_CLOTHING_PART_TYPES) figureContainer.removePart(part);
+
+        for(const part of targetFigureContainer.getPartTypeIds())
         {
-            case RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN: {
-                const widgetEvent = (event as RoomEngineTriggerWidgetEvent);
-
-                const roomObject = GetRoomEngine().getRoomObject(widgetEvent.roomId, widgetEvent.objectId, widgetEvent.category);
-
-                if(!roomObject) return;
-                
-                const figure            = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_MANNEQUIN_FIGURE);
-                const gender            = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_MANNEQUIN_GENDER);
-                const name              = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_MANNEQUIN_NAME);
-
-                const figureContainer   = GetAvatarRenderManager().createFigureContainer(figure);
-                const clubLevel         = GetAvatarRenderManager().getFigureClubLevel(figureContainer, gender, parts);
-                
-                const mannequinData     = new FurnitureMannequinData(widgetEvent.objectId, widgetEvent.category, name, figure, gender, clubLevel);
-                
-                setMannequinData(mannequinData);
-                loadViewMode(mannequinData);
-                return;
-            }
-            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED: {
-                const widgetEvent = (event as RoomWidgetRoomObjectUpdateEvent);
-
-                setMannequinData(prevState =>
-                    {
-                        if(!prevState || (widgetEvent.id !== prevState.objectId) || (widgetEvent.category !== prevState.category)) return prevState;
-
-                        return null;
-                    });
-                return;
-            }
+            figureContainer.updatePart(part, targetFigureContainer.getPartSetId(part), targetFigureContainer.getPartColorIds(part));
         }
-    }, [loadViewMode]);
 
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onNitroEvent);
+        return figureContainer;
+    }
 
-    const processAction = useCallback((type: string, value: string = null) =>
+    const transformAsMannequinFigure = (figureContainer: IAvatarFigureContainer) =>
     {
-        switch(type)
+        for(const part of figureContainer.getPartTypeIds())
         {
-            case 'close':
-                setMannequinData(null);
-                return;
-            case 'set_name':
-                setMannequinData(mannequinData => new FurnitureMannequinData(mannequinData.objectId, mannequinData.category, value, mannequinData.figure, mannequinData.gender, mannequinData.clubLevel, mannequinData.renderedFigure));
-                return;
-            case 'load_figure':
-                loadMannequinFigure(GetAvatarRenderManager().createFigureContainer(GetNitroInstance().sessionDataManager.figure));
-                setViewMode(MannequinViewMode.SAVE);
-                return;
-            case 'back':
-                loadMannequinFigure(GetAvatarRenderManager().createFigureContainer(mannequinData.figure));
-                setViewMode(MannequinViewMode.EDIT);
-                return;
-            case 'save_name':
-                GetRoomSession().connection.send(new FurnitureMannequinSaveNameComposer(mannequinData.objectId, mannequinData.name));
-                return;
-            case 'save_figure':
-                GetRoomSession().connection.send(new FurnitureMannequinSaveLookComposer(mannequinData.objectId));
-                processAction('save_name');
-                processAction('close');
-                return;
-            case 'wear':
-                GetRoomSession().connection.send(new FurnitureMultiStateComposer(mannequinData.objectId));
-                processAction('close');
+            if(MANNEQUIN_CLOTHING_PART_TYPES.indexOf(part) >= 0) continue;
+            
+            figureContainer.removePart(part);
+        }
+    
+        figureContainer.updatePart((MANNEQUIN_FIGURE[0] as string), (MANNEQUIN_FIGURE[1] as number), (MANNEQUIN_FIGURE[2] as number[]));
+    };
+
+    const processAction = useCallback((action: number, value: string = null) =>
+    {
+        switch(action)
+        {
+            case ACTION_SAVE:
+                SendMessageHook(new FurnitureMannequinSaveLookComposer(objectId));
+                break;
+            case ACTION_WEAR:
+                SendMessageHook(new FurnitureMultiStateComposer(objectId));
+                break;
+            case ACTION_SET_NAME:
+                SendMessageHook(new FurnitureMannequinSaveNameComposer(objectId, name));
                 return;
         }
-    }, [ loadMannequinFigure, mannequinData ]);
+
+        setMode(MODE_NONE);
+    }, [ objectId, name ]);
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) =>
     {
         if(event.key !== 'Enter') return;
 
-        processAction('save_name');
+        processAction(ACTION_SET_NAME);
     };
 
-    if(!mannequinData) return null;
+    useEffect(() =>
+    {
+        switch(mode)
+        {
+            case MODE_CONTROLLER:
+            case MODE_WRONG_GENDER: {
+                const figureContainer = GetAvatarRenderManager().createFigureContainer(figure);
+
+                transformAsMannequinFigure(figureContainer);
+
+                setRenderedFigure(figureContainer.getFigureString());
+                setRenderedClubLevel(clubLevel);
+                break;
+            }
+            case MODE_UPDATE: {
+                const figureContainer = GetAvatarRenderManager().createFigureContainer(GetSessionDataManager().figure);
+
+                transformAsMannequinFigure(figureContainer);
+
+                setRenderedFigure(figureContainer.getFigureString());
+                setRenderedClubLevel(GetAvatarRenderManager().getFigureClubLevel(figureContainer, GetSessionDataManager().gender, MANNEQUIN_CLOTHING_PART_TYPES));
+                break;
+            }
+            case MODE_PEER:
+            case MODE_NO_CLUB: {
+                const figureContainer = getMergedFigureContainer(GetSessionDataManager().figure, figure);
+
+                setRenderedFigure(figureContainer.getFigureString());
+                setRenderedClubLevel(clubLevel);
+                break;
+            }
+        }
+    }, [ mode, figure, clubLevel ]);
+
+    if(mode === MODE_NONE) return null;
 
     return (
         <NitroCardView className="nitro-mannequin" simple={ true }>
-            <NitroCardHeaderView headerText={ LocalizeText('mannequin.widget.title') } onCloseClick={ event => processAction('close') } />
+            <NitroCardHeaderView headerText={ LocalizeText('mannequin.widget.title') } onCloseClick={ event => setMode(MODE_NONE) } />
             <NitroCardContentView>
-                <div className="row">
-                    <div className="col-4">
-                        <div className="mannequin-preview">
-                            <AvatarImageView figure={ mannequinData.renderedFigure } direction={ 2 } />
-                        </div>
-                    </div>
-                    <div className="d-flex flex-column justify-content-between col">
-                        { viewMode === MannequinViewMode.DEFAULT &&
+                <NitroLayoutGrid>
+                    <NitroLayoutGridColumn className="justify-content-center align-items-center" overflow="hidden" size={ 4 }>
+                        <FurnitureMannequinPreviewView figure={ renderedFigure } clubLevel={ renderedClubLevel } />
+                    </NitroLayoutGridColumn>
+                    <NitroLayoutGridColumn className="justify-content-between" overflow="hidden" size={ 8 }>
+                        { (mode === MODE_CONTROLLER) &&
                             <>
-                                <div className="h-100">
-                                    <div className="mb-1 text-black fw-bold">{ mannequinData.name }</div>
-                                    <div className="text-black">{ LocalizeText('mannequin.widget.weartext') }</div>
-                                </div>
-                                <div className="btn btn-success float-end" onClick={ event => processAction('wear') }>{ LocalizeText('mannequin.widget.wear') }</div>
-                                </> }
-                        { viewMode === MannequinViewMode.EDIT &&
-                            <>
-                                <input type="text" className="form-control mb-2" value={ mannequinData.name }  onChange={ event => processAction('set_name', event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
-                                <div className="d-flex flex-column w-100">
-                                    <div className="btn btn-success mb-2 w-100" onClick={ event => processAction('load_figure') }>{ LocalizeText('mannequin.widget.style') }</div>
-                                    <div className="btn btn-success w-100" onClick={ event => processAction('wear') }>{ LocalizeText('mannequin.widget.wear') }</div>
-                                </div>
+                                <NitroLayoutFlexColumn gap={ 1 } overflow="auto">
+                                    <input type="text" className="form-control" value={ name } onChange={ event => setName(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
+                                </NitroLayoutFlexColumn>
+                                <NitroLayoutFlexColumn gap={ 1 }>
+                                    <NitroLayoutButton variant="success" onClick={ event => setMode(MODE_UPDATE) }>
+                                        { LocalizeText('mannequin.widget.style') }
+                                    </NitroLayoutButton>
+                                    <NitroLayoutButton variant="success" onClick={ event => processAction(ACTION_WEAR) }>
+                                        { LocalizeText('mannequin.widget.wear') }
+                                    </NitroLayoutButton>
+                                </NitroLayoutFlexColumn>
                             </> }
-                        { viewMode === MannequinViewMode.SAVE &&
+                        { (mode === MODE_UPDATE) &&
                             <>
-                                <div className="h-100">
-                                    <div className="mb-1 text-black fw-bold">{ mannequinData.name }</div>
-                                    <div className="text-black">{ LocalizeText('mannequin.widget.savetext') }</div>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <div className="text-black text-decoration-underline cursor-pointer" onClick={ event => processAction('back') }>{ LocalizeText('mannequin.widget.back') }</div>
-                                    <div className="btn btn-success" onClick={ event => processAction('save_figure') }>{ LocalizeText('mannequin.widget.save') }</div>
-                                </div>
+                                <NitroLayoutFlexColumn gap={ 1 } overflow="auto">
+                                    <NitroLayoutBase className="text-black fw-bold">
+                                        { name }
+                                    </NitroLayoutBase>
+                                    <NitroLayoutBase className="text-black">
+                                        { LocalizeText('mannequin.widget.savetext') }
+                                    </NitroLayoutBase>
+                                </NitroLayoutFlexColumn>
+                                <NitroLayoutFlex className="justify-content-between align-items-center">
+                                    <NitroLayoutBase className="text-black text-decoration-underline cursor-pointer" onClick={ event => setMode(MODE_CONTROLLER) }>
+                                        { LocalizeText('mannequin.widget.back') }
+                                    </NitroLayoutBase>
+                                    <NitroLayoutButton variant="success" onClick={ event => processAction(ACTION_SAVE) }>
+                                        { LocalizeText('mannequin.widget.save') }
+                                    </NitroLayoutButton>
+                                </NitroLayoutFlex>
                             </> }
-                        { viewMode === MannequinViewMode.CLUB &&
-                            <div className="text-black">{ LocalizeText('mannequin.widget.clubnotification') }</div> }
-                        { viewMode === MannequinViewMode.INCOMPATIBLE_GENDER &&
-                            <div className="text-black">{ LocalizeText('mannequin.widget.wronggender') }</div> }
-                    </div>
-                </div>
+                        { (mode === MODE_PEER) &&
+                            <>
+                                <NitroLayoutFlexColumn gap={ 1 } overflow="auto">
+                                    <NitroLayoutBase className="text-black fw-bold">
+                                        { name }
+                                    </NitroLayoutBase>
+                                    <NitroLayoutBase className="text-black">
+                                        { LocalizeText('mannequin.widget.weartext') }
+                                    </NitroLayoutBase>
+                                </NitroLayoutFlexColumn>
+                                <NitroLayoutButton variant="success" onClick={ event => processAction(ACTION_WEAR) }>
+                                    { LocalizeText('mannequin.widget.wear') }
+                                </NitroLayoutButton>
+                            </> }
+                        { (mode === MODE_NO_CLUB) &&
+                            <NitroLayoutBase className="text-black">
+                                { LocalizeText('mannequin.widget.clubnotification') }
+                            </NitroLayoutBase> }
+                        { (mode === MODE_WRONG_GENDER) &&
+                            <NitroLayoutBase className="text-black">
+                                { LocalizeText('mannequin.widget.wronggender') }
+                            </NitroLayoutBase> }
+                    </NitroLayoutGridColumn>
+                </NitroLayoutGrid>
             </NitroCardContentView>
         </NitroCardView>
     );

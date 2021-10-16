@@ -1,3 +1,10 @@
-.nitro-exchange-credit {
-    width: 290px;
+.nitro-widget-exchange-credit {
+    width: $nitro-widget-exchange-credit-width;
+    height: $nitro-widget-exchange-credit-height;
+
+    .exchange-image {
+        background-image: url('../../../../../assets/images/room-widgets/exchange-credit/exchange-credit-image.png');
+        width: 103px;
+        height: 103px;
+    }
 }

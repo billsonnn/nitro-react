@@ -2,9 +2,10 @@ import { FurnitureStackHeightComposer, FurnitureStackHeightEvent } from '@nitrot
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, RoomWidgetUpdateCustomStackHeightEvent } from '../../../../../api';
-import { CreateMessageHook, SendMessageHook } from '../../../../../hooks';
+import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutButton, NitroLayoutFlex, NitroLayoutFlexColumn, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../layout';
+import { NitroLayoutBase } from '../../../../../layout/base';
 import { useRoomContext } from '../../../context/RoomContext';
 
 const MAX_HEIGHT: number = 40;
@@ -14,13 +15,15 @@ export const FurnitureCustomStackHeightView: FC<{}> = props =>
     const [ objectId, setObjectId ] = useState(-1);
     const [ height, setHeight ] = useState(0);
     const [ pendingHeight, setPendingHeight ] = useState(-1);
-
-    const { roomSession = null, eventDispatcher = null } = useRoomContext();
+    const { eventDispatcher = null } = useRoomContext();
 
     const close = useCallback(() =>
     {
-        setObjectId(-1);
-        setHeight(0);
+        BatchUpdates(() =>
+        {
+            setObjectId(-1);
+            setHeight(0);
+        });
     }, []);
 
     const updateHeight = useCallback((height: number, fromServer: boolean = false) =>
@@ -31,9 +34,12 @@ export const FurnitureCustomStackHeightView: FC<{}> = props =>
 
         if(!fromServer) ((height > MAX_HEIGHT) && (height = MAX_HEIGHT));
 
-        setHeight(parseFloat(height.toFixed(2)));
+        BatchUpdates(() =>
+        {
+            setHeight(parseFloat(height.toFixed(2)));
 
-        if(!fromServer) setPendingHeight(height * 100);
+            if(!fromServer) setPendingHeight(height * 100);
+        });
     }, []);
 
     const onRoomWidgetUpdateCustomStackHeightEvent = useCallback((event: RoomWidgetUpdateCustomStackHeightEvent) =>
@@ -65,16 +71,6 @@ export const FurnitureCustomStackHeightView: FC<{}> = props =>
         SendMessageHook(new FurnitureStackHeightComposer(objectId, ~~(height)));
     }, [ objectId ]);
 
-    const placeAboveStack = useCallback(() =>
-    {
-        sendUpdate(-100);
-    }, [ sendUpdate ]);
-
-    const placeAtFloor = useCallback(() =>
-    {
-        sendUpdate(0);
-    }, [ sendUpdate ]);
-
     useEffect(() =>
     {
         if((objectId === -1) || (pendingHeight === -1)) return;
@@ -87,27 +83,35 @@ export const FurnitureCustomStackHeightView: FC<{}> = props =>
     if(objectId === -1) return null;
 
     return (
-        <NitroCardView>
+        <NitroCardView className="nitro-widget-custom-stack-height" simple={ true }>
             <NitroCardHeaderView headerText={ LocalizeText('widget.custom.stack.height.title') } onCloseClick={ close } />
             <NitroCardContentView>
-                <div className="form-group">
-                    <label className="fw-bold text-black">{ LocalizeText('widget.custom.stack.height.text') }</label>
-                    <ReactSlider
-                        className={ 'nitro-slider' }
-                        min={ 0 }
-                        max={ MAX_HEIGHT }
-                        step={ 0.01 }
-                        value={ height }
-                        onChange={ event => updateHeight(event) }
-                        renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
-                </div>
-                <div className="form-group">
-                    <input type="number" min={ 0 } max={ MAX_HEIGHT } value={ height } onChange={ event => updateHeight(parseFloat(event.target.value)) } />
-                </div>
-                <div className="form-group">
-                    <button type="button" className="btn btn-primary" onClick={ placeAboveStack }>{ LocalizeText('furniture.above.stack') }</button>
-                    <button type="button" className="btn btn-primary" onClick={ placeAtFloor }>{ LocalizeText('furniture.floor.level') }</button>
-                </div>
+                <NitroLayoutGrid>
+                    <NitroLayoutGridColumn className="justify-content-between" size={ 12 }>
+                        <NitroLayoutBase className="text-black" overflow="auto">
+                            { LocalizeText('widget.custom.stack.height.text') }
+                        </NitroLayoutBase>
+                        <NitroLayoutFlexColumn gap={ 2 }>
+                            <NitroLayoutFlex gap={ 2 }>
+                                <ReactSlider
+                                    className="nitro-slider"
+                                    min={ 0 }
+                                    max={ MAX_HEIGHT }
+                                    step={ 0.01 }
+                                    value={ height }
+                                    onChange={ event => updateHeight(event) }
+                                    renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
+                                <input type="number" min={ 0 } max={ MAX_HEIGHT } value={ height } onChange={ event => updateHeight(parseFloat(event.target.value)) } />
+                            </NitroLayoutFlex>
+                            <NitroLayoutButton variant="primary" onClick={ event => sendUpdate(-100) }>
+                                { LocalizeText('furniture.above.stack') }
+                            </NitroLayoutButton>
+                            <NitroLayoutButton variant="primary" onClick={ event => sendUpdate(0) }>
+                                { LocalizeText('furniture.floor.level') }
+                            </NitroLayoutButton>
+                        </NitroLayoutFlexColumn>
+                    </NitroLayoutGridColumn>
+                </NitroLayoutGrid>
             </NitroCardContentView>
         </NitroCardView>
     );

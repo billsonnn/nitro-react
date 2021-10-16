@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from 'react';
-import { RoomWidgetRoomObjectMessage, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../../../../api';
+import { RoomWidgetRoomObjectMessage, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../context/RoomContext';
 import { InfoStandWidgetBotView } from './views/bot/InfoStandWidgetBotView';
@@ -22,33 +22,33 @@ export const InfoStandWidgetView: FC<{}> = props =>
     {
         switch(event.type)
         {
-            case RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED: {
-                const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+            case RoomWidgetUpdateRoomObjectEvent.OBJECT_SELECTED: {
+                const roomObjectEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 widgetHandler.processWidgetMessage(new RoomWidgetRoomObjectMessage(RoomWidgetRoomObjectMessage.GET_OBJECT_INFO, roomObjectEvent.id, roomObjectEvent.category));
                 return;
             }
-            case RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED: {
-                const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+            case RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED: {
+                const roomObjectEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 closeInfostand();
                 return;
             }
-            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED:
-            case RoomWidgetRoomObjectUpdateEvent.USER_REMOVED: {
-                const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+            case RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED:
+            case RoomWidgetUpdateRoomObjectEvent.USER_REMOVED: {
+                const roomObjectEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 setInfoStandEvent(prevValue =>
                     {
                         switch(event.type)
                         {
-                            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED:
+                            case RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED:
                                 if(prevValue instanceof RoomWidgetUpdateInfostandFurniEvent)
                                 {
                                     if(prevValue.id === roomObjectEvent.id) return null;
                                 }
                                 break;
-                            case RoomWidgetRoomObjectUpdateEvent.USER_REMOVED:
+                            case RoomWidgetUpdateRoomObjectEvent.USER_REMOVED:
                                 if(prevValue instanceof RoomWidgetUpdateInfostandUserEvent || prevValue instanceof RoomWidgetUpdateInfostandRentableBotEvent)
                                 {
                                     if(prevValue.roomIndex === roomObjectEvent.id) return null;
@@ -80,10 +80,10 @@ export const InfoStandWidgetView: FC<{}> = props =>
         }
     }, [ widgetHandler, closeInfostand ]);
 
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_REMOVED, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_SELECTED, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, eventDispatcher, onRoomWidgetUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomWidgetUpdateEvent);
     CreateEventDispatcherHook(RoomWidgetUpdateInfostandFurniEvent.FURNI, eventDispatcher, onRoomWidgetUpdateEvent);
     CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.OWN_USER, eventDispatcher, onRoomWidgetUpdateEvent);
     CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateEvent);
