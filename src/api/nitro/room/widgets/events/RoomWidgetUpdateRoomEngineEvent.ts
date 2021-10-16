@@ -1,9 +1,9 @@
 import { RoomWidgetUpdateEvent } from './RoomWidgetUpdateEvent';
 
-export class RoomWidgetRoomEngineUpdateEvent extends RoomWidgetUpdateEvent
+export class RoomWidgetUpdateRoomEngineEvent extends RoomWidgetUpdateEvent
 {
-    public static GAME_MODE: string = 'RWREUE_GAME_MODE';
-    public static NORMAL_MODE: string = 'RWREUE_NORMAL_MODE';
+    public static GAME_MODE: string = 'RWUREE_GAME_MODE';
+    public static NORMAL_MODE: string = 'RWUREE_NORMAL_MODE';
 
     private _roomId: number = 0;
 
