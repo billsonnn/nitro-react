@@ -54,8 +54,11 @@ export const CatalogGiftView: FC<{}> = props =>
             if(giftData.colors && giftData.colors.length > 0) newColors.push({ id: colorId, color: `#${giftData.colors[0].toString(16)}` });
         }
 
-        setSelectedColorId(newColors[0].id);
-        setColors(newColors);
+        if(newColors.length)
+        {
+            setSelectedColorId(newColors[0].id);
+            setColors(newColors);
+        }
     }, [ giftConfiguration ]);
 
     const close = useCallback(() =>
@@ -68,7 +71,8 @@ export const CatalogGiftView: FC<{}> = props =>
         setMessage('');
         setSelectedBoxIndex(0);
         setSelectedRibbonIndex(0);
-        setSelectedColorId(colors[0].id);
+        
+        if(colors.length) setSelectedColorId(colors[0].id);
     }, [ colors ]);
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
