@@ -1,6 +1,6 @@
 import { UserProfileComposer } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { AutoSizer, List, ListRowProps, ListRowRenderer } from 'react-virtualized';
+import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps, ListRowRenderer } from 'react-virtualized';
 import { SendMessageHook } from '../../../../hooks';
 import { ChatlogViewProps } from './ChatlogView.types';
 
@@ -8,27 +8,31 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
 {
     const { record = null } = props;
 
-    const getRowHeight = ({ index }) =>
-    {
-        const item = record.chatlog[index];
-
-        if(item.message.length < 40) return 20;
-        else if(item.message.length < 70) return 42;
-        else return 62;
-    };
-
     const rowRenderer: ListRowRenderer = (props: ListRowProps) =>
     {
         const item = record.chatlog[props.index];
 
         return (
-            <div key={props.key} style={props.style} className="row chatlog-entry justify-content-start">
-                <div className="col-md-auto text-center">{item.timestamp}</div>
-                <div className="col-sm-2 justify-content-start username"><span className="fw-bold cursor-pointer" onClick={() => SendMessageHook(new UserProfileComposer(item.userId))}>{item.userName}</span></div>
-                <div className="col justify-content-start h-100"><span className="text-break text-wrap h-100">{item.message}</span></div>
-            </div>
+            <CellMeasurer
+                cache={cache}
+                columnIndex={0}
+                key={props.key}
+                parent={props.parent}
+                rowIndex={props.index}
+            >
+                <div key={props.key} style={props.style} className="row chatlog-entry justify-content-start">
+                    <div className="col-md-auto text-center">{item.timestamp}</div>
+                    <div className="col-sm-2 justify-content-start username"><span className="fw-bold cursor-pointer" onClick={() => SendMessageHook(new UserProfileComposer(item.userId))}>{item.userName}</span></div>
+                    <div className="col justify-content-start h-100"><span className="text-break text-wrap h-100">{item.message}</span></div>
+                </div>
+            </CellMeasurer>
         );
-    }
+    };
+
+    const cache = new CellMeasurerCache({
+        defaultHeight: 25,
+        fixedWidth: true
+    });
 
     return (
         <>
@@ -47,9 +51,10 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                                     width={width}
                                     height={height}
                                     rowCount={record.chatlog.length}
-                                    rowHeight={getRowHeight}
+                                    rowHeight={cache.rowHeight}
                                     className={'chatlog-container'}
-                                    rowRenderer={rowRenderer} />
+                                    rowRenderer={rowRenderer}
+                                    deferredMeasurementCache={cache} />
                             )
                         }
                         }
