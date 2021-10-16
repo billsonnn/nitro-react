@@ -16,11 +16,14 @@
 
             div.chatlog-entry {
                 border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-
                 .username {
                     color: #1E7295;
                     text-decoration: underline;
                     width: $username-col-width;
+                }
+
+                .message {
+                    word-break: break-all;
                 }
             }
         }
