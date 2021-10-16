@@ -1,5 +1,6 @@
 .chatlog-messages {
     color: $black;
+    min-width: 400px;
 
     $username-col-width: 100px;
 
@@ -9,7 +10,6 @@
 
     .chatlog {
         min-height: 200px;
-        min-width: 400px;
 
         .chatlog-container {
             color: $black;
