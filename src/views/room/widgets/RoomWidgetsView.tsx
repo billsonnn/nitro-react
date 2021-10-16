@@ -1,6 +1,6 @@
 import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomObjectVariable, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CanManipulateFurniture, GetRoomEngine, GetSessionDataManager, IsFurnitureSelectionDisabled, LocalizeText, ProcessRoomObjectOperation, RoomWidgetFurniToWidgetMessage, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectUpdateEvent } from '../../../api';
+import { CanManipulateFurniture, GetRoomEngine, GetSessionDataManager, IsFurnitureSelectionDisabled, LocalizeText, ProcessRoomObjectOperation, RoomWidgetFurniToWidgetMessage, RoomWidgetUpdateRoomEngineEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
 import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks/events';
 import { NotificationAlertType } from '../../notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../notification-center/common/NotificationUtilities';
@@ -27,10 +27,10 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
         switch(event.type)
         {
             case RoomEngineEvent.NORMAL_MODE:
-                eventDispatcher.dispatchEvent(new RoomWidgetRoomEngineUpdateEvent(RoomWidgetRoomEngineUpdateEvent.NORMAL_MODE, event.roomId));
+                eventDispatcher.dispatchEvent(new RoomWidgetUpdateRoomEngineEvent(RoomWidgetUpdateRoomEngineEvent.NORMAL_MODE, event.roomId));
                 return;
             case RoomEngineEvent.GAME_MODE:
-                eventDispatcher.dispatchEvent(new RoomWidgetRoomEngineUpdateEvent(RoomWidgetRoomEngineUpdateEvent.GAME_MODE, event.roomId));
+                eventDispatcher.dispatchEvent(new RoomWidgetUpdateRoomEngineEvent(RoomWidgetUpdateRoomEngineEvent.GAME_MODE, event.roomId));
                 return;
             case RoomZoomEvent.ROOM_ZOOM: {
                 const zoomEvent = (event as RoomZoomEvent);
@@ -67,15 +67,15 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
         const objectId  = event.objectId;
         const category  = event.category;
 
-        let updateEvent: RoomWidgetRoomObjectUpdateEvent = null;
+        let updateEvent: RoomWidgetUpdateRoomObjectEvent = null;
 
         switch(event.type)
         {
             case RoomEngineObjectEvent.SELECTED:
-                if(!IsFurnitureSelectionDisabled(event)) updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_SELECTED, objectId, category, event.roomId);
+                if(!IsFurnitureSelectionDisabled(event)) updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_SELECTED, objectId, category, event.roomId);
                 break;
             case RoomEngineObjectEvent.DESELECTED:
-                updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, objectId, category, event.roomId);
+                updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, objectId, category, event.roomId);
                 break;
             case RoomEngineObjectEvent.ADDED: {
                 let addedEventType: string = null;
@@ -84,14 +84,14 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
                 {
                     case RoomObjectCategory.FLOOR:
                     case RoomObjectCategory.WALL:
-                        addedEventType = RoomWidgetRoomObjectUpdateEvent.FURNI_ADDED;
+                        addedEventType = RoomWidgetUpdateRoomObjectEvent.FURNI_ADDED;
                         break;
                     case RoomObjectCategory.UNIT:
-                        addedEventType = RoomWidgetRoomObjectUpdateEvent.USER_ADDED;
+                        addedEventType = RoomWidgetUpdateRoomObjectEvent.USER_ADDED;
                         break;
                 }
 
-                if(addedEventType) updateEvent = new RoomWidgetRoomObjectUpdateEvent(addedEventType, objectId, category, event.roomId);
+                if(addedEventType) updateEvent = new RoomWidgetUpdateRoomObjectEvent(addedEventType, objectId, category, event.roomId);
                 break;
             }
             case RoomEngineObjectEvent.REMOVED: {
@@ -101,14 +101,14 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
                 {
                     case RoomObjectCategory.FLOOR:
                     case RoomObjectCategory.WALL:
-                        removedEventType = RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED;
+                        removedEventType = RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED;
                         break;
                     case RoomObjectCategory.UNIT:
-                        removedEventType = RoomWidgetRoomObjectUpdateEvent.USER_REMOVED;
+                        removedEventType = RoomWidgetUpdateRoomObjectEvent.USER_REMOVED;
                         break;
                 }
 
-                if(removedEventType) updateEvent = new RoomWidgetRoomObjectUpdateEvent(removedEventType, objectId, category, event.roomId);
+                if(removedEventType) updateEvent = new RoomWidgetUpdateRoomObjectEvent(removedEventType, objectId, category, event.roomId);
                 break;
             }
             case RoomEngineObjectEvent.REQUEST_MOVE:
@@ -118,13 +118,13 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
                 if(CanManipulateFurniture(roomSession, objectId, category)) ProcessRoomObjectOperation(objectId, category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE);
                 break;
             case RoomEngineObjectEvent.REQUEST_MANIPULATION:
-                if(CanManipulateFurniture(roomSession, objectId, category)) updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_REQUEST_MANIPULATION, objectId, category, event.roomId);
+                if(CanManipulateFurniture(roomSession, objectId, category)) updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_REQUEST_MANIPULATION, objectId, category, event.roomId);
                 break;
             case RoomEngineObjectEvent.MOUSE_ENTER:
-                updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER, objectId, category, event.roomId);
+                updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OVER, objectId, category, event.roomId);
                 break;
             case RoomEngineObjectEvent.MOUSE_LEAVE:
-                updateEvent = new RoomWidgetRoomObjectUpdateEvent(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT, objectId, category, event.roomId);
+                updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OUT, objectId, category, event.roomId);
                 break;
             case RoomEngineTriggerWidgetEvent.REQUEST_CREDITFURNI:
                 widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_CREDITFURNI, objectId, category, event.roomId));
@@ -202,7 +202,7 @@ export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
         {
             let dispatchEvent = true;
 
-            if(updateEvent instanceof RoomWidgetRoomObjectUpdateEvent) dispatchEvent = (!RoomId.isRoomPreviewerId(updateEvent.roomId));
+            if(updateEvent instanceof RoomWidgetUpdateRoomObjectEvent) dispatchEvent = (!RoomId.isRoomPreviewerId(updateEvent.roomId));
 
             if(dispatchEvent) widgetHandler.eventDispatcher.dispatchEvent(updateEvent);
         }

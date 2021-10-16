@@ -7,6 +7,7 @@
     border-radius: $border-radius;
     font-size: $font-size-sm;
     z-index: $context-menu-zindex;
+    pointer-events: all;
 
     &.name-only {
         background-color: rgba($black, 0.5);
@@ -34,8 +35,7 @@
     .menu-header {
         background-color: $william;
         color: $white;
-        width: 117px;
-        max-width: 117px;
+        min-width: 117px;
         height: 25px;
         max-height: 25px;
         font-size: 16px;

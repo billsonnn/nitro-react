@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText, RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRequestWidgetMessage, RoomWidgetRoomObjectUpdateEvent } from '../../../../api';
+import { LocalizeText, RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRequestWidgetMessage, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../context/RoomContext';
 import { ChooserWidgetView } from './ChooserWidgetView';
@@ -31,21 +31,21 @@ export const FurniChooserWidgetView: FC<{}> = props =>
 
     CreateEventDispatcherHook(RoomWidgetChooserContentEvent.FURNI_CHOOSER_CONTENT, eventDispatcher, onRoomWidgetChooserContentEvent);
 
-    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
     {
         if(!isVisible) return;
 
         switch(event.type)
         {
-            case RoomWidgetRoomObjectUpdateEvent.FURNI_ADDED:
-            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED:
+            case RoomWidgetUpdateRoomObjectEvent.FURNI_ADDED:
+            case RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED:
                 refreshChooser();
                 return;
         }
     }, [ isVisible, refreshChooser ]);
 
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_ADDED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_ADDED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
 
     const close = useCallback(() =>
     {
