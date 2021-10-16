@@ -1,7 +1,7 @@
 import { ApplyTonerComposer, RoomControllerLevel, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateBackgroundColorPreviewEvent } from '../../../../../api';
+import { GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { SendMessageHook } from '../../../../../hooks';
 import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../../../../hooks/events';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
@@ -48,7 +48,7 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
                 
                 return;
             }
-            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED: {
+            case RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED: {
                 if(objectId !== event.objectId) return;
 
                 close();
@@ -58,7 +58,7 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
     }, [ objectId, canOpenBackgroundToner, close ]);
 
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, onRoomEngineObjectEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onRoomEngineObjectEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomEngineObjectEvent);
 
     const processAction = useCallback((name: string) =>
     {

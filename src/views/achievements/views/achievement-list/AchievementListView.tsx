@@ -9,9 +9,9 @@ export const AchievementListView: FC<AchievementListViewProps> = props =>
 
     return (
         <NitroCardGridView { ...rest }>
-            { achievements && (achievements.length > 0) && achievements.map(achievement =>
+            { achievements && (achievements.length > 0) && achievements.map((achievement, index) =>
                 {
-                    return <AchievementListItemView key={ achievement.achievementId } achievement={ achievement } itemActive={ (selectedAchievementId === achievement.achievementId) } onClick={ event => setSelectedAchievementId(achievement.achievementId) } />;
+                    return <AchievementListItemView key={ index } achievement={ achievement } itemActive={ (selectedAchievementId === achievement.achievementId) } onClick={ event => setSelectedAchievementId(achievement.achievementId) } />;
                 }) }
         </NitroCardGridView>
     );

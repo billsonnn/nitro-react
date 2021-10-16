@@ -7,7 +7,7 @@ export const NotificationDefaultBubbleView: FC<NotificationDefaultBubbleViewProp
     const { item = null, close = null, ...rest } = props;
 
     return (
-        <NotificationBubbleView className="d-flex" fadesOut={ false } close={ close } { ...rest }>
+        <NotificationBubbleView className="d-flex" close={ close } { ...rest }>
             { (item.iconUrl && item.iconUrl.length) && <img className="bubble-image no-select" src={ item.iconUrl } alt="" /> }
             <span>{ item.message }</span>
         </NotificationBubbleView>

@@ -1,6 +1,6 @@
 import { RoomEnterEffect, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { GetRoomSession, GetSessionDataManager, RoomWidgetObjectNameEvent, RoomWidgetRoomEngineUpdateEvent, RoomWidgetRoomObjectMessage, RoomWidgetRoomObjectUpdateEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../../../../api';
+import { GetRoomSession, GetSessionDataManager, RoomWidgetObjectNameEvent, RoomWidgetRoomObjectMessage, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent, RoomWidgetUpdateRoomEngineEvent, RoomWidgetUpdateRoomObjectEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../context/RoomContext';
 import { AvatarInfoWidgetAvatarView } from './views/avatar/AvatarInfoWidgetAvatarView';
@@ -73,25 +73,25 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         setProductBubbles([]);
     }, []);
 
-    const onRoomWidgetRoomEngineUpdateEvent = useCallback((event: RoomWidgetRoomEngineUpdateEvent) =>
+    const onRoomWidgetRoomEngineUpdateEvent = useCallback((event: RoomWidgetUpdateRoomEngineEvent) =>
     {
         switch(event.type)
         {
-            case RoomWidgetRoomEngineUpdateEvent.NORMAL_MODE: {
+            case RoomWidgetUpdateRoomEngineEvent.NORMAL_MODE: {
                 if(isGameMode) setGameMode(false);
                 return;
             }
-            case RoomWidgetRoomEngineUpdateEvent.GAME_MODE: {
+            case RoomWidgetUpdateRoomEngineEvent.GAME_MODE: {
                 if(!isGameMode) setGameMode(true);
                 return;
             }
         }
     }, [ isGameMode ]);
 
-    CreateEventDispatcherHook(RoomWidgetRoomEngineUpdateEvent.NORMAL_MODE, eventDispatcher, onRoomWidgetRoomEngineUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomEngineUpdateEvent.GAME_MODE, eventDispatcher, onRoomWidgetRoomEngineUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomEngineEvent.NORMAL_MODE, eventDispatcher, onRoomWidgetRoomEngineUpdateEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomEngineEvent.GAME_MODE, eventDispatcher, onRoomWidgetRoomEngineUpdateEvent);
 
-    const onRoomObjectRemoved = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    const onRoomObjectRemoved = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
     {
         if(name)
         {
@@ -152,15 +152,15 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         }
     }, [ name, infoStandEvent, nameBubbles, productBubbles, removeNameBubble, clearInfoStandEvent ]);
 
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.USER_REMOVED, eventDispatcher, onRoomObjectRemoved);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onRoomObjectRemoved);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, eventDispatcher, onRoomObjectRemoved);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomObjectRemoved);
 
-    const onObjectRolled = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    const onObjectRolled = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
     {
         switch(event.type)
         {
-            case RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER: {
-                const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+            case RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OVER: {
+                const roomObjectEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 if(infoStandEvent) return;
 
@@ -168,8 +168,8 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
 
                 return;
             }
-            case RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT: {
-                const roomObjectEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+            case RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OUT: {
+                const roomObjectEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 if(!name || (name.roomIndex !== roomObjectEvent.id)) return;
 
@@ -180,16 +180,16 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         }
     }, [ infoStandEvent, name, widgetHandler ]);
 
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OVER, eventDispatcher, onObjectRolled);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_ROLL_OUT, eventDispatcher, onObjectRolled);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OVER, eventDispatcher, onObjectRolled);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OUT, eventDispatcher, onObjectRolled);
 
-    const onObjectDeselected = useCallback((event: RoomWidgetRoomObjectUpdateEvent) =>
+    const onObjectDeselected = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
     {
         if(infoStandEvent) clearInfoStandEvent();
         if(productBubbles.length) setProductBubbles([]);
     }, [ infoStandEvent, productBubbles, clearInfoStandEvent ]);
 
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.OBJECT_DESELECTED, eventDispatcher, onObjectDeselected);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, eventDispatcher, onObjectDeselected);
 
     const onRoomWidgetObjectNameEvent = useCallback((event: RoomWidgetObjectNameEvent) =>
     {

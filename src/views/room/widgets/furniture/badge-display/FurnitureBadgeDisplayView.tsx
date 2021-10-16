@@ -1,6 +1,6 @@
 import { NitroEvent, RoomEngineTriggerWidgetEvent, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine, LocalizeBadgeDescription, LocalizeBadgeName, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
+import { GetRoomEngine, LocalizeBadgeDescription, LocalizeBadgeName, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { NitroLayoutTrophyView } from '../../../../../layout';
@@ -36,8 +36,8 @@ export const FurnitureBadgeDisplayView: FC<{}> = props =>
                 setTrophyData(new FurnitureTrophyData(widgetEvent.objectId, widgetEvent.category, '1', senderName, date, badgeDesc, badgeName));
                 return;
             }
-            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED: {
-                const widgetEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+            case RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED: {
+                const widgetEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 setTrophyData(prevState =>
                     {
@@ -52,7 +52,7 @@ export const FurnitureBadgeDisplayView: FC<{}> = props =>
 
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING, onNitroEvent);
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, widgetHandler.eventDispatcher, onNitroEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, widgetHandler.eventDispatcher, onNitroEvent);
 
     const processAction = useCallback((type: string, value: string = null) =>
     {

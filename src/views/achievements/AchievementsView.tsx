@@ -158,6 +158,11 @@ export const AchievementsView: FC<AchievementsViewProps> = props =>
         return progress;
     }, [ achievementCategories ]);
 
+    const scaledProgressPercent = useMemo(() =>
+    {
+        return ~~((((getProgress - 0) * (100 - 0)) / (getMaxProgress - 0)) + 0);
+    }, [ getProgress, getMaxProgress ]);
+
     const getSelectedCategory = useMemo(() =>
     {
         if(!achievementCategories || !achievementCategories.length) return null;
@@ -220,8 +225,10 @@ export const AchievementsView: FC<AchievementsViewProps> = props =>
                             <>
                                 <AchievementsCategoryListView categories={ achievementCategories } selectedCategoryCode={ selectedCategoryCode } setSelectedCategoryCode={ setSelectedCategoryCode }  />
                                 <NitroLayoutFlexColumn className="flex-grow-1 justify-content-end" gap={ 2 }>
-                                    <NitroLayoutBase className="bg-muted text-black text-center rounded">
-                                        { LocalizeText('achievements.categories.totalprogress', [ 'progress', 'limit' ], [ getProgress.toString(), getMaxProgress.toString() ]) }
+                                    <NitroLayoutBase className="progress">
+                                        <NitroLayoutBase className="progress-bar" style={ { width: (scaledProgressPercent + '%') }}>
+                                            { LocalizeText('achievements.categories.totalprogress', [ 'progress', 'limit' ], [ getProgress.toString(), getMaxProgress.toString() ]) }
+                                        </NitroLayoutBase>
                                     </NitroLayoutBase>
                                     <NitroLayoutBase className="bg-muted text-black text-center rounded">
                                         { LocalizeText('achievements.categories.score', [ 'score' ], [ achievementScore.toString() ]) }
