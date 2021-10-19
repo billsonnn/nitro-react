@@ -21,11 +21,10 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
     {
         const parser = event.getParser();
 
-        if(!parser) return;
+        if(!parser || parser.data.userId !== userId) return;
 
-        console.log(parser);
         setUserInfo(parser.data);
-    }, [setUserInfo]);
+    }, [setUserInfo, userId]);
 
     CreateMessageHook(ModtoolUserInfoEvent, onModtoolUserInfoEvent);
     

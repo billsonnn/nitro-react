@@ -20,11 +20,11 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
     {
         const parser = event.getParser();
 
-        if(!parser) return;
+        if(!parser || parser.userId !== userId) return;
 
         setUsername(parser.username);
         setUserChatlog(parser.roomVisits);
-    }, [setUsername, setUserChatlog]);
+    }, [setUsername, setUserChatlog, userId]);
 
     CreateMessageHook(ModtoolUserChatlogEvent, onModtoolUserChatlogEvent);
 

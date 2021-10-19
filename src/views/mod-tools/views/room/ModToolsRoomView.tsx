@@ -32,13 +32,15 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
     {
         const parser = event.getParser();
 
+        if(!parser || parser.id !== roomId) return;
+
         setLoadedRoomId(parser.id);
         setName(parser.name);
         setOwnerId(parser.ownerId);
         setOwnerName(parser.ownerName);
         setOwnerInRoom(parser.ownerInRoom);
         setUsersInRoom(parser.playerAmount);
-    }, [ setLoadedRoomId, setName, setOwnerId, setOwnerName, setOwnerInRoom, setUsersInRoom ]);
+    }, [ setLoadedRoomId, setName, setOwnerId, setOwnerName, setOwnerInRoom, setUsersInRoom, roomId ]);
 
     CreateMessageHook(ModtoolRoomInfoEvent, onModtoolRoomInfoEvent);
 

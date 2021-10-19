@@ -20,10 +20,10 @@ export const ModToolsChatlogView: FC<ModToolsChatlogViewProps> = props =>
     {
         const parser = event.getParser();
 
-        if(!parser) return;
+        if(!parser || parser.data.roomId !== roomId) return;
 
         setRoomChatlog(parser.data);
-    }, [setRoomChatlog]);
+    }, [roomId, setRoomChatlog]);
 
     CreateMessageHook(ModtoolRoomChatlogEvent, onModtoolRoomChatlogEvent);
 
