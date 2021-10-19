@@ -1,29 +1,31 @@
-import { RoomEngineEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useReducer, useState } from 'react';
+import { RoomEngineEvent, RoomEngineObjectEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { FC, useCallback, useReducer, useState } from 'react';
+import { GetRoomSession } from '../../api';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
+import { ModToolsOpenRoomChatlogEvent } from '../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
 import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRoomInfoEvent';
-import { ModToolsSelectUserEvent } from '../../events/mod-tools/ModToolsSelectUserEvent';
+import { ModToolsOpenUserChatlogEvent } from '../../events/mod-tools/ModToolsOpenUserChatlogEvent';
+import { ModToolsOpenUserInfoEvent } from '../../events/mod-tools/ModToolsOpenUserInfoEvent';
 import { useRoomEngineEvent } from '../../hooks/events';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
 import { ModToolsContextProvider } from './context/ModToolsContext';
 import { ModToolsViewProps } from './ModToolsView.types';
 import { initialModTools, ModToolsActions, ModToolsReducer } from './reducers/ModToolsReducer';
+import { ISelectedUser } from './utils/ISelectedUser';
 import { ModToolsChatlogView } from './views/room-chatlog/ModToolsChatlogView';
 import { ModToolsRoomView } from './views/room/ModToolsRoomView';
 import { ModToolsTicketsView } from './views/tickets/ModToolsTicketsView';
+import { ModToolsUserChatlogView } from './views/user-chatlog/ModToolsUserChatlogView';
 import { ModToolsUserView } from './views/user/ModToolsUserView';
 
 export const ModToolsView: FC<ModToolsViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ modToolsState, dispatchModToolsState ] = useReducer(ModToolsReducer, initialModTools);
-    const { currentRoomId = null, selectedUser = null, openRooms = null, openChatlogs = null } = modToolsState;
-
-    const [ isRoomVisible, setIsRoomVisible ] = useState(false);
-    const [ isUserVisible, setIsUserVisible ] = useState(false);
+    const { currentRoomId = null, openRooms = null, openRoomChatlogs = null, openUserChatlogs = null, openUserInfo = null } = modToolsState;
+    const [ selectedUser, setSelectedUser] = useState<ISelectedUser>(null);
     const [ isTicketsVisible, setIsTicketsVisible ] = useState(false);
-    const [ isChatlogVisible, setChatlogVisible ] = useState(false);
 
     const onModToolsEvent = useCallback((event: ModToolsEvent) =>
     {
@@ -38,41 +40,76 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
             case ModToolsEvent.TOGGLE_MOD_TOOLS:
                 setIsVisible(value => !value);
                 return;
-            case ModToolsEvent.SELECT_USER: {
-                const castedEvent = (event as ModToolsSelectUserEvent);
-                
-                dispatchModToolsState({
-                    type: ModToolsActions.SET_SELECTED_USER,
-                    payload: {
-                        selectedUser: {
-                            webID: castedEvent.webID,
-                            name: castedEvent.name
-                        }
-                    }
-                });
-                return;
-            }
             case ModToolsEvent.OPEN_ROOM_INFO: {
                 const castedEvent = (event as ModToolsOpenRoomInfoEvent);
                 
                 if(openRooms && openRooms.includes(castedEvent.roomId)) return;
                 
+                const rooms = openRooms || [];
+                
                 dispatchModToolsState({
                     type: ModToolsActions.SET_OPEN_ROOMS,
                     payload: {
-                        openRooms: [...openRooms, castedEvent.roomId]
+                        openRooms: [...rooms, castedEvent.roomId]
+                    }
+                });
+                return;
+            }
+            case ModToolsEvent.OPEN_ROOM_CHATLOG: {
+                const castedEvent = (event as ModToolsOpenRoomChatlogEvent); 
+
+                if(openRoomChatlogs && openRoomChatlogs.includes(castedEvent.roomId)) return;
+
+                const chatlogs = openRoomChatlogs || [];
+
+                dispatchModToolsState({
+                    type: ModToolsActions.SET_OPEN_ROOM_CHATLOGS,
+                    payload: {
+                        openRoomChatlogs: [...chatlogs, castedEvent.roomId]
+                    }
+                });
+                return;
+            }
+            case ModToolsEvent.OPEN_USER_INFO: {
+                const castedEvent = (event as ModToolsOpenUserInfoEvent);
+
+                if(openUserInfo && openUserInfo.includes(castedEvent.userId)) return;
+
+                const userInfo = openUserInfo || [];
+
+                dispatchModToolsState({
+                    type: ModToolsActions.SET_OPEN_USERINFO,
+                    payload: {
+                        openUserInfo: [...userInfo, castedEvent.userId]
+                    }
+                });
+                return;
+            }
+            case ModToolsEvent.OPEN_USER_CHATLOG: {
+                const castedEvent = (event as ModToolsOpenUserChatlogEvent);
+
+                if(openUserChatlogs && openUserChatlogs.includes(castedEvent.userId)) return;
+
+                const userChatlog = openUserChatlogs || [];
+
+                dispatchModToolsState({
+                    type: ModToolsActions.SET_OPEN_USER_CHATLOGS,
+                    payload: {
+                        openUserChatlogs: [...userChatlog, castedEvent.userId]
                     }
                 });
                 return;
             }
         }
-    }, [ dispatchModToolsState, setIsVisible, openRooms ]);
+    }, [openRooms, openRoomChatlogs, openUserInfo, openUserChatlogs]);
 
     useUiEvent(ModToolsEvent.SHOW_MOD_TOOLS, onModToolsEvent);
     useUiEvent(ModToolsEvent.HIDE_MOD_TOOLS, onModToolsEvent);
     useUiEvent(ModToolsEvent.TOGGLE_MOD_TOOLS, onModToolsEvent);
-    useUiEvent(ModToolsEvent.SELECT_USER, onModToolsEvent);
     useUiEvent(ModToolsEvent.OPEN_ROOM_INFO, onModToolsEvent);
+    useUiEvent(ModToolsEvent.OPEN_ROOM_CHATLOG, onModToolsEvent);
+    useUiEvent(ModToolsEvent.OPEN_USER_INFO, onModToolsEvent);
+    useUiEvent(ModToolsEvent.OPEN_USER_CHATLOG, onModToolsEvent);
 
     const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
     {
@@ -99,6 +136,23 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
 
     useRoomEngineEvent(RoomEngineEvent.INITIALIZED, onRoomEngineEvent);
     useRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
+
+    const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
+    {
+        if(event.category !== RoomObjectCategory.UNIT) return;
+
+        const roomSession = GetRoomSession();
+
+        if(!roomSession) return;
+
+        const userData = roomSession.userDataManager.getUserDataByIndex(event.objectId);
+
+        if(!userData) return;
+
+        setSelectedUser({ userId: userData.webID, username: userData.name });
+    }, []);
+    
+    useRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
 
     const handleClick = useCallback((action: string, value?: string) =>
     {
@@ -139,27 +193,95 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
                 });                
                 return;
             }
-            case 'close_chatlog': {
-                const itemIndex = openChatlogs.indexOf(Number(value));
+            case 'toggle_room_chatlog': {
+                if(!openRoomChatlogs)
+                {
+                    dispatchUiEvent(new ModToolsOpenRoomChatlogEvent(currentRoomId));
+                    return;
+                }
 
-                const clone = Array.from(openChatlogs);
+                const itemIndex = openRoomChatlogs.indexOf(currentRoomId);
+
+                if(itemIndex > -1)
+                {
+                    handleClick('close_room_chatlog', currentRoomId.toString());
+                }
+                else
+                {
+                    dispatchUiEvent(new ModToolsOpenRoomChatlogEvent(currentRoomId));
+                }
+                return;
+            }
+            case 'close_room_chatlog': {
+                const itemIndex = openRoomChatlogs.indexOf(Number(value));
+
+                const clone = Array.from(openRoomChatlogs);
                 clone.splice(itemIndex, 1);
 
                 dispatchModToolsState({
-                    type: ModToolsActions.SET_OPEN_CHATLOGS,
+                    type: ModToolsActions.SET_OPEN_ROOM_CHATLOGS,
                     payload: {
-                        openChatlogs: clone
+                        openRoomChatlogs: clone
+                    }
+                });                
+                return;
+            }
+            case 'toggle_user_info': {
+
+                if(!selectedUser) return;
+
+                const userId = selectedUser.userId;
+
+                if(!openUserInfo)
+                {
+                    dispatchUiEvent(new ModToolsOpenUserInfoEvent(userId));
+                    return;
+                }
+
+                const itemIndex = openUserInfo.indexOf(userId);
+
+                if(itemIndex > -1)
+                {
+                    handleClick('close_user_info', userId.toString());
+                }
+                else
+                {
+                    dispatchUiEvent(new ModToolsOpenUserInfoEvent(userId));
+                }
+                return;
+            }
+            case 'close_user_info': {
+                const itemIndex = openUserInfo.indexOf(Number(value));
+
+                const clone = Array.from(openUserInfo);
+                clone.splice(itemIndex, 1);
+
+                dispatchModToolsState({
+                    type: ModToolsActions.SET_OPEN_USERINFO,
+                    payload: {
+                        openUserInfo: clone
+                    }
+                });                
+                return;
+            }
+            case 'close_user_chatlog': {
+                const itemIndex = openUserChatlogs.indexOf(Number(value));
+
+                const clone = Array.from(openUserChatlogs);
+                clone.splice(itemIndex, 1);
+
+                dispatchModToolsState({
+                    type: ModToolsActions.SET_OPEN_USER_CHATLOGS,
+                    payload: {
+                        openUserChatlogs: clone
                     }
                 });                
                 return;
             }
         }
-    }, [ dispatchModToolsState, openRooms, openChatlogs, currentRoomId ]);
+    }, [openRooms, currentRoomId, openRoomChatlogs, selectedUser, openUserInfo, openUserChatlogs]);
 
-    useEffect(() =>
-    {
-        if(!isVisible) return;
-    }, [ isVisible ]);
+    if(!isVisible) return null;
 
     return (
         <ModToolsContextProvider value={ { modToolsState, dispatchModToolsState } }>
@@ -168,8 +290,8 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
                     <NitroCardHeaderView headerText={ 'Mod Tools' } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardContentView className="text-black">
                         <button className="btn btn-primary btn-sm w-100 mb-2" onClick={ () => handleClick('toggle_room') } disabled={ !currentRoomId }><i className="fas fa-home"></i> Room Tool</button>
-                        <button className="btn btn-primary btn-sm w-100 mb-2" onClick={ () => setChatlogVisible(value => !value) } disabled={ !currentRoomId }><i className="fas fa-comments"></i> Chatlog Tool</button>
-                        <button className="btn btn-primary btn-sm w-100 mb-2" onClick={ () => setIsUserVisible(value => !value) } disabled={ !selectedUser }><i className="fas fa-user"></i> User: { selectedUser ? selectedUser.name : '' }</button>
+                        <button className="btn btn-primary btn-sm w-100 mb-2" onClick={ () => handleClick('toggle_room_chatlog') } disabled={ !currentRoomId }><i className="fas fa-comments"></i> Chatlog Tool</button>
+                        <button className="btn btn-primary btn-sm w-100 mb-2" onClick={ () => handleClick('toggle_user_info') } disabled={ !selectedUser }><i className="fas fa-user"></i> User: { selectedUser ? selectedUser.username : '' }</button>
                         <button className="btn btn-primary btn-sm w-100" onClick={ () => setIsTicketsVisible(value => !value) }><i className="fas fa-exclamation-circle"></i> Report Tool</button>
                     </NitroCardContentView>
                 </NitroCardView> }
@@ -178,10 +300,23 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
                     return <ModToolsRoomView key={ roomId } roomId={ roomId } onCloseClick={ () => handleClick('close_room', roomId.toString()) } />;
                 }) 
             }
+            { openRoomChatlogs && openRoomChatlogs.map(roomId =>
+                {
+                    return <ModToolsChatlogView key={ roomId } roomId={ roomId } onCloseClick={ () => handleClick('close_room_chatlog', roomId.toString()) } />;
+                })
+            }
+            { openUserInfo && openUserInfo.map(userId =>
+                {
+                    return <ModToolsUserView key={userId} userId={userId} onCloseClick={ () => handleClick('close_user_info', userId.toString())}/>
+                })
+            }
+            { openUserChatlogs && openUserChatlogs.map(userId =>
+                {
+                    return <ModToolsUserChatlogView key={userId} userId={userId} onCloseClick={ () => handleClick('close_user_chatlog', userId.toString())}/>
+                })
+            }
             
-            { isUserVisible && <ModToolsUserView /> }
             { isTicketsVisible && <ModToolsTicketsView onCloseClick={ () => setIsTicketsVisible(false) } /> }
-            { isChatlogVisible && <ModToolsChatlogView roomId={currentRoomId} onCloseClick={ () => setChatlogVisible(false) }/>}
         </ModToolsContextProvider>
     );
 }

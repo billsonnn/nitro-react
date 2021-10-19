@@ -1,5 +1,8 @@
 import { ModtoolRequestRoomInfoComposer, ModtoolRoomInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { TryVisitRoom } from '../../../../api';
+import { ModToolsOpenRoomChatlogEvent } from '../../../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
+import { dispatchUiEvent } from '../../../../hooks';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { ModToolsRoomViewProps } from './ModToolsRoomView.types';
@@ -57,15 +60,15 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
             <NitroCardContentView className="text-black">
                 <div className="d-flex justify-content-between align-items-center mb-1">
                     <div>
-                        <b>Room Owner:</b> <a href="#" className="fw-bold">{ ownerName }</a>
+                        <b>Room Owner:</b> <span className="username fw-bold cursor-pointer">{ ownerName }</span>
                     </div>
-                    <button className="btn btn-sm btn-primary">Visit Room</button>
+                    <button className="btn btn-sm btn-primary" onClick={() => TryVisitRoom(roomId)}>Visit Room</button>
                 </div>
                 <div className="d-flex justify-content-between align-items-center mb-1">
                     <div>
                         <b>Users in room:</b> { usersInRoom }
                     </div>
-                    <button className="btn btn-sm btn-primary">Chatlog</button>
+                    <button className="btn btn-sm btn-primary" onClick={() => dispatchUiEvent(new ModToolsOpenRoomChatlogEvent(roomId))}>Chatlog</button>
                 </div>
                 <div className="d-flex justify-content-between align-items-center mb-2">
                     <div>

@@ -1,6 +1,5 @@
 import { ChatRecordData, ModtoolRequestRoomChatlogComposer, ModtoolRoomChatlogEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { TryVisitRoom } from '../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { ChatlogView } from '../chatlog/ChatlogView';
@@ -28,33 +27,12 @@ export const ModToolsChatlogView: FC<ModToolsChatlogViewProps> = props =>
 
     CreateMessageHook(ModtoolRoomChatlogEvent, onModtoolRoomChatlogEvent);
 
-    const handleClick = useCallback((action: string, value?: string) =>
-    {
-        if(!action) return;
-
-        switch(action)
-        {
-            case 'close':
-                onCloseClick();
-                return;
-            case 'visit_room':
-                TryVisitRoom(roomChatlog.roomId);
-                return;
-        }
-    }, [onCloseClick, roomChatlog]);
-
     return (
         <NitroCardView className="nitro-mod-tools-room-chatlog" simple={true}>
-            <NitroCardHeaderView headerText={'Room Chatlog' + (roomChatlog ? ': ' + roomChatlog.roomName : '')} onCloseClick={event => handleClick('close')} />
+            <NitroCardHeaderView headerText={'Room Chatlog' + (roomChatlog ? ': ' + roomChatlog.roomName : '')} onCloseClick={() => onCloseClick()} />
             <NitroCardContentView className="text-black h-100">
                 {roomChatlog &&
-                    <>
-                        <div className="w-100 d-flex justify-content-start">
-                            <button className="btn btn-sm btn-primary me-2" onClick={event => handleClick('visit_room')}>Visit Room</button>
-                            <button className="btn btn-sm btn-primary">Room Tools</button>
-                        </div>
-                        <ChatlogView record={roomChatlog} />
-                    </>
+                    <ChatlogView records={[roomChatlog]} />
                 }
             </NitroCardContentView>
         </NitroCardView>
