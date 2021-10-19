@@ -52,13 +52,11 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
             
             if( (props.index + 1) === (totalIndex - currentRecord.chatlog.length))
             {
-                console.log(`global: ${props.index} roomInfo ${currentRecord.roomName}`);
                 isRoomInfo = true;
                 break;
             }
             const index = props.index - (totalIndex - currentRecord.chatlog.length);
             chatlogEntry = currentRecord.chatlog[index];
-            console.log(`global: ${props.index}  local: ${index}  value: ${chatlogEntry}`);
             break;
         }
 
