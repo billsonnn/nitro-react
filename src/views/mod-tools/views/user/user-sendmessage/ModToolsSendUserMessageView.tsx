@@ -19,7 +19,7 @@ export const ModToolsSendUserMessageView: FC<ModToolsSendUserMessageViewProps> =
 
     return (
         <NitroCardView className="nitro-mod-tools-user-message" simple={true}>
-            <NitroCardHeaderView headerText={'Send Message'} onCloseClick={() => onCloseClick()} />
+            <NitroCardHeaderView headerText={'Send Message'} onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black">
                 {user && <>
                     <div>Message To: {user.username}</div>

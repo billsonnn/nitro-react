@@ -8,7 +8,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
 
     return (
         <NitroCardView className="nitro-mod-tools-user-action" simple={true}>
-            <NitroCardHeaderView headerText={'Mod Action'} onCloseClick={() => onCloseClick()} />
+            <NitroCardHeaderView headerText={'Mod Action'} onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black">
                 {user && <div></div>}
             </NitroCardContentView>

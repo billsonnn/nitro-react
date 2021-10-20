@@ -1,29 +1,26 @@
 import { FriendlyTime, ModeratorUserInfoData, ModtoolRequestUserInfoComposer, ModtoolUserInfoEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { LocalizeText } from '../../../../../api';
 import { ModToolsOpenUserChatlogEvent } from '../../../../../events/mod-tools/ModToolsOpenUserChatlogEvent';
 import { CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
-import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
-import { IUserInfo } from '../../../utils/IUserInfo';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutButton, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../layout';
 import { ModToolsUserModActionView } from '../user-mod-action/ModToolsUserModActionView';
 import { ModToolsUserRoomVisitsView } from '../user-room-visits/ModToolsUserRoomVisitsView';
 import { ModToolsSendUserMessageView } from '../user-sendmessage/ModToolsSendUserMessageView';
 import { ModToolsUserViewProps } from './ModToolsUserView.types';
 
-
 export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
 {
-    const { onCloseClick = null, userId = null, simple = true } = props;
-    const [userInfo, setUserInfo] = useState<ModeratorUserInfoData>(null);
-    const [sendMessageVisible, setSendMessageVisible] = useState(false);
-    const [modActionVisible, setModActionVisible] = useState(false);
-    const [roomVisitsVisible, setRoomVisitsVisible] = useState(false);
+    const { onCloseClick = null, userId = null } = props;
+    const [ userInfo, setUserInfo ] = useState<ModeratorUserInfoData>(null);
+    const [ sendMessageVisible, setSendMessageVisible ] = useState(false);
+    const [ modActionVisible, setModActionVisible ] = useState(false);
+    const [ roomVisitsVisible, setRoomVisitsVisible ] = useState(false);
 
     useEffect(() =>
     {
         SendMessageHook(new ModtoolRequestUserInfoComposer(userId));
-    }, [userId]);
-
+    }, [ userId ]);
 
     const onModtoolUserInfoEvent = useCallback((event: ModtoolUserInfoEvent) =>
     {
@@ -36,137 +33,121 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
 
     CreateMessageHook(ModtoolUserInfoEvent, onModtoolUserInfoEvent);
 
-    const OnlineIcon = useCallback(() => 
+    const userProperties = useMemo(() =>
     {
-        if(userInfo.online) return (<i className="icon icon-pf-online ml-1" />);
-        else return (<i className="icon icon-pf-offline ml-1" />);
-    }, [userInfo]);
+        if(!userInfo) return null;
 
-    const userProperties = useCallback(() =>
-    {
-        let properties: IUserInfo[] = [];
-
-        if(!userInfo) return properties;
-
-        properties = [
+        return [
             {
-                nameKey: 'name',
-                nameKeyFallback: 'Name',
-                value: userInfo.userName
+                localeKey: 'modtools.userinfo.userName',
+                value: userInfo.userName,
+                showOnline: true
             },
             {
-                nameKey: 'cfhs',
-                nameKeyFallback: 'CFHs',
+                localeKey: 'modtools.userinfo.cfhCount',
                 value: userInfo.cfhCount.toString()
             },
             {
-                nameKey: 'abusive_cfhs',
-                nameKeyFallback: 'Abusive CFHs',
+                localeKey: 'modtools.userinfo.abusiveCfhCount',
                 value: userInfo.abusiveCfhCount.toString()
             },
             {
-                nameKey: 'cautions',
-                nameKeyFallback: 'Cautions',
+                localeKey: 'modtools.userinfo.cautionCount',
                 value: userInfo.cautionCount.toString()
             },
             {
-                nameKey: 'bans',
-                nameKeyFallback: 'Bans',
+                localeKey: 'modtools.userinfo.banCount',
                 value: userInfo.banCount.toString()
             },
             {
-                nameKey: 'last_sanction',
-                nameKeyFallback: 'Last sanction',
+                localeKey: 'modtools.userinfo.lastSanctionTime',
                 value: userInfo.lastSanctionTime
             },
             {
-                nameKey: 'trade_locks',
-                nameKeyFallback: 'Trade locks',
+                localeKey: 'modtools.userinfo.tradingLockCount',
                 value: userInfo.tradingLockCount.toString()
             },
             {
-                nameKey: 'lock_expires',
-                nameKeyFallback: 'Lock expires',
+                localeKey: 'modtools.userinfo.tradingExpiryDate',
                 value: userInfo.tradingExpiryDate
             },
             {
-                nameKey: 'last_login',
-                nameKeyFallback: 'Last login',
+                localeKey: 'modtools.userinfo.minutesSinceLastLogin',
                 value: FriendlyTime.format(userInfo.minutesSinceLastLogin * 60, '.ago', 2)
             },
             {
-                nameKey: 'purchase',
-                nameKeyFallback: 'Purchases',
+                localeKey: 'modtools.userinfo.lastPurchaseDate',
                 value: userInfo.lastPurchaseDate
             },
             {
-                nameKey: 'email',
-                nameKeyFallback: 'Email',
+                localeKey: 'modtools.userinfo.primaryEmailAddress',
                 value: userInfo.primaryEmailAddress
             },
             {
-                nameKey: 'acc_bans',
-                nameKeyFallback: 'Banned Accs.',
+                localeKey: 'modtools.userinfo.identityRelatedBanCount',
                 value: userInfo.identityRelatedBanCount.toString()
             },
             {
-                nameKey: 'registered',
-                nameKeyFallback: 'Registered',
+                localeKey: 'modtools.userinfo.registrationAgeInMinutes',
                 value: FriendlyTime.format(userInfo.registrationAgeInMinutes * 60, '.ago', 2)
             },
             {
-                nameKey: 'rank',
-                nameKeyFallback: 'Rank',
+                localeKey: 'modtools.userinfo.userClassification',
                 value: userInfo.userClassification
             }
         ];
+    }, [ userInfo ]);
 
-        return properties;
-
-    }, [userInfo]);
+    if(!userInfo) return null;
 
     return (
         <>
-        <NitroCardView className="nitro-mod-tools-user" simple={true}>
-            <NitroCardHeaderView headerText={'User Info: ' + (userInfo ? userInfo.userName : '')} onCloseClick={() => onCloseClick()} />
-            <NitroCardContentView className="text-black">
-                {userInfo &&
-                    <div className="row">
-                        {!simple &&
-                            <div className="col-sm-3 px-0 d-flex align-items-center">
-                                <AvatarImageView figure={userInfo.figure} direction={2} />
-                            </div>
-                        }
-                        <div className="col-7">
-                            <table className="d-flex flex-column table table-striped table-sm table-text-small text-black">
+            <NitroCardView className="nitro-mod-tools-user" simple={true}>
+                <NitroCardHeaderView headerText={ LocalizeText('modtools.userinfo.title', [ 'username' ], [ userInfo.userName ]) } onCloseClick={ onCloseClick } />
+                <NitroCardContentView className="text-black">
+                    <NitroLayoutGrid>
+                        <NitroLayoutGridColumn size={ 8 }>
+                            <table className="table table-striped table-sm table-text-small text-black m-0">
                                 <tbody>
-                                    {userProperties().map(property =>
-                                    {
-                                        return (
-                                            <tr key={property.nameKey}>
-                                                <th scope="row">{property.nameKeyFallback}</th>
-                                                <td className={'' + (property.nameKey === 'name' ? 'username' : '')}>
-                                                    {property.value} {(property.nameKey === 'name') && <OnlineIcon/>}
-                                                </td>
-                                            </tr>
-                                        )
-                                    })}
+                                    { userProperties.map(property =>
+                                        {
+
+                                            return (
+                                                <tr>
+                                                    <th scope="row">{ LocalizeText(property.localeKey) }</th>
+                                                    <td>
+                                                        { property.value }
+                                                        { property.showOnline && <i className={ `icon icon-pf-${ userInfo.online ? 'online' : 'offline' } ms-2` } /> }
+                                                        </td>
+                                                </tr>
+                                            );
+                                        }) }
                                 </tbody>
                             </table>
-                        </div>
-                        <div className="col-5">
-                            <button className="btn btn-sm btn-primary" onClick={() => dispatchUiEvent(new ModToolsOpenUserChatlogEvent(userId))}>Room Chat</button>
-                            <button className="btn btn-sm btn-primary mt-2" onClick={ () => setSendMessageVisible(!sendMessageVisible)}>Send Message</button>
-                            <button className="btn btn-sm btn-primary mt-2" onClick={ () => setRoomVisitsVisible(!roomVisitsVisible)}>Room Visits</button>
-                            <button className="btn btn-sm btn-primary mt-2" onClick={ () => setModActionVisible(!modActionVisible)}>Mod Action</button>
-                        </div>
-                    </div>
-                }
-            </NitroCardContentView>
-        </NitroCardView>
-        {(sendMessageVisible && userInfo) && <ModToolsSendUserMessageView user={{ userId: userId, username: userInfo.userName }} onCloseClick={ () => setSendMessageVisible(false)}/>}
-        {(userInfo && modActionVisible) && <ModToolsUserModActionView user={{ userId: userId, username: userInfo.userName }} onCloseClick={() => setModActionVisible(false)}/>}
-        {(userInfo && roomVisitsVisible) && <ModToolsUserRoomVisitsView userId={userId} onCloseClick={ () => setRoomVisitsVisible(false)}/>}
+                        </NitroLayoutGridColumn>
+                        <NitroLayoutGridColumn size={ 4 }>
+                            <NitroLayoutButton variant="primary" size="sm" onClick={ event => dispatchUiEvent(new ModToolsOpenUserChatlogEvent(userId)) }>
+                                Room Chat
+                            </NitroLayoutButton>
+                            <NitroLayoutButton variant="primary" size="sm" onClick={ event => setSendMessageVisible(!sendMessageVisible) }>
+                                Send Message
+                            </NitroLayoutButton>
+                            <NitroLayoutButton variant="primary" size="sm" onClick={ event => setRoomVisitsVisible(!roomVisitsVisible) }>
+                                Room Visits
+                            </NitroLayoutButton>
+                            <NitroLayoutButton variant="primary" size="sm" onClick={ event => setModActionVisible(!modActionVisible) }>
+                                Mod Action
+                            </NitroLayoutButton>
+                        </NitroLayoutGridColumn>
+                    </NitroLayoutGrid>
+                </NitroCardContentView>
+            </NitroCardView>
+            { sendMessageVisible &&
+                <ModToolsSendUserMessageView user={ { userId: userId, username: userInfo.userName } } onCloseClick={ event => setSendMessageVisible(false) } /> }
+            { modActionVisible &&
+                <ModToolsUserModActionView user={ { userId: userId, username: userInfo.userName } } onCloseClick={ event => setModActionVisible(false) } /> }
+            { roomVisitsVisible &&
+                <ModToolsUserRoomVisitsView userId={ userId } onCloseClick={ event => setRoomVisitsVisible(false) } /> }
         </>
     );
 }
