@@ -5,6 +5,9 @@ import { CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../..
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { IUserInfo } from '../../../utils/IUserInfo';
+import { ModToolsUserModActionView } from '../user-mod-action/ModToolsUserModActionView';
+import { ModToolsUserRoomVisitsView } from '../user-room-visits/ModToolsUserRoomVisitsView';
+import { ModToolsSendUserMessageView } from '../user-sendmessage/ModToolsSendUserMessageView';
 import { ModToolsUserViewProps } from './ModToolsUserView.types';
 
 
@@ -12,6 +15,9 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
 {
     const { onCloseClick = null, userId = null, simple = true } = props;
     const [userInfo, setUserInfo] = useState<ModeratorUserInfoData>(null);
+    const [sendMessageVisible, setSendMessageVisible] = useState(false);
+    const [modActionVisible, setModActionVisible] = useState(false);
+    const [roomVisitsVisible, setRoomVisitsVisible] = useState(false);
 
     useEffect(() =>
     {
@@ -120,6 +126,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
     }, [userInfo]);
 
     return (
+        <>
         <NitroCardView className="nitro-mod-tools-user" simple={true}>
             <NitroCardHeaderView headerText={'User Info: ' + (userInfo ? userInfo.userName : '')} onCloseClick={() => onCloseClick()} />
             <NitroCardContentView className="text-black">
@@ -149,13 +156,17 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
                         </div>
                         <div className="col-5">
                             <button className="btn btn-sm btn-primary" onClick={() => dispatchUiEvent(new ModToolsOpenUserChatlogEvent(userId))}>Room Chat</button>
-                            <button className="btn btn-sm btn-primary mt-2">Send Message</button>
-                            <button className="btn btn-sm btn-primary mt-2">Room Visits</button>
-                            <button className="btn btn-sm btn-primary mt-2">Mod Action</button>
+                            <button className="btn btn-sm btn-primary mt-2" onClick={ () => setSendMessageVisible(!sendMessageVisible)}>Send Message</button>
+                            <button className="btn btn-sm btn-primary mt-2" onClick={ () => setRoomVisitsVisible(!roomVisitsVisible)}>Room Visits</button>
+                            <button className="btn btn-sm btn-primary mt-2" onClick={ () => setModActionVisible(!modActionVisible)}>Mod Action</button>
                         </div>
                     </div>
                 }
             </NitroCardContentView>
         </NitroCardView>
+        {(sendMessageVisible && userInfo) && <ModToolsSendUserMessageView user={{ userId: userId, username: userInfo.userName }} onCloseClick={ () => setSendMessageVisible(false)}/>}
+        {(userInfo && modActionVisible) && <ModToolsUserModActionView user={{ userId: userId, username: userInfo.userName }} onCloseClick={() => setModActionVisible(false)}/>}
+        {(userInfo && roomVisitsVisible) && <ModToolsUserRoomVisitsView userId={userId} onCloseClick={ () => setRoomVisitsVisible(false)}/>}
+        </>
     );
 }

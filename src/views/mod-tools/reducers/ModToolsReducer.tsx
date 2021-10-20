@@ -1,7 +1,9 @@
+import { ModeratorInitData } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 
 export interface IModToolsState
 {
+    settings: ModeratorInitData;
     currentRoomId: number;
     openRooms: number[];
     openRoomChatlogs: number[];
@@ -13,6 +15,7 @@ export interface IModToolsAction
 {
     type: string;
     payload: {
+        settings?: ModeratorInitData;
         currentRoomId?: number;
         openRooms?: number[];
         openRoomChatlogs?: number[];
@@ -23,6 +26,7 @@ export interface IModToolsAction
 
 export class ModToolsActions
 {
+    public static SET_INIT_DATA: string = 'MTA_SET_INIT_DATA';
     public static SET_CURRENT_ROOM_ID: string = 'MTA_SET_CURRENT_ROOM_ID';
     public static SET_OPEN_ROOMS: string = 'MTA_SET_OPEN_ROOMS';
     public static SET_OPEN_USERINFO: string = 'MTA_SET_OPEN_USERINFO';
@@ -32,6 +36,7 @@ export class ModToolsActions
 }
 
 export const initialModTools: IModToolsState = {
+    settings: null,
     currentRoomId: null,
     openRooms: null,
     openRoomChatlogs: null,
@@ -43,6 +48,11 @@ export const ModToolsReducer: Reducer<IModToolsState, IModToolsAction> = (state,
 {
     switch(action.type)
     {
+        case ModToolsActions.SET_INIT_DATA: {
+            const data = (action.payload.settings || state.settings || null);
+
+            return { ...state, data };
+        }
         case ModToolsActions.SET_CURRENT_ROOM_ID: {
             const currentRoomId = (action.payload.currentRoomId || state.currentRoomId || null);
 

@@ -1,4 +1,4 @@
-import { RoomEngineEvent, RoomEngineObjectEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { ModeratorInitMessageEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useReducer, useState } from 'react';
 import { GetRoomSession } from '../../api';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
@@ -6,6 +6,7 @@ import { ModToolsOpenRoomChatlogEvent } from '../../events/mod-tools/ModToolsOpe
 import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRoomInfoEvent';
 import { ModToolsOpenUserChatlogEvent } from '../../events/mod-tools/ModToolsOpenUserChatlogEvent';
 import { ModToolsOpenUserInfoEvent } from '../../events/mod-tools/ModToolsOpenUserInfoEvent';
+import { CreateMessageHook } from '../../hooks';
 import { useRoomEngineEvent } from '../../hooks/events';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
@@ -153,6 +154,22 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
     }, []);
     
     useRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
+
+    const onModeratorInitMessageEvent = useCallback((event: ModeratorInitMessageEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        dispatchModToolsState({
+            type: ModToolsActions.SET_INIT_DATA,
+            payload: {
+                settings: parser.data
+            }
+        });   
+    }, []);
+
+    CreateMessageHook(ModeratorInitMessageEvent, onModeratorInitMessageEvent);
 
     const handleClick = useCallback((action: string, value?: string) =>
     {
