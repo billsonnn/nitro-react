@@ -13,11 +13,11 @@ import { ModToolsContextProvider } from './context/ModToolsContext';
 import { ModToolsViewProps } from './ModToolsView.types';
 import { initialModTools, ModToolsActions, ModToolsReducer } from './reducers/ModToolsReducer';
 import { ISelectedUser } from './utils/ISelectedUser';
-import { ModToolsChatlogView } from './views/room-chatlog/ModToolsChatlogView';
-import { ModToolsRoomView } from './views/room/ModToolsRoomView';
+import { ModToolsChatlogView } from './views/room/room-chatlog/ModToolsChatlogView';
+import { ModToolsRoomView } from './views/room/room-tools/ModToolsRoomView';
 import { ModToolsTicketsView } from './views/tickets/ModToolsTicketsView';
-import { ModToolsUserChatlogView } from './views/user-chatlog/ModToolsUserChatlogView';
-import { ModToolsUserView } from './views/user/ModToolsUserView';
+import { ModToolsUserChatlogView } from './views/user/user-chatlog/ModToolsUserChatlogView';
+import { ModToolsUserView } from './views/user/user-info/ModToolsUserView';
 
 export const ModToolsView: FC<ModToolsViewProps> = props =>
 {
