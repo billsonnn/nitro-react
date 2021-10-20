@@ -184,9 +184,7 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
                     return;
                 }
 
-                const itemIndex = openRooms.indexOf(currentRoomId);
-
-                if(itemIndex > -1)
+                if(openRooms.indexOf(currentRoomId) > -1)
                 {
                     handleClick('close_room', currentRoomId.toString());
                 }
@@ -217,9 +215,7 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
                     return;
                 }
 
-                const itemIndex = openRoomChatlogs.indexOf(currentRoomId);
-
-                if(itemIndex > -1)
+                if(openRoomChatlogs.indexOf(currentRoomId) > -1)
                 {
                     handleClick('close_room_chatlog', currentRoomId.toString());
                 }
@@ -255,9 +251,7 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
                     return;
                 }
 
-                const itemIndex = openUserInfo.indexOf(userId);
-
-                if(itemIndex > -1)
+                if(openUserInfo.indexOf(userId) > -1)
                 {
                     handleClick('close_user_info', userId.toString());
                 }
