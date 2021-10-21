@@ -1,4 +1,4 @@
-import { IssueInfoMessageEvent, ModeratorInitMessageEvent, RoomEngineEvent } from '@nitrots/nitro-renderer';
+import { CfhSanctionMessageEvent, CfhTopicsInitEvent, IssueDeletedMessageEvent, IssueInfoMessageEvent, IssuePickFailedMessageEvent, ModeratorActionResultMessageEvent, ModeratorInitMessageEvent, ModeratorToolPreferencesEvent, RoomEngineEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { ModToolsOpenRoomChatlogEvent } from '../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
@@ -62,11 +62,93 @@ export const ModToolsMessageHandler: FC<{}> = props =>
             payload: {
                 tickets: newTickets
             }
-        })
+        });
+
+        //todo: play ticket sound
+        //GetNitroInstance().events.dispatchEvent(new NitroSoundEvent(NitroSoundEvent.PLAY_SOUND, sound)
     }, [dispatchModToolsState, tickets]);
+
+    const onModeratorToolPreferencesEvent = useCallback((event: ModeratorToolPreferencesEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        console.log(parser);
+    }, []);
+
+    const onIssuePickFailedMessageEvent = useCallback((event: IssuePickFailedMessageEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        // todo: let user know it failed
+    }, []);
+
+    const onIssueDeletedMessageEvent = useCallback((event: IssueDeletedMessageEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        const newTickets = tickets ? Array.from(tickets) : [];
+        const existingIndex = newTickets.findIndex( entry => entry.issueId === parser.issueId);
+
+        if(existingIndex === -1) return;
+
+        newTickets.splice(existingIndex, 1);
+
+        dispatchModToolsState({
+            type: ModToolsActions.SET_TICKETS,
+            payload: {
+                tickets: newTickets
+            }
+        });
+    }, [dispatchModToolsState, tickets]);
+
+    const onModeratorActionResultMessageEvent = useCallback((event: ModeratorActionResultMessageEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        if(parser.success)
+        {
+            // do something
+        }
+        else 
+        {
+            // let user know it was a failure
+        }
+    }, []);
+
+    const onCfhTopicsInitEvent = useCallback((event: CfhTopicsInitEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+        
+        console.log(parser);
+    }, []);
+
+    const onCfhSanctionMessageEvent = useCallback((event: CfhSanctionMessageEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+        
+        console.log(parser);
+    }, []);
 
     CreateMessageHook(ModeratorInitMessageEvent, onModeratorInitMessageEvent);
     CreateMessageHook(IssueInfoMessageEvent, onIssueInfoMessageEvent);
+    CreateMessageHook(ModeratorToolPreferencesEvent, onModeratorToolPreferencesEvent);
+    CreateMessageHook(IssuePickFailedMessageEvent, onIssuePickFailedMessageEvent);
+    CreateMessageHook(IssueDeletedMessageEvent, onIssueDeletedMessageEvent);
+    CreateMessageHook(ModeratorActionResultMessageEvent, onModeratorActionResultMessageEvent);
+    CreateMessageHook(CfhTopicsInitEvent, onCfhTopicsInitEvent);
+    CreateMessageHook(CfhSanctionMessageEvent, onCfhSanctionMessageEvent);
 
     const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
     {
