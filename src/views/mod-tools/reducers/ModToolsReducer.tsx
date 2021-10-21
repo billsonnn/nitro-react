@@ -49,9 +49,9 @@ export const ModToolsReducer: Reducer<IModToolsState, IModToolsAction> = (state,
     switch(action.type)
     {
         case ModToolsActions.SET_INIT_DATA: {
-            const data = (action.payload.settings || state.settings || null);
+            const settings = (action.payload.settings || state.settings || null);
 
-            return { ...state, data };
+            return { ...state, settings };
         }
         case ModToolsActions.SET_CURRENT_ROOM_ID: {
             const currentRoomId = (action.payload.currentRoomId || state.currentRoomId || null);
