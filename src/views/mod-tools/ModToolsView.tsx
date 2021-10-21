@@ -161,12 +161,15 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
 
         if(!parser) return;
 
+        const data = parser.data;
+
         dispatchModToolsState({
             type: ModToolsActions.SET_INIT_DATA,
             payload: {
-                settings: parser.data
+                settings: data
             }
-        });   
+        });
+        console.log(parser);   
     }, []);
 
     CreateMessageHook(ModeratorInitMessageEvent, onModeratorInitMessageEvent);
