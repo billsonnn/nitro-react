@@ -1,10 +1,9 @@
-import { RoomEngineEvent, RoomEngineObjectEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { RoomEngineObjectEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useReducer, useState } from 'react';
 import { GetRoomSession } from '../../api';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { ModToolsOpenRoomChatlogEvent } from '../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
 import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRoomInfoEvent';
-import { ModToolsOpenUserChatlogEvent } from '../../events/mod-tools/ModToolsOpenUserChatlogEvent';
 import { ModToolsOpenUserInfoEvent } from '../../events/mod-tools/ModToolsOpenUserInfoEvent';
 import { useRoomEngineEvent } from '../../hooks/events';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
@@ -24,7 +23,7 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ modToolsState, dispatchModToolsState ] = useReducer(ModToolsReducer, initialModTools);
-    const { currentRoomId = null, openRooms = null, openRoomChatlogs = null, openUserChatlogs = null, openUserInfo = null, tickets = null } = modToolsState;
+    const { currentRoomId = null, openRooms = null, openRoomChatlogs = null, openUserChatlogs = null, openUserInfo = null } = modToolsState;
     const [ selectedUser, setSelectedUser] = useState<ISelectedUser>(null);
     const [ isTicketsVisible, setIsTicketsVisible ] = useState(false);
 
@@ -41,103 +40,13 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
             case ModToolsEvent.TOGGLE_MOD_TOOLS:
                 setIsVisible(value => !value);
                 return;
-            case ModToolsEvent.OPEN_ROOM_INFO: {
-                const castedEvent = (event as ModToolsOpenRoomInfoEvent);
-                
-                if(openRooms && openRooms.includes(castedEvent.roomId)) return;
-                
-                const rooms = openRooms || [];
-                
-                dispatchModToolsState({
-                    type: ModToolsActions.SET_OPEN_ROOMS,
-                    payload: {
-                        openRooms: [...rooms, castedEvent.roomId]
-                    }
-                });
-                return;
-            }
-            case ModToolsEvent.OPEN_ROOM_CHATLOG: {
-                const castedEvent = (event as ModToolsOpenRoomChatlogEvent); 
-
-                if(openRoomChatlogs && openRoomChatlogs.includes(castedEvent.roomId)) return;
-
-                const chatlogs = openRoomChatlogs || [];
-
-                dispatchModToolsState({
-                    type: ModToolsActions.SET_OPEN_ROOM_CHATLOGS,
-                    payload: {
-                        openRoomChatlogs: [...chatlogs, castedEvent.roomId]
-                    }
-                });
-                return;
-            }
-            case ModToolsEvent.OPEN_USER_INFO: {
-                const castedEvent = (event as ModToolsOpenUserInfoEvent);
-
-                if(openUserInfo && openUserInfo.includes(castedEvent.userId)) return;
-
-                const userInfo = openUserInfo || [];
-
-                dispatchModToolsState({
-                    type: ModToolsActions.SET_OPEN_USERINFO,
-                    payload: {
-                        openUserInfo: [...userInfo, castedEvent.userId]
-                    }
-                });
-                return;
-            }
-            case ModToolsEvent.OPEN_USER_CHATLOG: {
-                const castedEvent = (event as ModToolsOpenUserChatlogEvent);
-
-                if(openUserChatlogs && openUserChatlogs.includes(castedEvent.userId)) return;
-
-                const userChatlog = openUserChatlogs || [];
-
-                dispatchModToolsState({
-                    type: ModToolsActions.SET_OPEN_USER_CHATLOGS,
-                    payload: {
-                        openUserChatlogs: [...userChatlog, castedEvent.userId]
-                    }
-                });
-                return;
-            }
         }
-    }, [openRooms, openRoomChatlogs, openUserInfo, openUserChatlogs]);
+    }, []);
 
     useUiEvent(ModToolsEvent.SHOW_MOD_TOOLS, onModToolsEvent);
     useUiEvent(ModToolsEvent.HIDE_MOD_TOOLS, onModToolsEvent);
     useUiEvent(ModToolsEvent.TOGGLE_MOD_TOOLS, onModToolsEvent);
-    useUiEvent(ModToolsEvent.OPEN_ROOM_INFO, onModToolsEvent);
-    useUiEvent(ModToolsEvent.OPEN_ROOM_CHATLOG, onModToolsEvent);
-    useUiEvent(ModToolsEvent.OPEN_USER_INFO, onModToolsEvent);
-    useUiEvent(ModToolsEvent.OPEN_USER_CHATLOG, onModToolsEvent);
-
-    const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
-    {
-        switch(event.type)
-        {
-            case RoomEngineEvent.INITIALIZED:
-                dispatchModToolsState({
-                    type: ModToolsActions.SET_CURRENT_ROOM_ID,
-                    payload: {
-                        currentRoomId: event.roomId
-                    }
-                });
-                return;
-            case RoomEngineEvent.DISPOSED:
-                dispatchModToolsState({
-                    type: ModToolsActions.SET_CURRENT_ROOM_ID,
-                    payload: {
-                        currentRoomId: null
-                    }
-                });
-                return;
-        }
-    }, [ dispatchModToolsState ]);
-
-    useRoomEngineEvent(RoomEngineEvent.INITIALIZED, onRoomEngineEvent);
-    useRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
-
+    
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
         if(event.category !== RoomObjectCategory.UNIT) return;
@@ -275,8 +184,6 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
             }
         }
     }, [openRooms, currentRoomId, openRoomChatlogs, selectedUser, openUserInfo, openUserChatlogs]);
-
-    if(!isVisible) return null;
 
     return (
         <ModToolsContextProvider value={ { modToolsState, dispatchModToolsState } }>
