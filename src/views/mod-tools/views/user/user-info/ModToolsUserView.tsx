@@ -103,7 +103,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
     return (
         <>
             <NitroCardView className="nitro-mod-tools-user" simple={true}>
-                <NitroCardHeaderView headerText={ LocalizeText('modtools.userinfo.title', [ 'username' ], [ userInfo.userName ]) } onCloseClick={ onCloseClick } />
+                <NitroCardHeaderView headerText={ LocalizeText('modtools.userinfo.title', [ 'username' ], [ userInfo.userName ]) } onCloseClick={ () => onCloseClick() } />
                 <NitroCardContentView className="text-black">
                     <NitroLayoutGrid>
                         <NitroLayoutGridColumn size={ 8 }>
@@ -143,11 +143,11 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
                 </NitroCardContentView>
             </NitroCardView>
             { sendMessageVisible &&
-                <ModToolsSendUserMessageView user={ { userId: userId, username: userInfo.userName } } onCloseClick={ event => setSendMessageVisible(false) } /> }
+                <ModToolsSendUserMessageView user={ { userId: userId, username: userInfo.userName } } onCloseClick={ () => setSendMessageVisible(false) } /> }
             { modActionVisible &&
-                <ModToolsUserModActionView user={ { userId: userId, username: userInfo.userName } } onCloseClick={ event => setModActionVisible(false) } /> }
+                <ModToolsUserModActionView user={ { userId: userId, username: userInfo.userName } } onCloseClick={ () => setModActionVisible(false) } /> }
             { roomVisitsVisible &&
-                <ModToolsUserRoomVisitsView userId={ userId } onCloseClick={ event => setRoomVisitsVisible(false) } /> }
+                <ModToolsUserRoomVisitsView userId={ userId } onCloseClick={ () => setRoomVisitsVisible(false) } /> }
         </>
     );
 }

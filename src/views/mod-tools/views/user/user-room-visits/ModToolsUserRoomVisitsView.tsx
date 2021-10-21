@@ -42,7 +42,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
 
     return (
         <NitroCardView className="nitro-mod-tools-user-visits" simple={true}>
-            <NitroCardHeaderView headerText={'User Visits'} onCloseClick={ onCloseClick } />
+            <NitroCardHeaderView headerText={'User Visits'} onCloseClick={ () => onCloseClick() } />
             <NitroCardContentView className="text-black">
                 {roomVisitData &&
                     <div className="row h-100 w-100 user-visits">

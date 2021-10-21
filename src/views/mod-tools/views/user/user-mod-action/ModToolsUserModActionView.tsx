@@ -49,13 +49,20 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
         return values;
     }, [cfhCategories]);
 
+    const sendDefaultSanction = useCallback(() =>
+    {
+        SendMessageHook(new DefaultSanctionMessageComposer(user.userId, selectedTopic, message));
+        onCloseClick();
+    }, [message, onCloseClick, selectedTopic, user.userId]);
+
     const sendSanction = useCallback(() =>
     {
-        if(selectedTopic === -1)
+        if( (selectedTopic === -1) || (selectedAction === -1) )
         {
-            dispatchUiEvent(new NotificationAlertEvent(['You must select a CFH topic'], null, null, null, 'Error', null));
+            dispatchUiEvent(new NotificationAlertEvent(['You must select a CFH topic and Sanction'], null, null, null, 'Error', null));
             return;
         }
+
         if(!settings || !settings.cfhPermission) 
         {
             dispatchUiEvent(new NotificationAlertEvent(['You do not have permission to do this'], null, null, null, 'Error', null));
@@ -71,14 +78,13 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
             return;
         }
 
-        const messageOrDefault = message.trim().length === 0 ? LocalizeText('help.cfh.topic.' + category.id) : message;
-
-        if(!sanction) // send default sanction
+        if(!sanction)
         {
-            SendMessageHook(new DefaultSanctionMessageComposer(user.userId, category.id, messageOrDefault));
-            onCloseClick(null);
+            dispatchUiEvent(new NotificationAlertEvent(['You must select a sanction'], null, null, null, 'Error', null));
             return;
         }
+
+        const messageOrDefault = message.trim().length === 0 ? LocalizeText('help.cfh.topic.' + category.id) : message;
 
         switch(sanction.actionType)
         {
@@ -147,12 +153,12 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                 break;
         }
 
-        onCloseClick(null);
+        onCloseClick();
     }, [message, onCloseClick, selectedAction, selectedTopic, settings, topics, user.userId]);
 
     return (
         <NitroCardView className="nitro-mod-tools-user-action" simple={true}>
-            <NitroCardHeaderView headerText={'Mod Action: ' + (user ? user.username : '')} onCloseClick={ onCloseClick } />
+            <NitroCardHeaderView headerText={'Mod Action: ' + (user ? user.username : '')} onCloseClick={ () => onCloseClick() } />
             <NitroCardContentView className="text-black">
                 { user && 
                     <>
@@ -182,7 +188,10 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                         </div>
 
                         <div className="form-group mb-2">
-                            <button type="button" className="btn btn-primary" onClick={ () => sendSanction()}>Sanction</button>
+                            <div className="d-flex justify-content-between">
+                                <button type="button" className="btn btn-danger w-100 me-2" onClick={ () => sendSanction()}>Sanction</button>
+                                <button className="btn btn-success w-100" onClick={ () => sendDefaultSanction()}>Default Sanction</button>
+                            </div>
                         </div>
                     </>
                 }

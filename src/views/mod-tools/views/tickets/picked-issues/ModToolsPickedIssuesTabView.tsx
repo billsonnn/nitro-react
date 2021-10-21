@@ -1,14 +1,14 @@
 import { FC } from 'react';
 import { AutoSizer, List, ListRowProps, ListRowRenderer } from 'react-virtualized';
-import { ModToolsOpenIssuesTabViewProps } from './ModToolsOpenIssuesTabView.types';
+import { ModToolsPickedIssuesTabViewProps } from './ModToolsPickedIssuesTabView.types';
 
-export const ModToolsOpenIssuesTabView: FC<ModToolsOpenIssuesTabViewProps> = props =>
+export const ModToolsPickedIssuesTabView: FC<ModToolsPickedIssuesTabViewProps> = props =>
 {
-    const { openIssues = null } = props;
+    const { pickedIssues = null } = props;
 
     const RowRenderer: ListRowRenderer = (props: ListRowProps) =>
     {
-        const item = openIssues[props.index];
+        const item = pickedIssues[props.index];
 
         return (
             <div key={props.key} style={props.style} className="row issue-entry justify-content-start">
@@ -16,7 +16,7 @@ export const ModToolsOpenIssuesTabView: FC<ModToolsOpenIssuesTabViewProps> = pro
                     <div className="col justify-content-start username"><span className="fw-bold cursor-pointer">{item.reportedUserName}</span></div>
                     <div className="col-sm-2 justify-content-start"><span className="text-break text-wrap h-100">{item.getOpenTime(new Date().getTime())}</span></div>
                     <div className="col-sm-2">
-                        <button className="btn btn-sm btn-primary">Pick Issue</button>
+                        {item.pickerUserName}
                     </div>
             </div>
         );
@@ -28,7 +28,7 @@ export const ModToolsOpenIssuesTabView: FC<ModToolsOpenIssuesTabViewProps> = pro
             <div className="col-auto text-center fw-bold">Type</div>
             <div className="col fw-bold">Room/Player</div>
             <div className="col-sm-2 fw-bold">Opened</div>
-            <div className="col-sm-2"></div>
+            <div className="col-sm-2 fw-bold">Picker</div>
         </div>
         <div className="row w-100 h-100 issues">
             <AutoSizer defaultWidth={400} defaultHeight={200}>
@@ -38,7 +38,7 @@ export const ModToolsOpenIssuesTabView: FC<ModToolsOpenIssuesTabViewProps> = pro
                         <List
                             width={width}
                             height={height}
-                            rowCount={openIssues.length}
+                            rowCount={pickedIssues.length}
                             rowHeight={25}
                             className={'issues-container'}
                             rowRenderer={RowRenderer}

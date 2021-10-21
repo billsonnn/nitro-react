@@ -4,7 +4,9 @@ import { GetSessionDataManager } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
 import { useModToolsContext } from '../../context/ModToolsContext';
 import { ModToolsTicketsViewProps } from './ModToolsTicketsView.types';
+import { ModToolsMyIssuesTabView } from './my-issues/ModToolsMyIssuesTabView';
 import { ModToolsOpenIssuesTabView } from './open-issues/ModToolsOpenIssuesTabView';
+import { ModToolsPickedIssuesTabView } from './picked-issues/ModToolsPickedIssuesTabView';
 
 const TABS: string[] = [
     'Open Issues',
@@ -45,9 +47,11 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
         switch(currentTab)
         {
             case 0: return <ModToolsOpenIssuesTabView openIssues={openIssues}/>;
+            case 1: return <ModToolsMyIssuesTabView myIssues={myIssues} />;
+            case 2: return <ModToolsPickedIssuesTabView pickedIssues={pickedIssues}/>;
             default: return null;
         }
-    }, [currentTab, openIssues]);
+    }, [currentTab, myIssues, openIssues, pickedIssues]);
 
     return (
         <NitroCardView className="nitro-mod-tools-tickets" simple={ false }>

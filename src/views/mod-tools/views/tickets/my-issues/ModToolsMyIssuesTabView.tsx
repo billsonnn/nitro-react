@@ -1,14 +1,14 @@
 import { FC } from 'react';
 import { AutoSizer, List, ListRowProps, ListRowRenderer } from 'react-virtualized';
-import { ModToolsOpenIssuesTabViewProps } from './ModToolsOpenIssuesTabView.types';
+import { ModToolsMyIssuesTabViewProps } from './ModToolsMyIssuesTabView.types';
 
-export const ModToolsOpenIssuesTabView: FC<ModToolsOpenIssuesTabViewProps> = props =>
+export const ModToolsMyIssuesTabView: FC<ModToolsMyIssuesTabViewProps> = props =>
 {
-    const { openIssues = null } = props;
+    const { myIssues = null } = props;
 
     const RowRenderer: ListRowRenderer = (props: ListRowProps) =>
     {
-        const item = openIssues[props.index];
+        const item = myIssues[props.index];
 
         return (
             <div key={props.key} style={props.style} className="row issue-entry justify-content-start">
@@ -16,7 +16,7 @@ export const ModToolsOpenIssuesTabView: FC<ModToolsOpenIssuesTabViewProps> = pro
                     <div className="col justify-content-start username"><span className="fw-bold cursor-pointer">{item.reportedUserName}</span></div>
                     <div className="col-sm-2 justify-content-start"><span className="text-break text-wrap h-100">{item.getOpenTime(new Date().getTime())}</span></div>
                     <div className="col-sm-2">
-                        <button className="btn btn-sm btn-primary">Pick Issue</button>
+                        <button className="btn btn-sm btn-primary">View Issue</button>
                     </div>
             </div>
         );
@@ -38,7 +38,7 @@ export const ModToolsOpenIssuesTabView: FC<ModToolsOpenIssuesTabViewProps> = pro
                         <List
                             width={width}
                             height={height}
-                            rowCount={openIssues.length}
+                            rowCount={myIssues.length}
                             rowHeight={25}
                             className={'issues-container'}
                             rowRenderer={RowRenderer}

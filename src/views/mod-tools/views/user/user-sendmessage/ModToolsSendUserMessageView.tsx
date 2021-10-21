@@ -1,6 +1,7 @@
 import { ModMessageMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { SendMessageHook } from '../../../../../hooks';
+import { NotificationAlertEvent } from '../../../../../events';
+import { dispatchUiEvent, SendMessageHook } from '../../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
 import { ModToolsSendUserMessageViewProps } from './ModToolsSendUserMessage.types';
 
@@ -12,16 +13,20 @@ export const ModToolsSendUserMessageView: FC<ModToolsSendUserMessageViewProps> =
 
     const sendMessage = useCallback(() =>
     {
-        if(message.trim().length === 0) return;
+        if(message.trim().length === 0)
+        {
+            dispatchUiEvent(new NotificationAlertEvent(['Please write a message to user.'], null, null, null, 'Error', null));
+            return;
+        }
 
         SendMessageHook(new ModMessageMessageComposer(user.userId, message, -999));
 
-        onCloseClick(null);
+        onCloseClick();
     }, [message, onCloseClick, user.userId]);
 
     return (
         <NitroCardView className="nitro-mod-tools-user-message" simple={true}>
-            <NitroCardHeaderView headerText={'Send Message'} onCloseClick={ onCloseClick } />
+            <NitroCardHeaderView headerText={'Send Message'} onCloseClick={ () => onCloseClick() } />
             <NitroCardContentView className="text-black">
                 {user && <>
                     <div>Message To: {user.username}</div>
