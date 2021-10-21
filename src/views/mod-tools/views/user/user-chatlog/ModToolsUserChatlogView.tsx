@@ -1,4 +1,4 @@
-import { ChatRecordData, ModtoolRequestUserChatlogComposer, ModtoolUserChatlogEvent } from '@nitrots/nitro-renderer';
+import { ChatRecordData, GetUserChatlogMessageComposer, UserChatlogEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
@@ -13,20 +13,20 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
 
     useEffect(() =>
     {
-        SendMessageHook(new ModtoolRequestUserChatlogComposer(userId));
+        SendMessageHook(new GetUserChatlogMessageComposer(userId));
     }, [userId]);
     
-    const onModtoolUserChatlogEvent = useCallback((event: ModtoolUserChatlogEvent) =>
+    const onModtoolUserChatlogEvent = useCallback((event: UserChatlogEvent) =>
     {
         const parser = event.getParser();
 
-        if(!parser || parser.userId !== userId) return;
+        if(!parser || parser.data.userId !== userId) return;
 
-        setUsername(parser.username);
-        setUserChatlog(parser.roomVisits);
+        setUsername(parser.data.username);
+        setUserChatlog(parser.data.roomChatlogs);
     }, [setUsername, setUserChatlog, userId]);
 
-    CreateMessageHook(ModtoolUserChatlogEvent, onModtoolUserChatlogEvent);
+    CreateMessageHook(UserChatlogEvent, onModtoolUserChatlogEvent);
 
     return (
         <NitroCardView className="nitro-mod-tools-user-chatlog" simple={true}>

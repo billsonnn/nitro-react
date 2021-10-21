@@ -1,4 +1,4 @@
-import { ModtoolReceivedRoomsUserEvent, ModtoolRequestUserRoomsComposer, ModtoolRoomVisitedData } from '@nitrots/nitro-renderer';
+import { GetRoomVisitsMessageComposer, RoomVisitsData, RoomVisitsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AutoSizer, List, ListRowProps, ListRowRenderer } from 'react-virtualized';
 import { TryVisitRoom } from '../../../../../api';
@@ -10,14 +10,14 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
 {
     const { userId = null, onCloseClick = null } = props;
 
-    const [roomVisitData, setRoomVisitData] = useState<ModtoolRoomVisitedData>(null);
+    const [roomVisitData, setRoomVisitData] = useState<RoomVisitsData>(null);
 
     useEffect(() =>
     {
-        SendMessageHook(new ModtoolRequestUserRoomsComposer(userId));
+        SendMessageHook(new GetRoomVisitsMessageComposer(userId));
     }, [userId]);
 
-    const onModtoolReceivedRoomsUserEvent = useCallback((event: ModtoolReceivedRoomsUserEvent) =>
+    const onModtoolReceivedRoomsUserEvent = useCallback((event: RoomVisitsEvent) =>
     {
         const parser = event.getParser();
 
@@ -26,7 +26,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
         setRoomVisitData(parser.data);
     }, [userId]);
 
-    CreateMessageHook(ModtoolReceivedRoomsUserEvent, onModtoolReceivedRoomsUserEvent);
+    CreateMessageHook(RoomVisitsEvent, onModtoolReceivedRoomsUserEvent);
 
     const RowRenderer: ListRowRenderer = (props: ListRowProps) =>
     {

@@ -1,4 +1,4 @@
-import { ModerateRoomMessageComposer, ModeratorActionMessageComposer, ModtoolRequestRoomInfoComposer, ModtoolRoomInfoEvent } from '@nitrots/nitro-renderer';
+import { GetModeratorRoomInfoMessageComposer, ModerateRoomMessageComposer, ModeratorActionMessageComposer, ModeratorRoomInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { TryVisitRoom } from '../../../../../api';
 import { ModToolsOpenRoomChatlogEvent } from '../../../../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
@@ -30,25 +30,25 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
     {
         if(infoRequested) return;
         
-        SendMessageHook(new ModtoolRequestRoomInfoComposer(roomId));
+        SendMessageHook(new GetModeratorRoomInfoMessageComposer(roomId));
         setInfoRequested(true);
     }, [ roomId, infoRequested, setInfoRequested ]);
 
-    const onModtoolRoomInfoEvent = useCallback((event: ModtoolRoomInfoEvent) =>
+    const onModtoolRoomInfoEvent = useCallback((event: ModeratorRoomInfoEvent) =>
     {
         const parser = event.getParser();
 
-        if(!parser || parser.id !== roomId) return;
+        if(!parser || parser.data.flatId !== roomId) return;
 
-        setLoadedRoomId(parser.id);
-        setName(parser.name);
-        setOwnerId(parser.ownerId);
-        setOwnerName(parser.ownerName);
-        setOwnerInRoom(parser.ownerInRoom);
-        setUsersInRoom(parser.playerAmount);
+        setLoadedRoomId(parser.data.flatId);
+        setName(parser.data.room.name);
+        setOwnerId(parser.data.ownerId);
+        setOwnerName(parser.data.ownerName);
+        setOwnerInRoom(parser.data.ownerInRoom);
+        setUsersInRoom(parser.data.userCount);
     }, [ setLoadedRoomId, setName, setOwnerId, setOwnerName, setOwnerInRoom, setUsersInRoom, roomId ]);
 
-    CreateMessageHook(ModtoolRoomInfoEvent, onModtoolRoomInfoEvent);
+    CreateMessageHook(ModeratorRoomInfoEvent, onModtoolRoomInfoEvent);
 
     const handleClick = useCallback((action: string, value?: string) =>
     {

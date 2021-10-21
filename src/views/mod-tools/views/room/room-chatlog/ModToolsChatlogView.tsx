@@ -1,4 +1,4 @@
-import { ChatRecordData, ModtoolRequestRoomChatlogComposer, ModtoolRoomChatlogEvent } from '@nitrots/nitro-renderer';
+import { ChatRecordData, GetRoomChatlogMessageComposer, ModtoolRoomChatlogEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
@@ -13,7 +13,7 @@ export const ModToolsChatlogView: FC<ModToolsChatlogViewProps> = props =>
 
     useEffect(() =>
     {
-        SendMessageHook(new ModtoolRequestRoomChatlogComposer(roomId));
+        SendMessageHook(new GetRoomChatlogMessageComposer(roomId));
     }, [roomId]);
 
     const onModtoolRoomChatlogEvent = useCallback((event: ModtoolRoomChatlogEvent) =>

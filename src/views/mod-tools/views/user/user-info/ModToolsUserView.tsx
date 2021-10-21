@@ -1,4 +1,4 @@
-import { FriendlyTime, ModeratorUserInfoData, ModtoolRequestUserInfoComposer, ModtoolUserInfoEvent } from '@nitrots/nitro-renderer';
+import { FriendlyTime, GetModeratorUserInfoMessageComposer, ModeratorUserInfoData, ModtoolUserInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { ModToolsOpenUserChatlogEvent } from '../../../../../events/mod-tools/ModToolsOpenUserChatlogEvent';
@@ -19,7 +19,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
 
     useEffect(() =>
     {
-        SendMessageHook(new ModtoolRequestUserInfoComposer(userId));
+        SendMessageHook(new GetModeratorUserInfoMessageComposer(userId));
     }, [ userId ]);
 
     const onModtoolUserInfoEvent = useCallback((event: ModtoolUserInfoEvent) =>
@@ -109,11 +109,11 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
                         <NitroLayoutGridColumn size={ 8 }>
                             <table className="table table-striped table-sm table-text-small text-black m-0">
                                 <tbody>
-                                    { userProperties.map(property =>
+                                    { userProperties.map( (property, index) =>
                                         {
 
                                             return (
-                                                <tr>
+                                                <tr key={index}>
                                                     <th scope="row">{ LocalizeText(property.localeKey) }</th>
                                                     <td>
                                                         { property.value }
