@@ -1,4 +1,4 @@
-import { FriendlyTime, GetModeratorUserInfoMessageComposer, ModeratorUserInfoData, ModtoolUserInfoEvent } from '@nitrots/nitro-renderer';
+import { FriendlyTime, GetModeratorUserInfoMessageComposer, ModeratorUserInfoData, ModeratorUserInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { ModToolsOpenUserChatlogEvent } from '../../../../../events/mod-tools/ModToolsOpenUserChatlogEvent';
@@ -22,7 +22,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
         SendMessageHook(new GetModeratorUserInfoMessageComposer(userId));
     }, [ userId ]);
 
-    const onModtoolUserInfoEvent = useCallback((event: ModtoolUserInfoEvent) =>
+    const onModtoolUserInfoEvent = useCallback((event: ModeratorUserInfoEvent) =>
     {
         const parser = event.getParser();
 
@@ -31,7 +31,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
         setUserInfo(parser.data);
     }, [setUserInfo, userId]);
 
-    CreateMessageHook(ModtoolUserInfoEvent, onModtoolUserInfoEvent);
+    CreateMessageHook(ModeratorUserInfoEvent, onModtoolUserInfoEvent);
 
     const userProperties = useMemo(() =>
     {

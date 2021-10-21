@@ -1,4 +1,4 @@
-import { ChatRecordData, ModtoolRoomChatlogLine, UserProfileComposer } from '@nitrots/nitro-renderer';
+import { ChatlineData, ChatRecordData, UserProfileComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps, ListRowRenderer } from 'react-virtualized';
 import { TryVisitRoom } from '../../../../api';
@@ -33,7 +33,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
 
     const advancedRowRenderer: ListRowRenderer = (props: ListRowProps) =>
     {
-        let chatlogEntry: ModtoolRoomChatlogLine;
+        let chatlogEntry: ChatlineData;
         let currentRecord: ChatRecordData;
         let isRoomInfo = false;
 

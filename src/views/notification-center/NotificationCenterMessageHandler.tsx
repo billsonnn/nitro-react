@@ -60,7 +60,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
     {
         const parser = event.getParser();
 
-        NotificationUtilities.handleModeratorMessage(parser.message, parser.link);
+        NotificationUtilities.handleModeratorMessage(parser.message, parser.url);
     }, []);
 
     CreateMessageHook(ModeratorMessageEvent, onModeratorMessageEvent);
