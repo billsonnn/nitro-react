@@ -1,11 +1,12 @@
 import { CfhSanctionMessageEvent, CfhTopicsInitEvent, IssueDeletedMessageEvent, IssueInfoMessageEvent, IssuePickFailedMessageEvent, ModeratorActionResultMessageEvent, ModeratorInitMessageEvent, ModeratorToolPreferencesEvent, RoomEngineEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
+import { NotificationAlertEvent } from '../../events';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { ModToolsOpenRoomChatlogEvent } from '../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
 import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRoomInfoEvent';
 import { ModToolsOpenUserChatlogEvent } from '../../events/mod-tools/ModToolsOpenUserChatlogEvent';
 import { ModToolsOpenUserInfoEvent } from '../../events/mod-tools/ModToolsOpenUserInfoEvent';
-import { CreateMessageHook, useRoomEngineEvent, useUiEvent } from '../../hooks';
+import { CreateMessageHook, dispatchUiEvent, useRoomEngineEvent, useUiEvent } from '../../hooks';
 import { useModToolsContext } from './context/ModToolsContext';
 import { ModToolsActions } from './reducers/ModToolsReducer';
 
@@ -84,6 +85,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
         if(!parser) return;
 
         // todo: let user know it failed
+        dispatchUiEvent(new NotificationAlertEvent(['Failed to pick issue'], null, null, null, 'Error', null));
     }, []);
 
     const onIssueDeletedMessageEvent = useCallback((event: IssueDeletedMessageEvent) =>
@@ -115,11 +117,11 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         if(parser.success)
         {
-            // do something
+            dispatchUiEvent(new NotificationAlertEvent(['Moderation action was successfull'], null, null, null, 'Success', null));
         }
         else 
         {
-            // let user know it was a failure
+            dispatchUiEvent(new NotificationAlertEvent(['There was a problem applying that moderation action'], null, null, null, 'Error', null));
         }
     }, []);
 
@@ -128,9 +130,18 @@ export const ModToolsMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         if(!parser) return;
+
+        const categories = parser.callForHelpCategories;
+
+        dispatchModToolsState({
+            type: ModToolsActions.SET_CFH_CATEGORIES,
+            payload: {
+                cfhCategories: categories
+            }
+        });
         
         console.log(parser);
-    }, []);
+    }, [dispatchModToolsState]);
 
     const onCfhSanctionMessageEvent = useCallback((event: CfhSanctionMessageEvent) =>
     {

@@ -1,4 +1,4 @@
-import { IssueMessageData, ModeratorInitData } from '@nitrots/nitro-renderer';
+import { CallForHelpCategoryData, IssueMessageData, ModeratorInitData } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
 
 export interface IModToolsState
@@ -10,6 +10,7 @@ export interface IModToolsState
     openUserInfo: number[];
     openUserChatlogs: number[];
     tickets: IssueMessageData[]
+    cfhCategories: CallForHelpCategoryData[];
 }
 
 export interface IModToolsAction
@@ -23,6 +24,7 @@ export interface IModToolsAction
         openUserInfo?: number[];
         openUserChatlogs?: number[];
         tickets?: IssueMessageData[];
+        cfhCategories?: CallForHelpCategoryData[];
     }
 }
 
@@ -35,6 +37,7 @@ export class ModToolsActions
     public static SET_OPEN_ROOM_CHATLOGS: string = 'MTA_SET_OPEN_CHATLOGS';
     public static SET_OPEN_USER_CHATLOGS: string = 'MTA_SET_OPEN_USER_CHATLOGS';
     public static SET_TICKETS: string = 'MTA_SET_TICKETS';
+    public static SET_CFH_CATEGORIES: string = 'MTA_SET_CFH_CATEGORIES';
     public static RESET_STATE: string = 'MTA_RESET_STATE';
 }
 
@@ -45,7 +48,8 @@ export const initialModTools: IModToolsState = {
     openRoomChatlogs: null,
     openUserChatlogs: null,
     openUserInfo: null,
-    tickets: null
+    tickets: null,
+    cfhCategories: null
 };
 
 export const ModToolsReducer: Reducer<IModToolsState, IModToolsAction> = (state, action) =>
@@ -86,6 +90,11 @@ export const ModToolsReducer: Reducer<IModToolsState, IModToolsAction> = (state,
             const tickets = (action.payload.tickets || state.tickets || null);
 
             return { ...state, tickets };
+        }
+        case ModToolsActions.SET_CFH_CATEGORIES: {
+            const cfhCategories = (action.payload.cfhCategories || state.cfhCategories || null);
+
+            return { ...state, cfhCategories };
         }
         case ModToolsActions.RESET_STATE: {
             return { ...initialModTools };

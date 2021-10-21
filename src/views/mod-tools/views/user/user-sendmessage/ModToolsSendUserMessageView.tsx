@@ -15,7 +15,9 @@ export const ModToolsSendUserMessageView: FC<ModToolsSendUserMessageViewProps> =
         if(message.trim().length === 0) return;
 
         SendMessageHook(new ModMessageMessageComposer(user.userId, message, -999));
-    }, [message, user.userId]);
+
+        onCloseClick(null);
+    }, [message, onCloseClick, user.userId]);
 
     return (
         <NitroCardView className="nitro-mod-tools-user-message" simple={true}>
