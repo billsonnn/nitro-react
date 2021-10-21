@@ -1,5 +1,6 @@
 import { IssueMessageData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
+import { GetSessionDataManager } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
 import { useModToolsContext } from '../../context/ModToolsContext';
 import { ModToolsTicketsViewProps } from './ModToolsTicketsView.types';
@@ -15,15 +16,29 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
 {
     const { onCloseClick = null } = props;
     const { modToolsState = null } = useModToolsContext();
-    const { settings = null } = modToolsState;
+    const { tickets= null } = modToolsState;
     const [ currentTab, setCurrentTab ] = useState<number>(0);
 
     const openIssues = useMemo(() =>
     {
-        if(!settings) return [];
+        if(!tickets) return [];
         
-        return settings.issues.filter(issue => issue.state === IssueMessageData.STATE_OPEN)
-    }, [settings]);
+        return tickets.filter(issue => issue.state === IssueMessageData.STATE_OPEN);
+    }, [tickets]);
+
+    const myIssues = useMemo(() =>
+    {
+        if(!tickets) return [];
+
+        return tickets.filter(issue => (issue.state === IssueMessageData.STATE_PICKED) && (issue.pickerUserId === GetSessionDataManager().userId));
+    }, [tickets]);
+
+    const pickedIssues = useMemo(() =>
+    {
+        if(!tickets) return [];
+
+        return tickets.filter(issue => issue.state === IssueMessageData.STATE_PICKED);
+    }, [tickets]);
 
     const CurrentTabComponent = useCallback(() =>
     {
@@ -33,8 +48,6 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
             default: return null;
         }
     }, [currentTab, openIssues]);
-
-    console.log(settings);
 
     return (
         <NitroCardView className="nitro-mod-tools-tickets" simple={ false }>
@@ -49,7 +62,7 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
                         }) }
                 </NitroCardTabsView>
                 <div className="p-2">
-                    {settings && <CurrentTabComponent /> }
+                    <CurrentTabComponent />
                 </div>
             </NitroCardContentView>
         </NitroCardView>

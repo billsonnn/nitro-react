@@ -1,4 +1,4 @@
-import { ModeratorInitMessageEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { RoomEngineEvent, RoomEngineObjectEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useReducer, useState } from 'react';
 import { GetRoomSession } from '../../api';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
@@ -6,11 +6,11 @@ import { ModToolsOpenRoomChatlogEvent } from '../../events/mod-tools/ModToolsOpe
 import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRoomInfoEvent';
 import { ModToolsOpenUserChatlogEvent } from '../../events/mod-tools/ModToolsOpenUserChatlogEvent';
 import { ModToolsOpenUserInfoEvent } from '../../events/mod-tools/ModToolsOpenUserInfoEvent';
-import { CreateMessageHook } from '../../hooks';
 import { useRoomEngineEvent } from '../../hooks/events';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
 import { ModToolsContextProvider } from './context/ModToolsContext';
+import { ModToolsMessageHandler } from './ModToolsMessageHandler';
 import { ModToolsViewProps } from './ModToolsView.types';
 import { initialModTools, ModToolsActions, ModToolsReducer } from './reducers/ModToolsReducer';
 import { ISelectedUser } from './utils/ISelectedUser';
@@ -24,7 +24,7 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ modToolsState, dispatchModToolsState ] = useReducer(ModToolsReducer, initialModTools);
-    const { currentRoomId = null, openRooms = null, openRoomChatlogs = null, openUserChatlogs = null, openUserInfo = null } = modToolsState;
+    const { currentRoomId = null, openRooms = null, openRoomChatlogs = null, openUserChatlogs = null, openUserInfo = null, tickets = null } = modToolsState;
     const [ selectedUser, setSelectedUser] = useState<ISelectedUser>(null);
     const [ isTicketsVisible, setIsTicketsVisible ] = useState(false);
 
@@ -155,25 +155,6 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
     
     useRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
 
-    const onModeratorInitMessageEvent = useCallback((event: ModeratorInitMessageEvent) =>
-    {
-        const parser = event.getParser();
-
-        if(!parser) return;
-
-        const data = parser.data;
-
-        dispatchModToolsState({
-            type: ModToolsActions.SET_INIT_DATA,
-            payload: {
-                settings: data
-            }
-        });
-        console.log(parser);   
-    }, []);
-
-    CreateMessageHook(ModeratorInitMessageEvent, onModeratorInitMessageEvent);
-
     const handleClick = useCallback((action: string, value?: string) =>
     {
         if(!action) return;
@@ -299,6 +280,7 @@ export const ModToolsView: FC<ModToolsViewProps> = props =>
 
     return (
         <ModToolsContextProvider value={ { modToolsState, dispatchModToolsState } }>
+            <ModToolsMessageHandler />
             { isVisible &&
                 <NitroCardView uniqueKey="mod-tools" className="nitro-mod-tools" simple={ false }>
                     <NitroCardHeaderView headerText={ 'Mod Tools' } onCloseClick={ event => setIsVisible(false) } />
