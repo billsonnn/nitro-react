@@ -3,7 +3,7 @@ import { ChatHistoryContextProps, IChatHistoryContext } from './ChatHistoryConte
 
 const ChatHistoryContext = createContext<IChatHistoryContext>({
     chatHistoryState: null,
-    dispatchChatHistoryState: null
+    roomHistoryState: null
 });
 
 export const ChatHistoryContextProvider: FC<ChatHistoryContextProps> = props =>

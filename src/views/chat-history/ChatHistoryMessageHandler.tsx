@@ -1,41 +1,46 @@
 import { RoomInfoEvent, RoomSessionChatEvent, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomSession } from '../../api';
-import { ChatHistoryEvent } from '../../events/chat-history/ChatHistoryEvent';
-import { CreateMessageHook, dispatchUiEvent, useRoomSessionManagerEvent } from '../../hooks';
+import { CreateMessageHook, useRoomSessionManagerEvent } from '../../hooks';
 import { useChatHistoryContext } from './context/ChatHistoryContext';
-import { ChatEntryType, ChatHistoryAction, CHAT_HISTORY_MAX, IChatEntry } from './reducers/ChatHistoryReducer';
+import { ChatEntryType, CHAT_HISTORY_MAX, IChatEntry, IRoomHistoryEntry, ROOM_HISTORY_MAX } from './context/ChatHistoryContext.types';
 import { currentDate } from './utils/Utilities';
 
 export const ChatHistoryMessageHandler: FC<{}> = props =>
 {
-    const { chatHistoryState = null, dispatchChatHistoryState = null } = useChatHistoryContext();
-    const { chats = null, roomHistory = null } = chatHistoryState;
+    const { chatHistoryState = null, roomHistoryState = null } = useChatHistoryContext();
 
     const [needsRoomInsert, setNeedsRoomInsert ] = useState(false);
 
     const addChatEntry = useCallback((entry: IChatEntry) =>
     {
-        const newChats = [...chats];
-
-        newChats.push(entry);
+        entry.id = chatHistoryState.chats.length;
+        
+        chatHistoryState.chats.push(entry);
 
         //check for overflow
-        if(newChats.length > CHAT_HISTORY_MAX)
+        if(chatHistoryState.chats.length > CHAT_HISTORY_MAX)
         {
-            newChats.shift();
+            chatHistoryState.chats.shift();
+        }
+        chatHistoryState.notify();
+       
+        //dispatchUiEvent(new ChatHistoryEvent(ChatHistoryEvent.CHAT_HISTORY_CHANGED));
+        
+    }, [chatHistoryState]);
+
+    const addRoomHistoryEntry = useCallback((entry: IRoomHistoryEntry) =>
+    {
+        roomHistoryState.roomHistory.push(entry);
+
+        // check for overflow
+        if(roomHistoryState.roomHistory.length > ROOM_HISTORY_MAX)
+        {
+            roomHistoryState.roomHistory.shift();
         }
 
-        dispatchChatHistoryState({
-            type: ChatHistoryAction.SET_CHATS,
-            payload: {
-                chats: newChats
-            }
-        }); 
-       
-        dispatchUiEvent(new ChatHistoryEvent(ChatHistoryEvent.CHAT_HISTORY_CHANGED));
-        
-    }, [chats, dispatchChatHistoryState]);
+        roomHistoryState.notify();
+    }, [roomHistoryState]);
 
     const onChatEvent = useCallback((event: RoomSessionChatEvent) =>
     {
@@ -49,7 +54,7 @@ export const ChatHistoryMessageHandler: FC<{}> = props =>
          
         const timeString = currentDate();
 
-        const entry: IChatEntry = { id: userData.webID, name: userData.name, look: userData.figure, message: event.message, timestamp: timeString, type: ChatEntryType.TYPE_CHAT };
+        const entry: IChatEntry = { id: -1, entityId: userData.webID, name: userData.name, look: userData.figure, message: event.message, timestamp: timeString, type: ChatEntryType.TYPE_CHAT };
 
         addChatEntry(entry);
     }, [addChatEntry]);
@@ -84,13 +89,17 @@ export const ChatHistoryMessageHandler: FC<{}> = props =>
 
         if(needsRoomInsert)
         {
-            const chatEntry: IChatEntry = { id: parser.data.roomId, name: parser.data.roomName, timestamp: currentDate(), type: ChatEntryType.TYPE_ROOM_INFO };
+            const chatEntry: IChatEntry = { id: -1, entityId: parser.data.roomId, name: parser.data.roomName, timestamp: currentDate(), type: ChatEntryType.TYPE_ROOM_INFO };
 
             addChatEntry(chatEntry);
 
+            const roomEntry: IRoomHistoryEntry = { id: parser.data.roomId, name: parser.data.roomName };
+
+            addRoomHistoryEntry(roomEntry);
+
             setNeedsRoomInsert(false);
         }
-    }, [addChatEntry, needsRoomInsert]);
+    }, [addChatEntry, addRoomHistoryEntry, needsRoomInsert]);
 
     CreateMessageHook(RoomInfoEvent, onRoomInfoEvent);
     

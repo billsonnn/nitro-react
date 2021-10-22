@@ -1,6 +1,6 @@
 .nitro-chat-history
 {
-    width: 250px;
+    width: 300px;
 
     padding: 2px;
     background-color: #1C323F;
@@ -27,6 +27,26 @@
         {
             background-color: #1C323F;
             min-height: 200px;
+
+            .chat-history-list
+            {
+                .chathistory-entry
+                {
+                    .head-container
+                    {
+                        height: 44px;
+                        width: 42px;
+                    }
+
+                    .friend-bar-item-head {
+                        top: -30px;
+                        left: 15px;
+                        pointer-events: none;
+                        height: 44px;
+                        width: 42px;
+                    }
+                }
+            }
         }
     }
 }
