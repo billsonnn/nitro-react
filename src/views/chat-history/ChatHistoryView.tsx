@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps, ListRowRenderer, Size } from 'react-virtualized';
+import { RenderedRows } from 'react-virtualized/dist/es/List';
 import { ChatHistoryEvent } from '../../events/chat-history/ChatHistoryEvent';
 import { useUiEvent } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
@@ -12,6 +13,7 @@ import { RoomHistoryState } from './utils/RoomHistoryState';
 export const ChatHistoryView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
+    const [ needsScroll, setNeedsScroll ] = useState(false);
     const [ chatHistoryUpdateId, setChatHistoryUpdateId ] = useState(-1);
     const [ roomHistoryUpdateId, setRoomHistoryUpdateId ] = useState(-1);
     const [ chatHistoryState, setChatHistoryState ] = useState(new ChatHistoryState());
@@ -67,7 +69,7 @@ export const ChatHistoryView: FC<{}> = props =>
     const RowRenderer: ListRowRenderer = (props: ListRowProps) =>
     {
         const item = chatHistoryState.chats[props.index];
-        console.log(props.index);
+
         return (
             <CellMeasurer
                 cache={cache}
@@ -110,15 +112,30 @@ export const ChatHistoryView: FC<{}> = props =>
         cache.clearAll();
     }, [cache]);
 
+    const onRowsRendered = useCallback((info: RenderedRows) =>
+    {
+        if(elementRef && elementRef.current && isVisible && needsScroll)
+        {
+            console.log('stop ' + info.stopIndex);
+            //if(chatHistoryState.chats.length > 0) elementRef.current.measureAllRows();
+            elementRef.current.scrollToRow(chatHistoryState.chats.length);
+            console.log('scroll')
+            setNeedsScroll(false);
+        }
+    }, [chatHistoryState.chats.length, isVisible, needsScroll]);
+
     useEffect(() =>
     {
+        
         if(elementRef && elementRef.current && isVisible)
         {
-            //elementRef.current.measureAllRows();
-            elementRef.current.scrollToRow(chatHistoryState.chats.length - 1);
+            //if(chatHistoryState.chats.length > 0) elementRef.current.measureAllRows();
+            elementRef.current.scrollToRow(chatHistoryState.chats.length);
         }
         //console.log(chatHistoryState.chats.length);
-    }, [chatHistoryState.chats, isVisible, chatHistoryUpdateId])
+        
+       setNeedsScroll(true);
+    }, [chatHistoryState.chats, isVisible, chatHistoryUpdateId]);
 
     return (
         <ChatHistoryContextProvider value={ { chatHistoryState, roomHistoryState } }>
@@ -140,6 +157,7 @@ export const ChatHistoryView: FC<{}> = props =>
                                             rowHeight={cache.rowHeight}
                                             className={'chat-history-list'}
                                             rowRenderer={RowRenderer}
+                                            onRowsRendered={onRowsRendered}
                                             deferredMeasurementCache={cache}
                                         />
                                     )
