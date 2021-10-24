@@ -22,6 +22,10 @@
                     width: $username-col-width;
                 }
 
+                &.highlighted {
+                    border: 1px solid $red;
+                }
+
                 .message {
                     word-break: break-all;
                 }

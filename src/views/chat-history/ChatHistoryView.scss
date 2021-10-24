@@ -2,48 +2,23 @@
 {
     width: 300px;
 
-    padding: 2px;
-    background-color: #1C323F;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    border-radius: 0.25rem;
-
-    .container-fluid
-    {
-        .nitro-card-header
-        {
-            background-color: #3d5f6e;
-            color: #fff;
-        }
-
-        background-color: #1C323F;
-        
-    }
-
     .chat-history-content
     {
-        background-color: #1C323F;
 
         .chat-history-container
         {
-            background-color: #1C323F;
             min-height: 200px;
 
             .chat-history-list
             {
                 .chathistory-entry
                 {
-                    .head-container
-                    {
-                        height: 44px;
-                        width: 42px;
+                    .light {
+                        background-color: #121f27;
                     }
 
-                    .friend-bar-item-head {
-                        top: -30px;
-                        left: 15px;
-                        pointer-events: none;
-                        height: 44px;
-                        width: 42px;
+                    .dark {
+                        background-color: #0d171d;
                     }
                 }
             }

@@ -70,6 +70,8 @@ export const ChatHistoryView: FC<{}> = props =>
     {
         const item = chatHistoryState.chats[props.index];
 
+        const isDark = (props.index % 2 === 0);
+
         return (
             <CellMeasurer
                 cache={cache}
@@ -80,26 +82,17 @@ export const ChatHistoryView: FC<{}> = props =>
             >
                 <div key={props.key} style={props.style} className="row chathistory-entry justify-content-start">
                     {(item.type === ChatEntryType.TYPE_CHAT) &&
-                    <>
-                        <div className="col-auto text-center">{item.timestamp}</div>
-                        <div className="col-auto justify-content-start username">
-                            <span className="fw-bold cursor-pointer" dangerouslySetInnerHTML={ { __html: item.name }} />
-                        </div>
-                        <div className="col justify-content-start h-100">
-                            <span className="text-break text-wrap h-100">{item.message}</span>
-                        </div>
-                    </>
+                    <div className={`col d-flex flex-wrap text-break text-wrap ${isDark ? 'dark' : 'light'}`}>
+                        <div className="p-1">{item.timestamp}</div>
+                        <div className="p-1 fw-bold cursor-pointer" dangerouslySetInnerHTML={ { __html: (item.name + ':') }} />
+                        <div className="p-1 text-break text-wrap">{item.message}</div>
+                    </div>
                     }
                     {(item.type === ChatEntryType.TYPE_ROOM_INFO) &&
-                    <>
-                        <div className="col-auto text-center">{item.timestamp}</div>
-                        <div className="col-auto justify-content-start username">
-                            <span className="fw-bold cursor-pointer">{item.name}</span>
-                        </div>
-                        <div className="col justify-content-start h-100">
-                            <span className="text-break text-wrap h-100">{item.message}</span>
-                        </div>
-                    </>
+                    <div className={`col d-flex flex-wrap text-break text-wrap ${isDark ? 'dark' : 'light'}`}>
+                        <div className="p-1">{item.timestamp}</div>
+                        <div className="p-1 fw-bold cursor-pointer">{item.name}</div>
+                    </div>
                     }
                     
                 </div>
@@ -141,9 +134,9 @@ export const ChatHistoryView: FC<{}> = props =>
         <ChatHistoryContextProvider value={ { chatHistoryState, roomHistoryState } }>
             <ChatHistoryMessageHandler />
             {isVisible &&
-            <NitroCardView uniqueKey="chat-history" className="nitro-chat-history" simple={ false }>
-                <NitroCardHeaderView headerText={ 'Chat History' } onCloseClick={ event => setIsVisible(false) } />
-                <NitroCardContentView className="chat-history-content" style={{ backgroundColor: '#1C323F !important' }}>
+            <NitroCardView uniqueKey="chat-history" className="nitro-chat-history" simple={ false }  theme={'dark'} >
+                <NitroCardHeaderView headerText={ 'Chat History' } onCloseClick={ event => setIsVisible(false) } theme={'dark'}/>
+                <NitroCardContentView className="chat-history-content" theme={'dark'}>
                     <div className="row w-100 h-100 chat-history-container">
                             <AutoSizer defaultWidth={300} defaultHeight={200} onResize={onResize}>
                                 {({ height, width }) => 

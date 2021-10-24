@@ -4,7 +4,7 @@ import { NitroCardHeaderViewProps } from './NitroCardHeaderView.types';
 
 export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
 {
-    const { headerText = null, onCloseClick = null } = props;
+    const { headerText = null, onCloseClick = null, theme= 'primary' } = props;
     const { simple = false } = useNitroCardContext();
 
     const onMouseDown = useCallback((event: MouseEvent<HTMLDivElement>) =>
@@ -31,7 +31,7 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
 
     return (
         <div className="drag-handler container-fluid bg-primary">
-            <div className="row nitro-card-header overflow-hidden">
+            <div className={`row nitro-card-header overflow-hidden theme-${theme}`}>
                 <div className="d-flex justify-content-center align-items-center w-100 position-relative">
                     <div className="h4 text-white text-shadow header-text">{ headerText }</div>
                     <div className="position-absolute header-close" onMouseDownCapture={ onMouseDown } onClick={ onCloseClick }>

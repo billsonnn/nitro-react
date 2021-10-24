@@ -22,7 +22,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                 parent={props.parent}
                 rowIndex={props.index}
             >
-                <div key={props.key} style={props.style} className="row chatlog-entry justify-content-start">
+                <div key={props.key} style={props.style} className={'row chatlog-entry justify-content-start ' + (item.hasHighlighting ? 'highlighted' : '')}>
                     <div className="col-auto text-center">{item.timestamp}</div>
                     <div className="col-sm-2 justify-content-start username"><span className="fw-bold cursor-pointer" onClick={() => SendMessageHook(new UserProfileComposer(item.userId))}>{item.userName}</span></div>
                     <div className="col justify-content-start h-100"><span className="text-break text-wrap h-100">{item.message}</span></div>
