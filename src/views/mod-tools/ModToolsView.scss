@@ -1,5 +1,17 @@
 .nitro-mod-tools {
     width: 200px;
+
+    
+}
+
+.nitro-mod-tools-tickets
+{
+    width: 400px;
+    
+    .issues
+    {
+        height: 200px;
+    }
 }
 
 @import './views/room/room-tools/ModToolsRoomView';

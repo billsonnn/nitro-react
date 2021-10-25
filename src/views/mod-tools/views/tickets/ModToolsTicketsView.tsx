@@ -24,6 +24,7 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
     const openIssues = useMemo(() =>
     {
         if(!tickets) return [];
+        console.log(tickets);
         
         return tickets.filter(issue => issue.state === IssueMessageData.STATE_OPEN);
     }, [tickets]);

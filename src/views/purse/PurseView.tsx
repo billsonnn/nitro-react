@@ -1,6 +1,7 @@
 import { FriendlyTime, HabboClubLevelEnum, UserCurrencyComposer, UserSubscriptionComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetConfiguration, LocalizeText } from '../../api';
+import { HelpEvent } from '../../events/help/HelpEvent';
 import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
 import { dispatchUiEvent } from '../../hooks';
 import { SendMessageHook } from '../../hooks/messages/message-event';
@@ -22,6 +23,11 @@ export const PurseView: FC<{}> = props =>
     const handleUserSettingsClick = useCallback(() =>
     {
         dispatchUiEvent(new UserSettingsUIEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS));
+    }, []);
+
+    const handleHelpCenterClick = useCallback(() =>
+    {
+        dispatchUiEvent(new HelpEvent(HelpEvent.TOGGLE_HELP_CENTER));
     }, []);
 
     const displayedCurrencies = useMemo(() =>
@@ -140,7 +146,7 @@ export const PurseView: FC<{}> = props =>
                     </div>
                     <div className="col-2 px-0">
                         <div className="d-flex flex-column nitro-purse-buttons h-100 justify-content-center">
-                            <div className="nitro-purse-button text-white h-100 text-center d-flex align-items-center justify-content-center cursor-pointer"><i className="icon icon-help"/></div>
+                            <div className="nitro-purse-button text-white h-100 text-center d-flex align-items-center justify-content-center cursor-pointer" onClick={ handleHelpCenterClick }><i className="icon icon-help"/></div>
                             <div className="nitro-purse-button text-white h-100 text-center d-flex align-items-center justify-content-center cursor-pointer" onClick={ handleUserSettingsClick } ><i className="fas fa-cogs"/></div>
                         </div>
                     </div>

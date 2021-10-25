@@ -30,7 +30,7 @@ export const ModToolsPickedIssuesTabView: FC<ModToolsPickedIssuesTabViewProps> =
             <div className="col-sm-2 fw-bold">Opened</div>
             <div className="col-sm-2 fw-bold">Picker</div>
         </div>
-        <div className="row w-100 h-100 issues">
+        <div className="row w-100 issues">
             <AutoSizer defaultWidth={400} defaultHeight={200}>
                 {({ height, width }) => 
                 {

@@ -7,6 +7,7 @@ import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRo
 import { ModToolsOpenUserChatlogEvent } from '../../events/mod-tools/ModToolsOpenUserChatlogEvent';
 import { ModToolsOpenUserInfoEvent } from '../../events/mod-tools/ModToolsOpenUserInfoEvent';
 import { CreateMessageHook, dispatchUiEvent, useRoomEngineEvent, useUiEvent } from '../../hooks';
+import { SetCfhCategories } from './common/GetCFHCategories';
 import { useModToolsContext } from './context/ModToolsContext';
 import { ModToolsActions } from './reducers/ModToolsReducer';
 
@@ -67,6 +68,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         //todo: play ticket sound
         //GetNitroInstance().events.dispatchEvent(new NitroSoundEvent(NitroSoundEvent.PLAY_SOUND, sound)
+        console.log(parser);
     }, [dispatchModToolsState, tickets]);
 
     const onModeratorToolPreferencesEvent = useCallback((event: ModeratorToolPreferencesEvent) =>
@@ -139,6 +141,8 @@ export const ModToolsMessageHandler: FC<{}> = props =>
                 cfhCategories: categories
             }
         });
+
+        SetCfhCategories(categories);
         
         console.log(parser);
     }, [dispatchModToolsState]);

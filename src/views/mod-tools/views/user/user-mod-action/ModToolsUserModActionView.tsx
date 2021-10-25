@@ -40,7 +40,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
 
         for(let category of cfhCategories)
         {
-            for(let topic of category._Str_14841)
+            for(let topic of category.topics)
             {
                 values.push(topic)
             }

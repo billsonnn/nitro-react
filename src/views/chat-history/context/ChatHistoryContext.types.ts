@@ -24,6 +24,8 @@ export interface IChatEntry {
     name: string;
     look?: string;
     message?: string;
+    entityType?: number;
+    roomId: number;
     timestamp: string;
     type: number;
 }

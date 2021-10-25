@@ -5,10 +5,13 @@ import { ChatHistoryEvent } from '../../events/chat-history/ChatHistoryEvent';
 import { useUiEvent } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
 import { ChatHistoryMessageHandler } from './ChatHistoryMessageHandler';
+import { ChatHistoryState } from './common/ChatHistoryState';
+import { SetChatHistory } from './common/GetChatHistory';
+import { RoomHistoryState } from './common/RoomHistoryState';
 import { ChatHistoryContextProvider } from './context/ChatHistoryContext';
 import { ChatEntryType } from './context/ChatHistoryContext.types';
-import { ChatHistoryState } from './utils/ChatHistoryState';
-import { RoomHistoryState } from './utils/RoomHistoryState';
+
+
 
 export const ChatHistoryView: FC<{}> = props =>
 {
@@ -24,6 +27,8 @@ export const ChatHistoryView: FC<{}> = props =>
     {
         const chatState = new ChatHistoryState();
         const roomState = new RoomHistoryState();
+
+        SetChatHistory(chatState);
 
         chatState.notifier = () => setChatHistoryUpdateId(prevValue => (prevValue + 1));
         roomState.notifier = () => setRoomHistoryUpdateId(prevValue => (prevValue + 1));

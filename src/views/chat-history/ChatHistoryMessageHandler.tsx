@@ -54,7 +54,7 @@ export const ChatHistoryMessageHandler: FC<{}> = props =>
          
         const timeString = currentDate();
 
-        const entry: IChatEntry = { id: -1, entityId: userData.webID, name: userData.name, look: userData.figure, message: event.message, timestamp: timeString, type: ChatEntryType.TYPE_CHAT };
+        const entry: IChatEntry = { id: -1, entityId: userData.webID, name: userData.name, look: userData.figure, entityType: userData.type, message: event.message, timestamp: timeString, type: ChatEntryType.TYPE_CHAT, roomId: roomSession.roomId };
 
         addChatEntry(entry);
     }, [addChatEntry]);
@@ -89,7 +89,7 @@ export const ChatHistoryMessageHandler: FC<{}> = props =>
 
         if(needsRoomInsert)
         {
-            const chatEntry: IChatEntry = { id: -1, entityId: parser.data.roomId, name: parser.data.roomName, timestamp: currentDate(), type: ChatEntryType.TYPE_ROOM_INFO };
+            const chatEntry: IChatEntry = { id: -1, entityId: parser.data.roomId, name: parser.data.roomName, timestamp: currentDate(), type: ChatEntryType.TYPE_ROOM_INFO, roomId: parser.data.roomId };
 
             addChatEntry(chatEntry);
 
