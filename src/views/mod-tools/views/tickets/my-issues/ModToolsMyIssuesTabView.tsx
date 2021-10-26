@@ -1,53 +1,45 @@
-import { FC } from 'react';
-import { AutoSizer, List, ListRowProps, ListRowRenderer } from 'react-virtualized';
+import { ReleaseIssuesMessageComposer } from '@nitrots/nitro-renderer';
+import { FC, useCallback } from 'react';
+import { SendMessageHook } from '../../../../../hooks';
 import { ModToolsMyIssuesTabViewProps } from './ModToolsMyIssuesTabView.types';
 
 export const ModToolsMyIssuesTabView: FC<ModToolsMyIssuesTabViewProps> = props =>
 {
-    const { myIssues = null } = props;
-
-    const RowRenderer: ListRowRenderer = (props: ListRowProps) =>
-    {
-        const item = myIssues[props.index];
-
-        return (
-            <div key={props.key} style={props.style} className="row issue-entry justify-content-start">
-                    <div className="col-auto text-center">{item.categoryId}</div>
-                    <div className="col justify-content-start username"><span className="fw-bold cursor-pointer">{item.reportedUserName}</span></div>
-                    <div className="col-sm-2 justify-content-start"><span className="text-break text-wrap h-100">{item.getOpenTime(new Date().getTime())}</span></div>
-                    <div className="col-sm-2">
-                        <button className="btn btn-sm btn-primary">View Issue</button>
-                    </div>
-            </div>
-        );
-    };
+    const { myIssues = null, onIssueHandleClick = null } = props;
     
+
+    const onReleaseIssue = useCallback((issueId: number) =>
+    {
+        SendMessageHook(new ReleaseIssuesMessageComposer([issueId]));
+    }, []);
+
     return (
         <>
-        <div className="row align-items-start w-100">
-            <div className="col-auto text-center fw-bold">Type</div>
-            <div className="col fw-bold">Room/Player</div>
-            <div className="col-sm-2 fw-bold">Opened</div>
-            <div className="col-sm-2"></div>
-        </div>
-        <div className="row w-100 issues">
-            <AutoSizer defaultWidth={400} defaultHeight={200}>
-                {({ height, width }) => 
-                {
-                    return (
-                        <List
-                            width={width}
-                            height={height}
-                            rowCount={myIssues.length}
-                            rowHeight={25}
-                            className={'issues-container'}
-                            rowRenderer={RowRenderer}
-                            />
-                    )
-                }
-                }
-            </AutoSizer>
-        </div>
+        <table className="table text-black table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Room/Player</th>
+                        <th scope="col">Opened</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {myIssues.map(issue =>
+                        {
+                            return (
+                            <tr className="text-black" key={issue.issueId}>
+                                <td>{issue.categoryId}</td>
+                                <td>{issue.reportedUserName}</td>
+                                <td>{new Date(Date.now() - issue.issueAgeInMilliseconds).toLocaleTimeString()}</td>
+                                <td><button className="btn btn-sm btn-primary" onClick={() => onIssueHandleClick(issue.issueId)}>Handle</button></td>
+                                <td><button className="btn btn-sm btn-danger" onClick={() => onReleaseIssue(issue.issueId)}>Release</button></td>
+                            </tr>)
+                        })
+                    }
+                </tbody>
+            </table>
         </>
     );
 }

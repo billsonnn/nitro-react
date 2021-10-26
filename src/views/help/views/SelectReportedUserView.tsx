@@ -1,6 +1,6 @@
 import { RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { LocalizeText } from '../../../api';
+import { GetSessionDataManager, LocalizeText } from '../../../api';
 import { NitroCardGridItemView, NitroCardGridView } from '../../../layout';
 import { GetChatHistory } from '../../chat-history/common/GetChatHistory';
 import { ChatEntryType } from '../../chat-history/context/ChatHistoryContext.types';
@@ -19,7 +19,7 @@ export const SelectReportedUserView: FC<{}> = props =>
         GetChatHistory().chats
             .forEach(chat =>
             {
-                if((chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityType === RoomObjectType.USER))//todo: remove own chats
+                if((chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityType === RoomObjectType.USER) && (chat.entityId !== GetSessionDataManager().userId))
                 {
                     if(!users.has(chat.entityId))
                     {
@@ -47,6 +47,13 @@ export const SelectReportedUserView: FC<{}> = props =>
         else setSelectedUserId(userId);
     }, [selectedUserId]);
 
+    const back = useCallback(() =>
+    {
+        const reportState = Object.assign({}, helpReportState);
+        reportState.currentStep = --reportState.currentStep;
+        setHelpReportState(reportState);
+    }, [helpReportState, setHelpReportState]);
+
     return (
         <>
             <div className="d-grid col-12 mx-auto justify-content-center">
@@ -63,14 +70,17 @@ export const SelectReportedUserView: FC<{}> = props =>
                         {availableUsers.map((user, index) =>
                         {
                             return (
-                                <NitroCardGridItemView key={user.id} onClick={() => selectUser(user.id)} itemActive={( selectedUserId === user.id)}>
+                                <NitroCardGridItemView key={user.id} onClick={() => selectUser(user.id)} itemActive={(selectedUserId === user.id)}>
                                     <span dangerouslySetInnerHTML={{ __html: (user.username) }} />
                                 </NitroCardGridItemView>
                             )
                         })}
                     </NitroCardGridView>
 
-                    <button className="btn btn-secondary mt-2" type="button" disabled={selectedUserId <= 0} onClick={submitUser}>{LocalizeText('help.emergency.main.submit.button')}</button>
+                    <div className="d-flex gap-2 justify-content-between mt-auto">
+                        <button className="btn btn-secondary mt-2" type="button" onClick={back}>{LocalizeText('generic.back')}</button>
+                        <button className="btn btn-primary mt-2" type="button" disabled={selectedUserId <= 0} onClick={submitUser}>{LocalizeText('help.emergency.main.submit.button')}</button>
+                    </div>
                 </>
             }
         </>

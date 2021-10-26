@@ -45,14 +45,25 @@ export const SelectReportedChatsView: FC<{}> = props =>
         setHelpReportState(reportState);
 
     }, [helpReportState, selectedChats, setHelpReportState]);
+
+    const back = useCallback(() =>
+    {
+        const reportState = Object.assign({}, helpReportState);
+        reportState.currentStep = --reportState.currentStep;
+        setHelpReportState(reportState);
+    }, [helpReportState, setHelpReportState]);
     
     return (
         <>
             <div className="d-grid col-12 mx-auto justify-content-center">
                 <div className="col-12"><h3 className="fw-bold">{LocalizeText('help.emergency.chat_report.subtitle')}</h3></div>
-                <div className="text-wrap">{LocalizeText('help.emergency.chat_report.description')}</div>
+                { userChats.length > 0 &&
+                    <div className="text-wrap">{LocalizeText('help.emergency.chat_report.description')}</div>
+                }
             </div>
-            
+            {
+                (userChats.length === 0) && <div>{LocalizeText('help.cfh.error.no_user_data')}</div>
+            }
             { userChats.length > 0 &&
                 <>
                     <NitroCardGridView columns={1}>
@@ -65,7 +76,11 @@ export const SelectReportedChatsView: FC<{}> = props =>
                             )
                         })}
                     </NitroCardGridView>
-                    <button className="btn btn-secondary mt-2" type="button" disabled={selectedChats.size <= 0} onClick={submitChats}>{LocalizeText('help.emergency.main.submit.button')}</button>
+
+                    <div className="d-flex gap-2 justify-content-between mt-auto">
+                        <button className="btn btn-secondary mt-2" type="button" onClick={back}>{LocalizeText('generic.back')}</button>
+                        <button className="btn btn-primary mt-2" type="button" disabled={selectedChats.size <= 0} onClick={submitChats}>{LocalizeText('help.emergency.main.submit.button')}</button>
+                    </div>
                 </>
             }
         </>
