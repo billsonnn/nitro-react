@@ -11,8 +11,6 @@ import { RoomHistoryState } from './common/RoomHistoryState';
 import { ChatHistoryContextProvider } from './context/ChatHistoryContext';
 import { ChatEntryType } from './context/ChatHistoryContext.types';
 
-
-
 export const ChatHistoryView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
@@ -52,18 +50,15 @@ export const ChatHistoryView: FC<{}> = props =>
             case ChatHistoryEvent.TOGGLE_CHAT_HISTORY:
                 setIsVisible(!isVisible);
                 break;
-            case ChatHistoryEvent.CHAT_HISTORY_CHANGED:
-                break;
         }
     }, [isVisible]);
 
     useUiEvent(ChatHistoryEvent.HIDE_CHAT_HISTORY, onChatHistoryEvent);
     useUiEvent(ChatHistoryEvent.SHOW_CHAT_HISTORY, onChatHistoryEvent);
     useUiEvent(ChatHistoryEvent.TOGGLE_CHAT_HISTORY, onChatHistoryEvent);
-    useUiEvent(ChatHistoryEvent.CHAT_HISTORY_CHANGED, onChatHistoryEvent);
 
     const cache = useMemo(() => 
-{
+    {
         return new CellMeasurerCache({
             defaultHeight: 25,
             fixedWidth: true,

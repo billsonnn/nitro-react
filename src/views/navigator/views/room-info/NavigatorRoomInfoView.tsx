@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration, GetGroupInformation, GetSessionDataManager, LocalizeText } from '../../../../api';
 import { NavigatorEvent } from '../../../../events';
+import { FloorplanEditorEvent } from '../../../../events/floorplan-editor/FloorplanEditorEvent';
 import { RoomWidgetThumbnailEvent } from '../../../../events/room-widgets/thumbnail';
 import { dispatchUiEvent } from '../../../../hooks/events';
 import { SendMessageHook } from '../../../../hooks/messages';
@@ -98,6 +99,9 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                 setIsRoomMuted(value => !value);
                 SendMessageHook(new RoomMuteComposer());
             return;
+            case 'open_floorplan_editor':
+                dispatchUiEvent(new FloorplanEditorEvent(FloorplanEditorEvent.TOGGLE_FLOORPLAN_EDITOR));
+                return;
             case 'close':
                 onCloseClick();
                 return;
@@ -155,7 +159,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                     </div>
                     { hasPermission('settings') && <>
                         <button className="btn btn-sm btn-primary w-100 mb-1" onClick={ () => processAction('open_room_settings') }>{ LocalizeText('navigator.room.popup.info.room.settings') }</button>
-                        <button className="btn btn-sm btn-primary w-100 mb-1" disabled={ true }>{ LocalizeText('open.floor.plan.editor') }</button>
+                        <button className="btn btn-sm btn-primary w-100 mb-1" onClick={ () => processAction('open_floorplan_editor') }>{ LocalizeText('open.floor.plan.editor') }</button>
                     </> }
                     {  hasPermission('staff_pick') && <button className="btn btn-sm btn-primary w-100 mb-1" onClick={ () => processAction('toggle_pick') }>{ LocalizeText(isRoomPicked ? 'navigator.staffpicks.unpick' : 'navigator.staffpicks.pick') }</button> }
                     <button className="btn btn-sm btn-danger w-100 mb-1" disabled={ true }>{ LocalizeText('help.emergency.main.report.room') }</button>
