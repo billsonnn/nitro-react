@@ -89,12 +89,8 @@ export const FloorplanEditorView: FC<{}> = props =>
             {isVisible &&
                 <NitroCardView className="nitro-floorplan-editor">
                     <NitroCardHeaderView headerText={LocalizeText('floor.plan.editor.title')} onCloseClick={() => setIsVisible(false)} />
-                    <NitroCardContentView>
-                        <div className="row">
-                            <div className="col">
-                                <FloorplanOptionsView />
-                            </div>
-                        </div>
+                    <NitroCardContentView className="text-black">
+                        <FloorplanOptionsView />
                         <div className="row">
                             <div className="col">
                                 <FloorplanCanvasView />
@@ -102,12 +98,12 @@ export const FloorplanEditorView: FC<{}> = props =>
                         </div>
                         <div className="row justify-content-between mt-2">
                             <div className="btn-group col-auto">
-                                <button className="btn btn-primary">Revert changes</button>
+                                <button className="btn btn-primary">{LocalizeText('floor.plan.editor.reload')}</button>
                             </div>
                             <div className="btn-group col-auto" role="group" aria-label="First group">
-                                <button className="btn btn-primary">Show Preview</button>
-                                <button className="btn btn-primary">Import/Export</button>
-                                <button className="btn btn-primary" onClick={saveFloorChanges}>Save</button>
+                                <button className="btn btn-primary">{LocalizeText('floor.plan.editor.preview')}</button>
+                                <button className="btn btn-primary">{LocalizeText('floor.plan.editor.import.export')}</button>
+                                <button className="btn btn-primary" onClick={saveFloorChanges}>{LocalizeText('floor.plan.editor.save')}</button>
                             </div>
                         </div>
                     </NitroCardContentView>

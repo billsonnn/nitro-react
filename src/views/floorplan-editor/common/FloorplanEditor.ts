@@ -400,6 +400,11 @@ export class FloorplanEditor extends PixiApplicationProxy
         this._doorLocation = value;
     }
 
+    public get actionSettings(): ActionSettings
+    {
+        return this._actionSettings;
+    }
+
     public static get instance(): FloorplanEditor
     {
         if(!FloorplanEditor._instance)

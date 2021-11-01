@@ -1,37 +1,70 @@
-.nitro-floorplan-editor
-{
+.nitro-floorplan-editor {
     width: 760px;
     height: 575px;
 
-    .editor-area
-    {
+    .editor-area {
         width: 100%;
         height: 300px;
         overflow-x: scroll;
     }
 
-    .set-tile
-    {
-        background-image: url('../../assets/images/floorplaneditor/icon-tile-set.png');
+    .tile-options {
+
+        .tile-option {
+            width: 50px;
+            height: 50px;
+
+            &.set-tile {
+                background-image: url("../../assets/images/floorplaneditor/icon-tile-set.png");
+            }
+    
+            &.unset-tile {
+                background-image: url("../../assets/images/floorplaneditor/icon-tile-unset.png");
+            }
+    
+            &.increase-height {
+                background-image: url("../../assets/images/floorplaneditor/icon-tile-up.png");
+            }
+    
+            &.decrease-height {
+                background-image: url("../../assets/images/floorplaneditor/icon-tile-down.png");
+            }
+    
+            &.set-door {
+                background-image: url("../../assets/images/floorplaneditor/icon-door.png");
+            }
+        }
     }
 
-    .unset-tile
-    {
-        background-image: url('../../assets/images/floorplaneditor/icon-tile-unset.png');
-    }
-
-    .increase-height
-    {
-        background-image: url('../../assets/images/floorplaneditor/icon-tile-up.png');
-    }
-
-    .decrease-height
-    {
-        background-image: url('../../assets/images/floorplaneditor/icon-tile-down.png');
-    }
-
-    .set-door
-    {
-        background-image: url('../../assets/images/floorplaneditor/icon-door.png');
+    .visualization-options {
+        .option {
+            width: 85px;
+            height: 50px;
+            
+            &.door-direction-0 {
+                background-image: url("../../assets/images/floorplaneditor/door-direction-0.png");
+            }
+            &.door-direction-1 {
+                background-image: url("../../assets/images/floorplaneditor/door-direction-1.png");
+            }
+            &.door-direction-2 {
+                background-image: url("../../assets/images/floorplaneditor/door-direction-2.png");
+            }
+            &.door-direction-3 {
+                background-image: url("../../assets/images/floorplaneditor/door-direction-3.png");
+            }
+            &.door-direction-4 {
+                background-image: url("../../assets/images/floorplaneditor/door-direction-4.png");
+            }
+            &.door-direction-5 {
+                background-image: url("../../assets/images/floorplaneditor/door-direction-5.png");
+            }
+            &.door-direction-6 {
+                background-image: url("../../assets/images/floorplaneditor/door-direction-6.png");
+            }
+            &.door-direction-7 {
+                background-image: url("../../assets/images/floorplaneditor/door-direction-7.png");
+            }
+        }
     }
 }
