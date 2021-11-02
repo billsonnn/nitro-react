@@ -6,7 +6,7 @@ import { useFloorplanEditorContext } from '../context/FloorplanEditorContext';
 
 export const FloorplanCanvasView: FC<{}> = props =>
 {
-    const { floorplanSettings = null, setFloorplanSettings = null } = useFloorplanEditorContext();
+    const { originalFloorplanSettings = null, setOriginalFloorplanSettings = null, visualizationSettings = null, setVisualizationSettings = null } = useFloorplanEditorContext();
     const [ occupiedTilesReceived , setOccupiedTilesReceived ] = useState(false);
     const [ entryTileReceived, setEntryTileReceived ] = useState(false);
     const elementRef = useRef<HTMLDivElement>(null);
@@ -21,8 +21,9 @@ export const FloorplanCanvasView: FC<{}> = props =>
         return ( () =>
         {
             FloorplanEditor.instance.clear();
+            setVisualizationSettings( prev => {return { wallHeight: originalFloorplanSettings.wallHeight, thicknessWall: originalFloorplanSettings.thicknessWall, thicknessFloor: originalFloorplanSettings.thicknessFloor, entryPointDir: prev.entryPointDir } }); 
         });
-    }, []);
+    }, [originalFloorplanSettings.thicknessFloor, originalFloorplanSettings.thicknessWall, originalFloorplanSettings.wallHeight, setVisualizationSettings]);
 
     const onRoomOccupiedTilesMessageEvent = useCallback((event: RoomOccupiedTilesMessageEvent) =>
     {
@@ -30,16 +31,16 @@ export const FloorplanCanvasView: FC<{}> = props =>
 
         if(!parser) return;
 
-        const settings = Object.assign({}, floorplanSettings);
+        const settings = Object.assign({}, originalFloorplanSettings);
         settings.reservedTiles = parser.blockedTilesMap;
-        setFloorplanSettings(settings);
+        setOriginalFloorplanSettings(settings);
         
-        FloorplanEditor.instance.setTilemap(floorplanSettings.tilemap, parser.blockedTilesMap);
+        FloorplanEditor.instance.setTilemap(originalFloorplanSettings.tilemap, parser.blockedTilesMap);
 
         setOccupiedTilesReceived(true);
         
         elementRef.current.scrollTo(FloorplanEditor.instance.view.width / 3, 0);
-    }, [floorplanSettings, setFloorplanSettings]);
+    }, [originalFloorplanSettings, setOriginalFloorplanSettings]);
 
     CreateMessageHook(RoomOccupiedTilesMessageEvent, onRoomOccupiedTilesMessageEvent);
 
@@ -49,14 +50,18 @@ export const FloorplanCanvasView: FC<{}> = props =>
 
         if(!parser) return;
 
-        const settings = Object.assign({}, floorplanSettings);
+        const settings = Object.assign({}, originalFloorplanSettings);
         settings.entryPoint = [parser.x, parser.y];
         settings.entryPointDir = parser.direction;
-        setFloorplanSettings(settings);
+        setOriginalFloorplanSettings(settings);
+
+        const vSettings = Object.assign({}, visualizationSettings);
+        vSettings.entryPointDir = parser.direction;
+        setVisualizationSettings(vSettings);
         
-        FloorplanEditor.instance.doorLocation = new NitroPoint(settings.entryPoint[0], settings.entryPoint[1]);
+        FloorplanEditor.instance.doorLocation = new NitroPoint(parser.x, parser.y);
         setEntryTileReceived(true);
-    }, [floorplanSettings, setFloorplanSettings]);
+    }, [originalFloorplanSettings, setOriginalFloorplanSettings, setVisualizationSettings, visualizationSettings]);
 
     CreateMessageHook(RoomEntryTileMessageEvent, onRoomEntryTileMessageEvent);
 

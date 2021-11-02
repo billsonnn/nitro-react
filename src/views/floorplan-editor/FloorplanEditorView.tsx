@@ -1,20 +1,29 @@
-import { FloorHeightMapEvent, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
+import { FloorHeightMapEvent, NitroPoint, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../api';
 import { FloorplanEditorEvent } from '../../events/floorplan-editor/FloorplanEditorEvent';
 import { CreateMessageHook, SendMessageHook, useUiEvent } from '../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutGrid, NitroLayoutGridColumn } from '../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFlex, NitroLayoutGrid, NitroLayoutGridColumn } from '../../layout';
 import { FloorplanEditor } from './common/FloorplanEditor';
 import { convertNumbersForSaving, convertSettingToNumber } from './common/Utils';
 import { FloorplanEditorContextProvider } from './context/FloorplanEditorContext';
-import { IFloorplanSettings, initialFloorplanSettings } from './context/FloorplanEditorContext.types';
+import { IFloorplanSettings, initialFloorplanSettings, IVisualizationSettings } from './context/FloorplanEditorContext.types';
 import { FloorplanCanvasView } from './views/FloorplanCanvasView';
+import { FloorplanImportExportView } from './views/FloorplanImportExportView';
 import { FloorplanOptionsView } from './views/FloorplanOptionsView';
 
 export const FloorplanEditorView: FC<{}> = props =>
 {
     const [isVisible, setIsVisible] = useState(false);
-    const [floorplanSettings, setFloorplanSettings ] = useState<IFloorplanSettings>(initialFloorplanSettings);
+    const [ importExportVisible, setImportExportVisible ] = useState(false);
+    const [originalFloorplanSettings, setOriginalFloorplanSettings] = useState<IFloorplanSettings>(initialFloorplanSettings);
+    const [visualizationSettings, setVisualizationSettings] = useState<IVisualizationSettings>(
+        {
+            entryPointDir: 2,
+            wallHeight: -1,
+            thicknessWall: 1,
+            thicknessFloor: 1
+        });
 
     const onFloorplanEditorEvent = useCallback((event: FloorplanEditorEvent) =>
     {
@@ -47,11 +56,16 @@ export const FloorplanEditorView: FC<{}> = props =>
 
         if(!parser) return;
 
-        const settings = Object.assign({}, floorplanSettings);
+        const settings = Object.assign({}, originalFloorplanSettings);
         settings.tilemap = parser.model;
         settings.wallHeight = parser.wallHeight + 1;
-        setFloorplanSettings(settings);
-    }, [floorplanSettings]);
+        setOriginalFloorplanSettings(settings);
+
+        const vSettings = Object.assign({}, visualizationSettings);
+        vSettings.wallHeight = parser.wallHeight + 1;
+        setVisualizationSettings(vSettings);
+
+    }, [originalFloorplanSettings, visualizationSettings]);
 
     CreateMessageHook(FloorHeightMapEvent, onFloorHeightMapEvent);
 
@@ -61,12 +75,17 @@ export const FloorplanEditorView: FC<{}> = props =>
 
         if(!parser) return;
 
-        const settings = Object.assign({}, floorplanSettings);
-        settings.thicknessFloor = convertSettingToNumber(parser.thicknessFloor)
+        const settings = Object.assign({}, originalFloorplanSettings);
+        settings.thicknessFloor = convertSettingToNumber(parser.thicknessFloor);
         settings.thicknessWall = convertSettingToNumber(parser.thicknessWall);
 
-        setFloorplanSettings(settings);
-    }, [floorplanSettings]);
+        setOriginalFloorplanSettings(settings);
+
+        const vSettings = Object.assign({}, visualizationSettings);
+        vSettings.thicknessFloor = convertSettingToNumber(parser.thicknessFloor);
+        vSettings.thicknessWall = convertSettingToNumber(parser.thicknessWall);
+        setVisualizationSettings(vSettings);
+    }, [originalFloorplanSettings, visualizationSettings]);
 
     CreateMessageHook(RoomVisualizationSettingsEvent, onRoomVisualizationSettingsEvent);
 
@@ -74,42 +93,53 @@ export const FloorplanEditorView: FC<{}> = props =>
     {
         SendMessageHook(new UpdateFloorPropertiesMessageComposer(
             FloorplanEditor.instance.getCurrentTilemapString(),
-            floorplanSettings.entryPoint[0],
-            floorplanSettings.entryPoint[1],
-            floorplanSettings.entryPointDir,
-            convertNumbersForSaving(floorplanSettings.thicknessWall),
-            convertNumbersForSaving(floorplanSettings.thicknessFloor),
-            floorplanSettings.wallHeight - 1
+            FloorplanEditor.instance.doorLocation.x,
+            FloorplanEditor.instance.doorLocation.y,
+            visualizationSettings.entryPointDir,
+            convertNumbersForSaving(visualizationSettings.thicknessWall),
+            convertNumbersForSaving(visualizationSettings.thicknessFloor),
+            visualizationSettings.wallHeight - 1
         ));
-    }, [floorplanSettings.entryPoint, floorplanSettings.entryPointDir, floorplanSettings.thicknessFloor, floorplanSettings.thicknessWall, floorplanSettings.wallHeight]);
+    }, [visualizationSettings.entryPointDir, visualizationSettings.thicknessFloor, visualizationSettings.thicknessWall, visualizationSettings.wallHeight]);
+
+    const revertChanges = useCallback(() =>
+    {
+        setVisualizationSettings({ wallHeight: originalFloorplanSettings.wallHeight, thicknessWall: originalFloorplanSettings.thicknessWall, thicknessFloor: originalFloorplanSettings.thicknessFloor, entryPointDir: originalFloorplanSettings.entryPointDir });
+        
+        FloorplanEditor.instance.doorLocation = new NitroPoint(originalFloorplanSettings.entryPoint[0], originalFloorplanSettings.entryPoint[1]);
+        FloorplanEditor.instance.setTilemap(originalFloorplanSettings.tilemap, originalFloorplanSettings.reservedTiles);
+        FloorplanEditor.instance.renderTiles();
+    }, [originalFloorplanSettings.entryPoint, originalFloorplanSettings.entryPointDir, originalFloorplanSettings.reservedTiles, originalFloorplanSettings.thicknessFloor, originalFloorplanSettings.thicknessWall, originalFloorplanSettings.tilemap, originalFloorplanSettings.wallHeight])
 
     return (
         <>
-        <FloorplanEditorContextProvider value={ { floorplanSettings, setFloorplanSettings } }>
-            {isVisible &&
-                <NitroCardView className="nitro-floorplan-editor">
-                    <NitroCardHeaderView headerText={LocalizeText('floor.plan.editor.title')} onCloseClick={() => setIsVisible(false)} />
-                    <NitroCardContentView>
-                        <NitroLayoutGrid>
-                            <NitroLayoutGridColumn size={ 12 }>
-                                <FloorplanOptionsView />
-                                <FloorplanCanvasView />
-                            </NitroLayoutGridColumn>
-                        </NitroLayoutGrid>
-                        {/* <div className="row justify-content-between mt-2">
-                            <div className="btn-group col-auto">
-                                <button className="btn btn-primary">{LocalizeText('floor.plan.editor.reload')}</button>
-                            </div>
-                            <div className="btn-group col-auto" role="group" aria-label="First group">
-                                <button className="btn btn-primary">{LocalizeText('floor.plan.editor.preview')}</button>
-                                <button className="btn btn-primary">{LocalizeText('floor.plan.editor.import.export')}</button>
-                                <button className="btn btn-primary" onClick={saveFloorChanges}>{LocalizeText('floor.plan.editor.save')}</button>
-                            </div>
-                        </div> */}
-                    </NitroCardContentView>
-                </NitroCardView>
-            }
-        </FloorplanEditorContextProvider>
+            <FloorplanEditorContextProvider value={{ originalFloorplanSettings: originalFloorplanSettings, setOriginalFloorplanSettings: setOriginalFloorplanSettings, visualizationSettings: visualizationSettings, setVisualizationSettings: setVisualizationSettings }}>
+                {isVisible && <>
+                    <NitroCardView className="nitro-floorplan-editor">
+                        <NitroCardHeaderView headerText={LocalizeText('floor.plan.editor.title')} onCloseClick={() => setIsVisible(false)} />
+                        <NitroCardContentView>
+                            <NitroLayoutGrid>
+                                <NitroLayoutGridColumn size={12}>
+                                    <FloorplanOptionsView />
+                                    <FloorplanCanvasView />
+                                    <NitroLayoutFlex className="justify-content-between">
+                                        <div className="btn-group">
+                                            <button className="btn btn-primary" onClick={revertChanges}>{LocalizeText('floor.plan.editor.reload')}</button>
+                                        </div>
+                                        <div className="btn-group">
+                                            <button className="btn btn-primary" disabled={true}>{LocalizeText('floor.plan.editor.preview')}</button>
+                                            <button className="btn btn-primary" onClick={ () => setImportExportVisible(true) }>{LocalizeText('floor.plan.editor.import.export')}</button>
+                                            <button className="btn btn-primary" onClick={saveFloorChanges}>{LocalizeText('floor.plan.editor.save')}</button>
+                                        </div>
+                                    </NitroLayoutFlex>
+                                </NitroLayoutGridColumn>
+                            </NitroLayoutGrid>
+                        </NitroCardContentView>
+                    </NitroCardView>
+                    {importExportVisible && <FloorplanImportExportView onCloseClick={ () => setImportExportVisible(false)}/>}
+                    </>
+                }
+            </FloorplanEditorContextProvider>
         </>
     );
 }

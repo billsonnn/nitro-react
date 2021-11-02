@@ -2,8 +2,10 @@ import { createContext, FC, useContext } from 'react';
 import { FloorplanEditorContextProps, IFloorplanEditorContext } from './FloorplanEditorContext.types';
 
 const FloorplanEditorContext = createContext<IFloorplanEditorContext>({
-    floorplanSettings: null,
-    setFloorplanSettings: null
+    originalFloorplanSettings: null,
+    setOriginalFloorplanSettings: null,
+    visualizationSettings: null,
+    setVisualizationSettings: null
 });
 
 export const FloorplanEditorContextProvider: FC<FloorplanEditorContextProps> = props =>

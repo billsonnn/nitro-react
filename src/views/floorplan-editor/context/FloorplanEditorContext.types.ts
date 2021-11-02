@@ -2,14 +2,19 @@ import { ProviderProps } from 'react';
 
 export interface IFloorplanEditorContext
 {
-    floorplanSettings: IFloorplanSettings;
-    setFloorplanSettings: React.Dispatch<React.SetStateAction<IFloorplanSettings>>;
+    originalFloorplanSettings: IFloorplanSettings;
+    setOriginalFloorplanSettings: React.Dispatch<React.SetStateAction<IFloorplanSettings>>;
+    visualizationSettings: IVisualizationSettings;
+    setVisualizationSettings: React.Dispatch<React.SetStateAction<IVisualizationSettings>>;
 }
 
-export interface IFloorplanSettings {
+export interface IFloorplanSettings extends IVisualizationSettings {
     tilemap: string;
     reservedTiles: boolean[][];
     entryPoint: [number, number];
+}
+
+export interface IVisualizationSettings {
     entryPointDir: number;
     wallHeight: number;
     thicknessWall: number;
