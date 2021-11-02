@@ -10,11 +10,11 @@
     background-position: center;
 
     &.icon-nitro-light {
-        background-image: url('../images/nitro/nitro-n-light.svg');
+        background-image: url("../images/nitro/nitro-n-light.svg");
     }
 
     &.icon-nitro-dark {
-        background-image: url('../images/nitro/nitro-n-dark.svg');
+        background-image: url("../images/nitro/nitro-n-dark.svg");
     }
 
     &.icon-nitro-light,
@@ -24,691 +24,769 @@
     }
 
     &.icon-catalog {
-        background-image: url('../images/toolbar/icons/catalog.png');
+        background-image: url("../images/toolbar/icons/catalog.png");
         width: 37px;
         height: 36px;
     }
 
     &.icon-rooms {
-        background-image: url('../images/toolbar/icons/rooms.png');
+        background-image: url("../images/toolbar/icons/rooms.png");
         width: 44px;
         height: 30px;
     }
 
     &.icon-house {
-        background-image: url('../images/toolbar/icons/house.png');
+        background-image: url("../images/toolbar/icons/house.png");
         height: 30px;
         width: 32px;
     }
 
     &.icon-inventory {
-        background-image: url('../images/toolbar/icons/inventory.png');
+        background-image: url("../images/toolbar/icons/inventory.png");
         height: 41px;
         width: 44px;
     }
 
     &.icon-modtools {
-        background-image: url('../images/toolbar/icons/modtools.png');
+        background-image: url("../images/toolbar/icons/modtools.png");
         height: 34px;
         width: 29px;
     }
 
     &.icon-friendall {
-        background-image: url('../images/toolbar/icons/friend_all.png');
+        background-image: url("../images/toolbar/icons/friend_all.png");
         height: 33px;
         width: 32px;
     }
 
     &.icon-friendsearch {
-        background-image: url('../images/toolbar/icons/friend_search.png');
+        background-image: url("../images/toolbar/icons/friend_search.png");
         height: 33px;
         width: 29px;
     }
 
     &.icon-sendmessage {
-        background-image: url('../images/toolbar/icons/sendmessage.png');
+        background-image: url("../images/toolbar/icons/sendmessage.png");
         width: 20px;
         height: 21px;
     }
 
     &.icon-me-talents {
-        background-image: url('../images/toolbar/icons/me-menu/talents.png');
+        background-image: url("../images/toolbar/icons/me-menu/talents.png");
         width: 32px;
         height: 30px;
     }
 
     &.icon-me-helper-tool {
-        background-image: url('../images/toolbar/icons/me-menu/helper-tool.png');
+        background-image: url("../images/toolbar/icons/me-menu/helper-tool.png");
         width: 32px;
         height: 30px;
     }
 
     &.icon-me-profile {
-        background-image: url('../images/toolbar/icons/me-menu/profile.png');
+        background-image: url("../images/toolbar/icons/me-menu/profile.png");
         width: 32px;
         height: 30px;
     }
 
     &.icon-me-forums {
-        background-image: url('../images/toolbar/icons/me-menu/forums.png');
+        background-image: url("../images/toolbar/icons/me-menu/forums.png");
         width: 32px;
         height: 30px;
     }
 
     &.icon-me-rooms {
-        background-image: url('../images/toolbar/icons/me-menu/my-rooms.png');
+        background-image: url("../images/toolbar/icons/me-menu/my-rooms.png");
         width: 30px;
         height: 30px;
     }
 
     &.icon-me-achievements {
-        background-image: url('../images/toolbar/icons/me-menu/achievements.png');
+        background-image: url("../images/toolbar/icons/me-menu/achievements.png");
         width: 31px;
         height: 30px;
     }
 
     &.icon-me-clothing {
-        background-image: url('../images/toolbar/icons/me-menu/clothing.png');
+        background-image: url("../images/toolbar/icons/me-menu/clothing.png");
         width: 27px;
         height: 30px;
     }
 
     &.icon-me-settings {
-        background-image: url('../images/toolbar/icons/me-menu/cog.png');
+        background-image: url("../images/toolbar/icons/me-menu/cog.png");
         width: 28px;
         height: 34px;
     }
 
     &.icon-cog {
-        background: url('../images/icons/icon_cog.png');
+        background: url("../images/icons/icon_cog.png");
         width: 14px;
         height: 15px;
     }
 
     &.icon-help {
-        background: url('../images/icons/help.png');
+        background: url("../images/icons/help.png");
         width: 13px;
         height: 23px;
     }
 
     &.icon-joinroom {
-        background-image: url('../images/toolbar/icons/joinroom.png');
+        background-image: url("../images/toolbar/icons/joinroom.png");
         width: 21px;
         height: 21px;
     }
 
     &.icon-habbo {
-        background-image: url('../images/toolbar/icons/habbo.png');
+        background-image: url("../images/toolbar/icons/habbo.png");
         width: 28px;
         height: 28px;
     }
 
     &.icon-camera {
-        background-image: url('../images/toolbar/icons/camera.png');
+        background-image: url("../images/toolbar/icons/camera.png");
         width: 38px;
         height: 45px;
     }
 
     &.icon-message {
-        background-image: url('../images/toolbar/icons/message.png');
+        background-image: url("../images/toolbar/icons/message.png");
         width: 36px;
         height: 32px;
 
         &.is-unseen {
-            background-image: url('../images/toolbar/icons/message_unsee.gif');
+            background-image: url("../images/toolbar/icons/message_unsee.gif");
         }
     }
 
     &.icon-deny {
-        background: url('../images/icons/deny.png');
+        background: url("../images/icons/deny.png");
         width: 13px;
         height: 14px;
     }
 
     &.icon-accept {
-        background: url('../images/icons/accept.png');
+        background: url("../images/icons/accept.png");
         width: 13px;
         height: 14px;
     }
 
     &.icon-wired-trigger {
-        background-image: url('../images/wired/icon_trigger.png');
+        background-image: url("../images/wired/icon_trigger.png");
         width: 13px;
         height: 14px;
     }
 
     &.icon-wired-condition {
-        background-image: url('../images/wired/icon_condition.png');
+        background-image: url("../images/wired/icon_condition.png");
         width: 13px;
         height: 14px;
     }
 
     &.icon-wired-action {
-        background-image: url('../images/wired/icon_action.png');
+        background-image: url("../images/wired/icon_action.png");
         width: 13px;
         height: 14px;
     }
 
     &.arrow-left-icon {
-        background-image: url('../images/avatareditor/arrow-left-icon.png');
+        background-image: url("../images/avatareditor/arrow-left-icon.png");
         width: 28px;
         height: 21px;
     }
 
     &.arrow-right-icon {
-        background-image: url('../images/avatareditor/arrow-right-icon.png');
+        background-image: url("../images/avatareditor/arrow-right-icon.png");
         width: 28px;
         height: 21px;
     }
 
     &.clear-icon {
-        background-image: url('../images/avatareditor/clear-icon.png');
+        background-image: url("../images/avatareditor/clear-icon.png");
         width: 27px;
         height: 27px;
     }
 
     &.ca-icon {
-        background-image: url('../images/avatareditor/ca-icon.png');
+        background-image: url("../images/avatareditor/ca-icon.png");
         width: 25px;
         height: 25px;
 
         &.selected {
-            background-image: url('../images/avatareditor/ca-selected-icon.png');
+            background-image: url("../images/avatareditor/ca-selected-icon.png");
         }
     }
 
     &.cc-icon {
-        background-image: url('../images/avatareditor/cc-icon.png');
+        background-image: url("../images/avatareditor/cc-icon.png");
         width: 31px;
         height: 29px;
 
         &.selected {
-            background-image: url('../images/avatareditor/cc-selected-icon.png');
+            background-image: url("../images/avatareditor/cc-selected-icon.png");
         }
     }
 
     &.ch-icon {
-        background-image: url('../images/avatareditor/ch-icon.png');
+        background-image: url("../images/avatareditor/ch-icon.png");
         width: 29px;
         height: 24px;
 
         &.selected {
-            background-image: url('../images/avatareditor/ch-selected-icon.png');
+            background-image: url("../images/avatareditor/ch-selected-icon.png");
         }
     }
 
     &.cp-icon {
-        background-image: url('../images/avatareditor/cp-icon.png');
+        background-image: url("../images/avatareditor/cp-icon.png");
         width: 30px;
         height: 24px;
 
         &.selected {
-            background-image: url('../images/avatareditor/cp-selected-icon.png');
+            background-image: url("../images/avatareditor/cp-selected-icon.png");
         }
     }
 
     &.ea-icon {
-        background-image: url('../images/avatareditor/ea-icon.png');
+        background-image: url("../images/avatareditor/ea-icon.png");
         width: 35px;
         height: 16px;
 
         &.selected {
-            background-image: url('../images/avatareditor/ea-selected-icon.png');
+            background-image: url("../images/avatareditor/ea-selected-icon.png");
         }
     }
 
     &.fa-icon {
-        background-image: url('../images/avatareditor/fa-icon.png');
+        background-image: url("../images/avatareditor/fa-icon.png");
         width: 27px;
         height: 20px;
 
         &.selected {
-            background-image: url('../images/avatareditor/fa-selected-icon.png');
+            background-image: url("../images/avatareditor/fa-selected-icon.png");
         }
     }
 
     &.female-icon {
-        background-image: url('../images/avatareditor/female-icon.png');
+        background-image: url("../images/avatareditor/female-icon.png");
         width: 18px;
         height: 27px;
 
         &.selected {
-            background-image: url('../images/avatareditor/female-selected-icon.png');
+            background-image: url("../images/avatareditor/female-selected-icon.png");
         }
     }
 
     &.ha-icon {
-        background-image: url('../images/avatareditor/ha-icon.png');
+        background-image: url("../images/avatareditor/ha-icon.png");
         width: 25px;
         height: 22px;
 
         &.selected {
-            background-image: url('../images/avatareditor/ha-selected-icon.png');
+            background-image: url("../images/avatareditor/ha-selected-icon.png");
         }
     }
 
     &.he-icon {
-        background-image: url('../images/avatareditor/he-icon.png');
+        background-image: url("../images/avatareditor/he-icon.png");
         width: 31px;
         height: 27px;
 
         &.selected {
-            background-image: url('../images/avatareditor/he-selected-icon.png');
+            background-image: url("../images/avatareditor/he-selected-icon.png");
         }
     }
 
     &.hr-icon {
-        background-image: url('../images/avatareditor/hr-icon.png');
+        background-image: url("../images/avatareditor/hr-icon.png");
         width: 29px;
         height: 25px;
 
         &.selected {
-            background-image: url('../images/avatareditor/hr-selected-icon.png');
+            background-image: url("../images/avatareditor/hr-selected-icon.png");
         }
     }
 
     &.lg-icon {
-        background-image: url('../images/avatareditor/lg-icon.png');
+        background-image: url("../images/avatareditor/lg-icon.png");
         width: 19px;
         height: 20px;
 
         &.selected {
-            background-image: url('../images/avatareditor/lg-selected-icon.png');
+            background-image: url("../images/avatareditor/lg-selected-icon.png");
         }
     }
 
     &.loading-icon {
-        background-image: url('../images/icons/loading-icon.png');
+        background-image: url("../images/icons/loading-icon.png");
         width: 17px;
         height: 21px;
     }
 
     &.male-icon {
-        background-image: url('../images/avatareditor/male-icon.png');
+        background-image: url("../images/avatareditor/male-icon.png");
         width: 21px;
         height: 21px;
 
         &.selected {
-            background-image: url('../images/avatareditor/male-selected-icon.png');
+            background-image: url("../images/avatareditor/male-selected-icon.png");
         }
     }
 
     &.sh-icon {
-        background-image: url('../images/avatareditor/sh-icon.png');
+        background-image: url("../images/avatareditor/sh-icon.png");
         width: 37px;
         height: 10px;
 
         &.selected {
-            background-image: url('../images/avatareditor/sh-selected-icon.png');
+            background-image: url("../images/avatareditor/sh-selected-icon.png");
         }
     }
 
     &.wa-icon {
-        background-image: url('../images/avatareditor/wa-icon.png');
+        background-image: url("../images/avatareditor/wa-icon.png");
         width: 36px;
         height: 18px;
 
         &.selected {
-            background-image: url('../images/avatareditor/wa-selected-icon.png');
+            background-image: url("../images/avatareditor/wa-selected-icon.png");
         }
     }
 
     &.sellable-icon {
-        background-image: url('../images/avatareditor/sellable-icon.png');
+        background-image: url("../images/avatareditor/sellable-icon.png");
         width: 17px;
         height: 15px;
     }
 
     &.chatstyles-icon {
-        background-image: url('../images/chat/styles-icon.png');
+        background-image: url("../images/chat/styles-icon.png");
         width: 17px;
         height: 19px;
     }
 
     &.pencil-icon {
-        background-image: url('../images/infostand/pencil-icon.png');
+        background-image: url("../images/infostand/pencil-icon.png");
         width: 17px;
         height: 18px;
     }
 
     &.trade-locked-icon {
-        background-image: url('../images/inventory/trading/locked-icon.png');
+        background-image: url("../images/inventory/trading/locked-icon.png");
         width: 29px;
         height: 43px;
     }
 
     &.trade-unlocked-icon {
-        background-image: url('../images/inventory/trading/unlocked-icon.png');
+        background-image: url("../images/inventory/trading/unlocked-icon.png");
         width: 29px;
         height: 43px;
     }
 
     &.modtool-room-icon {
-        background-image: url('../images/modtool/room.png');
+        background-image: url("../images/modtool/room.png");
         width: 20px;
         height: 15px;
     }
 
     &.modtool-chatlog-icon {
-        background-image: url('../images/modtool/chatlog.gif');
+        background-image: url("../images/modtool/chatlog.gif");
         width: 20px;
         height: 15px;
     }
 
-    &.modtool-user-icon{
-        background-image: url('../images/modtool/user.gif');
+    &.modtool-user-icon {
+        background-image: url("../images/modtool/user.gif");
         width: 20px;
         height: 15px;
     }
 
     &.modtool-reports-icon {
-        background-image: url('../images/modtool/reports.png');
+        background-image: url("../images/modtool/reports.png");
         width: 20px;
         height: 15px;
     }
 
     &.modtool-wrench-icon {
-        background-image: url('../images/modtool/wrench.gif');
+        background-image: url("../images/modtool/wrench.gif");
         width: 20px;
         height: 15px;
     }
 
     &.modtool-key-icon {
-        background-image: url('../images/modtool/key.gif');
+        background-image: url("../images/modtool/key.gif");
         width: 20px;
         height: 15px;
     }
 
     &.icon-catalogue-hc_small {
-        background-image: url('../images/catalog/hc_small.png');
+        background-image: url("../images/catalog/hc_small.png");
         height: 17px;
         width: 31px;
     }
 
     &.icon-catalogue-hc_big {
-        background: url('../images/catalog/hc_big.png');
+        background: url("../images/catalog/hc_big.png");
         width: 68px;
         height: 40px;
     }
 
     &.icon-sign-exclamation {
-        background: url('../images/icons/sign-exclamation.png');
+        background: url("../images/icons/sign-exclamation.png");
         width: 7px;
         height: 17px;
     }
 
     &.icon-sign-heart {
-        background: url('../images/icons/sign-heart.png');
+        background: url("../images/icons/sign-heart.png");
         width: 15px;
         height: 13px;
     }
 
     &.icon-sign-red {
-        background: url('../images/icons/sign-red.png');
+        background: url("../images/icons/sign-red.png");
         width: 11px;
         height: 19px;
     }
 
     &.icon-sign-yellow {
-        background: url('../images/icons/sign-yellow.png');
+        background: url("../images/icons/sign-yellow.png");
         width: 11px;
         height: 19px;
     }
 
     &.icon-sign-skull {
-        background: url('../images/icons/sign-skull.png');
+        background: url("../images/icons/sign-skull.png");
         width: 12px;
         height: 12px;
     }
 
     &.icon-sign-smile {
-        background: url('../images/icons/sign-smile.png');
+        background: url("../images/icons/sign-smile.png");
         width: 7px;
         height: 14px;
     }
-    
+
     &.icon-sign-soccer {
-        background: url('../images/icons/sign-soccer.png');
+        background: url("../images/icons/sign-soccer.png");
         width: 20px;
         height: 20px;
     }
-    
+
     &.icon-house-small {
-        background: url('../images/icons/house-small.png');
+        background: url("../images/icons/house-small.png");
         width: 19px;
         height: 14px;
     }
 
     &.icon-camera-small {
-        background: url('../images/icons/camera-small.png');
+        background: url("../images/icons/camera-small.png");
         width: 17px;
         height: 15px;
     }
 
     &.icon-arrows {
-        background: url('../images/icons/arrows.png');
+        background: url("../images/icons/arrows.png");
         width: 17px;
         height: 15px;
     }
-    
+
     &.icon-fb-profile {
-        background: url('../images/toolbar/icons/friend-bar/profile.png');
+        background: url("../images/toolbar/icons/friend-bar/profile.png");
         width: 21px;
         height: 21px;
     }
 
     &.icon-camera-colormatrix {
-        background: url('../images/icons/camera-colormatrix.png');
+        background: url("../images/icons/camera-colormatrix.png");
         width: 32px;
         height: 21px;
     }
 
     &.icon-camera-composite {
-        background: url('../images/icons/camera-composite.png');
+        background: url("../images/icons/camera-composite.png");
         width: 32px;
         height: 21px;
     }
 
     &.icon-user-profile {
-        background: url('../images/icons/user-profile.png');
+        background: url("../images/icons/user-profile.png");
         width: 13px;
         height: 11px;
 
         &:hover {
-            background: url('../images/icons/user-profile-hover.png');
+            background: url("../images/icons/user-profile-hover.png");
         }
     }
 
     &.icon-fb-profile {
-        background: url('../images/toolbar/icons/friend-bar/profile.png');
+        background: url("../images/toolbar/icons/friend-bar/profile.png");
         width: 21px;
         height: 21px;
     }
 
     &.icon-fb-chat {
-        background: url('../images/toolbar/icons/friend-bar/chat.png');
+        background: url("../images/toolbar/icons/friend-bar/chat.png");
         width: 20px;
         height: 21px;
     }
 
     &.icon-fb-visit {
-        background: url('../images/toolbar/icons/friend-bar/visit.png');
+        background: url("../images/toolbar/icons/friend-bar/visit.png");
         width: 21px;
         height: 21px;
     }
 
     &.icon-pf-online {
-        background: url('../images/profile/icons/online.gif');
+        background: url("../images/profile/icons/online.gif");
         width: 40px;
         height: 16px;
     }
 
     &.icon-pf-offline {
-        background: url('../images/profile/icons/offline.png');
+        background: url("../images/profile/icons/offline.png");
         width: 39px;
         height: 16px;
     }
 
     &.icon-pf-tick {
-        background: url('../images/profile/icons/tick.png');
+        background: url("../images/profile/icons/tick.png");
         width: 11px;
         height: 10px;
     }
 
     &.icon-relationship-none {
-        background: url('../images/friendlist/icons/icon_relationship_none.png');
+        background: url("../images/friendlist/icons/icon_relationship_none.png");
         width: 16px;
         height: 14px;
     }
 
     &.icon-relationship-heart {
-        background: url('../images/profile/icons/heart.png');
+        background: url("../images/profile/icons/heart.png");
         width: 16px;
         height: 14px;
     }
 
     &.icon-relationship-bobba {
-        background: url('../images/profile/icons/bobba.png');
+        background: url("../images/profile/icons/bobba.png");
         width: 16px;
         height: 14px;
     }
 
     &.icon-relationship-smile {
-        background: url('../images/profile/icons/smile.png');
+        background: url("../images/profile/icons/smile.png");
         width: 16px;
         height: 14px;
     }
 
     &.icon-group-type-0 {
-        background: url('../images/groups/icons/grouptype_icon_0.png');
+        background: url("../images/groups/icons/grouptype_icon_0.png");
         width: 16px;
         height: 16px;
     }
 
     &.icon-group-type-1 {
-        background: url('../images/groups/icons/grouptype_icon_1.png');
+        background: url("../images/groups/icons/grouptype_icon_1.png");
         width: 16px;
         height: 16px;
     }
 
     &.icon-group-type-2 {
-        background: url('../images/groups/icons/grouptype_icon_2.png');
+        background: url("../images/groups/icons/grouptype_icon_2.png");
         width: 16px;
         height: 16px;
     }
 
     &.icon-group-decorate {
-        background: url('../images/groups/icons/group_decorate_icon.png');
+        background: url("../images/groups/icons/group_decorate_icon.png");
         width: 15px;
         height: 15px;
     }
 
     &.icon-group-member {
-        background: url('../images/groups/icons/group_icon_big_member.png');
+        background: url("../images/groups/icons/group_icon_big_member.png");
         width: 20px;
         height: 20px;
     }
 
     &.icon-group-admin {
-        background: url('../images/groups/icons/group_icon_big_admin.png');
+        background: url("../images/groups/icons/group_icon_big_admin.png");
         width: 20px;
         height: 20px;
     }
 
     &.icon-group-owner {
-        background: url('../images/groups/icons/group_icon_big_owner.png');
+        background: url("../images/groups/icons/group_icon_big_owner.png");
         width: 20px;
         height: 20px;
     }
 
     &.icon-group-favorite {
-        background: url('../images/groups/icons/group_favorite.png');
+        background: url("../images/groups/icons/group_favorite.png");
         width: 14px;
         height: 14px;
     }
 
     &.icon-group-not-favorite {
-        background: url('../images/groups/icons/group_notfavorite.png');
+        background: url("../images/groups/icons/group_notfavorite.png");
         width: 14px;
         height: 14px;
     }
 
     &.icon-group-small-admin {
-        background: url('../images/groups/icons/group_icon_admin.png');
+        background: url("../images/groups/icons/group_icon_admin.png");
         width: 11px;
         height: 13px;
     }
 
     &.icon-group-small-not-admin {
-        background: url('../images/groups/icons/group_icon_not_admin.png');
+        background: url("../images/groups/icons/group_icon_not_admin.png");
         width: 11px;
         height: 13px;
     }
 
     &.icon-group-small-owner {
-        background: url('../images/groups/icons/group_icon_small_owner.png');
+        background: url("../images/groups/icons/group_icon_small_owner.png");
         width: 13px;
         height: 13px;
     }
 
     &.icon-navigator-info {
-        background: url('../images/navigator/icons/info.png');
+        background: url("../images/navigator/icons/info.png");
         width: 18px;
         height: 18px;
     }
 
     &.icon-navigator-room-locked {
-        background: url('../images/navigator/icons/room_locked.png');
+        background: url("../images/navigator/icons/room_locked.png");
         width: 13px;
         height: 16px;
     }
 
     &.icon-navigator-room-password {
-        background: url('../images/navigator/icons/room_password.png');
+        background: url("../images/navigator/icons/room_password.png");
         width: 13px;
         height: 16px;
     }
 
     &.icon-navigator-room-invisible {
-        background: url('../images/navigator/icons/room_invisible.png');
+        background: url("../images/navigator/icons/room_invisible.png");
         width: 13px;
         height: 16px;
     }
 
     &.icon-navigator-room-group {
-        background: url('../images/navigator/icons/room_group.png');
+        background: url("../images/navigator/icons/room_group.png");
         width: 13px;
         height: 11px;
     }
 
     &.icon-friendlist-follow {
-        background: url('../images/friendlist/icons/icon_follow.png');
+        background: url("../images/friendlist/icons/icon_follow.png");
         width: 16px;
         height: 14px;
     }
 
     &.icon-friendlist-chat {
-        background: url('../images/friendlist/icons/icon_chat.png');
+        background: url("../images/friendlist/icons/icon_chat.png");
         width: 17px;
         height: 16px;
     }
 
     &.icon-friendlist-warning {
-        background: url('../images/friendlist/icons/icon_warning.png');
+        background: url("../images/friendlist/icons/icon_warning.png");
         width: 23px;
         height: 21px;
     }
 
     &.icon-friendlist-new-message {
-        background: url('../images/friendlist/icons/icon_new_message.png');
+        background: url("../images/friendlist/icons/icon_new_message.png");
         width: 14px;
         height: 16px;
     }
 
     &.icon-hc-banner {
-        background: url('../images/catalog/hc_big.png');
+        background: url("../images/catalog/hc_big.png");
         width: 68px;
         height: 40px;
+    }
+
+    &.icon-set-tile {
+        background-image: url("../images/floorplaneditor/icon-tile-set.png");
+        width: 40px;
+        height: 40px;
+    }
+
+    &.icon-unset-tile {
+        background-image: url("../images/floorplaneditor/icon-tile-unset.png");
+        width: 40px;
+        height: 40px;
+    }
+
+    &.icon-increase-height {
+        background-image: url("../images/floorplaneditor/icon-tile-up.png");
+        width: 40px;
+        height: 40px;
+    }
+
+    &.icon-decrease-height {
+        background-image: url("../images/floorplaneditor/icon-tile-down.png");
+        width: 40px;
+        height: 40px;
+    }
+
+    &.icon-set-door {
+        background-image: url("../images/floorplaneditor/icon-door.png");
+        width: 40px;
+        height: 40px;
+    }
+
+    &.icon-door-direction-0 {
+        background-image: url("../images/floorplaneditor/door-direction-0.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-1 {
+        background-image: url("../images/floorplaneditor/door-direction-1.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-2 {
+        background-image: url("../images/floorplaneditor/door-direction-2.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-3 {
+        background-image: url("../images/floorplaneditor/door-direction-3.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-4 {
+        background-image: url("../images/floorplaneditor/door-direction-4.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-5 {
+        background-image: url("../images/floorplaneditor/door-direction-5.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-6 {
+        background-image: url("../images/floorplaneditor/door-direction-6.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-7 {
+        background-image: url("../images/floorplaneditor/door-direction-7.png");
+        width: 80px;
+        height: 45px;
     }
 
     &.spin {

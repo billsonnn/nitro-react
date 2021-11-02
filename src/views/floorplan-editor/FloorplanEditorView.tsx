@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../api';
 import { FloorplanEditorEvent } from '../../events/floorplan-editor/FloorplanEditorEvent';
 import { CreateMessageHook, SendMessageHook, useUiEvent } from '../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutGrid, NitroLayoutGridColumn } from '../../layout';
 import { FloorplanEditor } from './common/FloorplanEditor';
 import { convertNumbersForSaving, convertSettingToNumber } from './common/Utils';
 import { FloorplanEditorContextProvider } from './context/FloorplanEditorContext';
@@ -89,14 +89,14 @@ export const FloorplanEditorView: FC<{}> = props =>
             {isVisible &&
                 <NitroCardView className="nitro-floorplan-editor">
                     <NitroCardHeaderView headerText={LocalizeText('floor.plan.editor.title')} onCloseClick={() => setIsVisible(false)} />
-                    <NitroCardContentView className="text-black">
-                        <FloorplanOptionsView />
-                        <div className="row">
-                            <div className="col">
+                    <NitroCardContentView>
+                        <NitroLayoutGrid>
+                            <NitroLayoutGridColumn size={ 12 }>
+                                <FloorplanOptionsView />
                                 <FloorplanCanvasView />
-                            </div>
-                        </div>
-                        <div className="row justify-content-between mt-2">
+                            </NitroLayoutGridColumn>
+                        </NitroLayoutGrid>
+                        {/* <div className="row justify-content-between mt-2">
                             <div className="btn-group col-auto">
                                 <button className="btn btn-primary">{LocalizeText('floor.plan.editor.reload')}</button>
                             </div>
@@ -105,7 +105,7 @@ export const FloorplanEditorView: FC<{}> = props =>
                                 <button className="btn btn-primary">{LocalizeText('floor.plan.editor.import.export')}</button>
                                 <button className="btn btn-primary" onClick={saveFloorChanges}>{LocalizeText('floor.plan.editor.save')}</button>
                             </div>
-                        </div>
+                        </div> */}
                     </NitroCardContentView>
                 </NitroCardView>
             }
