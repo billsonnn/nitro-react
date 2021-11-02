@@ -1,8 +1,8 @@
-import { FloorHeightMapEvent, NitroPoint, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
+import { FloorHeightMapEvent, NitroPoint, RoomEngineEvent, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../api';
 import { FloorplanEditorEvent } from '../../events/floorplan-editor/FloorplanEditorEvent';
-import { CreateMessageHook, SendMessageHook, useUiEvent } from '../../hooks';
+import { CreateMessageHook, SendMessageHook, useRoomEngineEvent, useUiEvent } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFlex, NitroLayoutGrid, NitroLayoutGridColumn } from '../../layout';
 import { FloorplanEditor } from './common/FloorplanEditor';
 import { convertNumbersForSaving, convertSettingToNumber } from './common/Utils';
@@ -49,6 +49,13 @@ export const FloorplanEditorView: FC<{}> = props =>
     {
         FloorplanEditor.instance.initialize();
     }, []);
+
+    const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
+    {
+        setIsVisible(false);
+    }, []);
+
+    useRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
 
     const onFloorHeightMapEvent = useCallback((event: FloorHeightMapEvent) =>
     {
