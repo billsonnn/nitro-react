@@ -1,7 +1,7 @@
 import { UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../api';
-import { SendMessageHook } from '../../../hooks';
+import { SendMessageHook, UseMountEffect } from '../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFlex, NitroLayoutGridColumn } from '../../../layout';
 import { convertNumbersForSaving } from '../common/Utils';
 import { useFloorplanEditorContext } from '../context/FloorplanEditorContext';
@@ -36,10 +36,10 @@ export const FloorplanImportExportView: FC<FloorplanImportExportViewProps> = pro
         ));
     }, [map, originalFloorplanSettings.entryPoint, originalFloorplanSettings.entryPointDir, originalFloorplanSettings.thicknessFloor, originalFloorplanSettings.thicknessWall, originalFloorplanSettings.wallHeight]);
 
-    useEffect(() =>
+    UseMountEffect(() =>
     {
         revertChanges();   
-    }, [revertChanges]);
+    });
 
     return (
         <NitroCardView simple={true} className="floorplan-import-export">

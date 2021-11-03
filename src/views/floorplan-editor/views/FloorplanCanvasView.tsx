@@ -1,6 +1,6 @@
 import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, NitroPoint, RoomEntryTileMessageEvent, RoomOccupiedTilesMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { CreateMessageHook, SendMessageHook } from '../../../hooks';
+import { CreateMessageHook, SendMessageHook, UseMountEffect } from '../../../hooks';
 import { FloorplanEditor } from '../common/FloorplanEditor';
 import { useFloorplanEditorContext } from '../context/FloorplanEditorContext';
 
@@ -13,17 +13,20 @@ export const FloorplanCanvasView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        SendMessageHook(new GetRoomEntryTileMessageComposer());
-        SendMessageHook(new GetOccupiedTilesMessageComposer());
-        FloorplanEditor.instance.tilemapRenderer.interactive = true;
-        elementRef.current.appendChild(FloorplanEditor.instance.renderer.view);
-
         return ( () =>
         {
             FloorplanEditor.instance.clear();
             setVisualizationSettings( prev => {return { wallHeight: originalFloorplanSettings.wallHeight, thicknessWall: originalFloorplanSettings.thicknessWall, thicknessFloor: originalFloorplanSettings.thicknessFloor, entryPointDir: prev.entryPointDir } }); 
         });
     }, [originalFloorplanSettings.thicknessFloor, originalFloorplanSettings.thicknessWall, originalFloorplanSettings.wallHeight, setVisualizationSettings]);
+
+    UseMountEffect(() =>
+    {
+        SendMessageHook(new GetRoomEntryTileMessageComposer());
+        SendMessageHook(new GetOccupiedTilesMessageComposer());
+        FloorplanEditor.instance.tilemapRenderer.interactive = true;
+        elementRef.current.appendChild(FloorplanEditor.instance.renderer.view);
+    });
 
     const onRoomOccupiedTilesMessageEvent = useCallback((event: RoomOccupiedTilesMessageEvent) =>
     {

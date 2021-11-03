@@ -1,8 +1,8 @@
 import { FloorHeightMapEvent, NitroPoint, RoomEngineEvent, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../api';
 import { FloorplanEditorEvent } from '../../events/floorplan-editor/FloorplanEditorEvent';
-import { CreateMessageHook, SendMessageHook, useRoomEngineEvent, useUiEvent } from '../../hooks';
+import { CreateMessageHook, SendMessageHook, UseMountEffect, useRoomEngineEvent, useUiEvent } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFlex, NitroLayoutGrid, NitroLayoutGridColumn } from '../../layout';
 import { FloorplanEditor } from './common/FloorplanEditor';
 import { convertNumbersForSaving, convertSettingToNumber } from './common/Utils';
@@ -45,10 +45,10 @@ export const FloorplanEditorView: FC<{}> = props =>
     useUiEvent(FloorplanEditorEvent.SHOW_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
     useUiEvent(FloorplanEditorEvent.TOGGLE_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
 
-    useEffect(() =>
+    UseMountEffect(() =>
     {
         FloorplanEditor.instance.initialize();
-    }, []);
+    });
 
     const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
     {
@@ -121,7 +121,7 @@ export const FloorplanEditorView: FC<{}> = props =>
     return (
         <>
             <FloorplanEditorContextProvider value={{ originalFloorplanSettings: originalFloorplanSettings, setOriginalFloorplanSettings: setOriginalFloorplanSettings, visualizationSettings: visualizationSettings, setVisualizationSettings: setVisualizationSettings }}>
-                {isVisible && <>
+                {isVisible &&
                     <NitroCardView className="nitro-floorplan-editor">
                         <NitroCardHeaderView headerText={LocalizeText('floor.plan.editor.title')} onCloseClick={() => setIsVisible(false)} />
                         <NitroCardContentView>
@@ -143,9 +143,8 @@ export const FloorplanEditorView: FC<{}> = props =>
                             </NitroLayoutGrid>
                         </NitroCardContentView>
                     </NitroCardView>
-                    {importExportVisible && <FloorplanImportExportView onCloseClick={ () => setImportExportVisible(false)}/>}
-                    </>
                 }
+                {importExportVisible && <FloorplanImportExportView onCloseClick={ () => setImportExportVisible(false)}/>}
             </FloorplanEditorContextProvider>
         </>
     );
