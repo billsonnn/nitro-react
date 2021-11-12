@@ -1,8 +1,9 @@
 .youtube-tv-widget {
     width: 600px;
+    height: 380px;
 
     .youtube-video-container {
-        min-height: 366px;
+        //min-height: 366px;
         
         .empty-video {
             background-color: black;
@@ -46,7 +47,8 @@
         }
 
         .playlist-grid {
-            height: 315px;
+            height: 100%;
+            width: 100%;
         }
     }
 }
