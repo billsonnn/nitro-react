@@ -29,6 +29,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     const [ unseenInventoryCount, setUnseenInventoryCount ] = useState(0);
     const [ unseenAchievementCount, setUnseenAchievementCount ] = useState(0);
 
+    const isMod = GetSessionDataManager().isModerator;
     const unseenFriendListCount = 0;
 
     const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
@@ -200,9 +201,10 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                             <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CAMERA_ITEM) }>
                                 <i className="icon icon-camera"></i>
                             </div>) }
-                        <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.MOD_TOOLS_ITEM) }>
+                        { isMod && (
+                            <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.MOD_TOOLS_ITEM) }>
                             <i className="icon icon-modtools"></i>
-                        </div>
+                        </div>) }
                     </div>
                     <div id="toolbar-chat-input-container" className="d-flex align-items-center" />
                 </div>

@@ -3,6 +3,10 @@
     padding-top: $container-padding-x;
     padding-bottom: $container-padding-x;
     overflow: auto;
+
+    &.theme-dark {
+        background-color: #1C323F !important;
+    }
 }
 
 @include media-breakpoint-down(lg) {

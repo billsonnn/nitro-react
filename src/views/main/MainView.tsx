@@ -7,6 +7,7 @@ import { AchievementsView } from '../achievements/AchievementsView';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CameraWidgetView } from '../camera/CameraWidgetView';
 import { CatalogView } from '../catalog/CatalogView';
+import { ChatHistoryView } from '../chat-history/ChatHistoryView';
 import { FriendsView } from '../friends/FriendsView';
 import { GroupsView } from '../groups/GroupsView';
 import { HelpView } from '../help/HelpView';
@@ -58,6 +59,7 @@ export const MainView: FC<MainViewProps> = props =>
             <ToolbarView isInRoom={ !landingViewVisible } />
             <ModToolsView />
             <RoomHostView />
+            <ChatHistoryView />
             <WiredView />
             <AvatarEditorView />
             <AchievementsView />

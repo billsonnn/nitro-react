@@ -1,0 +1,27 @@
+.nitro-chat-history
+{
+    width: 300px;
+
+    .chat-history-content
+    {
+
+        .chat-history-container
+        {
+            min-height: 200px;
+
+            .chat-history-list
+            {
+                .chathistory-entry
+                {
+                    .light {
+                        background-color: #121f27;
+                    }
+
+                    .dark {
+                        background-color: #0d171d;
+                    }
+                }
+            }
+        }
+    }
+}
