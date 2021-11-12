@@ -4,6 +4,7 @@
     "camera.url": "https://nitro.nitrots.co/camera",
     "thumbnails.url": "https://nitro.nitrots.co/camera/thumbnail/%thumbnail%.png",
     "url.prefix": "http://localhost:3000",
+    "floorplan.tile.url": "${asset.url}/floorplan-editor/tiles.json",
     "chat.viewer.height.percentage": 0.40,
     "widget.dimmer.colorwheel": false,
     "hotelview": {

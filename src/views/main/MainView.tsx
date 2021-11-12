@@ -8,6 +8,7 @@ import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CameraWidgetView } from '../camera/CameraWidgetView';
 import { CatalogView } from '../catalog/CatalogView';
 import { ChatHistoryView } from '../chat-history/ChatHistoryView';
+import { FloorplanEditorView } from '../floorplan-editor/FloorplanEditorView';
 import { FriendsView } from '../friends/FriendsView';
 import { GroupsView } from '../groups/GroupsView';
 import { HelpView } from '../help/HelpView';
@@ -73,6 +74,7 @@ export const MainView: FC<MainViewProps> = props =>
             <GroupsView />
             <CameraWidgetView />
             <HelpView />
+            <FloorplanEditorView />
         </div>
     );
 }

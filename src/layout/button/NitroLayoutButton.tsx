@@ -7,7 +7,7 @@ export const NitroLayoutButton: FC<NitroLayoutButtonProps> = props =>
 
     const getClassName = useMemo(() =>
     {
-        let newClassName = 'btn';
+        let newClassName = 'd-flex justify-content-center align-items-center btn';
 
         if(variant && variant.length) newClassName += ` btn-${ variant }`;
 
