@@ -1,4 +1,4 @@
-import { RoomInfoEvent, RoomSessionChatEvent, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { GetGuestRoomResultEvent, RoomSessionChatEvent, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomSession } from '../../api';
 import { CreateMessageHook, useRoomSessionManagerEvent } from '../../hooks';
@@ -77,7 +77,7 @@ export const ChatHistoryMessageHandler: FC<{}> = props =>
     useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
     useRoomSessionManagerEvent(RoomSessionEvent.STARTED, onRoomSessionEvent);
 
-    const onRoomInfoEvent = useCallback((event: RoomInfoEvent) =>
+    const onGetGuestRoomResultEvent = useCallback((event: GetGuestRoomResultEvent) =>
     {
         const parser = event.getParser();
 
@@ -101,7 +101,7 @@ export const ChatHistoryMessageHandler: FC<{}> = props =>
         }
     }, [addChatEntry, addRoomHistoryEntry, needsRoomInsert]);
 
-    CreateMessageHook(RoomInfoEvent, onRoomInfoEvent);
+    CreateMessageHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
     
     return null;
 }
