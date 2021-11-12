@@ -1,75 +1,52 @@
 .youtube-tv-widget {
-    min-width: 600px;
-    
-    .youtube-video-container
-    {
-        min-height: 315px;
-        /*
-        position: relative;
-        overflow: hidden;
+    width: 600px;
 
-        &::after
-        {
-            display: block;
-            content: "";
-            //padding-top: 56.25%;
-        }
-
-        .iframe, object, embed
-        {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        */
-        .empty-video
-        {
+    .youtube-video-container {
+        min-height: 366px;
+        
+        .empty-video {
             background-color: black;
             color: white;
             width: 100%;
             height: 100%;
             text-align: center;
         }
+
+        .youtubeContainer {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            //height: 0;
+            //padding-bottom: 56.25%;
+            overflow: hidden;
+            margin-bottom: 50px;
+        }
+
+        .youtubeContainer iframe {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
     }
 
-    .playlist-container
-    {
+    .playlist-container {
         overflow-y: hidden;
         margin-right: -10px;
-        color:black;
+        color: black;
+        height: 100%;
 
-        .playlist-controls
-        {
+        .playlist-controls {
             width: 100%;
-            .icon
-            {
+            .icon {
                 margin-right: 10px;
                 margin-bottom: 10px;
             }
         }
 
-        .playlist-list
-        {
-            margin-top: 10px;
-            width: 100%;
-            margin-bottom: 5px;
-            height: 100%;
-            overflow-y: scroll;
-
-            .playlist-entry
-            {
-                background-color: beige;
-                width: 100%;
-                height: 50px;
-                border-radius: 0.5px;
-
-                &.selected
-                {
-                    background-color: #40a2c9;
-                }
-            }
+        .playlist-grid {
+            height: 315px;
         }
     }
 }

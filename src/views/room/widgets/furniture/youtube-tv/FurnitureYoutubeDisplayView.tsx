@@ -5,7 +5,7 @@ import { LocalizeText } from '../../../../../api';
 import { RoomWidgetUpdateYoutubeDisplayEvent } from '../../../../../api/nitro/room/widgets/events/RoomWidgetUpdateYoutubeDisplayEvent';
 import { FurnitureYoutubeDisplayWidgetHandler } from '../../../../../api/nitro/room/widgets/handlers/FurnitureYoutubeDisplayWidgetHandler';
 import { BatchUpdates, CreateEventDispatcherHook, CreateMessageHook, SendMessageHook } from '../../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
+import { NitroCardContentView, NitroCardGridItemView, NitroCardGridView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
 import { YoutubeVideoPlaybackStateEnum } from './utils/YoutubeVideoPlaybackStateEnum';
 
@@ -181,8 +181,8 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
         if(!videoStart && !videoEnd)
         {
             return {
-                height: '390',
-                width: '435',
+                height: '375',
+                width: '500',
                 playerVars: {
                     autoplay: 1,
                     disablekb: 1,
@@ -194,8 +194,8 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
         }
        
         return {
-            height: '390',
-            width: '435',
+            height: '375',
+            width: '500',
             playerVars: {
                 autoplay: 1,
                 disablekb: 1,
@@ -217,7 +217,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                 <div className="row w-100 h-100">
                     <div className="youtube-video-container col-9">
                         {(videoId && videoId.length > 0) &&
-                            <YouTube videoId={videoId} opts={getYoutubeOpts as Options} onReady={onReady} onStateChange={onStateChange} />
+                            <YouTube videoId={videoId} opts={getYoutubeOpts as Options} onReady={onReady} onStateChange={onStateChange} containerClassName={'youtubeContainer'} />
                         }
                         {(!videoId || videoId.length === 0) &&
                             <div className="empty-video w-100 h-100 justify-content-center align-items-center d-flex">{LocalizeText('widget.furni.video_viewer.no_videos')}</div>
@@ -229,12 +229,16 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                             <i className="icon icon-youtube-next cursor-pointer" onClick={() => processAction('playlist_next')} />
                         </span>
                         <div className="mb-1">{LocalizeText('widget.furni.video_viewer.playlists')}</div>
-                        <div className="playlist-list">
-                            {playlists && playlists.map(entry =>
+                        <NitroCardGridView columns={1} className="playlist-grid">
+                            {playlists && playlists.map((entry, index) =>
                             {
-                                return <div className={'playlist-entry cursor-pointer ' + (entry.video === selectedItem ? 'selected' : '')} key={entry.video} onClick={() => processAction(entry.video)}><b>{entry.title}</b> - {entry.description}</div>
+                                return (
+                                    <NitroCardGridItemView key={index} onClick={() => processAction(entry.video)} itemActive={entry.video === selectedItem}>
+                                        <b>{entry.title}</b> - {entry.description}
+                                    </NitroCardGridItemView>
+                                )
                             })}
-                        </div>
+                        </NitroCardGridView>
                     </div>
                 </div>
             </NitroCardContentView>
