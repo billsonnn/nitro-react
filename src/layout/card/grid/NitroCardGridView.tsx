@@ -20,7 +20,7 @@ export const NitroCardGridView: FC<NitroCardGridViewProps> = props =>
 
         if(columns && (columns >= 1))
         {
-            newStyle['grid-template-columns'] = 'unset';
+            newStyle.gridTemplateColumns = 'unset';
             newStyle['--bs-columns'] = columns.toString();
         }
 

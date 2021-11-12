@@ -716,6 +716,90 @@
         height: 16px;
     }
 
+    &.icon-hc-banner {
+        background: url("../images/catalog/hc_big.png");
+        width: 68px;
+        height: 40px;
+    }
+
+    &.icon-set-tile {
+        background-image: url("../images/floorplaneditor/icon-tile-set.png");
+        width: 40px;
+        height: 40px;
+    }
+
+    &.icon-unset-tile {
+        background-image: url("../images/floorplaneditor/icon-tile-unset.png");
+        width: 40px;
+        height: 40px;
+    }
+
+    &.icon-increase-height {
+        background-image: url("../images/floorplaneditor/icon-tile-up.png");
+        width: 40px;
+        height: 40px;
+    }
+
+    &.icon-decrease-height {
+        background-image: url("../images/floorplaneditor/icon-tile-down.png");
+        width: 40px;
+        height: 40px;
+    }
+
+    &.icon-set-door {
+        background-image: url("../images/floorplaneditor/icon-door.png");
+        width: 40px;
+        height: 40px;
+    }
+
+    &.icon-door-direction-0 {
+        background-image: url("../images/floorplaneditor/door-direction-0.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-1 {
+        background-image: url("../images/floorplaneditor/door-direction-1.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-2 {
+        background-image: url("../images/floorplaneditor/door-direction-2.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-3 {
+        background-image: url("../images/floorplaneditor/door-direction-3.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-4 {
+        background-image: url("../images/floorplaneditor/door-direction-4.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-5 {
+        background-image: url("../images/floorplaneditor/door-direction-5.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-6 {
+        background-image: url("../images/floorplaneditor/door-direction-6.png");
+        width: 80px;
+        height: 45px;
+    }
+
+    &.icon-door-direction-7 {
+        background-image: url("../images/floorplaneditor/door-direction-7.png");
+        width: 80px;
+        height: 45px;
+    }
+
     &.spin {
         animation: rotating 1s linear infinite;
     }

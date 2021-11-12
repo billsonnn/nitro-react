@@ -1,6 +1,6 @@
 import { INodeData } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { NitroCardGridView } from '../../../../layout';
+import { NitroCardGridView, NitroLayoutFlexColumn } from '../../../../layout';
 import { CatalogSearchView } from '../search/CatalogSearchView';
 import { CatalogNavigationViewProps } from './CatalogNavigationView.types';
 import { CatalogNavigationSetView } from './set/CatalogNavigationSetView';
@@ -24,15 +24,13 @@ export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
     }, [ page ]);
     
     return (
-        <div className="row h-100">
-            <div className="d-flex flex-column col gap-2 h-100">
-                <CatalogSearchView />
-                <div className="d-flex flex-column overflow-hidden nitro-catalog-navigation-grid p-1 h-100">
-                    <NitroCardGridView columns={ 1 } gap={ 1 }>
-                        <CatalogNavigationSetView page={ page } isFirstSet={ true } pendingTree={ pendingTree } setPendingTree={ setPendingTree } />
-                    </NitroCardGridView>
-                </div>
-            </div>
-        </div>
+        <NitroLayoutFlexColumn gap={ 2 } overflow="auto">
+            <CatalogSearchView />
+            <NitroLayoutFlexColumn className="nitro-catalog-navigation-grid-container p-1" overflow="hidden">
+                <NitroCardGridView columns={ 1 } gap={ 1 }>
+                    <CatalogNavigationSetView page={ page } isFirstSet={ true } pendingTree={ pendingTree } setPendingTree={ setPendingTree } />
+                </NitroCardGridView>
+            </NitroLayoutFlexColumn>
+        </NitroLayoutFlexColumn>
     );
 }

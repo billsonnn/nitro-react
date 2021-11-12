@@ -2,6 +2,7 @@ import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespec
 import { GetNitroInstance, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
 import { InventoryTradeRequestEvent, WiredSelectObjectEvent } from '../../../../../events';
 import { FriendsSendFriendRequestEvent } from '../../../../../events/friends/FriendsSendFriendRequestEvent';
+import { HelpReportUserEvent } from '../../../../../events/help/HelpReportUserEvent';
 import { dispatchUiEvent } from '../../../../../hooks/events';
 import { SendMessageHook } from '../../../../../hooks/messages';
 import { PetSupplementEnum } from '../../../../../views/room/widgets/avatar-info/common/PetSupplementEnum';
@@ -164,6 +165,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             case RoomWidgetUserActionMessage.REPORT:
                 return;
             case RoomWidgetUserActionMessage.REPORT_CFH_OTHER:
+                dispatchUiEvent(new HelpReportUserEvent(userId));
                 return;
             case RoomWidgetUserActionMessage.AMBASSADOR_ALERT_USER:
                 this.container.roomSession.sendAmbassadorAlertMessage(userId);

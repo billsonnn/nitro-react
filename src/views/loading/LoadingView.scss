@@ -1,75 +1,113 @@
 .nitro-loading {
-    width: 100%;
-    height: 100%;
-    position: absolute;
+    position: relative;
+    background: linear-gradient(to bottom, $white, 15%, $primary);
 
-    .logo {
-        background: url('../../assets/images/nitro/nitro-light.svg') no-repeat center;
-        width: 45%;
-        height: 45%;
+    .connecting-duck {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        right: 0;
+        left: 0;
+        background: url('../../assets/images/loading/connecting-duck-spritesheet.png') no-repeat top left;
+        width: 235px;
+        height: 127px;
+        animation: 1.5s connecting-duck infinite step-end;
+        transform: scale(0.5);
+
+        &.01 {
+            background-position: 0 0;
+        }
+
+        &.02 {
+            background-position: 0 -132px;
+            width: 280px;
+            height: 151px;
+        }
+
+        &.03 {
+            background-position: 0 -288px;
+            width: 326px;
+            height: 174px;
+        }
+
+        &.04 {
+            background-position: 0 -467px;
+        }
+
+        &.05 {
+            background-position: 0 -599px;
+            width: 280px;
+            height: 151px;
+        }
+
+        &.06 {
+            background-position: 0 -755px;
+            width: 326px;
+            height: 174px;
+        }
+
+        &.07 {
+            background-position: 0 -934px;
+            width: 190px;
+            height: 104px;
+        }
     }
 
-    .lds-ellipsis {
-        display: inline-block;
-        position: relative;
-        width: 80px;
-        height: 80px;
+    .logo {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        right: 0;
+        left: 0;
+        width: 35%;
+        height: 35%;
+        background: url('../../assets/images/nitro/nitro-light.svg') no-repeat center;
+        z-index: -1;
+    }
+}
 
-        div {
-            position: absolute;
-            top: 33px;
-            width: 13px;
-            height: 13px;
-            border-radius: 50%;
-            background: #fff;
-            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+@keyframes connecting-duck {
+    0% {
+        background-position: 0 0;
+        width: 235px;
+        height: 127px;
+    }
 
-            @keyframes lds-ellipsis1 {
-                0% {
-                    transform: scale(0);
-                }
-                100% {
-                    transform: scale(1);
-                }
-            }
+    15% {
+        background-position: 0 -132px;
+        width: 280px;
+        height: 151px;
+    }
 
-            @keyframes lds-ellipsis3 {
-                0% {
-                    transform: scale(1);
-                }
-                100% {
-                    transform: scale(0);
-                }
-            }
+    30% {
+        background-position: 0 -288px;
+        width: 326px;
+        height: 174px;
+    }
 
-            @keyframes lds-ellipsis2 {
-                0% {
-                    transform: translate(0, 0);
-                }
-                100% {
-                    transform: translate(24px, 0);
-                }
-            }
+    45% {
+        background-position: 0 -467px;
+        width: 235px;
+        height: 127px;
+    }
 
-            &:nth-child(1) {
-                left: 8px;
-                animation: lds-ellipsis1 0.6s infinite;
-            }
+    60% {
+        background-position: 0 -599px;
+        width: 280px;
+        height: 151px;
+    }
 
-            &:nth-child(2) {
-                left: 8px;
-                animation: lds-ellipsis2 0.6s infinite;
-            }
+    75% {
+        background-position: 0 -755px;
+        width: 326px;
+        height: 174px;
+    }
 
-            &:nth-child(3) {
-                left: 32px;
-                animation: lds-ellipsis2 0.6s infinite;
-            }
-
-            &:nth-child(4) {
-                left: 56px;
-                animation: lds-ellipsis3 0.6s infinite;
-            }
-        }
+    90% {
+        background-position: 0 -934px;
+        width: 190px;
+        height: 104px;
     }
 }

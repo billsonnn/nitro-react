@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, RoomWidgetZoomToggleMessage } from '../../../../api';
 import { NavigatorEvent } from '../../../../events';
+import { ChatHistoryEvent } from '../../../../events/chat-history/ChatHistoryEvent';
 import { dispatchUiEvent } from '../../../../hooks/events';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { useRoomContext } from '../../context/RoomContext';
@@ -27,6 +28,8 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 setIsZoomedIn(value => !value);
                 return;
             case 'chat_history':
+                dispatchUiEvent(new ChatHistoryEvent(ChatHistoryEvent.TOGGLE_CHAT_HISTORY));
+                //setIsExpanded(false); close this ??
                 return;
             case 'like_room':
                 if(isLiked) return;

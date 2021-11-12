@@ -49,8 +49,10 @@ export const ChatWidgetView: FC<{}> = props =>
 
                 moveChatUp(existingChat, amount);
             });
+
+            removeHiddenChats();
         }
-    }, [ chatMessages, moveChatUp ]);
+    }, [ chatMessages, moveChatUp, removeHiddenChats ]);
 
     const addChat = useCallback((chat: ChatBubbleMessage) =>
     {

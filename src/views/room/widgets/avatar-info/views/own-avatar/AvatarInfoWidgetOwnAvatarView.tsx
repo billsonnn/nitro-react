@@ -1,5 +1,5 @@
-import { AvatarAction, AvatarExpressionEnum, RoomObjectCategory, UserProfileComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { AvatarAction, AvatarExpressionEnum, RoomControllerLevel, RoomObjectCategory, UserProfileComposer } from '@nitrots/nitro-renderer';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUserActionMessage } from '../../../../../../api';
 import { AvatarEditorEvent } from '../../../../../../events';
 import { dispatchUiEvent, SendMessageHook } from '../../../../../../hooks';
@@ -107,6 +107,11 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
     {
         SendMessageHook(new UserProfileComposer(userData.webID));
     }, [ userData ]);
+
+    const isShowDecorate = useMemo(() =>
+    {
+        return (userData.amIOwner || userData.amIAnyRoomController || (userData.roomControllerLevel > RoomControllerLevel.GUEST));
+    }, [ userData ]);
     
     const isRidingHorse = IsRidingHorse();
 
@@ -121,9 +126,10 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         <ContextMenuListItemView onClick={ event => processAction('change_name') }>
                             { LocalizeText('widget.avatar.change_name') }
                         </ContextMenuListItemView> }
-                    <ContextMenuListItemView onClick={ event => processAction('decorate') }>
-                        { LocalizeText('widget.avatar.decorate') }
-                    </ContextMenuListItemView>
+                    { isShowDecorate &&
+                        <ContextMenuListItemView onClick={ event => processAction('decorate') }>
+                            { LocalizeText('widget.avatar.decorate') }
+                        </ContextMenuListItemView> }
                     <ContextMenuListItemView onClick={ event => processAction('change_looks') }>
                         { LocalizeText('widget.memenu.myclothes') }
                     </ContextMenuListItemView>

@@ -17,13 +17,13 @@ $grid-active-border-color: $white;
 
 $toolbar-height: 55px;
 
-$achievement-width: 650px;
-$achievement-height: 400px;
+$achievement-width: 350px;
+$achievement-height: 370px;
 
 $avatar-editor-width: 620px;
 $avatar-editor-height: 374px;
 
-$catalog-width: 620px;
+$catalog-width: 630px;
 $catalog-height: 400px;
 
 $inventory-width: 528px;
@@ -31,6 +31,18 @@ $inventory-height: 320px;
 
 $navigator-width: 400px;
 $navigator-height: 420px;
+
+$chat-input-style-selector-widget-width: 200px;
+$chat-input-style-selector-widget-height: 200px;
+
+$user-profile-width: 560px;
+$user-profile-height: 500px;
+
+$nitro-widget-custom-stack-height-width: 275px;
+$nitro-widget-custom-stack-height-height: 220px;
+
+$nitro-widget-exchange-credit-width: 375px;
+$nitro-widget-exchange-credit-height: 150px;
 
 .nitro-app {
     width: 100%;

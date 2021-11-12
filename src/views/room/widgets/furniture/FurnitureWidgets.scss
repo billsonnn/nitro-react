@@ -1,3 +1,9 @@
+.nitro-room-widgets {
+    pointer-events: none;
+}
+
+@import './custom-stack-height/FurnitureCustomStackHeightView';
+
 @import './dimmer/FurnitureDimmerView';
 @import './exchange-credit/FurnitureExchangeCreditView';
 @import './external-image/FurnitureExternalImageView';

@@ -229,10 +229,10 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
     return (
         <NitroLayoutGrid>
-            <NitroLayoutGridColumn size={ 4 } gap={ 2 }>
+            <NitroLayoutGridColumn size={ 4 }>
                 <NitroLayoutFlexColumn className="h-100" overflow="auto" gap={ 2 }>
                     <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
-                    <NitroCardGridView columns={ 3 }>
+                    <NitroCardGridView>
                         { filteredGroupItems && (filteredGroupItems.length > 0) && filteredGroupItems.map((item, index) =>
                             {
                                 const count = item.getUnlockedCount();
@@ -252,12 +252,12 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                     { groupItem ? groupItem.name : LocalizeText('catalog_selectproduct') }
                 </NitroLayoutBase>
             </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn size={ 8 } gap={ 2 }>
+            <NitroLayoutGridColumn size={ 8 }>
                 <NitroLayoutGrid overflow="hidden">
-                    <NitroLayoutGridColumn size={ 6 } gap={ 2 }>
+                    <NitroLayoutGridColumn size={ 6 }>
                         <NitroLayoutFlexColumn className="h-100" overflow="auto" gap={ 2 }>
                             <span className="d-flex justify-content-between align-items-center text-black small mb-1">{ LocalizeText('inventory.trading.you') } { LocalizeText('inventory.trading.areoffering') }: <i className={ 'small fas ' + (tradeData.ownUser.accepts ? 'fa-lock text-success' : 'fa-unlock text-danger') } /></span>
-                            <NitroCardGridView columns={ 3 }>
+                            <NitroCardGridView>
                                 { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
                                     {
                                         const item = (tradeData.ownUser.items.getWithIndex(i) || null);
@@ -279,10 +279,10 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                             { ownGroupItem ? ownGroupItem.name : LocalizeText('catalog_selectproduct') }
                         </NitroLayoutBase>
                     </NitroLayoutGridColumn>
-                    <NitroLayoutGridColumn size={ 6 } gap={ 2 }>
+                    <NitroLayoutGridColumn size={ 6 }>
                         <NitroLayoutFlexColumn className="h-100" overflow="auto" gap={ 2 }>
                             <span className="d-flex justify-content-between align-items-center  text-black small mb-1">{ tradeData.otherUser.userName } { LocalizeText('inventory.trading.isoffering') }: <i className={ 'small fas ' + (tradeData.otherUser.accepts ? 'fa-lock text-success' : 'fa-unlock text-danger') } /></span>
-                            <NitroCardGridView columns={ 3 }>
+                            <NitroCardGridView>
                                 { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
                                     {
                                         const item = (tradeData.otherUser.items.getWithIndex(i) || null);

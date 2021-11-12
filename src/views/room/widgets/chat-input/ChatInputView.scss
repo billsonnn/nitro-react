@@ -1,13 +1,3 @@
-@media only screen and (max-width: 600px) {
-    .nitro-chat-input {
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 65px !important;
-        z-index: $chatinput-zindex;
-    }
-}
-
 .nitro-chat-input-container {
     display: flex;
     justify-content: center;
@@ -17,8 +7,16 @@
     border-radius: 8px;
     border: 2px solid rgb(0, 0, 0);
     background: #EDEDED;
-    padding-right: 30px;
+    padding-right: 10px;
     width: 100%;
+
+    @include media-breakpoint-down(sm) {
+        display: flex;
+        position: absolute;
+        bottom: 70px;
+        left: calc(100% / 3);
+        width: 200px;
+    }
 
     &:before {
         content: "";
@@ -60,6 +58,44 @@
             white-space: pre-wrap;
         }
     }
+
+    .bubble-container {
+        visibility: visible;
+        width: 75%;
+    }
 }
 
-@import './style-selector/ChatInputStyleSelectorView';
+.nitro-chat-style-selector-button {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    right: 7px;
+}
+
+.nitro-chat-style-selector-container {
+    width: $chat-input-style-selector-widget-width;
+    max-height: $chat-input-style-selector-widget-height;
+
+    .content-area {
+        max-height: $chat-input-style-selector-widget-height !important;
+    }
+
+    .grid-item {
+        font-size: $font-size-sm;
+        height: 30px !important;
+        border-color: unset !important;
+        border: 0 !important;
+        padding: 1px 3px;
+
+        &:not(.active) {
+            background-color: unset !important;
+        }
+
+        .bubble-container {
+            visibility: visible;
+            width: 75%;
+        }
+    }
+}

@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo, useState } from 'react';
-import { List, ListRowProps, ListRowRenderer } from 'react-virtualized';
+import { AutoSizer, List, ListRowProps, ListRowRenderer } from 'react-virtualized';
 import { RoomObjectItem, RoomWidgetRoomObjectMessage } from '../../../../api';
 import { LocalizeText } from '../../../../api/utils';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
@@ -53,12 +53,19 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
                         <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={searchValue} onChange={event => setSearchValue(event.target.value)} />
                     </div>
                 </div>
-                <List
-                    width={ 150 }
-                    height={ 150 }
-                    rowCount={ filteredItems.length }
-                    rowHeight={ 20 }
-                    rowRenderer={ rowRenderer } />
+                <div className="row w-100 h-100 chooser-container">
+                    <AutoSizer defaultWidth={150} defaultHeight={150}>
+                        {({ height, width }) => 
+                        {
+                            return (<List
+                                width={ width }
+                                height={ height }
+                                rowCount={ filteredItems.length }
+                                rowHeight={ 20 }
+                                rowRenderer={ rowRenderer } />)
+                        }}
+                    </AutoSizer>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
     );

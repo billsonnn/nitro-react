@@ -4,6 +4,8 @@ import { LocalizeText } from '../../../../../../api';
 import { CatalogEvent } from '../../../../../../events/catalog/CatalogEvent';
 import { useUiEvent } from '../../../../../../hooks';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
+import { NitroLayoutFlexColumn, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../../layout';
+import { NitroLayoutBase } from '../../../../../../layout/base';
 import { NitroCardGridItemView } from '../../../../../../layout/card/grid/item/NitroCardGridItemView';
 import { NitroCardGridView } from '../../../../../../layout/card/grid/NitroCardGridView';
 import { LoadingSpinnerView } from '../../../../../../layout/loading-spinner/LoadingSpinnerView';
@@ -142,63 +144,61 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
     }, [ pendingOffer, purchaseState, purchaseSubscription ]);
 
     return (
-        <>
-            <div className="row h-100 nitro-catalog-layout-vip-buy">
-                <div className="col-6 h-100">
-                    <NitroCardGridView columns={ 1 } className="vip-buy-grid">
-                        { clubOffers && (clubOffers.length > 0) && clubOffers.map((offer, index) =>
-                            {
-                                return (
-                                    <NitroCardGridItemView key={ index } className="justify-content-between py-1 px-2 text-black" itemActive={ pendingOffer === offer } onClick={ () => setOffer(offer) }>
-                                        <div className="hc-banner"></div>
-                                            <div className="fw-bold">
-                                                <div className="text-end">{ getOfferText(offer) }</div>
-                                                <div className="d-flex gap-2 justify-content-end">
-                                                    { (offer.priceCredits > 0) &&
-                                                        <div className="d-flex align-items-center justify-content-end gap-1">
-                                                            <span className="text-black">{ offer.priceCredits }</span>
-                                                            <CurrencyIcon type={ -1 } />
-                                                        </div> }
-                                                    { (offer.priceActivityPoints > 0) &&
-                                                        <div className="d-flex align-items-center justify-content-end gap-1">
-                                                            <span className="text-black">{ offer.priceActivityPoints }</span>
-                                                            <CurrencyIcon type={ offer.priceActivityPointsType } />
-                                                        </div> }
-                                                </div>
-                                            </div>
-                                    </NitroCardGridItemView>
-                                );
-                            }) }
-                    </NitroCardGridView>
-                </div>
-                <div className="position-relative d-flex flex-column col-6 justify-content-center align-items-center">
-                    <div className="d-block mb-2">
-                        <img alt="" src={ GetCatalogPageImage(pageParser, 1) } />
-                    </div>
-                    <div className="text-center text-black small bg-muted rounded p-1" dangerouslySetInnerHTML={ { __html: getSubscriptionDetails } }></div>
-                    { pendingOffer && <div className="mt-auto w-100 text-black">
-                        <div className="d-flex gap-2 mb-2 align-items-center">
-                            <div className="w-100">
-                                <div className="fw-bold">{ getPurchaseHeader() }</div>
-                                <div className="small">{ getPurchaseValidUntil() }</div>
-                            </div>
-                            <div>
-                                { (pendingOffer.priceCredits > 0) &&
-                                    <div className="d-flex align-items-center justify-content-end gap-1">
-                                        <span className="text-black">{ pendingOffer.priceCredits }</span>
-                                        <CurrencyIcon type={ -1 } />
-                                    </div> }
-                                { (pendingOffer.priceActivityPoints > 0) &&
-                                    <div className="d-flex align-items-center justify-content-end gap-1">
-                                        <span className="text-black">{ pendingOffer.priceActivityPoints }</span>
-                                        <CurrencyIcon type={ pendingOffer.priceActivityPointsType } />
-                                    </div> }
-                            </div>
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn size={ 7 }>
+                <NitroCardGridView columns={ 1 } className="vip-buy-grid">
+                    { clubOffers && (clubOffers.length > 0) && clubOffers.map((offer, index) =>
+                        {
+                            return (
+                                <NitroCardGridItemView key={ index } className="justify-content-between py-1 px-2 text-black" itemActive={ pendingOffer === offer } onClick={ () => setOffer(offer) }>
+                                    <i className="icon icon-hc-banner" />
+                                    <div className="fw-bold">
+                                        <div className="text-end">{ getOfferText(offer) }</div>
+                                        <div className="d-flex gap-2 justify-content-end">
+                                            { (offer.priceCredits > 0) &&
+                                                <div className="d-flex align-items-center justify-content-end gap-1">
+                                                    <span className="text-black">{ offer.priceCredits }</span>
+                                                    <CurrencyIcon type={ -1 } />
+                                                </div> }
+                                            { (offer.priceActivityPoints > 0) &&
+                                                <div className="d-flex align-items-center justify-content-end gap-1">
+                                                    <span className="text-black">{ offer.priceActivityPoints }</span>
+                                                    <CurrencyIcon type={ offer.priceActivityPointsType } />
+                                                </div> }
+                                        </div>
+                                    </div>
+                                </NitroCardGridItemView>
+                            );
+                        }) }
+                </NitroCardGridView>
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 5 }>
+                <NitroLayoutFlexColumn className="justify-content-center align-items-center h-100" overflow="hidden" gap={ 2 }>
+                    { GetCatalogPageImage(pageParser, 1) && <img className="" alt="" src={ GetCatalogPageImage(pageParser, 1) } /> }
+                    <NitroLayoutBase className="text-center text-black" overflow="auto" dangerouslySetInnerHTML={ { __html: getSubscriptionDetails } } />
+                </NitroLayoutFlexColumn>
+                { pendingOffer && <div className="mt-auto w-100 text-black">
+                    <div className="d-flex gap-2 mb-2 align-items-center">
+                        <div className="w-100">
+                            <div className="fw-bold">{ getPurchaseHeader() }</div>
+                            <div className="small">{ getPurchaseValidUntil() }</div>
                         </div>
-                        { getPurchaseButton() }
-                    </div>}
-                </div>
-            </div>
-        </>
+                        <div>
+                            { (pendingOffer.priceCredits > 0) &&
+                                <div className="d-flex align-items-center justify-content-end gap-1">
+                                    <span className="text-black">{ pendingOffer.priceCredits }</span>
+                                    <CurrencyIcon type={ -1 } />
+                                </div> }
+                            { (pendingOffer.priceActivityPoints > 0) &&
+                                <div className="d-flex align-items-center justify-content-end gap-1">
+                                    <span className="text-black">{ pendingOffer.priceActivityPoints }</span>
+                                    <CurrencyIcon type={ pendingOffer.priceActivityPointsType } />
+                                </div> }
+                        </div>
+                    </div>
+                    { getPurchaseButton() }
+                </div> }
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
     );
 }

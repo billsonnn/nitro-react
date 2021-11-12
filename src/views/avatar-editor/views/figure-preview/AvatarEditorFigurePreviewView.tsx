@@ -1,4 +1,7 @@
+import { AvatarDirectionAngle } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { NitroLayoutFlexColumn } from '../../../../layout';
+import { NitroLayoutBase } from '../../../../layout/base';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { AvatarEditorFigurePreviewViewProps } from './AvatarEditorFigurePreviewView.types';
 
@@ -12,6 +15,21 @@ export const AvatarEditorFigurePreviewView: FC<AvatarEditorFigurePreviewViewProp
         setUpdateId(prevValue => (prevValue + 1));
     }, []);
 
+    const rotateFigure = useCallback((direction: number) =>
+    {
+        if(direction < AvatarDirectionAngle.MIN_DIRECTION)
+        {
+            direction = (AvatarDirectionAngle.MAX_DIRECTION + (direction + 1));
+        }
+
+        if(direction > AvatarDirectionAngle.MAX_DIRECTION)
+        {
+            direction = (direction - (AvatarDirectionAngle.MAX_DIRECTION + 1));
+        }
+
+        figureData.direction = direction;
+    }, [ figureData ]);
+
     useEffect(() =>
     {
         if(!figureData) return;
@@ -24,5 +42,15 @@ export const AvatarEditorFigurePreviewView: FC<AvatarEditorFigurePreviewViewProp
         }
     }, [ figureData, rerender ] );
 
-    return <AvatarImageView figure={ figureData.getFigureString() } direction={ figureData.direction } scale={ 2 } />
+    return (
+        <NitroLayoutFlexColumn className="figure-preview-container" overflow="hidden" position="relative">
+            <AvatarImageView figure={ figureData.getFigureString() } direction={ figureData.direction } scale={ 2 } />
+            <NitroLayoutBase className="avatar-spotlight" />
+            <NitroLayoutBase className="avatar-shadow" />
+            <NitroLayoutBase className="arrow-container">
+                <i className="icon arrow-left-icon" onClick={ event => rotateFigure(figureData.direction + 1) }  />
+                <i className="icon arrow-right-icon" onClick={ event => rotateFigure(figureData.direction - 1) } />
+            </NitroLayoutBase>
+        </NitroLayoutFlexColumn>
+    );
 }

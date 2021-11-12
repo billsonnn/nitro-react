@@ -18,7 +18,7 @@ import { FurnitureYoutubeDisplayView } from './youtube-tv/FurnitureYoutubeDispla
 export const FurnitureWidgetsView: FC<{}> = props =>
 {
     return (
-        <div className="position-absolute nitro-room-widgets top-0 start-0">
+        <div className="position-absolute nitro-room-widgets top-0 start-0 w-100 h-100">
             <FurnitureBackgroundColorView />
             <FurnitureContextMenuView />
             <FurnitureCustomStackHeightView />

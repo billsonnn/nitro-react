@@ -1,6 +1,6 @@
 import { NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
+import { GetRoomEngine, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { NitroLayoutTrophyView } from '../../../../../layout';
@@ -9,6 +9,7 @@ import { FurnitureTrophyData } from './FurnitureTrophyData';
 
 export const FurnitureTrophyView: FC<{}> = props =>
 {
+
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ trophyData, setTrophyData ] = useState<FurnitureTrophyData>(null);
 
@@ -39,8 +40,8 @@ export const FurnitureTrophyView: FC<{}> = props =>
                 setTrophyData(new FurnitureTrophyData(widgetEvent.objectId, widgetEvent.category, color, ownerName, trophyDate, trophyText));
                 return;
             }
-            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED: {
-                const widgetEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+            case RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED: {
+                const widgetEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 setTrophyData(prevState =>
                     {
@@ -54,7 +55,7 @@ export const FurnitureTrophyView: FC<{}> = props =>
     }, []);
 
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_TROPHY, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, widgetHandler.eventDispatcher, onNitroEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, widgetHandler.eventDispatcher, onNitroEvent);
 
     const processAction = useCallback((type: string, value: string = null) =>
     {

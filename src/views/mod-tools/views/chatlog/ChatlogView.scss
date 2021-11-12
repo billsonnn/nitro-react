@@ -1,0 +1,40 @@
+.chatlog-messages {
+    color: $black;
+    min-width: 400px;
+
+    $username-col-width: 100px;
+
+    .username-label {
+        width: $username-col-width;
+    }
+
+    .chatlog {
+        min-height: 200px;
+
+        .chatlog-container {
+            color: $black;
+
+            div.chatlog-entry {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+                .username {
+                    color: #1E7295;
+                    text-decoration: underline;
+                    width: $username-col-width;
+                }
+
+                &.highlighted {
+                    border: 1px solid $red;
+                }
+
+                .message {
+                    word-break: break-all;
+                }
+            }
+
+            .room-info {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+                background: rgba(0, 0, 0, .05);
+            }
+        }
+    }
+}

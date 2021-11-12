@@ -1,4 +1,4 @@
-import { DesktopViewEvent, GroupInformationComposer, GroupInformationEvent, GroupInformationParser, GroupJoinComposer, GroupRemoveMemberComposer, RoomInfoEvent } from '@nitrots/nitro-renderer';
+import { DesktopViewEvent, GetGuestRoomResultEvent, GroupInformationComposer, GroupInformationEvent, GroupInformationParser, GroupJoinComposer, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetGroupInformation, GetSessionDataManager, LocalizeText } from '../../../../api';
 import { GetGroupManager } from '../../../../api/groups/GetGroupManager';
@@ -13,7 +13,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
     const [ groupInformation, setGroupInformation ] = useState<GroupInformationParser>(null);
     const [ isExpended, setIsExpended ] = useState<boolean>(true);
 
-    const onRoomInfoEvent = useCallback((event: RoomInfoEvent) =>
+    const onGetGuestRoomResultEvent = useCallback((event: GetGuestRoomResultEvent) =>
     {
         const parser = event.getParser();
         
@@ -26,7 +26,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
         }
     }, []);
 
-    CreateMessageHook(RoomInfoEvent, onRoomInfoEvent);
+    CreateMessageHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
 
     const onGroupInformationEvent = useCallback((event: GroupInformationEvent) =>
     {

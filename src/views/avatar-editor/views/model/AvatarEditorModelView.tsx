@@ -1,4 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
+import { NitroLayoutFlex, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../layout';
 import { CategoryData } from '../../common/CategoryData';
 import { FigureData } from '../../common/FigureData';
 import { AvatarEditorFigureSetView } from '../figure-set/AvatarEditorFigureSetView';
@@ -46,37 +47,37 @@ export const AvatarEditorModelView: FC<AvatarEditorModelViewProps> = props =>
     if(!model || !activeCategory) return null;
 
     return (
-        <div className="row h-100">
-            <div className="col-2 d-flex flex-column align-items-center h-100">
+        <NitroLayoutGrid>
+            <NitroLayoutGridColumn size={ 2 }>
                 { model.canSetGender &&
                     <>
-                        <div className="d-flex justify-content-center align-items-center category-item cursor-pointer"  onClick={ event => setGender(FigureData.MALE) }>
+                        <NitroLayoutFlex className="justify-content-center align-items-center category-item cursor-pointer" onClick={ event => setGender(FigureData.MALE) }>
                             <i className={ `icon male-icon ${ (gender === FigureData.MALE) ? ' selected' : ''}` } />
-                        </div>
-                        <div className="d-flex justify-content-center align-items-center category-item cursor-pointer"  onClick={ event => setGender(FigureData.FEMALE) }>
+                        </NitroLayoutFlex>
+                        <NitroLayoutFlex className="justify-content-center align-items-center category-item cursor-pointer" onClick={ event => setGender(FigureData.FEMALE) }>
                             <i className={ `icon female-icon ${ (gender === FigureData.FEMALE) ? ' selected' : ''}` } />
-                        </div>
+                        </NitroLayoutFlex>
                     </> }
                 { !model.canSetGender && model.categories &&  (model.categories.size > 0) && Array.from(model.categories.keys()).map(name =>
                     {
                         const category = model.categories.get(name);
 
                         return (
-                            <div key={ name } className="d-flex justify-content-center align-items-center category-item cursor-pointer" onClick={ event => selectCategory(name) }>
+                            <NitroLayoutFlex key={ name } className="justify-content-center align-items-center category-item cursor-pointer" onClick={ event => selectCategory(name) }>
                                 <i className={ `icon ${ category.name }-icon ${ (activeCategory === category) ? ' selected' : ''}` } />
-                            </div>
+                            </NitroLayoutFlex>
                         );
                     })}
-            </div>
-            <div className="col-5 d-flex flex-column h-100">
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 5 }>
                 <AvatarEditorFigureSetView model={ model } category={ activeCategory } setMaxPaletteCount={ setMaxPaletteCount } />
-            </div>
-            <div className="col-5 d-flex flex-column h-100 gap-2">
+            </NitroLayoutGridColumn>
+            <NitroLayoutGridColumn size={ 5 }>
                 { (maxPaletteCount >= 1) &&
                     <AvatarEditorPaletteSetView model={ model } category={ activeCategory } paletteSet={ activeCategory.getPalette(0) } paletteIndex={ 0 } /> }
                 { (maxPaletteCount === 2) &&
                     <AvatarEditorPaletteSetView model={ model } category={ activeCategory } paletteSet={ activeCategory.getPalette(1) } paletteIndex={ 1 } className="mt-1" /> }
-            </div>
-        </div>
+            </NitroLayoutGridColumn>
+        </NitroLayoutGrid>
     );
 }

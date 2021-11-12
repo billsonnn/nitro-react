@@ -5,4 +5,5 @@ export * from './grid';
 export * from './header';
 export * from './NitroCardView';
 export * from './NitroCardView.types';
+export * from './sub-header';
 export * from './tabs';

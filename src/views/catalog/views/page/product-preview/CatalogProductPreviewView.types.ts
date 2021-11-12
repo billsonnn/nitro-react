@@ -5,6 +5,8 @@ export interface CatalogProductPreviewViewProps
     pageParser: CatalogPageMessageParser;
     activeOffer: CatalogPageMessageOfferData;
     roomPreviewer: RoomPreviewer;
+    badgeCode?: string;
     extra?: string;
     disabled?: boolean;
+
 }

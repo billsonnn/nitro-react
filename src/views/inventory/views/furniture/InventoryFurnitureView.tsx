@@ -108,11 +108,11 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 
     return (
         <NitroLayoutGrid>
-            <NitroLayoutGridColumn size={ 7 } gap={ 2 }>
+            <NitroLayoutGridColumn size={ 7 }>
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                 <InventoryFurnitureResultsView groupItems={ filteredGroupItems }  />
             </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn size={ 5 } gap={ 2 } overflow="auto">
+            <NitroLayoutGridColumn size={ 5 } overflow="auto">
                 <NitroLayoutFlexColumn overflow="hidden" position="relative">
                     <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                     { groupItem && groupItem.stuffData.isUnique &&

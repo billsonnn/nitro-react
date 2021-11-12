@@ -1,4 +1,7 @@
 import { FC } from 'react';
+import { NitroLayoutFlexColumn } from '../../../../../layout';
+import { NitroLayoutBase } from '../../../../../layout/base';
+import { BadgeImageView } from '../../../../shared/badge-image/BadgeImageView';
 import { LimitedEditionCompletePlateView } from '../../../../shared/limited-edition/complete-plate/LimitedEditionCompletePlateView';
 import { GetOfferName } from '../../../common/CatalogUtilities';
 import { CatalogRoomPreviewerView } from '../../catalog-room-previewer/CatalogRoomPreviewerView';
@@ -8,7 +11,7 @@ import { CatalogProductPreviewViewProps } from './CatalogProductPreviewView.type
 
 export const CatalogProductPreviewView: FC<CatalogProductPreviewViewProps> = props =>
 {
-    const { pageParser = null, activeOffer = null, roomPreviewer = null, extra = '', disabled = false, children = null } = props;
+    const { pageParser = null, activeOffer = null, roomPreviewer = null, badgeCode = null, extra = '', disabled = false, children = null } = props;
 
     const product = ((activeOffer && activeOffer.products[0]) || null);
 
@@ -16,16 +19,22 @@ export const CatalogProductPreviewView: FC<CatalogProductPreviewViewProps> = pro
 
     return (
         <>
-            <div className="position-relative d-flex flex-column overflow-auto h-100">
-                <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+            <NitroLayoutFlexColumn overflow="hidden" position="relative">
+                { roomPreviewer && <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } /> }
                 { product.uniqueLimitedItem &&
-                    <LimitedEditionCompletePlateView uniqueLimitedItemsLeft={ product.uniqueLimitedItemsLeft } uniqueLimitedSeriesSize={ product.uniqueLimitedSeriesSize } /> }
-            </div>
-            <div className="d-flex flex-column gap-2">
-                <div className="flex-grow-1 text-black text-truncate">{ GetOfferName(activeOffer) }</div>
+                    <NitroLayoutBase className="top-2 end-2" position="absolute">
+                        <LimitedEditionCompletePlateView uniqueLimitedItemsLeft={ product.uniqueLimitedItemsLeft } uniqueLimitedSeriesSize={ product.uniqueLimitedSeriesSize } />
+                    </NitroLayoutBase> }
+                { badgeCode && badgeCode.length &&
+                    <NitroLayoutBase className="top-2 end-2" position="absolute">
+                        <BadgeImageView badgeCode={ badgeCode } isGroup={ true } />
+                    </NitroLayoutBase> }
+            </NitroLayoutFlexColumn>
+            <NitroLayoutFlexColumn className="flex-grow-1" gap={ 2 }>
+                <NitroLayoutBase className="flex-grow-1 text-black text-truncate">{ GetOfferName(activeOffer) }</NitroLayoutBase>
                 { children }
                 <CatalogPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ extra } disabled={ disabled } />
-            </div>
+            </NitroLayoutFlexColumn>
         </>
     );
 }

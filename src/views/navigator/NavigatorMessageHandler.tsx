@@ -1,4 +1,4 @@
-import { GenericErrorEvent, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomForwardEvent, RoomInfoComposer, RoomInfoEvent, RoomInfoOwnerEvent, RoomSettingsUpdatedEvent, UserInfoEvent } from '@nitrots/nitro-renderer';
+import { GenericErrorEvent, GetGuestRoomResultEvent, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomInfoComposer, RoomSettingsUpdatedEvent, UserInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateRoomSession, GetSessionDataManager } from '../../api';
 import { UpdateDoorStateEvent } from '../../events';
@@ -25,7 +25,7 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
         SendMessageHook(new RoomInfoComposer(parser.roomId, false, true));
     }, []);
 
-    const onRoomInfoOwnerEvent = useCallback((event: RoomInfoOwnerEvent) =>
+    const onRoomEntryInfoMessageEvent = useCallback((event: RoomEntryInfoMessageEvent) =>
     {
         const parser = event.getParser();
 
@@ -43,7 +43,7 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
         SendMessageHook(new RoomInfoComposer(parser.roomId, true, false));
     }, [ navigatorState, dispatchNavigatorState ]);
 
-    const onRoomInfoEvent = useCallback((event: RoomInfoEvent) =>
+    const onGetGuestRoomResultEvent = useCallback((event: GetGuestRoomResultEvent) =>
     {
         const parser = event.getParser();
 
@@ -196,8 +196,8 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
 
     CreateMessageHook(UserInfoEvent, onUserInfoEvent);
     CreateMessageHook(RoomForwardEvent, onRoomForwardEvent);
-    CreateMessageHook(RoomInfoOwnerEvent, onRoomInfoOwnerEvent);
-    CreateMessageHook(RoomInfoEvent, onRoomInfoEvent);
+    CreateMessageHook(RoomEntryInfoMessageEvent, onRoomEntryInfoMessageEvent);
+    CreateMessageHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
     CreateMessageHook(RoomDoorbellEvent, onRoomDoorbellEvent);
     CreateMessageHook(RoomDoorbellAcceptedEvent, onRoomDoorbellAcceptedEvent);
     CreateMessageHook(RoomDoorbellRejectedEvent, onRoomDoorbellRejectedEvent);

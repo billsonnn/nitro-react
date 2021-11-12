@@ -2,5 +2,8 @@
     width: 200px;
 }
 
-@import './views/chatlog/ModToolsChatlogView';
-@import './views/room/ModToolsRoomView';
+@import './views/room/room-tools/ModToolsRoomView';
+@import './views/chatlog/ChatlogView';
+@import './views/user/user-info/ModToolsUserView';
+@import './views/user/user-room-visits/ModToolsUserRoomVisitsView';
+@import './views/tickets/ModToolsTicketView';

@@ -1,11 +1,12 @@
-import { AvatarDirectionAngle, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, IAvatarFigureContainer, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
+import { AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, IAvatarFigureContainer, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetAvatarRenderManager, GetClubMemberLevel, GetSessionDataManager, LocalizeText } from '../../api';
 import { AvatarEditorEvent } from '../../events/avatar-editor';
 import { CreateMessageHook, SendMessageHook } from '../../hooks';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, NitroLayoutGrid, NitroLayoutGridColumn } from '../../layout';
 import { AvatarEditorViewProps } from './AvatarEditorView.types';
+import { AvatarEditorAction } from './common/AvatarEditorAction';
 import { AvatarEditorUtilities } from './common/AvatarEditorUtilities';
 import { BodyModel } from './common/BodyModel';
 import { FigureData } from './common/FigureData';
@@ -14,6 +15,7 @@ import { HeadModel } from './common/HeadModel';
 import { IAvatarEditorCategoryModel } from './common/IAvatarEditorCategoryModel';
 import { LegModel } from './common/LegModel';
 import { TorsoModel } from './common/TorsoModel';
+import { AvatarEditorFigureActionsView } from './views/figure-actions/AvatarEditorFigureActionsView';
 import { AvatarEditorFigurePreviewView } from './views/figure-preview/AvatarEditorFigurePreviewView';
 import { AvatarEditorModelView } from './views/model/AvatarEditorModelView';
 import { AvatarEditorWardrobeView } from './views/wardrobe/AvatarEditorWardrobeView';
@@ -21,6 +23,10 @@ import { AvatarEditorWardrobeView } from './views/wardrobe/AvatarEditorWardrobeV
 const DEFAULT_MALE_FIGURE: string = 'hr-100.hd-180-7.ch-215-66.lg-270-79.sh-305-62.ha-1002-70.wa-2007';
 const DEFAULT_FEMALE_FIGURE: string = 'hr-515-33.hd-600-1.ch-635-70.lg-716-66-62.sh-735-68';
 const MAX_SAVED_FIGURES: number = 10;
+const ACTION_CLEAR = 'action_clear';
+const ACTION_RESET = 'action_reset';
+const ACTION_RANDOMIZE = 'action_randomize';
+const ACTION_SAVE = 'action_save';
 
 export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
 {
@@ -157,46 +163,30 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
         }
     }, [ figures, figureData ]);
 
-    const clearFigure = useCallback(() =>
+    const processAction = useCallback((action: string) =>
     {
-        loadAvatarInEditor(figureData.getFigureStringWithFace(0, false), figureData.gender, false);
-        resetCategories();
-    }, [ figureData, loadAvatarInEditor, resetCategories ]);
-
-    const resetFigure = useCallback(() =>
-    {
-        loadAvatarInEditor(lastFigure, lastGender);
-        resetCategories();
-    }, [ lastFigure, lastGender, loadAvatarInEditor, resetCategories ]);
-
-    const randomizeFigure = useCallback(() =>
-    {
-        const figure = generateRandomFigure(figureData, figureData.gender, GetClubMemberLevel(), figureSetIds, [ FigureData.FACE ]);
-
-        loadAvatarInEditor(figure, figureData.gender, false);
-        resetCategories();
-    }, [ figureData, figureSetIds, loadAvatarInEditor, resetCategories ]);
-
-    const rotateFigure = useCallback((direction: number) =>
-    {
-        if(direction < AvatarDirectionAngle.MIN_DIRECTION)
+        switch(action)
         {
-            direction = (AvatarDirectionAngle.MAX_DIRECTION + (direction + 1));
+            case AvatarEditorAction.ACTION_CLEAR:
+                loadAvatarInEditor(figureData.getFigureStringWithFace(0, false), figureData.gender, false);
+                resetCategories();
+                return;
+            case AvatarEditorAction.ACTION_RESET:
+                loadAvatarInEditor(lastFigure, lastGender);
+                resetCategories();
+                return;
+            case AvatarEditorAction.ACTION_RANDOMIZE:
+                const figure = generateRandomFigure(figureData, figureData.gender, GetClubMemberLevel(), figureSetIds, [ FigureData.FACE ]);
+
+                loadAvatarInEditor(figure, figureData.gender, false);
+                resetCategories();
+                return;
+            case AvatarEditorAction.ACTION_SAVE:
+                SendMessageHook(new UserFigureComposer(figureData.gender, figureData.getFigureString()));
+                setIsVisible(false);
+                return;
         }
-
-        if(direction > AvatarDirectionAngle.MAX_DIRECTION)
-        {
-            direction = (direction - (AvatarDirectionAngle.MAX_DIRECTION + 1));
-        }
-
-        figureData.direction = direction;
-    }, [ figureData ]);
-
-    const saveFigure = useCallback(() =>
-    {
-        SendMessageHook(new UserFigureComposer(figureData.gender, figureData.getFigureString()));
-        setIsVisible(false);
-    }, [ figureData ]);
+    }, [ figureData, lastFigure, lastGender, figureSetIds, loadAvatarInEditor, resetCategories ])
 
     const setGender = useCallback((gender: string) =>
     {
@@ -295,37 +285,18 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
                 </NitroCardTabsItemView>
             </NitroCardTabsView>
             <NitroCardContentView>
-                <div className="row h-100">
-                    <div className="col-9 d-flex flex-column h-100">
-                        { (activeCategory && !isWardrobeVisible) && <AvatarEditorModelView model={ activeCategory } gender={ figureData.gender } setGender={ setGender } /> }
-                        { isWardrobeVisible && <AvatarEditorWardrobeView figureData={ figureData } savedFigures={ savedFigures } setSavedFigures={ setSavedFigures } loadAvatarInEditor={ loadAvatarInEditor } /> }
-                    </div>
-                    <div className="col-3 d-flex flex-column h-100">
-                        <div className="figure-preview-container">
-                            <AvatarEditorFigurePreviewView figureData={ figureData } />
-                            <div className="avatar-spotlight" />
-                            <div className="avatar-shadow" />
-                            <div className="arrow-container">
-                                <i className="icon arrow-left-icon" onClick={ event => rotateFigure(figureData.direction + 1) }  />
-                                <i className="icon arrow-right-icon" onClick={ event => rotateFigure(figureData.direction - 1) } />
-                            </div>
-                        </div>
-                        <div className="d-flex flex-column mt-1">
-                            <div className="btn-group mb-1">
-                                <button type="button" className="btn btn-sm btn-secondary" onClick={ resetFigure }>
-                                    <i className="fas fa-undo" />
-                                </button>
-                                <button type="button" className="btn btn-sm btn-secondary" onClick={ clearFigure }>
-                                    <i className="fas fa-trash" />
-                                </button>
-                                <button type="button" className="btn btn-sm btn-secondary" onClick={ randomizeFigure }>
-                                    <i className="fas fa-dice" />
-                                </button>
-                            </div>
-                            <button type="button" className="btn btn-success btn-sm w-100" onClick={ saveFigure }>{ LocalizeText('avatareditor.save') }</button>
-                        </div>
-                    </div>
-                </div>
+                <NitroLayoutGrid>
+                    <NitroLayoutGridColumn size={ 9 }>
+                        { (activeCategory && !isWardrobeVisible) &&
+                            <AvatarEditorModelView model={ activeCategory } gender={ figureData.gender } setGender={ setGender } /> }
+                        { isWardrobeVisible &&
+                            <AvatarEditorWardrobeView figureData={ figureData } savedFigures={ savedFigures } setSavedFigures={ setSavedFigures } loadAvatarInEditor={ loadAvatarInEditor } /> }
+                    </NitroLayoutGridColumn>
+                    <NitroLayoutGridColumn overflow="hidden" size={ 3 }>
+                        <AvatarEditorFigurePreviewView figureData={ figureData } />
+                        <AvatarEditorFigureActionsView processAction={ processAction } />
+                    </NitroLayoutGridColumn>
+                </NitroLayoutGrid>
             </NitroCardContentView>
         </NitroCardView>
     );

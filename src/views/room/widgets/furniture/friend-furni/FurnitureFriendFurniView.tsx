@@ -1,6 +1,6 @@
 import { FriendFurniConfirmLockMessageComposer, LoveLockFurniFinishedEvent, LoveLockFurniFriendConfirmedEvent, LoveLockFurniStartEvent, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine, GetRoomSession, LocalizeText, RoomWidgetRoomObjectUpdateEvent } from '../../../../../api';
+import { GetRoomEngine, GetRoomSession, LocalizeText, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
 import { CreateMessageHook } from '../../../../../hooks/messages/message-event';
@@ -37,8 +37,8 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                 }
                 return;
             }
-            case RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED: {
-                const widgetEvent = (event as RoomWidgetRoomObjectUpdateEvent);
+            case RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED: {
+                const widgetEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 setEngravingLockData(prevState =>
                     {
@@ -52,7 +52,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
     };
 
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetRoomObjectUpdateEvent.FURNI_REMOVED, eventDispatcher, onNitroEvent);
+    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onNitroEvent);
 
     const onLoveLockFurniStartEvent = useCallback((event: LoveLockFurniStartEvent) =>
     {
