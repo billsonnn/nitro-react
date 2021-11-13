@@ -105,7 +105,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
             <div>
                 <div className="text-center d-flex flex-column h-100 small text-black text-decoration-underline">
                     <div className="group-badge">
-                        <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } />
+                        <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } className="mx-auto"/>
                     </div>
                     <div className="mt-3 cursor-pointer" onClick={ () => handleAction('members') }>
                         { LocalizeText('group.membercount', ['totalMembers'], [groupInformation.membersCount.toString()]) }
