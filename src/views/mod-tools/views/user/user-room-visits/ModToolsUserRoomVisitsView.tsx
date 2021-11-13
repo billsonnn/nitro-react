@@ -36,7 +36,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
             <div style={props.style} key={props.key} className="row room-visit">
                 <div className="col-auto text-center">{item.enterHour.toString().padStart(2, '0')}:{item.enterMinute.toString().padStart(2, '0')}</div>
                 <div className="col-7"><span className="fw-bold">Room: </span>{item.roomName}</div>
-                <button className="btn btn-sm btn-link col-sm-auto fw-bold" onClick={() => TryVisitRoom(item.roomId)}>Visit Room</button>
+                <button className="btn btn-sm btn-link col-auto fw-bold" onClick={() => TryVisitRoom(item.roomId)}>Visit Room</button>
             </div>);
     }
 
