@@ -13,6 +13,7 @@ import { FurnitureManipulationMenuView } from './manipulation-menu/FurnitureMani
 import { FurnitureMannequinView } from './mannequin/FurnitureMannequinView';
 import { FurnitureStickieView } from './stickie/FurnitureStickieView';
 import { FurnitureTrophyView } from './trophy/FurnitureTrophyView';
+import { FurnitureYoutubeDisplayView } from './youtube-tv/FurnitureYoutubeDisplayView';
 
 export const FurnitureWidgetsView: FC<{}> = props =>
 {
@@ -32,6 +33,7 @@ export const FurnitureWidgetsView: FC<{}> = props =>
             <FurnitureTrophyView />
             <FurnitureBadgeDisplayView />
             <FurnitureExternalImageView />
+            <FurnitureYoutubeDisplayView />
         </div>
     );
 }

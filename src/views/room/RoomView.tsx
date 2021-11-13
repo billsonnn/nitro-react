@@ -1,6 +1,7 @@
 import { EventDispatcher, NitroRectangle, RoomGeometry, RoomVariableEnum, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
 import { DispatchMouseEvent, DispatchTouchEvent, DoorbellWidgetHandler, FurniChooserWidgetHandler, FurnitureContextMenuWidgetHandler, FurnitureCreditWidgetHandler, FurnitureCustomStackHeightWidgetHandler, FurnitureDimmerWidgetHandler, FurnitureExternalImageWidgetHandler, FurnitureMannequinWidgetHandler, FurniturePresentWidgetHandler, GetNitroInstance, GetRoomEngine, InitializeRoomInstanceRenderingCanvas, IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler, RoomWidgetRoomToolsHandler, RoomWidgetUpdateRoomViewEvent, UserChooserWidgetHandler } from '../../api';
+import { FurnitureYoutubeDisplayWidgetHandler } from '../../api/nitro/room/widgets/handlers/FurnitureYoutubeDisplayWidgetHandler';
 import { RoomContextProvider } from './context/RoomContext';
 import { RoomColorView } from './RoomColorView';
 import { RoomViewProps } from './RoomView.types';
@@ -44,6 +45,7 @@ export const RoomView: FC<RoomViewProps> = props =>
         widgetHandlerManager.registerHandler(new FurnitureExternalImageWidgetHandler());
         widgetHandlerManager.registerHandler(new FurniturePresentWidgetHandler());
         widgetHandlerManager.registerHandler(new FurnitureDimmerWidgetHandler());
+        widgetHandlerManager.registerHandler(new FurnitureYoutubeDisplayWidgetHandler());
         widgetHandlerManager.registerHandler(new FurnitureMannequinWidgetHandler());
 
         setWidgetHandler(widgetHandlerManager);
