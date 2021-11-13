@@ -27,10 +27,10 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
 
     return (
         <div className="row">
-            <div className="col-sm-3 px-0 d-flex align-items-center">
+            <div className="col-auto px-0 d-flex align-items-center">
                 <AvatarImageView figure={userProfile.figure} direction={2} />
             </div>
-            <div className="col-sm-8">
+            <div className="col">
                 <div className="user-info-container">
                     <div className="fw-bold">{userProfile.username}</div>
                     <div className="fst-italic text-break small">{userProfile.motto}</div>

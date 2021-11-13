@@ -21,23 +21,4 @@ export const BadgesContainerView: FC<BadgesContainerViewProps> = props =>
             </NitroCardGridView>
         </div>
     )
-
-//     return (
-//         <div className="row badge-container d-flex mt-1">
-//             <div className="nitro-card-grid theme-default">
-//                 <div className="row row-cols-5 align-content-start">
-//                 {
-//                     badges.map( (badge, index) => 
-// {
-//                         return (
-//                         <div className="grid-item-container" key={index}>
-//                             <BadgeImageView badgeCode={badge}/>
-//                         </div>
-//                         )
-//                     })
-//                 }
-//                 </div>
-//             </div>
-//         </div>
-//     );
 }

@@ -104,8 +104,8 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
         return (
             <div key={uniqueKey} style={style} className="row justify-content-start gap-2 room-info">
                 <div className="col-7"><span className="fw-bold">Room: </span>{roomName}</div>
-                <button className="btn btn-sm btn-primary col-sm-auto" onClick={() => TryVisitRoom(roomId)}>Visit Room</button>
-                <button className="btn btn-sm btn-primary col-sm-auto" onClick={() => dispatchUiEvent(new ModToolsOpenRoomInfoEvent(roomId))}>Room Tools</button>
+                <button className="btn btn-sm btn-primary col-auto" onClick={() => TryVisitRoom(roomId)}>Visit Room</button>
+                <button className="btn btn-sm btn-primary col-auto" onClick={() => dispatchUiEvent(new ModToolsOpenRoomInfoEvent(roomId))}>Room Tools</button>
             </div>
         );
     }, []);

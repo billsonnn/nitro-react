@@ -27,7 +27,7 @@ export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = p
             <div className="relationship-container d-flex flex-row align-items-center w-100">
                 <i className={`icon icon-relationship-${relationshipName} flex-shrink-0 align-self-baseline mt-2`} />
                 <div className="w-100 d-flex flex-column">
-                    <span className={'relationship w-100' + (!simple ? ' advanced' : '')}>
+                    <span className={'relationship mx-2' + (!simple ? ' advanced' : '')}>
                         <span className="cursor-pointer relationship-text" onClick={() => OnUserClick(relationshipInfo)}>
                             {
                                 (relationshipInfo && relationshipInfo.friendCount > 0) ? relationshipInfo.randomFriendName : LocalizeText('extendedprofile.add.friends')
