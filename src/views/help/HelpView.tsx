@@ -9,6 +9,7 @@ import { IHelpReportState, initialReportState } from './context/HelpContext.type
 import { HelpMessageHandler } from './HelpMessageHandler';
 import { DescribeReportView } from './views/DescribeReportView';
 import { HelpIndexView } from './views/HelpIndexView';
+import { SanctionSatusView } from './views/SanctionStatusView';
 import { SelectReportedChatsView } from './views/SelectReportedChatsView';
 import { SelectReportedUserView } from './views/SelectReportedUserView';
 import { SelectTopicView } from './views/SelectTopicView';
@@ -74,6 +75,7 @@ export const HelpView: FC<{}> = props =>
                     </NitroCardContentView>
                 </NitroCardView>
             }
+            <SanctionSatusView />
         </HelpContextProvider>
     );
 }
