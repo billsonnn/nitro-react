@@ -5,17 +5,17 @@ import { useRoomEngineEvent } from '../../../../../hooks';
 import { NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../layout';
 import { NitroLayoutBase } from '../../../../../layout/base';
 import { useRoomContext } from '../../../context/RoomContext';
-import { ContextMenuView } from '../../context-menu/ContextMenuView';
 import { ContextMenuHeaderView } from '../../context-menu/views/header/ContextMenuHeaderView';
 import { ContextMenuListView } from '../../context-menu/views/list/ContextMenuListView';
+import { ObjectLocationView } from '../../object-location/ObjectLocationView';
 
-const SCORE_TYPES = [ 'perteam', 'mostwins', 'classic' ];
-const CLEAR_TYPES = [ 'alltime', 'daily', 'weekly', 'monthly' ];
+const SCORE_TYPES = ['perteam', 'mostwins', 'classic'];
+const CLEAR_TYPES = ['alltime', 'daily', 'weekly', 'monthly'];
 
 export const FurnitureHighScoreView: FC<{}> = props =>
 {
-    const [ objectId, setObjectId ] = useState(-1);
-    const [ stuffData, setStuffData ] = useState<HighScoreDataType>(null);
+    const [objectId, setObjectId] = useState(-1);
+    const [stuffData, setStuffData] = useState<HighScoreDataType>(null);
     const { roomSession = null } = useRoomContext();
 
     const close = useCallback(() =>
@@ -23,7 +23,7 @@ export const FurnitureHighScoreView: FC<{}> = props =>
         setObjectId(-1);
         setStuffData(null);
     }, []);
-    
+
     const onRoomEngineTriggerWidgetEvent = useCallback((event: RoomEngineTriggerWidgetEvent) =>
     {
         switch(event.type)
@@ -49,7 +49,7 @@ export const FurnitureHighScoreView: FC<{}> = props =>
                 close();
                 return;
         }
-    }, [ roomSession, objectId, close ]);
+    }, [roomSession, objectId, close]);
 
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY, onRoomEngineTriggerWidgetEvent);
     useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY, onRoomEngineTriggerWidgetEvent);
@@ -57,49 +57,52 @@ export const FurnitureHighScoreView: FC<{}> = props =>
     if((objectId === -1) || !stuffData) return null;
 
     return (
-        <ContextMenuView objectId={ objectId } category={ RoomObjectCategory.FLOOR } close={ close } fades={ false } className="nitro-widget-high-score">
-            <ContextMenuHeaderView>
-                { LocalizeText('high.score.display.caption', [ 'scoretype', 'cleartype' ], [LocalizeText(`high.score.display.scoretype.${ SCORE_TYPES[stuffData.scoreType] }`), LocalizeText(`high.score.display.cleartype.${ CLEAR_TYPES[stuffData.clearType] }`) ]) }
-            </ContextMenuHeaderView>
-            <ContextMenuListView>
-                <NitroLayoutGrid>
-                    <NitroLayoutGridColumn size={ 6 }>
-                        <NitroLayoutBase className="text-center fw-bold">
-                            { LocalizeText('high.score.display.users.header') }
-                        </NitroLayoutBase>
-                    </NitroLayoutGridColumn>
-                    <NitroLayoutGridColumn size={ 6 }>
-                        <NitroLayoutBase className="text-center fw-bold">
-                            { LocalizeText('high.score.display.score.header') }
-                        </NitroLayoutBase>
-                    </NitroLayoutGridColumn>
-                </NitroLayoutGrid>
-                <hr className="m-0 my-1" />
-                <NitroLayoutGrid overflow="hidden">
-                    <NitroLayoutGridColumn size={ 6 }>
-                        { stuffData.entries.map((entry, index) =>
+        <ObjectLocationView objectId={objectId} category={RoomObjectCategory.FLOOR} >
+            <div className="nitro-widget-high-score nitro-context-menu">
+                <ContextMenuHeaderView>
+                    {LocalizeText('high.score.display.caption', ['scoretype', 'cleartype'], [LocalizeText(`high.score.display.scoretype.${SCORE_TYPES[stuffData.scoreType]}`), LocalizeText(`high.score.display.cleartype.${CLEAR_TYPES[stuffData.clearType]}`)])}
+                </ContextMenuHeaderView>
+                <ContextMenuListView>
+                    <NitroLayoutGrid>
+                        <NitroLayoutGridColumn size={6}>
+                            <NitroLayoutBase className="text-center fw-bold">
+                                {LocalizeText('high.score.display.users.header')}
+                            </NitroLayoutBase>
+                        </NitroLayoutGridColumn>
+                        <NitroLayoutGridColumn size={6}>
+                            <NitroLayoutBase className="text-center fw-bold">
+                                {LocalizeText('high.score.display.score.header')}
+                            </NitroLayoutBase>
+                        </NitroLayoutGridColumn>
+                    </NitroLayoutGrid>
+                    <hr className="m-0 my-1" />
+                    <NitroLayoutGrid overflow="hidden">
+                        <NitroLayoutGridColumn size={6}>
+                            {stuffData.entries.map((entry, index) =>
                             {
                                 return (
-                                    <NitroLayoutBase key={ index } className="text-center">
-                                        { entry.users.join(', ') }
+                                    <NitroLayoutBase key={index} className="text-center">
+                                        {entry.users.join(', ')}
                                     </NitroLayoutBase>
                                 );
                             })
-                        }
-                    </NitroLayoutGridColumn>
-                    <NitroLayoutGridColumn size={ 6 }>
-                        { stuffData.entries.map((entry, index) =>
+                            }
+                        </NitroLayoutGridColumn>
+                        <NitroLayoutGridColumn size={6}>
+                            {stuffData.entries.map((entry, index) =>
                             {
                                 return (
-                                    <NitroLayoutBase key={ index } className="text-center">
-                                        { entry.score }
+                                    <NitroLayoutBase key={index} className="text-center">
+                                        {entry.score}
                                     </NitroLayoutBase>
                                 );
                             })
-                        }
-                    </NitroLayoutGridColumn>
-                </NitroLayoutGrid>
-            </ContextMenuListView>
-        </ContextMenuView>
+                            }
+                        </NitroLayoutGridColumn>
+                    </NitroLayoutGrid>
+                </ContextMenuListView>
+            </div>
+        </ObjectLocationView>
+
     );
 }
