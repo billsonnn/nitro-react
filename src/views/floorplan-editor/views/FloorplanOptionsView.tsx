@@ -161,7 +161,7 @@ export const FloorplanOptionsView: FC<{}> = props =>
                                     step={ 1 }
                                     value={ floorHeight }
                                     onChange={ event => onFloorHeightChange(event) }
-                                    renderThumb={ ({ style, ...rest }, state) => <div style={ { backgroundColor: `#${Object.entries(COLORMAP)[state.valueNow + 1][1]}`, ...style } } { ...rest }>{ state.valueNow }</div> } />
+                                    renderThumb={ ({ style, ...rest }, state) => <div style={ { backgroundColor: `#${COLORMAP[state.valueNow.toString(33)]}`, ...style } } { ...rest }>{ state.valueNow }</div> } />
                 </NitroLayoutFlexColumn>
             </NitroLayoutGridColumn>
             <NitroLayoutGridColumn size={5}>
