@@ -43,7 +43,6 @@ export class PollWidgetHandler extends RoomWidgetHandler
     public processWidgetMessage(message: RoomWidgetMessage): RoomWidgetUpdateEvent
     {
         const pollMessage = (message as RoomWidgetPollMessage);
-
         switch(message.type)
         {
             case RoomWidgetPollMessage.START:

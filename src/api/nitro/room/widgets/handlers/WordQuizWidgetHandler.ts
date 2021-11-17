@@ -11,7 +11,6 @@ export class WordQuizWidgetHandler extends RoomWidgetHandler
     {
         const roomQuizEvent = (event as RoomSessionWordQuizEvent);
         let widgetEvent: RoomWidgetWordQuizUpdateEvent;
-
         switch(event.type)
         {
             case RoomSessionWordQuizEvent.ANSWERED:
