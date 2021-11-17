@@ -6,7 +6,7 @@ export const NitroCardAccordionView: FC<NitroCardAccordionViewProps> = props =>
     const { className = '' } = props;
 
     return (
-        <div className={ 'nitro-card-accordion bg-light text-black ' + className }>
+        <div className={ 'nitro-card-accordion text-black ' + className }>
             { props.children }
         </div>
     );

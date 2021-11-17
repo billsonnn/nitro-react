@@ -5,15 +5,26 @@ $nitro-card-tabs-height: 33px;
     pointer-events: all;
     resize: both;
 
-    &.theme-dark {
-        padding: 2px;
-        background-color: #1C323F;
-        border: 2px solid rgba(255, 255, 255, 0.5);
-        border-radius: 0.25rem;
-    }
-
     &.theme-primary {
         border: $border-width solid $border-color;
+
+        .nitro-card-header-container {
+            background-color: $primary;
+
+            .nitro-card-header {
+                .header-text {
+                    color: $white;
+                }
+            }
+        }
+
+        .nitro-card-tabs {
+            background-color: $secondary;
+        }
+
+        .content-area {
+            background-color: $light;
+        }
     }
 }
 
@@ -27,7 +38,6 @@ $nitro-card-tabs-height: 33px;
     overflow: hidden;
 
     @include media-breakpoint-down(lg) {
-        
         .draggable-window {
             top: 0 !important;
             left: 0 !important;
@@ -36,20 +46,15 @@ $nitro-card-tabs-height: 33px;
             //transform: none !important;
             overflow: hidden;
         }
-    
+
         .nitro-card {
             max-width: 75%;
             max-height: calc(100% - 20px);
             margin: 10px auto 10px;
-    
-            // &.rounded {
-            //     border-radius: 0 !important;
-            // }
         }
     }
 
     @include media-breakpoint-down(sm) {
-        
         .draggable-window {
             top: 0 !important;
             left: 0 !important;
@@ -58,13 +63,13 @@ $nitro-card-tabs-height: 33px;
             //transform: none !important;
             overflow: hidden;
         }
-    
+
         .nitro-card {
             width: 100%;
             max-width: 100%;
             max-height: calc(100% - #{$toolbar-height});
             margin: 0;
-    
+
             &.rounded {
                 border-radius: 0 !important;
             }
@@ -72,8 +77,8 @@ $nitro-card-tabs-height: 33px;
     }
 }
 
-@import './accordion/NitroCardAccordionView';
-@import './content/NitroCardContentView';
-@import './grid/NitroCardGridView';
-@import './header/NitroCardHeaderView';
-@import './tabs/NitroCardTabsView';
+@import "./accordion/NitroCardAccordionView";
+@import "./content/NitroCardContentView";
+@import "./grid/NitroCardGridView";
+@import "./header/NitroCardHeaderView";
+@import "./tabs/NitroCardTabsView";
