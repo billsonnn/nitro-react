@@ -1,7 +1,7 @@
+import { NitroEvent } from '@nitrots/nitro-renderer';
 import { MessengerFriend } from '../../views/friends/common/MessengerFriend';
-import { FriendsEvent } from './FriendsEvent';
 
-export class FriendListContentEvent extends FriendsEvent
+export class FriendListContentEvent extends NitroEvent
 {
     public static FRIEND_LIST_CONTENT: string = 'FLSFRE_FRIEND_LIST_CONTENT';
 

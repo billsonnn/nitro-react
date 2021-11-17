@@ -1,6 +1,6 @@
-import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, SendMessageComposer, UserProfileComposer } from '@nitrots/nitro-renderer';
+import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, SendMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
+import { AddEventLinkTracker, GetUserProfile, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
 import { FriendsMessengerIconEvent } from '../../../../events';
 import { BatchUpdates, CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
@@ -17,10 +17,9 @@ export const FriendsMessengerView: FC<{}> = props =>
     const [ activeThreadIndex, setActiveThreadIndex ] = useState(-1);
     const [ hiddenThreadIndexes, setHiddenThreadIndexes ] = useState<number[]>([]);
     const [ messageText, setMessageText ] = useState('');
-    const { friendsState = null } = useFriendsContext();
-    const { friends = [] } = friendsState;
     const messagesBox = useRef<HTMLDivElement>();
     const [ updateValue, setUpdateValue ] = useState({});
+    const { friends = [] } = useFriendsContext();
 
     const followFriend = useCallback(() =>
     {
@@ -29,7 +28,7 @@ export const FriendsMessengerView: FC<{}> = props =>
 
     const openProfile = useCallback(() =>
     {
-        SendMessageHook(new UserProfileComposer(messageThreads[activeThreadIndex].participant.id));
+        GetUserProfile(messageThreads[activeThreadIndex].participant.id);
     }, [ messageThreads, activeThreadIndex ]);
 
     const getFriend = useCallback((userId: number) =>

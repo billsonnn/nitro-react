@@ -1,43 +1,47 @@
 import { FC, useState } from 'react';
 import { LocalizeText } from '../../../../api';
-import { NitroCardAccordionItemView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
+import { NitroCardAccordionSetView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
 import { FriendsGroupView } from '../friends-group/FriendsGroupView';
+import { FriendsRequestView } from '../friends-request/FriendsRequestView';
 import { FriendsListViewProps } from './FriendsListView.types';
 
-const TABS: string[] = ['friendlist.friends', 'generic.search'];
+const MODE_FRIENDS: number = 0;
+const MODE_SEARCH: number = 1;
 
 export const FriendsListView: FC<FriendsListViewProps> = props =>
 {
-    const { onlineFriends = [], offlineFriends = [], friendRequests = [], onCloseClick = null } = props;
     
-    const [ currentTab, setCurrentTab ] = useState<number>(0);
+    const { onlineFriends = [], offlineFriends = [], friendRequests = [], onCloseClick = null } = props;
+    const [ mode, setMode ] = useState<number>(0);
 
     return (
         <NitroCardView className="nitro-friends">
-                <NitroCardHeaderView headerText={ LocalizeText('friendlist.friends') } onCloseClick={ onCloseClick } />
-                <NitroCardContentView className="p-0">
-                    <NitroCardTabsView>
-                        { TABS.map((tab, index) =>
-                            {
-                                return (<NitroCardTabsItemView key={ index } isActive={ currentTab === index } onClick={ () => setCurrentTab(index) }>
-                                    { LocalizeText(tab) }
-                                </NitroCardTabsItemView>);
-                            }) }
-                    </NitroCardTabsView>
-                    <div className="text-black">
-                        { currentTab === 0 && <NitroCardAccordionView>
-                            <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.friends') + ` (${onlineFriends.length})` } defaultState={ true }>
-                                <FriendsGroupView list={ onlineFriends } />
-                            </NitroCardAccordionItemView>
-                            <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.friends.offlinecaption') + ` (${offlineFriends.length})` }>
-                                <FriendsGroupView list={ offlineFriends } />
-                            </NitroCardAccordionItemView>
-                            { friendRequests.length > 0 && <NitroCardAccordionItemView headerText={ LocalizeText('friendlist.tab.friendrequests') + ` (${friendRequests.length})` }>
-                                <FriendsGroupView list={ friendRequests } />
-                            </NitroCardAccordionItemView> }
-                        </NitroCardAccordionView> }
-                    </div>
-                </NitroCardContentView>
-            </NitroCardView>
+            <NitroCardHeaderView headerText={ LocalizeText('friendlist.friends') } onCloseClick={ onCloseClick } />
+            <NitroCardTabsView>
+                <NitroCardTabsItemView isActive={ (mode === MODE_FRIENDS) } count={ friendRequests.length } onClick={ event => setMode(MODE_FRIENDS) }>
+                    { LocalizeText('friendlist.friends') }
+                </NitroCardTabsItemView>
+                <NitroCardTabsItemView isActive={ (mode === MODE_SEARCH) } onClick={ event => setMode(MODE_SEARCH) }>
+                    { LocalizeText('generic.search') }
+                </NitroCardTabsItemView>
+            </NitroCardTabsView>
+            <NitroCardContentView className="p-0 text-black">
+                { (mode === MODE_FRIENDS) &&
+                    <NitroCardAccordionView>
+                        <NitroCardAccordionSetView headerText={ LocalizeText('friendlist.friends') + ` (${onlineFriends.length})` } isExpanded={ true }>
+                            <FriendsGroupView list={ onlineFriends } />
+                        </NitroCardAccordionSetView>
+                        <NitroCardAccordionSetView headerText={ LocalizeText('friendlist.friends.offlinecaption') + ` (${offlineFriends.length})` }>
+                            <FriendsGroupView list={ offlineFriends } />
+                        </NitroCardAccordionSetView>
+
+
+                        <FriendsRequestView requests={ friendRequests } />
+                    </NitroCardAccordionView> }
+                { (mode === MODE_SEARCH) &&
+                    <>
+                    </> }
+            </NitroCardContentView>
+        </NitroCardView>
     );
 };
