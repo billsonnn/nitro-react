@@ -3,7 +3,7 @@ import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } 
 import { AddEventLinkTracker, GetUserProfile, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
 import { FriendsMessengerIconEvent } from '../../../../events';
 import { BatchUpdates, CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFlex } from '../../../../layout';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { MessengerThread } from '../../common/MessengerThread';
 import { MessengerThreadChat } from '../../common/MessengerThreadChat';
@@ -17,9 +17,9 @@ export const FriendsMessengerView: FC<{}> = props =>
     const [ activeThreadIndex, setActiveThreadIndex ] = useState(-1);
     const [ hiddenThreadIndexes, setHiddenThreadIndexes ] = useState<number[]>([]);
     const [ messageText, setMessageText ] = useState('');
-    const messagesBox = useRef<HTMLDivElement>();
     const [ updateValue, setUpdateValue ] = useState({});
     const { friends = [] } = useFriendsContext();
+    const messagesBox = useRef<HTMLDivElement>();
 
     const followFriend = useCallback(() =>
     {
@@ -235,7 +235,7 @@ export const FriendsMessengerView: FC<{}> = props =>
         <NitroCardView className="nitro-friends-messenger" simple={ true }>
             <NitroCardHeaderView headerText={ LocalizeText('messenger.window.title', [ 'OPEN_CHAT_COUNT' ], [ visibleThreads.length.toString() ]) } onCloseClick={ event => setIsVisible(false) } />
             <NitroCardContentView>
-                <div className="d-flex gap-2 overflow-auto pb-1">
+                <NitroLayoutFlex gap={ 2 } overflow="auto">
                     { visibleThreads && (visibleThreads.length > 0) && visibleThreads.map((thread, index) =>
                         {
                             const messageThreadIndex = messageThreads.indexOf(thread);
@@ -247,13 +247,16 @@ export const FriendsMessengerView: FC<{}> = props =>
                                 </div>
                             );
                         }) }
-                </div>
-                <hr className="bg-dark mt-3 mb-2" />
+                </NitroLayoutFlex>
+                <NitroLayoutFlex className="align-items-center my-1" position="relative">
+                    { (activeThreadIndex >= 0) &&
+                        <div className="text-black bg-light pe-2 flex-none">
+                            { LocalizeText('messenger.window.separator', [ 'FRIEND_NAME' ], [ messageThreads[activeThreadIndex].participant.name ]) }
+                        </div> }
+                    <hr className="bg-dark m-0 w-100" />
+                </NitroLayoutFlex>
                 { (activeThreadIndex >= 0) &&
                     <>
-                        <div className="text-black chat-title bg-light pe-2 position-absolute">
-                            { LocalizeText('messenger.window.separator', [ 'FRIEND_NAME' ], [ messageThreads[activeThreadIndex].participant.name ]) }
-                        </div>
                         <div className="d-flex gap-2 mb-2">
                             <div className="btn-group">
                                 <button className="d-flex justify-content-center align-items-center btn btn-sm btn-primary" onClick={ followFriend }>

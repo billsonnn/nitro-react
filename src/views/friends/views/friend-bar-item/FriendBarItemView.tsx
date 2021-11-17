@@ -27,6 +27,8 @@ export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
     {
         const element = elementRef.current;
 
+        if(!element) return;
+
         if((event.target !== element) && !element.contains((event.target as Node)))
         {
             setVisible(false);
