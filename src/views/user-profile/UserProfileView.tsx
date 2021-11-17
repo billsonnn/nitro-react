@@ -1,6 +1,6 @@
-import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileComposer, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
+import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../api';
+import { GetSessionDataManager, GetUserProfile, LocalizeText } from '../../api';
 import { CreateMessageHook, SendMessageHook } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
 import { BadgesContainerView } from './views/badges-container/BadgesContainerView';
@@ -23,7 +23,10 @@ export const UserProfileView: FC = props =>
 
     const onLeaveGroup = useCallback(() =>
     {
-        if(userProfile && userProfile.id === GetSessionDataManager().userId) SendMessageHook(new UserProfileComposer(userProfile.id));
+        if(userProfile && userProfile.id === GetSessionDataManager().userId)
+        {
+            GetUserProfile(userProfile.id);
+        }
     }, [ userProfile ]);
     
     const OnUserCurrentBadgesEvent = useCallback((event: UserCurrentBadgesEvent) =>

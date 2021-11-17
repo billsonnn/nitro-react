@@ -16,7 +16,6 @@ import { AvatarInfoUseProductView } from './views/use-product/AvatarInfoUseProdu
 
 export const AvatarInfoWidgetView: FC<{}> = props =>
 {
-    const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ name, setName ] = useState<RoomWidgetObjectNameEvent>(null);
     const [ nameBubbles, setNameBubbles ] = useState<RoomWidgetObjectNameEvent[]>([]);
     const [ productBubbles, setProductBubbles ] = useState<UseProductItem[]>([]);
@@ -26,6 +25,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
     const [ isDancing, setIsDancing ] = useState(false);
     const [ isDecorating, setIsDecorating ] = useState(false);
     const [ rentableBotChatEvent, setRentableBotChatEvent ] = useState<RoomWidgetUpdateRentableBotChatEvent>(null);
+    const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
 
     const removeNameBubble = useCallback((index: number) =>
     {

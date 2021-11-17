@@ -10,9 +10,9 @@ $infostand-zindex: 30;
 $chat-zindex: 20;
 $highscore-zindex: 19;
 
-$grid-bg-color: #CDD3D9;
+$grid-bg-color: #cdd3d9;
 $grid-border-color: $muted;
-$grid-active-bg-color: #ECECEC;
+$grid-active-bg-color: #ececec;
 $grid-active-border-color: $white;
 
 $toolbar-height: 55px;
@@ -44,10 +44,16 @@ $nitro-widget-custom-stack-height-height: 220px;
 $nitro-widget-exchange-credit-width: 375px;
 $nitro-widget-exchange-credit-height: 150px;
 
+$chat-history-width: 300px;
+$chat-history-height: 300px;
+
+$friends-list-width: 250px;
+$friends-list-height: 300px;
+
 .nitro-app {
     width: 100%;
     height: 100%;
 }
 
-@import './layout/Layout';
-@import './views/Styles';
+@import "./layout/Layout";
+@import "./views/Styles";
