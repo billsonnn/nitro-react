@@ -1,16 +1,17 @@
-import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserInfoDataParser, UserInfoEvent, UserProfileComposer, Wait } from '@nitrots/nitro-renderer';
+import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { CreateLinkEvent, GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GoToDesktop, OpenMessengerChat } from '../../api';
-import { AvatarEditorEvent, CatalogEvent, FriendsEvent, FriendsMessengerIconEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
+import { CreateLinkEvent, GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GetUserProfile, GoToDesktop, OpenMessengerChat } from '../../api';
+import { AvatarEditorEvent, CatalogEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
 import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
 import { dispatchUiEvent, useRoomEngineEvent, useUiEvent } from '../../hooks';
-import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
+import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
 import { TransitionAnimationTypes } from '../../layout/transitions/TransitionAnimation.types';
 import { AvatarImageView } from '../shared/avatar-image/AvatarImageView';
+import { ItemCountView } from '../shared/item-count/ItemCountView';
 import { ToolbarMeView } from './me/ToolbarMeView';
 import { ToolbarViewItems, ToolbarViewProps } from './ToolbarView.types';
 
@@ -28,9 +29,8 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     const [ chatIconType, setChatIconType ] = useState(CHAT_ICON_HIDDEN);
     const [ unseenInventoryCount, setUnseenInventoryCount ] = useState(0);
     const [ unseenAchievementCount, setUnseenAchievementCount ] = useState(0);
-
+    const [ unseenFriendRequestCount, setFriendRequestCount ] = useState(0);
     const isMod = GetSessionDataManager().isModerator;
-    const unseenFriendListCount = 0;
 
     const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
     {
@@ -72,27 +72,34 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
 
     useUiEvent(AchievementsUIUnseenCountEvent.UNSEEN_COUNT, onAchievementsUIUnseenCountEvent);
 
+    const onFriendsRequestCountEvent = useCallback((event: FriendsRequestCountEvent) =>
+    {
+        setFriendRequestCount(event.count);
+    }, []);
+
+    useUiEvent(FriendsRequestCountEvent.UPDATE_COUNT, onFriendsRequestCountEvent);
+
     const animationIconToToolbar = useCallback((iconName: string, image: HTMLImageElement, x: number, y: number) =>
     {
         const target = (document.body.getElementsByClassName(iconName)[0] as HTMLElement);
 
         if(!target) return;
         
-        image.className         = 'toolbar-icon-animation';
-        image.style.visibility  = 'visible';
-        image.style.left        = (x + 'px');
-        image.style.top         = (y + 'px');
+        image.className = 'toolbar-icon-animation';
+        image.style.visibility = 'visible';
+        image.style.left = (x + 'px');
+        image.style.top = (y + 'px');
 
         document.body.append(image);
 
         const targetBounds  = target.getBoundingClientRect();
         const imageBounds   = image.getBoundingClientRect();
 
-        const left    = (imageBounds.x - targetBounds.x);
-        const top     = (imageBounds.y - targetBounds.y);
+        const left = (imageBounds.x - targetBounds.x);
+        const top = (imageBounds.y - targetBounds.y);
         const squared = Math.sqrt(((left * left) + (top * top)));
-        const wait    = (500 - Math.abs(((((1 / squared) * 100) * 500) * 0.5)));
-        const height  = 20;
+        const wait = (500 - Math.abs(((((1 / squared) * 100) * 500) * 0.5)));
+        const height = 20;
 
         const motionName = (`ToolbarBouncing[${ iconName }]`);
 
@@ -144,7 +151,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 setMeExpanded(false);
                 return;
             case ToolbarViewItems.PROFILE_ITEM:
-                SendMessageHook(new UserProfileComposer(GetSessionDataManager().userId));
+                GetUserProfile(GetSessionDataManager().userId);
                 setMeExpanded(false);
                 return;
             case ToolbarViewItems.SETTINGS_ITEM:
@@ -176,7 +183,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                         <div className={ 'navigation-item item-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ event => setMeExpanded(!isMeExpanded) }>
                             <AvatarImageView figure={ userFigure } direction={ 2 } />
                             { (unseenAchievementCount > 0) &&
-                                <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenAchievementCount }</div> }
+                                <ItemCountView count={ unseenAchievementCount } /> }
                         </div>
                         { isInRoom && (
                             <div className="navigation-item" onClick={ visitDesktop }>
@@ -194,8 +201,8 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                         </div>
                         <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.INVENTORY_ITEM) }>
                             <i className="icon icon-inventory"></i>
-                            { (unseenInventoryCount > 0) && (
-                                <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenInventoryCount }</div>) }
+                            { (unseenInventoryCount > 0) &&
+                                <ItemCountView count={ unseenInventoryCount } /> }
                         </div>
                         { isInRoom && (
                             <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CAMERA_ITEM) }>
@@ -212,15 +219,13 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                     <div className="navigation-items gap-2">
                         <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_LIST_ITEM) }>
                             <i className="icon icon-friendall"></i>
-                            { (unseenFriendListCount > 0) && (
-                                <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div>) }
+                            { (unseenFriendRequestCount > 0) &&
+                                <ItemCountView count={ unseenFriendRequestCount } /> }
                         </div>
                         { ((chatIconType === CHAT_ICON_SHOWING) || (chatIconType === CHAT_ICON_UNREAD)) &&
                             <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_CHAT_ITEM) }>
                                 { (chatIconType === CHAT_ICON_SHOWING) && <i className="icon icon-message" /> }
                                 { (chatIconType === CHAT_ICON_UNREAD) && <i className="icon icon-message is-unseen" /> }
-                                { (unseenFriendListCount > 0) &&
-                                    <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenFriendListCount }</div> }
                             </div> }
                     </div>
                     <div id="toolbar-friend-bar-container" className="d-none d-lg-block" />

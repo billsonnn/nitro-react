@@ -1,6 +1,7 @@
 import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { GetRoomEngine, GetRoomSession } from '../../../api';
+import { ItemCountView } from '../../shared/item-count/ItemCountView';
 import { ToolbarViewItems } from '../ToolbarView.types';
 import { ToolbarMeViewProps } from './ToolbarMeView.types';
 
@@ -29,7 +30,7 @@ export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
                 <div className="navigation-item" onClick={ () => handleToolbarItemClick(ToolbarViewItems.ACHIEVEMENTS_ITEM) }>
                     <i className="icon icon-me-achievements"></i>
                     { (unseenAchievementCount > 0) &&
-                        <div className="position-absolute bg-danger px-1 py-0 rounded shadow count">{ unseenAchievementCount }</div> }
+                        <ItemCountView count={ unseenAchievementCount } /> }
                 </div>
                 <div className="navigation-item" onClick={ () => handleToolbarItemClick(ToolbarViewItems.PROFILE_ITEM) }>
                     <i className="icon icon-me-profile"></i>
