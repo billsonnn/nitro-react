@@ -4,9 +4,9 @@ import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 
 import { GetGroupInformation, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent } from '../../../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../../hooks/events';
+import { UserProfileIconView } from '../../../../../../layout';
 import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
-import { UserProfileIconView } from '../../../../../shared/user-profile-icon/UserProfileIconView';
 import { RelationshipsContainerView } from '../../../../../user-profile/views/relationships-container/RelationshipsContainerView';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { InfoStandWidgetUserViewProps } from './InfoStandWidgetUserView.types';

@@ -7,9 +7,8 @@ import { FloorplanEditorEvent } from '../../../../events/floorplan-editor/Floorp
 import { RoomWidgetThumbnailEvent } from '../../../../events/room-widgets/thumbnail';
 import { dispatchUiEvent } from '../../../../hooks/events';
 import { SendMessageHook } from '../../../../hooks/messages';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, UserProfileIconView } from '../../../../layout';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
-import { UserProfileIconView } from '../../../shared/user-profile-icon/UserProfileIconView';
 import { useNavigatorContext } from '../../context/NavigatorContext';
 import { NavigatorActions } from '../../reducers/NavigatorReducer';
 import { NavigatorRoomInfoViewProps } from './NavigatorRoomInfoView.types';

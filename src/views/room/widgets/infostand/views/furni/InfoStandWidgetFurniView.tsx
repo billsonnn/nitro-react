@@ -2,10 +2,10 @@ import { CrackableDataType, GroupInformationComposer, GroupInformationEvent, Roo
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage } from '../../../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
+import { UserProfileIconView } from '../../../../../../layout';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { LimitedEditionCompactPlateView } from '../../../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../../../shared/rarity-level/RarityLevelView';
-import { UserProfileIconView } from '../../../../../shared/user-profile-icon/UserProfileIconView';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { InfoStandBaseView } from '../base/InfoStandBaseView';
 import { InfoStandWidgetFurniViewProps } from './InfoStandWidgetFurniView.types';

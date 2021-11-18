@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../../api';
+import { UserProfileIconView } from '../../../../../../layout';
 import { PetImageView } from '../../../../../shared/pet-image/PetImageView';
-import { UserProfileIconView } from '../../../../../shared/user-profile-icon/UserProfileIconView';
 import { InfoStandBaseView } from '../base/InfoStandBaseView';
 import { InfoStandWidgetPetViewProps } from './InfoStandWidgetPetView.types';
 
