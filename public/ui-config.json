@@ -5,6 +5,7 @@
     "thumbnails.url": "https://nitro.nitrots.co/camera/thumbnail/%thumbnail%.png",
     "url.prefix": "http://localhost:3000",
     "floorplan.tile.url": "${asset.url}/floorplan-editor/tiles.json",
+    "habbopages.url": "http://localhost:3000/",
     "chat.viewer.height.percentage": 0.40,
     "widget.dimmer.colorwheel": false,
     "hotelview": {
