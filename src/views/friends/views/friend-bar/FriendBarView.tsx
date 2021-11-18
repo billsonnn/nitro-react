@@ -1,4 +1,6 @@
 import { FC, useMemo, useState } from 'react';
+import { NitroLayoutButton, NitroLayoutFlex } from '../../../../layout';
+import { NitroLayoutBase } from '../../../../layout/base';
 import { FriendBarItemView } from '../friend-bar-item/FriendBarItemView';
 import { FriendBarViewProps } from './FriendBarView.types';
 
@@ -24,10 +26,10 @@ export const FriendBarView: FC<FriendBarViewProps> = props =>
     }, [ maxDisplayCount, indexOffset, onlineFriends ]);
 
     return (
-        <div className="d-flex friend-bar align-items-center">
-            <button type="button" className="btn btn-sm btn-black align-self-center friend-bar-button" disabled={ !canDecreaseIndex } onClick={ event => setIndexOffset(indexOffset - 1) }>
-                <i className="fas fa-chevron-left" />
-            </button>
+        <NitroLayoutFlex className="friend-bar align-items-center">
+            <NitroLayoutButton className="friend-bar-button" variant="black" size="sm" disabled={ !canDecreaseIndex } onClick={ event => setIndexOffset(indexOffset - 1) }>
+                <NitroLayoutBase className="fas fa-chevron-left" />
+            </NitroLayoutButton>
             { Array.from(Array(maxDisplayCount), (e, i) =>
                 {
                     return <FriendBarItemView key={ i } friend={ (onlineFriends[ indexOffset + i ] || null) } />;
@@ -35,6 +37,6 @@ export const FriendBarView: FC<FriendBarViewProps> = props =>
             <button type="button" className="btn btn-sm btn-black align-self-center friend-bar-button" disabled={ !canIncreaseIndex } onClick={ event => setIndexOffset(indexOffset + 1) }>
                 <i className="fas fa-chevron-right" />
             </button>
-        </div>
+        </NitroLayoutFlex>
     );
 }

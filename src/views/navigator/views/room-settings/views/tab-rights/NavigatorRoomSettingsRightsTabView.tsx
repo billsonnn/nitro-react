@@ -2,7 +2,7 @@ import { RemoveAllRightsMessageComposer, RoomGiveRightsComposer, RoomTakeRightsC
 import { FC, useCallback, useMemo } from 'react';
 import { LocalizeText } from '../../../../../../api';
 import { SendMessageHook } from '../../../../../../hooks';
-import { UserProfileIconView } from '../../../../../shared/user-profile-icon/UserProfileIconView';
+import { UserProfileIconView } from '../../../../../../layout';
 import { NavigatorRoomSettingsRightsTabViewProps } from './NavigatorRoomSettingsRightsTabView.types';
 
 export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsRightsTabViewProps> = props =>

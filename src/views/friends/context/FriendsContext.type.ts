@@ -8,6 +8,8 @@ export interface IFriendsContext
     friends: MessengerFriend[];
     requests: MessengerRequest[];
     settings: MessengerSettings;
+    canRequestFriend: (userId: number) => boolean;
+    requestFriend: (userId: number, userName: string) => void;
     acceptFriend: (userId: number) => void;
     declineFriend: (userId: number, declineAll?: boolean) => void;
 }

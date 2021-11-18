@@ -5,6 +5,8 @@ const FriendsContext = createContext<IFriendsContext>({
     friends: null,
     requests: null,
     settings: null,
+    canRequestFriend: null,
+    requestFriend: null,
     acceptFriend: null,
     declineFriend: null
 });

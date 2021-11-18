@@ -344,7 +344,7 @@ export const FriendsView: FC<{}> = props =>
     }, [ requests ]);
 
     return (
-        <FriendsContextProvider value={ { friends, requests, settings, acceptFriend, declineFriend } }>
+        <FriendsContextProvider value={ { friends, requests, settings, canRequestFriend, requestFriend, acceptFriend, declineFriend } }>
             { isReady &&
                 createPortal(<FriendBarView onlineFriends={ onlineFriends } />, document.getElementById('toolbar-friend-bar-container')) }
             { isVisible &&

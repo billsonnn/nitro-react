@@ -14,3 +14,4 @@ export * from './notification-alert';
 export * from './notification-bubble';
 export * from './transitions';
 export * from './trophy';
+export * from './user-profile-icon';

@@ -3,6 +3,7 @@ import { LocalizeText } from '../../../../api';
 import { NitroCardAccordionSetView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
 import { FriendsGroupView } from '../friends-group/FriendsGroupView';
 import { FriendsRequestView } from '../friends-request/FriendsRequestView';
+import { FriendsSearchView } from '../friends-search/FriendsSearchView';
 import { FriendsListViewProps } from './FriendsListView.types';
 
 const MODE_FRIENDS: number = 0;
@@ -15,7 +16,7 @@ export const FriendsListView: FC<FriendsListViewProps> = props =>
     const [ mode, setMode ] = useState<number>(0);
 
     return (
-        <NitroCardView className="nitro-friends">
+        <NitroCardView className="nitro-friends" uniqueKey="nitro-friends">
             <NitroCardHeaderView headerText={ LocalizeText('friendlist.friends') } onCloseClick={ onCloseClick } />
             <NitroCardTabsView>
                 <NitroCardTabsItemView isActive={ (mode === MODE_FRIENDS) } count={ friendRequests.length } onClick={ event => setMode(MODE_FRIENDS) }>
@@ -34,13 +35,10 @@ export const FriendsListView: FC<FriendsListViewProps> = props =>
                         <NitroCardAccordionSetView headerText={ LocalizeText('friendlist.friends.offlinecaption') + ` (${offlineFriends.length})` }>
                             <FriendsGroupView list={ offlineFriends } />
                         </NitroCardAccordionSetView>
-
-
                         <FriendsRequestView requests={ friendRequests } />
                     </NitroCardAccordionView> }
                 { (mode === MODE_SEARCH) &&
-                    <>
-                    </> }
+                    <FriendsSearchView /> }
             </NitroCardContentView>
         </NitroCardView>
     );

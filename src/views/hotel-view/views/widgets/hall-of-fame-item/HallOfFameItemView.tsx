@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
+import { UserProfileIconView } from '../../../../../layout';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
-import { UserProfileIconView } from '../../../../shared/user-profile-icon/UserProfileIconView';
 import { HallOfFameItemViewProps } from './HallOfFameItemView.types';
 
 export const HallOfFameItemView: FC<HallOfFameItemViewProps> = props =>

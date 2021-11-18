@@ -45,11 +45,11 @@ export const AvatarEditorFigurePreviewView: FC<AvatarEditorFigurePreviewViewProp
     return (
         <NitroLayoutFlexColumn className="figure-preview-container" overflow="hidden" position="relative">
             <AvatarImageView figure={ figureData.getFigureString() } direction={ figureData.direction } scale={ 2 } />
-            <NitroLayoutBase className="avatar-spotlight" />
+            <NitroLayoutBase className="nitro-avatar-editor-spritesheet spotlight" />
             <NitroLayoutBase className="avatar-shadow" />
             <NitroLayoutBase className="arrow-container">
-                <i className="icon arrow-left-icon" onClick={ event => rotateFigure(figureData.direction + 1) }  />
-                <i className="icon arrow-right-icon" onClick={ event => rotateFigure(figureData.direction - 1) } />
+                <div className="nitro-avatar-editor-spritesheet arrow-left-icon" onClick={ event => rotateFigure(figureData.direction + 1) }  />
+                <div className="nitro-avatar-editor-spritesheet arrow-right-icon" onClick={ event => rotateFigure(figureData.direction - 1) } />
             </NitroLayoutBase>
         </NitroLayoutFlexColumn>
     );

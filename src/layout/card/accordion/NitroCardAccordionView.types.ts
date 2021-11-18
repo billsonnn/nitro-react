@@ -1,4 +1,6 @@
-export interface NitroCardAccordionViewProps
+import { NitroLayoutFlexColumnProps } from '../..';
+
+export interface NitroCardAccordionViewProps extends NitroLayoutFlexColumnProps
 {
-    className?: string;
+    
 }
