@@ -159,18 +159,6 @@
         }
     }
 
-    &.icon-deny {
-        background: url("../images/icons/deny.png");
-        width: 13px;
-        height: 14px;
-    }
-
-    &.icon-accept {
-        background: url("../images/icons/accept.png");
-        width: 13px;
-        height: 14px;
-    }
-
     &.icon-wired-trigger {
         background-image: url("../images/wired/icon_trigger.png");
         width: 13px;
@@ -187,176 +175,6 @@
         background-image: url("../images/wired/icon_action.png");
         width: 13px;
         height: 14px;
-    }
-
-    &.arrow-left-icon {
-        background-image: url("../images/avatareditor/arrow-left-icon.png");
-        width: 28px;
-        height: 21px;
-    }
-
-    &.arrow-right-icon {
-        background-image: url("../images/avatareditor/arrow-right-icon.png");
-        width: 28px;
-        height: 21px;
-    }
-
-    &.clear-icon {
-        background-image: url("../images/avatareditor/clear-icon.png");
-        width: 27px;
-        height: 27px;
-    }
-
-    &.ca-icon {
-        background-image: url("../images/avatareditor/ca-icon.png");
-        width: 25px;
-        height: 25px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/ca-selected-icon.png");
-        }
-    }
-
-    &.cc-icon {
-        background-image: url("../images/avatareditor/cc-icon.png");
-        width: 31px;
-        height: 29px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/cc-selected-icon.png");
-        }
-    }
-
-    &.ch-icon {
-        background-image: url("../images/avatareditor/ch-icon.png");
-        width: 29px;
-        height: 24px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/ch-selected-icon.png");
-        }
-    }
-
-    &.cp-icon {
-        background-image: url("../images/avatareditor/cp-icon.png");
-        width: 30px;
-        height: 24px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/cp-selected-icon.png");
-        }
-    }
-
-    &.ea-icon {
-        background-image: url("../images/avatareditor/ea-icon.png");
-        width: 35px;
-        height: 16px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/ea-selected-icon.png");
-        }
-    }
-
-    &.fa-icon {
-        background-image: url("../images/avatareditor/fa-icon.png");
-        width: 27px;
-        height: 20px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/fa-selected-icon.png");
-        }
-    }
-
-    &.female-icon {
-        background-image: url("../images/avatareditor/female-icon.png");
-        width: 18px;
-        height: 27px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/female-selected-icon.png");
-        }
-    }
-
-    &.ha-icon {
-        background-image: url("../images/avatareditor/ha-icon.png");
-        width: 25px;
-        height: 22px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/ha-selected-icon.png");
-        }
-    }
-
-    &.he-icon {
-        background-image: url("../images/avatareditor/he-icon.png");
-        width: 31px;
-        height: 27px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/he-selected-icon.png");
-        }
-    }
-
-    &.hr-icon {
-        background-image: url("../images/avatareditor/hr-icon.png");
-        width: 29px;
-        height: 25px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/hr-selected-icon.png");
-        }
-    }
-
-    &.lg-icon {
-        background-image: url("../images/avatareditor/lg-icon.png");
-        width: 19px;
-        height: 20px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/lg-selected-icon.png");
-        }
-    }
-
-    &.loading-icon {
-        background-image: url("../images/icons/loading-icon.png");
-        width: 17px;
-        height: 21px;
-    }
-
-    &.male-icon {
-        background-image: url("../images/avatareditor/male-icon.png");
-        width: 21px;
-        height: 21px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/male-selected-icon.png");
-        }
-    }
-
-    &.sh-icon {
-        background-image: url("../images/avatareditor/sh-icon.png");
-        width: 37px;
-        height: 10px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/sh-selected-icon.png");
-        }
-    }
-
-    &.wa-icon {
-        background-image: url("../images/avatareditor/wa-icon.png");
-        width: 36px;
-        height: 18px;
-
-        &.selected {
-            background-image: url("../images/avatareditor/wa-selected-icon.png");
-        }
-    }
-
-    &.sellable-icon {
-        background-image: url("../images/avatareditor/sellable-icon.png");
-        width: 17px;
-        height: 15px;
     }
 
     &.chatstyles-icon {
@@ -491,12 +309,6 @@
         height: 15px;
     }
 
-    &.icon-fb-profile {
-        background: url("../images/toolbar/icons/friend-bar/profile.png");
-        width: 21px;
-        height: 21px;
-    }
-
     &.icon-camera-colormatrix {
         background: url("../images/icons/camera-colormatrix.png");
         width: 32px;
@@ -506,34 +318,6 @@
     &.icon-camera-composite {
         background: url("../images/icons/camera-composite.png");
         width: 32px;
-        height: 21px;
-    }
-
-    &.icon-user-profile {
-        background: url("../images/icons/user-profile.png");
-        width: 13px;
-        height: 11px;
-
-        &:hover {
-            background: url("../images/icons/user-profile-hover.png");
-        }
-    }
-
-    &.icon-fb-profile {
-        background: url("../images/toolbar/icons/friend-bar/profile.png");
-        width: 21px;
-        height: 21px;
-    }
-
-    &.icon-fb-chat {
-        background: url("../images/toolbar/icons/friend-bar/chat.png");
-        width: 20px;
-        height: 21px;
-    }
-
-    &.icon-fb-visit {
-        background: url("../images/toolbar/icons/friend-bar/visit.png");
-        width: 21px;
         height: 21px;
     }
 
@@ -553,30 +337,6 @@
         background: url("../images/profile/icons/tick.png");
         width: 11px;
         height: 10px;
-    }
-
-    &.icon-relationship-none {
-        background: url("../images/friendlist/icons/icon_relationship_none.png");
-        width: 16px;
-        height: 14px;
-    }
-
-    &.icon-relationship-heart {
-        background: url("../images/profile/icons/heart.png");
-        width: 16px;
-        height: 14px;
-    }
-
-    &.icon-relationship-bobba {
-        background: url("../images/profile/icons/bobba.png");
-        width: 16px;
-        height: 14px;
-    }
-
-    &.icon-relationship-smile {
-        background: url("../images/profile/icons/smile.png");
-        width: 16px;
-        height: 14px;
     }
 
     &.icon-group-type-0 {
@@ -681,18 +441,6 @@
         height: 11px;
     }
 
-    &.icon-friendlist-follow {
-        background: url("../images/friendlist/icons/icon_follow.png");
-        width: 16px;
-        height: 14px;
-    }
-
-    &.icon-friendlist-chat {
-        background: url("../images/friendlist/icons/icon_chat.png");
-        width: 17px;
-        height: 16px;
-    }
-
     &.icon-youtube-next {
         background: url("../images/room-widgets/youtube-widget/next.png");
         width: 21px;
@@ -702,17 +450,6 @@
     &.icon-youtube-prev {
         background: url("../images/room-widgets/youtube-widget/prev.png");
         width: 21px;
-        height: 16px;
-    }
-    &.icon-friendlist-warning {
-        background: url("../images/friendlist/icons/icon_warning.png");
-        width: 23px;
-        height: 21px;
-    }
-
-    &.icon-friendlist-new-message {
-        background: url("../images/friendlist/icons/icon_new_message.png");
-        width: 14px;
         height: 16px;
     }
 
