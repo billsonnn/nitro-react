@@ -1,3 +1,217 @@
+.nitro-avatar-editor-spritesheet {
+    background: url('../../assets/images/avatareditor/avatar-editor-spritesheet.png') transparent no-repeat;
+
+    &.arrow-left-icon {
+        width: 28px;
+        height: 21px;
+        background-position: -226px -131px;
+    }
+    
+    &.arrow-right-icon {
+        width: 28px;
+        height: 21px;
+        background-position: -226px -162px;
+    }
+    
+    &.ca-icon {
+        width: 25px;
+        height: 25px;
+        background-position: -226px -61px;
+
+        &.selected {
+            width: 25px;
+            height: 25px;
+            background-position: -226px -96px;
+        }
+    }
+    
+    &.cc-icon {
+        width: 31px;
+        height: 29px;
+        background-position: -145px -5px;
+
+        &.selected {
+            width: 31px;
+            height: 29px;
+            background-position: -145px -44px;
+        }
+    }
+    
+    &.ch-icon {
+        width: 29px;
+        height: 24px;
+        background-position: -186px -39px;
+
+        &.selected {
+            width: 29px;
+            height: 24px;
+            background-position: -186px -73px;
+        }
+    }
+    
+    &.clear-icon {
+        width: 27px;
+        height: 27px;
+        background-position: -145px -157px;
+    }
+    
+    &.cp-icon {
+        width: 30px;
+        height: 24px;
+        background-position: -145px -264px;
+
+        &.selected {
+            width: 30px;
+            height: 24px;
+            background-position: -186px -5px;
+        }
+    }
+
+    
+    &.ea-icon {
+        width: 35px;
+        height: 16px;
+        background-position: -226px -193px;
+
+        &.selected {
+            width: 35px;
+            height: 16px;
+            background-position: -226px -219px;
+        }
+    }
+    
+    &.fa-icon {
+        width: 27px;
+        height: 20px;
+        background-position: -186px -137px;
+
+        &.selected {
+            width: 27px;
+            height: 20px;
+            background-position: -186px -107px;
+        }
+    }
+    
+    &.female-icon {
+        width: 18px;
+        height: 27px;
+        background-position: -186px -202px;
+
+        &.selected {
+            width: 18px;
+            height: 27px;
+            background-position: -186px -239px;
+        }
+    }
+    
+    &.ha-icon {
+        width: 25px;
+        height: 22px;
+        background-position: -226px -245px;
+
+        &.selected {
+            width: 25px;
+            height: 22px;
+            background-position: -226px -277px;
+        }
+    }
+    
+    &.he-icon {
+        width: 31px;
+        height: 27px;
+        background-position: -145px -83px;
+
+        &.selected {
+            width: 31px;
+            height: 27px;
+            background-position: -145px -120px;
+        }
+    }
+    
+    &.hr-icon {
+        width: 29px;
+        height: 25px;
+        background-position: -145px -194px;
+
+        &.selected {
+            width: 29px;
+            height: 25px;
+            background-position: -145px -229px;
+        }
+    }
+    
+    &.lg-icon {
+        width: 19px;
+        height: 20px;
+        background-position: -303px -45px;
+
+        &.selected {
+            width: 19px;
+            height: 20px;
+            background-position: -303px -75px;
+        }
+    }
+
+    &.loading-icon {
+        width: 21px;
+        height: 25px;
+        background-position: -186px -167px;
+    }
+    
+
+    &.male-icon {
+        width: 21px;
+        height: 21px;
+        background-position: -186px -276px;
+
+        &.selected {
+            width: 21px;
+            height: 21px;
+            background-position: -272px -5px;
+        }
+    }
+    
+
+    &.sellable-icon {
+        width: 17px;
+        height: 15px;
+        background-position: -303px -105px;
+    }
+    
+
+    &.sh-icon {
+        width: 37px;
+        height: 10px;
+        background-position: -303px -5px;
+
+        &.selected {
+            width: 37px;
+            height: 10px;
+            background-position: -303px -25px;
+        }
+    }
+    
+
+    &.spotlight {
+        width: 130px;
+        height: 305px;
+        background-position: -5px -5px;
+    }
+    
+
+    &.wa-icon {
+        width: 36px;
+        height: 18px;
+        background-position: -226px -5px;
+
+        &.selected {
+            width: 36px;
+            height: 18px;
+            background-position: -226px -33px;
+        }
+    }
+}
+
 .nitro-avatar-editor {
     width: $avatar-editor-width;
     height: $avatar-editor-height;
@@ -37,13 +251,10 @@
             z-index: 4;
         }
 
-        .avatar-spotlight {
+        .spotlight {
             position: absolute;
             top: -10px;
-            width: 100%;
-            height: 305px;
             margin: 0 auto;
-            background: transparent url('../../assets/images/avatareditor/spotlight.png') no-repeat center;
             opacity: 0.3;
             pointer-events: none;
             z-index: 3;

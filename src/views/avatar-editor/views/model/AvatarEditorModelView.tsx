@@ -52,10 +52,10 @@ export const AvatarEditorModelView: FC<AvatarEditorModelViewProps> = props =>
                 { model.canSetGender &&
                     <>
                         <NitroLayoutFlex className="justify-content-center align-items-center category-item cursor-pointer" onClick={ event => setGender(FigureData.MALE) }>
-                            <i className={ `icon male-icon ${ (gender === FigureData.MALE) ? ' selected' : ''}` } />
+                            <div className={ `nitro-avatar-editor-spritesheet male-icon ${ (gender === FigureData.MALE) ? ' selected' : ''}` } />
                         </NitroLayoutFlex>
                         <NitroLayoutFlex className="justify-content-center align-items-center category-item cursor-pointer" onClick={ event => setGender(FigureData.FEMALE) }>
-                            <i className={ `icon female-icon ${ (gender === FigureData.FEMALE) ? ' selected' : ''}` } />
+                            <div className={ `nitro-avatar-editor-spritesheet female-icon ${ (gender === FigureData.FEMALE) ? ' selected' : ''}` } />
                         </NitroLayoutFlex>
                     </> }
                 { !model.canSetGender && model.categories &&  (model.categories.size > 0) && Array.from(model.categories.keys()).map(name =>
@@ -64,7 +64,7 @@ export const AvatarEditorModelView: FC<AvatarEditorModelViewProps> = props =>
 
                         return (
                             <NitroLayoutFlex key={ name } className="justify-content-center align-items-center category-item cursor-pointer" onClick={ event => selectCategory(name) }>
-                                <i className={ `icon ${ category.name }-icon ${ (activeCategory === category) ? ' selected' : ''}` } />
+                                <div className={ `nitro-avatar-editor-spritesheet ${ category.name }-icon ${ (activeCategory === category) ? ' selected' : ''}` } />
                             </NitroLayoutFlex>
                         );
                     })}
