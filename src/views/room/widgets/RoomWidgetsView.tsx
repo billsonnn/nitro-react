@@ -1,4 +1,4 @@
-import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomObjectVariable, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
+import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomObjectVariable, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPollEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomSessionWordQuizEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CanManipulateFurniture, GetRoomEngine, GetSessionDataManager, IsFurnitureSelectionDisabled, LocalizeText, ProcessRoomObjectOperation, RoomWidgetFurniToWidgetMessage, RoomWidgetUpdateRoomEngineEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
 import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks/events';
@@ -15,6 +15,7 @@ import { FurnitureWidgetsView } from './furniture/FurnitureWidgetsView';
 import { InfoStandWidgetView } from './infostand/InfoStandWidgetView';
 import { RoomThumbnailWidgetView } from './room-thumbnail/RoomThumbnailWidgetView';
 import { RoomToolsWidgetView } from './room-tools/RoomToolsWidgetView';
+import { WordQuizWidgetView } from './word-quiz/WordQuizWidgetView';
 
 export const RoomWidgetsView: FC<{}> = props =>
 {
@@ -268,6 +269,12 @@ export const RoomWidgetsView: FC<{}> = props =>
     useRoomSessionManagerEvent(RoomSessionFriendRequestEvent.RSFRE_FRIEND_REQUEST, onRoomSessionEvent);
     useRoomSessionManagerEvent(RoomSessionPresentEvent.RSPE_PRESENT_OPENED, onRoomSessionEvent);
     useRoomSessionManagerEvent(RoomSessionPetInfoUpdateEvent.PET_INFO, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionWordQuizEvent.ANSWERED, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionWordQuizEvent.FINISHED, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionWordQuizEvent.QUESTION, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionPollEvent.OFFER, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionPollEvent.ERROR, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionPollEvent.CONTENT, onRoomSessionEvent);
 
     const onRoomSessionErrorMessageEvent = useCallback((event: RoomSessionErrorMessageEvent) =>
     {
@@ -349,6 +356,7 @@ export const RoomWidgetsView: FC<{}> = props =>
             <RoomThumbnailWidgetView />
             <FurniChooserWidgetView />
             <UserChooserWidgetView />
+            <WordQuizWidgetView />
         </>
     );
 }
