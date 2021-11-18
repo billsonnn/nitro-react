@@ -1,7 +1,7 @@
 import { AcceptFriendMessageComposer, DeclineFriendMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { SendMessageHook } from '../../../../hooks/messages/message-event';
-import { UserProfileIconView } from '../../../shared/user-profile-icon/UserProfileIconView';
+import { SendMessageHook } from '../../../../hooks';
+import { UserProfileIconView } from '../../../../layout';
 import { FriendsRequestItemViewProps } from './FriendsRequestItemView.types';
 
 export const FriendsRequestItemView: FC<FriendsRequestItemViewProps> = props =>

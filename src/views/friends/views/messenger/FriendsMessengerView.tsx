@@ -3,7 +3,8 @@ import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } 
 import { AddEventLinkTracker, GetUserProfile, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
 import { FriendsMessengerIconEvent } from '../../../../events';
 import { BatchUpdates, CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFlex } from '../../../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutButton, NitroLayoutButtonGroup, NitroLayoutFlex, NitroLayoutFlexColumn } from '../../../../layout';
+import { NitroLayoutBase } from '../../../../layout/base';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { MessengerThread } from '../../common/MessengerThread';
 import { MessengerThreadChat } from '../../common/MessengerThreadChat';
@@ -232,7 +233,7 @@ export const FriendsMessengerView: FC<{}> = props =>
     if(!isVisible) return null;
 
     return (
-        <NitroCardView className="nitro-friends-messenger" simple={ true }>
+        <NitroCardView className="nitro-friends-messenger" uniqueKey="nitro-friends-messenger" simple={ true }>
             <NitroCardHeaderView headerText={ LocalizeText('messenger.window.title', [ 'OPEN_CHAT_COUNT' ], [ visibleThreads.length.toString() ]) } onCloseClick={ event => setIsVisible(false) } />
             <NitroCardContentView>
                 <NitroLayoutFlex gap={ 2 } overflow="auto">
@@ -241,8 +242,9 @@ export const FriendsMessengerView: FC<{}> = props =>
                             const messageThreadIndex = messageThreads.indexOf(thread);
 
                             return (
-                                <div key={ index } className="friend-head rounded flex-shrink-0 cursor-pointer bg-muted" onClick={ event => setActiveThreadIndex(messageThreadIndex) }>
-                                    { thread.unread && <i className="icon icon-friendlist-new-message" /> }
+                                <div key={ index } className="position-relative friend-head rounded flex-shrink-0 cursor-pointer bg-muted" onClick={ event => setActiveThreadIndex(messageThreadIndex) }>
+                                    { thread.unread &&
+                                        <NitroLayoutBase className="position-absolute nitro-friends-spritesheet icon-new-message top-1 end-1 z-index-1" /> }
                                     <AvatarImageView figure={ thread.participant.figure } headOnly={ true } direction={ 3 } />
                                 </div>
                             );
@@ -250,32 +252,38 @@ export const FriendsMessengerView: FC<{}> = props =>
                 </NitroLayoutFlex>
                 <NitroLayoutFlex className="align-items-center my-1" position="relative">
                     { (activeThreadIndex >= 0) &&
-                        <div className="text-black bg-light pe-2 flex-none">
+                        <NitroLayoutBase className="text-black bg-light pe-2 flex-none">
                             { LocalizeText('messenger.window.separator', [ 'FRIEND_NAME' ], [ messageThreads[activeThreadIndex].participant.name ]) }
-                        </div> }
+                        </NitroLayoutBase> }
                     <hr className="bg-dark m-0 w-100" />
                 </NitroLayoutFlex>
                 { (activeThreadIndex >= 0) &&
                     <>
-                        <div className="d-flex gap-2 mb-2">
-                            <div className="btn-group">
-                                <button className="d-flex justify-content-center align-items-center btn btn-sm btn-primary" onClick={ followFriend }>
-                                    <i className="icon icon-friendlist-follow" />
-                                </button>
-                                <button className="d-flex justify-content-center align-items-center btn btn-sm btn-primary" onClick={ openProfile }>
-                                    <i className="icon icon-user-profile" />
-                                </button>
-                            </div>
-                            <button className="btn btn-sm btn-danger">{ LocalizeText('messenger.window.button.report') }</button>
-                            <button className="btn btn-sm btn-primary ms-auto" onClick={ event => closeThread(activeThreadIndex) }><i className="fas fa-times" /></button>
-                        </div>
-                        <div ref={ messagesBox } className="bg-muted p-2 rounded chat-messages mb-2 d-flex flex-column">
+                        <NitroLayoutFlex className="mb-2" gap={ 2 }>
+                            <NitroLayoutButtonGroup>
+                                <NitroLayoutButton variant="primary" size="sm" onClick={ followFriend }>
+                                    <NitroLayoutBase className="nitro-friends-spritesheet icon-follow" />
+                                </NitroLayoutButton>
+                                <NitroLayoutButton variant="primary" size="sm" onClick={ openProfile }>
+                                    <NitroLayoutBase className="nitro-friends-spritesheet icon-profile-sm" />
+                                </NitroLayoutButton>
+                            </NitroLayoutButtonGroup>
+                            <NitroLayoutButton variant="danger" size="sm" onClick={ openProfile }>
+                                { LocalizeText('messenger.window.button.report') }
+                            </NitroLayoutButton>
+                            <NitroLayoutButton className="ms-auto" variant="primary" size="sm" onClick={ event => closeThread(activeThreadIndex) }>
+                                <NitroLayoutBase className="fas fa-times" />
+                            </NitroLayoutButton>
+                        </NitroLayoutFlex>
+                        <NitroLayoutFlexColumn innerRef={ messagesBox } className="bg-muted p-2 rounded chat-messages mb-2">
                             <FriendsMessengerThreadView thread={ messageThreads[activeThreadIndex] } />
-                        </div>
-                        <div className="d-flex gap-2">
+                        </NitroLayoutFlexColumn>
+                        <NitroLayoutFlex gap={ 2 }>
                             <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('messenger.window.input.default', [ 'FRIEND_NAME' ], [ messageThreads[activeThreadIndex].participant.name ]) } value={ messageText } onChange={ event => setMessageText(event.target.value) } onKeyDown={ onKeyDown } />
-                            <button className="btn btn-sm btn-success" onClick={ sendMessage }>{ LocalizeText('widgets.chatinput.say') }</button>
-                        </div>
+                            <NitroLayoutButton variant="success" size="sm" onClick={ sendMessage }>
+                                { LocalizeText('widgets.chatinput.say') }
+                            </NitroLayoutButton>
+                        </NitroLayoutFlex>
                     </> }
             </NitroCardContentView>
         </NitroCardView>

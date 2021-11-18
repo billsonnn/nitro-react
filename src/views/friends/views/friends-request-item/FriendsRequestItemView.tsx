@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { NitroCardAccordionItemView } from '../../../../layout';
-import { UserProfileIconView } from '../../../shared/user-profile-icon/UserProfileIconView';
+import { NitroCardAccordionItemView, NitroLayoutFlex, UserProfileIconView } from '../../../../layout';
+import { NitroLayoutBase } from '../../../../layout/base';
 import { useFriendsContext } from '../../context/FriendsContext';
 import { FriendsRequestItemViewProps } from './FriendsRequestItemView.types';
 
@@ -14,11 +14,11 @@ export const FriendsRequestItemView: FC<FriendsRequestItemViewProps> = props =>
     return (
         <NitroCardAccordionItemView>
             <UserProfileIconView userId={ request.id } />
-            <div>{ request.name }</div>
-            <div className="ms-auto d-flex align-items-center gap-1">
-               <i className="icon icon-accept cursor-pointer" onClick={ event => acceptFriend(request.requesterUserId) } />
-               <i className="icon icon-deny cursor-pointer" onClick={ event => declineFriend(request.requesterUserId) } />
-            </div>
+            <NitroLayoutBase>{ request.name }</NitroLayoutBase>
+            <NitroLayoutFlex className="ms-auto align-items-center" gap={ 1 }>
+               <NitroLayoutBase className="nitro-friends-spritesheet icon-accept cursor-pointer" onClick={ event => acceptFriend(request.requesterUserId) } />
+               <NitroLayoutBase className="nitro-friends-spritesheet icon-deny cursor-pointer" onClick={ event => declineFriend(request.requesterUserId) } />
+            </NitroLayoutFlex>
         </NitroCardAccordionItemView>
     );
 };

@@ -2,7 +2,8 @@ import { FollowFriendMessageComposer, SetRelationshipStatusComposer } from '@nit
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, OpenMessengerChat } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
-import { UserProfileIconView } from '../../../shared/user-profile-icon/UserProfileIconView';
+import { NitroLayoutFlex, UserProfileIconView } from '../../../../layout';
+import { NitroLayoutBase } from '../../../../layout/base';
 import { MessengerFriend } from '../../common/MessengerFriend';
 import { FriendsGroupItemViewProps } from './FriendsGroupItemView.types';
 
@@ -52,19 +53,23 @@ export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
         <div className="px-2 py-1 d-flex gap-1 align-items-center">
             <UserProfileIconView userId={ friend.id } />
             <div>{ friend.name }</div>
-            <div className="ms-auto d-flex align-items-center gap-1">
-                { !isExpanded && <>
-                    { friend.followingAllowed && <i onClick={ followFriend } className="icon icon-friendlist-follow cursor-pointer" title={ LocalizeText('friendlist.tip.follow') } /> }
-                    { friend.online && <i className="icon icon-friendlist-chat cursor-pointer" onClick={ openMessengerChat } title={ LocalizeText('friendlist.tip.im') } /> }
-                    <i className={ 'icon cursor-pointer icon-relationship-' + getCurrentRelationshipName() } onClick={ () => setIsExpanded(true) } title={ LocalizeText('infostand.link.relationship') } />
+            <NitroLayoutFlex className="ms-auto align-items-center" gap={ 1 }>
+                { !isExpanded &&
+                    <>
+                        { friend.followingAllowed &&
+                            <NitroLayoutBase onClick={ followFriend } className="nitro-friends-spritesheet icon-follow cursor-pointer" title={ LocalizeText('friendlist.tip.follow') } /> }
+                        { friend.online &&
+                            <NitroLayoutBase className="nitro-friends-spritesheet icon-chat cursor-pointer" onClick={ openMessengerChat } title={ LocalizeText('friendlist.tip.im') } /> }
+                        <NitroLayoutBase className={ `nitro-friends-spritesheet icon-${ getCurrentRelationshipName() } cursor-pointer` }onClick={ event => setIsExpanded(true) } title={ LocalizeText('infostand.link.relationship') } />
                     </> }
-                { isExpanded && <>
-                    <i className="icon icon-relationship-heart cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_HEART) } />
-                    <i className="icon icon-relationship-smile cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_SMILE) } />
-                    <i className="icon icon-relationship-bobba cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_BOBBA) } />
-                    <i className="icon icon-relationship-none cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_NONE) } />
-                </> }
-            </div>
+                { isExpanded &&
+                    <>
+                        <NitroLayoutBase className="nitro-friends-spritesheet icon-heart cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_HEART) } />
+                        <NitroLayoutBase className="nitro-friends-spritesheet icon-smile cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_SMILE) } />
+                        <NitroLayoutBase className="nitro-friends-spritesheet icon-bobba cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_BOBBA) } />
+                        <NitroLayoutBase className="nitro-friends-spritesheet icon-none cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_NONE) } />
+                    </> }
+            </NitroLayoutFlex>
         </div>
     );
 }

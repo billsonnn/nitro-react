@@ -2,6 +2,7 @@ import { FollowFriendMessageComposer, MouseEventType } from '@nitrots/nitro-rend
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { GetUserProfile, LocalizeText, OpenMessengerChat } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';
+import { NitroLayoutBase } from '../../../../layout/base';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { FriendBarItemViewProps } from './FriendBarItemView.types';
 
@@ -63,9 +64,10 @@ export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
             <div className="text-truncate">{ friend.name }</div>
             { isVisible &&
                 <div className="d-flex justify-content-between">
-                    <i onClick={ openMessengerChat } className="icon icon-fb-chat cursor-pointer" />
-                    { friend.followingAllowed && <i onClick={ followFriend } className="icon icon-fb-visit cursor-pointer" /> }
-                    <i onClick={ event => GetUserProfile(friend.id) } className="icon icon-fb-profile cursor-pointer" />
+                    <NitroLayoutBase className="nitro-friends-spritesheet icon-friendbar-chat cursor-pointer" onClick={ openMessengerChat } />
+                    { friend.followingAllowed &&
+                        <NitroLayoutBase className="nitro-friends-spritesheet icon-friendbar-visit cursor-pointer" onClick={ followFriend } /> }
+                    <NitroLayoutBase className="nitro-friends-spritesheet icon-profile cursor-pointer" onClick={ event => GetUserProfile(friend.id) } />
                 </div> }
         </div>
     );
