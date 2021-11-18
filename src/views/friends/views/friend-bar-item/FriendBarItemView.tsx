@@ -1,6 +1,6 @@
-import { FollowFriendMessageComposer, MouseEventType, UserProfileComposer } from '@nitrots/nitro-renderer';
+import { FollowFriendMessageComposer, MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { LocalizeText, OpenMessengerChat } from '../../../../api';
+import { GetUserProfile, LocalizeText, OpenMessengerChat } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { FriendBarItemViewProps } from './FriendBarItemView.types';
@@ -23,14 +23,11 @@ export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
         OpenMessengerChat(friend.id);
     }, [ friend ]);
 
-    const openProfile = useCallback(() =>
-    {
-        SendMessageHook(new UserProfileComposer(friend.id));
-    }, [ friend ]);
-
     const onClick = useCallback((event: MouseEvent) =>
     {
         const element = elementRef.current;
+
+        if(!element) return;
 
         if((event.target !== element) && !element.contains((event.target as Node)))
         {
@@ -68,7 +65,7 @@ export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
                 <div className="d-flex justify-content-between">
                     <i onClick={ openMessengerChat } className="icon icon-fb-chat cursor-pointer" />
                     { friend.followingAllowed && <i onClick={ followFriend } className="icon icon-fb-visit cursor-pointer" /> }
-                    <i onClick={ openProfile } className="icon icon-fb-profile cursor-pointer" />
+                    <i onClick={ event => GetUserProfile(friend.id) } className="icon icon-fb-profile cursor-pointer" />
                 </div> }
         </div>
     );

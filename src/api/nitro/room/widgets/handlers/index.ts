@@ -1,4 +1,5 @@
 export * from './DoorbellWidgetHandler';
+export * from './FriendRequestHandler';
 export * from './FurniChooserWidgetHandler';
 export * from './FurnitureContextMenuWidgetHandler';
 export * from './FurnitureCreditWidgetHandler';
@@ -7,6 +8,8 @@ export * from './FurnitureDimmerWidgetHandler';
 export * from './FurnitureExternalImageWidgetHandler';
 export * from './FurnitureMannequinWidgetHandler';
 export * from './FurniturePresentWidgetHandler';
+export * from './FurnitureTrophyWidgetHandler';
+export * from './FurnitureYoutubeDisplayWidgetHandler';
 export * from './IRoomWidgetHandler';
 export * from './IRoomWidgetHandlerManager';
 export * from './RoomWidgetAvatarInfoHandler';

@@ -5,6 +5,7 @@ import { FriendsSendFriendRequestEvent } from '../../../../../events/friends/Fri
 import { HelpReportUserEvent } from '../../../../../events/help/HelpReportUserEvent';
 import { dispatchUiEvent } from '../../../../../hooks/events';
 import { SendMessageHook } from '../../../../../hooks/messages';
+import { FriendsHelper } from '../../../../../views/friends/common/FriendsHelper';
 import { PetSupplementEnum } from '../../../../../views/room/widgets/avatar-info/common/PetSupplementEnum';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { RoomWidgetObjectNameEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
@@ -77,7 +78,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             case RoomWidgetRoomObjectMessage.GET_OBJECT_INFO:
                 return this.processObjectInfoMessage((message as RoomWidgetRoomObjectMessage));
             case RoomWidgetUserActionMessage.SEND_FRIEND_REQUEST:
-                dispatchUiEvent(new FriendsSendFriendRequestEvent(userId));
+                dispatchUiEvent(new FriendsSendFriendRequestEvent(userData.webID, userData.name));
                 break;
             case RoomWidgetUserActionMessage.RESPECT_USER:
                 GetSessionDataManager().giveRespect(userId);
@@ -461,15 +462,18 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         if(eventType === RoomWidgetUpdateInfostandUserEvent.PEER)
         {
-            // userInfoData.canBeAskedAsFriend = this._container.friendService.canBeAskedForAFriend(userData.webID);
+            event.canBeAskedAsFriend = FriendsHelper.canRequestFriend(userData.webID);
 
-            // const friend = this._container.friendService.getFriend(userData.webID);
+            if(!event.canBeAskedAsFriend)
+            {
+                const friend = FriendsHelper.getFriend(userData.webID);
 
-            // if(friend)
-            // {
-            //     userInfoData.realName  = friend.realName;
-            //     userInfoData.isFriend  = true;
-            // }
+                if(friend)
+                {
+                    event.realName = friend.realName;
+                    event.isFriend = true;
+                }
+            }
 
             if(roomObject)
             {

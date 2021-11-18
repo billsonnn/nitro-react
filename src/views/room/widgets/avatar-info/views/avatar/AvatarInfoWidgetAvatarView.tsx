@@ -1,7 +1,6 @@
-import { RoomControllerLevel, RoomObjectCategory, RoomObjectVariable, UserProfileComposer } from '@nitrots/nitro-renderer';
+import { RoomControllerLevel, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetOwnRoomObject, LocalizeText, RoomWidgetMessage, RoomWidgetUserActionMessage } from '../../../../../../api';
-import { SendMessageHook } from '../../../../../../hooks';
+import { GetOwnRoomObject, GetUserProfile, LocalizeText, RoomWidgetMessage, RoomWidgetUserActionMessage } from '../../../../../../api';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';
 import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
@@ -192,14 +191,9 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
         return flag;
     }, []);
 
-    const openProfile = useCallback(() =>
-    {
-        SendMessageHook(new UserProfileComposer(userData.webID));
-    }, [ userData ]);
-
     return (
         <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ userData.userType } close={ close }>
-            <ContextMenuHeaderView className="cursor-pointer" onClick={ () => openProfile() }>
+            <ContextMenuHeaderView className="cursor-pointer" onClick={ event => GetUserProfile(userData.webID) }>
                 { userData.name }
             </ContextMenuHeaderView>
             { (mode === MODE_NORMAL) &&

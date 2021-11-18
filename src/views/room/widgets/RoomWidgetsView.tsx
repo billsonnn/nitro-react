@@ -15,9 +15,9 @@ import { FurnitureWidgetsView } from './furniture/FurnitureWidgetsView';
 import { InfoStandWidgetView } from './infostand/InfoStandWidgetView';
 import { RoomThumbnailWidgetView } from './room-thumbnail/RoomThumbnailWidgetView';
 import { RoomToolsWidgetView } from './room-tools/RoomToolsWidgetView';
-import { RoomWidgetViewProps } from './RoomWidgets.types';
 import { WordQuizWidgetView } from './word-quiz/WordQuizWidgetView';
-export const RoomWidgetsView: FC<RoomWidgetViewProps> = props =>
+
+export const RoomWidgetsView: FC<{}> = props =>
 {
     const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
 

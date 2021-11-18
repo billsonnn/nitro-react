@@ -1,8 +1,8 @@
-import { AvatarAction, AvatarExpressionEnum, RoomControllerLevel, RoomObjectCategory, UserProfileComposer } from '@nitrots/nitro-renderer';
+import { AvatarAction, AvatarExpressionEnum, RoomControllerLevel, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUserActionMessage } from '../../../../../../api';
+import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, GetUserProfile, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUserActionMessage } from '../../../../../../api';
 import { AvatarEditorEvent } from '../../../../../../events';
-import { dispatchUiEvent, SendMessageHook } from '../../../../../../hooks';
+import { dispatchUiEvent } from '../../../../../../hooks';
 import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';
@@ -103,11 +103,6 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
         if(hideMenu) close();
     }, [ roomSession, eventDispatcher, widgetHandler, userData, close ]);
 
-    const openProfile = useCallback(() =>
-    {
-        SendMessageHook(new UserProfileComposer(userData.webID));
-    }, [ userData ]);
-
     const isShowDecorate = useMemo(() =>
     {
         return (userData.amIOwner || userData.amIAnyRoomController || (userData.roomControllerLevel > RoomControllerLevel.GUEST));
@@ -117,7 +112,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
 
     return (
         <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ userData.userType } close={ close }>
-            <ContextMenuHeaderView className="cursor-pointer" onClick={ () => openProfile() }>
+            <ContextMenuHeaderView className="cursor-pointer" onClick={ event => GetUserProfile(userData.webID) }>
                 { userData.name }
             </ContextMenuHeaderView>
             { (mode === MODE_NORMAL) &&

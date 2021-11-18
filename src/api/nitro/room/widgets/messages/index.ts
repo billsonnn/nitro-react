@@ -9,6 +9,7 @@ export * from './RoomWidgetDanceMessage';
 export * from './RoomWidgetDimmerChangeStateMessage';
 export * from './RoomWidgetDimmerPreviewMessage';
 export * from './RoomWidgetDimmerSavePresetMessage';
+export * from './RoomWidgetFriendRequestMessage';
 export * from './RoomWidgetFurniActionMessage';
 export * from './RoomWidgetFurniToWidgetMessage';
 export * from './RoomWidgetLetUserInMessage';

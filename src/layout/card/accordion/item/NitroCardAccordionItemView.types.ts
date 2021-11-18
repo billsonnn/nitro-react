@@ -1,8 +1,6 @@
-export interface NitroCardAccordionItemViewProps
+import { NitroLayoutBaseProps } from '../../../base';
+
+export interface NitroCardAccordionItemViewProps extends NitroLayoutBaseProps
 {
-    className?: string;
-    headerClassName?: string;
-    contentClassName?: string;
-    headerText: string;
-    defaultState?: boolean;
+
 }

@@ -1,4 +1,5 @@
 import { FC, useMemo } from 'react';
+import { ItemCountView } from '../../../../views/shared/item-count/ItemCountView';
 import { LimitedEditionStyledNumberView } from '../../../../views/shared/limited-edition/styled-number/LimitedEditionStyledNumberView';
 import { NitroCardGridItemViewProps } from './NitroCardGridItemView.types';
 
@@ -39,7 +40,7 @@ export const NitroCardGridItemView: FC<NitroCardGridItemViewProps> = props =>
     return (
         <div className={ getClassName } style={ getStyle } { ...rest }>
             { (itemCount > itemCountMinimum) &&
-                <span className="position-absolute badge border bg-danger px-1 rounded-circle">{ itemCount }</span> }
+                <ItemCountView count={ itemCount } /> }
             { (itemUniqueNumber > 0) && 
                 <div className="position-absolute unique-item-counter">
                     <LimitedEditionStyledNumberView value={ itemUniqueNumber } />

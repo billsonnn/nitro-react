@@ -1,57 +1,272 @@
-import { MessengerInitComposer, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectUserType } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+import { AcceptFriendMessageComposer, FriendListFragmentEvent, FriendListUpdateEvent, FriendParser, FriendRequestsEvent, GetFriendRequestsComposer, MessengerInitComposer, MessengerInitEvent, NewFriendRequestEvent, RequestFriendComposer, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectUserType } from '@nitrots/nitro-renderer';
+import { DeclineFriendMessageComposer } from '@nitrots/nitro-renderer/src';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { GetRoomSession } from '../../api';
-import { FriendEnteredRoomEvent, FriendListContentEvent, FriendsEvent } from '../../events';
+import { FriendEnteredRoomEvent, FriendListContentEvent, FriendsEvent, FriendsRequestCountEvent } from '../../events';
 import { FriendsSendFriendRequestEvent } from '../../events/friends/FriendsSendFriendRequestEvent';
-import { useRoomEngineEvent } from '../../hooks/events';
+import { CreateMessageHook, useRoomEngineEvent } from '../../hooks';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
+import { FriendsHelper } from './common/FriendsHelper';
+import { MessengerFriend } from './common/MessengerFriend';
+import { MessengerRequest } from './common/MessengerRequest';
+import { MessengerSettings } from './common/MessengerSettings';
 import { FriendsContextProvider } from './context/FriendsContext';
-import { FriendsMessageHandler } from './FriendsMessageHandler';
-import { FriendsReducer, initialFriends } from './reducers/FriendsReducer';
 import { FriendBarView } from './views/friend-bar/FriendBarView';
 import { FriendsListView } from './views/friends-list/FriendsListView';
 import { FriendsMessengerView } from './views/messenger/FriendsMessengerView';
 
 export const FriendsView: FC<{}> = props =>
 {
-    const [ friendsState, dispatchFriendsState ] = useReducer(FriendsReducer, initialFriends);
-    const { friends = [], requests = [], settings = null } = friendsState;
-
     const [ isReady, setIsReady ] = useState(false);
-    const [ isListVisible, setIsListVisible ] = useState(false);
+    const [ isVisible, setIsVisible ] = useState(false);
+    const [ friends, setFriends ] = useState<MessengerFriend[]>([]);
+    const [ requests, setRequests ] = useState<MessengerRequest[]>([]);
+    const [ settings, setSettings ] = useState<MessengerSettings>(null);
+    const [ sentRequests, setSentRequests ] = useState<number[]>([]);
 
-    useEffect(() =>
+    const getFriend = useCallback((userId: number) =>
     {
-        SendMessageHook(new MessengerInitComposer());
+        for(const friend of friends)
+        {
+            if(friend.id === userId) return friend;
+        }
+
+        return null;
+    }, [ friends ]);
+
+    FriendsHelper.getFriend = getFriend;
+
+    const canRequestFriend = useCallback((userId: number) =>
+    {
+        if(getFriend(userId)) return false;
+
+        if(sentRequests.indexOf(userId) >= 0) return false;
+
+        return true;
+    }, [ sentRequests, getFriend ]);
+
+    FriendsHelper.canRequestFriend = canRequestFriend;
+
+    const requestFriend = useCallback((userId: number, userName: string) =>
+    {
+        if(sentRequests.indexOf(userId) >= 0) return true;
+
+        if(!canRequestFriend(userId)) return false;
+
+        setSentRequests(prevValue =>
+            {
+                const newSentRequests = [ ...prevValue ];
+
+                newSentRequests.push(userId);
+
+                return newSentRequests;
+            });
+
+        SendMessageHook(new RequestFriendComposer(userName));
+    }, [ sentRequests, canRequestFriend ]);
+
+    const acceptFriend = useCallback((userId: number) =>
+    {
+        setRequests(prevValue =>
+            {
+                const newRequests: MessengerRequest[] = [];
+
+                for(const request of prevValue)
+                {
+                    if(request.requesterUserId !== userId)
+                    {
+                        newRequests.push(request);
+                    }
+                    else
+                    {
+                        SendMessageHook(new AcceptFriendMessageComposer(request.id));
+                    }
+                }
+
+                return newRequests;
+            });
     }, []);
 
-    useEffect(() =>
+    const declineFriend = useCallback((userId: number, declineAll: boolean = false) =>
     {
-        if(!settings) return;
+        setRequests(prevValue =>
+            {
+                if(declineAll)
+                {
+                    SendMessageHook(new DeclineFriendMessageComposer(true));
 
-        setIsReady(true);
-    }, [ settings ]);
+                    return [];
+                }
+                else
+                {
+                    const newRequests: MessengerRequest[] = [];
+
+                    for(const request of prevValue)
+                    {
+                        if(request.requesterUserId !== userId)
+                        {
+                            newRequests.push(request);
+                        }
+                        else
+                        {
+                            SendMessageHook(new DeclineFriendMessageComposer(false, request.id));
+                        }
+                    }
+
+                    return newRequests;
+                }
+            });
+    }, []);
+
+    const onMessengerInitEvent = useCallback((event: MessengerInitEvent) =>
+    {
+        const parser = event.getParser();
+
+        setSettings(new MessengerSettings(
+            parser.userFriendLimit,
+            parser.normalFriendLimit,
+            parser.extendedFriendLimit,
+            parser.categories));
+
+        SendMessageHook(new GetFriendRequestsComposer());
+    }, []);
+
+    CreateMessageHook(MessengerInitEvent, onMessengerInitEvent);
+
+    const onFriendsFragmentEvent = useCallback((event: FriendListFragmentEvent) =>
+    {
+        const parser = event.getParser();
+
+        setFriends(prevValue =>
+            {
+                const newFriends = [ ...prevValue ];
+
+                for(const friend of parser.fragment)
+                {
+                    const index = newFriends.findIndex(existingFriend => (existingFriend.id === friend.id));
+                    const newFriend = new MessengerFriend();
+
+                    newFriend.populate(friend);
+
+                    if(index > -1) newFriends[index] = newFriend;
+                    else newFriends.push(newFriend);
+                }
+
+                return newFriends;
+            });
+    }, []);
+
+    CreateMessageHook(FriendListFragmentEvent, onFriendsFragmentEvent);
+
+    const onFriendsUpdateEvent = useCallback((event: FriendListUpdateEvent) =>
+    {
+        const parser = event.getParser();
+
+        setFriends(prevValue =>
+            {
+                const newFriends = [ ...prevValue ];
+
+                const processUpdate = (friend: FriendParser) =>
+                {
+                    const index = newFriends.findIndex(existingFriend => (existingFriend.id === friend.id));
+
+                    if(index === -1)
+                    {
+                        const newFriend = new MessengerFriend();
+                        newFriend.populate(friend);
+
+                        newFriends.unshift(newFriend);
+                    }
+                    else
+                    {
+                        newFriends[index].populate(friend);
+                    }
+                }
+
+                for(const friend of parser.addedFriends) processUpdate(friend);
+
+                for(const friend of parser.updatedFriends) processUpdate(friend);
+
+                for(const removedFriendId of parser.removedFriendIds)
+                {
+                    const index = newFriends.findIndex(existingFriend => (existingFriend.id === removedFriendId));
+
+                    if(index > -1) newFriends.splice(index);
+                }
+
+                return newFriends;
+            });
+    }, []);
+
+    CreateMessageHook(FriendListUpdateEvent, onFriendsUpdateEvent);
+
+    const onFriendRequestsEvent = useCallback((event: FriendRequestsEvent) =>
+    {
+        const parser = event.getParser();
+
+        setRequests(prevValue =>
+            {
+                const newRequests = [ ...prevValue ];
+
+                for(const request of parser.requests)
+                {
+                    const index = newRequests.findIndex(existing => (existing.requesterUserId === request.requesterUserId));
+
+                    if(index > 0) continue;
+
+                    const newRequest = new MessengerRequest();
+                    newRequest.populate(request);
+
+                    newRequests.push(newRequest);
+                }
+
+                return newRequests;
+            });
+    }, []);
+
+    CreateMessageHook(FriendRequestsEvent, onFriendRequestsEvent);
+
+    const onNewFriendRequestEvent = useCallback((event: NewFriendRequestEvent) =>
+    {
+        const parser = event.getParser();
+        const request = parser.request;
+
+        setRequests(prevValue =>
+            {
+                const newRequests = [ ...prevValue ];
+
+                const newRequest = new MessengerRequest();
+                newRequest.populate(request);
+
+                newRequests.push(newRequest);
+
+                return newRequests;
+            });
+    }, []);
+
+    CreateMessageHook(NewFriendRequestEvent, onNewFriendRequestEvent);
 
     const onFriendsEvent = useCallback((event: FriendsEvent) =>
     {
         switch(event.type)
         {
             case FriendsEvent.SHOW_FRIEND_LIST:
-                setIsListVisible(true);
+                setIsVisible(true);
                 return;
             case FriendsEvent.TOGGLE_FRIEND_LIST:
-                setIsListVisible(value => !value);
+                setIsVisible(value => !value);
                 return;
             case FriendsSendFriendRequestEvent.SEND_FRIEND_REQUEST:
                 const requestEvent = (event as FriendsSendFriendRequestEvent);
+                requestFriend(requestEvent.userId, requestEvent.userName);
                 return;
             case FriendsEvent.REQUEST_FRIEND_LIST:
-                dispatchUiEvent(new FriendListContentEvent(friendsState.friends));
+                dispatchUiEvent(new FriendListContentEvent(friends));
                 return;
         }
-    }, [ friendsState.friends ]);
+    }, [ friends, requestFriend ]);
 
     useUiEvent(FriendsEvent.SHOW_FRIEND_LIST, onFriendsEvent);
     useUiEvent(FriendsEvent.TOGGLE_FRIEND_LIST, onFriendsEvent);
@@ -70,33 +285,70 @@ export const FriendsView: FC<{}> = props =>
 
         if(!userData || (userData.type !== RoomObjectUserType.getTypeNumber(RoomObjectUserType.USER))) return;
 
-        const friend = friendsState.friends.find(friend =>
-            {
-                return (friend.id === userData.webID);
-            });
+        const friend = getFriend(userData.webID);
 
         if(!friend) return;
 
         dispatchUiEvent(new FriendEnteredRoomEvent(userData.roomIndex, RoomObjectCategory.UNIT, userData.webID, userData.name, userData.type));
-    }, [ friendsState.friends ]);
+    }, [ getFriend ]);
 
     useRoomEngineEvent(RoomEngineObjectEvent.ADDED, onRoomEngineObjectEvent);
 
     const onlineFriends = useMemo(() =>
     {
-        return friends.filter(f => f.online);
+        const onlineFriends = friends.filter(friend => friend.online);
+
+        onlineFriends.sort((a, b) =>
+        {
+            if( a.name < b.name ) return -1;
+
+            if( a.name > b.name ) return 1;
+
+            return 0;
+        });
+
+        return onlineFriends;
     }, [ friends ]);
 
     const offlineFriends = useMemo(() =>
     {
-        return friends.filter(f => !f.online);
+        const offlineFriends = friends.filter(friend => !friend.online);
+
+        offlineFriends.sort((a, b) =>
+        {
+            if( a.name < b.name ) return -1;
+
+            if( a.name > b.name ) return 1;
+
+            return 0;
+        });
+
+        return offlineFriends;
     }, [ friends ]);
 
+    useEffect(() =>
+    {
+        SendMessageHook(new MessengerInitComposer());
+    }, []);
+
+    useEffect(() =>
+    {
+        if(!settings) return;
+
+        setIsReady(true);
+    }, [ settings ]);
+
+    useEffect(() =>
+    {
+        dispatchUiEvent(new FriendsRequestCountEvent(requests.length));
+    }, [ requests ]);
+
     return (
-        <FriendsContextProvider value={ { friendsState, dispatchFriendsState } }>
-            <FriendsMessageHandler />
-            { isReady && createPortal(<FriendBarView onlineFriends={ onlineFriends } />, document.getElementById('toolbar-friend-bar-container')) }
-            { isListVisible && <FriendsListView onlineFriends={ onlineFriends } offlineFriends={ offlineFriends } friendRequests={ requests } onCloseClick={ () => setIsListVisible(false) } /> }
+        <FriendsContextProvider value={ { friends, requests, settings, acceptFriend, declineFriend } }>
+            { isReady &&
+                createPortal(<FriendBarView onlineFriends={ onlineFriends } />, document.getElementById('toolbar-friend-bar-container')) }
+            { isVisible &&
+                <FriendsListView onlineFriends={ onlineFriends } offlineFriends={ offlineFriends } friendRequests={ requests } onCloseClick={ () => setIsVisible(false) } /> }
             <FriendsMessengerView />
         </FriendsContextProvider>
     );
