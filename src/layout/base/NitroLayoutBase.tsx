@@ -3,7 +3,7 @@ import { NitroLayoutBaseProps } from './NitroLayoutBase.types';
 
 export const NitroLayoutBase: FC<NitroLayoutBaseProps> = props =>
 {
-    const { className = '', overflow = null, position = null, gap = null, children = null, ...rest } = props;
+    const { className = '', overflow = null, position = null, gap = null, ref = null, innerRef = null, children = null, ...rest } = props;
 
     const getClassName = useMemo(() =>
     {
@@ -21,7 +21,7 @@ export const NitroLayoutBase: FC<NitroLayoutBaseProps> = props =>
     }, [ className, overflow, position, gap ]);
 
     return (
-        <div className={ getClassName } { ...rest }>
+        <div className={ getClassName } ref={ innerRef } { ...rest }>
             { children }
         </div>
     );

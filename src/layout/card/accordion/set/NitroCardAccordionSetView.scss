@@ -3,12 +3,10 @@
     &.active {
         height: 100%;
         background: rgba($white, 0.5);
+        border-bottom: 1px solid rgba($black, 0.2);
     }
 
     .nitro-card-accordion-set-header {
         border-bottom: 1px solid rgba($black, 0.2);
-    }
-
-    .nitro-card-accordion-set-content {
     }
 }
