@@ -3,7 +3,7 @@ import { DeclineFriendMessageComposer } from '@nitrots/nitro-renderer/src';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { GetRoomSession } from '../../api';
-import { FriendEnteredRoomEvent, FriendListContentEvent, FriendsEvent, FriendsRequestCountEvent } from '../../events';
+import { FriendEnteredRoomEvent, FriendListContentEvent, FriendRequestEvent, FriendsAcceptFriendRequestEvent, FriendsDeclineFriendRequestEvent, FriendsEvent, FriendsRequestCountEvent } from '../../events';
 import { FriendsSendFriendRequestEvent } from '../../events/friends/FriendsSendFriendRequestEvent';
 import { CreateMessageHook, useRoomEngineEvent } from '../../hooks';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
@@ -71,18 +71,17 @@ export const FriendsView: FC<{}> = props =>
     {
         setRequests(prevValue =>
             {
-                const newRequests: MessengerRequest[] = [];
+                const newRequests: MessengerRequest[] = [ ...prevValue ];
 
-                for(const request of prevValue)
+                const index = newRequests.findIndex(request => (request.requesterUserId === userId));
+
+                if(index >= 0)
                 {
-                    if(request.requesterUserId !== userId)
-                    {
-                        newRequests.push(request);
-                    }
-                    else
-                    {
-                        SendMessageHook(new AcceptFriendMessageComposer(request.id));
-                    }
+                    SendMessageHook(new AcceptFriendMessageComposer(newRequests[index].id));
+
+                    dispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.ACCEPTED, userId));
+
+                    newRequests.splice(index, 1);
                 }
 
                 return newRequests;
@@ -97,22 +96,23 @@ export const FriendsView: FC<{}> = props =>
                 {
                     SendMessageHook(new DeclineFriendMessageComposer(true));
 
+                    for(const request of prevValue) dispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.DECLINED, request.requesterUserId));
+
                     return [];
                 }
                 else
                 {
-                    const newRequests: MessengerRequest[] = [];
+                    const newRequests: MessengerRequest[] = [ ...prevValue ];
 
-                    for(const request of prevValue)
+                    const index = newRequests.findIndex(request => (request.requesterUserId === userId));
+
+                    if(index >= 0)
                     {
-                        if(request.requesterUserId !== userId)
-                        {
-                            newRequests.push(request);
-                        }
-                        else
-                        {
-                            SendMessageHook(new DeclineFriendMessageComposer(false, request.id));
-                        }
+                        SendMessageHook(new DeclineFriendMessageComposer(false, newRequests[index].id));
+
+                        dispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.DECLINED, userId));
+
+                        newRequests.splice(index, 1);
                     }
 
                     return newRequests;
@@ -237,10 +237,15 @@ export const FriendsView: FC<{}> = props =>
             {
                 const newRequests = [ ...prevValue ];
 
-                const newRequest = new MessengerRequest();
-                newRequest.populate(request);
+                const index = newRequests.findIndex(existing => (existing.requesterUserId === request.requesterUserId));
 
-                newRequests.push(newRequest);
+                if(index === -1)
+                {
+                    const newRequest = new MessengerRequest();
+                    newRequest.populate(request);
+
+                    newRequests.push(newRequest);
+                }
 
                 return newRequests;
             });
@@ -272,6 +277,20 @@ export const FriendsView: FC<{}> = props =>
     useUiEvent(FriendsEvent.TOGGLE_FRIEND_LIST, onFriendsEvent);
     useUiEvent(FriendsSendFriendRequestEvent.SEND_FRIEND_REQUEST, onFriendsEvent);
     useUiEvent(FriendsEvent.REQUEST_FRIEND_LIST, onFriendsEvent);
+
+    const onFriendsAcceptFriendRequestEvent = useCallback((event: FriendsAcceptFriendRequestEvent) =>
+    {
+        acceptFriend(event.requestId);
+    }, [ acceptFriend ]);
+
+    useUiEvent(FriendsAcceptFriendRequestEvent.ACCEPT_FRIEND_REQUEST, onFriendsAcceptFriendRequestEvent);
+
+    const onFriendsDeclineFriendRequestEvent = useCallback((event: FriendsDeclineFriendRequestEvent) =>
+    {
+        declineFriend(event.requestId);
+    }, [ declineFriend ]);
+
+    useUiEvent(FriendsDeclineFriendRequestEvent.DECLINE_FRIEND_REQUEST, onFriendsDeclineFriendRequestEvent);
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {

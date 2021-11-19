@@ -14,9 +14,9 @@ export const FriendsRequestView: FC<FriendsRequestViewProps> = props =>
 
     return (
         <NitroCardAccordionSetView headerText={ LocalizeText('friendlist.tab.friendrequests') + ` (${ requests.length })` } isExpanded={ true }>
-            { requests.map(request =>
+            { requests.map((request, index) =>
                 {
-                    return <FriendsRequestItemView key={ request.requesterUserId } request={ request } />
+                    return <FriendsRequestItemView key={ index } request={ request } />
                 }) }
             <NitroLayoutFlex className="justify-content-center p-1">
                 <NitroLayoutButton size="sm" onClick={ event => declineFriend(-1, true) }>

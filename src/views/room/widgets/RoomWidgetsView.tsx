@@ -1,7 +1,8 @@
 import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomObjectVariable, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFriendRequestEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPollEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomSessionWordQuizEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CanManipulateFurniture, GetRoomEngine, GetSessionDataManager, IsFurnitureSelectionDisabled, LocalizeText, ProcessRoomObjectOperation, RoomWidgetFurniToWidgetMessage, RoomWidgetUpdateRoomEngineEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
-import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks/events';
+import { FriendRequestEvent } from '../../../events';
+import { useRoomEngineEvent, useRoomSessionManagerEvent, useUiEvent } from '../../../hooks';
 import { NotificationAlertType } from '../../notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../notification-center/common/NotificationUtilities';
 import { useRoomContext } from '../context/RoomContext';
@@ -11,6 +12,7 @@ import { ChatWidgetView } from './chat/ChatWidgetView';
 import { FurniChooserWidgetView } from './choosers/FurniChooserWidgetView';
 import { UserChooserWidgetView } from './choosers/UserChooserWidgetView';
 import { DoorbellWidgetView } from './doorbell/DoorbellWidgetView';
+import { FriendRequestWidgetView } from './friend-request/FriendRequestWidgetView';
 import { FurnitureWidgetsView } from './furniture/FurnitureWidgetsView';
 import { InfoStandWidgetView } from './infostand/InfoStandWidgetView';
 import { RoomThumbnailWidgetView } from './room-thumbnail/RoomThumbnailWidgetView';
@@ -275,6 +277,8 @@ export const RoomWidgetsView: FC<{}> = props =>
     useRoomSessionManagerEvent(RoomSessionPollEvent.OFFER, onRoomSessionEvent);
     useRoomSessionManagerEvent(RoomSessionPollEvent.ERROR, onRoomSessionEvent);
     useRoomSessionManagerEvent(RoomSessionPollEvent.CONTENT, onRoomSessionEvent);
+    useUiEvent(FriendRequestEvent.ACCEPTED, onRoomSessionEvent);
+    useUiEvent(FriendRequestEvent.DECLINED, onRoomSessionEvent);
 
     const onRoomSessionErrorMessageEvent = useCallback((event: RoomSessionErrorMessageEvent) =>
     {
@@ -357,6 +361,7 @@ export const RoomWidgetsView: FC<{}> = props =>
             <FurniChooserWidgetView />
             <UserChooserWidgetView />
             <WordQuizWidgetView />
+            <FriendRequestWidgetView />
         </>
     );
 }
