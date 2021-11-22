@@ -38,8 +38,8 @@ export const NitropediaView: FC<{}> = props =>
     {
         if(event.target instanceof HTMLAnchorElement)
         {
+            event.preventDefault();
             const link = event.target.href;
-            console.log(link);
 
             if(link.startsWith(internalLinkPrefix))
             {
