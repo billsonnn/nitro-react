@@ -16,6 +16,7 @@ import { HotelView } from '../hotel-view/HotelView';
 import { InventoryView } from '../inventory/InventoryView';
 import { ModToolsView } from '../mod-tools/ModToolsView';
 import { NavigatorView } from '../navigator/NavigatorView';
+import { NitropediaView } from '../nitropedia/NitropediaView';
 import { RightSideView } from '../right-side/RightSideView';
 import { RoomHostView } from '../room-host/RoomHostView';
 import { ToolbarView } from '../toolbar/ToolbarView';
@@ -75,6 +76,7 @@ export const MainView: FC<MainViewProps> = props =>
             <CameraWidgetView />
             <HelpView />
             <FloorplanEditorView />
+            <NitropediaView />
         </div>
     );
 }
