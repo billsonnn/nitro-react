@@ -478,7 +478,7 @@ $utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg") !d
 //
 // Style anchor elements.
 
-$link-color:                              $primary !default;
+$link-color:                              $body-color !default;
 $link-decoration:                         underline !default;
 $link-shade-percentage:                   20% !default;
 $link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;

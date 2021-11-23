@@ -4,7 +4,7 @@ import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 
 import { GetGroupInformation, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent } from '../../../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../../hooks/events';
-import { UserProfileIconView } from '../../../../../../layout';
+import { NitroLayoutFlex, UserProfileIconView } from '../../../../../../layout';
 import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
 import { RelationshipsContainerView } from '../../../../../user-profile/views/relationships-container/RelationshipsContainerView';
@@ -55,7 +55,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     CreateEventDispatcherHook(RoomSessionUserBadgesEvent.RSUBE_BADGES, eventDispatcher, onRoomSessionUserBadgesEvent);
 
-    const OnUserRelationshipsEvent = useCallback((event: RelationshipStatusInfoEvent) =>
+    const onUserRelationshipsEvent = useCallback((event: RelationshipStatusInfoEvent) =>
     {
         const parser = event.getParser();
 
@@ -63,7 +63,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
             setUserRelationships(parser);
     }, [userData]);
 
-    CreateMessageHook(RelationshipStatusInfoEvent, OnUserRelationshipsEvent);
+    CreateMessageHook(RelationshipStatusInfoEvent, onUserRelationshipsEvent);
 
     useEffect(() =>
     {
@@ -73,7 +73,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
         SendMessageHook(new UserRelationshipsComposer(userData.webID));
 
         return () => 
-{
+        {
             setBadges([]);
             setUserRelationships(null);
         }
@@ -85,10 +85,10 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
         <div className="d-flex flex-column nitro-card nitro-infostand rounded">
             <div className="container-fluid content-area overflow-visible">
                 <div className="d-flex justify-content-between align-items-center">
-                    <div className="small text-wrap">
+                    <NitroLayoutFlex className="align-items-center">
                         <UserProfileIconView userId={ userData.webID } />
-                        { userData.name }
-                    </div>
+                        <span className="small text-wrap">{ userData.name }</span>
+                    </NitroLayoutFlex>
                     <i className="fas fa-times cursor-pointer" onClick={ close }></i>
                 </div>
                 <hr className="m-0 my-1" />

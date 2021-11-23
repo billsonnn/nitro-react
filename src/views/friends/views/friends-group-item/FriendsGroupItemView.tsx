@@ -9,7 +9,7 @@ import { FriendsGroupItemViewProps } from './FriendsGroupItemView.types';
 
 export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
 {
-    const { friend = null } = props;
+    const { friend = null, selected = false, children = null, ...rest } = props;
 
     const [ isExpanded, setIsExpanded ] = useState<boolean>(false);
 
@@ -50,7 +50,7 @@ export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
     if(!friend) return null;
 
     return (
-        <div className="px-2 py-1 d-flex gap-1 align-items-center">
+        <NitroLayoutFlex className="px-2 py-1 align-items-center" gap={ 1 } { ...rest }>
             <UserProfileIconView userId={ friend.id } />
             <div>{ friend.name }</div>
             <NitroLayoutFlex className="ms-auto align-items-center" gap={ 1 }>
@@ -70,6 +70,7 @@ export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
                         <NitroLayoutBase className="nitro-friends-spritesheet icon-none cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_NONE) } />
                     </> }
             </NitroLayoutFlex>
-        </div>
+            { children }
+        </NitroLayoutFlex>
     );
 }

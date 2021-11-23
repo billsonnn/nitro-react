@@ -1,6 +1,7 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { NitroCardAccordionSetView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
+import { MessengerFriend } from '../../common/MessengerFriend';
 import { FriendsGroupView } from '../friends-group/FriendsGroupView';
 import { FriendsRequestView } from '../friends-request/FriendsRequestView';
 import { FriendsSearchView } from '../friends-search/FriendsSearchView';
@@ -11,9 +12,14 @@ const MODE_SEARCH: number = 1;
 
 export const FriendsListView: FC<FriendsListViewProps> = props =>
 {
-    
     const { onlineFriends = [], offlineFriends = [], friendRequests = [], onCloseClick = null } = props;
+    const [ selectedFriends, setSelectedFriends ] = useState<MessengerFriend[]>([]);
     const [ mode, setMode ] = useState<number>(0);
+
+    useEffect(() =>
+    {
+        setSelectedFriends([]);
+    }, [ onlineFriends, offlineFriends ]);
 
     return (
         <NitroCardView className="nitro-friends" uniqueKey="nitro-friends">

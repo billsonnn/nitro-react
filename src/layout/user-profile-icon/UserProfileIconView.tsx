@@ -5,9 +5,7 @@ import { UserProfileIconViewProps } from './UserProfileIconView.types';
 
 export const UserProfileIconView: FC<UserProfileIconViewProps> = props =>
 {
-    const { userId = 0, userName = null } = props;
-
-    const { className = '', children = null, ...rest } = props;
+    const { userId = 0, userName = null, className = '', children = null, ...rest  } = props;
 
     const getClassName = useMemo(() =>
     {
@@ -19,7 +17,7 @@ export const UserProfileIconView: FC<UserProfileIconViewProps> = props =>
     }, [ className ]);
 
     return (
-        <NitroLayoutBase className={ getClassName } onClick={ event => GetUserProfile(userId) }>
+        <NitroLayoutBase className={ getClassName } onClick={ event => GetUserProfile(userId) } { ... rest }>
             { children }
         </NitroLayoutBase>
     );
