@@ -1,6 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
-import { NitroCardContentView, NitroCardGridItemView, NitroCardGridView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFlex } from '../../../../layout';
+import { CalendarItemView } from '../calendar-item/CalendarItemView';
 import { CalendarViewProps } from './CalendarView.types';
 
 export const CalendarView: FC<CalendarViewProps> = props =>
@@ -23,20 +24,15 @@ export const CalendarView: FC<CalendarViewProps> = props =>
 
     return (
         <NitroCardView className="nitro-campaign-calendar">
-            <NitroCardHeaderView headerText={LocalizeText(`campaign.calendar.${campaignName}.title`)} onCloseClick={close}/>
+            <NitroCardHeaderView headerText={ LocalizeText(`campaign.calendar.${campaignName}.title`) } onCloseClick={ close }/>
             <NitroCardContentView>
                 <div className="text-black">
-                    <h3>{LocalizeText('campaign.calendar.heading.day', ['number'], [selectedDay.toString()])}</h3>
-                    <p>{LocalizeText('')}</p>
+                    <h3>{ LocalizeText('campaign.calendar.heading.day', ['number'], [selectedDay.toString()]) }</h3>
+                    <p>{ LocalizeText('') }</p>
                 </div>
-                <NitroCardGridView className="h-100 w-100" columns={7}>
-                    { 
-                        [...Array(7)].map((e, i) =>
-                        {
-                            return <NitroCardGridItemView key={i} className="calendar-day h-100"/>
-                        })
-                    }
-                </NitroCardGridView>
+                <NitroLayoutFlex className="h-100" gap={ 2 }>
+                    { [...Array(7)].map((e, i) => <CalendarItemView key={ i } /> ) }
+                </NitroLayoutFlex>
             </NitroCardContentView>
         </NitroCardView>
     )
