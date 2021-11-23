@@ -6,6 +6,7 @@ import { TransitionAnimation, TransitionAnimationTypes } from '../../layout';
 import { AchievementsView } from '../achievements/AchievementsView';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CameraWidgetView } from '../camera/CameraWidgetView';
+import { CampaignView } from '../campaign/CampaignView';
 import { CatalogView } from '../catalog/CatalogView';
 import { ChatHistoryView } from '../chat-history/ChatHistoryView';
 import { FloorplanEditorView } from '../floorplan-editor/FloorplanEditorView';
@@ -77,6 +78,7 @@ export const MainView: FC<MainViewProps> = props =>
             <HelpView />
             <FloorplanEditorView />
             <NitropediaView />
+            <CampaignView />
         </div>
     );
 }
