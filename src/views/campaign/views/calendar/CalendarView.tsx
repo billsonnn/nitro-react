@@ -1,6 +1,8 @@
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFlex } from '../../../../layout';
+import { CalendarItemState } from '../../common/CalendarItemState';
+import { getNumItemsDisplayed } from '../../common/Utils';
 import { CalendarItemView } from '../calendar-item/CalendarItemView';
 import { CalendarViewProps } from './CalendarView.types';
 
@@ -8,30 +10,104 @@ export const CalendarView: FC<CalendarViewProps> = props =>
 {
     const { close = null, campaignName = null, currentDay = null, numDays = null, missedDays = null, openedDays = null } = props;
     const [ selectedDay, setSelectedDay ] = useState(currentDay);
+    const [ index, setIndex ] = useState(0);
+
+    const getDayState = useCallback((day: number) =>
+    {
+        if(openedDays.includes(day))
+        {
+            return CalendarItemState.STATE_UNLOCKED;
+        }
+        if(day > currentDay)
+        {
+            return CalendarItemState.STATE_LOCKED_FUTURE;
+        }
+                    
+        if(missedDays.includes(day))
+        {
+            return CalendarItemState.STATE_LOCKED_EXPIRED;
+        }
+           
+        return CalendarItemState.STATE_LOCKED_AVAILABLE;
+    }, [currentDay, missedDays, openedDays]);
 
     const dayMessage = useCallback((day: number) =>
     {
-        if(missedDays.includes(day))
+        const state = getDayState(day);
+
+        switch(state)
         {
-            return LocalizeText('campaign.calendar.info.expired');
+            case CalendarItemState.STATE_UNLOCKED:
+                return LocalizeText('campaign.calendar.info.unlocked');
+            case CalendarItemState.STATE_LOCKED_FUTURE:
+                return LocalizeText('campaign.calendar.info.future');
+            case CalendarItemState.STATE_LOCKED_EXPIRED:
+                return LocalizeText('campaign.calendar.info.expired');
+            default: return LocalizeText('campaign.calendar.info.available.desktop');
+        }
+    }, [getDayState]);
+
+    const onClickNext = useCallback(() =>
+    {
+        const nextDay = selectedDay + 1;
+
+        if( (nextDay) === numDays) return;
+
+        setSelectedDay(nextDay);
+
+        if( (index + getNumItemsDisplayed()) < nextDay + 1 )
+        {
+            setIndex(index + 1);
         }
 
-        if(openedDays.includes(day))
+    }, [index, numDays, selectedDay]);
+
+    const onClickPrev = useCallback(() =>
+    {
+        const prevDay = selectedDay - 1;
+
+        if( (prevDay < 0)) return;
+
+        setSelectedDay(prevDay);
+
+        if( index > prevDay)
         {
-            return LocalizeText('campaign.calendar.info.unlocked')
+            setIndex(index - 1);
         }
-    }, [missedDays, openedDays]);
+    }, [index, selectedDay]);
+
+    const onClickItem = useCallback((item: number) =>
+    {
+        if(selectedDay === item)
+        {
+            //handle opening
+        }
+        else
+        {
+            setSelectedDay(item);
+        }
+    }, [selectedDay]);
 
     return (
         <NitroCardView className="nitro-campaign-calendar">
             <NitroCardHeaderView headerText={ LocalizeText(`campaign.calendar.${campaignName}.title`) } onCloseClick={ close }/>
             <NitroCardContentView>
                 <div className="text-black">
-                    <h3>{ LocalizeText('campaign.calendar.heading.day', ['number'], [selectedDay.toString()]) }</h3>
-                    <p>{ LocalizeText('') }</p>
+                    <h3>{ LocalizeText('campaign.calendar.heading.day', ['number'], [(selectedDay + 1).toString()]) }</h3>
+                    <p>{ dayMessage(selectedDay) }</p>
+                </div>
+                <div className="button-container">
+                    <div className="calendar-prev cursor-pointer" onClick={ onClickPrev }/>
+                    <div className="calendar-next cursor-pointer" onClick={ onClickNext }/>
                 </div>
                 <NitroLayoutFlex className="h-100" gap={ 2 }>
-                    { [...Array(7)].map((e, i) => <CalendarItemView key={ i } /> ) }
+                    { 
+                        [...Array(getNumItemsDisplayed())].map((e, i) =>
+                        {
+                            const day = index + i;
+                            return <CalendarItemView key={ i } state={ getDayState(day) } active={selectedDay === day} onClick={onClickItem} id={day}/> 
+                        }) 
+                    }
                 </NitroLayoutFlex>
             </NitroCardContentView>
         </NitroCardView>

@@ -14,7 +14,7 @@ export const CampaignView: FC<{}> = props =>
         const parser = event.getParser();
 
         if(!parser) return;
-
+        console.log(parser);
         setCalendarData(parser.calendarData);
     }, []);
 
