@@ -1,5 +1,6 @@
 import { CfhSanctionMessageEvent, CfhTopicsInitEvent, IssueDeletedMessageEvent, IssueInfoMessageEvent, IssuePickFailedMessageEvent, ModeratorActionResultMessageEvent, ModeratorInitMessageEvent, ModeratorToolPreferencesEvent, RoomEngineEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
+import { PlaySound } from '../../api/utils/PlaySound';
 import { NotificationAlertEvent } from '../../events';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { ModToolsOpenRoomChatlogEvent } from '../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
@@ -49,7 +50,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         const newTickets = tickets ? Array.from(tickets) : [];
         const existingIndex = newTickets.findIndex( entry => entry.issueId === parser.issueData.issueId)
-        
+
         if(existingIndex > -1)
         {
             newTickets[existingIndex] = parser.issueData;
@@ -57,6 +58,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
         else 
         {
             newTickets.push(parser.issueData);
+            PlaySound('modtools_new_ticket');
         }
 
         dispatchModToolsState({
@@ -66,8 +68,6 @@ export const ModToolsMessageHandler: FC<{}> = props =>
             }
         });
 
-        //todo: play ticket sound
-        //GetNitroInstance().events.dispatchEvent(new NitroSoundEvent(NitroSoundEvent.PLAY_SOUND, sound)
         console.log(parser);
     }, [dispatchModToolsState, tickets]);
 

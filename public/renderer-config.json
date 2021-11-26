@@ -5,7 +5,7 @@
     "hof.furni.url": "https://swf.nitrots.co/dcr/hof_furni",
     "images.url": "${asset.url}/images",
     "gamedata.url": "${asset.url}/gamedata",
-    "sounds.url": "${asset.url}/sounds",
+    "sounds.url": "${asset.url}/sounds/%sample%.mp3",
     "external.texts.url": [ "${gamedata.url}/ExternalTexts.json", "${gamedata.url}/UITexts.json" ],
     "external.samples.url": "${hof.furni.url}/mp3/sound_machine_sample_%sample%.mp3",
     "furnidata.url": "${gamedata.url}/FurnitureData.json",

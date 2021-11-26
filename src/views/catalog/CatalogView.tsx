@@ -1,6 +1,7 @@
 import { GetCatalogIndexComposer, GetCatalogPageComposer, GetGiftWrappingConfigurationComposer, ILinkEventTracker, INodeData, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { AddEventLinkTracker, GetRoomEngine, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { PlaySound } from '../../api/utils/PlaySound';
 import { CatalogEvent } from '../../events';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
@@ -47,6 +48,9 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                 save = true;
                 setIsVisible(value => !value);
                 return;
+            case CatalogEvent.PURCHASE_SUCCESS:
+                PlaySound('credits');
+                return;
         }
 
         if(save) saveActivePages();
@@ -56,6 +60,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
     useUiEvent(CatalogEvent.HIDE_CATALOG, onCatalogEvent);
     useUiEvent(CatalogEvent.TOGGLE_CATALOG, onCatalogEvent);
     useUiEvent(CatalogEvent.CATALOG_RESET, onCatalogEvent);
+    useUiEvent(CatalogEvent.PURCHASE_SUCCESS, onCatalogEvent);
 
     const linkReceived = useCallback((url: string) =>
     {
