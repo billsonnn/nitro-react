@@ -1,6 +1,6 @@
 import { ActivityPointNotificationMessageEvent, UserCreditsEvent, UserCurrencyEvent, UserSubscriptionEvent, UserSubscriptionParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { PlaySound } from '../../api/utils/PlaySound';
+import { CREDITS, DUCKETS, PlaySound } from '../../api/utils/PlaySound';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { usePurseContext } from './context/PurseContext';
 import { PurseMessageHandlerProps } from './PurseMessageHandler.types';
@@ -13,7 +13,7 @@ export const PurseMessageHandler: FC<PurseMessageHandlerProps> = props =>
     {
         const parser = event.getParser();
 
-        if(purse.credits && purse.credits !== parseFloat(parser.credits)) PlaySound('credits');
+        if(purse.credits && purse.credits !== parseFloat(parser.credits)) PlaySound(CREDITS);
 
         purse.credits = parseFloat(parser.credits);
 
@@ -35,7 +35,7 @@ export const PurseMessageHandler: FC<PurseMessageHandlerProps> = props =>
 
         purse.activityPoints.set(parser.type, parser.amount);
 
-        if(parser.type === 0) PlaySound('duckets');
+        if(parser.type === 0) PlaySound(DUCKETS);
 
         purse.notify();
     }, [ purse ]);

@@ -1,7 +1,7 @@
 import { GetCatalogIndexComposer, GetCatalogPageComposer, GetGiftWrappingConfigurationComposer, ILinkEventTracker, INodeData, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { AddEventLinkTracker, GetRoomEngine, LocalizeText, RemoveLinkEventTracker } from '../../api';
-import { PlaySound } from '../../api/utils/PlaySound';
+import { CREDITS, PlaySound } from '../../api/utils/PlaySound';
 import { CatalogEvent } from '../../events';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
@@ -49,7 +49,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                 setIsVisible(value => !value);
                 return;
             case CatalogEvent.PURCHASE_SUCCESS:
-                PlaySound('credits');
+                PlaySound(CREDITS);
                 return;
         }
 

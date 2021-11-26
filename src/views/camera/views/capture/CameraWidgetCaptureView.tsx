@@ -1,7 +1,7 @@
 import { NitroRectangle, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
 import { GetRoomEngine, GetRoomSession, LocalizeText } from '../../../../api';
-import { PlaySound } from '../../../../api/utils/PlaySound';
+import { CAMERA_SHUTTER, PlaySound } from '../../../../api/utils/PlaySound';
 import { DraggableWindow } from '../../../../layout';
 import { CameraPicture } from '../../common/CameraPicture';
 import { useCameraWidgetContext } from '../../context/CameraWidgetContext';
@@ -45,7 +45,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
             clone.pop();
         }
 
-        PlaySound('camera_shutter');
+        PlaySound(CAMERA_SHUTTER);
         clone.push(new CameraPicture(texture, TextureUtils.generateImageUrl(texture)));
 
         setCameraRoll(clone);
