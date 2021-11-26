@@ -1,6 +1,7 @@
 import { NitroRectangle } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
 import { GetRoomEngine, LocalizeText } from '../../api';
+import { CAMERA_SHUTTER, PlaySound } from '../../api/utils/PlaySound';
 import { DraggableWindow } from '../draggable-window';
 import { NitroLayoutMiniCameraViewProps } from './NitroLayoutMiniCameraView.types';
 
@@ -20,6 +21,7 @@ export const NitroLayoutMiniCameraView: FC<NitroLayoutMiniCameraViewProps> = pro
 
     const takePicture = useCallback(() =>
     {
+        PlaySound(CAMERA_SHUTTER);
         textureReceiver(GetRoomEngine().createTextureFromRoom(roomId, 1, getCameraBounds()));
     }, [ roomId, getCameraBounds, textureReceiver ]);
     
