@@ -34,17 +34,14 @@ export const DescribeReportView: FC<{}> = props =>
     }, [helpReportState, message, setHelpReportState]);
 
     return (
-        <>
-            <div className="d-grid col-12 mx-auto justify-content-center">
-                <div className="col-12"><h3 className="fw-bold">{LocalizeText('help.emergency.chat_report.subtitle')}</h3></div>
-                <div className="text-wrap">{LocalizeText('help.cfh.input.text')}</div>
-            </div>
-
+        <div className="d-flex flex-column gap-2 h-100">
+            <h3 className="text-center m-0">{LocalizeText('help.emergency.chat_report.subtitle')}</h3>
+            <div className="text-wrap">{LocalizeText('help.cfh.input.text')}</div>
             <div className="form-group mb-2">
                 <textarea className="form-control" value={message} onChange={event => setMessage(event.target.value)} />
             </div>
 
-            <button className="btn btn-danger mt-2" type="button" disabled={message.length < 15} onClick={submitReport}>{LocalizeText('help.bully.submit')}</button>
-        </>
+            <button className="btn btn-danger" disabled={message.length < 15} onClick={submitReport}>{LocalizeText('help.bully.submit')}</button>
+        </div>
     );
 }

@@ -55,16 +55,11 @@ export const SelectReportedUserView: FC<{}> = props =>
     }, [helpReportState, setHelpReportState]);
 
     return (
-        <>
-            <div className="d-grid col-12 mx-auto justify-content-center">
-                <h3 className="fw-bold">{LocalizeText('help.emergency.main.step.two.title')}</h3>
-                <p>{(availableUsers.length > 0) ? LocalizeText('report.user.pick.user') : ''}</p>
-            </div>
-            {
-                (availableUsers.length <= 0) && <div>{LocalizeText('report.user.error.nolist')}</div>
-            }
-            {
-                (availableUsers.length > 0) &&
+        <div className="d-flex flex-column gap-2 h-100">
+            <h3 className="text-center m-0">{LocalizeText('help.emergency.main.step.two.title')}</h3>
+            <div>{(availableUsers.length > 0) ? LocalizeText('report.user.pick.user') : ''}</div>
+            { (availableUsers.length <= 0) && <div className="bg-muted rounded text-center p-2">{LocalizeText('report.user.error.nolist')}</div> }
+            { (availableUsers.length > 0) &&
                 <>
                     <NitroCardGridView columns={1}>
                         {availableUsers.map((user, index) =>
@@ -76,13 +71,12 @@ export const SelectReportedUserView: FC<{}> = props =>
                             )
                         })}
                     </NitroCardGridView>
-
-                    <div className="d-flex gap-2 justify-content-between mt-auto">
-                        <button className="btn btn-secondary mt-2" type="button" onClick={back}>{LocalizeText('generic.back')}</button>
-                        <button className="btn btn-primary mt-2" type="button" disabled={selectedUserId <= 0} onClick={submitUser}>{LocalizeText('help.emergency.main.submit.button')}</button>
-                    </div>
                 </>
             }
-        </>
+            <div className="d-flex gap-2 justify-content-between mt-auto">
+                <button className="btn btn-secondary mt-2 w-100" type="button" onClick={back}>{LocalizeText('generic.back')}</button>
+                { (availableUsers.length > 0) && <button className="btn btn-success mt-2 w-100" type="button" disabled={selectedUserId <= 0} onClick={submitUser}>{LocalizeText('help.emergency.main.submit.button')}</button> }
+            </div>
+        </div>
     )
 }

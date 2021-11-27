@@ -68,7 +68,7 @@ export const HelpView: FC<{}> = props =>
         <HelpContextProvider value={ { helpReportState, setHelpReportState } }>
             <HelpMessageHandler />
             {isVisible &&
-                <NitroCardView className="nitro-help">
+                <NitroCardView className="nitro-help" simple={true}>
                     <NitroCardHeaderView headerText={LocalizeText('help.button.cfh')} onCloseClick={() => setIsVisible(false)} />
                     <NitroCardContentView className="text-black">
                         <CurrentStepView />

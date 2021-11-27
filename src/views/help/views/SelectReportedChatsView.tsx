@@ -54,18 +54,12 @@ export const SelectReportedChatsView: FC<{}> = props =>
     }, [helpReportState, setHelpReportState]);
     
     return (
-        <>
-            <div className="d-grid col-12 mx-auto justify-content-center">
-                <div className="col-12"><h3 className="fw-bold">{LocalizeText('help.emergency.chat_report.subtitle')}</h3></div>
-                { userChats.length > 0 &&
-                    <div className="text-wrap">{LocalizeText('help.emergency.chat_report.description')}</div>
-                }
-            </div>
-            {
-                (userChats.length === 0) && <div>{LocalizeText('help.cfh.error.no_user_data')}</div>
-            }
-            { userChats.length > 0 &&
+        <div className="d-flex flex-column gap-2 h-100">
+            <h3 className="text-center m-0">{LocalizeText('help.emergency.chat_report.subtitle')}</h3>
+            { (userChats.length === 0) && <div className="bg-muted rounded text-center p-2">{LocalizeText('help.cfh.error.no_user_data')}</div> }
+            { (userChats.length > 0) &&
                 <>
+                    <div className="text-wrap">{LocalizeText('help.emergency.chat_report.description')}</div>
                     <NitroCardGridView columns={1}>
                         {userChats.map((chat, index) =>
                         {
@@ -76,13 +70,12 @@ export const SelectReportedChatsView: FC<{}> = props =>
                             )
                         })}
                     </NitroCardGridView>
-
                     <div className="d-flex gap-2 justify-content-between mt-auto">
-                        <button className="btn btn-secondary mt-2" type="button" onClick={back}>{LocalizeText('generic.back')}</button>
-                        <button className="btn btn-primary mt-2" type="button" disabled={selectedChats.size <= 0} onClick={submitChats}>{LocalizeText('help.emergency.main.submit.button')}</button>
+                        <button className="btn btn-primary w-100" type="button" onClick={back}>{LocalizeText('generic.back')}</button>
+                        <button className="btn btn-success w-100" type="button" disabled={selectedChats.size <= 0} onClick={submitChats}>{LocalizeText('help.emergency.main.submit.button')}</button>
                     </div>
                 </>
             }
-        </>
+        </div>
     );
 }

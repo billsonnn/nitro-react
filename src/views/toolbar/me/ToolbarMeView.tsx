@@ -7,7 +7,7 @@ import { ToolbarMeViewProps } from './ToolbarMeView.types';
 
 export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
 {
-    const { unseenAchievementCount = 0, handleToolbarItemClick = null } = props;
+    const { useGuideTool = false, unseenAchievementCount = 0, handleToolbarItemClick = null } = props;
 
     useEffect(() =>
     {
@@ -24,9 +24,9 @@ export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
                 <div className="navigation-item">
                     <i className="icon icon-me-talents"></i>
                 </div>
-                <div className="navigation-item">
+                { useGuideTool && <div className="navigation-item" onClick={ () => handleToolbarItemClick(ToolbarViewItems.GUIDE_TOOL_ITEM) }>
                     <i className="icon icon-me-helper-tool"></i>
-                </div>
+                </div> }
                 <div className="navigation-item" onClick={ () => handleToolbarItemClick(ToolbarViewItems.ACHIEVEMENTS_ITEM) }>
                     <i className="icon icon-me-achievements"></i>
                     { (unseenAchievementCount > 0) &&

@@ -16,4 +16,5 @@ export class ToolbarViewItems
     public static ACHIEVEMENTS_ITEM: string = 'TVI_ACHIEVEMENTS_ITEM';
     public static PROFILE_ITEM: string      = 'TVI_PROFILE_ITEM';
     public static SETTINGS_ITEM: string     = 'TVI_SETTINGS_ITEM';
+    public static GUIDE_TOOL_ITEM: string     = 'TVI_GUIDE_TOOL_ITEM';
 }
