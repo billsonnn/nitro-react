@@ -1,4 +1,4 @@
 export const getNumItemsDisplayed = (): number =>
 {
-    return Math.max(Math.min(2, window.screen.width / 135), 7);
+    return Math.min(Math.max(2, Math.floor(window.screen.width / 135)), 7);
 }

@@ -26,8 +26,12 @@ export const CalendarItemView: FC<CalendarItemViewProps> = props =>
     return (
         <NitroLayoutFlexColumn className={`calendar-item h-100 w-100 cursor-pointer align-items-center justify-content-center ${active ? 'active' : ''}`} onClick={() => onClick(id)}>
             { (state === CalendarItemState.STATE_UNLOCKED) &&
-                <div className="unlocked-generic-bg">
-                    
+                <div className="unlocked-generic-bg d-flex justify-content-center align-items-center">
+                    <div className="opened d-flex justify-content-center align-items-center">
+                        { productName &&
+                            <img className="furni-icon" src={getFurnitureIcon(productName)} alt='' />
+                        }
+                    </div>
                 </div>
             }
 
