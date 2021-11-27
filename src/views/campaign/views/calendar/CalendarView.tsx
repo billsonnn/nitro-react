@@ -104,7 +104,7 @@ export const CalendarView: FC<CalendarViewProps> = props =>
         <NitroCardView className="nitro-campaign-calendar">
             <NitroCardHeaderView headerText={LocalizeText(`campaign.calendar.${campaignName}.title`)} onCloseClick={close} />
             <NitroCardContentView>
-                <div className="d-flex justify-content-between">
+                <div className="d-flex justify-content-between mx-5">
                     <div className="text-black">
                         <h3>{LocalizeText('campaign.calendar.heading.day', ['number'], [(selectedDay + 1).toString()])}</h3>
                         <p>{dayMessage(selectedDay)}</p>
@@ -114,10 +114,11 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                     }
                 </div>
                 <div className="button-container">
-                    <div className="calendar-prev cursor-pointer" onClick={onClickPrev} />
-                    <div className="calendar-next cursor-pointer" onClick={onClickNext} />
+                    
+                    
                 </div>
-                <NitroLayoutFlex className="h-100" gap={2}>
+                <NitroLayoutFlex className="h-100 align-items-center" gap={1}>
+                    <div className="calendar-prev cursor-pointer" onClick={onClickPrev} />
                     {
                         [...Array(getNumItemsDisplayed())].map((e, i) =>
                         {
@@ -125,6 +126,7 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                             return <CalendarItemView key={i} state={getDayState(day)} active={selectedDay === day} onClick={onClickItem} id={day} productName={receivedProducts.has(day) ? receivedProducts.get(day) : null} />
                         })
                     }
+                    <div className="calendar-next cursor-pointer" onClick={onClickNext} />
                 </NitroLayoutFlex>
             </NitroCardContentView>
         </NitroCardView>
