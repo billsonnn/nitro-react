@@ -1,6 +1,5 @@
 {
-    "socket.url": "ws://127.0.0.1:2096/",
-    "socket.urll": "wss://ws.nitrots.co:2096/",
+    "socket.url": "wss://ws.nitrots.co:2096/",
     "asset.url": "https://nitro.nitrots.co",
     "image.library.url": "https://swf.nitrots.co/c_images/",
     "hof.furni.url": "https://swf.nitrots.co/dcr/hof_furni",
