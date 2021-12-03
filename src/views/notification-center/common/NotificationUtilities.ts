@@ -27,27 +27,27 @@ export class NotificationUtilities
         return text.substr((text.length - 2), text.length);
     }
 
-    private static getMainNotificationConfig(): { [key: string]: { delivery?: string, display?: string; title?: string; image?: string }}
+    private static getMainNotificationConfig(): { [key: string]: { delivery?: string, display?: string; title?: string; image?: string } }
     {
-        return GetConfiguration<{ [key: string]: { delivery?: string, display?: string; title?: string; image?: string }}>('notification', {});
+        return GetConfiguration<{ [key: string]: { delivery?: string, display?: string; title?: string; image?: string } }>('notification', {});
     }
 
     private static getNotificationConfig(key: string): { delivery?: string, display?: string; title?: string; image?: string }
     {
         const mainConfig = this.getMainNotificationConfig();
 
-        if(!mainConfig) return null;
+        if (!mainConfig) return null;
 
         return mainConfig[key];
     }
 
     public static getNotificationPart(options: Map<string, string>, type: string, key: string, localize: boolean): string
     {
-        if(options.has(key)) return options.get(key);
+        if (options.has(key)) return options.get(key);
 
-        const localizeKey = [ 'notification', type, key ].join('.');
+        const localizeKey = ['notification', type, key].join('.');
 
-        if(GetNitroInstance().localization.hasValue(localizeKey) || localize)
+        if (GetNitroInstance().localization.hasValue(localizeKey) || localize)
         {
             return LocalizeText(localizeKey, Array.from(options.keys()), Array.from(options.values()));
         }
@@ -60,18 +60,18 @@ export class NotificationUtilities
         let imageUrl = options.get('image');
 
         // eslint-disable-next-line no-template-curly-in-string
-        if(!imageUrl) imageUrl = ('${image.library.url}notifications/' + type.replace(/\./g, '_') + '.png');
+        if (!imageUrl) imageUrl = ('${image.library.url}notifications/' + type.replace(/\./g, '_') + '.png');
 
         return imageUrl;
     }
 
     public static showNotification(type: string, options: Map<string, string> = null): void
     {
-        if(!options) options = new Map();
+        if (!options) options = new Map();
 
         const configuration = this.getNotificationConfig(('notification.' + type));
 
-        if(configuration) for(const key in configuration) options.set(key, configuration[key]);
+        if (configuration) for (const key in configuration) options.set(key, configuration[key]);
 
         console.log(options);
 
@@ -81,7 +81,7 @@ export class NotificationUtilities
         const linkUrl = this.getNotificationPart(options, type, 'linkUrl', false);
         const image = this.getNotificationImageUrl(options, type);
 
-        if(options.get('display') === 'BUBBLE')
+        if (options.get('display') === 'BUBBLE')
         {
             this.showSingleBubble(LocalizeText(message), NotificationBubbleType.INFO, LocalizeText(image), linkUrl);
         }
@@ -93,14 +93,14 @@ export class NotificationUtilities
 
     public static showSingleBubble(message: string, type: string, imageUrl: string = null, internalLink: string = null): void
     {
-        if(this.BUBBLES_DISABLED) return;
+        if (this.BUBBLES_DISABLED) return;
 
         dispatchUiEvent(new NotificationBubbleEvent(message, type, imageUrl, internalLink));
     }
 
     public static showClubGiftNotification(numGifts: number): void
     {
-        if(numGifts <= 0) return;
+        if (numGifts <= 0) return;
 
         this.showSingleBubble(numGifts.toString(), NotificationBubbleType.CLUBGIFT, null, ('catalog/open/' + CatalogPageName.CLUB_GIFTS));
     }
@@ -114,9 +114,9 @@ export class NotificationUtilities
 
     public static simpleAlert(message: string, type: string, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
     {
-        if(!title || !title.length) title = LocalizeText('notifications.broadcast.title');
+        if (!title || !title.length) title = LocalizeText('notifications.broadcast.title');
 
-        dispatchUiEvent(new NotificationAlertEvent([ this.cleanText(message) ], type, clickUrl, clickUrlText, title, imageUrl));
+        dispatchUiEvent(new NotificationAlertEvent([this.cleanText(message)], type, clickUrl, clickUrlText, title, imageUrl));
     }
 
     public static showModeratorMessage(message: string, url: string = null, showHabboWay: boolean = true): void
@@ -141,27 +141,27 @@ export class NotificationUtilities
 
     public static handleHotelClosedMessage(open: number, minute: number, thrownOut: boolean): void
     {
-        this.simpleAlert( LocalizeText(('opening.hours.' + (thrownOut ? 'disconnected' : 'closed')), [ 'h', 'm'], [ this.getTimeZeroPadded(open), this.getTimeZeroPadded(minute) ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
+        this.simpleAlert(LocalizeText(('opening.hours.' + (thrownOut ? 'disconnected' : 'closed')), ['h', 'm'], [this.getTimeZeroPadded(open), this.getTimeZeroPadded(minute)]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
     }
 
     public static handleHotelMaintenanceMessage(minutesUntilMaintenance: number, duration: number): void
     {
-        this.simpleAlert(LocalizeText('maintenance.shutdown', [ 'm', 'd' ], [ minutesUntilMaintenance.toString(), duration.toString() ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
+        this.simpleAlert(LocalizeText('maintenance.shutdown', ['m', 'd'], [minutesUntilMaintenance.toString(), duration.toString()]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
     }
 
     public static handleHotelClosingMessage(minutes: number): void
     {
-        this.simpleAlert(LocalizeText('opening.hours.shutdown', [ 'm' ], [ minutes.toString() ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
+        this.simpleAlert(LocalizeText('opening.hours.shutdown', ['m'], [minutes.toString()]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
     }
 
     public static handleLoginFailedHotelClosedMessage(openHour: number, openMinutes: number): void
     {
-        this.simpleAlert(LocalizeText('opening.hours.disconnected', [ 'h', 'm' ], [ openHour.toString(), openMinutes.toString() ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
+        this.simpleAlert(LocalizeText('opening.hours.disconnected', ['h', 'm'], [openHour.toString(), openMinutes.toString()]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
     }
 
     public static openUrl(url: string): void
     {
-        if(url.startsWith('http'))
+        if (url.startsWith('http'))
         {
             HabboWebTools.openWebPage(url);
         }
@@ -173,9 +173,9 @@ export class NotificationUtilities
 
     public static showModerationDisclaimer(): void
     {
-        if(RoomEnterEffect.isRunning())
+        if (RoomEnterEffect.isRunning())
         {
-            if(this.MODERATION_DISCLAIMER_TIMEOUT) return;
+            if (this.MODERATION_DISCLAIMER_TIMEOUT) return;
 
             this.MODERATION_DISCLAIMER_TIMEOUT = setTimeout(() =>
             {
@@ -184,7 +184,7 @@ export class NotificationUtilities
         }
         else
         {
-            if(this.MODERATION_DISCLAIMER_SHOWN) return;
+            if (this.MODERATION_DISCLAIMER_SHOWN) return;
 
             this.showSingleBubble(LocalizeText('mod.chatdisclaimer'), NotificationBubbleType.INFO);
 

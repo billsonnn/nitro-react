@@ -25,9 +25,15 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
 
         if(!name || !name.length) return searchResult.data;
 
-        if(name.startsWith('${')) return name.substr(2, (name.length - 3));
+        if(LocalizeText(searchResult.data) !== searchResult.data) return LocalizeText(searchResult.data);
 
-        return ('navigator.searchcode.title.' + name);
+        if(name.startsWith('${')) return LocalizeText(name.substr(2, (name.length - 3)));
+        
+        name = 'navigator.searchcode.title.' + name;
+
+        if(LocalizeText(name) !== name) return LocalizeText(name);
+        
+        return searchResult.data;
     }
 
     function toggleExtended(): void
@@ -53,7 +59,7 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
             <div className="d-flex flex-column">
                 <div className="d-flex align-items-center px-2 py-1 text-black">
                     <i className={ 'text-secondary fas ' + (isExtended ? 'fa-minus' : 'fa-plus') } onClick={ toggleExtended }></i>
-                    <div className="ms-2 flex-grow-1">{ LocalizeText(getResultTitle()) }</div>
+                    <div className="ms-2 flex-grow-1">{getResultTitle() }</div>
                     <i className={ 'text-secondary fas ' + classNames({ 'fa-bars': (displayMode === NavigatorSearchResultViewDisplayMode.LIST), 'fa-th': displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS })}></i>
                 </div>
                 { isExtended &&
