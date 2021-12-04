@@ -4,7 +4,7 @@ import { NitroCardHeaderViewProps } from './NitroCardHeaderView.types';
 
 export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
 {
-    const { headerText = null, onCloseClick = null, theme = 'primary' } = props;
+    const { headerText = null, onCloseClick = null, theme = 'primary', noCloseButton = false } = props;
     const { simple = false } = useNitroCardContext();
 
     const onMouseDown = useCallback((event: MouseEvent<HTMLDivElement>) =>
@@ -20,9 +20,9 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
                 <div className="row nitro-card-header overflow-hidden">
                     <div className="d-flex justify-content-center align-items-center w-100 position-relative">
                         <div className="h5 text-shadow header-text">{ headerText }</div>
-                        <div className="position-absolute header-close" onMouseDownCapture={ onMouseDown } onClick={ onCloseClick }>
+                        { !noCloseButton && <div className="position-absolute header-close" onMouseDownCapture={ onMouseDown } onClick={ onCloseClick }>
                             <i className="fas fa-times" />
-                        </div>
+                        </div> }
                     </div>
                 </div>
             </div>

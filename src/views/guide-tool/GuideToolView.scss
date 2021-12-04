@@ -24,4 +24,8 @@
         height: 24px;
         background-image: url(../../assets/images/guide-tool/guide_tool_info_icon.png);
     }
+    
+
+    @import './views/user-create-request/GuideToolUserCreateRequestView';
+    @import './views/ongoing/GuideToolOngoingView';
 }

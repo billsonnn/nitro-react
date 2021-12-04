@@ -7,7 +7,7 @@ import { GuideToolAcceptViewProps } from './GuideToolAcceptView.types';
 
 export const GuideToolAcceptView: FC<GuideToolAcceptViewProps> = props =>
 {
-    const { helpRequestDescription = null, helpRequestCountdown = 0, processAction = null } = props;
+    const { helpRequestDescription = null, helpRequestAverageTime = 0 } = props;
     
     const answerRequest = useCallback((response: boolean) =>
     {
