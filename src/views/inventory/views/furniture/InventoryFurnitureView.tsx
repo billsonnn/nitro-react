@@ -1,12 +1,12 @@
 import { FurnitureListComposer, RoomObjectVariable, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText } from '../../../../api';
+import { Column } from '../../../../common/Column';
+import { Grid } from '../../../../common/Grid';
+import { Text } from '../../../../common/Text';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { NitroLayoutButton } from '../../../../layout';
 import { NitroLayoutBase } from '../../../../layout/base';
-import { NitroLayoutFlexColumn } from '../../../../layout/flex-column/NitroLayoutFlexColumn';
-import { NitroLayoutGridColumn } from '../../../../layout/grid/column/NitroLayoutGridColumn';
-import { NitroLayoutGrid } from '../../../../layout/grid/NitroLayoutGrid';
 import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../shared/rarity-level/RarityLevelView';
 import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerView';
@@ -107,13 +107,13 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
     if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.title') } desc={ LocalizeText('inventory.empty.desc') } />;
 
     return (
-        <NitroLayoutGrid>
-            <NitroLayoutGridColumn size={ 7 }>
+        <Grid>
+            <Column size={ 7 } overflow="hidden">
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                 <InventoryFurnitureResultsView groupItems={ filteredGroupItems }  />
-            </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn size={ 5 } overflow="auto">
-                <NitroLayoutFlexColumn overflow="hidden" position="relative">
+            </Column>
+            <Column size={ 5 } overflow="auto">
+                <Column overflow="hidden" position="relative">
                     <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                     { groupItem && groupItem.stuffData.isUnique &&
                         <NitroLayoutBase className="top-2 end-2" position="absolute">
@@ -123,16 +123,16 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                         <NitroLayoutBase className="top-2 end-2" position="absolute">
                             <RarityLevelView level={ groupItem.stuffData.rarityLevel } />
                         </NitroLayoutBase> }
-                </NitroLayoutFlexColumn>
+                </Column>
                 { groupItem &&
-                    <NitroLayoutFlexColumn className="flex-grow-1" gap={ 2 }>
-                        <NitroLayoutBase className="flex-grow-1 text-black text-truncate">{ groupItem.name }</NitroLayoutBase>
+                    <Column grow justifyContent="between" gap={ 2 }>
+                        <Text>{ groupItem.name }</Text>
                         { !!roomSession &&
                             <NitroLayoutButton variant="success" size="sm" onClick={ event => attemptItemPlacement(groupItem) }>
                                 { LocalizeText('inventory.furni.placetoroom') }
                             </NitroLayoutButton> }
-                    </NitroLayoutFlexColumn> }
-            </NitroLayoutGridColumn>
-        </NitroLayoutGrid>
+                    </Column> }
+            </Column>
+        </Grid>
     );
 }
