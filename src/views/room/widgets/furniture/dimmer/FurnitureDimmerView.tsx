@@ -3,6 +3,11 @@ import classNames from 'classnames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { ColorUtils, GetConfiguration, LocalizeText, RoomWidgetDimmerChangeStateMessage, RoomWidgetDimmerPreviewMessage, RoomWidgetDimmerSavePresetMessage, RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateDimmerStateEvent } from '../../../../../api';
+import { Button } from '../../../../../common/Button';
+import { Column } from '../../../../../common/Column';
+import { Flex } from '../../../../../common/Flex';
+import { Grid } from '../../../../../common/Grid';
+import { Text } from '../../../../../common/Text';
 import { BatchUpdates, CreateEventDispatcherHook } from '../../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
@@ -147,53 +152,58 @@ export const FurnitureDimmerView: FC<{}> = props =>
     return (
         <NitroCardView className="nitro-dimmer">
             <NitroCardHeaderView headerText={ LocalizeText('widget.dimmer.title') } onCloseClick={ close } />
-            <NitroCardContentView className="p-0">
+            { (dimmerState === 1) &&
+                <NitroCardTabsView>
+                    { presets.map(preset =>
+                        {
+                            return <NitroCardTabsItemView key={ preset.id } isActive={ (selectedPresetId === preset.id) } onClick={ event => selectPresetId(preset.id) }>{ LocalizeText(`widget.dimmer.tab.${preset.id}`) }</NitroCardTabsItemView>
+                        }) }
+                </NitroCardTabsView> }
+            <NitroCardContentView>
                 { (dimmerState === 0) &&
-                    <div className="d-flex flex-column gap-2 align-items-center p-2">
+                    <Column alignItems="center">
                         <div className="dimmer-banner"></div>
-                        <div className="bg-muted rounded p-1 text-center text-black">{ LocalizeText('widget.dimmer.info.off') }</div>
-                        <button className="btn-success btn w-100" onClick={ toggleState }>{ LocalizeText('widget.dimmer.button.on') }</button>
-                    </div> }
+                        <Text center className="bg-muted rounded p-1">{ LocalizeText('widget.dimmer.info.off') }</Text>
+                        <Button fullWidth variant="success" onClick={ toggleState }>{ LocalizeText('widget.dimmer.button.on') }</Button>
+                    </Column> }
                 { (dimmerState === 1) &&
                     <>
-                        <NitroCardTabsView>
-                            { presets.map(preset =>
-                                {
-                                    return <NitroCardTabsItemView key={ preset.id } isActive={ (selectedPresetId === preset.id) } onClick={ event => selectPresetId(preset.id) }>{ LocalizeText(`widget.dimmer.tab.${preset.id}`) }</NitroCardTabsItemView>
-                                }) }
-                        </NitroCardTabsView>
-                        <div className="p-2">
-                            <div className="form-group mb-2">
-                                <label className="fw-bold text-black">{ LocalizeText('widget.backgroundcolor.hue') }</label>
-                                { isFreeColorMode &&
-                                    <input type="color" className="form-control" value={ ColorUtils.makeColorNumberHex(selectedColor) } onChange={ event => setSelectedColor(ColorUtils.convertFromHex(event.target.value)) } /> }
-                                { !isFreeColorMode &&
-                                    <div className="d-flex gap-2">
-                                        { AVAILABLE_COLORS.map((color, index) =>
+                        <Column gap={ 1 }>
+                            <Text fontWeight="bold">{ LocalizeText('widget.backgroundcolor.hue') }</Text>
+                            { isFreeColorMode &&
+                                <input type="color" className="form-control" value={ ColorUtils.makeColorNumberHex(selectedColor) } onChange={ event => setSelectedColor(ColorUtils.convertFromHex(event.target.value)) } /> }
+                            { !isFreeColorMode &&
+                                <Grid columnCount={ 7 }>
+                                    { AVAILABLE_COLORS.map((color, index) =>
                                         {
-                                            return <div key={ index } className={ 'color-swatch rounded w-100 cursor-pointer' + classNames({ ' active': color === selectedColor }) } onClick={ () => setSelectedColor(color) } style={{ backgroundColor: HTML_COLORS[index] }}></div>;
+                                            return (
+                                                <Column fullWidth pointer key={ index } className={ 'color-swatch rounded' + classNames({ ' active': color === selectedColor }) } onClick={ () => setSelectedColor(color) } style={{ backgroundColor: HTML_COLORS[index] }} />
+                                            );
                                         }) }
-                                </div> }
-                            </div>
-                            <div className="form-group mb-2">
-                                <label className="fw-bold text-black">{ LocalizeText('widget.backgroundcolor.lightness') }</label>
-                                <ReactSlider
-                                    className={ 'nitro-slider' }
-                                    min={ MIN_BRIGHTNESS }
-                                    max={ MAX_BRIGHTNESS }
-                                    value={ selectedBrightness }
-                                    onChange={ value => setSelectedBrightness(value) }
-                                    thumbClassName={ 'thumb percent' }
-                                    renderThumb={ (props, state) => <div {...props}>{ scaledBrightness(state.valueNow) }</div> } />
-                            </div>
-                            <div className="form-check mb-2">
-                                <input className="form-check-input" type="checkbox" checked={ (selectedEffectId === 2) } onChange={ event => setSelectedEffectId(event.target.checked ? 2 : 1) } />
-                                <label className="form-check-label text-black">{ LocalizeText('widget.dimmer.type.checkbox') }</label>
-                            </div>
-                            <div className="d-flex gap-2">
-                                <button className="btn btn-danger w-100" onClick={ toggleState }>{ LocalizeText('widget.dimmer.button.off') }</button>
-                                <button className="btn btn-success w-100" onClick={ applyChanges }>{ LocalizeText('widget.dimmer.button.apply') }</button>
-                            </div>
+                                </Grid> }
+                        </Column>
+                        <Column gap={ 1 }>
+                            <Text fontWeight="bold">{ LocalizeText('widget.backgroundcolor.lightness') }</Text>
+                            <ReactSlider
+                                className="nitro-slider"
+                                min={ MIN_BRIGHTNESS }
+                                max={ MAX_BRIGHTNESS }
+                                value={ selectedBrightness }
+                                onChange={ value => setSelectedBrightness(value) }
+                                thumbClassName={ 'thumb percent' }
+                                renderThumb={ (props, state) => <div {...props}>{ scaledBrightness(state.valueNow) }</div> } />
+                        </Column>
+                        <Flex>
+                            <input className="form-check-input" type="checkbox" checked={ (selectedEffectId === 2) } onChange={ event => setSelectedEffectId(event.target.checked ? 2 : 1) } />
+                            <label className="form-check-label text-black">{ LocalizeText('widget.dimmer.type.checkbox') }</label>
+                        </Flex>
+                        <div className="form-check mb-2">
+                            <input className="form-check-input" type="checkbox" checked={ (selectedEffectId === 2) } onChange={ event => setSelectedEffectId(event.target.checked ? 2 : 1) } />
+                            <label className="form-check-label text-black">{ LocalizeText('widget.dimmer.type.checkbox') }</label>
+                        </div>
+                        <div className="d-flex gap-2">
+                            <button className="btn btn-danger w-100" onClick={ toggleState }>{ LocalizeText('widget.dimmer.button.off') }</button>
+                            <button className="btn btn-success w-100" onClick={ applyChanges }>{ LocalizeText('widget.dimmer.button.apply') }</button>
                         </div>
                     </> }
             </NitroCardContentView>
