@@ -161,6 +161,8 @@ export class NotificationUtilities
 
     public static openUrl(url: string): void
     {
+        if(!url || !url.length) return;
+        
         if(url.startsWith('http'))
         {
             HabboWebTools.openWebPage(url);
