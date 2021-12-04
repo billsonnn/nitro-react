@@ -1,5 +1,5 @@
 {
-    "socket.url": "wss://ws.nitrots.co:2096",
+    "socket.url": "ws://127.0.0.1:1234",
     "asset.url": "https://nitro.nitrots.co",
     "image.library.url": "https://swf.nitrots.co/c_images/",
     "hof.furni.url": "https://swf.nitrots.co/dcr/hof_furni",
@@ -30,7 +30,7 @@
     "system.animation.fps": 24,
     "system.limits.fps": false,
     "system.dispatcher.log": false,
-    "system.packet.log": false,
+    "system.packet.log": true,
     "system.pong.manually": true,
     "system.pong.interval.ms": 20000,
     "room.color.skip.transition": true,
