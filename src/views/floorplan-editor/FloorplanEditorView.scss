@@ -9,9 +9,11 @@
         overflow: scroll;
     }
 
-    .color {
-        height: 50px;
-        width: 10px;
+    .arrow-button {
+
+        @include media-breakpoint-up(md) {
+            display:none;
+        }
     }
 }
 

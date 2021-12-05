@@ -87,10 +87,10 @@ export class FloorplanEditor extends PixiApplicationProxy
 
         this._tilemapRenderer.on('pointerdown', (event: PixiInteractionEventProxy) =>
         {
-            if(!(event.data.originalEvent instanceof PointerEvent)) return;
+            if(!(event.data.originalEvent instanceof PointerEvent) && !(event.data.originalEvent instanceof TouchEvent)) return;
 
             const pointerEvent = event.data.originalEvent;
-            if(pointerEvent.button === 2) return;
+            if((pointerEvent instanceof MouseEvent) && pointerEvent.button === 2) return;
 
 
             const location = event.data.global;
