@@ -106,9 +106,8 @@ export const WordQuizWidgetView: FC<{}> = props =>
     {
         setUserAnswers(prev =>
         {
-            const copy = new Map(prev);
             const keysToRemove: number[] = [];
-            copy.forEach((value, key) =>
+            prev.forEach((value, key) =>
             {
                 value.secondsLeft--;
 
@@ -118,8 +117,10 @@ export const WordQuizWidgetView: FC<{}> = props =>
                 }
             });
 
-            keysToRemove.forEach(key => copy.delete(key));
+            if(keysToRemove.length === 0) return prev;
 
+            const copy = new Map(prev);
+            keysToRemove.forEach(key => copy.delete(key));
             return copy;
         })
 
