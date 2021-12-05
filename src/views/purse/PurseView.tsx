@@ -1,6 +1,7 @@
 import { FriendlyTime, HabboClubLevelEnum, UserCurrencyComposer, UserSubscriptionComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetConfiguration, LocalizeText } from '../../api';
+import { HcCenterEvent } from '../../events/hc-center/HcCenterEvent';
 import { HelpEvent } from '../../events/help/HelpEvent';
 import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
 import { dispatchUiEvent } from '../../hooks';
@@ -28,6 +29,11 @@ export const PurseView: FC<{}> = props =>
     const handleHelpCenterClick = useCallback(() =>
     {
         dispatchUiEvent(new HelpEvent(HelpEvent.TOGGLE_HELP_CENTER));
+    }, []);
+
+    const handleHcCenterClick = useCallback(() =>
+    {
+        dispatchUiEvent(new HcCenterEvent(HcCenterEvent.TOGGLE_HC_CENTER));
     }, []);
 
     const displayedCurrencies = useMemo(() =>
@@ -139,7 +145,8 @@ export const PurseView: FC<{}> = props =>
                         </div>
                     </div>
                     <div className="col-4 px-0">
-                        <div className="nitro-purse-hc rounded mx-1 p-1 d-flex flex-column justify-content-center align-items-center h-100">
+                        <div className="nitro-purse-hc nitro-purse-button rounded mx-1 p-1 d-flex flex-column justify-content-center align-items-center h-100"
+                        onClick={ handleHcCenterClick }>
                             <CurrencyIcon className="flex-shrink-0" type="hc" />
                             <span>{ getClubText() }</span>
                         </div>

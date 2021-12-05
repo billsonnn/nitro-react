@@ -5,7 +5,7 @@
     "thumbnails.url": "https://nitro.nitrots.co/camera/thumbnail/%thumbnail%.png",
     "url.prefix": "http://localhost:3000",
     "floorplan.tile.url": "${asset.url}/floorplan-editor/tiles.json",
-    "habbopages.url": "http://localhost:3000/",
+    "habbopages.url": "https://swf.nitrots.co/gamedata/habbopages/",
     "chat.viewer.height.percentage": 0.40,
     "widget.dimmer.colorwheel": false,
     "hotelview": {
@@ -47,6 +47,15 @@
         5,
         101
     ],
+    "hc.center": {
+        "benefits.info": true,
+        "payday.info": true,
+        "gift.info": true,
+        "benefits.habbopage": "habboclub",
+        "payday.habbopage": "hcpayday",
+        "catalog.buy": "habbo_club",
+        "catalog.gifts": "club_gifts"
+    },
     "currency.display.number.short": false,
     "currency.asset.icon.url": "${images.url}/wallet/%type%.png",
     "catalog.asset.url": "${image.library.url}catalogue",

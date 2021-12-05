@@ -169,13 +169,14 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutVipBuyViewProps> = props =
                                     </div>
                                 </NitroCardGridItemView>
                             );
-                        }) }
+                    })}
+                    <div className="mt-auto text-black">{ LocalizeText('catalog.vip.buy.hccenter') }</div>
                 </NitroCardGridView>
             </NitroLayoutGridColumn>
             <NitroLayoutGridColumn size={ 5 }>
                 <NitroLayoutFlexColumn className="justify-content-center align-items-center h-100" overflow="hidden" gap={ 2 }>
                     { GetCatalogPageImage(pageParser, 1) && <img className="" alt="" src={ GetCatalogPageImage(pageParser, 1) } /> }
-                    <NitroLayoutBase className="text-center text-black" overflow="auto" dangerouslySetInnerHTML={ { __html: getSubscriptionDetails } } />
+                    <NitroLayoutBase className="text-center text-black" overflow="auto" dangerouslySetInnerHTML={{ __html: getSubscriptionDetails }} />
                 </NitroLayoutFlexColumn>
                 { pendingOffer && <div className="mt-auto w-100 text-black">
                     <div className="d-flex gap-2 mb-2 align-items-center">
