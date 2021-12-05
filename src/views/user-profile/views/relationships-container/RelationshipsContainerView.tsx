@@ -25,7 +25,7 @@ export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = p
 
         return (
             <div className="relationship-container d-flex flex-row align-items-center w-100">
-                <i className={`icon icon-relationship-${relationshipName} flex-shrink-0 align-self-baseline mt-2`} />
+                <i className={`nitro-friends-spritesheet icon-${relationshipName} flex-shrink-0 align-self-baseline mt-2`} />
                 <div className="w-100 d-flex flex-column">
                     <span className={'relationship mx-2' + (!simple ? ' advanced' : '')}>
                         <span className="cursor-pointer relationship-text" onClick={ event => OnUserClick(relationshipInfo)}>
