@@ -1,6 +1,6 @@
-import { RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { HabboWebTools, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetCommunication } from '../../api';
+import { AddEventLinkTracker, GetCommunication, RemoveLinkEventTracker } from '../../api';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { TransitionAnimation, TransitionAnimationTypes } from '../../layout';
 import { AchievementsView } from '../achievements/AchievementsView';
@@ -47,12 +47,49 @@ export const MainView: FC<MainViewProps> = props =>
     useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
     useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
+    const onLinkReceived = useCallback((link: string) =>
+    {
+        const parts = link.split('/');
+
+        if(parts.length < 2) return;
+
+        switch(parts[1])
+        {
+            case 'open':
+                if(parts.length > 2)
+                {
+                    switch(parts[2])
+                    {
+                        case 'credits':
+                            //HabboWebTools.openWebPageAndMinimizeClient(this._windowManager.getProperty(ExternalVariables.WEB_SHOP_RELATIVE_URL));
+                            break;
+                        default: {
+                            const name = parts[2];
+                            HabboWebTools.openHabblet(name);
+                        }
+                    }
+                }
+                return;
+        }
+    }, []);
+
     useEffect(() =>
     {
         setIsReady(true);
 
         GetCommunication().connection.onReady();
     }, []);
+
+    useEffect(() =>
+    {
+        const linkTracker = { linkReceived: onLinkReceived, eventUrlPrefix: 'habblet/' };
+        AddEventLinkTracker(linkTracker);
+
+        return () =>
+        {
+            RemoveLinkEventTracker(linkTracker);
+        }
+    }, [onLinkReceived]);
 
     return (
         <div className="nitro-main">
