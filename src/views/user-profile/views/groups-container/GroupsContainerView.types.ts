@@ -1,8 +1,8 @@
-import { GroupDataParser } from '@nitrots/nitro-renderer';
+import { HabboGroupEntryData } from '@nitrots/nitro-renderer';
 
 export interface GroupsContainerViewProps
 {
     itsMe: boolean;
-    groups: GroupDataParser[];
+    groups: HabboGroupEntryData[];
     onLeaveGroup: () => void;
 }

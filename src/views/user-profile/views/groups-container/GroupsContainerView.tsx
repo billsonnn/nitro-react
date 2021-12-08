@@ -28,7 +28,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
 
     useEffect(() =>
     {
-        if(groups.length > 0 && !selectedGroupId) setSelectedGroupId(groups[0].id);
+        if(groups.length > 0 && !selectedGroupId) setSelectedGroupId(groups[0].groupId);
     }, [ groups, selectedGroupId ]);
 
     useEffect(() =>
@@ -49,9 +49,9 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
                 <div className="h-100 overflow-auto d-flex flex-column gap-1">
                     { groups.map((group, index) =>
                         {
-                            return <div key={ index } onClick={ () => setSelectedGroupId(group.id) } className={ 'profile-groups-item position-relative flex-shrink-0 d-flex align-items-center justify-content-center cursor-pointer' + classNames({ ' active': selectedGroupId === group.id }) }>
-                                { itsMe && <i className={ 'position-absolute icon icon-group-' + (group.ownerOrFavorite ? 'favorite' : 'not-favorite') } onClick={ () => favoriteGroup(group.id) } /> }
-                                <BadgeImageView badgeCode={ group.badge } isGroup={ true } />
+                            return <div key={ index } onClick={ () => setSelectedGroupId(group.groupId) } className={ 'profile-groups-item position-relative flex-shrink-0 d-flex align-items-center justify-content-center cursor-pointer' + classNames({ ' active': selectedGroupId === group.groupId }) }>
+                                { itsMe && <i className={ 'position-absolute icon icon-group-' + (group.favourite ? 'favorite' : 'not-favorite') } onClick={ () => favoriteGroup(group.groupId) } /> }
+                                <BadgeImageView badgeCode={ group.badgeCode } isGroup={ true } />
                             </div>
                         }) }
                 </div>
