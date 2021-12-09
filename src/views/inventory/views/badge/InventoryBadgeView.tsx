@@ -1,18 +1,20 @@
 import { RequestBadgesComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { LocalizeBadgeName, LocalizeText } from '../../../../api';
+import { Button } from '../../../../common/Button';
+import { Column } from '../../../../common/Column';
+import { Flex } from '../../../../common/Flex';
+import { Grid } from '../../../../common/Grid';
+import { Text } from '../../../../common/Text';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
-import { NitroLayoutButton, NitroLayoutFlex } from '../../../../layout';
-import { NitroLayoutBase } from '../../../../layout/base';
-import { NitroLayoutFlexColumn } from '../../../../layout/flex-column/NitroLayoutFlexColumn';
-import { NitroLayoutGridColumn } from '../../../../layout/grid/column/NitroLayoutGridColumn';
-import { NitroLayoutGrid } from '../../../../layout/grid/NitroLayoutGrid';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryBadgeActions } from '../../reducers/InventoryBadgeReducer';
-import { InventoryActiveBadgeResultsView } from './active-results/InventoryActiveBadgeResultsView';
-import { InventoryBadgeViewProps } from './InventoryBadgeView.types';
-import { InventoryBadgeResultsView } from './results/InventoryBadgeResultsView';
+import { InventoryBadgeItemView } from './InventoryBadgeItemView';
+
+export interface InventoryBadgeViewProps
+{
+}
 
 export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
 {
@@ -79,26 +81,33 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
     }
 
     return (
-        <NitroLayoutGrid>
-            <NitroLayoutGridColumn size={ 7 }>
-                <InventoryBadgeResultsView badges={ badges } activeBadges={ activeBadges } />
-            </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn className="justify-content-between" size={ 5 } overflow="auto">
-                <NitroLayoutFlexColumn overflow="hidden" gap={ 2 }>
-                    <NitroLayoutBase className="text-black text-truncate flex-shrink-0">{ LocalizeText('inventory.badges.activebadges') }</NitroLayoutBase>
-                    <InventoryActiveBadgeResultsView badges={ activeBadges }  />
-                </NitroLayoutFlexColumn>
+        <Grid>
+            <Column size={ 7 } overflow="hidden">
+                <Grid grow columnCount={ 5 } overflow="auto">
+                    { badges && (badges.length > 0) && badges.map((code, index) =>
+                        {
+                            if(activeBadges.indexOf(code) >= 0) return null;
+
+                            return <InventoryBadgeItemView key={ code } badgeCode={ code } />
+                        }) }
+                </Grid>
+            </Column>
+            <Column className="justify-content-between" size={ 5 } overflow="auto">
+                <Column overflow="hidden" gap={ 2 }>
+                    <Text>{ LocalizeText('inventory.badges.activebadges') }</Text>
+                    <Grid grow columnCount={ 3 } overflow="auto">
+                        { activeBadges && (activeBadges.length > 0) && activeBadges.map((code, index) => <InventoryBadgeItemView key={ code } badgeCode={ code } />) }
+                    </Grid>
+                </Column>
                 { badge && (badge.length > 0) &&
-                    <NitroLayoutFlexColumn gap={ 2 }>
-                        <NitroLayoutFlex className="justify-content-between align-items-center">
-                            <NitroLayoutFlex className="flex-grow-1 align-items-center" gap={ 2 } overflow="hidden">
-                                <BadgeImageView badgeCode={ badge } />
-                                <NitroLayoutBase className="flex-grow-1 text-black text-truncate">{ LocalizeBadgeName(badge) }</NitroLayoutBase>
-                            </NitroLayoutFlex>
-                        </NitroLayoutFlex>
-                        <NitroLayoutButton variant={ (isWearingBadge(badge) ? 'danger' : 'success') } size="sm" disabled={ !isWearingBadge(badge) && !canWearBadges() } onClick={ toggleBadge }>{ LocalizeText(isWearingBadge(badge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</NitroLayoutButton>
-                    </NitroLayoutFlexColumn> }
-            </NitroLayoutGridColumn>
-        </NitroLayoutGrid>
+                    <Column grow justifyContent="end" gap={ 2 }>
+                        <Flex alignItems="center" gap={ 2 }>
+                            <BadgeImageView badgeCode={ badge } />
+                            <Text>{ LocalizeBadgeName(badge) }</Text>
+                        </Flex>
+                        <Button variant={ (isWearingBadge(badge) ? 'danger' : 'success') } size="sm" disabled={ !isWearingBadge(badge) && !canWearBadges() } onClick={ toggleBadge }>{ LocalizeText(isWearingBadge(badge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>
+                    </Column> }
+            </Column>
+        </Grid>
     );
 }

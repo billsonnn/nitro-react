@@ -1,12 +1,11 @@
-import { FurnitureListComposer, RoomObjectVariable, Vector3d } from '@nitrots/nitro-renderer';
+import { FurnitureListComposer, IRoomSession, RoomObjectVariable, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText } from '../../../../api';
+import { Button } from '../../../../common/Button';
 import { Column } from '../../../../common/Column';
 import { Grid } from '../../../../common/Grid';
 import { Text } from '../../../../common/Text';
 import { SendMessageHook } from '../../../../hooks/messages';
-import { NitroLayoutButton } from '../../../../layout';
-import { NitroLayoutBase } from '../../../../layout/base';
 import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../shared/rarity-level/RarityLevelView';
 import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerView';
@@ -16,9 +15,14 @@ import { GroupItem } from '../../common/GroupItem';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
 import { InventoryCategoryEmptyView } from '../category-empty/InventoryCategoryEmptyView';
-import { InventoryFurnitureViewProps } from './InventoryFurnitureView.types';
-import { InventoryFurnitureResultsView } from './results/InventoryFurnitureResultsView';
-import { InventoryFurnitureSearchView } from './search/InventoryFurnitureSearchView';
+import { InventoryFurnitureItemView } from './InventoryFurnitureItemView';
+import { InventoryFurnitureSearchView } from './InventoryFurnitureSearchView';
+
+export interface InventoryFurnitureViewProps
+{
+    roomSession: IRoomSession;
+    roomPreviewer: RoomPreviewer;
+}
 
 export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 {
@@ -64,13 +68,13 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 
         const roomEngine = GetRoomEngine();
 
-        let wallType        = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_WALL_TYPE);
-        let floorType       = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_FLOOR_TYPE);
-        let landscapeType   = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_LANDSCAPE_TYPE);
+        let wallType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_WALL_TYPE);
+        let floorType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_FLOOR_TYPE);
+        let landscapeType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_LANDSCAPE_TYPE);
 
-        wallType        = (wallType && wallType.length) ? wallType : '101';
-        floorType       = (floorType && floorType.length) ? floorType : '101';
-        landscapeType   = (landscapeType && landscapeType.length) ? landscapeType : '1.1';
+        wallType = (wallType && wallType.length) ? wallType : '101';
+        floorType = (floorType && floorType.length) ? floorType : '101';
+        landscapeType = (landscapeType && landscapeType.length) ? landscapeType : '1.1';
 
         roomPreviewer.reset(false);
         roomPreviewer.updateObjectRoom(floorType, wallType, landscapeType);
@@ -78,9 +82,9 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 
         if((furnitureItem.category === FurniCategory._Str_3639) || (furnitureItem.category === FurniCategory._Str_3683) || (furnitureItem.category === FurniCategory._Str_3432))
         {
-            floorType       = ((furnitureItem.category === FurniCategory._Str_3683) ? groupItem.stuffData.getLegacyString() : floorType);
-            wallType        = ((furnitureItem.category === FurniCategory._Str_3639) ? groupItem.stuffData.getLegacyString() : wallType);
-            landscapeType   = ((furnitureItem.category === FurniCategory._Str_3432) ? groupItem.stuffData.getLegacyString() : landscapeType);
+            floorType = ((furnitureItem.category === FurniCategory._Str_3683) ? groupItem.stuffData.getLegacyString() : floorType);
+            wallType = ((furnitureItem.category === FurniCategory._Str_3639) ? groupItem.stuffData.getLegacyString() : wallType);
+            landscapeType = ((furnitureItem.category === FurniCategory._Str_3432) ? groupItem.stuffData.getLegacyString() : landscapeType);
 
             roomPreviewer.updateObjectRoom(floorType, wallType, landscapeType);
 
@@ -110,27 +114,25 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
         <Grid>
             <Column size={ 7 } overflow="hidden">
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
-                <InventoryFurnitureResultsView groupItems={ filteredGroupItems }  />
+                <Grid grow columnCount={ 5 } overflow="auto">
+                    { filteredGroupItems && (filteredGroupItems.length > 0) && filteredGroupItems.map((item, index) => <InventoryFurnitureItemView key={ index } groupItem={ item } />) }
+                </Grid>
             </Column>
             <Column size={ 5 } overflow="auto">
                 <Column overflow="hidden" position="relative">
                     <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                     { groupItem && groupItem.stuffData.isUnique &&
-                        <NitroLayoutBase className="top-2 end-2" position="absolute">
-                            <LimitedEditionCompactPlateView uniqueNumber={ groupItem.stuffData.uniqueNumber } uniqueSeries={ groupItem.stuffData.uniqueSeries } />
-                        </NitroLayoutBase> }
+                        <LimitedEditionCompactPlateView className="top-2 end-2" position="absolute" uniqueNumber={ groupItem.stuffData.uniqueNumber } uniqueSeries={ groupItem.stuffData.uniqueSeries } /> }
                     { (groupItem && groupItem.stuffData.rarityLevel > -1) &&
-                        <NitroLayoutBase className="top-2 end-2" position="absolute">
-                            <RarityLevelView level={ groupItem.stuffData.rarityLevel } />
-                        </NitroLayoutBase> }
+                        <RarityLevelView className="top-2 end-2" position="absolute" level={ groupItem.stuffData.rarityLevel } /> }
                 </Column>
                 { groupItem &&
                     <Column grow justifyContent="between" gap={ 2 }>
                         <Text>{ groupItem.name }</Text>
                         { !!roomSession &&
-                            <NitroLayoutButton variant="success" size="sm" onClick={ event => attemptItemPlacement(groupItem) }>
+                            <Button variant="success" size="sm" onClick={ event => attemptItemPlacement(groupItem) }>
                                 { LocalizeText('inventory.furni.placetoroom') }
-                            </NitroLayoutButton> }
+                            </Button> }
                     </Column> }
             </Column>
         </Grid>

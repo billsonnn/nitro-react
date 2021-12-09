@@ -1,21 +1,28 @@
 import { FC } from 'react';
-import { NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../layout';
-import { NitroLayoutBase } from '../../../../layout/base';
-import { InventoryCategoryEmptyViewProps } from './InventoryCategoryEmptyView.types';
+import { Column } from '../../../../common/Column';
+import { Grid, GridProps } from '../../../../common/Grid';
+import { Text } from '../../../../common/Text';
+
+export interface InventoryCategoryEmptyViewProps extends GridProps
+{
+    title: string;
+    desc: string;
+}
 
 export const InventoryCategoryEmptyView: FC<InventoryCategoryEmptyViewProps> = props =>
 {
-    const { title = '', desc = '', ...rest } = props;
+    const { title = '', desc = '', children = null, ...rest } = props;
     
     return (
-        <NitroLayoutGrid { ...rest }>
-            <NitroLayoutGridColumn className="justify-content-center align-items-center" size={ 5 } overflow="hidden">
+        <Grid { ...rest }>
+            <Column center size={ 5 } overflow="hidden">
                 <div className="empty-image" />
-            </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn className="justify-content-center" size={ 7 } overflow="hidden">
-                <NitroLayoutBase className="text-black text-truncate fs-5 fw-bold">{ title }</NitroLayoutBase>
-                <NitroLayoutBase className="text-black" overflow="auto">{ desc }</NitroLayoutBase>
-            </NitroLayoutGridColumn>
-        </NitroLayoutGrid>
+            </Column>
+            <Column justifyContent="center" size={ 7 } overflow="hidden">
+                <Text fontWeight="bold" fontSize={ 5 } truncate>{ title }</Text>
+                <Text overflow="auto">{ desc }</Text>
+            </Column>
+            { children }
+        </Grid>
     );
 }

@@ -14,7 +14,6 @@ import { UnseenItemCategory } from './common/unseen/UnseenItemCategory';
 import { UnseenItemTracker } from './common/unseen/UnseenItemTracker';
 import { InventoryContextProvider } from './context/InventoryContext';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
-import { InventoryTabs, InventoryViewProps } from './InventoryView.types';
 import { initialInventoryBadge, InventoryBadgeReducer } from './reducers/InventoryBadgeReducer';
 import { initialInventoryBot, InventoryBotReducer } from './reducers/InventoryBotReducer';
 import { initialInventoryFurniture, InventoryFurnitureReducer } from './reducers/InventoryFurnitureReducer';
@@ -25,10 +24,14 @@ import { InventoryFurnitureView } from './views/furniture/InventoryFurnitureView
 import { InventoryPetView } from './views/pet/InventoryPetView';
 import { InventoryTradeView } from './views/trade/InventoryTradeView';
 
-const TABS = [ InventoryTabs.FURNITURE, InventoryTabs.BOTS, InventoryTabs.PETS, InventoryTabs.BADGES ];
+const TAB_FURNITURE: string = 'inventory.furni';
+const TAB_BOTS: string = 'inventory.bots';
+const TAB_PETS: string = 'inventory.furni.tab.pets';
+const TAB_BADGES: string = 'inventory.badges';
+const TABS = [ TAB_FURNITURE, TAB_BOTS, TAB_PETS, TAB_BADGES ];
 const UNSEEN_CATEGORIES = [ UnseenItemCategory.FURNI, UnseenItemCategory.BOT, UnseenItemCategory.PET, UnseenItemCategory.BADGE ];
 
-export const InventoryView: FC<InventoryViewProps> = props =>
+export const InventoryView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ]   = useState(false);
     const [ currentTab, setCurrentTab ] = useState<string>(TABS[0]);
@@ -213,13 +216,13 @@ export const InventoryView: FC<InventoryViewProps> = props =>
                                     }) }
                             </NitroCardTabsView>
                             <NitroCardContentView>
-                                { (currentTab === InventoryTabs.FURNITURE ) &&
+                                { (currentTab === TAB_FURNITURE ) &&
                                     <InventoryFurnitureView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
-                                { (currentTab === InventoryTabs.BOTS ) &&
+                                { (currentTab === TAB_BOTS ) &&
                                     <InventoryBotView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
-                                { (currentTab === InventoryTabs.PETS ) && 
+                                { (currentTab === TAB_PETS ) && 
                                     <InventoryPetView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
-                                { (currentTab === InventoryTabs.BADGES ) && 
+                                { (currentTab === TAB_BADGES ) && 
                                     <InventoryBadgeView /> }
                             </NitroCardContentView>
                         </> }

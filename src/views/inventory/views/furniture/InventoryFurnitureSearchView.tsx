@@ -1,9 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { Button } from '../../../../../common/Button';
-import { Flex } from '../../../../../common/Flex';
-import { InventoryFurnitureSearchViewProps } from './InventoryFurnitureSearchView.types';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { LocalizeText } from '../../../../api';
+import { Button } from '../../../../common/Button';
+import { Flex } from '../../../../common/Flex';
+import { GroupItem } from '../../common/GroupItem';
+
+export interface InventoryFurnitureSearchViewProps
+{
+    groupItems: GroupItem[];
+    setGroupItems: Dispatch<SetStateAction<GroupItem[]>>;
+}
 
 export const InventoryFurnitureSearchView: FC<InventoryFurnitureSearchViewProps> = props =>
 {

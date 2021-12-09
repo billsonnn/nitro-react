@@ -10,7 +10,6 @@ import { mergePetFragments } from './common/PetUtilities';
 import { TradeState } from './common/TradeState';
 import { TradeUserData } from './common/TradeUserData';
 import { useInventoryContext } from './context/InventoryContext';
-import { InventoryMessageHandlerProps } from './InventoryMessageHandler.types';
 import { InventoryBadgeActions } from './reducers/InventoryBadgeReducer';
 import { InventoryBotActions } from './reducers/InventoryBotReducer';
 import { InventoryFurnitureActions } from './reducers/InventoryFurnitureReducer';
@@ -18,7 +17,7 @@ import { InventoryPetActions } from './reducers/InventoryPetReducer';
 let furniMsgFragments: Map<number, FurnitureListItemParser>[] = null;
 let petMsgFragments: Map<number, PetData>[] = null;
  
-export const InventoryMessageHandler: FC<InventoryMessageHandlerProps> = props =>
+export const InventoryMessageHandler: FC<{}> = props =>
 {
     const { dispatchFurnitureState = null, dispatchBotState = null, dispatchPetState = null, badgeState = null, dispatchBadgeState = null, unseenTracker = null } = useInventoryContext();
 

@@ -1,11 +1,16 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
-import { NitroCardGridItemView } from '../../../../../layout/card/grid/item/NitroCardGridItemView';
-import { PetImageView } from '../../../../shared/pet-image/PetImageView';
-import { attemptPetPlacement } from '../../../common/PetUtilities';
-import { useInventoryContext } from '../../../context/InventoryContext';
-import { InventoryPetActions } from '../../../reducers/InventoryPetReducer';
-import { InventoryPetItemViewProps } from './InventoryPetItemView.types';
+import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
+import { PetImageView } from '../../../shared/pet-image/PetImageView';
+import { PetItem } from '../../common/PetItem';
+import { attemptPetPlacement } from '../../common/PetUtilities';
+import { useInventoryContext } from '../../context/InventoryContext';
+import { InventoryPetActions } from '../../reducers/InventoryPetReducer';
+
+export interface InventoryPetItemViewProps
+{
+    petItem: PetItem;
+}
 
 export const InventoryPetItemView: FC<InventoryPetItemViewProps> = props =>
 {

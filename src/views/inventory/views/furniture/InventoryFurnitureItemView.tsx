@@ -1,10 +1,15 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
-import { NitroCardGridItemView } from '../../../../../layout/card/grid/item/NitroCardGridItemView';
-import { attemptItemPlacement } from '../../../common/FurnitureUtilities';
-import { useInventoryContext } from '../../../context/InventoryContext';
-import { InventoryFurnitureActions } from '../../../reducers/InventoryFurnitureReducer';
-import { InventoryFurnitureItemViewProps } from './InventoryFurnitureItemView.types';
+import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
+import { attemptItemPlacement } from '../../common/FurnitureUtilities';
+import { GroupItem } from '../../common/GroupItem';
+import { useInventoryContext } from '../../context/InventoryContext';
+import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
+
+export interface InventoryFurnitureItemViewProps
+{
+    groupItem: GroupItem;
+}
 
 export const InventoryFurnitureItemView: FC<InventoryFurnitureItemViewProps> = props =>
 {

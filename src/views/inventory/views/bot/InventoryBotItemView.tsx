@@ -1,11 +1,16 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
-import { NitroCardGridItemView } from '../../../../../layout/card/grid/item/NitroCardGridItemView';
-import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
-import { attemptBotPlacement } from '../../../common/BotUtilities';
-import { useInventoryContext } from '../../../context/InventoryContext';
-import { InventoryBotActions } from '../../../reducers/InventoryBotReducer';
-import { InventoryBotItemViewProps } from './InventoryBotItemView.types';
+import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
+import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
+import { BotItem } from '../../common/BotItem';
+import { attemptBotPlacement } from '../../common/BotUtilities';
+import { useInventoryContext } from '../../context/InventoryContext';
+import { InventoryBotActions } from '../../reducers/InventoryBotReducer';
+
+export interface InventoryBotItemViewProps
+{
+    botItem: BotItem;
+}
 
 export const InventoryBotItemView: FC<InventoryBotItemViewProps> = props =>
 {
