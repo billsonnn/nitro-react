@@ -1,12 +1,13 @@
 import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, SendMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AddEventLinkTracker, GetUserProfile, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
+import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
 import { MESSENGER_MESSAGE_RECEIVED, MESSENGER_NEW_THREAD, PlaySound } from '../../../../api/utils/PlaySound';
 import { FriendsMessengerIconEvent } from '../../../../events';
 import { BatchUpdates, CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutButton, NitroLayoutButtonGroup, NitroLayoutFlex, NitroLayoutFlexColumn } from '../../../../layout';
 import { NitroLayoutBase } from '../../../../layout/base';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
+import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { MessengerThread } from '../../common/MessengerThread';
 import { MessengerThreadChat } from '../../common/MessengerThreadChat';
 import { useFriendsContext } from '../../context/FriendsContext';
@@ -117,7 +118,7 @@ export const FriendsMessengerView: FC<{}> = props =>
 
         if(messageThreads.length === 1 && thread.groups.length === 1) PlaySound(MESSENGER_NEW_THREAD);
 
-        thread.addMessage(0, messageText, 0, null, MessengerThreadChat.CHAT);
+        thread.addMessage(GetSessionDataManager().userId, messageText, 0, null, MessengerThreadChat.CHAT);
 
         BatchUpdates(() =>
         {
@@ -250,7 +251,9 @@ export const FriendsMessengerView: FC<{}> = props =>
                                 <div key={ index } className="position-relative friend-head rounded flex-shrink-0 cursor-pointer bg-muted" onClick={ event => setActiveThreadIndex(messageThreadIndex) }>
                                     { thread.unread &&
                                         <NitroLayoutBase className="position-absolute nitro-friends-spritesheet icon-new-message top-1 end-1 z-index-1" /> }
-                                    <AvatarImageView figure={ thread.participant.figure } headOnly={ true } direction={ 3 } />
+                                        { thread.participant.id > 0 && <AvatarImageView figure={ thread.participant.figure } headOnly={ true } direction={ 3 } />}
+                                        { thread.participant.id <= 0 && <BadgeImageView isGroup={ true } badgeCode={thread.participant.figure } /> }
+                                    
                                 </div>
                             );
                         }) }

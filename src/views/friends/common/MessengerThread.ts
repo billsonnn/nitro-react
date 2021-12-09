@@ -1,7 +1,9 @@
 import { LocalizeText } from '../../../api';
+import { GroupType } from './GroupType';
 import { MessengerFriend } from './MessengerFriend';
 import { MessengerThreadChat } from './MessengerThreadChat';
 import { MessengerThreadChatGroup } from './MessengerThreadChatGroup';
+import { getGroupChatData } from './Utils';
 
 export class MessengerThread
 {
@@ -21,7 +23,7 @@ export class MessengerThread
 
         if(isNew)
         {
-            this.addMessage(-1, LocalizeText('messenger.moderationinfo'), 0, null, MessengerThreadChat.SECURITY_NOTIFICATION);
+            this.addMessage(null, LocalizeText('messenger.moderationinfo'), 0, null, MessengerThreadChat.SECURITY_NOTIFICATION);
 
             this._unread = false;
         }
@@ -29,9 +31,14 @@ export class MessengerThread
 
     public addMessage(senderId: number, message: string, secondsSinceSent: number = 0, extraData: string = null, type: number = 0): MessengerThreadChat
     {
-        const group = this.getLastGroup(senderId);
+        const isGroupChat = (senderId < 0 && extraData);
+        const userId = isGroupChat ? getGroupChatData(extraData).userId : senderId;
+
+        const group = this.getLastGroup(userId);
 
         if(!group) return;
+
+        if(isGroupChat) group.type = GroupType.GROUP_CHAT;
 
         const chat = new MessengerThreadChat(senderId, message, secondsSinceSent, extraData, type);
 
