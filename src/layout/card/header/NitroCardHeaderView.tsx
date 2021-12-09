@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, MouseEvent, useCallback } from 'react';
 import { useNitroCardContext } from '../context/NitroCardContext';
 import { NitroCardHeaderViewProps } from './NitroCardHeaderView.types';
@@ -21,7 +22,7 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
                     <div className="d-flex justify-content-center align-items-center w-100 position-relative">
                         <div className="h5 text-shadow header-text">{ headerText }</div>
                         <div className="position-absolute header-close" onMouseDownCapture={ onMouseDown } onClick={ onCloseClick }>
-                            <i className="fas fa-times" />
+                            <FontAwesomeIcon icon="times" />
                         </div>
                     </div>
                 </div>
@@ -35,7 +36,7 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
                 <div className="d-flex justify-content-center align-items-center w-100 position-relative">
                     <div className="h4 text-shadow header-text">{ headerText }</div>
                     <div className="position-absolute header-close" onMouseDownCapture={ onMouseDown } onClick={ onCloseClick }>
-                        <i className="fas fa-times" />
+                        <FontAwesomeIcon icon="times" />
                     </div>
                 </div>
             </div>

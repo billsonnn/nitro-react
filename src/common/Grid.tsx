@@ -17,7 +17,9 @@ export const Grid: FC<GridProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'h-100' ];
+        const newClassNames: string[] = [];
+
+        if(!grow) newClassNames.push('h-100');
 
         if(inline) newClassNames.push('inline-grid');
         else newClassNames.push('grid');
@@ -27,7 +29,7 @@ export const Grid: FC<GridProps> = props =>
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ inline, gap, classNames ]);
+    }, [ grow, inline, gap, classNames ]);
 
     const getStyle = useMemo(() =>
     {
