@@ -1,7 +1,7 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback } from 'react';
 import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
-import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
+import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryBadgeActions } from '../../reducers/InventoryBadgeReducer';
 

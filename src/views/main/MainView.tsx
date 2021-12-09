@@ -1,6 +1,7 @@
 import { HabboWebTools, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetCommunication, RemoveLinkEventTracker } from '../../api';
+import { InventoryView } from '../../components/inventory/InventoryView';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { TransitionAnimation, TransitionAnimationTypes } from '../../layout';
 import { AchievementsView } from '../achievements/AchievementsView';
@@ -14,7 +15,6 @@ import { FriendsView } from '../friends/FriendsView';
 import { GroupsView } from '../groups/GroupsView';
 import { HelpView } from '../help/HelpView';
 import { HotelView } from '../hotel-view/HotelView';
-import { InventoryView } from '../inventory/InventoryView';
 import { ModToolsView } from '../mod-tools/ModToolsView';
 import { NavigatorView } from '../navigator/NavigatorView';
 import { NitropediaView } from '../nitropedia/NitropediaView';

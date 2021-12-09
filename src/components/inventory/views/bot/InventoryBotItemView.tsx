@@ -1,7 +1,7 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
 import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
-import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
+import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
 import { BotItem } from '../../common/BotItem';
 import { attemptBotPlacement } from '../../common/BotUtilities';
 import { useInventoryContext } from '../../context/InventoryContext';

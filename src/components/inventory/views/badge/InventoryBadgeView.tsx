@@ -7,7 +7,7 @@ import { Flex } from '../../../../common/Flex';
 import { Grid } from '../../../../common/Grid';
 import { Text } from '../../../../common/Text';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
-import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
+import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryBadgeActions } from '../../reducers/InventoryBadgeReducer';
 import { InventoryBadgeItemView } from './InventoryBadgeItemView';

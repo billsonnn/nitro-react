@@ -6,7 +6,7 @@ import { Column } from '../../../../common/Column';
 import { Grid } from '../../../../common/Grid';
 import { Text } from '../../../../common/Text';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
-import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerView';
+import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomPreviewerView';
 import { attemptPetPlacement } from '../../common/PetUtilities';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryPetActions } from '../../reducers/InventoryPetReducer';

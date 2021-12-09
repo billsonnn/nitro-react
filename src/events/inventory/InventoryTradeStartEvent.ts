@@ -1,4 +1,4 @@
-import { TradeUserData } from '../../views/inventory/common/TradeUserData';
+import { TradeUserData } from '../../components/inventory/common/TradeUserData';
 import { InventoryEvent } from './InventoryEvent';
 
 export class InventoryTradeStartEvent extends InventoryEvent
