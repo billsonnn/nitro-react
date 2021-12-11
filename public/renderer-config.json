@@ -101,20 +101,7 @@
         "elephants"
     ],
     "preload.assets.urls": [
-        "${images.url}/additions/user_blowkiss.png",
-        "${images.url}/additions/user_idle_left_1.png",
-        "${images.url}/additions/user_idle_left_2.png",
-        "${images.url}/additions/user_idle_right_1.png",
-        "${images.url}/additions/user_idle_right_2.png",
-        "${images.url}/additions/user_muted.png",
-        "${images.url}/additions/user_muted_small.png",
-        "${images.url}/additions/user_typing.png",
-        "${images.url}/additions/number_1.png",
-        "${images.url}/additions/number_2.png",
-        "${images.url}/additions/number_3.png",
-        "${images.url}/additions/number_4.png",
-        "${images.url}/additions/number_5.png",
-        "${images.url}/additions/pet_experience_bubble.png",
+        "${asset.url}/bundled/generic/avatar_additions.nitro",
         "${images.url}/loading_icon.png",
         "${images.url}/clear_icon.png",
         "${images.url}/big_arrow.png"
