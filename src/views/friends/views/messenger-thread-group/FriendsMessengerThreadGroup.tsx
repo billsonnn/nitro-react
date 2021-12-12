@@ -56,6 +56,13 @@ export const FriendsMessengerThreadGroup: FC<FriendsMessengerThreadGroupProps> =
                 }
                 </NitroLayoutBase>
             <NitroLayoutBase className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat ? 'right' : 'left') }>
+                <NitroLayoutBase className='fw-bold'>
+                    {
+                        (isOwnChat) && GetSessionDataManager().userName
+                    }
+                    { (!isOwnChat) && ((group.type === GroupType.GROUP_CHAT) ? getGroupChatData(group.chats[0].extraData).username : thread.participant.name)
+                    }
+                </NitroLayoutBase>
                 { group.chats.map((chat, index) =><NitroLayoutBase key={ index } className="text-break">{ chat.message }</NitroLayoutBase>) }
             </NitroLayoutBase>
             { (isOwnChat) &&
