@@ -1,6 +1,7 @@
 import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, SendMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AddEventLinkTracker, GetUserProfile, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
+import { MESSENGER_MESSAGE_RECEIVED, MESSENGER_NEW_THREAD, PlaySound } from '../../../../api/utils/PlaySound';
 import { FriendsMessengerIconEvent } from '../../../../events';
 import { BatchUpdates, CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutButton, NitroLayoutButtonGroup, NitroLayoutFlex, NitroLayoutFlexColumn } from '../../../../layout';
@@ -113,6 +114,8 @@ export const FriendsMessengerView: FC<{}> = props =>
         if(!thread) return;
 
         SendMessageHook(new SendMessageComposer(thread.participant.id, messageText));
+
+        if(messageThreads.length === 1 && thread.groups.length === 1) PlaySound(MESSENGER_NEW_THREAD);
 
         thread.addMessage(0, messageText, 0, null, MessengerThreadChat.CHAT);
 
@@ -227,6 +230,8 @@ export const FriendsMessengerView: FC<{}> = props =>
             }
         }
 
+        if(isUnread) PlaySound(MESSENGER_MESSAGE_RECEIVED);
+        
         dispatchUiEvent(new FriendsMessengerIconEvent(FriendsMessengerIconEvent.UPDATE_ICON, isUnread ? FriendsMessengerIconEvent.UNREAD_ICON : FriendsMessengerIconEvent.SHOW_ICON));
     }, [ visibleThreads, updateValue ]);
 

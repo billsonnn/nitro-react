@@ -1,9 +1,10 @@
-import { CallForHelpResultMessageEvent } from '@nitrots/nitro-renderer';
+import { CallForHelpResultMessageEvent, GetPendingCallsForHelpMessageComposer, IssueCloseNotificationMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../api';
-import { CreateMessageHook } from '../../hooks/messages/message-event';
+import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { NotificationAlertType } from '../notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../notification-center/common/NotificationUtilities';
+import { CallForHelpResult } from './common/CallForHelpResult';
 import { GetCloseReasonKey } from './common/GetCloseReasonKey';
  
 export const HelpMessageHandler: FC<{}> = props =>
@@ -14,12 +15,36 @@ export const HelpMessageHandler: FC<{}> = props =>
 
         let message = parser.messageText;
 
-        if(!message || !message.length) message = LocalizeText('help.cfh.closed.' + GetCloseReasonKey(parser.resultType))
+        switch(parser.resultType)
+        {
+            case CallForHelpResult.TOO_MANY_PENDING_CALLS_CODE:
+                SendMessageHook(new GetPendingCallsForHelpMessageComposer());
+                NotificationUtilities.simpleAlert(LocalizeText('help.cfh.error.pending'), NotificationAlertType.MODERATION, null, null, LocalizeText('help.cfh.error.title'));
+                break;
+            case CallForHelpResult.HAS_ABUSIVE_CALL_CODE:
+                NotificationUtilities.simpleAlert(LocalizeText('help.cfh.error.abusive'), NotificationAlertType.MODERATION, null, null, LocalizeText('help.cfh.error.title'));
+                break;
+            default:
+                if(message.trim().length === 0)
+                {
+                    message = LocalizeText('help.cfh.sent.text');
+                }
+                NotificationUtilities.simpleAlert(message, NotificationAlertType.MODERATION, null, null, LocalizeText('help.cfh.sent.title'));
+        }
+    }, []);
+
+    CreateMessageHook(CallForHelpResultMessageEvent, onCallForHelpResultMessageEvent);
+
+    const onIssueCloseNotificationMessageEvent = useCallback((event: IssueCloseNotificationMessageEvent) =>
+    {
+        const parser = event.getParser();
+
+        const message = LocalizeText('help.cfh.closed.' + GetCloseReasonKey(parser.closeReason))
 
         NotificationUtilities.simpleAlert(message, NotificationAlertType.MODERATION, null, null, LocalizeText('mod.alert.title'));
     }, []);
 
-    CreateMessageHook(CallForHelpResultMessageEvent, onCallForHelpResultMessageEvent);
+    CreateMessageHook(IssueCloseNotificationMessageEvent, onIssueCloseNotificationMessageEvent);
 
     return null;
 }

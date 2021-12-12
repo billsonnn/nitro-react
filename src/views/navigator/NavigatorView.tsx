@@ -1,7 +1,8 @@
-import { ILinkEventTracker, NavigatorInitComposer, NavigatorSearchComposer, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorInitComposer, NavigatorSearchComposer, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { AddEventLinkTracker, GoToDesktop, LocalizeText, RemoveLinkEventTracker, TryVisitRoom } from '../../api';
 import { NavigatorEvent, UpdateDoorStateEvent } from '../../events';
+import { UseMountEffect } from '../../hooks';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
@@ -180,6 +181,16 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, [ linkReceived]);
+
+    const enterRoomWebRequest = useCallback((k: string, _arg_2:boolean=false, _arg_3:string=null) =>
+    {
+        SendMessageHook(new ConvertGlobalRoomIdMessageComposer(k));
+    }, []);
+
+    UseMountEffect(() =>
+    {
+        LegacyExternalInterface.addCallback(HabboWebTools.OPENROOM, enterRoomWebRequest);
+    });
 
     useEffect(() =>
     {

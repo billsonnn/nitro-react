@@ -1,0 +1,68 @@
+.nitro-campaign-calendar {
+    width: 1055px;
+    height: 400px;
+
+    .calendar-item {
+        background: url("../../../../assets/images/campaign/campaign_day_generic_bg.png");
+        max-height: 100%;
+        min-width: 135px;
+        filter: brightness(80%);
+
+        &.active {
+            filter: brightness(100%);
+        }
+
+        .unlocked-generic-bg {
+            background: url("../../../../assets/images/campaign/unlocked_bg.png");
+            background-size: 132px 132px;
+            width: 132px;
+            height: 132px;
+
+            //width: 190px;
+            //height: 189px;
+
+            .opened {
+                background: url("../../../../assets/images/campaign/campaign_opened.png");
+                width: 96px;
+                height: 66px;
+
+                .furni-icon
+                {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        .locked-generic-bg {
+            background: url("../../../../assets/images/campaign/locked_bg.png");
+            width: 132px;
+            height: 132px;
+
+            .available {
+                background: url("../../../../assets/images/campaign/available.png");
+                width: 69px;
+                height: 78px;
+            }
+    
+            .unavailable {
+                background: url("../../../../assets/images/campaign/unavailable.png");
+                width: 68px;
+                height: 78px;
+            }
+        }
+    }
+
+    .calendar-prev {
+        background: url("../../../../assets/images/campaign/prev.png");
+        width: 33px;
+        min-width: 33px;
+        height: 34px;
+    }
+
+    .calendar-next {
+        background: url("../../../../assets/images/campaign/next.png");
+        width: 33px;
+        min-width: 33px;
+        height: 34px;
+    }
+}
