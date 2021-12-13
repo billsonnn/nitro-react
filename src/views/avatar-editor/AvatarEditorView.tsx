@@ -1,11 +1,12 @@
 import { AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, IAvatarFigureContainer, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetAvatarRenderManager, GetClubMemberLevel, GetSessionDataManager, LocalizeText } from '../../api';
+import { Column } from '../../common/Column';
+import { Grid } from '../../common/Grid';
 import { AvatarEditorEvent } from '../../events/avatar-editor';
 import { CreateMessageHook, SendMessageHook } from '../../hooks';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, NitroLayoutGrid, NitroLayoutGridColumn } from '../../layout';
-import { AvatarEditorViewProps } from './AvatarEditorView.types';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
 import { AvatarEditorAction } from './common/AvatarEditorAction';
 import { AvatarEditorUtilities } from './common/AvatarEditorUtilities';
 import { BodyModel } from './common/BodyModel';
@@ -28,7 +29,7 @@ const ACTION_RESET = 'action_reset';
 const ACTION_RANDOMIZE = 'action_randomize';
 const ACTION_SAVE = 'action_save';
 
-export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
+export const AvatarEditorView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ figures, setFigures ] = useState<Map<string, FigureData>>(null);
@@ -285,18 +286,18 @@ export const AvatarEditorView: FC<AvatarEditorViewProps> = props =>
                 </NitroCardTabsItemView>
             </NitroCardTabsView>
             <NitroCardContentView>
-                <NitroLayoutGrid>
-                    <NitroLayoutGridColumn size={ 9 }>
+                <Grid>
+                    <Column size={ 9 } overflow="hidden">
                         { (activeCategory && !isWardrobeVisible) &&
                             <AvatarEditorModelView model={ activeCategory } gender={ figureData.gender } setGender={ setGender } /> }
                         { isWardrobeVisible &&
                             <AvatarEditorWardrobeView figureData={ figureData } savedFigures={ savedFigures } setSavedFigures={ setSavedFigures } loadAvatarInEditor={ loadAvatarInEditor } /> }
-                    </NitroLayoutGridColumn>
-                    <NitroLayoutGridColumn overflow="hidden" size={ 3 }>
+                    </Column>
+                    <Column size={ 3 } overflow="hidden">
                         <AvatarEditorFigurePreviewView figureData={ figureData } />
                         <AvatarEditorFigureActionsView processAction={ processAction } />
-                    </NitroLayoutGridColumn>
-                </NitroLayoutGrid>
+                    </Column>
+                </Grid>
             </NitroCardContentView>
         </NitroCardView>
     );

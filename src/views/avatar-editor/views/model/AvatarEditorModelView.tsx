@@ -1,10 +1,19 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { NitroLayoutFlex, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../layout';
+import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { Column } from '../../../../common/Column';
+import { Flex } from '../../../../common/Flex';
+import { Grid } from '../../../../common/Grid';
 import { CategoryData } from '../../common/CategoryData';
 import { FigureData } from '../../common/FigureData';
+import { IAvatarEditorCategoryModel } from '../../common/IAvatarEditorCategoryModel';
+import { AvatarEditorIcon } from '../AvatarEditorIcon';
 import { AvatarEditorFigureSetView } from '../figure-set/AvatarEditorFigureSetView';
 import { AvatarEditorPaletteSetView } from '../palette-set/AvatarEditorPaletteSetView';
-import { AvatarEditorModelViewProps } from './AvatarEditorModelView.types';
+export interface AvatarEditorModelViewProps
+{
+    model: IAvatarEditorCategoryModel;
+    gender: string;
+    setGender: Dispatch<SetStateAction<string>>;
+}
 
 export const AvatarEditorModelView: FC<AvatarEditorModelViewProps> = props =>
 {
@@ -47,37 +56,37 @@ export const AvatarEditorModelView: FC<AvatarEditorModelViewProps> = props =>
     if(!model || !activeCategory) return null;
 
     return (
-        <NitroLayoutGrid>
-            <NitroLayoutGridColumn size={ 2 }>
+        <Grid>
+            <Column size={ 2 }>
                 { model.canSetGender &&
                     <>
-                        <NitroLayoutFlex className="justify-content-center align-items-center category-item cursor-pointer" onClick={ event => setGender(FigureData.MALE) }>
-                            <div className={ `nitro-avatar-editor-spritesheet male-icon ${ (gender === FigureData.MALE) ? ' selected' : ''}` } />
-                        </NitroLayoutFlex>
-                        <NitroLayoutFlex className="justify-content-center align-items-center category-item cursor-pointer" onClick={ event => setGender(FigureData.FEMALE) }>
-                            <div className={ `nitro-avatar-editor-spritesheet female-icon ${ (gender === FigureData.FEMALE) ? ' selected' : ''}` } />
-                        </NitroLayoutFlex>
+                        <Flex center pointer className="category-item" onClick={ event => setGender(FigureData.MALE) }>
+                            <AvatarEditorIcon icon="male" selected={ (gender === FigureData.MALE) } />
+                        </Flex>
+                        <Flex center pointer className="category-item" onClick={ event => setGender(FigureData.FEMALE) }>
+                            <AvatarEditorIcon icon="female" selected={ (gender === FigureData.FEMALE) } />
+                        </Flex>
                     </> }
                 { !model.canSetGender && model.categories &&  (model.categories.size > 0) && Array.from(model.categories.keys()).map(name =>
                     {
                         const category = model.categories.get(name);
 
                         return (
-                            <NitroLayoutFlex key={ name } className="justify-content-center align-items-center category-item cursor-pointer" onClick={ event => selectCategory(name) }>
-                                <div className={ `nitro-avatar-editor-spritesheet ${ category.name }-icon ${ (activeCategory === category) ? ' selected' : ''}` } />
-                            </NitroLayoutFlex>
+                            <Flex center pointer key={ name } className="category-item" onClick={ event => selectCategory(name) }>
+                                <AvatarEditorIcon icon={ category.name } selected={ (activeCategory === category) } />
+                            </Flex>
                         );
                     })}
-            </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn size={ 5 }>
+            </Column>
+            <Column size={ 5 } overflow="hidden">
                 <AvatarEditorFigureSetView model={ model } category={ activeCategory } setMaxPaletteCount={ setMaxPaletteCount } />
-            </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn size={ 5 }>
+            </Column>
+            <Column size={ 5 } overflow="hidden">
                 { (maxPaletteCount >= 1) &&
                     <AvatarEditorPaletteSetView model={ model } category={ activeCategory } paletteSet={ activeCategory.getPalette(0) } paletteIndex={ 0 } /> }
                 { (maxPaletteCount === 2) &&
-                    <AvatarEditorPaletteSetView model={ model } category={ activeCategory } paletteSet={ activeCategory.getPalette(1) } paletteIndex={ 1 } className="mt-1" /> }
-            </NitroLayoutGridColumn>
-        </NitroLayoutGrid>
+                    <AvatarEditorPaletteSetView model={ model } category={ activeCategory } paletteSet={ activeCategory.getPalette(1) } paletteIndex={ 1 } /> }
+            </Column>
+        </Grid>
     );
 }

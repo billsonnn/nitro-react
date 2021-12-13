@@ -1,8 +1,16 @@
-import { FC, useCallback } from 'react';
-import { NitroCardGridView } from '../../../../layout/card/grid/NitroCardGridView';
+import { Dispatch, FC, SetStateAction, useCallback } from 'react';
+import { Grid } from '../../../../common/Grid';
 import { AvatarEditorGridPartItem } from '../../common/AvatarEditorGridPartItem';
-import { AvatarEditorFigureSetItemView } from '../figure-set-item/AvatarEditorFigureSetItemView';
-import { AvatarEditorFigureSetViewProps } from './AvatarEditorFigureSetView.types';
+import { CategoryData } from '../../common/CategoryData';
+import { IAvatarEditorCategoryModel } from '../../common/IAvatarEditorCategoryModel';
+import { AvatarEditorFigureSetItemView } from './AvatarEditorFigureSetItemView';
+
+export interface AvatarEditorFigureSetViewProps
+{
+    model: IAvatarEditorCategoryModel;
+    category: CategoryData;
+    setMaxPaletteCount: Dispatch<SetStateAction<number>>;
+}
 
 export const AvatarEditorFigureSetView: FC<AvatarEditorFigureSetViewProps> = props =>
 {
@@ -22,11 +30,9 @@ export const AvatarEditorFigureSetView: FC<AvatarEditorFigureSetViewProps> = pro
     }, [ model, category, setMaxPaletteCount ]);
 
     return (
-        <NitroCardGridView>
+        <Grid grow columnCount={ 3 } overflow="auto">
             { (category.parts.length > 0) && category.parts.map((item, index) =>
-                {
-                    return <AvatarEditorFigureSetItemView key={ index } partItem={ item } onClick={ selectPart } />;
-                }) }
-        </NitroCardGridView>
+                <AvatarEditorFigureSetItemView key={ index } partItem={ item } onClick={ event => selectPart(item) } />) }
+        </Grid>
     );
 }

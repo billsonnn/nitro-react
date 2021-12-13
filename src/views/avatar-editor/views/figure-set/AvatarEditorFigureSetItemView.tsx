@@ -1,11 +1,18 @@
 import { FC, useCallback, useEffect, useState } from 'react';
+import { NitroCardGridItemViewProps } from '../../../../layout';
 import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
 import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
-import { AvatarEditorFigureSetItemViewProps } from './AvatarEditorFigureSetItemView.types';
+import { AvatarEditorGridPartItem } from '../../common/AvatarEditorGridPartItem';
+import { AvatarEditorIcon } from '../AvatarEditorIcon';
+
+export interface AvatarEditorFigureSetItemViewProps extends NitroCardGridItemViewProps
+{
+    partItem: AvatarEditorGridPartItem;
+}
 
 export const AvatarEditorFigureSetItemView: FC<AvatarEditorFigureSetItemViewProps> = props =>
 {
-    const { partItem = null, onClick = null } = props;
+    const { partItem = null, children = null, ...rest } = props;
     const [ updateId, setUpdateId ] = useState(-1);
 
     const rerender = useCallback(() =>
@@ -24,10 +31,11 @@ export const AvatarEditorFigureSetItemView: FC<AvatarEditorFigureSetItemViewProp
     })
 
     return (
-        <NitroCardGridItemView itemImage={ (partItem.isClear ? undefined : partItem.imageUrl) } itemActive={ partItem.isSelected } onClick={ event => onClick(partItem) }>
+        <NitroCardGridItemView itemImage={ (partItem.isClear ? undefined : partItem.imageUrl) } itemActive={ partItem.isSelected } { ...rest }>
             { partItem.isHC && <CurrencyIcon className="position-absolute end-1 bottom-1" type={ 'hc' } /> }
-            { partItem.isClear && <div className="nitro-avatar-editor-spritesheet clear-icon" /> }
-            { partItem.isSellable && <div className="position-absolute nitro-avatar-editor-spritesheet sellable-icon end-1 bottom-1" /> }
+            { partItem.isClear && <AvatarEditorIcon icon="clear" /> }
+            { partItem.isSellable && <AvatarEditorIcon icon="sellable" position="absolute" className="end-1 bottom-1" /> }
+            { children }
         </NitroCardGridItemView>
     );
 }

@@ -1,13 +1,21 @@
-import { SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useMemo } from 'react';
+import { IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
+import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 import { GetAvatarRenderManager, GetSessionDataManager } from '../../../../api';
+import { Grid } from '../../../../common/Grid';
 import { SendMessageHook } from '../../../../hooks';
 import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
-import { NitroCardGridView } from '../../../../layout/card/grid/NitroCardGridView';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
-import { AvatarEditorWardrobeViewProps } from './AvatarEditorWardrobeView.types';
+import { FigureData } from '../../common/FigureData';
+
+export interface AvatarEditorWardrobeViewProps
+{
+    figureData: FigureData;
+    savedFigures: [ IAvatarFigureContainer, string ][];
+    setSavedFigures: Dispatch<SetStateAction<[ IAvatarFigureContainer, string][]>>;
+    loadAvatarInEditor: (figure: string, gender: string, reset?: boolean) => void;
+}
 
 export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props =>
 {
@@ -65,8 +73,8 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
     }, [ savedFigures, saveFigureAtWardrobeIndex, wearFigureAtIndex ]);
 
     return (
-        <NitroCardGridView className="nitro-wardrobe-grid">
+        <Grid grow columnCount={ 5 } overflow="auto" columnMinWidth={ 80 }>
             { figures }
-        </NitroCardGridView>
+        </Grid>
     );
 }
