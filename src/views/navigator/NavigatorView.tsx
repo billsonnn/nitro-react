@@ -9,7 +9,6 @@ import { SendMessageHook } from '../../hooks/messages/message-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
 import { NavigatorContextProvider } from './context/NavigatorContext';
 import { NavigatorMessageHandler } from './NavigatorMessageHandler';
-import { NavigatorViewProps } from './NavigatorView.types';
 import { initialNavigator, NavigatorActions, NavigatorReducer } from './reducers/NavigatorReducer';
 import { NavigatorRoomCreatorView } from './views/creator/NavigatorRoomCreatorView';
 import { NavigatorRoomDoorbellView } from './views/room-doorbell/NavigatorRoomDoorbellView';
@@ -17,10 +16,10 @@ import { NavigatorRoomInfoView } from './views/room-info/NavigatorRoomInfoView';
 import { NavigatorRoomLinkView } from './views/room-link/NavigatorRoomLinkView';
 import { NavigatorRoomPasswordView } from './views/room-password/NavigatorRoomPasswordView';
 import { NavigatorRoomSettingsView } from './views/room-settings/NavigatorRoomSettingsView';
-import { NavigatorSearchResultSetView } from './views/search-result-set/NavigatorSearchResultSetView';
+import { NavigatorSearchResultView } from './views/search-result/NavigatorSearchResultView';
 import { NavigatorSearchView } from './views/search/NavigatorSearchView';
 
-export const NavigatorView: FC<NavigatorViewProps> = props =>
+export const NavigatorView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ isCreatorOpen, setCreatorOpen ] = useState(false);
@@ -252,13 +251,12 @@ export const NavigatorView: FC<NavigatorViewProps> = props =>
                         </NitroCardTabsItemView>
                     </NitroCardTabsView>
                     <NitroCardContentView>
-                    <div className="d-flex flex-column h-100">
-                        { !isCreatorOpen && <>
-                            <NavigatorSearchView sendSearch={ sendSearch } />
-                            <NavigatorSearchResultSetView />
-                        </> }
+                        { !isCreatorOpen &&
+                            <>
+                                <NavigatorSearchView sendSearch={ sendSearch } />
+                                { (navigatorState.searchResult && navigatorState.searchResult.results.map((result, index) => <NavigatorSearchResultView key={ index } searchResult={ result } />)) }
+                            </> }
                         { isCreatorOpen && <NavigatorRoomCreatorView /> }
-                    </div>
                     </NitroCardContentView>
                 </NitroCardView> }
             { isRoomInfoOpen && <NavigatorRoomInfoView onCloseClick={ () => setRoomInfoOpen(false) } /> }

@@ -1,12 +1,18 @@
-import { createContext, FC, useContext } from 'react';
-import { INavigatorContext, NavigatorContextProps } from './NavigatorContext.types';
+import { createContext, Dispatch, FC, ProviderProps, useContext } from 'react';
+import { INavigatorAction, INavigatorState } from '../reducers/NavigatorReducer';
+
+export interface INavigatorContext
+{
+    navigatorState: INavigatorState;
+    dispatchNavigatorState: Dispatch<INavigatorAction>;
+}
 
 const NavigatorContext = createContext<INavigatorContext>({
     navigatorState: null,
     dispatchNavigatorState: null
 });
 
-export const NavigatorContextProvider: FC<NavigatorContextProps> = props =>
+export const NavigatorContextProvider: FC<ProviderProps<INavigatorContext>> = props =>
 {
     return <NavigatorContext.Provider value={ props.value }>{ props.children }</NavigatorContext.Provider>
 }

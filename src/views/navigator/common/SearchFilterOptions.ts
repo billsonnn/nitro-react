@@ -1,13 +1,4 @@
-export interface NavigatorSearchViewProps
-{
-    sendSearch: (searchValue: string, contextCode: string) => void;
-}
-
-export interface INavigatorSearchFilter
-{
-    name: string;
-    query: string;
-}
+import { INavigatorSearchFilter } from './INavigatorSearchFilter';
 
 export const SearchFilterOptions: INavigatorSearchFilter[] = [
     {

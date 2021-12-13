@@ -5,10 +5,9 @@ import { UpdateDoorStateEvent } from '../../events';
 import { dispatchUiEvent } from '../../hooks';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { useNavigatorContext } from './context/NavigatorContext';
-import { NavigatorMessageHandlerProps } from './NavigatorMessageHandler.types';
 import { NavigatorActions } from './reducers/NavigatorReducer';
 
-export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =>
+export const NavigatorMessageHandler: FC<{}> = props =>
 {
     const { navigatorState = null, dispatchNavigatorState = null } = useNavigatorContext();
 

@@ -1,14 +1,20 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomDataParser } from '@nitrots/nitro-renderer';
-import classNames from 'classnames';
 import { FC, MouseEvent } from 'react';
 import { CreateRoomSession, GetSessionDataManager, TryVisitRoom } from '../../../../api';
+import { Flex, FlexProps } from '../../../../common/Flex';
+import { Text } from '../../../../common/Text';
 import { UpdateDoorStateEvent } from '../../../../events';
 import { dispatchUiEvent } from '../../../../hooks';
-import { NavigatorSearchResultItemViewProps } from './NavigatorSearchResultItemView.types';
+
+export interface NavigatorSearchResultItemViewProps extends FlexProps
+{
+    roomData: RoomDataParser
+}
 
 export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProps> = props =>
 {
-    const { roomData = null } = props;
+    const { roomData = null, children = null, ...rest } = props;
 
     function getUserCounterColor(): string
     {
@@ -64,8 +70,19 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
     }
 
     return (
-        <div className="col">
-            <div className="d-flex flex-column justify-content-center align-items-center nitro-navigator-result small cursor-pointer" onClick={ visitRoom }>
+        <Flex pointer onClick={ visitRoom } overflow="hidden" gap={ 2 } { ...rest }>
+            <Flex center className={ 'badge p-1 ' + getUserCounterColor() } gap={ 1 }>
+                <FontAwesomeIcon icon="user" />
+                { roomData.userCount }
+            </Flex>
+            <Text truncate className="flex-grow-1">{ roomData.roomName }</Text>
+            <Flex reverse alignItems="center" gap={ 1 }>
+                <i className="icon icon-navigator-info" onClick={ openInfo } />
+                { roomData.habboGroupId > 0 && <i className="icon icon-navigator-room-group" /> }
+                { (roomData.doorMode !== RoomDataParser.OPEN_STATE) && 
+                    <i className={ ('icon icon-navigator-room-' + ((roomData.doorMode === RoomDataParser.DOORBELL_STATE) ? 'locked' : (roomData.doorMode === RoomDataParser.PASSWORD_STATE) ? 'password' : (roomData.doorMode === RoomDataParser.INVISIBLE_STATE) ? 'invisible' : '')) } /> }
+            </Flex>
+            {/* <div className="d-flex flex-column justify-content-center align-items-center nitro-navigator-result small cursor-pointer" onClick={ visitRoom }>
                 <div className="d-flex justify-content-between w-100 px-2 py-1">
                     <div className="d-flex justify-content-center flex-grow-1 overflow-hidden">
                         <div className={ 'd-flex align-items-center justify-content-center badge p-1 ' + getUserCounterColor() }>
@@ -84,7 +101,8 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
                         }
                     </div>
                 </div>
-            </div>
-        </div>
+            </div> */}
+            { children }
+        </Flex>
     );
 }

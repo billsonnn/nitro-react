@@ -1,7 +1,15 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, KeyboardEvent, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
+import { Button } from '../../../../common/Button';
+import { Flex } from '../../../../common/Flex';
+import { SearchFilterOptions } from '../../common/SearchFilterOptions';
 import { useNavigatorContext } from '../../context/NavigatorContext';
-import { NavigatorSearchViewProps, SearchFilterOptions } from './NavigatorSearchView.types';
+
+export interface NavigatorSearchViewProps
+{
+    sendSearch: (searchValue: string, contextCode: string) => void;
+}
 
 export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 {
@@ -36,23 +44,21 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
     };
 
     return (
-        <div className="d-flex w-100 mb-2">
-            <div>
-                <select className="form-select form-select-sm flex-shrink-1" value={ searchFilterIndex } onChange={ event => setSearchFilterIndex(parseInt(event.target.value)) }>
+        <Flex fullWidth gap={ 1 }>
+            <Flex shrink>
+                <select className="form-select form-select-sm" value={ searchFilterIndex } onChange={ event => setSearchFilterIndex(parseInt(event.target.value)) }>
                     { SearchFilterOptions.map((filter, index) =>
                     {
                         return <option key={ index } value={ index }>{ LocalizeText('navigator.filter.' + filter.name) }</option>
                     }) }
                 </select>
-            </div>
-            <div className="ms-2 flex-grow-1">
+            </Flex>
+            <Flex fullWidth gap={ 1 }>
                 <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('navigator.filter.input.placeholder') } value={ searchValue }  onChange={ event => setSearchValue(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
-            </div>
-            <div className="ms-2">
-                <button type="button" className="btn btn-primary btn-sm" onClick={ processSearch }>
-                    <i className="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
+                <Button variant="primary" size="sm" onClick={ processSearch }>
+                    <FontAwesomeIcon icon="search" />
+                </Button>
+            </Flex>
+        </Flex>
     );
 }
