@@ -5,7 +5,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco --max_old_space_size=8048 build",
-    "build:prod": "npm uninstall @nitrots/nitro-renderer && npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev && npm i && npm run build",
+    "build:prod": "npx browserslist@latest --update-db && npm uninstall @nitrots/nitro-renderer && npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev && npm i && npm run build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -23,14 +23,9 @@
     "react-transition-group": "^4.4.2",
     "react-virtualized": "^9.22.3",
     "react-youtube": "^7.13.1",
-    "typescript": "^4.3.5",
-    "web-vitals": "^1.1.2"
+    "typescript": "^4.3.5"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "@types/jest": "^26.0.24",
     "@types/node": "^12.20.19",
     "@types/react": "^17.0.15",
     "@types/react-dom": "^17.0.9",
