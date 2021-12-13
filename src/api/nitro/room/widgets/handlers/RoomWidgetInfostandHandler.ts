@@ -1,4 +1,4 @@
-import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
+import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
 import { GetNitroInstance, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
 import { InventoryTradeRequestEvent, WiredSelectObjectEvent } from '../../../../../events';
 import { FriendsSendFriendRequestEvent } from '../../../../../events/friends/FriendsSendFriendRequestEvent';
@@ -23,6 +23,9 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 return;
             case RoomSessionUserBadgesEvent.RSUBE_BADGES:
                 this.container.eventDispatcher.dispatchEvent(event);
+                return;
+            case RoomSessionUserFigureUpdateEvent.USER_FIGURE:
+                this.processRoomSessionUserFigureUpdateEvent((event as RoomSessionUserFigureUpdateEvent));
                 return;
         }
     }
@@ -661,6 +664,17 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         this.container.eventDispatcher.dispatchEvent(infostandEvent);
     }
 
+    private processRoomSessionUserFigureUpdateEvent(event: RoomSessionUserFigureUpdateEvent): void
+    {
+        const userData = this.container.roomSession.userDataManager.getUserDataByIndex(event.userId);
+
+        if(!userData) return;
+
+        // update active infostand figure
+        // update motto
+        // update activity points
+    }
+
     private checkGuildSetting(event: RoomWidgetUpdateInfostandUserEvent): boolean
     {
         if(event.isGuildRoom) return (event.roomControllerLevel >= RoomControllerLevel.GUILD_ADMIN);
@@ -766,7 +780,8 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
     {
         return [
             RoomSessionPetInfoUpdateEvent.PET_INFO,
-            RoomSessionUserBadgesEvent.RSUBE_BADGES
+            RoomSessionUserBadgesEvent.RSUBE_BADGES,
+            RoomSessionUserFigureUpdateEvent.USER_FIGURE
         ];
     }
 
