@@ -27,7 +27,7 @@ export const GroupSharedTabColorsView: FC<{}> = props =>
             }
         });
         
-    }, [ groupColors, groupColorsA, groupColorsB ]);
+    }, [dispatchGroupsState, groupColors, groupColorsA, groupColorsB]);
 
     const getGroupColor = useCallback((colorIndex: number) =>
     {
@@ -63,7 +63,7 @@ export const GroupSharedTabColorsView: FC<{}> = props =>
                 <div className="fw-bold">{ LocalizeText('group.edit.color.primary.color') }</div>
                 <div className="d-flex align-items-center gap-2">
                     <div className="row row-cols-18 g-0 gap-1 w-100 h-100 overflow-auto">
-                        { groupColorsA && groupColorsA.map((item, index) =>
+                        { groupColors && groupColorsA && groupColorsA.map((item, index) =>
                             {
                                 return <div key={ index } className={ 'color-swatch cursor-pointer' + classNames({ ' active': groupColors[selectingColorIndex] === item.id }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(item.id) }></div>
                             }) }
