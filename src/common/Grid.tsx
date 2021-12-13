@@ -6,6 +6,7 @@ export interface GridProps extends BaseProps<HTMLDivElement>
 {
     columnCount?: number;
     columnMinWidth?: number;
+    columnMinHeight?: number;
     grow?: boolean;
     inline?: boolean;
     gap?: SpacingType;
@@ -13,7 +14,7 @@ export interface GridProps extends BaseProps<HTMLDivElement>
 
 export const Grid: FC<GridProps> = props =>
 {
-    const { columnCount = 0, columnMinWidth = 45, grow = false, inline = false, gap = 2, classNames = [], style = {}, ...rest } = props;
+    const { columnCount = 0, columnMinWidth = 40, columnMinHeight = 40, grow = false, inline = false, gap = 2, classNames = [], style = {}, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -43,13 +44,16 @@ export const Grid: FC<GridProps> = props =>
         if(grow)
         {
             newStyle['--nitro-grid-column-min-width'] = (columnMinWidth + 'px');
+            newStyle['--nitro-grid-column-min-height'] = (columnMinHeight + 'px');
             newStyle.gridTemplateColumns = 'repeat(auto-fill, minmax(var(--nitro-grid-column-min-width, 45px), 1fr)';
         }
 
         if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [ columnCount, columnMinWidth, grow, style ]);
+    }, [ columnCount, columnMinWidth, columnMinHeight, grow, style ]);
+
+    console.log('render')
 
     return <Base classNames={ getClassNames } style={ getStyle } { ...rest } />;
 }

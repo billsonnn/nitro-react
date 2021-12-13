@@ -61,5 +61,7 @@ $nitropedia-height: 400px;
     height: 100%;
 }
 
+@import './common';
 @import "./layout/Layout";
+@import './components';
 @import "./views/Styles";
