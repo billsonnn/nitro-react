@@ -18,7 +18,7 @@ export function attemptItemPlacement(groupItem: GroupItem, flag: boolean = false
 
     if(!item) return false;
 
-    if((item.category === FurniCategory._Str_3683) || (item.category === FurniCategory._Str_3639) || (item.category === FurniCategory._Str_3432))
+    if((item.category === FurniCategory.FLOOR) || (item.category === FurniCategory.WALL_PAPER) || (item.category === FurniCategory.LANDSCAPE))
     {
         if(flag) return false;
 
@@ -36,7 +36,7 @@ export function attemptItemPlacement(groupItem: GroupItem, flag: boolean = false
         if(item.isWallItem) category = RoomObjectCategory.WALL;
         else category = RoomObjectCategory.FLOOR;
 
-        if((item.category === FurniCategory._Str_5186)) // or external image from furnidata
+        if((item.category === FurniCategory.POSTER)) // or external image from furnidata
         {
             isMoving = GetRoomEngine().processRoomObjectPlacement(RoomObjectPlacementSource.INVENTORY, item.id, category, item.type, item.stuffData.getLegacyString());
         }
@@ -108,7 +108,7 @@ function getAllItemIds(groupItems: GroupItem[]): number[]
     {
         let totalCount = groupItem.getTotalCount();
 
-        if(groupItem.category === FurniCategory._Str_12351) totalCount = 1;
+        if(groupItem.category === FurniCategory.POST_IT) totalCount = 1;
 
         let i = 0;
 
@@ -240,7 +240,7 @@ function addGroupableFurnitureItem(set: GroupItem[], item: FurnitureItem, unseen
     {
         if((groupItem.type === item.type) && (groupItem.isWallItem === item.isWallItem) && groupItem.isGroupable)
         {
-            if(item.category === FurniCategory._Str_5186)
+            if(item.category === FurniCategory.POSTER)
             {
                 if(groupItem.stuffData.getLegacyString() === item.stuffData.getLegacyString())
                 {
@@ -250,7 +250,7 @@ function addGroupableFurnitureItem(set: GroupItem[], item: FurnitureItem, unseen
                 }
             }
 
-            else if(item.category === FurniCategory._Str_12454)
+            else if(item.category === FurniCategory.GUILD_FURNI)
             {
                 if(item.stuffData.compare(groupItem.stuffData))
                 {
@@ -309,7 +309,7 @@ export function createGroupItem(type: number, category: number, stuffData: IObje
 {
     // const iconImage: HTMLImageElement = null;
 
-    if(category === FurniCategory._Str_3639)
+    if(category === FurniCategory.WALL_PAPER)
     {
         // const icon = this._windowManager.assets.getAssetByName("inventory_furni_icon_wallpaper");
         // if (icon != null)
@@ -318,7 +318,7 @@ export function createGroupItem(type: number, category: number, stuffData: IObje
         // }
     }
 
-    else if(category === FurniCategory._Str_3683)
+    else if(category === FurniCategory.FLOOR)
     {
         // const icon = this._windowManager.assets.getAssetByName("inventory_furni_icon_floor");
         // if (icon != null)
@@ -327,7 +327,7 @@ export function createGroupItem(type: number, category: number, stuffData: IObje
         // }
     }
 
-    else if(category === FurniCategory._Str_3432)
+    else if(category === FurniCategory.LANDSCAPE)
     {
         // const icon = this._windowManager.assets.getAssetByName("inventory_furni_icon_landscape");
         // if (icon != null)

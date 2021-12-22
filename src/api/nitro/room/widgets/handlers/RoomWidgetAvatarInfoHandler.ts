@@ -120,24 +120,24 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
             {
                 if(userData.ownerId === ownerId)
                 {
-                    if(userData.hasSaddle && (specialType === FurniCategory._Str_6096)) replace = true;
+                    if(userData.hasSaddle && (specialType === FurniCategory.PET_SADDLE)) replace = true;
 
                     const figureParts = userData.figure.split(' ');
                     const figurePart = (figureParts.length ? parseInt(figureParts[0]) : -1);
 
                     if(figurePart === part)
                     {
-                        if(specialType === FurniCategory._Str_6915)
+                        if(specialType === FurniCategory.MONSTERPLANT_REVIVAL)
                         {
                             if(!userData.canRevive) continue;
                         }
 
-                        if(specialType === FurniCategory._Str_8726)
+                        if(specialType === FurniCategory.MONSTERPLANT_REBREED)
                         {
                             if((userData.petLevel < 7) || userData.canRevive || userData.canBreed) continue;
                         }
 
-                        if(specialType === FurniCategory._Str_9449)
+                        if(specialType === FurniCategory.MONSTERPLANT_FERTILIZE)
                         {
                             if((userData.petLevel >= 7) || userData.canRevive) continue;
                         }

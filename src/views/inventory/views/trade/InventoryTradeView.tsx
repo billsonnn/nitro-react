@@ -41,13 +41,13 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
         let type = spriteId.toString();
 
-        if(category === FurniCategory._Str_5186)
+        if(category === FurniCategory.POSTER)
         {
             type = ((type + 'poster') + stuffData.getLegacyString());
         }
         else
         {
-            if(category === FurniCategory._Str_12454)
+            if(category === FurniCategory.GUILD_FURNI)
             {
                 type = _Str_16998(spriteId, stuffData);
             }
