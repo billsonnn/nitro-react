@@ -2,8 +2,8 @@ import { IObjectData } from '@nitrots/nitro-renderer';
 
 export class MarketplaceOfferData
 {
-    public static TYPE_LANDSCAPE: number = 1;
-    public static TYPE_FLOOR: number = 2;
+    public static readonly TYPE_FLOOR: number = 1;
+    public static readonly TYPE_WALL: number = 2;
 
     private _offerId: number;
     private _furniId: number;

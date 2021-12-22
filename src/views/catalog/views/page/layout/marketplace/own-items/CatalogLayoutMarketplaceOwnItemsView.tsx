@@ -1,4 +1,4 @@
-import { GetMarketplaceOwnOffersMessageComposer, MarketplaceOwnOffersEvent } from '@nitrots/nitro-renderer';
+import { GetMarketplaceOwnOffersMessageComposer, MarketplaceOwnOffersEvent, RedeemMarketplaceOfferCreditsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../../../../api';
 import { BatchUpdates, CreateMessageHook, SendMessageHook, UseMountEffect } from '../../../../../../../hooks';
@@ -6,6 +6,7 @@ import { NitroCardGridView } from '../../../../../../../layout';
 import { NitroLayoutBase } from '../../../../../../../layout/base';
 import { CatalogLayoutProps } from '../../CatalogLayout.types';
 import { MarketplaceOfferData } from '../common/MarketplaceOfferData';
+import { MarketPlaceOfferState } from '../common/MarketplaceOfferState';
 import { MarketplaceItemView, OWN_OFFER } from '../marketplace-item/MarketplaceItemView';
 
 export interface CatalogLayoutMarketplaceOwnItemsViewProps extends CatalogLayoutProps
@@ -46,13 +47,39 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutMarketplaceOw
 
     CreateMessageHook(MarketplaceOwnOffersEvent, onMarketPlaceOwnOffersEvent);
     
+    const redeemSoldOffers = useCallback(() =>
+    {
+        setOffers(prev =>
+        {
+            const newVal = new Map(prev);
+
+            const idsToDelete = [];
+
+            for(const offer of newVal.values())
+            {
+                if(offer.status === MarketPlaceOfferState.SOLD)
+                {
+                    idsToDelete.push(offer.offerId);
+                }
+            }
+
+            for(const offerId of idsToDelete)
+            {
+                newVal.delete(offerId);
+            }
+            return newVal;
+        })
+        
+        SendMessageHook(new RedeemMarketplaceOfferCreditsMessageComposer());
+    }, []);
+
     return (
     <>
         { (creditsWaiting <= 0) && <NitroLayoutBase className='text-black'>{LocalizeText('catalog.marketplace.redeem.no_sold_items')}</NitroLayoutBase>}
 
         { (creditsWaiting > 0) && <NitroLayoutBase className='text-black'>{LocalizeText('catalog.marketplace.redeem.get_credits', ['count', 'credits'], ['0', creditsWaiting.toString()])}</NitroLayoutBase>}
 
-        <button className='btn btn-primary btn-sm mx-auto' disabled={creditsWaiting <= 0}>{LocalizeText('catalog.marketplace.offer.redeem')}</button>
+        <button className='btn btn-primary btn-sm mx-auto' disabled={creditsWaiting <= 0} onClick={redeemSoldOffers}>{LocalizeText('catalog.marketplace.offer.redeem')}</button>
 
         <div className='text-black'>{LocalizeText('catalog.marketplace.items_found', ['count'], [offers.size.toString()])}</div>
         <NitroCardGridView columns={1} className='text-black'>
