@@ -309,6 +309,42 @@
         height: 16px;
     }
 
+    &.icon-cog {
+        background: url("../images/icons/cog.png");
+        width: 21px;
+        height: 21px;
+    }
+
+    &.icon-chat-history {
+        background: url("../images/icons/chat-history.png");
+        width: 17px;
+        height: 21px;
+    }
+
+    &.icon-room-link {
+        background: url("../images/icons/room-link.png");
+        width: 17px;
+        height: 15px;
+    }
+
+    &.icon-zoom-more {
+        background: url("../images/icons/zoom-more.png");
+        width: 12px;
+        height: 22px;
+    }
+
+    &.icon-zoom-less {
+        background: url("../images/icons/zoom-less.png");
+        width: 12px;
+        height: 22px;
+    }
+
+    &.icon-like-room {
+        background: url("../images/icons/like-room.png");
+        width: 20px;
+        height: 22px;
+    }
+
     &.icon-arrows {
         background: url("../images/icons/arrows.png");
         width: 17px;

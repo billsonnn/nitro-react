@@ -1,7 +1,7 @@
 .nitro-room-tools {
     position: absolute;
     bottom: 125px;
-    left: -133px;
+    left: -145px;
     background: rgba($dark,.95);
     box-shadow: inset 0px 5px lighten(rgba($dark,.6),2.5), inset 0 -4px darken(rgba($dark,.6),4);
     border-top-right-radius: $border-radius;
@@ -34,6 +34,18 @@
 
         &.disabled {
             opacity: .5;
+        }
+    }
+
+    .tools-item {
+        .icon {
+            width: 22px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        &:hover {
+            text-decoration: underline;
         }
     }
 }

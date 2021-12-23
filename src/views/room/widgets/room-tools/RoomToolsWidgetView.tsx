@@ -45,21 +45,21 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     
     return (
         <div className={'nitro-room-tools ps-3 d-flex' + classNames({ ' open': isExpended })}>
-            <div className="list-group list-group-flush w-100 me-1">
-                <div className="list-group-item" onClick={ () => handleToolClick('settings') }>
-                    <i className="fas fa-cog me-2" />{ LocalizeText('room.settings.button.text') }
+            <div className="d-flex flex-column gap-2 w-100 py-2 pe-2">
+                <div className="d-flex align-items-center gap-2 cursor-pointer tools-item" onClick={ () => handleToolClick('settings') }>
+                    <i className="icon icon-cog" /> { LocalizeText('room.settings.button.text') }
                 </div>
-                <div className="list-group-item" onClick={ () => handleToolClick('zoom') }>
-                    <i className={ 'fas me-2 ' +classNames({ 'fa-search-minus': !isZoomedIn, 'fa-search-plus': isZoomedIn }) } />{ LocalizeText('room.zoom.button.text') }
+                <div className="d-flex align-items-center gap-2 cursor-pointer tools-item" onClick={ () => handleToolClick('zoom') }>
+                    <i className={ 'icon ' +classNames({ 'icon-zoom-less': !isZoomedIn, 'icon-zoom-more': isZoomedIn }) } />{ LocalizeText('room.zoom.button.text') }
                 </div>
-                <div className="list-group-item" onClick={ () => handleToolClick('chat_history') }>
-                    <i className="fas fa-comment-alt me-2" />{ LocalizeText('room.chathistory.button.text') }
+                <div className="d-flex align-items-center gap-2 cursor-pointer tools-item" onClick={ () => handleToolClick('chat_history') }>
+                    <i className="icon icon-chat-history" />{ LocalizeText('room.chathistory.button.text') }
                 </div>
-                <div className={ 'list-group-item' + classNames({ ' disabled': isLiked })} onClick={ () => handleToolClick('like_room') }>
-                    <i className="fas fa-heart me-2" />{ LocalizeText('room.like.button.text') }
+                <div className={ 'd-flex align-items-center gap-2 cursor-pointer tools-item' + classNames({ ' disabled': isLiked })} onClick={ () => handleToolClick('like_room') }>
+                    <i className="icon icon-like-room" /> { LocalizeText('room.like.button.text') }
                 </div>
-                <div className="list-group-item" onClick={ () => handleToolClick('toggle_room_link') }>
-                    <i className="fas fa-link me-2" />{ LocalizeText('navigator.embed.caption') }
+                <div className="d-flex align-items-center gap-2 cursor-pointer tools-item" onClick={ () => handleToolClick('toggle_room_link') }>
+                    <i className="icon icon-room-link" />{ LocalizeText('navigator.embed.caption') }
                 </div>
             </div>
             <div className="cursor-pointer d-flex align-items-center px-2" onClick={() => setIsExpanded(value => !value)}>
