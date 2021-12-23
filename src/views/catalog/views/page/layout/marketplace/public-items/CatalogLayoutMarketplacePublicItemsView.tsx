@@ -1,8 +1,10 @@
-import { GetMarketplaceOffersMessageComposer, MarketPlaceOffersEvent } from '@nitrots/nitro-renderer';
+import { GetMarketplaceOffersMessageComposer, MarketplaceBuyOfferResultEvent, MarketPlaceOffersEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../../../../api';
 import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../../../../hooks';
 import { NitroCardGridView } from '../../../../../../../layout';
+import { NotificationAlertType } from '../../../../../../notification-center/common/NotificationAlertType';
+import { NotificationUtilities } from '../../../../../../notification-center/common/NotificationUtilities';
 import { CatalogLayoutProps } from '../../CatalogLayout.types';
 import { IMarketplaceSearchOptions } from '../common/IMarketplaceSearchOptions';
 import { MarketplaceOfferData } from '../common/MarketplaceOfferData';
@@ -23,9 +25,11 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
     const [ searchType, setSearchType ] = useState(MarketplaceSearchType.BY_ACTIVITY);
     const [ totalItemsFound, setTotalItemsFound ] = useState(0);
     const [ offers, setOffers ] = useState(new Map<number, MarketplaceOfferData>());
+    const [ lastSearch, setLastSearch ] = useState<IMarketplaceSearchOptions>({ minPrice: -1, maxPrice: -1, query: '', type: 3 });
 
     const requestOffers = useCallback((options: IMarketplaceSearchOptions) =>
     {
+        setLastSearch(options);
         SendMessageHook(new GetMarketplaceOffersMessageComposer(options.minPrice, options.maxPrice, options.query, options.type))
     }, []);
 
@@ -65,7 +69,57 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
         
     }, []);
 
+    const onMarketplaceBuyOfferResultEvent = useCallback( (event: MarketplaceBuyOfferResultEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        switch(parser.result)
+        {
+            case 1:
+                requestOffers(lastSearch);
+                break;
+            case 2:
+                setOffers(prev =>
+                {
+                    const newVal = new Map(prev);
+                    newVal.delete(parser.requestedOfferId);
+                    return newVal;
+                });
+                NotificationUtilities.simpleAlert(LocalizeText('catalog.marketplace.not_available_header'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.marketplace.not_available_title'));
+                break;
+            case 3:
+                // our shit was updated
+                // todo: some dialogue modal 
+                setOffers( prev =>
+                {
+                    const newVal = new Map(prev);
+
+                    const item = newVal.get(parser.requestedOfferId);
+                    if(item)
+                    {
+                        item.offerId = parser.offerId;
+                        item.price = parser.newPrice;
+                        item.offerCount--;
+                        newVal.set(item.offerId, item);
+                    }
+
+                    newVal.delete(parser.requestedOfferId);
+                    return newVal;
+                });
+
+                // for now just let user know
+                NotificationUtilities.simpleAlert(LocalizeText('catalog.marketplace.confirm_higher_header'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.marketplace.confirm_higher_title'));
+                break;
+            case 4:
+                NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.notenough.credits.description'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.alert.notenough.title'));
+                break;
+        }
+    }, [lastSearch, requestOffers]);
+
     CreateMessageHook(MarketPlaceOffersEvent, onMarketPlaceOffersEvent);
+    CreateMessageHook(MarketplaceBuyOfferResultEvent, onMarketplaceBuyOfferResultEvent);
     
     return (<>
         <div className="btn-group" role="group">

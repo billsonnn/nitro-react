@@ -1,9 +1,11 @@
-import { GetMarketplaceOwnOffersMessageComposer, MarketplaceOwnOffersEvent, RedeemMarketplaceOfferCreditsMessageComposer } from '@nitrots/nitro-renderer';
+import { GetMarketplaceOwnOffersMessageComposer, MarketplaceCancelOfferResultEvent, MarketplaceOwnOffersEvent, RedeemMarketplaceOfferCreditsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../../../../api';
 import { BatchUpdates, CreateMessageHook, SendMessageHook, UseMountEffect } from '../../../../../../../hooks';
 import { NitroCardGridView } from '../../../../../../../layout';
 import { NitroLayoutBase } from '../../../../../../../layout/base';
+import { NotificationAlertType } from '../../../../../../notification-center/common/NotificationAlertType';
+import { NotificationUtilities } from '../../../../../../notification-center/common/NotificationUtilities';
 import { CatalogLayoutProps } from '../../CatalogLayout.types';
 import { MarketplaceOfferData } from '../common/MarketplaceOfferData';
 import { MarketPlaceOfferState } from '../common/MarketplaceOfferState';
@@ -45,7 +47,28 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutMarketplaceOw
         });
     }, []);
 
+    const onMarketplaceCancelOfferResultEvent = useCallback((event:MarketplaceCancelOfferResultEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        if(!parser.success)
+        {
+            NotificationUtilities.simpleAlert(LocalizeText('catalog.marketplace.cancel_failed'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.marketplace.operation_failed.topic'));
+            return;
+        }
+
+        setOffers( prev =>
+        {
+            const newVal = new Map(prev);
+            newVal.delete(parser.offerId);
+            return newVal;
+        });
+    }, []);
+
     CreateMessageHook(MarketplaceOwnOffersEvent, onMarketPlaceOwnOffersEvent);
+    CreateMessageHook(MarketplaceCancelOfferResultEvent, onMarketplaceCancelOfferResultEvent);
     
     const redeemSoldOffers = useCallback(() =>
     {
@@ -77,7 +100,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutMarketplaceOw
     <>
         { (creditsWaiting <= 0) && <NitroLayoutBase className='text-black'>{LocalizeText('catalog.marketplace.redeem.no_sold_items')}</NitroLayoutBase>}
 
-        { (creditsWaiting > 0) && <NitroLayoutBase className='text-black'>{LocalizeText('catalog.marketplace.redeem.get_credits', ['count', 'credits'], ['0', creditsWaiting.toString()])}</NitroLayoutBase>}
+        { (creditsWaiting > 0) && <NitroLayoutBase className='text-black'>{LocalizeText('catalog.marketplace.redeem.get_credits', ['count', 'credits'], [Array.from(offers.values()).filter(value => value.status === MarketPlaceOfferState.SOLD).length.toString(), creditsWaiting.toString()])}</NitroLayoutBase>}
 
         <button className='btn btn-primary btn-sm mx-auto' disabled={creditsWaiting <= 0} onClick={redeemSoldOffers}>{LocalizeText('catalog.marketplace.offer.redeem')}</button>
 

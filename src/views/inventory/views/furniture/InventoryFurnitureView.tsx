@@ -11,7 +11,7 @@ import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/
 import { RarityLevelView } from '../../../shared/rarity-level/RarityLevelView';
 import { RoomPreviewerView } from '../../../shared/room-previewer/RoomPreviewerView';
 import { FurniCategory } from '../../common/FurniCategory';
-import { attemptItemPlacement } from '../../common/FurnitureUtilities';
+import { attemptItemPlacement, attemptPlaceMarketplaceOffer } from '../../common/FurnitureUtilities';
 import { GroupItem } from '../../common/GroupItem';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
@@ -127,10 +127,15 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                 { groupItem &&
                     <NitroLayoutFlexColumn className="flex-grow-1" gap={ 2 }>
                         <NitroLayoutBase className="flex-grow-1 text-black text-truncate">{ groupItem.name }</NitroLayoutBase>
-                        { !!roomSession &&
+                        { roomSession &&
                             <NitroLayoutButton variant="success" size="sm" onClick={ event => attemptItemPlacement(groupItem) }>
                                 { LocalizeText('inventory.furni.placetoroom') }
                             </NitroLayoutButton> }
+                        { (groupItem && groupItem.isSellable) &&
+                            <NitroLayoutButton variant="primary" size="sm" onClick={ event => attemptPlaceMarketplaceOffer(groupItem) }>
+                                { LocalizeText('inventory.marketplace.sell') }
+                            </NitroLayoutButton>
+                        }
                     </NitroLayoutFlexColumn> }
             </NitroLayoutGridColumn>
         </NitroLayoutGrid>

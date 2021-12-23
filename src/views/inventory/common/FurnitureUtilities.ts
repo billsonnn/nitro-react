@@ -1,6 +1,7 @@
 import { FurnitureListItemParser, FurniturePlacePaintComposer, IObjectData, RoomObjectCategory, RoomObjectPlacementSource } from '@nitrots/nitro-renderer';
 import { GetRoomEngine } from '../../../api';
 import { InventoryEvent } from '../../../events';
+import { CatalogPostMarketplaceOfferEvent } from '../../../events/catalog/CatalogPostMarketplaceOfferEvent';
 import { dispatchUiEvent } from '../../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../../hooks/messages/message-event';
 import { FurniCategory } from './FurniCategory';
@@ -53,6 +54,17 @@ export function attemptItemPlacement(groupItem: GroupItem, flag: boolean = false
     }
 
     return true;
+}
+
+export function attemptPlaceMarketplaceOffer(groupItem: GroupItem): boolean
+{
+    const item = groupItem.getLastItem();
+
+    if(!item) return false;
+
+    if(!item.sellable) return false;
+
+    dispatchUiEvent(new CatalogPostMarketplaceOfferEvent(item));
 }
 
 function cancelRoomObjectPlacement(): void

@@ -442,6 +442,13 @@ export class GroupItem
         return (item ? item.isGroupable : false);
     }
 
+    public get isSellable(): boolean
+    {
+        const item = this.getItemByIndex(0);
+
+        return (item ? item.sellable : false);
+    }
+
     public get items(): FurnitureItem[]
     {
         return this._items;
