@@ -59,6 +59,8 @@ export const MarketplaceItemView: FC<MarketplaceItemViewProps> = props =>
     {
         if(!offerData) return '';
 
+        if(offerData.status === MarketPlaceOfferState.SOLD) return LocalizeText('catalog.marketplace.offer.sold');
+
         if(offerData.timeLeftMinutes <= 0) return LocalizeText('catalog.marketplace.offer.expired');
         
         const time = Math.max(1, offerData.timeLeftMinutes);
