@@ -80,18 +80,19 @@ export const ChatHistoryView: FC<{}> = props =>
                 parent={props.parent}
                 rowIndex={props.index}
             >
-                <div key={props.key} style={props.style} className="row chathistory-entry justify-content-start">
+                <div key={props.key} style={props.style} className="chathistory-entry justify-content-start">
                     {(item.type === ChatEntryType.TYPE_CHAT) &&
-                    <div className={`col d-flex flex-wrap text-break text-wrap ${isDark ? 'dark' : 'light'}`}>
-                        <div className="p-1">{item.timestamp}</div>
-                        <div className="p-1 fw-bold cursor-pointer" dangerouslySetInnerHTML={ { __html: (item.name + ':') }} />
-                        <div className="p-1 text-break text-wrap">{item.message}</div>
+                    <div className={`p-1 d-flex gap-1 ${isDark ? 'dark' : 'light'}`}>
+                        <div className="text-muted">{item.timestamp}</div>
+                        <div className="cursor-pointer d-flex text-nowrap" dangerouslySetInnerHTML={ { __html: (item.name + ':') }} />
+                        <div className="text-break text-wrap flex-grow-1">{item.message}</div>
                     </div>
                     }
                     {(item.type === ChatEntryType.TYPE_ROOM_INFO) &&
-                    <div className={`col d-flex flex-wrap text-break text-wrap ${isDark ? 'dark' : 'light'}`}>
-                        <div className="p-1">{item.timestamp}</div>
-                        <div className="p-1 fw-bold cursor-pointer">{item.name}</div>
+                    <div className={`p-1 d-flex gap-1 ${isDark ? 'dark' : 'light'}`}>
+                        <div className="text-muted">{item.timestamp}</div>
+                        <i className="icon icon-small-room" />
+                        <div className="cursor-pointer text-break text-wrap">{item.name}</div>
                     </div>
                     }
                     
@@ -134,9 +135,9 @@ export const ChatHistoryView: FC<{}> = props =>
         <ChatHistoryContextProvider value={ { chatHistoryState, roomHistoryState } }>
             <ChatHistoryMessageHandler />
             {isVisible &&
-            <NitroCardView uniqueKey="chat-history" className="nitro-chat-history" simple={ false }  theme={'dark'} >
+            <NitroCardView uniqueKey="chat-history" className="nitro-chat-history" simple={ false } theme={'dark'} >
                 <NitroCardHeaderView headerText={ 'Chat History' } onCloseClick={ event => setIsVisible(false) } theme={'dark'}/>
-                <NitroCardContentView className="chat-history-content" theme={'dark'}>
+                <NitroCardContentView className="chat-history-content p-0" theme={'dark'}>
                     <div className="row w-100 h-100 chat-history-container">
                             <AutoSizer defaultWidth={300} defaultHeight={200} onResize={onResize}>
                                 {({ height, width }) => 
