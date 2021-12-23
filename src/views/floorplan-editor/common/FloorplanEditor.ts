@@ -30,7 +30,7 @@ export class FloorplanEditor extends PixiApplicationProxy
         super({
             width: width,
             height: height,
-            backgroundColor: 0x2b2b2b,
+            backgroundColor: 0x000000,
             antialias: true,
             autoDensity: true,
             resolution: 1,
