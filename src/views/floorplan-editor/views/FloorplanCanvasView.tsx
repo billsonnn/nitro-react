@@ -105,7 +105,9 @@ export const FloorplanCanvasView: FC<{}> = props =>
         </NitroLayoutFlex>
         <NitroLayoutFlex className="align-items-center justify-content-center">
             <div className="arrow-button"><button className="btn btn-primary" onClick={() => onClickArrowButton('left')}><i className="fas fa-arrow-left"/></button></div>
-            <div ref={elementRef} className="editor-area" />
+            <div className="rounded-2 overflow-hidden">
+                <div ref={elementRef} className="editor-area" />
+            </div>
             <div className="arrow-button"><button className="btn btn-primary" onClick={() => onClickArrowButton('right')}><i className="fas fa-arrow-right"/></button></div>
         </NitroLayoutFlex>
         <NitroLayoutFlex className="align-items-center justify-content-center">
