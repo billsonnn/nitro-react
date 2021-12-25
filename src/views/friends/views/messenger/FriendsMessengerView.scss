@@ -1,24 +1,27 @@
 .nitro-friends-messenger {
-    width: 280px;
-    resize: both;
+    width: $messenger-width;
+    height: $messenger-height;
 
-    .friend-head {
+    .open-chat-entry {
         position: relative;
-        width: 40px;
-        height: 40px;
-        overflow: hidden;
+        border: 2px solid;
+        border-color: $light;
 
-        .icon {
-            position: absolute;
-            top: 1px;
-            right: 1px;
-            z-index: 10;
+        &.active {
+            border-color: #fffde9;
+            background-color: #ececec
         }
 
-        .avatar-image {
-            position: absolute;
-            margin-left: -27px;
-            margin-top: -27px;
+        .friend-head {
+            width: 45px;
+            height: 45px;
+            overflow: hidden;
+    
+            .avatar-image {
+                position: absolute;
+                margin-left: -27px;
+                margin-top: -27px;
+            }
         }
     }
 
@@ -27,8 +30,6 @@
     }
 
     .chat-messages {
-        height: 200px;
-        min-height: 200px;
         overflow-y: auto;
 
         .message-avatar {

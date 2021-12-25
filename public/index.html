@@ -13,9 +13,13 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root" class="w-100 h-100"></div>
     <script>
-      var NitroConfig = {
-          configurationUrls: [ '/renderer-config.json', '/ui-config.json' ],
-          sso: (new URLSearchParams(window.location.search).get('sso') || null)
+      const NitroConfig = {
+        "config.urls": ("%REACT_APP_CONFIG_URLS%").split(','),
+        "sso.ticket": (new URLSearchParams(window.location.search).get('sso') || null),
+        "socket.url": "%REACT_APP_SOCKET_URL%",
+        "asset.url": "%REACT_APP_ASSET_URL%",
+        "image.library.url": "%REACT_APP_IMAGE_LIBRARY_URL%",
+        "hof.furni.url": "%REACT_APP_HOF_FURNI_URL%"
       };
     </script>
   </body>

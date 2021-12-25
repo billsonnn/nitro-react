@@ -13,6 +13,7 @@ import { ChatHistoryView } from '../chat-history/ChatHistoryView';
 import { FloorplanEditorView } from '../floorplan-editor/FloorplanEditorView';
 import { FriendsView } from '../friends/FriendsView';
 import { GroupsView } from '../groups/GroupsView';
+import { HcCenterView } from '../hc-center/HcCenterView';
 import { HelpView } from '../help/HelpView';
 import { HotelView } from '../hotel-view/HotelView';
 import { ModToolsView } from '../mod-tools/ModToolsView';
@@ -115,6 +116,7 @@ export const MainView: FC<MainViewProps> = props =>
             <HelpView />
             <FloorplanEditorView />
             <NitropediaView />
+            <HcCenterView />
             <CampaignView />
         </div>
     );

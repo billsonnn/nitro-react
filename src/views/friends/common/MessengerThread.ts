@@ -1,7 +1,9 @@
 import { LocalizeText } from '../../../api';
+import { GroupType } from './GroupType';
 import { MessengerFriend } from './MessengerFriend';
 import { MessengerThreadChat } from './MessengerThreadChat';
 import { MessengerThreadChatGroup } from './MessengerThreadChatGroup';
+import { getGroupChatData } from './Utils';
 
 export class MessengerThread
 {
@@ -10,35 +12,40 @@ export class MessengerThread
     private _participant: MessengerFriend;
     private _groups: MessengerThreadChatGroup[];
     private _lastUpdated: Date;
-    private _unread: boolean;
+    private _unreadCount: number;
 
     constructor(participant: MessengerFriend, isNew: boolean = true)
     {
         this._participant = participant;
         this._groups = [];
         this._lastUpdated = new Date();
-        this._unread = false;
+        this._unreadCount = 0;
 
         if(isNew)
         {
-            this.addMessage(-1, LocalizeText('messenger.moderationinfo'), 0, null, MessengerThreadChat.SECURITY_NOTIFICATION);
+            this.addMessage(null, LocalizeText('messenger.moderationinfo'), 0, null, MessengerThreadChat.SECURITY_NOTIFICATION);
 
-            this._unread = false;
+            this._unreadCount = 0;
         }
     }
 
     public addMessage(senderId: number, message: string, secondsSinceSent: number = 0, extraData: string = null, type: number = 0): MessengerThreadChat
     {
-        const group = this.getLastGroup(senderId);
+        const isGroupChat = (senderId < 0 && extraData);
+        const userId = isGroupChat ? getGroupChatData(extraData).userId : senderId;
+
+        const group = this.getLastGroup(userId);
 
         if(!group) return;
+
+        if(isGroupChat) group.type = GroupType.GROUP_CHAT;
 
         const chat = new MessengerThreadChat(senderId, message, secondsSinceSent, extraData, type);
 
         group.addChat(chat);
 
         this._lastUpdated = new Date();
-        this._unread = true;
+        this._unreadCount++;
 
         return chat;
     }
@@ -58,7 +65,7 @@ export class MessengerThread
 
     public setRead(): void
     {
-        this._unread = false;
+        this._unreadCount = 0;
     }
 
     public get participant(): MessengerFriend
@@ -76,8 +83,13 @@ export class MessengerThread
         return this._lastUpdated;
     }
 
+    public get unreadCount(): number
+    {
+        return this._unreadCount;
+    }
+
     public get unread(): boolean
     {
-        return this._unread;
+        return this._unreadCount > 0;
     }
 }

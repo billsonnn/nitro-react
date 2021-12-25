@@ -47,6 +47,15 @@
         5,
         101
     ],
+    "hc.center": {
+        "benefits.info": true,
+        "payday.info": true,
+        "gift.info": true,
+        "benefits.habbopage": "habboclub",
+        "payday.habbopage": "hcpayday",
+        "catalog.buy": "habbo_club",
+        "catalog.gifts": "club_gifts"
+    },
     "currency.display.number.short": false,
     "currency.asset.icon.url": "${images.url}/wallet/%type%.png",
     "catalog.asset.url": "${image.library.url}catalogue",
