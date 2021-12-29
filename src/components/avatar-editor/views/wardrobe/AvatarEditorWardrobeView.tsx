@@ -3,10 +3,10 @@ import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 import { GetAvatarRenderManager, GetSessionDataManager } from '../../../../api';
 import { Grid } from '../../../../common/Grid';
+import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { SendMessageHook } from '../../../../hooks';
-import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
-import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
-import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
+import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
+import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { FigureData } from '../../common/FigureData';
 
 export interface AvatarEditorWardrobeViewProps
@@ -58,14 +58,15 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
                 if(figureContainer) clubLevel = GetAvatarRenderManager().getFigureClubLevel(figureContainer, gender);
 
                 items.push(
-                    <NitroCardGridItemView key={ index } className="flex-column justify-content-end position-relative">
-                        { figureContainer && <AvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } /> }
+                    <LayoutGridItem key={ index } position="relative" justifyContent="end" alignItems="center">
+                        { figureContainer &&
+                            <AvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } position="absolute" className="bottom-3" /> }
                         { (clubLevel > 0) && <CurrencyIcon className="position-absolute top-1 start-1" type="hc" /> }
                         <div className="d-flex w-100 figure-button-container p-1">
                             <Button variant="link" size="sm" className="w-100" onClick={ event => saveFigureAtWardrobeIndex(index) }>Save</Button>
                             { figureContainer && <Button variant="link" size="sm" className="w-100" onClick={ event => wearFigureAtIndex(index) } disabled={ (clubLevel > GetSessionDataManager().clubLevel) }>Use</Button> }
                         </div>
-                    </NitroCardGridItemView>
+                    </LayoutGridItem>
                 );
             });
 
@@ -73,7 +74,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
     }, [ savedFigures, saveFigureAtWardrobeIndex, wearFigureAtIndex ]);
 
     return (
-        <Grid grow columnCount={ 5 } overflow="auto" columnMinWidth={ 80 }>
+        <Grid grow columnCount={ 5 } overflow="auto" columnMinWidth={ 80 } columnMinHeight={ 140 }>
             { figures }
         </Grid>
     );

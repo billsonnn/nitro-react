@@ -27,7 +27,7 @@ export const AvatarEditorPaletteSetView: FC<AvatarEditorPaletteSetViewProps> = p
     }, [ model, category, paletteSet, paletteIndex ]);
 
     return (
-        <Grid grow columnCount={ 3 } overflow="auto">
+        <Grid grow columnCount={ 4 } columnMinWidth={ 30 } overflow="auto">
             { (paletteSet.length > 0) && paletteSet.map((item, index) =>
                 <AvatarEditorPaletteSetItem key={ index } colorItem={ item } onClick={ event => selectColor(item) } />) }
         </Grid>

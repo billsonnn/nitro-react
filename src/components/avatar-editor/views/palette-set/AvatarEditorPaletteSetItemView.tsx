@@ -1,10 +1,9 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { NitroCardGridItemViewProps } from '../../../../layout';
-import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
-import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
+import { LayoutGridItem, LayoutGridItemProps } from '../../../../common/layout/LayoutGridItem';
+import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { AvatarEditorGridColorItem } from '../../common/AvatarEditorGridColorItem';
 
-export interface AvatarEditorPaletteSetItemProps extends NitroCardGridItemViewProps
+export interface AvatarEditorPaletteSetItemProps extends LayoutGridItemProps
 {
     colorItem: AvatarEditorGridColorItem;
 }
@@ -27,9 +26,9 @@ export const AvatarEditorPaletteSetItem: FC<AvatarEditorPaletteSetItemProps> = p
     });
 
     return (
-        <NitroCardGridItemView itemColor={ colorItem.color } itemActive={ colorItem.isSelected } { ...rest }>
+        <LayoutGridItem itemColor={ colorItem.color } itemActive={ colorItem.isSelected } { ...rest }>
             { colorItem.isHC && <CurrencyIcon className="position-absolute end-1 bottom-1" type={ 'hc' } /> }
             { children }
-        </NitroCardGridItemView>
+        </LayoutGridItem>
     );
 }

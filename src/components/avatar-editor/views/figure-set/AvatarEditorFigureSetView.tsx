@@ -30,7 +30,7 @@ export const AvatarEditorFigureSetView: FC<AvatarEditorFigureSetViewProps> = pro
     }, [ model, category, setMaxPaletteCount ]);
 
     return (
-        <Grid grow columnCount={ 3 } overflow="auto">
+        <Grid grow columnCount={ 3 } columnMinHeight={ 50 } overflow="auto">
             { (category.parts.length > 0) && category.parts.map((item, index) =>
                 <AvatarEditorFigureSetItemView key={ index } partItem={ item } onClick={ event => selectPart(item) } />) }
         </Grid>

@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect, useState } from 'react';
+import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { NitroCardGridItemViewProps } from '../../../../layout';
-import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
-import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
+import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { AvatarEditorGridPartItem } from '../../common/AvatarEditorGridPartItem';
 import { AvatarEditorIcon } from '../AvatarEditorIcon';
 
@@ -31,11 +31,11 @@ export const AvatarEditorFigureSetItemView: FC<AvatarEditorFigureSetItemViewProp
     })
 
     return (
-        <NitroCardGridItemView itemImage={ (partItem.isClear ? undefined : partItem.imageUrl) } itemActive={ partItem.isSelected } { ...rest }>
+        <LayoutGridItem itemImage={ (partItem.isClear ? undefined : partItem.imageUrl) } itemActive={ partItem.isSelected } { ...rest }>
             { partItem.isHC && <CurrencyIcon className="position-absolute end-1 bottom-1" type={ 'hc' } /> }
             { partItem.isClear && <AvatarEditorIcon icon="clear" /> }
             { partItem.isSellable && <AvatarEditorIcon icon="sellable" position="absolute" className="end-1 bottom-1" /> }
             { children }
-        </NitroCardGridItemView>
+        </LayoutGridItem>
     );
 }

@@ -1,6 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, IAvatarFigureContainer, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetAvatarRenderManager, GetClubMemberLevel, GetSessionDataManager, LocalizeText } from '../../api';
+import { Button } from '../../common/Button';
+import { ButtonGroup } from '../../common/ButtonGroup';
 import { Column } from '../../common/Column';
 import { Grid } from '../../common/Grid';
 import { AvatarEditorEvent } from '../../events/avatar-editor';
@@ -16,7 +19,6 @@ import { HeadModel } from './common/HeadModel';
 import { IAvatarEditorCategoryModel } from './common/IAvatarEditorCategoryModel';
 import { LegModel } from './common/LegModel';
 import { TorsoModel } from './common/TorsoModel';
-import { AvatarEditorFigureActionsView } from './views/figure-actions/AvatarEditorFigureActionsView';
 import { AvatarEditorFigurePreviewView } from './views/figure-preview/AvatarEditorFigurePreviewView';
 import { AvatarEditorModelView } from './views/model/AvatarEditorModelView';
 import { AvatarEditorWardrobeView } from './views/wardrobe/AvatarEditorWardrobeView';
@@ -24,10 +26,6 @@ import { AvatarEditorWardrobeView } from './views/wardrobe/AvatarEditorWardrobeV
 const DEFAULT_MALE_FIGURE: string = 'hr-100.hd-180-7.ch-215-66.lg-270-79.sh-305-62.ha-1002-70.wa-2007';
 const DEFAULT_FEMALE_FIGURE: string = 'hr-515-33.hd-600-1.ch-635-70.lg-716-66-62.sh-735-68';
 const MAX_SAVED_FIGURES: number = 10;
-const ACTION_CLEAR = 'action_clear';
-const ACTION_RESET = 'action_reset';
-const ACTION_RANDOMIZE = 'action_randomize';
-const ACTION_SAVE = 'action_save';
 
 export const AvatarEditorView: FC<{}> = props =>
 {
@@ -295,7 +293,22 @@ export const AvatarEditorView: FC<{}> = props =>
                     </Column>
                     <Column size={ 3 } overflow="hidden">
                         <AvatarEditorFigurePreviewView figureData={ figureData } />
-                        <AvatarEditorFigureActionsView processAction={ processAction } />
+                        <Column grow gap={ 2 }>
+                            <ButtonGroup>
+                                <Button variant="secondary" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_RESET) }>
+                                    <FontAwesomeIcon icon="undo" />
+                                </Button>
+                                <Button variant="secondary" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_CLEAR) }>
+                                    <FontAwesomeIcon icon="trash" />
+                                </Button>
+                                <Button variant="secondary" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_RANDOMIZE) }>
+                                    <FontAwesomeIcon icon="dice" />
+                                </Button>
+                            </ButtonGroup>
+                            <Button className="w-100" variant="success" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_SAVE) }>
+                                { LocalizeText('avatareditor.save') }
+                            </Button>
+                        </Column>
                     </Column>
                 </Grid>
             </NitroCardContentView>

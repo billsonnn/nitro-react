@@ -1,9 +1,15 @@
 import { AvatarDirectionAngle } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { NitroLayoutFlexColumn } from '../../../../layout';
-import { NitroLayoutBase } from '../../../../layout/base';
-import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
-import { AvatarEditorFigurePreviewViewProps } from './AvatarEditorFigurePreviewView.types';
+import { Base } from '../../../../common/Base';
+import { Column } from '../../../../common/Column';
+import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
+import { FigureData } from '../../common/FigureData';
+import { AvatarEditorIcon } from '../AvatarEditorIcon';
+
+export interface AvatarEditorFigurePreviewViewProps
+{
+    figureData: FigureData;
+}
 
 export const AvatarEditorFigurePreviewView: FC<AvatarEditorFigurePreviewViewProps> = props =>
 {
@@ -43,14 +49,14 @@ export const AvatarEditorFigurePreviewView: FC<AvatarEditorFigurePreviewViewProp
     }, [ figureData, rerender ] );
 
     return (
-        <NitroLayoutFlexColumn className="figure-preview-container" overflow="hidden" position="relative">
+        <Column className="figure-preview-container" overflow="hidden" position="relative">
             <AvatarImageView figure={ figureData.getFigureString() } direction={ figureData.direction } scale={ 2 } />
-            <NitroLayoutBase className="nitro-avatar-editor-spritesheet spotlight" />
-            <NitroLayoutBase className="avatar-shadow" />
-            <NitroLayoutBase className="arrow-container">
-                <div className="nitro-avatar-editor-spritesheet arrow-left-icon" onClick={ event => rotateFigure(figureData.direction + 1) }  />
-                <div className="nitro-avatar-editor-spritesheet arrow-right-icon" onClick={ event => rotateFigure(figureData.direction - 1) } />
-            </NitroLayoutBase>
-        </NitroLayoutFlexColumn>
+            <AvatarEditorIcon icon="spotlight" />
+            <Base className="avatar-shadow" />
+            <Base className="arrow-container">
+                <AvatarEditorIcon pointer icon="arrow-left" onClick={ event => rotateFigure(figureData.direction + 1) } />
+                <AvatarEditorIcon pointer icon="arrow-right" onClick={ event => rotateFigure(figureData.direction - 1) } />
+            </Base>
+        </Column>
     );
 }
