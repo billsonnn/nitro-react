@@ -1,5 +1,7 @@
 import { FC, useMemo } from 'react';
 import { ItemCountView } from '../../views/shared/item-count/ItemCountView';
+import { LimitedEditionStyledNumberView } from '../../views/shared/limited-edition/styled-number/LimitedEditionStyledNumberView';
+import { Base } from '../Base';
 import { Column, ColumnProps } from '../Column';
 
 export interface LayoutGridItemProps extends ColumnProps
@@ -51,10 +53,13 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
         <Column center pointer position={ position } overflow={ overflow } classNames={ getClassNames } style={ getStyle } { ...rest }>
             { (itemCount > itemCountMinimum) &&
                 <ItemCountView count={ itemCount } /> }
-            {/* { (itemUniqueNumber > 0) && 
-                <div className="position-absolute unique-item-counter">
-                    <LimitedEditionStyledNumberView value={ itemUniqueNumber } />
-                </div> } */}
+            { (itemUniqueNumber > 0) && 
+                <>
+                    <Base fit className="unique-bg-override" style={ { backgroundImage: `url(${ itemImage })` } } />
+                    <div className="position-absolute bottom-0 unique-item-counter">
+                        <LimitedEditionStyledNumberView value={ itemUniqueNumber } />
+                    </div>
+                </> }
             { children }
         </Column>
     );

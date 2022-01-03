@@ -12,4 +12,8 @@
     &.unseen {
         background-color: rgba($success, 0.4);
     }
+
+    .avatar-image {
+        background-position-y: -35px;
+    }
 }

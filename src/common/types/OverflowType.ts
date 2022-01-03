@@ -1,1 +1,1 @@
-export type OverflowType = 'hidden' | 'auto';
+export type OverflowType = 'hidden' | 'auto' | 'unset';
