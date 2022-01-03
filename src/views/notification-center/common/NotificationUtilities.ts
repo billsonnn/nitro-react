@@ -112,9 +112,11 @@ export class NotificationUtilities
         dispatchUiEvent(new NotificationAlertEvent(messages, NotificationAlertType.MOTD, null, null, LocalizeText('notifications.motd.title')));
     }
 
-    public static simpleAlert(message: string, type: string, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
+    public static simpleAlert(message: string, type: string = null, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
     {
         if(!title || !title.length) title = LocalizeText('notifications.broadcast.title');
+
+        if(!type || !type.length) type = NotificationAlertType.DEFAULT;
 
         dispatchUiEvent(new NotificationAlertEvent([ this.cleanText(message) ], type, clickUrl, clickUrlText, title, imageUrl));
     }
