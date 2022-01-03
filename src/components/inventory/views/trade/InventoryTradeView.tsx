@@ -7,9 +7,10 @@ import { Button } from '../../../../common/Button';
 import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
 import { Grid } from '../../../../common/Grid';
+import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { Text } from '../../../../common/Text';
 import { SendMessageHook } from '../../../../hooks/messages';
-import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
+import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
 import { FurniCategory } from '../../common/FurniCategory';
 import { GroupItem } from '../../common/GroupItem';
 import { IFurnitureItem } from '../../common/IFurnitureItem';
@@ -156,7 +157,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
             case TradeState.TRADING_STATE_RUNNING:
                 if(!tradeData.otherUser.itemCount && !tradeData.ownUser.accepts)
                 {
-                    //this._notificationService.alert('${inventory.trading.warning.other_not_offering}');
+                    NotificationUtilities.simpleAlert(LocalizeText('${inventory.trading.warning.other_not_offering}'), null, null, null);
                 }
 
                 if(tradeData.ownUser.accepts)
@@ -246,24 +247,26 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         <Grid>
             <Column size={ 4 } overflow="hidden">
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
-                <Grid grow fullHeight columnCount={ 3 } overflow="auto">
-                    { filteredGroupItems && (filteredGroupItems.length > 0) && filteredGroupItems.map((item, index) =>
-                        {
-                            const count = item.getUnlockedCount();
+                <Flex column fullHeight justifyContent="between" overflow="hidden" gap={ 2 }>
+                    <Grid grow columnCount={ 3 } overflow="auto">
+                        { filteredGroupItems && (filteredGroupItems.length > 0) && filteredGroupItems.map((item, index) =>
+                            {
+                                const count = item.getUnlockedCount();
 
-                            return (
-                                <NitroCardGridItemView key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) }>
-                                    { ((count > 0) && (groupItem === item)) &&
-                                        <Button variant="success" size="sm" className="trade-button" onClick={ event => attemptItemOffer(1) }>
-                                            <FontAwesomeIcon icon="chevron-right" />
-                                        </Button> }
-                                </NitroCardGridItemView>
-                            );
-                        }) }
-                </Grid>
-                <Base fullWidth className="badge bg-muted">
-                    { groupItem ? groupItem.name : LocalizeText('catalog_selectproduct') }
-                </Base>
+                                return (
+                                    <LayoutGridItem key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) }>
+                                        { ((count > 0) && (groupItem === item)) &&
+                                            <Button position="absolute" variant="success" size="sm" className="trade-button bottom-1 end-1" onClick={ event => attemptItemOffer(1) }>
+                                                <FontAwesomeIcon icon="chevron-right" />
+                                            </Button> }
+                                    </LayoutGridItem>
+                                );
+                            }) }
+                    </Grid>
+                    <Base fullWidth className="badge bg-muted">
+                        { groupItem ? groupItem.name : LocalizeText('catalog_selectproduct') }
+                    </Base>
+                </Flex>
             </Column>
             <Column size={ 8 } overflow="hidden">
                 <Grid overflow="hidden">
@@ -277,15 +280,15 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                                 {
                                     const item = (tradeData.ownUser.items.getWithIndex(i) || null);
 
-                                    if(!item) return <NitroCardGridItemView key={ i } />;
+                                    if(!item) return <LayoutGridItem key={ i } />;
 
                                     return (
-                                        <NitroCardGridItemView key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) }>
+                                        <LayoutGridItem key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) }>
                                             { (ownGroupItem === item) &&
-                                                <Button variant="danger" size="sm" className="trade-button left" onClick={ event => removeItem(item) }>
+                                                <Button position="absolute" variant="danger" size="sm" className="trade-button bottom-1 start-1" onClick={ event => removeItem(item) }>
                                                     <FontAwesomeIcon icon="chevron-left" />
                                                 </Button> }
-                                        </NitroCardGridItemView>
+                                        </LayoutGridItem>
                                     );
                                 }) }
                         </Grid>
@@ -303,9 +306,9 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                                 {
                                     const item = (tradeData.otherUser.items.getWithIndex(i) || null);
 
-                                    if(!item) return <NitroCardGridItemView key={ i } />;
+                                    if(!item) return <LayoutGridItem key={ i } />;
 
-                                    return <NitroCardGridItemView key={ i } itemActive={ (otherGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
+                                    return <LayoutGridItem key={ i } itemActive={ (otherGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
                                 }) }
                         </Grid>
                         <Base fullWidth className="badge bg-muted w-100">

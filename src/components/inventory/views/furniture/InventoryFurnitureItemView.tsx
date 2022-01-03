@@ -14,8 +14,8 @@ export interface InventoryFurnitureItemViewProps
 export const InventoryFurnitureItemView: FC<InventoryFurnitureItemViewProps> = props =>
 {
     const { groupItem } = props;
-    const { furnitureState, dispatchFurnitureState } = useInventoryContext();
     const [ isMouseDown, setMouseDown ] = useState(false);
+    const { furnitureState, dispatchFurnitureState } = useInventoryContext();
     const isActive = (furnitureState.groupItem === groupItem);
 
     const onMouseEvent = useCallback((event: MouseEvent) =>

@@ -1,6 +1,6 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
-import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCardGridItemView';
+import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { PetImageView } from '../../../../views/shared/pet-image/PetImageView';
 import { PetItem } from '../../common/PetItem';
 import { attemptPetPlacement } from '../../common/PetUtilities';
@@ -15,8 +15,8 @@ export interface InventoryPetItemViewProps
 export const InventoryPetItemView: FC<InventoryPetItemViewProps> = props =>
 {
     const { petItem } = props;
-    const { petState = null, dispatchPetState = null } = useInventoryContext();
     const [ isMouseDown, setMouseDown ] = useState(false);
+    const { petState = null, dispatchPetState = null } = useInventoryContext();
     const isActive = (petState.petItem === petItem);
 
     const onMouseEvent = useCallback((event: MouseEvent) =>
@@ -50,8 +50,8 @@ export const InventoryPetItemView: FC<InventoryPetItemViewProps> = props =>
     }, [ isActive, petItem ]);
     
     return (
-        <NitroCardGridItemView itemActive={ isActive } itemUnseen={ petItem.isUnseen } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
-            <PetImageView figure={ petItem.petData.figureString } direction={ 3 } headOnly={ true } />
-        </NitroCardGridItemView>
+        <LayoutGridItem itemActive={ isActive } itemUnseen={ petItem.isUnseen } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
+            <PetImageView figure={ petItem.petData.figureData.figuredata } scale={ 0.5 } />
+        </LayoutGridItem>
     );
 }

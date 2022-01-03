@@ -1,10 +1,11 @@
 import { AdvancedMap, BadgePointLimitsEvent, BadgeReceivedEvent, BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, RequestBadgesComposer, TradingAcceptEvent, TradingCloseEvent, TradingCompletedEvent, TradingConfirmationEvent, TradingListItemEvent, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingYouAreNotAllowedEvent, UnseenItemsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { GetLocalization, GetRoomSession, GetSessionDataManager } from '../../api';
+import { GetLocalization, GetRoomSession, GetSessionDataManager, LocalizeText } from '../../api';
 import { InventoryBadgesUpdatedEvent } from '../../events';
 import { InventoryBadgesRequestEvent } from '../../events/inventory/InventoryBadgesRequestEvent';
 import { dispatchUiEvent, useUiEvent } from '../../hooks';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
+import { NotificationUtilities } from '../../views/notification-center/common/NotificationUtilities';
 import { mergeFurniFragments } from './common/FurnitureUtilities';
 import { mergePetFragments } from './common/PetUtilities';
 import { TradeState } from './common/TradeState';
@@ -292,6 +293,8 @@ export const InventoryMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         console.log(parser);
+
+        NotificationUtilities.simpleAlert(LocalizeText(`inventory.trading.openfail.${ parser.reason }`, [ 'otherusername' ], [ parser.otherUserName ]), null, null, null, LocalizeText('inventory.trading.openfail.title'));
     }, []);
 
     const onTradingOtherNotAllowedEvent = useCallback((event: TradingOtherNotAllowedEvent) =>

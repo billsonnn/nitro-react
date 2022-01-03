@@ -19,7 +19,7 @@ export const InventoryCategoryEmptyView: FC<InventoryCategoryEmptyViewProps> = p
                 <div className="empty-image" />
             </Column>
             <Column justifyContent="center" size={ 7 } overflow="hidden">
-                <Text fontWeight="bold" fontSize={ 5 } truncate>{ title }</Text>
+                <Text fontWeight="bold" fontSize={ 5 } overflow="unset" truncate>{ title }</Text>
                 <Text overflow="auto">{ desc }</Text>
             </Column>
             { children }
