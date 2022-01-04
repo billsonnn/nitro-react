@@ -1,11 +1,6 @@
-import { BuyMarketplaceOfferMessageComposer, CancelMarketplaceOfferMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetRoomEngine, LocalizeText } from '../../../../../../../api';
-import { SendMessageHook } from '../../../../../../../hooks';
 import { NitroCardGridItemView } from '../../../../../../../layout';
-import { NotificationAlertType } from '../../../../../../notification-center/common/NotificationAlertType';
-import { NotificationUtilities } from '../../../../../../notification-center/common/NotificationUtilities';
-import { GetCurrencyAmount } from '../../../../../../purse/common/CurrencyHelper';
 import { MarketplaceOfferData } from '../common/MarketplaceOfferData';
 import { MarketPlaceOfferState } from '../common/MarketplaceOfferState';
 
@@ -16,11 +11,12 @@ export interface MarketplaceItemViewProps
 {
     offerData: MarketplaceOfferData;
     type?: number;
+    onClick(offerData: MarketplaceOfferData): void;
 }
 
 export const MarketplaceItemView: FC<MarketplaceItemViewProps> = props =>
 {
-    const { offerData = null, type = PUBLIC_OFFER } = props;
+    const { offerData = null, type = PUBLIC_OFFER, onClick = null } = props;
 
     const getImageUrlForOffer = useCallback( () =>
     {
@@ -76,22 +72,6 @@ export const MarketplaceItemView: FC<MarketplaceItemViewProps> = props =>
         return LocalizeText('catalog.marketplace.offer.time_left', ['time'], [text] );
     }, [offerData]);
 
-    const takeItemBack = useCallback(() =>
-    {
-        SendMessageHook(new CancelMarketplaceOfferMessageComposer(offerData.offerId));
-    }, [offerData.offerId]);
-
-    const buyOffer = useCallback(() =>
-    {
-        if(offerData.price > GetCurrencyAmount(-1))
-        {
-            NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.notenough.credits.description'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.alert.notenough.title'));
-            return;
-        }
-        
-        SendMessageHook(new BuyMarketplaceOfferMessageComposer(offerData.offerId));
-    }, [offerData.offerId, offerData.price]);
-
     return (
     <NitroCardGridItemView className='w-100 marketplace-item align-items-center'>
         <img src={ getImageUrlForOffer() } className='mx-3' alt='' />
@@ -111,9 +91,9 @@ export const MarketplaceItemView: FC<MarketplaceItemViewProps> = props =>
             }
         </div>
         <div className='btn-group-vertical mx-1 gap-2'>
-            { (type === OWN_OFFER && offerData.status !== MarketPlaceOfferState.SOLD) && <button className='btn btn-secondary btn-sm' onClick={ takeItemBack }>{ LocalizeText('catalog.marketplace.offer.pick') }</button>}
+            { (type === OWN_OFFER && offerData.status !== MarketPlaceOfferState.SOLD) && <button className='btn btn-secondary btn-sm' onClick={ () => onClick(offerData) }>{ LocalizeText('catalog.marketplace.offer.pick') }</button>}
             { type === PUBLIC_OFFER && <>
-                <button className='btn btn-secondary btn-sm' onClick={ buyOffer } >{ LocalizeText('buy') }</button>
+                <button className='btn btn-secondary btn-sm' onClick={ () => onClick(offerData) } >{ LocalizeText('buy') }</button>
                 <button className='btn btn-secondary btn-sm' disabled={true}>{ LocalizeText('catalog.marketplace.view_more') }</button>
             </>}
         </div>

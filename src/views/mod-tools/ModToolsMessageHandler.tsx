@@ -1,13 +1,14 @@
 import { CfhSanctionMessageEvent, CfhTopicsInitEvent, IssueDeletedMessageEvent, IssueInfoMessageEvent, IssuePickFailedMessageEvent, ModeratorActionResultMessageEvent, ModeratorInitMessageEvent, ModeratorToolPreferencesEvent, RoomEngineEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { MODTOOLS_NEW_TICKET, PlaySound } from '../../api/utils/PlaySound';
-import { NotificationAlertEvent } from '../../events';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { ModToolsOpenRoomChatlogEvent } from '../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
 import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRoomInfoEvent';
 import { ModToolsOpenUserChatlogEvent } from '../../events/mod-tools/ModToolsOpenUserChatlogEvent';
 import { ModToolsOpenUserInfoEvent } from '../../events/mod-tools/ModToolsOpenUserInfoEvent';
-import { CreateMessageHook, dispatchUiEvent, useRoomEngineEvent, useUiEvent } from '../../hooks';
+import { CreateMessageHook, useRoomEngineEvent, useUiEvent } from '../../hooks';
+import { NotificationAlertType } from '../notification-center/common/NotificationAlertType';
+import { NotificationUtilities } from '../notification-center/common/NotificationUtilities';
 import { SetCfhCategories } from './common/GetCFHCategories';
 import { useModToolsContext } from './context/ModToolsContext';
 import { ModToolsActions } from './reducers/ModToolsReducer';
@@ -38,8 +39,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
                 tickets: data.issues
             }
         });
-        
-        console.log(parser);   
+          
     }, [dispatchModToolsState]);
 
     const onIssueInfoMessageEvent = useCallback((event: IssueInfoMessageEvent) =>
@@ -68,7 +68,6 @@ export const ModToolsMessageHandler: FC<{}> = props =>
             }
         });
 
-        console.log(parser);
     }, [dispatchModToolsState, tickets]);
 
     const onModeratorToolPreferencesEvent = useCallback((event: ModeratorToolPreferencesEvent) =>
@@ -77,7 +76,6 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         if(!parser) return;
 
-        console.log(parser);
     }, []);
 
     const onIssuePickFailedMessageEvent = useCallback((event: IssuePickFailedMessageEvent) =>
@@ -86,8 +84,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         if(!parser) return;
 
-        // todo: let user know it failed
-        dispatchUiEvent(new NotificationAlertEvent(['Failed to pick issue'], null, null, null, 'Error', null));
+        NotificationUtilities.simpleAlert('Failed to pick issue', NotificationAlertType.DEFAULT, null, null, 'Error')
     }, []);
 
     const onIssueDeletedMessageEvent = useCallback((event: IssueDeletedMessageEvent) =>
@@ -119,11 +116,11 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         if(parser.success)
         {
-            dispatchUiEvent(new NotificationAlertEvent(['Moderation action was successfull'], null, null, null, 'Success', null));
+            NotificationUtilities.simpleAlert('Moderation action was successfull', NotificationAlertType.MODERATION, null, null, 'Success');
         }
         else 
         {
-            dispatchUiEvent(new NotificationAlertEvent(['There was a problem applying that moderation action'], null, null, null, 'Error', null));
+            NotificationUtilities.simpleAlert('There was a problem applying tht moderation action', NotificationAlertType.MODERATION, null, null, 'Error');
         }
     }, []);
 
@@ -144,7 +141,6 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         SetCfhCategories(categories);
         
-        console.log(parser);
     }, [dispatchModToolsState]);
 
     const onCfhSanctionMessageEvent = useCallback((event: CfhSanctionMessageEvent) =>
@@ -153,7 +149,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         if(!parser) return;
         
-        console.log(parser);
+        // todo: update sanction data
     }, []);
 
     CreateMessageHook(ModeratorInitMessageEvent, onModeratorInitMessageEvent);

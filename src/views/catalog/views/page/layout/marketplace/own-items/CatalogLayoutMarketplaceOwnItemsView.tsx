@@ -1,4 +1,4 @@
-import { GetMarketplaceOwnOffersMessageComposer, MarketplaceCancelOfferResultEvent, MarketplaceOwnOffersEvent, RedeemMarketplaceOfferCreditsMessageComposer } from '@nitrots/nitro-renderer';
+import { CancelMarketplaceOfferMessageComposer, GetMarketplaceOwnOffersMessageComposer, MarketplaceCancelOfferResultEvent, MarketplaceOwnOffersEvent, RedeemMarketplaceOfferCreditsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../../../../api';
 import { BatchUpdates, CreateMessageHook, SendMessageHook, UseMountEffect } from '../../../../../../../hooks';
@@ -96,6 +96,11 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutMarketplaceOw
         SendMessageHook(new RedeemMarketplaceOfferCreditsMessageComposer());
     }, []);
 
+    const takeItemBack = useCallback( (offerData: MarketplaceOfferData) =>
+    {
+        SendMessageHook(new CancelMarketplaceOfferMessageComposer(offerData.offerId));
+    }, []);
+
     return (
     <>
         { (creditsWaiting <= 0) && <NitroLayoutBase className='text-black'>{LocalizeText('catalog.marketplace.redeem.no_sold_items')}</NitroLayoutBase>}
@@ -107,7 +112,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutMarketplaceOw
         <div className='text-black'>{LocalizeText('catalog.marketplace.items_found', ['count'], [offers.size.toString()])}</div>
         <NitroCardGridView columns={1} className='text-black'>
             { 
-                Array.from(offers.values()).map( (entry, index) => <MarketplaceItemView key={ index } offerData={ entry } type={ OWN_OFFER } />)
+                Array.from(offers.values()).map( (entry, index) => <MarketplaceItemView key={ index } offerData={ entry } type={ OWN_OFFER } onClick={takeItemBack} />)
             }
         </NitroCardGridView>
     </>

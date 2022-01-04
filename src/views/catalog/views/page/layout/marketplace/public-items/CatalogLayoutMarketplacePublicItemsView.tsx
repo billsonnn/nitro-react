@@ -1,10 +1,11 @@
-import { GetMarketplaceOffersMessageComposer, MarketplaceBuyOfferResultEvent, MarketPlaceOffersEvent } from '@nitrots/nitro-renderer';
+import { BuyMarketplaceOfferMessageComposer, GetMarketplaceOffersMessageComposer, MarketplaceBuyOfferResultEvent, MarketPlaceOffersEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../../../../api';
 import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../../../../hooks';
 import { NitroCardGridView } from '../../../../../../../layout';
 import { NotificationAlertType } from '../../../../../../notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../../../../../notification-center/common/NotificationUtilities';
+import { GetCurrencyAmount } from '../../../../../../purse/common/CurrencyHelper';
 import { CatalogLayoutProps } from '../../CatalogLayout.types';
 import { IMarketplaceSearchOptions } from '../common/IMarketplaceSearchOptions';
 import { MarketplaceOfferData } from '../common/MarketplaceOfferData';
@@ -46,6 +47,21 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
         }
         return [];
     }, [searchType]);
+
+    const purchaseItem = useCallback((offerData: MarketplaceOfferData) =>
+    {
+        if(offerData.price > GetCurrencyAmount(-1))
+        {
+            NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.notenough.credits.description'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.alert.notenough.title'));
+            return;
+        }
+        const offerId = offerData.offerId;
+        NotificationUtilities.confirm(LocalizeText('catalog.marketplace.confirm_header'), () =>
+            {
+                SendMessageHook(new BuyMarketplaceOfferMessageComposer(offerId));
+            },
+            null, null, null, LocalizeText('catalog.marketplace.confirm_title'));
+    },[]);
 
     const onMarketPlaceOffersEvent = useCallback( (event: MarketPlaceOffersEvent) =>
     {
@@ -109,8 +125,12 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                     return newVal;
                 });
 
-                // for now just let user know
-                NotificationUtilities.simpleAlert(LocalizeText('catalog.marketplace.confirm_higher_header'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.marketplace.confirm_higher_title'));
+                NotificationUtilities.confirm(LocalizeText('catalog.marketplace.confirm_higher_header') + 
+                '\n' + LocalizeText('catalog.marketplace.confirm_price', ['price'], [parser.newPrice.toString()]), () =>
+                {
+                    SendMessageHook(new BuyMarketplaceOfferMessageComposer(parser.offerId));
+                },
+                null, null, null, LocalizeText('catalog.marketplace.confirm_higher_title'));
                 break;
             case 4:
                 NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.notenough.credits.description'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.alert.notenough.title'));
@@ -139,7 +159,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
         <div className='text-black'>{LocalizeText('catalog.marketplace.items_found', ['count'], [offers.size.toString()])}</div>
         <NitroCardGridView columns={1} className='text-black'>
             { 
-                Array.from(offers.values()).map( (entry, index) => <MarketplaceItemView key={ index } offerData={ entry } type={ PUBLIC_OFFER } />)
+                Array.from(offers.values()).map( (entry, index) => <MarketplaceItemView key={ index } offerData={ entry } type={ PUBLIC_OFFER } onClick={purchaseItem} />)
             }
         </NitroCardGridView>
     </>);

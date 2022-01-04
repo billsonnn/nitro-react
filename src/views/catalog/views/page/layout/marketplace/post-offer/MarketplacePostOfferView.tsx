@@ -5,6 +5,7 @@ import { CatalogPostMarketplaceOfferEvent } from '../../../../../../../events/ca
 import { SendMessageHook, useUiEvent } from '../../../../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFlex } from '../../../../../../../layout';
 import { FurnitureItem } from '../../../../../../inventory/common/FurnitureItem';
+import { NotificationUtilities } from '../../../../../../notification-center/common/NotificationUtilities';
 
 export const MarketplacePostOfferView : FC<{}> = props =>
 {
@@ -68,12 +69,15 @@ export const MarketplacePostOfferView : FC<{}> = props =>
 
     const postItem = useCallback( () =>
     {
-        if(isNaN(askingPrice) || askingPrice <= 0) return;
+        if(isNaN(askingPrice) || askingPrice <= 0 || !item) return;
 
-        SendMessageHook(new MakeOfferMessageComposer(askingPrice, item.isWallItem ? 2 : 1, item.id));
-        
-        setItem(null);
-    }, [askingPrice, item]);
+        NotificationUtilities.confirm(LocalizeText('inventory.marketplace.confirm_offer.info', ['furniname', 'price'], [getFurniTitle(), askingPrice.toString()]), () =>
+            {
+                SendMessageHook(new MakeOfferMessageComposer(askingPrice, item.isWallItem ? 2 : 1, item.id));
+                setItem(null);
+            },
+            () => { setItem(null)}, null, null, LocalizeText('inventory.marketplace.confirm_offer.title'));
+    }, [askingPrice, getFurniTitle, item]);
 
     return ( item && 
         <NitroCardView uniqueKey="catalog-mp-post-offer" className="nitro-marketplace-post-offer" simple={ true }>
