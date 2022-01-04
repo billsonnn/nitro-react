@@ -1,9 +1,10 @@
 import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomWidgetEnum, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
 import { GetConfiguration, GetNitroInstance } from '../../..';
-import { GetRoomEngine, GetSessionDataManager } from '../../../..';
+import { GetRoomEngine, GetSessionDataManager, LocalizeText } from '../../../..';
 import { FloorplanEditorEvent } from '../../../../../events/floorplan-editor/FloorplanEditorEvent';
 import { dispatchUiEvent } from '../../../../../hooks';
 import { SendMessageHook } from '../../../../../hooks/messages';
+import { NotificationUtilities } from '../../../../../views/notification-center/common/NotificationUtilities';
 import { RoomWidgetFloodControlEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetChatMessage, RoomWidgetChatSelectAvatarMessage, RoomWidgetChatTypingMessage, RoomWidgetMessage, RoomWidgetRequestWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
@@ -127,10 +128,11 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
                             newWindow.document.write(image.outerHTML);
                             return null;
                         case ':pickall':
-                            // this.container.notificationService.alertWithConfirm('${room.confirm.pick_all}', '${generic.alert.title}', () =>
-                            // {
-                            //     GetSessionDataManager().sendSpecialCommandMessage(':pickall');
-                            // });
+                            NotificationUtilities.confirm(LocalizeText('room.confirm.pick_all'), () =>
+                                {
+                                    GetSessionDataManager().sendSpecialCommandMessage(':pickall');
+                                },
+                                null, null, null, LocalizeText('generic.alert.title'));
 
                             return null;
                         case ':furni':

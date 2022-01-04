@@ -1,6 +1,6 @@
 import { HabboWebTools, RoomEnterEffect } from '@nitrots/nitro-renderer';
 import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText } from '../../../api';
-import { NotificationAlertEvent } from '../../../events';
+import { NotificationAlertEvent, NotificationConfirmEvent } from '../../../events';
 import { NotificationBubbleEvent } from '../../../events/notification-center/NotificationBubbleEvent';
 import { dispatchUiEvent } from '../../../hooks';
 import { CatalogPageName } from '../../catalog/common/CatalogPageName';
@@ -110,6 +110,17 @@ export class NotificationUtilities
         messages = messages.map(message => this.cleanText(message));
 
         dispatchUiEvent(new NotificationAlertEvent(messages, NotificationAlertType.MOTD, null, null, LocalizeText('notifications.motd.title')));
+    }
+
+    public static confirm(message: string, onConfirm: Function, onCancel: Function, confirmText: string = null, cancelText: string = null, title: string = null, type: string = null): void
+    {
+        if(!confirmText || !confirmText.length) confirmText = LocalizeText('generic.confirm');
+
+        if(!cancelText || !cancelText.length) cancelText = LocalizeText('generic.cancel');
+
+        if(!title || !title.length) title = LocalizeText('notifications.broadcast.title');
+
+        dispatchUiEvent(new NotificationConfirmEvent(type, this.cleanText(message), onConfirm, onCancel, confirmText, cancelText, title));
     }
 
     public static simpleAlert(message: string, type: string, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void

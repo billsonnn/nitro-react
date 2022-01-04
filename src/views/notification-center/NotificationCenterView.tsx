@@ -1,20 +1,23 @@
 import { FC, ReactNode, useCallback, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { NotificationAlertEvent } from '../../events';
+import { NotificationAlertEvent, NotificationConfirmEvent } from '../../events';
 import { NotificationBubbleEvent } from '../../events/notification-center/NotificationBubbleEvent';
 import { useUiEvent } from '../../hooks/events';
 import { NotificationAlertItem } from './common/NotificationAlertItem';
 import { NotificationBubbleItem } from './common/NotificationBubbleItem';
 import { NotificationBubbleType } from './common/NotificationBubbleType';
+import { NotificationConfirmItem } from './common/NotificationConfirmItem';
 import { NotificationCenterMessageHandler } from './NotificationCenterMessageHandler';
 import { NotificationCenterViewProps } from './NotificationCenterView.types';
 import { GetAlertLayout } from './views/alert-layouts/GetAlertLayout';
 import { GetBubbleLayout } from './views/bubble-layouts/GetBubbleLayout';
+import { GetConfirmLayout } from './views/confirm-layouts/GetConfirmLayout';
 
 export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
 {
     const [ alerts, setAlerts ] = useState<NotificationAlertItem[]>([]);
     const [ bubbleAlerts, setBubbleAlerts ] = useState<NotificationBubbleItem[]>([]);
+    const [ confirms, setConfirms ] = useState<NotificationConfirmItem[]>([]);
 
     const onNotificationAlertEvent = useCallback((event: NotificationAlertEvent) =>
     {
@@ -35,6 +38,15 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
     }, []);
 
     useUiEvent(NotificationBubbleEvent.NEW_BUBBLE, onNotificationBubbleEvent);
+
+    const onNotificationConfirmEvent = useCallback((event: NotificationConfirmEvent) =>
+    {
+        const confirmItem = new NotificationConfirmItem(event.type, event.message, event.onConfirm, event.onCancel, event.confirmText, event.cancelText, event.title);
+
+        setConfirms(prevValue => [ confirmItem, ...prevValue ]);
+    }, []);
+
+    useUiEvent(NotificationConfirmEvent.CONFIRM, onNotificationConfirmEvent);
 
     const closeAlert = useCallback((alert: NotificationAlertItem) =>
     {
@@ -59,6 +71,19 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
                 if(index >= 0) newAlerts.splice(index, 1);
 
                 return newAlerts;
+            })
+    }, []);
+
+    const closeConfirm = useCallback((item: NotificationConfirmItem) =>
+    {
+        setConfirms(prevValue =>
+            {
+                const newConfirms = [ ...prevValue ];
+                const index = newConfirms.findIndex(value => (item === value));
+
+                if(index >= 0) newConfirms.splice(index, 1);
+
+                return newConfirms;
             })
     }, []);
 
@@ -101,6 +126,22 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
         return elements;
     }, [ bubbleAlerts, closeBubbleAlert ]);
 
+    const getConfirms = useMemo(() =>
+    {
+        if(!confirms || !confirms.length) return null;
+
+        const elements: ReactNode[] = [];
+
+        for(const confirm of confirms)
+        {
+            const element = GetConfirmLayout(confirm, () => closeConfirm(confirm));
+
+            elements.push(element);
+        }
+
+        return elements;
+    }, [ confirms, closeConfirm ]);
+
     return (
         <>
             <NotificationCenterMessageHandler />
@@ -108,6 +149,7 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
                 { getBubbleAlerts }
             </div>
             { createPortal(getAlerts, document.getElementById('nitro-alerts-container')) }
+            { createPortal(getConfirms, document.getElementById('nitro-confirms-container')) }
         </>
     );
 }
