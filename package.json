@@ -5,13 +5,13 @@
   "scripts": {
     "start": "craco start",
     "build": "craco --max_old_space_size=8048 build",
-    "build:prod": "npx browserslist@latest --update-db && yarn remove @nitrots/nitro-renderer && yarn add git+https://git@git.krews.org/nitro/nitro-renderer#dev && yarn install && yarn build",
+    "build:prod": "npx browserslist@latest --update-db && yarn install && yarn build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
   "dependencies": {
     "@craco/craco": "^6.3.0",
-    "@nitrots/nitro-renderer": "file:../nitro-renderer",
+    "@nitrots/nitro-renderer": "^1.1.2",
     "animate.css": "^4.1.1",
     "classnames": "^2.3.1",
     "node-sass": "^6.0.1",
