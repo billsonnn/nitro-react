@@ -10,6 +10,7 @@ import { Grid } from '../../../../common/Grid';
 import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { Text } from '../../../../common/Text';
 import { SendMessageHook } from '../../../../hooks/messages';
+import { NotificationAlertType } from '../../../../views/notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
 import { FurniCategory } from '../../common/FurniCategory';
 import { GroupItem } from '../../common/GroupItem';
@@ -49,13 +50,13 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
         let type = spriteId.toString();
 
-        if(category === FurniCategory._Str_5186)
+        if(category === FurniCategory.POSTER)
         {
             type = ((type + 'poster') + stuffData.getLegacyString());
         }
         else
         {
-            if(category === FurniCategory._Str_12454)
+            if(category === FurniCategory.GUILD_FURNI)
             {
                 type = _Str_16998(spriteId, stuffData);
             }
@@ -121,7 +122,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         }
         else
         {
-            //this._notificationService.alert('${trading.items.too_many_items.desc}', '${trading.items.too_many_items.title}');
+            NotificationUtilities.simpleAlert(LocalizeText('trading.items.too_many_items.desc'), NotificationAlertType.DEFAULT, null, null, LocalizeText('trading.items.too_many_items.title'));
         }
     }, [ groupItem, tradeData, canTradeItem ]);
 
@@ -157,6 +158,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
             case TradeState.TRADING_STATE_RUNNING:
                 if(!tradeData.otherUser.itemCount && !tradeData.ownUser.accepts)
                 {
+                    // eslint-disable-next-line no-template-curly-in-string
                     NotificationUtilities.simpleAlert(LocalizeText('${inventory.trading.warning.other_not_offering}'), null, null, null);
                 }
 

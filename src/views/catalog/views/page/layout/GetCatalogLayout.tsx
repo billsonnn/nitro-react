@@ -6,6 +6,8 @@ import { CatalogLayouGuildCustomFurniView } from './guild-custom-furni/CatalogLa
 import { CatalogLayouGuildForumView } from './guild-forum/CatalogLayoutGuildForumView';
 import { CatalogLayouGuildFrontpageView } from './guild-frontpage/CatalogLayoutGuildFrontpageView';
 import { CatalogLayoutInfoLoyaltyView } from './info-loyalty/CatalogLayoutInfoLoyaltyView';
+import { CatalogLayoutMarketplaceOwnItemsView } from './marketplace/own-items/CatalogLayoutMarketplaceOwnItemsView';
+import { CatalogLayoutMarketplacePublicItemsView } from './marketplace/public-items/CatalogLayoutMarketplacePublicItemsView';
 import { CatalogLayoutPetView } from './pets/CatalogLayoutPetView';
 import { CatalogLayoutPets2View } from './pets2/CatalogLayoutPets2View';
 import { CatalogLayoutPets3View } from './pets3/CatalogLayoutPets3View';
@@ -41,9 +43,9 @@ export const GetCatalogLayout = (pageParser: CatalogPageMessageParser, roomPrevi
         case 'club_gifts':
             return null;
         case 'marketplace_own_items':
-            return null;
+            return <CatalogLayoutMarketplaceOwnItemsView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'marketplace':
-            return null;
+            return <CatalogLayoutMarketplacePublicItemsView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'single_bundle':
             return <CatalogLayoutSingleBundleView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'spaces_new':

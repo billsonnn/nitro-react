@@ -43,7 +43,7 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
             {
                 switch(furniData.specialType)
                 {
-                    case FurniCategory._Str_12534:
+                    case FurniCategory.FIGURE_PURCHASABLE_SET:
                         mode = MODE_PURCHASABLE_CLOTHING;
 
                         const setIds = furniData.customParams.split(',').map(part => parseInt(part));

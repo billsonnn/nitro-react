@@ -127,6 +127,7 @@ export const App: FC<{}> = props =>
     return (
         <div className="nitro-app overflow-hidden">
             <div id="nitro-alerts-container" />
+            <div id="nitro-confirms-container" />
             { (!isReady || isError) && <LoadingView isError={ isError } message={ message } /> }
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ (isReady && !isError) }>
                 <MainView />

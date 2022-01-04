@@ -30,12 +30,12 @@ export function parseTradeItems(items: ItemDataStructure[], _arg_2: AdvancedMap<
             name = ('itemid' + item.itemId);
         }
 
-        if(item.category === FurniCategory._Str_5186)
+        if(item.category === FurniCategory.POSTER)
         {
             name = (item.itemId + 'poster' + item.stuffData.getLegacyString());
         }
 
-        else if(item.category === FurniCategory._Str_12454)
+        else if(item.category === FurniCategory.GUILD_FURNI)
         {
             name = '';
         }

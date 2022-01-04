@@ -10,7 +10,7 @@ import { LimitedEditionCompactPlateView } from '../../../../views/shared/limited
 import { RarityLevelView } from '../../../../views/shared/rarity-level/RarityLevelView';
 import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomPreviewerView';
 import { FurniCategory } from '../../common/FurniCategory';
-import { attemptItemPlacement } from '../../common/FurnitureUtilities';
+import { attemptItemPlacement, attemptPlaceMarketplaceOffer } from '../../common/FurnitureUtilities';
 import { GroupItem } from '../../common/GroupItem';
 import { useInventoryContext } from '../../context/InventoryContext';
 import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
@@ -80,15 +80,15 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
         roomPreviewer.updateObjectRoom(floorType, wallType, landscapeType);
         roomPreviewer.updateRoomWallsAndFloorVisibility(true, true);
 
-        if((furnitureItem.category === FurniCategory._Str_3639) || (furnitureItem.category === FurniCategory._Str_3683) || (furnitureItem.category === FurniCategory._Str_3432))
+        if((furnitureItem.category === FurniCategory.WALL_PAPER) || (furnitureItem.category === FurniCategory.FLOOR) || (furnitureItem.category === FurniCategory.LANDSCAPE))
         {
-            floorType = ((furnitureItem.category === FurniCategory._Str_3683) ? groupItem.stuffData.getLegacyString() : floorType);
-            wallType = ((furnitureItem.category === FurniCategory._Str_3639) ? groupItem.stuffData.getLegacyString() : wallType);
-            landscapeType = ((furnitureItem.category === FurniCategory._Str_3432) ? groupItem.stuffData.getLegacyString() : landscapeType);
+            floorType = ((furnitureItem.category === FurniCategory.FLOOR) ? groupItem.stuffData.getLegacyString() : floorType);
+            wallType = ((furnitureItem.category === FurniCategory.WALL_PAPER) ? groupItem.stuffData.getLegacyString() : wallType);
+            landscapeType = ((furnitureItem.category === FurniCategory.LANDSCAPE) ? groupItem.stuffData.getLegacyString() : landscapeType);
 
             roomPreviewer.updateObjectRoom(floorType, wallType, landscapeType);
 
-            if(furnitureItem.category === FurniCategory._Str_3432)
+            if(furnitureItem.category === FurniCategory.LANDSCAPE)
             {
                 const data = GetSessionDataManager().getWallItemDataByName('noob_window_double');
 
@@ -133,6 +133,11 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                             <Button variant="success" size="sm" onClick={ event => attemptItemPlacement(groupItem) }>
                                 { LocalizeText('inventory.furni.placetoroom') }
                             </Button> }
+                        { (groupItem && groupItem.isSellable) &&
+                            <Button variant="primary" size="sm" onClick={ event => attemptPlaceMarketplaceOffer(groupItem) }>
+                                { LocalizeText('inventory.marketplace.sell') }
+                            </Button>
+                        }
                     </Column> }
             </Column>
         </Grid>
