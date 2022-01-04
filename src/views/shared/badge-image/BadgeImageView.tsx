@@ -1,9 +1,19 @@
 import { BadgeImageReadyEvent, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
+import { BaseProps } from '../../../common/Base';
 import { NitroLayoutBase } from '../../../layout/base';
 import { BadgeInformationView } from './badge-info/BadgeInformationView';
-import { BadgeImageViewProps } from './BadgeImageView.types';
+
+export interface BadgeImageViewProps extends BaseProps<HTMLDivElement>
+{
+    badgeCode: string;
+    isGroup?: boolean;
+    showInfo?: boolean;
+    customTitle?: string;
+    isGrayscale?: boolean;
+    scale?: number;
+}
 
 export const BadgeImageView: FC<BadgeImageViewProps> = props =>
 {
@@ -48,25 +58,25 @@ export const BadgeImageView: FC<BadgeImageViewProps> = props =>
         return newStyle;
     }, [ style, badgeUrl ]);
 
-    const onBadgeImageReadyEvent = useCallback((event: BadgeImageReadyEvent) =>
-    {
-        if(event.badgeId !== badgeCode) return;
-
-        const nitroSprite = new NitroSprite(event.image);
-        setBadgeUrl(TextureUtils.generateImageUrl(nitroSprite));
-
-        if(isListening)
-        {
-            GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
-            setIsListening(false);
-        }
-    }, [ badgeCode, isListening ]);
-
     useEffect(() =>
     {
         if(!badgeCode || !badgeCode.length) return;
         
         const existing = (isGroup) ? GetSessionDataManager().loadGroupBadgeImage(badgeCode) : GetSessionDataManager().loadBadgeImage(badgeCode);
+
+        const onBadgeImageReadyEvent = (event: BadgeImageReadyEvent) =>
+        {
+            if(event.badgeId !== badgeCode) return;
+
+            const nitroSprite = new NitroSprite(event.image);
+            setBadgeUrl(TextureUtils.generateImageUrl(nitroSprite));
+
+            if(isListening)
+            {
+                GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
+                setIsListening(false);
+            }
+        }
 
         if(!existing)
         {
@@ -86,9 +96,7 @@ export const BadgeImageView: FC<BadgeImageViewProps> = props =>
                 GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
             }
         });
-    }, [ badgeCode ]);
-
-    const url = `url('${ badgeUrl }')`;
+    }, [ badgeCode, isGroup, isListening ]);
 
     return (
         <NitroLayoutBase className={ getClassName } style={ getStyle }>
