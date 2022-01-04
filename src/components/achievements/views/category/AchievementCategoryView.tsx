@@ -1,8 +1,14 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { NitroLayoutFlexColumn } from '../../../../layout';
+import { Column } from '../../../../common/Column';
+import { AchievementCategory } from '../../common/AchievementCategory';
 import { AchievementDetailsView } from '../achievement-details/AchievementDetailsView';
 import { AchievementListView } from '../achievement-list/AchievementListView';
-import { AchievementCategoryViewProps } from './AchievementCategoryView.types';
+
+export class AchievementCategoryViewProps
+{
+    category: AchievementCategory;
+    setAchievementSeen: (code: string, achievementId: number) => void;
+}
 
 export const AchievementCategoryView: FC<AchievementCategoryViewProps> = props =>
 {
@@ -42,10 +48,10 @@ export const AchievementCategoryView: FC<AchievementCategoryViewProps> = props =
     if(!category) return null;
 
     return (
-        <NitroLayoutFlexColumn className="justify-content-between h-100" gap={ 2 }>
+        <Column fullHeight justifyContent="between">
             <AchievementListView achievements={ category.achievements } selectedAchievementId={ selectedAchievementId } setSelectedAchievementId={ setSelectedAchievementId } />
             { getSelectedAchievement &&
                 <AchievementDetailsView achievement={ getSelectedAchievement } /> }
-        </NitroLayoutFlexColumn>
+        </Column>
     );
 }

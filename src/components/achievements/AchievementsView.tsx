@@ -1,18 +1,21 @@
 import { AchievementData, AchievementEvent, AchievementsEvent, AchievementsScoreEvent, RequestAchievementsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { LocalizeText } from '../../api';
+import { GetConfiguration, LocalizeText } from '../../api';
+import { Base } from '../../common/Base';
+import { Column } from '../../common/Column';
+import { Flex } from '../../common/Flex';
+import { Text } from '../../common/Text';
 import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events/achievements';
 import { BatchUpdates, CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../hooks';
 import { useUiEvent } from '../../hooks/events';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView, NitroLayoutFlexColumn, NitroLayoutGrid, NitroLayoutGridColumn } from '../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView } from '../../layout';
 import { NitroLayoutBase } from '../../layout/base';
-import { AchievementsViewProps } from './AchievementsView.types';
 import { AchievementCategory } from './common/AchievementCategory';
 import { AchievementUtilities } from './common/AchievementUtilities';
 import { AchievementsCategoryListView } from './views/category-list/AchievementsCategoryListView';
 import { AchievementCategoryView } from './views/category/AchievementCategoryView';
 
-export const AchievementsView: FC<AchievementsViewProps> = props =>
+export const AchievementsView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ isInitalized, setIsInitalized ] = useState(false);
@@ -170,6 +173,15 @@ export const AchievementsView: FC<AchievementsViewProps> = props =>
         return achievementCategories.find(existing => (existing.code === selectedCategoryCode));
     }, [ achievementCategories, selectedCategoryCode ]);
 
+    const getCategoryIcon = useMemo(() =>
+    {
+        if(!getSelectedCategory) return null;
+        
+        const imageUrl = GetConfiguration<string>('achievements.images.url');
+
+        return imageUrl.replace('%image%', `achicon_${ getSelectedCategory.code }`);
+    }, [ getSelectedCategory ]);
+
     const setAchievementSeen = useCallback((code: string, achievementId: number) =>
     {
         const newCategories = [ ...achievementCategories ];
@@ -207,38 +219,27 @@ export const AchievementsView: FC<AchievementsViewProps> = props =>
         <NitroCardView uniqueKey="achievements" className="nitro-achievements" simple={ true }>
             <NitroCardHeaderView headerText={ LocalizeText('inventory.achievements') } onCloseClick={ event => setIsVisible(false) } />
             { getSelectedCategory &&
-                <NitroCardSubHeaderView className="justify-content-center align-items-center cursor-pointer" gap={ 3 }>
+                <NitroCardSubHeaderView position="relative" className="justify-content-center align-items-center cursor-pointer" gap={ 3 }>
                     <NitroLayoutBase onClick={ event => setSelectedCategoryCode(null) } className="nitro-achievements-back-arrow" />
-                    <NitroLayoutFlexColumn className="flex-grow-1">
-                        <NitroLayoutBase className="fs-4 text-black fw-bold">
-                            { LocalizeText(`quests.${ getSelectedCategory.code }.name`) }
-                        </NitroLayoutBase>
-                        <NitroLayoutBase className="text-black">
-                            { LocalizeText('achievements.details.categoryprogress', [ 'progress', 'limit' ], [ getSelectedCategory.getProgress().toString(), getSelectedCategory.getMaxProgress().toString() ]) }
-                        </NitroLayoutBase>
-                    </NitroLayoutFlexColumn>
+                    <Column grow gap={ 0 }>
+                        <Text fontSize={ 4 } fontWeight="bold" className="text-small">{ LocalizeText(`quests.${ getSelectedCategory.code }.name`) }</Text>
+                        <Text>{ LocalizeText('achievements.details.categoryprogress', [ 'progress', 'limit' ], [ getSelectedCategory.getProgress().toString(), getSelectedCategory.getMaxProgress().toString() ]) }</Text>
+                    </Column>
                 </NitroCardSubHeaderView> }
             <NitroCardContentView>
-                <NitroLayoutGrid>
-                    <NitroLayoutGridColumn size={ 12 }>
-                        { !getSelectedCategory &&
-                            <>
-                                <AchievementsCategoryListView categories={ achievementCategories } selectedCategoryCode={ selectedCategoryCode } setSelectedCategoryCode={ setSelectedCategoryCode }  />
-                                <NitroLayoutFlexColumn className="flex-grow-1 justify-content-end" gap={ 2 }>
-                                    <NitroLayoutBase className="progress">
-                                        <NitroLayoutBase className="progress-bar" style={ { width: (scaledProgressPercent + '%') }}>
-                                            { LocalizeText('achievements.categories.totalprogress', [ 'progress', 'limit' ], [ getProgress.toString(), getMaxProgress.toString() ]) }
-                                        </NitroLayoutBase>
-                                    </NitroLayoutBase>
-                                    <NitroLayoutBase className="bg-muted text-black text-center rounded">
-                                        { LocalizeText('achievements.categories.score', [ 'score' ], [ achievementScore.toString() ]) }
-                                    </NitroLayoutBase>
-                                </NitroLayoutFlexColumn>
-                            </> }
-                        { getSelectedCategory &&
-                            <AchievementCategoryView category={ getSelectedCategory } setAchievementSeen={ setAchievementSeen } /> }
-                    </NitroLayoutGridColumn>
-                </NitroLayoutGrid>
+                { !getSelectedCategory &&
+                    <>
+                        <AchievementsCategoryListView categories={ achievementCategories } selectedCategoryCode={ selectedCategoryCode } setSelectedCategoryCode={ setSelectedCategoryCode } overflow="auto"  />
+                        <Column grow justifyContent="end">
+                            <Base className="progress" position="relative">
+                                <Flex fit center position="absolute" className="text-black">{ LocalizeText('achievements.categories.totalprogress', [ 'progress', 'limit' ], [ getProgress.toString(), getMaxProgress.toString() ]) }</Flex>
+                                <Base className="progress-bar bg-success" style={ { width: (scaledProgressPercent + '%') }} />
+                            </Base>
+                            <Text className="bg-muted rounded p-1" center>{ LocalizeText('achievements.categories.score', [ 'score' ], [ achievementScore.toString() ]) }</Text>
+                        </Column>
+                    </> }
+                { getSelectedCategory &&
+                    <AchievementCategoryView category={ getSelectedCategory } setAchievementSeen={ setAchievementSeen } /> }
             </NitroCardContentView>
         </NitroCardView>
     );

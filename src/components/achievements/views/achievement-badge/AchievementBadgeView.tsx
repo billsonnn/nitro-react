@@ -1,7 +1,14 @@
+import { AchievementData } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
+import { BaseProps } from '../../../../common/Base';
+import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
 import { AchievementUtilities } from '../../common/AchievementUtilities';
-import { AchievementBadgeViewProps } from './AchievementBadgeView.types';
+
+export interface AchievementBadgeViewProps extends BaseProps<HTMLDivElement>
+{
+    achievement: AchievementData;
+    scale?: number;
+}
 
 export const AchievementBadgeView: FC<AchievementBadgeViewProps> = props =>
 {

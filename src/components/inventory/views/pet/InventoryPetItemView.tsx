@@ -51,7 +51,7 @@ export const InventoryPetItemView: FC<InventoryPetItemViewProps> = props =>
     
     return (
         <LayoutGridItem itemActive={ isActive } itemUnseen={ petItem.isUnseen } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
-            <PetImageView figure={ petItem.petData.figureData.figuredata } scale={ 0.5 } />
+            <PetImageView figure={ petItem.petData.figureData.figuredata } direction={ 3 } headOnly={ true } />
         </LayoutGridItem>
     );
 }

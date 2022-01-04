@@ -1,11 +1,10 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
-import { NitroCardGridItemViewProps } from '../../../../layout';
+import { LayoutGridItem, LayoutGridItemProps } from '../../../../common/layout/LayoutGridItem';
 import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { AvatarEditorGridPartItem } from '../../common/AvatarEditorGridPartItem';
 import { AvatarEditorIcon } from '../AvatarEditorIcon';
 
-export interface AvatarEditorFigureSetItemViewProps extends NitroCardGridItemViewProps
+export interface AvatarEditorFigureSetItemViewProps extends LayoutGridItemProps
 {
     partItem: AvatarEditorGridPartItem;
 }

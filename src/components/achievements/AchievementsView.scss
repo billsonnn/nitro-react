@@ -3,19 +3,6 @@
     height: $achievement-height;
 }
 
-.nitro-achievements-category-grid {
-    --nitro-grid-column-min-width: 80px !important;
-
-    .grid-item {
-        height: 80px;
-        max-height: 80px;
-
-        .achievement-score {
-            top: 50px;
-        }
-    }
-}
-
 .nitro-achievements-back-arrow {
     background: url('../../assets/images/achievements/back-arrow.png') no-repeat center;
     width: 33px;
@@ -23,6 +10,6 @@
 }
 
 .nitro-achievements-badge-image {
-    width: 80px;
-    height: 80px;
+    width: 80px !important;
+    height: 80px !important;
 }

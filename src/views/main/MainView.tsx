@@ -1,11 +1,11 @@
 import { HabboWebTools, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetCommunication, RemoveLinkEventTracker } from '../../api';
+import { AchievementsView } from '../../components/achievements/AchievementsView';
 import { AvatarEditorView } from '../../components/avatar-editor/AvatarEditorView';
 import { InventoryView } from '../../components/inventory/InventoryView';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { TransitionAnimation, TransitionAnimationTypes } from '../../layout';
-import { AchievementsView } from '../achievements/AchievementsView';
 import { CameraWidgetView } from '../camera/CameraWidgetView';
 import { CampaignView } from '../campaign/CampaignView';
 import { CatalogView } from '../catalog/CatalogView';
