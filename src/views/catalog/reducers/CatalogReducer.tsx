@@ -174,7 +174,7 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
             return { ...state, clubGifts };
         }
         case CatalogActions.SET_MARKETPLACE_CONFIGURATION: {
-            let marketplaceConfiguration = (action.payload.marketplaceConfiguration || state.marketplaceConfiguration || null);
+            const marketplaceConfiguration = (action.payload.marketplaceConfiguration || state.marketplaceConfiguration || null);
 
             return { ...state, marketplaceConfiguration }
         }
