@@ -199,7 +199,7 @@ export class GroupItem
 
     public getTotalCount(): number
     {
-        if(this._category === FurniCategory._Str_12351)
+        if(this._category === FurniCategory.POST_IT)
         {
             let count   = 0;
             let index   = 0;
@@ -221,7 +221,7 @@ export class GroupItem
 
     public getUnlockedCount(): number
     {
-        if(this.category === FurniCategory._Str_12351) return this.getTotalCount();
+        if(this.category === FurniCategory.POST_IT) return this.getTotalCount();
 
         let count = 0;
         let index = 0;
@@ -318,10 +318,10 @@ export class GroupItem
 
         switch(this._category)
         {
-            case FurniCategory._Str_5186:
+            case FurniCategory.POSTER:
                 key = (('poster_' + k.stuffData.getLegacyString()) + '_name');
                 break;
-            case FurniCategory._Str_9125:
+            case FurniCategory.TRAX_SONG:
                 this._name = 'SONG_NAME';
                 return;
             default:
@@ -440,6 +440,13 @@ export class GroupItem
         const item = this.getItemByIndex(0);
 
         return (item ? item.isGroupable : false);
+    }
+
+    public get isSellable(): boolean
+    {
+        const item = this.getItemByIndex(0);
+
+        return (item ? item.sellable : false);
     }
 
     public get items(): FurnitureItem[]

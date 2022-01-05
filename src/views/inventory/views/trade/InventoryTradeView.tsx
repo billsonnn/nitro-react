@@ -8,6 +8,8 @@ import { NitroCardGridItemView } from '../../../../layout/card/grid/item/NitroCa
 import { NitroCardGridView } from '../../../../layout/card/grid/NitroCardGridView';
 import { NitroLayoutGridColumn } from '../../../../layout/grid/column/NitroLayoutGridColumn';
 import { NitroLayoutGrid } from '../../../../layout/grid/NitroLayoutGrid';
+import { NotificationAlertType } from '../../../notification-center/common/NotificationAlertType';
+import { NotificationUtilities } from '../../../notification-center/common/NotificationUtilities';
 import { FurniCategory } from '../../common/FurniCategory';
 import { GroupItem } from '../../common/GroupItem';
 import { IFurnitureItem } from '../../common/IFurnitureItem';
@@ -41,13 +43,13 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
         let type = spriteId.toString();
 
-        if(category === FurniCategory._Str_5186)
+        if(category === FurniCategory.POSTER)
         {
             type = ((type + 'poster') + stuffData.getLegacyString());
         }
         else
         {
-            if(category === FurniCategory._Str_12454)
+            if(category === FurniCategory.GUILD_FURNI)
             {
                 type = _Str_16998(spriteId, stuffData);
             }
@@ -113,7 +115,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         }
         else
         {
-            //this._notificationService.alert('${trading.items.too_many_items.desc}', '${trading.items.too_many_items.title}');
+            NotificationUtilities.simpleAlert(LocalizeText('trading.items.too_many_items.desc'), NotificationAlertType.DEFAULT, null, null, LocalizeText('trading.items.too_many_items.title'));
         }
     }, [ groupItem, tradeData, canTradeItem ]);
 

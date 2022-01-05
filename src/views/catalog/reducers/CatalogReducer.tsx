@@ -1,4 +1,4 @@
-import { CatalogPageMessageOfferData, CatalogPageMessageParser, ClubGiftInfoParser, ClubOfferData, GiftWrappingConfigurationParser, INodeData } from '@nitrots/nitro-renderer';
+import { CatalogPageMessageOfferData, CatalogPageMessageParser, ClubGiftInfoParser, ClubOfferData, GiftWrappingConfigurationParser, INodeData, MarketplaceConfigurationMessageParser } from '@nitrots/nitro-renderer';
 import { HabboGroupEntryData } from '@nitrots/nitro-renderer/src/nitro/communication/messages/parser/user/HabboGroupEntryData';
 import { Reducer } from 'react';
 import { CatalogPetPalette } from '../common/CatalogPetPalette';
@@ -20,6 +20,7 @@ export interface ICatalogState
     clubGifts: ClubGiftInfoParser;
     subscriptionInfo: SubscriptionInfo;
     giftConfiguration: GiftWrappingConfiguration;
+    marketplaceConfiguration: MarketplaceConfigurationMessageParser;
 }
 
 export interface ICatalogAction
@@ -38,6 +39,7 @@ export interface ICatalogAction
         clubGifts?: ClubGiftInfoParser;
         subscriptionInfo?: SubscriptionInfo;
         giftConfiguration?: GiftWrappingConfigurationParser;
+        marketplaceConfiguration?: MarketplaceConfigurationMessageParser;
     }
 }
 
@@ -55,6 +57,7 @@ export class CatalogActions
     public static SET_SUBSCRIPTION_INFO: string = 'CA_SET_SUBSCRIPTION_INFO';
     public static SET_GIFT_CONFIGURATION: string = 'CA_SET_GIFT_CONFIGURATION';
     public static SET_CLUB_GIFTS: string = 'CA_SET_CLUB_GIFTS';
+    public static SET_MARKETPLACE_CONFIGURATION: string = 'CA_SET_MARKETPLACE_CONFIGURATION';
 }
 
 export const initialCatalog: ICatalogState = {
@@ -69,7 +72,8 @@ export const initialCatalog: ICatalogState = {
     clubOffers: null,
     clubGifts: null,
     subscriptionInfo: new SubscriptionInfo(),
-    giftConfiguration: null
+    giftConfiguration: null,
+    marketplaceConfiguration: null
 }
 
 export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, action) =>
@@ -168,6 +172,11 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
             const clubGifts = (action.payload.clubGifts || state.clubGifts || null);
 
             return { ...state, clubGifts };
+        }
+        case CatalogActions.SET_MARKETPLACE_CONFIGURATION: {
+            let marketplaceConfiguration = (action.payload.marketplaceConfiguration || state.marketplaceConfiguration || null);
+
+            return { ...state, marketplaceConfiguration }
         }
         default:
             return state;

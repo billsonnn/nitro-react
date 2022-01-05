@@ -1,12 +1,15 @@
-import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
+import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, MarketplaceConfigurationEvent, MarketplaceMakeOfferResult, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
 import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/user/GuildMembershipsMessageEvent';
 import { FC, useCallback } from 'react';
+import { LocalizeText } from '../../api';
 import { CatalogNameResultEvent, CatalogPurchaseFailureEvent } from '../../events';
 import { CatalogGiftReceiverNotFoundEvent } from '../../events/catalog/CatalogGiftReceiverNotFoundEvent';
 import { CatalogPurchasedEvent } from '../../events/catalog/CatalogPurchasedEvent';
 import { CatalogPurchaseSoldOutEvent } from '../../events/catalog/CatalogPurchaseSoldOutEvent';
 import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
+import { NotificationAlertType } from '../notification-center/common/NotificationAlertType';
+import { NotificationUtilities } from '../notification-center/common/NotificationUtilities';
 import { CatalogMessageHandlerProps } from './CatalogMessageHandler.types';
 import { CatalogPetPalette } from './common/CatalogPetPalette';
 import { SubscriptionInfo } from './common/SubscriptionInfo';
@@ -164,6 +167,43 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [ dispatchCatalogState ]);
 
+    const onMarketplaceMakeOfferResult = useCallback((event: MarketplaceMakeOfferResult) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        let title = '';
+        if(parser.result === 1)
+        {
+            title = LocalizeText('inventory.marketplace.result.title.success');
+        }
+        else
+        {
+            title = LocalizeText('inventory.marketplace.result.title.failure');
+        }
+
+        const message = LocalizeText(`inventory.marketplace.result.${parser.result}`);
+        
+        NotificationUtilities.simpleAlert(message, NotificationAlertType.DEFAULT, null, null, title);
+    }, []);
+
+    const onMarketplaceConfigurationEvent = useCallback((event: MarketplaceConfigurationEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        console.log(parser);
+        
+        dispatchCatalogState({
+            type: CatalogActions.SET_MARKETPLACE_CONFIGURATION,
+            payload: {
+                marketplaceConfiguration: parser
+            }
+        });
+    }, [dispatchCatalogState]);
+
     const onClubGiftInfoEvent = useCallback((event: ClubGiftInfoEvent) =>
     {
         const parser = event.getParser();
@@ -194,6 +234,8 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
     CreateMessageHook(CatalogPublishedMessageEvent, onCatalogPublishedMessageEvent);
     CreateMessageHook(GiftWrappingConfigurationEvent, onGiftWrappingConfigurationEvent);
     CreateMessageHook(ClubGiftInfoEvent, onClubGiftInfoEvent);
+    CreateMessageHook(MarketplaceMakeOfferResult, onMarketplaceMakeOfferResult);
+    CreateMessageHook(MarketplaceConfigurationEvent, onMarketplaceConfigurationEvent);
 
     return null;
 }
