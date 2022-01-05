@@ -1,5 +1,6 @@
 import { CatalogPageMessageParser, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { CatalogLayoutBadgeDisplayView } from './badge-display/CatalogLayoutBadgeDisplayView';
+import { CatalogLayoutColorGroupingView } from './color-grouping/CatalogLayoutColorGroupingView';
 import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
 import { CatalogLayoutFrontpage4View } from './frontpage4/CatalogLayoutFrontpage4View';
 import { CatalogLayouGuildCustomFurniView } from './guild-custom-furni/CatalogLayoutGuildCustomFurniView';
@@ -13,6 +14,7 @@ import { CatalogLayoutSingleBundleView } from './single-bundle/CatalogLayoutSing
 import { CatalogLayoutSpacesView } from './spaces-new/CatalogLayoutSpacesView';
 import { CatalogLayoutTrophiesView } from './trophies/CatalogLayoutTrophiesView';
 import { CatalogLayoutVipBuyView } from './vip-buy/CatalogLayoutVipBuyView';
+import { CatalogLayoutVipGiftsView } from './vip-gifts/CatalogLayoutVipGiftsView';
 
 export const GetCatalogLayout = (pageParser: CatalogPageMessageParser, roomPreviewer: RoomPreviewer) =>
 {
@@ -39,7 +41,7 @@ export const GetCatalogLayout = (pageParser: CatalogPageMessageParser, roomPrevi
         case 'search_results':
             return null;
         case 'club_gifts':
-            return null;
+            return <CatalogLayoutVipGiftsView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'marketplace_own_items':
             return null;
         case 'marketplace':
@@ -54,6 +56,8 @@ export const GetCatalogLayout = (pageParser: CatalogPageMessageParser, roomPrevi
             return <CatalogLayoutInfoLoyaltyView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'badge_display':
             return <CatalogLayoutBadgeDisplayView roomPreviewer={roomPreviewer} pageParser={ pageParser } />;
+        case 'default_3x3_color_grouping':
+            return <CatalogLayoutColorGroupingView roomPreviewer={roomPreviewer} pageParser={ pageParser } />;
         case 'bots':
         case 'default_3x3':
         default:
