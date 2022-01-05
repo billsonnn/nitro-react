@@ -6,11 +6,13 @@ import { SendMessageHook, useUiEvent } from '../../../../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFlex } from '../../../../../../../layout';
 import { FurnitureItem } from '../../../../../../inventory/common/FurnitureItem';
 import { NotificationUtilities } from '../../../../../../notification-center/common/NotificationUtilities';
+import { useCatalogContext } from '../../../../../context/CatalogContext';
 
 export const MarketplacePostOfferView : FC<{}> = props =>
 {
     const [ item, setItem ] = useState<FurnitureItem>(null);
     const [ askingPrice, setAskingPrice ] = useState(0);
+    const { catalogState = null, dispatchCatalogState = null } = useCatalogContext();
     
     const close = useCallback(() =>
     {
@@ -91,17 +93,21 @@ export const MarketplacePostOfferView : FC<{}> = props =>
                     </div>
                 </NitroLayoutFlex>
                 <div className='mx-2 fst-italic text-break mb-3'>
-                    { LocalizeText('inventory.marketplace.make_offer.expiration_info') }
+                    { LocalizeText('inventory.marketplace.make_offer.expiration_info', ['time'], [catalogState.marketplaceConfiguration.offerTime.toString()]) }
                 </div>
                 <div className="d-flex flex-row text-black mb-3">
                     <div className="mr-2 align-self-center fw-bold" style={ { whiteSpace: 'nowrap' } }>{ LocalizeText('inventory.marketplace.make_offer.price_request') }</div>
                     <input className="form-control form-control-sm" type="number" min={0} value={ askingPrice } onChange={ event => setAskingPrice(event.target.valueAsNumber) } />
                 </div>
                 <div className="alert alert-light" role="alert">
-                    { askingPrice <= 0 || isNaN(askingPrice) ? LocalizeText('inventory.marketplace.make_offer.min_price', ['minprice'], ['1']) : LocalizeText('inventory.marketplace.make_offer.final_price', ['commission', 'finalprice'], ['1', (askingPrice + 1).toString()])}
+                    { (askingPrice < catalogState.marketplaceConfiguration.minimumPrice || isNaN(askingPrice)) && LocalizeText('inventory.marketplace.make_offer.min_price', ['minprice'], [catalogState.marketplaceConfiguration.minimumPrice.toString()]) }
+                    { askingPrice > catalogState.marketplaceConfiguration.maximumPrice && !isNaN(askingPrice) &&
+                        LocalizeText('inventory.marketplace.make_offer.max_price', ['maxprice'], [catalogState.marketplaceConfiguration.maximumPrice.toString()])
+                    }
+                    { !(askingPrice < catalogState.marketplaceConfiguration.minimumPrice || askingPrice > catalogState.marketplaceConfiguration.maximumPrice || isNaN(askingPrice)) && LocalizeText('inventory.marketplace.make_offer.final_price', ['commission', 'finalprice'], [catalogState.marketplaceConfiguration.commission.toString(), (askingPrice + catalogState.marketplaceConfiguration.commission).toString()])}
                 </div>
                 <div className="btn-group btn-group-sm mt-3" role="group">
-                    <button className='btn btn-primary' disabled={askingPrice <= 0 || isNaN(askingPrice)} onClick={ postItem }>
+                    <button className='btn btn-primary' disabled={askingPrice < catalogState.marketplaceConfiguration.minimumPrice || askingPrice > catalogState.marketplaceConfiguration.maximumPrice || isNaN(askingPrice)} onClick={ postItem }>
                         { LocalizeText('inventory.marketplace.make_offer.post') }
                     </button>
                 </div>
