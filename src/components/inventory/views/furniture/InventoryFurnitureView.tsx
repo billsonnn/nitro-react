@@ -6,7 +6,7 @@ import { Column } from '../../../../common/Column';
 import { Grid } from '../../../../common/Grid';
 import { Text } from '../../../../common/Text';
 import { SendMessageHook } from '../../../../hooks/messages';
-import { LimitedEditionCompactPlateView } from '../../../../views/shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
+import { LimitedEditionCompactPlateView } from '../../../../views/shared/limited-edition/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../../views/shared/rarity-level/RarityLevelView';
 import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomPreviewerView';
 import { FurniCategory } from '../../common/FurniCategory';
@@ -128,7 +128,7 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                 </Column>
                 { groupItem &&
                     <Column grow justifyContent="between" gap={ 2 }>
-                        <Text>{ groupItem.name }</Text>
+                        <Text grow truncate>{ groupItem.name }</Text>
                         { !!roomSession &&
                             <Button variant="success" size="sm" onClick={ event => attemptItemPlacement(groupItem) }>
                                 { LocalizeText('inventory.furni.placetoroom') }
