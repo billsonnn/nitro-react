@@ -1,5 +1,9 @@
 import { FC } from 'react';
-import { LimitedEditionStyledNumberViewProps } from './LimitedEditionStyledNumberView.types';
+
+export interface LimitedEditionStyledNumberViewProps
+{
+    value: number;
+}
 
 export const LimitedEditionStyledNumberView: FC<LimitedEditionStyledNumberViewProps> = props =>
 {

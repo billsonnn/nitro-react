@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
 import { ItemCountView } from '../../views/shared/item-count/ItemCountView';
-import { LimitedEditionStyledNumberView } from '../../views/shared/limited-edition/styled-number/LimitedEditionStyledNumberView';
+import { LimitedEditionStyledNumberView } from '../../views/shared/limited-edition/LimitedEditionStyledNumberView';
 import { Base } from '../Base';
 import { Column, ColumnProps } from '../Column';
 

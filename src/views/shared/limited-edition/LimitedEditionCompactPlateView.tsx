@@ -1,7 +1,12 @@
 import { FC, useMemo } from 'react';
-import { Base } from '../../../../common/Base';
-import { LimitedEditionStyledNumberView } from '../styled-number/LimitedEditionStyledNumberView';
-import { LimitedEditionCompactPlateViewProps } from './LimitedEditionCompactPlateView.types';
+import { Base, BaseProps } from '../../../common/Base';
+import { LimitedEditionStyledNumberView } from './LimitedEditionStyledNumberView';
+
+export interface LimitedEditionCompactPlateViewProps extends BaseProps<HTMLDivElement>
+{
+    uniqueNumber: number;
+    uniqueSeries: number;
+}
 
 export const LimitedEditionCompactPlateView: FC<LimitedEditionCompactPlateViewProps> = props =>
 {
