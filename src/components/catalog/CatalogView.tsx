@@ -1,10 +1,11 @@
-import { GetCatalogIndexComposer, GetCatalogPageComposer, GetGiftWrappingConfigurationComposer, ILinkEventTracker, INodeData, RoomPreviewer } from '@nitrots/nitro-renderer';
+import { GetCatalogIndexComposer, GetCatalogPageComposer, GetGiftWrappingConfigurationComposer, GetMarketplaceConfigurationMessageComposer, ILinkEventTracker, INodeData, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { AddEventLinkTracker, GetRoomEngine, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { CREDITS, PlaySound } from '../../api/utils/PlaySound';
 import { Column } from '../../common/Column';
 import { Grid } from '../../common/Grid';
 import { CatalogEvent } from '../../events';
+import { UseMountEffect } from '../../hooks';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
@@ -117,7 +118,6 @@ export const CatalogView: FC<{}> = props =>
         if(loadCatalog)
         {
             SendMessageHook(new GetCatalogIndexComposer(CatalogMode.MODE_NORMAL));
-            SendMessageHook(new GetGiftWrappingConfigurationComposer());
 
             return;
         }
@@ -190,6 +190,12 @@ export const CatalogView: FC<{}> = props =>
                 });
         }
     }, []);
+
+    UseMountEffect(() =>
+    {
+        SendMessageHook(new GetMarketplaceConfigurationMessageComposer());
+        SendMessageHook(new GetGiftWrappingConfigurationComposer());
+    });
 
     const currentNavigationPage = ((searchResult && searchResult.page) || currentTab);
     const navigationHidden = !!(pageParser && pageParser.frontPageItems.length);
