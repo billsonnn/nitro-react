@@ -1,0 +1,32 @@
+.nitro-catalog-layout-info-loyalty {
+
+    .info-loyalty-content {
+        background-repeat: no-repeat;
+        background-position: top right;
+        background-image: url('../../../../../assets/images/catalog/diamond_info_illustration.gif');
+        padding-right:123px;
+    }
+
+    .info-image {
+        width: 123px;
+        height:350px;
+        background-image: url('../../../../../assets/images/catalog/diamond_info_illustration.gif');
+    }
+}
+
+.nitro-catalog-layout-vip-buy-grid {
+
+    .layout-grid-item {
+        height: 50px !important;
+        max-height: 50px !important;
+
+        .icon-hc-banner {
+            width: 68px;
+            height: 40px;
+            background: url("../../../../../assets/images/catalog/hc_big.png") center no-repeat;
+        }
+    }
+}
+
+@import './marketplace/marketplace-item/MarketplaceItemView';
+@import './marketplace/post-offer/MarketplacePostOfferView';
