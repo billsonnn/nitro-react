@@ -6,6 +6,8 @@ export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttrib
 {
     innerRef?: LegacyRef<T>;
     fit?: boolean;
+    grow?: boolean;
+    shrink?: boolean;
     fullWidth?: boolean;
     fullHeight?: boolean;
     overflow?: OverflowType;
@@ -16,7 +18,7 @@ export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttrib
 
 export const Base: FC<BaseProps<HTMLDivElement>> = props =>
 {
-    const { ref = null, innerRef = null, fit = false, fullWidth = false, fullHeight = false, overflow = null, position = null, pointer = false, classNames = [], className = '', style = {}, ...rest } = props;
+    const { ref = null, innerRef = null, fit = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, pointer = false, classNames = [], className = '', style = {}, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -25,6 +27,10 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
         if(fit || fullWidth) newClassNames.push('w-100');
 
         if(fit || fullHeight) newClassNames.push('h-100');
+
+        if(grow) newClassNames.push('flex-grow-1');
+
+        if(shrink) newClassNames.push('flex-shrink-0');
 
         if(overflow) newClassNames.push('overflow-' + overflow);
 
@@ -35,7 +41,7 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ fit, fullWidth, fullHeight, overflow, position, pointer, classNames ]);
+    }, [ fit, grow, shrink, fullWidth, fullHeight, overflow, position, pointer, classNames ]);
 
     const getClassName = useMemo(() =>
     {

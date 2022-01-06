@@ -5,11 +5,12 @@ import { ColumnSizesType } from './types/ColumnSizesType';
 export interface ColumnProps extends FlexProps
 {
     size?: ColumnSizesType;
+    column?: boolean;
 }
 
 export const Column: FC<ColumnProps> = props =>
 {
-    const { size = 0, gap = 2, classNames = [], ...rest } = props;
+    const { size = 0, column = true, gap = 2, classNames = [], ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -22,5 +23,5 @@ export const Column: FC<ColumnProps> = props =>
         return newClassNames;
     }, [ size, classNames ]);
 
-    return <Flex classNames={ getClassNames } column={ true } gap={ gap } { ...rest } />;
+    return <Flex classNames={ getClassNames } column={ column } gap={ gap } { ...rest } />;
 }

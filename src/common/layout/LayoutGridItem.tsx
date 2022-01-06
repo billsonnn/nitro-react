@@ -11,13 +11,14 @@ export interface LayoutGridItemProps extends ColumnProps
     itemActive?: boolean;
     itemCount?: number;
     itemCountMinimum?: number;
+    itemUniqueSoldout?: boolean;
     itemUniqueNumber?: number;
     itemUnseen?: boolean;
 }
 
 export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
 {
-    const { itemImage = undefined, itemColor = undefined, itemActive = false, itemCount = 1, itemCountMinimum = 1, itemUniqueNumber = -2, itemUnseen = false, className = '', style = {}, classNames = [], position = 'relative', overflow = 'hidden', children = null, ...rest } = props;
+    const { itemImage = undefined, itemColor = undefined, itemActive = false, itemCount = 1, itemCountMinimum = 1, itemUniqueSoldout = false, itemUniqueNumber = -2, itemUnseen = false, center = true, column = true, style = {}, classNames = [], position = 'relative', overflow = 'hidden', children = null, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -25,9 +26,9 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
 
         if(itemActive) newClassNames.push('active');
 
-        if(itemUniqueNumber === -1) newClassNames.push('unique-item', 'sold-out');
+        if(itemUniqueSoldout || (itemUniqueNumber > 0)) newClassNames.push('unique-item');
 
-        if(itemUniqueNumber > 0) newClassNames.push('unique-item');
+        if(itemUniqueSoldout) newClassNames.push('sold-out');
 
         if(itemUnseen) newClassNames.push('unseen');
 
@@ -36,21 +37,23 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ itemActive, itemUniqueNumber, itemUnseen, itemImage, classNames ]);
+    }, [ itemActive, itemUniqueSoldout, itemUniqueNumber, itemUnseen, itemImage, classNames ]);
 
     const getStyle = useMemo(() =>
     {
-        const newStyle = { ...style };
+        let newStyle = { ...style };
 
         if(itemImage) newStyle.backgroundImage = `url(${ itemImage })`;
 
         if(itemColor) newStyle.backgroundColor = itemColor;
 
+        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
+
         return newStyle;
     }, [ style, itemImage, itemColor ]);
 
     return (
-        <Column center pointer position={ position } overflow={ overflow } classNames={ getClassNames } style={ getStyle } { ...rest }>
+        <Column center={ center } pointer position={ position } overflow={ overflow } column={ column } classNames={ getClassNames } style={ getStyle } { ...rest }>
             { (itemCount > itemCountMinimum) &&
                 <ItemCountView count={ itemCount } /> }
             { (itemUniqueNumber > 0) && 

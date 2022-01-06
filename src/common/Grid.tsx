@@ -41,7 +41,7 @@ export const Grid: FC<GridProps> = props =>
             newStyle['--bs-columns'] = columnCount.toString();
         }
 
-        if(grow)
+        if(grow && (!columnCount || (columnCount > 1)))
         {
             newStyle['--nitro-grid-column-min-width'] = (columnMinWidth + 'px');
             newStyle['--nitro-grid-column-min-height'] = (columnMinHeight + 'px');
@@ -52,8 +52,6 @@ export const Grid: FC<GridProps> = props =>
 
         return newStyle;
     }, [ columnCount, columnMinWidth, columnMinHeight, grow, style ]);
-
-    console.log('render')
 
     return <Base classNames={ getClassNames } style={ getStyle } { ...rest } />;
 }

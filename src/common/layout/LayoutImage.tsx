@@ -3,12 +3,12 @@ import { Base, BaseProps } from '../Base';
 
 export interface LayoutImageProps extends BaseProps<HTMLDivElement>
 {
-    imageUrl: string;
+    imageUrl?: string;
 }
 
 export const LayoutImage: FC<LayoutImageProps> = props =>
 {
-    const { imageUrl = null, style = null, ...rest } = props;
+    const { imageUrl = null, fit = true, style = null, ...rest } = props;
 
     const getStyle = useMemo(() =>
     {
@@ -19,5 +19,5 @@ export const LayoutImage: FC<LayoutImageProps> = props =>
         return newStyle;
     }, [ style, imageUrl ]);
 
-    return <Base fit style={ getStyle } { ...rest } />;
+    return <Base fit={ fit } style={ getStyle } { ...rest } />;
 }

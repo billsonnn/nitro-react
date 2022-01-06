@@ -9,8 +9,6 @@ export interface FlexProps extends BaseProps<HTMLDivElement>
     inline?: boolean;
     column?: boolean;
     reverse?: boolean;
-    grow?: boolean;
-    shrink?: boolean;
     gap?: SpacingType;
     center?: boolean;
     alignItems?: AlignItemType;
@@ -19,7 +17,7 @@ export interface FlexProps extends BaseProps<HTMLDivElement>
 
 export const Flex: FC<FlexProps> = props =>
 {
-    const { inline = false, column = undefined, reverse = false, grow = false, shrink = false, gap = null, center = false, alignItems = null, justifyContent = null, classNames = [], ...rest } = props;
+    const { inline = false, column = undefined, reverse = false, gap = null, center = false, alignItems = null, justifyContent = null, classNames = [], ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -27,10 +25,6 @@ export const Flex: FC<FlexProps> = props =>
 
         if(inline) newClassNames.push('d-inline-flex');
         else newClassNames.push('d-flex');
-
-        if(grow) newClassNames.push('flex-grow-1');
-
-        if(shrink) newClassNames.push('flex-shrink-0');
 
         if(column)
         {
@@ -53,7 +47,7 @@ export const Flex: FC<FlexProps> = props =>
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ inline, column, reverse, grow, shrink, gap, center, alignItems, justifyContent, classNames ]);
+    }, [ inline, column, reverse, gap, center, alignItems, justifyContent, classNames ]);
 
     return <Base classNames={ getClassNames } { ...rest } />;
 }

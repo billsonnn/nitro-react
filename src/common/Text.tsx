@@ -12,11 +12,12 @@ export interface TextProps extends BaseProps<HTMLDivElement>
     underline?: boolean;
     truncate?: boolean;
     center?: boolean;
+    textEnd?: boolean;
 }
 
 export const Text: FC<TextProps> = props =>
 {
-    const { variant = 'black', fontWeight = null, fontSize = 0, underline = false, truncate = false, center = false, ...rest } = props;
+    const { variant = 'black', fontWeight = null, fontSize = 0, underline = false, truncate = false, center = false, textEnd = false, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -34,8 +35,10 @@ export const Text: FC<TextProps> = props =>
 
         if(center) newClassNames.push('text-center');
 
+        if(textEnd) newClassNames.push('text-end');
+
         return newClassNames;
-    }, [ variant, fontWeight, fontSize, underline, truncate, center ]);
+    }, [ variant, fontWeight, fontSize, underline, truncate, center, textEnd ]);
 
     return <Base classNames={ getClassNames } { ...rest } />;
 }

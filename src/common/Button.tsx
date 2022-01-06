@@ -7,12 +7,13 @@ export interface ButtonProps extends FlexProps
 {
     variant?: ColorVariantType;
     size?: ButtonSizeType;
+    active?: boolean;
     disabled?: boolean;
 }
 
 export const Button: FC<ButtonProps> = props =>
 {
-    const { variant = 'primary', size = null, disabled = false, classNames = [], ...rest } = props;
+    const { variant = 'primary', size = null, active = false, disabled = false, classNames = [], ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -22,12 +23,14 @@ export const Button: FC<ButtonProps> = props =>
 
         if(size) newClassNames.push('btn-' + size);
 
+        if(active) newClassNames.push('active');
+
         if(disabled) newClassNames.push('disabled');
 
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ variant, size, disabled, classNames ]);
+    }, [ variant, size, active, disabled, classNames ]);
 
     return <Flex center classNames={ getClassNames } { ...rest } />;
 }
