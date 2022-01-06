@@ -1,9 +1,16 @@
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import { LocalizeText } from '../../../../api';
-import { NitroLayoutButton, NitroLayoutFlex } from '../../../../layout';
-import { NitroLayoutBase } from '../../../../layout/base';
+import { Base } from '../../../../common/Base';
+import { Button } from '../../../../common/Button';
+import { Flex } from '../../../../common/Flex';
+import { Text } from '../../../../common/Text';
 import { useCatalogContext } from '../../context/CatalogContext';
-import { CatalogSelectGroupViewProps } from './CatalogSelectGroupView.types';
+
+export interface CatalogSelectGroupViewProps
+{
+    selectedGroupIndex: number;
+    setSelectedGroupIndex: Dispatch<SetStateAction<number>>;
+}
 
 export const CatalogSelectGroupView: FC<CatalogSelectGroupViewProps> = props =>
 {
@@ -14,27 +21,24 @@ export const CatalogSelectGroupView: FC<CatalogSelectGroupViewProps> = props =>
     if(!groups || !groups.length)
     {
         return (
-            <NitroLayoutBase className="flex-grow-1 bg-muted rounded text-black text-center p-1">
+            <Text grow center className="bg-muted rounded p-1">
                 { LocalizeText('catalog.guild_selector.members_only') }
-                <NitroLayoutButton className="mt-1" variant="primary" size="sm">
+                <Button variant="primary" size="sm" className="mt-1">
                     { LocalizeText('catalog.guild_selector.find_groups') }
-                </NitroLayoutButton>
-            </NitroLayoutBase>
+                </Button>
+            </Text>
         );
     }
 
     return (
-        <NitroLayoutFlex>
-            <NitroLayoutFlex className="rounded border me-1" overflow="hidden">
-                <NitroLayoutBase className="h-100" style={ { width: '20px', backgroundColor: '#' + groups[selectedGroupIndex].colorA } } />
-                <NitroLayoutBase className="h-100" style={ { width: '20px', backgroundColor: '#' + groups[selectedGroupIndex].colorB } } />
-            </NitroLayoutFlex>
+        <Flex gap={ 1 }>
+            <Flex overflow="hidden" className="rounded border">
+                <Base fullHeight style={ { width: '20px', backgroundColor: '#' + groups[selectedGroupIndex].colorA } } />
+                <Base fullHeight style={ { width: '20px', backgroundColor: '#' + groups[selectedGroupIndex].colorB } } />
+            </Flex>
             <select className="form-select form-select-sm" value={ selectedGroupIndex } onChange={ event => setSelectedGroupIndex(parseInt(event.target.value)) }>
-                { groups.map((group, index) =>
-                    {
-                        return <option key={ index } value={ index }>{ group.groupName }</option>;
-                    }) }
+                { groups.map((group, index) => <option key={ index } value={ index }>{ group.groupName }</option>) }
             </select>
-        </NitroLayoutFlex>
+        </Flex>
     );
 }

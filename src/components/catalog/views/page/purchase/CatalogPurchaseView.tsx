@@ -82,8 +82,8 @@ export const CatalogPurchaseView: FC<CatalogPurchaseViewProps> = props =>
                 </Column>
             </Flex>
             <Column gap={ 1 }>
-                <CatalogPurchaseButtonView className="btn-sm w-100" offer={ offer } pageId={ pageId } extra={ extraData } quantity={ quantity } disabled={ disabled } />
-                { offer.giftable && <CatalogPurchaseGiftButtonView className="btn-sm w-100 mt-1" offer={ offer } pageId={ pageId } extra={ extraData } disabled={ disabled } /> }
+                <CatalogPurchaseButtonView offer={ offer } pageId={ pageId } extra={ extraData } quantity={ quantity } disabled={ disabled } />
+                { offer.giftable && <CatalogPurchaseGiftButtonView offer={ offer } pageId={ pageId } extra={ extraData } disabled={ disabled } /> }
             </Column>
         </Column>
     );

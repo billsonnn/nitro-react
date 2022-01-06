@@ -21,5 +21,5 @@ export const CatalogPurchaseGiftButtonView: FC<CatalogPurchaseGiftButtonViewProp
         dispatchUiEvent(new CatalogInitGiftEvent(pageId, offer.offerId, extra));
     }
 
-    return <Button variant="secondary" onClick={ initGift } { ...rest }>{ LocalizeText('catalog.purchase_confirmation.gift') }</Button>;
+    return <Button variant="secondary" size="sm" onClick={ initGift } { ...rest }>{ LocalizeText('catalog.purchase_confirmation.gift') }</Button>;
 }

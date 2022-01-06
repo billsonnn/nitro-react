@@ -1,7 +1,12 @@
+import { CatalogPageMessageParser } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { NitroLayoutFlexColumn } from '../../../../layout';
 import { GetCatalogPageImage, GetCatalogPageText } from '../../common/CatalogUtilities';
-import { CatalogPageDetailsViewProps } from './CatalogPageDetailsView.types';
+
+export interface CatalogPageDetailsViewProps
+{
+    pageParser: CatalogPageMessageParser;
+}
 
 export const CatalogPageDetailsView: FC<CatalogPageDetailsViewProps> = props =>
 {

@@ -28,5 +28,15 @@
     }
 }
 
-@import './marketplace/marketplace-item/MarketplaceItemView';
-@import './marketplace/post-offer/MarketplacePostOfferView';
+.nitro-catalog-layout-marketplace-grid {
+
+    .layout-grid-item {
+        height: 75px !important;
+        max-height: 75px !important;
+    }
+}
+
+.nitro-catalog-layout-marketplace-post-offer {
+    width: $marketplace-post-offer-width;
+    height: $marketplace-post-offer-height;
+}

@@ -6,8 +6,8 @@ import { CatalogLayouGuildCustomFurniView } from './guild-custom-furni/CatalogLa
 import { CatalogLayouGuildForumView } from './guild-forum/CatalogLayoutGuildForumView';
 import { CatalogLayouGuildFrontpageView } from './guild-frontpage/CatalogLayoutGuildFrontpageView';
 import { CatalogLayoutInfoLoyaltyView } from './info-loyalty/CatalogLayoutInfoLoyaltyView';
-import { CatalogLayoutMarketplaceOwnItemsView } from './marketplace/own-items/CatalogLayoutMarketplaceOwnItemsView';
-import { CatalogLayoutMarketplacePublicItemsView } from './marketplace/public-items/CatalogLayoutMarketplacePublicItemsView';
+import { CatalogLayoutMarketplaceOwnItemsView } from './marketplace/CatalogLayoutMarketplaceOwnItemsView';
+import { CatalogLayoutMarketplacePublicItemsView } from './marketplace/CatalogLayoutMarketplacePublicItemsView';
 import { CatalogLayoutPetView } from './pets/CatalogLayoutPetView';
 import { CatalogLayoutPets2View } from './pets2/CatalogLayoutPets2View';
 import { CatalogLayoutPets3View } from './pets3/CatalogLayoutPets3View';

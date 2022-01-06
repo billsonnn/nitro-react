@@ -67,8 +67,8 @@ export const CatalogLayoutPetPurchaseView: FC<CatalogLayoutPetPurchaseViewProps>
                 </Column>
             </Flex>
             <Column gap={ 1 }>
-                <CatalogPurchaseButtonView className="btn-sm w-100" offer={ offer } pageId={ pageId } extra={ extraData } quantity={ 1 } isPurchaseAllowed={ nameApproved } beforePurchase={ beforePurchase } />
-                { offer.giftable && <CatalogPurchaseGiftButtonView className="btn-sm w-100 mt-1" offer={ offer } pageId={ pageId } extra={ extraData } disabled={ nameApproved } /> }
+                <CatalogPurchaseButtonView offer={ offer } pageId={ pageId } extra={ extraData } quantity={ 1 } isPurchaseAllowed={ nameApproved } beforePurchase={ beforePurchase } />
+                { offer.giftable && <CatalogPurchaseGiftButtonView offer={ offer } pageId={ pageId } extra={ extraData } disabled={ nameApproved } /> }
             </Column>
         </Column>
     );

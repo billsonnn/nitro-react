@@ -117,6 +117,6 @@ export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = pro
             return <Button variant="danger" size="sm" disabled { ...rest }>{ LocalizeText('generic.failed') }</Button>;
         case CatalogPurchaseState.NONE:
         default:
-            return <Button variant="success" size="sm" onClick={ event => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('buy') }</Button>
+            return <Button variant="success" size="sm" onClick={ event => setPurchaseState(CatalogPurchaseState.CONFIRM) } { ...rest }>{ LocalizeText('buy') }</Button>
     }
 }

@@ -17,7 +17,7 @@ import { CatalogReducer, initialCatalog } from './reducers/CatalogReducer';
 import { CatalogGiftView } from './views/gift/CatalogGiftView';
 import { ACTIVE_PAGES, CatalogNavigationView } from './views/navigation/CatalogNavigationView';
 import { CatalogPageView } from './views/page/CatalogPageView';
-import { MarketplacePostOfferView } from './views/page/layout/marketplace/post-offer/MarketplacePostOfferView';
+import { MarketplacePostOfferView } from './views/page/layout/marketplace/MarketplacePostOfferView';
 
 export const CatalogView: FC<{}> = props =>
 {
