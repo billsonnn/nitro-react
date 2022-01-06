@@ -4,7 +4,7 @@ import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, Room
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
 import { UserProfileIconView } from '../../../../../../layout';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
-import { LimitedEditionCompactPlateView } from '../../../../../shared/limited-edition/compact-plate/LimitedEditionCompactPlateView';
+import { LimitedEditionCompactPlateView } from '../../../../../shared/limited-edition/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../../../shared/rarity-level/RarityLevelView';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { InfoStandBaseView } from '../base/InfoStandBaseView';

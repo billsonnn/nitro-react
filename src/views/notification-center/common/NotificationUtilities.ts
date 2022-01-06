@@ -1,9 +1,9 @@
 import { HabboWebTools, RoomEnterEffect } from '@nitrots/nitro-renderer';
 import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText } from '../../../api';
+import { CatalogPageName } from '../../../components/catalog/common/CatalogPageName';
 import { NotificationAlertEvent, NotificationConfirmEvent } from '../../../events';
 import { NotificationBubbleEvent } from '../../../events/notification-center/NotificationBubbleEvent';
 import { dispatchUiEvent } from '../../../hooks';
-import { CatalogPageName } from '../../catalog/common/CatalogPageName';
 import { NotificationAlertType } from './NotificationAlertType';
 import { NotificationBubbleType } from './NotificationBubbleType';
 

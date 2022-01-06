@@ -1,9 +1,9 @@
-import { ClubGiftInfoEvent, FriendlyTime, GetClubGiftInfo, RequestBadgesComposer, ScrKickbackData, ScrSendKickbackInfoMessageEvent, UserInfoEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
+import { ClubGiftInfoEvent, FriendlyTime, GetClubGiftInfo, ILinkEventTracker, RequestBadgesComposer, ScrKickbackData, ScrSendKickbackInfoMessageEvent, UserInfoEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
 import { BadgesEvent, FigureUpdateEvent } from '@nitrots/nitro-renderer/src';
 import { ScrGetKickbackInfoMessageComposer } from '@nitrots/nitro-renderer/src/nitro/communication/messages/outgoing/user/ScrGetKickbackInfoMessageComposer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
-import { CreateLinkEvent, GetConfiguration, LocalizeText } from '../../api';
+import { AddEventLinkTracker, CreateLinkEvent, GetConfiguration, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { HcCenterEvent } from '../../events/hc-center/HcCenterEvent';
 import { CreateMessageHook, SendMessageHook, useUiEvent } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
@@ -26,6 +26,40 @@ export const HcCenterView: FC<{}> = props =>
     const [unclaimedGifts, setUnclaimedGifts] = useState(0);
 
     const [badgeCode, setBadgeCode] = useState(BadgeResolver.default_badge);
+
+    const linkReceived = useCallback((url: string) =>
+    {
+        const parts = url.split('/');
+
+        if(parts.length < 2) return;
+
+        switch(parts[1])
+        {
+            case 'open':
+                if(parts.length > 2)
+                {
+                    switch(parts[2])
+                    {
+                        case 'hccenter':
+                            setIsVisible(true);
+                            break;
+                    }
+                }
+                return;
+        } 
+    }, []);
+
+    useEffect(() =>
+    {
+        const linkTracker: ILinkEventTracker = {
+            linkReceived,
+            eventUrlPrefix: 'habboUI/'
+        };
+
+        AddEventLinkTracker(linkTracker);
+
+        return () => RemoveLinkEventTracker(linkTracker);
+    }, [ linkReceived]);
 
     const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
     {
