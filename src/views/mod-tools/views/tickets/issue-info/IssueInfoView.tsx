@@ -49,8 +49,8 @@ export const IssueInfoView: FC<IssueInfoViewProps> = props =>
                         <div><span className="fw-bold">Source: </span>{getSourceName(ticket.categoryId)}</div>
                         <div><span className="fw-bold">Category: </span>{LocalizeText('help.cfh.topic.' + ticket.reportedCategoryId)}</div>
                         <div><span className="fw-bold">Description: </span>{ticket.message}</div>
-                        <div><span className="fw-bold">Caller: </span><button className="btn btn-link fw-bold" onClick={() => openUserInfo(ticket.reporterUserId)}>{ticket.reporterUserName}</button></div>
-                        <div><span className="fw-bold">Reported User: </span><button className="btn btn-link fw-bold" onClick={() => openUserInfo(ticket.reportedUserId)}>{ticket.reportedUserName}</button></div>
+                        <div><span className="fw-bold">Caller: </span><button className="btn btn-link fw-bold text-primary" onClick={() => openUserInfo(ticket.reporterUserId)}>{ticket.reporterUserName}</button></div>
+                        <div><span className="fw-bold">Reported User: </span><button className="btn btn-link fw-bold text-danger" onClick={() => openUserInfo(ticket.reportedUserId)}>{ticket.reportedUserName}</button></div>
                     </div>
                     <div className="col-4">
                         <div className="d-grid gap-2 mb-4">

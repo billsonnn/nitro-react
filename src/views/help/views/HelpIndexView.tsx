@@ -35,7 +35,7 @@ export const HelpIndexView: FC<{}> = props =>
             </div>
 
             <div className="d-grid gap-2 col-8 mx-auto">
-                <button className="btn btn-link" type="button" onClick={onRequestMySanctionStatusClick}>{LocalizeText('help.main.my.sanction.status')}</button>
+                <button className="btn btn-link text-primary" type="button" onClick={onRequestMySanctionStatusClick}>{LocalizeText('help.main.my.sanction.status')}</button>
             </div>
 
         </>

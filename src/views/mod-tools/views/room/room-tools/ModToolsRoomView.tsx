@@ -88,7 +88,6 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
                     <div>
                         <b>Owner in room:</b> { ownerInRoom ? 'Yes' : 'No' }
                     </div>
-                    <button className="btn btn-sm btn-primary">Edit in HK</button>
                 </div>
                 <div className="bg-muted rounded py-1 px-2 mb-2">
                     <div className="form-check">
