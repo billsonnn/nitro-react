@@ -1,4 +1,4 @@
-import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, MarketplaceConfigurationEvent, MarketplaceMakeOfferResult, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
+import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, MarketplaceConfigurationEvent, MarketplaceMakeOfferResult, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
 import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/user/GuildMembershipsMessageEvent';
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../api';
@@ -204,6 +204,20 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
         });
     }, [dispatchCatalogState]);
 
+    const onClubGiftInfoEvent = useCallback((event: ClubGiftInfoEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        dispatchCatalogState({
+            type: CatalogActions.SET_CLUB_GIFTS,
+            payload: {
+                clubGifts: parser
+            }
+        });
+    }, [dispatchCatalogState]);
+
     CreateMessageHook(CatalogPagesListEvent, onCatalogPagesListEvent);
     CreateMessageHook(CatalogPageMessageEvent, onCatalogPageMessageEvent);
     CreateMessageHook(PurchaseOKMessageEvent, onPurchaseOKMessageEvent);
@@ -219,6 +233,7 @@ export const CatalogMessageHandler: FC<CatalogMessageHandlerProps> = props =>
     CreateMessageHook(UserSubscriptionEvent, onUserSubscriptionEvent);
     CreateMessageHook(CatalogPublishedMessageEvent, onCatalogPublishedMessageEvent);
     CreateMessageHook(GiftWrappingConfigurationEvent, onGiftWrappingConfigurationEvent);
+    CreateMessageHook(ClubGiftInfoEvent, onClubGiftInfoEvent);
     CreateMessageHook(MarketplaceMakeOfferResult, onMarketplaceMakeOfferResult);
     CreateMessageHook(MarketplaceConfigurationEvent, onMarketplaceConfigurationEvent);
 
