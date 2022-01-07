@@ -1,5 +1,6 @@
 import { CSSProperties, FC, useMemo } from 'react';
 import { Base, BaseProps } from './Base';
+import { GridContextProvider } from './context/GridContext';
 import { SpacingType } from './types/SpacingType';
 
 export interface GridProps extends BaseProps<HTMLDivElement>
@@ -10,11 +11,12 @@ export interface GridProps extends BaseProps<HTMLDivElement>
     grow?: boolean;
     inline?: boolean;
     gap?: SpacingType;
+    maxContent?: boolean;
 }
 
 export const Grid: FC<GridProps> = props =>
 {
-    const { columnCount = 0, columnMinWidth = 40, columnMinHeight = 40, grow = false, inline = false, gap = 2, classNames = [], style = {}, ...rest } = props;
+    const { columnCount = 0, columnMinWidth = 40, columnMinHeight = 40, grow = false, inline = false, gap = 2, maxContent = false, classNames = [], style = {}, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -48,10 +50,16 @@ export const Grid: FC<GridProps> = props =>
             newStyle.gridTemplateColumns = 'repeat(auto-fill, minmax(var(--nitro-grid-column-min-width, 45px), 1fr)';
         }
 
+        if(maxContent) newStyle.gridTemplateRows = 'max-content';
+
         if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [ columnCount, columnMinWidth, columnMinHeight, grow, style ]);
+    }, [ columnCount, columnMinWidth, columnMinHeight, grow, maxContent, style ]);
 
-    return <Base classNames={ getClassNames } style={ getStyle } { ...rest } />;
+    return (
+        <GridContextProvider value={ { isCssGrid: true } }>
+            <Base classNames={ getClassNames } style={ getStyle } { ...rest } />
+        </GridContextProvider>
+    );
 }

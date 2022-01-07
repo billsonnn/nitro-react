@@ -1,4 +1,5 @@
 import { CSSProperties, DetailedHTMLProps, FC, HTMLAttributes, LegacyRef, useMemo } from 'react';
+import { ColorVariantType } from './types/ColorVariantType';
 import { OverflowType } from './types/OverflowType';
 import { PositionType } from './types/PositionType';
 
@@ -13,12 +14,13 @@ export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttrib
     overflow?: OverflowType;
     position?: PositionType;
     pointer?: boolean;
+    textColor?: ColorVariantType;
     classNames?: string[];
 }
 
 export const Base: FC<BaseProps<HTMLDivElement>> = props =>
 {
-    const { ref = null, innerRef = null, fit = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, pointer = false, classNames = [], className = '', style = {}, ...rest } = props;
+    const { ref = null, innerRef = null, fit = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, pointer = false, textColor = null, classNames = [], className = '', style = {}, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -38,10 +40,12 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
 
         if(pointer) newClassNames.push('cursor-pointer');
 
+        if(textColor) newClassNames.push('text-' + textColor);
+
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ fit, grow, shrink, fullWidth, fullHeight, overflow, position, pointer, classNames ]);
+    }, [ fit, grow, shrink, fullWidth, fullHeight, overflow, position, pointer, textColor, classNames ]);
 
     const getClassName = useMemo(() =>
     {
