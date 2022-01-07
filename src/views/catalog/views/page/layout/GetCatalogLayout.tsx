@@ -1,6 +1,5 @@
 import { CatalogPageMessageParser, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { CatalogLayoutBadgeDisplayView } from './badge-display/CatalogLayoutBadgeDisplayView';
-import { CatalogLayoutColorGroupingView } from './color-grouping/CatalogLayoutColorGroupingView';
 import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
 import { CatalogLayoutFrontpage4View } from './frontpage4/CatalogLayoutFrontpage4View';
 import { CatalogLayouGuildCustomFurniView } from './guild-custom-furni/CatalogLayoutGuildCustomFurniView';
@@ -58,8 +57,8 @@ export const GetCatalogLayout = (pageParser: CatalogPageMessageParser, roomPrevi
             return <CatalogLayoutInfoLoyaltyView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
         case 'badge_display':
             return <CatalogLayoutBadgeDisplayView roomPreviewer={roomPreviewer} pageParser={ pageParser } />;
-        case 'default_3x3_color_grouping':
-            return <CatalogLayoutColorGroupingView roomPreviewer={roomPreviewer} pageParser={ pageParser } />;
+        //case 'default_3x3_color_grouping':
+            //return <CatalogLayoutColorGroupingView roomPreviewer={roomPreviewer} pageParser={ pageParser } />;
         case 'bots':
         case 'default_3x3':
         default:
