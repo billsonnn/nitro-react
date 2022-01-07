@@ -1,8 +1,9 @@
-import { GetCatalogIndexComposer, GetCatalogPageComposer, GetGiftWrappingConfigurationComposer, ILinkEventTracker, INodeData, RoomPreviewer } from '@nitrots/nitro-renderer';
+import { GetCatalogIndexComposer, GetCatalogPageComposer, GetGiftWrappingConfigurationComposer, GetMarketplaceConfigurationMessageComposer, ILinkEventTracker, INodeData, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { AddEventLinkTracker, GetRoomEngine, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { CREDITS, PlaySound } from '../../api/utils/PlaySound';
 import { CatalogEvent } from '../../events';
+import { UseMountEffect } from '../../hooks';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, NitroLayoutGrid, NitroLayoutGridColumn } from '../../layout';
@@ -14,6 +15,7 @@ import { CatalogReducer, initialCatalog } from './reducers/CatalogReducer';
 import { CatalogGiftView } from './views/gift/CatalogGiftView';
 import { ACTIVE_PAGES, CatalogNavigationView } from './views/navigation/CatalogNavigationView';
 import { CatalogPageView } from './views/page/CatalogPageView';
+import { MarketplacePostOfferView } from './views/page/layout/marketplace/post-offer/MarketplacePostOfferView';
 
 export const CatalogView: FC<CatalogViewProps> = props =>
 {
@@ -114,7 +116,6 @@ export const CatalogView: FC<CatalogViewProps> = props =>
         if(loadCatalog)
         {
             SendMessageHook(new GetCatalogIndexComposer(CatalogMode.MODE_NORMAL));
-            SendMessageHook(new GetGiftWrappingConfigurationComposer());
 
             return;
         }
@@ -188,6 +189,12 @@ export const CatalogView: FC<CatalogViewProps> = props =>
         }
     }, []);
 
+    UseMountEffect(() =>
+    {
+        SendMessageHook(new GetMarketplaceConfigurationMessageComposer());
+        SendMessageHook(new GetGiftWrappingConfigurationComposer());
+    });
+
     const currentNavigationPage = ((searchResult && searchResult.page) || currentTab);
     const navigationHidden = !!(pageParser && pageParser.frontPageItems.length);
 
@@ -220,6 +227,7 @@ export const CatalogView: FC<CatalogViewProps> = props =>
                     </NitroCardContentView>
                 </NitroCardView> }
                 <CatalogGiftView />
+                <MarketplacePostOfferView />
         </CatalogContextProvider>
     );
 }

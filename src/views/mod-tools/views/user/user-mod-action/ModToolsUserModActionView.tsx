@@ -1,9 +1,10 @@
 import { CallForHelpTopicData, DefaultSanctionMessageComposer, ModAlertMessageComposer, ModBanMessageComposer, ModKickMessageComposer, ModMessageMessageComposer, ModMuteMessageComposer, ModTradingLockMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../../api';
-import { NotificationAlertEvent } from '../../../../../events';
-import { dispatchUiEvent, SendMessageHook } from '../../../../../hooks';
+import { SendMessageHook } from '../../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
+import { NotificationAlertType } from '../../../../notification-center/common/NotificationAlertType';
+import { NotificationUtilities } from '../../../../notification-center/common/NotificationUtilities';
 import { useModToolsContext } from '../../../context/ModToolsContext';
 import { ModActionDefinition } from '../../../utils/ModActionDefinition';
 import { ModToolsUserModActionViewProps } from './ModToolsUserModActionView.types';
@@ -59,13 +60,13 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
     {
         if( (selectedTopic === -1) || (selectedAction === -1) )
         {
-            dispatchUiEvent(new NotificationAlertEvent(['You must select a CFH topic and Sanction'], null, null, null, 'Error', null));
+            NotificationUtilities.simpleAlert('You must select a CFH topic and Sanction', NotificationAlertType.DEFAULT, null, null, 'Error');
             return;
         }
 
         if(!settings || !settings.cfhPermission) 
         {
-            dispatchUiEvent(new NotificationAlertEvent(['You do not have permission to do this'], null, null, null, 'Error', null));
+            NotificationUtilities.simpleAlert('You do not have permission to do this', NotificationAlertType.DEFAULT, null, null, 'Error');
             return;
         }
 
@@ -74,13 +75,13 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
 
         if(!category)
         {
-            dispatchUiEvent(new NotificationAlertEvent(['You must select a CFH topic'], null, null, null, 'Error', null));
+            NotificationUtilities.simpleAlert('You must select a CFH topic', NotificationAlertType.DEFAULT, null, null, 'Error');
             return;
         }
 
         if(!sanction)
         {
-            dispatchUiEvent(new NotificationAlertEvent(['You must select a sanction'], null, null, null, 'Error', null));
+            NotificationUtilities.simpleAlert('You must select a sanction', NotificationAlertType.DEFAULT, null, null, 'Error');
             return;
         }
 
@@ -92,13 +93,13 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
             
                     if(!settings.alertPermission)
                     {
-                        dispatchUiEvent(new NotificationAlertEvent(['You have insufficient permissions.'], null, null, null, 'Error', null));
+                        NotificationUtilities.simpleAlert('You have insufficient permissions', NotificationAlertType.DEFAULT, null, null, 'Error');
                         return;
                     }
 
                     if(message.trim().length === 0)
                     {
-                        dispatchUiEvent(new NotificationAlertEvent(['Please write a message to user.'], null, null, null, 'Error', null));
+                        NotificationUtilities.simpleAlert('Please write a message to user', NotificationAlertType.DEFAULT, null, null, 'Error');
                         return;
                     }
 
@@ -113,7 +114,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                 
                     if(!settings.banPermission)
                     {
-                        dispatchUiEvent(new NotificationAlertEvent(['You have insufficient permissions.'], null, null, null, 'Error', null));
+                        NotificationUtilities.simpleAlert('You have insufficient permissions', NotificationAlertType.DEFAULT, null, null, 'Error');
                         return;
                     }
 
@@ -125,7 +126,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                 
                     if(!settings.kickPermission)
                     {
-                        dispatchUiEvent(new NotificationAlertEvent(['You have insufficient permissions.'], null, null, null, 'Error', null));
+                        NotificationUtilities.simpleAlert('You have insufficient permissions', NotificationAlertType.DEFAULT, null, null, 'Error');
                         return;
                     }
 
@@ -144,7 +145,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                 
                     if(message.trim().length === 0)
                     {
-                        dispatchUiEvent(new NotificationAlertEvent(['Please write a message to user.'], null, null, null, 'Error', null));
+                        NotificationUtilities.simpleAlert('Please write a message to user', NotificationAlertType.DEFAULT, null, null, 'Error');
                         return;
                     }
 
