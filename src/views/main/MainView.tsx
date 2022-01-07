@@ -5,6 +5,7 @@ import { AchievementsView } from '../../components/achievements/AchievementsView
 import { AvatarEditorView } from '../../components/avatar-editor/AvatarEditorView';
 import { CatalogView } from '../../components/catalog/CatalogView';
 import { InventoryView } from '../../components/inventory/InventoryView';
+import { NavigatorView } from '../../components/navigator/NavigatorView';
 import { ToolbarView } from '../../components/toolbar/ToolbarView';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { TransitionAnimation, TransitionAnimationTypes } from '../../layout';
@@ -18,7 +19,6 @@ import { HcCenterView } from '../hc-center/HcCenterView';
 import { HelpView } from '../help/HelpView';
 import { HotelView } from '../hotel-view/HotelView';
 import { ModToolsView } from '../mod-tools/ModToolsView';
-import { NavigatorView } from '../navigator/NavigatorView';
 import { NitropediaView } from '../nitropedia/NitropediaView';
 import { RightSideView } from '../right-side/RightSideView';
 import { RoomHostView } from '../room-host/RoomHostView';

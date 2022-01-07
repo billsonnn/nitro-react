@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration, GetSessionDataManager, LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks/messages';
-import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
+import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { useNavigatorContext } from '../../context/NavigatorContext';
 import { NavigatorRoomCreatorViewProps, NAVIGATOR_ROOM_MODELS } from './NavigatorRoomCreatorView.types';
 

@@ -1,8 +1,14 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../../../api';
+import { Base } from '../../../../../../common/Base';
+import { Flex } from '../../../../../../common/Flex';
+import { Text } from '../../../../../../common/Text';
 import { GetMaxVisitorsList } from '../../../../common/RoomSettingsUtils';
 import { useNavigatorContext } from '../../../../context/NavigatorContext';
 import { NavigatorRoomSettingsTabViewProps } from '../../NavigatorRoomSettingsView.types';
+
+const DESC_MAX_LENGTH = 255;
 
 export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>
 {
@@ -48,49 +54,49 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
 
     return (
         <>
-            <div className="form-group mb-1">
-                <label>{ LocalizeText('navigator.roomname') }</label>
+            <Flex alignItems="center" gap={ 1 }>
+                <Text className="col-3">{ LocalizeText('navigator.roomname') }</Text>
                 <input className="form-control form-control-sm" value={ roomSettingsData.roomName } onChange={ event => handleChange('name', event.target.value) } onBlur={ () => onSave(roomSettingsData) } />
-            </div>
-            <div className="form-group mb-1">
-                <label>{ LocalizeText('navigator.roomsettings.desc') }</label>
-                <input className="form-control form-control-sm" value={ roomSettingsData.roomDescription } onChange={ event => handleChange('description', event.target.value) } onBlur={ () => onSave(roomSettingsData) } />
-            </div>
-            <div className="form-group mb-1">
-                <label>{ LocalizeText('navigator.category') }</label>
+            </Flex>
+            <Flex alignItems="center" gap={ 1 }>
+                <Text className="col-3">{ LocalizeText('navigator.roomsettings.desc') }</Text>
+                <textarea className="form-control form-control-sm" value={ roomSettingsData.roomDescription } onChange={ event => handleChange('description', event.target.value) } onBlur={ () => onSave(roomSettingsData) } maxLength={ DESC_MAX_LENGTH } />
+            </Flex>
+            <Flex alignItems="center" gap={ 1 }>
+                <Text className="col-3">{ LocalizeText('navigator.category') }</Text>
                 <select className="form-select form-select-sm" value={ roomSettingsData.categoryId } onChange={ event => handleChange('category', event.target.value) }>
                     { categories && categories.map(category =>
                         {
                             return <option key={ category.id } value={ category.id }>{ LocalizeText(category.name) }</option>
                         }) }
                 </select>
-            </div>
-            <div className="form-group mb-1">
-                <label>{ LocalizeText('navigator.maxvisitors') }</label>
+            </Flex>
+            <Flex alignItems="center" gap={ 1 }>
+                <Text className="col-3">{ LocalizeText('navigator.maxvisitors') }</Text>
                 <select className="form-select form-select-sm" value={ roomSettingsData.userCount } onChange={ event => handleChange('max_visitors', event.target.value) }>
                     { maxVisitorsList && maxVisitorsList.map(value =>
                         {
                             return <option key={ value } value={ value }>{ value }</option>
                         }) }
                 </select>
-            </div>
-            <div className="form-group mb-1">
-                <label>{ LocalizeText('navigator.tradesettings') }</label>
+            </Flex>
+            <Flex alignItems="center" gap={ 1 }>
+                <Text className="col-3">{ LocalizeText('navigator.tradesettings') }</Text>
                 <select className="form-select form-select-sm" value={ roomSettingsData.tradeState } onChange={ event => handleChange('trade_state', event.target.value) }>
                     <option value="0">{ LocalizeText('navigator.roomsettings.trade_not_allowed') }</option>
                     <option value="1">{ LocalizeText('navigator.roomsettings.trade_not_with_Controller') }</option>
                     <option value="2">{ LocalizeText('navigator.roomsettings.trade_allowed') }</option>
                 </select>
-            </div>
-            <div className="form-check">
+            </Flex>
+            <Flex alignItems="center" gap={ 1 }>
+                <Base className="col-3" />
                 <input className="form-check-input" type="checkbox" checked={ roomSettingsData.allowWalkthrough } onChange={ event => handleChange('allow_walkthrough', event.target.checked) } />
-                <label className="form-check-label">{ LocalizeText('navigator.roomsettings.allow_walk_through') }</label>
-            </div>
-            <div className="form-group d-flex justify-content-center mt-1">
-                <button type="button" className="btn btn-link btn-sm text-danger fw-bold">
-                    <i className="fas fa-times me-1" />
-                    { LocalizeText('navigator.roomsettings.delete') }</button>
-            </div>
+                <Text>{ LocalizeText('navigator.roomsettings.allow_walk_through') }</Text>
+            </Flex>
+            <Text variant="danger" underline bold pointer className="d-flex justify-content-center align-items-center gap-1 mt-2">
+                <FontAwesomeIcon icon="times" />
+                { LocalizeText('navigator.roomsettings.delete') }
+            </Text>
         </>
     );
 };

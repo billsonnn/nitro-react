@@ -1,18 +1,24 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { GetConfiguration, GetNitroInstance, LocalizeText } from '../../../../api';
+import { Column } from '../../../../common/Column';
+import { Flex } from '../../../../common/Flex';
+import { Text } from '../../../../common/Text';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
+import { RoomThumbnailView } from '../../../../layout/room-thumbnail/RoomThumbnailView';
 import { useNavigatorContext } from '../../context/NavigatorContext';
-import { NavigatorRoomLinkViewProps } from './NavigatorRoomLinkView.types';
+
+export class NavigatorRoomLinkViewProps
+{
+    onCloseClick: () => void;
+}
 
 export const NavigatorRoomLinkView: FC<NavigatorRoomLinkViewProps> = props =>
 {
     const { onCloseClick = null } = props;
-    const { navigatorState = null } = useNavigatorContext();
-    const { roomInfoData = null } = navigatorState;
-
     const [ roomThumbnail, setRoomThumbnail ] = useState(null);
     const [ roomLink, setRoomLink ] = useState(null);
-    
+    const { navigatorState = null } = useNavigatorContext();
+    const { roomInfoData = null } = navigatorState;
     const elementRef = useRef<HTMLInputElement>();
     
     useEffect(() =>
@@ -50,18 +56,16 @@ export const NavigatorRoomLinkView: FC<NavigatorRoomLinkViewProps> = props =>
     
     return (
         <NitroCardView className="nitro-room-link" simple={ true }>
-            <NitroCardHeaderView headerText={ LocalizeText('navigator.embed.title') } onCloseClick={ () => processAction('close') } />
+            <NitroCardHeaderView headerText={ LocalizeText('navigator.embed.title') } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black d-flex align-items-center">
-                <div className="me-3">
-                    <div className="room-thumbnail border">
-                        { roomThumbnail && <img alt="" src={ roomThumbnail } /> }
-                    </div>
-                </div>
-                <div>
-                    <div className="h5 fw-bold m-0">{ LocalizeText('navigator.embed.headline') }</div>
-                    <div>{ LocalizeText('navigator.embed.info') }</div>
-                    { roomLink && <input ref={ elementRef } type="text" readOnly className="form-control form-control-sm" value={ roomLink } /> }
-                </div>
+                <Flex gap={ 2 }>
+                    <RoomThumbnailView customUrl={ roomInfoData.enteredGuestRoom.officialRoomPicRef } />
+                    <Column>
+                        <Text bold fontSize={ 5 }>{ LocalizeText('navigator.embed.headline') }</Text>
+                        <Text>{ LocalizeText('navigator.embed.info') }</Text>
+                        { roomLink && <input ref={ elementRef } type="text" readOnly className="form-control form-control-sm" value={ roomLink } /> }
+                    </Column>
+                </Flex>
             </NitroCardContentView>
         </NitroCardView>
     );
