@@ -41,7 +41,7 @@ export class ProductImageUtility
         return imageUrl;
     }
 
-    private static getProductCategory(productType: string, furniClassId: number): number
+    public static getProductCategory(productType: string, furniClassId: number): number
     {
         if(productType === CatalogPageMessageProductData.S) return 1;
 

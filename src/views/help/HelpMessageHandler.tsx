@@ -39,7 +39,7 @@ export const HelpMessageHandler: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        const message = LocalizeText('help.cfh.closed.' + GetCloseReasonKey(parser.closeReason))
+        const message = parser.messageText.length === 0 ? LocalizeText('help.cfh.closed.' + GetCloseReasonKey(parser.closeReason)) : parser.messageText;
 
         NotificationUtilities.simpleAlert(message, NotificationAlertType.MODERATION, null, null, LocalizeText('mod.alert.title'));
     }, []);

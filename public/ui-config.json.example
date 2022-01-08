@@ -1,11 +1,11 @@
 {
     "image.library.notifications.url": "${image.library.url}notifications/%image%.png",
     "achievements.images.url": "${image.library.url}Quests/%image%.png",
-    "camera.url": "CAMERA_PHOTOS_URL",
-    "thumbnails.url": "CAMERA_ROOM_THUMBNAILS/%thumbnail%.png",
-    "url.prefix": "URL",
+    "camera.url": "https://camera.com",
+    "thumbnails.url": "https://camera.com/thumbnail/%thumbnail%.png",
+    "url.prefix": "https://website.com",
     "floorplan.tile.url": "${asset.url}/floorplan-editor/tiles.json",
-    "habbopages.url": "URL/",
+    "habbopages.url": "https://website.com/habbopages/",
     "chat.viewer.height.percentage": 0.40,
     "widget.dimmer.colorwheel": false,
     "hotelview": {
@@ -44,8 +44,7 @@
     "system.currency.types": [
         -1,
         0,
-        5,
-        101
+        5
     ],
     "hc.center": {
         "benefits.info": true,

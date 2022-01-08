@@ -1,15 +1,25 @@
 import { MouseEventType, TouchEventType } from '@nitrots/nitro-renderer';
-import { FC, Key, MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { DraggableWindowPosition, DraggableWindowProps } from './DraggableWindow.types';
+import { DetailedHTMLProps, FC, HTMLAttributes, Key, MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { BatchUpdates } from '../../hooks';
+import { DraggableWindowPosition } from './DraggableWindow.types';
 
 const CURRENT_WINDOWS: HTMLElement[] = [];
 const POS_MEMORY: Map<Key, { x: number, y: number }> = new Map();
 const BOUNDS_THRESHOLD_TOP: number = 0;
 const BOUNDS_THRESHOLD_LEFT: number = 0;
 
+export interface DraggableWindowProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+{
+    uniqueKey?: Key;
+    handleSelector?: string;
+    position?: string;
+    disableDrag?: boolean;
+}
+
 export const DraggableWindow: FC<DraggableWindowProps> = props =>
 {
-    const { uniqueKey = null, handleSelector = '.drag-handler', position = DraggableWindowPosition.CENTER, disableDrag = false, children = null } = props;
+    const { uniqueKey = null, handleSelector = '.drag-handler', position = DraggableWindowPosition.CENTER, disableDrag = false, children = null, ...rest } = props;
     const [ delta, setDelta ] = useState<{ x: number, y: number }>(null);
     const [ offset, setOffset ] = useState<{ x: number, y: number }>(null);
     const [ start, setStart ] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
@@ -120,9 +130,12 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
             offsetX = (document.body.offsetWidth - elementRef.current.offsetWidth) - elementRef.current.offsetLeft;
         }
 
-        setDelta({ x: 0, y: 0 });
-        setOffset({ x: offsetX, y: offsetY });
-        setIsDragging(false);
+        BatchUpdates(() =>
+        {
+            setDelta({ x: 0, y: 0 });
+            setOffset({ x: offsetX, y: offsetY });
+            setIsDragging(false);
+        });
 
         if(uniqueKey !== null) POS_MEMORY.set(uniqueKey, { x: offsetX, y: offsetY });
     }, [ dragHandler, delta, offset, uniqueKey ]);
@@ -180,8 +193,11 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
             }
         }
 
-        setDelta({ x: 0, y: 0 });
-        setOffset({ x: offsetX, y: offsetY });
+        BatchUpdates(() =>
+        {
+            setDelta({ x: 0, y: 0 });
+            setOffset({ x: offsetX, y: offsetY });
+        });
 
         return () =>
         {
@@ -236,8 +252,9 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
     }, [ isDragging, onDragMouseUp, onDragMouseMove, onDragTouchUp, onDragTouchMove ]);
 
     return (
-        <div ref={ elementRef } className="position-absolute draggable-window" onMouseDownCapture={ onMouseDown } onTouchStartCapture={ onTouchStart }>
+        createPortal(
+        <div ref={ elementRef } className="position-absolute draggable-window" onMouseDownCapture={ onMouseDown } onTouchStartCapture={ onTouchStart } { ...rest }>
             { children }
-        </div>
+        </div>, document.getElementById('draggable-windows-container'))
     );
 }

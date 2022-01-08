@@ -9,13 +9,11 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
 
     return (
         <NitroCardContextProvider value={ { theme, simple } }>
-            <div className="nitro-card-responsive">
-                <DraggableWindow { ...rest }>
-                    <div className={ `nitro-card d-flex flex-column rounded shadow overflow-hidden theme-${theme} ${className}` }>
-                        { children }
-                    </div>
-                </DraggableWindow>
-            </div>
+            <DraggableWindow { ...rest }>
+                <div className={ `nitro-card d-flex flex-column rounded shadow overflow-hidden theme-${theme} ${className} position-relative` }>
+                    { children }
+                </div>
+            </DraggableWindow>
         </NitroCardContextProvider>
     );
 }

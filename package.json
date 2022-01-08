@@ -5,7 +5,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco --max_old_space_size=8048 build",
-    "build:prod": "npx browserslist@latest --update-db && yarn remove @nitrots/nitro-renderer && yarn add git+https://git@git.krews.org/nitro/nitro-renderer#dev && yarn install && yarn build",
+    "build:prod": "npx browserslist@latest --update-db && yarn install && yarn build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },

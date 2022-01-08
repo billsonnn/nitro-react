@@ -1,5 +1,4 @@
 import { FC, ReactNode, useCallback, useMemo, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { NotificationAlertEvent, NotificationConfirmEvent } from '../../events';
 import { NotificationBubbleEvent } from '../../events/notification-center/NotificationBubbleEvent';
 import { useUiEvent } from '../../hooks/events';
@@ -148,8 +147,8 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
             <div className="nitro-notification-center">
                 { getBubbleAlerts }
             </div>
-            { createPortal(getAlerts, document.getElementById('nitro-alerts-container')) }
-            { createPortal(getConfirms, document.getElementById('nitro-confirms-container')) }
+            { getConfirms }
+            { getAlerts }
         </>
     );
 }

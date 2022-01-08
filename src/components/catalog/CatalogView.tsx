@@ -1,4 +1,4 @@
-import { GetCatalogIndexComposer, GetCatalogPageComposer, GetGiftWrappingConfigurationComposer, GetMarketplaceConfigurationMessageComposer, ILinkEventTracker, INodeData, RoomPreviewer } from '@nitrots/nitro-renderer';
+import { GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, GetMarketplaceConfigurationMessageComposer, ILinkEventTracker, INodeData, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { AddEventLinkTracker, GetRoomEngine, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { CREDITS, PlaySound } from '../../api/utils/PlaySound';
@@ -195,6 +195,7 @@ export const CatalogView: FC<{}> = props =>
     {
         SendMessageHook(new GetMarketplaceConfigurationMessageComposer());
         SendMessageHook(new GetGiftWrappingConfigurationComposer());
+        SendMessageHook(new GetClubGiftInfo());
     });
 
     const currentNavigationPage = ((searchResult && searchResult.page) || currentTab);
