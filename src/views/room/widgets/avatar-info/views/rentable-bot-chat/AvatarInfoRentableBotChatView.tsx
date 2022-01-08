@@ -1,19 +1,22 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
+import { GetRoomObjectBounds, GetRoomSession } from '../../../../../../api';
 import { DraggableWindow, DraggableWindowPosition } from '../../../../../../layout';
-import { ObjectLocationView } from '../../../object-location/ObjectLocationView';
 import { AvatarInfoRentableBotChatViewProps } from './AvatarInfoRentableBotChatView.types';
 
 export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProps> = props =>
 {
     const { chatEvent = null } = props;
 
+    const getObjectLocation = useMemo(() =>
+    {
+        return GetRoomObjectBounds(GetRoomSession().roomId, chatEvent.objectId, chatEvent.category, 1);
+    }, [ chatEvent ]);
+
     return (
-        <DraggableWindow position={ DraggableWindowPosition.NOTHING } handleSelector=".drag-handler">
-            <ObjectLocationView objectId={ chatEvent.objectId } category={ chatEvent.category } noFollow={ true }>
-                <div className="nitro-context-menu">
-                    <div className="drag-handler">test!!!!!</div>
-                </div>
-                </ObjectLocationView>
+        <DraggableWindow position={ DraggableWindowPosition.NOTHING } handleSelector=".drag-handler" style={ { top: getObjectLocation.y, left: getObjectLocation.x } }>
+            <div className="nitro-context-menu">
+                <div className="drag-handler">test!!!!!</div>
+            </div>
         </DraggableWindow>
     );
 }
