@@ -41,7 +41,6 @@ yarn-error.log
 testem.log
 /typings
 .git
-.env
 
 # System Files
 .DS_Store
@@ -49,3 +48,6 @@ Thumbs.db
 
 /build
 *.zip
+.env
+public/renderer-config.json
+public/ui-config.json
