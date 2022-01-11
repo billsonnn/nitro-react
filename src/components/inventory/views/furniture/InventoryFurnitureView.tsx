@@ -129,15 +129,16 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                 { groupItem &&
                     <Column grow justifyContent="between" gap={ 2 }>
                         <Text grow truncate>{ groupItem.name }</Text>
-                        { !!roomSession &&
-                            <Button variant="success" size="sm" onClick={ event => attemptItemPlacement(groupItem) }>
-                                { LocalizeText('inventory.furni.placetoroom') }
-                            </Button> }
-                        { (groupItem && groupItem.isSellable) &&
-                            <Button variant="primary" size="sm" onClick={ event => attemptPlaceMarketplaceOffer(groupItem) }>
-                                { LocalizeText('inventory.marketplace.sell') }
-                            </Button>
-                        }
+                        <Column gap={ 1 }>
+                            { !!roomSession &&
+                                <Button variant="success" onClick={ event => attemptItemPlacement(groupItem) }>
+                                    { LocalizeText('inventory.furni.placetoroom') }
+                                </Button> }
+                            { (groupItem && groupItem.isSellable) &&
+                                <Button onClick={ event => attemptPlaceMarketplaceOffer(groupItem) }>
+                                    { LocalizeText('inventory.marketplace.sell') }
+                                </Button> }
+                        </Column>
                     </Column> }
             </Column>
         </Grid>

@@ -1,5 +1,5 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
+import { FC, MouseEvent, useEffect, useState } from 'react';
 import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { attemptItemPlacement } from '../../common/FurnitureUtilities';
 import { GroupItem } from '../../common/GroupItem';
@@ -18,7 +18,7 @@ export const InventoryFurnitureItemView: FC<InventoryFurnitureItemViewProps> = p
     const { furnitureState, dispatchFurnitureState } = useInventoryContext();
     const isActive = (furnitureState.groupItem === groupItem);
 
-    const onMouseEvent = useCallback((event: MouseEvent) =>
+    const onMouseEvent = (event: MouseEvent) =>
     {
         switch(event.type)
         {
@@ -39,7 +39,7 @@ export const InventoryFurnitureItemView: FC<InventoryFurnitureItemViewProps> = p
                 attemptItemPlacement(groupItem);
                 return;
         }
-    }, [ isActive, isMouseDown, groupItem, dispatchFurnitureState ]);
+    }
 
     useEffect(() =>
     {

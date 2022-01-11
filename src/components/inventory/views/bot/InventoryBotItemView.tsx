@@ -1,5 +1,5 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
+import { FC, MouseEvent, useEffect, useState } from 'react';
 import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
 import { BotItem } from '../../common/BotItem';
@@ -15,11 +15,11 @@ export interface InventoryBotItemViewProps
 export const InventoryBotItemView: FC<InventoryBotItemViewProps> = props =>
 {
     const { botItem } = props;
-    const { botState = null, dispatchBotState = null } = useInventoryContext();
     const [ isMouseDown, setMouseDown ] = useState(false);
+    const { botState = null, dispatchBotState = null } = useInventoryContext();
     const isActive = (botState.botItem === botItem);
 
-    const onMouseEvent = useCallback((event: MouseEvent) =>
+    const onMouseEvent = (event: MouseEvent) =>
     {
         switch(event.type)
         {
@@ -40,7 +40,7 @@ export const InventoryBotItemView: FC<InventoryBotItemViewProps> = props =>
                 attemptBotPlacement(botItem);
                 return;
         }
-    }, [ isActive, isMouseDown, botItem, dispatchBotState ]);
+    }
 
     useEffect(() =>
     {

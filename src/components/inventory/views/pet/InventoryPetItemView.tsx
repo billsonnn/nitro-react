@@ -1,5 +1,5 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
+import { FC, MouseEvent, useEffect, useState } from 'react';
 import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { PetImageView } from '../../../../views/shared/pet-image/PetImageView';
 import { PetItem } from '../../common/PetItem';
@@ -19,7 +19,7 @@ export const InventoryPetItemView: FC<InventoryPetItemViewProps> = props =>
     const { petState = null, dispatchPetState = null } = useInventoryContext();
     const isActive = (petState.petItem === petItem);
 
-    const onMouseEvent = useCallback((event: MouseEvent) =>
+    const onMouseEvent = (event: MouseEvent) =>
     {
         switch(event.type)
         {
@@ -40,7 +40,7 @@ export const InventoryPetItemView: FC<InventoryPetItemViewProps> = props =>
                 attemptPetPlacement(petItem);
                 return;
         }
-    }, [ isActive, isMouseDown, petItem, dispatchPetState ]);
+    }
 
     useEffect(() =>
     {

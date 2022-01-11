@@ -21,6 +21,34 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
     const { badgeState = null, dispatchBadgeState = null } = useInventoryContext();
     const { needsBadgeUpdate = false, badge = null, badges = [], activeBadges = [] } = badgeState;
 
+    const isWearingBadge = (badgeCode: string) => (activeBadges.indexOf(badgeCode) >= 0);
+
+    const canWearBadges = () => (activeBadges.length < 5);
+
+    const toggleBadge = () =>
+    {
+        if(isWearingBadge(badge))
+        {
+            dispatchBadgeState({
+                type: InventoryBadgeActions.REMOVE_ACTIVE_BADGE,
+                payload: {
+                    badgeCode: badge
+                }
+            });
+        }
+        else
+        {
+            if(!canWearBadges()) return;
+
+            dispatchBadgeState({
+                type: InventoryBadgeActions.ADD_ACTIVE_BADGE,
+                payload: {
+                    badgeCode: badge
+                }
+            });
+        }
+    }
+
     useEffect(() =>
     {
         if(needsBadgeUpdate)
@@ -45,40 +73,6 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
         }
 
     }, [ needsBadgeUpdate, badges, dispatchBadgeState ]);
-
-    function isWearingBadge(badgeCode: string): boolean
-    {
-        return (activeBadges.indexOf(badgeCode) >= 0);
-    }
-
-    function canWearBadges(): boolean
-    {
-        return (activeBadges.length < 5);
-    }
-
-    function toggleBadge(): void
-    {
-        if(isWearingBadge(badge))
-        {
-            dispatchBadgeState({
-                type: InventoryBadgeActions.REMOVE_ACTIVE_BADGE,
-                payload: {
-                    badgeCode: badge
-                }
-            });
-        }
-        else
-        {
-            if(!canWearBadges()) return;
-
-            dispatchBadgeState({
-                type: InventoryBadgeActions.ADD_ACTIVE_BADGE,
-                payload: {
-                    badgeCode: badge
-                }
-            });
-        }
-    }
 
     return (
         <Grid>
@@ -105,7 +99,7 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
                             <BadgeImageView badgeCode={ badge } />
                             <Text>{ LocalizeBadgeName(badge) }</Text>
                         </Flex>
-                        <Button variant={ (isWearingBadge(badge) ? 'danger' : 'success') } size="sm" disabled={ !isWearingBadge(badge) && !canWearBadges() } onClick={ toggleBadge }>{ LocalizeText(isWearingBadge(badge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>
+                        <Button variant={ (isWearingBadge(badge) ? 'danger' : 'success') } disabled={ !isWearingBadge(badge) && !canWearBadges() } onClick={ toggleBadge }>{ LocalizeText(isWearingBadge(badge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>
                     </Column> }
             </Column>
         </Grid>

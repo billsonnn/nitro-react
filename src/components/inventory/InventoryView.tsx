@@ -151,12 +151,12 @@ export const InventoryView: FC<{}> = props =>
         }
     }, [ furnitureState.groupItems, unseenTracker ]);
 
-    const switchTab = useCallback((prevTab: string, nextTab: string) =>
+    const switchTab = (prevTab: string, nextTab: string) =>
     {
         if(nextTab) setCurrentTab(nextTab);
 
         resetTrackerForTab(prevTab);
-    }, [ resetTrackerForTab ]);
+    }
 
     useEffect(() =>
     {

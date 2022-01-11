@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FurnitureListComposer, IObjectData, TradingAcceptComposer, TradingConfirmationComposer, TradingListAddItemComposer, TradingListAddItemsComposer, TradingListItemRemoveComposer, TradingUnacceptComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { Base } from '../../../../common/Base';
 import { Button } from '../../../../common/Button';
@@ -26,7 +26,6 @@ export interface InventoryTradeViewProps
     cancelTrade: () => void;
 }
 
-
 const MAX_ITEMS_TO_TRADE: number = 9;
 
 export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
@@ -40,7 +39,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
     const { furnitureState = null, dispatchFurnitureState = null } = useInventoryContext();
     const { needsFurniUpdate = false, groupItems = [], tradeData = null } = furnitureState;
 
-    const canTradeItem = useCallback((isWallItem: boolean, spriteId: number, category: number, groupable: boolean, stuffData: IObjectData) =>
+    const canTradeItem = (isWallItem: boolean, spriteId: number, category: number, groupable: boolean, stuffData: IObjectData) =>
     {
         if(!tradeData || !tradeData.ownUser || tradeData.ownUser.accepts || !tradeData.ownUser.items) return false;
 
@@ -67,9 +66,9 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         }
 
         return !!tradeData.ownUser.items.getValue(type);
-    }, [ tradeData ]);
+    }
 
-    const attemptItemOffer = useCallback((count: number) =>
+    const attemptItemOffer = (count: number) =>
     {
         if(!tradeData || !groupItem) return;
 
@@ -124,42 +123,25 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         {
             NotificationUtilities.simpleAlert(LocalizeText('trading.items.too_many_items.desc'), NotificationAlertType.DEFAULT, null, null, LocalizeText('trading.items.too_many_items.title'));
         }
-    }, [ groupItem, tradeData, canTradeItem ]);
+    }
 
-    const removeItem = useCallback((group: GroupItem) =>
+    const removeItem = (group: GroupItem) =>
     {
         const item = group.getLastItem();
 
         if(!item) return;
 
         SendMessageHook(new TradingListItemRemoveComposer(item.id));
-    }, []);
+    }
 
-    useEffect(() =>
-    {
-        if(needsFurniUpdate)
-        {
-            dispatchFurnitureState({
-                type: InventoryFurnitureActions.SET_NEEDS_UPDATE,
-                payload: {
-                    flag: false
-                }
-            });
-
-            SendMessageHook(new FurnitureListComposer());
-        }
-
-    }, [ needsFurniUpdate, groupItems, dispatchFurnitureState ]);
-
-    const progressTrade = useCallback(() =>
+    const progressTrade = () =>
     {
         switch(tradeData.state)
         {
             case TradeState.TRADING_STATE_RUNNING:
                 if(!tradeData.otherUser.itemCount && !tradeData.ownUser.accepts)
                 {
-                    // eslint-disable-next-line no-template-curly-in-string
-                    NotificationUtilities.simpleAlert(LocalizeText('${inventory.trading.warning.other_not_offering}'), null, null, null);
+                    NotificationUtilities.simpleAlert(LocalizeText('inventory.trading.warning.other_not_offering'), null, null, null);
                 }
 
                 if(tradeData.ownUser.accepts)
@@ -182,7 +164,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                 });
                 return;
         }
-    }, [ tradeData, dispatchFurnitureState ]);
+    }
 
     const getLockIcon = (accepts: boolean) =>
     {
@@ -192,24 +174,21 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         return <FontAwesomeIcon icon={ iconName } className={ 'text-' + textColor } />
     };
 
-    const getTradeButton = useMemo(() =>
+    useEffect(() =>
     {
-        if(!tradeData) return null;
-
-        switch(tradeData.state)
+        if(needsFurniUpdate)
         {
-            case TradeState.TRADING_STATE_READY:
-                return <Button variant="secondary" size="sm" disabled={ (!tradeData.ownUser.itemCount && !tradeData.otherUser.itemCount) } onClick={ progressTrade }>{ LocalizeText('inventory.trading.accept') }</Button>;
-            case TradeState.TRADING_STATE_RUNNING:
-                return <Button variant="secondary" size="sm" disabled={ (!tradeData.ownUser.itemCount && !tradeData.otherUser.itemCount) } onClick={ progressTrade }>{ LocalizeText(tradeData.ownUser.accepts ? 'inventory.trading.modify' : 'inventory.trading.accept') }</Button>;
-            case TradeState.TRADING_STATE_COUNTDOWN:
-                return <Button variant="secondary" size="sm" disabled>{ LocalizeText('inventory.trading.countdown', [ 'counter' ], [ countdownTick.toString() ]) }</Button>;
-            case TradeState.TRADING_STATE_CONFIRMING:
-                return <Button variant="secondary" size="sm" onClick={ progressTrade }>{ LocalizeText('inventory.trading.button.restore') }</Button>;
-            case TradeState.TRADING_STATE_CONFIRMED:
-                return <Button variant="secondary" size="sm">{ LocalizeText('inventory.trading.info.waiting') }</Button>;
+            dispatchFurnitureState({
+                type: InventoryFurnitureActions.SET_NEEDS_UPDATE,
+                payload: {
+                    flag: false
+                }
+            });
+
+            SendMessageHook(new FurnitureListComposer());
         }
-    }, [ tradeData, countdownTick, progressTrade ]);
+
+    }, [ needsFurniUpdate, groupItems, dispatchFurnitureState ]);
 
     useEffect(() =>
     {
@@ -223,7 +202,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                 {
                     const newValue = (prevValue - 1);
 
-                    if(newValue === -1)
+                    if(newValue === 0)
                     {
                         dispatchFurnitureState({
                             type: InventoryFurnitureActions.SET_TRADE_STATE,
@@ -258,7 +237,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                                 return (
                                     <LayoutGridItem key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) }>
                                         { ((count > 0) && (groupItem === item)) &&
-                                            <Button position="absolute" variant="success" size="sm" className="trade-button bottom-1 end-1" onClick={ event => attemptItemOffer(1) }>
+                                            <Button position="absolute" variant="success" className="trade-button bottom-1 end-1" onClick={ event => attemptItemOffer(1) }>
                                                 <FontAwesomeIcon icon="chevron-right" />
                                             </Button> }
                                     </LayoutGridItem>
@@ -287,7 +266,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                                     return (
                                         <LayoutGridItem key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) }>
                                             { (ownGroupItem === item) &&
-                                                <Button position="absolute" variant="danger" size="sm" className="trade-button bottom-1 start-1" onClick={ event => removeItem(item) }>
+                                                <Button position="absolute" variant="danger" className="trade-button bottom-1 start-1" onClick={ event => removeItem(item) }>
                                                     <FontAwesomeIcon icon="chevron-left" />
                                                 </Button> }
                                         </LayoutGridItem>
@@ -319,8 +298,17 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                     </Column>
                 </Grid>
                 <Flex grow justifyContent="between">
-                    <Button variant="danger" size="sm" onClick={ cancelTrade }>{ LocalizeText('generic.cancel') }</Button>
-                    { getTradeButton }
+                    <Button variant="danger" onClick={ cancelTrade }>{ LocalizeText('generic.cancel') }</Button>
+                    { (tradeData.state === TradeState.TRADING_STATE_READY) &&
+                        <Button variant="secondary" disabled={ (!tradeData.ownUser.itemCount && !tradeData.otherUser.itemCount) } onClick={ progressTrade }>{ LocalizeText('inventory.trading.accept') }</Button> }
+                    { (tradeData.state === TradeState.TRADING_STATE_RUNNING) &&
+                        <Button variant="secondary" disabled={ (!tradeData.ownUser.itemCount && !tradeData.otherUser.itemCount) } onClick={ progressTrade }>{ LocalizeText(tradeData.ownUser.accepts ? 'inventory.trading.modify' : 'inventory.trading.accept') }</Button> }
+                    { (tradeData.state === TradeState.TRADING_STATE_COUNTDOWN) &&
+                        <Button variant="secondary" disabled>{ LocalizeText('inventory.trading.countdown', [ 'counter' ], [ countdownTick.toString() ]) }</Button> }
+                    { (tradeData.state === TradeState.TRADING_STATE_CONFIRMING) &&
+                        <Button variant="secondary" onClick={ progressTrade }>{ LocalizeText('inventory.trading.button.restore') }</Button> }
+                    { (tradeData.state === TradeState.TRADING_STATE_CONFIRMED) &&
+                        <Button variant="secondary">{ LocalizeText('inventory.trading.info.waiting') }</Button> }
                 </Flex>
             </Column>
         </Grid>
