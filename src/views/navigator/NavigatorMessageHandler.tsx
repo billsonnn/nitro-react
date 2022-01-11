@@ -1,4 +1,4 @@
-import { GenericErrorEvent, GetGuestRoomResultEvent, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomInfoComposer, RoomSettingsUpdatedEvent, UserInfoEvent } from '@nitrots/nitro-renderer';
+import { GenericErrorEvent, GetGuestRoomResultEvent, LegacyExternalInterface, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomInfoComposer, RoomSettingsUpdatedEvent, UserInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateRoomSession, GetSessionDataManager } from '../../api';
 import { UpdateDoorStateEvent } from '../../events';
@@ -41,6 +41,8 @@ export const NavigatorMessageHandler: FC<NavigatorMessageHandlerProps> = props =
         });
 
         SendMessageHook(new RoomInfoComposer(parser.roomId, true, false));
+
+        if(LegacyExternalInterface.available) LegacyExternalInterface.call('legacyTrack', 'navigator', 'private', [ parser.roomId ]);
     }, [ navigatorState, dispatchNavigatorState ]);
 
     const onGetGuestRoomResultEvent = useCallback((event: GetGuestRoomResultEvent) =>
