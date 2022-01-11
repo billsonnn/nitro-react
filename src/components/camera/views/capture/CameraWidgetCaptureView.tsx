@@ -1,11 +1,21 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NitroRectangle, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
 import { GetRoomEngine, GetRoomSession, LocalizeText } from '../../../../api';
 import { CAMERA_SHUTTER, PlaySound } from '../../../../api/utils/PlaySound';
+import { Column } from '../../../../common/Column';
+import { Flex } from '../../../../common/Flex';
 import { DraggableWindow } from '../../../../layout';
+import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
 import { CameraPicture } from '../../common/CameraPicture';
 import { useCameraWidgetContext } from '../../context/CameraWidgetContext';
-import { CameraWidgetCaptureViewProps } from './CameraWidgetCaptureView.types';
+
+export interface CameraWidgetCaptureViewProps
+{
+    onClose: () => void;
+    onEdit: () => void;
+    onDelete: () => void;
+}
 
 const CAMERA_ROLL_LIMIT: number = 5;
 
@@ -40,7 +50,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
 
         if(clone.length >= CAMERA_ROLL_LIMIT)
         {
-            alert(LocalizeText('camera.full.body'));
+            NotificationUtilities.simpleAlert(LocalizeText('camera.full.body'));
 
             clone.pop();
         }
@@ -52,12 +62,12 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
     }, [ cameraRoll, selectedPictureIndex, getCameraBounds, setCameraRoll, setSelectedPictureIndex ]);
 
     return (
-        <DraggableWindow>
-            <div className="d-flex flex-column justify-content-center align-items-center nitro-camera-capture">
+        <DraggableWindow uniqueKey="nitro-camera-capture">
+            <Column center className="nitro-camera-capture" gap={ 0 }>
                 { selectedPicture && <img alt="" className="camera-area" src={ selectedPicture.imageUrl } /> }
                 <div className="camera-canvas drag-handler">
                     <div className="position-absolute header-close" onClick={ onClose }>
-                        <i className="fas fa-times" />
+                        <FontAwesomeIcon icon="times" />
                     </div>
                     { !selectedPicture && <div ref={ elementRef } className="camera-area camera-view-finder" /> }
                     { selectedPicture && 
@@ -72,13 +82,13 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
                     </div>
                 </div>
                 { (cameraRoll.length > 0) &&
-                    <div className="camera-roll d-flex justify-content-center py-2">
+                    <Flex gap={ 2 } justifyContent="center" className="camera-roll d-flex justify-content-center py-2">
                         { cameraRoll.map((picture, index) =>
                             {
-                                return <img alt="" key={ index } className={ (index < (cameraRoll.length - 1) ? 'me-2' : '') } src={ picture.imageUrl } onClick={ event => setSelectedPictureIndex(index) } />;
+                                return <img alt="" key={ index } src={ picture.imageUrl } onClick={ event => setSelectedPictureIndex(index) } />;
                             }) }
-                    </div> }
-            </div>
+                    </Flex> }
+            </Column>
         </DraggableWindow>
     );
 }

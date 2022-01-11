@@ -1,14 +1,24 @@
+import { IRoomCameraWidgetEffect, IRoomCameraWidgetSelectedEffect } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { NitroCardGridView } from '../../../../../layout';
-import { CameraWidgetEffectListItemView } from '../effect-list-item/CameraWidgetEffectListItemView';
-import { CameraWidgetEffectListViewProps } from './CameraWidgetEffectListView.types';
+import { Grid } from '../../../../../common/Grid';
+import { CameraPictureThumbnail } from '../../../common/CameraPictureThumbnail';
+import { CameraWidgetEffectListItemView } from './CameraWidgetEffectListItemView';
+
+export interface CameraWidgetEffectListViewProps
+{
+    myLevel: number;
+    selectedEffects: IRoomCameraWidgetSelectedEffect[];
+    effects: IRoomCameraWidgetEffect[];
+    thumbnails: CameraPictureThumbnail[];
+    processAction: (type: string, name: string) => void;
+}
 
 export const CameraWidgetEffectListView: FC<CameraWidgetEffectListViewProps> = props =>
 {
     const { myLevel = 0, selectedEffects = [], effects = [], thumbnails = [], processAction = null } = props;
 
     return (
-        <NitroCardGridView className="effect-grid" columns={ 3 }>
+        <Grid columnCount={ 2 } overflow="auto" columnMinHeight={ 60 }>
             { effects && (effects.length > 0) && effects.map((effect, index) =>
                 {
                     const thumbnailUrl = (thumbnails.find(thumbnail => (thumbnail.effectName === effect.name)));
@@ -16,6 +26,6 @@ export const CameraWidgetEffectListView: FC<CameraWidgetEffectListViewProps> = p
 
                     return <CameraWidgetEffectListItemView key={ index } effect={ effect } thumbnailUrl={ ((thumbnailUrl && thumbnailUrl.thumbnailUrl) || null) } isActive={ isActive } isLocked={ (effect.minLevel > myLevel) } selectEffect={ () => processAction('select_effect', effect.name) } removeEffect={ () => processAction('remove_effect', effect.name) } />
                 }) }
-        </NitroCardGridView>
+        </Grid>
     );
 }

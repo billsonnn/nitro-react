@@ -1,13 +1,32 @@
-import { IRoomCameraWidgetSelectedEffect, RoomCameraWidgetSelectedEffect } from '@nitrots/nitro-renderer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IRoomCameraWidgetEffect, IRoomCameraWidgetSelectedEffect, RoomCameraWidgetSelectedEffect } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { GetRoomCameraWidgetManager, LocalizeText } from '../../../../api';
+import { Button } from '../../../../common/Button';
+import { ButtonGroup } from '../../../../common/ButtonGroup';
+import { Column } from '../../../../common/Column';
+import { Flex } from '../../../../common/Flex';
+import { Grid } from '../../../../common/Grid';
+import { LayoutImage } from '../../../../common/layout/LayoutImage';
+import { Text } from '../../../../common/Text';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
+import { CameraEditorTabs } from '../../common/CameraEditorTabs';
+import { CameraPicture } from '../../common/CameraPicture';
 import { CameraPictureThumbnail } from '../../common/CameraPictureThumbnail';
-import { CameraWidgetEditorTabs, CameraWidgetEditorViewProps } from './CameraWidgetEditorView.types';
 import { CameraWidgetEffectListView } from './effect-list/CameraWidgetEffectListView';
 
-const TABS: string[] = [ CameraWidgetEditorTabs.COLORMATRIX, CameraWidgetEditorTabs.COMPOSITE ];
+export interface CameraWidgetEditorViewProps
+{
+    picture: CameraPicture;
+    availableEffects: IRoomCameraWidgetEffect[];
+    myLevel: number;
+    onClose: () => void;
+    onCancel: () => void;
+    onCheckout: (pictureUrl: string) => void;
+}
+
+const TABS: string[] = [ CameraEditorTabs.COLORMATRIX, CameraEditorTabs.COMPOSITE ];
 
 export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 {
@@ -30,7 +49,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 
     const getEffectList = useCallback(() =>
     {
-        if(currentTab === CameraWidgetEditorTabs.COLORMATRIX)
+        if(currentTab === CameraEditorTabs.COLORMATRIX)
         {
             return getColorMatrixEffects;
         }
@@ -170,45 +189,49 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                     }) }
             </NitroCardTabsView>
             <NitroCardContentView>
-                <div className="row h-100">
-                    <div className="col-5 d-flex flex-column h-100">
+                <Grid>
+                    <Column size={ 5 } overflow="hidden">
                         <CameraWidgetEffectListView myLevel={ myLevel } selectedEffects={ selectedEffects } effects={ getEffectList() } thumbnails={ effectsThumbnails } processAction={ processAction } />
-                    </div>
-                    <div className="col-7 d-flex flex-column h-100">
-                        <div className="picture-preview">
-                            <img alt="" src={ getCurrentPictureUrl } />
-                        </div>
-                        { selectedEffectName &&
-                            <div className="w-100 p-2 d-flex flex-column justify-content-center slider">
-                                <div className="w-100 text-center">{ LocalizeText('camera.effect.name.' + selectedEffectName) }</div>
-                                <ReactSlider
-                                    className={ 'nitro-slider' }
-                                    min={ 0 }
-                                    max={ 1 }
-                                    step={ 0.01 }
-                                    value={ getCurrentEffect.alpha }
-                                    onChange={ event => setSelectedEffectAlpha(event) }
-                                    renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
-                            </div> }
-                        <div className="d-flex justify-content-between mt-2">
-                            <div className="btn-group">
-                                <button className="btn btn-primary" onClick={ event => processAction('clear_effects') }>
-                                    <i className="fas fa-trash"></i>
-                                </button>
-                                <button className="btn btn-primary" onClick={ event => processAction('download') }>
-                                    <i className="fas fa-save"></i>
-                                </button>
-                                <button className="btn btn-primary" onClick={ event => processAction('zoom') }>
-                                    <i className={ `fas fa-search-${ isZoomed ? 'minus': 'plus' }` } />
-                                </button>
-                            </div>
-                            <div className="d-flex justify-content-end">
-                                <button className="btn btn-primary me-2" onClick={ event => processAction('cancel') }>{ LocalizeText('generic.cancel') }</button>
-                                <button className="btn btn-success" onClick={ event => processAction('checkout') }>{ LocalizeText('camera.preview.button.text') }</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    </Column>
+                    <Column size={ 7 } justifyContent="between" overflow="hidden">
+                        <Column center>
+                            <LayoutImage fit={ false } imageUrl={ getCurrentPictureUrl } className="picture-preview" />
+                            { selectedEffectName &&
+                                <Column center fullWidth gap={ 1 }>
+                                    <Text>{ LocalizeText('camera.effect.name.' + selectedEffectName) }</Text>
+                                    <ReactSlider
+                                        className={ 'nitro-slider' }
+                                        min={ 0 }
+                                        max={ 1 }
+                                        step={ 0.01 }
+                                        value={ getCurrentEffect.alpha }
+                                        onChange={ event => setSelectedEffectAlpha(event) }
+                                        renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
+                                </Column> }
+                        </Column>
+                        <Flex justifyContent="between">
+                            <ButtonGroup>
+                                <Button size="sm" onClick={ event => processAction('clear_effects') }>
+                                    <FontAwesomeIcon icon="trash" />
+                                </Button>
+                                <Button size="sm" onClick={ event => processAction('download') }>
+                                    <FontAwesomeIcon icon="save" />
+                                </Button>
+                                <Button size="sm" onClick={ event => processAction('zoom') }>
+                                    <FontAwesomeIcon icon={ isZoomed ? 'search-minus' : 'search-plus' } />
+                                </Button>
+                            </ButtonGroup>
+                            <Flex gap={ 1 }>
+                                <Button size="sm" onClick={ event => processAction('cancel') }>
+                                    { LocalizeText('generic.cancel') }
+                                </Button>
+                                <Button size="sm" onClick={ event => processAction('checkout') }>
+                                    { LocalizeText('camera.preview.button.text') }
+                                </Button>
+                            </Flex>
+                        </Flex>
+                    </Column>
+                </Grid>
             </NitroCardContentView>
         </NitroCardView>
     );
