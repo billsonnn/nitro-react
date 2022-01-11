@@ -23,6 +23,7 @@ export const Grid: FC<GridProps> = props =>
         const newClassNames: string[] = [];
 
         if(!grow) newClassNames.push('h-100');
+        else newClassNames.push('flex-basis-fit-content');
 
         if(inline) newClassNames.push('inline-grid');
         else newClassNames.push('grid');

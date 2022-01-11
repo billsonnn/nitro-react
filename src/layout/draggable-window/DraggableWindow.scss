@@ -21,5 +21,6 @@
     .draggable-window {
         display: inline-block;
         visibility: hidden;
+        pointer-events: all;
     }
 }

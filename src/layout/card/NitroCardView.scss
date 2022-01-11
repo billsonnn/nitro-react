@@ -2,7 +2,6 @@ $nitro-card-header-height: 33px;
 $nitro-card-tabs-height: 33px;
 
 .nitro-card {
-    pointer-events: all;
     resize: both;
 
     @include media-breakpoint-down(sm) {
