@@ -1,8 +1,11 @@
 import { CatalogPageMessageOfferData } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../../../../api';
-import { NitroCardGridItemView } from '../../../../../../../layout';
-import { ProductImageUtility } from '../../../../../../notification-center/common/ProductImageUtility';
+import { LocalizeText } from '../../../../../../api';
+import { Button } from '../../../../../../common/Button';
+import { LayoutGridItem } from '../../../../../../common/layout/LayoutGridItem';
+import { LayoutImage } from '../../../../../../common/layout/LayoutImage';
+import { Text } from '../../../../../../common/Text';
+import { ProductImageUtility } from '../../../../../../views/notification-center/common/ProductImageUtility';
 
 export interface VipGiftItemViewProps
 {
@@ -47,15 +50,12 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
     }, [offer]);
 
     return (
-        <NitroCardGridItemView className='w-100 vip-gift-item align-items-center'>
-            <img src={ getImageUrlForOffer() } className='mx-3' alt='' />
-            <div className='h-100 flex-grow-1 justify-content-center '>
-                <div className='fw-bold'>{getItemTitle()}</div>
-                <div className='fst-italic fs-6'>{getItemDesc()}</div>
-            </div>
-            <div className='btn-group-vertical mx-1 gap-2'>
-                <button className='btn btn-secondary btn-sm' disabled={!isAvailable} onClick={() => onSelect(offer.localizationId)}>{ LocalizeText('catalog.club_gift.select') }</button>
-            </div>
-        </NitroCardGridItemView>
-    )
+        <LayoutGridItem center={ false } column={ false } alignItems="center" className="p-1">
+            <LayoutImage imageUrl={ getImageUrlForOffer() } fit={ false } style={ { width: 50, height: 50 } } />
+            <Text grow fontWeight="bold">{ getItemTitle() }</Text>
+            <Button variant="secondary" size="sm" onClick={ () => onSelect(offer.localizationId) }>
+                { LocalizeText('catalog.club_gift.select') }
+            </Button>
+        </LayoutGridItem>
+    );
 }

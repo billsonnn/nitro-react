@@ -1,21 +1,16 @@
 import { SelectClubGiftComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../../../../../api';
+import { Grid } from '../../../../../../common/Grid';
+import { Text } from '../../../../../../common/Text';
 import { SendMessageHook } from '../../../../../../hooks';
-import { NitroCardGridView } from '../../../../../../layout';
-import { NitroLayoutBase } from '../../../../../../layout/base';
-import { NotificationUtilities } from '../../../../../notification-center/common/NotificationUtilities';
+import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogActions } from '../../../../reducers/CatalogReducer';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
-import { VipGiftItem } from './gift-item/VipGiftItemView';
+import { VipGiftItem } from './VipGiftItemView';
 
-export interface CatalogLayoutVipGiftsViewProps extends CatalogLayoutProps
-{
-
-}
-
-export const CatalogLayoutVipGiftsView: FC<CatalogLayoutVipGiftsViewProps> = props =>
+export const CatalogLayoutVipGiftsView: FC<CatalogLayoutProps> = props =>
 {
     const { catalogState, dispatchCatalogState } = useCatalogContext();
     
@@ -64,10 +59,10 @@ export const CatalogLayoutVipGiftsView: FC<CatalogLayoutVipGiftsViewProps> = pro
     
     return (
         <>
-        <NitroLayoutBase className='text-black'>{giftsAvailable()}</NitroLayoutBase>
-        <NitroCardGridView columns={1} className='text-black'>
-            { catalogState.clubGifts && catalogState.clubGifts.offers.map( (offer, index) => <VipGiftItem key={index} offer={offer} isAvailable={ catalogState.clubGifts.getOfferExtraData(offer.offerId).isSelectable && catalogState.clubGifts.giftsAvailable > 0} onSelect={selectGift}/>)}
-        </NitroCardGridView>
+            <Text truncate shrink fontWeight="bold">{ giftsAvailable() }</Text>
+            <Grid columnCount={ 1 } className="nitro-catalog-layout-vip-gifts-grid" overflow="auto">
+                { (catalogState.clubGifts.offers.length > 0) && catalogState.clubGifts.offers.map(offer => <VipGiftItem key={ offer.offerId } offer={ offer } isAvailable={ (catalogState.clubGifts.getOfferExtraData(offer.offerId).isSelectable && (catalogState.clubGifts.giftsAvailable > 0)) } onSelect={ selectGift }/>) }
+            </Grid>
         </>
     )
 }
