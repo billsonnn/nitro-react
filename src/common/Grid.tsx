@@ -16,24 +16,22 @@ export interface GridProps extends BaseProps<HTMLDivElement>
 
 export const Grid: FC<GridProps> = props =>
 {
-    const { columnCount = 0, columnMinWidth = 40, columnMinHeight = 40, grow = false, inline = false, gap = 2, maxContent = false, classNames = [], style = {}, ...rest } = props;
+    const { columnCount = 0, columnMinWidth = 40, columnMinHeight = 40, grow = false, fullHeight = undefined, inline = false, gap = 2, maxContent = false, classNames = [], style = {}, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
         const newClassNames: string[] = [];
 
-        if(!grow) newClassNames.push('h-100');
-        else newClassNames.push('flex-basis-fit-content');
-
         if(inline) newClassNames.push('inline-grid');
         else newClassNames.push('grid');
 
         if(gap) newClassNames.push('gap-' + gap);
+        else if(gap === 0) newClassNames.push('gap-0');
 
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ grow, inline, gap, classNames ]);
+    }, [ inline, gap, classNames ]);
 
     const getStyle = useMemo(() =>
     {
@@ -60,7 +58,7 @@ export const Grid: FC<GridProps> = props =>
 
     return (
         <GridContextProvider value={ { isCssGrid: true } }>
-            <Base classNames={ getClassNames } style={ getStyle } { ...rest } />
+            <Base classNames={ getClassNames } style={ getStyle } fullHeight={ ((fullHeight !== undefined) ? fullHeight : !grow) } { ...rest } />
         </GridContextProvider>
     );
 }

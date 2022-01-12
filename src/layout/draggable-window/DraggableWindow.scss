@@ -10,11 +10,11 @@
     @include media-breakpoint-down(lg) {
         display: flex;
         justify-content: center;
-        transform: none !important;
 
         .draggable-window {
-            top: 10px !important;
-            left: 0 !important;
+            top: unset !important;
+            left: unset !important;
+            transform: none !important;
         }
     }
 

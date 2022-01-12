@@ -9,6 +9,15 @@
         background-color: $grid-active-bg-color !important;
     }
 
+    &.disabled {
+        cursor: not-allowed;
+
+        img {
+            opacity: .5;
+            filter: grayscale(1);
+        }
+    }
+
     &.unseen {
         background-color: rgba($success, 0.4);
     }
