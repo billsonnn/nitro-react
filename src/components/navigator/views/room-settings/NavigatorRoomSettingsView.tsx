@@ -1,17 +1,14 @@
 import { RoomBannedUsersComposer, RoomBannedUsersEvent, RoomSettingsEvent, RoomUsersWithRightsComposer, RoomUsersWithRightsEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
-import { FriendsEvent } from '../../../../events';
-import { FriendListContentEvent } from '../../../../events/friends/FriendListContentEvent';
-import { dispatchUiEvent, useUiEvent } from '../../../../hooks';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
 import RoomSettingsData from '../../common/RoomSettingsData';
-import { NavigatorRoomSettingsAccessTabView } from './views/tab-access/NavigatorRoomSettingsAccessTabView';
-import { NavigatorRoomSettingsBasicTabView } from './views/tab-basic/NavigatorRoomSettingsBasicTabView';
-import { NavigatorRoomSettingsModTabView } from './views/tab-mod/NavigatorRoomSettingsModTabView';
-import { NavigatorRoomSettingsRightsTabView } from './views/tab-rights/NavigatorRoomSettingsRightsTabView';
-import { NavigatorRoomSettingsVipChatTabView } from './views/tab-vipchat/NavigatorRoomSettingsVipChatTabView';
+import { NavigatorRoomSettingsAccessTabView } from './views/NavigatorRoomSettingsAccessTabView';
+import { NavigatorRoomSettingsBasicTabView } from './views/NavigatorRoomSettingsBasicTabView';
+import { NavigatorRoomSettingsModTabView } from './views/NavigatorRoomSettingsModTabView';
+import { NavigatorRoomSettingsRightsTabView } from './views/NavigatorRoomSettingsRightsTabView';
+import { NavigatorRoomSettingsVipChatTabView } from './views/NavigatorRoomSettingsVipChatTabView';
 
 const TABS: string[] = [
     'navigator.roomsettings.tab.1',
@@ -25,7 +22,6 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
 {
     const [ roomSettingsData, setRoomSettingsData ] = useState<RoomSettingsData>(null);
     const [ currentTab, setCurrentTab ] = useState(TABS[0]);
-    const [ friends, setFriends ] = useState<Map<number, string>>(new Map());
 
     const updateSettings = useCallback((roomSettings: RoomSettingsData) =>
     {
@@ -73,24 +69,11 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
         setRoomSettingsData(data);
     }, [roomSettingsData]);
 
-    const onFriendsListContentEvent = useCallback((event: FriendListContentEvent) =>
-    {
-        if(!roomSettingsData || !event.friends) return;
-
-        setFriends(event.friends);
-    }, [roomSettingsData]);
-
     CreateMessageHook(RoomSettingsEvent, onRoomSettingsEvent);
     CreateMessageHook(RoomUsersWithRightsEvent, onRoomUsersWithRightsEvent);
     CreateMessageHook(RoomBannedUsersEvent, onRoomBannedUsersEvent);
-    useUiEvent(FriendListContentEvent.FRIEND_LIST_CONTENT, onFriendsListContentEvent);
 
-    useEffect(() =>
-    {
-        if(roomSettingsData) dispatchUiEvent(new FriendsEvent(FriendsEvent.REQUEST_FRIEND_LIST));
-    }, [roomSettingsData])
-
-    const save = useCallback((data: RoomSettingsData) =>
+    const saveSettings = useCallback((data: RoomSettingsData) =>
     {
         SendMessageHook(
             new SaveRoomSettingsComposer(
@@ -132,6 +115,109 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
         }
     }, [ setRoomSettingsData ]);
 
+    const handleChange = useCallback((field: string, value: string | number | boolean) =>
+    {
+        const roomSettings = Object.assign({}, roomSettingsData);
+
+        let save = true;
+
+        switch(field)
+        {
+            case 'name':
+                roomSettings.roomName = String(value);
+                save = false;
+                break;
+            case 'description':
+                roomSettings.roomDescription = String(value);
+                save = false;
+                break;
+            case 'category':
+                roomSettings.categoryId = Number(value);
+                break;
+            case 'max_visitors': 
+                roomSettings.userCount = Number(value);
+                break;
+            case 'trade_state':
+                roomSettings.tradeState =  Number(value);
+                break;
+            case 'allow_walkthrough':
+                roomSettings.allowWalkthrough = Boolean(value);
+                break;
+            case 'allow_pets':
+                roomSettings.allowPets = Boolean(value);
+                break;
+            case 'allow_pets_eat':
+                roomSettings.allowPetsEat = Boolean(value);
+                break;
+            case 'hide_walls':
+                roomSettings.hideWalls = Boolean(value);
+                break;
+            case 'wall_thickness':
+                roomSettings.wallThickness = Number(value);
+                break;
+            case 'floor_thickness':
+                roomSettings.floorThickness = Number(value);
+                break;
+            case 'lock_state':
+                roomSettings.lockState = Number(value);
+
+                if(Number(value) === 3) save = false;
+                break;
+            case 'password':
+                roomSettings.password = String(value);
+                save = false;
+                break;
+            case 'confirm_password':
+                roomSettings.confirmPassword = String(value);
+                save = false;
+                break;
+            case 'moderation_mute':
+                roomSettings.muteState = Number(value);
+                break;
+            case 'moderation_kick':
+                roomSettings.kickState = Number(value);
+                break;
+            case 'moderation_ban':
+                roomSettings.banState = Number(value);
+                break;
+            case 'bubble_mode':
+                roomSettings.chatBubbleMode = Number(value);
+                break;
+            case 'chat_weight':
+                roomSettings.chatBubbleWeight = Number(value);
+                break;
+            case 'bubble_speed':
+                roomSettings.chatBubbleSpeed = Number(value);
+                break;
+            case 'flood_protection':
+                roomSettings.chatFloodProtection = Number(value);
+                break;
+            case 'chat_distance':
+                roomSettings.chatDistance = Number(value);
+                save = false;
+                break;
+            case 'unban_user':
+                roomSettings.bannedUsers.delete(Number(value));
+                save = false;
+                break;
+            case 'remove_rights_user':
+                roomSettings.usersWithRights.delete(Number(value));
+                save = false;
+                break;
+            case 'remove_all_rights':
+                roomSettings.usersWithRights.clear();
+                save = false;
+                break;
+            case 'save':
+                save = true;
+                break;
+        }
+
+        setRoomSettingsData(roomSettings);
+
+        if(save) saveSettings(roomSettings);
+    }, [ roomSettingsData, saveSettings ]);
+
     if(!roomSettingsData) return null;
     
     return (
@@ -143,12 +229,17 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
                         return <NitroCardTabsItemView key={ tab } isActive={ (currentTab === tab) } onClick={ event => setCurrentTab(tab) }>{ LocalizeText(tab) }</NitroCardTabsItemView>
                     }) }
             </NitroCardTabsView>
-            <NitroCardContentView className="text-black">
-                { currentTab === TABS[0] && <NavigatorRoomSettingsBasicTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
-                { currentTab === TABS[1] && <NavigatorRoomSettingsAccessTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
-                { currentTab === TABS[2] && <NavigatorRoomSettingsRightsTabView roomSettingsData= {roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } friends={friends} /> }
-                { currentTab === TABS[3] && <NavigatorRoomSettingsVipChatTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
-                { currentTab === TABS[4] && <NavigatorRoomSettingsModTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
+            <NitroCardContentView>
+                { currentTab === TABS[0] &&
+                    <NavigatorRoomSettingsBasicTabView roomSettingsData={ roomSettingsData } handleChange={ handleChange } /> }
+                { currentTab === TABS[1] &&
+                    <NavigatorRoomSettingsAccessTabView roomSettingsData={ roomSettingsData } handleChange={ handleChange } /> }
+                { currentTab === TABS[2] &&
+                    <NavigatorRoomSettingsRightsTabView roomSettingsData= {roomSettingsData } handleChange={ handleChange } /> }
+                { currentTab === TABS[3] &&
+                    <NavigatorRoomSettingsVipChatTabView roomSettingsData={ roomSettingsData } handleChange={ handleChange } /> }
+                { currentTab === TABS[4] &&
+                    <NavigatorRoomSettingsModTabView roomSettingsData={ roomSettingsData } handleChange={ handleChange } /> }
             </NitroCardContentView>
         </NitroCardView>
     );

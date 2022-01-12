@@ -1,6 +1,8 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorInitComposer, NavigatorSearchComposer, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { AddEventLinkTracker, GoToDesktop, LocalizeText, RemoveLinkEventTracker, TryVisitRoom } from '../../api';
+import { Column } from '../../common/Column';
 import { NavigatorEvent, UpdateDoorStateEvent } from '../../events';
 import { UseMountEffect } from '../../hooks';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
@@ -246,15 +248,17 @@ export const NavigatorView: FC<{}> = props =>
                                     </NitroCardTabsItemView>
                                 );
                             }) }
-                        <NitroCardTabsItemView isActive={ isCreatorOpen } onClick={ () => setCreatorOpen(true) }>
-                            <i className="fas fa-plus" />
+                        <NitroCardTabsItemView isActive={ isCreatorOpen } onClick={ event => setCreatorOpen(true) }>
+                            <FontAwesomeIcon icon="plus" />
                         </NitroCardTabsItemView>
                     </NitroCardTabsView>
                     <NitroCardContentView>
                         { !isCreatorOpen &&
                             <>
                                 <NavigatorSearchView sendSearch={ sendSearch } />
-                                { (navigatorState.searchResult && navigatorState.searchResult.results.map((result, index) => <NavigatorSearchResultView key={ index } searchResult={ result } />)) }
+                                <Column overflow="auto">
+                                    { (navigatorState.searchResult && navigatorState.searchResult.results.map((result, index) => <NavigatorSearchResultView key={ index } searchResult={ result } />)) }
+                                </Column>
                             </> }
                         { isCreatorOpen && <NavigatorRoomCreatorView /> }
                     </NitroCardContentView>

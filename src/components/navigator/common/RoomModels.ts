@@ -1,11 +1,13 @@
 import { HabboClubLevelEnum } from '@nitrots/nitro-renderer';
 
-export interface NavigatorRoomCreatorViewProps
+export interface IRoomModel
 {
-    
+    clubLevel: number;
+    tileSize: number;
+    name: string;
 }
 
-export const NAVIGATOR_ROOM_MODELS: { clubLevel: number, tileSize: number, name: string }[] = [
+export const RoomModels: IRoomModel[] = [
     { clubLevel: HabboClubLevelEnum.NO_CLUB, tileSize: 104, name: 'a' },
     { clubLevel: HabboClubLevelEnum.NO_CLUB, tileSize: 94, name: 'b' },
     { clubLevel: HabboClubLevelEnum.NO_CLUB, tileSize: 36, name: 'c' },

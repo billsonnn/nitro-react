@@ -1,66 +1,31 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC, useCallback, useState } from 'react';
-import { LocalizeText } from '../../../../../../api';
-import { Base } from '../../../../../../common/Base';
-import { Flex } from '../../../../../../common/Flex';
-import { Text } from '../../../../../../common/Text';
-import { GetMaxVisitorsList } from '../../../../common/RoomSettingsUtils';
-import { useNavigatorContext } from '../../../../context/NavigatorContext';
-import { NavigatorRoomSettingsTabViewProps } from '../../NavigatorRoomSettingsView.types';
+import { FC, useState } from 'react';
+import { LocalizeText } from '../../../../../api';
+import { Base } from '../../../../../common/Base';
+import { Flex } from '../../../../../common/Flex';
+import { Text } from '../../../../../common/Text';
+import { GetMaxVisitorsList } from '../../../common/RoomSettingsUtils';
+import { useNavigatorContext } from '../../../context/NavigatorContext';
+import { NavigatorRoomSettingsTabViewProps } from './NavigatorRoomSettingsTabViewProps.types';
 
 const DESC_MAX_LENGTH = 255;
 
 export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>
 {
-    const { roomSettingsData = null, setRoomSettingsData = null, onSave = null } = props;
+    const { roomSettingsData = null, handleChange = null } = props;
     const [ maxVisitorsList, setMaxVisitorsList ] = useState(GetMaxVisitorsList());
     const { navigatorState = null } = useNavigatorContext();
     const { categories = null } = navigatorState;
-
-    const handleChange = useCallback((field: string, value: string | number | boolean) =>
-    {
-        const roomSettings = Object.assign({}, roomSettingsData);
-
-        let save = true;
-
-        switch(field)
-        {
-            case 'name':
-                roomSettings.roomName = String(value);
-                save = false;
-                break;
-            case 'description':
-                roomSettings.roomDescription = String(value);
-                save = false;
-                break;
-            case 'category':
-                roomSettings.categoryId =  Number(value);
-                break;
-            case 'max_visitors': 
-                roomSettings.userCount = Number(value);
-                break;
-            case 'trade_state':
-                roomSettings.tradeState =  Number(value);
-                break;
-            case 'allow_walkthrough':
-                roomSettings.allowWalkthrough = Boolean(value);
-                break;
-        }
-
-        setRoomSettingsData(roomSettings);
-
-        if(save) onSave(roomSettings);
-    }, [ roomSettingsData, setRoomSettingsData, onSave ]);
 
     return (
         <>
             <Flex alignItems="center" gap={ 1 }>
                 <Text className="col-3">{ LocalizeText('navigator.roomname') }</Text>
-                <input className="form-control form-control-sm" value={ roomSettingsData.roomName } onChange={ event => handleChange('name', event.target.value) } onBlur={ () => onSave(roomSettingsData) } />
+                <input className="form-control form-control-sm" value={ roomSettingsData.roomName } onChange={ event => handleChange('name', event.target.value) } onBlur={ event => handleChange('save', null) } />
             </Flex>
             <Flex alignItems="center" gap={ 1 }>
                 <Text className="col-3">{ LocalizeText('navigator.roomsettings.desc') }</Text>
-                <textarea className="form-control form-control-sm" value={ roomSettingsData.roomDescription } onChange={ event => handleChange('description', event.target.value) } onBlur={ () => onSave(roomSettingsData) } maxLength={ DESC_MAX_LENGTH } />
+                <textarea className="form-control form-control-sm" value={ roomSettingsData.roomDescription } onChange={ event => handleChange('description', event.target.value) } onBlur={ event => handleChange('save', null) } maxLength={ DESC_MAX_LENGTH } />
             </Flex>
             <Flex alignItems="center" gap={ 1 }>
                 <Text className="col-3">{ LocalizeText('navigator.category') }</Text>

@@ -1,18 +1,28 @@
+import { RoomDataParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { CreateRoomSession, LocalizeText } from '../../../../api';
+import { Button } from '../../../../common/Button';
+import { Column } from '../../../../common/Column';
+import { Text } from '../../../../common/Text';
 import { UpdateDoorStateEvent } from '../../../../events';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { NavigatorRoomPasswordViewProps } from './NavigatorRoomPasswordView.types';
+
+export interface NavigatorRoomPasswordViewProps
+{
+    roomData: RoomDataParser;
+    state: string;
+    onClose: (state: string) => void;
+}
 
 export const NavigatorRoomPasswordView: FC<NavigatorRoomPasswordViewProps> = props =>
 {
     const { roomData = null, state = null, onClose = null } = props;
     const [ password, setPassword ] = useState('');
 
-    const close = useCallback(() =>
+    const close = () =>
     {
         onClose(null);
-    }, [ onClose ]);
+    }
 
     const tryEntering = useCallback(() =>
     {
@@ -26,18 +36,24 @@ export const NavigatorRoomPasswordView: FC<NavigatorRoomPasswordViewProps> = pro
     return (
         <NitroCardView className="nitro-navigator-password" simple={ true }>
             <NitroCardHeaderView headerText={ LocalizeText('navigator.password.title') } onCloseClick={ close } />
-            <NitroCardContentView className="text-black d-flex flex-column">
-                { roomData && <span className="fw-bold">{ roomData.roomName }</span> }
-                { (state === UpdateDoorStateEvent.START_PASSWORD) && <span>{ LocalizeText('navigator.password.info') }</span> }
-                { (state === UpdateDoorStateEvent.STATE_WRONG_PASSWORD) && <span>{ LocalizeText('navigator.password.retryinfo') }</span> }
-                <div className="form-group mt-1">
-                    <label>{ LocalizeText('navigator.password.enter') }</label>
+            <NitroCardContentView>
+                <Column gap={ 1 }>
+                    { roomData &&
+                        <Text bold>{ roomData.roomName }</Text> }
+                    { (state === UpdateDoorStateEvent.START_PASSWORD) &&
+                        <Text>{ LocalizeText('navigator.password.info') }</Text> }
+                    { (state === UpdateDoorStateEvent.STATE_WRONG_PASSWORD) &&
+                        <Text>{ LocalizeText('navigator.password.retryinfo') }</Text> }
+                </Column>
+                <Column gap={ 1 }>
+                    <Text>{ LocalizeText('navigator.password.enter') }</Text>
                     <input type="password" className="form-control form-control-sm" onChange={ event => setPassword(event.target.value) } />
-                </div>
-                <div className="d-flex flex-column mt-1">
-                    <button type="button" className="btn btn-success btn-sm" onClick={ tryEntering }>{ LocalizeText('navigator.password.button.try') }</button>
-                    <button type="button" className="btn btn-danger btn-sm mt-1" onClick={ close }>{ LocalizeText('generic.cancel') }</button>
-                </div>
+                </Column>
+                <Button variant="success" size="sm" onClick={ tryEntering }>
+                    { LocalizeText('navigator.password.button.try') }</Button>
+                <Button variant="danger" size="sm" onClick={ close }>
+                        { LocalizeText('generic.cancel') }
+                    </Button>
             </NitroCardContentView>
         </NitroCardView>
     );

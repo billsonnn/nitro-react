@@ -1,48 +1,39 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { NavigatorSearchResultList } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
 import { Grid } from '../../../../common/Grid';
 import { Text } from '../../../../common/Text';
-import { NavigatorSearchResultItemView } from '../search-result-item/NavigatorSearchResultItemView';
-import { NavigatorSearchResultViewDisplayMode, NavigatorSearchResultViewProps } from './NavigatorSearchResultView.types';
+import { BatchUpdates } from '../../../../hooks';
+import { NavigatorSearchResultViewDisplayMode } from '../../common/NavigatorSearchResultViewDisplayMode';
+import { NavigatorSearchResultItemView } from './NavigatorSearchResultItemView';
+
+export interface NavigatorSearchResultViewProps
+{
+    searchResult: NavigatorSearchResultList;
+}
 
 export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = props =>
 {
     const { searchResult = null } = props;
 
-    const [ isExtended, setIsExtended ]     = useState(true);
-    const [ displayMode, setDisplayMode ]   = useState<number>(0);
+    const [ isExtended, setIsExtended ] = useState(true);
+    const [ displayMode, setDisplayMode ] = useState<number>(0);
 
-    useEffect(() =>
-    {
-        if(!searchResult) return;
-
-        //setIsExtended(searchResult.closed);
-        //setDisplayMode(searchResult.mode);
-    }, [ searchResult ]);
-
-    function getResultTitle(): string
+    const getResultTitle = () =>
     {
         let name = searchResult.code;
 
         if(!name || !name.length) return searchResult.data;
 
-        if(name.startsWith('${')) return name.substr(2, (name.length - 3));
+        if(name.startsWith('${')) return name.slice(2, (name.length - 1));
 
         return ('navigator.searchcode.title.' + name);
     }
 
-    function toggleExtended(): void
-    {
-        setIsExtended(prevValue =>
-            {
-                return !prevValue;
-            });
-    }
-
-    function toggleDisplayMode(): void
+    const toggleDisplayMode = () =>
     {
         setDisplayMode(prevValue =>
             {
@@ -51,23 +42,33 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
                 return NavigatorSearchResultViewDisplayMode.LIST;
             });
     }
+
+    useEffect(() =>
+    {
+        if(!searchResult) return;
+
+        BatchUpdates(() =>
+        {
+            //setIsExtended(searchResult.closed);
+            setDisplayMode(searchResult.mode);
+        });
+    }, [ searchResult ]);
+
+    const gridHasTwoColumns = (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS);
     
     return (
-        <Column className="bg-white rounded p-1" overflow="hidden">
-            <Flex fullWidth alignItems="center" justifyContent="between" className="p-1">
-                <Flex alignItems="center" gap={ 1 }>
-                    <FontAwesomeIcon icon={ isExtended ? 'minus' : 'plus' } className="text-secondary" onClick={ toggleExtended } />
+        <Column className="bg-white rounded border border-muted" gap={ 0 }>
+            <Flex fullWidth alignItems="center" justifyContent="between" className="px-2 py-1">
+                <Flex grow pointer alignItems="center" gap={ 1 } onClick={ event => setIsExtended(prevValue => !prevValue) }>
+                    <FontAwesomeIcon icon={ isExtended ? 'minus' : 'plus' } className="text-secondary" />
                     <Text>{ LocalizeText(getResultTitle()) }</Text>
                 </Flex>
-                <FontAwesomeIcon icon={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 'bars' : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 'th' : null) } className="text-secondary" onClick={ toggleExtended } />
+                <FontAwesomeIcon icon={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 'bars' : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 'th' : null) } className="text-secondary" onClick={ toggleDisplayMode } />
             </Flex>
-            <Grid columnCount={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 1 : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 2 : 1) }>
-                { isExtended &&
-                    searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) =>
-                        {
-                            return <NavigatorSearchResultItemView key={ index } roomData={ room } />
-                        }) }
-            </Grid>
+            { isExtended &&
+                <Grid columnCount={ (gridHasTwoColumns ? 2 : 1) } className={ 'navigator-grid' + (gridHasTwoColumns ? ' two-columns' : '') } gap={ 0 }>
+                    { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={ index } roomData={ room } />) }
+            </Grid> }
         </Column>
         // <div className="nitro-navigator-search-result bg-white rounded mb-2 overflow-hidden">
         //     <div className="d-flex flex-column">
