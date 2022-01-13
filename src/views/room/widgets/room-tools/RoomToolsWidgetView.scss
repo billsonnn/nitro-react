@@ -1,16 +1,12 @@
 .nitro-room-tools {
     position: absolute;
-    bottom: 125px;
-    left: -145px;
+    bottom: $toolbar-height + 65px;
+    left: 0;
     background: rgba($dark,.95);
     box-shadow: inset 0px 5px lighten(rgba($dark,.6),2.5), inset 0 -4px darken(rgba($dark,.6),4);
     border-top-right-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
     transition: all .2s ease;
-    
-    &.open {
-        left: 0px;
-    }
 
     .list-group-item {
         background: transparent;

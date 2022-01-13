@@ -123,7 +123,7 @@ export class NotificationUtilities
         dispatchUiEvent(new NotificationConfirmEvent(type, this.cleanText(message), onConfirm, onCancel, confirmText, cancelText, title));
     }
 
-    public static simpleAlert(message: string, type: string, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
+    public static simpleAlert(message: string, type: string = null, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
     {
         if(!title || !title.length) title = LocalizeText('notifications.broadcast.title');
 
