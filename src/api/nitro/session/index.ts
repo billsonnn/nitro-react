@@ -14,6 +14,7 @@ export * from './GetSessionDataManager';
 export * from './GoToDesktop';
 export * from './HasHabboClub';
 export * from './HasHabboVip';
+export * from './IsOwnerOfFloorFurniture';
 export * from './IsOwnerOfFurniture';
 export * from './IsRidingHorse';
 export * from './StartRoomSession';
