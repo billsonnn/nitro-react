@@ -1,5 +1,8 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
+import { Column } from '../../../../common/Column';
+import { Flex } from '../../../../common/Flex';
+import { Text } from '../../../../common/Text';
 import { WiredFurniType } from '../../common/WiredFurniType';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
@@ -11,41 +14,35 @@ export const WiredConditionFurniMatchesSnapshotView: FC<{}> = props =>
     const [ positionFlag, setPositionFlag ] = useState(-1);
     const { trigger = null, setIntParams = null } = useWiredContext();
 
+    const save = useCallback(() =>
+    {
+        setIntParams([ stateFlag, directionFlag, positionFlag ]);
+    }, [ directionFlag, positionFlag, stateFlag, setIntParams ]);
+
     useEffect(() =>
     {
         setStateFlag(trigger.getBoolean(0) ? 1 : 0);
         setDirectionFlag(trigger.getBoolean(1) ? 1 : 0);
         setPositionFlag(trigger.getBoolean(2) ? 1 : 0);
     }, [ trigger ]);
-
-    const save = useCallback(() =>
-    {
-        setIntParams([ stateFlag, directionFlag, positionFlag ]);
-    }, [ directionFlag, positionFlag, stateFlag, setIntParams ]);
     
     return (
         <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } save={ save }>
-            <div className="form-group">
-                <label className="fw-bold">{ LocalizeText('wiredfurni.params.conditions') }</label>
-                <div className="form-check">
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('wiredfurni.params.conditions') }</Text>
+                <Flex gap={ 1 }>
                     <input className="form-check-input" type="checkbox" id="stateFlag" onChange={ event => setStateFlag(event.target.checked ? 1 : 0) } />
-                    <label className="form-check-label" htmlFor="stateFlag">
-                        { LocalizeText('wiredfurni.params.condition.state') }
-                    </label>
-                </div>
-                <div className="form-check">
+                    <Text>{ LocalizeText('wiredfurni.params.condition.state') }</Text>
+                </Flex>
+                <Flex gap={ 1 }>
                     <input className="form-check-input" type="checkbox" id="directionFlag" onChange={ event => setDirectionFlag(event.target.checked ? 1 : 0) } />
-                    <label className="form-check-label" htmlFor="directionFlag">
-                        { LocalizeText('wiredfurni.params.condition.direction') }
-                    </label>
-                </div>
-                <div className="form-check">
+                    <Text>{ LocalizeText('wiredfurni.params.condition.direction') }</Text>
+                </Flex>
+                <Flex gap={ 1 }>
                     <input className="form-check-input" type="checkbox" id="positionFlag" onChange={ event => setPositionFlag(event.target.checked ? 1 : 0) } />
-                    <label className="form-check-label" htmlFor="positionFlag">
-                        { LocalizeText('wiredfurni.params.condition.position') }
-                    </label>
-                </div>
-            </div>
+                    <Text>{ LocalizeText('wiredfurni.params.condition.position') }</Text>
+                </Flex>
+            </Column>
         </WiredConditionBaseView>
     );
 }
