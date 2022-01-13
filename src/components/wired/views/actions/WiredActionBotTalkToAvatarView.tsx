@@ -1,9 +1,9 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { WiredFurniType } from '../../../common/WiredFurniType';
-import { WIRED_STRING_DELIMETER } from '../../../common/WiredStringDelimeter';
-import { useWiredContext } from '../../../context/WiredContext';
-import { WiredActionBaseView } from '../base/WiredActionBaseView';
+import { LocalizeText } from '../../../../api';
+import { WiredFurniType } from '../../common/WiredFurniType';
+import { WIRED_STRING_DELIMETER } from '../../common/WiredStringDelimeter';
+import { useWiredContext } from '../../context/WiredContext';
+import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionBotTalkToAvatarView: FC<{}> = props =>
 {

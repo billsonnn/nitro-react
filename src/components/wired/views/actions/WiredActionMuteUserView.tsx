@@ -36,7 +36,7 @@ export const WiredActionMuteUserView: FC<{}> = props =>
             </div>
             <div className="form-group">
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.message') }</label>
-                <input type="text" className="form-control form-control-sm" value={ message } onChange={ event => setMessage(event.target.value) } />
+                <input type="text" className="form-control form-control-sm" value={ message } onChange={ event => setMessage(event.target.value) } maxLength={ 100 } />
             </div>
         </WiredActionBaseView>
     );
