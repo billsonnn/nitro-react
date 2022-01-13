@@ -1,5 +1,8 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
+import { Column } from '../../../../common/Column';
+import { Flex } from '../../../../common/Flex';
+import { Text } from '../../../../common/Text';
 import { WiredFurniType } from '../../common/WiredFurniType';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
@@ -10,39 +13,33 @@ export const WiredTriggerAvatarEnterRoomView: FC<{}> = props =>
     const [ avatarMode, setAvatarMode ] = useState(0);
     const { trigger = null, setStringParam = null } = useWiredContext();
 
-    useEffect(() =>
-    {
-        setUsername(trigger.stringData);
-        setAvatarMode(trigger.stringData ? 1 : 0)
-    }, [ trigger ]);
-
     const save = useCallback(() =>
     {
         if(avatarMode === 1) setStringParam(username);
         else setStringParam('');
     }, [ username, avatarMode, setStringParam ]);
 
+    useEffect(() =>
+    {
+        setUsername(trigger.stringData);
+        setAvatarMode(trigger.stringData ? 1 : 0)
+    }, [ trigger ]);
+
     return (
         <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="form-group">
-                <label className="fw-bold">{ LocalizeText('wiredfurni.params.picktriggerer') }</label>
-                <div className="form-check">
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('wiredfurni.params.picktriggerer') }</Text>
+                <Flex alignItems="center" gap={ 1 }>
                     <input className="form-check-input" type="radio" name="avatarMode" id="avatarMode0" checked={ (avatarMode === 0) } onChange={ event => setAvatarMode(0) } />
-                    <label className="form-check-label" htmlFor="avatarMode0">
-                        { LocalizeText('wiredfurni.params.anyavatar') }
-                    </label>
-                </div>
-                <div className="form-check">
+                    <Text>{ LocalizeText('wiredfurni.params.anyavatar') }</Text>
+                </Flex>
+                <Flex alignItems="center" gap={ 1 }>
                     <input className="form-check-input" type="radio" name="avatarMode" id="avatarMode1" checked={ (avatarMode === 1) } onChange={ event => setAvatarMode(1) } />
-                    <label className="form-check-label" htmlFor="avatarMode1">
-                        { LocalizeText('wiredfurni.params.certainavatar') }
-                    </label>
-                </div>
-            </div>
-            { (avatarMode === 1) &&
-                <div className="form-group">
-                    <input type="text" className="form-control form-control-sm" value={ username } onChange={ event => setUsername(event.target.value) } />
-                </div> }
+                    <Text>{ LocalizeText('wiredfurni.params.certainavatar') }</Text>
+                </Flex>
+                { (avatarMode === 1) &&
+                    <input type="text" className="form-control form-control-sm" value={ username } onChange={ event => setUsername(event.target.value) } /> }
+            </Column>
         </WiredTriggerBaseView>
     );
 }
