@@ -1,5 +1,6 @@
 import { ConditionDefinition, Triggerable, TriggerDefinition, UpdateActionMessageComposer, UpdateConditionMessageComposer, UpdateTriggerMessageComposer, WiredActionDefinition } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
+import { IsOwnerOfFloorFurniture } from '../../api';
 import { WiredEvent } from '../../events';
 import { useUiEvent } from '../../hooks/events';
 import { SendMessageHook } from '../../hooks/messages';
@@ -22,7 +23,10 @@ export const WiredView: FC<{}> = props =>
 
     const onWiredEvent = useCallback((event: WiredEvent) =>
     {
-        // check if owner & warn with confirm
+        if(!IsOwnerOfFloorFurniture(trigger.id))
+        {
+            
+        }
         
         if(trigger instanceof WiredActionDefinition)
         {

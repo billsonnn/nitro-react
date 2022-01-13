@@ -1,5 +1,7 @@
 import { FC, useCallback, useEffect } from 'react';
 import { LocalizeText } from '../../../api';
+import { Column } from '../../../common/Column';
+import { Text } from '../../../common/Text';
 import { WiredSelectObjectEvent } from '../../../events';
 import { useUiEvent } from '../../../hooks/events';
 import { WiredSelectionVisualizer } from '../common/WiredSelectionVisualizer';
@@ -75,9 +77,9 @@ export const WiredFurniSelectorView: FC<{}> = props =>
     }, [ trigger, setFurniIds ]);
     
     return (
-        <div className="d-flex flex-column">
-            <div className="fw-bold">{ LocalizeText('wiredfurni.pickfurnis.caption', ['count', 'limit'], [ furniIds.length.toString(), trigger.maximumItemSelectionCount.toString() ]) }</div>
-            { LocalizeText('wiredfurni.pickfurnis.desc') }
-        </div>
+        <Column gap={ 1 }>
+            <Text bold>{ LocalizeText('wiredfurni.pickfurnis.caption', ['count', 'limit'], [ furniIds.length.toString(), trigger.maximumItemSelectionCount.toString() ]) }</Text>
+            <Text small>{ LocalizeText('wiredfurni.pickfurnis.desc') }</Text>
+        </Column>
     );
 }

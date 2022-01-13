@@ -1,8 +1,12 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../api';
+import { Button } from '../../../common/Button';
+import { Column } from '../../../common/Column';
+import { Flex } from '../../../common/Flex';
+import { Text } from '../../../common/Text';
 import { WiredEvent } from '../../../events';
 import { dispatchUiEvent } from '../../../hooks/events';
-import { NitroCardContentView, NitroCardView } from '../../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../layout';
 import { WiredFurniType } from '../common/WiredFurniType';
 import { WiredSelectionVisualizer } from '../common/WiredSelectionVisualizer';
 import { useWiredContext } from '../context/WiredContext';
@@ -13,11 +17,12 @@ export interface WiredBaseViewProps
     wiredType: string;
     requiresFurni: number;
     save: () => void;
+    validate?: () => boolean;
 }
 
 export const WiredBaseView: FC<WiredBaseViewProps> = props =>
 {
-    const { wiredType = '', requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, children = null } = props;
+    const { wiredType = '', requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, validate = null, children = null } = props;
     const [ wiredName, setWiredName ] = useState<string>(null);
     const [ wiredDescription, setWiredDescription ] = useState<string>(null);
     const { trigger = null, setTrigger = null, setIntParams = null, setStringParam = null, setFurniIds = null } = useWiredContext();
@@ -60,10 +65,12 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
 
     const onSave = useCallback(() =>
     {
+        if(validate && !validate()) return;
+
         if(save) save();
 
         setTimeout(() => dispatchUiEvent(new WiredEvent(WiredEvent.SAVE_WIRED)), 1);
-    }, [ save ]);
+    }, [ save, validate ]);
 
     const close = useCallback(() =>
     {
@@ -71,34 +78,27 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
     }, [ setTrigger ]);
 
     return (
-        <NitroCardView className={`nitro-wired nitro-wired-${wiredType} ` + (wiredType === 'trigger' ? 'rounded-0' : 'rounded-2')}>
-            <div className="nitro-wired-header d-flex">
-                <div className="nitro-wired-title rounded-start w-100 drag-handler">{ LocalizeText('wiredfurni.title') }</div>
-                <div className="nitro-wired-close rounded-end flex-shrink-0" onClick={ close }>
-                    <i className="fas fa-times" />
-                </div>
-            </div>
+        <NitroCardView uniqueKey="nitro-wired" className="nitro-wired" simple={ true }>
+            <NitroCardHeaderView headerText={ LocalizeText('wiredfurni.title') } onCloseClick={ close } />
             <NitroCardContentView>
-                <div className="d-flex align-items-center">
-                    <i className={ `me-2 flex-shrink-0 icon icon-wired-${ wiredType }` } />
-                    <div className="fw-bold">{ wiredName }</div>
-                </div>
-                <div>{ wiredDescription }</div>
-                <div>
-                    { !children ? null : <>
-                        <hr className="my-1 mb-2 bg-dark" />
-                        { children }
-                    </> }
-                </div>
+                <Column gap={ 1 }>
+                    <Flex alignItems="center" gap={ 1 }>
+                        <i className={ `icon icon-wired-${ wiredType }` } />
+                        <Text bold>{ wiredName }</Text>
+                    </Flex>
+                    <Text small>{ wiredDescription }</Text>
+                </Column>
+                { (children !== null) && <hr className="m-0 bg-dark" /> }
+                { children }
                 { (requiresFurni > WiredFurniType.STUFF_SELECTION_OPTION_NONE) &&
                     <>
-                        <hr className="my-1 mb-2 bg-dark" />
+                        <hr className="m-0 bg-dark" />
                         <WiredFurniSelectorView />
                     </> }
-                <div className="d-flex mt-3">
-                    <button className="btn btn-sm btn-success me-2 w-100" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</button>
-                    <button className="btn btn-sm btn-secondary w-100" onClick={ close }>{ LocalizeText('cancel') }</button>
-                </div>
+                <Flex gap={ 1 }>
+                    <Button fullWidth variant="success" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</Button>
+                    <Button fullWidth variant="secondary" onClick={ close }>{ LocalizeText('cancel') }</Button>
+                </Flex>
             </NitroCardContentView>
         </NitroCardView>
     );
