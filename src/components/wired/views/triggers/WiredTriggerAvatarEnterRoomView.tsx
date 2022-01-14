@@ -3,6 +3,7 @@ import { LocalizeText } from '../../../../api';
 import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
 import { Text } from '../../../../common/Text';
+import { BatchUpdates } from '../../../../hooks';
 import { WiredFurniType } from '../../common/WiredFurniType';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
@@ -21,8 +22,11 @@ export const WiredTriggerAvatarEnterRoomView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        setUsername(trigger.stringData);
-        setAvatarMode(trigger.stringData ? 1 : 0)
+        BatchUpdates(() =>
+        {
+            setUsername(trigger.stringData);
+            setAvatarMode(trigger.stringData ? 1 : 0);
+        });
     }, [ trigger ]);
 
     return (

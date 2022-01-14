@@ -1,5 +1,8 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
+import { Column } from '../../../../common/Column';
+import { Flex } from '../../../../common/Flex';
+import { Text } from '../../../../common/Text';
 import { WiredFurniType } from '../../common/WiredFurniType';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
@@ -9,32 +12,30 @@ export const WiredActionJoinTeamView: FC<{}> = props =>
     const [ selectedTeam, setSelectedTeam ] = useState(-1);
     const { trigger = null, setIntParams = null } = useWiredContext();
 
-    useEffect(() =>
-    {
-        setSelectedTeam((trigger.intData.length > 0) ? trigger.intData[0] : 0);
-    }, [ trigger ]);
-
     const save = useCallback(() =>
     {
         setIntParams([ selectedTeam ]);
     }, [ selectedTeam, setIntParams ]);
 
+    useEffect(() =>
+    {
+        setSelectedTeam((trigger.intData.length > 0) ? trigger.intData[0] : 0);
+    }, [ trigger ]);
+
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="form-group">
-                <label className="fw-bold">{ LocalizeText('wiredfurni.params.team') }</label>
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('wiredfurni.params.team') }</Text>
                 { [1, 2, 3, 4].map(team =>
                     {
                         return (
-                            <div key={ team } className="form-check">
+                            <Flex key={ team } gap={ 1 }>
                                 <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ team }` } checked={ (selectedTeam === team) } onChange={ event => setSelectedTeam(team) } />
-                                <label className="form-check-label" htmlFor={ `selectedTeam${ team }` }>
-                                    { LocalizeText(`wiredfurni.params.team.${ team }`) }
-                                </label>
-                            </div>
+                                <Text>{ LocalizeText(`wiredfurni.params.team.${ team }`) }</Text>
+                            </Flex>
                         )
                     }) }
-            </div>
+            </Column>
         </WiredActionBaseView>
     );
 }

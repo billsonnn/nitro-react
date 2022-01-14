@@ -1,4 +1,4 @@
-export function GetWiredTimeLocale(value: number): string
+export const GetWiredTimeLocale = (value: number) =>
 {
     const time = Math.floor((value / 2));
 

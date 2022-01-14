@@ -29,7 +29,7 @@ export const WiredConditionFurniHasFurniOnView: FC<{}> = props =>
                 { [0, 1].map(value =>
                     {
                         return (
-                            <Flex gap={ 1 } key={ value }>
+                            <Flex alignItems="center" gap={ 1 } key={ value }>
                                 <input className="form-check-input" type="radio" name="requireAll" id={ `requireAll${ value }` } checked={ (requireAll === value) } onChange={ event => setRequireAll(value) } />
                                 <Text>{ LocalizeText('wiredfurni.params.requireall.' + value) }</Text>
                             </Flex>

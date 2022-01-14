@@ -25,7 +25,7 @@ import { WiredActionTeleportView } from '../views/actions/WiredActionTeleportVie
 import { WiredActionToggleFurniStateView } from '../views/actions/WiredActionToggleFurniStateView';
 import { WiredActionLayout } from './WiredActionLayoutCode';
 
-export function GetWiredActionLayout(code: number): JSX.Element
+export const GetWiredActionLayout = (code: number) =>
 {
     switch(code)
     {

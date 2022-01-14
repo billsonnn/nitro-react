@@ -3,6 +3,7 @@ import { GetSessionDataManager, LocalizeText } from '../../../../api';
 import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
 import { Text } from '../../../../common/Text';
+import { BatchUpdates } from '../../../../hooks';
 import { WiredFurniType } from '../../common/WiredFurniType';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
@@ -15,14 +16,20 @@ export const WiredTriggerAvatarSaysSomethingView: FC<{}> = props =>
 
     const save = useCallback(() =>
     {
-        setStringParam(message);
-        setIntParams([ triggererAvatar ]);
+        BatchUpdates(() =>
+        {
+            setStringParam(message);
+            setIntParams([ triggererAvatar ]);
+        });
     }, [ message, triggererAvatar, setStringParam, setIntParams ]);
 
     useEffect(() =>
     {
-        setMessage(trigger.stringData);
-        setTriggererAvatar((trigger.intData.length > 0) ? trigger.intData[0] : 0);
+        BatchUpdates(() =>
+        {
+            setMessage(trigger.stringData);
+            setTriggererAvatar((trigger.intData.length > 0) ? trigger.intData[0] : 0);
+        });
     }, [ trigger ]);
     
     return (

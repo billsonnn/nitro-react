@@ -1,6 +1,10 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../../api';
+import { Column } from '../../../../common/Column';
+import { Flex } from '../../../../common/Flex';
+import { Text } from '../../../../common/Text';
+import { BatchUpdates } from '../../../../hooks';
 import { WiredFurniType } from '../../common/WiredFurniType';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
@@ -30,54 +34,53 @@ export const WiredActionMoveFurniToView: FC<{}> = props =>
     const [ movement, setMovement ] = useState(-1);
     const { trigger = null, setIntParams = null } = useWiredContext();
 
-    useEffect(() =>
-    {
-        if(trigger.intData.length >= 2)
-        {
-            setSpacing(trigger.intData[1]);
-            setMovement(trigger.intData[0]);
-        }
-        else
-        {
-            setSpacing(-1);
-            setMovement(-1);
-        }
-    }, [ trigger ]);
-
     const save = useCallback(() =>
     {
         setIntParams([ movement, spacing ]);
     }, [ movement, spacing, setIntParams ]);
 
+    useEffect(() =>
+    {
+        BatchUpdates(() =>
+        {
+            if(trigger.intData.length >= 2)
+            {
+                setSpacing(trigger.intData[1]);
+                setMovement(trigger.intData[0]);
+            }
+            else
+            {
+                setSpacing(-1);
+                setMovement(-1);
+            }
+        });
+    }, [ trigger ]);
+
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_OR_BY_TYPE } save={ save }>
-            <div className="form-group mb-2">
-                <label className="fw-bold">{ LocalizeText('wiredfurni.params.emptytiles', [ 'tiles' ], [ spacing.toString() ]) }</label>
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('wiredfurni.params.emptytiles', [ 'tiles' ], [ spacing.toString() ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }
                     min={ 1 }
                     max={ 5 }
                     value={ spacing }
                     onChange={ event => setSpacing(event) } />
-            </div>
-            <div className="form-group">
-                <label className="fw-bold">{ LocalizeText('wiredfurni.params.startdir') }</label>
-                <div className="row row-cold-4">
+            </Column>
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('wiredfurni.params.startdir') }</Text>
+                <Flex gap={ 1 }>
                     { directionOptions.map(value =>
                         {
                             return (
-                                <div key={ value.value } className="col">
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="radio" name="movement" id={ `movement${ value.value }` } checked={ (movement === value.value) } onChange={ event => setMovement(value.value) } />
-                                        <label className="form-check-label" htmlFor={ `movement${ value.value }` }>
-                                            <i className={ `icon icon-${ value.icon }` } />
-                                        </label>
-                                    </div>
-                                </div>
+                                <Flex key={ value.value } alignItems="center" gap={ 1 }>
+                                    <input className="form-check-input" type="radio" name="movement" id={ `movement${ value.value }` } checked={ (movement === value.value) } onChange={ event => setMovement(value.value) } />
+                                    <Text><i className={ `icon icon-${ value.icon }` } /></Text>
+                                </Flex>
                             )
                         }) }
-                </div>
-            </div>
+                </Flex>
+            </Column>
         </WiredActionBaseView>
     );
 }

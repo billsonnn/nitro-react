@@ -1,6 +1,10 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../../api';
+import { Column } from '../../../../common/Column';
+import { Flex } from '../../../../common/Flex';
+import { Text } from '../../../../common/Text';
+import { BatchUpdates } from '../../../../hooks';
 import { WiredFurniType } from '../../common/WiredFurniType';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
@@ -12,61 +16,62 @@ export const WiredActionGiveScoreToPredefinedTeamView: FC<{}> = props =>
     const [ selectedTeam, setSelectedTeam ] = useState(1);
     const { trigger = null, setIntParams = null } = useWiredContext();
 
-    useEffect(() =>
-    {
-        if(trigger.intData.length >= 2)
-        {
-            setPoints(trigger.intData[0]);
-            setTime(trigger.intData[1]);
-            setSelectedTeam(trigger.intData[2]);
-        }
-        else
-        {
-            setPoints(1);
-            setTime(1);
-            setSelectedTeam(1);
-        }
-    }, [ trigger ]);
-
     const save = useCallback(() =>
     {
         setIntParams([ points, time, selectedTeam ]);
     }, [ points, time, selectedTeam, setIntParams ]);
 
+    useEffect(() =>
+    {
+        BatchUpdates(() =>
+        {
+            if(trigger.intData.length >= 2)
+            {
+                setPoints(trigger.intData[0]);
+                setTime(trigger.intData[1]);
+                setSelectedTeam(trigger.intData[2]);
+            }
+            else
+            {
+                setPoints(1);
+                setTime(1);
+                setSelectedTeam(1);
+            }
+        });
+    }, [ trigger ]);
+
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="form-group mb-2">
-                <label className="fw-bold">{ LocalizeText('wiredfurni.params.setpoints', [ 'points' ], [ points.toString() ]) }</label>
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('wiredfurni.params.setpoints', [ 'points' ], [ points.toString() ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }
                     min={ 1 }
                     max={ 100 }
                     value={ points }
                     onChange={ event => setPoints(event) } />
-            </div>
-            <div className="form-group mb-2">
-                <label className="fw-bold">{ LocalizeText('wiredfurni.params.settimesingame', [ 'times' ], [ time.toString() ]) }</label>
+            </Column>
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('wiredfurni.params.settimesingame', [ 'times' ], [ time.toString() ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }
                     min={ 1 }
                     max={ 10 }
                     value={ time }
                     onChange={ event => setTime(event) } />
-            </div>
-            <div className="form-group">
-                <label className="fw-bold">{ LocalizeText('wiredfurni.params.team') }</label>
+            </Column>
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('wiredfurni.params.team') }</Text>
                 { [1, 2, 3, 4].map(value =>
                     {
                         return (
-                            <div key={ value } className="form-check">
+                            <Flex key={ value } gap={ 1 }>
                                 <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ value }` } checked={ (selectedTeam === value) } onChange={ event => setSelectedTeam(value) } />
-                                <label className="form-check-label" htmlFor={'selectedTeam' + value}>
-                                    { LocalizeText('wiredfurni.params.team.' + value) }
-                                </label>
-                            </div>
+                                <Text>{ LocalizeText('wiredfurni.params.team.' + value) }</Text>
+                            </Flex>
                         );
                     }) }
-            </div>
+            </Column>
         </WiredActionBaseView>
     );
 }

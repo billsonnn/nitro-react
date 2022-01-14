@@ -3,6 +3,7 @@ import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../../api';
 import { Column } from '../../../../common/Column';
 import { Text } from '../../../../common/Text';
+import { BatchUpdates } from '../../../../hooks';
 import { WiredFurniType } from '../../common/WiredFurniType';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
@@ -20,16 +21,19 @@ export const WiredConditionUserCountInRoomView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if(trigger.intData.length >= 2)
+        BatchUpdates(() =>
         {
-            setMin(trigger.intData[0]);
-            setMax(trigger.intData[1]);
-        }
-        else
-        {
-            setMin(1);
-            setMax(1);
-        }
+            if(trigger.intData.length >= 2)
+            {
+                setMin(trigger.intData[0]);
+                setMax(trigger.intData[1]);
+            }
+            else
+            {
+                setMin(1);
+                setMax(1);
+            }
+        });
     }, [ trigger ]);
     
     return (

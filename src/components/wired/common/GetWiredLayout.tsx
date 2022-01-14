@@ -3,7 +3,7 @@ import { GetWiredActionLayout } from './GetWiredActionLayout';
 import { GetWiredConditionLayout } from './GetWiredConditionLayout';
 import { GetWiredTriggerLayout } from './GetWiredTriggerLayout';
 
-export function GetWiredLayout(trigger: Triggerable): JSX.Element
+export const GetWiredLayout = (trigger: Triggerable) =>
 {
     if(trigger instanceof WiredActionDefinition) return GetWiredActionLayout(trigger.code);
 

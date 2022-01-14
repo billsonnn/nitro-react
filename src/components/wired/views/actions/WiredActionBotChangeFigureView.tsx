@@ -1,5 +1,10 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../../api';
+import { Button } from '../../../../common/Button';
+import { Column } from '../../../../common/Column';
+import { Flex } from '../../../../common/Flex';
+import { Text } from '../../../../common/Text';
+import { BatchUpdates } from '../../../../hooks';
 import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
 import { WiredFurniType } from '../../common/WiredFurniType';
 import { WIRED_STRING_DELIMETER } from '../../common/WiredStringDelimeter';
@@ -14,14 +19,6 @@ export const WiredActionBotChangeFigureView: FC<{}> = props =>
     const [ figure, setFigure ] = useState('');
     const { trigger = null, setStringParam = null } = useWiredContext();
 
-    useEffect(() =>
-    {
-        const data = trigger.stringData.split(WIRED_STRING_DELIMETER);
-
-        if(data.length > 0) setBotName(data[0]);
-        if(data.length > 1) setFigure(data[1].length > 0 ? data[1] : DEFAULT_FIGURE);
-    }, [ trigger ]);
-
     const copyLooks = useCallback(() =>
     {
         setFigure(GetSessionDataManager().figure);
@@ -32,16 +29,27 @@ export const WiredActionBotChangeFigureView: FC<{}> = props =>
         setStringParam((botName + WIRED_STRING_DELIMETER + figure));
     }, [ botName, figure, setStringParam ]);
 
+    useEffect(() =>
+    {
+        const data = trigger.stringData.split(WIRED_STRING_DELIMETER);
+
+        BatchUpdates(() =>
+        {
+            if(data.length > 0) setBotName(data[0]);
+            if(data.length > 1) setFigure(data[1].length > 0 ? data[1] : DEFAULT_FIGURE);
+        });
+    }, [ trigger ]);
+
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="form-group">
-                <label className="fw-bold">{ LocalizeText('wiredfurni.params.bot.name') }</label>
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('wiredfurni.params.bot.name') }</Text>
                 <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
-            </div>
-            <div className="d-flex align-items-center justify-content-center">
+            </Column>
+            <Flex center>
                 <AvatarImageView figure={ figure } direction={ 4 } />
-                <button type="button" className="btn btn-primary" onClick={ copyLooks }>{ LocalizeText('wiredfurni.params.capture.figure') }</button>
-            </div>
+                <Button onClick={ copyLooks }>{ LocalizeText('wiredfurni.params.capture.figure') }</Button>
+            </Flex>
         </WiredActionBaseView>
     );
 }

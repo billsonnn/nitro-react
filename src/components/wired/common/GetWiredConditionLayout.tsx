@@ -15,7 +15,7 @@ import { WiredConditionTimeElapsedMoreView } from '../views/conditions/WiredCond
 import { WiredConditionUserCountInRoomView } from '../views/conditions/WiredConditionUserCountInRoomView';
 import { WiredConditionlayout } from './WiredConditionLayoutCode';
 
-export function GetWiredConditionLayout(code: number): JSX.Element
+export const GetWiredConditionLayout = (code: number) =>
 {
     switch(code)
     {

@@ -5,6 +5,7 @@ import { Column } from '../../../common/Column';
 import { Flex } from '../../../common/Flex';
 import { Text } from '../../../common/Text';
 import { WiredEvent } from '../../../events';
+import { BatchUpdates } from '../../../hooks';
 import { dispatchUiEvent } from '../../../hooks/events';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../layout';
 import { WiredFurniType } from '../common/WiredFurniType';
@@ -27,42 +28,6 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
     const [ wiredDescription, setWiredDescription ] = useState<string>(null);
     const { trigger = null, setTrigger = null, setIntParams = null, setStringParam = null, setFurniIds = null } = useWiredContext();
 
-    useEffect(() =>
-    {
-        if(!trigger) return;
-
-        const spriteId = (trigger.spriteId || -1);
-
-        const furniData = GetSessionDataManager().getFloorItemData(spriteId);
-
-        if(!furniData)
-        {
-            setWiredName(('NAME: ' + spriteId));
-            setWiredDescription(('NAME: ' + spriteId));
-        }
-        else
-        {
-            setWiredName(furniData.name);
-            setWiredDescription(furniData.description);
-        }
-
-        setIntParams(trigger.intData);
-        setStringParam(trigger.stringData);
-        setFurniIds(prevValue =>
-            {
-                if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
-
-                if(trigger.selectedItems && trigger.selectedItems.length)
-                {
-                    WiredSelectionVisualizer.applySelectionShaderToFurni(trigger.selectedItems);
-
-                    return trigger.selectedItems;
-                }
-
-                return [];
-            });
-    }, [ trigger, setIntParams, setStringParam, setFurniIds ]);
-
     const onSave = useCallback(() =>
     {
         if(validate && !validate()) return;
@@ -77,6 +42,44 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
         setTrigger(null);
     }, [ setTrigger ]);
 
+    useEffect(() =>
+    {
+        if(!trigger) return;
+
+        const spriteId = (trigger.spriteId || -1);
+        const furniData = GetSessionDataManager().getFloorItemData(spriteId);
+
+        BatchUpdates(() =>
+        {
+            if(!furniData)
+            {
+                setWiredName(('NAME: ' + spriteId));
+                setWiredDescription(('NAME: ' + spriteId));
+            }
+            else
+            {
+                setWiredName(furniData.name);
+                setWiredDescription(furniData.description);
+            }
+
+            setIntParams(trigger.intData);
+            setStringParam(trigger.stringData);
+            setFurniIds(prevValue =>
+                {
+                    if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
+
+                    if(trigger.selectedItems && trigger.selectedItems.length)
+                    {
+                        WiredSelectionVisualizer.applySelectionShaderToFurni(trigger.selectedItems);
+
+                        return trigger.selectedItems;
+                    }
+
+                    return [];
+                });
+        });
+    }, [ trigger, setIntParams, setStringParam, setFurniIds ]);
+
     return (
         <NitroCardView uniqueKey="nitro-wired" className="nitro-wired" simple={ true }>
             <NitroCardHeaderView headerText={ LocalizeText('wiredfurni.title') } onCloseClick={ close } />
@@ -88,14 +91,14 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                     </Flex>
                     <Text small>{ wiredDescription }</Text>
                 </Column>
-                { (children !== null) && <hr className="m-0 bg-dark" /> }
+                { !!children && <hr className="m-0 bg-dark" /> }
                 { children }
                 { (requiresFurni > WiredFurniType.STUFF_SELECTION_OPTION_NONE) &&
                     <>
                         <hr className="m-0 bg-dark" />
                         <WiredFurniSelectorView />
                     </> }
-                <Flex gap={ 1 }>
+                <Flex alignItems="center" gap={ 1 }>
                     <Button fullWidth variant="success" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</Button>
                     <Button fullWidth variant="secondary" onClick={ close }>{ LocalizeText('cancel') }</Button>
                 </Flex>

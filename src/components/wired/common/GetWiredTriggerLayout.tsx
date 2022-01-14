@@ -14,7 +14,7 @@ import { WiredTriggeScoreAchievedView } from '../views/triggers/WiredTriggerScor
 import { WiredTriggerToggleFurniView } from '../views/triggers/WiredTriggerToggleFurniView';
 import { WiredTriggerLayout } from './WiredTriggerLayoutCode';
 
-export function GetWiredTriggerLayout(code: number): JSX.Element
+export const GetWiredTriggerLayout = (code: number) =>
 {
     switch(code)
     {

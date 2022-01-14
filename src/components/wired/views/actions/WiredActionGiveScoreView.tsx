@@ -1,6 +1,9 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../../api';
+import { Column } from '../../../../common/Column';
+import { Text } from '../../../../common/Text';
+import { BatchUpdates } from '../../../../hooks';
 import { WiredFurniType } from '../../common/WiredFurniType';
 import { useWiredContext } from '../../context/WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
@@ -11,45 +14,48 @@ export const WiredActionGiveScoreView: FC<{}> = props =>
     const [ time, setTime ] = useState(1);
     const { trigger = null, setIntParams = null } = useWiredContext();
 
-    useEffect(() =>
-    {
-        if(trigger.intData.length >= 2)
-        {
-            setPoints(trigger.intData[0]);
-            setTime(trigger.intData[1]);
-        }
-        else
-        {
-            setPoints(1);
-            setTime(1);
-        }
-    }, [ trigger ]);
-
     const save = useCallback(() =>
     {
         setIntParams([ points, time ]);
     }, [ points, time, setIntParams ]);
 
+    useEffect(() =>
+    {
+        BatchUpdates(() =>
+        {
+            if(trigger.intData.length >= 2)
+            {
+                setPoints(trigger.intData[0]);
+                setTime(trigger.intData[1]);
+            }
+            else
+            {
+                setPoints(1);
+                setTime(1);
+            }
+        });
+    }, [ trigger ]);
+
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="form-group mb-2">
-                <label className="fw-bold">{ LocalizeText('wiredfurni.params.setpoints', [ 'points' ], [ points.toString() ]) }</label>
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('wiredfurni.params.setpoints', [ 'points' ], [ points.toString() ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }
                     min={ 1 }
                     max={ 100 }
                     value={ points }
                     onChange={ event => setPoints(event) } />
-            </div>
-            <div className="form-group">
-                <label className="fw-bold">{ LocalizeText('wiredfurni.params.settimesingame', [ 'times' ], [ time.toString() ]) }</label>
+            </Column>
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('wiredfurni.params.settimesingame', [ 'times' ], [ time.toString() ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }
                     min={ 1 }
                     max={ 10 }
                     value={ time }
                     onChange={ event => setTime(event) } />
-            </div>
+            </Column>
         </WiredActionBaseView>
     );
 }
