@@ -2,6 +2,7 @@
 import { HabboClubLevelEnum, RoomCreateComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetConfiguration, GetSessionDataManager, LocalizeText } from '../../../../api';
+import { Button } from '../../../../common/Button';
 import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
 import { Grid } from '../../../../common/Grid';
@@ -38,8 +39,6 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
     const createRoom = () =>
     {
-        if(!name || name.length < 3) return;
-
         SendMessageHook(new RoomCreateComposer(name, description, 'model_' + selectedModelName, Number(category), Number(visitorsCount), tradesSetting));
     }
 
@@ -69,11 +68,11 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
             <Grid fullHeight={ false }>
                 <Column size={ 6 } gap={ 1 }>
                     <Text>{ LocalizeText('navigator.createroom.roomnameinfo') }</Text>
-                    <input type="text" className="form-control form-control-sm" onChange={ (e) => setName(e.target.value) } />
+                    <input type="text" className="form-control form-control-sm" onChange={ event => setName(event.target.value) } />
                 </Column>
                 <Column size={ 6 } gap={ 1 }>
                     <Text>{ LocalizeText('navigator.category') }</Text>
-                    <select className="form-select form-select-sm" onChange={ (e) => setCategory(Number(e.target.value)) }>
+                    <select className="form-select form-select-sm" onChange={ event => setCategory(Number(event.target.value)) }>
                         { categories && categories.map(category =>
                             {
                                 return <option key={ category.id } value={ category.id }>{ LocalizeText(category.name) }</option>
@@ -82,7 +81,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                 </Column>
                 <Column size={ 6 } gap={ 1 }>
                     <Text>{ LocalizeText('navigator.maxvisitors') }</Text>
-                    <select className="form-select form-select-sm" onChange={ (e) => setVisitorsCount(Number(e.target.value)) }>
+                    <select className="form-select form-select-sm" onChange={ event => setVisitorsCount(Number(event.target.value)) }>
                         { maxVisitorsList && maxVisitorsList.map(value =>
                             {
                                 return <option key={ value } value={ value }>{ value }</option>
@@ -91,7 +90,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                 </Column>
                 <Column size={ 6 } gap={ 1 }>
                     <Text>{ LocalizeText('navigator.tradesettings') }</Text>
-                    <select className="form-select form-select-sm" onChange={ (e) => setTradesSetting(Number(e.target.value)) }>
+                    <select className="form-select form-select-sm" onChange={ event => setTradesSetting(Number(event.target.value)) }>
                         <option value="0">{ LocalizeText('navigator.roomsettings.trade_not_allowed') }</option>
                         <option value="1">{ LocalizeText('navigator.roomsettings.trade_not_with_Controller') }</option>
                         <option value="2">{ LocalizeText('navigator.roomsettings.trade_allowed') }</option>
@@ -100,7 +99,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
             </Grid>
             <Column gap={ 1 }>
                 <Text>{ LocalizeText('navigator.createroom.roomdescinfo') }</Text>
-                <input type="text" className="form-control form-control-sm" onChange={ (e) => setDescription(e.target.value) } />
+                <input type="text" className="form-control form-control-sm" onChange={ event => setDescription(event.target.value) } />
             </Column>
             <Flex overflow="auto" gap={ 1 }>
                 {
@@ -116,7 +115,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                         })
                 }
             </Flex>
-            <button className="btn btn-success float-end" onClick={ () => createRoom() } disabled={ !name || name.length < 3 }>{ LocalizeText('navigator.createroom.create') }</button>
+            <Button variant="success" onClick={ createRoom } disabled={ (!name || (name.length < 3)) }>{ LocalizeText('navigator.createroom.create') }</Button>
         </Column>
     );
 }
