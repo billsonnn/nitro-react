@@ -1,20 +1,23 @@
-import { CatalogPageMessageOfferData, MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, useCallback, useState } from 'react';
+import { GetProductOfferComposer, MouseEventType } from '@nitrots/nitro-renderer';
+import { Dispatch, FC, MouseEvent, SetStateAction, useCallback, useState } from 'react';
+import { SendMessageHook } from '../../../../../hooks';
+import { FurnitureOffer } from '../../../common/FurnitureOffer';
+import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 import { useCatalogContext } from '../../../context/CatalogContext';
-import { CatalogActions } from '../../../reducers/CatalogReducer';
 import { CatalogProductView } from '../product/CatalogProductView';
 
 export interface CatalogPageOfferViewProps
 {
     isActive: boolean;
-    offer: CatalogPageMessageOfferData;
+    offer: IPurchasableOffer;
+    setActiveOffer: Dispatch<SetStateAction<IPurchasableOffer>>;
 }
 
 export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
 {
-    const { isActive = false, offer = null } = props;
+    const { isActive = false, offer = null, setActiveOffer = null } = props;
     const [ isMouseDown, setMouseDown ] = useState(false);
-    const { dispatchCatalogState = null } = useCatalogContext();
+    const { setCurrentOffer = null } = useCatalogContext();
 
     const onMouseEvent = useCallback((event: MouseEvent) =>
     {
@@ -23,12 +26,16 @@ export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
             case MouseEventType.MOUSE_CLICK:
                 if(isActive) return;
 
-                dispatchCatalogState({
-                    type: CatalogActions.SET_CATALOG_ACTIVE_OFFER,
-                    payload: {
-                        activeOffer: offer
-                    }
-                });
+                setActiveOffer(offer);
+
+                if(offer instanceof FurnitureOffer)
+                {
+                    SendMessageHook(new GetProductOfferComposer(offer.offerId));
+                }
+                else
+                {
+                    setCurrentOffer(offer);
+                }
                 return;
             case MouseEventType.MOUSE_DOWN:
                 setMouseDown(true);
@@ -40,9 +47,9 @@ export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
                 if(!isMouseDown || !isActive) return;
                 return;
         }
-    }, [ isActive, offer, isMouseDown, dispatchCatalogState ]);
+    }, [ isActive, offer, isMouseDown, setActiveOffer, setCurrentOffer ]);
 
-    const product = ((offer.products && offer.products[0]) || null);
+    const product = offer.product;
 
     if(!product) return null;
 

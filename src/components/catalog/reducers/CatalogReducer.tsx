@@ -2,14 +2,12 @@ import { CatalogPageMessageOfferData, CatalogPageMessageParser, ClubGiftInfoPars
 import { HabboGroupEntryData } from '@nitrots/nitro-renderer/src/nitro/communication/messages/parser/user/HabboGroupEntryData';
 import { Reducer } from 'react';
 import { CatalogPetPalette } from '../common/CatalogPetPalette';
-import { ICatalogOffers, ICatalogSearchResult, SetOffersToNodes } from '../common/CatalogUtilities';
+import { ICatalogSearchResult } from '../common/CatalogUtilities';
 import { GiftWrappingConfiguration } from '../common/GiftWrappingConfiguration';
 import { SubscriptionInfo } from '../common/SubscriptionInfo';
 
 export interface ICatalogState
 {
-    root: INodeData;
-    offerRoot: ICatalogOffers;
     currentTab: INodeData;
     pageParser: CatalogPageMessageParser;
     activeOffer: CatalogPageMessageOfferData;
@@ -27,8 +25,6 @@ export interface ICatalogAction
 {
     type: string;
     payload: {
-        root?: INodeData;
-        offerRoot?: ICatalogOffers;
         currentTab?: INodeData;
         pageParser?: CatalogPageMessageParser;
         activeOffer?: CatalogPageMessageOfferData;
@@ -46,7 +42,6 @@ export interface ICatalogAction
 export class CatalogActions
 {
     public static RESET_STATE: string = 'CA_RESET_STATE';
-    public static SET_CATALOG_ROOT: string = 'CA_SET_CATALOG_ROOT';
     public static SET_CATALOG_CURRENT_TAB: string = 'CA_SET_CATALOG_CURRENT_TAB';
     public static SET_CATALOG_PAGE_PARSER: string = 'CA_SET_CATALOG_PAGE';
     public static SET_CATALOG_ACTIVE_OFFER: string = 'CA_SET_ACTIVE_OFFER';
@@ -61,8 +56,6 @@ export class CatalogActions
 }
 
 export const initialCatalog: ICatalogState = {
-    root: null,
-    offerRoot: null,
     currentTab: null,
     pageParser: null,
     activeOffer: null,
@@ -80,16 +73,6 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
 {
     switch(action.type)
     {
-        case CatalogActions.SET_CATALOG_ROOT: {
-            const root = (action.payload.root || state.root || null);
-            const currentTab = ((root && (root.children.length > 0) && root.children[0]) || null);
-
-            const offerRoot: ICatalogOffers = {};
-
-            SetOffersToNodes(offerRoot, root);
-
-            return { ...state, root, offerRoot, currentTab };
-        }
         case CatalogActions.SET_CATALOG_CURRENT_TAB: {
             const currentTab = (action.payload.currentTab || state.currentTab || null);
             const searchResult = null;

@@ -27,7 +27,7 @@ export const GetProductIconUrl = (furniClassId: number, productType: string, cus
                         iconName = [ 'th', 'wall', customParams ].join('_');
                         break;
                     case 'landscape':
-                        iconName = [ 'th', furniData.className, customParams.replace('.', '_'), '001' ].join('_');
+                        iconName = [ 'th', furniData.className, (customParams || '').replace('.', '_'), '001' ].join('_');
                         break;
                 }
 

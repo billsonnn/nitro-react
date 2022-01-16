@@ -10,21 +10,19 @@ import { InventoryBadgesRequestEvent } from '../../../../../../events/inventory/
 import { dispatchUiEvent, useUiEvent } from '../../../../../../hooks';
 import { BadgeImageView } from '../../../../../../views/shared/badge-image/BadgeImageView';
 import { useCatalogContext } from '../../../../context/CatalogContext';
+import { CatalogProductPreviewView } from '../../offers/CatalogPageOfferPreviewView';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
-import { CatalogProductPreviewView } from '../../product-preview/CatalogProductPreviewView';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 
 export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutProps> = props =>
 {
-    const { roomPreviewer = null, pageParser = null } = props;
+    const { page = null, roomPreviewer = null } = props;
     const [ badges, setBadges ] = useState<string[]>([]);
     const [ currentBadge, setCurrentBadge ] = useState<string>(null);
-    const { catalogState = null } = useCatalogContext();
-    const { activeOffer = null } = catalogState;
+    const { currentOffer = null } = useCatalogContext();
 
     const onInventoryBadgesUpdatedEvent = useCallback((event: InventoryBadgesUpdatedEvent) =>
     {
-        console.log(event);
         setBadges(event.badges);
     }, []);
 
@@ -37,9 +35,10 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutProps> = props =>
 
     useEffect(() =>
     {
-        if(!currentBadge || !activeOffer) return;
+        if(!currentBadge || !currentOffer) return;
 
         const productData = [];
+
         productData.push('0');
         productData.push(currentBadge);
         productData.push('');
@@ -49,13 +48,13 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutProps> = props =>
         const stringDataType = new StringDataType();
         stringDataType.setValue(productData);
 
-        dispatchUiEvent(new SetRoomPreviewerStuffDataEvent(activeOffer, stringDataType));
-    }, [ currentBadge, activeOffer, roomPreviewer ]);
+        dispatchUiEvent(new SetRoomPreviewerStuffDataEvent(currentOffer, stringDataType));
+    }, [ currentBadge, currentOffer, roomPreviewer ]);
 
     return (
         <Grid>
             <Column size={ 7 } overflow="hidden">
-                <CatalogPageOffersView shrink offers={ pageParser.offers } />
+                <CatalogPageOffersView shrink offers={ page.offers } />
                 <Column gap={ 1 } overflow="hidden">
                     <Text truncate shrink fontWeight="bold">{ LocalizeText('catalog_selectbadge') }</Text>
                     <Grid grow columnCount={ 5 } overflow="auto">
@@ -71,7 +70,8 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutProps> = props =>
                 </Column>
             </Column>
             <Column size={ 5 } overflow="hidden">
-                <CatalogProductPreviewView pageParser={ pageParser } activeOffer={ activeOffer } roomPreviewer={ roomPreviewer } extra={ currentBadge } disabled={ !currentBadge } />
+                { !!currentOffer &&
+                    <CatalogProductPreviewView offer={ currentOffer } roomPreviewer={ roomPreviewer } extra={ currentBadge } disabled={ !currentBadge } /> }
             </Column>
         </Grid>
     );

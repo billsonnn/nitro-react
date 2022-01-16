@@ -1,4 +1,4 @@
-import { CatalogPageMessageOfferData, PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
+import { PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { Button, ButtonProps } from '../../../../../common/Button';
@@ -9,10 +9,11 @@ import { SendMessageHook } from '../../../../../hooks/messages/message-event';
 import { LoadingSpinnerView } from '../../../../../layout';
 import { GetCurrencyAmount } from '../../../../../views/purse/common/CurrencyHelper';
 import { CatalogPurchaseState } from '../../../common/CatalogPurchaseState';
+import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 
 export interface CatalogPurchaseButtonViewProps extends ButtonProps
 {
-    offer: CatalogPageMessageOfferData;
+    offer: IPurchasableOffer;
     pageId: number;
     extra?: string;
     quantity?: number;
@@ -88,21 +89,21 @@ export const CatalogPurchaseButtonView: FC<CatalogPurchaseButtonViewProps> = pro
         }
     }, [ purchaseState, pendingApproval, isPurchaseAllowed, purchase ]);
 
-    const product = offer.products[0];
+    const product = offer.product;
 
-    if(product && product.uniqueLimitedItem && !product.uniqueLimitedItemsLeft)
+    if(product && product.isUniqueLimitedItem && !product.uniqueLimitedItemsLeft)
     {
         return <Button variant="danger" size="sm" disabled>{ LocalizeText('catalog.alert.limited_edition_sold_out.title') }</Button>;
     }
 
-    if((offer.priceCredits * quantity) > GetCurrencyAmount(-1))
+    if((offer.priceInCredits * quantity) > GetCurrencyAmount(-1))
     {
         return <Button variant="danger" size="sm" disabled>{ LocalizeText('catalog.alert.notenough.title') }</Button>;
     }
 
-    if((offer.priceActivityPoints * quantity) > GetCurrencyAmount(offer.priceActivityPointsType))
+    if((offer.priceInActivityPoints * quantity) > GetCurrencyAmount(offer.activityPointType))
     {
-        return <Button variant="danger" size="sm" disabled>{ LocalizeText('catalog.alert.notenough.activitypoints.title.' + offer.priceActivityPointsType) }</Button>;
+        return <Button variant="danger" size="sm" disabled>{ LocalizeText('catalog.alert.notenough.activitypoints.title.' + offer.activityPointType) }</Button>;
     }
 
     switch(purchaseState)

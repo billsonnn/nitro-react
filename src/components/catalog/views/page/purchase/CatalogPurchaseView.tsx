@@ -1,17 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { CatalogPageMessageOfferData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { Column } from '../../../../../common/Column';
 import { Flex } from '../../../../../common/Flex';
 import { Text } from '../../../../../common/Text';
 import { CurrencyIcon } from '../../../../../views/shared/currency-icon/CurrencyIcon';
+import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
+import { Offer } from '../../../common/Offer';
 import { CatalogPurchaseButtonView } from './CatalogPurchaseButtonView';
 import { CatalogPurchaseGiftButtonView } from './CatalogPurchaseGiftButtonView';
 
 export interface CatalogPurchaseViewProps
 {
-    offer: CatalogPageMessageOfferData;
+    offer: IPurchasableOffer;
     pageId: number;
     extra?: string;
     disabled?: boolean;
@@ -54,7 +55,7 @@ export const CatalogPurchaseView: FC<CatalogPurchaseViewProps> = props =>
         setQuantity(1);
     }, [ offer ]);
 
-    const extraData = ((extra && extra.length) ? extra : (offer?.products[0]?.extraParam || null));
+    const extraData = ((extra && extra.length) ? extra : (offer.product.extraParam || null));
     
     return (
         <Column fullWidth grow justifyContent="end">
@@ -69,21 +70,22 @@ export const CatalogPurchaseView: FC<CatalogPurchaseViewProps> = props =>
                         </Flex> }
                 </div>
                 <Column gap={ 1 }>
-                    { (offer.priceCredits > 0) &&
+                    { ((offer.priceType === Offer.PRICE_TYPE_CREDITS_ACTIVITYPOINTS) || (offer.priceType === Offer.PRICE_TYPE_CREDITS)) &&
                         <Flex alignItems="center" justifyContent="end" gap={ 1 }>
-                            <Text>{ offer.priceCredits * quantity }</Text>
+                            <Text>{ offer.priceInCredits * quantity }</Text>
                             <CurrencyIcon type={ -1 } />
                         </Flex> }
-                    { (offer.priceActivityPoints > 0) &&
+                    { ((offer.priceType === Offer.PRICE_TYPE_CREDITS_ACTIVITYPOINTS) || (offer.priceType === Offer.PRICE_TYPE_ACTIVITYPOINTS)) &&
                         <Flex alignItems="center" justifyContent="end" gap={ 1 }>
-                            <Text>{ offer.priceActivityPoints * quantity }</Text>
-                            <CurrencyIcon type={ offer.priceActivityPointsType } />
+                            <Text>{ offer.priceInActivityPoints * quantity }</Text>
+                            <CurrencyIcon type={ offer.activityPointType } />
                         </Flex> }
                 </Column>
             </Flex>
             <Column gap={ 1 }>
                 <CatalogPurchaseButtonView offer={ offer } pageId={ pageId } extra={ extraData } quantity={ quantity } disabled={ disabled } />
-                { offer.giftable && <CatalogPurchaseGiftButtonView offer={ offer } pageId={ pageId } extra={ extraData } disabled={ disabled } /> }
+                { offer.giftable &&
+                    <CatalogPurchaseGiftButtonView offer={ offer } pageId={ pageId } extra={ extraData } disabled={ disabled } /> }
             </Column>
         </Column>
     );

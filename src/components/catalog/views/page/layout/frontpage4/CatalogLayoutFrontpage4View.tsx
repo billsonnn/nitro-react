@@ -3,14 +3,15 @@ import { FC, useCallback } from 'react';
 import { CreateLinkEvent } from '../../../../../../api';
 import { Column } from '../../../../../../common/Column';
 import { Grid } from '../../../../../../common/Grid';
-import { GetCatalogPageText } from '../../../../common/CatalogUtilities';
+import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogRedeemVoucherView } from '../../redeem-voucher/CatalogRedeemVoucherView';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutFrontPageItemView } from './CatalogLayoutFrontPageItemView';
 
 export const CatalogLayoutFrontpage4View: FC<CatalogLayoutProps> = props =>
 {
-    const { pageParser = null } = props;
+    const { page = null } = props;
+    const { frontPageItems = [] } = useCatalogContext();
 
     const selectItem = useCallback((item: FrontPageItem) =>
     {
@@ -28,17 +29,17 @@ export const CatalogLayoutFrontpage4View: FC<CatalogLayoutProps> = props =>
     return (
         <Grid>
             <Column size={ 4 }>
-                { pageParser.frontPageItems[0] &&
-                    <CatalogLayoutFrontPageItemView item={ pageParser.frontPageItems[0] } onClick={ event => selectItem(pageParser.frontPageItems[0]) } /> }
+                { frontPageItems[0] &&
+                    <CatalogLayoutFrontPageItemView item={ frontPageItems[0] } onClick={ event => selectItem(frontPageItems[0]) } /> }
             </Column>
             <Column size={ 8 }>
-                { pageParser.frontPageItems[1] &&
-                    <CatalogLayoutFrontPageItemView item={ pageParser.frontPageItems[1] } onClick={ event => selectItem(pageParser.frontPageItems[1]) } /> }
-                { pageParser.frontPageItems[2] &&
-                    <CatalogLayoutFrontPageItemView item={ pageParser.frontPageItems[2] } onClick={ event => selectItem(pageParser.frontPageItems[2]) } /> }
-                { pageParser.frontPageItems[3] &&
-                    <CatalogLayoutFrontPageItemView item={ pageParser.frontPageItems[3] } onClick={ event => selectItem(pageParser.frontPageItems[3]) } /> }
-                <CatalogRedeemVoucherView text={ GetCatalogPageText(pageParser, 1) } />
+                { frontPageItems[1] &&
+                    <CatalogLayoutFrontPageItemView item={ frontPageItems[1] } onClick={ event => selectItem(frontPageItems[1]) } /> }
+                { frontPageItems[2] &&
+                    <CatalogLayoutFrontPageItemView item={ frontPageItems[2] } onClick={ event => selectItem(frontPageItems[2]) } /> }
+                { frontPageItems[3] &&
+                    <CatalogLayoutFrontPageItemView item={ frontPageItems[3] } onClick={ event => selectItem(frontPageItems[3]) } /> }
+                <CatalogRedeemVoucherView text={ page.localization.getText(1) } />
             </Column>
         </Grid>
     );

@@ -1,41 +1,42 @@
-import { INodeData } from '@nitrots/nitro-renderer';
-import { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { Column } from '../../../../common/Column';
 import { Grid } from '../../../../common/Grid';
+import { FilterCatalogNode } from '../../common/FilterCatalogNode';
+import { ICatalogNode } from '../../common/ICatalogNode';
+import { useCatalogContext } from '../../context/CatalogContext';
 import { CatalogSearchView } from '../search/CatalogSearchView';
 import { CatalogNavigationSetView } from './CatalogNavigationSetView';
 
 export interface CatalogNavigationViewProps
 {
-    page: INodeData;
-    pendingTree: INodeData[];
-    setPendingTree: Dispatch<SetStateAction<INodeData[]>>;
+    node: ICatalogNode;
 }
-
-export let ACTIVE_PAGES: INodeData[] = [];
 
 export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
 {
-    const { page = null, pendingTree = null, setPendingTree = null } = props;
+    const { node = null } = props;
+    const [ filteredNodes, setFilteredNodes ] = useState<ICatalogNode[]>([]);
+    const { currentNode = null, activeNodes = null } = useCatalogContext();
 
-    useEffect(() =>
+    const filterNodes = useCallback((value: string, furniLines: string[]) =>
     {
-        if(!page) return;
+        const nodes: ICatalogNode[] = [];
 
-        ACTIVE_PAGES = [ page ];
+        FilterCatalogNode(value, furniLines, currentNode, nodes);
 
-        return () =>
-        {
-            ACTIVE_PAGES = [];
-        }
-    }, [ page ]);
+        setFilteredNodes(nodes.filter(node => (node.isVisible)));
+    }, [ currentNode ]);
     
     return (
         <>
             <CatalogSearchView />
             <Column fullHeight className="nitro-catalog-navigation-grid-container p-1" overflow="hidden">
                 <Grid grow columnCount={ 1 } gap={ 1 } overflow="auto">
-                    <CatalogNavigationSetView page={ page } isFirstSet={ true } pendingTree={ pendingTree } setPendingTree={ setPendingTree } />
+                    {/* { filterNodes && (filteredNodes.length > 0) && filteredNodes.map((node, index) =>
+                    {
+                        return <CatalogNavigationItemView key={ index } node={ node } isActive={ (activeNodes.indexOf(node) > -1) } selectNode={ selectNode } />;
+                    })} */}
+                    <CatalogNavigationSetView node={ node } />
                 </Grid>
             </Column>
         </>

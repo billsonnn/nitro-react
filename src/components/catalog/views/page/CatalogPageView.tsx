@@ -1,39 +1,35 @@
-import { CatalogPageMessageOfferData, IObjectData, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
-import { GetAvatarRenderManager, GetFurnitureDataForProductOffer, GetSessionDataManager } from '../../../../api';
+import { IObjectData, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
+import { FC, useCallback, useEffect } from 'react';
+import { GetAvatarRenderManager, GetSessionDataManager } from '../../../../api';
 import { SetRoomPreviewerStuffDataEvent } from '../../../../events';
 import { useUiEvent } from '../../../../hooks';
 import { FurniCategory } from '../../common/FurniCategory';
+import { ICatalogPage } from '../../common/ICatalogPage';
+import { IPurchasableOffer } from '../../common/IPurchasableOffer';
 import { ProductTypeEnum } from '../../common/ProductTypeEnum';
 import { useCatalogContext } from '../../context/CatalogContext';
 import { GetCatalogLayout } from './layout/GetCatalogLayout';
-import { CatalogLayoutSearchResultView } from './search-result/CatalogLayoutSearchResultView';
 
 export interface CatalogPageViewProps
 {
+    page: ICatalogPage;
     roomPreviewer: RoomPreviewer;
 }
 
 export const CatalogPageView: FC<CatalogPageViewProps> = props =>
 {
-    const { roomPreviewer = null } = props;
-    const [ lastOffer, setLastOffer ] = useState<CatalogPageMessageOfferData>(null);
-    const { catalogState = null } = useCatalogContext();
-    const { pageParser = null, activeOffer = null, searchResult = null } = catalogState;
+    const { page = null, roomPreviewer = null } = props;
+    const { currentOffer = null } = useCatalogContext();
 
-    const updatePreviewerForOffer = useCallback((offer: CatalogPageMessageOfferData, stuffData: IObjectData = null) =>
+    const updatePreviewerForOffer = useCallback((offer: IPurchasableOffer, stuffData: IObjectData = null) =>
     {
         if(!offer || !roomPreviewer) return;
 
-        const product = offer.products[0];
+        const product = offer.product;
 
-        if(!product) return;
+        if(!product && !product.furnitureData && (product.productType !== ProductTypeEnum.ROBOT)) return;
 
-        const furniData = GetFurnitureDataForProductOffer(product);
-
-        if(!furniData && (product.productType !== ProductTypeEnum.ROBOT)) return;
-
-        switch(product.productType)
+        switch(product.productType.toLowerCase())
         {
             case ProductTypeEnum.ROBOT: {
                 roomPreviewer.updateObjectRoom('default', 'default', 'default');
@@ -46,10 +42,10 @@ export const CatalogPageView: FC<CatalogPageViewProps> = props =>
             case ProductTypeEnum.FLOOR: {
                 roomPreviewer.updateObjectRoom('default', 'default', 'default');
 
-                if(furniData.specialType === FurniCategory.FIGURE_PURCHASABLE_SET)
+                if(product.furnitureData.specialType === FurniCategory.FIGURE_PURCHASABLE_SET)
                 {
                     const setIds: number[] = [];
-                    const sets = furniData.customParams.split(',');
+                    const sets = product.furnitureData.customParams.split(',');
 
                     for(const set of sets)
                     {
@@ -64,12 +60,13 @@ export const CatalogPageView: FC<CatalogPageViewProps> = props =>
                 }
                 else
                 {
-                    roomPreviewer.addFurnitureIntoRoom(product.furniClassId, new Vector3d(90), stuffData);
+                    console.log('??')
+                    roomPreviewer.addFurnitureIntoRoom(product.productClassId, new Vector3d(90), stuffData);
                 }
                 return;
             }
             case ProductTypeEnum.WALL: {
-                switch(furniData.className)
+                switch(product.furnitureData.className)
                 {
                     case 'floor':
                         roomPreviewer.reset(false);
@@ -85,7 +82,7 @@ export const CatalogPageView: FC<CatalogPageViewProps> = props =>
                         break;
                     default:
                         roomPreviewer.updateObjectRoom('default', 'default', 'default');
-                        roomPreviewer.addWallItemIntoRoom(product.furniClassId, new Vector3d(90), product.extraParam);
+                        roomPreviewer.addWallItemIntoRoom(product.productClassId, new Vector3d(90), product.extraParam);
                         return;
                 }
 
@@ -109,15 +106,12 @@ export const CatalogPageView: FC<CatalogPageViewProps> = props =>
 
     useEffect(() =>
     {
-        if(!activeOffer) return;
+        if(!currentOffer) return;
 
-        updatePreviewerForOffer(activeOffer);
-    }, [ activeOffer, updatePreviewerForOffer ]);
+        updatePreviewerForOffer(currentOffer);
+    }, [ currentOffer, updatePreviewerForOffer ]);
 
-    if(searchResult && searchResult.furniture)
-    {
-        return <CatalogLayoutSearchResultView roomPreviewer={ roomPreviewer } furnitureDatas={ searchResult.furniture } />;
-    }
+    if(!page) return null;
 
-    return ((pageParser && GetCatalogLayout(pageParser, roomPreviewer)) || null);
+    return GetCatalogLayout(page, roomPreviewer);
 }

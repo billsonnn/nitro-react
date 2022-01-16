@@ -6,7 +6,7 @@ export function GetFurnitureData(furniClassId: number, productType: string): IFu
 {
     let furniData: IFurnitureData = null;
 
-    switch(productType.toUpperCase())
+    switch(productType.toLowerCase())
     {
         case ProductTypeEnum.FLOOR:
             furniData = GetSessionDataManager().getFloorItemData(furniClassId);

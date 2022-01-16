@@ -1,4 +1,4 @@
-import { ApproveNameMessageComposer, CatalogPageMessageOfferData } from '@nitrots/nitro-renderer';
+import { ApproveNameMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../../../api';
 import { Column } from '../../../../../../common/Column';
@@ -8,13 +8,15 @@ import { CatalogEvent } from '../../../../../../events';
 import { useUiEvent } from '../../../../../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { CurrencyIcon } from '../../../../../../views/shared/currency-icon/CurrencyIcon';
+import { IPurchasableOffer } from '../../../../common/IPurchasableOffer';
+import { Offer } from '../../../../common/Offer';
 import { CatalogPurchaseButtonView } from '../../purchase/CatalogPurchaseButtonView';
 import { CatalogPurchaseGiftButtonView } from '../../purchase/CatalogPurchaseGiftButtonView';
 import { CatalogPetNameApprovalView } from './CatalogPetNameApprovalView';
 
 export interface CatalogLayoutPetPurchaseViewProps
 {
-    offer: CatalogPageMessageOfferData;
+    offer: IPurchasableOffer;
     pageId: number;
     extra?: string;
 }
@@ -53,22 +55,23 @@ export const CatalogLayoutPetPurchaseView: FC<CatalogLayoutPetPurchaseViewProps>
                 <div className="flex-grow-1 align-items-end">
                     <Text>{ LocalizeText('catalog.bundlewidget.price') }</Text>
                 </div>
-                <Column>
-                    { (offer.priceCredits > 0) &&
+                <Column gap={ 1 }>
+                    { ((offer.priceType === Offer.PRICE_TYPE_CREDITS_ACTIVITYPOINTS) || (offer.priceType === Offer.PRICE_TYPE_CREDITS)) &&
                         <Flex alignItems="center" justifyContent="end" gap={ 1 }>
-                            <Text>{ offer.priceCredits }</Text>
+                            <Text>{ offer.priceInCredits }</Text>
                             <CurrencyIcon type={ -1 } />
                         </Flex> }
-                    { (offer.priceActivityPoints > 0) &&
+                    { ((offer.priceType === Offer.PRICE_TYPE_CREDITS_ACTIVITYPOINTS) || (offer.priceType === Offer.PRICE_TYPE_ACTIVITYPOINTS)) &&
                         <Flex alignItems="center" justifyContent="end" gap={ 1 }>
-                            <Text>{ offer.priceActivityPoints }</Text>
-                            <CurrencyIcon type={ offer.priceActivityPointsType } />
+                            <Text>{ offer.priceInActivityPoints }</Text>
+                            <CurrencyIcon type={ offer.activityPointType } />
                         </Flex> }
                 </Column>
             </Flex>
             <Column gap={ 1 }>
                 <CatalogPurchaseButtonView offer={ offer } pageId={ pageId } extra={ extraData } quantity={ 1 } isPurchaseAllowed={ nameApproved } beforePurchase={ beforePurchase } />
-                { offer.giftable && <CatalogPurchaseGiftButtonView offer={ offer } pageId={ pageId } extra={ extraData } disabled={ nameApproved } /> }
+                { offer.giftable &&
+                    <CatalogPurchaseGiftButtonView offer={ offer } pageId={ pageId } extra={ extraData } disabled={ nameApproved } /> }
             </Column>
         </Column>
     );

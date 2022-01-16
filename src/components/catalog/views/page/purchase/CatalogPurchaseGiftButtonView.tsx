@@ -1,13 +1,13 @@
-import { CatalogPageMessageOfferData } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { Button, ButtonProps } from '../../../../../common/Button';
 import { CatalogInitGiftEvent } from '../../../../../events/catalog/CatalogInitGiftEvent';
 import { dispatchUiEvent } from '../../../../../hooks';
+import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 
 export interface CatalogPurchaseGiftButtonViewProps extends ButtonProps
 {
-    offer: CatalogPageMessageOfferData;
+    offer: IPurchasableOffer;
     pageId: number;
     extra?: string;
 }

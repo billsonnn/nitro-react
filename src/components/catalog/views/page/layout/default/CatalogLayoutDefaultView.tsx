@@ -2,23 +2,26 @@ import { FC } from 'react';
 import { Column } from '../../../../../../common/Column';
 import { Grid } from '../../../../../../common/Grid';
 import { useCatalogContext } from '../../../../context/CatalogContext';
+import { CatalogPageDetailsView } from '../../../page-details/CatalogPageDetailsView';
+import { CatalogProductPreviewView } from '../../offers/CatalogPageOfferPreviewView';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
-import { CatalogProductPreviewView } from '../../product-preview/CatalogProductPreviewView';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 
 export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
 {
-    const { roomPreviewer = null, pageParser = null } = props;
-    const { catalogState = null } = useCatalogContext();
-    const { activeOffer = null } = catalogState;
+    const { page = null, roomPreviewer = null } = props;
+    const { currentOffer = null } = useCatalogContext();
 
     return (
         <Grid>
             <Column size={ 7 } overflow="hidden">
-                <CatalogPageOffersView offers={ pageParser.offers } />
+                <CatalogPageOffersView offers={ page.offers } />
             </Column>
             <Column size={ 5 } overflow="hidden">
-                <CatalogProductPreviewView pageParser={ pageParser } activeOffer={ activeOffer } roomPreviewer={ roomPreviewer } />
+                { !currentOffer &&
+                    <CatalogPageDetailsView page={ page } /> }
+                { !!currentOffer &&
+                    <CatalogProductPreviewView offer={ currentOffer } roomPreviewer={ roomPreviewer } /> }
             </Column>
         </Grid>
     );

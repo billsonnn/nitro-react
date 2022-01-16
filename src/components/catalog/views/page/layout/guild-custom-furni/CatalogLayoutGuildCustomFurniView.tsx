@@ -7,16 +7,16 @@ import { dispatchUiEvent } from '../../../../../../hooks';
 import { SendMessageHook } from '../../../../../../hooks/messages';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogSelectGroupView } from '../../../select-group/CatalogSelectGroupView';
+import { CatalogProductPreviewView } from '../../offers/CatalogPageOfferPreviewView';
 import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
-import { CatalogProductPreviewView } from '../../product-preview/CatalogProductPreviewView';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 
 export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutProps> = props =>
 {
-    const { roomPreviewer = null, pageParser = null } = props;
+    const { page = null, roomPreviewer = null } = props;
     const [ selectedGroupIndex, setSelectedGroupIndex ] = useState<number>(0);
-    const { catalogState = null } = useCatalogContext();
-    const { activeOffer = null, groups = null } = catalogState;
+    const { currentOffer = null, catalogState = null } = useCatalogContext();
+    const { groups = null } = catalogState;
 
     const selectedGroup = useMemo(() =>
     {
@@ -27,14 +27,17 @@ export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutProps> = props =>
 
     useEffect(() =>
     {
+        if(!page) return;
+
         SendMessageHook(new CatalogGroupsComposer());
-    }, [ pageParser ]);
+    }, [ page ]);
 
     useEffect(() =>
     {
-        if(!activeOffer || !groups[selectedGroupIndex]) return;
+        if(!currentOffer || !groups[selectedGroupIndex]) return;
 
         const productData = [];
+
         productData.push('0');
         productData.push(groups[selectedGroupIndex].groupId);
         productData.push(groups[selectedGroupIndex].badgeCode);
@@ -44,20 +47,21 @@ export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutProps> = props =>
         const stringDataType = new StringDataType();
         stringDataType.setValue(productData);
 
-        dispatchUiEvent(new SetRoomPreviewerStuffDataEvent(activeOffer, stringDataType));
-    }, [ groups, selectedGroupIndex, activeOffer ]);
+        dispatchUiEvent(new SetRoomPreviewerStuffDataEvent(currentOffer, stringDataType));
+    }, [ groups, currentOffer, selectedGroupIndex ]);
 
     if(!groups) return null;
     
     return (
         <Grid>
             <Column size={ 7 } overflow="hidden">
-                <CatalogPageOffersView offers={ pageParser.offers } />
+                <CatalogPageOffersView offers={ page.offers } />
             </Column>
             <Column size={ 5 } overflow="hidden">
-                <CatalogProductPreviewView pageParser={ pageParser } activeOffer={ activeOffer } roomPreviewer={ roomPreviewer } badgeCode={ ((selectedGroup && selectedGroup.badgeCode) || null) } extra={ groups[selectedGroupIndex] ? groups[selectedGroupIndex].groupId.toString() : '' } disabled={ !(!!groups[selectedGroupIndex]) }>
-                    <CatalogSelectGroupView selectedGroupIndex={ selectedGroupIndex } setSelectedGroupIndex={ setSelectedGroupIndex } />
-                </CatalogProductPreviewView>
+                { !!currentOffer &&
+                    <CatalogProductPreviewView offer={ currentOffer } roomPreviewer={ roomPreviewer } badgeCode={ ((selectedGroup && selectedGroup.badgeCode) || null) } extra={ groups[selectedGroupIndex] ? groups[selectedGroupIndex].groupId.toString() : '' } disabled={ !(!!groups[selectedGroupIndex]) }>
+                        <CatalogSelectGroupView selectedGroupIndex={ selectedGroupIndex } setSelectedGroupIndex={ setSelectedGroupIndex } />
+                    </CatalogProductPreviewView> }
             </Column>
         </Grid>
     );

@@ -1,25 +1,24 @@
-import { CatalogPageMessageParser } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { NitroLayoutFlexColumn } from '../../../../layout';
-import { GetCatalogPageImage, GetCatalogPageText } from '../../common/CatalogUtilities';
+import { ICatalogPage } from '../../common/ICatalogPage';
 
 export interface CatalogPageDetailsViewProps
 {
-    pageParser: CatalogPageMessageParser;
+    page: ICatalogPage;
 }
 
 export const CatalogPageDetailsView: FC<CatalogPageDetailsViewProps> = props =>
 {
-    const { pageParser = null } = props;
+    const { page = null } = props;
 
-    if(!pageParser) return null;
-
-    const imageUrl = GetCatalogPageImage(pageParser, 1);
+    if(!page) return null;
+    
+    const imageUrl = page.localization.getImage(1);
 
     return (
         <NitroLayoutFlexColumn className="justify-content-center align-items-center h-100" overflow="hidden" gap={ 2 }>
             { imageUrl && <img className="" alt="" src={ imageUrl } /> }
-            <div className="d-flex flex-column fs-6 text-center text-black lh-sm overflow-auto" dangerouslySetInnerHTML={ { __html: GetCatalogPageText(pageParser, 0) } } />
+            <div className="d-flex flex-column fs-6 text-center text-black lh-sm overflow-auto" dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
         </NitroLayoutFlexColumn>
     );
 }

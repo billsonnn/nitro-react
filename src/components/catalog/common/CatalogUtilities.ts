@@ -1,5 +1,6 @@
 import { CatalogPageMessageOfferData, CatalogPageMessageParser, IFurnitureData, INodeData, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { GetConfiguration, GetProductDataForLocalization, GetRoomEngine } from '../../../api';
+import { ICatalogNode } from './ICatalogNode';
 
 export interface ICatalogOffers
 {
@@ -21,25 +22,25 @@ export function GetOfferName(offer: CatalogPageMessageOfferData): string
     return offer.localizationId;
 }
 
-export function GetOfferNodes(offers: ICatalogOffers, offerId: number): INodeData[]
+export const GetOfferNodes = (offerNodes: Map<number, ICatalogNode[]>, offerId: number) =>
 {
-    const pages = offers[offerId.toString()];
-    const allowedPages: INodeData[] = [];
+    const nodes = offerNodes.get(offerId);
+    const allowedNodes: ICatalogNode[] = [];
 
-    if(pages && pages.length)
+    if(nodes && nodes.length)
     {
-        for(const page of pages)
+        for(const node of nodes)
         {
-            if(!page.visible) continue;
+            if(!node.isVisible) continue;
     
-            allowedPages.push(page);
+            allowedNodes.push(node);
         }
     }
 
-    return allowedPages;
+    return allowedNodes;
 }
 
-export function SetOffersToNodes(offers: ICatalogOffers, pageData: INodeData): void
+export const SetOffersToNodes = (offers: ICatalogOffers, pageData: INodeData) =>
 {
     if(pageData.offerIds && pageData.offerIds.length)
     {

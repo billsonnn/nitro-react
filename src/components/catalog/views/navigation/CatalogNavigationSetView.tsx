@@ -1,44 +1,71 @@
-import { INodeData } from '@nitrots/nitro-renderer';
-import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { UseMountEffect } from '../../../../hooks';
+import { ICatalogNode } from '../../common/ICatalogNode';
+import { useCatalogContext } from '../../context/CatalogContext';
 import { CatalogNavigationItemView } from './CatalogNavigationItemView';
 
 export interface CatalogNavigationSetViewProps
 {
-    page: INodeData;
-    isFirstSet?: boolean;
-    pendingTree: INodeData[];
-    setPendingTree: Dispatch<SetStateAction<INodeData[]>>;
+    node: ICatalogNode;
 }
 
 export const CatalogNavigationSetView: FC<CatalogNavigationSetViewProps> = props =>
 {
-    const { page = null, isFirstSet = false, pendingTree = null, setPendingTree = null } = props;
-    const [ activeChild, setActiveChild ] = useState<INodeData>(null);
+    const { node = null } = props;
+    const [ activeNode, setActiveNode ] = useState<ICatalogNode>(null);
+    const { activeNodes = null, setActiveNodes = null } = useCatalogContext();
+
+    const selectNode = (node: ICatalogNode) =>
+    {
+        setActiveNode(node);
+    }
 
     useEffect(() =>
     {
-        if(!page || (page.pageId === -1) || !isFirstSet || pendingTree) return;
+        if(!node || !activeNode) return;
 
-        if(page.children.length)
-        {
-            if(activeChild)
+        setActiveNodes(prevValue =>
             {
-                if(page.children.indexOf(activeChild) === -1) setActiveChild(null);
-                
-                return;
-            }
-            
-            setActiveChild(page.children[0]);
+                const newNodes = prevValue.slice(0, (node.depth - 1));
+
+                newNodes.push(activeNode);
+
+                return newNodes;
+            });
+
+        return () =>
+        {
+            setActiveNodes(prevValue =>
+                {
+                    const newNodes = prevValue.slice(0, (node.depth - 1));
+
+                    return newNodes;
+                });
         }
-    }, [ page, isFirstSet, activeChild, pendingTree ]);
+    }, [ node, activeNode, setActiveNodes ]);
+
+    UseMountEffect(() =>
+    {
+        if(activeNodes && activeNodes.length)
+        {
+            const index = activeNodes.indexOf(node);
+
+            if(index > -1)
+            {
+                const childNode = activeNodes[index + 1];
+
+                if(childNode) setActiveNode(childNode);
+            }
+        }
+    });
     
     return (
         <>
-            { page && (page.children.length > 0) && page.children.map((page, index) =>
+            { node && (node.children.length > 0) && node.children.map((node, index) =>
                 {
-                    if(!page.visible) return null;
+                    if(!node.isVisible) return null;
                     
-                    return <CatalogNavigationItemView key={ index } page={ page } isActive={ (activeChild === page) } pendingTree={ pendingTree } setPendingTree={ setPendingTree } setActiveChild={ setActiveChild } />
+                    return <CatalogNavigationItemView key={ index } node={ node } isActive={ (activeNodes.indexOf(node) > -1) } selectNode={ selectNode } />
                 }) }
         </>
     );

@@ -4,44 +4,35 @@ import { Base } from '../../../../../../common/Base';
 import { Column } from '../../../../../../common/Column';
 import { Grid } from '../../../../../../common/Grid';
 import { SendMessageHook } from '../../../../../../hooks/messages';
-import { GetCatalogPageText } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
-import { CatalogActions } from '../../../../reducers/CatalogReducer';
 import { CatalogSelectGroupView } from '../../../select-group/CatalogSelectGroupView';
-import { CatalogProductPreviewView } from '../../product-preview/CatalogProductPreviewView';
+import { CatalogProductPreviewView } from '../../offers/CatalogPageOfferPreviewView';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 
 export const CatalogLayouGuildForumView: FC<CatalogLayoutProps> = props =>
 {
-    const { pageParser = null } = props;
+    const { page = null } = props;
     const [ selectedGroupIndex, setSelectedGroupIndex ] = useState<number>(0);
-    const { catalogState = null, dispatchCatalogState = null } = useCatalogContext();
-    const { activeOffer = null, groups = null } = catalogState;
+    const { currentOffer = null, setCurrentOffer = null, catalogState = null, dispatchCatalogState = null } = useCatalogContext();
+    const { groups = null } = catalogState;
 
     useEffect(() =>
     {
         SendMessageHook(new CatalogGroupsComposer());
 
-        if(pageParser.offers.length > 0)
-        {
-            dispatchCatalogState({
-                type: CatalogActions.SET_CATALOG_ACTIVE_OFFER,
-                payload: {
-                    activeOffer: pageParser.offers[0]
-                }
-            });
-        }
-    }, [ dispatchCatalogState, pageParser ]);
+        if(page.offers.length) setCurrentOffer(page.offers[0]);
+    }, [ page, setCurrentOffer ]);
     
     return (
         <Grid>
             <Column className="bg-muted rounded p-2 text-black" size={ 7 } overflow="hidden">
-                <Base className="overflow-auto" dangerouslySetInnerHTML={ { __html: GetCatalogPageText(pageParser, 1) } } />
+                <Base className="overflow-auto" dangerouslySetInnerHTML={ { __html: page.localization.getText(1) } } />
             </Column>
             <Column size={ 5 } overflow="hidden">
-                <CatalogProductPreviewView pageParser={ pageParser } activeOffer={ activeOffer } roomPreviewer={ null } extra={ groups[selectedGroupIndex] ? groups[selectedGroupIndex].groupId.toString() : '' } disabled={ !(!!groups[selectedGroupIndex]) }>
-                    <CatalogSelectGroupView selectedGroupIndex={ selectedGroupIndex } setSelectedGroupIndex={ setSelectedGroupIndex } />
-                </CatalogProductPreviewView>
+                { !!currentOffer &&
+                    <CatalogProductPreviewView offer={ currentOffer } roomPreviewer={ null } extra={ groups[selectedGroupIndex] ? groups[selectedGroupIndex].groupId.toString() : '' } disabled={ !(!!groups[selectedGroupIndex]) }>
+                        <CatalogSelectGroupView selectedGroupIndex={ selectedGroupIndex } setSelectedGroupIndex={ setSelectedGroupIndex } />
+                    </CatalogProductPreviewView> }
             </Column>
         </Grid>
     );

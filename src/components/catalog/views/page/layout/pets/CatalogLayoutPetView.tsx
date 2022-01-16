@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorConverter, GetSellablePetPalettesComposer, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { GetProductDataForLocalization, LocalizeText } from '../../../../../../api';
+import { LocalizeText } from '../../../../../../api';
 import { Base } from '../../../../../../common/Base';
 import { Button } from '../../../../../../common/Button';
 import { Column } from '../../../../../../common/Column';
@@ -13,7 +13,6 @@ import { SendMessageHook } from '../../../../../../hooks/messages/message-event'
 import { PetImageView } from '../../../../../../views/shared/pet-image/PetImageView';
 import { GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
-import { CatalogActions } from '../../../../reducers/CatalogReducer';
 import { CatalogRoomPreviewerView } from '../../../catalog-room-previewer/CatalogRoomPreviewerView';
 import { CatalogPageDetailsView } from '../../../page-details/CatalogPageDetailsView';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
@@ -21,15 +20,15 @@ import { CatalogLayoutPetPurchaseView } from './CatalogLayoutPetPurchaseView';
 
 export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 {
-    const { roomPreviewer = null, pageParser = null } = props;
+    const { page = null, roomPreviewer = null } = props;
     const [ petIndex, setPetIndex ] = useState(-1);
     const [ sellablePalettes, setSellablePalettes ] = useState<SellablePetPaletteData[]>([]);
     const [ selectedPaletteIndex, setSelectedPaletteIndex ] = useState(-1);
     const [ sellableColors, setSellableColors ] = useState<number[][]>([]);
     const [ selectedColorIndex, setSelectedColorIndex ] = useState(-1);
     const [ colorsShowing, setColorsShowing ] = useState(false);
-    const { catalogState = null, dispatchCatalogState = null } = useCatalogContext();
-    const { activeOffer = null, petPalettes = [] } = catalogState;
+    const { currentOffer = null, setCurrentOffer = null, catalogState = null, dispatchCatalogState = null } = useCatalogContext();
+    const { petPalettes = [] } = catalogState;
 
     const getColor = useMemo(() =>
     {
@@ -69,29 +68,23 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
     useEffect(() =>
     {
-        if(!pageParser || !pageParser.offers.length) return;
+        if(!page || !page.offers.length) return;
 
-        const offer = pageParser.offers[0];
-
-        dispatchCatalogState({
-            type: CatalogActions.SET_CATALOG_ACTIVE_OFFER,
-            payload: {
-                activeOffer: offer
-            }
-        });
+        const offer = page.offers[0];
 
         BatchUpdates(() =>
         {
+            setCurrentOffer(offer);
             setPetIndex(GetPetIndexFromLocalization(offer.localizationId));
             setColorsShowing(false);
         });
-    }, [ pageParser, dispatchCatalogState ]);
+    }, [ page, setCurrentOffer ]);
 
     useEffect(() =>
     {
-        if(!activeOffer) return;
+        if(!currentOffer) return;
 
-        const productData = GetProductDataForLocalization(activeOffer.localizationId);
+        const productData = currentOffer.product.productData;
 
         if(!productData) return;
 
@@ -124,7 +117,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
         });
 
         SendMessageHook(new GetSellablePetPalettesComposer(productData.type));
-    }, [ activeOffer, petPalettes ]);
+    }, [ currentOffer, petPalettes ]);
 
     useEffect(() =>
     {
@@ -154,7 +147,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
         roomPreviewer.addPetIntoRoom(petFigureString);
     }, [ roomPreviewer, petIndex, sellablePalettes, selectedPaletteIndex, getColor ]);
 
-    if(!activeOffer) return null;
+    if(!currentOffer) return null;
 
     return (
         <Grid>
@@ -173,7 +166,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
             </Column>
             <Column size={ 5 } overflow="hidden">
                 { (petIndex === -1) &&
-                    <CatalogPageDetailsView pageParser={ pageParser } /> }
+                    <CatalogPageDetailsView page={ page } /> }
                 { (petIndex >= 0) &&
                     <>
                         <Column overflow="hidden" position="relative" gap={ 0 }>
@@ -187,7 +180,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
                         </Column>
                         <Column grow>
                             <Text grow truncate>{ petBreedName }</Text>
-                            <CatalogLayoutPetPurchaseView offer={ activeOffer } pageId={ pageParser.pageId } extra={ petPurchaseString } />
+                            <CatalogLayoutPetPurchaseView offer={ currentOffer } pageId={ page.pageId } extra={ petPurchaseString } />
                         </Column>
                     </> }
             </Column>

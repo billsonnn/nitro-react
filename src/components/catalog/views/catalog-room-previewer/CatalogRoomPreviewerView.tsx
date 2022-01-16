@@ -1,15 +1,24 @@
 import { NitroToolbarAnimateIconEvent, TextureUtils, ToolbarIconEnum } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useRef } from 'react';
+import { FC, useCallback, useRef, useState } from 'react';
 import { GetRoomEngine } from '../../../../api';
-import { CatalogEvent } from '../../../../events';
+import { CatalogEvent, CatalogSelectProductEvent } from '../../../../events';
 import { useUiEvent } from '../../../../hooks';
 import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomPreviewerView';
 import { RoomPreviewerViewProps } from '../../../../views/shared/room-previewer/RoomPreviewerView.types';
+import { IPurchasableOffer } from '../../common/IPurchasableOffer';
 
 export const CatalogRoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 {
     const { roomPreviewer = null } = props;
+    const [ offer, setOffer ] = useState<IPurchasableOffer>(null);
     const elementRef = useRef<HTMLDivElement>(null);
+
+    const onCatalogSelectProductEvent = useCallback((event: CatalogSelectProductEvent) =>
+    {
+        setOffer(event.offer);
+    }, []);
+
+    useUiEvent(CatalogSelectProductEvent.SELECT_PRODUCT, onCatalogSelectProductEvent)
 
     const animatePurchase = useCallback(() =>
     {

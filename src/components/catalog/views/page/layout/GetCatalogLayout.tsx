@@ -1,5 +1,7 @@
-import { CatalogPageMessageParser, RoomPreviewer } from '@nitrots/nitro-renderer';
+import { RoomPreviewer } from '@nitrots/nitro-renderer';
+import { ICatalogPage } from '../../../common/ICatalogPage';
 import { CatalogLayoutBadgeDisplayView } from './badge-display/CatalogLayoutBadgeDisplayView';
+import { CatalogLayoutProps } from './CatalogLayout.types';
 import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
 import { CatalogLayoutFrontpage4View } from './frontpage4/CatalogLayoutFrontpage4View';
 import { CatalogLayouGuildCustomFurniView } from './guild-custom-furni/CatalogLayoutGuildCustomFurniView';
@@ -17,51 +19,53 @@ import { CatalogLayoutTrophiesView } from './trophies/CatalogLayoutTrophiesView'
 import { CatalogLayoutVipBuyView } from './vip-buy/CatalogLayoutVipBuyView';
 import { CatalogLayoutVipGiftsView } from './vip-gifts/CatalogLayoutVipGiftsView';
 
-export const GetCatalogLayout = (pageParser: CatalogPageMessageParser, roomPreviewer: RoomPreviewer) =>
+export const GetCatalogLayout = (page: ICatalogPage, roomPreviewer: RoomPreviewer) =>
 {
-    switch(pageParser.layoutCode)
+    const layoutProps: CatalogLayoutProps = { page, roomPreviewer };
+
+    switch(page.layoutCode)
     {
         case 'frontpage_featured':
             return null
         case 'frontpage4':
-            return <CatalogLayoutFrontpage4View roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutFrontpage4View { ...layoutProps } />;
         case 'pets':
-            return <CatalogLayoutPetView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutPetView { ...layoutProps } />;
         case 'pets2':
-            return <CatalogLayoutPets2View roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutPets2View { ...layoutProps } />;
         case 'pets3':
-            return <CatalogLayoutPets3View roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutPets3View { ...layoutProps } />;
         case 'vip_buy':
-            return <CatalogLayoutVipBuyView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutVipBuyView { ...layoutProps } />;
         case 'guild_frontpage':
-            return <CatalogLayouGuildFrontpageView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayouGuildFrontpageView { ...layoutProps } />;
         case 'guild_forum':
-            return <CatalogLayouGuildForumView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayouGuildForumView { ...layoutProps } />;
         case 'guild_custom_furni':
-            return <CatalogLayouGuildCustomFurniView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayouGuildCustomFurniView { ...layoutProps } />;
         case 'search_results':
             return null;
         case 'club_gifts':
-            return <CatalogLayoutVipGiftsView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutVipGiftsView { ...layoutProps } />;
         case 'marketplace_own_items':
-            return <CatalogLayoutMarketplaceOwnItemsView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutMarketplaceOwnItemsView { ...layoutProps } />;
         case 'marketplace':
-            return <CatalogLayoutMarketplacePublicItemsView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutMarketplacePublicItemsView { ...layoutProps } />;
         case 'single_bundle':
-            return <CatalogLayoutSingleBundleView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutSingleBundleView { ...layoutProps } />;
         case 'spaces_new':
-            return <CatalogLayoutSpacesView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutSpacesView { ...layoutProps } />;
         case 'trophies':
-            return <CatalogLayoutTrophiesView roomPreviewer={roomPreviewer} pageParser={ pageParser } />;
+            return <CatalogLayoutTrophiesView roomPreviewer={roomPreviewer} page={ page } />;
         case 'info_loyalty':
-            return <CatalogLayoutInfoLoyaltyView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutInfoLoyaltyView { ...layoutProps } />;
         case 'badge_display':
-            return <CatalogLayoutBadgeDisplayView roomPreviewer={roomPreviewer} pageParser={ pageParser } />;
+            return <CatalogLayoutBadgeDisplayView roomPreviewer={roomPreviewer} page={ page } />;
         //case 'default_3x3_color_grouping':
-            //return <CatalogLayoutColorGroupingView roomPreviewer={roomPreviewer} pageParser={ pageParser } />;
+            //return <CatalogLayoutColorGroupingView { ...layoutProps } />;
         case 'bots':
         case 'default_3x3':
         default:
-            return <CatalogLayoutDefaultView roomPreviewer={ roomPreviewer } pageParser={ pageParser } />;
+            return <CatalogLayoutDefaultView { ...layoutProps } />;
     }
 }

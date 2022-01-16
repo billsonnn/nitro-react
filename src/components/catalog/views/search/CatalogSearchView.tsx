@@ -1,18 +1,24 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IFurnitureData, INodeData } from '@nitrots/nitro-renderer';
+import { IFurnitureData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../../api';
 import { Button } from '../../../../common/Button';
 import { Flex } from '../../../../common/Flex';
+import { BatchUpdates } from '../../../../hooks';
+import { CatalogPage } from '../../common/CatalogPage';
+import { CatalogType } from '../../common/CatalogType';
 import { GetOfferNodes } from '../../common/CatalogUtilities';
+import { FurnitureOffer } from '../../common/FurnitureOffer';
+import { ICatalogPage } from '../../common/ICatalogPage';
+import { IPurchasableOffer } from '../../common/IPurchasableOffer';
+import { PageLocalization } from '../../common/PageLocalization';
 import { useCatalogContext } from '../../context/CatalogContext';
-import { CatalogActions } from '../../reducers/CatalogReducer';
 
 export const CatalogSearchView: FC<{}> = props =>
 {
     const [ searchValue, setSearchValue ] = useState('');
-    const { catalogState = null, dispatchCatalogState = null } = useCatalogContext();
-    const { offerRoot = null, searchResult = null } = catalogState;
+    const { currentType = null, setActiveNodes = null, currentOffers = null, setCurrentPage = null, catalogState = null, dispatchCatalogState = null } = useCatalogContext();
+    const { searchResult = null } = catalogState;
 
     useEffect(() =>
     {
@@ -26,73 +32,60 @@ export const CatalogSearchView: FC<{}> = props =>
 
     const processSearch = useCallback((search: string) =>
     {
-        if(!search || !search.length || !offerRoot)
-        {
-            dispatchCatalogState({
-                type: CatalogActions.SET_SEARCH_RESULT,
-                payload: {
-                    searchResult: null
-                }
-            });
+        search = search.toLocaleLowerCase().replace(' ', '');
 
-            return;
-        }
+        if(!search || !search.length) return;
 
-        search = search.toLocaleLowerCase();
-
-        const furnitureData = GetSessionDataManager().getAllFurnitureData({
+        const furnitureDatas = GetSessionDataManager().getAllFurnitureData({
             loadFurnitureData: null
         });
 
-        if(!furnitureData) return;
+        if(!furnitureDatas || !furnitureDatas.length) return;
 
-        const foundPages: INodeData[] = [];
         const foundFurniture: IFurnitureData[] = [];
+        const foundFurniLines: string[] = [];
 
-        for(const furniture of furnitureData)
+        for(const furniture of furnitureDatas)
         {
-            if((furniture.purchaseOfferId === -1) && (furniture.rentOfferId === -1)) continue;
-            
-            const pages = [
-                ...GetOfferNodes(offerRoot, furniture.purchaseOfferId),
-                ...GetOfferNodes(offerRoot, furniture.rentOfferId)
-            ];
+            if((currentType === CatalogType.BUILDER) && !furniture.availableForBuildersClub) continue;
 
-            if(!pages.length) continue;
+            if((currentType === CatalogType.NORMAL) && furniture.excludeDynamic) continue;
 
-            const searchValue = [ furniture.className, furniture.name ].join(' ').toLocaleLowerCase();
+            const searchValues = [ furniture.className, furniture.name, furniture.description ].join(' ').replace(/ /gi, '').toLowerCase();
 
-            if(searchValue.indexOf(search) === -1) continue;
-
-            foundPages.push(...pages);
-            foundFurniture.push(furniture);
-        }
-
-        const uniquePages = foundPages.filter((value, index, self) =>
-        {
-            return (self.indexOf(value) === index);
-        });
-
-        const catalogPage: INodeData = {
-            visible: true,
-            icon: 0,
-            pageId: -1,
-            pageName: LocalizeText('generic.search'),
-            localization: LocalizeText('generic.search'),
-            children: [ ...uniquePages ],
-            offerIds: []
-        };
-        
-        dispatchCatalogState({
-            type: CatalogActions.SET_SEARCH_RESULT,
-            payload: {
-                searchResult: {
-                    page: catalogPage,
-                    furniture: foundFurniture
+            if((currentType === CatalogType.BUILDER) && (furniture.purchaseOfferId === -1) && (furniture.rentOfferId === -1))
+            {
+                if((furniture.furniLine !== '') && (foundFurniLines.indexOf(furniture.furniLine) < 0))
+                {
+                    if(searchValues.indexOf(search) >= 0) foundFurniLines.push(furniture.furniLine);
                 }
             }
+            else
+            {
+                const foundNodes = [
+                    ...GetOfferNodes(currentOffers, furniture.purchaseOfferId),
+                    ...GetOfferNodes(currentOffers, furniture.rentOfferId)
+                ];
+
+                if(foundNodes.length)
+                {
+                    if(searchValues.indexOf(search) >= 0) foundFurniture.push(furniture);
+
+                    if(searchValues.length === 250) break;
+                }
+            }
+        }
+
+        const offers: IPurchasableOffer[] = [];
+
+        for(const furniture of foundFurniture) offers.push(new FurnitureOffer(furniture));
+
+        BatchUpdates(() =>
+        {
+            setCurrentPage((new CatalogPage(-1, 'default_3x3', new PageLocalization([], []), offers, false, 1) as ICatalogPage));
+            setActiveNodes([]);
         });
-    }, [ offerRoot, dispatchCatalogState ]);
+    }, [ currentOffers, currentType, setCurrentPage, setActiveNodes ]);
 
     useEffect(() =>
     {
