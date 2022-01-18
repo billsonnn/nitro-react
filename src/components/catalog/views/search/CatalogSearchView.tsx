@@ -17,18 +17,7 @@ import { useCatalogContext } from '../../context/CatalogContext';
 export const CatalogSearchView: FC<{}> = props =>
 {
     const [ searchValue, setSearchValue ] = useState('');
-    const { currentType = null, setActiveNodes = null, currentOffers = null, setCurrentPage = null, catalogState = null, dispatchCatalogState = null } = useCatalogContext();
-    const { searchResult = null } = catalogState;
-
-    useEffect(() =>
-    {
-        setSearchValue(prevValue =>
-            {
-                if(!searchResult && prevValue && prevValue.length) return '';
-
-                return prevValue;
-            });
-    }, [ searchResult ]);
+    const { currentType = null, setActiveNodes = null, currentOffers = null, setCurrentPage = null } = useCatalogContext();
 
     const processSearch = useCallback((search: string) =>
     {

@@ -36,7 +36,7 @@ export const CatalogView: FC<{}> = props =>
     const [ pageId, setPageId ] = useState(-1);
     const [ previousPageId, setPreviousPageId ] = useState(-1);
     const [ currentType, setCurrentType ] = useState(CatalogType.NORMAL);
-    const [ currentNode, setCurrentNode ] = useState<ICatalogNode>(null);
+    const [ rootNode, setRootNode ] = useState<ICatalogNode>(null);
     const [ currentOffers, setCurrentOffers ] = useState<Map<number, ICatalogNode[]>>(null);
     const [ currentPage, setCurrentPage ] = useState<ICatalogPage>(null);
     const [ currentOffer, setCurrentOffer ] = useState<IPurchasableOffer>(null);
@@ -50,6 +50,46 @@ export const CatalogView: FC<{}> = props =>
     const [ requestedPage, setRequestedPage ] = useState(new RequestedPage());
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
     const [ catalogState, dispatchCatalogState ] = useReducer(CatalogReducer, initialCatalog);
+
+    const resetState = useCallback(() =>
+    {
+        BatchUpdates(() =>
+        {
+            setPageId(-1);
+            setPreviousPageId(-1);
+            setRootNode(null);
+            setCurrentOffers(null);
+            setCurrentPage(null);
+            setCurrentOffer(null);
+            setPurchasableOffer(null);
+            setCurrentTab(null);
+            setActiveNodes([]);
+            setLastActiveNodes(null);
+            setFrontPageItems([]);
+            setIsInitialized(false);
+            setIsVisible(true);
+        });
+    }, []);
+
+    const getNodesByOfferId = useCallback((offerId: number) =>
+    {
+        if(!currentOffers || !currentOffers.size) return null;
+
+        if(true)
+        {
+            const nodes: ICatalogNode[] = [];
+            const offers = currentOffers.get(offerId);
+
+            if(offers && offers.length)
+            {
+                for(const offer of offers) (offer.isVisible && nodes.push(offer));
+            }
+
+            if(nodes.length) return nodes;
+        }
+
+        return currentOffers.get(offerId);
+    }, [ currentOffers ]);
 
     const loadCatalogPage = useCallback((pageId: number, offerId: number, forceRefresh: boolean = false) =>
     {
@@ -94,6 +134,41 @@ export const CatalogView: FC<{}> = props =>
             selectOffer(offerId);
         });
     }, [ currentPage, forceRefresh, selectOffer ]);
+
+    const selectCatalogNode = useCallback((targetNode: ICatalogNode) =>
+    {
+        setActiveNodes(prevValue =>
+            {
+                const isActive = (prevValue.indexOf(targetNode) >= 0);
+                const isOpen = targetNode.isOpen;
+                const newNodes: ICatalogNode[] = [];
+
+                for(const n of prevValue)
+                {
+                    n.deactivate();
+
+                    if(n.depth < targetNode.depth)
+                    {
+                        newNodes.push(n);
+                    }
+                    else
+                    {
+                        n.close();
+                    }
+                }
+
+                targetNode.activate();
+
+                if(isActive && isOpen) targetNode.close();
+                else targetNode.open();
+
+                if(newNodes.indexOf(targetNode) < 0) newNodes.push(targetNode);
+
+                return newNodes;
+            });
+            
+        if(targetNode.pageId > -1) loadCatalogPage(targetNode.pageId, -1, true);
+    }, [ setActiveNodes, loadCatalogPage ]);
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
@@ -186,7 +261,37 @@ export const CatalogView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if(!currentNode) return;
+        if(!isVisible) return;
+
+        if(!isInitialized) SendMessageHook(new GetCatalogIndexComposer(currentType));
+    }, [ isVisible, isInitialized, currentType ]);
+
+    useEffect(() =>
+    {
+        if(!rootNode) return;
+
+        BatchUpdates(() =>
+        {
+            setIsInitialized(true);
+
+            if(rootNode.isBranch)
+            {
+                for(const child of rootNode.children)
+                {
+                    if(child && child.isVisible)
+                    {
+                        setCurrentTab(child);
+
+                        return;
+                    }
+                }
+            }
+        });
+    }, [ rootNode ]);
+
+    useEffect(() =>
+    {
+        if(!rootNode) return;
 
         switch(requestedPage.requestType)
         {
@@ -200,60 +305,28 @@ export const CatalogView: FC<{}> = props =>
                 requestedPage.resetRequest();
                 return;
         }
-    }, [ currentNode, requestedPage ]);
+    }, [ rootNode, requestedPage ]);
 
     useEffect(() =>
     {
-        if(!isVisible) return;
+        if(!currentTab) return;
 
-        if(!isInitialized) SendMessageHook(new GetCatalogIndexComposer(currentType));
-    }, [ isVisible, isInitialized, currentType ]);
-
-    useEffect(() =>
-    {
-        if(!currentNode || !currentTab) return;
-
-        const activeNodes: ICatalogNode[] = [];
-
-        if(currentTab.isVisible && !currentTab.children.length && (currentTab !== currentNode))
+        if(currentTab.children.length)
         {
-            loadCatalogPage(currentTab.pageId, -1);
+            for(const child of currentTab.children)
+            {
+                if(!child.isVisible) continue;
+
+                selectCatalogNode(child);
+
+                return;
+            }
         }
         else
         {
-            if(currentTab.children.length)
-            {
-                for(const child of currentTab.children)
-                {
-                    if(child.isVisible)
-                    {
-                        activeNodes.push(child);
-
-                        loadCatalogPage(child.pageId, -1);
-
-                        break;
-                    }
-                }
-            }
+            loadCatalogPage(currentTab.pageId, -1, true);
         }
-
-        // if(currentTab.children.length)
-        // {
-        //     for(const child of currentTab.children)
-        //     {
-        //         if(child.isVisible)
-        //         {
-        //             activeNodes.push(child);
-
-        //             loadCatalogPage(child.pageId, -1);
-
-        //             break;
-        //         }
-        //     }
-        // }
-
-        setActiveNodes(activeNodes);
-    }, [ currentNode, currentTab, loadCatalogPage ]);
+    }, [ currentTab, selectCatalogNode, loadCatalogPage ]);
 
     useEffect(() =>
     {
@@ -261,29 +334,6 @@ export const CatalogView: FC<{}> = props =>
 
         setCurrentOffer(null);
     }, [ currentPage ]);
-
-    useEffect(() =>
-    {
-        if(!currentNode) return;
-
-        BatchUpdates(() =>
-        {
-            setIsInitialized(true);
-
-            if(currentNode.isBranch)
-            {
-                for(const child of currentNode.children)
-                {
-                    if(child && child.isVisible)
-                    {
-                        setCurrentTab(child);
-
-                        return;
-                    }
-                }
-            }
-        });
-    }, [ currentNode ]);
 
     useEffect(() =>
     {
@@ -310,13 +360,13 @@ export const CatalogView: FC<{}> = props =>
     });
 
     return (
-        <CatalogContextProvider value={ { isVisible, isBusy, setIsBusy, pageId, currentType, setCurrentType, currentNode, setCurrentNode, currentOffers, setCurrentOffers, currentPage, setCurrentPage, currentOffer, setCurrentOffer, purchasableOffer, setPurchasableOffer, activeNodes, setActiveNodes, frontPageItems, setFrontPageItems, loadCatalogPage, showCatalogPage, catalogState, dispatchCatalogState } }>
+        <CatalogContextProvider value={ { isVisible, isBusy, setIsBusy, pageId, currentType, setCurrentType, rootNode, setRootNode, currentOffers, setCurrentOffers, currentPage, setCurrentPage, currentOffer, setCurrentOffer, purchasableOffer, setPurchasableOffer, activeNodes, setActiveNodes, frontPageItems, setFrontPageItems, resetState, loadCatalogPage, showCatalogPage, selectCatalogNode, catalogState, dispatchCatalogState } }>
             <CatalogMessageHandler />
             { isVisible &&
                 <NitroCardView uniqueKey="catalog" className="nitro-catalog">
                     <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => { setIsVisible(false); } } />
                     <NitroCardTabsView>
-                        <CatalogTabsViews node={ currentNode } currentTab={ currentTab } setCurrentTab={ setCurrentTab } />
+                        <CatalogTabsViews node={ rootNode } currentTab={ currentTab } setCurrentTab={ setCurrentTab } />
                     </NitroCardTabsView>
                     <NitroCardContentView>
                         <Grid>

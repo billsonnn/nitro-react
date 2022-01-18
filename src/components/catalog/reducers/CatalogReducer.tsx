@@ -1,17 +1,12 @@
-import { CatalogPageMessageOfferData, CatalogPageMessageParser, ClubGiftInfoParser, ClubOfferData, GiftWrappingConfigurationParser, INodeData, MarketplaceConfigurationMessageParser } from '@nitrots/nitro-renderer';
+import { ClubGiftInfoParser, ClubOfferData, GiftWrappingConfigurationParser, MarketplaceConfigurationMessageParser } from '@nitrots/nitro-renderer';
 import { HabboGroupEntryData } from '@nitrots/nitro-renderer/src/nitro/communication/messages/parser/user/HabboGroupEntryData';
 import { Reducer } from 'react';
 import { CatalogPetPalette } from '../common/CatalogPetPalette';
-import { ICatalogSearchResult } from '../common/CatalogUtilities';
 import { GiftWrappingConfiguration } from '../common/GiftWrappingConfiguration';
 import { SubscriptionInfo } from '../common/SubscriptionInfo';
 
 export interface ICatalogState
 {
-    currentTab: INodeData;
-    pageParser: CatalogPageMessageParser;
-    activeOffer: CatalogPageMessageOfferData;
-    searchResult: ICatalogSearchResult;
     groups: HabboGroupEntryData[];
     petPalettes: CatalogPetPalette[];
     clubOffers: ClubOfferData[];
@@ -25,10 +20,6 @@ export interface ICatalogAction
 {
     type: string;
     payload: {
-        currentTab?: INodeData;
-        pageParser?: CatalogPageMessageParser;
-        activeOffer?: CatalogPageMessageOfferData;
-        searchResult?: ICatalogSearchResult;
         groups?: HabboGroupEntryData[];
         petPalette?: CatalogPetPalette;
         clubOffers?: ClubOfferData[];
@@ -42,9 +33,6 @@ export interface ICatalogAction
 export class CatalogActions
 {
     public static RESET_STATE: string = 'CA_RESET_STATE';
-    public static SET_CATALOG_CURRENT_TAB: string = 'CA_SET_CATALOG_CURRENT_TAB';
-    public static SET_CATALOG_PAGE_PARSER: string = 'CA_SET_CATALOG_PAGE';
-    public static SET_CATALOG_ACTIVE_OFFER: string = 'CA_SET_ACTIVE_OFFER';
     public static SET_CLUB_OFFERS: string = 'CA_SET_CLUB_OFFERS';
     public static SET_GROUPS: string = 'CA_SET_GROUPS';
     public static SET_PET_PALETTE: string = 'CA_SET_PET_PALETTE';
@@ -56,10 +44,6 @@ export class CatalogActions
 }
 
 export const initialCatalog: ICatalogState = {
-    currentTab: null,
-    pageParser: null,
-    activeOffer: null,
-    searchResult: null,
     groups: [],
     petPalettes: [],
     clubOffers: null,
@@ -73,40 +57,6 @@ export const CatalogReducer: Reducer<ICatalogState, ICatalogAction> = (state, ac
 {
     switch(action.type)
     {
-        case CatalogActions.SET_CATALOG_CURRENT_TAB: {
-            const currentTab = (action.payload.currentTab || state.currentTab || null);
-            const searchResult = null;
-
-            return { ...state, currentTab, searchResult };
-        }
-        case CatalogActions.SET_CATALOG_PAGE_PARSER: {
-            let pageParser = (Object.create(action.payload.pageParser) as CatalogPageMessageParser);
-            let activeOffer = null;
-
-            if(pageParser.layoutCode === 'single_bundle')
-            {
-                activeOffer = ((pageParser.offers && pageParser.offers[0]) || null);
-            }
-
-            const searchResult = state.searchResult;
-
-            if(searchResult)
-            {
-                searchResult.furniture = null;
-            }
-
-            return { ...state, pageParser, activeOffer, searchResult };
-        }
-        case CatalogActions.SET_CATALOG_ACTIVE_OFFER: {
-            const activeOffer = (action.payload.activeOffer || state.activeOffer || null);
-
-            return { ...state, activeOffer };
-        }
-        case CatalogActions.SET_SEARCH_RESULT: {
-            const searchResult = (action.payload.searchResult || null);
-
-            return { ...state, searchResult };
-        }
         case CatalogActions.SET_GROUPS: {
             const groups = (action.payload.groups || null);
 

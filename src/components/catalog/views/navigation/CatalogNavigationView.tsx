@@ -1,9 +1,7 @@
-import { FC, useCallback, useState } from 'react';
+import { FC } from 'react';
 import { Column } from '../../../../common/Column';
 import { Grid } from '../../../../common/Grid';
-import { FilterCatalogNode } from '../../common/FilterCatalogNode';
 import { ICatalogNode } from '../../common/ICatalogNode';
-import { useCatalogContext } from '../../context/CatalogContext';
 import { CatalogSearchView } from '../search/CatalogSearchView';
 import { CatalogNavigationSetView } from './CatalogNavigationSetView';
 
@@ -15,17 +13,6 @@ export interface CatalogNavigationViewProps
 export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
 {
     const { node = null } = props;
-    const [ filteredNodes, setFilteredNodes ] = useState<ICatalogNode[]>([]);
-    const { currentNode = null, activeNodes = null } = useCatalogContext();
-
-    const filterNodes = useCallback((value: string, furniLines: string[]) =>
-    {
-        const nodes: ICatalogNode[] = [];
-
-        FilterCatalogNode(value, furniLines, currentNode, nodes);
-
-        setFilteredNodes(nodes.filter(node => (node.isVisible)));
-    }, [ currentNode ]);
     
     return (
         <>

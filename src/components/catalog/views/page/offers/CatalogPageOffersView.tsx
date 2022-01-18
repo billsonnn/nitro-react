@@ -1,6 +1,7 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Grid, GridProps } from '../../../../../common/Grid';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
+import { useCatalogContext } from '../../../context/CatalogContext';
 import { CatalogPageOfferView } from './CatalogPageOfferView';
 
 export interface CatalogPageOffersViewProps extends GridProps
@@ -11,11 +12,11 @@ export interface CatalogPageOffersViewProps extends GridProps
 export const CatalogPageOffersView: FC<CatalogPageOffersViewProps> = props =>
 {
     const { offers = [], children = null, ...rest } = props;
-    const [ activeOffer, setActiveOffer ] = useState<IPurchasableOffer>(null);
+    const { currentOffer = null } = useCatalogContext();
 
     return (
         <Grid grow columnCount={ 5 } overflow="auto" { ...rest }>
-            { offers && (offers.length > 0) && offers.map((offer, index) => <CatalogPageOfferView key={ index } isActive={ (activeOffer === offer) } offer={ offer } setActiveOffer={ setActiveOffer } />) }
+            { offers && (offers.length > 0) && offers.map((offer, index) => <CatalogPageOfferView key={ index } isActive={ (currentOffer === offer) } offer={ offer } />) }
             { children }
         </Grid>
     );

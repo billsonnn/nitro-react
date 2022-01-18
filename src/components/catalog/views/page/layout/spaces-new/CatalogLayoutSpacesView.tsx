@@ -17,7 +17,6 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutProps> = props =>
     const [ groups, setGroups ] = useState<IPurchasableOffer[][]>([]);
     const [ activeGroupIndex, setActiveGroupIndex ] = useState(-1);
     const { currentOffer = null, catalogState } = useCatalogContext();
-    const { activeOffer = null } = catalogState;
 
     const groupNames = [ 'floors', 'walls', 'views' ];
 

@@ -13,6 +13,16 @@ export interface ICatalogSearchResult
     furniture: IFurnitureData[];
 }
 
+export const GetPixelEffectIcon = (id: number) =>
+{
+    return '';
+}
+
+export const GetSubscriptionProductIcon = (id: number) =>
+{
+    return '';
+}
+
 export function GetOfferName(offer: CatalogPageMessageOfferData): string
 {
     const productData = GetProductDataForLocalization(offer.localizationId);

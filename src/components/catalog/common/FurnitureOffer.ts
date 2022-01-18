@@ -58,6 +58,11 @@ export class FurnitureOffer implements IPurchasableOffer
         return this._product;
     }
 
+    public get products(): IProduct[]
+    {
+        return [ this._product ];
+    }
+
     public get localizationId(): string
     {
         return 'roomItem.name.' + this._furniData.id;

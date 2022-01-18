@@ -15,7 +15,6 @@ import { GetCurrencyAmount } from '../../../../../../views/purse/common/Currency
 import { GLOBAL_PURSE } from '../../../../../../views/purse/PurseView';
 import { CurrencyIcon } from '../../../../../../views/shared/currency-icon/CurrencyIcon';
 import { CatalogPurchaseState } from '../../../../common/CatalogPurchaseState';
-import { GetCatalogPageImage } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 
@@ -23,8 +22,8 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
 {
     const [ pendingOffer, setPendingOffer ] = useState<ClubOfferData>(null);
     const [ purchaseState, setPurchaseState ] = useState(CatalogPurchaseState.NONE);
-    const { catalogState = null } = useCatalogContext();
-    const { pageParser = null, clubOffers = null, subscriptionInfo = null } = catalogState;
+    const { currentPage = null, catalogState = null } = useCatalogContext();
+    const { clubOffers = null, subscriptionInfo = null } = catalogState;
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
@@ -102,8 +101,8 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
         if(!pendingOffer) return;
 
         setPurchaseState(CatalogPurchaseState.PURCHASE);
-        SendMessageHook(new PurchaseFromCatalogComposer(pageParser.pageId, pendingOffer.offerId, null, 1));
-    }, [ pendingOffer, pageParser ]);
+        SendMessageHook(new PurchaseFromCatalogComposer(currentPage.pageId, pendingOffer.offerId, null, 1));
+    }, [ pendingOffer, currentPage ]);
 
     const setOffer = useCallback((offer: ClubOfferData) =>
     {
@@ -176,7 +175,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
             </Column>
             <Column size={ 5 } overflow="hidden">
                 <Column fullHeight center overflow="hidden">
-                    { GetCatalogPageImage(pageParser, 1) && <img alt="" src={ GetCatalogPageImage(pageParser, 1) } /> }
+                    { currentPage.localization.getImage(1) && <img alt="" src={ currentPage.localization.getImage(1) } /> }
                     <Text center overflow="auto" dangerouslySetInnerHTML={{ __html: getSubscriptionDetails }} />
                 </Column>
                 { pendingOffer &&

@@ -160,6 +160,11 @@ export class Offer implements IPurchasableOffer
         return LocalizeText(this._localizationId);
     }
 
+    public get products(): IProduct[]
+    {
+        return this._products;
+    }
+
     private setPricingModelForProducts(): void
     {
         const products = Product.stripAddonProducts(this._products);

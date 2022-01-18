@@ -1,8 +1,8 @@
 import { IObjectData, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect } from 'react';
 import { GetAvatarRenderManager, GetSessionDataManager } from '../../../../api';
-import { SetRoomPreviewerStuffDataEvent } from '../../../../events';
-import { useUiEvent } from '../../../../hooks';
+import { CatalogPageReadyEvent, SetRoomPreviewerStuffDataEvent } from '../../../../events';
+import { dispatchUiEvent, useUiEvent } from '../../../../hooks';
 import { FurniCategory } from '../../common/FurniCategory';
 import { ICatalogPage } from '../../common/ICatalogPage';
 import { IPurchasableOffer } from '../../common/IPurchasableOffer';
@@ -110,6 +110,11 @@ export const CatalogPageView: FC<CatalogPageViewProps> = props =>
 
         updatePreviewerForOffer(currentOffer);
     }, [ currentOffer, updatePreviewerForOffer ]);
+
+    useEffect(() =>
+    {
+        dispatchUiEvent(new CatalogPageReadyEvent());
+    }, [ page ]);
 
     if(!page) return null;
 

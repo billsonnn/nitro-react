@@ -14,8 +14,8 @@ export interface ICatalogContext
     pageId: number;
     currentType: string;
     setCurrentType: Dispatch<SetStateAction<string>>;
-    currentNode: ICatalogNode;
-    setCurrentNode: Dispatch<SetStateAction<ICatalogNode>>;
+    rootNode: ICatalogNode;
+    setRootNode: Dispatch<SetStateAction<ICatalogNode>>;
     currentOffers: Map<number, ICatalogNode[]>;
     setCurrentOffers: Dispatch<SetStateAction<Map<number, ICatalogNode[]>>>;
     currentPage: ICatalogPage;
@@ -28,8 +28,10 @@ export interface ICatalogContext
     setActiveNodes: Dispatch<SetStateAction<ICatalogNode[]>>;
     frontPageItems: FrontPageItem[];
     setFrontPageItems: Dispatch<SetStateAction<FrontPageItem[]>>;
+    resetState: () => void;
     loadCatalogPage: (pageId: number, offerId: number, forceRefresh?: boolean) => void;
     showCatalogPage: (pageId: number, layoutCode: string, localization: IPageLocalization, offers: IPurchasableOffer[], offerId: number, acceptSeasonCurrencyAsCredits: boolean) => void;
+    selectCatalogNode: (targetNode: ICatalogNode) => void;
 
     catalogState: ICatalogState;
     dispatchCatalogState: Dispatch<ICatalogAction>;
@@ -42,8 +44,8 @@ const CatalogContext = createContext<ICatalogContext>({
     pageId: null,
     currentType: null,
     setCurrentType: null,
-    currentNode: null,
-    setCurrentNode: null,
+    rootNode: null,
+    setRootNode: null,
     currentOffers: null,
     setCurrentOffers: null,
     currentPage: null,
@@ -56,8 +58,10 @@ const CatalogContext = createContext<ICatalogContext>({
     setActiveNodes: null,
     frontPageItems: null,
     setFrontPageItems: null,
+    resetState: null,
     loadCatalogPage: null,
     showCatalogPage: null,
+    selectCatalogNode: null,
     catalogState: null,
     dispatchCatalogState: null
 });

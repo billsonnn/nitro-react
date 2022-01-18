@@ -13,6 +13,7 @@ import { CatalogLayoutMarketplacePublicItemsView } from './marketplace/CatalogLa
 import { CatalogLayoutPetView } from './pets/CatalogLayoutPetView';
 import { CatalogLayoutPets2View } from './pets2/CatalogLayoutPets2View';
 import { CatalogLayoutPets3View } from './pets3/CatalogLayoutPets3View';
+import { CatalogLayoutRoomBundleView } from './room-bundle/CatalogLayoutRoomBundleView';
 import { CatalogLayoutSingleBundleView } from './single-bundle/CatalogLayoutSingleBundleView';
 import { CatalogLayoutSpacesView } from './spaces-new/CatalogLayoutSpacesView';
 import { CatalogLayoutTrophiesView } from './trophies/CatalogLayoutTrophiesView';
@@ -53,6 +54,8 @@ export const GetCatalogLayout = (page: ICatalogPage, roomPreviewer: RoomPreviewe
             return <CatalogLayoutMarketplacePublicItemsView { ...layoutProps } />;
         case 'single_bundle':
             return <CatalogLayoutSingleBundleView { ...layoutProps } />;
+        case 'room_bundle':
+            return <CatalogLayoutRoomBundleView { ...layoutProps } />;
         case 'spaces_new':
             return <CatalogLayoutSpacesView { ...layoutProps } />;
         case 'trophies':

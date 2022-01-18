@@ -2,7 +2,7 @@ import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent
 import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/user/GuildMembershipsMessageEvent';
 import { FC, useCallback } from 'react';
 import { GetFurnitureData, GetProductDataForLocalization, LocalizeText } from '../../api';
-import { CatalogNameResultEvent, CatalogPurchaseFailureEvent, CatalogSelectProductEvent } from '../../events';
+import { CatalogNameResultEvent, CatalogPurchaseFailureEvent, CatalogSelectProductEvent, CatalogSetExtraPurchaseParameterEvent } from '../../events';
 import { CatalogGiftReceiverNotFoundEvent } from '../../events/catalog/CatalogGiftReceiverNotFoundEvent';
 import { CatalogPurchasedEvent } from '../../events/catalog/CatalogPurchasedEvent';
 import { CatalogPurchaseSoldOutEvent } from '../../events/catalog/CatalogPurchaseSoldOutEvent';
@@ -20,13 +20,14 @@ import { IPurchasableOffer } from './common/IPurchasableOffer';
 import { Offer } from './common/Offer';
 import { PageLocalization } from './common/PageLocalization';
 import { Product } from './common/Product';
+import { ProductTypeEnum } from './common/ProductTypeEnum';
 import { SubscriptionInfo } from './common/SubscriptionInfo';
 import { useCatalogContext } from './context/CatalogContext';
 import { CatalogActions } from './reducers/CatalogReducer';
 
 export const CatalogMessageHandler: FC<{}> = props =>
 {
-    const { setIsBusy, pageId, currentType, setCurrentNode, setCurrentOffers, currentPage, setCurrentOffer, setPurchasableOffer, setFrontPageItems, showCatalogPage, catalogState, dispatchCatalogState } = useCatalogContext();
+    const { setIsBusy, pageId, currentType, setRootNode, setCurrentOffers, currentPage, setCurrentOffer, setPurchasableOffer, setFrontPageItems, resetState, showCatalogPage, catalogState, dispatchCatalogState } = useCatalogContext();
 
     const onCatalogPagesListEvent = useCallback((event: CatalogPagesListEvent) =>
     {
@@ -52,10 +53,10 @@ export const CatalogMessageHandler: FC<{}> = props =>
 
         BatchUpdates(() =>
         {
-            setCurrentNode(getCatalogNode(parser.root, 0, null));
+            setRootNode(getCatalogNode(parser.root, 0, null));
             setCurrentOffers(offers);
         });
-    }, [ setCurrentNode, setCurrentOffers ]);
+    }, [ setRootNode, setCurrentOffers ]);
 
     const onCatalogPageMessageEvent = useCallback((event: CatalogPageMessageEvent) =>
     {
@@ -155,12 +156,14 @@ export const CatalogMessageHandler: FC<{}> = props =>
 
         dispatchUiEvent(new CatalogSelectProductEvent(offer));
 
-        BatchUpdates(() =>
+        if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
         {
-            setCurrentOffer(offer);
-            setPurchasableOffer(offer); 
-        });
-    }, [ currentType, currentPage, setCurrentOffer, setPurchasableOffer ]);
+            dispatchUiEvent(new CatalogSetExtraPurchaseParameterEvent(offer.product.extraParam));
+        }
+
+        // (this._isObjectMoverRequested) && (this._purchasableOffer)
+        // setPurchasableOffer(offer);
+    }, [ currentType, currentPage ]);
 
     const onSellablePetPalettesMessageEvent = useCallback((event: SellablePetPalettesMessageEvent) =>
     {
@@ -229,11 +232,8 @@ export const CatalogMessageHandler: FC<{}> = props =>
 
     const onCatalogPublishedMessageEvent = useCallback((event: CatalogPublishedMessageEvent) =>
     {
-        dispatchCatalogState({
-            type: CatalogActions.RESET_STATE,
-            payload: {}
-        });
-    }, [ dispatchCatalogState ]);
+        resetState();
+    }, [ resetState ]);
 
     const onGiftWrappingConfigurationEvent = useCallback((event: GiftWrappingConfigurationEvent) =>
     {

@@ -1,7 +1,10 @@
 export interface ICatalogNode 
 {
+    activate(): void;
+    deactivate(): void;
+    open(): void;
+    close(): void;
     addChild(node: ICatalogNode): void;
-    readonly isOpen: boolean;
     readonly depth: number;
     readonly isBranch: boolean;
     readonly isLeaf: boolean;
@@ -13,4 +16,6 @@ export interface ICatalogNode
     readonly offerIds: number[];
     readonly parent: ICatalogNode;
     readonly isVisible: boolean;
+    readonly isActive: boolean;
+    readonly isOpen: boolean;
 }

@@ -1,5 +1,8 @@
-import { IFurnitureData, IProductData } from '@nitrots/nitro-renderer';
+import { IFurnitureData, IObjectData, IProductData } from '@nitrots/nitro-renderer';
+import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../../../api';
+import { GetPixelEffectIcon, GetSubscriptionProductIcon } from './CatalogUtilities';
 import { IProduct } from './IProduct';
+import { IPurchasableOffer } from './IPurchasableOffer';
 import { ProductTypeEnum } from './ProductTypeEnum';
 
 export class Product implements IProduct
@@ -34,6 +37,53 @@ export class Product implements IProduct
         if(products.length === 1) return products;
 
         return products.filter(product => ((product.productType !== ProductTypeEnum.BADGE) && (product.productType !== ProductTypeEnum.EFFECT) && (product.productClassId !== Product.EFFECT_CLASSID_NINJA_DISAPPEAR)));
+    }
+
+    public getIconUrl(offer: IPurchasableOffer = null, stuffData: IObjectData = null): string
+    {
+        switch(this._productType)
+        {
+            case ProductTypeEnum.FLOOR:
+                return GetRoomEngine().getFurnitureFloorIconUrl(this.productClassId);
+            case ProductTypeEnum.WALL: {
+                if(offer && this._furnitureData)
+                {
+                    let iconName = '';
+
+                    switch(this._furnitureData.className)
+                    {
+                        case 'floor':
+                            iconName = [ 'th', this._furnitureData.className, offer.product.extraParam ].join('_');
+                            break;
+                        case 'wallpaper':
+                            iconName = [ 'th', 'wall', offer.product.extraParam ].join('_');
+                            break;
+                        case 'landscape':
+                            iconName = [ 'th', this._furnitureData.className, (offer.product.extraParam || '').replace('.', '_'), '001' ].join('_');
+                            break;
+                    }
+
+                    if(iconName !== '')
+                    {
+                        const assetUrl = GetConfiguration<string>('catalog.asset.url');
+
+                        return `${ assetUrl }/${ iconName }.png`;
+                    }
+                }
+
+                return GetRoomEngine().getFurnitureWallIconUrl(this.productClassId, this._extraParam);
+            }
+            case ProductTypeEnum.EFFECT:
+                return GetPixelEffectIcon(this.productClassId);
+            case ProductTypeEnum.HABBO_CLUB:
+                return GetSubscriptionProductIcon(this.productClassId);
+            case ProductTypeEnum.BADGE:
+                return GetSessionDataManager().getBadgeUrl(this._extraParam);
+            case ProductTypeEnum.ROBOT:
+                return null;
+        }
+
+        return null;
     }
 
     public get productType(): string

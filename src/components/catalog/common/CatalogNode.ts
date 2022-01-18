@@ -12,6 +12,8 @@ export class CatalogNode implements ICatalogNode
     private _offerIds: number[];
     private _parent: ICatalogNode;
     private _isVisible: boolean;
+    private _isActive: boolean;
+    private _isOpen: boolean;
 
     constructor(node: NodeData, depth: number, parent: ICatalogNode)
     {
@@ -24,11 +26,35 @@ export class CatalogNode implements ICatalogNode
         this._children = [];
         this._offerIds = node.offerIds;
         this._isVisible = node.visible;
+        this._isActive = false;
+        this._isOpen = false;
     }
 
-    public get isOpen(): boolean
+    public activate(): void
     {
-        return false;
+        this._isActive = true;
+    }
+
+    public deactivate(): void
+    {
+        this._isActive = false;
+    }
+
+    public open(): void
+    {
+        this._isOpen = true;
+    }
+
+    public close(): void
+    {
+        this._isOpen = false;
+    }
+
+    public addChild(child: ICatalogNode):void
+    {
+        if(!child) return;
+
+        this._children.push(child);
     }
 
     public get depth(): number
@@ -86,10 +112,13 @@ export class CatalogNode implements ICatalogNode
         return this._isVisible;
     }
 
-    public addChild(child: ICatalogNode):void
+    public get isActive(): boolean
     {
-        if(!child) return;
+        return this._isActive;
+    }
 
-        this._children.push(child);
+    public get isOpen(): boolean
+    {
+        return this._isOpen;
     }
 }

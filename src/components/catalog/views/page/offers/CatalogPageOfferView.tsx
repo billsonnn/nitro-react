@@ -1,5 +1,5 @@
 import { GetProductOfferComposer, MouseEventType } from '@nitrots/nitro-renderer';
-import { Dispatch, FC, MouseEvent, SetStateAction, useCallback, useState } from 'react';
+import { FC, MouseEvent, useCallback, useState } from 'react';
 import { SendMessageHook } from '../../../../../hooks';
 import { FurnitureOffer } from '../../../common/FurnitureOffer';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
@@ -10,12 +10,11 @@ export interface CatalogPageOfferViewProps
 {
     isActive: boolean;
     offer: IPurchasableOffer;
-    setActiveOffer: Dispatch<SetStateAction<IPurchasableOffer>>;
 }
 
 export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
 {
-    const { isActive = false, offer = null, setActiveOffer = null } = props;
+    const { isActive = false, offer = null } = props;
     const [ isMouseDown, setMouseDown ] = useState(false);
     const { setCurrentOffer = null } = useCatalogContext();
 
@@ -26,15 +25,11 @@ export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
             case MouseEventType.MOUSE_CLICK:
                 if(isActive) return;
 
-                setActiveOffer(offer);
+                setCurrentOffer(offer);
 
                 if(offer instanceof FurnitureOffer)
                 {
                     SendMessageHook(new GetProductOfferComposer(offer.offerId));
-                }
-                else
-                {
-                    setCurrentOffer(offer);
                 }
                 return;
             case MouseEventType.MOUSE_DOWN:
@@ -47,7 +42,7 @@ export const CatalogPageOfferView: FC<CatalogPageOfferViewProps> = props =>
                 if(!isMouseDown || !isActive) return;
                 return;
         }
-    }, [ isActive, offer, isMouseDown, setActiveOffer, setCurrentOffer ]);
+    }, [ isActive, offer, isMouseDown, setCurrentOffer ]);
 
     const product = offer.product;
 

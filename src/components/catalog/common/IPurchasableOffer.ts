@@ -19,4 +19,5 @@ export interface IPurchasableOffer
     readonly badgeCode: string;
     readonly localizationName: string;
     readonly localizationDescription: string;
+    readonly products: IProduct[];
 }

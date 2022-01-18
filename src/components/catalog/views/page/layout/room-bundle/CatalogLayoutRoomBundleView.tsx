@@ -3,11 +3,10 @@ import { Column } from '../../../../../../common/Column';
 import { Grid } from '../../../../../../common/Grid';
 import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogPageDetailsView } from '../../../page-details/CatalogPageDetailsView';
-import { CatalogProductPreviewView } from '../../offers/CatalogPageOfferPreviewView';
-import { CatalogItemGridWidgetView } from '../../widgets/CatalogItemGridWidgetView';
+import { CatalogPurchaseView } from '../../purchase/CatalogPurchaseView';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 
-export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
+export const CatalogLayoutRoomBundleView: FC<CatalogLayoutProps> = props =>
 {
     const { page = null, roomPreviewer = null } = props;
     const { currentOffer = null } = useCatalogContext();
@@ -15,14 +14,13 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
     return (
         <Grid>
             <Column size={ 7 } overflow="hidden">
-                <CatalogItemGridWidgetView />
-                {/* <CatalogPageOffersView offers={ page.offers } /> */}
+                <Grid grow overflow="auto">
+                    {/* { currentOffer && currentOffer.products && (activeOffer.products.length > 0) && activeOffer.products.map((product, index) => <CatalogProductView key={ index } itemActive={ false } product={ product } />)} */}
+                </Grid>
             </Column>
             <Column size={ 5 } overflow="hidden">
-                { !currentOffer &&
-                    <CatalogPageDetailsView page={ page } /> }
-                { !!currentOffer &&
-                    <CatalogProductPreviewView offer={ currentOffer } roomPreviewer={ roomPreviewer } /> }
+                <CatalogPageDetailsView page={ page } />
+                { currentOffer && <CatalogPurchaseView offer={ currentOffer } pageId={ page.pageId } /> }
             </Column>
         </Grid>
     );
