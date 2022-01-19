@@ -5,25 +5,13 @@ export class RequestedPage
     public static REQUEST_TYPE_NAME: number = 2;
 
     private _requestType: number;
-    private _requestId: number;
+    private _requestById: number;
     private _requestedOfferId: number;
-    private _requestName: string;
+    private _requestByName: string;
 
     constructor()
     {
         this._requestType = RequestedPage.REQUEST_TYPE_NONE;
-    }
-
-    public setRequestById(id: number):void
-    {
-        this._requestType = RequestedPage.REQUEST_TYPE_ID;
-        this._requestId = id;
-    }
-
-    public setRequestByName(name: string):void
-    {
-        this._requestType = RequestedPage.REQUEST_TYPE_NAME;
-        this._requestName = name;
     }
 
     public resetRequest():void
@@ -37,9 +25,26 @@ export class RequestedPage
         return this._requestType;
     }
 
-    public get requestId(): number
+    public get requestById(): number
     {
-        return this._requestId;
+        return this._requestById;
+    }
+
+    public set requestById(id: number)
+    {
+        this._requestType = RequestedPage.REQUEST_TYPE_ID;
+        this._requestById = id;
+    }
+
+    public get requestByName(): string
+    {
+        return this._requestByName;
+    }
+
+    public set requestByName(name: string)
+    {
+        this._requestType = RequestedPage.REQUEST_TYPE_NAME;
+        this._requestByName = name;
     }
 
     public get requestedOfferId(): number
@@ -50,10 +55,5 @@ export class RequestedPage
     public set requestedOfferId(offerId: number)
     {
         this._requestedOfferId = offerId;
-    }
-
-    public get requestName(): string
-    {
-        return this._requestName;
     }
 }

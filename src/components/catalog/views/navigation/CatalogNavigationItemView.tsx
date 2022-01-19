@@ -15,11 +15,11 @@ export interface CatalogNavigationItemViewProps
 export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = props =>
 {
     const { node = null } = props;
-    const { selectCatalogNode = null } = useCatalogContext();
+    const { activateNode = null } = useCatalogContext();
     
     return (
         <>
-            <LayoutGridItem column={ false } itemActive={ node.isActive } onClick={ event => selectCatalogNode(node) }>
+            <LayoutGridItem column={ false } itemActive={ node.isActive } onClick={ event => activateNode(node) }>
                 <CatalogIconView icon={ node.iconId } />
                 <Text grow truncate>{ node.localization }</Text>
                 { node.isBranch &&

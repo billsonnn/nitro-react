@@ -29,9 +29,9 @@ export interface ICatalogContext
     frontPageItems: FrontPageItem[];
     setFrontPageItems: Dispatch<SetStateAction<FrontPageItem[]>>;
     resetState: () => void;
-    loadCatalogPage: (pageId: number, offerId: number, forceRefresh?: boolean) => void;
+    loadCatalogPage: (pageId: number, offerId: number) => void;
     showCatalogPage: (pageId: number, layoutCode: string, localization: IPageLocalization, offers: IPurchasableOffer[], offerId: number, acceptSeasonCurrencyAsCredits: boolean) => void;
-    selectCatalogNode: (targetNode: ICatalogNode) => void;
+    activateNode: (targetNode: ICatalogNode) => void;
 
     catalogState: ICatalogState;
     dispatchCatalogState: Dispatch<ICatalogAction>;
@@ -61,7 +61,7 @@ const CatalogContext = createContext<ICatalogContext>({
     resetState: null,
     loadCatalogPage: null,
     showCatalogPage: null,
-    selectCatalogNode: null,
+    activateNode: null,
     catalogState: null,
     dispatchCatalogState: null
 });
