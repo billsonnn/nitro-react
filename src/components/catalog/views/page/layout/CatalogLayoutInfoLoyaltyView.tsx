@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { CatalogLayoutProps } from '../CatalogLayout.types';
+import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutInfoLoyaltyView: FC<CatalogLayoutProps> = props =>
 {

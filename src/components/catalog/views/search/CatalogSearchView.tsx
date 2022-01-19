@@ -7,17 +7,19 @@ import { Flex } from '../../../../common/Flex';
 import { BatchUpdates } from '../../../../hooks';
 import { CatalogPage } from '../../common/CatalogPage';
 import { CatalogType } from '../../common/CatalogType';
-import { GetOfferNodes } from '../../common/CatalogUtilities';
+import { FilterCatalogNode, GetOfferNodes } from '../../common/CatalogUtilities';
 import { FurnitureOffer } from '../../common/FurnitureOffer';
+import { ICatalogNode } from '../../common/ICatalogNode';
 import { ICatalogPage } from '../../common/ICatalogPage';
 import { IPurchasableOffer } from '../../common/IPurchasableOffer';
 import { PageLocalization } from '../../common/PageLocalization';
+import { SearchResult } from '../../common/SearchResult';
 import { useCatalogContext } from '../../context/CatalogContext';
 
 export const CatalogSearchView: FC<{}> = props =>
 {
     const [ searchValue, setSearchValue ] = useState('');
-    const { currentType = null, setActiveNodes = null, currentOffers = null, setCurrentPage = null } = useCatalogContext();
+    const { currentType = null, rootNode = null, setActiveNodes = null, currentOffers = null, searchResult = null, setSearchResult = null, setCurrentPage = null } = useCatalogContext();
 
     const processSearch = useCallback((search: string) =>
     {
@@ -69,12 +71,17 @@ export const CatalogSearchView: FC<{}> = props =>
 
         for(const furniture of foundFurniture) offers.push(new FurnitureOffer(furniture));
 
+        let nodes: ICatalogNode[] = [];
+
+        FilterCatalogNode(search, foundFurniLines, rootNode, nodes);
+
         BatchUpdates(() =>
         {
             setCurrentPage((new CatalogPage(-1, 'default_3x3', new PageLocalization([], []), offers, false, 1) as ICatalogPage));
+            setSearchResult(new SearchResult(search, offers, nodes.filter(node => (node.isVisible))));
             setActiveNodes([]);
         });
-    }, [ currentOffers, currentType, setCurrentPage, setActiveNodes ]);
+    }, [ currentOffers, currentType, rootNode, setCurrentPage, setSearchResult, setActiveNodes ]);
 
     useEffect(() =>
     {

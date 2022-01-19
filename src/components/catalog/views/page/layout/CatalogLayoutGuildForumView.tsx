@@ -1,13 +1,13 @@
 import { CatalogGroupsComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { Base } from '../../../../../../common/Base';
-import { Column } from '../../../../../../common/Column';
-import { Grid } from '../../../../../../common/Grid';
-import { SendMessageHook } from '../../../../../../hooks/messages';
-import { useCatalogContext } from '../../../../context/CatalogContext';
-import { CatalogSelectGroupView } from '../../../select-group/CatalogSelectGroupView';
-import { CatalogProductPreviewView } from '../../offers/CatalogPageOfferPreviewView';
-import { CatalogLayoutProps } from '../CatalogLayout.types';
+import { Base } from '../../../../../common/Base';
+import { Column } from '../../../../../common/Column';
+import { Grid } from '../../../../../common/Grid';
+import { SendMessageHook } from '../../../../../hooks/messages';
+import { useCatalogContext } from '../../../context/CatalogContext';
+import { CatalogSelectGroupView } from '../../select-group/CatalogSelectGroupView';
+import { CatalogProductPreviewView } from '../offers/CatalogPageOfferPreviewView';
+import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayouGuildForumView: FC<CatalogLayoutProps> = props =>
 {

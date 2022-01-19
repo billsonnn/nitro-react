@@ -2,7 +2,9 @@ import { FC } from 'react';
 import { Column } from '../../../../common/Column';
 import { Grid } from '../../../../common/Grid';
 import { ICatalogNode } from '../../common/ICatalogNode';
+import { useCatalogContext } from '../../context/CatalogContext';
 import { CatalogSearchView } from '../search/CatalogSearchView';
+import { CatalogNavigationItemView } from './CatalogNavigationItemView';
 import { CatalogNavigationSetView } from './CatalogNavigationSetView';
 
 export interface CatalogNavigationViewProps
@@ -13,17 +15,19 @@ export interface CatalogNavigationViewProps
 export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
 {
     const { node = null } = props;
+    const { searchResult = null } = useCatalogContext();
     
     return (
         <>
             <CatalogSearchView />
             <Column fullHeight className="nitro-catalog-navigation-grid-container p-1" overflow="hidden">
                 <Grid grow columnCount={ 1 } gap={ 1 } overflow="auto">
-                    {/* { filterNodes && (filteredNodes.length > 0) && filteredNodes.map((node, index) =>
+                    { searchResult && (searchResult.filteredNodes.length > 0) && searchResult.filteredNodes.map((n, index) =>
                     {
-                        return <CatalogNavigationItemView key={ index } node={ node } isActive={ (activeNodes.indexOf(node) > -1) } selectNode={ selectNode } />;
-                    })} */}
-                    <CatalogNavigationSetView node={ node } />
+                        return <CatalogNavigationItemView key={ index } node={ n } />;
+                    })}
+                    { !searchResult &&
+                        <CatalogNavigationSetView node={ node } /> }
                 </Grid>
             </Column>
         </>

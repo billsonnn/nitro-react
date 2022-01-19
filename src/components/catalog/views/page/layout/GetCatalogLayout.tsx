@@ -1,23 +1,23 @@
 import { RoomPreviewer } from '@nitrots/nitro-renderer';
 import { ICatalogPage } from '../../../common/ICatalogPage';
-import { CatalogLayoutBadgeDisplayView } from './badge-display/CatalogLayoutBadgeDisplayView';
 import { CatalogLayoutProps } from './CatalogLayout.types';
-import { CatalogLayoutDefaultView } from './default/CatalogLayoutDefaultView';
+import { CatalogLayoutBadgeDisplayView } from './CatalogLayoutBadgeDisplayView';
+import { CatalogLayoutDefaultView } from './CatalogLayoutDefaultView';
+import { CatalogLayouGuildCustomFurniView } from './CatalogLayoutGuildCustomFurniView';
+import { CatalogLayouGuildForumView } from './CatalogLayoutGuildForumView';
+import { CatalogLayouGuildFrontpageView } from './CatalogLayoutGuildFrontpageView';
+import { CatalogLayoutInfoLoyaltyView } from './CatalogLayoutInfoLoyaltyView';
+import { CatalogLayoutPets2View } from './CatalogLayoutPets2View';
+import { CatalogLayoutPets3View } from './CatalogLayoutPets3View';
+import { CatalogLayoutRoomBundleView } from './CatalogLayoutRoomBundleView';
+import { CatalogLayoutSingleBundleView } from './CatalogLayoutSingleBundleView';
+import { CatalogLayoutSpacesView } from './CatalogLayoutSpacesView';
+import { CatalogLayoutTrophiesView } from './CatalogLayoutTrophiesView';
+import { CatalogLayoutVipBuyView } from './CatalogLayoutVipBuyView';
 import { CatalogLayoutFrontpage4View } from './frontpage4/CatalogLayoutFrontpage4View';
-import { CatalogLayouGuildCustomFurniView } from './guild-custom-furni/CatalogLayoutGuildCustomFurniView';
-import { CatalogLayouGuildForumView } from './guild-forum/CatalogLayoutGuildForumView';
-import { CatalogLayouGuildFrontpageView } from './guild-frontpage/CatalogLayoutGuildFrontpageView';
-import { CatalogLayoutInfoLoyaltyView } from './info-loyalty/CatalogLayoutInfoLoyaltyView';
 import { CatalogLayoutMarketplaceOwnItemsView } from './marketplace/CatalogLayoutMarketplaceOwnItemsView';
 import { CatalogLayoutMarketplacePublicItemsView } from './marketplace/CatalogLayoutMarketplacePublicItemsView';
 import { CatalogLayoutPetView } from './pets/CatalogLayoutPetView';
-import { CatalogLayoutPets2View } from './pets2/CatalogLayoutPets2View';
-import { CatalogLayoutPets3View } from './pets3/CatalogLayoutPets3View';
-import { CatalogLayoutRoomBundleView } from './room-bundle/CatalogLayoutRoomBundleView';
-import { CatalogLayoutSingleBundleView } from './single-bundle/CatalogLayoutSingleBundleView';
-import { CatalogLayoutSpacesView } from './spaces-new/CatalogLayoutSpacesView';
-import { CatalogLayoutTrophiesView } from './trophies/CatalogLayoutTrophiesView';
-import { CatalogLayoutVipBuyView } from './vip-buy/CatalogLayoutVipBuyView';
 import { CatalogLayoutVipGiftsView } from './vip-gifts/CatalogLayoutVipGiftsView';
 
 export const GetCatalogLayout = (page: ICatalogPage, roomPreviewer: RoomPreviewer) =>

@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { LayoutGridItem, LayoutGridItemProps } from '../../../../../common/layout/LayoutGridItem';
 import { AvatarImageView } from '../../../../../views/shared/avatar-image/AvatarImageView';
-import { GetProductIconUrl } from '../../../common/GetProuductIconUrl';
 import { IProduct } from '../../../common/IProduct';
 import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
 
@@ -16,7 +15,7 @@ export const CatalogProductView: FC<CatalogProductViewProps> = props =>
 
     if(!product) return null;
 
-    const iconUrl = GetProductIconUrl(product.productClassId, product.productType, product.extraParam);
+    const iconUrl = product.getIconUrl(null);
 
     return (
         <LayoutGridItem itemImage={ iconUrl } itemCount={ product.productCount } itemUniqueSoldout={ (product.uniqueLimitedItemSeriesSize && !product.uniqueLimitedItemsLeft) } itemUniqueNumber={ product.uniqueLimitedItemSeriesSize } { ...rest }>

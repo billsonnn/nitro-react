@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { Column } from '../../../../../../common/Column';
-import { Grid } from '../../../../../../common/Grid';
-import { useCatalogContext } from '../../../../context/CatalogContext';
-import { CatalogPageDetailsView } from '../../../page-details/CatalogPageDetailsView';
-import { CatalogPurchaseView } from '../../purchase/CatalogPurchaseView';
-import { CatalogLayoutProps } from '../CatalogLayout.types';
+import { Column } from '../../../../../common/Column';
+import { Grid } from '../../../../../common/Grid';
+import { useCatalogContext } from '../../../context/CatalogContext';
+import { CatalogPageDetailsView } from '../../page-details/CatalogPageDetailsView';
+import { CatalogPurchaseView } from '../purchase/CatalogPurchaseView';
+import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutRoomBundleView: FC<CatalogLayoutProps> = props =>
 {

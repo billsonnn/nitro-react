@@ -1,11 +1,11 @@
 import { FC } from 'react';
-import { Column } from '../../../../../../common/Column';
-import { Grid } from '../../../../../../common/Grid';
-import { useCatalogContext } from '../../../../context/CatalogContext';
-import { CatalogPageDetailsView } from '../../../page-details/CatalogPageDetailsView';
-import { CatalogProductPreviewView } from '../../offers/CatalogPageOfferPreviewView';
-import { CatalogItemGridWidgetView } from '../../widgets/CatalogItemGridWidgetView';
-import { CatalogLayoutProps } from '../CatalogLayout.types';
+import { Column } from '../../../../../common/Column';
+import { Grid } from '../../../../../common/Grid';
+import { useCatalogContext } from '../../../context/CatalogContext';
+import { CatalogPageDetailsView } from '../../page-details/CatalogPageDetailsView';
+import { CatalogProductPreviewView } from '../offers/CatalogPageOfferPreviewView';
+import { CatalogItemGridWidgetView } from '../widgets/CatalogItemGridWidgetView';
+import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
 {
@@ -16,7 +16,6 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
         <Grid>
             <Column size={ 7 } overflow="hidden">
                 <CatalogItemGridWidgetView />
-                {/* <CatalogPageOffersView offers={ page.offers } /> */}
             </Column>
             <Column size={ 5 } overflow="hidden">
                 { !currentOffer &&

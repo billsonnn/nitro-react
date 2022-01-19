@@ -1,15 +1,15 @@
 import { FC, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../../../api';
-import { Button } from '../../../../../../common/Button';
-import { ButtonGroup } from '../../../../../../common/ButtonGroup';
-import { Column } from '../../../../../../common/Column';
-import { Grid } from '../../../../../../common/Grid';
-import { BatchUpdates } from '../../../../../../hooks';
-import { IPurchasableOffer } from '../../../../common/IPurchasableOffer';
-import { useCatalogContext } from '../../../../context/CatalogContext';
-import { CatalogProductPreviewView } from '../../offers/CatalogPageOfferPreviewView';
-import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
-import { CatalogLayoutProps } from '../CatalogLayout.types';
+import { LocalizeText } from '../../../../../api';
+import { Button } from '../../../../../common/Button';
+import { ButtonGroup } from '../../../../../common/ButtonGroup';
+import { Column } from '../../../../../common/Column';
+import { Grid } from '../../../../../common/Grid';
+import { BatchUpdates } from '../../../../../hooks';
+import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
+import { useCatalogContext } from '../../../context/CatalogContext';
+import { CatalogProductPreviewView } from '../offers/CatalogPageOfferPreviewView';
+import { CatalogPageOffersView } from '../offers/CatalogPageOffersView';
+import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutSpacesView: FC<CatalogLayoutProps> = props =>
 {

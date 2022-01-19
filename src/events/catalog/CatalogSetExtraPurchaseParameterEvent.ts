@@ -1,14 +1,13 @@
 import { NitroEvent } from '@nitrots/nitro-renderer';
+import { CatalogWidgetEvent } from './CatalogWidgetEvent';
 
 export class CatalogSetExtraPurchaseParameterEvent extends NitroEvent
 {
-    public static SET_EXTRA_PARAM: string = 'CSEPPE_SET_EXTRA_PARAM';
-
     private _parameter: string;
 
     constructor(parameter: string)
     {
-        super(CatalogSetExtraPurchaseParameterEvent.SET_EXTRA_PARAM);
+        super(CatalogWidgetEvent.SET_EXTRA_PARM);
 
         this._parameter = parameter;
     }

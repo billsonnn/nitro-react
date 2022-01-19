@@ -21,7 +21,7 @@ export class Product implements IProduct
 
     constructor(productType: string, productClassId: number, extraParam: string, productCount: number, productData: IProductData, furnitureData: IFurnitureData, isUniqueLimitedItem: boolean = false, uniqueLimitedItemSeriesSize: number = 0, uniqueLimitedItemsLeft: number = 0)
     {
-        this._productType = productType;
+        this._productType = productType.toLowerCase();
         this._productClassId = productClassId;
         this._extraParam = extraParam;
         this._productCount = productCount;

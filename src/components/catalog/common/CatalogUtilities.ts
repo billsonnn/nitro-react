@@ -1,17 +1,6 @@
-import { CatalogPageMessageOfferData, CatalogPageMessageParser, IFurnitureData, INodeData, SellablePetPaletteData } from '@nitrots/nitro-renderer';
-import { GetConfiguration, GetProductDataForLocalization, GetRoomEngine } from '../../../api';
+import { SellablePetPaletteData } from '@nitrots/nitro-renderer';
+import { GetRoomEngine } from '../../../api';
 import { ICatalogNode } from './ICatalogNode';
-
-export interface ICatalogOffers
-{
-    [key: string]: INodeData[];
-}
-
-export interface ICatalogSearchResult
-{
-    page: INodeData;
-    furniture: IFurnitureData[];
-}
 
 export const GetPixelEffectIcon = (id: number) =>
 {
@@ -23,13 +12,39 @@ export const GetSubscriptionProductIcon = (id: number) =>
     return '';
 }
 
-export function GetOfferName(offer: CatalogPageMessageOfferData): string
+export const GetNodeById = (id: number, searchNode: ICatalogNode = null, rootNode: ICatalogNode) =>
 {
-    const productData = GetProductDataForLocalization(offer.localizationId);
+    if(!searchNode) searchNode = rootNode;
 
-    if(productData) return productData.name;
+    if(!searchNode) return null;
 
-    return offer.localizationId;
+    if((searchNode.pageId === id) && (searchNode !== rootNode)) return searchNode;
+
+    for(const child of searchNode.children)
+    {
+        const node = (GetNodeById(id, child, rootNode) as ICatalogNode);
+
+        if(node) return node;
+    }
+
+    return null;
+}
+
+export const GetNodesByOfferId = (offerId: number, flag: boolean = false, currentOffers: Map<number, ICatalogNode[]>) =>
+{
+    if(!currentOffers || !currentOffers.size) return null;
+
+    if(flag)
+    {
+        const nodes: ICatalogNode[] = [];
+        const offers = currentOffers.get(offerId);
+
+        if(offers && offers.length) for(const offer of offers) (offer.isVisible && nodes.push(offer));
+
+        if(nodes.length) return nodes;
+    }
+
+    return currentOffers.get(offerId);
 }
 
 export const GetOfferNodes = (offerNodes: Map<number, ICatalogNode[]>, offerId: number) =>
@@ -50,53 +65,36 @@ export const GetOfferNodes = (offerNodes: Map<number, ICatalogNode[]>, offerId: 
     return allowedNodes;
 }
 
-export const SetOffersToNodes = (offers: ICatalogOffers, pageData: INodeData) =>
+export const FilterCatalogNode = (search: string, furniLines: string[], node: ICatalogNode, nodes: ICatalogNode[]) =>
 {
-    if(pageData.offerIds && pageData.offerIds.length)
+    if(node.isVisible && (node.pageId > 0))
     {
-        for(const offerId of pageData.offerIds)
+        let nodeAdded = false;
+        
+        const hayStack = [ node.pageName, node.localization ].join(' ').toLowerCase().replace(/ /gi, '');
+
+        if(hayStack.indexOf(search) > -1)
         {
-            let existing = offers[offerId.toString()];
+            nodes.push(node);
 
-            if(!existing)
+            nodeAdded = true;
+        }
+
+        if(!nodeAdded)
+        {
+            for(const furniLine of furniLines)
             {
-                existing = [];
+                if(hayStack.indexOf(furniLine) >= 0)
+                {
+                    nodes.push(node);
 
-                offers[offerId.toString()] = existing;
+                    break;
+                }
             }
-
-            if(existing.indexOf(pageData) >= 0) continue;
-
-            existing.push(pageData);
         }
     }
 
-    if(pageData.children && pageData.children.length)
-    {
-        for(const child of pageData.children) SetOffersToNodes(offers, child);
-    }
-}
-
-export function GetCatalogPageImage(page: CatalogPageMessageParser, index: number = 0): string
-{
-    const imageName = page.localization.images && page.localization.images[index];
-
-    if(!imageName || !imageName.length) return null;
-
-    let assetUrl = GetConfiguration<string>('catalog.asset.image.url');
-
-    assetUrl = assetUrl.replace('%name%', imageName);
-
-    return assetUrl;
-}
-
-export function GetCatalogPageText(page: CatalogPageMessageParser, index: number = 0): string
-{
-    let message = (page.localization.texts[index] || '');
-
-    if(message && message.length) message = message.replace(/\r\n|\r|\n/g, '<br />');
-
-    return (message || '');
+    for(const child of node.children) FilterCatalogNode(search, furniLines, child, nodes);
 }
 
 export function GetPetIndexFromLocalization(localization: string)
@@ -159,78 +157,4 @@ export function GetPetAvailableColors(petIndex: number, palettes: SellablePetPal
             return colors;
         }
     }
-}
-
-export function GetCatalogPageTreeByName(page: INodeData, lookup: string, tree: INodeData[])
-{
-    if(page.pageName === lookup) return page;
-
-    for(const pageData of page.children)
-    {
-        const foundPageData = GetCatalogPageTreeByName(pageData, lookup, tree);
-
-        if(foundPageData)
-        {
-            tree.push(pageData);
-
-            return pageData;
-        }
-    }
-}
-
-export function GetCatalogPageTreeById(page: INodeData, lookup: number, tree: INodeData[])
-{
-    if(page.pageId === lookup) return page;
-
-    for(const pageData of page.children)
-    {
-        const foundPageData = GetCatalogPageTreeById(pageData, lookup, tree);
-
-        if(foundPageData)
-        {
-            tree.push(pageData);
-
-            return pageData;
-        }
-    }
-}
-
-export function GetCatalogPageTreeByOfferId(page: INodeData, lookup: number, tree: INodeData[])
-{
-    if(page.offerIds.indexOf(lookup) >= 0) return page;
-
-    for(const pageData of page.children)
-    {
-        const foundPageData = GetCatalogPageTreeByOfferId(pageData, lookup, tree);
-
-        if(foundPageData)
-        {
-            tree.push(pageData);
-
-            return pageData;
-        }
-    }
-}
-
-export function BuildCatalogPageTree(page: INodeData, lookup: string, isOffer: boolean = false)
-{
-    const pageTree: INodeData[] = [];
-
-    if(isOffer)
-    {
-        GetCatalogPageTreeByOfferId(page, parseInt(lookup), pageTree);
-    }
-
-    else if(isNaN((lookup as unknown) as number))
-    {
-        GetCatalogPageTreeByName(page, lookup, pageTree);
-    }
-    else
-    {
-        GetCatalogPageTreeById(page, parseInt(lookup), pageTree);
-    }
-
-    if(pageTree.length) pageTree.reverse();
-
-    return pageTree;
 }

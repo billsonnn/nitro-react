@@ -1,22 +1,22 @@
 import { ClubOfferData, GetClubOffersMessageComposer, PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { LocalizeText } from '../../../../../../api';
-import { Button } from '../../../../../../common/Button';
-import { Column } from '../../../../../../common/Column';
-import { Flex } from '../../../../../../common/Flex';
-import { Grid } from '../../../../../../common/Grid';
-import { LayoutGridItem } from '../../../../../../common/layout/LayoutGridItem';
-import { Text } from '../../../../../../common/Text';
-import { CatalogEvent } from '../../../../../../events/catalog/CatalogEvent';
-import { useUiEvent } from '../../../../../../hooks';
-import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
-import { LoadingSpinnerView } from '../../../../../../layout/loading-spinner/LoadingSpinnerView';
-import { GetCurrencyAmount } from '../../../../../../views/purse/common/CurrencyHelper';
-import { GLOBAL_PURSE } from '../../../../../../views/purse/PurseView';
-import { CurrencyIcon } from '../../../../../../views/shared/currency-icon/CurrencyIcon';
-import { CatalogPurchaseState } from '../../../../common/CatalogPurchaseState';
-import { useCatalogContext } from '../../../../context/CatalogContext';
-import { CatalogLayoutProps } from '../CatalogLayout.types';
+import { LocalizeText } from '../../../../../api';
+import { Button } from '../../../../../common/Button';
+import { Column } from '../../../../../common/Column';
+import { Flex } from '../../../../../common/Flex';
+import { Grid } from '../../../../../common/Grid';
+import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
+import { Text } from '../../../../../common/Text';
+import { CatalogEvent } from '../../../../../events/catalog/CatalogEvent';
+import { useUiEvent } from '../../../../../hooks';
+import { SendMessageHook } from '../../../../../hooks/messages/message-event';
+import { LoadingSpinnerView } from '../../../../../layout/loading-spinner/LoadingSpinnerView';
+import { GetCurrencyAmount } from '../../../../../views/purse/common/CurrencyHelper';
+import { GLOBAL_PURSE } from '../../../../../views/purse/PurseView';
+import { CurrencyIcon } from '../../../../../views/shared/currency-icon/CurrencyIcon';
+import { CatalogPurchaseState } from '../../../common/CatalogPurchaseState';
+import { useCatalogContext } from '../../../context/CatalogContext';
+import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
 {

@@ -1,15 +1,15 @@
 import { CatalogGroupsComposer, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { Column } from '../../../../../../common/Column';
-import { Grid } from '../../../../../../common/Grid';
-import { SetRoomPreviewerStuffDataEvent } from '../../../../../../events';
-import { dispatchUiEvent } from '../../../../../../hooks';
-import { SendMessageHook } from '../../../../../../hooks/messages';
-import { useCatalogContext } from '../../../../context/CatalogContext';
-import { CatalogSelectGroupView } from '../../../select-group/CatalogSelectGroupView';
-import { CatalogProductPreviewView } from '../../offers/CatalogPageOfferPreviewView';
-import { CatalogPageOffersView } from '../../offers/CatalogPageOffersView';
-import { CatalogLayoutProps } from '../CatalogLayout.types';
+import { Column } from '../../../../../common/Column';
+import { Grid } from '../../../../../common/Grid';
+import { SetRoomPreviewerStuffDataEvent } from '../../../../../events';
+import { dispatchUiEvent } from '../../../../../hooks';
+import { SendMessageHook } from '../../../../../hooks/messages';
+import { useCatalogContext } from '../../../context/CatalogContext';
+import { CatalogSelectGroupView } from '../../select-group/CatalogSelectGroupView';
+import { CatalogProductPreviewView } from '../offers/CatalogPageOfferPreviewView';
+import { CatalogPageOffersView } from '../offers/CatalogPageOffersView';
+import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutProps> = props =>
 {

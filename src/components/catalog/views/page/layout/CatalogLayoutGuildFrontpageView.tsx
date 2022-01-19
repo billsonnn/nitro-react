@@ -1,11 +1,11 @@
 import { FC } from 'react';
-import { CreateLinkEvent, LocalizeText } from '../../../../../../api';
-import { Base } from '../../../../../../common/Base';
-import { Button } from '../../../../../../common/Button';
-import { Column } from '../../../../../../common/Column';
-import { Grid } from '../../../../../../common/Grid';
-import { LayoutImage } from '../../../../../../common/layout/LayoutImage';
-import { CatalogLayoutProps } from '../CatalogLayout.types';
+import { CreateLinkEvent, LocalizeText } from '../../../../../api';
+import { Base } from '../../../../../common/Base';
+import { Button } from '../../../../../common/Button';
+import { Column } from '../../../../../common/Column';
+import { Grid } from '../../../../../common/Grid';
+import { LayoutImage } from '../../../../../common/layout/LayoutImage';
+import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayouGuildFrontpageView: FC<CatalogLayoutProps> = props =>
 {

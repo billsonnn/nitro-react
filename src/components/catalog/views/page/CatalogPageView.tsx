@@ -60,7 +60,6 @@ export const CatalogPageView: FC<CatalogPageViewProps> = props =>
                 }
                 else
                 {
-                    console.log('??')
                     roomPreviewer.addFurnitureIntoRoom(product.productClassId, new Vector3d(90), stuffData);
                 }
                 return;

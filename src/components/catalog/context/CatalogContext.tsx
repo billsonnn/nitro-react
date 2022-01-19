@@ -1,9 +1,10 @@
-import { FrontPageItem } from '@nitrots/nitro-renderer';
+import { FrontPageItem, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { createContext, Dispatch, FC, ProviderProps, SetStateAction, useContext } from 'react';
 import { ICatalogNode } from '../common/ICatalogNode';
 import { ICatalogPage } from '../common/ICatalogPage';
 import { IPageLocalization } from '../common/IPageLocalization';
 import { IPurchasableOffer } from '../common/IPurchasableOffer';
+import { SearchResult } from '../common/SearchResult';
 import { ICatalogAction, ICatalogState } from '../reducers/CatalogReducer';
 
 export interface ICatalogContext
@@ -26,8 +27,11 @@ export interface ICatalogContext
     setPurchasableOffer: Dispatch<SetStateAction<IPurchasableOffer>>;
     activeNodes: ICatalogNode[];
     setActiveNodes: Dispatch<SetStateAction<ICatalogNode[]>>;
+    searchResult: SearchResult;
+    setSearchResult: Dispatch<SetStateAction<SearchResult>>;
     frontPageItems: FrontPageItem[];
     setFrontPageItems: Dispatch<SetStateAction<FrontPageItem[]>>;
+    roomPreviewer: RoomPreviewer;
     resetState: () => void;
     loadCatalogPage: (pageId: number, offerId: number) => void;
     showCatalogPage: (pageId: number, layoutCode: string, localization: IPageLocalization, offers: IPurchasableOffer[], offerId: number, acceptSeasonCurrencyAsCredits: boolean) => void;
@@ -56,8 +60,11 @@ const CatalogContext = createContext<ICatalogContext>({
     setPurchasableOffer: null,
     activeNodes: null,
     setActiveNodes: null,
+    searchResult: null,
+    setSearchResult: null,
     frontPageItems: null,
     setFrontPageItems: null,
+    roomPreviewer: null,
     resetState: null,
     loadCatalogPage: null,
     showCatalogPage: null,

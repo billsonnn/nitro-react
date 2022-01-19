@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import { NitroCardTabsItemView } from '../../../../layout';
 import { ICatalogNode } from '../../common/ICatalogNode';
 
@@ -6,17 +6,12 @@ interface CatalogTabsViewsProps
 {
     node: ICatalogNode;
     currentTab: ICatalogNode;
-    setCurrentTab: (node: ICatalogNode) => void;
+    setCurrentTab: Dispatch<SetStateAction<ICatalogNode>>;
 }
 
 export const CatalogTabsViews: FC<CatalogTabsViewsProps> = props =>
 {
     const { node = null, currentTab = null, setCurrentTab = null } = props;
-
-    const selectNode = (node: ICatalogNode) =>
-    {
-        setCurrentTab(node);
-    }
 
     return (
         <>
@@ -25,7 +20,7 @@ export const CatalogTabsViews: FC<CatalogTabsViewsProps> = props =>
                     if(!child.isVisible) return null;
 
                     return (
-                        <NitroCardTabsItemView key={ child.pageId } isActive={ (currentTab === child) } onClick={ event => selectNode(child) }>
+                        <NitroCardTabsItemView key={ child.pageId } isActive={ (currentTab === child) } onClick={ event => setCurrentTab(child) }>
                             { child.localization }
                         </NitroCardTabsItemView>
                     );

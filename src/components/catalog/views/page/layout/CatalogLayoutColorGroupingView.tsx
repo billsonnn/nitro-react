@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { CatalogLayoutProps } from '../CatalogLayout.types';
+import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export interface CatalogLayoutColorGroupViewProps extends CatalogLayoutProps
 {
