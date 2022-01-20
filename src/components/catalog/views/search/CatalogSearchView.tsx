@@ -79,19 +79,14 @@ export const CatalogSearchView: FC<{}> = props =>
         {
             setCurrentPage((new CatalogPage(-1, 'default_3x3', new PageLocalization([], []), offers, false, 1) as ICatalogPage));
             setSearchResult(new SearchResult(search, offers, nodes.filter(node => (node.isVisible))));
-            setActiveNodes([]);
+            setActiveNodes(prevValue => prevValue.slice(0, 1));
         });
     }, [ currentOffers, currentType, rootNode, setCurrentPage, setSearchResult, setActiveNodes ]);
 
     useEffect(() =>
     {
-        if(!searchValue)
-        {
-            processSearch(searchValue);
-
-            return;
-        }
-
+        if(!searchValue) return;
+        
         const timeout = setTimeout(() => processSearch(searchValue), 300);
 
         return () =>
@@ -102,7 +97,7 @@ export const CatalogSearchView: FC<{}> = props =>
 
     return (
         <Flex gap={ 1 }>
-            <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
+            <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } onKeyDown={ event => (event.code === 'Enter') && processSearch(searchValue) } />
             <Button variant="primary" size="sm">
                 <FontAwesomeIcon icon="search" />
             </Button>

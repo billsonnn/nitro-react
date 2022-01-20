@@ -13,4 +13,5 @@ export class CatalogEvent extends NitroEvent
     public static PURCHASE_APPROVED: string = 'CE_PURCHASE_APPROVED';
     public static INIT_GIFT: string = 'CE_INIT_GIFT';
     public static CATALOG_RESET: string = 'CE_RESET';
+    public static CATALOG_INVISIBLE_PAGE_VISITED: string = 'CE_CATALOG_INVISIBLE_PAGE_VISITED';
 }

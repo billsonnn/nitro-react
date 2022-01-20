@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Column } from '../../../../../common/Column';
+import { Flex } from '../../../../../common/Flex';
 import { Grid } from '../../../../../common/Grid';
 import { Text } from '../../../../../common/Text';
 import { CatalogAddOnBadgeWidgetView } from '../widgets/CatalogAddOnBadgeWidgetView';
@@ -10,24 +11,31 @@ import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutSingleBundleView: FC<CatalogLayoutProps> = props =>
 {
-    const { page = null, roomPreviewer = null } = props;
+    const { page = null } = props;
 
     const imageUrl = page.localization.getImage(1);
 
     return (
         <>
             <Grid>
-                <Column justifyContent="center" size={ 7 } overflow="hidden">
+                <Column justifyContent="between" size={ 7 } overflow="hidden">
                     <Text dangerouslySetInnerHTML={ { __html: page.localization.getText(2) } } />
-                    <CatalogBundleGridWidgetView />
-                </Column>
-                <Column size={ 5 } overflow="hidden">
-                    <Column fullHeight center position="relative">
-                        <CatalogAddOnBadgeWidgetView />
-                        <CatalogSimplePriceWidgetView />
-                        { imageUrl && <img className="" alt="" src={ imageUrl } /> }
+                    <Column fit overflow="hidden" className="bg-muted p-2 rounded">
+                        <CatalogBundleGridWidgetView className="nitro-catalog-layout-bundle-grid" fullWidth />
                     </Column>
-                    <CatalogPurchaseWidgetView />
+                </Column>
+                <Column size={ 5 } overflow="hidden" gap={ 1 }>
+                    <Text center overflow="auto">{ page.localization.getText(1) }</Text>
+                    <Flex fullHeight center position="relative" overflow="hidden">
+                        { imageUrl && <img className="" alt="" src={ imageUrl } /> }
+                        <CatalogAddOnBadgeWidgetView position="absolute" className="bottom-0 start-0" />
+                    </Flex>
+                    <Column gap={ 1 } position="relative">
+                        <Flex center>
+                            <CatalogSimplePriceWidgetView />
+                        </Flex>
+                        <CatalogPurchaseWidgetView />
+                    </Column>
                 </Column>
             </Grid>
         </>
