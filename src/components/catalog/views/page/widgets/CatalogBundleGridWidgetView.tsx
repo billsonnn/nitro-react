@@ -1,7 +1,8 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Grid, GridProps } from '../../../../../common/Grid';
 import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
 import { CatalogPageReadyEvent, CatalogSelectProductEvent } from '../../../../../events';
+import { CatalogWidgetEvent } from '../../../../../events/catalog/CatalogWidgetEvent';
 import { dispatchUiEvent, useUiEvent } from '../../../../../hooks';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 import { useCatalogContext } from '../../../context/CatalogContext';
@@ -22,7 +23,7 @@ export const CatalogBundleGridWidgetView: FC<CatalogBundleGridWidgetViewProps> =
         setOffer(event.offer);
     }, []);
 
-    useUiEvent(CatalogSelectProductEvent.SELECT_PRODUCT, onCatalogSelectProductEvent);
+    useUiEvent(CatalogWidgetEvent.SELECT_PRODUCT, onCatalogSelectProductEvent);
 
     const onCatalogPageReadyEvent = useCallback((event: CatalogPageReadyEvent) =>
     {
@@ -35,11 +36,16 @@ export const CatalogBundleGridWidgetView: FC<CatalogBundleGridWidgetViewProps> =
 
     useUiEvent(CatalogPageReadyEvent.PAGE_READY, onCatalogPageReadyEvent);
 
+    useEffect(() =>
+    {
+        return () => setOffer(null);
+    }, [ currentPage ]);
+
     if(!offer) return null;
 
     return (
         <Grid grow columnCount={ 5 } overflow="auto" { ...rest }>
-            { offer.products && (offer.products.length > 0) && offer.products.map((product, index) => <LayoutGridItem key={ index } itemImage={ product.getIconUrl() } />) }
+            { offer.products && (offer.products.length > 0) && offer.products.map((product, index) => <LayoutGridItem key={ index } itemImage={ product.getIconUrl() } itemCount={ product.productCount } />) }
             { children }
         </Grid>
     );

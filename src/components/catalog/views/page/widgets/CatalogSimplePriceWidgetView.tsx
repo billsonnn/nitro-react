@@ -1,6 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { BaseProps } from '../../../../../common/Base';
 import { CatalogSelectProductEvent } from '../../../../../events';
+import { CatalogWidgetEvent } from '../../../../../events/catalog/CatalogWidgetEvent';
 import { useUiEvent } from '../../../../../hooks';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 import { CatalogPriceDisplayWidgetView } from './CatalogPriceDisplayWidgetView';
@@ -20,7 +21,7 @@ export const CatalogSimplePriceWidgetView: FC<CatalogSimplePriceWidgetViewProps>
         setOffer(event.offer);
     }, []);
 
-    useUiEvent(CatalogSelectProductEvent.SELECT_PRODUCT, onCatalogSelectProductEvent);
+    useUiEvent(CatalogWidgetEvent.SELECT_PRODUCT, onCatalogSelectProductEvent);
 
     return <CatalogPriceDisplayWidgetView offer={ offer } { ...rest } />;
 }

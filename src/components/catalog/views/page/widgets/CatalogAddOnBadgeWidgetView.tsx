@@ -1,6 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { BaseProps } from '../../../../../common/Base';
 import { CatalogSelectProductEvent } from '../../../../../events';
+import { CatalogWidgetEvent } from '../../../../../events/catalog/CatalogWidgetEvent';
 import { useUiEvent } from '../../../../../hooks';
 import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
 
@@ -19,7 +20,7 @@ export const CatalogAddOnBadgeWidgetView: FC<CatalogAddOnBadgeWidgetViewProps> =
         if(event.offer.badgeCode) setBadgeCode(event.offer.badgeCode);
     }, []);
 
-    useUiEvent(CatalogSelectProductEvent.SELECT_PRODUCT, onCatalogSelectProductEvent);
+    useUiEvent(CatalogWidgetEvent.SELECT_PRODUCT, onCatalogSelectProductEvent);
 
     if(!badgeCode || !badgeCode.length) return null;
 

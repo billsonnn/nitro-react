@@ -17,7 +17,7 @@ export const CatalogPriceDisplayWidgetView: FC<CatalogPriceDisplayWidgetViewProp
     if(!offer) return null;
 
     return (
-        <Flex gap={ 1 }>
+        <Flex gap={ 1 } className="bg-muted p-1 rounded">
             { (offer.priceInCredits > 0) &&
                 <Flex alignItems="center" justifyContent="end" gap={ 1 }>
                     <Text>{ offer.priceInCredits }</Text>
