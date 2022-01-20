@@ -17,8 +17,8 @@ export interface ICatalogContext
     setCurrentType: Dispatch<SetStateAction<string>>;
     rootNode: ICatalogNode;
     setRootNode: Dispatch<SetStateAction<ICatalogNode>>;
-    currentOffers: Map<number, ICatalogNode[]>;
-    setCurrentOffers: Dispatch<SetStateAction<Map<number, ICatalogNode[]>>>;
+    offersToNodes: Map<number, ICatalogNode[]>;
+    setOffersToNodes: Dispatch<SetStateAction<Map<number, ICatalogNode[]>>>;
     currentPage: ICatalogPage;
     setCurrentPage: Dispatch<SetStateAction<ICatalogPage>>;
     currentOffer: IPurchasableOffer;
@@ -50,8 +50,8 @@ const CatalogContext = createContext<ICatalogContext>({
     setCurrentType: null,
     rootNode: null,
     setRootNode: null,
-    currentOffers: null,
-    setCurrentOffers: null,
+    offersToNodes: null,
+    setOffersToNodes: null,
     currentPage: null,
     setCurrentPage: null,
     currentOffer: null,

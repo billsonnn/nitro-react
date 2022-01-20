@@ -19,7 +19,7 @@ import { useCatalogContext } from '../../context/CatalogContext';
 export const CatalogSearchView: FC<{}> = props =>
 {
     const [ searchValue, setSearchValue ] = useState('');
-    const { currentType = null, rootNode = null, setActiveNodes = null, currentOffers = null, searchResult = null, setSearchResult = null, setCurrentPage = null } = useCatalogContext();
+    const { currentType = null, rootNode = null, setActiveNodes = null, offersToNodes = null, searchResult = null, setSearchResult = null, setCurrentPage = null } = useCatalogContext();
 
     const processSearch = useCallback((search: string) =>
     {
@@ -54,8 +54,8 @@ export const CatalogSearchView: FC<{}> = props =>
             else
             {
                 const foundNodes = [
-                    ...GetOfferNodes(currentOffers, furniture.purchaseOfferId),
-                    ...GetOfferNodes(currentOffers, furniture.rentOfferId)
+                    ...GetOfferNodes(offersToNodes, furniture.purchaseOfferId),
+                    ...GetOfferNodes(offersToNodes, furniture.rentOfferId)
                 ];
 
                 if(foundNodes.length)
@@ -81,7 +81,7 @@ export const CatalogSearchView: FC<{}> = props =>
             setSearchResult(new SearchResult(search, offers, nodes.filter(node => (node.isVisible))));
             setActiveNodes(prevValue => prevValue.slice(0, 1));
         });
-    }, [ currentOffers, currentType, rootNode, setCurrentPage, setSearchResult, setActiveNodes ]);
+    }, [ offersToNodes, currentType, rootNode, setCurrentPage, setSearchResult, setActiveNodes ]);
 
     useEffect(() =>
     {

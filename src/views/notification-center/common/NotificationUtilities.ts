@@ -182,7 +182,7 @@ export class NotificationUtilities
         }
         else
         {
-            CreateLinkEvent(url.substring(6));
+            CreateLinkEvent(url);
         }
     }
 

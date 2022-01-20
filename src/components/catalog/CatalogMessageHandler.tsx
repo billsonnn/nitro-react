@@ -27,7 +27,7 @@ import { CatalogActions } from './reducers/CatalogReducer';
 
 export const CatalogMessageHandler: FC<{}> = props =>
 {
-    const { setIsBusy, pageId, currentType, setRootNode, setCurrentOffers, currentPage, setCurrentOffer, setPurchasableOffer, setFrontPageItems, resetState, showCatalogPage, catalogState, dispatchCatalogState } = useCatalogContext();
+    const { setIsBusy, pageId, currentType, setRootNode, setOffersToNodes, currentPage, setCurrentOffer, setPurchasableOffer, setFrontPageItems, resetState, showCatalogPage, catalogState, dispatchCatalogState } = useCatalogContext();
 
     const onCatalogPagesListEvent = useCallback((event: CatalogPagesListEvent) =>
     {
@@ -54,9 +54,9 @@ export const CatalogMessageHandler: FC<{}> = props =>
         BatchUpdates(() =>
         {
             setRootNode(getCatalogNode(parser.root, 0, null));
-            setCurrentOffers(offers);
+            setOffersToNodes(offers);
         });
-    }, [ setRootNode, setCurrentOffers ]);
+    }, [ setRootNode, setOffersToNodes ]);
 
     const onCatalogPageMessageEvent = useCallback((event: CatalogPageMessageEvent) =>
     {
@@ -273,8 +273,6 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         if(!parser) return;
-
-        console.log(parser);
         
         dispatchCatalogState({
             type: CatalogActions.SET_MARKETPLACE_CONFIGURATION,

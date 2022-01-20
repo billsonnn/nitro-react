@@ -48,3 +48,10 @@
     width: $marketplace-post-offer-width;
     height: $marketplace-post-offer-height;
 }
+
+.nitro-catalog-layout-bundle-grid {
+
+    .layout-grid-item {
+        background-color: transparent;
+    }
+}
