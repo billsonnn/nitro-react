@@ -1,73 +1,51 @@
-import { FC, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { Button } from '../../../../../common/Button';
-import { ButtonGroup } from '../../../../../common/ButtonGroup';
+import { NitroPoint } from '@nitrots/nitro-renderer';
+import { FC, useEffect } from 'react';
+import { Base } from '../../../../../common/Base';
 import { Column } from '../../../../../common/Column';
+import { Flex } from '../../../../../common/Flex';
 import { Grid } from '../../../../../common/Grid';
-import { BatchUpdates } from '../../../../../hooks';
-import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
+import { Text } from '../../../../../common/Text';
 import { useCatalogContext } from '../../../context/CatalogContext';
-import { CatalogProductPreviewView } from '../offers/CatalogPageOfferPreviewView';
-import { CatalogPageOffersView } from '../offers/CatalogPageOffersView';
+import { CatalogPurchaseWidgetView } from '../widgets/CatalogPurchaseWidgetView';
+import { CatalogSpacesWidgetView } from '../widgets/CatalogSpacesWidgetView';
+import { CatalogTotalPriceWidget } from '../widgets/CatalogTotalPriceWidget';
+import { CatalogViewProductWidgetView } from '../widgets/CatalogViewProductWidgetView';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutSpacesView: FC<CatalogLayoutProps> = props =>
 {
-    const { page = null, roomPreviewer = null } = props;
-    const [ groups, setGroups ] = useState<IPurchasableOffer[][]>([]);
-    const [ activeGroupIndex, setActiveGroupIndex ] = useState(-1);
-    const { currentOffer = null, catalogState } = useCatalogContext();
-
-    const groupNames = [ 'floors', 'walls', 'views' ];
+    const { page = null } = props;
+    const { currentOffer = null, roomPreviewer = null } = useCatalogContext();
 
     useEffect(() =>
     {
-        if(!page) return;
-        
-        const groupedOffers: IPurchasableOffer[][] = [ [], [], [] ];
-        
-        for(const offer of page.offers)
-        {
-            const product = offer.product
-
-            if(!product) continue;
-
-            if(!product.furnitureData) continue;
-
-            const className = product.furnitureData.className;
-
-            switch(className)
-            {
-                case 'floor':
-                    groupedOffers[0].push(offer);
-                    break;
-                case 'wallpaper':
-                    groupedOffers[1].push(offer);
-                    break;
-                case 'landscape':
-                    groupedOffers[2].push(offer);
-                    break;
-            }
-        }
-
-        BatchUpdates(() =>
-        {
-            setGroups(groupedOffers);
-            setActiveGroupIndex(0);
-        });
-    }, [ page ]);
+        roomPreviewer.updatePreviewObjectBoundingRectangle(new NitroPoint());
+    }, [ roomPreviewer ]);
 
     return (
         <Grid>
             <Column size={ 7 } overflow="hidden">
-                <ButtonGroup>
-                    { groupNames.map((name, index) => <Button key={ index } active={ (activeGroupIndex === index) } onClick={ event => setActiveGroupIndex(index) }>{ LocalizeText(`catalog.spaces.tab.${ name }`) }</Button>)}
-                </ButtonGroup>
-                <CatalogPageOffersView offers={ groups[activeGroupIndex] } />
+                <CatalogSpacesWidgetView />
             </Column>
-            <Column size={ 5 } overflow="hidden">
-                { !!currentOffer &&
-                    <CatalogProductPreviewView offer={ currentOffer } roomPreviewer={ roomPreviewer } /> }
+            <Column center={ !currentOffer } size={ 5 } overflow="hidden">
+                { !currentOffer &&
+                    <>
+                        { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
+                        <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
+                    </> }
+                { currentOffer &&
+                    <>
+                        <Base position="relative" overflow="hidden">
+                            <CatalogViewProductWidgetView />
+                        </Base>
+                        <Column grow gap={ 1 }>
+                            <Text grow truncate>{ currentOffer.localizationName }</Text>
+                            <Flex justifyContent="end">
+                                <CatalogTotalPriceWidget alignItems="end" />
+                            </Flex>
+                            <CatalogPurchaseWidgetView />
+                        </Column>
+                    </> }
             </Column>
         </Grid>
     );

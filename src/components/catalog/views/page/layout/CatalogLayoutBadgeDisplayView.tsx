@@ -1,78 +1,58 @@
-import { StringDataType } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
+import { Base } from '../../../../../common/Base';
 import { Column } from '../../../../../common/Column';
+import { Flex } from '../../../../../common/Flex';
 import { Grid } from '../../../../../common/Grid';
-import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
 import { Text } from '../../../../../common/Text';
-import { InventoryBadgesUpdatedEvent, SetRoomPreviewerStuffDataEvent } from '../../../../../events';
-import { InventoryBadgesRequestEvent } from '../../../../../events/inventory/InventoryBadgesRequestEvent';
-import { dispatchUiEvent, useUiEvent } from '../../../../../hooks';
-import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
 import { useCatalogContext } from '../../../context/CatalogContext';
-import { CatalogProductPreviewView } from '../offers/CatalogPageOfferPreviewView';
-import { CatalogPageOffersView } from '../offers/CatalogPageOffersView';
+import { CatalogBadgeSelectorWidgetView } from '../widgets/CatalogBadgeSelectorWidgetView';
+import { CatalogFirstProductSelectorWidgetView } from '../widgets/CatalogFirstProductSelectorWidgetView';
+import { CatalogItemGridWidgetView } from '../widgets/CatalogItemGridWidgetView';
+import { CatalogLimitedItemWidgetView } from '../widgets/CatalogLimitedItemWidgetView';
+import { CatalogPurchaseWidgetView } from '../widgets/CatalogPurchaseWidgetView';
+import { CatalogTotalPriceWidget } from '../widgets/CatalogTotalPriceWidget';
+import { CatalogViewProductWidgetView } from '../widgets/CatalogViewProductWidgetView';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutProps> = props =>
 {
-    const { page = null, roomPreviewer = null } = props;
-    const [ badges, setBadges ] = useState<string[]>([]);
-    const [ currentBadge, setCurrentBadge ] = useState<string>(null);
+    const { page = null } = props;
     const { currentOffer = null } = useCatalogContext();
 
-    const onInventoryBadgesUpdatedEvent = useCallback((event: InventoryBadgesUpdatedEvent) =>
-    {
-        setBadges(event.badges);
-    }, []);
-
-    useUiEvent(InventoryBadgesUpdatedEvent.BADGES_UPDATED, onInventoryBadgesUpdatedEvent);
-
-    useEffect(() =>
-    {
-        dispatchUiEvent(new InventoryBadgesRequestEvent(InventoryBadgesRequestEvent.REQUEST_BADGES));
-    }, []);
-
-    useEffect(() =>
-    {
-        if(!currentBadge || !currentOffer) return;
-
-        const productData = [];
-
-        productData.push('0');
-        productData.push(currentBadge);
-        productData.push('');
-        productData.push('');
-        productData.push('');
-
-        const stringDataType = new StringDataType();
-        stringDataType.setValue(productData);
-
-        dispatchUiEvent(new SetRoomPreviewerStuffDataEvent(currentOffer, stringDataType));
-    }, [ currentBadge, currentOffer, roomPreviewer ]);
-
     return (
-        <Grid>
-            <Column size={ 7 } overflow="hidden">
-                <CatalogPageOffersView shrink offers={ page.offers } />
-                <Column gap={ 1 } overflow="hidden">
-                    <Text truncate shrink fontWeight="bold">{ LocalizeText('catalog_selectbadge') }</Text>
-                    <Grid grow columnCount={ 5 } overflow="auto">
-                        { badges && (badges.length > 0) && badges.map(code =>
-                            {
-                                return (
-                                    <LayoutGridItem key={ code } itemActive={ (currentBadge === code) } onMouseDown={ event => setCurrentBadge(code) }> 
-                                        <BadgeImageView badgeCode={ code } />
-                                    </LayoutGridItem>
-                                );
-                            }) }
-                    </Grid>
+        <>
+            <CatalogFirstProductSelectorWidgetView />
+            <Grid>
+                <Column size={ 7 } overflow="hidden">
+                    <CatalogItemGridWidgetView shrink />
+                    <Column gap={ 1 } overflow="hidden">
+                        <Text truncate shrink fontWeight="bold">{ LocalizeText('catalog_selectbadge') }</Text>
+                        <CatalogBadgeSelectorWidgetView />
+                    </Column>
                 </Column>
-            </Column>
-            <Column size={ 5 } overflow="hidden">
-                { !!currentOffer &&
-                    <CatalogProductPreviewView offer={ currentOffer } roomPreviewer={ roomPreviewer } extra={ currentBadge } disabled={ !currentBadge } /> }
-            </Column>
-        </Grid>
+                <Column center={ !currentOffer } size={ 5 } overflow="hidden">
+                    { !currentOffer &&
+                        <>
+                            { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
+                            <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
+                        </> }
+                    { currentOffer &&
+                        <>
+                            <Base position="relative" overflow="hidden">
+                                <CatalogViewProductWidgetView />
+                                <CatalogLimitedItemWidgetView fullWidth position="absolute" className="top-1" />
+                            </Base>
+                            <Column grow gap={ 1 }>
+                                <Text grow truncate>{ currentOffer.localizationName }</Text>
+                                <Flex justifyContent="end">
+                                <CatalogTotalPriceWidget alignItems="end" />
+                                </Flex>
+                                <CatalogPurchaseWidgetView />
+                            </Column>
+                        </> }
+                </Column>
+            </Grid>
+        </>
     );
 }

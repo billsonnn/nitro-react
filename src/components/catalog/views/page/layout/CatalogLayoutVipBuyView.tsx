@@ -7,6 +7,7 @@ import { Flex } from '../../../../../common/Flex';
 import { Grid } from '../../../../../common/Grid';
 import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
 import { Text } from '../../../../../common/Text';
+import { CatalogPurchasedEvent, CatalogPurchaseFailureEvent } from '../../../../../events';
 import { CatalogEvent } from '../../../../../events/catalog/CatalogEvent';
 import { useUiEvent } from '../../../../../hooks';
 import { SendMessageHook } from '../../../../../hooks/messages/message-event';
@@ -22,24 +23,24 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
 {
     const [ pendingOffer, setPendingOffer ] = useState<ClubOfferData>(null);
     const [ purchaseState, setPurchaseState ] = useState(CatalogPurchaseState.NONE);
-    const { currentPage = null, catalogState = null } = useCatalogContext();
-    const { clubOffers = null, subscriptionInfo = null } = catalogState;
+    const { currentPage = null, catalogOptions = null } = useCatalogContext();
+    const { clubOffers = null, subscriptionInfo = null } = catalogOptions;
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
         switch(event.type)
         {
-            case CatalogEvent.PURCHASE_SUCCESS:
+            case CatalogPurchasedEvent.PURCHASE_SUCCESS:
                 setPurchaseState(CatalogPurchaseState.NONE);
                 return;
-            case CatalogEvent.PURCHASE_FAILED:
+            case CatalogPurchaseFailureEvent.PURCHASE_FAILED:
                 setPurchaseState(CatalogPurchaseState.FAILED);
                 return;
         }
     }, []);
 
-    useUiEvent(CatalogEvent.PURCHASE_SUCCESS, onCatalogEvent);
-    useUiEvent(CatalogEvent.PURCHASE_FAILED, onCatalogEvent);
+    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
+    useUiEvent(CatalogPurchaseFailureEvent.PURCHASE_FAILED, onCatalogEvent);
 
     const getOfferText = useCallback((offer: ClubOfferData) =>
     {
@@ -145,7 +146,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
 
     return (
         <Grid>
-            <Column fullHeight size={ 7 } overflow="hidden">
+            <Column fullHeight size={ 7 } overflow="hidden" justifyContent="between">
                 <Grid grow columnCount={ 1 } className="nitro-catalog-layout-vip-buy-grid" overflow="auto">
                     { clubOffers && (clubOffers.length > 0) && clubOffers.map((offer, index) =>
                         {
@@ -169,9 +170,9 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
                                     </Column>
                                 </LayoutGridItem>
                             );
-                    })}
-                    <Text dangerouslySetInnerHTML={{ __html: LocalizeText('catalog.vip.buy.hccenter') }}></Text>
+                        }) }
                 </Grid>
+                <Text center dangerouslySetInnerHTML={{ __html: LocalizeText('catalog.vip.buy.hccenter') }}></Text>
             </Column>
             <Column size={ 5 } overflow="hidden">
                 <Column fullHeight center overflow="hidden">

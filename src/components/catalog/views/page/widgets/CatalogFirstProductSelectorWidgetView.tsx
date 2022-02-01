@@ -1,20 +1,16 @@
-import { FC, useCallback } from 'react';
-import { CatalogPageReadyEvent, CatalogSelectProductEvent } from '../../../../../events';
-import { dispatchUiEvent, useUiEvent } from '../../../../../hooks';
+import { FC, useEffect } from 'react';
 import { useCatalogContext } from '../../../context/CatalogContext';
 
 export const CatalogFirstProductSelectorWidgetView: FC<{}> = props =>
 {
-    const { currentPage = null } = useCatalogContext();
+    const { currentPage = null, setCurrentOffer = null } = useCatalogContext();
 
-    const onCatalogPageReadyEvent = useCallback((event: CatalogPageReadyEvent) =>
+    useEffect(() =>
     {
         if(!currentPage || !currentPage.offers.length) return;
 
-        dispatchUiEvent(new CatalogSelectProductEvent(currentPage.offers[0]));
-    }, [ currentPage ]);
-
-    useUiEvent(CatalogPageReadyEvent.PAGE_READY, onCatalogPageReadyEvent);
+        setCurrentOffer(currentPage.offers[0]);
+    }, [ currentPage, setCurrentOffer ]);
 
     return null;
 }

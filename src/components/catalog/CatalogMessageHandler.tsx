@@ -2,7 +2,7 @@ import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent
 import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/user/GuildMembershipsMessageEvent';
 import { FC, useCallback } from 'react';
 import { GetFurnitureData, GetProductDataForLocalization, LocalizeText } from '../../api';
-import { CatalogNameResultEvent, CatalogPurchaseFailureEvent, CatalogSelectProductEvent, CatalogSetExtraPurchaseParameterEvent } from '../../events';
+import { CatalogNameResultEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogSetExtraPurchaseParameterEvent } from '../../events';
 import { CatalogGiftReceiverNotFoundEvent } from '../../events/catalog/CatalogGiftReceiverNotFoundEvent';
 import { CatalogPurchasedEvent } from '../../events/catalog/CatalogPurchasedEvent';
 import { CatalogPurchaseSoldOutEvent } from '../../events/catalog/CatalogPurchaseSoldOutEvent';
@@ -14,6 +14,7 @@ import { NotificationUtilities } from '../../views/notification-center/common/No
 import { CatalogNode } from './common/CatalogNode';
 import { CatalogPetPalette } from './common/CatalogPetPalette';
 import { CatalogType } from './common/CatalogType';
+import { GiftWrappingConfiguration } from './common/GiftWrappingConfiguration';
 import { ICatalogNode } from './common/ICatalogNode';
 import { IProduct } from './common/IProduct';
 import { IPurchasableOffer } from './common/IPurchasableOffer';
@@ -23,11 +24,10 @@ import { Product } from './common/Product';
 import { ProductTypeEnum } from './common/ProductTypeEnum';
 import { SubscriptionInfo } from './common/SubscriptionInfo';
 import { useCatalogContext } from './context/CatalogContext';
-import { CatalogActions } from './reducers/CatalogReducer';
 
 export const CatalogMessageHandler: FC<{}> = props =>
 {
-    const { setIsBusy, pageId, currentType, setRootNode, setOffersToNodes, currentPage, setCurrentOffer, setPurchasableOffer, setFrontPageItems, resetState, showCatalogPage, catalogState, dispatchCatalogState } = useCatalogContext();
+    const { setIsBusy, pageId, currentType, setRootNode, setOffersToNodes, currentPage, setCurrentOffer, setFrontPageItems, resetState, showCatalogPage, setCatalogOptions = null } = useCatalogContext();
 
     const onCatalogPagesListEvent = useCallback((event: CatalogPagesListEvent) =>
     {
@@ -115,6 +115,8 @@ export const CatalogMessageHandler: FC<{}> = props =>
     const onPurchaseNotAllowedMessageEvent = useCallback((event: PurchaseNotAllowedMessageEvent) =>
     {
         const parser = event.getParser();
+
+        dispatchUiEvent(new CatalogPurchaseNotAllowedEvent(parser.code));
     }, []);
 
     const onLimitedEditionSoldOutEvent = useCallback((event: LimitedEditionSoldOutEvent) =>
@@ -154,7 +156,7 @@ export const CatalogMessageHandler: FC<{}> = props =>
 
         offer.page = currentPage;
 
-        dispatchUiEvent(new CatalogSelectProductEvent(offer));
+        setCurrentOffer(offer);
 
         if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
         {
@@ -162,19 +164,36 @@ export const CatalogMessageHandler: FC<{}> = props =>
         }
 
         // (this._isObjectMoverRequested) && (this._purchasableOffer)
-        // setPurchasableOffer(offer);
-    }, [ currentType, currentPage ]);
+    }, [ currentType, currentPage, setCurrentOffer ]);
 
     const onSellablePetPalettesMessageEvent = useCallback((event: SellablePetPalettesMessageEvent) =>
     {
         const parser = event.getParser();
         const petPalette = new CatalogPetPalette(parser.productCode, parser.palettes.slice());
 
-        dispatchCatalogState({
-            type: CatalogActions.SET_PET_PALETTE,
-            payload: { petPalette }
-        });
-    }, [ dispatchCatalogState ]);
+        setCatalogOptions(prevValue =>
+            {
+                const petPalettes = [];
+
+                if(prevValue.petPalettes) petPalettes.push(...prevValue.petPalettes);
+
+                for(let i = 0; i < petPalettes.length; i++)
+                {
+                    const palette = petPalettes[i];
+
+                    if(palette.breed === petPalette.breed)
+                    {
+                        petPalettes.splice(i, 1);
+
+                        break;
+                    }
+                }
+                
+                petPalettes.push(petPalette);
+
+                return { ...prevValue, petPalettes };
+            });
+    }, [ setCatalogOptions ]);
 
     const onApproveNameMessageEvent = useCallback((event: ApproveNameMessageEvent) =>
     {
@@ -192,43 +211,42 @@ export const CatalogMessageHandler: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        dispatchCatalogState({
-            type: CatalogActions.SET_CLUB_OFFERS,
-            payload: {
-                clubOffers: parser.offers
-            }
-        });
-    }, [ dispatchCatalogState ]);
+        setCatalogOptions(prevValue =>
+            {
+                const clubOffers = parser.offers;
+
+                return { ...prevValue, clubOffers };
+            });
+    }, [ setCatalogOptions ]);
 
     const onGuildMembershipsMessageEvent = useCallback((event: GuildMembershipsMessageEvent) =>
     {
         const parser = event.getParser();
 
-        dispatchCatalogState({
-            type: CatalogActions.SET_GROUPS,
-            payload: {
-                groups: parser.groups
-            }
-        });
-    }, [ dispatchCatalogState ]);
+        setCatalogOptions(prevValue =>
+            {
+                const groups = parser.groups;
+
+                return { ...prevValue, groups };
+            });
+    }, [ setCatalogOptions ]);
 
     const onUserSubscriptionEvent = useCallback((event: UserSubscriptionEvent) =>
     {
         const parser = event.getParser();
 
-        dispatchCatalogState({
-            type: CatalogActions.SET_SUBSCRIPTION_INFO,
-            payload: {
-                subscriptionInfo: new SubscriptionInfo(
+        setCatalogOptions(prevValue =>
+            {
+                const subscriptionInfo = new SubscriptionInfo(
                     Math.max(0, parser.daysToPeriodEnd),
                     Math.max(0, parser.periodsSubscribedAhead),
                     parser.isVip,
                     parser.pastClubDays,
-                    parser.pastVipDays
-                )
-            }
-        });
-    }, [ dispatchCatalogState ]);
+                    parser.pastVipDays);
+
+                return { ...prevValue, subscriptionInfo };
+            });
+    }, [ setCatalogOptions ]);
 
     const onCatalogPublishedMessageEvent = useCallback((event: CatalogPublishedMessageEvent) =>
     {
@@ -239,13 +257,13 @@ export const CatalogMessageHandler: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        dispatchCatalogState({
-            type: CatalogActions.SET_GIFT_CONFIGURATION,
-            payload: {
-                giftConfiguration: parser
-            }
-        });
-    }, [ dispatchCatalogState ]);
+        setCatalogOptions(prevValue =>
+            {
+                const giftConfiguration = new GiftWrappingConfiguration(parser);
+
+                return { ...prevValue, giftConfiguration };
+            });
+    }, [ setCatalogOptions ]);
 
     const onMarketplaceMakeOfferResult = useCallback((event: MarketplaceMakeOfferResult) =>
     {
@@ -272,29 +290,25 @@ export const CatalogMessageHandler: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if(!parser) return;
-        
-        dispatchCatalogState({
-            type: CatalogActions.SET_MARKETPLACE_CONFIGURATION,
-            payload: {
-                marketplaceConfiguration: parser
-            }
-        });
-    }, [dispatchCatalogState]);
+        setCatalogOptions(prevValue =>
+            {
+                const marketplaceConfiguration = parser;
+
+                return { ...prevValue, marketplaceConfiguration };
+            });
+    }, [ setCatalogOptions ]);
 
     const onClubGiftInfoEvent = useCallback((event: ClubGiftInfoEvent) =>
     {
         const parser = event.getParser();
 
-        if(!parser) return;
+        setCatalogOptions(prevValue =>
+            {
+                const clubGifts = parser;
 
-        dispatchCatalogState({
-            type: CatalogActions.SET_CLUB_GIFTS,
-            payload: {
-                clubGifts: parser
-            }
-        });
-    }, [dispatchCatalogState]);
+                return { ...prevValue, clubGifts };
+            });
+    }, [ setCatalogOptions ]);
 
     CreateMessageHook(CatalogPagesListEvent, onCatalogPagesListEvent);
     CreateMessageHook(CatalogPageMessageEvent, onCatalogPageMessageEvent);

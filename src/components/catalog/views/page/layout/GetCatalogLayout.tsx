@@ -1,4 +1,3 @@
-import { RoomPreviewer } from '@nitrots/nitro-renderer';
 import { ICatalogPage } from '../../../common/ICatalogPage';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 import { CatalogLayoutBadgeDisplayView } from './CatalogLayoutBadgeDisplayView';
@@ -20,9 +19,11 @@ import { CatalogLayoutMarketplacePublicItemsView } from './marketplace/CatalogLa
 import { CatalogLayoutPetView } from './pets/CatalogLayoutPetView';
 import { CatalogLayoutVipGiftsView } from './vip-gifts/CatalogLayoutVipGiftsView';
 
-export const GetCatalogLayout = (page: ICatalogPage, roomPreviewer: RoomPreviewer) =>
+export const GetCatalogLayout = (page: ICatalogPage) =>
 {
-    const layoutProps: CatalogLayoutProps = { page, roomPreviewer };
+    if(!page) return null;
+    
+    const layoutProps: CatalogLayoutProps = { page };
 
     switch(page.layoutCode)
     {
@@ -44,8 +45,6 @@ export const GetCatalogLayout = (page: ICatalogPage, roomPreviewer: RoomPreviewe
             return <CatalogLayouGuildForumView { ...layoutProps } />;
         case 'guild_custom_furni':
             return <CatalogLayouGuildCustomFurniView { ...layoutProps } />;
-        case 'search_results':
-            return null;
         case 'club_gifts':
             return <CatalogLayoutVipGiftsView { ...layoutProps } />;
         case 'marketplace_own_items':
@@ -59,11 +58,11 @@ export const GetCatalogLayout = (page: ICatalogPage, roomPreviewer: RoomPreviewe
         case 'spaces_new':
             return <CatalogLayoutSpacesView { ...layoutProps } />;
         case 'trophies':
-            return <CatalogLayoutTrophiesView roomPreviewer={roomPreviewer} page={ page } />;
+            return <CatalogLayoutTrophiesView page={ page } />;
         case 'info_loyalty':
             return <CatalogLayoutInfoLoyaltyView { ...layoutProps } />;
         case 'badge_display':
-            return <CatalogLayoutBadgeDisplayView roomPreviewer={roomPreviewer} page={ page } />;
+            return <CatalogLayoutBadgeDisplayView page={ page } />;
         //case 'default_3x3_color_grouping':
             //return <CatalogLayoutColorGroupingView { ...layoutProps } />;
         case 'bots':

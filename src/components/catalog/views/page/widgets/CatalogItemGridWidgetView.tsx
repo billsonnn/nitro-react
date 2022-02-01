@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Grid, GridProps } from '../../../../../common/Grid';
-import { CatalogSelectProductEvent, CatalogSetExtraPurchaseParameterEvent } from '../../../../../events';
+import { CatalogSetExtraPurchaseParameterEvent } from '../../../../../events';
 import { dispatchUiEvent } from '../../../../../hooks';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
@@ -23,8 +23,6 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
     {
         setCurrentOffer(offer);
 
-        dispatchUiEvent(new CatalogSelectProductEvent(offer));
-
         if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
         {
             dispatchUiEvent(new CatalogSetExtraPurchaseParameterEvent(offer.product.extraParam));
@@ -35,7 +33,7 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
         <Grid grow columnCount={ 5 } overflow="auto" { ...rest }>
             { currentPage.offers && (currentPage.offers.length > 0) && currentPage.offers.map((offer, index) =>
             {
-                return <CatalogGridOfferView key={ index } itemActive={ (currentOffer === offer) } offer={ offer } onClick={ event => selectOffer(offer) } />;
+                return <CatalogGridOfferView key={ index } itemActive={ (currentOffer && (currentOffer.offerId === offer.offerId)) } offer={ offer } onClick={ event => selectOffer(offer) } />;
             }) }
             { children }
         </Grid>

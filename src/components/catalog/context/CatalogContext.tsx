@@ -1,13 +1,14 @@
 import { FrontPageItem, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { createContext, Dispatch, FC, ProviderProps, SetStateAction, useContext } from 'react';
 import { ICatalogNode } from '../common/ICatalogNode';
+import { ICatalogOptions } from '../common/ICatalogOptions';
 import { ICatalogPage } from '../common/ICatalogPage';
 import { IPageLocalization } from '../common/IPageLocalization';
 import { IPurchasableOffer } from '../common/IPurchasableOffer';
+import { IPurchaseOptions } from '../common/IPurchaseOptions';
 import { SearchResult } from '../common/SearchResult';
-import { ICatalogAction, ICatalogState } from '../reducers/CatalogReducer';
 
-export interface ICatalogContext
+interface ICatalogContext
 {
     isVisible: boolean;
     isBusy: boolean;
@@ -23,8 +24,6 @@ export interface ICatalogContext
     setCurrentPage: Dispatch<SetStateAction<ICatalogPage>>;
     currentOffer: IPurchasableOffer;
     setCurrentOffer: Dispatch<SetStateAction<IPurchasableOffer>>;
-    purchasableOffer: IPurchasableOffer;
-    setPurchasableOffer: Dispatch<SetStateAction<IPurchasableOffer>>;
     activeNodes: ICatalogNode[];
     setActiveNodes: Dispatch<SetStateAction<ICatalogNode[]>>;
     searchResult: SearchResult;
@@ -32,13 +31,15 @@ export interface ICatalogContext
     frontPageItems: FrontPageItem[];
     setFrontPageItems: Dispatch<SetStateAction<FrontPageItem[]>>;
     roomPreviewer: RoomPreviewer;
+    purchaseOptions: IPurchaseOptions;
+    setPurchaseOptions: Dispatch<SetStateAction<IPurchaseOptions>>;
+    catalogOptions: ICatalogOptions;
+    setCatalogOptions: Dispatch<SetStateAction<ICatalogOptions>>;
     resetState: () => void;
+    getNodesByOfferId: (offerId: number, flag?: boolean) => ICatalogNode[];
     loadCatalogPage: (pageId: number, offerId: number) => void;
     showCatalogPage: (pageId: number, layoutCode: string, localization: IPageLocalization, offers: IPurchasableOffer[], offerId: number, acceptSeasonCurrencyAsCredits: boolean) => void;
     activateNode: (targetNode: ICatalogNode) => void;
-
-    catalogState: ICatalogState;
-    dispatchCatalogState: Dispatch<ICatalogAction>;
 }
 
 const CatalogContext = createContext<ICatalogContext>({
@@ -56,8 +57,6 @@ const CatalogContext = createContext<ICatalogContext>({
     setCurrentPage: null,
     currentOffer: null,
     setCurrentOffer: null,
-    purchasableOffer: null,
-    setPurchasableOffer: null,
     activeNodes: null,
     setActiveNodes: null,
     searchResult: null,
@@ -65,12 +64,15 @@ const CatalogContext = createContext<ICatalogContext>({
     frontPageItems: null,
     setFrontPageItems: null,
     roomPreviewer: null,
+    purchaseOptions: null,
+    setPurchaseOptions: null,
+    catalogOptions: null,
+    setCatalogOptions: null,
     resetState: null,
+    getNodesByOfferId: null,
     loadCatalogPage: null,
     showCatalogPage: null,
-    activateNode: null,
-    catalogState: null,
-    dispatchCatalogState: null
+    activateNode: null
 });
 
 export const CatalogContextProvider: FC<ProviderProps<ICatalogContext>> = props =>

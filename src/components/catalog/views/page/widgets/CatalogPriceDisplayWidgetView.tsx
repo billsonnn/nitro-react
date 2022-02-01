@@ -4,32 +4,36 @@ import { Flex } from '../../../../../common/Flex';
 import { Text } from '../../../../../common/Text';
 import { CurrencyIcon } from '../../../../../views/shared/currency-icon/CurrencyIcon';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
+import { useCatalogContext } from '../../../context/CatalogContext';
 
 interface CatalogPriceDisplayWidgetViewProps
 {
     offer: IPurchasableOffer;
+    separator?: boolean;
 }
 
 export const CatalogPriceDisplayWidgetView: FC<CatalogPriceDisplayWidgetViewProps> = props =>
 {
-    const { offer = null } = props;
+    const { offer = null, separator = false } = props;
+    const { purchaseOptions = null } = useCatalogContext();
+    const { quantity = 1 } = purchaseOptions;
 
     if(!offer) return null;
 
     return (
-        <Flex gap={ 1 } className="bg-muted p-1 rounded">
+        <>
             { (offer.priceInCredits > 0) &&
-                <Flex alignItems="center" justifyContent="end" gap={ 1 }>
-                    <Text>{ offer.priceInCredits }</Text>
+                <Flex alignItems="center" gap={ 1 }>
+                    <Text bold>{ (offer.priceInCredits * quantity) }</Text>
                     <CurrencyIcon type={ -1 } />
                 </Flex> }
-            { ( offer.priceInCredits > 0) && (offer.priceInActivityPoints > 0) &&
-                <FontAwesomeIcon icon="plus" /> }
+            { separator && (offer.priceInCredits > 0) && (offer.priceInActivityPoints > 0) &&
+                <FontAwesomeIcon size="xs" color="black" icon="plus" /> }
             { (offer.priceInActivityPoints > 0) &&
-                <Flex alignItems="center" justifyContent="end" gap={ 1 }>
-                    <Text>{ offer.priceInActivityPoints }</Text>
+                <Flex alignItems="center" gap={ 1 }>
+                    <Text bold>{ (offer.priceInActivityPoints * quantity) }</Text>
                     <CurrencyIcon type={ offer.activityPointType } />
                 </Flex> }
-        </Flex>
+        </>
     );
 }

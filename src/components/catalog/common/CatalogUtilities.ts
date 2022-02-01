@@ -12,41 +12,6 @@ export const GetSubscriptionProductIcon = (id: number) =>
     return '';
 }
 
-export const GetNodeById = (id: number, searchNode: ICatalogNode = null, rootNode: ICatalogNode) =>
-{
-    if(!searchNode) searchNode = rootNode;
-
-    if(!searchNode) return null;
-
-    if((searchNode.pageId === id) && (searchNode !== rootNode)) return searchNode;
-
-    for(const child of searchNode.children)
-    {
-        const node = (GetNodeById(id, child, rootNode) as ICatalogNode);
-
-        if(node) return node;
-    }
-
-    return null;
-}
-
-export const GetNodesByOfferId = (offerId: number, flag: boolean = false, currentOffers: Map<number, ICatalogNode[]>) =>
-{
-    if(!currentOffers || !currentOffers.size) return null;
-
-    if(flag)
-    {
-        const nodes: ICatalogNode[] = [];
-        const offers = currentOffers.get(offerId);
-
-        if(offers && offers.length) for(const offer of offers) (offer.isVisible && nodes.push(offer));
-
-        if(nodes.length) return nodes;
-    }
-
-    return currentOffers.get(offerId);
-}
-
 export const GetOfferNodes = (offerNodes: Map<number, ICatalogNode[]>, offerId: number) =>
 {
     const nodes = offerNodes.get(offerId);

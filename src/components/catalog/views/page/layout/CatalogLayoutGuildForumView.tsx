@@ -5,7 +5,6 @@ import { Column } from '../../../../../common/Column';
 import { Grid } from '../../../../../common/Grid';
 import { SendMessageHook } from '../../../../../hooks/messages';
 import { useCatalogContext } from '../../../context/CatalogContext';
-import { CatalogSelectGroupView } from '../../select-group/CatalogSelectGroupView';
 import { CatalogProductPreviewView } from '../offers/CatalogPageOfferPreviewView';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
@@ -13,8 +12,8 @@ export const CatalogLayouGuildForumView: FC<CatalogLayoutProps> = props =>
 {
     const { page = null } = props;
     const [ selectedGroupIndex, setSelectedGroupIndex ] = useState<number>(0);
-    const { currentOffer = null, setCurrentOffer = null, catalogState = null, dispatchCatalogState = null } = useCatalogContext();
-    const { groups = null } = catalogState;
+    const { currentOffer = null, setCurrentOffer = null, catalogOptions = null } = useCatalogContext();
+    const { groups = null } = catalogOptions;
 
     useEffect(() =>
     {
@@ -31,7 +30,7 @@ export const CatalogLayouGuildForumView: FC<CatalogLayoutProps> = props =>
             <Column size={ 5 } overflow="hidden">
                 { !!currentOffer &&
                     <CatalogProductPreviewView offer={ currentOffer } roomPreviewer={ null } extra={ groups[selectedGroupIndex] ? groups[selectedGroupIndex].groupId.toString() : '' } disabled={ !(!!groups[selectedGroupIndex]) }>
-                        <CatalogSelectGroupView selectedGroupIndex={ selectedGroupIndex } setSelectedGroupIndex={ setSelectedGroupIndex } />
+                        {/* <CatalogSelectGroupView selectedGroupIndex={ selectedGroupIndex } setSelectedGroupIndex={ setSelectedGroupIndex } /> */}
                     </CatalogProductPreviewView> }
             </Column>
         </Grid>

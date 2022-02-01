@@ -4,14 +4,13 @@ import { LocalizeText } from '../../../../../../api';
 import { Column } from '../../../../../../common/Column';
 import { Flex } from '../../../../../../common/Flex';
 import { Text } from '../../../../../../common/Text';
-import { CatalogEvent } from '../../../../../../events';
+import { CatalogPurchasedEvent } from '../../../../../../events';
 import { useUiEvent } from '../../../../../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { CurrencyIcon } from '../../../../../../views/shared/currency-icon/CurrencyIcon';
 import { IPurchasableOffer } from '../../../../common/IPurchasableOffer';
 import { Offer } from '../../../../common/Offer';
-import { CatalogPurchaseButtonView } from '../../purchase/CatalogPurchaseButtonView';
-import { CatalogPurchaseGiftButtonView } from '../../purchase/CatalogPurchaseGiftButtonView';
+import { CatalogPurchaseWidgetView } from '../../widgets/CatalogPurchaseWidgetView';
 import { CatalogPetNameApprovalView } from './CatalogPetNameApprovalView';
 
 export interface CatalogLayoutPetPurchaseViewProps
@@ -27,17 +26,12 @@ export const CatalogLayoutPetPurchaseView: FC<CatalogLayoutPetPurchaseViewProps>
     const [ petNameValue, setPetNameValue ] = useState('');
     const [ nameApproved, setNameApproved ] = useState(false);
 
-    const onCatalogEvent = useCallback((event: CatalogEvent) =>
+    const onCatalogPurchasedEvent = useCallback((event: CatalogPurchasedEvent) =>
     {
-        switch(event.type)
-        {
-            case CatalogEvent.PURCHASE_SUCCESS:
-                setNameApproved(false);
-                return;
-        }
+        setNameApproved(false);
     }, []);
 
-    useUiEvent(CatalogEvent.PURCHASE_SUCCESS, onCatalogEvent);
+    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
 
     const beforePurchase = useCallback(() =>
     {
@@ -69,9 +63,10 @@ export const CatalogLayoutPetPurchaseView: FC<CatalogLayoutPetPurchaseViewProps>
                 </Column>
             </Flex>
             <Column gap={ 1 }>
-                <CatalogPurchaseButtonView offer={ offer } pageId={ pageId } extra={ extraData } quantity={ 1 } isPurchaseAllowed={ nameApproved } beforePurchase={ beforePurchase } />
+                <CatalogPurchaseWidgetView />
+                {/* <CatalogPurchaseButtonView offer={ offer } pageId={ pageId } extra={ extraData } quantity={ 1 } isPurchaseAllowed={ nameApproved } beforePurchase={ beforePurchase } />
                 { offer.giftable &&
-                    <CatalogPurchaseGiftButtonView offer={ offer } pageId={ pageId } extra={ extraData } disabled={ nameApproved } /> }
+                    <CatalogPurchaseGiftButtonView offer={ offer } pageId={ pageId } extra={ extraData } disabled={ nameApproved } /> } */}
             </Column>
         </Column>
     );

@@ -22,5 +22,9 @@ export const CatalogGridOfferView: FC<CatalogGridOfferViewProps> = props =>
         return offer.product.getIconUrl(offer);
     }, [ offer ]);
 
-    return <LayoutGridItem itemImage={ iconUrl } itemCount={ (offer.pricingModel === Offer.PRICING_MODEL_MULTI) ? offer.product.productCount : 1 } { ...rest } />;
+    const product = offer.product;
+
+    if(!product) return null;
+
+    return <LayoutGridItem itemImage={ iconUrl } itemCount={ ((offer.pricingModel === Offer.PRICING_MODEL_MULTI) ? product.productCount : 1) } itemUniqueSoldout={ (product.uniqueLimitedItemSeriesSize && !product.uniqueLimitedItemsLeft) } itemUniqueNumber={ product.uniqueLimitedItemSeriesSize } { ...rest } />;
 }

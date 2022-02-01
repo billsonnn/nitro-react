@@ -1,10 +1,10 @@
 import { FrontPageItem, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, GetMarketplaceConfigurationMessageComposer, ILinkEventTracker, RoomPreviewer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useReducer, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetRoomEngine, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { CREDITS, PlaySound } from '../../api/utils/PlaySound';
 import { Column } from '../../common/Column';
 import { Grid } from '../../common/Grid';
-import { CatalogEvent } from '../../events';
+import { CatalogPurchasedEvent } from '../../events';
 import { BatchUpdates } from '../../hooks';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
@@ -13,27 +13,25 @@ import { CatalogMessageHandler } from './CatalogMessageHandler';
 import { CatalogPage } from './common/CatalogPage';
 import { CatalogType } from './common/CatalogType';
 import { ICatalogNode } from './common/ICatalogNode';
+import { ICatalogOptions } from './common/ICatalogOptions';
 import { ICatalogPage } from './common/ICatalogPage';
 import { IPageLocalization } from './common/IPageLocalization';
 import { IPurchasableOffer } from './common/IPurchasableOffer';
+import { IPurchaseOptions } from './common/IPurchaseOptions';
 import { RequestedPage } from './common/RequestedPage';
 import { SearchResult } from './common/SearchResult';
 import { CatalogContextProvider } from './context/CatalogContext';
-import { CatalogReducer, initialCatalog } from './reducers/CatalogReducer';
 import { CatalogGiftView } from './views/gift/CatalogGiftView';
 import { CatalogNavigationView } from './views/navigation/CatalogNavigationView';
-import { CatalogPageView } from './views/page/CatalogPageView';
+import { GetCatalogLayout } from './views/page/layout/GetCatalogLayout';
 import { MarketplacePostOfferView } from './views/page/layout/marketplace/MarketplacePostOfferView';
 
-const DUMMY_PAGE_ID_FOR_OFFER_SEARCH: number = -12345678;
 const REQUESTED_PAGE = new RequestedPage();
 
 export const CatalogView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
-
     const [ isBusy, setIsBusy ] = useState(false);
-    const [ forceRefresh, setForceRefresh ] = useState(false);
     const [ pageId, setPageId ] = useState(-1);
     const [ previousPageId, setPreviousPageId ] = useState(-1);
     const [ currentType, setCurrentType ] = useState(CatalogType.NORMAL);
@@ -41,12 +39,12 @@ export const CatalogView: FC<{}> = props =>
     const [ offersToNodes, setOffersToNodes ] = useState<Map<number, ICatalogNode[]>>(null);
     const [ currentPage, setCurrentPage ] = useState<ICatalogPage>(null);
     const [ currentOffer, setCurrentOffer ] = useState<IPurchasableOffer>(null);
-    const [ purchasableOffer, setPurchasableOffer ] = useState<IPurchasableOffer>(null);
     const [ activeNodes, setActiveNodes ] = useState<ICatalogNode[]>([]);
     const [ searchResult, setSearchResult ] = useState<SearchResult>(null);
     const [ frontPageItems, setFrontPageItems ] = useState<FrontPageItem[]>([]);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
-    const [ catalogState, dispatchCatalogState ] = useReducer(CatalogReducer, initialCatalog);
+    const [ purchaseOptions, setPurchaseOptions ] = useState<IPurchaseOptions>({});
+    const [ catalogOptions, setCatalogOptions ] = useState<ICatalogOptions>({});
 
     const resetState = useCallback(() =>
     {
@@ -58,7 +56,6 @@ export const CatalogView: FC<{}> = props =>
             setOffersToNodes(null);
             setCurrentPage(null);
             setCurrentOffer(null);
-            setPurchasableOffer(null);
             setActiveNodes([]);
             setSearchResult(null);
             setFrontPageItems([]);
@@ -66,13 +63,27 @@ export const CatalogView: FC<{}> = props =>
         });
     }, []);
 
-    const getFirstNodeByName = useCallback((name: string, node: ICatalogNode) =>
+    const getNodeById = useCallback((id: number, node: ICatalogNode) =>
+    {
+        if((node.pageId === id) && (node !== rootNode)) return node;
+
+        for(const child of node.children)
+        {
+            const found = (getNodeById(id, child) as ICatalogNode);
+
+            if(found) return found;
+        }
+
+        return null;
+    }, [ rootNode ]);
+
+    const getNodeByName = useCallback((name: string, node: ICatalogNode) =>
     {
         if((node.pageName === name) && (node !== rootNode)) return node;
 
         for(const child of node.children)
         {
-            const found = (getFirstNodeByName(name, child) as ICatalogNode);
+            const found = (getNodeByName(name, child) as ICatalogNode);
 
             if(found) return found;
         }
@@ -110,43 +121,28 @@ export const CatalogView: FC<{}> = props =>
         if(pageId > -1) SendMessageHook(new GetCatalogPageComposer(pageId, offerId, currentType));
     }, [ currentType ]);
 
-    const selectOffer = useCallback((offerId: number) =>
-    {
-        if(!currentPage || !currentPage.offers || offerId < 0) return;
-
-        for(const offer of currentPage.offers)
-        {
-            if(offer.offerId !== offerId) continue;
-            
-            setCurrentOffer(offer)
-
-            return;
-        }
-    }, [ currentPage ]);
-
     const showCatalogPage = useCallback((pageId: number, layoutCode: string, localization: IPageLocalization, offers: IPurchasableOffer[], offerId: number, acceptSeasonCurrencyAsCredits: boolean) =>
     {
-        if(currentPage)
-        {
-            if(!forceRefresh && (currentPage.pageId === pageId))
-            {
-                if(offerId > -1) selectOffer(offerId);
-
-                return;
-            }
-        }
-
         const catalogPage = (new CatalogPage(pageId, layoutCode, localization, offers, acceptSeasonCurrencyAsCredits) as ICatalogPage);
 
         BatchUpdates(() =>
         {
             setCurrentPage(catalogPage);
-            setPreviousPageId(prevValue => ((pageId > DUMMY_PAGE_ID_FOR_OFFER_SEARCH) ? pageId : prevValue));
-            setForceRefresh(false);
+            setPreviousPageId(prevValue => ((pageId !== -1) ? pageId : prevValue));
 
-            selectOffer(offerId);
+            if((offerId > -1) && catalogPage.offers.length)
+            {
+                for(const offer of catalogPage.offers)
+                {
+                    if(offer.offerId !== offerId) continue;
+                    
+                    setCurrentOffer(offer)
+        
+                    break;
+                }
+            }
         });
-    }, [ currentPage, forceRefresh, selectOffer ]);
+    }, []);
 
     const activateNode = useCallback((targetNode: ICatalogNode, offerId: number = -1) =>
     {
@@ -169,7 +165,7 @@ export const CatalogView: FC<{}> = props =>
 
         let node = targetNode;
 
-        while(node && node.pageName !== 'root')
+        while(node && (node.pageName !== 'root'))
         {
             nodes.push(node);
 
@@ -194,7 +190,9 @@ export const CatalogView: FC<{}> = props =>
                 {
                     n.activate();
 
-                    if(n === targetNode.parent) n.open();
+                    if(n.parent) n.open();
+
+                    if((n === targetNode.parent) && n.children.length) n.open();
                 }
 
                 if(isActive && isOpen) targetNode.close();
@@ -205,6 +203,27 @@ export const CatalogView: FC<{}> = props =>
             
         if(targetNode.pageId > -1) loadCatalogPage(targetNode.pageId, offerId);
     }, [ setActiveNodes, loadCatalogPage ]);
+
+    const openPageById = useCallback((id: number) =>
+    {
+        BatchUpdates(() =>
+        {
+            setSearchResult(null);
+
+            if(!isVisible)
+            {
+                REQUESTED_PAGE.requestById = id;
+
+                setIsVisible(true);
+            }
+            else
+            {
+                const node = getNodeById(id, rootNode);
+
+                if(node) activateNode(node);
+            }
+        });
+    }, [ isVisible, rootNode, getNodeById, activateNode ]);
 
     const openPageByName = useCallback((name: string) =>
     {
@@ -220,12 +239,12 @@ export const CatalogView: FC<{}> = props =>
             }
             else
             {
-                const node = getFirstNodeByName(name, rootNode);
+                const node = getNodeByName(name, rootNode);
 
                 if(node) activateNode(node);
             }
         });
-    }, [ isVisible, rootNode, getFirstNodeByName, activateNode ]);
+    }, [ isVisible, rootNode, getNodeByName, activateNode ]);
 
     const openPageByOfferId = useCallback((offerId: number) =>
     {
@@ -250,17 +269,12 @@ export const CatalogView: FC<{}> = props =>
         });
     }, [ isVisible, getNodesByOfferId, activateNode ]);
 
-    const onCatalogEvent = useCallback((event: CatalogEvent) =>
+    const onCatalogPurchasedEvent = useCallback((event: CatalogPurchasedEvent) =>
     {
-        switch(event.type)
-        {
-            case CatalogEvent.PURCHASE_SUCCESS:
-                PlaySound(CREDITS);
-                return;
-        }
+        PlaySound(CREDITS);
     }, []);
 
-    useUiEvent(CatalogEvent.PURCHASE_SUCCESS, onCatalogEvent);
+    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
 
     const linkReceived = useCallback((url: string) =>
     {
@@ -294,8 +308,6 @@ export const CatalogView: FC<{}> = props =>
                     else
                     {
                         openPageByName(parts[2]);
-
-                        return;
                     }
                 }
                 else
@@ -367,6 +379,7 @@ export const CatalogView: FC<{}> = props =>
                 }
                 return;
             case RequestedPage.REQUEST_TYPE_ID:
+                openPageById(REQUESTED_PAGE.requestById);
                 REQUESTED_PAGE.resetRequest();
                 return;
             case RequestedPage.REQUEST_TYPE_OFFER:
@@ -378,17 +391,20 @@ export const CatalogView: FC<{}> = props =>
                 REQUESTED_PAGE.resetRequest();
                 return;
         }
-    }, [ isVisible, rootNode, activeNodes, activateNode, openPageByOfferId, openPageByName ]);
+    }, [ isVisible, rootNode, activeNodes, activateNode, openPageById, openPageByOfferId, openPageByName ]);
 
     useEffect(() =>
     {
-        if(!currentPage) return;
+        if(!searchResult && currentPage && (currentPage.pageId === -1)) openPageById(previousPageId);
+    }, [ searchResult, currentPage, previousPageId, openPageById ]);
 
-        setCurrentOffer(null);
+    useEffect(() =>
+    {
+        return () => setCurrentOffer(null);
     }, [ currentPage ]);
 
     return (
-        <CatalogContextProvider value={ { isVisible, isBusy, setIsBusy, pageId, currentType, setCurrentType, rootNode, setRootNode, offersToNodes, setOffersToNodes, currentPage, setCurrentPage, currentOffer, setCurrentOffer, purchasableOffer, setPurchasableOffer, activeNodes, setActiveNodes, searchResult, setSearchResult, frontPageItems, setFrontPageItems, roomPreviewer, resetState, loadCatalogPage, showCatalogPage, activateNode, catalogState, dispatchCatalogState } }>
+        <CatalogContextProvider value={ { isVisible, isBusy, setIsBusy, pageId, currentType, setCurrentType, rootNode, setRootNode, offersToNodes, setOffersToNodes, currentPage, setCurrentPage, currentOffer, setCurrentOffer, activeNodes, setActiveNodes, searchResult, setSearchResult, frontPageItems, setFrontPageItems, roomPreviewer, purchaseOptions, setPurchaseOptions, catalogOptions, setCatalogOptions, resetState, getNodesByOfferId, loadCatalogPage, showCatalogPage, activateNode } }>
             <CatalogMessageHandler />
             { isVisible &&
                 <NitroCardView uniqueKey="catalog" className="nitro-catalog">
@@ -417,7 +433,7 @@ export const CatalogView: FC<{}> = props =>
                                     <CatalogNavigationView node={ activeNodes[0] } /> }
                             </Column>
                             <Column size={ 9 } overflow="hidden">
-                                <CatalogPageView page={ currentPage } roomPreviewer={ roomPreviewer } />
+                                { GetCatalogLayout(currentPage) }
                             </Column>
                         </Grid>
                     </NitroCardContentView>

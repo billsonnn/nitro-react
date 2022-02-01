@@ -6,8 +6,6 @@ import { Text } from '../../../../../common/Text';
 import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
 import { LimitedEditionCompletePlateView } from '../../../../../views/shared/limited-edition/LimitedEditionCompletePlateView';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
-import { Offer } from '../../../common/Offer';
-import { CatalogRoomPreviewerView } from '../../catalog-room-previewer/CatalogRoomPreviewerView';
 import { CatalogPurchaseView } from '../purchase/CatalogPurchaseView';
 
 export interface CatalogProductPreviewViewProps
@@ -28,8 +26,6 @@ export const CatalogProductPreviewView: FC<CatalogProductPreviewViewProps> = pro
     return (
         <>
             <Column overflow="hidden" position="relative" gap={ 0 }>
-                { ((offer.pricingModel === Offer.PRICING_MODEL_SINGLE) || (offer.pricingModel === Offer.PRICING_MODEL_MULTI)) &&
-                    <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } /> }
                 { product.isUniqueLimitedItem &&
                     <Base fullWidth position="absolute" className="top-1">
                         <LimitedEditionCompletePlateView className="mx-auto" uniqueLimitedItemsLeft={ product.uniqueLimitedItemsLeft } uniqueLimitedSeriesSize={ product.uniqueLimitedItemSeriesSize } />

@@ -18,7 +18,8 @@ export const MarketplacePostOfferView : FC<{}> = props =>
 {
     const [ item, setItem ] = useState<FurnitureItem>(null);
     const [ askingPrice, setAskingPrice ] = useState(0);
-    const { catalogState = null, dispatchCatalogState = null } = useCatalogContext();
+    const { catalogOptions = null } = useCatalogContext();
+    const { marketplaceConfiguration = null } = catalogOptions;
     
     const close = useCallback(() =>
     {
@@ -105,24 +106,24 @@ export const MarketplacePostOfferView : FC<{}> = props =>
                         </Column>
                         <Column overflow="auto">
                             <Text italics>
-                                { LocalizeText('inventory.marketplace.make_offer.expiration_info', ['time'], [catalogState.marketplaceConfiguration.offerTime.toString()]) }
+                                { LocalizeText('inventory.marketplace.make_offer.expiration_info', ['time'], [marketplaceConfiguration.offerTime.toString()]) }
                             </Text>
                             <div className="input-group has-validation">
                                 <input className="form-control form-control-sm" type="number" min={ 0 } value={ askingPrice } onChange={ event => setAskingPrice(event.target.valueAsNumber) } placeholder={ LocalizeText('inventory.marketplace.make_offer.price_request') } />
-                                { ((askingPrice < catalogState.marketplaceConfiguration.minimumPrice) || isNaN(askingPrice)) &&
+                                { ((askingPrice < marketplaceConfiguration.minimumPrice) || isNaN(askingPrice)) &&
                                     <Base className="invalid-feedback d-block">
-                                        { LocalizeText('inventory.marketplace.make_offer.min_price', [ 'minprice' ], [ catalogState.marketplaceConfiguration.minimumPrice.toString() ]) }
+                                        { LocalizeText('inventory.marketplace.make_offer.min_price', [ 'minprice' ], [ marketplaceConfiguration.minimumPrice.toString() ]) }
                                     </Base> }
-                                { ((askingPrice > catalogState.marketplaceConfiguration.maximumPrice) && !isNaN(askingPrice)) &&
+                                { ((askingPrice > marketplaceConfiguration.maximumPrice) && !isNaN(askingPrice)) &&
                                     <Base className="invalid-feedback d-block">
-                                        { LocalizeText('inventory.marketplace.make_offer.max_price', [ 'maxprice' ], [ catalogState.marketplaceConfiguration.maximumPrice.toString() ]) }
+                                        { LocalizeText('inventory.marketplace.make_offer.max_price', [ 'maxprice' ], [ marketplaceConfiguration.maximumPrice.toString() ]) }
                                     </Base> }
-                                { (!((askingPrice < catalogState.marketplaceConfiguration.minimumPrice) || (askingPrice > catalogState.marketplaceConfiguration.maximumPrice) || isNaN(askingPrice))) &&
+                                { (!((askingPrice < marketplaceConfiguration.minimumPrice) || (askingPrice > marketplaceConfiguration.maximumPrice) || isNaN(askingPrice))) &&
                                     <Base className="invalid-feedback d-block">
-                                        { LocalizeText('inventory.marketplace.make_offer.final_price', [ 'commission', 'finalprice' ], [ catalogState.marketplaceConfiguration.commission.toString(), (askingPrice + catalogState.marketplaceConfiguration.commission).toString() ]) }
+                                        { LocalizeText('inventory.marketplace.make_offer.final_price', [ 'commission', 'finalprice' ], [ marketplaceConfiguration.commission.toString(), (askingPrice + marketplaceConfiguration.commission).toString() ]) }
                                     </Base> }
                             </div>
-                            <Button size="sm" disabled={ ((askingPrice < catalogState.marketplaceConfiguration.minimumPrice) || (askingPrice > catalogState.marketplaceConfiguration.maximumPrice) || isNaN(askingPrice)) } onClick={ postItem }>
+                            <Button size="sm" disabled={ ((askingPrice < marketplaceConfiguration.minimumPrice) || (askingPrice > marketplaceConfiguration.maximumPrice) || isNaN(askingPrice)) } onClick={ postItem }>
                                 { LocalizeText('inventory.marketplace.make_offer.post') }
                             </Button>
                         </Column>

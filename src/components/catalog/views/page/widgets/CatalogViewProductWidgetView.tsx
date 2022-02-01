@@ -1,38 +1,106 @@
-import { IObjectData } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
-import { CatalogSelectProductEvent } from '../../../../../events';
-import { CatalogSetRoomPreviewerStuffDataEvent } from '../../../../../events/catalog/CatalogSetRoomPreviewerStuffDataEvent';
-import { CatalogWidgetEvent } from '../../../../../events/catalog/CatalogWidgetEvent';
-import { BatchUpdates, useUiEvent } from '../../../../../hooks';
-import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
+import { Vector3d } from '@nitrots/nitro-renderer';
+import { FC, useEffect } from 'react';
+import { GetAvatarRenderManager, GetSessionDataManager } from '../../../../../api';
+import { Column } from '../../../../../common/Column';
+import { Grid } from '../../../../../common/Grid';
+import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
+import { RoomPreviewerView } from '../../../../../views/shared/room-previewer/RoomPreviewerView';
+import { FurniCategory } from '../../../common/FurniCategory';
+import { Offer } from '../../../common/Offer';
+import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
 import { useCatalogContext } from '../../../context/CatalogContext';
 
 export const CatalogViewProductWidgetView: FC<{}> = props =>
 {
-    const [ selectedProductEvent, setSelectedProductEvent ] = useState<CatalogSelectProductEvent>(null);
-    const [ offer, setOffer ] = useState<IPurchasableOffer>(null);
-    const [ stuffData, setStuffData ] = useState<IObjectData>(null);
-    const { roomPreviewer = null } = useCatalogContext();
+    const { currentOffer = null, roomPreviewer = null, purchaseOptions = null } = useCatalogContext();
+    const { previewStuffData = null } = purchaseOptions;
 
-    const onCatalogSelectProductEvent = useCallback((event: CatalogSelectProductEvent) =>
+    useEffect(() =>
     {
-        BatchUpdates(() =>
+        if(!currentOffer || (currentOffer.pricingModel === Offer.PRICING_MODEL_BUNDLE) || !roomPreviewer) return;
+
+        const product = currentOffer.product;
+
+        if(!product) return;
+
+        switch(product.productType)
         {
-            setSelectedProductEvent(event);
-            setOffer(event.offer);
-        })
-    }, []);
+            case ProductTypeEnum.FLOOR: {
+                if(!product.furnitureData) return;
 
-    useUiEvent(CatalogWidgetEvent.SELECT_PRODUCT, onCatalogSelectProductEvent);
+                if(product.furnitureData.specialType === FurniCategory.FIGURE_PURCHASABLE_SET)
+                {
+                    const furniData = GetSessionDataManager().getFloorItemData(product.furnitureData.id);
+                    const customParts = furniData.customParams.split(',').map(value => parseInt(value));
+                    const figureSets: number[] = [];
 
-    const onCatalogSetRoomPreviewerStuffDataEvent = useCallback((event: CatalogSetRoomPreviewerStuffDataEvent) =>
+                    for(const part of customParts)
+                    {
+                        if(GetAvatarRenderManager().isValidFigureSetForGender(part, GetSessionDataManager().gender)) figureSets.push(part);
+                    }
+
+                    const figureString = GetAvatarRenderManager().getFigureStringWithFigureIds(GetSessionDataManager().figure, GetSessionDataManager().gender, figureSets);
+
+                    roomPreviewer.addAvatarIntoRoom(figureString, product.productClassId)
+                }
+                else
+                {
+                    roomPreviewer.addFurnitureIntoRoom(product.productClassId, new Vector3d(90), previewStuffData, product.extraParam);
+                }
+                return;
+            }
+            case ProductTypeEnum.WALL: {
+                if(!product.furnitureData) return;
+
+                switch(product.furnitureData.specialType)
+                {
+                    case FurniCategory.FLOOR:
+                        roomPreviewer.reset(false);
+                        roomPreviewer.updateObjectRoom(product.extraParam);
+                        return;
+                    case FurniCategory.WALL_PAPER:
+                        roomPreviewer.reset(false);
+                        roomPreviewer.updateObjectRoom(null, product.extraParam);
+                        return;
+                    case FurniCategory.LANDSCAPE: {
+                        roomPreviewer.reset(false);
+                        roomPreviewer.updateObjectRoom(null, null, product.extraParam);
+
+                        const furniData = GetSessionDataManager().getWallItemDataByName('ads_twi_windw');
+
+                        if(furniData) roomPreviewer.addWallItemIntoRoom(furniData.id, new Vector3d(90), furniData.customParams);
+                        return;
+                    }
+                    default:
+                        roomPreviewer.updateObjectRoom('default', 'default', 'default');
+                        roomPreviewer.addWallItemIntoRoom(product.productClassId, new Vector3d(90), product.extraParam);
+                        return;
+                }
+            }
+            case ProductTypeEnum.ROBOT:
+                roomPreviewer.addAvatarIntoRoom(product.extraParam, 0);
+                return;
+            case ProductTypeEnum.EFFECT:
+                roomPreviewer.addAvatarIntoRoom(GetSessionDataManager().figure, product.productClassId);
+                return;
+        }
+    }, [ currentOffer, previewStuffData, roomPreviewer ]);
+
+    if(!currentOffer) return null;
+
+    if(currentOffer.pricingModel === Offer.PRICING_MODEL_BUNDLE)
     {
-        setStuffData(event.stuffData);
-
-        if(roomPreviewer) roomPreviewer.reset(false);
-    }, [ roomPreviewer ]);
-
-    useUiEvent(CatalogWidgetEvent.SET_PREVIEWER_STUFFDATA, onCatalogSetRoomPreviewerStuffDataEvent);
-
-    return null;
+        return (
+            <Column fit overflow="hidden" className="bg-muted p-2 rounded">
+                <Grid fullWidth grow columnCount={ 4 } overflow="auto" className="nitro-catalog-layout-bundle-grid">
+                    { (currentOffer.products.length > 0) && currentOffer.products.map((product, index) =>
+                    {
+                        return <LayoutGridItem key={ index } itemImage={ product.getIconUrl(currentOffer) } itemCount={ product.productCount } />;
+                    }) }
+                </Grid>
+            </Column>
+        );
+    }
+    
+    return <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />;
 }

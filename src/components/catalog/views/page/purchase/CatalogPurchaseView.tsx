@@ -7,8 +7,6 @@ import { Text } from '../../../../../common/Text';
 import { CurrencyIcon } from '../../../../../views/shared/currency-icon/CurrencyIcon';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 import { Offer } from '../../../common/Offer';
-import { CatalogPurchaseButtonView } from './CatalogPurchaseButtonView';
-import { CatalogPurchaseGiftButtonView } from './CatalogPurchaseGiftButtonView';
 
 export interface CatalogPurchaseViewProps
 {
@@ -82,11 +80,6 @@ export const CatalogPurchaseView: FC<CatalogPurchaseViewProps> = props =>
                         </Flex> }
                 </Column>
             </Flex>
-            <Column gap={ 1 }>
-                <CatalogPurchaseButtonView offer={ offer } pageId={ pageId } extra={ extraData } quantity={ quantity } disabled={ disabled } />
-                { offer.giftable &&
-                    <CatalogPurchaseGiftButtonView offer={ offer } pageId={ pageId } extra={ extraData } disabled={ disabled } /> }
-            </Column>
         </Column>
     );
 }

@@ -9,7 +9,7 @@ import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
 import { FormGroup } from '../../../../common/FormGroup';
 import { Text } from '../../../../common/Text';
-import { CatalogEvent } from '../../../../events';
+import { CatalogEvent, CatalogPurchasedEvent } from '../../../../events';
 import { CatalogInitGiftEvent } from '../../../../events/catalog/CatalogInitGiftEvent';
 import { BatchUpdates, SendMessageHook, useUiEvent } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutGiftCardView } from '../../../../layout';
@@ -32,8 +32,8 @@ export const CatalogGiftView: FC<{}> = props =>
     const [ maxBoxIndex, setMaxBoxIndex ] = useState<number>(0);
     const [ maxRibbonIndex, setMaxRibbonIndex ] = useState<number>(0);
     const [ receiverNotFound, setReceiverNotFound ] = useState<boolean>(false);
-    const { catalogState = null } = useCatalogContext();
-    const { giftConfiguration = null } = catalogState;
+    const { catalogOptions = null } = useCatalogContext();
+    const { giftConfiguration = null } = catalogOptions;
 
     const close = useCallback(() =>
     {
@@ -56,7 +56,7 @@ export const CatalogGiftView: FC<{}> = props =>
     {
         switch(event.type)
         {
-            case CatalogEvent.PURCHASE_SUCCESS:
+            case CatalogPurchasedEvent.PURCHASE_SUCCESS:
                 close();
                 return;
             case CatalogEvent.INIT_GIFT:
@@ -77,7 +77,7 @@ export const CatalogGiftView: FC<{}> = props =>
         }
     }, [ close ]);
 
-    useUiEvent(CatalogEvent.PURCHASE_SUCCESS, onCatalogEvent);
+    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
     useUiEvent(CatalogEvent.INIT_GIFT, onCatalogEvent);
     useUiEvent(CatalogEvent.GIFT_RECEIVER_NOT_FOUND, onCatalogEvent);
 

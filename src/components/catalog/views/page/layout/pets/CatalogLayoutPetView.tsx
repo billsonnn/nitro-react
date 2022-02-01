@@ -1,34 +1,71 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorConverter, GetSellablePetPalettesComposer, SellablePetPaletteData } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../../../api';
 import { Base } from '../../../../../../common/Base';
 import { Button } from '../../../../../../common/Button';
 import { Column } from '../../../../../../common/Column';
+import { Flex } from '../../../../../../common/Flex';
 import { Grid } from '../../../../../../common/Grid';
 import { LayoutGridItem } from '../../../../../../common/layout/LayoutGridItem';
 import { Text } from '../../../../../../common/Text';
-import { BatchUpdates } from '../../../../../../hooks';
+import { CatalogNameResultEvent } from '../../../../../../events';
+import { CatalogWidgetEvent } from '../../../../../../events/catalog/CatalogWidgetEvent';
+import { BatchUpdates, useUiEvent } from '../../../../../../hooks';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { PetImageView } from '../../../../../../views/shared/pet-image/PetImageView';
 import { GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../common/CatalogUtilities';
 import { useCatalogContext } from '../../../../context/CatalogContext';
-import { CatalogRoomPreviewerView } from '../../../catalog-room-previewer/CatalogRoomPreviewerView';
-import { CatalogPageDetailsView } from '../../../page-details/CatalogPageDetailsView';
+import { CatalogAddOnBadgeWidgetView } from '../../widgets/CatalogAddOnBadgeWidgetView';
+import { CatalogPurchaseWidgetView } from '../../widgets/CatalogPurchaseWidgetView';
+import { CatalogTotalPriceWidget } from '../../widgets/CatalogTotalPriceWidget';
+import { CatalogViewProductWidgetView } from '../../widgets/CatalogViewProductWidgetView';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
-import { CatalogLayoutPetPurchaseView } from './CatalogLayoutPetPurchaseView';
 
 export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 {
-    const { page = null, roomPreviewer = null } = props;
+    const { page = null } = props;
     const [ petIndex, setPetIndex ] = useState(-1);
     const [ sellablePalettes, setSellablePalettes ] = useState<SellablePetPaletteData[]>([]);
     const [ selectedPaletteIndex, setSelectedPaletteIndex ] = useState(-1);
     const [ sellableColors, setSellableColors ] = useState<number[][]>([]);
     const [ selectedColorIndex, setSelectedColorIndex ] = useState(-1);
     const [ colorsShowing, setColorsShowing ] = useState(false);
-    const { currentOffer = null, setCurrentOffer = null, catalogState = null, dispatchCatalogState = null } = useCatalogContext();
-    const { petPalettes = [] } = catalogState;
+    const [ petName, setPetName ] = useState('');
+    const [ approvalPending, setApprovalPending ] = useState(true);
+    const [ approvalResult, setApprovalResult ] = useState(-1);
+    const { currentOffer = null, setCurrentOffer = null, catalogOptions = null, roomPreviewer = null } = useCatalogContext();
+    const { petPalettes = [] } = catalogOptions;
+
+    const validationErrorMessage = () =>
+    {
+        let key: string = '';
+
+        switch(approvalResult)
+        {
+            case 1:
+                key = 'catalog.alert.petname.long';
+                break;
+            case 2:
+                key = 'catalog.alert.petname.short';
+                break;
+            case 3:
+                key = 'catalog.alert.petname.chars';
+                break;
+            case 4:
+                key = 'catalog.alert.petname.bobba';
+                break;
+        }
+
+        return LocalizeText(key);
+    }
+
+    const onCatalogNameResultEvent = useCallback((event: CatalogNameResultEvent) =>
+    {
+        setApprovalPending(false);
+    }, []);
+
+    useUiEvent(CatalogWidgetEvent.APPROVE_RESULT, onCatalogNameResultEvent)
 
     const getColor = useMemo(() =>
     {
@@ -135,8 +172,8 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
     useEffect(() =>
     {
         if(!roomPreviewer) return;
-
-        roomPreviewer && roomPreviewer.reset(false);
+        
+        roomPreviewer.reset(false);
 
         if((petIndex === -1) || !sellablePalettes.length || (selectedPaletteIndex === -1)) return;
 
@@ -164,23 +201,33 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
                     { colorsShowing && (sellableColors.length > 0) && sellableColors.map((colorSet, index) => <LayoutGridItem key={ index } itemActive={ (selectedColorIndex === index) } itemColor={ ColorConverter.int2rgb(colorSet[0]) } onClick={ event => setSelectedColorIndex(index) } />) }
                 </Grid>
             </Column>
-            <Column size={ 5 } overflow="hidden">
-                { (petIndex === -1) &&
-                    <CatalogPageDetailsView page={ page } /> }
-                { (petIndex >= 0) &&
+            <Column center={ !currentOffer } size={ 5 } overflow="hidden">
+                { !currentOffer &&
                     <>
-                        <Column overflow="hidden" position="relative" gap={ 0 }>
-                            { roomPreviewer && <CatalogRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } /> }
-                            { (petIndex > -1 && petIndex <= 7) &&
-                                <Base position="absolute" className="start-1 bottom-1">
-                                    <Button size="sm" active={ colorsShowing } onClick={ event => setColorsShowing(!colorsShowing) }>
-                                        <FontAwesomeIcon icon="fill-drip" />
-                                    </Button>
-                                </Base> }
-                        </Column>
-                        <Column grow>
-                            <Text grow truncate>{ petBreedName }</Text>
-                            <CatalogLayoutPetPurchaseView offer={ currentOffer } pageId={ page.pageId } extra={ petPurchaseString } />
+                        { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
+                        <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
+                    </> }
+                { currentOffer &&
+                    <>
+                        <Base position="relative" overflow="hidden">
+                            <CatalogViewProductWidgetView />
+                            <CatalogAddOnBadgeWidgetView position="absolute" className="bg-muted rounded bottom-1 end-1" />
+                            { ((petIndex > -1) && (petIndex <= 7)) &&
+                                <Button position="absolute" className="bottom-1 start-1" onClick={ event => setColorsShowing(!colorsShowing) }>
+                                    <FontAwesomeIcon icon="fill-drip" />
+                                </Button> }
+                        </Base>
+                        <Column grow gap={ 1 }>
+                            <Text truncate>{ petBreedName }</Text>
+                            <Column grow gap={ 1 }>
+                                <input type="text" className="form-control form-control-sm w-100" placeholder={ LocalizeText('widgets.petpackage.name.title') } value={ petName } onChange={ event => setPetName(event.target.value) } />
+                                { (approvalResult > 0) &&
+                                    <Base className="invalid-feedback">{ validationErrorMessage }</Base> }
+                            </Column>
+                            <Flex justifyContent="end">
+                                <CatalogTotalPriceWidget justifyContent="end" alignItems="end" />
+                            </Flex>
+                            <CatalogPurchaseWidgetView />
                         </Column>
                     </> }
             </Column>

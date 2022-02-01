@@ -1,27 +1,21 @@
-import { FC, useCallback, useState } from 'react';
-import { BaseProps } from '../../../../../common/Base';
-import { CatalogSelectProductEvent } from '../../../../../events';
-import { CatalogWidgetEvent } from '../../../../../events/catalog/CatalogWidgetEvent';
-import { useUiEvent } from '../../../../../hooks';
-import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
+import { FC } from 'react';
+import { Flex, FlexProps } from '../../../../../common/Flex';
+import { useCatalogContext } from '../../../context/CatalogContext';
 import { CatalogPriceDisplayWidgetView } from './CatalogPriceDisplayWidgetView';
 
-interface CatalogSimplePriceWidgetViewProps extends BaseProps<HTMLDivElement>
+interface CatalogSimplePriceWidgetViewProps extends FlexProps
 {
 
 }
 
 export const CatalogSimplePriceWidgetView: FC<CatalogSimplePriceWidgetViewProps> = props =>
 {
-    const { ...rest } = props;
-    const [ offer, setOffer ] = useState<IPurchasableOffer>(null);
+    const { gap = 1, ...rest } = props;
+    const { currentOffer = null } = useCatalogContext();
 
-    const onCatalogSelectProductEvent = useCallback((event: CatalogSelectProductEvent) =>
-    {
-        setOffer(event.offer);
-    }, []);
-
-    useUiEvent(CatalogWidgetEvent.SELECT_PRODUCT, onCatalogSelectProductEvent);
-
-    return <CatalogPriceDisplayWidgetView offer={ offer } { ...rest } />;
+    return (
+        <Flex gap={ gap } alignItems="center" classNames={ [ 'bg-muted', 'p-1', 'rounded' ] } { ...rest }>
+            <CatalogPriceDisplayWidgetView separator={ true } offer={ currentOffer } />
+        </Flex>
+    );
 }

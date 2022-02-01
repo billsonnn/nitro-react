@@ -1,25 +1,15 @@
 import { NitroToolbarAnimateIconEvent, TextureUtils, ToolbarIconEnum } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useRef, useState } from 'react';
+import { FC, useCallback, useRef } from 'react';
 import { GetRoomEngine } from '../../../../api';
-import { CatalogEvent, CatalogSelectProductEvent } from '../../../../events';
-import { CatalogWidgetEvent } from '../../../../events/catalog/CatalogWidgetEvent';
+import { CatalogPurchasedEvent } from '../../../../events';
 import { useUiEvent } from '../../../../hooks';
 import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomPreviewerView';
 import { RoomPreviewerViewProps } from '../../../../views/shared/room-previewer/RoomPreviewerView.types';
-import { IPurchasableOffer } from '../../common/IPurchasableOffer';
 
 export const CatalogRoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 {
     const { roomPreviewer = null } = props;
-    const [ offer, setOffer ] = useState<IPurchasableOffer>(null);
     const elementRef = useRef<HTMLDivElement>(null);
-
-    const onCatalogSelectProductEvent = useCallback((event: CatalogSelectProductEvent) =>
-    {
-        setOffer(event.offer);
-    }, []);
-
-    useUiEvent(CatalogWidgetEvent.SELECT_PRODUCT, onCatalogSelectProductEvent)
 
     const animatePurchase = useCallback(() =>
     {
@@ -44,18 +34,13 @@ export const CatalogRoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 
         GetRoomEngine().events.dispatchEvent(event);
     }, [ roomPreviewer ]);
-    
-    const onCatalogEvent = useCallback((event: CatalogEvent) =>
+
+    const onCatalogPurchasedEvent = useCallback((event: CatalogPurchasedEvent) =>
     {
-        switch(event.type)
-        {
-            case CatalogEvent.PURCHASE_SUCCESS:
-                animatePurchase();
-                return;
-        }
+        animatePurchase();
     }, [ animatePurchase ]);
 
-    useUiEvent(CatalogEvent.PURCHASE_SUCCESS, onCatalogEvent);
+    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
 
     return (
         <div ref={ elementRef }>

@@ -1,9 +1,7 @@
-import { FC, useCallback, useState } from 'react';
+import { FC } from 'react';
 import { BaseProps } from '../../../../../common/Base';
-import { CatalogSelectProductEvent } from '../../../../../events';
-import { CatalogWidgetEvent } from '../../../../../events/catalog/CatalogWidgetEvent';
-import { useUiEvent } from '../../../../../hooks';
 import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
+import { useCatalogContext } from '../../../context/CatalogContext';
 
 interface CatalogAddOnBadgeWidgetViewProps extends BaseProps<HTMLDivElement>
 {
@@ -13,16 +11,9 @@ interface CatalogAddOnBadgeWidgetViewProps extends BaseProps<HTMLDivElement>
 export const CatalogAddOnBadgeWidgetView: FC<CatalogAddOnBadgeWidgetViewProps> = props =>
 {
     const { ...rest } = props;
-    const [ badgeCode, setBadgeCode ] = useState<string>(null);
+    const { currentOffer = null } = useCatalogContext();
 
-    const onCatalogSelectProductEvent = useCallback((event: CatalogSelectProductEvent) =>
-    {
-        if(event.offer.badgeCode) setBadgeCode(event.offer.badgeCode);
-    }, []);
+    if(!currentOffer || !currentOffer.badgeCode || !currentOffer.badgeCode.length) return null;
 
-    useUiEvent(CatalogWidgetEvent.SELECT_PRODUCT, onCatalogSelectProductEvent);
-
-    if(!badgeCode || !badgeCode.length) return null;
-
-    return <BadgeImageView badgeCode={ badgeCode } { ...rest } />;
+    return <BadgeImageView badgeCode={ currentOffer.badgeCode } { ...rest } />;
 }
