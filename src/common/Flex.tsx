@@ -1,6 +1,7 @@
 import { FC, useMemo } from 'react';
 import { Base, BaseProps } from './Base';
 import { AlignItemType } from './types/AlignItemType';
+import { AlignSelfType } from './types/AlignSelfType';
 import { JustifyContentType } from './types/JustifyContentType';
 import { SpacingType } from './types/SpacingType';
 
@@ -11,13 +12,14 @@ export interface FlexProps extends BaseProps<HTMLDivElement>
     reverse?: boolean;
     gap?: SpacingType;
     center?: boolean;
+    alignSelf?: AlignSelfType;
     alignItems?: AlignItemType;
     justifyContent?: JustifyContentType;
 }
 
 export const Flex: FC<FlexProps> = props =>
 {
-    const { inline = false, column = undefined, reverse = false, gap = null, center = false, alignItems = null, justifyContent = null, classNames = [], ...rest } = props;
+    const { inline = false, column = undefined, reverse = false, gap = null, center = false, alignSelf = null, alignItems = null, justifyContent = null, classNames = [], ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -38,6 +40,8 @@ export const Flex: FC<FlexProps> = props =>
 
         if(gap) newClassNames.push('gap-' + gap);
 
+        if(alignSelf) newClassNames.push('align-self-' + alignSelf);
+
         if(alignItems) newClassNames.push('align-items-' + alignItems);
 
         if(justifyContent) newClassNames.push('justify-content-' + justifyContent);
@@ -47,7 +51,7 @@ export const Flex: FC<FlexProps> = props =>
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ inline, column, reverse, gap, center, alignItems, justifyContent, classNames ]);
+    }, [ inline, column, reverse, gap, center, alignSelf, alignItems, justifyContent, classNames ]);
 
     return <Base classNames={ getClassNames } { ...rest } />;
 }
