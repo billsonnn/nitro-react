@@ -1,5 +1,5 @@
 import { createContext, Dispatch, FC, ProviderProps, SetStateAction, useContext } from 'react';
-import { CameraPicture } from '../common/CameraPicture';
+import { CameraPicture } from './common/CameraPicture';
 
 export interface ICameraWidgetContext
 {

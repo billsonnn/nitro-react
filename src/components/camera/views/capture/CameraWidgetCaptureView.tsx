@@ -7,8 +7,8 @@ import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
 import { DraggableWindow } from '../../../../layout';
 import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
+import { useCameraWidgetContext } from '../../CameraWidgetContext';
 import { CameraPicture } from '../../common/CameraPicture';
-import { useCameraWidgetContext } from '../../context/CameraWidgetContext';
 
 export interface CameraWidgetCaptureViewProps
 {
