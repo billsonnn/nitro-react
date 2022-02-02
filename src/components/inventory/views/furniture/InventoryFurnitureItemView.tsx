@@ -3,7 +3,7 @@ import { FC, MouseEvent, useEffect, useState } from 'react';
 import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { attemptItemPlacement } from '../../common/FurnitureUtilities';
 import { GroupItem } from '../../common/GroupItem';
-import { useInventoryContext } from '../../context/InventoryContext';
+import { useInventoryContext } from '../../InventoryContext';
 import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
 
 export interface InventoryFurnitureItemViewProps

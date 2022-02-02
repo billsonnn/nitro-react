@@ -2,7 +2,7 @@ import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent } from 'react';
 import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
-import { useInventoryContext } from '../../context/InventoryContext';
+import { useInventoryContext } from '../../InventoryContext';
 import { InventoryBadgeActions } from '../../reducers/InventoryBadgeReducer';
 
 export interface InventoryBadgeItemViewProps

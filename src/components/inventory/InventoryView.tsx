@@ -12,7 +12,7 @@ import { TradeState } from './common/TradeState';
 import { IUnseenItemTracker } from './common/unseen/IUnseenItemTracker';
 import { UnseenItemCategory } from './common/unseen/UnseenItemCategory';
 import { UnseenItemTracker } from './common/unseen/UnseenItemTracker';
-import { InventoryContextProvider } from './context/InventoryContext';
+import { InventoryContextProvider } from './InventoryContext';
 import { InventoryMessageHandler } from './InventoryMessageHandler';
 import { initialInventoryBadge, InventoryBadgeReducer } from './reducers/InventoryBadgeReducer';
 import { initialInventoryBot, InventoryBotReducer } from './reducers/InventoryBotReducer';

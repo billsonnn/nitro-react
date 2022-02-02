@@ -17,7 +17,7 @@ import { GroupItem } from '../../common/GroupItem';
 import { IFurnitureItem } from '../../common/IFurnitureItem';
 import { TradeState } from '../../common/TradeState';
 import { _Str_16998 } from '../../common/TradingUtilities';
-import { useInventoryContext } from '../../context/InventoryContext';
+import { useInventoryContext } from '../../InventoryContext';
 import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
 import { InventoryFurnitureSearchView } from '../furniture/InventoryFurnitureSearchView';
 

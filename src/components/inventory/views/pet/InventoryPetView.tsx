@@ -8,7 +8,7 @@ import { Text } from '../../../../common/Text';
 import { SendMessageHook } from '../../../../hooks/messages/message-event';
 import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomPreviewerView';
 import { attemptPetPlacement } from '../../common/PetUtilities';
-import { useInventoryContext } from '../../context/InventoryContext';
+import { useInventoryContext } from '../../InventoryContext';
 import { InventoryPetActions } from '../../reducers/InventoryPetReducer';
 import { InventoryCategoryEmptyView } from '../category-empty/InventoryCategoryEmptyView';
 import { InventoryPetItemView } from './InventoryPetItemView';

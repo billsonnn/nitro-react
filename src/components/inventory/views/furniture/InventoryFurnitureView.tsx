@@ -12,7 +12,7 @@ import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomP
 import { FurniCategory } from '../../common/FurniCategory';
 import { attemptItemPlacement, attemptPlaceMarketplaceOffer } from '../../common/FurnitureUtilities';
 import { GroupItem } from '../../common/GroupItem';
-import { useInventoryContext } from '../../context/InventoryContext';
+import { useInventoryContext } from '../../InventoryContext';
 import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
 import { InventoryCategoryEmptyView } from '../category-empty/InventoryCategoryEmptyView';
 import { InventoryFurnitureItemView } from './InventoryFurnitureItemView';

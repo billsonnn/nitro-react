@@ -4,7 +4,7 @@ import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
 import { BotItem } from '../../common/BotItem';
 import { attemptBotPlacement } from '../../common/BotUtilities';
-import { useInventoryContext } from '../../context/InventoryContext';
+import { useInventoryContext } from '../../InventoryContext';
 import { InventoryBotActions } from '../../reducers/InventoryBotReducer';
 
 export interface InventoryBotItemViewProps

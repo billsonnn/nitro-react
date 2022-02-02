@@ -10,7 +10,7 @@ import { mergeFurniFragments } from './common/FurnitureUtilities';
 import { mergePetFragments } from './common/PetUtilities';
 import { TradeState } from './common/TradeState';
 import { TradeUserData } from './common/TradeUserData';
-import { useInventoryContext } from './context/InventoryContext';
+import { useInventoryContext } from './InventoryContext';
 import { InventoryBadgeActions } from './reducers/InventoryBadgeReducer';
 import { InventoryBotActions } from './reducers/InventoryBotReducer';
 import { InventoryFurnitureActions } from './reducers/InventoryFurnitureReducer';

@@ -4,7 +4,7 @@ import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { PetImageView } from '../../../../views/shared/pet-image/PetImageView';
 import { PetItem } from '../../common/PetItem';
 import { attemptPetPlacement } from '../../common/PetUtilities';
-import { useInventoryContext } from '../../context/InventoryContext';
+import { useInventoryContext } from '../../InventoryContext';
 import { InventoryPetActions } from '../../reducers/InventoryPetReducer';
 
 export interface InventoryPetItemViewProps
