@@ -12,7 +12,7 @@ import { BatchUpdates, SendMessageHook, useUiEvent } from '../../../../../../hoo
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../../layout';
 import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
 import { FurnitureItem } from '../../../../../inventory/common/FurnitureItem';
-import { useCatalogContext } from '../../../../context/CatalogContext';
+import { useCatalogContext } from '../../../../CatalogContext';
 
 export const MarketplacePostOfferView : FC<{}> = props =>
 {

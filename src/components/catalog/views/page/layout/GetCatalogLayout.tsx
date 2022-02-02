@@ -19,11 +19,11 @@ import { CatalogLayoutMarketplacePublicItemsView } from './marketplace/CatalogLa
 import { CatalogLayoutPetView } from './pets/CatalogLayoutPetView';
 import { CatalogLayoutVipGiftsView } from './vip-gifts/CatalogLayoutVipGiftsView';
 
-export const GetCatalogLayout = (page: ICatalogPage) =>
+export const GetCatalogLayout = (page: ICatalogPage, hideNavigation: () => void) =>
 {
     if(!page) return null;
     
-    const layoutProps: CatalogLayoutProps = { page };
+    const layoutProps: CatalogLayoutProps = { page, hideNavigation };
 
     switch(page.layoutCode)
     {
@@ -58,11 +58,11 @@ export const GetCatalogLayout = (page: ICatalogPage) =>
         case 'spaces_new':
             return <CatalogLayoutSpacesView { ...layoutProps } />;
         case 'trophies':
-            return <CatalogLayoutTrophiesView page={ page } />;
+            return <CatalogLayoutTrophiesView { ...layoutProps } />;
         case 'info_loyalty':
             return <CatalogLayoutInfoLoyaltyView { ...layoutProps } />;
         case 'badge_display':
-            return <CatalogLayoutBadgeDisplayView page={ page } />;
+            return <CatalogLayoutBadgeDisplayView { ...layoutProps } />;
         //case 'default_3x3_color_grouping':
             //return <CatalogLayoutColorGroupingView { ...layoutProps } />;
         case 'bots':

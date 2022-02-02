@@ -4,7 +4,7 @@ import { Column } from '../../../../../common/Column';
 import { Flex } from '../../../../../common/Flex';
 import { Grid } from '../../../../../common/Grid';
 import { Text } from '../../../../../common/Text';
-import { useCatalogContext } from '../../../context/CatalogContext';
+import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogAddOnBadgeWidgetView } from '../widgets/CatalogAddOnBadgeWidgetView';
 import { CatalogItemGridWidgetView } from '../widgets/CatalogItemGridWidgetView';
 import { CatalogLimitedItemWidgetView } from '../widgets/CatalogLimitedItemWidgetView';

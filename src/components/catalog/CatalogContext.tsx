@@ -1,12 +1,12 @@
 import { FrontPageItem, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { createContext, Dispatch, FC, ProviderProps, SetStateAction, useContext } from 'react';
-import { ICatalogNode } from '../common/ICatalogNode';
-import { ICatalogOptions } from '../common/ICatalogOptions';
-import { ICatalogPage } from '../common/ICatalogPage';
-import { IPageLocalization } from '../common/IPageLocalization';
-import { IPurchasableOffer } from '../common/IPurchasableOffer';
-import { IPurchaseOptions } from '../common/IPurchaseOptions';
-import { SearchResult } from '../common/SearchResult';
+import { ICatalogNode } from './common/ICatalogNode';
+import { ICatalogOptions } from './common/ICatalogOptions';
+import { ICatalogPage } from './common/ICatalogPage';
+import { IPageLocalization } from './common/IPageLocalization';
+import { IPurchasableOffer } from './common/IPurchasableOffer';
+import { IPurchaseOptions } from './common/IPurchaseOptions';
+import { SearchResult } from './common/SearchResult';
 
 interface ICatalogContext
 {

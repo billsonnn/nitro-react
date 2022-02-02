@@ -1,16 +1,16 @@
 import { FrontPageItem } from '@nitrots/nitro-renderer';
-import { FC, useCallback } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 import { CreateLinkEvent } from '../../../../../../api';
 import { Column } from '../../../../../../common/Column';
 import { Grid } from '../../../../../../common/Grid';
-import { useCatalogContext } from '../../../../context/CatalogContext';
-import { CatalogRedeemVoucherView } from '../../redeem-voucher/CatalogRedeemVoucherView';
+import { useCatalogContext } from '../../../../CatalogContext';
+import { CatalogRedeemVoucherView } from '../../common/CatalogRedeemVoucherView';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutFrontPageItemView } from './CatalogLayoutFrontPageItemView';
 
 export const CatalogLayoutFrontpage4View: FC<CatalogLayoutProps> = props =>
 {
-    const { page = null } = props;
+    const { page = null, hideNavigation = null } = props;
     const { frontPageItems = [] } = useCatalogContext();
 
     const selectItem = useCallback((item: FrontPageItem) =>
@@ -25,6 +25,11 @@ export const CatalogLayoutFrontpage4View: FC<CatalogLayoutProps> = props =>
                 return;
         }
     }, []);
+
+    useEffect(() =>
+    {
+        hideNavigation();
+    }, [ page, hideNavigation ]);
 
     return (
         <Grid>

@@ -9,6 +9,7 @@ import { BatchUpdates } from '../../hooks';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
+import { CatalogContextProvider } from './CatalogContext';
 import { CatalogMessageHandler } from './CatalogMessageHandler';
 import { CatalogPage } from './common/CatalogPage';
 import { CatalogType } from './common/CatalogType';
@@ -20,7 +21,6 @@ import { IPurchasableOffer } from './common/IPurchasableOffer';
 import { IPurchaseOptions } from './common/IPurchaseOptions';
 import { RequestedPage } from './common/RequestedPage';
 import { SearchResult } from './common/SearchResult';
-import { CatalogContextProvider } from './context/CatalogContext';
 import { CatalogGiftView } from './views/gift/CatalogGiftView';
 import { CatalogNavigationView } from './views/navigation/CatalogNavigationView';
 import { GetCatalogLayout } from './views/page/layout/GetCatalogLayout';
@@ -43,6 +43,7 @@ export const CatalogView: FC<{}> = props =>
     const [ searchResult, setSearchResult ] = useState<SearchResult>(null);
     const [ frontPageItems, setFrontPageItems ] = useState<FrontPageItem[]>([]);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
+    const [ navigationHidden, setNavigationHidden ] = useState(false);
     const [ purchaseOptions, setPurchaseOptions ] = useState<IPurchaseOptions>({});
     const [ catalogOptions, setCatalogOptions ] = useState<ICatalogOptions>({});
 
@@ -129,6 +130,7 @@ export const CatalogView: FC<{}> = props =>
         {
             setCurrentPage(catalogPage);
             setPreviousPageId(prevValue => ((pageId !== -1) ? pageId : prevValue));
+            setNavigationHidden(false);
 
             if((offerId > -1) && catalogPage.offers.length)
             {
@@ -428,12 +430,13 @@ export const CatalogView: FC<{}> = props =>
                     </NitroCardTabsView>
                     <NitroCardContentView>
                         <Grid>
-                            <Column size={ 3 } overflow="hidden">
-                                { activeNodes && (activeNodes.length > 0) &&
-                                    <CatalogNavigationView node={ activeNodes[0] } /> }
-                            </Column>
-                            <Column size={ 9 } overflow="hidden">
-                                { GetCatalogLayout(currentPage) }
+                            { !navigationHidden &&
+                                <Column size={ 3 } overflow="hidden">
+                                    { activeNodes && (activeNodes.length > 0) &&
+                                        <CatalogNavigationView node={ activeNodes[0] } /> }
+                                </Column> }
+                            <Column size={ !navigationHidden ? 9 : 12 } overflow="hidden">
+                                { GetCatalogLayout(currentPage, () => setNavigationHidden(true)) }
                             </Column>
                         </Grid>
                     </NitroCardContentView>

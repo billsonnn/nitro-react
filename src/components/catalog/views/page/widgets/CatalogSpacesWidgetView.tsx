@@ -4,11 +4,11 @@ import { Button } from '../../../../../common/Button';
 import { ButtonGroup } from '../../../../../common/ButtonGroup';
 import { Grid, GridProps } from '../../../../../common/Grid';
 import { BatchUpdates } from '../../../../../hooks';
+import { useCatalogContext } from '../../../CatalogContext';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 import { Offer } from '../../../common/Offer';
 import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
-import { useCatalogContext } from '../../../context/CatalogContext';
-import { CatalogGridOfferView } from '../offers/CatalogGridOfferView';
+import { CatalogGridOfferView } from '../common/CatalogGridOfferView';
 
 interface CatalogSpacesWidgetViewProps extends GridProps
 {

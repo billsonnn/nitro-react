@@ -5,10 +5,10 @@ import { Column } from '../../../../../common/Column';
 import { Grid } from '../../../../../common/Grid';
 import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
 import { RoomPreviewerView } from '../../../../../views/shared/room-previewer/RoomPreviewerView';
+import { useCatalogContext } from '../../../CatalogContext';
 import { FurniCategory } from '../../../common/FurniCategory';
 import { Offer } from '../../../common/Offer';
 import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
-import { useCatalogContext } from '../../../context/CatalogContext';
 
 export const CatalogViewProductWidgetView: FC<{}> = props =>
 {

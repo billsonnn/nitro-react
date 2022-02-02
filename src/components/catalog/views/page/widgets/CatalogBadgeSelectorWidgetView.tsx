@@ -6,7 +6,7 @@ import { InventoryBadgesUpdatedEvent } from '../../../../../events';
 import { InventoryBadgesRequestEvent } from '../../../../../events/inventory/InventoryBadgesRequestEvent';
 import { dispatchUiEvent, useUiEvent } from '../../../../../hooks';
 import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
-import { useCatalogContext } from '../../../context/CatalogContext';
+import { useCatalogContext } from '../../../CatalogContext';
 
 const EXCLUDED_BADGE_CODES: string[] = [];
 

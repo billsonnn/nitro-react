@@ -11,6 +11,7 @@ import { dispatchUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
 import { NotificationAlertType } from '../../views/notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../views/notification-center/common/NotificationUtilities';
+import { useCatalogContext } from './CatalogContext';
 import { CatalogNode } from './common/CatalogNode';
 import { CatalogPetPalette } from './common/CatalogPetPalette';
 import { CatalogType } from './common/CatalogType';
@@ -23,7 +24,6 @@ import { PageLocalization } from './common/PageLocalization';
 import { Product } from './common/Product';
 import { ProductTypeEnum } from './common/ProductTypeEnum';
 import { SubscriptionInfo } from './common/SubscriptionInfo';
-import { useCatalogContext } from './context/CatalogContext';
 
 export const CatalogMessageHandler: FC<{}> = props =>
 {

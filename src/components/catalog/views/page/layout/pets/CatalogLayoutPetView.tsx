@@ -14,8 +14,8 @@ import { CatalogWidgetEvent } from '../../../../../../events/catalog/CatalogWidg
 import { BatchUpdates, useUiEvent } from '../../../../../../hooks';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { PetImageView } from '../../../../../../views/shared/pet-image/PetImageView';
+import { useCatalogContext } from '../../../../CatalogContext';
 import { GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../common/CatalogUtilities';
-import { useCatalogContext } from '../../../../context/CatalogContext';
 import { CatalogAddOnBadgeWidgetView } from '../../widgets/CatalogAddOnBadgeWidgetView';
 import { CatalogPurchaseWidgetView } from '../../widgets/CatalogPurchaseWidgetView';
 import { CatalogTotalPriceWidget } from '../../widgets/CatalogTotalPriceWidget';

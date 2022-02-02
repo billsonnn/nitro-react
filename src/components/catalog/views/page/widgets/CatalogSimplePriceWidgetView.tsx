@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Flex, FlexProps } from '../../../../../common/Flex';
-import { useCatalogContext } from '../../../context/CatalogContext';
+import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogPriceDisplayWidgetView } from './CatalogPriceDisplayWidgetView';
 
 interface CatalogSimplePriceWidgetViewProps extends FlexProps

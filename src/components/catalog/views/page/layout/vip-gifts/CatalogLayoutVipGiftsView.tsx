@@ -5,7 +5,7 @@ import { Grid } from '../../../../../../common/Grid';
 import { Text } from '../../../../../../common/Text';
 import { SendMessageHook } from '../../../../../../hooks';
 import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
-import { useCatalogContext } from '../../../../context/CatalogContext';
+import { useCatalogContext } from '../../../../CatalogContext';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { VipGiftItem } from './VipGiftItemView';
 

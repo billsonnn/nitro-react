@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { BaseProps } from '../../../../../common/Base';
 import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
-import { useCatalogContext } from '../../../context/CatalogContext';
+import { useCatalogContext } from '../../../CatalogContext';
 
 interface CatalogAddOnBadgeWidgetViewProps extends BaseProps<HTMLDivElement>
 {

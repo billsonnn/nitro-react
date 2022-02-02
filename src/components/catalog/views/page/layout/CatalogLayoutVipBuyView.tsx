@@ -15,8 +15,8 @@ import { LoadingSpinnerView } from '../../../../../layout/loading-spinner/Loadin
 import { GetCurrencyAmount } from '../../../../../views/purse/common/CurrencyHelper';
 import { GLOBAL_PURSE } from '../../../../../views/purse/PurseView';
 import { CurrencyIcon } from '../../../../../views/shared/currency-icon/CurrencyIcon';
+import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogPurchaseState } from '../../../common/CatalogPurchaseState';
-import { useCatalogContext } from '../../../context/CatalogContext';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>

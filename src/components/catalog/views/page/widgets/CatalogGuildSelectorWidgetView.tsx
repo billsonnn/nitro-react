@@ -5,7 +5,7 @@ import { Base } from '../../../../../common/Base';
 import { Button } from '../../../../../common/Button';
 import { Flex } from '../../../../../common/Flex';
 import { SendMessageHook } from '../../../../../hooks';
-import { useCatalogContext } from '../../../context/CatalogContext';
+import { useCatalogContext } from '../../../CatalogContext';
 
 export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
 {

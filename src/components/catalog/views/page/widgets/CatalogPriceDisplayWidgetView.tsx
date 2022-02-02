@@ -3,8 +3,8 @@ import { FC } from 'react';
 import { Flex } from '../../../../../common/Flex';
 import { Text } from '../../../../../common/Text';
 import { CurrencyIcon } from '../../../../../views/shared/currency-icon/CurrencyIcon';
+import { useCatalogContext } from '../../../CatalogContext';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
-import { useCatalogContext } from '../../../context/CatalogContext';
 
 interface CatalogPriceDisplayWidgetViewProps
 {

@@ -1,20 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IFurnitureData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../../../api';
-import { Button } from '../../../../common/Button';
-import { Flex } from '../../../../common/Flex';
-import { BatchUpdates } from '../../../../hooks';
-import { CatalogPage } from '../../common/CatalogPage';
-import { CatalogType } from '../../common/CatalogType';
-import { FilterCatalogNode, GetOfferNodes } from '../../common/CatalogUtilities';
-import { FurnitureOffer } from '../../common/FurnitureOffer';
-import { ICatalogNode } from '../../common/ICatalogNode';
-import { ICatalogPage } from '../../common/ICatalogPage';
-import { IPurchasableOffer } from '../../common/IPurchasableOffer';
-import { PageLocalization } from '../../common/PageLocalization';
-import { SearchResult } from '../../common/SearchResult';
-import { useCatalogContext } from '../../context/CatalogContext';
+import { GetSessionDataManager, LocalizeText } from '../../../../../api';
+import { Button } from '../../../../../common/Button';
+import { Flex } from '../../../../../common/Flex';
+import { BatchUpdates } from '../../../../../hooks';
+import { useCatalogContext } from '../../../CatalogContext';
+import { CatalogPage } from '../../../common/CatalogPage';
+import { CatalogType } from '../../../common/CatalogType';
+import { FilterCatalogNode, GetOfferNodes } from '../../../common/CatalogUtilities';
+import { FurnitureOffer } from '../../../common/FurnitureOffer';
+import { ICatalogNode } from '../../../common/ICatalogNode';
+import { ICatalogPage } from '../../../common/ICatalogPage';
+import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
+import { PageLocalization } from '../../../common/PageLocalization';
+import { SearchResult } from '../../../common/SearchResult';
 
 export const CatalogSearchView: FC<{}> = props =>
 {

@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { Column } from '../../../../common/Column';
 import { Grid } from '../../../../common/Grid';
+import { useCatalogContext } from '../../CatalogContext';
 import { ICatalogNode } from '../../common/ICatalogNode';
-import { useCatalogContext } from '../../context/CatalogContext';
-import { CatalogSearchView } from '../search/CatalogSearchView';
+import { CatalogSearchView } from '../page/common/CatalogSearchView';
 import { CatalogNavigationItemView } from './CatalogNavigationItemView';
 import { CatalogNavigationSetView } from './CatalogNavigationSetView';
 

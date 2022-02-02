@@ -2,10 +2,10 @@ import { FC } from 'react';
 import { Grid, GridProps } from '../../../../../common/Grid';
 import { CatalogSetExtraPurchaseParameterEvent } from '../../../../../events';
 import { dispatchUiEvent } from '../../../../../hooks';
+import { useCatalogContext } from '../../../CatalogContext';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
-import { useCatalogContext } from '../../../context/CatalogContext';
-import { CatalogGridOfferView } from '../offers/CatalogGridOfferView';
+import { CatalogGridOfferView } from '../common/CatalogGridOfferView';
 
 interface CatalogItemGridWidgetViewProps extends GridProps
 {

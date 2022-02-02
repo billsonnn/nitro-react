@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Base, BaseProps } from '../../../../../common/Base';
 import { LimitedEditionCompletePlateView } from '../../../../../views/shared/limited-edition/LimitedEditionCompletePlateView';
+import { useCatalogContext } from '../../../CatalogContext';
 import { Offer } from '../../../common/Offer';
-import { useCatalogContext } from '../../../context/CatalogContext';
 
 export const CatalogLimitedItemWidgetView: FC<BaseProps<HTMLDivElement>> = props =>
 {

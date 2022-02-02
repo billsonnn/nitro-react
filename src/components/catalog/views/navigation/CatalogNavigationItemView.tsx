@@ -2,8 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
 import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { Text } from '../../../../common/Text';
+import { useCatalogContext } from '../../CatalogContext';
 import { ICatalogNode } from '../../common/ICatalogNode';
-import { useCatalogContext } from '../../context/CatalogContext';
 import { CatalogIconView } from '../catalog-icon/CatalogIconView';
 import { CatalogNavigationSetView } from './CatalogNavigationSetView';
 

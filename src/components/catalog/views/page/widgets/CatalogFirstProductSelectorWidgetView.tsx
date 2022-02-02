@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { useCatalogContext } from '../../../context/CatalogContext';
+import { useCatalogContext } from '../../../CatalogContext';
 
 export const CatalogFirstProductSelectorWidgetView: FC<{}> = props =>
 {

@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { Flex } from '../../../../../common/Flex';
 import { Text } from '../../../../../common/Text';
-import { useCatalogContext } from '../../../context/CatalogContext';
+import { useCatalogContext } from '../../../CatalogContext';
 
 const MIN_VALUE: number = 1;
 const MAX_VALUE: number = 100;

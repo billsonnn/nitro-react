@@ -8,9 +8,9 @@ import { CatalogWidgetEvent } from '../../../../../events/catalog/CatalogWidgetE
 import { SendMessageHook, useUiEvent } from '../../../../../hooks';
 import { LoadingSpinnerView } from '../../../../../layout';
 import { GetCurrencyAmount } from '../../../../../views/purse/common/CurrencyHelper';
+import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogPurchaseState } from '../../../common/CatalogPurchaseState';
 import { Offer } from '../../../common/Offer';
-import { useCatalogContext } from '../../../context/CatalogContext';
 
 interface CatalogPurchaseWidgetViewProps
 {

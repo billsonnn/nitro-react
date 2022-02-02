@@ -15,7 +15,7 @@ import { BatchUpdates, SendMessageHook, useUiEvent } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutGiftCardView } from '../../../../layout';
 import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { FurniImageView } from '../../../../views/shared/furni-image/FurniImageView';
-import { useCatalogContext } from '../../context/CatalogContext';
+import { useCatalogContext } from '../../CatalogContext';
 
 export const CatalogGiftView: FC<{}> = props =>
 {

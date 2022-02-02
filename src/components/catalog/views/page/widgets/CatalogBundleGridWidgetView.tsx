@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Grid, GridProps } from '../../../../../common/Grid';
 import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
-import { useCatalogContext } from '../../../context/CatalogContext';
+import { useCatalogContext } from '../../../CatalogContext';
 
 interface CatalogBundleGridWidgetViewProps extends GridProps
 {

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Column, ColumnProps } from '../../../../../common/Column';
-import { useCatalogContext } from '../../../context/CatalogContext';
+import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogPriceDisplayWidgetView } from './CatalogPriceDisplayWidgetView';
 
 interface CatalogSimplePriceWidgetViewProps extends ColumnProps
