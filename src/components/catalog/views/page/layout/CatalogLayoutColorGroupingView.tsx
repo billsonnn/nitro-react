@@ -8,7 +8,7 @@ export interface CatalogLayoutColorGroupViewProps extends CatalogLayoutProps
 
 export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProps> = props =>
 {
-    const { page = null, roomPreviewer = null } = props;
+    const { page = null } = props;
     const [ colorableItems, setColorableItems ] = useState<Map<string, number[]>>(new Map<string, number[]>());
 
     // const offers = useMemo(() =>

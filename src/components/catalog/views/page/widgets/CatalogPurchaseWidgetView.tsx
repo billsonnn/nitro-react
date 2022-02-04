@@ -15,15 +15,16 @@ import { Offer } from '../../../common/Offer';
 interface CatalogPurchaseWidgetViewProps
 {
     noGiftOption?: boolean;
+    purchaseCallback?: () => void;
 }
 
 export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = props =>
 {
-    const { noGiftOption = false } = props;
+    const { noGiftOption = false, purchaseCallback = null } = props;
     const [ purchaseWillBeGift, setPurchaseWillBeGift ] = useState(false);
     const [ purchaseState, setPurchaseState ] = useState(CatalogPurchaseState.NONE);
     const { currentOffer = null, currentPage = null, purchaseOptions = null, setPurchaseOptions = null, getNodesByOfferId = null } = useCatalogContext();
-    const { quantity = 1, extraData = '', extraParamRequired = false, purchaseCallback = null, previewStuffData = null } = purchaseOptions;
+    const { quantity = 1, extraData = '', extraParamRequired = false, previewStuffData = null } = purchaseOptions;
 
     const onCatalogInitPurchaseEvent = useCallback((event: CatalogInitPurchaseEvent) =>
     {
@@ -86,6 +87,8 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
             return;
         }
 
+        setPurchaseState(CatalogPurchaseState.PURCHASE);
+
         if(purchaseCallback)
         {
             purchaseCallback();
@@ -114,9 +117,24 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         return () =>
         {
             setPurchaseState(CatalogPurchaseState.NONE);
-            setPurchaseOptions({ quantity: 1, extraData: '', extraParamRequired: false, purchaseCallback: null, previewStuffData: null });
+            setPurchaseOptions({ quantity: 1, extraData: '', extraParamRequired: false, previewStuffData: null });
         }
     }, [ currentOffer, setPurchaseOptions ]);
+
+    useEffect(() =>
+    {
+        let timeout: ReturnType<typeof setTimeout> = null;
+
+        if((purchaseState === CatalogPurchaseState.CONFIRM) || (purchaseState === CatalogPurchaseState.FAILED))
+        {
+            timeout = setTimeout(() => setPurchaseState(CatalogPurchaseState.NONE), 3000);
+        }
+
+        return () =>
+        {
+            if(timeout) clearTimeout(timeout);
+        }
+    }, [ purchaseState ]);
 
     if(!currentOffer) return null;
 

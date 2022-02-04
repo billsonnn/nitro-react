@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ColorConverter, GetSellablePetPalettesComposer, SellablePetPaletteData } from '@nitrots/nitro-renderer';
+import { ApproveNameMessageComposer, ColorConverter, GetSellablePetPalettesComposer, PurchaseFromCatalogComposer, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../../../api';
 import { Base } from '../../../../../../common/Base';
@@ -9,9 +9,9 @@ import { Flex } from '../../../../../../common/Flex';
 import { Grid } from '../../../../../../common/Grid';
 import { LayoutGridItem } from '../../../../../../common/layout/LayoutGridItem';
 import { Text } from '../../../../../../common/Text';
-import { CatalogNameResultEvent } from '../../../../../../events';
+import { CatalogNameResultEvent, CatalogPurchaseFailureEvent } from '../../../../../../events';
 import { CatalogWidgetEvent } from '../../../../../../events/catalog/CatalogWidgetEvent';
-import { BatchUpdates, useUiEvent } from '../../../../../../hooks';
+import { BatchUpdates, dispatchUiEvent, useUiEvent } from '../../../../../../hooks';
 import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
 import { PetImageView } from '../../../../../../views/shared/pet-image/PetImageView';
 import { useCatalogContext } from '../../../../CatalogContext';
@@ -34,38 +34,8 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
     const [ petName, setPetName ] = useState('');
     const [ approvalPending, setApprovalPending ] = useState(true);
     const [ approvalResult, setApprovalResult ] = useState(-1);
-    const { currentOffer = null, setCurrentOffer = null, catalogOptions = null, roomPreviewer = null } = useCatalogContext();
+    const { currentOffer = null, setCurrentOffer = null, setPurchaseOptions = null, catalogOptions = null, roomPreviewer = null } = useCatalogContext();
     const { petPalettes = [] } = catalogOptions;
-
-    const validationErrorMessage = () =>
-    {
-        let key: string = '';
-
-        switch(approvalResult)
-        {
-            case 1:
-                key = 'catalog.alert.petname.long';
-                break;
-            case 2:
-                key = 'catalog.alert.petname.short';
-                break;
-            case 3:
-                key = 'catalog.alert.petname.chars';
-                break;
-            case 4:
-                key = 'catalog.alert.petname.bobba';
-                break;
-        }
-
-        return LocalizeText(key);
-    }
-
-    const onCatalogNameResultEvent = useCallback((event: CatalogNameResultEvent) =>
-    {
-        setApprovalPending(false);
-    }, []);
-
-    useUiEvent(CatalogWidgetEvent.APPROVE_RESULT, onCatalogNameResultEvent)
 
     const getColor = useMemo(() =>
     {
@@ -102,6 +72,60 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
         return `${ paletteId }\n${ colorString }`;
     }, [ sellablePalettes, selectedPaletteIndex, petIndex, sellableColors, selectedColorIndex ]);
+
+    const validationErrorMessage = useMemo(() =>
+    {
+        let key: string = '';
+
+        console.log(approvalResult);
+
+        switch(approvalResult)
+        {
+            case 1:
+                key = 'catalog.alert.petname.long';
+                break;
+            case 2:
+                key = 'catalog.alert.petname.short';
+                break;
+            case 3:
+                key = 'catalog.alert.petname.chars';
+                break;
+            case 4:
+                key = 'catalog.alert.petname.bobba';
+                break;
+        }
+
+        if(!key || !key.length) return '';
+
+        return LocalizeText(key);
+    }, [ approvalResult ]);
+
+    const purchasePet = useCallback(() =>
+    {
+        if(approvalResult === -1)
+        {
+            SendMessageHook(new ApproveNameMessageComposer(petName, 1));
+
+            return;
+        }
+
+        if(approvalResult === 0)
+        {
+            SendMessageHook(new PurchaseFromCatalogComposer(page.pageId, currentOffer.offerId, `${ petName }\n${ petPurchaseString }`, 1));
+
+            return;
+        }
+    }, [ page, currentOffer, petName, petPurchaseString, approvalResult ]);
+
+    const onCatalogNameResultEvent = useCallback((event: CatalogNameResultEvent) =>
+    {
+        setApprovalResult(event.result);
+
+        if(event.result === 0) purchasePet();
+        else dispatchUiEvent(new CatalogPurchaseFailureEvent(-1));
+    }, [ purchasePet ]);
+
+    useUiEvent(CatalogWidgetEvent.APPROVE_RESULT, onCatalogNameResultEvent);
 
     useEffect(() =>
     {
@@ -184,6 +208,11 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
         roomPreviewer.addPetIntoRoom(petFigureString);
     }, [ roomPreviewer, petIndex, sellablePalettes, selectedPaletteIndex, getColor ]);
 
+    useEffect(() =>
+    {
+        setApprovalResult(-1);
+    }, [ petName ]);
+
     if(!currentOffer) return null;
 
     return (
@@ -222,12 +251,12 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
                             <Column grow gap={ 1 }>
                                 <input type="text" className="form-control form-control-sm w-100" placeholder={ LocalizeText('widgets.petpackage.name.title') } value={ petName } onChange={ event => setPetName(event.target.value) } />
                                 { (approvalResult > 0) &&
-                                    <Base className="invalid-feedback">{ validationErrorMessage }</Base> }
+                                    <Base className="invalid-feedback d-block m-0">{ validationErrorMessage }</Base> }
                             </Column>
                             <Flex justifyContent="end">
                                 <CatalogTotalPriceWidget justifyContent="end" alignItems="end" />
                             </Flex>
-                            <CatalogPurchaseWidgetView />
+                            <CatalogPurchaseWidgetView purchaseCallback={ purchasePet } />
                         </Column>
                     </> }
             </Column>
