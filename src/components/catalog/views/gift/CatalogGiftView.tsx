@@ -3,6 +3,7 @@ import { PurchaseFromCatalogAsGiftComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../../api';
+import { Base } from '../../../../common/Base';
 import { Button } from '../../../../common/Button';
 import { ButtonGroup } from '../../../../common/ButtonGroup';
 import { Column } from '../../../../common/Column';
@@ -16,12 +17,14 @@ import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutGi
 import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { FurniImageView } from '../../../../views/shared/furni-image/FurniImageView';
 import { useCatalogContext } from '../../CatalogContext';
+import { ProductTypeEnum } from '../../common/ProductTypeEnum';
 
 export const CatalogGiftView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState<boolean>(false);
     const [ pageId, setPageId ] = useState<number>(0);
     const [ offerId, setOfferId ] = useState<number>(0);
+    const [ extraData, setExtraData ] = useState<string>('');
     const [ receiverName, setReceiverName ] = useState<string>('');
     const [ showMyFace, setShowMyFace ] = useState<boolean>(true);
     const [ message, setMessage ] = useState<string>('');
@@ -42,6 +45,7 @@ export const CatalogGiftView: FC<{}> = props =>
             setIsVisible(false);
             setPageId(0);
             setOfferId(0);
+            setExtraData('');
             setReceiverName('');
             setShowMyFace(true);
             setMessage('');
@@ -68,6 +72,7 @@ export const CatalogGiftView: FC<{}> = props =>
                     
                     setPageId(castedEvent.pageId);
                     setOfferId(castedEvent.offerId);
+                    setExtraData(castedEvent.extraData);
                     setIsVisible(true);
                 });
                 return;
@@ -86,7 +91,7 @@ export const CatalogGiftView: FC<{}> = props =>
         return giftConfiguration ? (giftConfiguration.defaultStuffTypes.findIndex(s => (s === giftConfiguration.boxTypes[selectedBoxIndex])) > -1) : true;
     }, [ giftConfiguration, selectedBoxIndex ]);
 
-    const extraData = useMemo(() =>
+    const boxExtraData = useMemo(() =>
     {
         if(!giftConfiguration) return '';
 
@@ -176,18 +181,19 @@ export const CatalogGiftView: FC<{}> = props =>
                 <FormGroup column>
                     <Text>{ LocalizeText('catalog.gift_wrapping.receiver') }</Text>
                     <input type="text" className={ 'form-control form-control-sm' + classNames({ ' is-invalid': receiverNotFound }) } value={ receiverName } onChange={ (e) => setReceiverName(e.target.value) } />
-                    { receiverNotFound && <div className="invalid-feedback">{ LocalizeText('catalog.gift_wrapping.receiver_not_found.title') }</div> }
+                    { receiverNotFound &&
+                        <Base className="invalid-feedback">{ LocalizeText('catalog.gift_wrapping.receiver_not_found.title') }</Base> }
                 </FormGroup>
                 <NitroLayoutGiftCardView figure={ GetSessionDataManager().figure } userName={ GetSessionDataManager().userName } message={ message } editable={ true } onChange={ (value) => setMessage(value) } />
-                <div className="form-check">
+                <Base className="form-check">
                     <input className="form-check-input" type="checkbox" name="showMyFace" checked={ showMyFace } onChange={ (e) => setShowMyFace(value => !value) } />
                     <label className="form-check-label">{ LocalizeText('catalog.gift_wrapping.show_face.title') }</label>
-                </div>
+                </Base>
                 <Flex alignItems="center" gap={ 2 }>
                     { selectedColorId &&
-                        <div className="gift-preview">
-                            <FurniImageView spriteId={ selectedColorId } type="s" extras={ extraData } />
-                        </div> }
+                        <Base className="gift-preview">
+                            <FurniImageView productType={ ProductTypeEnum.FLOOR } productClassId={ selectedColorId } extraData={ boxExtraData } />
+                        </Base> }
                     <Column gap={ 1 }>
                         <Flex gap={ 2 }>
                             <ButtonGroup>

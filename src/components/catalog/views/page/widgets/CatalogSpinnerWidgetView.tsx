@@ -15,6 +15,8 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
 
     const updateQuantity = (value: number) =>
     {
+        if(isNaN(value)) value = 1;
+
         value = Math.max(value, MIN_VALUE);
         value = Math.min(value, MAX_VALUE);
 

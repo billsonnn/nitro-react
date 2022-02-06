@@ -3,9 +3,10 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetClubMemberLevel, LocalizeText } from '../../../../../api';
 import { Button } from '../../../../../common/Button';
 import { CatalogEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent } from '../../../../../events';
+import { CatalogInitGiftEvent } from '../../../../../events/catalog/CatalogInitGiftEvent';
 import { CatalogInitPurchaseEvent } from '../../../../../events/catalog/CatalogInitPurchaseEvent';
 import { CatalogWidgetEvent } from '../../../../../events/catalog/CatalogWidgetEvent';
-import { SendMessageHook, useUiEvent } from '../../../../../hooks';
+import { dispatchUiEvent, SendMessageHook, useUiEvent } from '../../../../../hooks';
 import { LoadingSpinnerView } from '../../../../../layout';
 import { GetCurrencyAmount } from '../../../../../views/purse/common/CurrencyHelper';
 import { useCatalogContext } from '../../../CatalogContext';
@@ -87,6 +88,13 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
             return;
         }
 
+        if(isGift)
+        {
+            dispatchUiEvent(new CatalogInitGiftEvent(currentOffer.page.pageId, currentOffer.offerId, extraData));
+
+            return;
+        }
+
         setPurchaseState(CatalogPurchaseState.PURCHASE);
 
         if(purchaseCallback)
@@ -107,8 +115,6 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
 
         SendMessageHook(new PurchaseFromCatalogComposer(pageId, currentOffer.offerId, extraData, quantity));
     }, [ currentOffer, purchaseCallback, extraData, quantity, getNodesByOfferId ]);
-
-    // dispatchUiEvent(new CatalogInitGiftEvent(pageId, offer.offerId, extra)); setup gift
 
     useEffect(() =>
     {
@@ -171,7 +177,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         <>
             <PurchaseButton />
             { (!noGiftOption && !currentOffer.isRentOffer) &&
-                <Button disabled={ ((quantity > 1) || !currentOffer.giftable || isLimitedSoldOut || (extraParamRequired && (!extraData || !extraData.length))) }>
+                <Button disabled={ ((quantity > 1) || !currentOffer.giftable || isLimitedSoldOut || (extraParamRequired && (!extraData || !extraData.length))) } onClick={ event => purchase(true) }>
                     { LocalizeText('catalog.purchase_confirmation.gift') }
                 </Button> }
         </>

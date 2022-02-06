@@ -25,7 +25,6 @@ export const CatalogLayoutVipGiftsView: FC<CatalogLayoutProps> = props =>
         if(subscriptionInfo.isVip) return LocalizeText('catalog.club_gift.not_available');
 
         return LocalizeText('catalog.club_gift.no_club');
-
     }, [ clubGifts, subscriptionInfo ]);
 
     const selectGift = useCallback((localizationId: string) =>
