@@ -1,7 +1,7 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../api';
-import { GetCfhCategories } from '../../mod-tools/common/GetCFHCategories';
-import { useHelpContext } from '../context/HelpContext';
+import { GetCfhCategories } from '../../../views/mod-tools/common/GetCFHCategories';
+import { useHelpContext } from '../HelpContext';
 
 export const SelectTopicView: FC<{}> = props =>
 {

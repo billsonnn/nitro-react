@@ -1,8 +1,7 @@
 import { FriendlyTime, HabboClubLevelEnum, UserCurrencyComposer, UserSubscriptionComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetConfiguration, LocalizeText } from '../../api';
+import { CreateLinkEvent, GetConfiguration, LocalizeText } from '../../api';
 import { HcCenterEvent } from '../../events/hc-center/HcCenterEvent';
-import { HelpEvent } from '../../events/help/HelpEvent';
 import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
 import { dispatchUiEvent } from '../../hooks';
 import { SendMessageHook } from '../../hooks/messages/message-event';
@@ -28,7 +27,7 @@ export const PurseView: FC<{}> = props =>
 
     const handleHelpCenterClick = useCallback(() =>
     {
-        dispatchUiEvent(new HelpEvent(HelpEvent.TOGGLE_HELP_CENTER));
+        CreateLinkEvent('help/show');
     }, []);
 
     const handleHcCenterClick = useCallback(() =>

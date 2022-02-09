@@ -2,9 +2,9 @@ import { RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../api';
 import { NitroCardGridItemView, NitroCardGridView } from '../../../layout';
-import { GetChatHistory } from '../../chat-history/common/GetChatHistory';
-import { ChatEntryType, IChatEntry } from '../../chat-history/context/ChatHistoryContext.types';
-import { useHelpContext } from '../context/HelpContext';
+import { GetChatHistory } from '../../../views/chat-history/common/GetChatHistory';
+import { ChatEntryType, IChatEntry } from '../../../views/chat-history/context/ChatHistoryContext.types';
+import { useHelpContext } from '../HelpContext';
 
 export const SelectReportedChatsView: FC<{}> = props =>
 {

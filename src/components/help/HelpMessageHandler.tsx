@@ -2,8 +2,8 @@ import { CallForHelpResultMessageEvent, GetPendingCallsForHelpMessageComposer, I
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../api';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
-import { NotificationAlertType } from '../notification-center/common/NotificationAlertType';
-import { NotificationUtilities } from '../notification-center/common/NotificationUtilities';
+import { NotificationAlertType } from '../../views/notification-center/common/NotificationAlertType';
+import { NotificationUtilities } from '../../views/notification-center/common/NotificationUtilities';
 import { CallForHelpResult } from './common/CallForHelpResult';
 import { GetCloseReasonKey } from './common/GetCloseReasonKey';
  

@@ -1,6 +1,6 @@
-import { HelpEvent } from './HelpEvent';
+import { NitroEvent } from '@nitrots/nitro-renderer';
 
-export class HelpReportUserEvent extends HelpEvent
+export class HelpReportUserEvent extends NitroEvent
 {
     public static REPORT_USER: string = 'HCE_HELP_CENTER_REPORT_USER';
     
