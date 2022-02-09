@@ -1,7 +1,7 @@
 import { CSSProperties, FC, useMemo } from 'react';
 import { Base, BaseProps } from './Base';
-import { GridContextProvider } from './context/GridContext';
-import { SpacingType } from './types/SpacingType';
+import { GridContextProvider } from './GridContext';
+import { SpacingType } from './types';
 
 export interface GridProps extends BaseProps<HTMLDivElement>
 {

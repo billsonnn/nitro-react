@@ -1,7 +1,5 @@
 import { CSSProperties, DetailedHTMLProps, FC, HTMLAttributes, LegacyRef, useMemo } from 'react';
-import { ColorVariantType } from './types/ColorVariantType';
-import { OverflowType } from './types/OverflowType';
-import { PositionType } from './types/PositionType';
+import { ColorVariantType, OverflowType, PositionType } from './types';
 
 export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttributes<T>, T>
 {

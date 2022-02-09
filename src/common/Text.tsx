@@ -1,8 +1,6 @@
 import { FC, useMemo } from 'react';
 import { Base, BaseProps } from './Base';
-import { ColorVariantType } from './types/ColorVariantType';
-import { FontSizeType } from './types/FontSizeType';
-import { FontWeightType } from './types/FontWeightType';
+import { ColorVariantType, FontSizeType, FontWeightType } from './types';
 
 export interface TextProps extends BaseProps<HTMLDivElement>
 {

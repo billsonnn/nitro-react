@@ -1,7 +1,6 @@
 import { FC, useMemo } from 'react';
 import { Flex, FlexProps } from './Flex';
-import { ButtonSizeType } from './types/ButtonSizeType';
-import { ColorVariantType } from './types/ColorVariantType';
+import { ButtonSizeType, ColorVariantType } from './types';
 
 export interface ButtonProps extends FlexProps
 {

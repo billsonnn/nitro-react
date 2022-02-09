@@ -1,9 +1,6 @@
 import { FC, useMemo } from 'react';
 import { Base, BaseProps } from './Base';
-import { AlignItemType } from './types/AlignItemType';
-import { AlignSelfType } from './types/AlignSelfType';
-import { JustifyContentType } from './types/JustifyContentType';
-import { SpacingType } from './types/SpacingType';
+import { AlignItemType, AlignSelfType, JustifyContentType, SpacingType } from './types';
 
 export interface FlexProps extends BaseProps<HTMLDivElement>
 {

@@ -1,7 +1,7 @@
 import { FC, useMemo } from 'react';
-import { useGridContext } from './context/GridContext';
 import { Flex, FlexProps } from './Flex';
-import { ColumnSizesType } from './types/ColumnSizesType';
+import { useGridContext } from './GridContext';
+import { ColumnSizesType } from './types';
 
 export interface ColumnProps extends FlexProps
 {
