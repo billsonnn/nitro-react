@@ -1,4 +1,4 @@
-import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, SendMessageComposer } from '@nitrots/nitro-renderer';
+import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, RoomInviteEvent, SendMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
 import { MESSENGER_MESSAGE_RECEIVED, MESSENGER_NEW_THREAD, PlaySound } from '../../../../api/utils/PlaySound';
@@ -104,6 +104,21 @@ export const FriendsMessengerView: FC<{}> = props =>
     }, [getMessageThreadWithIndex]);
 
     CreateMessageHook(NewConsoleMessageEvent, onNewConsoleMessageEvent);
+
+    const onRoomInviteEvent = useCallback((event: RoomInviteEvent) =>
+    {
+        const parser = event.getParser();
+
+        const [threadIndex, thread] = getMessageThreadWithIndex(parser.senderId);
+
+        if((threadIndex === -1) || !thread) return;
+
+        thread.addMessage(parser.senderId, parser.messageText, 0, null, MessengerThreadChat.ROOM_INVITE);
+
+        setMessageThreads(prevValue => [...prevValue]);
+    }, [getMessageThreadWithIndex]);
+
+    CreateMessageHook(RoomInviteEvent, onRoomInviteEvent);
 
     const sendMessage = useCallback(() =>
     {

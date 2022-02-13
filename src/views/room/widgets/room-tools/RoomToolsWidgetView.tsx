@@ -119,7 +119,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                     <div className="h4 text-muted m-0">{ roomOwner }</div>
                 </div>
                 { roomTags && roomTags.length > 0 && <div className="d-flex gap-2">
-                    { roomTags.map(tag => 
+                    { roomTags.map((tag: string) => 
                     {
                         return <div className="rounded bg-primary text-white p-1 text-sm">#{ tag }</div>
                     }) }

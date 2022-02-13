@@ -5,4 +5,5 @@ export interface FriendsGroupItemViewProps extends NitroLayoutFlexProps
 {
     friend: MessengerFriend;
     selected?: boolean;
+    selectFriend: () => void;
 }
