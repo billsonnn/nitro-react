@@ -66,64 +66,56 @@ export const NavigatorRoomCreatorView: FC<NavigatorRoomCreatorViewProps> = props
     }, [ name, description, category, visitorsCount, tradesSetting, selectedModelName ]);
 
     return (
-        <div className="text-black d-flex flex-column h-100 justify-content-center">
-            <div className="row row-cols-2 mb-2">
-                <div className="col mb-2">
-                    <div className="form-group">
-                        <label>{ LocalizeText('navigator.createroom.roomnameinfo') }</label>
-                        <input type="text" className="form-control form-control-sm" onChange={ (e) => setName(e.target.value) } />
-                    </div>
+        <div className="text-black d-flex gap-3 h-100">
+            <div className="w-100 d-flex flex-column gap-2">
+                <div className="form-group">
+                    <label>{ LocalizeText('navigator.createroom.roomnameinfo') }</label>
+                    <input type="text" className="form-control form-control-sm" onChange={ (e) => setName(e.target.value) } />
                 </div>
-                <div className="col">
-                    <div className="form-group">
-                        <label>{ LocalizeText('navigator.category') }</label>
-                        <select className="form-select form-select-sm" onChange={ (e) => setCategory(e.target.value) }>
-                            { categories && categories.map(category =>
-                                {
-                                    return <option key={ category.id } value={ category.id }>{ LocalizeText(category.name) }</option>
-                                }) }
-                        </select>
-                    </div>
+                <div className="form-group">
+                    <label>{ LocalizeText('navigator.category') }</label>
+                    <select className="form-select form-select-sm" onChange={ (e) => setCategory(e.target.value) }>
+                        { categories && categories.map(category =>
+                            {
+                                return <option key={ category.id } value={ category.id }>{ LocalizeText(category.name) }</option>
+                            }) }
+                    </select>
                 </div>
-                <div className="col">
-                    <div className="form-group">
-                        <label>{ LocalizeText('navigator.maxvisitors') }</label>
-                        <select className="form-select form-select-sm" onChange={ (e) => setVisitorsCount(e.target.value) }>
-                            { maxVisitorsList && maxVisitorsList.map(value =>
-                                {
-                                    return <option key={ value } value={ value }>{ value }</option>
-                                }) }
-                        </select>
-                    </div>
+                <div className="form-group">
+                    <label>{ LocalizeText('navigator.maxvisitors') }</label>
+                    <select className="form-select form-select-sm" onChange={ (e) => setVisitorsCount(e.target.value) }>
+                        { maxVisitorsList && maxVisitorsList.map(value =>
+                            {
+                                return <option key={ value } value={ value }>{ value }</option>
+                            }) }
+                    </select>
                 </div>
-                <div className="col">
-                    <div className="form-group">
-                        <label>{ LocalizeText('navigator.tradesettings') }</label>
-                        <select className="form-select form-select-sm" onChange={ (e) => setTradesSetting(Number(e.target.value)) }>
-                            <option value="0">{ LocalizeText('${navigator.roomsettings.trade_not_allowed}') }</option>
-                            <option value="1">{ LocalizeText('${navigator.roomsettings.trade_not_with_Controller}') }</option>
-                            <option value="2">{ LocalizeText('${navigator.roomsettings.trade_allowed}') }</option>
-                        </select>
-                    </div>
+                <div className="form-group">
+                    <label>{ LocalizeText('navigator.tradesettings') }</label>
+                    <select className="form-select form-select-sm" onChange={ (e) => setTradesSetting(Number(e.target.value)) }>
+                        <option value="0">{ LocalizeText('${navigator.roomsettings.trade_not_allowed}') }</option>
+                        <option value="1">{ LocalizeText('${navigator.roomsettings.trade_not_with_Controller}') }</option>
+                        <option value="2">{ LocalizeText('${navigator.roomsettings.trade_allowed}') }</option>
+                    </select>
                 </div>
+                <div className="form-group">
+                    <label>{ LocalizeText('navigator.createroom.roomdescinfo') }</label>
+                    <input type="text" className="form-control form-control-sm" onChange={ (e) => setDescription(e.target.value) } />
+                </div>
+                <button className="btn btn-success mt-auto" onClick={ () => createRoom() } disabled={ !name || name.length < 3 }>{ LocalizeText('navigator.createroom.create') }</button>
             </div>
-            <div className="form-group mb-3">
-                <label>{ LocalizeText('navigator.createroom.roomdescinfo') }</label>
-                <input type="text" className="form-control form-control-sm" onChange={ (e) => setDescription(e.target.value) } />
-            </div>
-            <div className="room-model-list pb-2 mb-2">
+            <div className="room-model-list w-100 gap-2">
                 {
                     NAVIGATOR_ROOM_MODELS.map(model =>
                         {
-                            return (<div key={ model.name } onClick={ () => selectModel(model.name) } className={ 'h-100 cursor-pointer d-flex flex-column justify-content-center align-items-center p-1 me-2 rounded border border-2' + classNames({ ' active': selectedModelName === model.name, ' disabled': GetSessionDataManager().clubLevel < model.clubLevel }) }>
+                            return (<div key={ model.name } onClick={ () => selectModel(model.name) } className={ 'cursor-pointer position-relative d-flex flex-column justify-content-center align-items-center p-1 rounded border border-2' + classNames({ ' active': selectedModelName === model.name, ' disabled': GetSessionDataManager().clubLevel < model.clubLevel }) }>
+                                { model.clubLevel > HabboClubLevelEnum.NO_CLUB && <div className="position-absolute top-1 end-1"><CurrencyIcon type="hc" /></div> }
                                 <img alt="" src={ getRoomModelImage(model.name) } />
                                 <div>{ model.tileSize } { LocalizeText('navigator.createroom.tilesize') }</div>
-                                { model.clubLevel > HabboClubLevelEnum.NO_CLUB && <CurrencyIcon type="hc" /> }
                             </div>);
                         })
                 }
             </div>
-            <button className="btn btn-success float-end" onClick={ () => createRoom() } disabled={ !name || name.length < 3 }>{ LocalizeText('navigator.createroom.create') }</button>
         </div>
     );
 }
