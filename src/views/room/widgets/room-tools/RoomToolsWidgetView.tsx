@@ -1,6 +1,6 @@
 import { GetGuestRoomResultEvent, RoomLikeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText, RoomWidgetZoomToggleMessage } from '../../../../api';
 import { NavigatorEvent } from '../../../../events';
 import { ChatHistoryEvent } from '../../../../events/chat-history/ChatHistoryEvent';
@@ -53,38 +53,32 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        let updated = false;
+        if(roomName !== parser.data.roomName) setRoomName(parser.data.roomName);
 
-        if(roomName !== parser.data.roomName)
-        {
-            updated = true;
-            setRoomName(parser.data.roomName);
-        }
+        if(roomOwner !== parser.data.ownerName) setRoomOwner(parser.data.ownerName);
 
-        if(roomOwner !== parser.data.ownerName)
-        {
-            updated = true;
-            setRoomOwner(parser.data.ownerName);
-        }
+        if(roomTags !== parser.data.tags) setRoomTags(parser.data.tags);
+    }, [ roomName, roomOwner, roomTags ]);
 
-        if(roomTags !== parser.data.tags)
-        {
-            updated = true;
-            setRoomTags(parser.data.tags);
-        }
+    useEffect(() =>
+    {
+        setRoomInfoOpacity(true);
+        setRoomInfoDisplay(true);
 
-        if(updated)
+        let timeoutDisplay = null;
+        
+        const timeoutOpacity = setTimeout(() =>
         {
-            setRoomInfoOpacity(true);
-            setRoomInfoDisplay(true);
+            setRoomInfoOpacity(false);
             
-            setTimeout(() =>
-            {
-                setRoomInfoOpacity(false);
-                
-                setTimeout(() => setRoomInfoDisplay(false), 1000);
-            }, 3000);
-        }
+            timeoutDisplay = setTimeout(() => setRoomInfoDisplay(false), 1000);
+        }, 3000);
+
+        return () =>
+        {
+            clearTimeout(timeoutOpacity);
+            clearTimeout(timeoutDisplay);
+        };
     }, [ roomName, roomOwner, roomTags ]);
 
     CreateMessageHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
