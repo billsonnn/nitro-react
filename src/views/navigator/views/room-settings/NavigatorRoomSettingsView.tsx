@@ -143,7 +143,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
                         return <NitroCardTabsItemView key={ tab } isActive={ currentTab === tab } onClick={ event => setCurrentTab(tab) }>{ LocalizeText(tab) }</NitroCardTabsItemView>
                     }) }
             </NitroCardTabsView>
-            <NitroCardContentView className="text-black px-4">
+            <NitroCardContentView className="text-black px-4 h-100">
                 { currentTab === TABS[0] && <NavigatorRoomSettingsBasicTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
                 { currentTab === TABS[1] && <NavigatorRoomSettingsAccessTabView roomSettingsData={ roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } /> }
                 { currentTab === TABS[2] && <NavigatorRoomSettingsRightsTabView roomSettingsData= {roomSettingsData } setRoomSettingsData={ updateSettings } onSave={ save } friends={friends} /> }
