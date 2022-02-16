@@ -2,7 +2,7 @@ import { IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitr
 import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 import { GetAvatarRenderManager, GetSessionDataManager } from '../../../../api';
-import { Grid } from '../../../../common/Grid';
+import { AutoGrid } from '../../../../common/AutoGrid';
 import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
 import { SendMessageHook } from '../../../../hooks';
 import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
@@ -74,8 +74,8 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
     }, [ savedFigures, saveFigureAtWardrobeIndex, wearFigureAtIndex ]);
 
     return (
-        <Grid grow columnCount={ 5 } overflow="auto" columnMinWidth={ 80 } columnMinHeight={ 140 }>
+        <AutoGrid grow columnCount={ 5 } overflow="auto" columnMinWidth={ 80 } columnMinHeight={ 140 }>
             { figures }
-        </Grid>
+        </AutoGrid>
     );
 }

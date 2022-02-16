@@ -1,5 +1,5 @@
 import { FC, useCallback } from 'react';
-import { Grid } from '../../../../common/Grid';
+import { AutoGrid } from '../../../../common/AutoGrid';
 import { AvatarEditorGridColorItem } from '../../common/AvatarEditorGridColorItem';
 import { CategoryData } from '../../common/CategoryData';
 import { IAvatarEditorCategoryModel } from '../../common/IAvatarEditorCategoryModel';
@@ -27,9 +27,9 @@ export const AvatarEditorPaletteSetView: FC<AvatarEditorPaletteSetViewProps> = p
     }, [ model, category, paletteSet, paletteIndex ]);
 
     return (
-        <Grid grow columnCount={ 4 } columnMinWidth={ 30 } overflow="auto">
+        <AutoGrid grow columnCount={ 4 } columnMinWidth={ 30 } overflow="auto">
             { (paletteSet.length > 0) && paletteSet.map((item, index) =>
                 <AvatarEditorPaletteSetItem key={ index } colorItem={ item } onClick={ event => selectColor(item) } />) }
-        </Grid>
+        </AutoGrid>
     );
 }

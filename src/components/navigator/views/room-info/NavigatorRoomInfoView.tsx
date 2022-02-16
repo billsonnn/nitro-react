@@ -160,13 +160,13 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                                     }) }
                                             </Flex> }
                                     </Column>
-                                    <Grid maxContent columnCount={ 2 } gap={ 1 }>
-                                        <i onClick={ () => processAction('set_home_room') } className={ 'flex-shrink-0 icon icon-house-small cursor-pointer' + classNames({ ' gray': homeRoomId !== roomInfoData.enteredGuestRoom.roomId }) } />
-                                        <FontAwesomeIcon icon="link" title={ LocalizeText('navigator.embed.caption') }  className="cursor-pointer" onClick={ event => dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK)) } />
+                                    <Grid maxContent gap={ 1 }>
+                                        <i onClick={ () => processAction('set_home_room') } className={ 'g-col-6 flex-shrink-0 icon icon-house-small cursor-pointer' + classNames({ ' gray': homeRoomId !== roomInfoData.enteredGuestRoom.roomId }) } />
+                                        <FontAwesomeIcon icon="link" title={ LocalizeText('navigator.embed.caption') } className="cursor-pointer g-col-6" onClick={ event => dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK)) } />
                                         { hasPermission('settings') &&
                                             <>
-                                                <FontAwesomeIcon icon="cogs" title={ LocalizeText('navigator.room.popup.info.room.settings') } className="cursor-pointer" onClick={ event => processAction('open_room_settings') } />
-                                                <FontAwesomeIcon icon="tools" title={ LocalizeText('open.floor.plan.editor') } className="cursor-pointer" onClick={ event => processAction('open_floorplan_editor') } />
+                                                <FontAwesomeIcon icon="cogs" title={ LocalizeText('navigator.room.popup.info.room.settings') } className="g-col-6 cursor-pointer" onClick={ event => processAction('open_room_settings') } />
+                                                <FontAwesomeIcon icon="tools" title={ LocalizeText('open.floor.plan.editor') } className="g-col-6 cursor-pointer" onClick={ event => processAction('open_floorplan_editor') } />
                                             </> } 
                                     </Grid>
                                 </Flex>

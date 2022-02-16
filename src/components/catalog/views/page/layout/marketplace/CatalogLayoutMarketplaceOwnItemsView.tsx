@@ -106,7 +106,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
                 <Text truncate shrink fontWeight="bold">
                     { LocalizeText('catalog.marketplace.items_found', [ 'count' ], [ offers.length.toString() ]) }
                 </Text>
-                <Grid columnCount={ 1 } overflow="auto" className="nitro-catalog-layout-marketplace-grid">
+                <Grid overflow="auto" className="nitro-catalog-layout-marketplace-grid">
                 { (offers.length > 0) && offers.map(offer => <CatalogLayoutMarketplaceItemView key={ offer.offerId } offerData={ offer } type={ OWN_OFFER } onClick={ takeItemBack } />) }
             </Grid>
             </Column>

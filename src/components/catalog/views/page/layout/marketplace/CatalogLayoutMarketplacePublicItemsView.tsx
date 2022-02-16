@@ -163,7 +163,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                 <Text truncate shrink fontWeight="bold">
                     { LocalizeText('catalog.marketplace.items_found', [ 'count' ], [ offers.size.toString() ]) }
                 </Text>
-                <Grid columnCount={ 1 } className="nitro-catalog-layout-marketplace-grid" overflow="auto">
+                <Grid className="nitro-catalog-layout-marketplace-grid" overflow="auto">
                     { 
                         Array.from(offers.values()).map( (entry, index) => <CatalogLayoutMarketplaceItemView key={ index } offerData={ entry } type={ PUBLIC_OFFER } onClick={purchaseItem} />)
                     }

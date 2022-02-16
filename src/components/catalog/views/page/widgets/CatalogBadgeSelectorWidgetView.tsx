@@ -1,6 +1,6 @@
 import { StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Grid, GridProps } from '../../../../../common/Grid';
+import { AutoGrid, AutoGridProps } from '../../../../../common/AutoGrid';
 import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
 import { InventoryBadgesUpdatedEvent } from '../../../../../events';
 import { InventoryBadgesRequestEvent } from '../../../../../events/inventory/InventoryBadgesRequestEvent';
@@ -10,7 +10,7 @@ import { useCatalogContext } from '../../../CatalogContext';
 
 const EXCLUDED_BADGE_CODES: string[] = [];
 
-interface CatalogBadgeSelectorWidgetViewProps extends GridProps
+interface CatalogBadgeSelectorWidgetViewProps extends AutoGridProps
 {
 
 }
@@ -59,7 +59,7 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
     }, []);
 
     return (
-        <Grid grow={ grow } columnCount={ columnCount } overflow={ overflow } { ...rest }>
+        <AutoGrid grow={ grow } columnCount={ columnCount } overflow={ overflow } { ...rest }>
             { badges && (badges.length > 0) && badges.map(code =>
                 {
                     return (
@@ -68,6 +68,6 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
                         </LayoutGridItem>
                     );
                 }) }
-        </Grid>
+        </AutoGrid>
     );
 }

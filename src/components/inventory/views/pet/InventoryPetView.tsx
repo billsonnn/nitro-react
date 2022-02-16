@@ -1,6 +1,7 @@
 import { IRoomSession, RequestPetsComposer, RoomObjectVariable, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { GetRoomEngine, LocalizeText } from '../../../../api';
+import { AutoGrid } from '../../../../common/AutoGrid';
 import { Button } from '../../../../common/Button';
 import { Column } from '../../../../common/Column';
 import { Grid } from '../../../../common/Grid';
@@ -76,9 +77,9 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
     return (
         <Grid>
             <Column size={ 7 } overflow="hidden">
-                <Grid grow columnCount={ 5 } overflow="auto">
+                <AutoGrid columnCount={ 5 }>
                     { petItems && (petItems.length > 0) && petItems.map(item => <InventoryPetItemView key={ item.id } petItem={ item } />) }
-                </Grid>
+                </AutoGrid>
             </Column>
             <Column size={ 5 } overflow="auto">
                 <Column overflow="hidden" position="relative">

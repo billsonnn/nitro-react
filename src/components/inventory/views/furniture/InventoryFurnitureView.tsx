@@ -1,6 +1,7 @@
 import { FurnitureListComposer, IRoomSession, RoomObjectVariable, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText } from '../../../../api';
+import { AutoGrid } from '../../../../common/AutoGrid';
 import { Button } from '../../../../common/Button';
 import { Column } from '../../../../common/Column';
 import { Grid } from '../../../../common/Grid';
@@ -114,9 +115,9 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
         <Grid>
             <Column size={ 7 } overflow="hidden">
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
-                <Grid grow columnCount={ 5 } overflow="auto">
+                <AutoGrid columnCount={ 5 }>
                     { filteredGroupItems && (filteredGroupItems.length > 0) && filteredGroupItems.map((item, index) => <InventoryFurnitureItemView key={ index } groupItem={ item } />) }
-                </Grid>
+                </AutoGrid>
             </Column>
             <Column size={ 5 } overflow="auto">
                 <Column overflow="hidden" position="relative">

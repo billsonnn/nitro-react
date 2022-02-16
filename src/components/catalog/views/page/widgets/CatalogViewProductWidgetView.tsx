@@ -1,8 +1,8 @@
 import { Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { GetAvatarRenderManager, GetSessionDataManager } from '../../../../../api';
+import { AutoGrid } from '../../../../../common/AutoGrid';
 import { Column } from '../../../../../common/Column';
-import { Grid } from '../../../../../common/Grid';
 import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
 import { RoomPreviewerView } from '../../../../../views/shared/room-previewer/RoomPreviewerView';
 import { useCatalogContext } from '../../../CatalogContext';
@@ -92,12 +92,12 @@ export const CatalogViewProductWidgetView: FC<{}> = props =>
     {
         return (
             <Column fit overflow="hidden" className="bg-muted p-2 rounded">
-                <Grid fullWidth grow columnCount={ 4 } overflow="auto" className="nitro-catalog-layout-bundle-grid">
+                <AutoGrid fullWidth grow columnCount={ 4 } overflow="auto" className="nitro-catalog-layout-bundle-grid">
                     { (currentOffer.products.length > 0) && currentOffer.products.map((product, index) =>
                     {
                         return <LayoutGridItem key={ index } itemImage={ product.getIconUrl(currentOffer) } itemCount={ product.productCount } />;
                     }) }
-                </Grid>
+                </AutoGrid>
             </Column>
         );
     }

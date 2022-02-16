@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useCallback } from 'react';
-import { Grid } from '../../../../common/Grid';
+import { AutoGrid } from '../../../../common/AutoGrid';
 import { AvatarEditorGridPartItem } from '../../common/AvatarEditorGridPartItem';
 import { CategoryData } from '../../common/CategoryData';
 import { IAvatarEditorCategoryModel } from '../../common/IAvatarEditorCategoryModel';
@@ -30,9 +30,9 @@ export const AvatarEditorFigureSetView: FC<AvatarEditorFigureSetViewProps> = pro
     }, [ model, category, setMaxPaletteCount ]);
 
     return (
-        <Grid grow columnCount={ 3 } columnMinHeight={ 50 } overflow="auto">
+        <AutoGrid grow columnCount={ 3 } columnMinHeight={ 50 } overflow="auto">
             { (category.parts.length > 0) && category.parts.map((item, index) =>
                 <AvatarEditorFigureSetItemView key={ index } partItem={ item } onClick={ event => selectPart(item) } />) }
-        </Grid>
+        </AutoGrid>
     );
 }

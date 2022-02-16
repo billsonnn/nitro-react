@@ -1,9 +1,9 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction } from 'react';
-import { Grid, GridProps } from '../../../../common/Grid';
+import { AutoGrid } from '../../../../common/AutoGrid';
 import { AchievementListItemView } from './AchievementListItemView';
 
-export interface AchievementListViewProps extends GridProps
+export interface AchievementListViewProps
 {
     achievements: AchievementData[];
     selectedAchievementId: number;
@@ -12,15 +12,15 @@ export interface AchievementListViewProps extends GridProps
 
 export const AchievementListView: FC<AchievementListViewProps> = props =>
 {
-    const { achievements = null, selectedAchievementId = 0, setSelectedAchievementId = null, children = null, ...rest } = props;
+    const { achievements = null, selectedAchievementId = 0, setSelectedAchievementId = null, children = null } = props;
 
     return (
-        <Grid grow columnCount={ 6 } columnMinWidth={ 50 } columnMinHeight={ 50 } overflow="auto" { ...rest }>
+        <AutoGrid columnCount={ 6 } columnMinWidth={ 50 } columnMinHeight={ 50 }>
             { achievements && (achievements.length > 0) && achievements.map((achievement, index) =>
                 {
                     return <AchievementListItemView key={ index } achievement={ achievement } itemActive={ (selectedAchievementId === achievement.achievementId) } onClick={ event => setSelectedAchievementId(achievement.achievementId) } />;
                 }) }
             { children }
-        </Grid>
+        </AutoGrid>
     );
 }

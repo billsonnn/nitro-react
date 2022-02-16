@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../api';
+import { AutoGrid, AutoGridProps } from '../../../../../common/AutoGrid';
 import { Button } from '../../../../../common/Button';
 import { ButtonGroup } from '../../../../../common/ButtonGroup';
-import { Grid, GridProps } from '../../../../../common/Grid';
 import { BatchUpdates } from '../../../../../hooks';
 import { useCatalogContext } from '../../../CatalogContext';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
@@ -10,7 +10,7 @@ import { Offer } from '../../../common/Offer';
 import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
 import { CatalogGridOfferView } from '../common/CatalogGridOfferView';
 
-interface CatalogSpacesWidgetViewProps extends GridProps
+interface CatalogSpacesWidgetViewProps extends AutoGridProps
 {
 
 }
@@ -19,7 +19,7 @@ const SPACES_GROUP_NAMES = [ 'floors', 'walls', 'views' ];
 
 export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =>
 {
-    const { children = null, ...rest } = props;
+    const { columnCount = 5, children = null, ...rest } = props;
     const [ groupedOffers, setGroupedOffers ] = useState<IPurchasableOffer[][]>(null);
     const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(-1);
     const [ selectedOfferForGroup, setSelectedOfferForGroup ] = useState<IPurchasableOffer[]>(null);
@@ -93,7 +93,7 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
             <ButtonGroup>
                 { SPACES_GROUP_NAMES.map((name, index) => <Button key={ index } active={ (selectedGroupIndex === index) } onClick={ event => setSelectedGroupIndex(index) }>{ LocalizeText(`catalog.spaces.tab.${ name }`) }</Button>) }
             </ButtonGroup>
-            <Grid grow columnCount={ 5 } overflow="auto" { ...rest }>
+            <AutoGrid columnCount={ columnCount } { ...rest }>
                 { offers && (offers.length > 0) && offers.map((offer, index) =>
                 {
                     const setSelectedOffer = () =>
@@ -111,7 +111,7 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
                     return <CatalogGridOfferView key={ index } itemActive={ (currentOffer && (currentOffer === offer)) } offer={ offer } onClick={ setSelectedOffer } />;
                 }) }
                 { children }
-            </Grid>
+            </AutoGrid>
         </>
     );
 }

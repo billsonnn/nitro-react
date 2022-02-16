@@ -1,9 +1,9 @@
 import { Dispatch, FC, SetStateAction } from 'react';
-import { Grid, GridProps } from '../../../../common/Grid';
+import { AutoGrid } from '../../../../common/AutoGrid';
 import { AchievementCategory } from '../../common/AchievementCategory';
 import { AchievementsCategoryListItemView } from './AchievementsCategoryListItemView';
 
-export interface AchievementsCategoryListViewProps extends GridProps
+export interface AchievementsCategoryListViewProps
 {
     categories: AchievementCategory[];
     selectedCategoryCode: string;
@@ -12,12 +12,12 @@ export interface AchievementsCategoryListViewProps extends GridProps
 
 export const AchievementsCategoryListView: FC<AchievementsCategoryListViewProps> = props =>
 {
-    const { categories = null, selectedCategoryCode = null, setSelectedCategoryCode = null, children = null, ...rest } = props;
+    const { categories = null, selectedCategoryCode = null, setSelectedCategoryCode = null, children = null } = props;
     
     return (
-        <Grid grow columnMinWidth={ 90 } columnMinHeight={ 100 } { ...rest }>
+        <AutoGrid columnMinWidth={ 90 } columnMinHeight={ 100 }>
             { categories && (categories.length > 0) && categories.map((category, index) => <AchievementsCategoryListItemView key={ index } category={ category } itemActive={ (selectedCategoryCode === category.code) } onClick={ event => setSelectedCategoryCode(category.code) } /> ) }
             { children }
-        </Grid>
+        </AutoGrid>
     );
 };

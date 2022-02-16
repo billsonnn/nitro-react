@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FurnitureListComposer, IObjectData, TradingAcceptComposer, TradingConfirmationComposer, TradingListAddItemComposer, TradingListAddItemsComposer, TradingListItemRemoveComposer, TradingUnacceptComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
+import { AutoGrid } from '../../../../common/AutoGrid';
 import { Base } from '../../../../common/Base';
 import { Button } from '../../../../common/Button';
 import { Column } from '../../../../common/Column';
@@ -229,7 +230,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
             <Column size={ 4 } overflow="hidden">
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                 <Flex column fullHeight justifyContent="between" overflow="hidden" gap={ 2 }>
-                    <Grid grow columnCount={ 3 } overflow="auto">
+                    <AutoGrid columnCount={ 3 }>
                         { filteredGroupItems && (filteredGroupItems.length > 0) && filteredGroupItems.map((item, index) =>
                             {
                                 const count = item.getUnlockedCount();
@@ -243,7 +244,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                                     </LayoutGridItem>
                                 );
                             }) }
-                    </Grid>
+                    </AutoGrid>
                     <Base fullWidth className="badge bg-muted">
                         { groupItem ? groupItem.name : LocalizeText('catalog_selectproduct') }
                     </Base>
@@ -256,7 +257,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                             <Text>{ LocalizeText('inventory.trading.you') } { LocalizeText('inventory.trading.areoffering') }:</Text>
                             { getLockIcon(tradeData.ownUser.accepts) }
                         </Flex>
-                        <Grid grow columnCount={ 3 } overflow="auto">
+                        <AutoGrid columnCount={ 3 }>
                             { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
                                 {
                                     const item = (tradeData.ownUser.items.getWithIndex(i) || null);
@@ -272,7 +273,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                                         </LayoutGridItem>
                                     );
                                 }) }
-                        </Grid>
+                        </AutoGrid>
                         <Base fullWidth className="badge bg-muted">
                             { ownGroupItem ? ownGroupItem.name : LocalizeText('catalog_selectproduct') }
                         </Base>
@@ -282,7 +283,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                             <Text>{ tradeData.otherUser.userName } { LocalizeText('inventory.trading.isoffering') }:</Text>
                             { getLockIcon(tradeData.otherUser.accepts) }
                         </Flex>
-                        <Grid grow columnCount={ 3 } overflow="auto">
+                        <AutoGrid columnCount={ 3 }>
                             { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
                                 {
                                     const item = (tradeData.otherUser.items.getWithIndex(i) || null);
@@ -291,7 +292,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
                                     return <LayoutGridItem key={ i } itemActive={ (otherGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
                                 }) }
-                        </Grid>
+                        </AutoGrid>
                         <Base fullWidth className="badge bg-muted w-100">
                             { otherGroupItem ? otherGroupItem.name : LocalizeText('catalog_selectproduct') }
                         </Base>

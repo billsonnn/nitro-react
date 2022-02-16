@@ -1,6 +1,7 @@
 import { RequestBadgesComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { LocalizeBadgeName, LocalizeText } from '../../../../api';
+import { AutoGrid } from '../../../../common/AutoGrid';
 import { Button } from '../../../../common/Button';
 import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
@@ -77,21 +78,21 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
     return (
         <Grid>
             <Column size={ 7 } overflow="hidden">
-                <Grid grow columnCount={ 5 } overflow="auto">
+                <AutoGrid columnCount={ 5 }>
                     { badges && (badges.length > 0) && badges.map((code, index) =>
                         {
                             if(activeBadges.indexOf(code) >= 0) return null;
 
                             return <InventoryBadgeItemView key={ code } badgeCode={ code } />
                         }) }
-                </Grid>
+                </AutoGrid>
             </Column>
             <Column className="justify-content-between" size={ 5 } overflow="auto">
                 <Column overflow="hidden" gap={ 2 }>
                     <Text>{ LocalizeText('inventory.badges.activebadges') }</Text>
-                    <Grid grow columnCount={ 3 } overflow="auto">
+                    <AutoGrid columnCount={ 3 }>
                         { activeBadges && (activeBadges.length > 0) && activeBadges.map((code, index) => <InventoryBadgeItemView key={ code } badgeCode={ code } />) }
-                    </Grid>
+                    </AutoGrid>
                 </Column>
                 { badge && (badge.length > 0) &&
                     <Column grow justifyContent="end" gap={ 2 }>

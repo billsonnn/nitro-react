@@ -229,7 +229,7 @@ export const AchievementsView: FC<{}> = props =>
             <NitroCardContentView>
                 { !getSelectedCategory &&
                     <>
-                        <AchievementsCategoryListView categories={ achievementCategories } selectedCategoryCode={ selectedCategoryCode } setSelectedCategoryCode={ setSelectedCategoryCode } overflow="auto"  />
+                        <AchievementsCategoryListView categories={ achievementCategories } selectedCategoryCode={ selectedCategoryCode } setSelectedCategoryCode={ setSelectedCategoryCode } />
                         <Column grow justifyContent="end">
                             <Base className="progress" position="relative">
                                 <Flex fit center position="absolute" className="text-black">{ LocalizeText('achievements.categories.totalprogress', [ 'progress', 'limit' ], [ getProgress.toString(), getMaxProgress.toString() ]) }</Flex>

@@ -1,6 +1,7 @@
 import { ClubOfferData, GetClubOffersMessageComposer, PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../../api';
+import { AutoGrid } from '../../../../../common/AutoGrid';
 import { Button } from '../../../../../common/Button';
 import { Column } from '../../../../../common/Column';
 import { Flex } from '../../../../../common/Flex';
@@ -147,7 +148,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
     return (
         <Grid>
             <Column fullHeight size={ 7 } overflow="hidden" justifyContent="between">
-                <Grid grow columnCount={ 1 } className="nitro-catalog-layout-vip-buy-grid" overflow="auto">
+                <AutoGrid columnCount={ 1 } className="nitro-catalog-layout-vip-buy-grid">
                     { clubOffers && (clubOffers.length > 0) && clubOffers.map((offer, index) =>
                         {
                             return (
@@ -171,7 +172,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
                                 </LayoutGridItem>
                             );
                         }) }
-                </Grid>
+                </AutoGrid>
                 <Text center dangerouslySetInnerHTML={{ __html: LocalizeText('catalog.vip.buy.hccenter') }}></Text>
             </Column>
             <Column size={ 5 } overflow="hidden">

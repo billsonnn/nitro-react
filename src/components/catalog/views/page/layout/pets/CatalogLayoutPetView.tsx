@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ApproveNameMessageComposer, ColorConverter, GetSellablePetPalettesComposer, PurchaseFromCatalogComposer, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../../../api';
+import { AutoGrid } from '../../../../../../common/AutoGrid';
 import { Base } from '../../../../../../common/Base';
 import { Button } from '../../../../../../common/Button';
 import { Column } from '../../../../../../common/Column';
@@ -218,7 +219,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
     return (
         <Grid>
             <Column size={ 7 } overflow="hidden">
-                <Grid grow columnCount={ 5 } overflow="auto">
+                <AutoGrid columnCount={ 5 }>
                     { !colorsShowing && (sellablePalettes.length > 0) && sellablePalettes.map((palette, index) =>
                         {
                             return (
@@ -228,7 +229,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
                             );
                         })}
                     { colorsShowing && (sellableColors.length > 0) && sellableColors.map((colorSet, index) => <LayoutGridItem key={ index } itemActive={ (selectedColorIndex === index) } itemColor={ ColorConverter.int2rgb(colorSet[0]) } onClick={ event => setSelectedColorIndex(index) } />) }
-                </Grid>
+                </AutoGrid>
             </Column>
             <Column center={ !currentOffer } size={ 5 } overflow="hidden">
                 { !currentOffer &&
