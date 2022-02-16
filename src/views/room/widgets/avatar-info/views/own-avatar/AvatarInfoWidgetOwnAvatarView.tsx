@@ -2,6 +2,7 @@ import { AvatarAction, AvatarExpressionEnum, RoomControllerLevel, RoomObjectCate
 import { FC, useCallback, useMemo, useState } from 'react';
 import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, GetUserProfile, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUserActionMessage } from '../../../../../../api';
 import { AvatarEditorEvent } from '../../../../../../events';
+import { HelpNameChangeEvent } from '../../../../../../events/help/HelpNameChangeEvent';
 import { dispatchUiEvent } from '../../../../../../hooks';
 import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
 import { useRoomContext } from '../../../../context/RoomContext';
@@ -41,6 +42,9 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                 {
                     case 'decorate':
                         eventDispatcher.dispatchEvent(new RoomWidgetUpdateDecorateModeEvent(true));
+                        break;
+                    case 'change_name':
+                        dispatchUiEvent(new HelpNameChangeEvent(HelpNameChangeEvent.INIT));
                         break;
                     case 'change_looks':
                         dispatchUiEvent(new AvatarEditorEvent(AvatarEditorEvent.SHOW_EDITOR));

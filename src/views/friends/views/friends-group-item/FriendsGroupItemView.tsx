@@ -1,4 +1,5 @@
 import { FollowFriendMessageComposer, SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
+import classNames from 'classnames';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, OpenMessengerChat } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
@@ -9,7 +10,7 @@ import { FriendsGroupItemViewProps } from './FriendsGroupItemView.types';
 
 export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
 {
-    const { friend = null, selected = false, children = null, ...rest } = props;
+    const { friend = null, selected = false, selectFriend = null, children = null, ...rest } = props;
 
     const [ isExpanded, setIsExpanded ] = useState<boolean>(false);
 
@@ -20,8 +21,10 @@ export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
         SendMessageHook(new FollowFriendMessageComposer(friend.id));
     }, [ friend ]);
 
-    const openMessengerChat = useCallback(() =>
+    const openMessengerChat = useCallback((e) =>
     {
+        e.stopPropagation();
+        
         if(!friend) return;
         
         OpenMessengerChat(friend.id);
@@ -40,8 +43,16 @@ export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
         }
     }, [ friend ]);
 
-    const updateRelationship = useCallback((type: number) =>
+    const initUpdateRelationship = useCallback((e) =>
     {
+        e.stopPropagation();
+        setIsExpanded(true);
+    }, []);
+
+    const updateRelationship = useCallback((e, type: number) =>
+    {
+        e.stopPropagation();
+        
         if(type !== friend.relationshipStatus) SendMessageHook(new SetRelationshipStatusComposer(friend.id, type));
         
         setIsExpanded(false);
@@ -50,8 +61,10 @@ export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
     if(!friend) return null;
 
     return (
-        <NitroLayoutFlex className="px-2 py-1 align-items-center" gap={ 1 } { ...rest }>
-            <UserProfileIconView userId={ friend.id } />
+        <NitroLayoutFlex className={ 'px-2 py-1 align-items-center' + classNames({ ' bg-primary text-white': selected }) } gap={ 1 } { ...rest } onClick={ selectFriend }>
+            <div  onClick={ (e) => e.stopPropagation() }>
+                <UserProfileIconView userId={ friend.id } />
+            </div>
             <div>{ friend.name }</div>
             <NitroLayoutFlex className="ms-auto align-items-center" gap={ 1 }>
                 { !isExpanded &&
@@ -60,14 +73,14 @@ export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
                             <NitroLayoutBase onClick={ followFriend } className="nitro-friends-spritesheet icon-follow cursor-pointer" title={ LocalizeText('friendlist.tip.follow') } /> }
                         { friend.online &&
                             <NitroLayoutBase className="nitro-friends-spritesheet icon-chat cursor-pointer" onClick={ openMessengerChat } title={ LocalizeText('friendlist.tip.im') } /> }
-                        <NitroLayoutBase className={ `nitro-friends-spritesheet icon-${ getCurrentRelationshipName() } cursor-pointer` }onClick={ event => setIsExpanded(true) } title={ LocalizeText('infostand.link.relationship') } />
+                        <NitroLayoutBase className={ `nitro-friends-spritesheet icon-${ getCurrentRelationshipName() } cursor-pointer` } onClick={ initUpdateRelationship } title={ LocalizeText('infostand.link.relationship') } />
                     </> }
                 { isExpanded &&
                     <>
-                        <NitroLayoutBase className="nitro-friends-spritesheet icon-heart cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_HEART) } />
-                        <NitroLayoutBase className="nitro-friends-spritesheet icon-smile cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_SMILE) } />
-                        <NitroLayoutBase className="nitro-friends-spritesheet icon-bobba cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_BOBBA) } />
-                        <NitroLayoutBase className="nitro-friends-spritesheet icon-none cursor-pointer" onClick={ () => updateRelationship(MessengerFriend.RELATIONSHIP_NONE) } />
+                        <NitroLayoutBase className="nitro-friends-spritesheet icon-heart cursor-pointer" onClick={ (e) => updateRelationship(e, MessengerFriend.RELATIONSHIP_HEART) } />
+                        <NitroLayoutBase className="nitro-friends-spritesheet icon-smile cursor-pointer" onClick={ (e) => updateRelationship(e, MessengerFriend.RELATIONSHIP_SMILE) } />
+                        <NitroLayoutBase className="nitro-friends-spritesheet icon-bobba cursor-pointer" onClick={ (e) => updateRelationship(e, MessengerFriend.RELATIONSHIP_BOBBA) } />
+                        <NitroLayoutBase className="nitro-friends-spritesheet icon-none cursor-pointer" onClick={ (e) => updateRelationship(e, MessengerFriend.RELATIONSHIP_NONE) } />
                     </> }
             </NitroLayoutFlex>
             { children }

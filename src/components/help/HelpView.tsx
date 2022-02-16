@@ -10,6 +10,7 @@ import { HelpContextProvider } from './HelpContext';
 import { HelpMessageHandler } from './HelpMessageHandler';
 import { DescribeReportView } from './views/DescribeReportView';
 import { HelpIndexView } from './views/HelpIndexView';
+import { NameChangeView } from './views/name-change/NameChangeView';
 import { SanctionSatusView } from './views/SanctionStatusView';
 import { SelectReportedChatsView } from './views/SelectReportedChatsView';
 import { SelectReportedUserView } from './views/SelectReportedUserView';
@@ -124,6 +125,7 @@ export const HelpView: FC<{}> = props =>
                     </NitroCardContentView>
                 </NitroCardView> }
             <SanctionSatusView />
+            <NameChangeView />
         </HelpContextProvider>
     );
 }

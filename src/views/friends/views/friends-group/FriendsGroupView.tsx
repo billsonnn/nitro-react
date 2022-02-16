@@ -4,15 +4,15 @@ import { FriendsGroupViewProps } from './FriendsGroupView.types';
 
 export const FriendsGroupView: FC<FriendsGroupViewProps> = props =>
 {
-    const { list = null } = props;
+    const { list = null, selectedFriendsIds = null, selectFriend = null } = props;
 
     if(!list) return null;
 
     return (
         <>
-            { list.map((item, index) =>
+            { selectedFriendsIds && list && list.map((item, index) =>
                 {
-                    return <FriendsGroupItemView key={ index } friend={ item } />;
+                    return <FriendsGroupItemView key={ index } friend={ item } selected={ selectedFriendsIds.includes(item.id) } selectFriend={ () => selectFriend(item.id) } />;
                 }) }
         </>
     );
