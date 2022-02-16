@@ -307,7 +307,7 @@ export const FriendsMessengerView: FC<{}> = props =>
                                     <FriendsMessengerThreadView thread={messageThreads[activeThreadIndex]} />
                                 </NitroLayoutFlexColumn>
                                 <NitroLayoutFlex gap={2}>
-                                    <input type="text" className="form-control form-control-sm" placeholder={LocalizeText('messenger.window.input.default', ['FRIEND_NAME'], [messageThreads[activeThreadIndex].participant.name])} value={messageText} onChange={event => setMessageText(event.target.value)} onKeyDown={onKeyDown} />
+                                    <input type="text" className="form-control form-control-sm" maxLength={ 255 } placeholder={LocalizeText('messenger.window.input.default', ['FRIEND_NAME'], [messageThreads[activeThreadIndex].participant.name])} value={messageText} onChange={event => setMessageText(event.target.value)} onKeyDown={onKeyDown} />
                                     <NitroLayoutButton variant="success" size="sm" onClick={sendMessage}>
                                         {LocalizeText('widgets.chatinput.say')}
                                     </NitroLayoutButton>
