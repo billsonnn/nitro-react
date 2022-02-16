@@ -1,49 +1,44 @@
 import { CallForHelpMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { CreateLinkEvent, LocalizeText } from '../../../api';
+import { Button, Column, Text } from '../../../common';
 import { SendMessageHook } from '../../../hooks';
 import { useHelpContext } from '../HelpContext';
 
 export const DescribeReportView: FC<{}> = props =>
 {
+    const [ message, setMessage ] = useState('');
     const { helpReportState = null, setHelpReportState = null } = useHelpContext();
-    const [message, setMessage] = useState('');
+    const { reportedChats, cfhTopic, reportedUserId } = helpReportState;
 
-    const submitReport = useCallback(() =>
+    const submitReport = () =>
     {
         if(message.length < 15) return;
-        
-        const reportState = Object.assign({}, helpReportState);
 
-        reportState.message = message;
+        const roomId = reportedChats[0].roomId;
+        const chats: (string | number )[] = [];
 
-        setHelpReportState(reportState);
-
-        const roomId = reportState.reportedChats[0].roomId;
-        const chats: (string | number )[] = []; 
-        reportState.reportedChats.forEach(entry =>
+        reportedChats.forEach(entry =>
         {
             chats.push(entry.entityId);
             chats.push(entry.message);
         });
 
-        SendMessageHook(new CallForHelpMessageComposer(message, reportState.cfhTopic, reportState.reportedUserId, roomId, chats));
+        SendMessageHook(new CallForHelpMessageComposer(message, cfhTopic, reportedUserId, roomId, chats));
 
         CreateLinkEvent('help/hide');
-    }, [helpReportState, message, setHelpReportState]);
+    }
 
     return (
         <>
-            <div className="d-grid col-12 mx-auto justify-content-center">
-                <div className="col-12"><h3 className="fw-bold">{LocalizeText('help.emergency.chat_report.subtitle')}</h3></div>
-                <div className="text-wrap">{LocalizeText('help.cfh.input.text')}</div>
-            </div>
-
-            <div className="form-group mb-2">
-                <textarea className="form-control" value={message} onChange={event => setMessage(event.target.value)} />
-            </div>
-
-            <button className="btn btn-danger mt-2" type="button" disabled={message.length < 15} onClick={submitReport}>{LocalizeText('help.bully.submit')}</button>
+            <Column gap={ 1 }>
+                <Text fontSize={ 3 }>{ LocalizeText('help.emergency.chat_report.subtitle') }</Text>
+                <Text>{ LocalizeText('help.cfh.input.text') }</Text>
+            </Column>
+            <textarea className="form-control" value={ message } onChange={ event => setMessage(event.target.value) } />
+            <Button variant="success" disabled={ (message.length < 15) } onClick={ submitReport }>
+                { LocalizeText('help.bully.submit') }
+            </Button>
         </>
     );
 }

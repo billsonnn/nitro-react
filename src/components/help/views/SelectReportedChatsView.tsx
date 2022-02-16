@@ -1,88 +1,84 @@
 import { RoomObjectType } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../api';
-import { NitroCardGridItemView, NitroCardGridView } from '../../../layout';
+import { Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../common';
 import { GetChatHistory } from '../../../views/chat-history/common/GetChatHistory';
 import { ChatEntryType, IChatEntry } from '../../../views/chat-history/context/ChatHistoryContext.types';
 import { useHelpContext } from '../HelpContext';
 
 export const SelectReportedChatsView: FC<{}> = props =>
 {
-    const { helpReportState = null, setHelpReportState = null } = useHelpContext();
     const [ selectedChats, setSelectedChats ] = useState<Map<number, IChatEntry>>(new Map());
+    const { helpReportState = null, setHelpReportState = null } = useHelpContext();
+    const { reportedUserId = -1 } = helpReportState;
 
     const userChats = useMemo(() =>
     {
-        return GetChatHistory().chats.filter(chat => (chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityId === helpReportState.reportedUserId) && (chat.entityType === RoomObjectType.USER))
-    }, [helpReportState.reportedUserId]);
+        return GetChatHistory().chats.filter(chat => (chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityId === reportedUserId) && (chat.entityType === RoomObjectType.USER));
+    }, [ reportedUserId ]);
 
-    const selectChat = useCallback((chatEntry: IChatEntry) =>
+    const selectChat = (chatEntry: IChatEntry) =>
     {
         const chats = new Map(selectedChats);
 
-        if(chats.has(chatEntry.id))
-        {
-            chats.delete(chatEntry.id);
-        }
-
-        else
-        {
-            chats.set(chatEntry.id, chatEntry);
-        }
+        if(chats.has(chatEntry.id)) chats.delete(chatEntry.id);
+        else chats.set(chatEntry.id, chatEntry);
 
         setSelectedChats(chats);
+    }
 
-    }, [selectedChats]);
-
-    const submitChats = useCallback(() =>
+    const submitChats = () =>
     {
-        if(!selectedChats || selectedChats.size <= 0) return;
+        if(!selectedChats || (selectedChats.size <= 0)) return;
 
-        const reportState = Object.assign({}, helpReportState);
+        setHelpReportState(prevValue =>
+            {
+                const reportedChats = Array.from(selectedChats.values());
+                const currentStep = 3;
 
-        reportState.reportedChats = Array.from(selectedChats.values());
-        reportState.currentStep = 3;
-        setHelpReportState(reportState);
+                return { ...prevValue, reportedChats, currentStep };
+            });
+    }
 
-    }, [helpReportState, selectedChats, setHelpReportState]);
-
-    const back = useCallback(() =>
+    const back = () =>
     {
-        const reportState = Object.assign({}, helpReportState);
-        reportState.currentStep = --reportState.currentStep;
-        setHelpReportState(reportState);
-    }, [helpReportState, setHelpReportState]);
-    
+        setHelpReportState(prevValue =>
+            {
+                const currentStep = (prevValue.currentStep - 1);
+
+                return { ...prevValue, currentStep };
+            });
+    }
+
     return (
         <>
-            <div className="d-grid col-12 mx-auto justify-content-center">
-                <div className="col-12"><h3 className="fw-bold">{LocalizeText('help.emergency.chat_report.subtitle')}</h3></div>
-                { userChats.length > 0 &&
-                    <div className="text-wrap">{LocalizeText('help.emergency.chat_report.description')}</div>
-                }
-            </div>
-            {
-                (userChats.length === 0) && <div>{LocalizeText('help.cfh.error.no_user_data')}</div>
-            }
-            { userChats.length > 0 &&
-                <>
-                    <NitroCardGridView columns={1}>
-                        {userChats.map((chat, index) =>
-                        {
-                            return (
-                                <NitroCardGridItemView key={chat.id} onClick={() => selectChat(chat)} itemActive={selectedChats.has(chat.id)}>
-                                    <span>{chat.message}</span>
-                                </NitroCardGridItemView>
-                            )
-                        })}
-                    </NitroCardGridView>
-
-                    <div className="d-flex gap-2 justify-content-between mt-auto">
-                        <button className="btn btn-secondary mt-2" type="button" onClick={back}>{LocalizeText('generic.back')}</button>
-                        <button className="btn btn-primary mt-2" type="button" disabled={selectedChats.size <= 0} onClick={submitChats}>{LocalizeText('help.emergency.main.submit.button')}</button>
-                    </div>
-                </>
-            }
+            <Column gap={ 1 }>
+                <Text fontSize={ 3 }>{ LocalizeText('help.emergency.chat_report.subtitle') }</Text>
+                <Text>{ LocalizeText('help.emergency.chat_report.description') }</Text>
+            </Column>
+            <Column gap={ 1 }>
+                { !!!userChats.length &&
+                    <Text>{ LocalizeText('help.cfh.error.no_user_data') }</Text> }
+                { (userChats.length > 0) &&
+                    <Grid gap={ 1 } columnCount={ 1 } overflow="auto">
+                        { userChats.map((chat, index) =>
+                            {
+                                return (
+                                    <LayoutGridItem key={ chat.id } onClick={ event => selectChat(chat) } itemActive={ selectedChats.has(chat.id) }>
+                                        <Text>{ chat.message }</Text>
+                                    </LayoutGridItem>
+                                );
+                            }) }
+                    </Grid> }
+            </Column>
+            <Flex gap={ 2 } justifyContent="between">
+                <Button variant="secondary" onClick={ back }>
+                    { LocalizeText('generic.back') }
+                </Button>
+                <Button disabled={ (selectedChats.size <= 0) } onClick={ submitChats }>
+                    { LocalizeText('help.emergency.main.submit.button') }
+                </Button>
+            </Flex>
         </>
     );
 }

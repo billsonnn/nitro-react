@@ -1,6 +1,7 @@
 import { ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { Base, Column, Grid } from '../../common';
 import { HelpReportUserEvent } from '../../events/help/HelpReportUserEvent';
 import { useUiEvent } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
@@ -112,7 +113,14 @@ export const HelpView: FC<{}> = props =>
                 <NitroCardView className="nitro-help">
                     <NitroCardHeaderView headerText={ LocalizeText('help.button.cfh') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardContentView className="text-black">
-                        <CurrentStepView />
+                        <Grid>
+                            <Column center size={ 5 } overflow="hidden">
+                                <Base className="index-image" />
+                            </Column>
+                            <Column justifyContent="between" size={ 7 } overflow="hidden">
+                                <CurrentStepView />
+                            </Column>
+                        </Grid>
                     </NitroCardContentView>
                 </NitroCardView> }
             <SanctionSatusView />
