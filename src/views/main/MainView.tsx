@@ -9,6 +9,7 @@ import { HelpView } from '../../components/help/HelpView';
 import { InventoryView } from '../../components/inventory/InventoryView';
 import { NavigatorView } from '../../components/navigator/NavigatorView';
 import { ToolbarView } from '../../components/toolbar/ToolbarView';
+import { UserSettingsView } from '../../components/user-settings/UserSettingsView';
 import { WiredView } from '../../components/wired/WiredView';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { TransitionAnimation, TransitionAnimationTypes } from '../../layout';
@@ -24,7 +25,6 @@ import { NitropediaView } from '../nitropedia/NitropediaView';
 import { RightSideView } from '../right-side/RightSideView';
 import { RoomHostView } from '../room-host/RoomHostView';
 import { UserProfileView } from '../user-profile/UserProfileView';
-import { UserSettingsView } from '../user-settings/UserSettingsView';
 import { MainViewProps } from './MainView.types';
 
 export const MainView: FC<MainViewProps> = props =>

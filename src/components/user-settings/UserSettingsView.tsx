@@ -1,6 +1,8 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NitroSettingsEvent, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer, UserSettingsSoundComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../api';
+import { Column, Flex, Text } from '../../common';
 import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
 import { CreateMessageHook, dispatchMainEvent, SendMessageHook, useUiEvent } from '../../hooks';
 import { NitroCardContentView, NitroCardHeaderView } from '../../layout';
@@ -116,48 +118,48 @@ export const UserSettingsView: FC<{}> = props =>
     return (
         <NitroCardView uniqueKey="user-settings" className="user-settings-window" simple>
             <NitroCardHeaderView headerText={ LocalizeText('widget.memenu.settings.title') } onCloseClick={event => processAction('close_view')} />
-            <NitroCardContentView className="text-black d-flex flex-column gap-2">
-                <div className="d-flex flex-column gap-1">
-                    <div className="form-check">
+            <NitroCardContentView className="text-black">
+                <Column gap={ 1 }>
+                    <Flex alignItems="center" gap={ 1 }>
                         <input className="form-check-input" type="checkbox" checked={ userSettings.oldChat } onChange={ event => processAction('oldchat', event.target.checked) } />
-                        <label className="form-check-label">{ LocalizeText('memenu.settings.chat.prefer.old.chat') }</label>
-                    </div>
-                    <div className="form-check">
+                        <Text>{ LocalizeText('memenu.settings.chat.prefer.old.chat') }</Text>
+                    </Flex>
+                    <Flex alignItems="center" gap={ 1 }>
                         <input className="form-check-input" type="checkbox" checked={ userSettings.roomInvites } onChange={ event => processAction('room_invites', event.target.checked) } />
-                        <label className="form-check-label">{ LocalizeText('memenu.settings.other.ignore.room.invites') }</label>
-                    </div>
-                    <div className="form-check">
+                        <Text>{ LocalizeText('memenu.settings.other.ignore.room.invites') }</Text>
+                    </Flex>
+                    <Flex alignItems="center" gap={ 1 }>
                         <input className="form-check-input" type="checkbox" checked={ userSettings.cameraFollow } onChange={ event => processAction('camera_follow', event.target.checked) } />
-                        <label className="form-check-label">{ LocalizeText('memenu.settings.other.disable.room.camera.follow') }</label>
-                    </div>
-                </div>
-                <div className="d-flex flex-column gap-2">
-                    <div className="fw-bold">{ LocalizeText('widget.memenu.settings.volume') }</div>
-                    <div>
-                        <label>{ LocalizeText('widget.memenu.settings.volume.ui') }</label>
-                        <div className={ 'd-flex align-items-center justify-content-center' }>
-                            <i className={ 'fas' + ((userSettings.volumeSystem === 0) ? ' fa-volume-mute' : '') + ((userSettings.volumeSystem > 0) ? ' fa-volume-down' : '') + ((userSettings.volumeSystem >= 50) ? ' text-muted' : '') } />
-                            <input type="range" className="custom-range ms-2 me-2 w-100" min="0" max="100" step="1" id="volumeSystem" value={ userSettings.volumeSystem } onChange={ event => processAction('system_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') }/>
-                            <i className={ 'fas fa-volume-up' + ((userSettings.volumeSystem < 50) ? ' text-muted': '') } />
-                        </div>
-                    </div>
-                    <div>
-                        <label>{ LocalizeText('widget.memenu.settings.volume.furni') }</label>
-                        <div className={ 'd-flex align-items-center justify-content-center' }>
-                            <i className={ 'fas' + ((userSettings.volumeFurni === 0) ? ' fa-volume-mute' : '') + ((userSettings.volumeFurni > 0) ? ' fa-volume-down' : '') + ((userSettings.volumeFurni >= 50) ? ' text-muted' : '') } />
-                            <input type="range" className="custom-range ms-2 me-2 w-100" min="0" max="100" step="1" id="volumeFurni" value={ userSettings.volumeFurni } onChange={ event => processAction('furni_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') }/>
-                            <i className={ 'fas fa-volume-up' + ((userSettings.volumeFurni < 50) ? ' text-muted': '') } />
-                        </div>
-                    </div>
-                    <div>
-                        <label>{ LocalizeText('widget.memenu.settings.volume.trax') }</label>
-                        <div className={ 'd-flex align-items-center justify-content-center' }>
-                            <i className={ 'fas' + ((userSettings.volumeTrax === 0) ? ' fa-volume-mute' : '') + ((userSettings.volumeTrax > 0) ? ' fa-volume-down' : '') + ((userSettings.volumeTrax >= 50) ? ' text-muted' : '') } />
-                            <input type="range" className="custom-range ms-2 me-2 w-100" min="0" max="100" step="1" id="volumeTrax" value={ userSettings.volumeTrax } onChange={ event => processAction('trax_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') }/>
-                            <i className={ 'fas fa-volume-up' + ((userSettings.volumeTrax < 50) ? ' text-muted': '') } />
-                        </div>
-                    </div>
-                </div>
+                        <Text>{ LocalizeText('memenu.settings.other.disable.room.camera.follow') }</Text>
+                    </Flex>
+                </Column>
+                <Column>
+                    <Text bold>{ LocalizeText('widget.memenu.settings.volume') }</Text>
+                    <Column gap={ 1 }>
+                        <Text>{ LocalizeText('widget.memenu.settings.volume.ui') }</Text>
+                        <Flex alignItems="center" gap={ 1 }>
+                            <FontAwesomeIcon icon={ ((userSettings.volumeSystem === 0) ? 'volume-mute' : (userSettings.volumeSystem > 0) ? 'volume-down' : null) } className={ (userSettings.volumeSystem >= 50) ? 'text-muted' : '' } />
+                            <input type="range" className="custom-range w-100" min="0" max="100" step="1" id="volumeSystem" value={ userSettings.volumeSystem } onChange={ event => processAction('system_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') }/>
+                            <FontAwesomeIcon icon="volume-up" className={ (userSettings.volumeSystem < 50) ? 'text-muted' : '' } />
+                        </Flex>
+                    </Column>
+                    <Column gap={ 1 }>
+                        <Text>{ LocalizeText('widget.memenu.settings.volume.furni') }</Text>
+                        <Flex alignItems="center" gap={ 1 }>
+                            <FontAwesomeIcon icon={ ((userSettings.volumeFurni === 0) ? 'volume-mute' : (userSettings.volumeFurni > 0) ? 'volume-down' : null) } className={ (userSettings.volumeFurni >= 50) ? 'text-muted' : '' } />
+                            <input type="range" className="custom-range w-100" min="0" max="100" step="1" id="volumeFurni" value={ userSettings.volumeFurni } onChange={ event => processAction('furni_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') }/>
+                            <FontAwesomeIcon icon="volume-up" className={ (userSettings.volumeFurni < 50) ? 'text-muted' : '' } />
+                        </Flex>
+                    </Column>
+                    <Column gap={ 1 }>
+                        <Text>{ LocalizeText('widget.memenu.settings.volume.trax') }</Text>
+                        <Flex alignItems="center" gap={ 1 }>
+                            <FontAwesomeIcon icon={ ((userSettings.volumeTrax === 0) ? 'volume-mute' : (userSettings.volumeTrax > 0) ? 'volume-down' : null) } className={ (userSettings.volumeTrax >= 50) ? 'text-muted' : '' } />
+                            <input type="range" className="custom-range w-100" min="0" max="100" step="1" id="volumeTrax" value={ userSettings.volumeTrax } onChange={ event => processAction('trax_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') }/>
+                            <FontAwesomeIcon icon="volume-up" className={ (userSettings.volumeTrax < 50) ? 'text-muted' : '' } />
+                        </Flex>
+                    </Column>
+                </Column>
             </NitroCardContentView>
         </NitroCardView>
     );
