@@ -1,6 +1,6 @@
 import { FC } from 'react';
+import { AutoGrid } from '../../../../common/AutoGrid';
 import { Column } from '../../../../common/Column';
-import { Grid } from '../../../../common/Grid';
 import { useCatalogContext } from '../../CatalogContext';
 import { ICatalogNode } from '../../common/ICatalogNode';
 import { CatalogSearchView } from '../page/common/CatalogSearchView';
@@ -21,14 +21,14 @@ export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
         <>
             <CatalogSearchView />
             <Column fullHeight className="nitro-catalog-navigation-grid-container p-1" overflow="hidden">
-                <Grid gap={ 1 } columnCount={ 1 } overflow="auto">
+                <AutoGrid gap={ 1 } columnCount={ 1 }>
                     { searchResult && (searchResult.filteredNodes.length > 0) && searchResult.filteredNodes.map((n, index) =>
                     {
                         return <CatalogNavigationItemView key={ index } node={ n } />;
                     })}
                     { !searchResult &&
                         <CatalogNavigationSetView node={ node } /> }
-                </Grid>
+                </AutoGrid>
             </Column>
         </>
     );

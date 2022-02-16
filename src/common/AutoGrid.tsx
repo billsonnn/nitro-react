@@ -9,7 +9,7 @@ export interface AutoGridProps extends GridProps
 
 export const AutoGrid: FC<AutoGridProps> = props =>
 {
-    const { columnMinWidth = 40, columnMinHeight = 40, columnCount = 0, fullHeight = false, overflow = 'auto', style = {}, ...rest } = props;
+    const { columnMinWidth = 40, columnMinHeight = 40, columnCount = 0, fullHeight = false, maxContent = true, overflow = 'auto', style = {}, ...rest } = props;
 
     const getStyle = useMemo(() =>
     {

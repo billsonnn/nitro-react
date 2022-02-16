@@ -10,13 +10,13 @@ interface CatalogBundleGridWidgetViewProps extends AutoGridProps
 
 export const CatalogBundleGridWidgetView: FC<CatalogBundleGridWidgetViewProps> = props =>
 {
-    const { children = null, ...rest } = props;
+    const { columnCount = 5, children = null, ...rest } = props;
     const { currentOffer = null } = useCatalogContext();
 
     if(!currentOffer) return null;
 
     return (
-        <AutoGrid grow columnCount={ 5 } overflow="auto" { ...rest }>
+        <AutoGrid columnCount={ 5 } { ...rest }>
             { currentOffer.products && (currentOffer.products.length > 0) && currentOffer.products.map((product, index) => <LayoutGridItem key={ index } itemImage={ product.getIconUrl() } itemCount={ product.productCount } />) }
             { children }
         </AutoGrid>

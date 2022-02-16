@@ -26,10 +26,12 @@ export const Grid: FC<GridProps> = props =>
         if(gap) newClassNames.push('gap-' + gap);
         else if(gap === 0) newClassNames.push('gap-0');
 
+        if(maxContent) newClassNames.push('flex-basis-max-content');
+
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ inline, gap, classNames ]);
+    }, [ inline, gap, maxContent, classNames ]);
 
     const getStyle = useMemo(() =>
     {
@@ -37,12 +39,10 @@ export const Grid: FC<GridProps> = props =>
 
         if(columnCount) newStyle['--bs-columns'] = columnCount.toString();
 
-        if(maxContent) newStyle.gridTemplateRows = 'max-content';
-
         if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [ columnCount, maxContent, style ]);
+    }, [ columnCount, style ]);
 
     return (
         <GridContextProvider value={ { isCssGrid: true } }>

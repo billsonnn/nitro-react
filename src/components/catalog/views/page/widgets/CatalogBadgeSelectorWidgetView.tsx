@@ -17,7 +17,7 @@ interface CatalogBadgeSelectorWidgetViewProps extends AutoGridProps
 
 export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewProps> = props =>
 {
-    const { grow = true, columnCount = 5, overflow = 'auto', ...rest } = props;
+    const { columnCount = 5, ...rest } = props;
     const [ badges, setBadges ] = useState<string[]>([]);
     const [ currentBadge, setCurrentBadge ] = useState<string>(null);
     const { currentOffer = null, setPurchaseOptions = null } = useCatalogContext();
@@ -59,7 +59,7 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
     }, []);
 
     return (
-        <AutoGrid grow={ grow } columnCount={ columnCount } overflow={ overflow } { ...rest }>
+        <AutoGrid columnCount={ columnCount } { ...rest }>
             { badges && (badges.length > 0) && badges.map(code =>
                 {
                     return (
