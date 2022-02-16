@@ -1,4 +1,4 @@
-import { ConfigurationEvent, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
+import { ConfigurationEvent, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetCommunication, GetConfiguration, GetNitroInstance } from './api';
 import { useConfigurationEvent } from './hooks/events/core/configuration/configuration-event';
@@ -68,6 +68,8 @@ export const App: FC<{}> = props =>
                 setMessage('Finishing Up');
 
                 GetNitroInstance().init();
+
+                if(LegacyExternalInterface.available) LegacyExternalInterface.call('legacyTrack', 'authentication', 'authok', []);
 				return;
 			case NitroCommunicationDemoEvent.CONNECTION_ERROR:
                 setIsError(true);
@@ -79,7 +81,7 @@ export const App: FC<{}> = props =>
                 setIsError(true);
                 setMessage('Connection Error');
 
-                LegacyExternalInterface.call('disconnect', -1, 'client.init.handshake.fail');
+                HabboWebTools.send(-1, 'client.init.handshake.fail');
                 return;
             case RoomEngineEvent.ENGINE_INITIALIZED:
                 setIsReady(true);
