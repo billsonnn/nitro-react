@@ -1,16 +1,5 @@
-import { Dispatch, ProviderProps, Reducer } from 'react';
+import { Reducer } from 'react';
 import { GroupBadgePart } from '../common/GroupBadgePart';
-
-export interface IGroupsContext
-{
-    groupsState: IGroupsState;
-    dispatchGroupsState: Dispatch<IGroupsAction>;
-}
-
-export interface GroupsContextProps extends ProviderProps<IGroupsContext>
-{
-
-}
 
 export interface IGroupsState
 {

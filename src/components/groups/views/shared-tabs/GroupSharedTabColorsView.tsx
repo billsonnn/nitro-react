@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { useGroupsContext } from '../../../context/GroupsContext';
-import { GroupsActions } from '../../../context/GroupsContext.types';
+import { LocalizeText } from '../../../../api';
+import { useGroupsContext } from '../../GroupsContext';
+import { GroupsActions } from '../../reducers/GroupsReducer';
 
 export const GroupSharedTabColorsView: FC<{}> = props =>
 {

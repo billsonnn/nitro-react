@@ -1,8 +1,12 @@
 import { FC, useCallback } from 'react';
-import { CreateLinkEvent, LocalizeText } from '../../../../../api';
-import { useGroupsContext } from '../../../context/GroupsContext';
-import { GroupsActions } from '../../../context/GroupsContext.types';
-import { GroupSharedTabIdentityViewProps } from './GroupSharedTabIdentityView.types';
+import { CreateLinkEvent, LocalizeText } from '../../../../api';
+import { useGroupsContext } from '../../GroupsContext';
+import { GroupsActions } from '../../reducers/GroupsReducer';
+
+interface GroupSharedTabIdentityViewProps
+{
+    isCreator?: boolean;
+}
 
 export const GroupSharedTabIdentityView: FC<GroupSharedTabIdentityViewProps> = props =>
 {

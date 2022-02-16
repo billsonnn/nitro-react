@@ -1,7 +1,7 @@
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
-import { useGroupsContext } from '../../../context/GroupsContext';
+import { LocalizeText } from '../../../../api';
+import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
+import { useGroupsContext } from '../../GroupsContext';
 
 export const GroupCreatorTabConfirmationView: FC<{}> = props =>
 {

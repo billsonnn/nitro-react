@@ -5,15 +5,20 @@ import { Button } from 'react-bootstrap';
 import { HasHabboClub, LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { useGroupsContext } from '../../context/GroupsContext';
-import { GroupsActions } from '../../context/GroupsContext.types';
-import { GroupSharedTabBadgeView } from '../shared-tabs/tab-badge/GroupSharedTabBadgeView';
-import { GroupSharedTabColorsView } from '../shared-tabs/tab-colors/GroupSharedTabColorsView';
-import { GroupSharedTabIdentityView } from '../shared-tabs/tab-identity/GroupSharedTabIdentityView';
-import { GroupCreatorViewProps } from './GroupCreatorView.types';
-import { GroupCreatorTabConfirmationView } from './tab-confirmation/GroupCreatorTabConfirmationView';
+import { useGroupsContext } from '../../GroupsContext';
+import { GroupsActions } from '../../reducers/GroupsReducer';
+import { GroupSharedTabBadgeView } from '../shared-tabs/GroupSharedTabBadgeView';
+import { GroupSharedTabColorsView } from '../shared-tabs/GroupSharedTabColorsView';
+import { GroupSharedTabIdentityView } from '../shared-tabs/GroupSharedTabIdentityView';
+import { GroupCreatorTabConfirmationView } from './GroupCreatorTabConfirmationView';
 
 const TABS: number[] = [1, 2, 3, 4];
+
+interface GroupCreatorViewProps
+{
+    isVisible: boolean;
+    onClose: () => void;
+}
 
 export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
 {

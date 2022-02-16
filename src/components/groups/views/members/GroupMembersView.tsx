@@ -6,7 +6,14 @@ import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
-import { GroupMembersViewProps } from './GroupMembersView.types';
+
+interface GroupMembersViewProps
+{
+    groupId: number;
+    levelId: number;
+    onClose: () => void;
+}
+
 
 export const GroupMembersView: FC<GroupMembersViewProps> = props =>
 {

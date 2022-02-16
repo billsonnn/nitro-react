@@ -1,7 +1,7 @@
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../../../../api/utils/LocalizeText';
-import { useGroupsContext } from '../../../context/GroupsContext';
-import { GroupsActions } from '../../../context/GroupsContext.types';
+import { useGroupsContext } from '../../../GroupsContext';
+import { GroupsActions } from '../../../reducers/GroupsReducer';
 
 const STATES: string[] = ['regular', 'exclusive', 'private'];
 

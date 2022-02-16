@@ -1,10 +1,10 @@
 import { GroupBadgePartsComposer, GroupPurchasedEvent, GroupSettingsComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
 import { AddEventLinkTracker, RemoveLinkEventTracker, TryVisitRoom } from '../../api';
-import { CreateMessageHook, SendMessageHook } from '../../hooks';
-import { GroupsContextProvider } from './context/GroupsContext';
-import { GroupsReducer, initialGroups } from './context/GroupsContext.types';
+import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../hooks';
+import { GroupsContextProvider } from './GroupsContext';
 import { GroupsMessageHandler } from './GroupsMessageHandler';
+import { GroupsReducer, initialGroups } from './reducers/GroupsReducer';
 import { GroupCreatorView } from './views/creator/GroupCreatorView';
 import { GroupInformationStandaloneView } from './views/information-standalone/GroupInformationStandaloneView';
 import { GroupManagerView } from './views/manager/GroupManagerView';
@@ -12,16 +12,29 @@ import { GroupMembersView } from './views/members/GroupMembersView';
 
 export const GroupsView: FC<{}> = props =>
 {
-    const [ groupsState, dispatchGroupsState ] = useReducer(GroupsReducer, initialGroups);
-
     const [ isCreatorVisible, setIsCreatorVisible ] = useState<boolean>(false);
     const [ groupMembersId, setGroupMembersId ] = useState<number>(null);
     const [ groupMembersLevel, setGroupMembersLevel ] = useState<number>(null);
+    const [ groupsState, dispatchGroupsState ] = useReducer(GroupsReducer, initialGroups);
 
-    useEffect(() =>
+    const onGroupPurchasedEvent = useCallback((event: GroupPurchasedEvent) =>
     {
-        SendMessageHook(new GroupBadgePartsComposer());
+        const parser = event.getParser();
+
+        setIsCreatorVisible(false);
+        TryVisitRoom(parser.roomId);
     }, []);
+
+    CreateMessageHook(GroupPurchasedEvent, onGroupPurchasedEvent);
+
+    const closeMembers = () =>
+    {
+        BatchUpdates(() =>
+        {
+            setGroupMembersId(null);
+            setGroupMembersLevel(null);
+        });
+    }
 
     const linkReceived = useCallback((url: string) =>
     {
@@ -41,10 +54,13 @@ export const GroupsView: FC<{}> = props =>
                 return;
             case 'members':
                 if(!parts[2]) return;
-                
-                setGroupMembersId(Number(parts[2]));
 
-                if(parts[3]) setGroupMembersLevel(Number(parts[3]));
+                BatchUpdates(() =>
+                {
+                    setGroupMembersId(Number(parts[2]));
+
+                    if(parts[3]) setGroupMembersLevel(Number(parts[3]));
+                });
                 return;
         }
     }, []);
@@ -61,20 +77,9 @@ export const GroupsView: FC<{}> = props =>
         return () => RemoveLinkEventTracker(linkTracker);
     }, [ linkReceived ]);
 
-    const onGroupPurchasedEvent = useCallback((event: GroupPurchasedEvent) =>
+    useEffect(() =>
     {
-        const parser = event.getParser();
-
-        setIsCreatorVisible(false);
-        TryVisitRoom(parser.roomId);
-    }, []);
-
-    CreateMessageHook(GroupPurchasedEvent, onGroupPurchasedEvent);
-
-    const closeMembers = useCallback(() =>
-    {
-        setGroupMembersId(null);
-        setGroupMembersLevel(null);
+        SendMessageHook(new GroupBadgePartsComposer());
     }, []);
     
     return (

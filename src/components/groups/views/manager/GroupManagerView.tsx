@@ -3,11 +3,11 @@ import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
-import { useGroupsContext } from '../../context/GroupsContext';
-import { GroupsActions } from '../../context/GroupsContext.types';
-import { GroupSharedTabBadgeView } from '../shared-tabs/tab-badge/GroupSharedTabBadgeView';
-import { GroupSharedTabColorsView } from '../shared-tabs/tab-colors/GroupSharedTabColorsView';
-import { GroupSharedTabIdentityView } from '../shared-tabs/tab-identity/GroupSharedTabIdentityView';
+import { useGroupsContext } from '../../GroupsContext';
+import { GroupsActions } from '../../reducers/GroupsReducer';
+import { GroupSharedTabBadgeView } from '../shared-tabs/GroupSharedTabBadgeView';
+import { GroupSharedTabColorsView } from '../shared-tabs/GroupSharedTabColorsView';
+import { GroupSharedTabIdentityView } from '../shared-tabs/GroupSharedTabIdentityView';
 import { GroupManagerTabSettingsView } from './tab-settings/GroupManagerTabSettingsView';
 
 const TABS: number[] = [1, 2, 3, 5];

@@ -1,4 +1,4 @@
-import { GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
+import { GroupInformationParser, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateLinkEvent, GetSessionDataManager, LocalizeText, TryVisitRoom } from '../../../../api';
 import { GetGroupManager } from '../../../../api/groups/GetGroupManager';
@@ -9,7 +9,13 @@ import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageV
 import { CatalogPageName } from '../../../catalog/common/CatalogPageName';
 import { GroupMembershipType } from '../../common/GroupMembershipType';
 import { GroupType } from '../../common/GroupType';
-import { GroupInformationViewProps } from './GroupInformationView.types';
+
+interface GroupInformationViewProps
+{
+    groupInformation: GroupInformationParser;
+    onJoin?: () => void;
+    onClose?: () => void;
+}
 
 export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 {

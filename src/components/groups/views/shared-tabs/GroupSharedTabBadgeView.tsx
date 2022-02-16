@@ -1,12 +1,16 @@
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
-import { GroupBadgePart } from '../../../common/GroupBadgePart';
-import { useGroupsContext } from '../../../context/GroupsContext';
-import { GroupsActions } from '../../../context/GroupsContext.types';
-import { GroupSharedTabBadgeViewProps } from './GroupSharedTabBadgeView.types';
+import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
+import { GroupBadgePart } from '../../common/GroupBadgePart';
+import { useGroupsContext } from '../../GroupsContext';
+import { GroupsActions } from '../../reducers/GroupsReducer';
 
 const POSITIONS: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+interface GroupSharedTabBadgeViewProps
+{
+    skipDefault?: boolean;
+}
 
 export const GroupSharedTabBadgeView: FC<GroupSharedTabBadgeViewProps> = props =>
 {

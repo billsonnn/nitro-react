@@ -2,8 +2,8 @@ import { GroupBadgePartsEvent, GroupBuyDataEvent, GroupSettingsEvent, RoomCreate
 import { FC, useCallback } from 'react';
 import { CreateMessageHook } from '../../hooks';
 import { GroupBadgePart } from './common/GroupBadgePart';
-import { useGroupsContext } from './context/GroupsContext';
-import { GroupsActions } from './context/GroupsContext.types';
+import { useGroupsContext } from './GroupsContext';
+import { GroupsActions } from './reducers/GroupsReducer';
 
 function compareId(a, b)
 {
