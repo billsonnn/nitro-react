@@ -1,13 +1,14 @@
-import { CatalogPageMessageOfferData, IObjectData, NitroEvent } from '@nitrots/nitro-renderer';
+import { IObjectData, NitroEvent } from '@nitrots/nitro-renderer';
+import { IPurchasableOffer } from '../../components/catalog/common/IPurchasableOffer';
 
 export class SetRoomPreviewerStuffDataEvent extends NitroEvent
 {
     public static UPDATE_STUFF_DATA: string = 'SRPSA_UPDATE_STUFF_DATA';
 
-    private _offer: CatalogPageMessageOfferData;
+    private _offer: IPurchasableOffer;
     private _stuffData: IObjectData;
 
-    constructor(offer: CatalogPageMessageOfferData, stuffData: IObjectData)
+    constructor(offer: IPurchasableOffer, stuffData: IObjectData)
     {
         super(SetRoomPreviewerStuffDataEvent.UPDATE_STUFF_DATA);
 
@@ -15,7 +16,7 @@ export class SetRoomPreviewerStuffDataEvent extends NitroEvent
         this._stuffData = stuffData;
     }
 
-    public get offer(): CatalogPageMessageOfferData
+    public get offer(): IPurchasableOffer
     {
         return this._offer;
     }

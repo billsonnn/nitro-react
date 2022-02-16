@@ -1,19 +1,26 @@
 import { IGetImageListener, ImageResult, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetRoomEngine } from '../../../api';
-import { ProductTypeEnum } from '../../catalog/common/ProductTypeEnum';
-import { FurniImageViewProps } from './FurniImageView.types';
+import { Base } from '../../../common/Base';
+import { ProductTypeEnum } from '../../../components/catalog/common/ProductTypeEnum';
+
+interface FurniImageViewProps
+{
+    productType: string;
+    productClassId: number;
+    direction?: number;
+    extraData?: string;
+    scale?: number;
+}
 
 export const FurniImageView: FC<FurniImageViewProps> = props =>
 {
-    const { type = 's', spriteId = -1, direction = 0, extras = '', scale = 1 } = props;
+    const { productType = 's', productClassId = -1, direction = 0, extraData = '', scale = 1 } = props;
     const [ imageElement, setImageElement ] = useState<HTMLImageElement>(null);
 
     const buildImage = useCallback(() =>
     {
         let imageResult: ImageResult = null;
-
-        const furniType = type.toLocaleLowerCase();
 
         const listener: IGetImageListener = {
             imageReady: (id, texture, image) =>
@@ -28,13 +35,13 @@ export const FurniImageView: FC<FurniImageViewProps> = props =>
             imageFailed: null
         };
 
-        switch(furniType)
+        switch(productType.toLocaleLowerCase())
         {
             case ProductTypeEnum.FLOOR:
-                imageResult = GetRoomEngine().getFurnitureFloorImage(spriteId, new Vector3d(direction), 64, listener, 0, extras);
+                imageResult = GetRoomEngine().getFurnitureFloorImage(productClassId, new Vector3d(direction), 64, listener, 0, extraData);
                 break;
             case ProductTypeEnum.WALL:
-                imageResult = GetRoomEngine().getFurnitureWallImage(spriteId, new Vector3d(direction), 64, listener, 0, extras);
+                imageResult = GetRoomEngine().getFurnitureWallImage(productClassId, new Vector3d(direction), 64, listener, 0, extraData);
                 break;
         }
 
@@ -44,7 +51,7 @@ export const FurniImageView: FC<FurniImageViewProps> = props =>
             
             image.onload = () => setImageElement(image);
         }
-    }, [ type, spriteId, direction, extras ]);
+    }, [ productType, productClassId, direction, extraData ]);
 
     useEffect(() =>
     {
@@ -54,6 +61,6 @@ export const FurniImageView: FC<FurniImageViewProps> = props =>
     if(!imageElement) return null;
 
     const imageUrl = `url('${ imageElement.src }')`;
-        
-    return <div className={ 'furni-image scale-' + scale } style={ { backgroundImage: imageUrl, width: imageElement.width, height: imageElement.height } }></div>;
+
+    return <Base classNames={ [ 'furni-image', `scale-${ scale }` ] } style={ { backgroundImage: imageUrl, width: imageElement.width, height: imageElement.height } } />;
 }

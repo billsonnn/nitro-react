@@ -204,10 +204,10 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                         <ContextMenuListItemView onClick={ event => processAction('revive') }>
                             { LocalizeText('infostand.button.revive') }
                         </ContextMenuListItemView> }
-                        { roomSession.isRoomOwner &&
-                            <ContextMenuListItemView onClick={ event => processAction('compost') }>
-                                { LocalizeText('infostand.button.compost') }
-                            </ContextMenuListItemView> }
+                    { roomSession.isRoomOwner &&
+                        <ContextMenuListItemView onClick={ event => processAction('compost') }>
+                            { LocalizeText('infostand.button.compost') }
+                        </ContextMenuListItemView> }
                     { !petData.dead && ((petData.energy / petData.maximumEnergy) < 0.98) &&
                         <ContextMenuListItemView onClick={ event => processAction('treat') }>
                             { LocalizeText('infostand.button.treat') }

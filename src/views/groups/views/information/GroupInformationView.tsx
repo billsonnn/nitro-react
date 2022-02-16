@@ -4,8 +4,8 @@ import { CreateLinkEvent, GetSessionDataManager, LocalizeText, TryVisitRoom } fr
 import { GetGroupManager } from '../../../../api/groups/GetGroupManager';
 import { GetGroupMembers } from '../../../../api/groups/GetGroupMembers';
 import { TryJoinGroup } from '../../../../api/groups/TryJoinGroup';
+import { CatalogPageName } from '../../../../components/catalog/common/CatalogPageName';
 import { SendMessageHook } from '../../../../hooks';
-import { CatalogPageName } from '../../../catalog/common/CatalogPageName';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { GroupMembershipType } from '../../common/GroupMembershipType';
 import { GroupType } from '../../common/GroupType';

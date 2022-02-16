@@ -2,6 +2,10 @@ import { ApplyTonerComposer, RoomControllerLevel, RoomEngineObjectEvent, RoomEng
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
+import { Button } from '../../../../../common/Button';
+import { Column } from '../../../../../common/Column';
+import { FormGroup } from '../../../../../common/FormGroup';
+import { Text } from '../../../../../common/Text';
 import { SendMessageHook } from '../../../../../hooks';
 import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../../../../hooks/events';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
@@ -86,43 +90,49 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
         <NitroCardView>
             <NitroCardHeaderView headerText={ LocalizeText('widget.backgroundcolor.title') } onCloseClick={ close } />
             <NitroCardContentView>
-                <div className="form-group">
-                    <label className="fw-bold text-black">{ LocalizeText('widget.backgroundcolor.hue') }</label>
-                    <ReactSlider
-                        className={ 'nitro-slider' }
-                        min={ 0 }
-                        max={ 360 }
-                        value={ hue }
-                        onChange={ event => setHue(event) }
-                        thumbClassName={ 'thumb degree' }
-                        renderThumb={ (props, state) => <div {...props}>{ state.valueNow }</div> } />
-                </div>
-                <div className="form-group">
-                    <label className="fw-bold text-black">{ LocalizeText('widget.backgroundcolor.saturation') }</label>
-                    <ReactSlider
-                        className={ 'nitro-slider' }
-                        min={ 0 }
-                        max={ 100 }
-                        value={ saturation }
-                        onChange={ event => setSaturation(event) }
-                        thumbClassName={ 'thumb percent' }
-                        renderThumb={ (props, state) => <div {...props}>{ state.valueNow }</div> } />
-                </div>
-                <div className="form-group mb-2">
-                    <label className="fw-bold text-black">{ LocalizeText('widget.backgroundcolor.lightness') }</label>
-                    <ReactSlider
-                        className={ 'nitro-slider' }
-                        min={ 0 }
-                        max={ 100 }
-                        value={ lightness }
-                        onChange={ event => setLightness(event) }
-                        thumbClassName={ 'thumb percent' }
-                        renderThumb={ (props, state) => <div {...props}>{ state.valueNow }</div> } />
-                </div>
-                <div className="d-flex form-group justify-content-between align-items-center">
-                    <button type="button" className="btn btn-primary" onClick={ event => processAction('toggle') }>{ LocalizeText('widget.backgroundcolor.button.on') }</button>
-                    <button type="button" className="btn btn-primary" onClick={ event => processAction('apply') }>{ LocalizeText('widget.backgroundcolor.button.apply') }</button>
-                </div>
+                <Column overflow="auto">
+                    <FormGroup column>
+                        <Text fontWeight="bold">{ LocalizeText('widget.backgroundcolor.hue') }</Text>
+                        <ReactSlider
+                            className={ 'nitro-slider' }
+                            min={ 0 }
+                            max={ 360 }
+                            value={ hue }
+                            onChange={ event => setHue(event) }
+                            thumbClassName={ 'thumb degree' }
+                            renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
+                    </FormGroup>
+                    <FormGroup column>
+                        <Text fontWeight="bold">{ LocalizeText('widget.backgroundcolor.saturation') }</Text>
+                        <ReactSlider
+                            className={ 'nitro-slider' }
+                            min={ 0 }
+                            max={ 100 }
+                            value={ saturation }
+                            onChange={ event => setSaturation(event) }
+                            thumbClassName={ 'thumb percent' }
+                            renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
+                    </FormGroup>
+                    <FormGroup column>
+                        <Text fontWeight="bold">{ LocalizeText('widget.backgroundcolor.lightness') }</Text>
+                        <ReactSlider
+                            className={ 'nitro-slider' }
+                            min={ 0 }
+                            max={ 100 }
+                            value={ lightness }
+                            onChange={ event => setLightness(event) }
+                            thumbClassName={ 'thumb percent' }
+                            renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
+                    </FormGroup>
+                </Column>
+                <Column center gap={ 1 }>
+                    <Button fullWidth variant="primary" size="sm" onClick={ event => processAction('toggle') }>
+                        { LocalizeText('widget.backgroundcolor.button.on') }
+                    </Button>
+                    <Button fullWidth variant="primary" size="sm" onClick={ event => processAction('apply') }>
+                        { LocalizeText('widget.backgroundcolor.button.apply') }
+                    </Button>
+                </Column>
             </NitroCardContentView>
         </NitroCardView>
     );

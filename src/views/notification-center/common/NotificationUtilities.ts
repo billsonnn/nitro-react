@@ -1,9 +1,9 @@
 import { HabboWebTools, RoomEnterEffect } from '@nitrots/nitro-renderer';
 import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText } from '../../../api';
+import { CatalogPageName } from '../../../components/catalog/common/CatalogPageName';
 import { NotificationAlertEvent, NotificationConfirmEvent } from '../../../events';
 import { NotificationBubbleEvent } from '../../../events/notification-center/NotificationBubbleEvent';
 import { dispatchUiEvent } from '../../../hooks';
-import { CatalogPageName } from '../../catalog/common/CatalogPageName';
 import { NotificationAlertType } from './NotificationAlertType';
 import { NotificationBubbleType } from './NotificationBubbleType';
 
@@ -123,9 +123,11 @@ export class NotificationUtilities
         dispatchUiEvent(new NotificationConfirmEvent(type, this.cleanText(message), onConfirm, onCancel, confirmText, cancelText, title));
     }
 
-    public static simpleAlert(message: string, type: string, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
+    public static simpleAlert(message: string, type: string = null, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
     {
         if(!title || !title.length) title = LocalizeText('notifications.broadcast.title');
+
+        if(!type || !type.length) type = NotificationAlertType.DEFAULT;
 
         dispatchUiEvent(new NotificationAlertEvent([ this.cleanText(message) ], type, clickUrl, clickUrlText, title, imageUrl));
     }
@@ -172,13 +174,15 @@ export class NotificationUtilities
 
     public static openUrl(url: string): void
     {
+        if(!url || !url.length) return;
+        
         if(url.startsWith('http'))
         {
             HabboWebTools.openWebPage(url);
         }
         else
         {
-            CreateLinkEvent(url.substring(6));
+            CreateLinkEvent(url);
         }
     }
 

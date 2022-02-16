@@ -1,10 +1,24 @@
-import { FC, useMemo } from 'react';
+import { CSSProperties, FC, useMemo } from 'react';
 import { GetConfiguration } from '../../../api';
-import { CurrencyIconProps } from './CurrencyIcon.types';
+import { Base, BaseProps } from '../../../common/Base';
+
+export interface CurrencyIconProps extends BaseProps<HTMLDivElement>
+{
+    type: number | string;
+}
 
 export const CurrencyIcon: FC<CurrencyIconProps> = props =>
 {
-    const { type = '', className = '', style = {}, ...rest } = props;
+    const { type = '', classNames = [], style = {}, ...rest } = props;
+
+    const getClassNames = useMemo(() =>
+    {
+        const newClassNames: string[] = [ 'nitro-currency-icon' ];
+
+        if(classNames.length) newClassNames.push(...classNames);
+
+        return newClassNames;
+    }, [ classNames ]);
 
     const urlString = useMemo(() =>
     {
@@ -15,7 +29,16 @@ export const CurrencyIcon: FC<CurrencyIconProps> = props =>
         return `url(${ url })`;
     }, [ type ]);
 
-    return (
-        <div className={ 'nitro-currency-icon ' + className } style={ { ...style, backgroundImage: urlString } } { ...rest } />
-    );
+    const getStyle = useMemo(() =>
+    {
+        let newStyle: CSSProperties = {};
+
+        newStyle.backgroundImage = urlString;
+
+        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
+
+        return newStyle;
+    }, [ style, urlString ]);
+
+    return <Base classNames={ getClassNames } style={ getStyle } { ...rest } />
 }

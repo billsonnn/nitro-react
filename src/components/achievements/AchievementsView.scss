@@ -1,0 +1,15 @@
+.nitro-achievements {
+    width: $achievement-width;
+    height: $achievement-height;
+}
+
+.nitro-achievements-back-arrow {
+    background: url('../../assets/images/achievements/back-arrow.png') no-repeat center;
+    width: 33px;
+    height: 34px;
+}
+
+.nitro-achievements-badge-image {
+    width: 80px !important;
+    height: 80px !important;
+}

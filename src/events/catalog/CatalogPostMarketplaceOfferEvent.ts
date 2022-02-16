@@ -1,5 +1,5 @@
 import { CatalogEvent } from '.';
-import { FurnitureItem } from '../../views/inventory/common/FurnitureItem';
+import { FurnitureItem } from '../../components/inventory/common/FurnitureItem';
 
 export class CatalogPostMarketplaceOfferEvent extends CatalogEvent
 {

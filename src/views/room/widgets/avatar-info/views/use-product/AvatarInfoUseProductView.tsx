@@ -1,7 +1,7 @@
 import { RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetFurnitureDataForRoomObject, LocalizeText } from '../../../../../../api';
-import { FurniCategory } from '../../../../../inventory/common/FurniCategory';
+import { FurniCategory } from '../../../../../../components/inventory/common/FurniCategory';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';
 import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';

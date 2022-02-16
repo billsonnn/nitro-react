@@ -1,16 +1,33 @@
 .unique-item {
-    background: url("../../../assets/images/unique/grid-bg.png") center no-repeat, rgba(0, 0, 0, 0.1);
+
+    .unique-bg-override {
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: 2;
+    }
 
     &:before {
         position: absolute;
-        content: ' ';
+        content: '';
+        width: 100%;
+        height: 100%;
+        background: url("../../../assets/images/unique/grid-bg.png") center no-repeat;
+        z-index: 1;
+    }
+
+    &:after {
+        position: absolute;
+        content: '';
         width: 100%;
         height: 100%;
         background: url("../../../assets/images/unique/grid-bg-glass.png") center no-repeat;
+        bottom: 0;
+        z-index: 4;
     }
 
-    &.sold-out:before {
-        background: url("../../../assets/images/unique/grid-bg-sold-out.png") center no-repeat, url("../../../assets/images/unique/grid-bg-glass.png") center no-repeat;
+    &.sold-out:after {
+        background: url("../../../assets/images/unique/grid-bg-sold-out.png") center no-repeat,
+                    url("../../../assets/images/unique/grid-bg-glass.png") center no-repeat;
     }
 
     .unique-item-counter {
@@ -22,6 +39,7 @@
         width: 100%;
         height: 9px;
         background: url("../../../assets/images/unique/grid-count-bg.png") center no-repeat;
+        z-index: 3;
     }
 }
 
@@ -41,6 +59,102 @@
     }
 }
 
-@import './compact-plate/LimitedEditionCompactPlateView';
-@import './complete-plate/LimitedEditionCompletePlateView';
-@import './styled-number/LimitedEditionStyledNumberView';
+.unique-compact-plate {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    right: 16px;
+    width: 34px;
+    height: 37px;
+    background: url("../../../assets/images/unique/inventory-info-amount-bg.png");
+
+    div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 9.5px;
+    }
+}
+
+.unique-complete-plate {
+    width: 170px;
+    height: 29px;
+    background: url("../../../assets/images/unique/catalog-info-amount-bg.png") no-repeat center;
+    z-index: 1;
+    padding-top: 3px;
+
+    .plate-container {
+        margin-left: 45px;
+        width: 100px;
+        font-size: 10px;
+        color: black;
+
+        > :first-child {
+            margin-bottom: 2px;
+        }
+    }
+}
+
+.limited-edition-number {
+    display: inline-block;
+    outline: 0;
+    height: 5px;
+    margin-right: 1px;
+    background-image: url('../../../assets/images/unique/numbers.png');
+    background-repeat: no-repeat;
+
+    &:last-child {
+        margin-right: 0px;
+    }
+
+    &.n-0 {
+        width: 4px;
+        background-position: -1px 0px;
+    }
+
+    &.n-1 {
+        width: 2px;
+        background-position: -6px 0px;
+    }
+
+    &.n-2 {
+        width: 4px;
+        background-position: -9px 0px;
+    }
+
+    &.n-3 {
+        width: 4px;
+        background-position: -14px 0px;
+    }
+
+    &.n-4 {
+        width: 4px;
+        background-position: -19px 0px;
+    }
+
+    &.n-5 {
+        width: 4px;
+        background-position: -24px 0px;
+    }
+
+    &.n-6 {
+        width: 4px;
+        background-position: -29px 0px;
+    }
+
+    &.n-7 {
+        width: 4px;
+        background-position: -34px 0px;
+    }
+
+    &.n-8 {
+        width: 4px;
+        background-position: -39px 0px;
+    }
+
+    &.n-9 {
+        width: 4px;
+        background-position: -44px 0px;
+    }
+}

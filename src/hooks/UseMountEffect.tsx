@@ -1,3 +1,6 @@
-import { useEffect } from 'react';
+import { EffectCallback, useEffect } from 'react';
 
-export const UseMountEffect = (fun: Function) => useEffect(() => fun(), []);
+
+const useEffectOnce = (effect: EffectCallback) => useEffect(effect, []);
+
+export const UseMountEffect = (fn: Function) => useEffectOnce(() => fn());

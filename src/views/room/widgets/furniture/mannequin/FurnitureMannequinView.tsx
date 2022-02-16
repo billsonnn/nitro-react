@@ -1,10 +1,14 @@
 import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, HabboClubLevelEnum, IAvatarFigureContainer, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { GetAvatarRenderManager, GetSessionDataManager, LocalizeText, RoomWidgetUpdateMannequinEvent } from '../../../../../api';
+import { Button } from '../../../../../common/Button';
+import { Column } from '../../../../../common/Column';
+import { Flex } from '../../../../../common/Flex';
+import { Grid } from '../../../../../common/Grid';
+import { Text } from '../../../../../common/Text';
 import { BatchUpdates, SendMessageHook } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutButton, NitroLayoutFlex, NitroLayoutFlexColumn, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../layout';
-import { NitroLayoutBase } from '../../../../../layout/base';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
 import { FurnitureMannequinPreviewView } from './views/preview/FurnitureMannequinPreviewView';
 
@@ -169,68 +173,52 @@ export const FurnitureMannequinView: FC<{}> = props =>
         <NitroCardView className="nitro-mannequin" simple={ true }>
             <NitroCardHeaderView headerText={ LocalizeText('mannequin.widget.title') } onCloseClick={ event => setMode(MODE_NONE) } />
             <NitroCardContentView>
-                <NitroLayoutGrid>
-                    <NitroLayoutGridColumn className="justify-content-center align-items-center" overflow="hidden" size={ 4 }>
+                <Grid>
+                    <Column center size={ 4 } overflow="hidden">
                         <FurnitureMannequinPreviewView figure={ renderedFigure } clubLevel={ renderedClubLevel } />
-                    </NitroLayoutGridColumn>
-                    <NitroLayoutGridColumn className="justify-content-between" overflow="hidden" size={ 8 }>
+                    </Column>
+                    <Column size={ 8 } justifyContent="between" overflow="hidden">
                         { (mode === MODE_CONTROLLER) &&
                             <>
-                                <NitroLayoutFlexColumn gap={ 1 } overflow="auto">
-                                    <input type="text" className="form-control" value={ name } onChange={ event => setName(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
-                                </NitroLayoutFlexColumn>
-                                <NitroLayoutFlexColumn gap={ 1 }>
-                                    <NitroLayoutButton variant="success" onClick={ event => setMode(MODE_UPDATE) }>
+                                <input type="text" className="form-control" value={ name } onChange={ event => setName(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
+                                <Column gap={ 1 } overflow="auto">
+                                    <Button variant="success" onClick={ event => setMode(MODE_UPDATE) }>
                                         { LocalizeText('mannequin.widget.style') }
-                                    </NitroLayoutButton>
-                                    <NitroLayoutButton variant="success" onClick={ event => processAction(ACTION_WEAR) }>
+                                    </Button>
+                                    <Button variant="success" onClick={ event => processAction(ACTION_WEAR) }>
                                         { LocalizeText('mannequin.widget.wear') }
-                                    </NitroLayoutButton>
-                                </NitroLayoutFlexColumn>
+                                    </Button>
+                                </Column>
                             </> }
                         { (mode === MODE_UPDATE) &&
                             <>
-                                <NitroLayoutFlexColumn gap={ 1 } overflow="auto">
-                                    <NitroLayoutBase className="text-black fw-bold">
-                                        { name }
-                                    </NitroLayoutBase>
-                                    <NitroLayoutBase className="text-black">
-                                        { LocalizeText('mannequin.widget.savetext') }
-                                    </NitroLayoutBase>
-                                </NitroLayoutFlexColumn>
-                                <NitroLayoutFlex className="justify-content-between align-items-center">
-                                    <NitroLayoutBase className="text-black text-decoration-underline cursor-pointer" onClick={ event => setMode(MODE_CONTROLLER) }>
+                                <Column gap={ 1 } overflow="auto">
+                                    <Text fontWeight="bold">{ name }</Text>
+                                    <Text>{ LocalizeText('mannequin.widget.savetext') }</Text>
+                                </Column>
+                                <Flex alignItems="center" justifyContent="between">
+                                    <Text underline pointer onClick={ event => setMode(MODE_CONTROLLER) }>
                                         { LocalizeText('mannequin.widget.back') }
-                                    </NitroLayoutBase>
-                                    <NitroLayoutButton variant="success" onClick={ event => processAction(ACTION_SAVE) }>
+                                    </Text>
+                                    <Button variant="success" onClick={ event => processAction(ACTION_SAVE) }>
                                         { LocalizeText('mannequin.widget.save') }
-                                    </NitroLayoutButton>
-                                </NitroLayoutFlex>
+                                    </Button>
+                                </Flex>
                             </> }
                         { (mode === MODE_PEER) &&
                             <>
-                                <NitroLayoutFlexColumn gap={ 1 } overflow="auto">
-                                    <NitroLayoutBase className="text-black fw-bold">
-                                        { name }
-                                    </NitroLayoutBase>
-                                    <NitroLayoutBase className="text-black">
-                                        { LocalizeText('mannequin.widget.weartext') }
-                                    </NitroLayoutBase>
-                                </NitroLayoutFlexColumn>
-                                <NitroLayoutButton variant="success" onClick={ event => processAction(ACTION_WEAR) }>
+                                <Column gap={ 1 } overflow="auto">
+                                    <Text fontWeight="bold">{ name }</Text>
+                                    <Text>{ LocalizeText('mannequin.widget.weartext') }</Text>
+                                </Column>
+                                <Button variant="success" onClick={ event => processAction(ACTION_WEAR) }>
                                     { LocalizeText('mannequin.widget.wear') }
-                                </NitroLayoutButton>
+                                </Button>
                             </> }
-                        { (mode === MODE_NO_CLUB) &&
-                            <NitroLayoutBase className="text-black">
-                                { LocalizeText('mannequin.widget.clubnotification') }
-                            </NitroLayoutBase> }
-                        { (mode === MODE_WRONG_GENDER) &&
-                            <NitroLayoutBase className="text-black">
-                                { LocalizeText('mannequin.widget.wronggender') }
-                            </NitroLayoutBase> }
-                    </NitroLayoutGridColumn>
-                </NitroLayoutGrid>
+                        { (mode === MODE_NO_CLUB) && <Text>{ LocalizeText('mannequin.widget.clubnotification') }</Text> }
+                        { (mode === MODE_WRONG_GENDER) && <Text>{ LocalizeText('mannequin.widget.wronggender') }</Text> }
+                    </Column>
+                </Grid>
             </NitroCardContentView>
         </NitroCardView>
     );

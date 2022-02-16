@@ -1,11 +1,11 @@
 import { RoomObjectCategory, RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetPresentOpenMessage, RoomWidgetUpdatePresentDataEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
+import { ProductTypeEnum } from '../../../../../components/catalog/common/ProductTypeEnum';
 import { BatchUpdates } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutButton, NitroLayoutFlex, NitroLayoutFlexColumn, NitroLayoutGiftCardView, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../layout';
 import { NitroLayoutBase } from '../../../../../layout/base';
-import { ProductTypeEnum } from '../../../../catalog/common/ProductTypeEnum';
 import { useRoomContext } from '../../../context/RoomContext';
 
 const FLOOR: string = 'floor';

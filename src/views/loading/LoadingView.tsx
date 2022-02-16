@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { NitroLayoutFlexColumn } from '../../layout';
 import { NitroLayoutBase } from '../../layout/base';
-import { NotificationAlertType } from '../notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../notification-center/common/NotificationUtilities';
 import { LoadingViewProps } from './LoadingView.types';
 
@@ -14,7 +13,7 @@ export const LoadingView: FC<LoadingViewProps> = props =>
     {
         if(!isError) return;
 
-        NotificationUtilities.simpleAlert(message, NotificationAlertType.DEFAULT, null, null, 'Connection Error');
+        NotificationUtilities.simpleAlert(message, null, null, null, 'Connection Error');
     }, [ isError, message ]);
 
     useEffect(() =>

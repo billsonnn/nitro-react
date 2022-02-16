@@ -17,6 +17,7 @@ export const PetImageView: FC<PetImageViewProps> = props =>
         let petPaletteId = paletteId;
         let petColor = color;
         let petCustomParts = customParts;
+        let petHeadOnly = headOnly;
 
         if(figure && figure.length)
         {
@@ -27,6 +28,8 @@ export const PetImageView: FC<PetImageViewProps> = props =>
             petColor = petFigureData.color;
             petCustomParts = petFigureData.customParts;
         }
+
+        if(petTypeId === 16) petHeadOnly = false;
 
         const imageResult = GetRoomEngine().getRoomObjectPetImage(petTypeId, petPaletteId, petColor, new Vector3d((direction * 45)), 64, {
             imageReady: (id, texture, image) =>
@@ -40,7 +43,7 @@ export const PetImageView: FC<PetImageViewProps> = props =>
             {
 
             }
-        }, headOnly, 0, petCustomParts, posture);
+        }, petHeadOnly, 0, petCustomParts, posture);
 
         if(imageResult)
         {

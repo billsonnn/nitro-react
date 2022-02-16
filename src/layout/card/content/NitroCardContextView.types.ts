@@ -1,7 +1,7 @@
-import { DetailsHTMLAttributes } from 'react';
+import { ColumnProps } from '../../../common/Column';
 
 
-export interface NitroCardContentViewProps extends DetailsHTMLAttributes<HTMLDivElement>
+export interface NitroCardContentViewProps extends ColumnProps
 {
     theme?: string;
 }

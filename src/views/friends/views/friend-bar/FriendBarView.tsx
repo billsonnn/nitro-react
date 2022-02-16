@@ -1,5 +1,6 @@
 import { FC, useMemo, useState } from 'react';
-import { NitroLayoutButton, NitroLayoutFlex } from '../../../../layout';
+import { Flex } from '../../../../common/Flex';
+import { NitroLayoutButton } from '../../../../layout';
 import { NitroLayoutBase } from '../../../../layout/base';
 import { FriendBarItemView } from '../friend-bar-item/FriendBarItemView';
 import { FriendBarViewProps } from './FriendBarView.types';
@@ -26,7 +27,7 @@ export const FriendBarView: FC<FriendBarViewProps> = props =>
     }, [ maxDisplayCount, indexOffset, onlineFriends ]);
 
     return (
-        <NitroLayoutFlex className="friend-bar align-items-center">
+        <Flex alignItems="center" className="friend-bar">
             <NitroLayoutButton className="friend-bar-button" variant="black" size="sm" disabled={ !canDecreaseIndex } onClick={ event => setIndexOffset(indexOffset - 1) }>
                 <NitroLayoutBase className="fas fa-chevron-left" />
             </NitroLayoutButton>
@@ -37,6 +38,6 @@ export const FriendBarView: FC<FriendBarViewProps> = props =>
             <button type="button" className="btn btn-sm btn-black align-self-center friend-bar-button" disabled={ !canIncreaseIndex } onClick={ event => setIndexOffset(indexOffset + 1) }>
                 <i className="fas fa-chevron-right" />
             </button>
-        </NitroLayoutFlex>
+        </Flex>
     );
 }

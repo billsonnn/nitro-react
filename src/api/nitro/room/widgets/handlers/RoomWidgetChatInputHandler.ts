@@ -1,4 +1,4 @@
-import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomSessionChatEvent, RoomSettingsComposer, RoomWidgetEnum, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
+import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomRotatingEffect, RoomSessionChatEvent, RoomSettingsComposer, RoomShakingEffect, RoomWidgetEnum, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
 import { GetConfiguration, GetNitroInstance } from '../../..';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText } from '../../../..';
 import { FloorplanEditorEvent } from '../../../../../events/floorplan-editor/FloorplanEditorEvent';
@@ -66,6 +66,17 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
 
                     switch(firstPart.toLowerCase())
                     {
+                        case ':shake':
+                            RoomShakingEffect.init(2500, 5000);
+                            RoomShakingEffect.turnVisualizationOn();
+                            
+                            return null;
+
+                        case ':rotate':
+                            RoomRotatingEffect.init(2500, 5000);
+                            RoomRotatingEffect.turnVisualizationOn();
+                            
+                            return null;
                         case ':d':
                         case ';d':
                             if(GetSessionDataManager().clubLevel === HabboClubLevelEnum.VIP)
@@ -110,6 +121,7 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
 
                             return null;
                         case ':iddqd':
+                        case ':flip':
                             GetRoomEngine().events.dispatchEvent(new RoomZoomEvent(this.container.roomSession.roomId, -1, true));
 
                             return null;

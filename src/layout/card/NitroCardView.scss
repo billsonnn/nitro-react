@@ -2,11 +2,11 @@ $nitro-card-header-height: 33px;
 $nitro-card-tabs-height: 33px;
 
 .nitro-card {
-    pointer-events: all;
     resize: both;
 
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(lg) {
         max-width: 100vw !important;
+        max-height: 100vh !important;
     }
 
     &.theme-primary {
