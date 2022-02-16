@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { BadgeImageView } from '../../../../shared/badge-image/BadgeImageView';
+import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
 import { GroupBadgePart } from '../../../common/GroupBadgePart';
 import { useGroupsContext } from '../../../context/GroupsContext';
 import { GroupsActions } from '../../../context/GroupsContext.types';

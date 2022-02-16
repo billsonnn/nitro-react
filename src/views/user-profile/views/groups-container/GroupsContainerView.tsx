@@ -1,8 +1,8 @@
 import { GroupFavoriteComposer, GroupInformationComposer, GroupInformationEvent, GroupInformationParser } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { GroupInformationView } from '../../../../components/groups/views/information/GroupInformationView';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
-import { GroupInformationView } from '../../../groups/views/information/GroupInformationView';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { GroupsContainerViewProps } from './GroupsContainerView.types';
 

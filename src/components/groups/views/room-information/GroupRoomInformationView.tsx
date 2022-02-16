@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { GetGroupInformation, GetSessionDataManager, LocalizeText } from '../../../../api';
 import { GetGroupManager } from '../../../../api/groups/GetGroupManager';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
-import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
+import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
 import { GroupMembershipType } from '../../common/GroupMembershipType';
 import { GroupType } from '../../common/GroupType';
 

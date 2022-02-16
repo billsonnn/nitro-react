@@ -1,5 +1,5 @@
 import { Dispatch, ProviderProps, Reducer } from 'react';
-import { GroupBadgePart } from './../common/GroupBadgePart';
+import { GroupBadgePart } from '../common/GroupBadgePart';
 
 export interface IGroupsContext
 {

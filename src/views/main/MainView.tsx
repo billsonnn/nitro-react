@@ -5,6 +5,7 @@ import { AchievementsView } from '../../components/achievements/AchievementsView
 import { AvatarEditorView } from '../../components/avatar-editor/AvatarEditorView';
 import { CameraWidgetView } from '../../components/camera/CameraWidgetView';
 import { CatalogView } from '../../components/catalog/CatalogView';
+import { GroupsView } from '../../components/groups/GroupsView';
 import { HelpView } from '../../components/help/HelpView';
 import { InventoryView } from '../../components/inventory/InventoryView';
 import { NavigatorView } from '../../components/navigator/NavigatorView';
@@ -17,7 +18,6 @@ import { CampaignView } from '../campaign/CampaignView';
 import { ChatHistoryView } from '../chat-history/ChatHistoryView';
 import { FloorplanEditorView } from '../floorplan-editor/FloorplanEditorView';
 import { FriendsView } from '../friends/FriendsView';
-import { GroupsView } from '../groups/GroupsView';
 import { HcCenterView } from '../hc-center/HcCenterView';
 import { HotelView } from '../hotel-view/HotelView';
 import { ModToolsView } from '../mod-tools/ModToolsView';

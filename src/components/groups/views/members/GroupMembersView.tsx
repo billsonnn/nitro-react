@@ -4,8 +4,8 @@ import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager, GetUserProfile, LocalizeText } from '../../../../api';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
-import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
+import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
+import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
 import { GroupMembersViewProps } from './GroupMembersView.types';
 
 export const GroupMembersView: FC<GroupMembersViewProps> = props =>
