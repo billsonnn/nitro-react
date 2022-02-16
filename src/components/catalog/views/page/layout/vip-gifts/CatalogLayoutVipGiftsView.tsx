@@ -1,7 +1,7 @@
 import { SelectClubGiftComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../../../../../api';
-import { Grid } from '../../../../../../common/Grid';
+import { AutoGrid } from '../../../../../../common/AutoGrid';
 import { Text } from '../../../../../../common/Text';
 import { SendMessageHook } from '../../../../../../hooks';
 import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
@@ -45,9 +45,9 @@ export const CatalogLayoutVipGiftsView: FC<CatalogLayoutProps> = props =>
     return (
         <>
             <Text truncate shrink fontWeight="bold">{ giftsAvailable() }</Text>
-            <Grid className="nitro-catalog-layout-vip-gifts-grid" overflow="auto">
+            <AutoGrid columnCount={ 1 } className="nitro-catalog-layout-vip-gifts-grid">
                 { (clubGifts.offers.length > 0) && clubGifts.offers.map(offer => <VipGiftItem key={ offer.offerId } offer={ offer } isAvailable={ (clubGifts.getOfferExtraData(offer.offerId).isSelectable && (clubGifts.giftsAvailable > 0)) } onSelect={ selectGift }/>) }
-            </Grid>
+            </AutoGrid>
         </>
     )
 }
