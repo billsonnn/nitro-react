@@ -15,7 +15,7 @@ export const AchievementsCategoryListView: FC<AchievementsCategoryListViewProps>
     const { categories = null, selectedCategoryCode = null, setSelectedCategoryCode = null, children = null } = props;
     
     return (
-        <AutoGrid columnMinWidth={ 90 } columnMinHeight={ 100 }>
+        <AutoGrid columnCount={ 3 } columnMinWidth={ 90 } columnMinHeight={ 100 }>
             { categories && (categories.length > 0) && categories.map((category, index) => <AchievementsCategoryListItemView key={ index } category={ category } itemActive={ (selectedCategoryCode === category.code) } onClick={ event => setSelectedCategoryCode(category.code) } /> ) }
             { children }
         </AutoGrid>
