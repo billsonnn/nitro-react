@@ -293,7 +293,7 @@ export const AvatarEditorView: FC<{}> = props =>
                     </Column>
                     <Column size={ 3 } overflow="hidden">
                         <AvatarEditorFigurePreviewView figureData={ figureData } />
-                        <Column grow gap={ 2 }>
+                        <Column grow gap={ 1 }>
                             <ButtonGroup>
                                 <Button variant="secondary" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_RESET) }>
                                     <FontAwesomeIcon icon="undo" />
