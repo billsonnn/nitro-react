@@ -7,8 +7,8 @@ import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRo
 import { ModToolsOpenUserChatlogEvent } from '../../events/mod-tools/ModToolsOpenUserChatlogEvent';
 import { ModToolsOpenUserInfoEvent } from '../../events/mod-tools/ModToolsOpenUserInfoEvent';
 import { CreateMessageHook, useRoomEngineEvent, useUiEvent } from '../../hooks';
-import { NotificationAlertType } from '../notification-center/common/NotificationAlertType';
-import { NotificationUtilities } from '../notification-center/common/NotificationUtilities';
+import { NotificationAlertType } from '../../views/notification-center/common/NotificationAlertType';
+import { NotificationUtilities } from '../../views/notification-center/common/NotificationUtilities';
 import { SetCfhCategories } from './common/GetCFHCategories';
 import { useModToolsContext } from './context/ModToolsContext';
 import { ModToolsActions } from './reducers/ModToolsReducer';

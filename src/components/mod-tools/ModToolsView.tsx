@@ -10,7 +10,6 @@ import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
 import { ModToolsContextProvider } from './context/ModToolsContext';
 import { ModToolsMessageHandler } from './ModToolsMessageHandler';
-import { ModToolsViewProps } from './ModToolsView.types';
 import { initialModTools, ModToolsActions, ModToolsReducer } from './reducers/ModToolsReducer';
 import { ISelectedUser } from './utils/ISelectedUser';
 import { ModToolsChatlogView } from './views/room/room-chatlog/ModToolsChatlogView';
@@ -19,7 +18,7 @@ import { ModToolsTicketsView } from './views/tickets/ModToolsTicketsView';
 import { ModToolsUserChatlogView } from './views/user/user-chatlog/ModToolsUserChatlogView';
 import { ModToolsUserView } from './views/user/user-info/ModToolsUserView';
 
-export const ModToolsView: FC<ModToolsViewProps> = props =>
+export const ModToolsView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ modToolsState, dispatchModToolsState ] = useReducer(ModToolsReducer, initialModTools);
