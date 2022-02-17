@@ -39,6 +39,8 @@ export const BadgeImageView: FC<BadgeImageViewProps> = props =>
     {
         const newClassNames: string[] = [ 'badge-image' ];
 
+        if(isGroup) newClassNames.push('group-badge');
+
         if(isGrayscale) newClassNames.push('grayscale');
 
         if((scale !== 1) && getScaleClass.length) newClassNames.push(getScaleClass);
@@ -46,7 +48,7 @@ export const BadgeImageView: FC<BadgeImageViewProps> = props =>
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ classNames, isGrayscale, scale, getScaleClass ]);
+    }, [ classNames, isGroup, isGrayscale, scale, getScaleClass ]);
 
     const getStyle = useMemo(() =>
     {

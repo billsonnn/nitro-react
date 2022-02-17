@@ -1,7 +1,7 @@
 import { GroupInformationEvent, GroupInformationParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
-import { CreateMessageHook } from '../../../../hooks';
+import { BatchUpdates, CreateMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { GroupInformationView } from '../information/GroupInformationView';
 
@@ -15,8 +15,11 @@ export const GroupInformationStandaloneView: FC<{}> = props =>
 
         if(!parser.flag) return;
 
-        setGroupInformation(null);
-        setGroupInformation(parser);
+        BatchUpdates(() =>
+        {
+            setGroupInformation(null);
+            setGroupInformation(parser);
+        });
     }, []);
 
     CreateMessageHook(GroupInformationEvent, onGroupInformationEvent);
@@ -24,9 +27,9 @@ export const GroupInformationStandaloneView: FC<{}> = props =>
     if(!groupInformation) return null;
 
     return (
-        <NitroCardView className="nitro-group-information-standalone" simple={ true }>
+        <NitroCardView className="nitro-group-information-standalone" simple>
             <NitroCardHeaderView headerText={ LocalizeText('group.window.title') } onCloseClick={ () => setGroupInformation(null) } />
-            <NitroCardContentView className="pb-2">
+            <NitroCardContentView>
                 <GroupInformationView groupInformation={ groupInformation } onClose={ () => setGroupInformation(null) } />
             </NitroCardContentView>
         </NitroCardView>

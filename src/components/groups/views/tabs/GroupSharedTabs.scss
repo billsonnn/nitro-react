@@ -26,6 +26,22 @@
     }
 }
 
+.nitro-groups-color-grid {
+
+    .color-swatch {
+        position: relative;
+        border-radius: $border-radius;
+        width: 16px;
+        height: 16px;
+        border: 2px solid $white;
+        box-shadow: inset 3px 3px rgba(0, 0, 0, .1);
+
+        &.active {
+            box-shadow: none;
+        }
+    }
+}
+
 .shared-tab-badge {
     .position-swatch {
         position: relative;
@@ -38,19 +54,6 @@
 
         &.active {
             background: $primary;
-            box-shadow: none;
-        }
-    }
-
-    .color-swatch {
-        position: relative;
-        border-radius: $border-radius;
-        width: 16px;
-        height: 16px;
-        border: 2px solid $white;
-        box-shadow: inset 3px 3px rgba(0, 0, 0, .1);
-
-        &.active {
             box-shadow: none;
         }
     }
