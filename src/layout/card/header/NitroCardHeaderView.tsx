@@ -5,8 +5,8 @@ import { NitroCardHeaderViewProps } from './NitroCardHeaderView.types';
 
 export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
 {
-    const { headerText = null, onCloseClick = null, theme = 'primary' } = props;
-    const { simple = false } = useNitroCardContext();
+    const { headerText = null, onCloseClick = null } = props;
+    const { theme = 'primary', simple = false } = useNitroCardContext();
 
     const onMouseDown = useCallback((event: MouseEvent<HTMLDivElement>) =>
     {

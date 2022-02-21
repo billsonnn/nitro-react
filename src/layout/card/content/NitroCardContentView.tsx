@@ -1,12 +1,11 @@
 import { FC, useMemo } from 'react';
-import { Column } from '../../../common/Column';
+import { Column, ColumnProps } from '../../../common';
 import { useNitroCardContext } from '../context';
-import { NitroCardContentViewProps } from './NitroCardContextView.types';
 
-export const NitroCardContentView: FC<NitroCardContentViewProps> = props =>
+export const NitroCardContentView: FC<ColumnProps> = props =>
 {
-    const { theme = 'primary', classNames = [], ...rest } = props;
-    const { simple = false } = useNitroCardContext();
+    const { classNames = [], ...rest } = props;
+    const { theme = 'primary', simple = false } = useNitroCardContext();
 
     const getClassNames = useMemo(() =>
     {
