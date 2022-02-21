@@ -12,6 +12,7 @@ import { InventoryView } from '../../components/inventory/InventoryView';
 import { ModToolsView } from '../../components/mod-tools/ModToolsView';
 import { NavigatorView } from '../../components/navigator/NavigatorView';
 import { RightSideView } from '../../components/right-side/RightSideView';
+import { RoomHostView } from '../../components/room-host/RoomHostView';
 import { ToolbarView } from '../../components/toolbar/ToolbarView';
 import { UserProfileView } from '../../components/user-profile/UserProfileView';
 import { UserSettingsView } from '../../components/user-settings/UserSettingsView';
@@ -24,7 +25,6 @@ import { FriendsView } from '../friends/FriendsView';
 import { HcCenterView } from '../hc-center/HcCenterView';
 import { HotelView } from '../hotel-view/HotelView';
 import { NitropediaView } from '../nitropedia/NitropediaView';
-import { RoomHostView } from '../room-host/RoomHostView';
 import { MainViewProps } from './MainView.types';
 
 export const MainView: FC<MainViewProps> = props =>
