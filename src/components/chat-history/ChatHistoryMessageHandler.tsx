@@ -2,9 +2,14 @@ import { GetGuestRoomResultEvent, RoomSessionChatEvent, RoomSessionEvent } from 
 import { FC, useCallback, useState } from 'react';
 import { GetRoomSession } from '../../api';
 import { CreateMessageHook, useRoomSessionManagerEvent } from '../../hooks';
-import { useChatHistoryContext } from './context/ChatHistoryContext';
-import { ChatEntryType, CHAT_HISTORY_MAX, IChatEntry, IRoomHistoryEntry, ROOM_HISTORY_MAX } from './context/ChatHistoryContext.types';
-import { currentDate } from './utils/Utilities';
+import { useChatHistoryContext } from './ChatHistoryContext';
+import { ChatEntryType } from './common/ChatEntryType';
+import { IChatEntry } from './common/IChatEntry';
+import { IRoomHistoryEntry } from './common/IRoomHistoryEntry';
+import { currentDate } from './common/Utilities';
+
+const CHAT_HISTORY_MAX = 1000;
+const ROOM_HISTORY_MAX = 10;
 
 export const ChatHistoryMessageHandler: FC<{}> = props =>
 {

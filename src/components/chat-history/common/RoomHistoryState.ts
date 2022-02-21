@@ -1,4 +1,5 @@
-import { IRoomHistoryEntry, IRoomHistoryState } from '../context/ChatHistoryContext.types';
+import { IRoomHistoryEntry } from './IRoomHistoryEntry';
+import { IRoomHistoryState } from './IRoomHistoryState';
 
 export class RoomHistoryState implements IRoomHistoryState
 {

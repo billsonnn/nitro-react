@@ -1,4 +1,5 @@
-import { IChatEntry, IChatHistoryState } from '../context/ChatHistoryContext.types';
+import { IChatEntry } from './IChatEntry';
+import { IChatHistoryState } from './IChatHistoryState';
 
 export class ChatHistoryState implements IChatHistoryState
 {
@@ -8,6 +9,11 @@ export class ChatHistoryState implements IChatHistoryState
     constructor()
     {
         this._chats = [];
+    }
+
+    public notify(): void
+    {
+        if(this._notifier) this._notifier();
     }
 
     public get chats(): IChatEntry[]
@@ -23,10 +29,5 @@ export class ChatHistoryState implements IChatHistoryState
     public set notifier(notifier: () => void)
     {
         this._notifier = notifier;
-    }
-
-    notify(): void
-    {
-        if(this._notifier) this._notifier();
     }
 }

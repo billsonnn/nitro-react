@@ -1,4 +1,4 @@
-import { IChatHistoryState } from '../context/ChatHistoryContext.types';
+import { IChatHistoryState } from './IChatHistoryState';
 
 let GLOBAL_CHATS: IChatHistoryState = null;
 

@@ -5,6 +5,7 @@ import { AchievementsView } from '../../components/achievements/AchievementsView
 import { AvatarEditorView } from '../../components/avatar-editor/AvatarEditorView';
 import { CameraWidgetView } from '../../components/camera/CameraWidgetView';
 import { CatalogView } from '../../components/catalog/CatalogView';
+import { ChatHistoryView } from '../../components/chat-history/ChatHistoryView';
 import { GroupsView } from '../../components/groups/GroupsView';
 import { HelpView } from '../../components/help/HelpView';
 import { InventoryView } from '../../components/inventory/InventoryView';
@@ -17,7 +18,6 @@ import { WiredView } from '../../components/wired/WiredView';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { TransitionAnimation, TransitionAnimationTypes } from '../../layout';
 import { CampaignView } from '../campaign/CampaignView';
-import { ChatHistoryView } from '../chat-history/ChatHistoryView';
 import { FloorplanEditorView } from '../floorplan-editor/FloorplanEditorView';
 import { FriendsView } from '../friends/FriendsView';
 import { HcCenterView } from '../hc-center/HcCenterView';
