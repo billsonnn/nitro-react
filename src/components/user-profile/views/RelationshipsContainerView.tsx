@@ -1,8 +1,13 @@
-import { RelationshipStatusEnum, RelationshipStatusInfo } from '@nitrots/nitro-renderer';
+import { RelationshipStatusEnum, RelationshipStatusInfo, RelationshipStatusInfoMessageParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { GetUserProfile, LocalizeText } from '../../../../api';
-import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
-import { RelationshipsContainerViewProps } from './RelationshipsContainerView.types';
+import { GetUserProfile, LocalizeText } from '../../../api';
+import { AvatarImageView } from '../../../views/shared/avatar-image/AvatarImageView';
+
+interface RelationshipsContainerViewProps
+{
+    relationships: RelationshipStatusInfoMessageParser;
+    simple?: boolean;
+}
 
 export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = props =>
 {

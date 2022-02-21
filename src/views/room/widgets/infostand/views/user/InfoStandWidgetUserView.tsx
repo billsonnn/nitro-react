@@ -5,7 +5,7 @@ import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 
 import { GetGroupInformation, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent } from '../../../../../../api';
 import { Base } from '../../../../../../common/Base';
 import { Flex } from '../../../../../../common/Flex';
-import { RelationshipsContainerView } from '../../../../../../components/user-profile/views/relationships-container/RelationshipsContainerView';
+import { RelationshipsContainerView } from '../../../../../../components/user-profile/views/RelationshipsContainerView';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../../hooks/events';
 import { UserProfileIconView } from '../../../../../../layout';

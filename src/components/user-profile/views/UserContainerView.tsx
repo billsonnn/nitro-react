@@ -1,8 +1,12 @@
-import { FriendlyTime } from '@nitrots/nitro-renderer';
+import { FriendlyTime, UserProfileParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../../../api';
-import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
-import { UserContainerViewProps } from './UserContainerView.types';
+import { GetSessionDataManager, LocalizeText } from '../../../api';
+import { AvatarImageView } from '../../../views/shared/avatar-image/AvatarImageView';
+
+interface UserContainerViewProps
+{
+    userProfile: UserProfileParser;
+}
 
 export const UserContainerView: FC<UserContainerViewProps> = props =>
 {

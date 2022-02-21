@@ -1,7 +1,13 @@
+import { RelationshipStatusInfoMessageParser } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { LocalizeText } from '../../../../api';
-import { RelationshipsContainerView } from '../relationships-container/RelationshipsContainerView';
-import { FriendsContainerViewProps } from './FriendsContainerView.types';
+import { LocalizeText } from '../../../api';
+import { RelationshipsContainerView } from './RelationshipsContainerView';
+
+interface FriendsContainerViewProps
+{
+    relationships: RelationshipStatusInfoMessageParser;
+    friendsCount: number;
+}
 
 export const FriendsContainerView: FC<FriendsContainerViewProps> = props => 
 {

@@ -1,10 +1,16 @@
-import { GroupFavoriteComposer, GroupInformationComposer, GroupInformationEvent, GroupInformationParser } from '@nitrots/nitro-renderer';
+import { GroupFavoriteComposer, GroupInformationComposer, GroupInformationEvent, GroupInformationParser, HabboGroupEntryData } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
-import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
-import { GroupInformationView } from '../../../groups/views/information/GroupInformationView';
-import { GroupsContainerViewProps } from './GroupsContainerView.types';
+import { CreateMessageHook, SendMessageHook } from '../../../hooks';
+import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
+import { GroupInformationView } from '../../groups/views/information/GroupInformationView';
+
+interface GroupsContainerViewProps
+{
+    itsMe: boolean;
+    groups: HabboGroupEntryData[];
+    onLeaveGroup: () => void;
+}
 
 export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
 {

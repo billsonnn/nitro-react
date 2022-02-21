@@ -45,5 +45,62 @@
     }
 }
 
-@import './views/relationships-container/RelationshipsContainerView';
-@import './views/groups-container/GroupsContainerView';
+.profile-groups {
+    height: 219px;
+
+    .profile-groups-item {
+        width: 50px;
+        height: 50px;
+        border-radius: $border-radius;
+        border-color: $grid-border-color !important;
+        background-color: $grid-bg-color;
+        border: nth(map-values($border-widths), 2) solid;
+
+        &.active {
+            border-color: $grid-active-border-color !important;
+            background-color: $grid-active-bg-color !important;
+        }
+
+        .icon {
+            z-index: 1;
+            top: 0px;
+            right: 0px;
+        }
+    }
+}
+
+.relationships-container {
+
+    .relationship-container {
+
+        .relationship 
+        {
+            position: relative;
+            
+            &.advanced {
+                background-color: white;
+                padding: 5px;
+                border-radius: 5px;
+            }
+
+            .relationship-text {
+                text-decoration: underline;
+            }
+
+            .avatar-image {
+                position: absolute;
+                width: 50px;
+                height: 80px;
+                right: 0;
+                margin-top: -60px;
+            }
+        }
+
+        .others-text {
+            margin-left: 20px;
+            height: 21px;
+            color: #939392;
+        }
+    }
+    
+}

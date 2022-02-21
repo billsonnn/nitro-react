@@ -1,7 +1,11 @@
 import { FC } from 'react';
-import { NitroCardGridItemView, NitroCardGridView } from '../../../../layout';
-import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
-import { BadgesContainerViewProps } from './BadgesContainerView.types';
+import { NitroCardGridItemView, NitroCardGridView } from '../../../layout';
+import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
+
+interface BadgesContainerViewProps
+{
+    badges: string[];
+}
 
 export const BadgesContainerView: FC<BadgesContainerViewProps> = props =>
 {
