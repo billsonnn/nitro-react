@@ -1,11 +1,16 @@
-import { createContext, FC, useContext } from 'react';
-import { IPurseContext, PurseContextProps } from './PurseContext.types';
+import { createContext, FC, ProviderProps, useContext } from 'react';
+import { IPurse } from './common/IPurse';
+
+interface IPurseContext
+{
+    purse: IPurse;
+}
 
 const PurseContext = createContext<IPurseContext>({
     purse: null
 });
 
-export const PurseContextProvider: FC<PurseContextProps> = props =>
+export const PurseContextProvider: FC<ProviderProps<IPurseContext>> = props =>
 {
     return <PurseContext.Provider value={ props.value }>{ props.children }</PurseContext.Provider>
 }

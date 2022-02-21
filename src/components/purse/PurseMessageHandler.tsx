@@ -2,10 +2,9 @@ import { ActivityPointNotificationMessageEvent, UserCreditsEvent, UserCurrencyEv
 import { FC, useCallback } from 'react';
 import { CREDITS, DUCKETS, PlaySound } from '../../api/utils/PlaySound';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
-import { usePurseContext } from './context/PurseContext';
-import { PurseMessageHandlerProps } from './PurseMessageHandler.types';
+import { usePurseContext } from './PurseContext';
  
-export const PurseMessageHandler: FC<PurseMessageHandlerProps> = props =>
+export const PurseMessageHandler: FC<{}> = props =>
 {
     const { purse = null } = usePurseContext();
 
