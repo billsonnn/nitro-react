@@ -1,5 +1,5 @@
 import { CSSProperties, DetailedHTMLProps, FC, HTMLAttributes, LegacyRef, useMemo } from 'react';
-import { ColorVariantType, OverflowType, PositionType } from './types';
+import { ColorVariantType, FloatType, OverflowType, PositionType } from './types';
 
 export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttributes<T>, T>
 {
@@ -11,6 +11,7 @@ export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttrib
     fullHeight?: boolean;
     overflow?: OverflowType;
     position?: PositionType;
+    float?: FloatType;
     pointer?: boolean;
     textColor?: ColorVariantType;
     classNames?: string[];
@@ -18,7 +19,7 @@ export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttrib
 
 export const Base: FC<BaseProps<HTMLDivElement>> = props =>
 {
-    const { ref = null, innerRef = null, fit = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, pointer = false, textColor = null, classNames = [], className = '', style = {}, ...rest } = props;
+    const { ref = null, innerRef = null, fit = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, float = null, pointer = false, textColor = null, classNames = [], className = '', style = {}, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -36,6 +37,8 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
 
         if(position) newClassNames.push('position-' + position);
 
+        if(float) newClassNames.push('float-' + float);
+
         if(pointer) newClassNames.push('cursor-pointer');
 
         if(textColor) newClassNames.push('text-' + textColor);
@@ -43,7 +46,7 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ fit, grow, shrink, fullWidth, fullHeight, overflow, position, pointer, textColor, classNames ]);
+    }, [ fit, grow, shrink, fullWidth, fullHeight, overflow, position, float, pointer, textColor, classNames ]);
 
     const getClassName = useMemo(() =>
     {
