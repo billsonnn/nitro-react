@@ -135,7 +135,7 @@ export const ChatHistoryView: FC<{}> = props =>
         <ChatHistoryContextProvider value={ { chatHistoryState, roomHistoryState } }>
             <ChatHistoryMessageHandler />
             {isVisible &&
-            <NitroCardView uniqueKey="chat-history" className="nitro-chat-history" simple={ false } theme={'dark'} >
+            <NitroCardView uniqueKey="chat-history" className="nitro-chat-history rounded" simple={ false } theme={'dark'} >
                 <NitroCardHeaderView headerText={ 'Chat History' } onCloseClick={ event => setIsVisible(false) } theme={'dark'}/>
                 <NitroCardContentView className="chat-history-content p-0" theme={'dark'}>
                     <div className="row w-100 h-100 chat-history-container">

@@ -27,7 +27,7 @@
             background-color: rgba($light-dark, 1);
             width: 100%;
             max-width: 68px;
-            border-radius: 3px;
+            border-radius: $border-radius;
             margin-right: 5px;
 
             &.pet {
