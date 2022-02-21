@@ -1,33 +1,33 @@
 import { HabboWebTools, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetCommunication, RemoveLinkEventTracker } from '../../api';
-import { AchievementsView } from '../../components/achievements/AchievementsView';
-import { AvatarEditorView } from '../../components/avatar-editor/AvatarEditorView';
-import { CameraWidgetView } from '../../components/camera/CameraWidgetView';
-import { CatalogView } from '../../components/catalog/CatalogView';
-import { ChatHistoryView } from '../../components/chat-history/ChatHistoryView';
-import { GroupsView } from '../../components/groups/GroupsView';
-import { HelpView } from '../../components/help/HelpView';
-import { InventoryView } from '../../components/inventory/InventoryView';
-import { ModToolsView } from '../../components/mod-tools/ModToolsView';
-import { NavigatorView } from '../../components/navigator/NavigatorView';
-import { RightSideView } from '../../components/right-side/RightSideView';
-import { RoomHostView } from '../../components/room-host/RoomHostView';
-import { ToolbarView } from '../../components/toolbar/ToolbarView';
-import { UserProfileView } from '../../components/user-profile/UserProfileView';
-import { UserSettingsView } from '../../components/user-settings/UserSettingsView';
-import { WiredView } from '../../components/wired/WiredView';
+import { Base } from '../../common';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
 import { TransitionAnimation, TransitionAnimationTypes } from '../../layout';
-import { CampaignView } from '../campaign/CampaignView';
-import { FloorplanEditorView } from '../floorplan-editor/FloorplanEditorView';
-import { FriendsView } from '../friends/FriendsView';
-import { HcCenterView } from '../hc-center/HcCenterView';
-import { HotelView } from '../hotel-view/HotelView';
-import { NitropediaView } from '../nitropedia/NitropediaView';
-import { MainViewProps } from './MainView.types';
+import { CampaignView } from '../../views/campaign/CampaignView';
+import { FloorplanEditorView } from '../../views/floorplan-editor/FloorplanEditorView';
+import { FriendsView } from '../../views/friends/FriendsView';
+import { HcCenterView } from '../../views/hc-center/HcCenterView';
+import { HotelView } from '../../views/hotel-view/HotelView';
+import { NitropediaView } from '../../views/nitropedia/NitropediaView';
+import { AchievementsView } from '../achievements/AchievementsView';
+import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
+import { CameraWidgetView } from '../camera/CameraWidgetView';
+import { CatalogView } from '../catalog/CatalogView';
+import { ChatHistoryView } from '../chat-history/ChatHistoryView';
+import { GroupsView } from '../groups/GroupsView';
+import { HelpView } from '../help/HelpView';
+import { InventoryView } from '../inventory/InventoryView';
+import { ModToolsView } from '../mod-tools/ModToolsView';
+import { NavigatorView } from '../navigator/NavigatorView';
+import { RightSideView } from '../right-side/RightSideView';
+import { RoomHostView } from '../room-host/RoomHostView';
+import { ToolbarView } from '../toolbar/ToolbarView';
+import { UserProfileView } from '../user-profile/UserProfileView';
+import { UserSettingsView } from '../user-settings/UserSettingsView';
+import { WiredView } from '../wired/WiredView';
 
-export const MainView: FC<MainViewProps> = props =>
+export const MainView: FC<{}> = props =>
 {
     const [ isReady, setIsReady ] = useState(false);
     const [ landingViewVisible, setLandingViewVisible ] = useState(true);
@@ -93,7 +93,7 @@ export const MainView: FC<MainViewProps> = props =>
     }, [onLinkReceived]);
 
     return (
-        <div className="nitro-main">
+        <Base fit>
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ landingViewVisible } timeout={ 300 }>
                 <HotelView />
             </TransitionAnimation>
@@ -118,6 +118,6 @@ export const MainView: FC<MainViewProps> = props =>
             <NitropediaView />
             <HcCenterView />
             <CampaignView />
-        </div>
+        </Base>
     );
 }
