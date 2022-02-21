@@ -1,82 +1,87 @@
-import { ChatlineData, ChatRecordData, UserProfileComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback } from 'react';
-import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps, ListRowRenderer } from 'react-virtualized';
+import { ChatRecordData, UserProfileComposer } from '@nitrots/nitro-renderer';
+import { CSSProperties, FC, Key, useCallback } from 'react';
+import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps } from 'react-virtualized';
 import { TryVisitRoom } from '../../../../api';
+import { Base, Button, Column, Flex, Grid, Text } from '../../../../common';
 import { ModToolsOpenRoomInfoEvent } from '../../../../events/mod-tools/ModToolsOpenRoomInfoEvent';
 import { dispatchUiEvent, SendMessageHook } from '../../../../hooks';
-import { ChatlogViewProps } from './ChatlogView.types';
+
+interface ChatlogViewProps
+{
+    records: ChatRecordData[];
+}
 
 export const ChatlogView: FC<ChatlogViewProps> = props =>
 {
     const { records = null } = props;
 
-    const simpleRowRenderer: ListRowRenderer = (props: ListRowProps) =>
+    const rowRenderer = (props: ListRowProps) =>
     {
-        const item = records[0].chatlog[props.index];
+        let chatlogEntry = records[0].chatlog[props.index];
 
         return (
             <CellMeasurer
-                cache={cache}
-                columnIndex={0}
-                key={props.key}
-                parent={props.parent}
-                rowIndex={props.index}
+                cache={ cache }
+                columnIndex={ 0 }
+                key={ props.key }
+                parent={ props.parent }
+                rowIndex={ props.index }
             >
-                <div key={props.key} style={props.style} className={'row chatlog-entry justify-content-start ' + (item.hasHighlighting ? 'highlighted' : '')}>
-                    <div className="col-auto text-center">{item.timestamp}</div>
-                    <div className="col-sm-2 justify-content-start username"><span className="fw-bold cursor-pointer" onClick={() => SendMessageHook(new UserProfileComposer(item.userId))}>{item.userName}</span></div>
-                    <div className="col justify-content-start h-100"><span className="text-break text-wrap h-100">{item.message}</span></div>
-                </div>
+                <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
+                    <Text className="g-col-2">{ chatlogEntry.timestamp }</Text>
+                    <Text className="g-col-3" bold underline pointer onClick={ event => SendMessageHook(new UserProfileComposer(chatlogEntry.userId)) }>{ chatlogEntry.userName }</Text>
+                    <Text textBreak wrap className="g-col-7">{ chatlogEntry.message }</Text>
+                </Grid>
             </CellMeasurer>
         );
     };
 
-    const advancedRowRenderer: ListRowRenderer = (props: ListRowProps) =>
+    const advancedRowRenderer = (props: ListRowProps) =>
     {
-        let chatlogEntry: ChatlineData;
-        let currentRecord: ChatRecordData;
+        let chatlogEntry = null;
+        let currentRecord: ChatRecordData = null;
         let isRoomInfo = false;
-
         let totalIndex = 0;
+
         for(let i = 0; i < records.length; i++)
         {
             currentRecord = records[i];
 
             totalIndex++; // row for room info
-            totalIndex = totalIndex + currentRecord.chatlog.length;
+            totalIndex = (totalIndex + currentRecord.chatlog.length);
 
-            if(props.index > (totalIndex - 1))
-            {
-                continue; // it is not in current one
-            }
+            if(props.index > (totalIndex - 1)) continue;
             
-            if( (props.index + 1) === (totalIndex - currentRecord.chatlog.length))
+            if((props.index + 1) === (totalIndex - currentRecord.chatlog.length))
             {
                 isRoomInfo = true;
+
                 break;
             }
-            const index = props.index - (totalIndex - currentRecord.chatlog.length);
+
+            const index = (props.index - (totalIndex - currentRecord.chatlog.length));
+
             chatlogEntry = currentRecord.chatlog[index];
+
             break;
         }
 
         return (
             <CellMeasurer
-                cache={cache}
-                columnIndex={0}
-                key={props.key}
-                parent={props.parent}
-                rowIndex={props.index}
+                cache={ cache }
+                columnIndex={ 0 }
+                key={ props.key }
+                parent={ props.parent }
+                rowIndex={ props.index }
             >
-                {isRoomInfo && <RoomInfo roomId={currentRecord.roomId} roomName={currentRecord.roomName} uniqueKey={props.key} style={props.style}/>}
-                {!isRoomInfo &&
-                    <div key={props.key} style={props.style} className="row chatlog-entry justify-content-start">
-                        <div className="col-auto text-center">{chatlogEntry.timestamp}</div>
-                        <div className="col-sm-2 justify-content-start username"><span className="fw-bold cursor-pointer" onClick={() => SendMessageHook(new UserProfileComposer(chatlogEntry.userId))}>{chatlogEntry.userName}</span></div>
-                        <div className="col justify-content-start h-100"><span className="text-break text-wrap h-100">{chatlogEntry.message}</span></div>
-                    </div>
-                }
-
+                { (isRoomInfo && currentRecord) &&
+                    <RoomInfo roomId={ currentRecord.roomId } roomName={ currentRecord.roomName } uniqueKey={ props.key } style={ props.style } /> }
+                { !isRoomInfo &&
+                    <Grid key={ props.key } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
+                        <Text className="g-col-2">{ chatlogEntry.timestamp }</Text>
+                        <Text className="g-col-3" bold underline pointer onClick={ event => SendMessageHook(new UserProfileComposer(chatlogEntry.userId)) }>{ chatlogEntry.userName }</Text>
+                        <Text textBreak wrap className="g-col-7">{ chatlogEntry.message }</Text>
+                    </Grid> }
             </CellMeasurer>
         );
     }
@@ -94,57 +99,60 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
         return count;
     }, [records]);
 
+    const RoomInfo = (props: { roomId: number, roomName: string, uniqueKey: Key, style: CSSProperties }) =>
+    {
+        return (
+            <Flex key={ props.uniqueKey } gap={ 2 } alignItems="center" justifyContent="between" className="room-info bg-muted rounded p-1" style={ props.style }>
+                <Flex gap={ 1 }>
+                    <Text bold>Room name:</Text>
+                    <Text>{ props.roomName }</Text>
+                </Flex>
+                <Flex gap={ 1 }>
+                    <Button onClick={ event => TryVisitRoom(props.roomId) }>Visit Room</Button>
+                    <Button onClick={ event => dispatchUiEvent(new ModToolsOpenRoomInfoEvent(props.roomId)) }>Room Tools</Button>
+                </Flex>
+            </Flex>
+        );
+    }
+
     const cache = new CellMeasurerCache({
         defaultHeight: 25,
         fixedWidth: true
     });
 
-    const RoomInfo = useCallback(({ roomId, roomName, uniqueKey, style }) =>
-    {
-        return (
-            <div key={uniqueKey} style={style} className="row justify-content-start gap-2 room-info">
-                <div className="col-7"><span className="fw-bold">Room: </span>{roomName}</div>
-                <button className="btn btn-sm btn-primary col-auto" onClick={() => TryVisitRoom(roomId)}>Visit Room</button>
-                <button className="btn btn-sm btn-primary col-auto" onClick={() => dispatchUiEvent(new ModToolsOpenRoomInfoEvent(roomId))}>Room Tools</button>
-            </div>
-        );
-    }, []);
-
     return (
         <>
-            {
-                (records && records.length) &&
-                <>
-                    {(records.length === 1) && <RoomInfo roomId={records[0].roomId} roomName={records[0].roomName} uniqueKey={records[0].roomId} style={{}} />}
-                    <div className="chatlog-messages w-100 h-100 overflow-hidden">
-                        <div className="row align-items-start w-100">
-                            <div className="col-auto text-center fw-bold">Time</div>
-                            <div className="col-sm-2 username-label fw-bold">User</div>
-                            <div className="col fw-bold">Message</div>
-                        </div>
-                        <div className="row w-100 h-100 chatlog">
-                            <AutoSizer defaultWidth={400} defaultHeight={200}>
-                                {({ height, width }) => 
+            { (records && (records.length === 1)) &&
+                <RoomInfo roomId={records[0].roomId} roomName={records[0].roomName} uniqueKey={ null } style={ {} } /> }
+            <Column fit gap={ 0 } overflow="hidden">
+                <Column gap={ 2 }>
+                    <Grid gap={ 1 } className="text-black fw-bold border-bottom pb-1">
+                        <Base className="g-col-2">Time</Base>
+                        <Base className="g-col-3">User</Base>
+                        <Base className="g-col-7">Message</Base>
+                    </Grid>
+                </Column>
+                { (records && (records.length > 0)) &&
+                    <Column className="log-container striped-children" overflow="auto" gap={ 0 }>
+                        <AutoSizer defaultWidth={ 400 } defaultHeight={ 200 }>
+                            { ({ height, width }) => 
                                 {
                                     cache.clearAll();
 
                                     return (
                                         <List
-                                            width={width}
-                                            height={height}
-                                            rowCount={records.length > 1 ? getNumRowsForAdvanced() : records[0].chatlog.length}
-                                            rowHeight={cache.rowHeight}
-                                            className={'chatlog-container'}
-                                            rowRenderer={records.length > 1 ? advancedRowRenderer : simpleRowRenderer}
-                                            deferredMeasurementCache={cache} />
-                                    )
-                                }
-                                }
-                            </AutoSizer>
-                        </div>
-                    </div>
-                </>
-            }
+                                            width={ width }
+                                            height={ height }
+                                            rowCount={ (records.length > 1) ? getNumRowsForAdvanced() : records[0].chatlog.length }
+                                            rowHeight={ cache.rowHeight }
+                                            className={ 'log-entry-container' }
+                                            rowRenderer={ (records.length > 1) ? advancedRowRenderer : rowRenderer }
+                                            deferredMeasurementCache={ cache } />
+                                    );
+                                } }
+                        </AutoSizer>
+                    </Column> }
+            </Column>
         </>
     );
 }

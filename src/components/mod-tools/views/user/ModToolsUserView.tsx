@@ -1,13 +1,19 @@
 import { FriendlyTime, GetModeratorUserInfoMessageComposer, ModeratorUserInfoData, ModeratorUserInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { ModToolsOpenUserChatlogEvent } from '../../../../../events/mod-tools/ModToolsOpenUserChatlogEvent';
-import { CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutButton, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../layout';
-import { ModToolsUserModActionView } from '../user-mod-action/ModToolsUserModActionView';
-import { ModToolsUserRoomVisitsView } from '../user-room-visits/ModToolsUserRoomVisitsView';
-import { ModToolsSendUserMessageView } from '../user-sendmessage/ModToolsSendUserMessageView';
-import { ModToolsUserViewProps } from './ModToolsUserView.types';
+import { LocalizeText } from '../../../../api';
+import { Button, Column, Grid } from '../../../../common';
+import { ModToolsOpenUserChatlogEvent } from '../../../../events/mod-tools/ModToolsOpenUserChatlogEvent';
+import { CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
+import { ModToolsUserModActionView } from './ModToolsUserModActionView';
+import { ModToolsUserRoomVisitsView } from './ModToolsUserRoomVisitsView';
+import { ModToolsUserSendMessageView } from './ModToolsUserSendMessageView';
+
+interface ModToolsUserViewProps
+{
+    userId: number;
+    onCloseClick: () => void;
+}
 
 export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
 {
@@ -17,11 +23,6 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
     const [ modActionVisible, setModActionVisible ] = useState(false);
     const [ roomVisitsVisible, setRoomVisitsVisible ] = useState(false);
 
-    useEffect(() =>
-    {
-        SendMessageHook(new GetModeratorUserInfoMessageComposer(userId));
-    }, [ userId ]);
-
     const onModtoolUserInfoEvent = useCallback((event: ModeratorUserInfoEvent) =>
     {
         const parser = event.getParser();
@@ -29,7 +30,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
         if(!parser || parser.data.userId !== userId) return;
 
         setUserInfo(parser.data);
-    }, [setUserInfo, userId]);
+    }, [ userId ]);
 
     CreateMessageHook(ModeratorUserInfoEvent, onModtoolUserInfoEvent);
 
@@ -98,52 +99,58 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
         ];
     }, [ userInfo ]);
 
+    useEffect(() =>
+    {
+        SendMessageHook(new GetModeratorUserInfoMessageComposer(userId));
+    }, [ userId ]);
+
     if(!userInfo) return null;
 
     return (
         <>
-            <NitroCardView className="nitro-mod-tools-user" simple={true}>
+            <NitroCardView className="nitro-mod-tools-user" simple>
                 <NitroCardHeaderView headerText={ LocalizeText('modtools.userinfo.title', [ 'username' ], [ userInfo.userName ]) } onCloseClick={ () => onCloseClick() } />
                 <NitroCardContentView className="text-black">
-                    <NitroLayoutGrid>
-                        <NitroLayoutGridColumn size={ 8 }>
+                    <Grid overflow="hidden">
+                        <Column size={ 8 } overflow="auto">
                             <table className="table table-striped table-sm table-text-small text-black m-0">
                                 <tbody>
                                     { userProperties.map( (property, index) =>
                                         {
 
                                             return (
-                                                <tr key={index}>
+                                                <tr key={ index }>
                                                     <th scope="row">{ LocalizeText(property.localeKey) }</th>
                                                     <td>
                                                         { property.value }
-                                                        { property.showOnline && <i className={ `icon icon-pf-${ userInfo.online ? 'online' : 'offline' } ms-2` } /> }
-                                                        </td>
+                                                        { property.showOnline &&
+                                                            <i className={ `icon icon-pf-${ userInfo.online ? 'online' : 'offline' } ms-2` } /> }
+                                                    </td>
                                                 </tr>
                                             );
                                         }) }
                                 </tbody>
                             </table>
-                        </NitroLayoutGridColumn>
-                        <NitroLayoutGridColumn size={ 4 }>
-                            <NitroLayoutButton variant="primary" size="sm" onClick={ event => dispatchUiEvent(new ModToolsOpenUserChatlogEvent(userId)) }>
+                        </Column>
+                        <Column size={ 4 } gap={ 1 }>
+                            <Button onClick={ event => dispatchUiEvent(new ModToolsOpenUserChatlogEvent(userId)) }>
                                 Room Chat
-                            </NitroLayoutButton>
-                            <NitroLayoutButton variant="primary" size="sm" onClick={ event => setSendMessageVisible(!sendMessageVisible) }>
+                            </Button>
+                            <Button onClick={ event => setSendMessageVisible(!sendMessageVisible) }>
                                 Send Message
-                            </NitroLayoutButton>
-                            <NitroLayoutButton variant="primary" size="sm" onClick={ event => setRoomVisitsVisible(!roomVisitsVisible) }>
+                            </Button>
+                            <Button onClick={ event => setRoomVisitsVisible(!roomVisitsVisible) }>
                                 Room Visits
-                            </NitroLayoutButton>
-                            <NitroLayoutButton variant="primary" size="sm" onClick={ event => setModActionVisible(!modActionVisible) }>
+                            </Button>
+                            <Button onClick={ event => setModActionVisible(!modActionVisible) }>
                                 Mod Action
-                            </NitroLayoutButton>
-                        </NitroLayoutGridColumn>
-                    </NitroLayoutGrid>
+                            </Button>
+                        </Column>
+                    </Grid>
                 </NitroCardContentView>
             </NitroCardView>
             { sendMessageVisible &&
-                <ModToolsSendUserMessageView user={ { userId: userId, username: userInfo.userName } } onCloseClick={ () => setSendMessageVisible(false) } /> }
+                <ModToolsUserSendMessageView user={ { userId: userId, username: userInfo.userName } } onCloseClick={ () => setSendMessageVisible(false) } /> }
             { modActionVisible &&
                 <ModToolsUserModActionView user={ { userId: userId, username: userInfo.userName } } onCloseClick={ () => setModActionVisible(false) } /> }
             { roomVisitsVisible &&

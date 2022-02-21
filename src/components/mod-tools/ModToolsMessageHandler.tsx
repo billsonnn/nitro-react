@@ -10,7 +10,7 @@ import { CreateMessageHook, useRoomEngineEvent, useUiEvent } from '../../hooks';
 import { NotificationAlertType } from '../../views/notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../views/notification-center/common/NotificationUtilities';
 import { SetCfhCategories } from './common/GetCFHCategories';
-import { useModToolsContext } from './context/ModToolsContext';
+import { useModToolsContext } from './ModToolsContext';
 import { ModToolsActions } from './reducers/ModToolsReducer';
 
 export const ModToolsMessageHandler: FC<{}> = props =>

@@ -2,12 +2,16 @@ import { IssueMessageData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { GetSessionDataManager } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
-import { useModToolsContext } from '../../context/ModToolsContext';
-import { IssueInfoView } from './issue-info/IssueInfoView';
-import { ModToolsTicketsViewProps } from './ModToolsTicketsView.types';
-import { ModToolsMyIssuesTabView } from './my-issues/ModToolsMyIssuesTabView';
-import { ModToolsOpenIssuesTabView } from './open-issues/ModToolsOpenIssuesTabView';
-import { ModToolsPickedIssuesTabView } from './picked-issues/ModToolsPickedIssuesTabView';
+import { useModToolsContext } from '../../ModToolsContext';
+import { ModToolsIssueInfoView } from './ModToolsIssueInfoView';
+import { ModToolsMyIssuesTabView } from './ModToolsMyIssuesTabView';
+import { ModToolsOpenIssuesTabView } from './ModToolsOpenIssuesTabView';
+import { ModToolsPickedIssuesTabView } from './ModToolsPickedIssuesTabView';
+
+interface ModToolsTicketsViewProps
+{
+    onCloseClick: () => void;
+}
 
 const TABS: string[] = [
     'Open Issues',
@@ -82,25 +86,21 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
 
     return (
         <>
-        <NitroCardView className="nitro-mod-tools-tickets" simple={ false }>
-            <NitroCardHeaderView headerText={ 'Tickets' } onCloseClick={ onCloseClick } />
-            <NitroCardContentView className="p-0 text-black">
-                <NitroCardTabsView>
-                    { TABS.map((tab, index) =>
-                        {
-                            return (<NitroCardTabsItemView key={ index } isActive={ currentTab === index } onClick={ () => setCurrentTab(index) }>
-                                { tab }
-                            </NitroCardTabsItemView>);
-                        }) }
-                </NitroCardTabsView>
-                <div className="p-2">
+            <NitroCardView className="nitro-mod-tools-tickets">
+                <NitroCardHeaderView headerText={ 'Tickets' } onCloseClick={ onCloseClick } />
+                    <NitroCardTabsView>
+                        { TABS.map((tab, index) =>
+                            {
+                                return (<NitroCardTabsItemView key={ index } isActive={ (currentTab === index) } onClick={ event => setCurrentTab(index) }>
+                                    { tab }
+                                </NitroCardTabsItemView>);
+                            }) }
+                    </NitroCardTabsView>
+                <NitroCardContentView gap={ 1 }>
                     <CurrentTabComponent />
-                </div>
-            </NitroCardContentView>
-        </NitroCardView>
-        {
-            issueInfoWindows && issueInfoWindows.map(issueId => <IssueInfoView key={issueId} issueId={issueId} onIssueInfoClosed={onIssueInfoClosed}/>)
-        }
+                </NitroCardContentView>
+            </NitroCardView>
+            { issueInfoWindows && (issueInfoWindows.length > 0) && issueInfoWindows.map(issueId => <ModToolsIssueInfoView key={ issueId } issueId={ issueId } onIssueInfoClosed={ onIssueInfoClosed } />) }
         </>
     );
 }

@@ -1,6 +1,8 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomEngineObjectEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useReducer, useState } from 'react';
 import { GetRoomSession } from '../../api';
+import { Button } from '../../common';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { ModToolsOpenRoomChatlogEvent } from '../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
 import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRoomInfoEvent';
@@ -8,23 +10,23 @@ import { ModToolsOpenUserInfoEvent } from '../../events/mod-tools/ModToolsOpenUs
 import { useRoomEngineEvent } from '../../hooks/events';
 import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
-import { ModToolsContextProvider } from './context/ModToolsContext';
+import { ModToolsContextProvider } from './ModToolsContext';
 import { ModToolsMessageHandler } from './ModToolsMessageHandler';
 import { initialModTools, ModToolsActions, ModToolsReducer } from './reducers/ModToolsReducer';
 import { ISelectedUser } from './utils/ISelectedUser';
-import { ModToolsChatlogView } from './views/room/room-chatlog/ModToolsChatlogView';
-import { ModToolsRoomView } from './views/room/room-tools/ModToolsRoomView';
+import { ModToolsChatlogView } from './views/room/ModToolsChatlogView';
+import { ModToolsRoomView } from './views/room/ModToolsRoomView';
 import { ModToolsTicketsView } from './views/tickets/ModToolsTicketsView';
-import { ModToolsUserChatlogView } from './views/user/user-chatlog/ModToolsUserChatlogView';
-import { ModToolsUserView } from './views/user/user-info/ModToolsUserView';
+import { ModToolsUserChatlogView } from './views/user/ModToolsUserChatlogView';
+import { ModToolsUserView } from './views/user/ModToolsUserView';
 
 export const ModToolsView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
-    const [ modToolsState, dispatchModToolsState ] = useReducer(ModToolsReducer, initialModTools);
-    const { currentRoomId = null, openRooms = null, openRoomChatlogs = null, openUserChatlogs = null, openUserInfo = null } = modToolsState;
     const [ selectedUser, setSelectedUser] = useState<ISelectedUser>(null);
     const [ isTicketsVisible, setIsTicketsVisible ] = useState(false);
+    const [ modToolsState, dispatchModToolsState ] = useReducer(ModToolsReducer, initialModTools);
+    const { currentRoomId = null, openRooms = null, openRoomChatlogs = null, openUserChatlogs = null, openUserInfo = null } = modToolsState;
 
     const onModToolsEvent = useCallback((event: ModToolsEvent) =>
     {
@@ -190,11 +192,19 @@ export const ModToolsView: FC<{}> = props =>
             { isVisible &&
                 <NitroCardView uniqueKey="mod-tools" className="nitro-mod-tools" simple={ false }>
                     <NitroCardHeaderView headerText={ 'Mod Tools' } onCloseClick={ event => setIsVisible(false) } />
-                    <NitroCardContentView className="text-black">
-                        <button className="btn btn-primary btn-sm w-100 mb-2" onClick={ () => handleClick('toggle_room') } disabled={ !currentRoomId }><i className="fas fa-home"></i> Room Tool</button>
-                        <button className="btn btn-primary btn-sm w-100 mb-2" onClick={ () => handleClick('toggle_room_chatlog') } disabled={ !currentRoomId }><i className="fas fa-comments"></i> Chatlog Tool</button>
-                        <button className="btn btn-primary btn-sm w-100 mb-2" onClick={ () => handleClick('toggle_user_info') } disabled={ !selectedUser }><i className="fas fa-user"></i> User: { selectedUser ? selectedUser.username : '' }</button>
-                        <button className="btn btn-primary btn-sm w-100" onClick={ () => setIsTicketsVisible(value => !value) }><i className="fas fa-exclamation-circle"></i> Report Tool</button>
+                    <NitroCardContentView className="text-black" gap={ 1 }>
+                        <Button gap={ 1 } onClick={ event => handleClick('toggle_room') } disabled={ !currentRoomId }>
+                            <FontAwesomeIcon icon="home" /> Room Tool
+                        </Button>
+                        <Button gap={ 1 } onClick={ event => handleClick('toggle_room_chatlog') } disabled={ !currentRoomId }>
+                            <FontAwesomeIcon icon="comments" /> Chatlog Tool
+                        </Button>
+                        <Button gap={ 1 } onClick={ () => handleClick('toggle_user_info') } disabled={ !selectedUser }>
+                            <FontAwesomeIcon icon="user" /> User: { selectedUser ? selectedUser.username : '' }
+                        </Button>
+                        <Button gap={ 1 } onClick={ () => setIsTicketsVisible(value => !value) }>
+                            <FontAwesomeIcon icon="exclamation-circle" /> Report Tool
+                        </Button>
                     </NitroCardContentView>
                 </NitroCardView> }
             { openRooms && openRooms.map(roomId =>

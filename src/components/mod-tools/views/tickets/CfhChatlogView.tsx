@@ -1,9 +1,14 @@
 import { CfhChatlogData, CfhChatlogEvent, GetCfhChatlogMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { CreateMessageHook, SendMessageHook } from '../../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
-import { ChatlogView } from '../../chatlog/ChatlogView';
-import { CfhChatlogViewProps } from './CfhChatlogView.types';
+import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
+import { ChatlogView } from '../chatlog/ChatlogView';
+
+interface CfhChatlogViewProps
+{
+    issueId: number;
+    onCloseClick(): void;
+}
 
 export const CfhChatlogView: FC<CfhChatlogViewProps> = props =>
 {
