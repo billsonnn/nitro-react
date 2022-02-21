@@ -1,7 +1,7 @@
 import { RelationshipStatusEnum, RelationshipStatusInfo } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetUserProfile, LocalizeText } from '../../../../api';
-import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
+import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
 import { RelationshipsContainerViewProps } from './RelationshipsContainerView.types';
 
 export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = props =>

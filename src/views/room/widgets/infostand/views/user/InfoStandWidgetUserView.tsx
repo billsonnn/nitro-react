@@ -5,12 +5,12 @@ import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 
 import { GetGroupInformation, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent } from '../../../../../../api';
 import { Base } from '../../../../../../common/Base';
 import { Flex } from '../../../../../../common/Flex';
+import { RelationshipsContainerView } from '../../../../../../components/user-profile/views/relationships-container/RelationshipsContainerView';
 import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../../hooks/events';
 import { UserProfileIconView } from '../../../../../../layout';
 import { AvatarImageView } from '../../../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
-import { RelationshipsContainerView } from '../../../../../user-profile/views/relationships-container/RelationshipsContainerView';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { InfoStandWidgetUserViewProps } from './InfoStandWidgetUserView.types';
 

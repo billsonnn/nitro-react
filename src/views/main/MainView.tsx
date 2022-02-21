@@ -11,6 +11,7 @@ import { InventoryView } from '../../components/inventory/InventoryView';
 import { ModToolsView } from '../../components/mod-tools/ModToolsView';
 import { NavigatorView } from '../../components/navigator/NavigatorView';
 import { ToolbarView } from '../../components/toolbar/ToolbarView';
+import { UserProfileView } from '../../components/user-profile/UserProfileView';
 import { UserSettingsView } from '../../components/user-settings/UserSettingsView';
 import { WiredView } from '../../components/wired/WiredView';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
@@ -24,7 +25,6 @@ import { HotelView } from '../hotel-view/HotelView';
 import { NitropediaView } from '../nitropedia/NitropediaView';
 import { RightSideView } from '../right-side/RightSideView';
 import { RoomHostView } from '../room-host/RoomHostView';
-import { UserProfileView } from '../user-profile/UserProfileView';
 import { MainViewProps } from './MainView.types';
 
 export const MainView: FC<MainViewProps> = props =>
