@@ -1,7 +1,7 @@
 import { FriendlyTime, HabboClubLevelEnum, UserCurrencyComposer, UserSubscriptionComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetConfiguration, LocalizeText } from '../../api';
-import { Column, Flex, Grid } from '../../common';
+import { Column, Flex, Grid, Text } from '../../common';
 import { HcCenterEvent } from '../../events/hc-center/HcCenterEvent';
 import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
 import { dispatchUiEvent } from '../../hooks';
@@ -109,27 +109,29 @@ export const PurseView: FC<{}> = props =>
     return (
         <PurseContextProvider value={ { purse } }>
             <PurseMessageHandler />
-            <Flex className="nitro-purse rounded-bottom p-1">
-                <Grid gap={ 1 }>
-                    <Column justifyContent="center" size={ 6 } gap={ 1 } className="nitro-currencies">
-                        <CurrencyView type={ -1 } amount={ purse.credits } short={ currencyDisplayNumberShort } />
-                        { getCurrencyElements(0, 2) }
-                    </Column>
-                    <Column center size={ 4 } gap={ 1 } className="nitro-purse-hc nitro-purse-button rounded" onClick={ handleHcCenterClick }>
-                        <CurrencyIcon className="flex-shrink-0" type="hc" />
-                        <span>{ getClubText }</span>
-                    </Column>
-                    <Column justifyContent="center" size={ 2 } gap={ 1 } className="nitro-purse-buttons">
-                        <Flex center pointer fullHeight className="nitro-purse-button text-white text-center p-1 rounded" onClick={ handleHelpCenterClick }>
-                            <i className="icon icon-help"/>
-                        </Flex>
-                        <Flex center pointer fullHeight className="nitro-purse-button text-white text-center p-1 rounded" onClick={ handleUserSettingsClick } >
-                            <i className="icon icon-cog"/>
-                        </Flex>
-                    </Column>
-                </Grid>
-            </Flex>
-            { getCurrencyElements(2, -1, true) }
+            <Column className="nitro-purse-container" gap={ 1 }>
+                <Flex className="nitro-purse rounded-bottom p-1">
+                    <Grid fullWidth gap={ 1 }>
+                        <Column justifyContent="center" size={ 6 } gap={ 0 }>
+                            <CurrencyView type={ -1 } amount={ purse.credits } short={ currencyDisplayNumberShort } />
+                            { getCurrencyElements(0, 2) }
+                        </Column>
+                        <Column center pointer size={ 4 } gap={ 1 } className="nitro-purse-subscription rounded" onClick={ handleHcCenterClick }>
+                            <CurrencyIcon type="hc" />
+                            <Text variant="white">{ getClubText }</Text>
+                        </Column>
+                        <Column justifyContent="center" size={ 2 } gap={ 0 }>
+                            <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ handleHelpCenterClick }>
+                                <i className="icon icon-help"/>
+                            </Flex>
+                            <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ handleUserSettingsClick } >
+                                <i className="icon icon-cog"/>
+                            </Flex>
+                        </Column>
+                    </Grid>
+                </Flex>
+                { getCurrencyElements(2, -1, true) }
+            </Column>
         </PurseContextProvider>
     );
 }

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LocalizeFormattedNumber, LocalizeText } from '../../../api';
-import { Flex } from '../../../common';
+import { Flex, Text } from '../../../common';
 import { CurrencyIcon } from '../../../views/shared/currency-icon/CurrencyIcon';
 
 interface SeasonalViewProps
@@ -14,14 +14,12 @@ export const SeasonalView: FC<SeasonalViewProps> = props =>
     const { type = -1, amount = -1 } = props;
 
     return (
-        <Flex justifyContent="end" className="nitro-seasonal-currency rounded">
-            <div className="nitro-currency-text w-100 px-1 d-flex justify-content-between">
-                <span className="seasonal-text">{ LocalizeText(`purse.seasonal.currency.${ type }`) }</span>
-                <span>{ LocalizeFormattedNumber(amount) }</span>
-            </div>
-            <div>
+        <Flex justifyContent="between" className="nitro-purse-seasonal-currency p-2 rounded">
+            <Text variant="white">{ LocalizeText(`purse.seasonal.currency.${ type }`) }</Text>
+            <Flex gap={ 1 }>
+                <Text variant="white">{ LocalizeFormattedNumber(amount) }</Text>
                 <CurrencyIcon type={ type } />
-            </div>
+            </Flex>
         </Flex>
     );
 }
