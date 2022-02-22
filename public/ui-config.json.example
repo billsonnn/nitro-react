@@ -8,6 +8,7 @@
     "habbopages.url": "https://website.com/habbopages/",
     "chat.viewer.height.percentage": 0.40,
     "widget.dimmer.colorwheel": false,
+    "avatar.wardrobe.max.slots": 10,
     "hotelview": {
         "widgets": {
             "slot.1.widget": "promoarticle",
