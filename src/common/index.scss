@@ -6,7 +6,7 @@
 
     &.active {
         border-color: $grid-active-border-color !important;
-        background-color: $grid-active-bg-color !important;
+        background-color: $grid-active-bg-color;
     }
 
     &.disabled {
@@ -24,5 +24,20 @@
 
     .avatar-image {
         background-position-y: -35px;
+    }
+
+    &.has-highlight {
+
+        &:after {
+            content: "";
+            z-index: 2;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background-color: $white;
+            opacity: 0.1;
+        }
     }
 }

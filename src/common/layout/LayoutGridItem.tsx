@@ -14,12 +14,13 @@ export interface LayoutGridItemProps extends ColumnProps
     itemUniqueSoldout?: boolean;
     itemUniqueNumber?: number;
     itemUnseen?: boolean;
+    itemHighlight?: boolean;
     disabled?: boolean;
 }
 
 export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
 {
-    const { itemImage = undefined, itemColor = undefined, itemActive = false, itemCount = 1, itemCountMinimum = 1, itemUniqueSoldout = false, itemUniqueNumber = -2, itemUnseen = false, disabled = false, center = true, column = true, style = {}, classNames = [], position = 'relative', overflow = 'hidden', children = null, ...rest } = props;
+    const { itemImage = undefined, itemColor = undefined, itemActive = false, itemCount = 1, itemCountMinimum = 1, itemUniqueSoldout = false, itemUniqueNumber = -2, itemUnseen = false, itemHighlight = false, disabled = false, center = true, column = true, style = {}, classNames = [], position = 'relative', overflow = 'hidden', children = null, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -33,6 +34,8 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
 
         if(itemUnseen) newClassNames.push('unseen');
 
+        if(itemHighlight) newClassNames.push('has-highlight');
+
         if(disabled) newClassNames.push('disabled')
 
         if(itemImage === null) newClassNames.push('icon', 'loading-icon');
@@ -40,7 +43,7 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ itemActive, itemUniqueSoldout, itemUniqueNumber, itemUnseen, disabled, itemImage, classNames ]);
+    }, [ itemActive, itemUniqueSoldout, itemUniqueNumber, itemUnseen, itemHighlight, disabled, itemImage, classNames ]);
 
     const getStyle = useMemo(() =>
     {
