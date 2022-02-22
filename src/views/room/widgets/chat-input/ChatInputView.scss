@@ -4,7 +4,7 @@
     align-items: center;
     position: relative;
     height: 40px;
-    border-radius: 8px;
+    border-radius: $border-radius;
     border: 2px solid rgb(0, 0, 0);
     background: #EDEDED;
     padding-right: 10px;
@@ -23,7 +23,7 @@
         position: absolute;
         width: 98%;
         height: 5px;
-        border-radius: 8px;
+        border-radius: $border-radius;
         top: 1px;
         left: 0;
         right: 0;

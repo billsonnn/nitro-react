@@ -1,6 +1,7 @@
-import { IChatEntry } from '../../../views/chat-history/context/ChatHistoryContext.types';
+import { IChatEntry } from '../../chat-history/common/IChatEntry';
 
-export interface IHelpReportState {
+export interface IHelpReportState
+{
     reportedUserId: number;
     reportedChats: IChatEntry[];
     cfhCategory: number;

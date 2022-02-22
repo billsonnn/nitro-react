@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, IAvatarFigureContainer, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
-import { GetAvatarRenderManager, GetClubMemberLevel, GetSessionDataManager, LocalizeText } from '../../api';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText } from '../../api';
 import { Button } from '../../common/Button';
 import { ButtonGroup } from '../../common/ButtonGroup';
 import { Column } from '../../common/Column';
@@ -25,7 +25,6 @@ import { AvatarEditorWardrobeView } from './views/wardrobe/AvatarEditorWardrobeV
 
 const DEFAULT_MALE_FIGURE: string = 'hr-100.hd-180-7.ch-215-66.lg-270-79.sh-305-62.ha-1002-70.wa-2007';
 const DEFAULT_FEMALE_FIGURE: string = 'hr-515-33.hd-600-1.ch-635-70.lg-716-66-62.sh-735-68';
-const MAX_SAVED_FIGURES: number = 10;
 
 export const AvatarEditorView: FC<{}> = props =>
 {
@@ -36,12 +35,14 @@ export const AvatarEditorView: FC<{}> = props =>
     const [ activeCategory, setActiveCategory ] = useState<IAvatarEditorCategoryModel>(null);
     const [ figureSetIds, setFigureSetIds ] = useState<number[]>([]);
     const [ boundFurnitureNames, setBoundFurnitureNames ] = useState<string[]>([]);
-    const [ savedFigures, setSavedFigures ] = useState<[ IAvatarFigureContainer, string ][]>(new Array(MAX_SAVED_FIGURES));
+    const [ savedFigures, setSavedFigures ] = useState<[ IAvatarFigureContainer, string ][]>([]);
     const [ isWardrobeVisible, setIsWardrobeVisible ] = useState(false);
     const [ lastFigure, setLastFigure ] = useState<string>(null);
     const [ lastGender, setLastGender ] = useState<string>(null);
     const [ needsReset, setNeedsReset ] = useState(false);
     const [ isInitalized, setIsInitalized ] = useState(false);
+
+    const maxWardrobeSlots = useMemo(() => GetConfiguration<number>('avatar.wardrobe.max.slots', 10), []);
 
     const onAvatarEditorEvent = useCallback((event: AvatarEditorEvent) =>
     {
@@ -88,7 +89,7 @@ export const AvatarEditorView: FC<{}> = props =>
 
         let i = 0;
 
-        while(i < MAX_SAVED_FIGURES)
+        while(i < maxWardrobeSlots)
         {
             savedFigures.push([ null, null ]);
 
@@ -103,7 +104,7 @@ export const AvatarEditorView: FC<{}> = props =>
         }
 
         setSavedFigures(savedFigures)
-    }, []);
+    }, [ maxWardrobeSlots ]);
 
     CreateMessageHook(UserWardrobePageEvent, onUserWardrobePageEvent);
 
@@ -193,6 +194,11 @@ export const AvatarEditorView: FC<{}> = props =>
 
         setFigureData(figures.get(gender));
     }, [ figures ]);
+
+    useEffect(() =>
+    {
+        setSavedFigures(new Array(maxWardrobeSlots));
+    }, [ maxWardrobeSlots ]);
 
     useEffect(() =>
     {

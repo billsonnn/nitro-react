@@ -9,7 +9,7 @@ import { Text } from '../../../../../../common/Text';
 import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
 import { NotificationAlertType } from '../../../../../../views/notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
-import { GetCurrencyAmount } from '../../../../../../views/purse/common/CurrencyHelper';
+import { GetCurrencyAmount } from '../../../../../purse/common/CurrencyHelper';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, PUBLIC_OFFER } from './CatalogLayoutMarketplaceItemView';
 import { SearchFormView } from './CatalogLayoutMarketplaceSearchFormView';

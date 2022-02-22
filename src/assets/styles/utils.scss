@@ -90,3 +90,10 @@ ul {
 .flex-basis-max-content {
     flex-basis: max-content;
 }
+
+.striped-children {
+
+    > :nth-child(1) {
+        background-color: $table-striped-bg;
+    }
+}

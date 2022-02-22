@@ -8,7 +8,7 @@ import { CatalogInitPurchaseEvent } from '../../../../../events/catalog/CatalogI
 import { CatalogWidgetEvent } from '../../../../../events/catalog/CatalogWidgetEvent';
 import { dispatchUiEvent, SendMessageHook, useUiEvent } from '../../../../../hooks';
 import { LoadingSpinnerView } from '../../../../../layout';
-import { GetCurrencyAmount } from '../../../../../views/purse/common/CurrencyHelper';
+import { GetCurrencyAmount } from '../../../../purse/common/CurrencyHelper';
 import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogPurchaseState } from '../../../common/CatalogPurchaseState';
 import { Offer } from '../../../common/Offer';

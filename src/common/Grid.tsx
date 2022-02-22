@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 import { CSSProperties } from 'styled-components';
 import { Base, BaseProps } from './Base';
 import { GridContextProvider } from './GridContext';
-import { SpacingType } from './types';
+import { AlignItemType, AlignSelfType, JustifyContentType, SpacingType } from './types';
 
 export interface GridProps extends BaseProps<HTMLDivElement>
 {
@@ -10,11 +10,15 @@ export interface GridProps extends BaseProps<HTMLDivElement>
     gap?: SpacingType;
     maxContent?: boolean;
     columnCount?: number;
+    center?: boolean;
+    alignSelf?: AlignSelfType;
+    alignItems?: AlignItemType;
+    justifyContent?: JustifyContentType;
 }
 
 export const Grid: FC<GridProps> = props =>
 {
-    const { inline = false, gap = 2, maxContent = false, columnCount = 0, fullHeight = true, classNames = [], style = {}, ...rest } = props;
+    const { inline = false, gap = 2, maxContent = false, columnCount = 0, center = false, alignSelf = null, alignItems = null, justifyContent = null, fullHeight = true, classNames = [], style = {}, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -28,10 +32,18 @@ export const Grid: FC<GridProps> = props =>
 
         if(maxContent) newClassNames.push('flex-basis-max-content');
 
+        if(alignSelf) newClassNames.push('align-self-' + alignSelf);
+
+        if(alignItems) newClassNames.push('align-items-' + alignItems);
+
+        if(justifyContent) newClassNames.push('justify-content-' + justifyContent);
+
+        if(!alignItems && !justifyContent && center) newClassNames.push('align-items-center', 'justify-content-center');
+
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ inline, gap, maxContent, classNames ]);
+    }, [ inline, gap, maxContent, alignSelf, alignItems, justifyContent, center, classNames ]);
 
     const getStyle = useMemo(() =>
     {

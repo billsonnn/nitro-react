@@ -1,111 +1,67 @@
-.nitro-toolbar-container {
+.nitro-toolbar {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: $toolbar-height;
     z-index: $toolbar-zindex;
+    pointer-events: all;
+    background: rgba($dark, 0.95);
+    box-shadow: inset 0px 5px lighten(rgba($dark, 0.6), 2.5),
+        inset 0 -4px darken(rgba($dark, 0.6), 4);
 
-    .nitro-toolbar {
-        height: 100%;
-        pointer-events: all;
-        background: rgba($dark, 0.95);
-        box-shadow: inset 0px 5px lighten(rgba($dark, 0.6), 2.5),
-            inset 0 -4px darken(rgba($dark, 0.6), 4);
+    .navigation-item {
 
-        #toolbar-chat-input-container {
-            margin: 0 10px;
-
-            @include media-breakpoint-down(sm) {
-                width: 0px;
-                height: 0px;
+        &.item-avatar {
+            width: 50px;
+            height: 45px;
+            overflow: hidden;
+    
+            .avatar-image {
+                margin-left: -5px;
+                margin-top: 25px;
             }
         }
 
-        .navigation-items {
-            display: flex;
-            align-items: center;
-
-            &.navigation-avatar {
-                border-right: 1px solid rgba(0, 0, 0, 0.3);
-            }
-
-            .navigation-item {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                //margin: 0 1px;
-                position: relative;
-
-                &.item-avatar {
-                    width: 50px;
-                    height: 45px;
-                    overflow: hidden;
-
-                    .avatar-image {
-                        margin-left: -5px;
-                        margin-top: 25px;
-                    }
-                }
-
-                .icon,
-                &.item-avatar {
-                    position: relative;
-                    //transition: transform .2s ease-out;
-
-                    &:hover,
-                    &.active {
-                        -webkit-transform: translate(-1px, -1px);
-                        transform: translate(-1px, -1px);
-                        filter: drop-shadow(2px 2px 0 rgba($black, 0.8));
-                    }
-                }
-
-                .avatar-image {
-                    pointer-events: none;
-                }
-
-                .chat-input-container {
-                    left: 60px;
-                }
-            }
+        &:hover {
+            -webkit-transform: translate(-1px, -1px);
+            transform: translate(-1px, -1px);
+            filter: drop-shadow(2px 2px 0 rgba($black, 0.8));
         }
 
-        .nitro-toolbar-me-menu {
-            bottom: 77px;
-            left: 200px;
-            position: absolute;
-            font-size: 12px;
-            z-index: $toolbar-memenu-zindex;
+        &.active,
+        &:active {
+            -webkit-transform: translate(0px, 0px);
+            transform: translate(0px, 0px);
+            filter: drop-shadow(2px 2px 0 rgba($black, 0.8));
+        }
+    }
 
-            .list-group {
-                .list-group-item {
-                    min-width: 70px;
-                    transition: all 0.3s;
-                    font-size: 10px;
-                    text-align: center;
+    #toolbar-chat-input-container {
 
-                    i {
-                        filter: grayscale(1);
-                    }
+        @include media-breakpoint-down(sm) {
+            width: 0px;
+            height: 0px;
+        }
+    }
+}
 
-                    &:hover {
-                        color: $cyan;
-                        text-decoration: underline;
+.nitro-toolbar-me {
+    position: absolute;
+    bottom: 60px;
+    left: 15px;
+    z-index: $toolbar-memenu-zindex;
+    background: rgba(20, 20, 20, .95);
+    border: 1px solid #101010;
+    box-shadow: inset 2px 2px rgba(255, 255, 255, .1), inset -2px -2px rgba(255, 255, 255, .1);
+    border-radius: $border-radius;
 
-                        i {
-                            filter: grayscale(0);
-                        }
-                    }
+    .navigation-item {
+        transition: filter .2s ease-out;
+        filter: grayscale(1);
 
-                    .count {
-                        top: 0px;
-                        right: 5px;
-                        font-size: 10px;
-                    }
-                }
-            }
+        &:hover {
+            filter: grayscale(0) drop-shadow(2px 2px 0 rgba($black, 0.8));
         }
     }
 }
@@ -121,46 +77,4 @@
     filter: drop-shadow(2px 1px 0 rgba($white, 1))
         drop-shadow(-2px 1px 0 rgba($white, 1))
         drop-shadow(0 -2px 0 rgba($white, 1));
-}
-
-.nitro-toolbar-me {
-    position: absolute;
-    bottom: 65px;
-    left: 15px;
-    z-index: $toolbar-me-zindex;
-    background: rgba(20, 20, 20, .95);
-    border: 1px solid #101010;
-    box-shadow: inset 2px 2px rgba(255, 255, 255, .1), inset -2px -2px rgba(255, 255, 255, .1);
-    border-radius: $border-radius;
-
-    .navigation-items {
-        display: flex;
-        align-items: center;
-
-        &.navigation-avatar {
-            border-right: 1px solid rgba(0, 0, 0, .3);
-        }
-
-        .navigation-item {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            cursor: pointer;
-            width: 50px;
-            font-size: 11px;
-
-            .icon {
-                transition: filter .2s ease-out;
-                filter: grayscale(1);
-            }
-
-            &:hover {
-                .icon {
-                    filter: grayscale(0) drop-shadow(2px 2px 0 rgba($black, 0.8));
-                }
-            }
-        }
-    }
 }

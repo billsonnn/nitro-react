@@ -1,10 +1,9 @@
 import { GetGuestRoomResultEvent, RoomLikeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText, RoomWidgetZoomToggleMessage } from '../../../../api';
+import { CreateLinkEvent, LocalizeText, RoomWidgetZoomToggleMessage } from '../../../../api';
 import { Base, Column, Flex, Text } from '../../../../common';
 import { NavigatorEvent } from '../../../../events';
-import { ChatHistoryEvent } from '../../../../events/chat-history/ChatHistoryEvent';
 import { dispatchUiEvent } from '../../../../hooks/events';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
 import { useRoomContext } from '../../context/RoomContext';
@@ -33,7 +32,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 setIsZoomedIn(value => !value);
                 return;
             case 'chat_history':
-                dispatchUiEvent(new ChatHistoryEvent(ChatHistoryEvent.TOGGLE_CHAT_HISTORY));
+                CreateLinkEvent('chat-history/toggle');
                 return;
             case 'like_room':
                 if(isLiked) return;

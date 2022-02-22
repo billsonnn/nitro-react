@@ -2,8 +2,8 @@ import { RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../api';
 import { Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../common';
-import { GetChatHistory } from '../../../views/chat-history/common/GetChatHistory';
-import { ChatEntryType } from '../../../views/chat-history/context/ChatHistoryContext.types';
+import { ChatEntryType } from '../../chat-history/common/ChatEntryType';
+import { GetChatHistory } from '../../chat-history/common/GetChatHistory';
 import { IReportedUser } from '../common/IReportedUser';
 import { useHelpContext } from '../HelpContext';
 

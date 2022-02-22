@@ -1,6 +1,7 @@
 import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GetUserProfile, GoToDesktop, OpenMessengerChat } from '../../api';
+import { Base, Flex } from '../../common';
 import { AvatarEditorEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
 import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
@@ -181,64 +182,47 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     }, []);
 
     return (
-        <div className="nitro-toolbar-container">
+        <>
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isMeExpanded } timeout={ 300 }>
                 <ToolbarMeView unseenAchievementCount={ unseenAchievementCount } handleToolbarItemClick={ handleToolbarItemClick } />
             </TransitionAnimation>
-            <div className="d-flex justify-content-between align-items-center nitro-toolbar py-1 px-3">
-                <div className="d-flex align-items-center">
-                    <div className="navigation-items gap-2">
-                        <div className={ 'navigation-item item-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ event => setMeExpanded(!isMeExpanded) }>
+            <Flex alignItems="center" justifyContent="between" gap={ 2 } className="nitro-toolbar py-1 px-3">
+                <Flex gap={ 2 } alignItems="center">
+                    <Flex alignItems="center" gap={ 2 }>
+                        <Flex center pointer className={ 'navigation-item item-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ event => setMeExpanded(!isMeExpanded) }>
                             <AvatarImageView figure={ userFigure } direction={ 2 } />
                             { (unseenAchievementCount > 0) &&
                                 <ItemCountView count={ unseenAchievementCount } /> }
-                        </div>
-                        { isInRoom && (
-                            <div className="navigation-item" onClick={ visitDesktop }>
-                                <i className="icon icon-habbo"></i>
-                            </div>) }
-                        { !isInRoom && (
-                            <div className="navigation-item" onClick={ event => CreateLinkEvent('navigator/goto/home') }>
-                                <i className="icon icon-house"></i>
-                            </div>) }
-                        <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.NAVIGATOR_ITEM) }>
-                            <i className="icon icon-rooms"></i>
-                        </div>
-                        <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CATALOG_ITEM) }>
-                            <i className="icon icon-catalog"></i>
-                        </div>
-                        <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.INVENTORY_ITEM) }>
-                            <i className="icon icon-inventory"></i>
+                        </Flex>
+                        { isInRoom &&
+                            <Base pointer className="navigation-item icon icon-habbo" onClick={ visitDesktop } /> }
+                        { !isInRoom &&
+                            <Base pointer className="navigation-item icon icon-house" onClick={ event => CreateLinkEvent('navigator/goto/home') } /> }
+                        <Base pointer className="navigation-item icon icon-rooms" onClick={ event => handleToolbarItemClick(ToolbarViewItems.NAVIGATOR_ITEM) } />
+                        <Base pointer className="navigation-item icon icon-catalog" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CATALOG_ITEM) } />
+                        <Base pointer className="navigation-item icon icon-inventory" onClick={ event => handleToolbarItemClick(ToolbarViewItems.INVENTORY_ITEM) }>
                             { (unseenInventoryCount > 0) &&
                                 <ItemCountView count={ unseenInventoryCount } /> }
-                        </div>
-                        { isInRoom && (
-                            <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CAMERA_ITEM) }>
-                                <i className="icon icon-camera"></i>
-                            </div>) }
-                        { isMod && (
-                            <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.MOD_TOOLS_ITEM) }>
-                            <i className="icon icon-modtools"></i>
-                        </div>) }
-                    </div>
-                    <div id="toolbar-chat-input-container" className="d-flex align-items-center" />
-                </div>
-                <div className="d-flex align-items-center gap-2">
-                    <div className="navigation-items gap-2">
-                        <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_LIST_ITEM) }>
-                            <i className="icon icon-friendall"></i>
+                        </Base>
+                        { isInRoom &&
+                            <Base pointer className="navigation-item icon icon-camera" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CAMERA_ITEM) } /> }
+                        { isMod &&
+                            <Base pointer className="navigation-item icon icon-modtools" onClick={ event => handleToolbarItemClick(ToolbarViewItems.MOD_TOOLS_ITEM) } /> }
+                    </Flex>
+                    <Flex alignItems="center" id="toolbar-chat-input-container" />
+                </Flex>
+                <Flex alignItems="center" gap={ 2 }>
+                    <Flex gap={ 2 }>
+                        <Base pointer className="navigation-item icon icon-friendall" onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_LIST_ITEM) }>
                             { (unseenFriendRequestCount > 0) &&
                                 <ItemCountView count={ unseenFriendRequestCount } /> }
-                        </div>
+                        </Base>
                         { ((chatIconType === CHAT_ICON_SHOWING) || (chatIconType === CHAT_ICON_UNREAD)) &&
-                            <div className="navigation-item" onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_CHAT_ITEM) }>
-                                { (chatIconType === CHAT_ICON_SHOWING) && <i className="icon icon-message" /> }
-                                { (chatIconType === CHAT_ICON_UNREAD) && <i className="icon icon-message is-unseen" /> }
-                            </div> }
-                    </div>
-                    <div id="toolbar-friend-bar-container" className="d-none d-lg-block" />
-                </div>
-            </div>
-        </div>
+                            <Base pointer className={ `navigation-item icon icon-message ${ (chatIconType === CHAT_ICON_UNREAD) && 'is-unread' }` } onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_CHAT_ITEM) } /> }
+                    </Flex>
+                    <Base id="toolbar-friend-bar-container" className="d-none d-lg-block" />
+                </Flex>
+            </Flex>
+        </>
     );
 }

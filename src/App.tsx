@@ -1,13 +1,14 @@
 import { ConfigurationEvent, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetCommunication, GetConfiguration, GetNitroInstance } from './api';
+import { Base } from './common';
+import { LoadingView } from './components/loading/LoadingView';
+import { MainView } from './components/main/MainView';
 import { useConfigurationEvent } from './hooks/events/core/configuration/configuration-event';
 import { useLocalizationEvent } from './hooks/events/nitro/localization/localization-event';
 import { dispatchMainEvent, useMainEvent } from './hooks/events/nitro/main-event';
 import { useRoomEngineEvent } from './hooks/events/nitro/room/room-engine-event';
 import { TransitionAnimation, TransitionAnimationTypes } from './layout';
-import { LoadingView } from './views/loading/LoadingView';
-import { MainView } from './views/main/MainView';
 
 export const App: FC<{}> = props =>
 {
@@ -127,12 +128,13 @@ export const App: FC<{}> = props =>
     }
     
     return (
-        <div className="nitro-app overflow-hidden">
-            { (!isReady || isError) && <LoadingView isError={ isError } message={ message } /> }
+        <Base fit overflow="hidden">
+            { (!isReady || isError) &&
+                <LoadingView isError={ isError } message={ message } /> }
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ (isReady && !isError) }>
                 <MainView />
             </TransitionAnimation>
-            <div id="draggable-windows-container" />
-        </div>
+            <Base id="draggable-windows-container" />
+        </Base>
     );
 }
