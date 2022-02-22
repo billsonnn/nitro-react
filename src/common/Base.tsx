@@ -54,7 +54,7 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
 
         if(className.length) newClassName += (' ' + className);
 
-        return newClassName;
+        return newClassName.trim();
     }, [ getClassNames, className ]);
 
     const getStyle = useMemo(() =>
