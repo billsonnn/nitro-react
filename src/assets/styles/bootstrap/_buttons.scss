@@ -79,6 +79,11 @@
   font-weight: $font-weight-normal;
   color: $btn-link-color;
   text-decoration: $link-decoration;
+  box-shadow: none !important;
+
+  &:active {
+    color: $btn-link-color !important;
+  }
 
   &:hover {
     color: $btn-link-hover-color;
