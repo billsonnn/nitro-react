@@ -11,6 +11,7 @@
         inset 0 -4px darken(rgba($dark, 0.6), 4);
 
     .navigation-item {
+        position: relative;
 
         &.item-avatar {
             width: 50px;
@@ -31,9 +32,9 @@
 
         &.active,
         &:active {
-            -webkit-transform: translate(0px, 0px);
-            transform: translate(0px, 0px);
-            filter: drop-shadow(2px 2px 0 rgba($black, 0.8));
+            -webkit-transform: unset;
+            transform: unset;
+            filter: none;
         }
     }
 
