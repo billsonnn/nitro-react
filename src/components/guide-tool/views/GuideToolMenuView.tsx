@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../api';
-import { NitroCardContentView } from '../../../layout';
+import { Base, Button, Column, Flex, Text } from '../../../common';
 
 interface GuideToolMenuViewProps
 {
@@ -34,47 +34,43 @@ export const GuideToolMenuView: FC<GuideToolMenuViewProps> = props =>
     } = props;
     
     return (
-        <>
-            <NitroCardContentView className="text-black flex flex-column gap-2">
-                <div className="duty-status py-2 px-3 d-flex gap-2 align-items-center">
-                    <div>
-                        <div className={ 'duty-switch' + (isOnDuty ? '' : ' off') } onClick={ () => processAction('toggle_duty') } />
-                    </div>
-                    <div>
-                        <div className="fw-bold">{ LocalizeText('guide.help.guide.tool.yourstatus') }</div>
-                        <div>{ LocalizeText(`guide.help.guide.tool.duty.${(isOnDuty ? 'on' : 'off')}`) }</div>
-                    </div>
-                </div>
-                <div>
-                    <div className="fw-bold">{ LocalizeText('guide.help.guide.tool.tickettypeselection.caption') }</div>
-                    <div className="form-check">
-                        <input className="form-check-input" disabled={ isOnDuty } type="checkbox" checked={ isHandlingGuideRequests } onChange={ e => { setIsHandlingGuideRequests(e.target.checked) } } />
-                        <label className="form-check-label">{ LocalizeText('guide.help.guide.tool.tickettypeselection.guiderequests') }</label>
-                    </div>
-                    <div className="form-check">
-                        <input className="form-check-input" disabled={ isOnDuty } type="checkbox" checked={ isHandlingHelpRequests } onChange={ e => { setIsHandlingHelpRequests(e.target.checked) } } />
-                        <label className="form-check-label">{ LocalizeText('guide.help.guide.tool.tickettypeselection.onlyhelprequests') }</label>
-                    </div>
-                    <div className="form-check">
-                        <input className="form-check-input" disabled={ isOnDuty } type="checkbox" checked={ isHandlingBullyReports } onChange={ e => { setIsHandlingBullyReports(e.target.checked) } } />
-                        <label className="form-check-label">{ LocalizeText('guide.help.guide.tool.tickettypeselection.bullyreports') }</label>
-                    </div>
-                </div>
-                <hr className="bg-dark m-0" />
-                <div className="d-flex align-items-center justify-content-center gap-2">
-                    <div className="info-icon" />
-                    <div>
-                        <div dangerouslySetInnerHTML={ { __html: LocalizeText('guide.help.guide.tool.guidesonduty', ['amount'], [guidesOnDuty.toString()]) } } />
-                        <div dangerouslySetInnerHTML={ { __html: LocalizeText('guide.help.guide.tool.helpersonduty', ['amount'], [helpersOnDuty.toString()]) } } />
-                        <div dangerouslySetInnerHTML={ { __html: LocalizeText('guide.help.guide.tool.guardiansonduty', ['amount'], [guardiansOnDuty.toString()]) } } />
-                    </div>
-                </div>
-                <hr className="bg-dark m-0 mt-auto" />
-                <div className="d-flex gap-2 w-100">
-                    <button className="btn btn-primary btn-sm w-100 text-nowrap" onClick={ () => processAction('forum_link') }>{ LocalizeText('guide.help.guide.tool.forum.link') }</button>
-                    <button className="btn btn-primary btn-sm w-100 text-nowrap" disabled>{ LocalizeText('guide.help.guide.tool.skill.link') }</button>
-                </div>
-            </NitroCardContentView>
-        </>
+        <Column>
+            <Flex alignItems="center" gap={ 2 } className="bg-muted p-2 rounded">
+                <Base className={ 'duty-switch' + (isOnDuty ? '' : ' off') } onClick={ event => processAction('toggle_duty') } />
+                <Column gap={ 0 }>
+                    <Text bold>{ LocalizeText('guide.help.guide.tool.yourstatus') }</Text>
+                    <Text>{ LocalizeText(`guide.help.guide.tool.duty.${ (isOnDuty ? 'on' : 'off') }`) }</Text>
+                </Column>
+            </Flex>
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('guide.help.guide.tool.tickettypeselection.caption') }</Text>
+                <Flex alignItems="center" gap={ 1 }>
+                    <input className="form-check-input" disabled={ isOnDuty } type="checkbox" checked={ isHandlingGuideRequests } onChange={ event => setIsHandlingGuideRequests(event.target.checked) } />
+                    <Text>{ LocalizeText('guide.help.guide.tool.tickettypeselection.guiderequests') }</Text>
+                </Flex>
+                <Flex alignItems="center" gap={ 1 }>
+                    <input className="form-check-input" disabled={ isOnDuty } type="checkbox" checked={ isHandlingHelpRequests } onChange={ event => setIsHandlingHelpRequests(event.target.checked) } />
+                    <Text>{ LocalizeText('guide.help.guide.tool.tickettypeselection.onlyhelprequests') }</Text>
+                </Flex>
+                <Flex alignItems="center" gap={ 1 }>
+                    <input className="form-check-input" disabled={ isOnDuty } type="checkbox" checked={ isHandlingBullyReports } onChange={ event => setIsHandlingBullyReports(event.target.checked) } />
+                    <Text>{ LocalizeText('guide.help.guide.tool.tickettypeselection.bullyreports') }</Text>
+                </Flex>
+            </Column>
+            <hr className="bg-dark m-0" />
+            <Flex center gap={ 2 }>
+                <Base className="info-icon" />
+                <Column gap={ 1 }>
+                    <Base dangerouslySetInnerHTML={ { __html: LocalizeText('guide.help.guide.tool.guidesonduty', [ 'amount' ], [ guidesOnDuty.toString() ]) } } />
+                    <Base dangerouslySetInnerHTML={ { __html: LocalizeText('guide.help.guide.tool.helpersonduty', [ 'amount' ], [ helpersOnDuty.toString() ]) } } />
+                    <Base dangerouslySetInnerHTML={ { __html: LocalizeText('guide.help.guide.tool.guardiansonduty', [ 'amount' ], [ guardiansOnDuty.toString() ]) } } />
+                </Column>
+            </Flex>
+            <hr className="bg-dark m-0" />
+            <Flex justifyContent="between" gap={ 2 }>
+                <Button onClick={ event => processAction('forum_link') }>{ LocalizeText('guide.help.guide.tool.forum.link') }</Button>
+                <Button disabled>{ LocalizeText('guide.help.guide.tool.skill.link') }</Button>
+            </Flex>
+        </Column>
     );
 }

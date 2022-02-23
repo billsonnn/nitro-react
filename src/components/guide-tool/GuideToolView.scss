@@ -1,13 +1,6 @@
 .nitro-guide-tool {
     width: 250px;
 
-    .duty-status {
-        border-radius: 0.25rem;
-        border-color: #B6BEC5 !important;
-        background-color: #CDD3D9;
-        border: 2px solid;
-    }
-
     .duty-switch {
         width: 38px;
         height: 21px;
@@ -26,9 +19,6 @@
     }
 
     .chat-messages {
-        height: 200px;
-        min-height: 200px;
-        overflow-y: auto;
     
         .message-avatar {
             position: relative;

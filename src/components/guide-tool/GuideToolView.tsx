@@ -3,9 +3,10 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetConfiguration, GetSessionDataManager, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { GuideToolEvent, NotificationAlertEvent } from '../../events';
 import { CreateMessageHook, dispatchUiEvent, SendMessageHook, useUiEvent } from '../../hooks';
-import { NitroCardHeaderView, NitroCardView } from '../../layout';
-import { GuideSessionState, GuideToolMessageGroup } from './common';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
+import { GuideSessionState } from './common/GuideSessionState';
 import { GuideToolMessage } from './common/GuideToolMessage';
+import { GuideToolMessageGroup } from './common/GuideToolMessageGroup';
 import { GuideToolAcceptView } from './views/GuideToolAcceptView';
 import { GuideToolMenuView } from './views/GuideToolMenuView';
 import { GuideToolOngoingView } from './views/GuideToolOngoingView';
@@ -319,46 +320,24 @@ export const GuideToolView: FC<{}> = props =>
     if(!isVisible) return null;
 
     return (
-        <NitroCardView className="nitro-guide-tool" simple={ true }>
-            <NitroCardHeaderView headerText={ headerText } onCloseClick={ () => processAction('close') } noCloseButton={ noCloseButton } />
-            
-            { sessionState === GuideSessionState.GUIDE_TOOL_MENU &&
-            <GuideToolMenuView isOnDuty={ isOnDuty }
-            isHandlingGuideRequests={ isHandlingGuideRequests }
-            setIsHandlingGuideRequests={ setIsHandlingGuideRequests }
-            isHandlingHelpRequests={ isHandlingHelpRequests }
-            setIsHandlingHelpRequests={ setIsHandlingHelpRequests }
-            isHandlingBullyReports={ isHandlingBullyReports }
-            setIsHandlingBullyReports={ setIsHandlingBullyReports }
-            guidesOnDuty={ guidesOnDuty }
-            helpersOnDuty={ helpersOnDuty }
-            guardiansOnDuty={ guardiansOnDuty }
-            processAction={ processAction }
-            /> }
-
-            { sessionState === GuideSessionState.GUIDE_ACCEPT &&
-            <GuideToolAcceptView helpRequestDescription={ helpRequestDescription } helpRequestAverageTime={ helpRequestAverageTime } /> }
-
-            { [ GuideSessionState.GUIDE_ONGOING, GuideSessionState.USER_ONGOING ].includes(sessionState) &&
-            <GuideToolOngoingView isGuide={ isOnDuty }
-            userId={ ongoingUserId }
-            userName={ ongoingUsername }
-            userFigure={ ongoingFigure }
-            isTyping={ ongoingIsTyping }
-            messageGroups={ ongoingMessageGroups }
-            /> }
-
-            { sessionState === GuideSessionState.USER_CREATE &&
-            <GuideToolUserCreateRequestView userRequest={ userRequest } setUserRequest={ setUserRequest } /> }
-
-            { sessionState === GuideSessionState.USER_PENDING &&
-            <GuideToolUserPendingView helpRequestDescription={ helpRequestDescription } helpRequestAverageTime={ helpRequestAverageTime } /> }
-
-            { sessionState === GuideSessionState.USER_FEEDBACK && 
-            <GuideToolUserFeedbackView userName={ ongoingUsername } /> }
-
-            { sessionState === GuideSessionState.USER_THANKS && 
-            <GuideToolUserThanksView /> }
+        <NitroCardView className="nitro-guide-tool" simple>
+            <NitroCardHeaderView headerText={ headerText } onCloseClick={ event => processAction('close') } noCloseButton={ noCloseButton } />
+            <NitroCardContentView className="text-black">
+                { (sessionState === GuideSessionState.GUIDE_TOOL_MENU) &&
+                    <GuideToolMenuView isOnDuty={ isOnDuty } isHandlingGuideRequests={ isHandlingGuideRequests } setIsHandlingGuideRequests={ setIsHandlingGuideRequests } isHandlingHelpRequests={ isHandlingHelpRequests } setIsHandlingHelpRequests={ setIsHandlingHelpRequests } isHandlingBullyReports={ isHandlingBullyReports } setIsHandlingBullyReports={ setIsHandlingBullyReports } guidesOnDuty={ guidesOnDuty } helpersOnDuty={ helpersOnDuty } guardiansOnDuty={ guardiansOnDuty } processAction={ processAction } /> } 
+                { (sessionState === GuideSessionState.GUIDE_ACCEPT) &&
+                    <GuideToolAcceptView helpRequestDescription={ helpRequestDescription } helpRequestAverageTime={ helpRequestAverageTime } /> }
+                { [ GuideSessionState.GUIDE_ONGOING, GuideSessionState.USER_ONGOING ].includes(sessionState) &&
+                    <GuideToolOngoingView isGuide={ isOnDuty } userId={ ongoingUserId } userName={ ongoingUsername } userFigure={ ongoingFigure } isTyping={ ongoingIsTyping } messageGroups={ ongoingMessageGroups } /> }
+                { (sessionState === GuideSessionState.USER_CREATE) &&
+                    <GuideToolUserCreateRequestView userRequest={ userRequest } setUserRequest={ setUserRequest } /> }
+                { (sessionState === GuideSessionState.USER_PENDING) &&
+                    <GuideToolUserPendingView helpRequestDescription={ helpRequestDescription } helpRequestAverageTime={ helpRequestAverageTime } /> }
+                { (sessionState === GuideSessionState.USER_FEEDBACK) &&
+                    <GuideToolUserFeedbackView userName={ ongoingUsername } /> }
+                { (sessionState === GuideSessionState.USER_THANKS) &&
+                    <GuideToolUserThanksView /> }
+            </NitroCardContentView>
         </NitroCardView>
     );
 };

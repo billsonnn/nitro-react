@@ -1,8 +1,8 @@
 import { GuideSessionRequesterCancelsMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback } from 'react';
+import { FC } from 'react';
 import { LocalizeText } from '../../../api';
+import { Button, Column, Text } from '../../../common';
 import { SendMessageHook } from '../../../hooks';
-import { NitroCardContentView } from '../../../layout';
 
 interface GuideToolUserPendingViewProps
 {
@@ -14,24 +14,21 @@ export const GuideToolUserPendingView: FC<GuideToolUserPendingViewProps> = props
 {
     const { helpRequestDescription = null, helpRequestAverageTime = 0 } = props;
 
-    const cancelRequest = useCallback(() =>
-    {
-        SendMessageHook(new GuideSessionRequesterCancelsMessageComposer());
-    }, []);
+    const cancelRequest = () => SendMessageHook(new GuideSessionRequesterCancelsMessageComposer());
 
     return (
-        <NitroCardContentView className="text-black flex flex-column gap-2">
-            <div className="duty-status py-2 px-3">
-                <div className="fw-bold">{ LocalizeText('guide.help.request.guide.accept.request.title') }</div>
-                <div className="text-muted">{ LocalizeText('guide.help.request.type.1') }</div>
-                <div className="text-wrap text-break">{ helpRequestDescription }</div>
-            </div>
-            <div>
-                <div className="fw-bold">{ LocalizeText('guide.help.request.user.pending.info.title') }</div>
-                <div>{ LocalizeText('guide.help.request.user.pending.info.message') }</div>
-                <div>{ LocalizeText('guide.help.request.user.pending.info.waiting', ['waitingtime'], [helpRequestAverageTime.toString()]) }</div>
-            </div>
-            <button className="btn btn-danger mt-auto" onClick={ cancelRequest }>{ LocalizeText('guide.help.request.user.pending.cancel.button') }</button>
-        </NitroCardContentView>
+        <Column>
+            <Column gap={ 0 } className="bg-muted rounded p-2">
+                <Text bold>{ LocalizeText('guide.help.request.guide.accept.request.title') }</Text>
+                <Text variant="muted">{ LocalizeText('guide.help.request.type.1') }</Text>
+                <Text wrap textBreak>{ helpRequestDescription }</Text>
+            </Column>
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('guide.help.request.user.pending.info.title') }</Text>
+                <Text>{ LocalizeText('guide.help.request.user.pending.info.message') }</Text>
+                <Text>{ LocalizeText('guide.help.request.user.pending.info.waiting', [ 'waitingtime' ], [ helpRequestAverageTime.toString() ]) }</Text>
+            </Column>
+            <Button variant="danger" onClick={ cancelRequest }>{ LocalizeText('guide.help.request.user.pending.cancel.button') }</Button>
+        </Column>
     );
 };
