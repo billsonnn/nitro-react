@@ -63,13 +63,13 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
             <div className="d-flex gap-2 align-items-center bg-secondary p-2 text-white">
                 { isGuide && <div className="btn-group">
                     <button className="btn btn-light btn-sm" onClick={ visit }>{ LocalizeText('guide.help.request.guide.ongoing.visit.button') }</button>
-                    <button className="btn btn-light btn-sm" onClick={ invite }>{ LocalizeText('guide.help.request.guide.ongoing.invite.button') }</button>
+                    <button className="btn btn-light btn-sm" disabled onClick={ invite }>{ LocalizeText('guide.help.request.guide.ongoing.invite.button') }</button>
                 </div> }
                 { !isGuide && <div>
                     <div className="fw-bold">{ userName }</div>
                     <div>{ LocalizeText('guide.help.request.user.ongoing.guide.desc') }</div>
                 </div> }
-                <div className="ms-auto text-decoration-underline cursor-pointer text-nowrap">{ LocalizeText('guide.help.common.report.link') }</div>
+                <div className="ms-auto text-decoration-underline cursor-pointer text-nowrap text-muted">{ LocalizeText('guide.help.common.report.link') }</div>
             </div>
             <div className="p-2 d-flex flex-column gap-1">
                 <div className="text-black d-flex flex-column gap-2 p-2 chat-messages bg-muted rounded">
