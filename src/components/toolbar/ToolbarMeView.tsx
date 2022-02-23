@@ -7,13 +7,14 @@ import { ToolbarViewItems } from './common/ToolbarViewItems';
 
 export interface ToolbarMeViewProps
 {
+    useGuideTool: boolean;
     unseenAchievementCount: number;
     handleToolbarItemClick: (item: string) => void;
 }
 
 export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
 {
-    const { unseenAchievementCount = 0, handleToolbarItemClick = null } = props;
+    const { useGuideTool = false, unseenAchievementCount = 0, handleToolbarItemClick = null } = props;
 
     useEffect(() =>
     {
@@ -26,6 +27,8 @@ export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
 
     return (
         <Flex alignItems="center" className="nitro-toolbar-me p-2" gap={ 2 }>
+            { useGuideTool &&
+                <Base pointer className="navigation-item icon icon-me-helper-tool" onClick={ () => handleToolbarItemClick(ToolbarViewItems.GUIDE_TOOL_ITEM) } /> }
             <Base pointer className="navigation-item icon icon-me-achievements" onClick={ () => handleToolbarItemClick(ToolbarViewItems.ACHIEVEMENTS_ITEM) }>
                 { (unseenAchievementCount > 0) &&
                     <ItemCountView count={ unseenAchievementCount } /> }

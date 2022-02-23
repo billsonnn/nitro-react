@@ -20,7 +20,6 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
 
     const onNotificationAlertEvent = useCallback((event: NotificationAlertEvent) =>
     {
-        console.log(event);
         const alertItem = new NotificationAlertItem(event.messages, event.alertType, event.clickUrl, event.clickUrlText, event.title, event.imageUrl);
 
         setAlerts(prevValue => [ alertItem, ...prevValue ]);
@@ -30,7 +29,6 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
 
     const onNotificationBubbleEvent = useCallback((event: NotificationBubbleEvent) =>
     {
-        console.log(event);
         const notificationItem = new NotificationBubbleItem(event.message, event.notificationType, event.imageUrl, event.linkUrl);
 
         setBubbleAlerts(prevValue => [ notificationItem, ...prevValue ]);

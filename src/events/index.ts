@@ -2,6 +2,7 @@ export * from './avatar-editor';
 export * from './camera';
 export * from './catalog';
 export * from './friends';
+export * from './guide-tool';
 export * from './inventory';
 export * from './navigator';
 export * from './notification-center';

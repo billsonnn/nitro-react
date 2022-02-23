@@ -1,8 +1,8 @@
-import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, Queue, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
+import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, PerkAllowancesMessageEvent, PerkEnum, Queue, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GetUserProfile, GoToDesktop, OpenMessengerChat } from '../../api';
 import { Base, Flex } from '../../common';
-import { AvatarEditorEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
+import { AvatarEditorEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
 import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
@@ -32,6 +32,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     const [ userInfo, setUserInfo ] = useState<UserInfoDataParser>(null);
     const [ userFigure, setUserFigure ] = useState<string>(null);
     const [ isMeExpanded, setMeExpanded ] = useState(false);
+    const [ useGuideTool, setUseGuideTool ] = useState(false);
     const [ chatIconType, setChatIconType ] = useState(CHAT_ICON_HIDDEN);
     const [ unseenInventoryCount, setUnseenInventoryCount ] = useState(0);
     const [ unseenAchievementCount, setUnseenAchievementCount ] = useState(0);
@@ -59,6 +60,15 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     }, []);
     
     CreateMessageHook(FigureUpdateEvent, onUserFigureEvent);
+
+    const onPerkAllowancesMessageEvent = useCallback((event: PerkAllowancesMessageEvent) =>
+    {
+        const parser = event.getParser();
+
+        setUseGuideTool(parser.isAllowed(PerkEnum.USE_GUIDE_TOOL));
+    }, [ setUseGuideTool ]);
+    
+    CreateMessageHook(PerkAllowancesMessageEvent, onPerkAllowancesMessageEvent);
 
     const onFriendsMessengerIconEvent = useCallback((event: FriendsMessengerIconEvent) =>
     {
@@ -167,6 +177,10 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 dispatchUiEvent(new UserSettingsUIEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS));
                 setMeExpanded(false);
                 return;
+            case ToolbarViewItems.GUIDE_TOOL_ITEM:
+                dispatchUiEvent(new GuideToolEvent(GuideToolEvent.TOGGLE_GUIDE_TOOL));
+                setMeExpanded(false);
+                return;
             case ToolbarViewItems.FRIEND_CHAT_ITEM:
                 OpenMessengerChat();
                 return;
@@ -184,7 +198,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     return (
         <>
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isMeExpanded } timeout={ 300 }>
-                <ToolbarMeView unseenAchievementCount={ unseenAchievementCount } handleToolbarItemClick={ handleToolbarItemClick } />
+                <ToolbarMeView useGuideTool={ useGuideTool } unseenAchievementCount={ unseenAchievementCount }  handleToolbarItemClick={ handleToolbarItemClick } />
             </TransitionAnimation>
             <Flex alignItems="center" justifyContent="between" gap={ 2 } className="nitro-toolbar py-1 px-3">
                 <Flex gap={ 2 } alignItems="center">

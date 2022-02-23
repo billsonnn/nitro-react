@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import { App } from './App';
 import './index.scss';
 
+//@ts-ignore
 library.add(fas);
 
 ReactDOM.render(

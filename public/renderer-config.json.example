@@ -28,7 +28,7 @@
     "system.animation.fps": 24,
     "system.limits.fps": false,
     "system.dispatcher.log": false,
-    "system.packet.log": false,
+    "system.packet.log": true,
     "system.pong.manually": true,
     "system.pong.interval.ms": 20000,
     "room.color.skip.transition": true,

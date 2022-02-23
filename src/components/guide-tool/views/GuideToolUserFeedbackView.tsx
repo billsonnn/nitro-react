@@ -1,0 +1,44 @@
+import { GuideSessionFeedbackMessageComposer } from '@nitrots/nitro-renderer';
+import { FC, useCallback } from 'react';
+import { LocalizeText } from '../../../api';
+import { Button, Column, Flex, Text } from '../../../common';
+import { SendMessageHook } from '../../../hooks';
+
+interface GuideToolUserFeedbackViewProps
+{
+    userName: string;
+}
+
+export const GuideToolUserFeedbackView: FC<GuideToolUserFeedbackViewProps> = props =>
+{
+    const { userName = null } = props;
+
+    const giveFeedback = useCallback((recommend: boolean) =>
+    {
+        SendMessageHook(new GuideSessionFeedbackMessageComposer(recommend));
+    }, []);
+
+    return (
+        <Column>
+            <Flex justifyContent="between" gap={ 1 } className="bg-muted p-2 rounded">
+                <Column gap={ 0 }>
+                    <Text bold>{ userName }</Text>
+                    <Text>{ LocalizeText('guide.help.request.user.feedback.guide.desc') }</Text>
+                </Column>
+                <Button variant="danger" disabled>{ LocalizeText('guide.help.common.report.link') }</Button>
+            </Flex>
+            <Column gap={ 1 }>
+                <Text bold>{ LocalizeText('guide.help.request.user.feedback.closed.title') }</Text>
+                <Text>{ LocalizeText('guide.help.request.user.feedback.closed.desc') }</Text>
+            </Column>
+            <hr className="bg-dark m-0 mt-auto" />
+            <Column>
+                <Text center bold>{ LocalizeText('guide.help.request.user.feedback.question') }</Text>
+                <Flex gap={ 1 }>
+                    <Button fullWidth variant="success" onClick={ event => giveFeedback(true) }>{ LocalizeText('guide.help.request.user.feedback.positive.button') }</Button>
+                    <Button fullWidth variant="danger" onClick={ event => giveFeedback(false) }>{ LocalizeText('guide.help.request.user.feedback.negative.button') }</Button>
+                </Flex>
+            </Column>
+        </Column>
+    );
+};

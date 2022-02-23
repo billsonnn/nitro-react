@@ -16,6 +16,7 @@ import { CameraWidgetView } from '../camera/CameraWidgetView';
 import { CatalogView } from '../catalog/CatalogView';
 import { ChatHistoryView } from '../chat-history/ChatHistoryView';
 import { GroupsView } from '../groups/GroupsView';
+import { GuideToolView } from '../guide-tool/GuideToolView';
 import { HelpView } from '../help/HelpView';
 import { InventoryView } from '../inventory/InventoryView';
 import { ModToolsView } from '../mod-tools/ModToolsView';
@@ -116,6 +117,7 @@ export const MainView: FC<{}> = props =>
             <HelpView />
             <FloorplanEditorView />
             <NitropediaView />
+            <GuideToolView />
             <HcCenterView />
             <CampaignView />
         </Base>

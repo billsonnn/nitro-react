@@ -65,57 +65,59 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
     return (
         <Column overflow="hidden">
-            <Grid fullHeight={ false }>
-                <Column size={ 6 } gap={ 1 }>
-                    <Text>{ LocalizeText('navigator.createroom.roomnameinfo') }</Text>
-                    <input type="text" className="form-control form-control-sm" onChange={ event => setName(event.target.value) } />
+            <Grid overflow="hidden">
+                <Column size={ 6 } gap={ 1 } overflow="auto">
+                    <Column gap={ 1 }>
+                        <Text>{ LocalizeText('navigator.createroom.roomnameinfo') }</Text>
+                        <input type="text" className="form-control form-control-sm" onChange={ event => setName(event.target.value) } />
+                    </Column>
+                    <Column gap={ 1 }>
+                        <Text>{ LocalizeText('navigator.category') }</Text>
+                        <select className="form-select form-select-sm" onChange={ event => setCategory(Number(event.target.value)) }>
+                            { categories && categories.map(category =>
+                                {
+                                    return <option key={ category.id } value={ category.id }>{ LocalizeText(category.name) }</option>
+                                }) }
+                        </select>
+                    </Column>
+                    <Column gap={ 1 }>
+                        <Text>{ LocalizeText('navigator.maxvisitors') }</Text>
+                        <select className="form-select form-select-sm" onChange={ event => setVisitorsCount(Number(event.target.value)) }>
+                            { maxVisitorsList && maxVisitorsList.map(value =>
+                                {
+                                    return <option key={ value } value={ value }>{ value }</option>
+                                }) }
+                        </select>
+                    </Column>
+                    <Column gap={ 1 }>
+                        <Text>{ LocalizeText('navigator.tradesettings') }</Text>
+                        <select className="form-select form-select-sm" onChange={ event => setTradesSetting(Number(event.target.value)) }>
+                            <option value="0">{ LocalizeText('navigator.roomsettings.trade_not_allowed') }</option>
+                            <option value="1">{ LocalizeText('navigator.roomsettings.trade_not_with_Controller') }</option>
+                            <option value="2">{ LocalizeText('navigator.roomsettings.trade_allowed') }</option>
+                        </select>
+                    </Column>
+                    <Column gap={ 1 }>
+                        <Text>{ LocalizeText('navigator.createroom.roomdescinfo') }</Text>
+                        <input type="text" className="form-control form-control-sm" onChange={ event => setDescription(event.target.value) } />
+                    </Column>
                 </Column>
-                <Column size={ 6 } gap={ 1 }>
-                    <Text>{ LocalizeText('navigator.category') }</Text>
-                    <select className="form-select form-select-sm" onChange={ event => setCategory(Number(event.target.value)) }>
-                        { categories && categories.map(category =>
+                <Column size={ 6 } gap={ 1 } overflow="auto">
+                    {
+                        RoomModels.map(model =>
                             {
-                                return <option key={ category.id } value={ category.id }>{ LocalizeText(category.name) }</option>
-                            }) }
-                    </select>
-                </Column>
-                <Column size={ 6 } gap={ 1 }>
-                    <Text>{ LocalizeText('navigator.maxvisitors') }</Text>
-                    <select className="form-select form-select-sm" onChange={ event => setVisitorsCount(Number(event.target.value)) }>
-                        { maxVisitorsList && maxVisitorsList.map(value =>
-                            {
-                                return <option key={ value } value={ value }>{ value }</option>
-                            }) }
-                    </select>
-                </Column>
-                <Column size={ 6 } gap={ 1 }>
-                    <Text>{ LocalizeText('navigator.tradesettings') }</Text>
-                    <select className="form-select form-select-sm" onChange={ event => setTradesSetting(Number(event.target.value)) }>
-                        <option value="0">{ LocalizeText('navigator.roomsettings.trade_not_allowed') }</option>
-                        <option value="1">{ LocalizeText('navigator.roomsettings.trade_not_with_Controller') }</option>
-                        <option value="2">{ LocalizeText('navigator.roomsettings.trade_allowed') }</option>
-                    </select>
+                                return (<LayoutGridItem fullHeight key={ model.name } onClick={ () => selectModel(model) } itemActive={ (selectedModelName === model.name) } overflow="unset" gap={ 0 } className="p-1" disabled={ (GetSessionDataManager().clubLevel < model.clubLevel) }>
+                                    <Flex fullHeight center overflow="hidden">
+                                        <img alt="" src={ getRoomModelImage(model.name) } />
+                                    </Flex>
+                                    <Text bold>{ model.tileSize } { LocalizeText('navigator.createroom.tilesize') }</Text>
+                                    { model.clubLevel > HabboClubLevelEnum.NO_CLUB && <CurrencyIcon position="absolute" className="top-1 end-1" type="hc" /> }
+                                </LayoutGridItem>);
+                            })
+                    }
                 </Column>
             </Grid>
-            <Column gap={ 1 }>
-                <Text>{ LocalizeText('navigator.createroom.roomdescinfo') }</Text>
-                <input type="text" className="form-control form-control-sm" onChange={ event => setDescription(event.target.value) } />
-            </Column>
-            <Flex overflow="auto" gap={ 1 }>
-                {
-                    RoomModels.map(model =>
-                        {
-                            return (<LayoutGridItem fullHeight key={ model.name } onClick={ () => selectModel(model) } itemActive={ (selectedModelName === model.name) } overflow="unset" gap={ 0 } className="p-1" disabled={ (GetSessionDataManager().clubLevel < model.clubLevel) }>
-                                <Flex fullHeight center overflow="hidden">
-                                    <img alt="" src={ getRoomModelImage(model.name) } />
-                                </Flex>
-                                <Text bold>{ model.tileSize } { LocalizeText('navigator.createroom.tilesize') }</Text>
-                                { model.clubLevel > HabboClubLevelEnum.NO_CLUB && <CurrencyIcon position="absolute" className="top-1 end-1" type="hc" /> }
-                            </LayoutGridItem>);
-                        })
-                }
-            </Flex>
-            <Button variant="success" onClick={ createRoom } disabled={ (!name || (name.length < 3)) }>{ LocalizeText('navigator.createroom.create') }</Button>
+            <Button fullWidth variant="success" onClick={ createRoom } disabled={ (!name || (name.length < 3)) }>{ LocalizeText('navigator.createroom.create') }</Button>
         </Column>
     );
 }
