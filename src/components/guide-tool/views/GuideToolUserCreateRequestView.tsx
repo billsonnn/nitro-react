@@ -1,9 +1,14 @@
 import { GuideSessionCreateMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { SendMessageHook } from '../../../../hooks';
-import { NitroCardContentView } from '../../../../layout';
-import { GuideToolUserCreateRequestViewProps } from './GuideTooluserCreateRequestView.types';
+import { LocalizeText } from '../../../api';
+import { SendMessageHook } from '../../../hooks';
+import { NitroCardContentView } from '../../../layout';
+
+interface GuideToolUserCreateRequestViewProps
+{
+    userRequest: string;
+    setUserRequest: (value: string) => void;
+}
 
 const MIN_REQUEST_LENGTH: number = 15;
 

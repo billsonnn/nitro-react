@@ -1,9 +1,14 @@
 import { GuideSessionGuideDecidesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../api';
-import { SendMessageHook } from '../../../../hooks';
-import { NitroCardContentView } from '../../../../layout';
-import { GuideToolAcceptViewProps } from './GuideToolAcceptView.types';
+import { LocalizeText } from '../../../api';
+import { SendMessageHook } from '../../../hooks';
+import { NitroCardContentView } from '../../../layout';
+
+interface GuideToolAcceptViewProps
+{
+    helpRequestDescription: string;
+    helpRequestAverageTime: number;
+}
 
 export const GuideToolAcceptView: FC<GuideToolAcceptViewProps> = props =>
 {

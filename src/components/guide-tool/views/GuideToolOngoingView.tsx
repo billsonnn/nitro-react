@@ -1,12 +1,22 @@
 import { GuideSessionGetRequesterRoomMessageComposer, GuideSessionInviteRequesterMessageComposer, GuideSessionRequesterRoomMessageEvent, GuideSessionResolvedMessageComposer } from '@nitrots/nitro-renderer';
 import { GuideSessionMessageMessageComposer } from '@nitrots/nitro-renderer/src';
 import { FC, KeyboardEvent, useCallback, useState } from 'react';
-import { GetSessionDataManager, LocalizeText, TryVisitRoom } from '../../../../api';
-import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
-import { NitroCardContentView, NitroLayoutButton, NitroLayoutFlex } from '../../../../layout';
-import { NitroLayoutBase } from '../../../../layout/base';
-import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
-import { GuideToolOngoingViewProps } from './GuideToolOngoingView.types';
+import { GetSessionDataManager, LocalizeText, TryVisitRoom } from '../../../api';
+import { CreateMessageHook, SendMessageHook } from '../../../hooks';
+import { NitroCardContentView, NitroLayoutButton, NitroLayoutFlex } from '../../../layout';
+import { NitroLayoutBase } from '../../../layout/base';
+import { AvatarImageView } from '../../../views/shared/avatar-image/AvatarImageView';
+import { GuideToolMessageGroup } from '../common';
+
+interface GuideToolOngoingViewProps
+{
+    isGuide: boolean;
+    userId: number;
+    userName: string;
+    userFigure: string;
+    isTyping: boolean;
+    messageGroups: GuideToolMessageGroup[];
+}
 
 export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
 {

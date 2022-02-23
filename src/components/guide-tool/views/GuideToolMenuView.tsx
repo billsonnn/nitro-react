@@ -1,7 +1,21 @@
 import { FC } from 'react';
-import { LocalizeText } from '../../../../api';
-import { NitroCardContentView } from '../../../../layout';
-import { GuideToolMenuViewProps } from './GuideToolMenuView.types';
+import { LocalizeText } from '../../../api';
+import { NitroCardContentView } from '../../../layout';
+
+interface GuideToolMenuViewProps
+{
+    isOnDuty: boolean;
+    isHandlingGuideRequests: boolean;
+    setIsHandlingGuideRequests: (value: boolean) => void;
+    isHandlingHelpRequests: boolean;
+    setIsHandlingHelpRequests: (value: boolean) => void;
+    isHandlingBullyReports: boolean;
+    setIsHandlingBullyReports: (value: boolean) => void;
+    guidesOnDuty: number;
+    helpersOnDuty: number;
+    guardiansOnDuty: number;
+    processAction: (action: string) => void;
+}
 
 export const GuideToolMenuView: FC<GuideToolMenuViewProps> = props =>
 {

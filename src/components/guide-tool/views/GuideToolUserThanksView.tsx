@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { LocalizeText } from '../../../../api';
-import { NitroCardContentView } from '../../../../layout';
+import { LocalizeText } from '../../../api';
+import { NitroCardContentView } from '../../../layout';
 
 export const GuideToolUserThanksView: FC<{}> = props =>
 {

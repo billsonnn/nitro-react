@@ -1,9 +1,14 @@
 import { GuideSessionRequesterCancelsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../api';
-import { SendMessageHook } from '../../../../hooks';
-import { NitroCardContentView } from '../../../../layout';
-import { GuideToolUserPendingViewProps } from './GuideToolUserPendingView.types';
+import { LocalizeText } from '../../../api';
+import { SendMessageHook } from '../../../hooks';
+import { NitroCardContentView } from '../../../layout';
+
+interface GuideToolUserPendingViewProps
+{
+    helpRequestDescription: string;
+    helpRequestAverageTime: number;
+}
 
 export const GuideToolUserPendingView: FC<GuideToolUserPendingViewProps> = props =>
 {

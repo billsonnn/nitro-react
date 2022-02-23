@@ -1,9 +1,13 @@
 import { GuideSessionFeedbackMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../api';
-import { SendMessageHook } from '../../../../hooks';
-import { NitroCardContentView } from '../../../../layout';
-import { GuideToolUserFeedbackViewProps } from './GuideToolUserFeedbackView.types';
+import { LocalizeText } from '../../../api';
+import { SendMessageHook } from '../../../hooks';
+import { NitroCardContentView } from '../../../layout';
+
+interface GuideToolUserFeedbackViewProps
+{
+    userName: string;
+}
 
 export const GuideToolUserFeedbackView: FC<GuideToolUserFeedbackViewProps> = props =>
 {

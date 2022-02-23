@@ -6,13 +6,13 @@ import { CreateMessageHook, dispatchUiEvent, SendMessageHook, useUiEvent } from 
 import { NitroCardHeaderView, NitroCardView } from '../../layout';
 import { GuideSessionState, GuideToolMessageGroup } from './common';
 import { GuideToolMessage } from './common/GuideToolMessage';
-import { GuideToolAcceptView } from './views/guide-accept/GuideToolAcceptView';
-import { GuideToolMenuView } from './views/guide-tool-menu/GuideToolMenuView';
-import { GuideToolOngoingView } from './views/ongoing/GuideToolOngoingView';
-import { GuideToolUserCreateRequestView } from './views/user-create-request/GuideToolUserCreateRequestView';
-import { GuideToolUserFeedbackView } from './views/user-feedback/GuideToolUserFeedbackView';
-import { GuideToolUserPendingView } from './views/user-pending/GuideToolUserPendingView';
-import { GuideToolUserThanksView } from './views/user-thanks/GuideToolUserThanksView';
+import { GuideToolAcceptView } from './views/GuideToolAcceptView';
+import { GuideToolMenuView } from './views/GuideToolMenuView';
+import { GuideToolOngoingView } from './views/GuideToolOngoingView';
+import { GuideToolUserCreateRequestView } from './views/GuideToolUserCreateRequestView';
+import { GuideToolUserFeedbackView } from './views/GuideToolUserFeedbackView';
+import { GuideToolUserPendingView } from './views/GuideToolUserPendingView';
+import { GuideToolUserThanksView } from './views/GuideToolUserThanksView';
 
 export const GuideToolView: FC<{}> = props =>
 {
