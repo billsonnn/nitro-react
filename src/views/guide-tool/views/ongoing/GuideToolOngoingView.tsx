@@ -53,6 +53,11 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
         sendMessage();
     }, [ sendMessage ]);
 
+    const isOwnChat = useCallback((userId: number) =>
+    {
+        return userId === GetSessionDataManager().userId;
+    }, []);
+
     return (
         <NitroCardContentView className="p-0">
             <div className="d-flex gap-2 align-items-center bg-secondary p-2 text-white">
@@ -71,26 +76,24 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                     { messageGroups.map((group, index) =>
                     {
                         return (
-                            <NitroLayoutFlex className={ 'w-100 justify-content-' + (group.userId === 0 ? 'end' : 'start') } gap={ 2 }>
-                                { (group.userId === userId) &&
-                                    <NitroLayoutBase className="message-avatar flex-shrink-0">
-                                        <AvatarImageView figure={ userFigure } direction={ 2 } />
-                                    </NitroLayoutBase> }
-                                <NitroLayoutBase className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (group.userId !== userId ? 'right' : 'left') }>
-                                    { group.messages.map((message, index) =>
-                                    {
-                                        return (
-                                            <NitroLayoutBase key={ index } className="text-break">
-                                                { message.roomId > 0 ? LocalizeText('guide.help.request.user.ongoing.visit.guide.request.message', ['name', 'roomname'], [userName, message.message]) : message.message }
-                                            </NitroLayoutBase>
-                                        );
-                                    }) }
+                            <NitroLayoutFlex className={ 'w-100 justify-content-' + (isOwnChat(group.userId) ? 'end' : 'start') } gap={ 2 }>
+                                <NitroLayoutBase className="message-avatar flex-shrink-0">
+                                { (!isOwnChat(group.userId)) &&
+                                    <AvatarImageView figure={ userFigure } direction={ 2 } />
+                                }
                                 </NitroLayoutBase>
-                                { (group.userId !== userId) &&
-                                    <NitroLayoutBase className="message-avatar flex-shrink-0">
-                                        <AvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
-                                    </NitroLayoutBase> }
-                            </NitroLayoutFlex>
+                            <NitroLayoutBase className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat(group.userId) ? 'right' : 'left') }>
+                                <NitroLayoutBase className='fw-bold'>
+                                    { (isOwnChat(group.userId)) && GetSessionDataManager().userName }
+                                    { (!isOwnChat(group.userId)) && userName }
+                                </NitroLayoutBase>
+                                { group.messages.map((chat, index) =><NitroLayoutBase key={ index } className="text-break">{ chat.message }</NitroLayoutBase>) }
+                            </NitroLayoutBase>
+                            { (isOwnChat(group.userId)) &&
+                                <NitroLayoutBase className="message-avatar flex-shrink-0">
+                                    <AvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
+                                </NitroLayoutBase> }
+                        </NitroLayoutFlex>
                         );
                     }) } 
                 </div>

@@ -4,7 +4,8 @@ import { LocalizeText } from '../../../api';
 import { Button } from '../../../common/Button';
 import { Column } from '../../../common/Column';
 import { Text } from '../../../common/Text';
-import { SendMessageHook } from '../../../hooks';
+import { GuideToolEvent } from '../../../events/guide-tool/GuideToolEvent';
+import { dispatchUiEvent, SendMessageHook } from '../../../hooks';
 import { useHelpContext } from '../HelpContext';
 
 export const HelpIndexView: FC<{}> = props =>
@@ -23,6 +24,11 @@ export const HelpIndexView: FC<{}> = props =>
         SendMessageHook(new GetCfhStatusMessageComposer(false));
     }, []);
 
+    const onNewHelpRequestClick = useCallback(() =>
+    {
+        dispatchUiEvent(new GuideToolEvent(GuideToolEvent.CREATE_HELP_REQUEST));
+    }, []);
+
     return (
         <>
             <Column gap={ 1 }>
@@ -31,7 +37,7 @@ export const HelpIndexView: FC<{}> = props =>
             </Column>
             <Column gap={ 1 }>
                 <Button onClick={ onReportClick }>{ LocalizeText('help.main.bully.subtitle') }</Button>
-                <Button disabled={ true }>{ LocalizeText('help.main.help.title') }</Button>
+                <Button onClick={ onNewHelpRequestClick }>{ LocalizeText('help.main.help.title') }</Button>
                 <Button disabled={ true }>{ LocalizeText('help.main.self.tips.title') }</Button>
                 <Button variant="link" className="text-black" onClick={ onRequestMySanctionStatusClick }>{ LocalizeText('help.main.my.sanction.status') }</Button>
             </Column>
