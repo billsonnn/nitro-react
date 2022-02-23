@@ -12,29 +12,30 @@ import { GroupMembersView } from './views/members/GroupMembersView';
 
 export const GroupsView: FC<{}> = props =>
 {
-    const [ isCreatorVisible, setIsCreatorVisible ] = useState<boolean>(false);
-    const [ groupMembersId, setGroupMembersId ] = useState<number>(null);
-    const [ groupMembersLevel, setGroupMembersLevel ] = useState<number>(null);
+    const [ currentGroupId, setCurrentGroupId ] = useState<number>(null);
+    const [ currentGroupLevelId, setCurrentGroupLevelId ] = useState<number>(null);
+    const [ isMembersVisible, setMembersVisible ] = useState<boolean>(false);
+    const [ isCreatorVisible, setCreatorVisible ] = useState<boolean>(false);
     const [ groupsState, dispatchGroupsState ] = useReducer(GroupsReducer, initialGroups);
-
-    const onGroupPurchasedEvent = useCallback((event: GroupPurchasedEvent) =>
-    {
-        const parser = event.getParser();
-
-        setIsCreatorVisible(false);
-        TryVisitRoom(parser.roomId);
-    }, []);
-
-    CreateMessageHook(GroupPurchasedEvent, onGroupPurchasedEvent);
 
     const closeMembers = () =>
     {
         BatchUpdates(() =>
         {
-            setGroupMembersId(null);
-            setGroupMembersLevel(null);
+            setCurrentGroupId(null);
+            setCurrentGroupLevelId(null);
         });
     }
+
+    const onGroupPurchasedEvent = useCallback((event: GroupPurchasedEvent) =>
+    {
+        const parser = event.getParser();
+
+        setCreatorVisible(false);
+        TryVisitRoom(parser.roomId);
+    }, []);
+
+    CreateMessageHook(GroupPurchasedEvent, onGroupPurchasedEvent);
 
     const linkReceived = useCallback((url: string) =>
     {
@@ -45,7 +46,7 @@ export const GroupsView: FC<{}> = props =>
         switch(parts[1])
         {
             case 'create':
-                setIsCreatorVisible(true);
+                setCreatorVisible(true);
                 return;
             case 'manage':
                 if(!parts[2]) return;
@@ -55,12 +56,16 @@ export const GroupsView: FC<{}> = props =>
             case 'members':
                 if(!parts[2]) return;
 
+                const groupId = (parseInt(parts[2]) || -1);
+                const levelId = (parseInt(parts[3]) || 3);
+
                 BatchUpdates(() =>
                 {
-                    setGroupMembersId(Number(parts[2]));
-
-                    if(parts[3]) setGroupMembersLevel(Number(parts[3]));
+                    setCurrentGroupId(groupId);
+                    setCurrentGroupLevelId(levelId);
+                    setMembersVisible(true);
                 });
+
                 return;
         }
     }, []);
@@ -86,9 +91,10 @@ export const GroupsView: FC<{}> = props =>
         <GroupsContextProvider value={ { groupsState, dispatchGroupsState } }>
             <GroupsMessageHandler />
             <div className="nitro-groups">
-                <GroupCreatorView isVisible={ isCreatorVisible } onClose={ () => setIsCreatorVisible(false) } />
+                <GroupCreatorView isVisible={ isCreatorVisible } onClose={ () => setCreatorVisible(false) } />
                 <GroupManagerView />
-                <GroupMembersView groupId={ groupMembersId } levelId={ groupMembersLevel } onClose={ closeMembers } />
+                { isMembersVisible &&
+                    <GroupMembersView groupId={ currentGroupId } levelId={ currentGroupLevelId } setLevelId={ setCurrentGroupLevelId } onClose={ closeMembers } /> }
                 <GroupInformationStandaloneView />
             </div>
         </GroupsContextProvider>

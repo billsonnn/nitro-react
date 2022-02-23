@@ -36,7 +36,7 @@ export const GroupTabSettingsView: FC<{}> = props =>
             { STATES.map((state, index) =>
                 {
                     return (
-                        <Flex alignItems="center" gap={ 1 }>
+                        <Flex key={ index } alignItems="center" gap={ 1 }>
                             <input className="form-check-input" type="radio" name="groupState" checked={ (groupState === index) } onChange={ event => setState(index) } />
                             <Column gap={ 0 }>
                                 <Flex gap={ 1 }>

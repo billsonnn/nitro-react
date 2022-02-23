@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GroupAdminGiveComposer, GroupAdminTakeComposer, GroupConfirmMemberRemoveEvent, GroupConfirmRemoveMemberComposer, GroupMemberParser, GroupMembersComposer, GroupMembersEvent, GroupMembershipAcceptComposer, GroupMembershipDeclineComposer, GroupMembersParser, GroupRank, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager, GetUserProfile, LocalizeText } from '../../../../api';
 import { Base, Button, Column, Flex, Grid, Text } from '../../../../common';
 import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../hooks';
@@ -14,66 +14,29 @@ interface GroupMembersViewProps
 {
     groupId: number;
     levelId: number;
+    setLevelId: Dispatch<SetStateAction<number>>;
     onClose: () => void;
 }
 
 export const GroupMembersView: FC<GroupMembersViewProps> = props =>
 {
-    const { groupId = null, levelId = null, onClose = null } = props;
+    const { groupId = -1, levelId = -1, setLevelId = null, onClose = null } = props;
     const [ pageData, setPageData ] = useState<GroupMembersParser>(null);
+    const [ pageId, setPageId ] = useState<number>(-1);
     const [ searchQuery, setSearchQuery ] = useState<string>('');
-    const [ searchLevelId, setSearchLevelId ] = useState<number>(3);
     const [ totalPages, setTotalPages ] = useState<number>(0);
     const [ removingMemberName, setRemovingMemberName ] = useState<string>(null);
 
-    const searchMembers = useCallback((pageId: number, newLevelId?: number) =>
+    const refreshMembers = useCallback(() =>
     {
-        if(!groupId) return;
-        
-        SendMessageHook(new GroupMembersComposer(groupId, pageId, searchQuery, ((newLevelId !== undefined) ? newLevelId : searchLevelId)));
-    }, [ groupId, searchLevelId, searchQuery ]);
+        if((groupId === -1) || (levelId === -1) || (pageId === -1)) return;
 
-    const onGroupMembersEvent = useCallback((event: GroupMembersEvent) =>
-    {
-        const parser = event.getParser();
+        SendMessageHook(new GroupMembersComposer(groupId, pageId, searchQuery, levelId));
+    }, [ groupId, levelId, pageId, searchQuery ]);
 
-        BatchUpdates(() =>
-        {
-            setPageData(null);
-            setPageData(parser);
-            setSearchLevelId(parser.level);
-            setTotalPages(Math.ceil(parser.totalMembersCount / parser.pageSize));
-        });
-    }, []);
+    const previousPage = () => setPageId(prevValue => (prevValue - 1));
 
-    CreateMessageHook(GroupMembersEvent, onGroupMembersEvent);
-
-    const onGroupConfirmMemberRemoveEvent = useCallback((event: GroupConfirmMemberRemoveEvent) =>
-    {
-        const parser = event.getParser();
-
-        NotificationUtilities.confirm(LocalizeText(((parser.furnitureCount > 0) ? 'group.kickconfirm.desc' : 'group.kickconfirm_nofurni.desc'), [ 'user', 'amount' ], [ removingMemberName, parser.furnitureCount.toString() ]), () =>
-            {
-                SendMessageHook(new GroupRemoveMemberComposer(pageData.groupId, parser.userId));
-                searchMembers(pageData.pageIndex);
-            }, null);
-            
-        setRemovingMemberName(null);
-    }, [ pageData, removingMemberName, searchMembers ]);
-
-    CreateMessageHook(GroupConfirmMemberRemoveEvent, onGroupConfirmMemberRemoveEvent);
-
-    const selectSearchLevelId = (level: number) =>
-    {
-        setSearchLevelId(level);
-        searchMembers(0, level);
-    }
-
-    const previousPage = () => searchMembers((pageData.pageIndex - 1));
-
-    const nextPage = () => searchMembers((pageData.pageIndex + 1));
-    
-    const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => ((event.key === 'Enter') && searchMembers(pageData.pageIndex));
+    const nextPage = () => setPageId(prevValue => (prevValue + 1));
 
     const getRankDescription = (member: GroupMemberParser) =>
     {
@@ -96,7 +59,7 @@ export const GroupMembersView: FC<GroupMembersViewProps> = props =>
         if(member.rank !== GroupRank.ADMIN) SendMessageHook(new GroupAdminGiveComposer(pageData.groupId, member.id));
         else SendMessageHook(new GroupAdminTakeComposer(pageData.groupId, member.id));
 
-        searchMembers(pageData.pageIndex);
+        refreshMembers();
     }
 
     const acceptMembership = (member: GroupMemberParser) =>
@@ -104,7 +67,8 @@ export const GroupMembersView: FC<GroupMembersViewProps> = props =>
         if(member.rank !== GroupRank.REQUESTED) return;
         
         SendMessageHook(new GroupMembershipAcceptComposer(pageData.groupId, member.id));
-        searchMembers(pageData.pageIndex);
+
+        refreshMembers();
     }
 
     const removeMemberOrDeclineMembership = (member: GroupMemberParser) =>
@@ -112,7 +76,8 @@ export const GroupMembersView: FC<GroupMembersViewProps> = props =>
         if(member.rank === GroupRank.REQUESTED)
         {
             SendMessageHook(new GroupMembershipDeclineComposer(pageData.groupId, member.id));
-            searchMembers(pageData.pageIndex);
+
+            refreshMembers();
 
             return;
         }
@@ -121,21 +86,52 @@ export const GroupMembersView: FC<GroupMembersViewProps> = props =>
         SendMessageHook(new GroupConfirmRemoveMemberComposer(pageData.groupId, member.id));
     }
 
-    useEffect(() =>
+    const onGroupMembersEvent = useCallback((event: GroupMembersEvent) =>
     {
+        const parser = event.getParser();
+
         BatchUpdates(() =>
         {
-            setPageData(null);
-            setSearchQuery('');
-            setSearchLevelId(0);
+            setPageData(parser);
+            //setSearchLevelId(parser.level);
+            setTotalPages(Math.ceil(parser.totalMembersCount / parser.pageSize));
         });
+    }, []);
 
-        if(!groupId) return;
+    CreateMessageHook(GroupMembersEvent, onGroupMembersEvent);
 
-        if(levelId !== null) setSearchLevelId(levelId);
+    const onGroupConfirmMemberRemoveEvent = useCallback((event: GroupConfirmMemberRemoveEvent) =>
+    {
+        const parser = event.getParser();
 
-        searchMembers(0, levelId);
-    }, [ groupId, levelId, searchMembers ]);
+        NotificationUtilities.confirm(LocalizeText(((parser.furnitureCount > 0) ? 'group.kickconfirm.desc' : 'group.kickconfirm_nofurni.desc'), [ 'user', 'amount' ], [ removingMemberName, parser.furnitureCount.toString() ]), () =>
+            {
+                SendMessageHook(new GroupRemoveMemberComposer(pageData.groupId, parser.userId));
+
+                refreshMembers();
+            }, null);
+            
+        setRemovingMemberName(null);
+    }, [ pageData, removingMemberName, refreshMembers ]);
+
+    CreateMessageHook(GroupConfirmMemberRemoveEvent, onGroupConfirmMemberRemoveEvent);
+
+    useEffect(() =>
+    {
+        setPageId(0);
+    }, [ groupId, levelId, searchQuery ]);
+
+    useEffect(() =>
+    {
+        
+    })
+
+    useEffect(() =>
+    {
+        if((groupId === -1) || (levelId === -1) || (pageId === -1)) return;
+
+        SendMessageHook(new GroupMembersComposer(groupId, pageId, searchQuery, levelId));
+    }, [ groupId, levelId, pageId, searchQuery ]);
 
     if(!groupId || !pageData) return null;
 
@@ -148,8 +144,8 @@ export const GroupMembersView: FC<GroupMembersViewProps> = props =>
                         <BadgeImageView badgeCode={ pageData.badge } isGroup={ true } className="mx-auto d-block"/>
                     </Flex>
                     <Column fullWidth gap={ 1 }>
-                        <input type="text" className="form-control form-control-sm w-100" placeholder={ LocalizeText('group.members.searchinfo') } value={ searchQuery } onChange={ (e) => setSearchQuery(e.target.value) } onBlur={ () => searchMembers(pageData.pageIndex) } onKeyDown={ onKeyDown } />
-                        <select className="form-select form-select-sm w-100" value={ searchLevelId } onChange={ (e) => selectSearchLevelId(Number(e.target.value)) }>
+                        <input type="text" className="form-control form-control-sm w-100" placeholder={ LocalizeText('group.members.searchinfo') } value={ searchQuery } onChange={ event => setSearchQuery(event.target.value) } />
+                        <select className="form-select form-select-sm w-100" value={ levelId } onChange={ event => setLevelId(parseInt(event.target.value)) }>
                             <option value="0">{ LocalizeText('group.members.search.all') }</option>
                             <option value="1">{ LocalizeText('group.members.search.admins') }</option>
                             <option value="2">{ LocalizeText('group.members.search.pending') }</option>
