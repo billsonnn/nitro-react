@@ -4,6 +4,7 @@ import { GetUserProfile, LocalizeText, OpenMessengerChat } from '../../../../api
 import { SendMessageHook } from '../../../../hooks/messages';
 import { NitroLayoutBase } from '../../../../layout/base';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
+import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { FriendBarItemViewProps } from './FriendBarItemView.types';
 
 export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
@@ -58,8 +59,9 @@ export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
 
     return (
         <div ref={ elementRef } className={'btn btn-success friend-bar-item ' + (isVisible ? 'friend-bar-item-active' : '')} onClick={ event => setVisible(prevValue => !prevValue) }>
-            <div className="friend-bar-item-head position-absolute">
-                <AvatarImageView headOnly={ true } figure={ friend.figure } direction={ 2 } />
+            <div className={`friend-bar-item-head position-absolute ${friend.id > 0 ? 'avatar': 'group'}`}>
+                { friend.id > 0 && <AvatarImageView headOnly={ true } figure={ friend.figure } direction={ 2 } /> }
+                { friend.id <= 0 && <BadgeImageView isGroup={ true } badgeCode={ friend.figure} />} 
             </div>
             <div className="text-truncate">{ friend.name }</div>
             { isVisible &&

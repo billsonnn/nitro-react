@@ -1,0 +1,80 @@
+.nitro-toolbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: $toolbar-height;
+    z-index: $toolbar-zindex;
+    pointer-events: all;
+    background: rgba($dark, 0.95);
+    box-shadow: inset 0px 5px lighten(rgba($dark, 0.6), 2.5),
+        inset 0 -4px darken(rgba($dark, 0.6), 4);
+
+    .navigation-item {
+
+        &.item-avatar {
+            width: 50px;
+            height: 45px;
+            overflow: hidden;
+    
+            .avatar-image {
+                margin-left: -5px;
+                margin-top: 25px;
+            }
+        }
+
+        &:hover {
+            -webkit-transform: translate(-1px, -1px);
+            transform: translate(-1px, -1px);
+            filter: drop-shadow(2px 2px 0 rgba($black, 0.8));
+        }
+
+        &.active,
+        &:active {
+            -webkit-transform: translate(0px, 0px);
+            transform: translate(0px, 0px);
+            filter: drop-shadow(2px 2px 0 rgba($black, 0.8));
+        }
+    }
+
+    #toolbar-chat-input-container {
+
+        @include media-breakpoint-down(sm) {
+            width: 0px;
+            height: 0px;
+        }
+    }
+}
+
+.nitro-toolbar-me {
+    position: absolute;
+    bottom: 60px;
+    left: 15px;
+    z-index: $toolbar-memenu-zindex;
+    background: rgba(20, 20, 20, .95);
+    border: 1px solid #101010;
+    box-shadow: inset 2px 2px rgba(255, 255, 255, .1), inset -2px -2px rgba(255, 255, 255, .1);
+    border-radius: $border-radius;
+
+    .navigation-item {
+        transition: filter .2s ease-out;
+        filter: grayscale(1);
+
+        &:hover {
+            filter: grayscale(0) drop-shadow(2px 2px 0 rgba($black, 0.8));
+        }
+    }
+}
+
+.toolbar-icon-animation {
+    position: absolute;
+    object-fit: cover;
+    height: auto;
+    width: auto;
+    max-width: 120px;
+    max-height: 150px;
+    z-index: 500;
+    filter: drop-shadow(2px 1px 0 rgba($white, 1))
+        drop-shadow(-2px 1px 0 rgba($white, 1))
+        drop-shadow(0 -2px 0 rgba($white, 1));
+}

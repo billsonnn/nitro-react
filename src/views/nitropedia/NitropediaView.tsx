@@ -1,10 +1,10 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { AddEventLinkTracker, CreateLinkEvent, GetConfiguration, RemoveLinkEventTracker } from '../../api';
+import { AddEventLinkTracker, GetConfiguration, RemoveLinkEventTracker } from '../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
+import { NotificationUtilities } from '../notification-center/common/NotificationUtilities';
 
 const newLineRegex = /\n\r|\n|\r/mg;
-const internalLinkPrefix = 'event:';
 export const NitropediaView: FC<{}> = props =>
 {
     const [ content, setContent ] = useState<string>(null);
@@ -40,17 +40,7 @@ export const NitropediaView: FC<{}> = props =>
         {
             event.preventDefault();
             const link = event.target.href;
-
-            if(link.startsWith(internalLinkPrefix))
-            {
-                const internalLink = link.substring(internalLinkPrefix.length);
-                CreateLinkEvent(internalLink);
-            }
-
-            else
-            {
-                window.open(link);
-            }
+            NotificationUtilities.openUrl(link);
         }
         
     },[]);

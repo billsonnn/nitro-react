@@ -1,6 +1,7 @@
 import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, NitroPoint, RoomEntryTileMessageEvent, RoomOccupiedTilesMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { CreateMessageHook, SendMessageHook, UseMountEffect } from '../../../hooks';
+import { NitroLayoutFlex } from '../../../layout';
 import { FloorplanEditor } from '../common/FloorplanEditor';
 import { useFloorplanEditorContext } from '../context/FloorplanEditorContext';
 
@@ -68,6 +69,29 @@ export const FloorplanCanvasView: FC<{}> = props =>
 
     CreateMessageHook(RoomEntryTileMessageEvent, onRoomEntryTileMessageEvent);
 
+    const onClickArrowButton = useCallback((scrollDirection: string) =>
+    {
+        const element = elementRef.current;
+
+        if(!element) return;
+
+        switch(scrollDirection)
+        {
+            case 'up':
+                element.scrollBy({ top: -10 });
+                break;
+            case 'down':
+                element.scrollBy({ top: 10 });
+                break;
+            case 'left':
+                element.scrollBy({ left: -10 });
+                break;
+            case 'right':
+                element.scrollBy({ left: 10 });
+                break;
+        }
+    }, []);
+
     useEffect(() =>
     {
         if(entryTileReceived && occupiedTilesReceived)
@@ -75,6 +99,20 @@ export const FloorplanCanvasView: FC<{}> = props =>
     }, [entryTileReceived, occupiedTilesReceived])
 
     return (
-        <div ref={elementRef} className="editor-area" />
+        <>
+        <NitroLayoutFlex className="align-items-center justify-content-center">
+            <div className="arrow-button"><button className="btn btn-primary" onClick={() => onClickArrowButton('up')}><i className="fas fa-arrow-up"/></button></div>
+        </NitroLayoutFlex>
+        <NitroLayoutFlex className="align-items-center justify-content-center">
+            <div className="arrow-button"><button className="btn btn-primary" onClick={() => onClickArrowButton('left')}><i className="fas fa-arrow-left"/></button></div>
+            <div className="rounded-2 overflow-hidden">
+                <div ref={elementRef} className="editor-area" />
+            </div>
+            <div className="arrow-button"><button className="btn btn-primary" onClick={() => onClickArrowButton('right')}><i className="fas fa-arrow-right"/></button></div>
+        </NitroLayoutFlex>
+        <NitroLayoutFlex className="align-items-center justify-content-center">
+            <div className="arrow-button"><button className="btn btn-primary" onClick={() => onClickArrowButton('down')}><i className="fas fa-arrow-down"/></button></div>
+        </NitroLayoutFlex>
+        </>
     );
 }

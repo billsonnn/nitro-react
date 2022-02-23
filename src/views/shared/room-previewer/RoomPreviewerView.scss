@@ -12,6 +12,7 @@
         background-color: $light;
         background-repeat: no-repeat;
         background-position: center;
+        overflow: hidden;
     
         &.border-0 {
             &::after {

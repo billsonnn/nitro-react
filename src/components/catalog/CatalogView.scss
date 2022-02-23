@@ -1,0 +1,123 @@
+.nitro-catalog {
+    width: $catalog-width;
+    height: $catalog-height;
+
+    font[size="16"] {
+        font-size: 20px;
+    }
+
+    .catalog-search-button {
+        min-width: 30px;
+        width: 30px;
+    }
+
+    .quantity-input {
+        min-height: 17px;
+        height: 17px;
+        width: 20px;
+        padding: 0 4px;
+        text-align: right;
+    }
+}
+
+.catalog-icon-image {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+}
+
+.nitro-catalog-gift {
+    width: 325px;
+    
+    .gift-preview {
+        width: 80px;
+        height: 80px;
+        overflow: hidden;
+    }
+
+    .gift-color {
+        width: 15px;
+        height: 15px;
+        border-radius: $border-radius;
+    }
+}
+
+.nitro-catalog-navigation-grid-container {
+    border-color: #B6BEC5 !important;
+    background-color: #CDD3D9;
+    border: 2px solid;
+
+    .layout-grid-item {
+        font-size: $font-size-sm;
+        height: 23px !important;
+        border-color: unset !important;
+        background-color: #CDD3D9;
+        border: 0 !important;
+        padding: 1px 3px;
+
+        .svg-inline--fa {
+            color: $black;
+            font-size: 10px;
+            padding: 1px;
+        }
+    }
+}
+
+.nitro-catalog-layout-info-loyalty {
+
+    .info-loyalty-content {
+        background-repeat: no-repeat;
+        background-position: top right;
+        background-image: url('../../assets/images/catalog/diamond_info_illustration.gif');
+        padding-right:123px;
+    }
+
+    .info-image {
+        width: 123px;
+        height:350px;
+        background-image: url('../../assets/images/catalog/diamond_info_illustration.gif');
+    }
+}
+
+.nitro-catalog-layout-vip-buy-grid {
+
+    .layout-grid-item {
+        height: 50px !important;
+        max-height: 50px !important;
+
+        .icon-hc-banner {
+            width: 68px;
+            height: 40px;
+            background: url("../../assets/images/catalog/hc_big.png") center no-repeat;
+        }
+    }
+}
+
+.nitro-catalog-layout-marketplace-grid {
+
+    .layout-grid-item {
+        height: 75px !important;
+        max-height: 75px !important;
+    }
+}
+
+.nitro-catalog-layout-vip-gifts-grid {
+
+    .layout-grid-item {
+        height: 55px !important;
+        max-height: 55px !important;
+    }
+}
+
+.nitro-catalog-layout-marketplace-post-offer {
+    width: $marketplace-post-offer-width;
+    height: $marketplace-post-offer-height;
+}
+
+.nitro-catalog-layout-bundle-grid {
+
+    .layout-grid-item {
+        background-color: transparent;
+    }
+}

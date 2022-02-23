@@ -1,9 +1,9 @@
 import { HabboWebTools, RoomEnterEffect } from '@nitrots/nitro-renderer';
 import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText } from '../../../api';
-import { NotificationAlertEvent } from '../../../events';
+import { CatalogPageName } from '../../../components/catalog/common/CatalogPageName';
+import { NotificationAlertEvent, NotificationConfirmEvent } from '../../../events';
 import { NotificationBubbleEvent } from '../../../events/notification-center/NotificationBubbleEvent';
 import { dispatchUiEvent } from '../../../hooks';
-import { CatalogPageName } from '../../catalog/common/CatalogPageName';
 import { NotificationAlertType } from './NotificationAlertType';
 import { NotificationBubbleType } from './NotificationBubbleType';
 
@@ -112,9 +112,22 @@ export class NotificationUtilities
         dispatchUiEvent(new NotificationAlertEvent(messages, NotificationAlertType.MOTD, null, null, LocalizeText('notifications.motd.title')));
     }
 
-    public static simpleAlert(message: string, type: string, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
+    public static confirm(message: string, onConfirm: Function, onCancel: Function, confirmText: string = null, cancelText: string = null, title: string = null, type: string = null): void
+    {
+        if(!confirmText || !confirmText.length) confirmText = LocalizeText('generic.confirm');
+
+        if(!cancelText || !cancelText.length) cancelText = LocalizeText('generic.cancel');
+
+        if(!title || !title.length) title = LocalizeText('notifications.broadcast.title');
+
+        dispatchUiEvent(new NotificationConfirmEvent(type, this.cleanText(message), onConfirm, onCancel, confirmText, cancelText, title));
+    }
+
+    public static simpleAlert(message: string, type: string = null, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
     {
         if(!title || !title.length) title = LocalizeText('notifications.broadcast.title');
+
+        if(!type || !type.length) type = NotificationAlertType.DEFAULT;
 
         dispatchUiEvent(new NotificationAlertEvent([ this.cleanText(message) ], type, clickUrl, clickUrlText, title, imageUrl));
     }
@@ -161,13 +174,15 @@ export class NotificationUtilities
 
     public static openUrl(url: string): void
     {
+        if(!url || !url.length) return;
+        
         if(url.startsWith('http'))
         {
             HabboWebTools.openWebPage(url);
         }
         else
         {
-            CreateLinkEvent(url.substring(6));
+            CreateLinkEvent(url);
         }
     }
 

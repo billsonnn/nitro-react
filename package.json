@@ -5,16 +5,19 @@
   "scripts": {
     "start": "craco start",
     "build": "craco --max_old_space_size=8048 build",
-    "build:prod": "npm uninstall @nitrots/nitro-renderer && npm i git+https://git@git.krews.org/nitro/nitro-renderer#dev && npm i && npm run build",
+    "build:prod": "npx browserslist@latest --update-db && yarn install && yarn build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
   "dependencies": {
     "@craco/craco": "^6.3.0",
-    "@nitrots/nitro-renderer": "file:../nitro-renderer",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/react-fontawesome": "^0.1.16",
+    "@nitrots/nitro-renderer": "^1.1.4",
     "animate.css": "^4.1.1",
     "classnames": "^2.3.1",
-    "node-sass": "^5.0.0",
+    "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-alpha.2",
     "react-dom": "^17.0.2",
@@ -23,20 +26,16 @@
     "react-transition-group": "^4.4.2",
     "react-virtualized": "^9.22.3",
     "react-youtube": "^7.13.1",
-    "typescript": "^4.3.5",
-    "web-vitals": "^1.1.2"
+    "typescript": "^4.3.5"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "@types/jest": "^26.0.24",
     "@types/node": "^12.20.19",
     "@types/react": "^17.0.15",
     "@types/react-dom": "^17.0.9",
     "@types/react-slider": "^1.3.1",
     "@types/react-transition-group": "^4.4.2",
     "@types/react-virtualized": "^9.21.13",
+    "@types/styled-components": "^5.1.15",
     "@typescript-eslint/eslint-plugin": "^4.29.1"
   }
 }

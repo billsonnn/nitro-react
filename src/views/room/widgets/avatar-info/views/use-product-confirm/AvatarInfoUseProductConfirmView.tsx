@@ -1,8 +1,8 @@
 import { IFurnitureData, PetCustomPart, PetFigureData, RoomObjectCategory, RoomObjectVariable, RoomUserData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetFurnitureDataForRoomObject, GetRoomEngine, LocalizeText, RoomWidgetUseProductMessage } from '../../../../../../api';
+import { FurniCategory } from '../../../../../../components/inventory/common/FurniCategory';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../../layout';
-import { FurniCategory } from '../../../../../inventory/common/FurniCategory';
 import { PetImageView } from '../../../../../shared/pet-image/PetImageView';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { AvatarInfoUseProductConfirmViewProps } from './AvatarInfoUseProductConfirmView.types';
@@ -48,7 +48,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
         switch(furniData.specialType)
         {
-            case FurniCategory._Str_7696: {
+            case FurniCategory.PET_SHAMPOO: {
                 if(customParts.length < 2) return null;
 
                 const currentPalette = GetRoomEngine().getPetColorResult(petIndex, petFigureData.paletteId);
@@ -68,7 +68,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
                 return <PetImageView typeId={ petFigureData.typeId } paletteId={ paletteId } color={ petFigureData.color } customParts={ petFigureData.customParts } direction={ 2 } />
             }
-            case FurniCategory._Str_7297: {
+            case FurniCategory.PET_CUSTOM_PART: {
                 if(customParts.length < 4) return null;
 
                 const newCustomParts: PetCustomPart[] = [];
@@ -95,7 +95,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
                 return <PetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } color={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
             }
-            case FurniCategory._Str_7954: {
+            case FurniCategory.PET_CUSTOM_PART_SHAMPOO: {
                 if(customParts.length < 3) return null;
 
                 const newCustomParts: PetCustomPart[] = [];
@@ -121,7 +121,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
                 return <PetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } color={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
             }
-            case FurniCategory._Str_6096: {
+            case FurniCategory.PET_SADDLE: {
                 if(customParts.length < 4) return null;
 
                 const newCustomParts: PetCustomPart[] = [];
@@ -149,9 +149,9 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
                 return <PetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } color={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
             }
-            case FurniCategory._Str_8726:
-            case FurniCategory._Str_6915:
-            case FurniCategory._Str_9449: {
+            case FurniCategory.MONSTERPLANT_REBREED:
+            case FurniCategory.MONSTERPLANT_REVIVAL:
+            case FurniCategory.MONSTERPLANT_FERTILIZE: {
                 let posture = 'rip';
 
                 const roomObject = GetRoomEngine().getRoomObject(roomSession.roomId, petData.roomIndex, RoomObjectCategory.UNIT);
@@ -190,25 +190,25 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
         switch(furniData.specialType)
         {
-            case FurniCategory._Str_7696:
+            case FurniCategory.PET_SHAMPOO:
                 mode = _Str_11906;
                 break;
-            case FurniCategory._Str_7297:
+            case FurniCategory.PET_CUSTOM_PART:
                 mode = _Str_11214;
                 break;
-            case FurniCategory._Str_7954:
+            case FurniCategory.PET_CUSTOM_PART_SHAMPOO:
                 mode = _Str_11733;
                 break;
-            case FurniCategory._Str_6096:
+            case FurniCategory.PET_SADDLE:
                 mode = _Str_11369;
                 break;
-            case FurniCategory._Str_6915:
+            case FurniCategory.MONSTERPLANT_REVIVAL:
                 mode = _Str_8759;
                 break;
-            case FurniCategory._Str_8726:
+            case FurniCategory.MONSTERPLANT_REBREED:
                 mode = _Str_8432;
                 break;
-            case FurniCategory._Str_9449:
+            case FurniCategory.MONSTERPLANT_FERTILIZE:
                 mode = _Str_9653;
                 break;
         }

@@ -1,0 +1,8 @@
+.nitro-chat-history {
+    width: $chat-history-width;
+    height: $chat-history-height;
+
+    .content-area {
+        min-height: 200px;
+    }
+}

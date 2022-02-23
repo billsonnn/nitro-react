@@ -1,0 +1,43 @@
+.layout-grid-item {
+    height: var(--nitro-grid-column-min-height, 45px);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: $grid-bg-color;
+
+    &.active {
+        border-color: $grid-active-border-color !important;
+        background-color: $grid-active-bg-color;
+    }
+
+    &.disabled {
+        cursor: not-allowed;
+
+        img {
+            opacity: .5;
+            filter: grayscale(1);
+        }
+    }
+
+    &.unseen {
+        background-color: rgba($success, 0.4);
+    }
+
+    .avatar-image {
+        background-position-y: -35px;
+    }
+
+    &.has-highlight {
+
+        &:after {
+            content: "";
+            z-index: 2;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background-color: $white;
+            opacity: 0.1;
+        }
+    }
+}

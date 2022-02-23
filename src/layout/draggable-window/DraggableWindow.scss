@@ -1,7 +1,26 @@
-.draggable-window {
-    visibility: hidden;
+#draggable-windows-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
 
-    .drag-handler {
-        cursor: move;
+    @include media-breakpoint-down(lg) {
+        display: flex;
+        justify-content: center;
+
+        .draggable-window {
+            top: unset !important;
+            left: unset !important;
+            transform: none !important;
+        }
+    }
+
+    .draggable-window {
+        display: inline-block;
+        visibility: hidden;
+        pointer-events: all;
     }
 }

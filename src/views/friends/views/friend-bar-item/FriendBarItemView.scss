@@ -11,8 +11,15 @@
     }
 
     .friend-bar-item-head {
-        top: -30px;
-        left: -30px;
+        &.avatar {
+            top: -30px;
+            left: -30px;
+        }
+        &.group {
+            top: -5px;
+            left: -5px;
+        }
+
         pointer-events: none;
     }
 

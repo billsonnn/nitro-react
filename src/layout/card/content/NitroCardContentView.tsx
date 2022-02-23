@@ -1,15 +1,22 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
+import { Column, ColumnProps } from '../../../common';
 import { useNitroCardContext } from '../context';
-import { NitroCardContentViewProps } from './NitroCardContextView.types';
 
-export const NitroCardContentView: FC<NitroCardContentViewProps> = props =>
+export const NitroCardContentView: FC<ColumnProps> = props =>
 {
-    const { theme = 'primary',  children = null, className = '', ...rest } = props;
-    const { simple = false } = useNitroCardContext();
-    
-    return (
-        <div className={ `container-fluid content-area d-flex flex-column overflow-auto ${ (simple ? 'simple' : '') } ${ className || '' }` } { ...rest }>
-            { children }
-        </div>
-    );
+    const { classNames = [], ...rest } = props;
+    const { theme = 'primary', simple = false } = useNitroCardContext();
+
+    const getClassNames = useMemo(() =>
+    {
+        const newClassNames: string[] = [ 'container-fluid', 'content-area' ];
+
+        if(simple) newClassNames.push('simple');
+
+        if(classNames.length) newClassNames.push(...classNames);
+
+        return newClassNames;
+    }, [ simple, classNames ]);
+
+    return <Column classNames={ getClassNames } overflow="auto" { ...rest } />;
 }

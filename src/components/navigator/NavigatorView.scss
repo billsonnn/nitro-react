@@ -1,0 +1,63 @@
+.nitro-navigator {
+    width: $navigator-width;
+    height: $navigator-height;
+
+    .navigator-grid {
+
+        .navigator-item {
+
+            .badge {
+                width: 35px;
+                min-width: 35px;
+            }
+        }
+
+        &:not(.two-columns) {
+
+            .navigator-item {
+    
+                &:nth-child(odd) {
+                    background-color: $grid-active-bg-color;
+                }
+            }
+        }
+    
+        &.two-columns {
+    
+            .navigator-item {
+        
+                &:nth-child(4n-2),
+                &:nth-child(4n-3) {
+                    background: $grid-active-bg-color;
+                }
+            }
+        }
+    }
+}
+
+.nitro-navigator-doorbell,
+.nitro-navigator-password {
+    width: 250px;
+}
+
+.nitro-room-info {
+    width: $room-info-width;
+    max-height: 300px;
+}
+
+.nitro-room-link {
+    width: 400px;
+}
+
+.nitro-room-settings {
+    width: 400px;
+
+    .list-container {
+        min-height: 100px;
+        max-height: 100px;
+
+        .list-item {
+            background-color: $grid-active-bg-color;
+        }
+    }
+}

@@ -1,6 +1,6 @@
 import { CatalogPageMessageProductData } from '@nitrots/nitro-renderer';
 import { GetRoomEngine } from '../../../api';
-import { FurniCategory } from '../../catalog/common/FurniCategory';
+import { FurniCategory } from '../../../components/catalog/common/FurniCategory';
 
 export class ProductImageUtility
 {
@@ -41,7 +41,7 @@ export class ProductImageUtility
         return imageUrl;
     }
 
-    private static getProductCategory(productType: string, furniClassId: number): number
+    public static getProductCategory(productType: string, furniClassId: number): number
     {
         if(productType === CatalogPageMessageProductData.S) return 1;
 

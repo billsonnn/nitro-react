@@ -1,21 +1,21 @@
 import { RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetFurnitureDataForRoomObject, LocalizeText } from '../../../../../../api';
-import { FurniCategory } from '../../../../../inventory/common/FurniCategory';
+import { FurniCategory } from '../../../../../../components/inventory/common/FurniCategory';
 import { useRoomContext } from '../../../../context/RoomContext';
 import { ContextMenuView } from '../../../context-menu/ContextMenuView';
 import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../../context-menu/views/list-item/ContextMenuListItemView';
 import { AvatarInfoUseProductViewProps } from './AvatarInfoUseProductView.types';
 
-const _Str_2906: number = 0;
-const _Str_13718: number = 1;
-const _Str_14146: number = 2;
-const _Str_15667: number = 3;
-const _Str_14658: number = 4;
-const _Str_14165: number = 5;
-const _Str_12577: number = 6;
-const _Str_14611: number = 7;
+const PRODUCT_PAGE_UKNOWN: number = 0;
+const PRODUCT_PAGE_SHAMPOO: number = 1;
+const PRODUCT_PAGE_CUSTOM_PART: number = 2;
+const PRODUCT_PAGE_CUSTOM_PART_SHAMPOO: number = 3;
+const PRODUCT_PAGE_SADDLE: number = 4;
+const PRODUCT_PAGE_REVIVE: number = 5;
+const PRODUCT_PAGE_REBREED: number = 6;
+const PRODUCT_PAGE_FERTILIZE: number = 7;
 
 export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props =>
 {
@@ -31,30 +31,30 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
 
         if(!furniData) return;
 
-        let mode = _Str_2906;
+        let mode = PRODUCT_PAGE_UKNOWN;
 
         switch(furniData.specialType)
         {
-            case FurniCategory._Str_7696:
-                mode = _Str_13718;
+            case FurniCategory.PET_SHAMPOO:
+                mode = PRODUCT_PAGE_SHAMPOO;
                 break;
-            case FurniCategory._Str_7297:
-                mode = _Str_14146;
+            case FurniCategory.PET_CUSTOM_PART:
+                mode = PRODUCT_PAGE_CUSTOM_PART;
                 break;
-            case FurniCategory._Str_7954:
-                mode = _Str_15667;
+            case FurniCategory.PET_CUSTOM_PART_SHAMPOO:
+                mode = PRODUCT_PAGE_CUSTOM_PART_SHAMPOO;
                 break;
-            case FurniCategory._Str_6096:
-                mode = _Str_14658;
+            case FurniCategory.PET_SADDLE:
+                mode = PRODUCT_PAGE_SADDLE;
                 break;
-            case FurniCategory._Str_6915:
-                mode = _Str_14165;
+            case FurniCategory.MONSTERPLANT_REVIVAL:
+                mode = PRODUCT_PAGE_REVIVE;
                 break;
-            case FurniCategory._Str_8726:
-                mode = _Str_12577;
+            case FurniCategory.MONSTERPLANT_REBREED:
+                mode = PRODUCT_PAGE_REBREED;
                 break;
-            case FurniCategory._Str_9449:
-                mode = _Str_14611;
+            case FurniCategory.MONSTERPLANT_FERTILIZE:
+                mode = PRODUCT_PAGE_FERTILIZE;
                 break;
         }
 
@@ -86,23 +86,23 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
             <ContextMenuHeaderView>
                 { item.name }
             </ContextMenuHeaderView>
-            { (mode === _Str_2906) &&
+            { (mode === PRODUCT_PAGE_UKNOWN) &&
                 <ContextMenuListItemView onClick={ event => processAction('use_product') }>
                     { LocalizeText('infostand.button.useproduct') }
                 </ContextMenuListItemView> }
-            { (mode === _Str_13718) &&
+            { (mode === PRODUCT_PAGE_SHAMPOO) &&
                 <ContextMenuListItemView onClick={ event => processAction('use_product_shampoo') }>
                     { LocalizeText('infostand.button.useproduct_shampoo') }
                 </ContextMenuListItemView> }
-            { (mode === _Str_14146) &&
+            { (mode === PRODUCT_PAGE_CUSTOM_PART) &&
                 <ContextMenuListItemView onClick={ event => processAction('use_product_custom_part') }>
                     { LocalizeText('infostand.button.useproduct_custom_part') }
                 </ContextMenuListItemView> }
-            { (mode === _Str_15667) &&
+            { (mode === PRODUCT_PAGE_CUSTOM_PART_SHAMPOO) &&
                 <ContextMenuListItemView onClick={ event => processAction('use_product_custom_part_shampoo') }>
                     { LocalizeText('infostand.button.useproduct_custom_part_shampoo') }
                 </ContextMenuListItemView> }
-            { (mode === _Str_14658) &&
+            { (mode === PRODUCT_PAGE_SADDLE) &&
                 <>
                     { item.replace &&
                         <ContextMenuListItemView onClick={ event => processAction('replace_product_saddle') }>
@@ -113,15 +113,15 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
                             { LocalizeText('infostand.button.useproduct_saddle') }
                         </ContextMenuListItemView> }
                 </> }
-            { (mode === _Str_14165) &&
+            { (mode === PRODUCT_PAGE_REVIVE) &&
                 <ContextMenuListItemView onClick={ event => processAction('revive_monsterplant') }>
                     { LocalizeText('infostand.button.revive_monsterplant') }
                 </ContextMenuListItemView> }
-            { (mode === _Str_12577) &&
+            { (mode === PRODUCT_PAGE_REBREED) &&
                 <ContextMenuListItemView onClick={ event => processAction('rebreed_monsterplant') }>
                     { LocalizeText('infostand.button.rebreed_monsterplant') }
                 </ContextMenuListItemView> }
-            { (mode === _Str_14611) &&
+            { (mode === PRODUCT_PAGE_FERTILIZE) &&
                 <ContextMenuListItemView onClick={ event => processAction('fertilize_monsterplant') }>
                     { LocalizeText('infostand.button.fertilize_monsterplant') }
                 </ContextMenuListItemView> }

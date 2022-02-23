@@ -1,20 +1,24 @@
-import { RoomLikeRoomComposer } from '@nitrots/nitro-renderer';
+import { GetGuestRoomResultEvent, RoomLikeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { FC, useCallback, useState } from 'react';
-import { LocalizeText, RoomWidgetZoomToggleMessage } from '../../../../api';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { CreateLinkEvent, LocalizeText, RoomWidgetZoomToggleMessage } from '../../../../api';
+import { Base, Column, Flex, Text } from '../../../../common';
 import { NavigatorEvent } from '../../../../events';
-import { ChatHistoryEvent } from '../../../../events/chat-history/ChatHistoryEvent';
 import { dispatchUiEvent } from '../../../../hooks/events';
-import { SendMessageHook } from '../../../../hooks/messages';
+import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
 import { useRoomContext } from '../../context/RoomContext';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
 {
-    const { widgetHandler = null } = useRoomContext();
-
-    const [ isExpended, setIsExpanded ] = useState(false);
     const [ isZoomedIn, setIsZoomedIn ] = useState(false);
     const [ isLiked, setIsLiked ] = useState(false);
+    const { widgetHandler = null } = useRoomContext();
+
+    const [ roomName, setRoomName ] = useState(null);
+    const [ roomOwner, setRoomOwner ] = useState(null);
+    const [ roomTags, setRoomTags ] = useState(null);
+    const [ roomInfoDisplay, setRoomInfoDisplay ] = useState(false);
+    const [ isOpen, setIsOpen ] = useState(false);
 
     const handleToolClick = useCallback((action: string) =>
     {
@@ -28,8 +32,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 setIsZoomedIn(value => !value);
                 return;
             case 'chat_history':
-                dispatchUiEvent(new ChatHistoryEvent(ChatHistoryEvent.TOGGLE_CHAT_HISTORY));
-                //setIsExpanded(false); close this ??
+                CreateLinkEvent('chat-history/toggle');
                 return;
             case 'like_room':
                 if(isLiked) return;
@@ -42,29 +45,50 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 return;
         }
     }, [ isZoomedIn, isLiked, widgetHandler ]);
+
+    const onGetGuestRoomResultEvent = useCallback((event: GetGuestRoomResultEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(roomName !== parser.data.roomName) setRoomName(parser.data.roomName);
+
+        if(roomOwner !== parser.data.ownerName) setRoomOwner(parser.data.ownerName);
+
+        if(roomTags !== parser.data.tags) setRoomTags(parser.data.tags);
+    }, [ roomName, roomOwner, roomTags ]);
+
+    CreateMessageHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
+
+    useEffect(() =>
+    {
+        setIsOpen(true);
+
+        const timeout = setTimeout(() => setIsOpen(false), 5000);
+
+        return () => clearTimeout(timeout);
+    }, [ roomName, roomOwner, roomTags ]);
     
     return (
-        <div className={'nitro-room-tools ps-3 d-flex' + classNames({ ' open': isExpended })}>
-            <div className="list-group list-group-flush w-100 me-1">
-                <div className="list-group-item" onClick={ () => handleToolClick('settings') }>
-                    <i className="fas fa-cog me-2" />{ LocalizeText('room.settings.button.text') }
-                </div>
-                <div className="list-group-item" onClick={ () => handleToolClick('zoom') }>
-                    <i className={ 'fas me-2 ' +classNames({ 'fa-search-minus': !isZoomedIn, 'fa-search-plus': isZoomedIn }) } />{ LocalizeText('room.zoom.button.text') }
-                </div>
-                <div className="list-group-item" onClick={ () => handleToolClick('chat_history') }>
-                    <i className="fas fa-comment-alt me-2" />{ LocalizeText('room.chathistory.button.text') }
-                </div>
-                <div className={ 'list-group-item' + classNames({ ' disabled': isLiked })} onClick={ () => handleToolClick('like_room') }>
-                    <i className="fas fa-heart me-2" />{ LocalizeText('room.like.button.text') }
-                </div>
-                <div className="list-group-item" onClick={ () => handleToolClick('toggle_room_link') }>
-                    <i className="fas fa-link me-2" />{ LocalizeText('navigator.embed.caption') }
-                </div>
-            </div>
-            <div className="cursor-pointer d-flex align-items-center px-2" onClick={() => setIsExpanded(value => !value)}>
-                <i className={ 'fas ' + classNames({ 'fa-chevron-left': isExpended, 'fa-chevron-right': !isExpended }) } />
-            </div>
-        </div>
+        <Flex className="nitro-room-tools-container">
+            <Column center className="nitro-room-tools p-2">
+                <Base pointer title={ LocalizeText('room.settings.button.text') } className="icon icon-cog" onClick={ () => handleToolClick('settings') } />
+                <Base pointer title={ LocalizeText('room.zoom.button.text') } onClick={ () => handleToolClick('zoom') } className={ 'icon ' + classNames({ 'icon-zoom-less': !isZoomedIn, 'icon-zoom-more': isZoomedIn }) } />
+                <Base pointer title={ LocalizeText('room.chathistory.button.text') } onClick={ () => handleToolClick('chat_history') } className="icon icon-chat-history" />
+                { !isLiked && <Base pointer title={ LocalizeText('room.like.button.text') } onClick={ () => handleToolClick('like_room') } className="icon icon-like-room" /> }
+            </Column>
+            { isOpen &&
+                <Column center>
+                    <Column className="nitro-room-tools-info rounded py-2 px-3">
+                        <Column gap={ 1 }>
+                            <Text variant="white" fontSize={ 4 }>{ roomName }</Text>
+                            <Text variant="muted" fontSize={ 5 }>{ roomOwner }</Text>
+                        </Column>
+                        { roomTags && roomTags.length > 0 &&
+                            <div className="d-flex gap-2">
+                                { roomTags.map((tag: string) => <div className="rounded bg-primary text-white p-1 text-sm">#{ tag }</div>) }
+                            </div> }
+                    </Column>
+                </Column> }
+        </Flex>
     );
-};
+}

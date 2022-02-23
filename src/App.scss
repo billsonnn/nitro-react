@@ -17,8 +17,8 @@ $grid-active-border-color: $white;
 
 $toolbar-height: 55px;
 
-$achievement-width: 350px;
-$achievement-height: 370px;
+$achievement-width: 375px;
+$achievement-height: 425px;
 
 $avatar-editor-width: 620px;
 $avatar-editor-height: 374px;
@@ -50,16 +50,33 @@ $chat-history-height: 300px;
 $friends-list-width: 250px;
 $friends-list-height: 300px;
 
-$help-width: 275px;
-$help-height: 450px;
+$help-width: 450px;
+$help-height: 250px;
 
 $nitropedia-width: 400px;
 $nitropedia-height: 400px;
+
+$messenger-width: 500px;
+$messenger-height: 370px;
+
+$marketplace-post-offer-width: 430px;
+$marketplace-post-offer-height: 250px;
+
+$camera-editor-width: 600px;
+$camera-editor-height: 500px;
+
+$camera-checkout-width: 350px;
+
+$room-info-width: 325px;
+
+$nitro-mod-tools-width: 175px;
 
 .nitro-app {
     width: 100%;
     height: 100%;
 }
 
+@import './common';
 @import "./layout/Layout";
+@import './components';
 @import "./views/Styles";

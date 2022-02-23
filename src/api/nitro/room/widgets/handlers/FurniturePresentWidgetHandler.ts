@@ -1,7 +1,7 @@
 import { IFurnitureData, IGetImageListener, NitroEvent, NitroRenderTexture, PetFigureData, RoomObjectCategory, RoomObjectVariable, RoomSessionPresentEvent, RoomWidgetEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { GetSessionDataManager, IsOwnerOfFurniture } from '../../..';
 import { GetRoomEngine, LocalizeText } from '../../../..';
-import { ProductTypeEnum } from '../../../../../views/catalog/common/ProductTypeEnum';
+import { ProductTypeEnum } from '../../../../../components/catalog/common/ProductTypeEnum';
 import { RoomWidgetUpdateEvent, RoomWidgetUpdatePresentDataEvent } from '../events';
 import { RoomWidgetFurniToWidgetMessage, RoomWidgetPresentOpenMessage } from '../messages';
 import { RoomWidgetMessage } from '../messages/RoomWidgetMessage';

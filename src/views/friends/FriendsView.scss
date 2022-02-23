@@ -92,5 +92,13 @@
     }
 }
 
+.nitro-friends-room-invite {
+    width: $friends-list-width;
+}
+
+.nitro-friends-remove-confirmation {
+    width: $friends-list-width;
+}
+
 @import "./views/friend-bar/FriendBarView";
 @import "./views/messenger/FriendsMessengerView";

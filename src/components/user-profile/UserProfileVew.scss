@@ -1,0 +1,106 @@
+.user-profile {
+    width: 560px;
+
+    .content-area {
+        color: black;
+    }
+
+    .user-container {
+        border-right: 1px solid gray;
+
+        .avatar-image {
+            left: -10px;
+        }
+
+        .add-friend {
+            margin: 5px;
+            margin-left: 10px;
+        }
+    }
+
+    .badge-container {
+        min-height: 50px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        margin: 0px;
+        margin-bottom: 2px;
+    }
+
+    .rooms-button-container {
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        padding: 1px;
+
+        .rooms-button {
+            display: inline-block;
+            text-align: center;
+            height: 100%;
+            text-decoration: underline;
+            margin-left: 10px;
+        }
+    }
+
+    .friends-container {
+        height: 100%;
+    }
+}
+
+.profile-groups {
+    height: 219px;
+
+    .profile-groups-item {
+        width: 50px;
+        height: 50px;
+        border-radius: $border-radius;
+        border-color: $grid-border-color !important;
+        background-color: $grid-bg-color;
+        border: nth(map-values($border-widths), 2) solid;
+
+        &.active {
+            border-color: $grid-active-border-color !important;
+            background-color: $grid-active-bg-color !important;
+        }
+
+        .icon {
+            z-index: 1;
+            top: 0px;
+            right: 0px;
+        }
+    }
+}
+
+.relationships-container {
+
+    .relationship-container {
+
+        .relationship 
+        {
+            position: relative;
+            
+            &.advanced {
+                background-color: white;
+                padding: 5px;
+                border-radius: 5px;
+            }
+
+            .relationship-text {
+                text-decoration: underline;
+            }
+
+            .avatar-image {
+                position: absolute;
+                width: 50px;
+                height: 80px;
+                right: 0;
+                margin-top: -60px;
+            }
+        }
+
+        .others-text {
+            margin-left: 20px;
+            height: 21px;
+            color: #939392;
+        }
+    }
+    
+}

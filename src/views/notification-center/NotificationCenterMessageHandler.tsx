@@ -80,7 +80,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
                 break;
         }
 
-        NotificationUtilities.showSingleBubble(LocalizeText('notifications.text.loyalty.received', [ 'amount' ], [ parser.amountChanged.toString() ]), NotificationBubbleType.INFO, imageUrl);
+        NotificationUtilities.showSingleBubble(LocalizeText('notifications.text.loyalty.received', [ 'AMOUNT' ], [ parser.amountChanged.toString() ]), NotificationBubbleType.INFO, imageUrl);
     }, []);
 
     CreateMessageHook(ActivityPointNotificationMessageEvent, onActivityPointNotificationMessageEvent);

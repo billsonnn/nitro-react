@@ -1,13 +1,14 @@
-import { CatalogEvent } from './CatalogEvent';
+import { NitroEvent } from '@nitrots/nitro-renderer';
+import { CatalogWidgetEvent } from './CatalogWidgetEvent';
 
-export class CatalogNameResultEvent extends CatalogEvent
+export class CatalogNameResultEvent extends NitroEvent
 {
     private _result: number;
     private _validationInfo: string;
 
     constructor(result: number, validationInfo: string)
     {
-        super(CatalogEvent.APPROVE_NAME_RESULT);
+        super(CatalogWidgetEvent.APPROVE_RESULT);
 
         this._result = result;
         this._validationInfo = validationInfo;

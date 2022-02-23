@@ -1,6 +1,6 @@
-import { NitroEvent, RoomEngineUseProductEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionDanceEvent, RoomSessionUserDataUpdateEvent, RoomWidgetEnum } from '@nitrots/nitro-renderer';
-import { GetRoomEngine, GetRoomSession, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
-import { FurniCategory } from '../../../../../views/inventory/common/FurniCategory';
+import { NitroEvent, RoomEngineUseProductEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionDanceEvent, RoomSessionPetStatusUpdateEvent, RoomSessionUserDataUpdateEvent, RoomWidgetEnum } from '@nitrots/nitro-renderer';
+import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
+import { FurniCategory } from '../../../../../components/inventory/common/FurniCategory';
 import { RoomWidgetAvatarInfoEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateUserDataEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../events';
 import { RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUseProductMessage, RoomWidgetUserActionMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
@@ -19,7 +19,7 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
 
                 let isDancing = false;
 
-                const userData = GetRoomSession().userDataManager.getUserData(GetSessionDataManager().userId);
+                const userData = this.container.roomSession.userDataManager.getUserData(GetSessionDataManager().userId);
 
                 if(userData && (userData.roomIndex === danceEvent.roomIndex)) isDancing = (danceEvent.danceId !== 0);
 
@@ -29,6 +29,9 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
                 return;
             case RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM:
                 this.processUsableRoomObject((event as RoomEngineUseProductEvent).objectId);
+                return;
+            case RoomSessionPetStatusUpdateEvent.PET_STATUS_UPDATE:
+                this.processRoomSessionPetStatusUpdateEvent((event as RoomSessionPetStatusUpdateEvent));
                 return;
         }
     }
@@ -44,28 +47,39 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
             case RoomWidgetRoomObjectMessage.GET_OWN_CHARACTER_INFO:
                 this.processOwnCharacterInfo();
                 break;
+            case RoomWidgetUserActionMessage.START_NAME_CHANGE:
+                // habbo help - start name change
+                break;
+            case RoomWidgetUserActionMessage.REQUEST_PET_UPDATE:
+                break;
+            case RoomWidgetUseProductMessage.PET_PRODUCT: {
+                const productMessage = (message as RoomWidgetUseProductMessage);
+
+                this.container.roomSession.usePetProduct(productMessage.objectId, productMessage.petId);
+                break;
+            }
+            case RoomWidgetUserActionMessage.HARVEST_PET:
+                this.container.roomSession.harvestPet(userId);
+                break;
+            case RoomWidgetUserActionMessage.COMPOST_PLANT:
+                this.container.roomSession.compostPlant(userId);
+                break;
             case RoomWidgetDanceMessage.DANCE: {
                 const danceMessage = (message as RoomWidgetDanceMessage);
 
-                GetRoomSession().sendDanceMessage(danceMessage.style);
+                this.container.roomSession.sendDanceMessage(danceMessage.style);
                 break;
             }
             case RoomWidgetAvatarExpressionMessage.AVATAR_EXPRESSION: {
                 const expressionMessage = (message as RoomWidgetAvatarExpressionMessage);
 
-                GetRoomSession().sendExpressionMessage(expressionMessage.animation.ordinal)
+                this.container.roomSession.sendExpressionMessage(expressionMessage.animation.ordinal)
                 break;
             }
             case RoomWidgetChangePostureMessage.CHANGE_POSTURE: {
                 const postureMessage = (message as RoomWidgetChangePostureMessage);
 
-                GetRoomSession().sendPostureMessage(postureMessage.posture);
-                break;
-            }
-            case RoomWidgetUseProductMessage.PET_PRODUCT: {
-                const productMessage = (message as RoomWidgetUseProductMessage);
-
-                GetRoomSession().usePetProduct(productMessage.objectId, productMessage.petId);
+                this.container.roomSession.sendPostureMessage(postureMessage.posture);
                 break;
             }
         }
@@ -78,9 +92,11 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
         const userId = GetSessionDataManager().userId;
         const userName = GetSessionDataManager().userName;
         const allowNameChange = GetSessionDataManager().canChangeName;
-        const userData = GetRoomSession().userDataManager.getUserData(userId);
+        const userData = this.container.roomSession.userDataManager.getUserData(userId);
 
-        if(userData) this.container.eventDispatcher.dispatchEvent(new RoomWidgetAvatarInfoEvent(userId, userName, userData.type, userData.roomIndex, allowNameChange));
+        if(!userData) return;
+        
+        this.container.eventDispatcher.dispatchEvent(new RoomWidgetAvatarInfoEvent(userId, userName, userData.type, userData.roomIndex, allowNameChange));
     }
 
     private processUsableRoomObject(objectId: number): void
@@ -120,24 +136,24 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
             {
                 if(userData.ownerId === ownerId)
                 {
-                    if(userData.hasSaddle && (specialType === FurniCategory._Str_6096)) replace = true;
+                    if(userData.hasSaddle && (specialType === FurniCategory.PET_SADDLE)) replace = true;
 
                     const figureParts = userData.figure.split(' ');
                     const figurePart = (figureParts.length ? parseInt(figureParts[0]) : -1);
 
                     if(figurePart === part)
                     {
-                        if(specialType === FurniCategory._Str_6915)
+                        if(specialType === FurniCategory.MONSTERPLANT_REVIVAL)
                         {
                             if(!userData.canRevive) continue;
                         }
 
-                        if(specialType === FurniCategory._Str_8726)
+                        if(specialType === FurniCategory.MONSTERPLANT_REBREED)
                         {
                             if((userData.petLevel < 7) || userData.canRevive || userData.canBreed) continue;
                         }
 
-                        if(specialType === FurniCategory._Str_9449)
+                        if(specialType === FurniCategory.MONSTERPLANT_FERTILIZE)
                         {
                             if((userData.petLevel >= 7) || userData.canRevive) continue;
                         }
@@ -151,6 +167,11 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
         if(useProductBubbles.length) this.container.eventDispatcher.dispatchEvent(new RoomWidgetUseProductBubbleEvent(RoomWidgetUseProductBubbleEvent.USE_PRODUCT_BUBBLES, useProductBubbles));
     }
 
+    private processRoomSessionPetStatusUpdateEvent(event: RoomSessionPetStatusUpdateEvent): void
+    {
+        
+    }
+
     public get type(): string
     {
         return RoomWidgetEnum.AVATAR_INFO;
@@ -162,18 +183,29 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
             RoomSessionUserDataUpdateEvent.USER_DATA_UPDATED,
             RoomSessionDanceEvent.RSDE_DANCE,
             RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY,
-            RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM
+            RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM,
+            RoomSessionPetStatusUpdateEvent.PET_STATUS_UPDATE
         ];
     }
+
+    // UserNameUpdateEvent.UNUE_NAME_UPDATED
+    // RoomSessionNestBreedingSuccessEvent.RSPFUE_NEST_BREEDING_SUCCESS
+    // RoomSessionPetLevelUpdateEvent.RSPLUE_PET_LEVEL_UPDATE
 
     public get messageTypes(): string[]
     {
         return [
             RoomWidgetRoomObjectMessage.GET_OWN_CHARACTER_INFO,
+            RoomWidgetUserActionMessage.START_NAME_CHANGE,
+            RoomWidgetUserActionMessage.REQUEST_PET_UPDATE,
+            RoomWidgetUseProductMessage.PET_PRODUCT,
+            RoomWidgetUserActionMessage.REQUEST_BREED_PET,
+            RoomWidgetUserActionMessage.HARVEST_PET,
+            RoomWidgetUserActionMessage.REVIVE_PET,
+            RoomWidgetUserActionMessage.COMPOST_PLANT,
             RoomWidgetDanceMessage.DANCE,
             RoomWidgetAvatarExpressionMessage.AVATAR_EXPRESSION,
             RoomWidgetChangePostureMessage.CHANGE_POSTURE,
-            RoomWidgetUseProductMessage.PET_PRODUCT
         ];
     }
 }

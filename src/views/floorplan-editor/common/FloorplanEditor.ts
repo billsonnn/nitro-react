@@ -30,7 +30,7 @@ export class FloorplanEditor extends PixiApplicationProxy
         super({
             width: width,
             height: height,
-            backgroundColor: 0x2b2b2b,
+            backgroundColor: 0x000000,
             antialias: true,
             autoDensity: true,
             resolution: 1,
@@ -43,7 +43,7 @@ export class FloorplanEditor extends PixiApplicationProxy
         this._width = 0;
         this._height = 0;
         this._isHolding = false;
-        this._lastUsedTile = new NitroPoint(-1,-1);
+        this._lastUsedTile = new NitroPoint(-1, -1);
         this._actionSettings = new ActionSettings();
     }
 
@@ -52,7 +52,7 @@ export class FloorplanEditor extends PixiApplicationProxy
         if(!this._isInitialized)
         {
             this.loader.add('tiles', GetConfiguration<string>('floorplan.tile.url'));
-            
+
             this.loader.load((_, resources) =>
             {
                 this._tilemapRenderer = new NitroTilemap(resources['tiles'].spritesheet.baseTexture);
@@ -87,10 +87,10 @@ export class FloorplanEditor extends PixiApplicationProxy
 
         this._tilemapRenderer.on('pointerdown', (event: PixiInteractionEventProxy) =>
         {
-            if(!(event.data.originalEvent instanceof PointerEvent)) return;
+            if(!(event.data.originalEvent instanceof PointerEvent) && !(event.data.originalEvent instanceof TouchEvent)) return;
 
             const pointerEvent = event.data.originalEvent;
-            if(pointerEvent.button === 2) return;
+            if((pointerEvent instanceof MouseEvent) && pointerEvent.button === 2) return;
 
 
             const location = event.data.global;
@@ -127,9 +127,8 @@ export class FloorplanEditor extends PixiApplicationProxy
             const bufIndex = j + bufSize;
             const data = buffer.slice(j, bufIndex);
 
-            const width = data[4];
-            const height = data[5];
-
+            const width = TILE_SIZE;
+            const height = TILE_SIZE / 2;
 
             const mousePositionX = Math.floor(tempPoint.x);
             const mousePositionY = Math.floor(tempPoint.y);
@@ -137,12 +136,11 @@ export class FloorplanEditor extends PixiApplicationProxy
             const tileStartX = data[2];
             const tileStartY = data[3];
 
-
             const centreX = tileStartX + (width / 2);
             const centreY = tileStartY + (height / 2);
 
-            const dx = Math.abs(mousePositionX - centreX - 2);
-            const dy = Math.abs(mousePositionY - centreY - 2);
+            const dx = Math.abs(mousePositionX - centreX);
+            const dy = Math.abs(mousePositionY - centreY);
 
             const solution = (dx / (width * 0.5) + dy / (height * 0.5) <= 1);//todo: improve this
             if(solution)
@@ -171,7 +169,6 @@ export class FloorplanEditor extends PixiApplicationProxy
         return false;
     }
 
-    
     private onClick(x: number, y: number): void
     {
         const tile = this._tilemap[y][x];
@@ -212,7 +209,7 @@ export class FloorplanEditor extends PixiApplicationProxy
         {
             if((x + 1) > this._width) this._width = x + 1;
 
-            if( (y + 1) > this._height) this._height = y + 1;
+            if((y + 1) > this._height) this._height = y + 1;
         }
 
         const newHeight = HEIGHT_SCHEME[futureHeightIndex];
@@ -229,7 +226,7 @@ export class FloorplanEditor extends PixiApplicationProxy
     public renderTiles(): void
     {
         this.tilemapRenderer.clear();
-        
+
         for(let y = 0; y < this._tilemap.length; y++)
         {
             for(let x = 0; x < this.tilemap[y].length; x++)
@@ -237,13 +234,13 @@ export class FloorplanEditor extends PixiApplicationProxy
                 const tile = this.tilemap[y][x];
                 let assetName = tile.height;
 
-               if(this._doorLocation.x === x && this._doorLocation.y === y)
+                if(this._doorLocation.x === x && this._doorLocation.y === y)
                     assetName = FloorplanEditor.TILE_DOOR;
 
                 if(tile.isBlocked) assetName = FloorplanEditor.TILE_BLOCKED;
-                
+
                 //if((tile.height === 'x') || tile.height === 'X') continue;
-                const [positionX, positionY ] = getScreenPositionForTile(x, y);
+                const [positionX, positionY] = getScreenPositionForTile(x, y);
                 this._tilemapRenderer.tile(`${assetName}.png`, positionX, positionY);
             }
         }
@@ -337,10 +334,10 @@ export class FloorplanEditor extends PixiApplicationProxy
 
                     if(tile.height !== 'x')
                     {
-                        if( (x + 1) > this._width)
+                        if((x + 1) > this._width)
                             this._width = x + 1;
 
-                        if( (y + 1) > this._height)
+                        if((y + 1) > this._height)
                             this._height = y + 1;
                     }
                 }

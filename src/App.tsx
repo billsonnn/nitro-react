@@ -1,13 +1,14 @@
-import { ConfigurationEvent, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
+import { ConfigurationEvent, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetCommunication, GetConfiguration, GetNitroInstance } from './api';
+import { Base } from './common';
+import { LoadingView } from './components/loading/LoadingView';
+import { MainView } from './components/main/MainView';
 import { useConfigurationEvent } from './hooks/events/core/configuration/configuration-event';
 import { useLocalizationEvent } from './hooks/events/nitro/localization/localization-event';
 import { dispatchMainEvent, useMainEvent } from './hooks/events/nitro/main-event';
 import { useRoomEngineEvent } from './hooks/events/nitro/room/room-engine-event';
 import { TransitionAnimation, TransitionAnimationTypes } from './layout';
-import { LoadingView } from './views/loading/LoadingView';
-import { MainView } from './views/main/MainView';
 
 export const App: FC<{}> = props =>
 {
@@ -68,6 +69,8 @@ export const App: FC<{}> = props =>
                 setMessage('Finishing Up');
 
                 GetNitroInstance().init();
+
+                if(LegacyExternalInterface.available) LegacyExternalInterface.call('legacyTrack', 'authentication', 'authok', []);
 				return;
 			case NitroCommunicationDemoEvent.CONNECTION_ERROR:
                 setIsError(true);
@@ -79,7 +82,7 @@ export const App: FC<{}> = props =>
                 setIsError(true);
                 setMessage('Connection Error');
 
-                LegacyExternalInterface.call('disconnect', -1, 'client.init.handshake.fail');
+                HabboWebTools.send(-1, 'client.init.handshake.fail');
                 return;
             case RoomEngineEvent.ENGINE_INITIALIZED:
                 setIsReady(true);
@@ -125,12 +128,13 @@ export const App: FC<{}> = props =>
     }
     
     return (
-        <div className="nitro-app overflow-hidden">
-            <div id="nitro-alerts-container" />
-            { (!isReady || isError) && <LoadingView isError={ isError } message={ message } /> }
+        <Base fit overflow="hidden">
+            { (!isReady || isError) &&
+                <LoadingView isError={ isError } message={ message } /> }
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ (isReady && !isError) }>
                 <MainView />
             </TransitionAnimation>
-        </div>
+            <Base id="draggable-windows-container" />
+        </Base>
     );
 }
