@@ -60,19 +60,19 @@ export const GroupTabColorsView: FC<{}> = props =>
             </Column>
             <Column size={ 5 } gap={ 1 } overflow="hidden">
                 <Text bold>{ LocalizeText('group.edit.color.primary.color') }</Text>
-                <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 } className="nitro-groups-color-grid">
+                <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 }>
                     { groupColors && groupColorsA && groupColorsA.map((item, index) =>
                         {
-                            return <div key={ index } className={ 'color-swatch cursor-pointer' + classNames({ ' active': (groupColors[0] === item.id) }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(0, item.id) }></div>
+                            return <div key={ index } className={ 'group-badge-color-swatch cursor-pointer' + classNames({ ' active': (groupColors[0] === item.id) }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(0, item.id) }></div>
                         }) }
                 </AutoGrid>
             </Column>
             <Column size={ 5 } gap={ 1 } overflow="hidden">
                 <Text bold>{ LocalizeText('group.edit.color.secondary.color') }</Text>
-                <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 } className="nitro-groups-color-grid">
+                <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 }>
                     { groupColorsB && groupColorsB.map((item, index) =>
                         {
-                            return <div key={ index } className={ 'color-swatch cursor-pointer' + classNames({ ' active': (groupColors[1] === item.id) }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(1, item.id) }></div>
+                            return <div key={ index } className={ 'group-badge-color-swatch cursor-pointer' + classNames({ ' active': (groupColors[1] === item.id) }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(1, item.id) }></div>
                         }) }
                 </AutoGrid>
             </Column>

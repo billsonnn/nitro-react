@@ -1,8 +1,3 @@
-.nitro-group-manager {
-    width: 420px;
-    max-height: 400px;
-}
-
 .nitro-group-tab-image {
     width: 122px;
     height: 68px;
@@ -80,6 +75,55 @@
             }
         }
     }
+}
+
+.group-badge-preview {
+    width: 42px;
+    height: 42px;
+    background-color: $grid-bg-color;
+
+    &.active {
+        border-color: $grid-active-border-color !important;
+        background-color: $grid-active-bg-color;
+
+        &:before {
+            position: absolute;
+            content: ' ';
+            width: 0;
+            height: 0;
+            border-top: 10px solid white;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            bottom: -10px;
+        }
+    }
+}
+
+.group-badge-color-swatch,
+.group-badge-position-swatch {
+    position: relative;
+    border-radius: $border-radius;
+    width: 16px;
+    height: 16px;
+    background: $white;
+    border: 2px solid $white;
+    box-shadow: inset 3px 3px rgba(0, 0, 0, .1);
+
+    &.active {
+        box-shadow: none;
+    }
+}
+
+.group-badge-position-swatch {
+    box-shadow: inset 3px 3px rgba(0, 0, 0, .1);
+
+    &.active {
+        background: $primary;
+    }
+}
+
+.group-badge-color-swatch {
+    box-shadow: inset 2px 2px rgba(0, 0, 0, .2);
 }
 
 .group-color-swatch {

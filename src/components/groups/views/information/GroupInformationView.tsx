@@ -108,8 +108,8 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
         <>
             <Grid overflow="hidden">
                 <Column center size={ 3 } overflow="hidden">
-                    <Flex alignItems="center" className="group-badge">
-                        <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } className="mx-auto d-block"/>
+                    <Flex alignItems="center" overflow="hidden" className="group-badge">
+                        <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } scale={ 2 } />
                     </Flex>
                     <Column alignItems="center" gap={ 1 }>
                         <Text small underline pointer onClick={ () => handleAction('members') }>{ LocalizeText('group.membercount', [ 'totalMembers' ], [ groupInformation.membersCount.toString() ]) }</Text>

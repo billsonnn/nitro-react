@@ -1,4 +1,4 @@
-import { GroupDeleteComposer, GroupSaveBadgeComposer, GroupSaveColorsComposer, GroupSaveInformationComposer, GroupSavePreferencesComposer } from '@nitrots/nitro-renderer';
+import { GroupDeleteComposer, GroupSaveColorsComposer, GroupSaveInformationComposer, GroupSavePreferencesComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { Base, Button, Column, Flex, Text } from '../../../../common';
@@ -44,7 +44,7 @@ export const GroupManagerView: FC<{}> = props =>
         });
 
         SendMessageHook(new GroupSaveInformationComposer(groupId, groupName, groupDescription));
-        SendMessageHook(new GroupSaveBadgeComposer(groupId, badge));
+        //SendMessageHook(new GroupSaveBadgeComposer(groupId, badge));
         SendMessageHook(new GroupSaveColorsComposer(groupId, groupColors[0], groupColors[1]));
         SendMessageHook(new GroupSavePreferencesComposer(groupId, groupState, groupCanMembersDecorate ? 0 : 1));
 
