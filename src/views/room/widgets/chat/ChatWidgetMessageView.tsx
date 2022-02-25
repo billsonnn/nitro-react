@@ -1,20 +1,20 @@
-import { FC, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { useRoomContext } from '../../../context/RoomContext';
-import { ChatWidgetMessageViewProps } from './ChatWidgetMessageView.types';
+import { FC, MouseEvent, useEffect, useRef, useState } from 'react';
+import { ChatBubbleMessage } from './common/ChatBubbleMessage';
+
+interface ChatWidgetMessageViewProps
+{
+    chat: ChatBubbleMessage;
+    makeRoom: (chat: ChatBubbleMessage) => void;
+    onChatClicked: (chat: ChatBubbleMessage) => void;
+}
 
 export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
 {
     const { chat = null, makeRoom = null, onChatClicked = null } = props;
     const [ isVisible, setIsVisible ] = useState(false);
-    const { widgetHandler = null } = useRoomContext();
     const elementRef = useRef<HTMLDivElement>();
 
-    const onMouseDown = useCallback((event: MouseEvent<HTMLDivElement>) =>
-    {
-        if(event.shiftKey) return;
-
-        onChatClicked(chat);
-    }, [ chat, onChatClicked ]);
+    const onMouseDown = (event: MouseEvent<HTMLDivElement>) => ((event.shiftKey) && onChatClicked(chat));
 
     useEffect(() =>
     {
@@ -54,10 +54,7 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
         }
     }, [ elementRef, chat, makeRoom ]);
 
-    useEffect(() =>
-    {
-        setIsVisible(chat.visible);
-    }, [ chat.visible ]);
+    useEffect(() => setIsVisible(chat.visible), [ chat.visible ]);
 
     return (
         <div ref={ elementRef } className="bubble-container" style={ { visibility: (isVisible ? 'visible' : 'hidden') } } onMouseDown={ onMouseDown }>
