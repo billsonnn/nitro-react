@@ -105,49 +105,47 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
     if(!groupInformation) return null;
 
     return (
-        <>
-            <Grid overflow="hidden">
-                <Column center size={ 3 } overflow="hidden">
-                    <Flex alignItems="center" overflow="hidden" className="group-badge">
-                        <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } scale={ 2 } />
-                    </Flex>
-                    <Column alignItems="center" gap={ 1 }>
-                        <Text small underline pointer onClick={ () => handleAction('members') }>{ LocalizeText('group.membercount', [ 'totalMembers' ], [ groupInformation.membersCount.toString() ]) }</Text>
-                        { (groupInformation.pendingRequestsCount > 0) &&
-                            <Text small underline pointer onClick={ () => handleAction('members_pending') }>{ LocalizeText('group.pendingmembercount', [ 'amount' ], [ groupInformation.pendingRequestsCount.toString() ]) }</Text> }
-                        { groupInformation.isOwner &&
-                            <Text small underline pointer onClick={ () => handleAction('manage') }>{ LocalizeText('group.manage') }</Text> }
-                    </Column>
-                    { getRoleIcon() }
+        <Grid overflow="hidden">
+            <Column center size={ 3 } overflow="hidden">
+                <Flex alignItems="center" overflow="hidden" className="group-badge">
+                    <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } scale={ 2 } />
+                </Flex>
+                <Column alignItems="center" gap={ 1 }>
+                    <Text small underline pointer onClick={ () => handleAction('members') }>{ LocalizeText('group.membercount', [ 'totalMembers' ], [ groupInformation.membersCount.toString() ]) }</Text>
+                    { (groupInformation.pendingRequestsCount > 0) &&
+                        <Text small underline pointer onClick={ () => handleAction('members_pending') }>{ LocalizeText('group.pendingmembercount', [ 'amount' ], [ groupInformation.pendingRequestsCount.toString() ]) }</Text> }
+                    { groupInformation.isOwner &&
+                        <Text small underline pointer onClick={ () => handleAction('manage') }>{ LocalizeText('group.manage') }</Text> }
                 </Column>
-                <Column size={ 9 } justifyContent="between" overflow="auto">
-                    <Column overflow="hidden">
-                        <Column gap={ 1 }>
-                            <Flex alignItems="center" gap={ 2 }>
-                                <Text bold>{ groupInformation.title }</Text>
-                                <Flex gap={ 1 }>
-                                    <i className={ 'icon icon-group-type-' + groupInformation.type } />
-                                    { groupInformation.canMembersDecorate &&
-                                        <i className="icon icon-group-decorate" /> }
-                                </Flex>
+                { getRoleIcon() }
+            </Column>
+            <Column size={ 9 } justifyContent="between" overflow="auto">
+                <Column overflow="hidden">
+                    <Column gap={ 1 }>
+                        <Flex alignItems="center" gap={ 2 }>
+                            <Text bold>{ groupInformation.title }</Text>
+                            <Flex gap={ 1 }>
+                                <i className={ 'icon icon-group-type-' + groupInformation.type } />
+                                { groupInformation.canMembersDecorate &&
+                                    <i className="icon icon-group-decorate" /> }
                             </Flex>
-                            <Text small>{ LocalizeText('group.created', ['date', 'owner'], [groupInformation.createdAt, groupInformation.ownerName]) }</Text>
-                        </Column>
-                        <Text small overflow="auto" className="group-description">{ groupInformation.description }</Text>
+                        </Flex>
+                        <Text small>{ LocalizeText('group.created', ['date', 'owner'], [groupInformation.createdAt, groupInformation.ownerName]) }</Text>
                     </Column>
-                    <Column>
-                        <Column gap={ 1 }>
-                            <Text small underline pointer onClick={ () => handleAction('homeroom') }>{ LocalizeText('group.linktobase') }</Text>
-                            <Text small underline pointer onClick={ () => handleAction('furniture') }>{ LocalizeText('group.buyfurni') }</Text>
-                            <Text small underline pointer>{ LocalizeText('group.showgroups') }</Text>
-                        </Column>
-                        { (groupInformation.type !== GroupType.PRIVATE) && 
-                            <Button disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) || isRealOwner() } onClick={ handleButtonClick }>
-                                { LocalizeText(getButtonText()) }
-                            </Button> }
-                    </Column>
+                    <Text small overflow="auto" className="group-description">{ groupInformation.description }</Text>
                 </Column>
-            </Grid>
-        </>
+                <Column>
+                    <Column gap={ 1 }>
+                        <Text small underline pointer onClick={ () => handleAction('homeroom') }>{ LocalizeText('group.linktobase') }</Text>
+                        <Text small underline pointer onClick={ () => handleAction('furniture') }>{ LocalizeText('group.buyfurni') }</Text>
+                        <Text small underline pointer>{ LocalizeText('group.showgroups') }</Text>
+                    </Column>
+                    { (groupInformation.type !== GroupType.PRIVATE) && 
+                        <Button disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) || isRealOwner() } onClick={ handleButtonClick }>
+                            { LocalizeText(getButtonText()) }
+                        </Button> }
+                </Column>
+            </Column>
+        </Grid>
     );
 };
