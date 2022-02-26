@@ -89,7 +89,7 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
     return (
         <NitroCardView>
             <NitroCardHeaderView headerText={ LocalizeText('widget.backgroundcolor.title') } onCloseClick={ close } />
-            <NitroCardContentView overflow="hidden">
+            <NitroCardContentView overflow="hidden" justifyContent="between">
                 <Column overflow="auto" gap={ 1 }>
                     <Column>
                         <Text bold>{ LocalizeText('widget.backgroundcolor.hue') }</Text>

@@ -9,9 +9,9 @@ import { useRoomContext } from '../../../context/RoomContext';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
 import { ContextMenuHeaderView } from '../../context-menu/views/header/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/views/list-item/ContextMenuListItemView';
-import { EffectBoxConfirmView } from './views/EffectBoxConfirmView';
-import { MonsterPlantSeedConfirmView } from './views/MonsterPlantSeedConfirmView';
-import { PurchasableClothingConfirmView } from './views/PurchasableClothingConfirmView';
+import { EffectBoxConfirmView } from './EffectBoxConfirmView';
+import { MonsterPlantSeedConfirmView } from './MonsterPlantSeedConfirmView';
+import { PurchasableClothingConfirmView } from './PurchasableClothingConfirmView';
 
 const MONSTERPLANT_SEED_CONFIRMATION: string = 'MONSTERPLANT_SEED_CONFIRMATION';
 const PURCHASABLE_CLOTHING_CONFIRMATION: string = 'PURCHASABLE_CLOTHING_CONFIRMATION';

@@ -9,8 +9,8 @@ import { FurnitureTrophyData } from '../trophy/FurnitureTrophyData';
 
 export const FurnitureBadgeDisplayView: FC<{}> = props =>
 {
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const [ trophyData, setTrophyData ] = useState<FurnitureTrophyData>(null);
+    const { widgetHandler = null } = useRoomContext();
 
     const onNitroEvent = useCallback((event: NitroEvent) =>
     {

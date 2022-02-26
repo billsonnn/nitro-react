@@ -1,6 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { IPhotoData, LocalizeText, RoomWidgetUpdateExternalImageEvent } from '../../../../../api';
-import { CreateEventDispatcherHook } from '../../../../../hooks';
+import { Flex, Text } from '../../../../../common';
+import { BatchUpdates, CreateEventDispatcherHook } from '../../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
 
@@ -10,19 +11,23 @@ export const FurnitureExternalImageView: FC<{}> = props =>
     const [ photoData, setPhotoData ] = useState<IPhotoData>(null);
     const { eventDispatcher = null } = useRoomContext();
     
-    const close = useCallback(() =>
+    const close = () =>
     {
         setObjectId(-1);
         setPhotoData(null)
-    }, []);
+    }
 
     const onRoomWidgetUpdateExternalImageEvent = useCallback((event: RoomWidgetUpdateExternalImageEvent) =>
     {
         switch(event.type)
         {
             case RoomWidgetUpdateExternalImageEvent.UPDATE_EXTERNAL_IMAGE: {
-                setObjectId(event.objectId);
-                setPhotoData(event.photoData);
+
+                BatchUpdates(() =>
+                {
+                    setObjectId(event.objectId);
+                    setPhotoData(event.photoData);
+                });
             }
         }
     }, []);
@@ -35,17 +40,16 @@ export const FurnitureExternalImageView: FC<{}> = props =>
         <NitroCardView className="nitro-external-image-widget">
             <NitroCardHeaderView headerText={ '' } onCloseClick={ close } />
             <NitroCardContentView>
-                <div className="d-flex justify-content-center align-items-center picture-preview border mb-2" style={ photoData.w ? { backgroundImage: 'url(' + photoData.w + ')' } : {} }>
+                <Flex center className="picture-preview border border-black" style={ photoData.w ? { backgroundImage: 'url(' + photoData.w + ')' } : {} }>
                     { !photoData.w &&
-                        <div className="text-black fw-bold">
-                            { LocalizeText('camera.loading') }
-                        </div> }
-                </div>
-                <span className="text-center text-black">{ photoData.m && <div>{ photoData.m }</div> }</span>
-                <div className="d-flex align-items-center justify-content-between">
-                    <span className="text-black">{ (photoData.n || '') }</span>
-                    <span className="text-black">{ new Date(photoData.t * 1000).toLocaleDateString() }</span>
-                </div>
+                        <Text bold>{ LocalizeText('camera.loading') }</Text> }
+                </Flex>
+                { photoData.m && photoData.m.length &&
+                    <Text center>{ photoData.m }</Text> }
+                <Flex alignItems="center" justifyContent="between">
+                    <Text>{ (photoData.n || '') }</Text>
+                    <Text>{ new Date(photoData.t * 1000).toLocaleDateString() }</Text>
+                </Flex>
             </NitroCardContentView>
         </NitroCardView>
     );
