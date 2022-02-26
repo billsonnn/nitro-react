@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRequestWidgetMessage, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
-import { CreateEventDispatcherHook } from '../../../../hooks';
+import { BatchUpdates, CreateEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../context/RoomContext';
 import { ChooserWidgetView } from './ChooserWidgetView';
 
@@ -25,8 +25,11 @@ export const UserChooserWidgetView: FC<{}> = props =>
 
     const onRoomWidgetChooserContentEvent = useCallback((event: RoomWidgetChooserContentEvent) =>
     {
-        setItems(event.items);
-        setIsVisible(true);
+        BatchUpdates(() =>
+        {
+            setItems(event.items);
+            setIsVisible(true);
+        });
     }, []);
 
     CreateEventDispatcherHook(RoomWidgetChooserContentEvent.USER_CHOOSER_CONTENT, eventDispatcher, onRoomWidgetChooserContentEvent);
@@ -49,8 +52,11 @@ export const UserChooserWidgetView: FC<{}> = props =>
 
     const close = useCallback(() =>
     {
-        setIsVisible(false);
-        setItems(null);
+        BatchUpdates(() =>
+        {
+            setIsVisible(false);
+            setItems(null);
+        });
     }, []);
     
     if(!isVisible) return null;
