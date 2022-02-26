@@ -50,9 +50,21 @@
     
 }
 
+.nitro-mannequin {
+}
+
+.mannequin-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 83px;
+    height: 130px;
+    background-image: url('../../../../assets/images/room-widgets/mannequin-widget/mannequin-spritesheet.png');
+    overflow: hidden;
+}
+
 @import './friend-furni/FurnitureFriendFurniView';
 @import './manipulation-menu/FurnitureManipulationMenuView';
-@import './mannequin/FurnitureMannequinView';
 @import './stickie/FurnitureStickieView';
 @import './high-score/FurnitureHighScoreView';
 @import './youtube-tv/FurnitureYoutubeDisplayView';
