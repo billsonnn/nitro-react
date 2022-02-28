@@ -106,15 +106,15 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
 
         let pageId = currentOffer.page.pageId;
 
-        if(pageId === -1)
-        {
-            const nodes = getNodesByOfferId(currentOffer.offerId);
+        // if(pageId === -1)
+        // {
+        //     const nodes = getNodesByOfferId(currentOffer.offerId);
 
-            if(nodes) pageId = nodes[0].pageId;
-        }
+        //     if(nodes) pageId = nodes[0].pageId;
+        // }
 
         SendMessageHook(new PurchaseFromCatalogComposer(pageId, currentOffer.offerId, extraData, quantity));
-    }, [ currentOffer, purchaseCallback, extraData, quantity, getNodesByOfferId ]);
+    }, [ currentOffer, purchaseCallback, extraData, quantity ]);
 
     useEffect(() =>
     {

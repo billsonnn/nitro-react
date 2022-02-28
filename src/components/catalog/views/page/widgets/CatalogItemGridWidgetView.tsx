@@ -21,6 +21,10 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
 
     const selectOffer = (offer: IPurchasableOffer) =>
     {
+        offer.activate();
+
+        if(offer.isLazy) return;
+        
         setCurrentOffer(offer);
 
         if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
@@ -31,10 +35,7 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
 
     return (
         <AutoGrid columnCount={ columnCount } { ...rest }>
-            { currentPage.offers && (currentPage.offers.length > 0) && currentPage.offers.map((offer, index) =>
-            {
-                return <CatalogGridOfferView key={ index } itemActive={ (currentOffer && (currentOffer.offerId === offer.offerId)) } offer={ offer } onClick={ event => selectOffer(offer) } />;
-            }) }
+            { currentPage.offers && (currentPage.offers.length > 0) && currentPage.offers.map((offer, index) => <CatalogGridOfferView key={ index } itemActive={ (currentOffer && (currentOffer.offerId === offer.offerId)) } offer={ offer } onClick={ event => selectOffer(offer) } />) }
             { children }
         </AutoGrid>
     );
