@@ -14,12 +14,12 @@ export const RoomToolsWidgetView: FC<{}> = props =>
 {
     const [ isZoomedIn, setIsZoomedIn ] = useState(false);
     const [ isLiked, setIsLiked ] = useState(false);
-    const { widgetHandler = null } = useRoomContext();
     const [ roomName, setRoomName ] = useState(null);
     const [ roomOwner, setRoomOwner ] = useState(null);
     const [ roomTags, setRoomTags ] = useState(null);
     const [ roomInfoDisplay, setRoomInfoDisplay ] = useState(false);
     const [ isOpen, setIsOpen ] = useState(false);
+    const { widgetHandler = null } = useRoomContext();
 
     const handleToolClick = (action: string) =>
     {
