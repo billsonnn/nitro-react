@@ -13,13 +13,14 @@ export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttrib
     position?: PositionType;
     float?: FloatType;
     pointer?: boolean;
+    visible?: boolean;
     textColor?: ColorVariantType;
     classNames?: string[];
 }
 
 export const Base: FC<BaseProps<HTMLDivElement>> = props =>
 {
-    const { ref = null, innerRef = null, fit = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, float = null, pointer = false, textColor = null, classNames = [], className = '', style = {}, ...rest } = props;
+    const { ref = null, innerRef = null, fit = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, float = null, pointer = false, visible = null, textColor = null, classNames = [], className = '', style = {}, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -41,12 +42,14 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
 
         if(pointer) newClassNames.push('cursor-pointer');
 
+        if(visible !== null) newClassNames.push(visible ? 'visible' : 'invisible');
+
         if(textColor) newClassNames.push('text-' + textColor);
 
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ fit, grow, shrink, fullWidth, fullHeight, overflow, position, float, pointer, textColor, classNames ]);
+    }, [ fit, grow, shrink, fullWidth, fullHeight, overflow, position, float, pointer, visible, textColor, classNames ]);
 
     const getClassName = useMemo(() =>
     {

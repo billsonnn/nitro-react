@@ -1,5 +1,4 @@
-import { FC, useMemo } from 'react';
-import { CSSProperties } from 'styled-components';
+import { CSSProperties, FC, useMemo } from 'react';
 import { Base, BaseProps } from './Base';
 import { GridContextProvider } from './GridContext';
 import { AlignItemType, AlignSelfType, JustifyContentType, SpacingType } from './types';
