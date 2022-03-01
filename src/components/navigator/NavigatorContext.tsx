@@ -1,7 +1,7 @@
 import { createContext, Dispatch, FC, ProviderProps, useContext } from 'react';
-import { INavigatorAction, INavigatorState } from '../reducers/NavigatorReducer';
+import { INavigatorAction, INavigatorState } from './reducers/NavigatorReducer';
 
-export interface INavigatorContext
+interface INavigatorContext
 {
     navigatorState: INavigatorState;
     dispatchNavigatorState: Dispatch<INavigatorAction>;

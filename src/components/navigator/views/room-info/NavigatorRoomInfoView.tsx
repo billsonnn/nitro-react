@@ -17,7 +17,7 @@ import { SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, UserProfileIconView } from '../../../../layout';
 import { RoomThumbnailView } from '../../../../layout/room-thumbnail/RoomThumbnailView';
 import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
-import { useNavigatorContext } from '../../context/NavigatorContext';
+import { useNavigatorContext } from '../../NavigatorContext';
 import { NavigatorActions } from '../../reducers/NavigatorReducer';
 
 export class NavigatorRoomInfoViewProps

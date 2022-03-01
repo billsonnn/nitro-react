@@ -4,7 +4,7 @@ import { LocalizeText } from '../../../../api';
 import { Button } from '../../../../common/Button';
 import { Flex } from '../../../../common/Flex';
 import { SearchFilterOptions } from '../../common/SearchFilterOptions';
-import { useNavigatorContext } from '../../context/NavigatorContext';
+import { useNavigatorContext } from '../../NavigatorContext';
 
 export interface NavigatorSearchViewProps
 {

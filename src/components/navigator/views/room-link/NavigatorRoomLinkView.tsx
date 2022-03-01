@@ -5,7 +5,7 @@ import { Flex } from '../../../../common/Flex';
 import { Text } from '../../../../common/Text';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { RoomThumbnailView } from '../../../../layout/room-thumbnail/RoomThumbnailView';
-import { useNavigatorContext } from '../../context/NavigatorContext';
+import { useNavigatorContext } from '../../NavigatorContext';
 
 export class NavigatorRoomLinkViewProps
 {

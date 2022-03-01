@@ -12,7 +12,7 @@ import { BatchUpdates } from '../../../../hooks';
 import { SendMessageHook } from '../../../../hooks/messages';
 import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { IRoomModel, RoomModels } from '../../common/RoomModels';
-import { useNavigatorContext } from '../../context/NavigatorContext';
+import { useNavigatorContext } from '../../NavigatorContext';
 
 export const NavigatorRoomCreatorView: FC<{}> = props =>
 {
