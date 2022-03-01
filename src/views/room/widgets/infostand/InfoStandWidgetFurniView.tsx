@@ -1,14 +1,20 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CrackableDataType, GroupInformationComposer, GroupInformationEvent, RoomControllerLevel, RoomObjectCategory, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage } from '../../../../../../api';
-import { CreateMessageHook, SendMessageHook } from '../../../../../../hooks';
-import { UserProfileIconView } from '../../../../../../layout';
-import { BadgeImageView } from '../../../../../shared/badge-image/BadgeImageView';
-import { LimitedEditionCompactPlateView } from '../../../../../shared/limited-edition/LimitedEditionCompactPlateView';
-import { RarityLevelView } from '../../../../../shared/rarity-level/RarityLevelView';
-import { useRoomContext } from '../../../../context/RoomContext';
-import { InfoStandBaseView } from '../base/InfoStandBaseView';
-import { InfoStandWidgetFurniViewProps } from './InfoStandWidgetFurniView.types';
+import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage, RoomWidgetUpdateInfostandFurniEvent } from '../../../../api';
+import { Button, Column, Flex, Text } from '../../../../common';
+import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../hooks';
+import { UserProfileIconView } from '../../../../layout';
+import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
+import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/LimitedEditionCompactPlateView';
+import { RarityLevelView } from '../../../shared/rarity-level/RarityLevelView';
+import { useRoomContext } from '../../context/RoomContext';
+
+interface InfoStandWidgetFurniViewProps
+{
+    furniData: RoomWidgetUpdateInfostandFurniEvent;
+    close: () => void;
+}
 
 const PICKUP_MODE_NONE: number = 0;
 const PICKUP_MODE_EJECT: number = 1;
@@ -117,19 +123,22 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
         if(furniData.isStickie) pickupMode = PICKUP_MODE_NONE;
 
-        setPickupMode(pickupMode);
-        setCanMove(canMove);
-        setCanRotate(canRotate);
-        setCanUse(canUse);
-        setFurniKeys(furniKeyss);
-        setFurniValues(furniValuess);
-        setCustomKeys(customKeyss);
-        setCustomValues(customValuess);
-        setIsCrackable(isCrackable);
-        setCrackableHits(crackableHits);
-        setCrackableTarget(crackableTarget);
-        setGodMode(godMode);
-        setGroupName(null);
+        BatchUpdates(() =>
+        {
+            setPickupMode(pickupMode);
+            setCanMove(canMove);
+            setCanRotate(canRotate);
+            setCanUse(canUse);
+            setFurniKeys(furniKeyss);
+            setFurniValues(furniValuess);
+            setCustomKeys(customKeyss);
+            setCustomValues(customValuess);
+            setIsCrackable(isCrackable);
+            setCrackableHits(crackableHits);
+            setCrackableTarget(crackableTarget);
+            setGodMode(godMode);
+            setGroupName(null);
+        });
         
         if(furniData.groupId) SendMessageHook(new GroupInformationComposer(furniData.groupId, false));
     }, [ roomSession, furniData ]);
@@ -247,97 +256,125 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
     if(!furniData) return null;
 
     return (
-        <>
-            <InfoStandBaseView headerText={ furniData.name } onCloseClick={ close }>
-                <div className="position-relative w-100">
-                    { furniData.stuffData.isUnique &&
-                        <div className="position-absolute end-0">
-                            <LimitedEditionCompactPlateView uniqueNumber={ furniData.stuffData.uniqueNumber } uniqueSeries={ furniData.stuffData.uniqueSeries } />
-                        </div> }
-                    { (furniData.stuffData.rarityLevel > -1) &&
-                        <div className="position-absolute end-0">
-                            <RarityLevelView level={ furniData.stuffData.rarityLevel } />
-                        </div> }
-                    { furniData.image && furniData.image.src.length && 
-                        <img className="d-block mx-auto" src={ furniData.image.src } alt="" /> }
-                </div>
-                <hr className="m-0 my-1" />
-                <div className="small text-wrap">{ furniData.description }</div>
-                <hr className="m-0 my-1" />
-                <div className="d-flex align-items-center">
-                    <UserProfileIconView userId={ furniData.ownerId } />
-                    <div className="small text-wrap">{ LocalizeText('furni.owner', [ 'name' ], [ furniData.ownerName ]) }</div>
-                </div>
-                { (furniData.purchaseOfferId > 0) && <button type="button" className="btn btn-primary btn-sm mt-1" onClick={ event => processButtonAction('buy_one') }>{ LocalizeText('infostand.button.buy') }</button> }
-                { isCrackable &&
-                    <>
-                        <hr className="m-0 my-1" />
-                        <div className="small text-wrap">{ LocalizeText('infostand.crackable_furni.hits_remaining', [ 'hits', 'target' ], [ crackableHits.toString(), crackableTarget.toString() ]) }</div>
-                    </> }
-                { furniData.groupId > 0 &&
-                    <>
-                        <hr className="m-0 my-1" />
-                        <div className="d-flex align-items-center cursor-pointer text-decoration-underline gap-2" onClick={ () => GetGroupInformation(furniData.groupId) }>
-                            <BadgeImageView badgeCode={ getGroupBadgeCode() } isGroup={ true } />
-                            <div>{ groupName }</div>
-                        </div>
-                    </> }
-                { godMode &&
-                    <>
-                        <hr className="m-0 my-1" />
-                        <div className="small text-wrap">ID: { furniData.id }</div>
-                        { (furniKeys.length > 0) &&
+        <Column gap={ 1 } alignItems="end">
+            <Column className="nitro-infostand rounded">
+                <Column overflow="visible" className="container-fluid content-area" gap={ 1 }>
+                    <Column gap={ 1 }>
+                        <Flex alignItems="center" justifyContent="between" gap={ 1 }>
+                            <Text variant="white" small wrap>{ furniData.name }</Text>
+                            <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ close } />
+                        </Flex>
+                        <hr className="m-0" />
+                    </Column>
+                    <Column gap={ 1 }>
+                        <Flex position="relative" gap={ 1 }>
+                            { furniData.stuffData.isUnique &&
+                                <div className="position-absolute end-0">
+                                    <LimitedEditionCompactPlateView uniqueNumber={ furniData.stuffData.uniqueNumber } uniqueSeries={ furniData.stuffData.uniqueSeries } />
+                                </div> }
+                            { (furniData.stuffData.rarityLevel > -1) &&
+                                <div className="position-absolute end-0">
+                                    <RarityLevelView level={ furniData.stuffData.rarityLevel } />
+                                </div> }
+                            { furniData.image && furniData.image.src.length && 
+                                <img className="d-block mx-auto" src={ furniData.image.src } alt="" /> }
+                        </Flex>
+                        <hr className="m-0" />
+                    </Column>
+                    <Column gap={ 1 }>
+                        <Text fullWidth wrap textBreak variant="white" small>{ furniData.description }</Text>
+                        <hr className="m-0" />
+                    </Column>
+                    <Column gap={ 1 }>
+                        <Flex alignItems="center" gap={ 1 }>
+                            <UserProfileIconView userId={ furniData.ownerId } />
+                            <Text variant="white" small wrap>
+                                { LocalizeText('furni.owner', [ 'name' ], [ furniData.ownerName ]) }
+                            </Text>
+                        </Flex>
+                        { (furniData.purchaseOfferId > 0) &&
+                            <Flex>
+                                <Text variant="white" small underline pointer onClick={ event => processButtonAction('buy_one') }>
+                                    { LocalizeText('infostand.button.buy') }
+                                </Text>
+                            </Flex> }
+                    </Column>
+                    <Column gap={ 1 }>
+                        { isCrackable &&
+                            <>
+                                <hr className="m-0" />
+                                <Text variant="white" small wrap>{ LocalizeText('infostand.crackable_furni.hits_remaining', [ 'hits', 'target' ], [ crackableHits.toString(), crackableTarget.toString() ]) }</Text>
+                            </> }
+                        { furniData.groupId > 0 &&
+                            <>
+                                <hr className="m-0" />
+                                <Flex pointer alignItems="center" gap={ 2 } onClick={ () => GetGroupInformation(furniData.groupId) }>
+                                    <BadgeImageView badgeCode={ getGroupBadgeCode() } isGroup={ true } />
+                                    <Text variant="white" underline>{ groupName }</Text>
+                                </Flex>
+                            </> }
+                        { godMode &&
+                            <>
+                                <hr className="m-0" />
+                                <Text small wrap variant="white">ID: { furniData.id }</Text>
+                                { (furniKeys.length > 0) &&
+                                    <>
+                                        <hr className="m-0"/>
+                                        <Column gap={ 1 }>
+                                            { furniKeys.map((key, index) =>
+                                                {
+                                                    return (
+                                                        <Flex key={ index } alignItems="center" gap={ 1 }>
+                                                            <Text small wrap align="end" variant="white" className="col-4">{ key }</Text>
+                                                            <input type="text" className="form-control form-control-sm" value={ furniValues[index] } onChange={ event => onFurniSettingChange(index, event.target.value) }/>
+                                                        </Flex>);
+                                                }) }
+                                        </Column>
+                                    </> }
+                            </> }
+                        { (customKeys.length > 0) &&
                             <>
                                 <hr className="m-0 my-1"/>
-                                { furniKeys.map((key, index) =>
-                                    {
-                                        return (
-                                            <div key={ index } className="mb-1">
-                                                <div className="small text-wrap">{ key }</div>
-                                                <input type="text" className="form-control form-control-sm" value={ furniValues[index] } onChange={ event => onFurniSettingChange(index, event.target.value) }/>
-                                            </div>);
-                                    }) }
+                                <Column gap={ 1 }>
+                                    { customKeys.map((key, index) =>
+                                        {
+                                            return (
+                                                <Flex key={ index } alignItems="center" gap={ 1 }>
+                                                    <Text small wrap align="end" variant="white" className="col-4">{ key }</Text>
+                                                    <input type="text" className="form-control form-control-sm" value={ customValues[index] } onChange={ event => onCustomVariableChange(index, event.target.value) }/>
+                                                </Flex>);
+                                        }) }
+                                </Column>
                             </> }
-                    </> }
-                { (customKeys.length > 0) &&
-                    <>
-                        <hr className="m-0 my-1"/>
-                        { customKeys.map((key, index) =>
-                            {
-                                return (
-                                    <div key={ index } className="mb-1">
-                                        <div className="small text-wrap">{ key }</div>
-                                        <input type="text" className="form-control form-control-sm" value={ customValues[index] } onChange={ event => onCustomVariableChange(index, event.target.value) }/>
-                                    </div>);
-                            }) }
-                    </> }
-            </InfoStandBaseView>
-            <div className="button-container mt-2">
+                    </Column>
+                </Column>
+            </Column>
+            <Flex gap={ 1 } justifyContent="end">
                 { canMove &&
-                    <button type="button" className="btn btn-sm btn-dark" onClick={ event => processButtonAction('move') }>
+                    <Button variant="dark" onClick={ event => processButtonAction('move') }>
                         { LocalizeText('infostand.button.move') }
-                    </button> }
+                    </Button> }
                 { canRotate &&
-                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={ event => processButtonAction('rotate') }>
+                    <Button variant="dark" onClick={ event => processButtonAction('rotate') }>
                         { LocalizeText('infostand.button.rotate') }
-                    </button> }
+                    </Button> }
                 { canUse &&
-                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={ event => processButtonAction('use') }>
+                    <Button variant="dark" onClick={ event => processButtonAction('use') }>
                         { LocalizeText('infostand.button.use') }
-                    </button>}
+                    </Button>}
                 { (pickupMode !== PICKUP_MODE_NONE) &&
-                    <button type="button" className="btn btn-sm btn-dark ms-1" onClick={ event => processButtonAction('pickup') }>
+                    <Button variant="dark" onClick={ event => processButtonAction('pickup') }>
                         { LocalizeText((pickupMode === PICKUP_MODE_EJECT) ? 'infostand.button.eject' : 'infostand.button.pickup') }
-                    </button> }
+                    </Button> }
                 { ((furniKeys.length > 0 && furniValues.length > 0) && (furniKeys.length === furniValues.length)) &&
-                    <button className="btn btn-sm btn-dark ms-1" onClick={ () => processButtonAction('save_branding_configuration') }>
+                    <Button variant="dark" onClick={ () => processButtonAction('save_branding_configuration') }>
                         { LocalizeText('save') }
-                    </button> }
+                    </Button> }
                 { ((customKeys.length > 0 && customValues.length > 0) && (customKeys.length === customValues.length)) &&
-                    <button className="btn btn-sm btn-dark ms-1" onClick={ () => processButtonAction('save_custom_variables') }>
-                        Set values
-                    </button> }
-            </div>
-        </>
+                    <Button variant="dark" onClick={ () => processButtonAction('save_custom_variables') }>
+                        { LocalizeText('save') }
+                    </Button> }
+            </Flex>
+        </Column>
     );
 }

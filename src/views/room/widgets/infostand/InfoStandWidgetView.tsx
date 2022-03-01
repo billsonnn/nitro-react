@@ -1,12 +1,13 @@
 import { FC, useCallback, useState } from 'react';
 import { RoomWidgetRoomObjectMessage, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
+import { Column } from '../../../../common';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../context/RoomContext';
-import { InfoStandWidgetBotView } from './views/bot/InfoStandWidgetBotView';
-import { InfoStandWidgetFurniView } from './views/furni/InfoStandWidgetFurniView';
-import { InfoStandWidgetPetView } from './views/pet/InfoStandWidgetPetView';
-import { InfoStandWidgetRentableBotView } from './views/rentable-bot/InfoStandWidgetRentableBotView';
-import { InfoStandWidgetUserView } from './views/user/InfoStandWidgetUserView';
+import { InfoStandWidgetBotView } from './InfoStandWidgetBotView';
+import { InfoStandWidgetFurniView } from './InfoStandWidgetFurniView';
+import { InfoStandWidgetPetView } from './InfoStandWidgetPetView';
+import { InfoStandWidgetRentableBotView } from './InfoStandWidgetRentableBotView';
+import { InfoStandWidgetUserView } from './InfoStandWidgetUserView';
 
 export const InfoStandWidgetView: FC<{}> = props =>
 {
@@ -116,8 +117,8 @@ export const InfoStandWidgetView: FC<{}> = props =>
     if(!infoStandEvent) return null;
 
     return (
-        <div className="d-flex flex-column align-items-end nitro-infostand-container">
+        <Column alignItems="end" className="nitro-infostand-container">
             { getInfostandView() }
-        </div>
+        </Column>
     );
 }
