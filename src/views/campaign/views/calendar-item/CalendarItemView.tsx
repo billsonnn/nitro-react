@@ -2,7 +2,15 @@ import { FC, useCallback } from 'react';
 import { GetRoomEngine, GetSessionDataManager } from '../../../../api';
 import { NitroLayoutFlexColumn } from '../../../../layout';
 import { CalendarItemState } from '../../common/CalendarItemState';
-import { CalendarItemViewProps } from './CalendarItemView.types';
+
+interface CalendarItemViewProps
+{
+    id: number;
+    productName?: string;
+    state: number;
+    active?: boolean;
+    onClick(itemId: number): void;
+}
 
 export const CalendarItemView: FC<CalendarItemViewProps> = props =>
 {

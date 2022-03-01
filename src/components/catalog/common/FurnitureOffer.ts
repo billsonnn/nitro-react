@@ -1,5 +1,6 @@
-import { IFurnitureData } from '@nitrots/nitro-renderer';
+import { GetProductOfferComposer, IFurnitureData } from '@nitrots/nitro-renderer';
 import { GetProductDataForLocalization } from '../../../api';
+import { SendMessageHook } from '../../../hooks';
 import { ICatalogPage } from './ICatalogPage';
 import { IProduct } from './IProduct';
 import { IPurchasableOffer } from './IPurchasableOffer';
@@ -16,6 +17,11 @@ export class FurnitureOffer implements IPurchasableOffer
     {
         this._furniData = furniData;
         this._product = (new Product(this._furniData.type, this._furniData.id, this._furniData.customParams, 1, GetProductDataForLocalization(this._furniData.className), this._furniData) as IProduct);
+    }
+
+    public activate(): void
+    {
+        SendMessageHook(new GetProductOfferComposer((this._furniData.rentOfferId > -1) ? this._furniData.rentOfferId : this._furniData.purchaseOfferId));
     }
 
     public get offerId(): number
@@ -106,5 +112,10 @@ export class FurnitureOffer implements IPurchasableOffer
     public get localizationDescription(): string
     {
         return this._furniData.description;
+    }
+
+    public get isLazy(): boolean
+    {
+        return true;
     }
 }

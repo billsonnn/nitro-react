@@ -78,8 +78,6 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
     {
         let key: string = '';
 
-        console.log(approvalResult);
-
         switch(approvalResult)
         {
             case 1:

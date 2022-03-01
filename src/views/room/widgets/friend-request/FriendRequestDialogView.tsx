@@ -1,47 +1,40 @@
-import { FC, useCallback } from 'react';
+import { FC } from 'react';
 import { LocalizeText, RoomWidgetFriendRequestMessage } from '../../../../api';
-import { NitroLayoutButton, NitroLayoutFlex, NitroLayoutFlexColumn } from '../../../../layout';
-import { NitroLayoutBase } from '../../../../layout/base';
+import { Base, Button, Column, Flex, Text } from '../../../../common';
 import { useRoomContext } from '../../context/RoomContext';
 import { UserLocationView } from '../user-location/UserLocationView';
-import { FriendRequestDialogViewProps } from './FriendRequestDialogView.types';
+
+interface FriendRequestDialogViewProps
+{
+    requestId: number;
+    userId: number;
+    userName: string;
+    close: () => void;
+}
 
 export const FriendRequestDialogView: FC<FriendRequestDialogViewProps> = props =>
 {
     const { requestId = -1, userId = -1, userName = null, close = null } = props;
     const { widgetHandler = null } = useRoomContext();
 
-    const accept = useCallback(() =>
+    const respond = (flag: boolean) =>
     {
-        widgetHandler.processWidgetMessage(new RoomWidgetFriendRequestMessage(RoomWidgetFriendRequestMessage.ACCEPT, requestId));
+        widgetHandler.processWidgetMessage(new RoomWidgetFriendRequestMessage((flag ? RoomWidgetFriendRequestMessage.ACCEPT : RoomWidgetFriendRequestMessage.DECLINE), requestId));
 
         close();
-    }, [ requestId, widgetHandler, close ]);
-
-    const decline = useCallback(() =>
-    {
-        widgetHandler.processWidgetMessage(new RoomWidgetFriendRequestMessage(RoomWidgetFriendRequestMessage.ACCEPT, requestId));
-
-        close();
-    }, [ requestId, widgetHandler, close ]);
+    }
 
     return (
         <UserLocationView userId={ userId }>
-            <NitroLayoutBase className="nitro-friend-request-dialog nitro-context-menu p-2">
-                <NitroLayoutFlexColumn>
-                    <NitroLayoutBase className="h6">
-                        { LocalizeText('widget.friendrequest.from', [ 'username' ], [ userName ]) }
-                    </NitroLayoutBase>
-                    <NitroLayoutFlex className="justify-content-end align-items-center" gap={ 2 }>
-                        <NitroLayoutButton variant="danger" size="sm" onClick={ decline }>
-                            { LocalizeText('widget.friendrequest.decline') }
-                        </NitroLayoutButton>
-                        <NitroLayoutButton variant="success" size="sm" onClick={ accept }>
-                            { LocalizeText('widget.friendrequest.accept') }
-                        </NitroLayoutButton>
-                    </NitroLayoutFlex>
-                </NitroLayoutFlexColumn>
-            </NitroLayoutBase>
+            <Base className="nitro-friend-request-dialog nitro-context-menu p-2">
+                <Column>
+                    <Text variant="white" fontSize={ 6 }>{ LocalizeText('widget.friendrequest.from', [ 'username' ], [ userName ]) }</Text>
+                    <Flex justifyContent="end" gap={ 1 }>
+                        <Button variant="danger" onClick={ event => respond(false) }>{ LocalizeText('widget.friendrequest.decline') }</Button>
+                        <Button variant="success" onClick={ event => respond(true) }>{ LocalizeText('widget.friendrequest.accept') }</Button>
+                    </Flex>
+                </Column>
+            </Base>
         </UserLocationView>
     );
 }

@@ -59,6 +59,11 @@ export class Offer implements IPurchasableOffer
         }
     }
 
+    public activate(): void
+    {
+        
+    }
+
     public get clubLevel(): number
     {
         return this._clubLevel;
@@ -158,6 +163,11 @@ export class Offer implements IPurchasableOffer
         if(productData) return productData.description;
 
         return LocalizeText(this._localizationId);
+    }
+
+    public get isLazy(): boolean
+    {
+        return false;
     }
 
     public get products(): IProduct[]

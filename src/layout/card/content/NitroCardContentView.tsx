@@ -4,8 +4,8 @@ import { useNitroCardContext } from '../context';
 
 export const NitroCardContentView: FC<ColumnProps> = props =>
 {
-    const { classNames = [], ...rest } = props;
-    const { theme = 'primary', simple = false } = useNitroCardContext();
+    const { overflow = 'auto', classNames = [], ...rest } = props;
+    const { simple = false } = useNitroCardContext();
 
     const getClassNames = useMemo(() =>
     {
@@ -18,5 +18,5 @@ export const NitroCardContentView: FC<ColumnProps> = props =>
         return newClassNames;
     }, [ simple, classNames ]);
 
-    return <Column classNames={ getClassNames } overflow="auto" { ...rest } />;
+    return <Column classNames={ getClassNames } overflow={ overflow } { ...rest } />;
 }

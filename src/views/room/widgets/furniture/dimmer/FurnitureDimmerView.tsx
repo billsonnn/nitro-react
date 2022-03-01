@@ -3,11 +3,7 @@ import classNames from 'classnames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { ColorUtils, GetConfiguration, LocalizeText, RoomWidgetDimmerChangeStateMessage, RoomWidgetDimmerPreviewMessage, RoomWidgetDimmerSavePresetMessage, RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateDimmerStateEvent } from '../../../../../api';
-import { Button } from '../../../../../common/Button';
-import { Column } from '../../../../../common/Column';
-import { Flex } from '../../../../../common/Flex';
-import { Grid } from '../../../../../common/Grid';
-import { Text } from '../../../../../common/Text';
+import { Base, Button, Column, Flex, Grid, Text } from '../../../../../common';
 import { BatchUpdates, CreateEventDispatcherHook } from '../../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
@@ -31,7 +27,6 @@ export const FurnitureDimmerView: FC<{}> = props =>
     const [ selectedEffectId, setSelectedEffectId ] = useState(0);
     const [ selectedColor, setSelectedColor ] = useState(0);
     const [ selectedBrightness, setSelectedBrightness ] = useState(0);
-
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
 
     const onNitroEvent = useCallback((event: NitroEvent) =>
@@ -45,9 +40,12 @@ export const FurnitureDimmerView: FC<{}> = props =>
 
                 for(const preset of widgetEvent.presets) presets.push(new DimmerFurnitureWidgetPresetItem(preset.id, preset.type, preset.color, preset.brightness));
 
-                setPresets(presets);
-                setSelectedPresetId(widgetEvent.selectedPresetId);
-                setIsVisible(true);
+                BatchUpdates(() =>
+                {
+                    setPresets(presets);
+                    setSelectedPresetId(widgetEvent.selectedPresetId);
+                    setIsVisible(true);
+                });
                 return;
             }
             case RoomWidgetUpdateDimmerEvent.HIDE: {
@@ -86,10 +84,13 @@ export const FurnitureDimmerView: FC<{}> = props =>
 
         if(!preset) return;
 
-        setSelectedPresetId(preset.id);
-        setSelectedEffectId(preset.type);
-        setSelectedColor(preset.color);
-        setSelectedBrightness(preset.light);
+        BatchUpdates(() =>
+        {
+            setSelectedPresetId(preset.id);
+            setSelectedEffectId(preset.type);
+            setSelectedColor(preset.color);
+            setSelectedBrightness(preset.light);
+        });
     }, [ presets ]);
 
     const close = useCallback(() =>
@@ -133,16 +134,11 @@ export const FurnitureDimmerView: FC<{}> = props =>
         return ~~((((value - MIN_BRIGHTNESS) * (100 - 0)) / (MAX_BRIGHTNESS - MIN_BRIGHTNESS)) + 0);
     }, []);
 
-    const isFreeColorMode = useMemo(() =>
-    {
-        return GetConfiguration<boolean>('widget.dimmer.colorwheel', false);
-    }, []);
+    const isFreeColorMode = useMemo(() => GetConfiguration<boolean>('widget.dimmer.colorwheel', false), []);
 
     useEffect(() =>
     {
         if((dimmerState === 0) && (lastDimmerState === 0)) return;
-
-        console.log('ye')
 
         widgetHandler.processWidgetMessage(new RoomWidgetDimmerPreviewMessage(selectedColor, selectedBrightness, (selectedEffectId === 2)));
     }, [ widgetHandler, dimmerState, lastDimmerState, selectedColor, selectedBrightness, selectedEffectId ]);
@@ -150,19 +146,16 @@ export const FurnitureDimmerView: FC<{}> = props =>
     if(!isVisible) return null;
 
     return (
-        <NitroCardView className="nitro-dimmer">
+        <NitroCardView className="nitro-room-widget-dimmer">
             <NitroCardHeaderView headerText={ LocalizeText('widget.dimmer.title') } onCloseClick={ close } />
             { (dimmerState === 1) &&
                 <NitroCardTabsView>
-                    { presets.map(preset =>
-                        {
-                            return <NitroCardTabsItemView key={ preset.id } isActive={ (selectedPresetId === preset.id) } onClick={ event => selectPresetId(preset.id) }>{ LocalizeText(`widget.dimmer.tab.${preset.id}`) }</NitroCardTabsItemView>
-                        }) }
+                    { presets.map(preset => <NitroCardTabsItemView key={ preset.id } isActive={ (selectedPresetId === preset.id) } onClick={ event => selectPresetId(preset.id) }>{ LocalizeText(`widget.dimmer.tab.${preset.id}`) }</NitroCardTabsItemView>) }
                 </NitroCardTabsView> }
             <NitroCardContentView>
                 { (dimmerState === 0) &&
                     <Column alignItems="center">
-                        <div className="dimmer-banner"></div>
+                        <Base className="dimmer-banner" />
                         <Text center className="bg-muted rounded p-1">{ LocalizeText('widget.dimmer.info.off') }</Text>
                         <Button fullWidth variant="success" onClick={ toggleState }>{ LocalizeText('widget.dimmer.button.on') }</Button>
                     </Column> }
@@ -173,7 +166,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
                             { isFreeColorMode &&
                                 <input type="color" className="form-control" value={ ColorUtils.makeColorNumberHex(selectedColor) } onChange={ event => setSelectedColor(ColorUtils.convertFromHex(event.target.value)) } /> }
                             { !isFreeColorMode &&
-                                <Grid columnCount={ 7 }>
+                                <Grid gap={ 1 } columnCount={ 7 }>
                                     { AVAILABLE_COLORS.map((color, index) =>
                                         {
                                             return (
@@ -193,18 +186,14 @@ export const FurnitureDimmerView: FC<{}> = props =>
                                 thumbClassName={ 'thumb percent' }
                                 renderThumb={ (props, state) => <div {...props}>{ scaledBrightness(state.valueNow) }</div> } />
                         </Column>
-                        <Flex>
+                        <Flex alignItems="center" gap={ 1 }>
                             <input className="form-check-input" type="checkbox" checked={ (selectedEffectId === 2) } onChange={ event => setSelectedEffectId(event.target.checked ? 2 : 1) } />
-                            <label className="form-check-label text-black">{ LocalizeText('widget.dimmer.type.checkbox') }</label>
+                            <Text>{ LocalizeText('widget.dimmer.type.checkbox') }</Text>
                         </Flex>
-                        <div className="form-check mb-2">
-                            <input className="form-check-input" type="checkbox" checked={ (selectedEffectId === 2) } onChange={ event => setSelectedEffectId(event.target.checked ? 2 : 1) } />
-                            <label className="form-check-label text-black">{ LocalizeText('widget.dimmer.type.checkbox') }</label>
-                        </div>
-                        <div className="d-flex gap-2">
-                            <button className="btn btn-danger w-100" onClick={ toggleState }>{ LocalizeText('widget.dimmer.button.off') }</button>
-                            <button className="btn btn-success w-100" onClick={ applyChanges }>{ LocalizeText('widget.dimmer.button.apply') }</button>
-                        </div>
+                        <Flex gap={ 1 }>
+                            <Button fullWidth variant="danger" onClick={ toggleState }>{ LocalizeText('widget.dimmer.button.off') }</Button>
+                            <Button fullWidth variant="success" onClick={ applyChanges }>{ LocalizeText('widget.dimmer.button.apply') }</Button>
+                        </Flex>
                     </> }
             </NitroCardContentView>
         </NitroCardView>

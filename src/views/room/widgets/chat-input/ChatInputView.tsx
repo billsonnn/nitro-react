@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { GetConfiguration, GetSessionDataManager, LocalizeText, RoomWidgetChatMessage, RoomWidgetChatTypingMessage, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks/events';
 import { useRoomContext } from '../../context/RoomContext';
-import { ChatInputStyleSelectorView } from './style-selector/ChatInputStyleSelectorView';
+import { ChatInputStyleSelectorView } from './ChatInputStyleSelectorView';
 
 export const ChatInputView: FC<{}> = props =>
 {
@@ -118,7 +118,6 @@ export const ChatInputView: FC<{}> = props =>
         {
             if(needsChatStyleUpdate)
             {
-                console.log('send')
                 GetSessionDataManager().sendChatStyleUpdate(chatStyleId);
 
                 setNeedsChatStyleUpdate(false);

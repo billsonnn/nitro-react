@@ -1,16 +1,17 @@
 import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, HabboClubLevelEnum, IAvatarFigureContainer, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { GetAvatarRenderManager, GetSessionDataManager, LocalizeText, RoomWidgetUpdateMannequinEvent } from '../../../../../api';
+import { Base } from '../../../../../common';
 import { Button } from '../../../../../common/Button';
 import { Column } from '../../../../../common/Column';
 import { Flex } from '../../../../../common/Flex';
-import { Grid } from '../../../../../common/Grid';
 import { Text } from '../../../../../common/Text';
 import { BatchUpdates, SendMessageHook } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
+import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
+import { CurrencyIcon } from '../../../../shared/currency-icon/CurrencyIcon';
 import { useRoomContext } from '../../../context/RoomContext';
-import { FurnitureMannequinPreviewView } from './views/preview/FurnitureMannequinPreviewView';
 
 const MODE_NONE: number = -1;
 const MODE_CONTROLLER: number = 0;
@@ -143,8 +144,11 @@ export const FurnitureMannequinView: FC<{}> = props =>
 
                 transformAsMannequinFigure(figureContainer);
 
-                setRenderedFigure(figureContainer.getFigureString());
-                setRenderedClubLevel(clubLevel);
+                BatchUpdates(() =>
+                {
+                    setRenderedFigure(figureContainer.getFigureString());
+                    setRenderedClubLevel(clubLevel);
+                });
                 break;
             }
             case MODE_UPDATE: {
@@ -152,16 +156,22 @@ export const FurnitureMannequinView: FC<{}> = props =>
 
                 transformAsMannequinFigure(figureContainer);
 
-                setRenderedFigure(figureContainer.getFigureString());
-                setRenderedClubLevel(GetAvatarRenderManager().getFigureClubLevel(figureContainer, GetSessionDataManager().gender, MANNEQUIN_CLOTHING_PART_TYPES));
+                BatchUpdates(() =>
+                {
+                    setRenderedFigure(figureContainer.getFigureString());
+                    setRenderedClubLevel(GetAvatarRenderManager().getFigureClubLevel(figureContainer, GetSessionDataManager().gender, MANNEQUIN_CLOTHING_PART_TYPES));
+                });
                 break;
             }
             case MODE_PEER:
             case MODE_NO_CLUB: {
                 const figureContainer = getMergedFigureContainer(GetSessionDataManager().figure, figure);
 
-                setRenderedFigure(figureContainer.getFigureString());
-                setRenderedClubLevel(clubLevel);
+                BatchUpdates(() =>
+                {
+                    setRenderedFigure(figureContainer.getFigureString());
+                    setRenderedClubLevel(clubLevel);
+                });
                 break;
             }
         }
@@ -170,18 +180,22 @@ export const FurnitureMannequinView: FC<{}> = props =>
     if(mode === MODE_NONE) return null;
 
     return (
-        <NitroCardView className="nitro-mannequin" simple={ true }>
+        <NitroCardView className="nitro-mannequin" simple>
             <NitroCardHeaderView headerText={ LocalizeText('mannequin.widget.title') } onCloseClick={ event => setMode(MODE_NONE) } />
-            <NitroCardContentView>
-                <Grid>
-                    <Column center size={ 4 } overflow="hidden">
-                        <FurnitureMannequinPreviewView figure={ renderedFigure } clubLevel={ renderedClubLevel } />
+            <NitroCardContentView center>
+                <Flex gap={ 2 } overflow="hidden">
+                    <Column>
+                        <Base position="relative" className="mannequin-preview">
+                            <AvatarImageView figure={ renderedFigure } direction={ 2 } />
+                            { (clubLevel > 0) &&
+                                <CurrencyIcon className="position-absolute end-2 bottom-2" type="hc" /> }
+                        </Base>
                     </Column>
-                    <Column size={ 8 } justifyContent="between" overflow="hidden">
+                    <Column justifyContent="between" overflow="auto">
                         { (mode === MODE_CONTROLLER) &&
                             <>
                                 <input type="text" className="form-control" value={ name } onChange={ event => setName(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
-                                <Column gap={ 1 } overflow="auto">
+                                <Column gap={ 1 }>
                                     <Button variant="success" onClick={ event => setMode(MODE_UPDATE) }>
                                         { LocalizeText('mannequin.widget.style') }
                                     </Button>
@@ -192,9 +206,9 @@ export const FurnitureMannequinView: FC<{}> = props =>
                             </> }
                         { (mode === MODE_UPDATE) &&
                             <>
-                                <Column gap={ 1 } overflow="auto">
-                                    <Text fontWeight="bold">{ name }</Text>
-                                    <Text>{ LocalizeText('mannequin.widget.savetext') }</Text>
+                                <Column gap={ 1 }>
+                                    <Text bold>{ name }</Text>
+                                    <Text wrap>{ LocalizeText('mannequin.widget.savetext') }</Text>
                                 </Column>
                                 <Flex alignItems="center" justifyContent="between">
                                     <Text underline pointer onClick={ event => setMode(MODE_CONTROLLER) }>
@@ -207,18 +221,20 @@ export const FurnitureMannequinView: FC<{}> = props =>
                             </> }
                         { (mode === MODE_PEER) &&
                             <>
-                                <Column gap={ 1 } overflow="auto">
-                                    <Text fontWeight="bold">{ name }</Text>
+                                <Column gap={ 1 }>
+                                    <Text bold>{ name }</Text>
                                     <Text>{ LocalizeText('mannequin.widget.weartext') }</Text>
                                 </Column>
                                 <Button variant="success" onClick={ event => processAction(ACTION_WEAR) }>
                                     { LocalizeText('mannequin.widget.wear') }
                                 </Button>
                             </> }
-                        { (mode === MODE_NO_CLUB) && <Text>{ LocalizeText('mannequin.widget.clubnotification') }</Text> }
-                        { (mode === MODE_WRONG_GENDER) && <Text>{ LocalizeText('mannequin.widget.wronggender') }</Text> }
+                        { (mode === MODE_NO_CLUB) &&
+                            <Text>{ LocalizeText('mannequin.widget.clubnotification') }</Text> }
+                        { (mode === MODE_WRONG_GENDER) &&
+                            <Text>{ LocalizeText('mannequin.widget.wronggender') }</Text> }
                     </Column>
-                </Grid>
+                </Flex>
             </NitroCardContentView>
         </NitroCardView>
     );

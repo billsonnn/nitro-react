@@ -1,8 +1,13 @@
 import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
+import { BaseProps } from '../../../../common';
 import { useRoomContext } from '../../context/RoomContext';
 import { ObjectLocationView } from '../object-location/ObjectLocationView';
-import { UserLocationViewProps } from './UserLocationView.types';
+
+interface UserLocationViewProps extends BaseProps<HTMLDivElement>
+{
+    userId: number;
+}
 
 export const UserLocationView: FC<UserLocationViewProps> = props =>
 {

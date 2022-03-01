@@ -3,15 +3,15 @@ import { GroupFurniContextMenuInfoMessageEvent } from '@nitrots/nitro-renderer/s
 import { FC, useCallback, useState } from 'react';
 import { GetGroupInformation, GetRoomEngine, IsOwnerOfFurniture, LocalizeText, RoomWidgetFurniActionMessage, TryVisitRoom } from '../../../../../api';
 import { TryJoinGroup } from '../../../../../api/groups/TryJoinGroup';
-import { CreateMessageHook } from '../../../../../hooks';
+import { BatchUpdates, CreateMessageHook } from '../../../../../hooks';
 import { useRoomEngineEvent } from '../../../../../hooks/events';
 import { useRoomContext } from '../../../context/RoomContext';
+import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
+import { ContextMenuListItemView } from '../../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
-import { ContextMenuHeaderView } from '../../context-menu/views/header/ContextMenuHeaderView';
-import { ContextMenuListItemView } from '../../context-menu/views/list-item/ContextMenuListItemView';
-import { EffectBoxConfirmView } from './views/effect-box/EffectBoxConfirmView';
-import { MonsterPlantSeedConfirmView } from './views/monsterplant-seed/MonsterPlantSeedConfirmView';
-import { PurchasableClothingConfirmView } from './views/purchaseable-clothing/PurchasableClothingConfirmView';
+import { EffectBoxConfirmView } from './EffectBoxConfirmView';
+import { MonsterPlantSeedConfirmView } from './MonsterPlantSeedConfirmView';
+import { PurchasableClothingConfirmView } from './PurchasableClothingConfirmView';
 
 const MONSTERPLANT_SEED_CONFIRMATION: string = 'MONSTERPLANT_SEED_CONFIRMATION';
 const PURCHASABLE_CLOTHING_CONFIRMATION: string = 'PURCHASABLE_CLOTHING_CONFIRMATION';
@@ -26,22 +26,24 @@ export const FurnitureContextMenuView: FC<{}> = props =>
     const [ confirmingObjectId, setConfirmingObjectId ] = useState(-1);
     const [ groupData, setGroupData ] = useState<GroupFurniContextMenuInfoMessageParser>(null);
     const [ isGroupMember, setIsGroupMember ] = useState(false);
-
     const { roomSession = null, widgetHandler = null } = useRoomContext();
 
     const close = useCallback(() =>
     {
-        setObjectId(-1);
-        setGroupData(null);
-        setIsGroupMember(false);
-        setMode(null);
+        BatchUpdates(() =>
+        {
+            setObjectId(-1);
+            setGroupData(null);
+            setIsGroupMember(false);
+            setMode(null);
+        });
     }, []);
 
-    const closeConfirm = useCallback(() =>
+    const closeConfirm = () =>
     {
         setConfirmMode(null);
         setConfirmingObjectId(-1);
-    }, []);
+    }
 
     const onRoomEngineTriggerWidgetEvent = useCallback((event: RoomEngineTriggerWidgetEvent) =>
     {
@@ -54,47 +56,60 @@ export const FurnitureContextMenuView: FC<{}> = props =>
             case RoomEngineTriggerWidgetEvent.REQUEST_MONSTERPLANT_SEED_PLANT_CONFIRMATION_DIALOG:
                 if(!IsOwnerOfFurniture(object)) return;
 
-                setConfirmingObjectId(object.id);
-                setConfirmMode(MONSTERPLANT_SEED_CONFIRMATION);
+                BatchUpdates(() =>
+                {
+                    setConfirmingObjectId(object.id);
+                    setConfirmMode(MONSTERPLANT_SEED_CONFIRMATION);
+                });
 
                 close();
                 return;
             case RoomEngineTriggerWidgetEvent.REQUEST_EFFECTBOX_OPEN_DIALOG:
                 if(!IsOwnerOfFurniture(object)) return;
-                
-                setConfirmingObjectId(object.id);
-                setConfirmMode(EFFECTBOX_OPEN);
+
+                BatchUpdates(() =>
+                {
+                    setConfirmingObjectId(object.id);
+                    setConfirmMode(EFFECTBOX_OPEN);
+                });
 
                 close();
                 return;
             case RoomEngineTriggerWidgetEvent.REQUEST_PURCHASABLE_CLOTHING_CONFIRMATION_DIALOG:
                 if(!IsOwnerOfFurniture(object)) return;
 
-                setConfirmingObjectId(object.id);
-                setConfirmMode(PURCHASABLE_CLOTHING_CONFIRMATION);
+                BatchUpdates(() =>
+                {
+                    setConfirmingObjectId(object.id);
+                    setConfirmMode(PURCHASABLE_CLOTHING_CONFIRMATION);
+                });
 
                 close();
                 return;
             case RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU:
-                setObjectId(object.id);
 
-                switch(event.contextMenu)
+                BatchUpdates(() =>
                 {
-                    case ContextMenuEnum.FRIEND_FURNITURE:
-                        setMode(ContextMenuEnum.FRIEND_FURNITURE);
-                        return;
-                    case ContextMenuEnum.MONSTERPLANT_SEED:
-                        if(IsOwnerOfFurniture(object)) setMode(ContextMenuEnum.MONSTERPLANT_SEED);
-                        return;
-                    case ContextMenuEnum.MYSTERY_BOX:
-                        return;
-                    case ContextMenuEnum.RANDOM_TELEPORT:
-                        setMode(ContextMenuEnum.RANDOM_TELEPORT);
-                        return;
-                    case ContextMenuEnum.PURCHASABLE_CLOTHING:
-                        if(IsOwnerOfFurniture(object)) setMode(ContextMenuEnum.PURCHASABLE_CLOTHING);
-                        return;
-                }
+                    setObjectId(object.id);
+
+                    switch(event.contextMenu)
+                    {
+                        case ContextMenuEnum.FRIEND_FURNITURE:
+                            setMode(ContextMenuEnum.FRIEND_FURNITURE);
+                            return;
+                        case ContextMenuEnum.MONSTERPLANT_SEED:
+                            if(IsOwnerOfFurniture(object)) setMode(ContextMenuEnum.MONSTERPLANT_SEED);
+                            return;
+                        case ContextMenuEnum.MYSTERY_BOX:
+                            return;
+                        case ContextMenuEnum.RANDOM_TELEPORT:
+                            setMode(ContextMenuEnum.RANDOM_TELEPORT);
+                            return;
+                        case ContextMenuEnum.PURCHASABLE_CLOTHING:
+                            if(IsOwnerOfFurniture(object)) setMode(ContextMenuEnum.PURCHASABLE_CLOTHING);
+                            return;
+                    }
+                });
 
                 return;
             case RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU:
@@ -113,15 +128,18 @@ export const FurnitureContextMenuView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        setObjectId(parser.objectId);
-        setGroupData(parser);
-        setIsGroupMember(parser.userIsMember);
-        setMode(GROUP_FURNITURE);
+        BatchUpdates(() =>
+        {
+            setObjectId(parser.objectId);
+            setGroupData(parser);
+            setIsGroupMember(parser.userIsMember);
+            setMode(GROUP_FURNITURE);
+        });
     }, []);
 
     CreateMessageHook(GroupFurniContextMenuInfoMessageEvent, onGroupFurniContextMenuInfoMessageEvent);
 
-    const processAction = useCallback((name: string) =>
+    const processAction = (name: string) =>
     {
         if(name)
         {
@@ -152,7 +170,7 @@ export const FurnitureContextMenuView: FC<{}> = props =>
         }
 
         close();
-    }, [ roomSession, widgetHandler, objectId, groupData, close ]);
+    }
 
     return (
         <>

@@ -1,10 +1,6 @@
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, RoomWidgetCreditFurniRedeemMessage, RoomWidgetUpdateCreditFurniEvent } from '../../../../../api';
-import { Base } from '../../../../../common/Base';
-import { Button } from '../../../../../common/Button';
-import { Column } from '../../../../../common/Column';
-import { Grid } from '../../../../../common/Grid';
-import { Text } from '../../../../../common/Text';
+import { Base, Button, Column, Flex, Text } from '../../../../../common';
 import { BatchUpdates } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
@@ -18,39 +14,42 @@ export const FurnitureExchangeCreditView: FC<{}> = props =>
 
     const onRoomWidgetUpdateCreditFurniEvent = useCallback((event: RoomWidgetUpdateCreditFurniEvent) =>
     {
-        setObjectId(event.objectId);
-        setValue(event.value);
+        BatchUpdates(() =>
+        {
+            setObjectId(event.objectId);
+            setValue(event.value);
+        });
     }, []);
 
     CreateEventDispatcherHook(RoomWidgetUpdateCreditFurniEvent.CREDIT_FURNI_UPDATE, eventDispatcher, onRoomWidgetUpdateCreditFurniEvent);
 
-    const close = useCallback(() =>
+    const close = () =>
     {
         BatchUpdates(() =>
         {
             setObjectId(-1);
             setValue(0);
         });
-    }, []);
+    }
 
-    const redeem = useCallback(() =>
+    const redeem = () =>
     {
         widgetHandler.processWidgetMessage(new RoomWidgetCreditFurniRedeemMessage(RoomWidgetCreditFurniRedeemMessage.REDEEM, objectId));
 
         close();
-    }, [ widgetHandler, objectId, close ]);
+    }
 
     if(objectId === -1) return null;
 
     return (
-        <NitroCardView className="nitro-widget-exchange-credit" simple={ true }>
+        <NitroCardView className="nitro-widget-exchange-credit" simple>
             <NitroCardHeaderView headerText={ LocalizeText('catalog.redeem.dialog.title') } onCloseClick={ close } />
-            <NitroCardContentView>
-                <Grid>
-                    <Column center overflow="hidden" size={ 4 }>
+            <NitroCardContentView center>
+                <Flex overflow="hidden" gap={ 2 }>
+                    <Column center>
                         <Base className="exchange-image" />
                     </Column>
-                    <Column justifyContent="between" overflow="hidden" size={ 8 }>
+                    <Column grow justifyContent="between" overflow="hidden">
                         <Column gap={ 1 } overflow="auto">
                             <Text fontWeight="bold">{ LocalizeText('creditfurni.description', [ 'credits' ], [ value.toString() ]) }</Text>
                             <Text>{ LocalizeText('creditfurni.prompt') }</Text>
@@ -59,7 +58,7 @@ export const FurnitureExchangeCreditView: FC<{}> = props =>
                             { LocalizeText('catalog.redeem.dialog.button.exchange') }
                         </Button>
                     </Column>
-                </Grid>
+                </Flex>
             </NitroCardContentView>
         </NitroCardView>
     );

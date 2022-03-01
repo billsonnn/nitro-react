@@ -3,6 +3,7 @@ import { IProduct } from './IProduct';
 
 export interface IPurchasableOffer
 {
+    activate(): void;
     clubLevel: number;
     page: ICatalogPage;
     offerId: number;
@@ -19,5 +20,6 @@ export interface IPurchasableOffer
     badgeCode: string;
     localizationName: string;
     localizationDescription: string;
+    isLazy: boolean;
     products: IProduct[];
 }

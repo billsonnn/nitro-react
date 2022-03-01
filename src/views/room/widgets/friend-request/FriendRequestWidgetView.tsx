@@ -38,7 +38,7 @@ export const FriendRequestWidgetView: FC<{}> = props =>
                 newValue.splice(index, 1);
 
                 return newValue;
-            })
+            });
     }, [ friendRequests ]);
 
     const onRoomWidgetUpdateFriendRequestEvent = useCallback((event: RoomWidgetUpdateFriendRequestEvent) =>

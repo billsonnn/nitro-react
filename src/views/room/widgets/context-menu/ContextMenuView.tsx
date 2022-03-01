@@ -1,7 +1,17 @@
 import { FixedSizeStack, NitroPoint, NitroRectangle, RoomObjectType } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { CSSProperties, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { GetNitroInstance, GetRoomEngine, GetRoomObjectBounds, GetRoomSession, GetTicker } from '../../../../api';
-import { ContextMenuViewProps } from './ContextMenuView.types';
+import { Base, BaseProps } from '../../../../common';
+import { BatchUpdates } from '../../../../hooks';
+
+interface ContextMenuViewProps extends BaseProps<HTMLDivElement>
+{
+    objectId: number;
+    category: number;
+    userType?: number;
+    fades?: boolean;
+    close: () => void;
+}
 
 const LOCATION_STACK_SIZE: number = 25;
 const BUBBLE_DROP_SPEED: number = 3;
@@ -11,7 +21,7 @@ const SPACE_AROUND_EDGES = 10;
 
 export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 {
-    const { objectId = -1, category = -1, userType = -1, fades = false, className = '', close = null, children = null } = props;
+    const { objectId = -1, category = -1, userType = -1, fades = false, close = null, position = 'absolute', classNames = [], style = {}, ...rest } = props;
     const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: null, y: null });
     const [ deltaYStack, setDeltaYStack ] = useState<FixedSizeStack>(null);
     const [ currentDeltaY, setCurrentDeltaY ] = useState(-1000000);
@@ -92,8 +102,11 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         if(y < SPACE_AROUND_EDGES) y = SPACE_AROUND_EDGES;
         else if(y > maxTop) y = maxTop;
 
-        setCurrentDeltaY(maxStack);
-        setPos({ x, y });
+        BatchUpdates(() =>
+        {
+            setCurrentDeltaY(maxStack);
+            setPos({ x, y });
+        });
     }, [ deltaYStack, currentDeltaY, getOffset ]);
 
     const update = useCallback((time: number) =>
@@ -106,10 +119,37 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         updatePosition(bounds, location);
     }, [ objectId, category, updateFade, updatePosition ]);
 
+    const getClassNames = useMemo(() =>
+    {
+        const newClassNames: string[] = [ 'nitro-context-menu' ];
+
+        newClassNames.push((pos.x !== null) ? 'visible' : 'invisible');
+
+        if(classNames.length) newClassNames.push(...classNames);
+
+        return newClassNames;
+    }, [ pos, classNames ]);
+
+    const getStyle = useMemo(() =>
+    {
+        let newStyle: CSSProperties = {};
+
+        newStyle.left = (pos.x || 0);
+        newStyle.top = (pos.y || 0);
+        newStyle.opacity = opacity;
+
+        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
+
+        return newStyle;
+    }, [ pos, opacity, style ]);
+
     useEffect(() =>
     {
-        setDeltaYStack(new FixedSizeStack(LOCATION_STACK_SIZE));
-        setCurrentDeltaY(-1000000);
+        BatchUpdates(() =>
+        {
+            setDeltaYStack(new FixedSizeStack(LOCATION_STACK_SIZE));
+            setCurrentDeltaY(-1000000);
+        });
     }, []);
 
     useEffect(() =>
@@ -135,15 +175,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
         const timeout = setTimeout(() => setIsFading(true), fadeDelay);
 
-        return () =>
-        {
-            clearTimeout(timeout);
-        }
+        return () => clearTimeout(timeout);
     }, [ fades ]);
 
-    return (
-        <div ref={ elementRef } className={ `position-absolute nitro-context-menu ${ className }${ (pos.x !== null ? ' visible' : ' invisible') }` } style={ { left: (pos.x || 0), top: (pos.y || 0), opacity: opacity } }>
-            { children }
-        </div>
-    );
+    return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } { ...rest } />;
 }

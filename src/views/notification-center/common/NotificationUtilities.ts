@@ -73,8 +73,6 @@ export class NotificationUtilities
 
         if(configuration) for(const key in configuration) options.set(key, configuration[key]);
 
-        console.log(options);
-
         const title = this.getNotificationPart(options, type, 'title', true);
         const message = this.getNotificationPart(options, type, 'message', true).replace(/\\r/g, '\r');
         const linkTitle = this.getNotificationPart(options, type, 'linkTitle', false);

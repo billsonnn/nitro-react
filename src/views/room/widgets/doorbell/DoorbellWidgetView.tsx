@@ -1,9 +1,10 @@
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, RoomWidgetDoorbellEvent, RoomWidgetLetUserInMessage } from '../../../../api';
-import { CreateEventDispatcherHook } from '../../../../hooks';
+import { Column } from '../../../../common';
+import { BatchUpdates, CreateEventDispatcherHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { useRoomContext } from '../../context/RoomContext';
-import { DoorbellWidgetItemView } from './doorbell-item/DoorbellWidgetItemView';
+import { DoorbellWidgetItemView } from './DoorbellWidgetItemView';
 
 export const DoorbellWidgetView: FC<{}> = props =>
 {
@@ -15,10 +16,11 @@ export const DoorbellWidgetView: FC<{}> = props =>
     {
         if(users.indexOf(userName) >= 0) return;
 
-        const newUsers = [ ...users, userName ];
-
-        setUsers(newUsers);
-        setIsVisible(true);
+        BatchUpdates(() =>
+        {
+            setUsers([ ...users, userName ]);
+            setIsVisible(true);
+        });
     }, [ users ]);
 
     const removeUser = useCallback((userName: string) =>
@@ -66,13 +68,10 @@ export const DoorbellWidgetView: FC<{}> = props =>
     return (
         <NitroCardView className="nitro-widget-doorbell" simple={ true }>
             <NitroCardHeaderView headerText={ LocalizeText('navigator.doorbell.title') } onCloseClick={ event => setIsVisible(false) } />
-            <NitroCardContentView>
-                <div className="row row-cols-1 doorbell-user-list">
-                    { (users.length > 0) && users.map(userName =>
-                        {
-                            return <DoorbellWidgetItemView key={ userName } userName={ userName } accept={ () => answer(userName, true) } deny={ () => answer(userName, false) } />;
-                        }) }
-                </div>
+            <NitroCardContentView overflow="hidden">
+                <Column overflow="auto">
+                    { users && (users.length > 0) && users.map(userName => <DoorbellWidgetItemView key={ userName } userName={ userName } accept={ () => answer(userName, true) } deny={ () => answer(userName, false) } />) }
+                </Column>
             </NitroCardContentView>
         </NitroCardView>
     );

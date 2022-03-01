@@ -3,8 +3,8 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { RoomWidgetChatSelectAvatarMessage, RoomWidgetRoomObjectMessage, RoomWidgetUpdateChatEvent } from '../../../../api';
 import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../../../hooks/events';
 import { useRoomContext } from '../../context/RoomContext';
-import { ChatWidgetMessageView } from './message/ChatWidgetMessageView';
-import { ChatBubbleMessage } from './utils/ChatBubbleMessage';
+import { ChatWidgetMessageView } from './ChatWidgetMessageView';
+import { ChatBubbleMessage } from './common/ChatBubbleMessage';
 
 export const ChatWidgetView: FC<{}> = props =>
 {
@@ -54,13 +54,7 @@ export const ChatWidgetView: FC<{}> = props =>
         }
     }, [ chatMessages, moveChatUp, removeHiddenChats ]);
 
-    const addChat = useCallback((chat: ChatBubbleMessage) =>
-    {
-        setChatMessages(prevValue =>
-            {
-                return [ ...prevValue, chat ];
-            });
-    }, []);
+    const addChat = useCallback((chat: ChatBubbleMessage) => setChatMessages(prevValue => [ ...prevValue, chat ]), []);
 
     const onRoomWidgetUpdateChatEvent = useCallback((event: RoomWidgetUpdateChatEvent) =>
     {
@@ -115,10 +109,7 @@ export const ChatWidgetView: FC<{}> = props =>
 
     return (
         <div ref={ elementRef } className="nitro-chat-widget">
-            { chatMessages.map(chat =>
-                {
-                    return <ChatWidgetMessageView key={ chat.id } chat={ chat } makeRoom={ makeRoom } onChatClicked={ onChatClicked } />
-                })}
+            { chatMessages.map(chat => <ChatWidgetMessageView key={ chat.id } chat={ chat } makeRoom={ makeRoom } onChatClicked={ onChatClicked } />) }
         </div>
     );
 }

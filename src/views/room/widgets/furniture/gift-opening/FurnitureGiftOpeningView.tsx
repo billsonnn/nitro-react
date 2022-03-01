@@ -1,11 +1,11 @@
 import { RoomObjectCategory, RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetPresentOpenMessage, RoomWidgetUpdatePresentDataEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
+import { Button, Column, Flex, Text } from '../../../../../common';
 import { ProductTypeEnum } from '../../../../../components/catalog/common/ProductTypeEnum';
 import { BatchUpdates } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutButton, NitroLayoutFlex, NitroLayoutFlexColumn, NitroLayoutGiftCardView, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../layout';
-import { NitroLayoutBase } from '../../../../../layout/base';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutGiftCardView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
 
 const FLOOR: string = 'floor';
@@ -111,6 +111,7 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
                     setPlacedItemId(event.placedItemId);
                     setPlacedItemType(event.placedItemType);
                     setPlacedInRoom(event.placedInRoom);
+                    setImageUrl(event.imageUrl);
                 });
                 return;
             }
@@ -215,47 +216,43 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
     return (
         <NitroCardView className="nitro-gift-opening" simple={ true }>
             <NitroCardHeaderView headerText={ LocalizeText(senderName ? 'widget.furni.present.window.title_from' : 'widget.furni.present.window.title', [ 'name' ], [ senderName ]) } onCloseClick={ close } />
-            <NitroCardContentView>
-                <NitroLayoutGrid>
-                    { (placedItemId === -1) &&
-                        <NitroLayoutGridColumn size={ 12 }>
-                            <NitroLayoutFlex className="justify-content-center align-items-center" overflow="auto">
-                                <NitroLayoutGiftCardView userName={ senderName } figure={ senderFigure } message={ text } />
-                            </NitroLayoutFlex>
-                            <NitroLayoutFlex gap={ 2 }>
-                                { senderName &&
-                                    <NitroLayoutButton className="text-nowrap w-100" variant="primary" onClick={ event => handleAction(ACTION_GIVE_GIFT) }>
-                                        { LocalizeText('widget.furni.present.give_gift', [ 'name' ], [ senderName ]) }
-                                    </NitroLayoutButton> }
-                                <NitroLayoutButton className="text-nowrap w-100" variant="success" onClick={ event => handleAction(ACTION_OPEN) }>
-                                    { LocalizeText('widget.furni.present.open_gift') }
-                                </NitroLayoutButton>
-                            </NitroLayoutFlex>
-                        </NitroLayoutGridColumn> }
-                    { (placedItemId > -1) &&
-                        <NitroLayoutGridColumn size={ 12 }>
-                            <NitroLayoutFlex className="justify-content-center align-items-center" overflow="auto" gap={ 2 }>
-                                <img src={ imageUrl } alt="" />
-                                <NitroLayoutBase className="text-black">
-                                    { LocalizeText(productName, [ 'product' ], [ text ]) }
-                                </NitroLayoutBase>
-                            </NitroLayoutFlex>
-                            <NitroLayoutFlexColumn gap={ 2 }>
-                                <NitroLayoutFlex gap={ 2 }>
-                                    <NitroLayoutButton className="w-100" variant="primary" onClick={ event => handleAction(ACTION_INVENTORY) }>
-                                        { LocalizeText('widget.furni.present.put_in_inventory') }
-                                    </NitroLayoutButton>
-                                    <NitroLayoutButton className="w-100" variant="success" onClick={ event => handleAction(ACTION_PLACE) }>
-                                        { LocalizeText(placedInRoom ? 'widget.furni.present.keep_in_room' : 'widget.furni.present.place_in_room') }
-                                    </NitroLayoutButton>
-                                </NitroLayoutFlex>
-                                { (senderName && senderName.length) &&
-                                    <NitroLayoutButton className="w-100" variant="primary" onClick={ event => handleAction(ACTION_GIVE_GIFT) }>
-                                        { LocalizeText('widget.furni.present.give_gift', [ 'name' ], [ senderName ]) }
-                                    </NitroLayoutButton> }
-                            </NitroLayoutFlexColumn>
-                        </NitroLayoutGridColumn> }
-                </NitroLayoutGrid>
+            <NitroCardContentView center>
+                { (placedItemId === -1) &&
+                    <Column overflow="hidden">
+                        <Flex center overflow="auto">
+                            <NitroLayoutGiftCardView userName={ senderName } figure={ senderFigure } message={ text } />
+                        </Flex>
+                        <Flex gap={ 1 }>
+                            { senderName &&
+                                <Button fullWidth onClick={ event => handleAction(ACTION_GIVE_GIFT) }>
+                                    { LocalizeText('widget.furni.present.give_gift', [ 'name' ], [ senderName ]) }
+                                </Button> }
+                            <Button fullWidth variant="success" onClick={ event => handleAction(ACTION_OPEN) }>
+                                { LocalizeText('widget.furni.present.open_gift') }
+                            </Button>
+                        </Flex>
+                    </Column> }
+                { (placedItemId > -1) &&
+                    <Column overflow="hidden">
+                        <Flex center overflow="auto" gap={ 2 }>
+                            <img src={ imageUrl } className="no-select" alt="" />
+                            <Text wrap>{ LocalizeText(productName, [ 'product' ], [ text ]) }</Text>
+                        </Flex>
+                        <Column grow gap={ 1 }>
+                            <Flex gap={ 1 }>
+                                <Button fullWidth onClick={ event => handleAction(ACTION_INVENTORY) }>
+                                    { LocalizeText('widget.furni.present.put_in_inventory') }
+                                </Button>
+                                <Button fullWidth variant="success" onClick={ event => handleAction(ACTION_PLACE) }>
+                                    { LocalizeText(placedInRoom ? 'widget.furni.present.keep_in_room' : 'widget.furni.present.place_in_room') }
+                                </Button>
+                            </Flex>
+                            { (senderName && senderName.length) &&
+                                <Button fullWidth onClick={ event => handleAction(ACTION_GIVE_GIFT) }>
+                                    { LocalizeText('widget.furni.present.give_gift', [ 'name' ], [ senderName ]) }
+                                </Button> }
+                        </Column>
+                    </Column> }
             </NitroCardContentView>
         </NitroCardView>
     );

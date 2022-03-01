@@ -11,6 +11,7 @@
     "chat.viewer.height.percentage": 0.40,
     "widget.dimmer.colorwheel": false,
     "avatar.wardrobe.max.slots": 10,
+    "user.badges.max.slots": 5,
     "hotelview": {
         "widgets": {
             "slot.1.widget": "promoarticle",

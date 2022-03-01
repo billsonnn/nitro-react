@@ -1,6 +1,6 @@
 import { RequestBadgesComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { LocalizeBadgeName, LocalizeText } from '../../../../api';
+import { GetConfiguration, LocalizeBadgeName, LocalizeText } from '../../../../api';
 import { AutoGrid } from '../../../../common/AutoGrid';
 import { Button } from '../../../../common/Button';
 import { Column } from '../../../../common/Column';
@@ -22,9 +22,10 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
     const { badgeState = null, dispatchBadgeState = null } = useInventoryContext();
     const { needsBadgeUpdate = false, badge = null, badges = [], activeBadges = [] } = badgeState;
 
-    const isWearingBadge = (badgeCode: string) => (activeBadges.indexOf(badgeCode) >= 0);
+    const maxBadgeCount = GetConfiguration<number>('user.badges.max.slots', 5);
 
-    const canWearBadges = () => (activeBadges.length < 5);
+    const isWearingBadge = (badgeCode: string) => (activeBadges.indexOf(badgeCode) >= 0);
+    const canWearBadges = () => (activeBadges.length < maxBadgeCount);
 
     const toggleBadge = () =>
     {

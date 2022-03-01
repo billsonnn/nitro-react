@@ -2,11 +2,8 @@ import { ApplyTonerComposer, RoomControllerLevel, RoomEngineObjectEvent, RoomEng
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
-import { Button } from '../../../../../common/Button';
-import { Column } from '../../../../../common/Column';
-import { FormGroup } from '../../../../../common/FormGroup';
-import { Text } from '../../../../../common/Text';
-import { SendMessageHook } from '../../../../../hooks';
+import { Button, Column, Text } from '../../../../../common';
+import { BatchUpdates, SendMessageHook } from '../../../../../hooks';
 import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../../../../hooks/events';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
@@ -44,11 +41,14 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
                 
                 const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
                 const model = roomObject.model;
-                
-                setObjectId(roomObject.id);
-                setHue(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_HUE)));
-                setSaturation(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_SATURATION)));
-                setLightness(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_LIGHTNESS)));
+
+                BatchUpdates(() =>
+                {
+                    setObjectId(roomObject.id);
+                    setHue(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_HUE)));
+                    setSaturation(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_SATURATION)));
+                    setLightness(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_LIGHTNESS)));
+                });
                 
                 return;
             }
@@ -89,10 +89,10 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
     return (
         <NitroCardView>
             <NitroCardHeaderView headerText={ LocalizeText('widget.backgroundcolor.title') } onCloseClick={ close } />
-            <NitroCardContentView>
-                <Column overflow="auto">
-                    <FormGroup column>
-                        <Text fontWeight="bold">{ LocalizeText('widget.backgroundcolor.hue') }</Text>
+            <NitroCardContentView overflow="hidden" justifyContent="between">
+                <Column overflow="auto" gap={ 1 }>
+                    <Column>
+                        <Text bold>{ LocalizeText('widget.backgroundcolor.hue') }</Text>
                         <ReactSlider
                             className={ 'nitro-slider' }
                             min={ 0 }
@@ -101,9 +101,9 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
                             onChange={ event => setHue(event) }
                             thumbClassName={ 'thumb degree' }
                             renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
-                    </FormGroup>
-                    <FormGroup column>
-                        <Text fontWeight="bold">{ LocalizeText('widget.backgroundcolor.saturation') }</Text>
+                    </Column>
+                    <Column>
+                        <Text bold>{ LocalizeText('widget.backgroundcolor.saturation') }</Text>
                         <ReactSlider
                             className={ 'nitro-slider' }
                             min={ 0 }
@@ -112,9 +112,9 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
                             onChange={ event => setSaturation(event) }
                             thumbClassName={ 'thumb percent' }
                             renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
-                    </FormGroup>
-                    <FormGroup column>
-                        <Text fontWeight="bold">{ LocalizeText('widget.backgroundcolor.lightness') }</Text>
+                    </Column>
+                    <Column>
+                        <Text bold>{ LocalizeText('widget.backgroundcolor.lightness') }</Text>
                         <ReactSlider
                             className={ 'nitro-slider' }
                             min={ 0 }
@@ -123,13 +123,13 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
                             onChange={ event => setLightness(event) }
                             thumbClassName={ 'thumb percent' }
                             renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
-                    </FormGroup>
+                    </Column>
                 </Column>
-                <Column center gap={ 1 }>
-                    <Button fullWidth variant="primary" size="sm" onClick={ event => processAction('toggle') }>
+                <Column gap={ 1 }>
+                    <Button fullWidth variant="primary" onClick={ event => processAction('toggle') }>
                         { LocalizeText('widget.backgroundcolor.button.on') }
                     </Button>
-                    <Button fullWidth variant="primary" size="sm" onClick={ event => processAction('apply') }>
+                    <Button fullWidth variant="primary" onClick={ event => processAction('apply') }>
                         { LocalizeText('widget.backgroundcolor.button.apply') }
                     </Button>
                 </Column>

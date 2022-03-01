@@ -2,10 +2,10 @@ import { FurnitureStackHeightComposer, FurnitureStackHeightEvent } from '@nitrot
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, RoomWidgetUpdateCustomStackHeightEvent } from '../../../../../api';
+import { Button, Column, Flex, Text } from '../../../../../common';
 import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutButton, NitroLayoutFlex, NitroLayoutFlexColumn, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../../../layout';
-import { NitroLayoutBase } from '../../../../../layout/base';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
 
 const MAX_HEIGHT: number = 40;
@@ -17,14 +17,14 @@ export const FurnitureCustomStackHeightView: FC<{}> = props =>
     const [ pendingHeight, setPendingHeight ] = useState(-1);
     const { eventDispatcher = null } = useRoomContext();
 
-    const close = useCallback(() =>
+    const close = () =>
     {
         BatchUpdates(() =>
         {
             setObjectId(-1);
             setHeight(0);
         });
-    }, []);
+    }
 
     const updateHeight = useCallback((height: number, fromServer: boolean = false) =>
     {
@@ -83,35 +83,29 @@ export const FurnitureCustomStackHeightView: FC<{}> = props =>
     if(objectId === -1) return null;
 
     return (
-        <NitroCardView className="nitro-widget-custom-stack-height" simple={ true }>
+        <NitroCardView className="nitro-widget-custom-stack-height" simple>
             <NitroCardHeaderView headerText={ LocalizeText('widget.custom.stack.height.title') } onCloseClick={ close } />
-            <NitroCardContentView>
-                <NitroLayoutGrid>
-                    <NitroLayoutGridColumn className="justify-content-between" size={ 12 }>
-                        <NitroLayoutBase className="text-black" overflow="auto">
-                            { LocalizeText('widget.custom.stack.height.text') }
-                        </NitroLayoutBase>
-                        <NitroLayoutFlexColumn gap={ 2 }>
-                            <NitroLayoutFlex gap={ 2 }>
-                                <ReactSlider
-                                    className="nitro-slider"
-                                    min={ 0 }
-                                    max={ MAX_HEIGHT }
-                                    step={ 0.01 }
-                                    value={ height }
-                                    onChange={ event => updateHeight(event) }
-                                    renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
-                                <input type="number" min={ 0 } max={ MAX_HEIGHT } value={ height } onChange={ event => updateHeight(parseFloat(event.target.value)) } />
-                            </NitroLayoutFlex>
-                            <NitroLayoutButton variant="primary" onClick={ event => sendUpdate(-100) }>
-                                { LocalizeText('furniture.above.stack') }
-                            </NitroLayoutButton>
-                            <NitroLayoutButton variant="primary" onClick={ event => sendUpdate(0) }>
-                                { LocalizeText('furniture.floor.level') }
-                            </NitroLayoutButton>
-                        </NitroLayoutFlexColumn>
-                    </NitroLayoutGridColumn>
-                </NitroLayoutGrid>
+            <NitroCardContentView justifyContent="between">
+                <Text>{ LocalizeText('widget.custom.stack.height.text') }</Text>
+                <Flex gap={ 2 }>
+                    <ReactSlider
+                        className="nitro-slider"
+                        min={ 0 }
+                        max={ MAX_HEIGHT }
+                        step={ 0.01 }
+                        value={ height }
+                        onChange={ event => updateHeight(event) }
+                        renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
+                    <input type="number" min={ 0 } max={ MAX_HEIGHT } value={ height } onChange={ event => updateHeight(parseFloat(event.target.value)) } />
+                </Flex>
+                <Column gap={ 1 }>
+                    <Button onClick={ event => sendUpdate(-100) }>
+                        { LocalizeText('furniture.above.stack') }
+                    </Button>
+                    <Button onClick={ event => sendUpdate(0) }>
+                        { LocalizeText('furniture.floor.level') }
+                    </Button>
+                </Column>
             </NitroCardContentView>
         </NitroCardView>
     );

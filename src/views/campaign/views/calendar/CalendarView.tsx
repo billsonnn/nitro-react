@@ -4,7 +4,18 @@ import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFl
 import { CalendarItemState } from '../../common/CalendarItemState';
 import { getNumItemsDisplayed } from '../../common/Utils';
 import { CalendarItemView } from '../calendar-item/CalendarItemView';
-import { CalendarViewProps } from './CalendarView.types';
+
+interface CalendarViewProps
+{
+    close(): void;
+    openPackage(id: number, asStaff: boolean): void;
+    receivedProducts: Map<number, string>;
+    campaignName: string;
+    currentDay: number;
+    numDays: number;
+    openedDays: number[];
+    missedDays: number[];
+}
 
 export const CalendarView: FC<CalendarViewProps> = props =>
 {

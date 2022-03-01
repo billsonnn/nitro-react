@@ -227,8 +227,6 @@ export const InventoryMessageHandler: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        console.log(parser);
-
         dispatchFurnitureState({
             type: InventoryFurnitureActions.UPDATE_TRADE,
             payload: {
@@ -291,8 +289,6 @@ export const InventoryMessageHandler: FC<{}> = props =>
     const onTradingOpenFailedEvent = useCallback((event: TradingOpenFailedEvent) =>
     {
         const parser = event.getParser();
-
-        console.log(parser);
 
         NotificationUtilities.simpleAlert(LocalizeText(`inventory.trading.openfail.${ parser.reason }`, [ 'otherusername' ], [ parser.otherUserName ]), null, null, null, LocalizeText('inventory.trading.openfail.title'));
     }, []);

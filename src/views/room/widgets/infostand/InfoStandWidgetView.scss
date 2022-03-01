@@ -4,6 +4,7 @@
     bottom: $toolbar-height + 10px;
     pointer-events: none;
     z-index: $infostand-zindex;
+    color: $white;
 
     .nitro-infostand {
         position: relative;
@@ -28,7 +29,6 @@
             width: 100%;
             max-width: 68px;
             border-radius: $border-radius;
-            margin-right: 5px;
 
             &.pet {
                 max-width: 75px;
