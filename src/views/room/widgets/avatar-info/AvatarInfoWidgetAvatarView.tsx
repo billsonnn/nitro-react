@@ -1,11 +1,18 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomControllerLevel, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetOwnRoomObject, GetUserProfile, LocalizeText, RoomWidgetMessage, RoomWidgetUserActionMessage } from '../../../../../../api';
-import { useRoomContext } from '../../../../context/RoomContext';
-import { ContextMenuView } from '../../../context-menu/ContextMenuView';
-import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
-import { ContextMenuListItemView } from '../../../context-menu/views/list-item/ContextMenuListItemView';
-import { AvatarInfoWidgetAvatarViewProps } from './AvatarInfoWidgetAvatarView.types';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { GetOwnRoomObject, GetUserProfile, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUserActionMessage } from '../../../../api';
+import { BatchUpdates } from '../../../../hooks';
+import { useRoomContext } from '../../context/RoomContext';
+import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
+import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
+import { ContextMenuView } from '../context-menu/ContextMenuView';
+
+interface AvatarInfoWidgetAvatarViewProps
+{
+    userData: RoomWidgetUpdateInfostandUserEvent;
+    close: () => void;
+}
 
 const MODE_NORMAL = 0;
 const MODE_MODERATE = 1;
@@ -20,12 +27,6 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
     const [ mode, setMode ] = useState(MODE_NORMAL);
     const [ respectsLeft, setRespectsLeft ] = useState(0);
     const { widgetHandler = null } = useRoomContext();
-
-    useEffect(() =>
-    {
-        setMode(MODE_NORMAL);
-        setRespectsLeft(userData.respectLeft);
-    }, [ userData ])
 
     const isShowGiveRights = useMemo(() =>
     {
@@ -42,7 +43,23 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
         return (userData.canBeKicked || userData.canBeBanned || userData.canBeMuted || isShowGiveRights || isShowRemoveRights);
     }, [ isShowGiveRights, isShowRemoveRights, userData ]);
 
-    const processAction = useCallback((name: string) =>
+    const canGiveHandItem = useMemo(() =>
+    {
+        let flag = false;
+
+        const roomObject = GetOwnRoomObject();
+
+        if(roomObject)
+        {
+            const carryId = roomObject.model.getValue<number>(RoomObjectVariable.FIGURE_CARRY_OBJECT);
+
+            if((carryId > 0) && (carryId < 999999)) flag = true;
+        }
+
+        return flag;
+    }, []);
+
+    const processAction = (name: string) =>
     {
         let messageType: string = null;
         let message: RoomWidgetMessage = null;
@@ -173,23 +190,16 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
         }
 
         if(hideMenu) close();
-    }, [ widgetHandler, userData, close ]);
+    }
 
-    const canGiveHandItem = useMemo(() =>
+    useEffect(() =>
     {
-        let flag = false;
-
-        const roomObject = GetOwnRoomObject();
-
-        if(roomObject)
+        BatchUpdates(() =>
         {
-            const carryId = roomObject.model.getValue<number>(RoomObjectVariable.FIGURE_CARRY_OBJECT);
-
-            if((carryId > 0) && (carryId < 999999)) flag = true;
-        }
-
-        return flag;
-    }, []);
+            setMode(MODE_NORMAL);
+            setRespectsLeft(userData.respectLeft);
+        });
+    }, [ userData ]);
 
     return (
         <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ userData.userType } close={ close }>
@@ -225,12 +235,12 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                     </ContextMenuListItemView>
                     { moderateMenuHasContent &&
                         <ContextMenuListItemView onClick={ event => processAction('moderate') }>
-                            <i className="fas fa-chevron-right right" />
+                            <FontAwesomeIcon icon="chevron-right" className="right" />
                             { LocalizeText('infostand.link.moderate') }
                         </ContextMenuListItemView> }
                     { userData.isAmbassador &&
                         <ContextMenuListItemView onClick={ event => processAction('ambassador') }>
-                            <i className="fas fa-chevron-right right" />
+                            <FontAwesomeIcon icon="chevron-right" className="right" />
                             { LocalizeText('infostand.link.ambassador') }
                         </ContextMenuListItemView> }
                     { canGiveHandItem && <ContextMenuListItemView onClick={ event => processAction('pass_hand_item') }>
@@ -243,11 +253,11 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                         { LocalizeText('infostand.button.kick') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('mute') }>
-                        <i className="fas fa-chevron-right right" />
+                        <FontAwesomeIcon icon="chevron-right" className="right" />
                         { LocalizeText('infostand.button.mute') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('ban') }>
-                        <i className="fas fa-chevron-right right" />
+                        <FontAwesomeIcon icon="chevron-right" className="right" />
                         { LocalizeText('infostand.button.ban') }
                     </ContextMenuListItemView>
                     { isShowGiveRights &&
@@ -259,7 +269,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                             { LocalizeText('infostand.button.removerights') }
                         </ContextMenuListItemView> }
                     <ContextMenuListItemView onClick={ event => processAction('back') }>
-                        <i className="fas fa-chevron-left left" />
+                        <FontAwesomeIcon icon="chevron-left" className="left" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
                 </> }
@@ -275,7 +285,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                         { LocalizeText('infostand.button.perm_ban') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('back_moderate') }>
-                        <i className="fas fa-chevron-left left" />
+                        <FontAwesomeIcon icon="chevron-left" className="left" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
                 </> }
@@ -291,7 +301,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                         { LocalizeText('infostand.button.mute_10min') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('back_moderate') }>
-                        <i className="fas fa-chevron-left left" />
+                        <FontAwesomeIcon icon="chevron-left" className="left" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
                 </> }
@@ -304,11 +314,11 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                         { LocalizeText('infostand.button.kick') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('ambassador_mute') }>
-                        <i className="fas fa-chevron-right right" />
                         { LocalizeText('infostand.button.mute') }
+                        <FontAwesomeIcon icon="chevron-right" className="right" />
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('back') }>
-                        <i className="fas fa-chevron-left left" />
+                        <FontAwesomeIcon icon="chevron-left" className="left" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
                 </> }
@@ -327,7 +337,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                         { LocalizeText('infostand.button.mute_18hour') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('back_ambassador') }>
-                        <i className="fas fa-chevron-left left" />
+                        <FontAwesomeIcon icon="chevron-left" className="left" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
                 </> }

@@ -9,6 +9,11 @@
     z-index: $context-menu-zindex;
     pointer-events: all;
 
+    &.bot-chat {
+        max-width: 250px;
+        width: 250px;
+    }
+
     &.name-only {
         background-color: rgba($black, 0.5);
         padding: 1px 8px;

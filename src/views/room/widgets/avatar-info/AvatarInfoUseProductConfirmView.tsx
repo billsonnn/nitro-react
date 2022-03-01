@@ -1,11 +1,17 @@
 import { IFurnitureData, PetCustomPart, PetFigureData, RoomObjectCategory, RoomObjectVariable, RoomUserData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetFurnitureDataForRoomObject, GetRoomEngine, LocalizeText, RoomWidgetUseProductMessage } from '../../../../../../api';
-import { FurniCategory } from '../../../../../../components/inventory/common/FurniCategory';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../../layout';
-import { PetImageView } from '../../../../../shared/pet-image/PetImageView';
-import { useRoomContext } from '../../../../context/RoomContext';
-import { AvatarInfoUseProductConfirmViewProps } from './AvatarInfoUseProductConfirmView.types';
+import { GetFurnitureDataForRoomObject, GetRoomEngine, LocalizeText, RoomWidgetUseProductMessage, UseProductItem } from '../../../../api';
+import { Base, Button, Column, Flex, Text } from '../../../../common';
+import { FurniCategory } from '../../../../components/inventory/common/FurniCategory';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
+import { PetImageView } from '../../../shared/pet-image/PetImageView';
+import { useRoomContext } from '../../context/RoomContext';
+
+interface AvatarInfoUseProductConfirmViewProps
+{
+    item: UseProductItem;
+    close: () => void;
+}
 
 const _Str_5091: number = -1;
 const _Str_11906: number = 0;
@@ -221,57 +227,57 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
     return (
         <NitroCardView className="nitro-use-product-confirmation">
             <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title', [ 'name' ], [ petData.name ]) } onCloseClick={ close } />
-            <NitroCardContentView>
-                <div className="row">
-                    <div className="w-unset">
-                        <div className="product-preview cursor-pointer" onClick={ selectRoomObject }>
+            <NitroCardContentView center>
+                <Flex gap={ 2 } overflow="hidden">
+                    <Column>
+                        <Base pointer className="product-preview" onClick={ selectRoomObject }>
                             { getPetImage }
-                        </div>
-                    </div>
-                    <div className="col d-flex flex-column justify-content-between">
-                        <div className="d-flex flex-column">
+                        </Base>
+                    </Column>
+                    <Column justifyContent="between" overflow="auto">
+                        <Column gap={ 2 }>
                             { (mode === _Str_11906) && 
                                 <>
-                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.shampoo', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.shampoo') }</div>
+                                    <Text>{ LocalizeText('useproduct.widget.text.shampoo', [ 'productName' ], [ furniData.name ] ) }</Text>
+                                    <Text>{ LocalizeText('useproduct.widget.info.shampoo') }</Text>
                                 </> }
                             { (mode === _Str_11214) && 
                                 <>
-                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.custompart', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.custompart') }</div>
+                                    <Text>{ LocalizeText('useproduct.widget.text.custompart', [ 'productName' ], [ furniData.name ] ) }</Text>
+                                    <Text>{ LocalizeText('useproduct.widget.info.custompart') }</Text>
                                 </> }
                             { (mode === _Str_11733) && 
                                 <>
-                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.custompartshampoo', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.custompartshampoo') }</div>
+                                    <Text>{ LocalizeText('useproduct.widget.text.custompartshampoo', [ 'productName' ], [ furniData.name ] ) }</Text>
+                                    <Text>{ LocalizeText('useproduct.widget.info.custompartshampoo') }</Text>
                                 </> }
                             { (mode === _Str_11369) && 
                                 <>
-                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.saddle', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.saddle') }</div>
+                                    <Text>{ LocalizeText('useproduct.widget.text.saddle', [ 'productName' ], [ furniData.name ] ) }</Text>
+                                    <Text>{ LocalizeText('useproduct.widget.info.saddle') }</Text>
                                 </> }
                             { (mode === _Str_8759) && 
                                 <>
-                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.revive_monsterplant', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.revive_monsterplant') }</div>
+                                    <Text>{ LocalizeText('useproduct.widget.text.revive_monsterplant', [ 'productName' ], [ furniData.name ] ) }</Text>
+                                    <Text>{ LocalizeText('useproduct.widget.info.revive_monsterplant') }</Text>
                                 </> }
                             { (mode === _Str_8432) && 
                                 <>
-                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.rebreed_monsterplant', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.rebreed_monsterplant') }</div>
+                                    <Text>{ LocalizeText('useproduct.widget.text.rebreed_monsterplant', [ 'productName' ], [ furniData.name ] ) }</Text>
+                                    <Text>{ LocalizeText('useproduct.widget.info.rebreed_monsterplant') }</Text>
                                 </> }
                             { (mode === _Str_9653) && 
                                 <>
-                                    <div className="text-black mb-2">{ LocalizeText('useproduct.widget.text.fertilize_monsterplant', [ 'productName' ], [ furniData.name ] ) }</div>
-                                    <div className="text-black">{ LocalizeText('useproduct.widget.info.fertilize_monsterplant') }</div>
+                                    <Text>{ LocalizeText('useproduct.widget.text.fertilize_monsterplant', [ 'productName' ], [ furniData.name ] ) }</Text>
+                                    <Text>{ LocalizeText('useproduct.widget.info.fertilize_monsterplant') }</Text>
                                 </> }
-                        </div>
-                        <div className="d-flex justify-content-between align-items-end w-100 h-100">
-                            <button type="button" className="btn btn-danger" onClick={ close }>{ LocalizeText('useproduct.widget.cancel') }</button>
-                            <button type="button" className="btn btn-primary" onClick={ useProduct }>{ LocalizeText('useproduct.widget.use') }</button>
-                        </div>
-                    </div>
-                </div>
+                        </Column>
+                        <Flex alignItems="center" justifyContent="between">
+                            <Button variant="danger" onClick={ close }>{ LocalizeText('useproduct.widget.cancel') }</Button>
+                            <Button variant="success" onClick={ useProduct }>{ LocalizeText('useproduct.widget.use') }</Button>
+                        </Flex>
+                    </Column>
+                </Flex>
             </NitroCardContentView>
         </NitroCardView>
     )

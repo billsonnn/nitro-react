@@ -1,11 +1,17 @@
 import { PetType, RoomObjectCategory, RoomObjectType, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetOwnRoomObject, LocalizeText, RoomWidgetMessage, RoomWidgetUserActionMessage } from '../../../../../../api';
-import { useRoomContext } from '../../../../context/RoomContext';
-import { ContextMenuView } from '../../../context-menu/ContextMenuView';
-import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
-import { ContextMenuListItemView } from '../../../context-menu/views/list-item/ContextMenuListItemView';
-import { AvatarInfoWidgetOwnPetViewProps } from './AvatarInfoWidgetOwnPetView.types';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { GetOwnRoomObject, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUserActionMessage } from '../../../../api';
+import { BatchUpdates } from '../../../../hooks';
+import { useRoomContext } from '../../context/RoomContext';
+import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
+import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
+import { ContextMenuView } from '../context-menu/ContextMenuView';
+
+interface AvatarInfoWidgetOwnPetViewProps
+{
+    petData: RoomWidgetUpdateInfostandPetEvent;
+    close: () => void;
+}
 
 const _Str_2906: number = 0;
 const _Str_5818: number = 1;
@@ -19,21 +25,23 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
     const [ respectsLeft, setRespectsLeft ] = useState(0);
     const { roomSession = null, widgetHandler = null } = useRoomContext();
 
-    useEffect(() =>
+    const canGiveHandItem = useMemo(() =>
     {
-        setMode(prevValue =>
-            {
-                if(petData.petType === PetType.MONSTERPLANT) return _Str_10946;
-                else if(petData.saddle && !petData.rider) return _Str_5818;
-                else if(petData.rider) return _Str_5938;
+        let flag = false;
 
-                return _Str_2906;
-            });
+        const roomObject = GetOwnRoomObject();
 
-        setRespectsLeft(petData.respectsPetLeft);
-    }, [ petData ])
+        if(roomObject)
+        {
+            const carryId = roomObject.model.getValue<number>(RoomObjectVariable.FIGURE_CARRY_OBJECT);
 
-    const processAction = useCallback((name: string) =>
+            if((carryId > 0) && (carryId < 999999)) flag = true;
+        }
+
+        return flag;
+    }, []);
+
+    const processAction = (name: string) =>
     {
         let messageType: string = null;
         let message: RoomWidgetMessage = null;
@@ -118,23 +126,24 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
         }
 
         if(hideMenu) close();
-    }, [ widgetHandler, petData, mode, close ]);
+    }
 
-    const canGiveHandItem = useMemo(() =>
+    useEffect(() =>
     {
-        let flag = false;
-
-        const roomObject = GetOwnRoomObject();
-
-        if(roomObject)
+        BatchUpdates(() =>
         {
-            const carryId = roomObject.model.getValue<number>(RoomObjectVariable.FIGURE_CARRY_OBJECT);
-
-            if((carryId > 0) && (carryId < 999999)) flag = true;
-        }
-
-        return flag;
-    }, []);
+            setMode(prevValue =>
+                {
+                    if(petData.petType === PetType.MONSTERPLANT) return _Str_10946;
+                    else if(petData.saddle && !petData.rider) return _Str_5818;
+                    else if(petData.rider) return _Str_5938;
+    
+                    return _Str_2906;
+                });
+    
+            setRespectsLeft(petData.respectsPetLeft);
+        });
+    }, [ petData ]);
 
     return (
         <ContextMenuView objectId={ petData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close }>
@@ -167,8 +176,8 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                     <ContextMenuListItemView onClick={ event => processAction('mount') }>
                         { LocalizeText('infostand.button.mount') }
                     </ContextMenuListItemView>
-                    <ContextMenuListItemView onClick={ event => processAction('toggle_riding_permission') }>
-                        <input type="checkbox" className="me-1" checked={ !!petData.publiclyRideable } readOnly={ true }  />
+                    <ContextMenuListItemView onClick={ event => processAction('toggle_riding_permission') } gap={ 1 }>
+                        <input type="checkbox" checked={ !!petData.publiclyRideable } readOnly={ true }  />
                         { LocalizeText('infostand.button.toggle_riding_permission') }
                     </ContextMenuListItemView>
                     { (respectsLeft > 0) &&
@@ -214,8 +223,8 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                         </ContextMenuListItemView> }
                     { !petData.dead && (petData.level === petData.maximumLevel) && petData.breedable &&
                         <>
-                            <ContextMenuListItemView onClick={ event => processAction('toggle_breeding_permission') }>
-                                <input type="checkbox" className="me-1" checked={ petData.publiclyBreedable } readOnly={ true }  />
+                            <ContextMenuListItemView onClick={ event => processAction('toggle_breeding_permission') } gap={ 1 }>
+                                <input type="checkbox" checked={ petData.publiclyBreedable } readOnly={ true }  />
                                 { LocalizeText('infostand.button.toggle_breeding_permission') }
                             </ContextMenuListItemView>
                             <ContextMenuListItemView onClick={ event => processAction('breed') }>

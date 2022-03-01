@@ -3,16 +3,16 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import { GetRoomSession, GetSessionDataManager, RoomWidgetObjectNameEvent, RoomWidgetRoomObjectMessage, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent, RoomWidgetUpdateRoomEngineEvent, RoomWidgetUpdateRoomObjectEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../../../../api';
 import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
 import { useRoomContext } from '../../context/RoomContext';
-import { AvatarInfoWidgetAvatarView } from './views/avatar/AvatarInfoWidgetAvatarView';
-import { AvatarInfoWidgetDecorateView } from './views/decorate/AvatarInfoWidgetDecorateView';
-import { AvatarInfoWidgetNameView } from './views/name/AvatarInfoWidgetNameView';
-import { AvatarInfoWidgetOwnAvatarView } from './views/own-avatar/AvatarInfoWidgetOwnAvatarView';
-import { AvatarInfoWidgetOwnPetView } from './views/own-pet/AvatarInfoWidgetOwnPetView';
-import { AvatarInfoWidgetPetView } from './views/pet/AvatarInfoWidgetPetView';
-import { AvatarInfoRentableBotChatView } from './views/rentable-bot-chat/AvatarInfoRentableBotChatView';
-import { AvatarInfoWidgetRentableBotView } from './views/rentable-bot/AvatarInfoWidgetRentableBotView';
-import { AvatarInfoUseProductConfirmView } from './views/use-product-confirm/AvatarInfoUseProductConfirmView';
-import { AvatarInfoUseProductView } from './views/use-product/AvatarInfoUseProductView';
+import { AvatarInfoRentableBotChatView } from './AvatarInfoRentableBotChatView';
+import { AvatarInfoUseProductConfirmView } from './AvatarInfoUseProductConfirmView';
+import { AvatarInfoUseProductView } from './AvatarInfoUseProductView';
+import { AvatarInfoWidgetAvatarView } from './AvatarInfoWidgetAvatarView';
+import { AvatarInfoWidgetDecorateView } from './AvatarInfoWidgetDecorateView';
+import { AvatarInfoWidgetNameView } from './AvatarInfoWidgetNameView';
+import { AvatarInfoWidgetOwnAvatarView } from './AvatarInfoWidgetOwnAvatarView';
+import { AvatarInfoWidgetOwnPetView } from './AvatarInfoWidgetOwnPetView';
+import { AvatarInfoWidgetPetView } from './AvatarInfoWidgetPetView';
+import { AvatarInfoWidgetRentableBotView } from './AvatarInfoWidgetRentableBotView';
 
 export const AvatarInfoWidgetView: FC<{}> = props =>
 {

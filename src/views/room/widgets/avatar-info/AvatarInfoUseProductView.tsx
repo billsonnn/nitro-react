@@ -1,12 +1,18 @@
 import { RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetFurnitureDataForRoomObject, LocalizeText } from '../../../../../../api';
-import { FurniCategory } from '../../../../../../components/inventory/common/FurniCategory';
-import { useRoomContext } from '../../../../context/RoomContext';
-import { ContextMenuView } from '../../../context-menu/ContextMenuView';
-import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
-import { ContextMenuListItemView } from '../../../context-menu/views/list-item/ContextMenuListItemView';
-import { AvatarInfoUseProductViewProps } from './AvatarInfoUseProductView.types';
+import { GetFurnitureDataForRoomObject, LocalizeText, UseProductItem } from '../../../../api';
+import { FurniCategory } from '../../../../components/inventory/common/FurniCategory';
+import { useRoomContext } from '../../context/RoomContext';
+import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
+import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
+import { ContextMenuView } from '../context-menu/ContextMenuView';
+
+interface AvatarInfoUseProductViewProps
+{
+    item: UseProductItem;
+    updateConfirmingProduct: (product: UseProductItem) => void;
+    close: () => void;
+}
 
 const PRODUCT_PAGE_UKNOWN: number = 0;
 const PRODUCT_PAGE_SHAMPOO: number = 1;

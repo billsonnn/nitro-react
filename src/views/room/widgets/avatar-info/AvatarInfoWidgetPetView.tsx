@@ -1,11 +1,17 @@
 import { PetType, RoomControllerLevel, RoomObjectCategory, RoomObjectType, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetOwnRoomObject, GetSessionDataManager, LocalizeText, RoomWidgetMessage, RoomWidgetUserActionMessage } from '../../../../../../api';
-import { useRoomContext } from '../../../../context/RoomContext';
-import { ContextMenuView } from '../../../context-menu/ContextMenuView';
-import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
-import { ContextMenuListItemView } from '../../../context-menu/views/list-item/ContextMenuListItemView';
-import { AvatarInfoWidgetPetViewProps } from './AvatarInfoWidgetPetView.types';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { GetOwnRoomObject, GetSessionDataManager, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUserActionMessage } from '../../../../api';
+import { BatchUpdates } from '../../../../hooks';
+import { useRoomContext } from '../../context/RoomContext';
+import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
+import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
+import { ContextMenuView } from '../context-menu/ContextMenuView';
+
+interface AvatarInfoWidgetPetViewProps
+{
+    petData: RoomWidgetUpdateInfostandPetEvent;
+    close: () => void;
+}
 
 const _Str_2906: number = 0;
 const _Str_5818: number = 1;
@@ -19,21 +25,28 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
     const [ respectsLeft, setRespectsLeft ] = useState(0);
     const { roomSession = null, widgetHandler = null } = useRoomContext();
 
-    useEffect(() =>
+    const canPickUp = useMemo(() =>
     {
-        setMode(prevValue =>
-            {
-                if(petData.petType === PetType.MONSTERPLANT) return _Str_13388;
-                else if(petData.saddle && !petData.rider) return _Str_5818;
-                else if(petData.rider) return _Str_5938;
+        return (roomSession.isRoomOwner || (roomSession.controllerLevel >= RoomControllerLevel.GUEST) || GetSessionDataManager().isModerator);
+    }, [ roomSession ]);
 
-                return _Str_2906;
-            });
+    const canGiveHandItem = useMemo(() =>
+    {
+        let flag = false;
 
-        setRespectsLeft(petData.respectsPetLeft);
-    }, [ petData ])
+        const roomObject = GetOwnRoomObject();
 
-    const processAction = useCallback((name: string) =>
+        if(roomObject)
+        {
+            const carryId = roomObject.model.getValue<number>(RoomObjectVariable.FIGURE_CARRY_OBJECT);
+
+            if((carryId > 0) && (carryId < 999999)) flag = true;
+        }
+
+        return flag;
+    }, []);
+
+    const processAction = (name: string) =>
     {
         let messageType: string = null;
         let message: RoomWidgetMessage = null;
@@ -80,28 +93,24 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
         }
 
         if(hideMenu) close();
-    }, [ widgetHandler, petData, close ]);
+    }
 
-    const canPickUp = useMemo(() =>
+    useEffect(() =>
     {
-        return (roomSession.isRoomOwner || (roomSession.controllerLevel >= RoomControllerLevel.GUEST) || GetSessionDataManager().isModerator);
-    }, [ roomSession ]);
-
-    const canGiveHandItem = useMemo(() =>
-    {
-        let flag = false;
-
-        const roomObject = GetOwnRoomObject();
-
-        if(roomObject)
+        BatchUpdates(() =>
         {
-            const carryId = roomObject.model.getValue<number>(RoomObjectVariable.FIGURE_CARRY_OBJECT);
-
-            if((carryId > 0) && (carryId < 999999)) flag = true;
-        }
-
-        return flag;
-    }, []);
+            setMode(prevValue =>
+                {
+                    if(petData.petType === PetType.MONSTERPLANT) return _Str_13388;
+                    else if(petData.saddle && !petData.rider) return _Str_5818;
+                    else if(petData.rider) return _Str_5938;
+    
+                    return _Str_2906;
+                });
+    
+            setRespectsLeft(petData.respectsPetLeft);
+        });
+    }, [ petData ]);
 
     return (
         <ContextMenuView objectId={ petData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close }>

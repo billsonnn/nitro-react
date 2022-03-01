@@ -1,15 +1,23 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AvatarAction, AvatarExpressionEnum, RoomControllerLevel, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, GetUserProfile, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUserActionMessage } from '../../../../../../api';
-import { AvatarEditorEvent } from '../../../../../../events';
-import { HelpNameChangeEvent } from '../../../../../../events/help/HelpNameChangeEvent';
-import { dispatchUiEvent } from '../../../../../../hooks';
-import { CurrencyIcon } from '../../../../../shared/currency-icon/CurrencyIcon';
-import { useRoomContext } from '../../../../context/RoomContext';
-import { ContextMenuView } from '../../../context-menu/ContextMenuView';
-import { ContextMenuHeaderView } from '../../../context-menu/views/header/ContextMenuHeaderView';
-import { ContextMenuListItemView } from '../../../context-menu/views/list-item/ContextMenuListItemView';
-import { AvatarInfoWidgetOwnAvatarViewProps } from './AvatarInfoWidgetOwnAvatarView.types';
+import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, GetUserProfile, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUserActionMessage } from '../../../../api';
+import { Flex } from '../../../../common';
+import { AvatarEditorEvent } from '../../../../events';
+import { HelpNameChangeEvent } from '../../../../events/help/HelpNameChangeEvent';
+import { dispatchUiEvent } from '../../../../hooks';
+import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
+import { useRoomContext } from '../../context/RoomContext';
+import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
+import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
+import { ContextMenuView } from '../context-menu/ContextMenuView';
+
+interface AvatarInfoWidgetOwnAvatarViewProps
+{
+    userData: RoomWidgetUpdateInfostandUserEvent;
+    isDancing: boolean;
+    close: () => void;
+}
 
 const MODE_NORMAL = 0;
 const MODE_CLUB_DANCES = 1;
@@ -134,7 +142,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                     </ContextMenuListItemView>
                     { (HasHabboClub() && !isRidingHorse) &&
                         <ContextMenuListItemView onClick={ event => processAction('dance_menu') }>
-                            <i className="fas fa-chevron-right right" />
+                            <FontAwesomeIcon icon="chevron-right" className="right" />
                             { LocalizeText('widget.memenu.dance') }
                         </ContextMenuListItemView> }
                     { (!isDancing && !HasHabboClub() && !isRidingHorse) &&
@@ -146,11 +154,11 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                             { LocalizeText('widget.memenu.dance.stop') }
                         </ContextMenuListItemView> }
                     <ContextMenuListItemView onClick={ event => processAction('expressions') }>
-                        <i className="fas fa-chevron-right right" />
+                    <FontAwesomeIcon icon="chevron-right" className="right" />
                         { LocalizeText('infostand.link.expressions') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('signs') }>
-                        <i className="fas fa-chevron-right right" />
+                    <FontAwesomeIcon icon="chevron-right" className="right" />
                         { LocalizeText('infostand.show.signs') }
                     </ContextMenuListItemView>
                     { (userData.carryItem > 0) &&
@@ -177,7 +185,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         { LocalizeText('widget.memenu.dance4') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('back') }>
-                        <i className="fas fa-chevron-left left" />
+                        <FontAwesomeIcon icon="chevron-left" className="left" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
                 </> }
@@ -196,12 +204,12 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                             { LocalizeText('widget.memenu.wave') }
                         </ContextMenuListItemView> }
                     { GetCanUseExpression() &&
-                        <ContextMenuListItemView canSelect={ HasHabboVip() } onClick={ event => processAction('laugh') }>
+                        <ContextMenuListItemView disabled={ !HasHabboVip() } onClick={ event => processAction('laugh') }>
                             <CurrencyIcon type="hc" />
                             { LocalizeText('widget.memenu.laugh') }
                         </ContextMenuListItemView> }
                     { GetCanUseExpression() &&
-                        <ContextMenuListItemView canSelect={ HasHabboVip() } onClick={ event => processAction('blow') }>
+                        <ContextMenuListItemView disabled={ !HasHabboVip() } onClick={ event => processAction('blow') }>
                             <CurrencyIcon type="hc" />
                             { LocalizeText('widget.memenu.blow') }
                         </ContextMenuListItemView> }
@@ -209,13 +217,13 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         { LocalizeText('widget.memenu.idle') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('back') }>
-                        <i className="fas fa-chevron-left left" />
+                        <FontAwesomeIcon icon="chevron-left" className="left" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
                 </> }
             { (mode === MODE_SIGNS) &&
                 <>
-                    <div className="d-flex menu-list-split-3">
+                    <Flex className="menu-list-split-3">
                         <ContextMenuListItemView onClick={ event => processAction('sign_1') }>
                             1
                         </ContextMenuListItemView>
@@ -225,8 +233,8 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         <ContextMenuListItemView onClick={ event => processAction('sign_3') }>
                             3
                         </ContextMenuListItemView>
-                    </div>
-                    <div className="d-flex menu-list-split-3">
+                    </Flex>
+                    <Flex className="menu-list-split-3">
                         <ContextMenuListItemView onClick={ event => processAction('sign_4') }>
                             4
                         </ContextMenuListItemView>
@@ -236,8 +244,8 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         <ContextMenuListItemView onClick={ event => processAction('sign_6') }>
                             6
                         </ContextMenuListItemView>
-                    </div>
-                    <div className="d-flex menu-list-split-3">
+                    </Flex>
+                    <Flex className="menu-list-split-3">
                         <ContextMenuListItemView onClick={ event => processAction('sign_7') }>
                             7
                         </ContextMenuListItemView>
@@ -247,8 +255,8 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         <ContextMenuListItemView onClick={ event => processAction('sign_9') }>
                             9
                         </ContextMenuListItemView>
-                    </div>
-                    <div className="d-flex menu-list-split-3">
+                    </Flex>
+                    <Flex className="menu-list-split-3">
                         <ContextMenuListItemView onClick={ event => processAction('sign_10') }>
                             10
                         </ContextMenuListItemView>
@@ -258,8 +266,8 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         <ContextMenuListItemView onClick={ event => processAction('sign_15') }>
                             <i className="icon icon-sign-smile" />
                         </ContextMenuListItemView>
-                    </div>
-                    <div className="d-flex menu-list-split-3">
+                    </Flex>
+                    <Flex className="menu-list-split-3">
                         <ContextMenuListItemView onClick={ event => processAction('sign_12') }>
                             <i className="icon icon-sign-skull" />
                         </ContextMenuListItemView>
@@ -269,8 +277,8 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         <ContextMenuListItemView onClick={ event => processAction('sign_17') }>
                             <i className="icon icon-sign-yellow" />
                         </ContextMenuListItemView>
-                    </div>
-                    <div className="d-flex menu-list-split-3">
+                    </Flex>
+                    <Flex className="menu-list-split-3">
                         <ContextMenuListItemView onClick={ event => processAction('sign_16') }>
                             <i className="icon icon-sign-red" />
                         </ContextMenuListItemView>
@@ -280,9 +288,9 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         <ContextMenuListItemView onClick={ event => processAction('sign_11') }>
                             <i className="icon icon-sign-heart" />
                         </ContextMenuListItemView>
-                    </div>
+                    </Flex>
                     <ContextMenuListItemView onClick={ event => processAction('back') }>
-                        <i className="fas fa-chevron-left left" />
+                        <FontAwesomeIcon icon="chevron-left" className="left" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
                 </> }
