@@ -1,5 +1,9 @@
 import { FC } from 'react';
-import { ItemCountViewProps } from './ItemCountView.types';
+
+interface ItemCountViewProps
+{
+    count: number;
+}
 
 export const ItemCountView: FC<ItemCountViewProps> = props =>
 {

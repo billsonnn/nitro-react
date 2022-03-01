@@ -1,7 +1,19 @@
-import { PetFigureData, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
+import { PetCustomPart, PetFigureData, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
 import { GetRoomEngine } from '../../../api';
-import { PetImageViewProps } from './PetImageView.types';
+
+interface PetImageViewProps
+{
+    figure?: string;
+    typeId?: number;
+    paletteId?: number;
+    color?: number;
+    customParts?: PetCustomPart[];
+    posture?: string;
+    headOnly?: boolean;
+    direction?: number;
+    scale?: number;
+}
 
 export const PetImageView: FC<PetImageViewProps> = props =>
 {
