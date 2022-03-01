@@ -12,7 +12,7 @@ import { FriendsHelper } from './common/FriendsHelper';
 import { MessengerFriend } from './common/MessengerFriend';
 import { MessengerRequest } from './common/MessengerRequest';
 import { MessengerSettings } from './common/MessengerSettings';
-import { FriendsContextProvider } from './context/FriendsContext';
+import { FriendsContextProvider } from './FriendsContext';
 import { FriendBarView } from './views/friend-bar/FriendBarView';
 import { FriendsListView } from './views/friends-list/FriendsListView';
 import { FriendsMessengerView } from './views/messenger/FriendsMessengerView';

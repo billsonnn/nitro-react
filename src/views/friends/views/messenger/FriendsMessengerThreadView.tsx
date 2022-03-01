@@ -1,6 +1,11 @@
 import { FC } from 'react';
-import { FriendsMessengerThreadGroup } from '../messenger-thread-group/FriendsMessengerThreadGroup';
-import { FriendsMessengerThreadViewProps } from './FriendsMessengerThreadView.types';
+import { MessengerThread } from '../../common/MessengerThread';
+import { FriendsMessengerThreadGroup } from './FriendsMessengerThreadGroup';
+
+interface FriendsMessengerThreadViewProps
+{
+    thread: MessengerThread;
+}
 
 export const FriendsMessengerThreadView: FC<FriendsMessengerThreadViewProps> = props =>
 {

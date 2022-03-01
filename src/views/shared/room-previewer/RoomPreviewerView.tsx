@@ -1,7 +1,12 @@
-import { ColorConverter, IRoomRenderingCanvas, TextureUtils } from '@nitrots/nitro-renderer';
+import { ColorConverter, IRoomRenderingCanvas, RoomPreviewer, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { GetNitroInstance } from '../../../api';
-import { RoomPreviewerViewProps } from './RoomPreviewerView.types';
+
+export interface RoomPreviewerViewProps
+{
+    roomPreviewer: RoomPreviewer;
+    height?: number;
+}
 
 export const RoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 {

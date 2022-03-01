@@ -3,10 +3,16 @@ import classNames from 'classnames';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, OpenMessengerChat } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
-import { NitroLayoutFlex, UserProfileIconView } from '../../../../layout';
+import { NitroLayoutFlex, NitroLayoutFlexProps, UserProfileIconView } from '../../../../layout';
 import { NitroLayoutBase } from '../../../../layout/base';
 import { MessengerFriend } from '../../common/MessengerFriend';
-import { FriendsGroupItemViewProps } from './FriendsGroupItemView.types';
+
+interface FriendsGroupItemViewProps extends NitroLayoutFlexProps
+{
+    friend: MessengerFriend;
+    selected?: boolean;
+    selectFriend: () => void;
+}
 
 export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
 {

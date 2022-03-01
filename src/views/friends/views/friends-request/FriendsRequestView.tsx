@@ -1,9 +1,14 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../api';
 import { NitroCardAccordionSetView, NitroLayoutButton, NitroLayoutFlex } from '../../../../layout';
-import { useFriendsContext } from '../../context/FriendsContext';
-import { FriendsRequestItemView } from '../friends-request-item/FriendsRequestItemView';
-import { FriendsRequestViewProps } from './FriendsRequestView.types';
+import { MessengerRequest } from '../../common/MessengerRequest';
+import { useFriendsContext } from '../../FriendsContext';
+import { FriendsRequestItemView } from './FriendsRequestItemView';
+
+interface FriendsRequestViewProps
+{
+    requests: MessengerRequest[];
+}
 
 export const FriendsRequestView: FC<FriendsRequestViewProps> = props =>
 {

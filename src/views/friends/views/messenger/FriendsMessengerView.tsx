@@ -11,8 +11,8 @@ import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { ItemCountView } from '../../../shared/item-count/ItemCountView';
 import { MessengerThread } from '../../common/MessengerThread';
 import { MessengerThreadChat } from '../../common/MessengerThreadChat';
-import { useFriendsContext } from '../../context/FriendsContext';
-import { FriendsMessengerThreadView } from '../messenger-thread/FriendsMessengerThreadView';
+import { useFriendsContext } from '../../FriendsContext';
+import { FriendsMessengerThreadView } from './FriendsMessengerThreadView';
 
 export const FriendsMessengerView: FC<{}> = props =>
 {

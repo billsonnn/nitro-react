@@ -5,7 +5,12 @@ import { SendMessageHook } from '../../../../hooks/messages';
 import { NitroLayoutBase } from '../../../../layout/base';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
-import { FriendBarItemViewProps } from './FriendBarItemView.types';
+import { MessengerFriend } from '../../common/MessengerFriend';
+
+interface FriendBarItemViewProps
+{
+    friend: MessengerFriend;
+}
 
 export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
 {

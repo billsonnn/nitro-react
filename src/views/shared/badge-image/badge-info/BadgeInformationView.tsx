@@ -1,5 +1,10 @@
 import { FC } from 'react';
-import { BadgeInformationViewProps } from './BadgeInformationView.types';
+
+interface BadgeInformationViewProps
+{
+    title: string;
+    description: string;
+}
 
 export const BadgeInformationView: FC<BadgeInformationViewProps> = props =>
 {

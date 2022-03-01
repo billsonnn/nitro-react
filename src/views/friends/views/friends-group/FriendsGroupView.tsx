@@ -1,6 +1,13 @@
-import React, { FC } from 'react';
-import { FriendsGroupItemView } from '../friends-group-item/FriendsGroupItemView';
-import { FriendsGroupViewProps } from './FriendsGroupView.types';
+import { FC } from 'react';
+import { MessengerFriend } from '../../common/MessengerFriend';
+import { FriendsGroupItemView } from './FriendsGroupItemView';
+
+interface FriendsGroupViewProps
+{
+    list: MessengerFriend[];
+    selectedFriendsIds: number[];
+    selectFriend: (userId: number) => void;
+}
 
 export const FriendsGroupView: FC<FriendsGroupViewProps> = props =>
 {

@@ -6,7 +6,10 @@
 
     &.active {
         border-color: $grid-active-border-color !important;
-        background-color: $grid-active-bg-color;
+
+        &:not(.clear-bg) {
+            background-color: $grid-active-bg-color !important;
+        }
     }
 
     &.disabled {

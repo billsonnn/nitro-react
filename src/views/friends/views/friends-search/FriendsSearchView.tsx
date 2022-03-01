@@ -4,7 +4,7 @@ import { LocalizeText, OpenMessengerChat } from '../../../../api';
 import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../hooks';
 import { NitroCardAccordionItemView, NitroCardAccordionSetView, NitroCardAccordionView, NitroLayoutFlex, UserProfileIconView } from '../../../../layout';
 import { NitroLayoutBase } from '../../../../layout/base';
-import { useFriendsContext } from '../../context/FriendsContext';
+import { useFriendsContext } from '../../FriendsContext';
 
 export const FriendsSearchView: FC<{}> = props =>
 {

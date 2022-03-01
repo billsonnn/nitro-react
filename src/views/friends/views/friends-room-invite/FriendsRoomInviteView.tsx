@@ -1,7 +1,13 @@
 import { FC, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { FriendsRoomInviteViewProps } from './FriendsRoomInviteView.types';
+
+interface FriendsRoomInviteViewProps
+{
+    selectedFriendsIds: number[];
+    onCloseClick: () => void;
+    sendRoomInvite: (message: string) => void;
+}
 
 export const FriendsRoomInviteView: FC<FriendsRoomInviteViewProps> = props =>
 {

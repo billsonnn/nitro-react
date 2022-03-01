@@ -1,9 +1,14 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useMemo, useState } from 'react';
+import { Button } from '../../../../common';
 import { Flex } from '../../../../common/Flex';
-import { NitroLayoutButton } from '../../../../layout';
-import { NitroLayoutBase } from '../../../../layout/base';
-import { FriendBarItemView } from '../friend-bar-item/FriendBarItemView';
-import { FriendBarViewProps } from './FriendBarView.types';
+import { MessengerFriend } from '../../common/MessengerFriend';
+import { FriendBarItemView } from './FriendBarItemView';
+
+interface FriendBarViewProps
+{
+    onlineFriends: MessengerFriend[];
+}
 
 export const FriendBarView: FC<FriendBarViewProps> = props =>
 {
@@ -28,16 +33,16 @@ export const FriendBarView: FC<FriendBarViewProps> = props =>
 
     return (
         <Flex alignItems="center" className="friend-bar">
-            <NitroLayoutButton className="friend-bar-button" variant="black" size="sm" disabled={ !canDecreaseIndex } onClick={ event => setIndexOffset(indexOffset - 1) }>
-                <NitroLayoutBase className="fas fa-chevron-left" />
-            </NitroLayoutButton>
+            <Button variant="black" className="friend-bar-button" disabled={ !canDecreaseIndex } onClick={ event => setIndexOffset(indexOffset - 1) }>
+                <FontAwesomeIcon icon="chevron-left" />
+            </Button>
             { Array.from(Array(maxDisplayCount), (e, i) =>
                 {
                     return <FriendBarItemView key={ i } friend={ (onlineFriends[ indexOffset + i ] || null) } />;
                 }) }
-            <button type="button" className="btn btn-sm btn-black align-self-center friend-bar-button" disabled={ !canIncreaseIndex } onClick={ event => setIndexOffset(indexOffset + 1) }>
-                <i className="fas fa-chevron-right" />
-            </button>
+            <Button variant="black" className="friend-bar-button" disabled={ !canIncreaseIndex } onClick={ event => setIndexOffset(indexOffset + 1) }>
+                <FontAwesomeIcon icon="chevron-right" />
+            </Button>
         </Flex>
     );
 }

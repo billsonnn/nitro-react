@@ -4,9 +4,16 @@ import { NitroLayoutFlex } from '../../../../layout';
 import { NitroLayoutBase } from '../../../../layout/base';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { GroupType } from '../../common/GroupType';
+import { MessengerThread } from '../../common/MessengerThread';
 import { MessengerThreadChat } from '../../common/MessengerThreadChat';
+import { MessengerThreadChatGroup } from '../../common/MessengerThreadChatGroup';
 import { getGroupChatData } from '../../common/Utils';
-import { FriendsMessengerThreadGroupProps } from './FriendsMessengerThreadGroup.types';
+
+interface FriendsMessengerThreadGroupProps
+{
+    thread: MessengerThread;
+    group: MessengerThreadChatGroup;
+}
 
 export const FriendsMessengerThreadGroup: FC<FriendsMessengerThreadGroupProps> = props =>
 {
