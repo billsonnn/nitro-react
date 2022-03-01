@@ -1,5 +1,5 @@
 .nitro-guide-tool {
-    width: 250px;
+    width: $nitro-guide-tool-width;
 
     .duty-switch {
         width: 38px;
@@ -19,6 +19,7 @@
     }
 
     .chat-messages {
+        height: 200px;
     
         .message-avatar {
             position: relative;

@@ -83,7 +83,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                     </Column> }
                 <Button variant="danger" disabled>{ LocalizeText('guide.help.common.report.link') }</Button>
             </Flex>
-            <Column fullHeight overflow="hidden" gap={ 1 } className="bg-muted rounded chat-messages p-2">
+            <Column overflow="hidden" gap={ 1 } className="bg-muted rounded chat-messages p-2">
                 <Column overflow="auto">
                     { messageGroups.map((group, index) =>
                         {
