@@ -3,8 +3,7 @@ import { FC, useCallback, useRef } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { CatalogPurchasedEvent } from '../../../../events';
 import { useUiEvent } from '../../../../hooks';
-import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomPreviewerView';
-import { RoomPreviewerViewProps } from '../../../../views/shared/room-previewer/RoomPreviewerView.types';
+import { RoomPreviewerView, RoomPreviewerViewProps } from '../../../../views/shared/room-previewer/RoomPreviewerView';
 
 export const CatalogRoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 {

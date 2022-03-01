@@ -2,7 +2,7 @@ import { ColorConverter, IRoomRenderingCanvas, RoomPreviewer, TextureUtils } fro
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { GetNitroInstance } from '../../../api';
 
-interface RoomPreviewerViewProps
+export interface RoomPreviewerViewProps
 {
     roomPreviewer: RoomPreviewer;
     height?: number;
