@@ -1,7 +1,14 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { FriendsRemoveConfirmationViewProps } from './FriendsRemoveConfirmationView.types';
+
+interface FriendsRemoveConfirmationViewProps
+{
+    selectedFriendsIds: number[];
+    removeFriendsText: string;
+    removeSelectedFriends: () => void;
+    onCloseClick: () => void;
+}
 
 export const FriendsRemoveConfirmationView: FC<FriendsRemoveConfirmationViewProps> = props =>
 {

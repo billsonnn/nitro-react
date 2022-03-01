@@ -2,8 +2,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useMemo, useState } from 'react';
 import { Button } from '../../../../common';
 import { Flex } from '../../../../common/Flex';
-import { FriendBarItemView } from '../friend-bar-item/FriendBarItemView';
-import { FriendBarViewProps } from './FriendBarView.types';
+import { MessengerFriend } from '../../common/MessengerFriend';
+import { FriendBarItemView } from './FriendBarItemView';
+
+interface FriendBarViewProps
+{
+    onlineFriends: MessengerFriend[];
+}
 
 export const FriendBarView: FC<FriendBarViewProps> = props =>
 {

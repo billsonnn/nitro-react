@@ -1,8 +1,13 @@
 import { FC } from 'react';
 import { NitroCardAccordionItemView, NitroLayoutFlex, UserProfileIconView } from '../../../../layout';
 import { NitroLayoutBase } from '../../../../layout/base';
-import { useFriendsContext } from '../../context/FriendsContext';
-import { FriendsRequestItemViewProps } from './FriendsRequestItemView.types';
+import { MessengerRequest } from '../../common/MessengerRequest';
+import { useFriendsContext } from '../../FriendsContext';
+
+interface FriendsRequestItemViewProps
+{
+    request: MessengerRequest;
+}
 
 export const FriendsRequestItemView: FC<FriendsRequestItemViewProps> = props =>
 {

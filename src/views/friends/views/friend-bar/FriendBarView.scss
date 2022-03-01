@@ -1,7 +1,42 @@
 .friend-bar {
+
     .friend-bar-button {
         z-index: 2;
     }
 
-    @import '../friend-bar-item/FriendBarItemView.scss';
+    .friend-bar-item {
+        width: 130px;
+        margin: 0 3px;
+        z-index: 0;
+        position: relative;
+        padding-left:38px;
+        text-align: left;
+    
+        &.friend-bar-item-active {
+            margin-bottom:21px;
+        }
+    
+        .friend-bar-item-head {
+            &.avatar {
+                top: -30px;
+                left: -30px;
+            }
+            &.group {
+                top: -5px;
+                left: -5px;
+            }
+    
+            pointer-events: none;
+        }
+    
+        &.friend-bar-search {
+            .friend-bar-item-head {
+                top: -3px;
+                left: 5px;
+                width: 31px;
+                height: 34px;
+                background-image: url('../../../../assets/images/toolbar/friend-search.png');
+            } 
+        }
+    }
 }

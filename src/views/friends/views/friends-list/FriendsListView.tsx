@@ -4,12 +4,20 @@ import { LocalizeText } from '../../../../api';
 import { SendMessageHook } from '../../../../hooks';
 import { NitroCardAccordionSetView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
 import { MessengerFriend } from '../../common/MessengerFriend';
+import { MessengerRequest } from '../../common/MessengerRequest';
 import { FriendsGroupView } from '../friends-group/FriendsGroupView';
 import { FriendsRemoveConfirmationView } from '../friends-remove-confirmation/FriendsRemoveConfirmationView';
 import { FriendsRequestView } from '../friends-request/FriendsRequestView';
 import { FriendsRoomInviteView } from '../friends-room-invite/FriendsRoomInviteView';
 import { FriendsSearchView } from '../friends-search/FriendsSearchView';
-import { FriendsListViewProps } from './FriendsListView.types';
+
+interface FriendsListViewProps
+{
+    onCloseClick: () => void;
+    onlineFriends: MessengerFriend[];
+    offlineFriends: MessengerFriend[];
+    friendRequests: MessengerRequest[];
+}
 
 const MODE_FRIENDS: number = 0;
 const MODE_SEARCH: number = 1;
