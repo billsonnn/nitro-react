@@ -1,5 +1,5 @@
 import { RoomObjectCategory, RoomObjectOperationType } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetPresentOpenMessage, RoomWidgetUpdatePresentDataEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { Button, Column, Flex, Text } from '../../../../../common';
 import { ProductTypeEnum } from '../../../../../components/catalog/common/ProductTypeEnum';
@@ -33,11 +33,6 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
     const [ openRequested, setOpenRequested ] = useState(false);
     const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
 
-    useEffect(() =>
-    {
-        console.log(imageUrl);
-    }, [ imageUrl ]);
-
     const clearGift = useCallback(() =>
     {
         if(!openRequested) setObjectId(-1);
@@ -53,7 +48,6 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
 
     const onRoomWidgetUpdatePresentDataEvent = useCallback((event: RoomWidgetUpdatePresentDataEvent) =>
     {
-        console.log(event.imageUrl, event.type);
         switch(event.type)
         {
             case RoomWidgetUpdatePresentDataEvent.PACKAGEINFO: {

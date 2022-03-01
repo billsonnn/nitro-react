@@ -118,7 +118,6 @@ export const ChatInputView: FC<{}> = props =>
         {
             if(needsChatStyleUpdate)
             {
-                console.log('send')
                 GetSessionDataManager().sendChatStyleUpdate(chatStyleId);
 
                 setNeedsChatStyleUpdate(false);
