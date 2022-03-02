@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Column } from '../../common';
 import { NotificationCenterView } from '../../views/notification-center/NotificationCenterView';
-import { GroupRoomInformationView } from '../groups/views/room-information/GroupRoomInformationView';
+import { GroupRoomInformationView } from '../groups/views/GroupRoomInformationView';
 import { PurseView } from '../purse/PurseView';
 
 export const RightSideView: FC<{}> = props =>

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateMessageHook, SendMessageHook } from '../../../hooks';
 import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
-import { GroupInformationView } from '../../groups/views/information/GroupInformationView';
+import { GroupInformationView } from '../../groups/views/GroupInformationView';
 
 interface GroupsContainerViewProps
 {

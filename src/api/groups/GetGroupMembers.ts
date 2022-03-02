@@ -2,6 +2,6 @@ import { CreateLinkEvent } from '..';
 
 export function GetGroupMembers(groupId: number, levelId?: number): void
 {
-    if(!levelId) CreateLinkEvent(`groups/members/${groupId}`);
-    else CreateLinkEvent(`groups/members/${groupId}/${levelId}`);
+    if(!levelId) CreateLinkEvent(`group-members/${ groupId }`);
+    else CreateLinkEvent(`group-members/${ groupId }/${ levelId }`);
 }

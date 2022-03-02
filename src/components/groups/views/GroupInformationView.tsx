@@ -1,16 +1,18 @@
 import { GroupInformationParser, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CreateLinkEvent, GetSessionDataManager, LocalizeText, TryVisitRoom } from '../../../../api';
-import { GetGroupManager } from '../../../../api/groups/GetGroupManager';
-import { GetGroupMembers } from '../../../../api/groups/GetGroupMembers';
-import { TryJoinGroup } from '../../../../api/groups/TryJoinGroup';
-import { Button, Column, Flex, Grid, Text } from '../../../../common';
-import { SendMessageHook } from '../../../../hooks';
-import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
-import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
-import { CatalogPageName } from '../../../catalog/common/CatalogPageName';
-import { GroupMembershipType } from '../../common/GroupMembershipType';
-import { GroupType } from '../../common/GroupType';
+import { CreateLinkEvent, GetSessionDataManager, LocalizeText, TryVisitRoom } from '../../../api';
+import { GetGroupManager } from '../../../api/groups/GetGroupManager';
+import { GetGroupMembers } from '../../../api/groups/GetGroupMembers';
+import { TryJoinGroup } from '../../../api/groups/TryJoinGroup';
+import { Button, Column, Flex, Grid, Text } from '../../../common';
+import { SendMessageHook } from '../../../hooks';
+import { NotificationUtilities } from '../../../views/notification-center/common/NotificationUtilities';
+import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
+import { CatalogPageName } from '../../catalog/common/CatalogPageName';
+import { GroupMembershipType } from '../common/GroupMembershipType';
+import { GroupType } from '../common/GroupType';
+
+const STATES: string[] = [ 'regular', 'exclusive', 'private' ];
 
 interface GroupInformationViewProps
 {
@@ -125,9 +127,9 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                         <Flex alignItems="center" gap={ 2 }>
                             <Text bold>{ groupInformation.title }</Text>
                             <Flex gap={ 1 }>
-                                <i className={ 'icon icon-group-type-' + groupInformation.type } />
+                                <i className={ 'icon icon-group-type-' + groupInformation.type } title={ LocalizeText(`group.edit.settings.type.${ STATES[groupInformation.type] }.help`)} />
                                 { groupInformation.canMembersDecorate &&
-                                    <i className="icon icon-group-decorate" /> }
+                                    <i className="icon icon-group-decorate" title={ LocalizeText('group.memberscandecorate') } /> }
                             </Flex>
                         </Flex>
                         <Text small>{ LocalizeText('group.created', ['date', 'owner'], [groupInformation.createdAt, groupInformation.ownerName]) }</Text>

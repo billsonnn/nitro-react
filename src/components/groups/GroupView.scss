@@ -131,7 +131,59 @@
     height: 40px;
 }
 
-@import './views/creator/GroupCreatorView';
-@import './views/manager/GroupManagerView';
-@import './views/room-information/GroupRoomInformationView';
-@import './views/tabs/GroupSharedTabs';
+.nitro-group-manager {
+    height: $nitro-group-manager-height;
+    width: $nitro-group-manager-width;
+}
+
+.nitro-group-creator {
+    height: $nitro-group-manager-height;
+    width: $nitro-group-manager-width;
+
+    .creator-tabs {
+
+        .tab {
+            position: relative;
+            margin-left: -6px;
+            background-image: url('../../assets/images/groups/creator_tabs.png');
+            background-repeat: no-repeat;
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &.tab-blue-flat {
+                width: 84px;
+                height: 24px;
+                background-position: 0px 0px;
+
+                &.active {
+                    height: 28px;
+                    background-position: 0px -24px;
+                }
+            }
+
+            &.tab-blue-arrow {
+                width: 83px;
+                height: 24px;
+                background-position: 0px -52px;
+
+                &.active {
+                    height: 28px;
+                    background-position: 0px -76px;
+                }
+            }
+
+            &.tab-yellow {
+                width: 133px;
+                height: 28px;
+                background-position: 0px -104px;
+
+                &.active {
+                    height: 33px;
+                    background-position: 0px -132px;
+                }
+            }
+        }
+    }
+}

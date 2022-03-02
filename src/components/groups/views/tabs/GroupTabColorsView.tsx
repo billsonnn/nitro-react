@@ -1,58 +1,107 @@
+import { GroupSaveColorsComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { FC, useEffect } from 'react';
+import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { AutoGrid, Base, Column, Flex, Grid, Text } from '../../../../common';
+import { SendMessageHook } from '../../../../hooks';
+import { IGroupData } from '../../common/IGroupData';
 import { useGroupsContext } from '../../GroupsContext';
-import { GroupsActions } from '../../reducers/GroupsReducer';
 
-export const GroupTabColorsView: FC<{}> = props =>
+interface GroupTabColorsViewProps
 {
-    const { groupsState = null, dispatchGroupsState = null } = useGroupsContext();
-    const { groupColors = null, groupColorsA = null, groupColorsB = null } = groupsState;
+    groupData: IGroupData;
+    setGroupData: Dispatch<SetStateAction<IGroupData>>;
+    setCloseAction: Dispatch<SetStateAction<{ action: () => boolean }>>;
+}
+
+export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
+{
+    const { groupData = null, setGroupData = null, setCloseAction = null } = props;
+    const [ colors, setColors ] = useState<number[]>(null);
+    const { groupCustomize = null } = useGroupsContext();
 
     const getGroupColor = (colorIndex: number) =>
     {
-        if(colorIndex === 0) return groupColorsA.find(color => (color.id === groupColors[colorIndex])).color;
+        if(colorIndex === 0) return groupCustomize.groupColorsA.find(color => (color.id === colors[colorIndex])).color;
 
-        return groupColorsB.find(color => (color.id === groupColors[colorIndex])).color;
+        return groupCustomize.groupColorsB.find(color => (color.id === colors[colorIndex])).color;
     }
 
     const selectColor = (colorIndex: number, colorId: number) =>
     {
-        const clonedGroupColors = Array.from(groupColors);
+        setColors(prevValue =>
+            {
+                const newColors = [ ...prevValue ];
 
-        clonedGroupColors[colorIndex] = colorId;
+                newColors[colorIndex] = colorId;
 
-        dispatchGroupsState({
-            type: GroupsActions.SET_GROUP_COLORS,
-            payload: { 
-                objectValues: clonedGroupColors
-            }
-        });
+                return newColors;
+            });
     }
+
+    const saveColors = useCallback(() =>
+    {
+        if(!groupData || !colors || !colors.length) return false;
+
+        if(groupData.groupColors === colors) return true;
+
+        if(groupData.groupId <= 0)
+        {
+            setGroupData(prevValue =>
+                {
+                    const newValue = { ...prevValue };
+
+                    newValue.groupColors = [ ...colors ];
+
+                    return newValue;
+                });
+
+            return true;
+        }
+        
+        SendMessageHook(new GroupSaveColorsComposer(groupData.groupId, colors[0], colors[1]));
+
+        return true;
+    }, [ groupData, colors, setGroupData ]);
 
     useEffect(() =>
     {
-        if(!groupColorsA || !groupColorsB || groupColors) return;
+        if(!groupCustomize.groupColorsA || !groupCustomize.groupColorsB || groupData.groupColors) return;
 
-        const colors: number[] = [
-            groupColorsA[0].id,
-            groupColorsB[0].id
-        ];
+        const groupColors = [ groupCustomize.groupColorsA[0].id, groupCustomize.groupColorsB[0].id ];
 
-        dispatchGroupsState({
-            type: GroupsActions.SET_GROUP_COLORS,
-            payload: {
-                objectValues: colors
-            }
-        });
-    }, [ dispatchGroupsState, groupColors, groupColorsA, groupColorsB ]);
+        setGroupData(prevValue =>
+            {
+                return { ...prevValue, groupColors };
+            });
+    }, [ groupCustomize, groupData.groupColors, setGroupData ]);
+
+    useEffect(() =>
+    {
+        if(groupData.groupId <= 0)
+        {
+            setColors(groupData.groupColors ? [ ...groupData.groupColors ] : null);
+
+            return;
+        }
+        
+        setColors(groupData.groupColors);
+    }, [ groupData ]);
+
+    useEffect(() =>
+    {
+        setCloseAction({ action: saveColors });
+
+        return () => setCloseAction(null);
+    }, [ setCloseAction, saveColors ]);
+
+    if(!colors) return null;
     
     return (
         <Grid overflow="hidden">
             <Column size={ 2 } gap={ 1 }>
                 <Text bold>{ LocalizeText('group.edit.color.guild.color') }</Text>
-                { groupColors && (groupColors.length > 0) &&
+                { groupData.groupColors && (groupData.groupColors.length > 0) &&
                     <Flex overflow="hidden" className="rounded border">
                         <Base className="group-color-swatch" style={{ backgroundColor: '#' + getGroupColor(0) }} />
                         <Base className="group-color-swatch" style={{ backgroundColor: '#' + getGroupColor(1) }} />
@@ -61,18 +110,18 @@ export const GroupTabColorsView: FC<{}> = props =>
             <Column size={ 5 } gap={ 1 } overflow="hidden">
                 <Text bold>{ LocalizeText('group.edit.color.primary.color') }</Text>
                 <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 }>
-                    { groupColors && groupColorsA && groupColorsA.map((item, index) =>
+                    { groupData.groupColors && groupCustomize.groupColorsA && groupCustomize.groupColorsA.map((item, index) =>
                         {
-                            return <div key={ index } className={ 'group-badge-color-swatch cursor-pointer' + classNames({ ' active': (groupColors[0] === item.id) }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(0, item.id) }></div>
+                            return <div key={ index } className={ 'group-badge-color-swatch cursor-pointer' + classNames({ ' active': (groupData.groupColors[0] === item.id) }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(0, item.id) }></div>
                         }) }
                 </AutoGrid>
             </Column>
             <Column size={ 5 } gap={ 1 } overflow="hidden">
                 <Text bold>{ LocalizeText('group.edit.color.secondary.color') }</Text>
                 <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 }>
-                    { groupColorsB && groupColorsB.map((item, index) =>
+                    { groupData.groupColors && groupCustomize.groupColorsB && groupCustomize.groupColorsB.map((item, index) =>
                         {
-                            return <div key={ index } className={ 'group-badge-color-swatch cursor-pointer' + classNames({ ' active': (groupColors[1] === item.id) }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(1, item.id) }></div>
+                            return <div key={ index } className={ 'group-badge-color-swatch cursor-pointer' + classNames({ ' active': (groupData.groupColors[1] === item.id) }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(1, item.id) }></div>
                         }) }
                 </AutoGrid>
             </Column>

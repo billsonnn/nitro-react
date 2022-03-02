@@ -1,15 +1,15 @@
-import { createContext, Dispatch, FC, ProviderProps, useContext } from 'react';
-import { IGroupsAction, IGroupsState } from './reducers/GroupsReducer';
+import { createContext, Dispatch, FC, ProviderProps, SetStateAction, useContext } from 'react';
+import { IGroupCustomize } from './common/IGroupCustomize';
 
 interface IGroupsContext
 {
-    groupsState: IGroupsState;
-    dispatchGroupsState: Dispatch<IGroupsAction>;
+    groupCustomize: IGroupCustomize;
+    setGroupCustomize: Dispatch<SetStateAction<IGroupCustomize>>;
 }
 
 const GroupsContext = createContext<IGroupsContext>({
-    groupsState: null,
-    dispatchGroupsState: null
+    groupCustomize: null,
+    setGroupCustomize: null
 });
 
 export const GroupsContextProvider: FC<ProviderProps<IGroupsContext>> = props =>

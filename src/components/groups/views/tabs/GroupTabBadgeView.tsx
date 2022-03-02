@@ -1,26 +1,26 @@
 import { GroupSaveBadgeComposer } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { Column, Flex, Grid } from '../../../../common';
 import { SendMessageHook } from '../../../../hooks';
 import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
 import { GroupBadgePart } from '../../common/GroupBadgePart';
+import { IGroupData } from '../../common/IGroupData';
 import { useGroupsContext } from '../../GroupsContext';
-import { GroupsActions } from '../../reducers/GroupsReducer';
 import { GroupBadgeCreatorView } from '../GroupBadgeCreatorView';
-
-const POSITIONS: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 interface GroupTabBadgeViewProps
 {
     skipDefault?: boolean;
+    setCloseAction: Dispatch<SetStateAction<{ action: () => boolean }>>;
+    groupData: IGroupData;
+    setGroupData: Dispatch<SetStateAction<IGroupData>>;
 }
 
 export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
 {
-    const { skipDefault = null } = props;
+    const { groupData = null, setGroupData = null, setCloseAction = null, skipDefault = null } = props;
     const [ badgeParts, setBadgeParts ] = useState<GroupBadgePart[]>(null);
-    const { groupsState = null, dispatchGroupsState = null } = useGroupsContext();
-    const { badgeBases = null, badgeSymbols = null, badgePartColors = null, groupId = -1, groupBadgeParts = null } = groupsState;
+    const { groupCustomize = null } = useGroupsContext();
 
     const getModifiedBadgeCode = () =>
     {
@@ -33,36 +33,29 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
         return badgeCode;
     }
 
-    useEffect(() =>
+    const saveBadge = useCallback(() =>
     {
-        if(groupBadgeParts && groupBadgeParts.length) return;
-        
-        const badgeParts = [
-            new GroupBadgePart(GroupBadgePart.BASE, badgeBases[0].id, badgePartColors[0].id),
-            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, badgePartColors[0].id),
-            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, badgePartColors[0].id),
-            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, badgePartColors[0].id),
-            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, badgePartColors[0].id)
-        ];
+        if(!groupData || !badgeParts || !badgeParts.length) return false;
 
-        dispatchGroupsState({
-            type: GroupsActions.SET_GROUP_BADGE_PARTS,
-            payload: { badgeParts }
-        });
-    }, [ groupBadgeParts, badgeBases, badgePartColors, dispatchGroupsState ]);
+        if((groupData.groupBadgeParts === badgeParts)) return true;
 
-    useEffect(() =>
-    {
-        setBadgeParts(groupBadgeParts);
-    }, [ groupBadgeParts ]);
+        if(groupData.groupId <= 0)
+        {
+            setGroupData(prevValue =>
+                {
+                    const newValue = { ...prevValue };
 
-    useEffect(() =>
-    {
-        if((groupId <= 0) || !badgeParts || !badgeParts.length || !groupBadgeParts || !groupBadgeParts.length || (badgeParts === groupBadgeParts)) return;
+                    newValue.groupBadgeParts = badgeParts;
+
+                    return newValue;
+                });
+
+            return true;
+        }
 
         const badge = [];
 
-        badgeParts.forEach((part) =>
+        badgeParts.forEach(part =>
         {
             if(!part.code) return;
             
@@ -70,31 +63,50 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
             badge.push(part.color);
             badge.push(part.position);
         });
-
-        console.log('send')
         
-        SendMessageHook(new GroupSaveBadgeComposer(groupId, badge));
-    }, [ groupId, badgeParts, groupBadgeParts ]);
+        SendMessageHook(new GroupSaveBadgeComposer(groupData.groupId, badge));
 
-    // useEffect(() =>
-    // {
-    //     if((groupId <= 0) || !badgeParts || !badgeParts.length || (badgeParts === groupBadgeParts)) return;
+        return true;
+    }, [ groupData, badgeParts, setGroupData ]);
 
-    //     const badge = [];
-
-    //     badgeParts.forEach((part) =>
-    //     {
-    //         if(!part.code) return;
-            
-    //         badge.push(part.key);
-    //         badge.push(part.color);
-    //         badge.push(part.position);
-    //     });
-
-    //     console.log('send')
+    useEffect(() =>
+    {
+        if(groupData.groupBadgeParts) return;
         
-    //     SendMessageHook(new GroupSaveBadgeComposer(groupId, badge));
-    // }, [ groupId, groupBadgeParts, badgeParts ]);
+        const badgeParts = [
+            new GroupBadgePart(GroupBadgePart.BASE, groupCustomize.badgeBases[0].id, groupCustomize.badgePartColors[0].id),
+            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, groupCustomize.badgePartColors[0].id),
+            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, groupCustomize.badgePartColors[0].id),
+            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, groupCustomize.badgePartColors[0].id),
+            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, groupCustomize.badgePartColors[0].id)
+        ];
+
+        setGroupData(prevValue =>
+            {
+                const groupBadgeParts = badgeParts;
+
+                return { ...prevValue, groupBadgeParts };
+            });
+    }, [ groupData.groupBadgeParts, groupCustomize, setGroupData ]);
+
+    useEffect(() =>
+    {
+        if(groupData.groupId <= 0)
+        {
+            setBadgeParts(groupData.groupBadgeParts ? [ ...groupData.groupBadgeParts ] : null);
+
+            return;
+        }
+        
+        setBadgeParts(groupData.groupBadgeParts);
+    }, [ groupData ]);
+
+    useEffect(() =>
+    {
+        setCloseAction({ action: saveBadge });
+
+        return () => setCloseAction(null);
+    }, [ setCloseAction, saveBadge ]);
     
     return (
         <Grid overflow="hidden" gap={ 1 }>
