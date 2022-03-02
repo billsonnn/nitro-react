@@ -1,21 +1,27 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { NitroLayoutBase } from '../base';
+import { Base, BaseProps } from '../../common';
 import { TransitionAnimation, TransitionAnimationTypes } from '../transitions';
-import { NotificationBubbleViewProps } from './NotificationBubbleView.types';
+
+interface NotificationBubbleViewProps extends BaseProps<HTMLDivElement>
+{
+    fadesOut?: boolean;
+    timeoutMs?: number;
+    close: () => void;
+}
 
 export const NotificationBubbleView: FC<NotificationBubbleViewProps> = props =>
 {
-    const { fadesOut = true, timeoutMs = 8000, close = null, className = '', ...rest } = props;
+    const { fadesOut = true, timeoutMs = 8000, close = null, classNames = [], ...rest } = props;
     const [ isVisible, setIsVisible ] = useState(false);
 
-    const getClassName = useMemo(() =>
+    const getClassNames = useMemo(() =>
     {
-        let newClassName = 'nitro-notification-bubble rounded';
+        const newClassNames: string[] = [ 'nitro-notification-bubble', 'rounded' ];
 
-        if(className && className.length) newClassName += ` ${ className }`;
+        if(classNames.length) newClassNames.push(...classNames);
 
-        return newClassName;
-    }, [ className ]);
+        return newClassNames;
+    }, [ classNames ]);
 
     useEffect(() =>
     {
@@ -40,7 +46,7 @@ export const NotificationBubbleView: FC<NotificationBubbleViewProps> = props =>
 
     return (
         <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isVisible } timeout={ 300 }>
-            <NitroLayoutBase className={ getClassName } onClick={ close } { ...rest } />
+            <Base classNames={ getClassNames } onClick={ close } { ...rest } />
         </TransitionAnimation>
     );
 }
