@@ -1,21 +1,20 @@
 import { FC, useMemo } from 'react';
-import { NitroLayoutFlex } from '../..';
-import { NitroCardSubHeaderViewProps } from './NitroCardSubHeaderView.types';
+import { Flex, FlexProps } from '../../../common';
 
-export const NitroCardSubHeaderView: FC<NitroCardSubHeaderViewProps> = props =>
+export const NitroCardSubHeaderView: FC<FlexProps> = props =>
 {
-    const { className = '', ...rest } = props;
+    const { justifyContent = 'center', classNames = [], ...rest } = props;
 
-    const getClassName = useMemo(() =>
+    const getClassNames = useMemo(() =>
     {
-        let newClassName = 'container-fluid bg-muted justify-content-center py-1';
+        const newClassNames: string[] = [ 'container-fluid', 'bg-muted', 'p-1' ];
 
-        if(className && className.length) newClassName += ` ${ className }`;
+        if(classNames.length) newClassNames.push(...classNames);
 
-        return newClassName;
-    }, [ className ]);
+        return newClassNames;
+    }, [ classNames ]);
 
     return (
-        <NitroLayoutFlex className={ getClassName } { ...rest } />
+        <Flex justifyContent={ justifyContent } classNames={ getClassNames } { ...rest } />
     );
 }

@@ -4,6 +4,16 @@
     height: 40px;
     background-repeat: no-repeat;
     background-position: center;
+
+    &.group-badge {
+        width: 39px;
+        height: 39px;
+
+        &.scale-2 {
+            width: 80px;
+            height: 80px;
+        }
+    }
     
     .badge-information {
         display: none;

@@ -1,9 +1,4 @@
 .nitro-group-manager {
-    width: 385px;
-
-    .manager-tab {
-        height: 260px;
-        min-height: 260px;
-        max-height: 260px;
-    }
+    height: $nitro-group-manager-height;
+    width: $nitro-group-manager-width;
 }

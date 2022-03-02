@@ -4,7 +4,9 @@ import { CreateLinkEvent, GetSessionDataManager, LocalizeText, TryVisitRoom } fr
 import { GetGroupManager } from '../../../../api/groups/GetGroupManager';
 import { GetGroupMembers } from '../../../../api/groups/GetGroupMembers';
 import { TryJoinGroup } from '../../../../api/groups/TryJoinGroup';
+import { Button, Column, Flex, Grid, Text } from '../../../../common';
 import { SendMessageHook } from '../../../../hooks';
+import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
 import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
 import { CatalogPageName } from '../../../catalog/common/CatalogPageName';
 import { GroupMembershipType } from '../../common/GroupMembershipType';
@@ -21,30 +23,21 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 {
     const { groupInformation = null, onClose = null } = props;    
 
-    const joinGroup = useCallback(() =>
+    const isRealOwner = () => (groupInformation && (groupInformation.ownerName === GetSessionDataManager().userName));
+    
+    const joinGroup = () => (groupInformation && TryJoinGroup(groupInformation.id));
+
+    const leaveGroup = () =>
     {
-        if(!groupInformation) return;
+        NotificationUtilities.confirm(LocalizeText('group.leaveconfirm.desc'), () =>
+            {
+                SendMessageHook(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
 
-        TryJoinGroup(groupInformation.id);
-    }, [ groupInformation ]);
+                if(onClose) onClose();
+            }, null);
+    }
 
-    const leaveGroup = useCallback(() =>
-    {
-        if(window.confirm(LocalizeText('group.leaveconfirm.desc')))
-        {
-            SendMessageHook(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
-            if(onClose) onClose();
-        }       
-    }, [ groupInformation, onClose ]);
-
-    const isRealOwner = useCallback(() =>
-    {
-        if(!groupInformation) return false;
-
-        return (groupInformation.ownerName === GetSessionDataManager().userName);
-    }, [ groupInformation ]);
-
-    const getRoleIcon = useCallback(() =>
+    const getRoleIcon = () =>
     {
         if(groupInformation.membershipType === GroupMembershipType.NOT_MEMBER || groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return null;
 
@@ -53,9 +46,9 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
         if(groupInformation.isAdmin) return <i className="icon icon-group-admin" title={ LocalizeText('group.youareadmin') } />;
 
         return <i className="icon icon-group-member" title={ LocalizeText('group.youaremember') } />;
-    }, [ groupInformation, isRealOwner ]);
+    }
 
-    const getButtonText = useCallback(() =>
+    const getButtonText = () =>
     {
         if(groupInformation.type === GroupType.PRIVATE) return '';
 
@@ -71,16 +64,21 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 
             if(groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return 'group.membershippending';
         }
-    }, [ groupInformation, isRealOwner ]);
+    }
 
-    const handleButtonClick = useCallback(() =>
+    const handleButtonClick = () =>
     {
-        if(groupInformation.type === GroupType.PRIVATE && groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) return;
+        if((groupInformation.type === GroupType.PRIVATE) && (groupInformation.membershipType === GroupMembershipType.NOT_MEMBER)) return;
 
-        if(groupInformation.membershipType === GroupMembershipType.MEMBER) return leaveGroup();
+        if(groupInformation.membershipType === GroupMembershipType.MEMBER)
+        {
+            leaveGroup();
 
-        return joinGroup();
-    }, [ groupInformation, leaveGroup, joinGroup ]);
+            return;
+        }
+        
+        joinGroup();
+    }
 
     const handleAction = useCallback((action: string) =>
     {
@@ -102,56 +100,52 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                 CreateLinkEvent('catalog/open/' + CatalogPageName.GUILD_CUSTOM_FURNI);
                 break;
         }
-    }, [ groupInformation, onClose ]);
+    }, [ groupInformation ]);
     
     if(!groupInformation) return null;
 
     return (
-        <div className="group-information text-black p-2">
-            <div>
-                <div className="text-center d-flex flex-column h-100 small text-black text-decoration-underline">
-                    <div className="group-badge d-flex align-items-center">
-                        <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } className="mx-auto d-block"/>
-                    </div>
-                    <div className="mt-3 cursor-pointer" onClick={ () => handleAction('members') }>
-                        { LocalizeText('group.membercount', ['totalMembers'], [groupInformation.membersCount.toString()]) }
-                    </div>
-                    { groupInformation.pendingRequestsCount > 0 && <div className="cursor-pointer" onClick={ () => handleAction('members_pending') }>
-                        { LocalizeText('group.pendingmembercount', ['amount'], [groupInformation.pendingRequestsCount.toString()]) }
-                    </div> }
-                    { groupInformation.isOwner && <div className="cursor-pointer" onClick={ () => handleAction('manage') }>
-                        { LocalizeText('group.manage') }
-                    </div> }
-                    <div className="mt-auto mb-1">
-                        { getRoleIcon() }
-                    </div>
-                </div>
-            </div>
-            <div className="ms-2 w-100">
-                <div className="fw-bold d-flex align-items-center">
-                    <i className={ 'icon icon-group-type-' + groupInformation.type } />
-                    { groupInformation.canMembersDecorate && <i className="icon icon-group-decorate ms-1" /> }
-                    <div className="ms-1">{ groupInformation.title }</div>
-                </div>
-                <div>{ LocalizeText('group.created', ['date', 'owner'], [groupInformation.createdAt, groupInformation.ownerName]) }</div>
-                <div className="group-description small overflow-auto">{ groupInformation.description }</div>
-                <div className="small text-black text-decoration-underline">
-                    <div className="cursor-pointer" onClick={ () => handleAction('homeroom') }>
-                        { LocalizeText('group.linktobase') }
-                    </div>
-                    <div className="cursor-pointer" onClick={ () => handleAction('furniture') }>
-                        { LocalizeText('group.buyfurni') }
-                    </div>
-                    <div className="cursor-pointer">
-                        { LocalizeText('group.showgroups') }
-                    </div>
-                </div>
-                { groupInformation.type !== GroupType.PRIVATE && 
-                    <button className="btn btn-primary w-100 mt-2" disabled={ groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING || isRealOwner() } onClick={ handleButtonClick }>
-                        { LocalizeText(getButtonText()) }
-                    </button>
-                }
-            </div>
-        </div>
+        <Grid overflow="hidden">
+            <Column center size={ 3 } overflow="hidden">
+                <Flex alignItems="center" overflow="hidden" className="group-badge">
+                    <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } scale={ 2 } />
+                </Flex>
+                <Column alignItems="center" gap={ 1 }>
+                    <Text small underline pointer onClick={ () => handleAction('members') }>{ LocalizeText('group.membercount', [ 'totalMembers' ], [ groupInformation.membersCount.toString() ]) }</Text>
+                    { (groupInformation.pendingRequestsCount > 0) &&
+                        <Text small underline pointer onClick={ () => handleAction('members_pending') }>{ LocalizeText('group.pendingmembercount', [ 'amount' ], [ groupInformation.pendingRequestsCount.toString() ]) }</Text> }
+                    { groupInformation.isOwner &&
+                        <Text small underline pointer onClick={ () => handleAction('manage') }>{ LocalizeText('group.manage') }</Text> }
+                </Column>
+                { getRoleIcon() }
+            </Column>
+            <Column size={ 9 } justifyContent="between" overflow="auto">
+                <Column overflow="hidden">
+                    <Column gap={ 1 }>
+                        <Flex alignItems="center" gap={ 2 }>
+                            <Text bold>{ groupInformation.title }</Text>
+                            <Flex gap={ 1 }>
+                                <i className={ 'icon icon-group-type-' + groupInformation.type } />
+                                { groupInformation.canMembersDecorate &&
+                                    <i className="icon icon-group-decorate" /> }
+                            </Flex>
+                        </Flex>
+                        <Text small>{ LocalizeText('group.created', ['date', 'owner'], [groupInformation.createdAt, groupInformation.ownerName]) }</Text>
+                    </Column>
+                    <Text small overflow="auto" className="group-description">{ groupInformation.description }</Text>
+                </Column>
+                <Column>
+                    <Column gap={ 1 }>
+                        <Text small underline pointer onClick={ () => handleAction('homeroom') }>{ LocalizeText('group.linktobase') }</Text>
+                        <Text small underline pointer onClick={ () => handleAction('furniture') }>{ LocalizeText('group.buyfurni') }</Text>
+                        <Text small underline pointer>{ LocalizeText('group.showgroups') }</Text>
+                    </Column>
+                    { (groupInformation.type !== GroupType.PRIVATE) && 
+                        <Button disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) || isRealOwner() } onClick={ handleButtonClick }>
+                            { LocalizeText(getButtonText()) }
+                        </Button> }
+                </Column>
+            </Column>
+        </Grid>
     );
 };

@@ -6,7 +6,6 @@ import { GetConfiguration, GetGroupInformation, GetSessionDataManager, LocalizeT
 import { Button } from '../../../../common/Button';
 import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
-import { Grid } from '../../../../common/Grid';
 import { Text } from '../../../../common/Text';
 import { NavigatorEvent } from '../../../../events';
 import { FloorplanEditorEvent } from '../../../../events/floorplan-editor/FloorplanEditorEvent';
@@ -17,7 +16,7 @@ import { SendMessageHook } from '../../../../hooks/messages';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView, UserProfileIconView } from '../../../../layout';
 import { RoomThumbnailView } from '../../../../layout/room-thumbnail/RoomThumbnailView';
 import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
-import { useNavigatorContext } from '../../context/NavigatorContext';
+import { useNavigatorContext } from '../../NavigatorContext';
 import { NavigatorActions } from '../../reducers/NavigatorReducer';
 
 export class NavigatorRoomInfoViewProps
@@ -160,15 +159,17 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                                     }) }
                                             </Flex> }
                                     </Column>
-                                    <Grid maxContent gap={ 1 }>
-                                        <i onClick={ () => processAction('set_home_room') } className={ 'g-col-6 flex-shrink-0 icon icon-house-small cursor-pointer' + classNames({ ' gray': homeRoomId !== roomInfoData.enteredGuestRoom.roomId }) } />
-                                        <FontAwesomeIcon icon="link" title={ LocalizeText('navigator.embed.caption') } className="cursor-pointer g-col-6" onClick={ event => dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK)) } />
+                                    <Column gap={ 1 }>
+                                        <Flex gap={ 1 }>
+                                            <i onClick={ () => processAction('set_home_room') } className={ 'flex-shrink-0 icon icon-house-small cursor-pointer' + classNames({ ' gray': homeRoomId !== roomInfoData.enteredGuestRoom.roomId }) } />
+                                            <FontAwesomeIcon icon="link" title={ LocalizeText('navigator.embed.caption') } className="cursor-pointer" onClick={ event => dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK)) } />
+                                        </Flex>
                                         { hasPermission('settings') &&
-                                            <>
-                                                <FontAwesomeIcon icon="cogs" title={ LocalizeText('navigator.room.popup.info.room.settings') } className="g-col-6 cursor-pointer" onClick={ event => processAction('open_room_settings') } />
-                                                <FontAwesomeIcon icon="tools" title={ LocalizeText('open.floor.plan.editor') } className="g-col-6 cursor-pointer" onClick={ event => processAction('open_floorplan_editor') } />
-                                            </> } 
-                                    </Grid>
+                                            <Flex gap={ 1 }>
+                                                <FontAwesomeIcon icon="cogs" title={ LocalizeText('navigator.room.popup.info.room.settings') } className="cursor-pointer" onClick={ event => processAction('open_room_settings') } />
+                                                <FontAwesomeIcon icon="tools" title={ LocalizeText('open.floor.plan.editor') } className="cursor-pointer" onClick={ event => processAction('open_floorplan_editor') } />
+                                            </Flex> } 
+                                    </Column>
                                 </Flex>
                                 <Text overflow="auto">{ roomInfoData.enteredGuestRoom.description }</Text>
                                 { (roomInfoData.enteredGuestRoom.habboGroupId > 0) &&

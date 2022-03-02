@@ -1,11 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { RoomDeleteComposer } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { Base } from '../../../../../common/Base';
 import { Flex } from '../../../../../common/Flex';
 import { Text } from '../../../../../common/Text';
+import { SendMessageHook } from '../../../../../hooks';
+import { NotificationUtilities } from '../../../../../views/notification-center/common/NotificationUtilities';
 import { GetMaxVisitorsList } from '../../../common/RoomSettingsUtils';
-import { useNavigatorContext } from '../../../context/NavigatorContext';
+import { useNavigatorContext } from '../../../NavigatorContext';
 import { NavigatorRoomSettingsTabViewProps } from './NavigatorRoomSettingsTabViewProps.types';
 
 const DESC_MAX_LENGTH = 255;
@@ -16,6 +19,15 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
     const [ maxVisitorsList, setMaxVisitorsList ] = useState(GetMaxVisitorsList());
     const { navigatorState = null } = useNavigatorContext();
     const { categories = null } = navigatorState;
+
+    const deleteRoom = () =>
+    {
+        NotificationUtilities.confirm(LocalizeText('navigator.roomsettings.deleteroom.confirm.message'), () =>
+        {
+            SendMessageHook(new RoomDeleteComposer(roomSettingsData.roomId));
+        },
+        null, null, null, LocalizeText('navigator.roomsettings.deleteroom.confirm.title'));
+    }
 
     return (
         <>
@@ -58,7 +70,7 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
                 <input className="form-check-input" type="checkbox" checked={ roomSettingsData.allowWalkthrough } onChange={ event => handleChange('allow_walkthrough', event.target.checked) } />
                 <Text>{ LocalizeText('navigator.roomsettings.allow_walk_through') }</Text>
             </Flex>
-            <Text variant="danger" underline bold pointer className="d-flex justify-content-center align-items-center gap-1 mt-2">
+            <Text variant="danger" underline bold pointer className="d-flex justify-content-center align-items-center gap-1" onClick={ deleteRoom }>
                 <FontAwesomeIcon icon="times" />
                 { LocalizeText('navigator.roomsettings.delete') }
             </Text>

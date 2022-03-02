@@ -1,14 +1,15 @@
-import { GroupDeleteComposer, GroupSaveBadgeComposer, GroupSaveColorsComposer, GroupSaveInformationComposer, GroupSavePreferencesComposer } from '@nitrots/nitro-renderer';
+import { GroupDeleteComposer, GroupSaveColorsComposer, GroupSaveInformationComposer, GroupSavePreferencesComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
+import { Base, Button, Column, Flex, Text } from '../../../../common';
 import { SendMessageHook } from '../../../../hooks';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
 import { useGroupsContext } from '../../GroupsContext';
 import { GroupsActions } from '../../reducers/GroupsReducer';
-import { GroupSharedTabBadgeView } from '../shared-tabs/GroupSharedTabBadgeView';
-import { GroupSharedTabColorsView } from '../shared-tabs/GroupSharedTabColorsView';
-import { GroupSharedTabIdentityView } from '../shared-tabs/GroupSharedTabIdentityView';
-import { GroupManagerTabSettingsView } from './tab-settings/GroupManagerTabSettingsView';
+import { GroupTabBadgeView } from '../tabs/GroupTabBadgeView';
+import { GroupTabColorsView } from '../tabs/GroupTabColorsView';
+import { GroupTabIdentityView } from '../tabs/GroupTabIdentityView';
+import { GroupTabSettingsView } from '../tabs/GroupTabSettingsView';
 
 const TABS: number[] = [1, 2, 3, 5];
 
@@ -43,7 +44,7 @@ export const GroupManagerView: FC<{}> = props =>
         });
 
         SendMessageHook(new GroupSaveInformationComposer(groupId, groupName, groupDescription));
-        SendMessageHook(new GroupSaveBadgeComposer(groupId, badge));
+        //SendMessageHook(new GroupSaveBadgeComposer(groupId, badge));
         SendMessageHook(new GroupSaveColorsComposer(groupId, groupColors[0], groupColors[1]));
         SendMessageHook(new GroupSavePreferencesComposer(groupId, groupState, groupCanMembersDecorate ? 0 : 1));
 
@@ -64,36 +65,36 @@ export const GroupManagerView: FC<{}> = props =>
     return (
         <NitroCardView className="nitro-group-manager" simple={ false }>
             <NitroCardHeaderView headerText={ LocalizeText('group.window.title') } onCloseClick={ onClose } />
-            <NitroCardContentView className="p-0">
-                <NitroCardTabsView>
-                    { TABS.map(tab =>
-                        {
-                            return (<NitroCardTabsItemView key={ tab } isActive={ currentTab === tab } onClick={ () => setCurrentTab(tab) }>
-                                { LocalizeText(`group.edit.tab.${tab}`) }
-                            </NitroCardTabsItemView>);
-                        }) }
-                </NitroCardTabsView>
-                <div className="p-2">
-                    <div className="d-flex align-items-center mb-2">
-                        <div className={ 'flex-shrink-0 tab-image tab-' + currentTab }>
-                            <div></div>
-                        </div>
-                        <div className="w-100 text-black ms-2">
-                            <div className="fw-bold h4 m-0">{ LocalizeText('group.edit.tabcaption.' + currentTab) }</div>
-                            <div>{ LocalizeText('group.edit.tabdesc.' + currentTab) }</div>
-                        </div>
-                    </div>
-                    <div className="text-black manager-tab">
-                        { currentTab === 1 && <GroupSharedTabIdentityView /> }
-                        { currentTab === 2 && <GroupSharedTabBadgeView skipDefault={ true } /> }
-                        { currentTab === 3 && <GroupSharedTabColorsView /> }
-                        { currentTab === 5 && <GroupManagerTabSettingsView /> }
-                    </div>
-                    <div className="d-flex justify-content-between mt-2">
-                        <button className="btn btn-danger" onClick={ deleteGroup }>{ LocalizeText('group.delete') }</button>
-                        <button className="btn btn-success" onClick={ saveGroup }>{ LocalizeText('save') }</button>
-                    </div>
-                </div>
+            <NitroCardTabsView>
+                { TABS.map(tab =>
+                    {
+                        return (<NitroCardTabsItemView key={ tab } isActive={ currentTab === tab } onClick={ () => setCurrentTab(tab) }>
+                            { LocalizeText(`group.edit.tab.${tab}`) }
+                        </NitroCardTabsItemView>);
+                    }) }
+            </NitroCardTabsView>
+            <NitroCardContentView>
+                <Flex alignItems="center" gap={ 2 }>
+                    <Base className={ `nitro-group-tab-image tab-${ currentTab }`} />
+                    <Column grow gap={ 0 }>
+                        <Text bold fontSize={ 4 }>{ LocalizeText(`group.edit.tabcaption.${ currentTab }`) }</Text>
+                        <Text>{ LocalizeText(`group.edit.tabdesc.${ currentTab }`) }</Text>
+                    </Column>
+                </Flex>
+                <Column grow overflow="hidden">
+                    { currentTab === 1 &&
+                        <GroupTabIdentityView /> }
+                    { currentTab === 2 &&
+                        <GroupTabBadgeView skipDefault={ true } /> }
+                    { currentTab === 3 &&
+                        <GroupTabColorsView /> }
+                    { currentTab === 5 &&
+                        <GroupTabSettingsView /> }
+                </Column>
+                <Flex justifyContent="between">
+                    <Button variant="danger" onClick={ deleteGroup }>{ LocalizeText('group.delete') }</Button>
+                    <Button variant="success" onClick={ saveGroup }>{ LocalizeText('save') }</Button>
+                </Flex>
             </NitroCardContentView>
         </NitroCardView>
     );

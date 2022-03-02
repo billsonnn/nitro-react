@@ -1,54 +1,137 @@
-.nitro-groups {
-    .tab-image {
-        width: 122px;
-        height: 68px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+.nitro-group-tab-image {
+    width: 122px;
+    height: 68px;
+    background: url('../../assets/images/groups/creator_images.png') no-repeat;
 
-        div {
-            background-image: url('../../assets/images/groups/creator_images.png');
-            background-repeat: no-repeat;
+    &.tab-1 {
+        background-position: 0px 0px;
+        width: 99px;
+        height: 50px;
+    }
+
+    &.tab-2 {
+        background-position: -99px 0px;
+        width: 98px;
+        height: 62px;
+    }
+
+    &.tab-3 {
+        background-position: 0px -50px;
+        width: 96px;
+        height: 45px;
+    }
+
+    &.tab-4,
+    &.tab-5 {
+        background-position: 0px -95px;
+        width: 114px;
+        height: 61px;
+    }
+}
+
+.group-information {
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    .group-badge {
+        width: 78px;
+        height: 78px;
+
+        .badge-image {
+            background-size: contain;
         }
+    }
 
-        &.tab-1 {
-            div {
-                background-position: 0px 0px;
-                width: 99px;
+    .group-description {
+        height: 55px;
+    }
+}
+
+.nitro-group-information-standalone {
+    width: 500px;
+}
+
+.nitro-group-members {
+    width: 400px;
+
+    .nitro-group-members-list-grid {
+
+        .member-list-item {
+            height: 50px;
+            max-height: 50px;
+
+            .avatar-head {
+                position: relative;
+                overflow: hidden;
+                width: 40px;
                 height: 50px;
-            }
-        }
-
-        &.tab-2 {
-            div {
-                background-position: -99px 0px;
-                width: 98px;
-                height: 62px;
-            }
-        }
-
-        &.tab-3 {
-            div {
-                background-position: 0px -50px;
-                width: 96px;
-                height: 45px;
-            }
-        }
-
-        &.tab-4, &.tab-5 {
-            div {
-                background-position: 0px -95px;
-                width: 114px;
-                height: 61px;
+        
+                .avatar-image {
+                    position: absolute;
+                    left: -25px;
+                    top: -20px;
+                }
             }
         }
     }
 }
 
+.group-badge-preview {
+    width: 42px;
+    height: 42px;
+    background-color: $grid-bg-color;
+
+    &.active {
+        border-color: $grid-active-border-color !important;
+        background-color: $grid-active-bg-color;
+
+        &:before {
+            position: absolute;
+            content: ' ';
+            width: 0;
+            height: 0;
+            border-top: 10px solid white;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            bottom: -10px;
+        }
+    }
+}
+
+.group-badge-color-swatch,
+.group-badge-position-swatch {
+    position: relative;
+    border-radius: $border-radius;
+    width: 16px;
+    height: 16px;
+    background: $white;
+    border: 2px solid $white;
+    box-shadow: inset 3px 3px rgba(0, 0, 0, .1);
+
+    &.active {
+        box-shadow: none;
+    }
+}
+
+.group-badge-position-swatch {
+    box-shadow: inset 3px 3px rgba(0, 0, 0, .1);
+
+    &.active {
+        background: $primary;
+    }
+}
+
+.group-badge-color-swatch {
+    box-shadow: inset 2px 2px rgba(0, 0, 0, .2);
+}
+
+.group-color-swatch {
+    width: 30px;
+    height: 40px;
+}
+
 @import './views/creator/GroupCreatorView';
-@import './views/information/GroupInformationView';
-@import './views/information-standalone/GroupInformationStandaloneView';
 @import './views/manager/GroupManagerView';
-@import './views/members/GroupMembersView';
 @import './views/room-information/GroupRoomInformationView';
-@import './views/shared-tabs/GroupSharedTabs';
+@import './views/tabs/GroupSharedTabs';

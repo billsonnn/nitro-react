@@ -18,7 +18,6 @@ export const BadgeImageView: FC<BadgeImageViewProps> = props =>
 {
     const { badgeCode = null, isGroup = false, showInfo = false, customTitle = null, isGrayscale = false, scale = 1, classNames = [], style = {}, children = null, ...rest } = props;
     const [ badgeUrl, setBadgeUrl ] = useState<string>('');
-    const [ isListening, setIsListening ] = useState<boolean>(true);
 
     const getScaleClass = useMemo(() =>
     {
@@ -39,6 +38,8 @@ export const BadgeImageView: FC<BadgeImageViewProps> = props =>
     {
         const newClassNames: string[] = [ 'badge-image' ];
 
+        if(isGroup) newClassNames.push('group-badge');
+
         if(isGrayscale) newClassNames.push('grayscale');
 
         if((scale !== 1) && getScaleClass.length) newClassNames.push(getScaleClass);
@@ -46,7 +47,7 @@ export const BadgeImageView: FC<BadgeImageViewProps> = props =>
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ classNames, isGrayscale, scale, getScaleClass ]);
+    }, [ classNames, isGroup, isGrayscale, scale, getScaleClass ]);
 
     const getStyle = useMemo(() =>
     {
@@ -62,42 +63,28 @@ export const BadgeImageView: FC<BadgeImageViewProps> = props =>
     useEffect(() =>
     {
         if(!badgeCode || !badgeCode.length) return;
-        
-        const existing = (isGroup) ? GetSessionDataManager().loadGroupBadgeImage(badgeCode) : GetSessionDataManager().loadBadgeImage(badgeCode);
+
+        let didSetBadge = false;
 
         const onBadgeImageReadyEvent = (event: BadgeImageReadyEvent) =>
         {
             if(event.badgeId !== badgeCode) return;
 
-            const nitroSprite = new NitroSprite(event.image);
-            setBadgeUrl(TextureUtils.generateImageUrl(nitroSprite));
+            setBadgeUrl(TextureUtils.generateImageUrl(new NitroSprite(event.image)));
 
-            if(isListening)
-            {
-                GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
-                setIsListening(false);
-            }
+            didSetBadge = true;
+            
+            GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
         }
 
-        if(!existing)
-        {
-            GetSessionDataManager().events.addEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
-        }
-        else
-        {
-            const image = (isGroup) ? GetSessionDataManager().getGroupBadgeImage(badgeCode) : GetSessionDataManager().getBadgeImage(badgeCode);
-            const nitroSprite = new NitroSprite(image);
-            setBadgeUrl(TextureUtils.generateImageUrl(nitroSprite));
-        }
+        GetSessionDataManager().events.addEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
 
-        return (() =>
-        {
-            if(isListening)
-            {
-                GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
-            }
-        });
-    }, [ badgeCode, isGroup, isListening ]);
+        const texture = isGroup ? GetSessionDataManager().getGroupBadgeImage(badgeCode) : GetSessionDataManager().getBadgeImage(badgeCode);
+
+        if(texture && !didSetBadge) setBadgeUrl(TextureUtils.generateImageUrl(new NitroSprite(texture)));
+
+        return () => GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
+    }, [ badgeCode, isGroup ]);
 
     return (
         <Base classNames={ getClassNames } style={ getStyle } { ...rest }>

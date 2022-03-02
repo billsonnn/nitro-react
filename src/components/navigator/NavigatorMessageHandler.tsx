@@ -4,7 +4,7 @@ import { CreateRoomSession, GetSessionDataManager } from '../../api';
 import { UpdateDoorStateEvent } from '../../events';
 import { dispatchUiEvent } from '../../hooks';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
-import { useNavigatorContext } from './context/NavigatorContext';
+import { useNavigatorContext } from './NavigatorContext';
 import { NavigatorActions } from './reducers/NavigatorReducer';
 
 export const NavigatorMessageHandler: FC<{}> = props =>
