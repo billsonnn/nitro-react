@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { ProcessRoomObjectOperation, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
@@ -104,10 +105,10 @@ export const FurnitureManipulationMenuView: FC<{}> = props =>
         <ObjectLocationView objectId={ objectId } category={ objectType }>
             <div className="btn-group">
                 <button type="button" className="btn btn-primary btn-sm" onClick={ pickupFurniture }>
-                    <i className="fas fa-times" />
+                    <FontAwesomeIcon icon="times" />
                 </button>
                 <button type="button" className="btn btn-primary btn-sm" onClick={ rotateFurniture }>
-                    <i className="fas fa-undo" />
+                    <FontAwesomeIcon icon="undo" />
                 </button>
             </div>
         </ObjectLocationView>
