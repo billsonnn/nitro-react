@@ -48,13 +48,15 @@ export const NavigatorRoomDoorbellView: FC<NavigatorRoomDoorbellViewProps> = pro
                     { (state === UpdateDoorStateEvent.STATE_NO_ANSWER) &&
                         <Text>{ LocalizeText('navigator.doorbell.no.answer') }</Text> }
                 </Column>
-                { (state === UpdateDoorStateEvent.START_DOORBELL) &&
-                    <Button variant="success" size="sm" onClick={ ring }>
-                        { LocalizeText('navigator.doorbell.button.ring') }
-                    </Button> }
-                <Button variant="danger" size="sm" onClick={ close }>
-                    { LocalizeText('generic.cancel') }
-                </Button>
+                <Column gap={ 1 }>
+                    { (state === UpdateDoorStateEvent.START_DOORBELL) &&
+                        <Button variant="success" size="sm" onClick={ ring }>
+                            { LocalizeText('navigator.doorbell.button.ring') }
+                        </Button> }
+                    <Button variant="danger" size="sm" onClick={ close }>
+                        { LocalizeText('generic.cancel') }
+                    </Button>
+                </Column>
             </NitroCardContentView>
         </NitroCardView>
     );

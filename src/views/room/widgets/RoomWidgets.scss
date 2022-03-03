@@ -94,6 +94,11 @@
     width: 22px;
 }
 
+.nitro-widget-doorbell {
+    width: $nitro-doorbell-width;
+    height: $nitro-doorbell-height;
+}
+
 @import './avatar-info/AvatarInfoWidgetView';
 @import './chat/ChatWidgetView';
 @import './chat-input/ChatInputView';
