@@ -100,6 +100,7 @@
     ],
     "preload.assets.urls": [
         "${asset.url}/bundled/generic/avatar_additions.nitro",
+        "${asset.url}/bundled/generic/group_badge.nitro",
         "${asset.url}/bundled/generic/floor_editor.nitro",
         "${images.url}/loading_icon.png",
         "${images.url}/clear_icon.png",
