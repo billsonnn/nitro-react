@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { NitroCardGridItemView, NitroCardGridView } from '../../../layout';
+import { Grid, LayoutGridItem } from '../../../common';
 import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
 
 interface BadgesContainerViewProps
@@ -13,16 +13,16 @@ export const BadgesContainerView: FC<BadgesContainerViewProps> = props =>
 
     return (
         <div className="row">
-            <NitroCardGridView>
+            <Grid>
                 { badges && (badges.length > 0) && badges.map((badge, index) =>
                         {
                             return (
-                                <NitroCardGridItemView key={ index }>
+                                <LayoutGridItem key={ index }>
                                     <BadgeImageView badgeCode={ badge }/>
-                                </NitroCardGridItemView>
+                                </LayoutGridItem>
                             )
                         }) }
-            </NitroCardGridView>
+            </Grid>
         </div>
     )
 }

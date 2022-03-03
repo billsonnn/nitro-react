@@ -7,12 +7,12 @@ import { Column } from '../../../../../common/Column';
 import { Flex } from '../../../../../common/Flex';
 import { Grid } from '../../../../../common/Grid';
 import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
+import { LayoutLoadingSpinnerView } from '../../../../../common/layout/LayoutLoadingSpinnerView';
 import { Text } from '../../../../../common/Text';
 import { CatalogPurchasedEvent, CatalogPurchaseFailureEvent } from '../../../../../events';
 import { CatalogEvent } from '../../../../../events/catalog/CatalogEvent';
 import { useUiEvent } from '../../../../../hooks';
 import { SendMessageHook } from '../../../../../hooks/messages/message-event';
-import { LoadingSpinnerView } from '../../../../../layout/loading-spinner/LoadingSpinnerView';
 import { CurrencyIcon } from '../../../../../views/shared/currency-icon/CurrencyIcon';
 import { GetCurrencyAmount } from '../../../../purse/common/CurrencyHelper';
 import { GLOBAL_PURSE } from '../../../../purse/PurseView';
@@ -131,7 +131,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
             case CatalogPurchaseState.CONFIRM:
                 return <Button fullWidth variant="warning" size="sm" onClick={ purchaseSubscription }>{ LocalizeText('catalog.marketplace.confirm_title') }</Button>;
             case CatalogPurchaseState.PURCHASE:
-                return <Button fullWidth variant="primary" size="sm" disabled><LoadingSpinnerView /></Button>;
+                return <Button fullWidth variant="primary" size="sm" disabled><LayoutLoadingSpinnerView /></Button>;
             case CatalogPurchaseState.FAILED:
                 return <Button fullWidth variant="danger" size="sm" disabled>{ LocalizeText('generic.failed') }</Button>;
             case CatalogPurchaseState.NONE:

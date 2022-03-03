@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LocalizeFormattedNumber, LocalizeText } from '../../../../../api';
-import { UserProfileIconView } from '../../../../../layout';
+import { UserProfileIconView } from '../../../../../common';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { HallOfFameItemViewProps } from './HallOfFameItemView.types';
 

@@ -3,9 +3,8 @@ import classNames from 'classnames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { ColorUtils, GetConfiguration, LocalizeText, RoomWidgetDimmerChangeStateMessage, RoomWidgetDimmerPreviewMessage, RoomWidgetDimmerSavePresetMessage, RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateDimmerStateEvent } from '../../../../../api';
-import { Base, Button, Column, Flex, Grid, Text } from '../../../../../common';
+import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../../common';
 import { BatchUpdates, CreateEventDispatcherHook } from '../../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
 import { DimmerFurnitureWidgetPresetItem } from './DimmerFurnitureWidgetPresetItem';
 

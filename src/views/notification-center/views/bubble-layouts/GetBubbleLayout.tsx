@@ -1,7 +1,7 @@
 import { NotificationBubbleItem } from '../../common/NotificationBubbleItem';
 import { NotificationBubbleType } from '../../common/NotificationBubbleType';
-import { NotificationClubGiftBubbleView } from './club-gift/NotificationClubGiftBubbleView';
-import { NotificationDefaultBubbleView } from './default/NotificationDefaultBubbleView';
+import { NotificationClubGiftBubbleView } from './NotificationClubGiftBubbleView';
+import { NotificationDefaultBubbleView } from './NotificationDefaultBubbleView';
 
 export const GetBubbleLayout = (item: NotificationBubbleItem, close: () => void) =>
 {

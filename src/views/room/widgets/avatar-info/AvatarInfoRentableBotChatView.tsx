@@ -1,9 +1,8 @@
 import { BotSkillSaveComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
 import { GetRoomObjectBounds, GetRoomSession, LocalizeText, RoomWidgetUpdateRentableBotChatEvent } from '../../../../api';
-import { Base, Button, Column, Flex, Text } from '../../../../common';
+import { Base, Button, Column, DraggableWindow, DraggableWindowPosition, Flex, Text } from '../../../../common';
 import { SendMessageHook } from '../../../../hooks';
-import { DraggableWindow, DraggableWindowPosition } from '../../../../layout';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { BotSkillsEnum } from './common/BotSkillsEnum';
 
@@ -36,7 +35,7 @@ export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProp
     }
     
     return (
-        <DraggableWindow position={ DraggableWindowPosition.NOTHING } handleSelector=".drag-handler" style={ { top: getObjectLocation.y, left: getObjectLocation.x } }>
+        <DraggableWindow windowPosition={ DraggableWindowPosition.NOTHING } handleSelector=".drag-handler" dragStyle={ { top: getObjectLocation.y, left: getObjectLocation.x } }>
             <Base className="nitro-context-menu bot-chat">
                 <ContextMenuHeaderView className="drag-handler">
                     { LocalizeText('bot.skill.chatter.configuration.title') }

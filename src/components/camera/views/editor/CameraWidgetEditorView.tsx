@@ -3,14 +3,7 @@ import { IRoomCameraWidgetEffect, IRoomCameraWidgetSelectedEffect, RoomCameraWid
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { GetRoomCameraWidgetManager, LocalizeText } from '../../../../api';
-import { Button } from '../../../../common/Button';
-import { ButtonGroup } from '../../../../common/ButtonGroup';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Grid } from '../../../../common/Grid';
-import { LayoutImage } from '../../../../common/layout/LayoutImage';
-import { Text } from '../../../../common/Text';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
+import { Button, ButtonGroup, Column, Flex, Grid, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../common';
 import { CameraEditorTabs } from '../../common/CameraEditorTabs';
 import { CameraPicture } from '../../common/CameraPicture';
 import { CameraPictureThumbnail } from '../../common/CameraPictureThumbnail';

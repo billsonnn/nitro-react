@@ -1,8 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../api';
-import { NitroCardGridItemView, NitroCardGridView, NitroLayoutFlex, NitroLayoutFlexColumn, NitroLayoutGrid, NitroLayoutGridColumn } from '../../../layout';
-import { NitroLayoutBase } from '../../../layout/base';
+import { Base, Column, Flex, Grid, LayoutGridItem } from '../../../common';
 import { COLORMAP, FloorAction } from '../common/Constants';
 import { FloorplanEditor } from '../common/FloorplanEditor';
 import { useFloorplanEditorContext } from '../context/FloorplanEditorContext';
@@ -112,48 +111,48 @@ export const FloorplanOptionsView: FC<{}> = props =>
     }
 
     return (
-        <NitroLayoutGrid className="h-auto">
-            <NitroLayoutGridColumn size={ 5 }>
-                <NitroLayoutFlexColumn gap={ 2 } overflow="hidden">
-                    <NitroLayoutBase className="flex-shrink-0 fw-bold text-black text-truncate">{ LocalizeText('floor.plan.editor.draw.mode') }</NitroLayoutBase>
-                    <NitroCardGridView>
-                        <NitroCardGridItemView itemActive={ (floorAction === FloorAction.SET) } onClick={ event => selectAction(FloorAction.SET) }>
+        <Grid className="h-auto">
+            <Column size={ 5 }>
+                <Column gap={ 2 } overflow="hidden">
+                    <Base className="flex-shrink-0 fw-bold text-black text-truncate">{ LocalizeText('floor.plan.editor.draw.mode') }</Base>
+                    <Grid>
+                        <LayoutGridItem itemActive={ (floorAction === FloorAction.SET) } onClick={ event => selectAction(FloorAction.SET) }>
                             <i className="icon icon-set-tile" />
-                        </NitroCardGridItemView>
-                        <NitroCardGridItemView itemActive={ (floorAction === FloorAction.UNSET) } onClick={ event => selectAction(FloorAction.UNSET) }>
+                        </LayoutGridItem>
+                        <LayoutGridItem itemActive={ (floorAction === FloorAction.UNSET) } onClick={ event => selectAction(FloorAction.UNSET) }>
                             <i className="icon icon-unset-tile" />
-                        </NitroCardGridItemView>
-                        <NitroCardGridItemView itemActive={ (floorAction === FloorAction.UP) } onClick={ event => selectAction(FloorAction.UP) }>
+                        </LayoutGridItem>
+                        <LayoutGridItem itemActive={ (floorAction === FloorAction.UP) } onClick={ event => selectAction(FloorAction.UP) }>
                             <i className="icon icon-increase-height" />
-                        </NitroCardGridItemView>
-                        <NitroCardGridItemView itemActive={ (floorAction === FloorAction.DOWN) } onClick={ event => selectAction(FloorAction.DOWN) }>
+                        </LayoutGridItem>
+                        <LayoutGridItem itemActive={ (floorAction === FloorAction.DOWN) } onClick={ event => selectAction(FloorAction.DOWN) }>
                             <i className="icon icon-decrease-height" />
-                        </NitroCardGridItemView>
-                        <NitroCardGridItemView itemActive={ (floorAction === FloorAction.DOOR) } onClick={ event => selectAction(FloorAction.DOOR) }>
+                        </LayoutGridItem>
+                        <LayoutGridItem itemActive={ (floorAction === FloorAction.DOOR) } onClick={ event => selectAction(FloorAction.DOOR) }>
                             <i className="icon icon-set-door" />
-                        </NitroCardGridItemView>
-                    </NitroCardGridView>
-                </NitroLayoutFlexColumn>
-            </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn className="align-items-center overflow-hidden" size={ 4 }>
-                <NitroLayoutFlexColumn gap={ 2 } overflow="hidden">
-                    <NitroLayoutBase className="flex-shrink-0 fw-bold text-black text-truncate">{ LocalizeText('floor.plan.editor.enter.direction') }</NitroLayoutBase>
+                        </LayoutGridItem>
+                    </Grid>
+                </Column>
+            </Column>
+            <Column className="align-items-center overflow-hidden" size={ 4 }>
+                <Column gap={ 2 } overflow="hidden">
+                    <Base className="flex-shrink-0 fw-bold text-black text-truncate">{ LocalizeText('floor.plan.editor.enter.direction') }</Base>
                     <i className={ `icon icon-door-direction-${ visualizationSettings.entryPointDir } cursor-pointer` } onClick={ changeDoorDirection } />
-                </NitroLayoutFlexColumn>
-            </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn className="align-items-center" size={ 3 }>
-                <NitroLayoutFlexColumn gap={ 2 } overflow="hidden">
-                    <NitroLayoutBase className="flex-shrink-0 fw-bold text-black text-truncate">{ LocalizeText('floor.editor.wall.height') }</NitroLayoutBase>
-                    <NitroLayoutFlex className="align-items-center">
+                </Column>
+            </Column>
+            <Column className="align-items-center" size={ 3 }>
+                <Column gap={ 2 } overflow="hidden">
+                    <Base className="flex-shrink-0 fw-bold text-black text-truncate">{ LocalizeText('floor.editor.wall.height') }</Base>
+                    <Flex className="align-items-center">
                         <i className="fas fa-caret-left cursor-pointer me-1 text-black" onClick={ decreaseWallHeight } />
                         <input type="number" className="form-control form-control-sm quantity-input" value={ visualizationSettings.wallHeight } onChange={ event => onWallHeightChange(event.target.valueAsNumber)} />
                         <i className="fas fa-caret-right cursor-pointer ms-1 text-black" onClick={ increaseWallHeight } />
-                    </NitroLayoutFlex>
-                </NitroLayoutFlexColumn>
-            </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn size={ 5 }>
-                <NitroLayoutFlexColumn gap={ 2 } overflow="hidden">
-                    <NitroLayoutBase className="flex-shrink-0 fw-bold text-black text-truncate">{ LocalizeText('floor.plan.editor.tile.height') }: { floorHeight }</NitroLayoutBase>
+                    </Flex>
+                </Column>
+            </Column>
+            <Column size={ 5 }>
+                <Column gap={ 2 } overflow="hidden">
+                    <Base className="flex-shrink-0 fw-bold text-black text-truncate">{ LocalizeText('floor.plan.editor.tile.height') }: { floorHeight }</Base>
                     <ReactSlider
                                     className="nitro-slider"
                                     min={ MIN_FLOOR_HEIGHT }
@@ -162,12 +161,12 @@ export const FloorplanOptionsView: FC<{}> = props =>
                                     value={ floorHeight }
                                     onChange={ event => onFloorHeightChange(event) }
                                     renderThumb={ ({ style, ...rest }, state) => <div style={ { backgroundColor: `#${COLORMAP[state.valueNow.toString(33)]}`, ...style } } { ...rest }>{ state.valueNow }</div> } />
-                </NitroLayoutFlexColumn>
-            </NitroLayoutGridColumn>
-            <NitroLayoutGridColumn size={5}>
-                <NitroLayoutFlexColumn gap={ 2 } overflow="hidden">
-                <NitroLayoutBase className="flex-shrink-0 fw-bold text-black text-truncate">{ LocalizeText('floor.plan.editor.room.options') }</NitroLayoutBase>
-                <NitroLayoutFlex className="align-items-center">
+                </Column>
+            </Column>
+            <Column size={5}>
+                <Column gap={ 2 } overflow="hidden">
+                <Base className="flex-shrink-0 fw-bold text-black text-truncate">{ LocalizeText('floor.plan.editor.room.options') }</Base>
+                <Flex className="align-items-center">
                     <select className="form-control form-control-sm" value={visualizationSettings.thicknessWall} onChange={event => onWallThicknessChange(parseInt(event.target.value))}>
                         <option value={0}>{ LocalizeText('navigator.roomsettings.wall_thickness.thinnest') }</option>
                         <option value={1}>{ LocalizeText('navigator.roomsettings.wall_thickness.thin') }</option>
@@ -180,9 +179,9 @@ export const FloorplanOptionsView: FC<{}> = props =>
                         <option value={2}>{ LocalizeText('navigator.roomsettings.floor_thickness.normal') }</option>
                         <option value={3}>{ LocalizeText('navigator.roomsettings.floor_thickness.thick') }</option>
                     </select>
-                </NitroLayoutFlex>
-                </NitroLayoutFlexColumn>
-            </NitroLayoutGridColumn>
-        </NitroLayoutGrid>
+                </Flex>
+                </Column>
+            </Column>
+        </Grid>
     );
 }

@@ -1,9 +1,8 @@
 import { GroupBuyComposer, GroupBuyDataComposer, GroupBuyDataEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { HasHabboClub, LocalizeText } from '../../../api';
-import { Base, Button, Column, Flex, Text } from '../../../common';
+import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../layout';
 import { IGroupData } from '../common/IGroupData';
 import { GroupTabBadgeView } from './tabs/GroupTabBadgeView';
 import { GroupTabColorsView } from './tabs/GroupTabColorsView';

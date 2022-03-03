@@ -1,14 +1,13 @@
 import { ConfigurationEvent, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetCommunication, GetConfiguration, GetNitroInstance } from './api';
-import { Base } from './common';
+import { Base, TransitionAnimation, TransitionAnimationTypes } from './common';
 import { LoadingView } from './components/loading/LoadingView';
 import { MainView } from './components/main/MainView';
 import { useConfigurationEvent } from './hooks/events/core/configuration/configuration-event';
 import { useLocalizationEvent } from './hooks/events/nitro/localization/localization-event';
 import { dispatchMainEvent, useMainEvent } from './hooks/events/nitro/main-event';
 import { useRoomEngineEvent } from './hooks/events/nitro/room/room-engine-event';
-import { TransitionAnimation, TransitionAnimationTypes } from './layout';
 
 export const App: FC<{}> = props =>
 {

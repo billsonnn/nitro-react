@@ -1,11 +1,10 @@
 import { RoomObjectCategory, RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetPresentOpenMessage, RoomWidgetUpdatePresentDataEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
-import { Button, Column, Flex, Text } from '../../../../../common';
+import { Button, Column, Flex, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
 import { ProductTypeEnum } from '../../../../../components/catalog/common/ProductTypeEnum';
 import { BatchUpdates } from '../../../../../hooks';
 import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutGiftCardView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
 
 const FLOOR: string = 'floor';
@@ -220,7 +219,7 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
                 { (placedItemId === -1) &&
                     <Column overflow="hidden">
                         <Flex center overflow="auto">
-                            <NitroLayoutGiftCardView userName={ senderName } figure={ senderFigure } message={ text } />
+                            <LayoutGiftTagView userName={ senderName } figure={ senderFigure } message={ text } />
                         </Flex>
                         <Flex gap={ 1 }>
                             { senderName &&

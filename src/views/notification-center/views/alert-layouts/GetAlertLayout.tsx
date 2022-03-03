@@ -1,7 +1,7 @@
 import { NotificationAlertItem } from '../../common/NotificationAlertItem';
 import { NotificationAlertType } from '../../common/NotificationAlertType';
-import { NotificationDefaultAlertView } from './default/NotificationDefaultAlertView';
-import { NotificationEventAlertView } from './event/NotificationEventAlertView';
+import { NotificationDefaultAlertView } from './NotificationDefaultAlertView';
+import { NotificationEventAlertView } from './NotificationEventAlertView';
 
 export const GetAlertLayout = (item: NotificationAlertItem, close: () => void) =>
 {

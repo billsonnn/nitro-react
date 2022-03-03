@@ -4,9 +4,9 @@ import { ScrGetKickbackInfoMessageComposer } from '@nitrots/nitro-renderer/src/n
 import { FC, useCallback, useEffect, useState } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { AddEventLinkTracker, CreateLinkEvent, GetConfiguration, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { HcCenterEvent } from '../../events/hc-center/HcCenterEvent';
 import { CreateMessageHook, SendMessageHook, useUiEvent } from '../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
 import { AvatarImageView } from '../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../shared/badge-image/BadgeImageView';
 import { BadgeResolver } from './util/BadgeResolver';

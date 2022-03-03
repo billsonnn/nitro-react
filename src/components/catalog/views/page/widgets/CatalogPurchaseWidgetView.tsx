@@ -1,13 +1,9 @@
 import { PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetClubMemberLevel, LocalizeText } from '../../../../../api';
-import { Button } from '../../../../../common/Button';
-import { CatalogEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent } from '../../../../../events';
-import { CatalogInitGiftEvent } from '../../../../../events/catalog/CatalogInitGiftEvent';
-import { CatalogInitPurchaseEvent } from '../../../../../events/catalog/CatalogInitPurchaseEvent';
-import { CatalogWidgetEvent } from '../../../../../events/catalog/CatalogWidgetEvent';
+import { Button, LayoutLoadingSpinnerView } from '../../../../../common';
+import { CatalogEvent, CatalogInitGiftEvent, CatalogInitPurchaseEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, CatalogWidgetEvent } from '../../../../../events';
 import { dispatchUiEvent, SendMessageHook, useUiEvent } from '../../../../../hooks';
-import { LoadingSpinnerView } from '../../../../../layout';
 import { GetCurrencyAmount } from '../../../../purse/common/CurrencyHelper';
 import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogPurchaseState } from '../../../common/CatalogPurchaseState';
@@ -162,7 +158,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
             case CatalogPurchaseState.CONFIRM:
                 return <Button onClick={ event => purchase() }>{ LocalizeText('catalog.marketplace.confirm_title') }</Button>;
             case CatalogPurchaseState.PURCHASE:
-                return <Button disabled><LoadingSpinnerView /></Button>;
+                return <Button disabled><LayoutLoadingSpinnerView /></Button>;
             case CatalogPurchaseState.FAILED:
                 return <Button variant="danger">{ LocalizeText('generic.failed') }</Button>;
             case CatalogPurchaseState.SOLD_OUT:

@@ -1,9 +1,9 @@
 import { NitroEvent, RoomEngineTriggerWidgetEvent, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, LocalizeBadgeDescription, LocalizeBadgeName, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
+import { LayoutTrophyView } from '../../../../../common';
 import { CreateEventDispatcherHook } from '../../../../../hooks';
 import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
-import { NitroLayoutTrophyView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
 import { FurnitureTrophyData } from '../trophy/FurnitureTrophyData';
 
@@ -66,5 +66,5 @@ export const FurnitureBadgeDisplayView: FC<{}> = props =>
 
     if(!trophyData) return null;
 
-    return <NitroLayoutTrophyView color={ trophyData.color } message={ trophyData.message } date={ trophyData.date } senderName={ trophyData.ownerName } customTitle={ trophyData.customTitle } onCloseClick={ () => processAction('close') } />;
+    return <LayoutTrophyView color={ trophyData.color } message={ trophyData.message } date={ trophyData.date } senderName={ trophyData.ownerName } customTitle={ trophyData.customTitle } onCloseClick={ () => processAction('close') } />;
 }

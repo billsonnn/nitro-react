@@ -2,12 +2,11 @@ import { GetGuestRoomResultEvent, RoomLikeRoomComposer } from '@nitrots/nitro-re
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, LocalizeText, RoomWidgetZoomToggleMessage } from '../../../../api';
-import { Base, Column, Flex, Text } from '../../../../common';
+import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
 import { NavigatorEvent } from '../../../../events';
 import { BatchUpdates } from '../../../../hooks';
 import { dispatchUiEvent } from '../../../../hooks/events';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
-import { TransitionAnimation, TransitionAnimationTypes } from '../../../../layout';
 import { useRoomContext } from '../../context/RoomContext';
 
 export const RoomToolsWidgetView: FC<{}> = props =>

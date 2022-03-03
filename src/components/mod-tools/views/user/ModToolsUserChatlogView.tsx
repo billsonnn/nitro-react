@@ -1,7 +1,7 @@
 import { ChatRecordData, GetUserChatlogMessageComposer, UserChatlogEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { ChatlogView } from '../chatlog/ChatlogView';
 
 interface ModToolsUserChatlogViewProps

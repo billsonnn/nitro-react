@@ -1,10 +1,6 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { GetConfiguration, GetNitroInstance, LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
-import { RoomThumbnailView } from '../../../../layout/room-thumbnail/RoomThumbnailView';
+import { Column, Flex, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useNavigatorContext } from '../../NavigatorContext';
 
 export class NavigatorRoomLinkViewProps
@@ -59,7 +55,7 @@ export const NavigatorRoomLinkView: FC<NavigatorRoomLinkViewProps> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('navigator.embed.title') } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black d-flex align-items-center">
                 <Flex gap={ 2 }>
-                    <RoomThumbnailView customUrl={ roomInfoData.enteredGuestRoom.officialRoomPicRef } />
+                    <LayoutRoomThumbnailView customUrl={ roomInfoData.enteredGuestRoom.officialRoomPicRef } />
                     <Column>
                         <Text bold fontSize={ 5 }>{ LocalizeText('navigator.embed.headline') }</Text>
                         <Text>{ LocalizeText('navigator.embed.info') }</Text>

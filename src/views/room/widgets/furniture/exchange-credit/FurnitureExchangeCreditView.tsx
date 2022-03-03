@@ -1,9 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, RoomWidgetCreditFurniRedeemMessage, RoomWidgetUpdateCreditFurniEvent } from '../../../../../api';
-import { Base, Button, Column, Flex, Text } from '../../../../../common';
-import { BatchUpdates } from '../../../../../hooks';
-import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
+import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
+import { BatchUpdates, CreateEventDispatcherHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../context/RoomContext';
 
 export const FurnitureExchangeCreditView: FC<{}> = props =>

@@ -2,11 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NitroSettingsEvent, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer, UserSettingsSoundComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../api';
-import { Column, Flex, Text } from '../../common';
+import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
 import { CreateMessageHook, dispatchMainEvent, SendMessageHook, useUiEvent } from '../../hooks';
-import { NitroCardContentView, NitroCardHeaderView } from '../../layout';
-import { NitroCardView } from '../../layout/card/NitroCardView';
 
 export const UserSettingsView: FC<{}> = props =>
 {

@@ -5,7 +5,6 @@ import { GetGroupInformation, GetSessionDataManager, LocalizeText, TryJoinGroup 
 import { GetGroupManager } from '../../../api/groups/GetGroupManager';
 import { Base, Button, Column, Flex, Text } from '../../../common';
 import { CreateMessageHook, SendMessageHook } from '../../../hooks';
-import { NotificationBubbleView } from '../../../layout';
 import { NotificationUtilities } from '../../../views/notification-center/common/NotificationUtilities';
 import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
 import { GroupMembershipType } from '../common/GroupMembershipType';
@@ -120,7 +119,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
     if(!groupInformation) return null;
 
     return (
-        <NotificationBubbleView fadesOut={ false } close={ null }>
+        <Base className="nitro-notification-bubble rounded">
             <Column>
                 <Flex alignItems="center" justifyContent="between" pointer onClick={ event => setIsOpen(value => !value) }>
                     <Text variant="white">{ LocalizeText('group.homeroominfo.title') }</Text>
@@ -141,6 +140,6 @@ export const GroupRoomInformationView: FC<{}> = props =>
                             }
                     </> }
             </Column>
-        </NotificationBubbleView>
+        </Base>
     );
 };

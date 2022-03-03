@@ -1,6 +1,0 @@
-.nitro-grid {
-    --nitro-grid-column-min-width: 45px;
-    grid-template-columns: repeat(auto-fill, minmax(var(--nitro-grid-column-min-width, 45px), 1fr));
-}
-
-@import './item/NitroCardGridItemView.scss';

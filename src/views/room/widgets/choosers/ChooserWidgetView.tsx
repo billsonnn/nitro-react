@@ -2,8 +2,7 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import { AutoSizer, List, ListRowProps, ListRowRenderer } from 'react-virtualized';
 import { RoomObjectItem, RoomWidgetRoomObjectMessage } from '../../../../api';
 import { LocalizeText } from '../../../../api/utils';
-import { Column, Flex, Text } from '../../../../common';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
+import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useRoomContext } from '../../context/RoomContext';
 
 interface ChooserWidgetViewProps

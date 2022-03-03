@@ -2,13 +2,13 @@ import { FrontPageItem, GetCatalogIndexComposer, GetCatalogPageComposer, GetClub
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetRoomEngine, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { CREDITS, PlaySound } from '../../api/utils/PlaySound';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { Column } from '../../common/Column';
 import { Grid } from '../../common/Grid';
 import { CatalogPurchasedEvent } from '../../events';
 import { BatchUpdates } from '../../hooks';
 import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { SendMessageHook } from '../../hooks/messages/message-event';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../layout';
 import { CatalogContextProvider } from './CatalogContext';
 import { CatalogMessageHandler } from './CatalogMessageHandler';
 import { CatalogPage } from './common/CatalogPage';

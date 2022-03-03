@@ -1,9 +1,8 @@
 import { HabboWebTools, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetCommunication, RemoveLinkEventTracker } from '../../api';
-import { Base } from '../../common';
+import { Base, TransitionAnimation, TransitionAnimationTypes } from '../../common';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
-import { TransitionAnimation, TransitionAnimationTypes } from '../../layout';
 import { CampaignView } from '../../views/campaign/CampaignView';
 import { FloorplanEditorView } from '../../views/floorplan-editor/FloorplanEditorView';
 import { FriendsView } from '../../views/friends/FriendsView';

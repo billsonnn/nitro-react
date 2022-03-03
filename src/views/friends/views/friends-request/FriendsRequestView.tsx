@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../api';
-import { NitroCardAccordionSetView, NitroLayoutButton, NitroLayoutFlex } from '../../../../layout';
+import { Button, Flex, NitroCardAccordionSetView } from '../../../../common';
 import { MessengerRequest } from '../../common/MessengerRequest';
 import { useFriendsContext } from '../../FriendsContext';
 import { FriendsRequestItemView } from './FriendsRequestItemView';
@@ -23,11 +23,11 @@ export const FriendsRequestView: FC<FriendsRequestViewProps> = props =>
                 {
                     return <FriendsRequestItemView key={ index } request={ request } />
                 }) }
-            <NitroLayoutFlex className="justify-content-center p-1">
-                <NitroLayoutButton size="sm" onClick={ event => declineFriend(-1, true) }>
+            <Flex className="justify-content-center p-1">
+                <Button onClick={ event => declineFriend(-1, true) }>
                     { LocalizeText('friendlist.requests.dismissall') }
-                </NitroLayoutButton>
-            </NitroLayoutFlex>
+                </Button>
+            </Flex>
         </NitroCardAccordionSetView>
     );
 }

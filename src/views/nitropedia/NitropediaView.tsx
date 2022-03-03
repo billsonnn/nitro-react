@@ -1,7 +1,7 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AddEventLinkTracker, GetConfiguration, RemoveLinkEventTracker } from '../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { NotificationUtilities } from '../notification-center/common/NotificationUtilities';
 
 const newLineRegex = /\n\r|\n|\r/mg;

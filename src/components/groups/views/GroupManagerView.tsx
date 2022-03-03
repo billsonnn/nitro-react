@@ -1,9 +1,8 @@
 import { GroupBadgePart, GroupInformationEvent, GroupSettingsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../api';
-import { Base, Column, Flex, Text } from '../../../common';
+import { Base, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../common';
 import { CreateMessageHook } from '../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../layout';
 import { IGroupData } from '../common/IGroupData';
 import { GroupTabBadgeView } from './tabs/GroupTabBadgeView';
 import { GroupTabColorsView } from './tabs/GroupTabColorsView';

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 
 interface FriendsRemoveConfirmationViewProps
 {

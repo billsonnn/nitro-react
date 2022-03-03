@@ -1,7 +1,7 @@
 import { IssueMessageData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { GetSessionDataManager } from '../../../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';
 import { useModToolsContext } from '../../ModToolsContext';
 import { ModToolsIssueInfoView } from './ModToolsIssueInfoView';
 import { ModToolsMyIssuesTabView } from './ModToolsMyIssuesTabView';

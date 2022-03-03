@@ -1,10 +1,8 @@
 import { FriendFurniConfirmLockMessageComposer, LoveLockFurniFinishedEvent, LoveLockFurniFriendConfirmedEvent, LoveLockFurniStartEvent, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, GetRoomSession, LocalizeText, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
-import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
-import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
-import { CreateMessageHook } from '../../../../../hooks/messages/message-event';
-import { DraggableWindow, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
+import { DraggableWindow, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../common';
+import { CreateEventDispatcherHook, CreateMessageHook, useRoomEngineEvent } from '../../../../../hooks';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../../context/RoomContext';
 import { FurnitureEngravingLockData } from './FriendFurniLockData';

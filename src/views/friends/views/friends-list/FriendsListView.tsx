@@ -1,8 +1,8 @@
 import { RemoveFriendComposer, SendRoomInviteComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../api';
+import { NitroCardAccordionSetView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';
 import { SendMessageHook } from '../../../../hooks';
-import { NitroCardAccordionSetView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
 import { MessengerFriend } from '../../common/MessengerFriend';
 import { MessengerRequest } from '../../common/MessengerRequest';
 import { FriendsGroupView } from '../friends-group/FriendsGroupView';

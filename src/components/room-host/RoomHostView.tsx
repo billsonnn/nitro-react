@@ -1,10 +1,9 @@
 import { IRoomSession, RoomEngineEvent, RoomId, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomSession, SetActiveRoomId, StartRoomSession } from '../../api';
-import { Base } from '../../common';
+import { Base, TransitionAnimation, TransitionAnimationTypes } from '../../common';
 import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
 import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
-import { TransitionAnimation, TransitionAnimationTypes } from '../../layout';
 import { RoomView } from '../../views/room/RoomView';
 
 export const RoomHostView: FC<{}> = props =>

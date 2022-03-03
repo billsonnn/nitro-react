@@ -1,8 +1,8 @@
 import { RoomBannedUsersComposer, RoomBannedUsersEvent, RoomSettingsEvent, RoomUsersWithRightsComposer, RoomUsersWithRightsEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../../api';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../layout';
 import RoomSettingsData from '../../common/RoomSettingsData';
 import { NavigatorRoomSettingsAccessTabView } from './views/NavigatorRoomSettingsAccessTabView';
 import { NavigatorRoomSettingsBasicTabView } from './views/NavigatorRoomSettingsBasicTabView';

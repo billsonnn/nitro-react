@@ -1,8 +1,8 @@
 import { UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../api';
+import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
 import { SendMessageHook, UseMountEffect } from '../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFlex, NitroLayoutGridColumn } from '../../../layout';
 import { convertNumbersForSaving } from '../common/Utils';
 import { useFloorplanEditorContext } from '../context/FloorplanEditorContext';
 
@@ -45,17 +45,17 @@ export const FloorplanImportExportView: FC<FloorplanImportExportViewProps> = pro
         <NitroCardView simple={true} className="floorplan-import-export">
             <NitroCardHeaderView headerText={LocalizeText('floor.plan.editor.import.export')} onCloseClick={ onCloseClick } />
             <NitroCardContentView>
-                <NitroLayoutGridColumn size={ 12 } className="h-100">
+                <Column size={ 12 } className="h-100">
                     <textarea className="h-100" value={map} onChange={ event => setMap(event.target.value) }></textarea>
-                    <NitroLayoutFlex className="justify-content-between">
+                    <Flex className="justify-content-between">
                         <div className="btn-group">
                             <button className="btn btn-primary" onClick={revertChanges}>{LocalizeText('floor.plan.editor.revert.to.last.received.map')}</button>
                         </div>
                         <div className="btn-group">
                             <button className="btn btn-primary" onClick={saveFloorChanges}>{LocalizeText('floor.plan.editor.save')}</button>
                         </div>
-                    </NitroLayoutFlex>
-                </NitroLayoutGridColumn>
+                    </Flex>
+                </Column>
                 
             </NitroCardContentView>
         </NitroCardView>

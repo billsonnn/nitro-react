@@ -1,7 +1,8 @@
 import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, PerkAllowancesMessageEvent, PerkEnum, Queue, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GetUserProfile, GoToDesktop, OpenMessengerChat } from '../../api';
-import { Base, Flex } from '../../common';
+import { Base, Flex, TransitionAnimationTypes } from '../../common';
+import { TransitionAnimation } from '../../common/transitions/TransitionAnimation';
 import { AvatarEditorEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
 import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
@@ -9,8 +10,6 @@ import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
 import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
 import { BatchUpdates, dispatchUiEvent, useRoomEngineEvent, useUiEvent } from '../../hooks';
 import { CreateMessageHook } from '../../hooks/messages/message-event';
-import { TransitionAnimation } from '../../layout/transitions/TransitionAnimation';
-import { TransitionAnimationTypes } from '../../layout/transitions/TransitionAnimation.types';
 import { AvatarImageView } from '../../views/shared/avatar-image/AvatarImageView';
 import { ItemCountView } from '../../views/shared/item-count/ItemCountView';
 import { ToolbarViewItems } from './common/ToolbarViewItems';

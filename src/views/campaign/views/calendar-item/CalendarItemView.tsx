@@ -1,6 +1,6 @@
 import { FC, useCallback } from 'react';
 import { GetRoomEngine, GetSessionDataManager } from '../../../../api';
-import { NitroLayoutFlexColumn } from '../../../../layout';
+import { Column } from '../../../../common';
 import { CalendarItemState } from '../../common/CalendarItemState';
 
 interface CalendarItemViewProps
@@ -32,7 +32,7 @@ export const CalendarItemView: FC<CalendarItemViewProps> = props =>
     }, []);
 
     return (
-        <NitroLayoutFlexColumn className={`calendar-item h-100 w-100 cursor-pointer align-items-center justify-content-center ${active ? 'active' : ''}`} onClick={() => onClick(id)}>
+        <Column className={`calendar-item h-100 w-100 cursor-pointer align-items-center justify-content-center ${active ? 'active' : ''}`} onClick={() => onClick(id)}>
             { (state === CalendarItemState.STATE_UNLOCKED) &&
                 <div className="unlocked-generic-bg d-flex justify-content-center align-items-center">
                     <div className="opened d-flex justify-content-center align-items-center">
@@ -53,6 +53,6 @@ export const CalendarItemView: FC<CalendarItemViewProps> = props =>
                     }
                 </div>
             }
-        </NitroLayoutFlexColumn>
+        </Column>
     );
 }

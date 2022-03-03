@@ -1,9 +1,9 @@
 import { NitroRenderTexture } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine } from '../../../../api';
+import { LayoutMiniCameraView } from '../../../../common';
 import { RoomWidgetThumbnailEvent } from '../../../../events/room-widgets/thumbnail';
 import { useUiEvent } from '../../../../hooks/events';
-import { NitroLayoutMiniCameraView } from '../../../../layout';
 import { useRoomContext } from '../../context/RoomContext';
 
 export const RoomThumbnailWidgetView: FC<{}> = props =>
@@ -40,5 +40,5 @@ export const RoomThumbnailWidgetView: FC<{}> = props =>
 
     if(!isVisible) return null;
 
-    return <NitroLayoutMiniCameraView roomId={ roomSession.roomId } textureReceiver={ receiveTexture } onClose={ () => setIsVisible(false) } />
+    return <LayoutMiniCameraView roomId={ roomSession.roomId } textureReceiver={ receiveTexture } onClose={ () => setIsVisible(false) } />
 };

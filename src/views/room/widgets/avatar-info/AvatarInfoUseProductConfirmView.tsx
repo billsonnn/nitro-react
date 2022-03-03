@@ -1,9 +1,8 @@
 import { IFurnitureData, PetCustomPart, PetFigureData, RoomObjectCategory, RoomObjectVariable, RoomUserData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetFurnitureDataForRoomObject, GetRoomEngine, LocalizeText, RoomWidgetUseProductMessage, UseProductItem } from '../../../../api';
-import { Base, Button, Column, Flex, Text } from '../../../../common';
+import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { FurniCategory } from '../../../../components/inventory/common/FurniCategory';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { PetImageView } from '../../../shared/pet-image/PetImageView';
 import { useRoomContext } from '../../context/RoomContext';
 

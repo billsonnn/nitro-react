@@ -1,8 +1,8 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../api';
-import { HelpNameChangeEvent } from '../../../../events/help/HelpNameChangeEvent';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
+import { HelpNameChangeEvent } from '../../../../events';
 import { useUiEvent } from '../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { NameChangeConfirmationView } from './NameChangeConfirmationView';
 import { NameChangeInitView } from './NameChangeInitView';
 import { NameChangeInputView } from './NameChangeInputView';

@@ -1,14 +1,9 @@
 import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraStorageUrlMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration, GetRoomEngine, LocalizeText } from '../../../../api';
-import { Button } from '../../../../common/Button';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { LayoutImage } from '../../../../common/layout/LayoutImage';
-import { Text } from '../../../../common/Text';
+import { Button, Column, Flex, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { InventoryEvent } from '../../../../events';
 import { BatchUpdates, CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 
 export interface CameraWidgetCheckoutViewProps

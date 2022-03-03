@@ -1,8 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, RoomWidgetDoorbellEvent, RoomWidgetLetUserInMessage } from '../../../../api';
-import { Base, Button, Column, Flex, Grid } from '../../../../common';
+import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { BatchUpdates, CreateEventDispatcherHook } from '../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 import { useRoomContext } from '../../context/RoomContext';
 
 export const DoorbellWidgetView: FC<{}> = props =>

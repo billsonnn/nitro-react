@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutFlex } from '../../../../layout';
+import { Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { CalendarItemState } from '../../common/CalendarItemState';
 import { getNumItemsDisplayed } from '../../common/Utils';
 import { CalendarItemView } from '../calendar-item/CalendarItemView';
@@ -128,7 +128,7 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                     
                     
                 </div>
-                <NitroLayoutFlex className="h-100 align-items-center" gap={1}>
+                <Flex className="h-100 align-items-center" gap={1}>
                     <div className="calendar-prev cursor-pointer" onClick={onClickPrev} />
                     {
                         [...Array(getNumItemsDisplayed())].map((e, i) =>
@@ -138,7 +138,7 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                         })
                     }
                     <div className="calendar-next cursor-pointer" onClick={onClickNext} />
-                </NitroLayoutFlex>
+                </Flex>
             </NitroCardContentView>
         </NitroCardView>
     )

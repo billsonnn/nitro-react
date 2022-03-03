@@ -2,9 +2,8 @@ import { GetRoomVisitsMessageComposer, RoomVisitsData, RoomVisitsEvent } from '@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AutoSizer, List, ListRowProps } from 'react-virtualized';
 import { TryVisitRoom } from '../../../../api';
-import { Base, Column, Grid, Text } from '../../../../common';
+import { Base, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../layout';
 
 interface ModToolsUserRoomVisitsViewProps
 {

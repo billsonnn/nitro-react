@@ -1,9 +1,8 @@
 import { SanctionStatusEvent, SanctionStatusMessageParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../api';
-import { Base, Button, Column, Grid } from '../../../common';
+import { Base, Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
 import { CreateMessageHook } from '../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../layout';
 
 export const SanctionSatusView:FC<{}> = props =>
 {

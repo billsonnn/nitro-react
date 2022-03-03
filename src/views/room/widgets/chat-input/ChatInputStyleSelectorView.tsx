@@ -1,8 +1,7 @@
 import { FC, MouseEvent, useEffect, useState } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
-import { Base, Flex, Grid } from '../../../../common';
+import { Base, Flex, Grid, NitroCardContentView } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { NitroCardContentView } from '../../../../layout';
 
 interface ChatInputStyleSelectorViewProps
 {

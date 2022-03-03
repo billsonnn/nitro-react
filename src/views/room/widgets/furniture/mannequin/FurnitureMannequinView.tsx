@@ -1,14 +1,8 @@
 import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, HabboClubLevelEnum, IAvatarFigureContainer, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { GetAvatarRenderManager, GetSessionDataManager, LocalizeText, RoomWidgetUpdateMannequinEvent } from '../../../../../api';
-import { Base } from '../../../../../common';
-import { Button } from '../../../../../common/Button';
-import { Column } from '../../../../../common/Column';
-import { Flex } from '../../../../../common/Flex';
-import { Text } from '../../../../../common/Text';
-import { BatchUpdates, SendMessageHook } from '../../../../../hooks';
-import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
+import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
+import { BatchUpdates, CreateEventDispatcherHook, SendMessageHook } from '../../../../../hooks';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { CurrencyIcon } from '../../../../shared/currency-icon/CurrencyIcon';
 import { useRoomContext } from '../../../context/RoomContext';

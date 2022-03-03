@@ -1,10 +1,8 @@
 import { NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { ColorUtils, GetRoomEngine, GetRoomSession, GetSessionDataManager, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
-import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
-import { useRoomEngineEvent } from '../../../../../hooks/events/nitro/room/room-engine-event';
-import { DraggableWindowPosition } from '../../../../../layout';
-import { DraggableWindow } from '../../../../../layout/draggable-window/DraggableWindow';
+import { DraggableWindow, DraggableWindowPosition } from '../../../../../common';
+import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../../../../hooks';
 import { useRoomContext } from '../../../context/RoomContext';
 import { FurnitureStickieData } from './FurnitureStickieData';
 import { getStickieColorName, STICKIE_COLORS } from './FurnitureStickieUtils';
@@ -113,7 +111,7 @@ export const FurnitureStickieView: FC<{}> = props =>
     if(!stickieData) return null;
 
     return (
-        <DraggableWindow handleSelector=".drag-handler" position={ DraggableWindowPosition.NOTHING }>
+        <DraggableWindow handleSelector=".drag-handler" windowPosition={ DraggableWindowPosition.NOTHING }>
             <div className={ 'nitro-stickie nitro-stickie-image stickie-' + getStickieColorName(stickieData.color) }>
                 <div className="d-flex align-items-center stickie-header drag-handler">
                     <div className="d-flex align-items-center flex-grow-1 h-100">

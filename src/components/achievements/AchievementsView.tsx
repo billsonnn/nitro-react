@@ -1,6 +1,7 @@
 import { AchievementData, AchievementEvent, AchievementsEvent, AchievementsScoreEvent, RequestAchievementsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetConfiguration, LocalizeText } from '../../api';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView } from '../../common';
 import { Base } from '../../common/Base';
 import { Column } from '../../common/Column';
 import { Flex } from '../../common/Flex';
@@ -8,8 +9,6 @@ import { Text } from '../../common/Text';
 import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events/achievements';
 import { BatchUpdates, CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../hooks';
 import { useUiEvent } from '../../hooks/events';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView } from '../../layout';
-import { NitroLayoutBase } from '../../layout/base';
 import { AchievementCategory } from './common/AchievementCategory';
 import { AchievementUtilities } from './common/AchievementUtilities';
 import { AchievementsCategoryListView } from './views/category-list/AchievementsCategoryListView';
@@ -220,7 +219,7 @@ export const AchievementsView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('inventory.achievements') } onCloseClick={ event => setIsVisible(false) } />
             { getSelectedCategory &&
                 <NitroCardSubHeaderView position="relative" className="justify-content-center align-items-center cursor-pointer" gap={ 3 }>
-                    <NitroLayoutBase onClick={ event => setSelectedCategoryCode(null) } className="nitro-achievements-back-arrow" />
+                    <Base onClick={ event => setSelectedCategoryCode(null) } className="nitro-achievements-back-arrow" />
                     <Column grow gap={ 0 }>
                         <Text fontSize={ 4 } fontWeight="bold" className="text-small">{ LocalizeText(`quests.${ getSelectedCategory.code }.name`) }</Text>
                         <Text>{ LocalizeText('achievements.details.categoryprogress', [ 'progress', 'limit' ], [ getSelectedCategory.getProgress().toString(), getSelectedCategory.getMaxProgress().toString() ]) }</Text>

@@ -4,7 +4,6 @@ import { FC, KeyboardEvent, useCallback, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, TryVisitRoom } from '../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, Text } from '../../../common';
 import { CreateMessageHook, SendMessageHook } from '../../../hooks';
-import { NitroLayoutBase } from '../../../layout/base';
 import { AvatarImageView } from '../../../views/shared/avatar-image/AvatarImageView';
 import { GuideToolMessageGroup } from '../common/GuideToolMessageGroup';
 
@@ -101,9 +100,9 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                                         { group.messages.map((chat, index) => <Base key={ index } className="text-break">{ chat.message }</Base>) }
                                     </Base>
                                     { (isOwnChat(group.userId)) &&
-                                        <NitroLayoutBase className="message-avatar flex-shrink-0">
+                                        <Base className="message-avatar flex-shrink-0">
                                             <AvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
-                                        </NitroLayoutBase> }
+                                        </Base> }
                                 </Flex>
                             );
                         }) } 

@@ -1,11 +1,9 @@
 import { ControlYoutubeDisplayPlaybackMessageComposer, SetYoutubeDisplayPlaylistMessageComposer, YoutubeControlVideoMessageEvent, YoutubeDisplayPlaylist, YoutubeDisplayPlaylistsEvent, YoutubeDisplayVideoMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
-import { LocalizeText } from '../../../../../api';
-import { RoomWidgetUpdateYoutubeDisplayEvent } from '../../../../../api/nitro/room/widgets/events/RoomWidgetUpdateYoutubeDisplayEvent';
-import { FurnitureYoutubeDisplayWidgetHandler } from '../../../../../api/nitro/room/widgets/handlers/FurnitureYoutubeDisplayWidgetHandler';
+import { FurnitureYoutubeDisplayWidgetHandler, LocalizeText, RoomWidgetUpdateYoutubeDisplayEvent } from '../../../../../api';
+import { Grid, LayoutGridItem, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../common';
 import { BatchUpdates, CreateEventDispatcherHook, CreateMessageHook, SendMessageHook } from '../../../../../hooks';
-import { NitroCardContentView, NitroCardGridItemView, NitroCardGridView, NitroCardHeaderView, NitroCardView } from '../../../../../layout';
 import { useRoomContext } from '../../../context/RoomContext';
 import { YoutubeVideoPlaybackStateEnum } from './utils/YoutubeVideoPlaybackStateEnum';
 
@@ -229,16 +227,16 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                             <i className="icon icon-youtube-next cursor-pointer" onClick={() => processAction('playlist_next')} />
                         </span>
                         <div className="mb-1">{LocalizeText('widget.furni.video_viewer.playlists')}</div>
-                        <NitroCardGridView columns={1} className="playlist-grid">
+                        <Grid columnCount={1} className="playlist-grid">
                             {playlists && playlists.map((entry, index) =>
                             {
                                 return (
-                                    <NitroCardGridItemView key={index} onClick={() => processAction(entry.video)} itemActive={entry.video === selectedItem}>
+                                    <LayoutGridItem key={index} onClick={() => processAction(entry.video)} itemActive={entry.video === selectedItem}>
                                         <b>{entry.title}</b> - {entry.description}
-                                    </NitroCardGridItemView>
+                                    </LayoutGridItem>
                                 )
                             })}
-                        </NitroCardGridView>
+                        </Grid>
                     </div>
                 </div>
             </NitroCardContentView>

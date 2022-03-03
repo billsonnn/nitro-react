@@ -3,17 +3,10 @@ import { PurchaseFromCatalogAsGiftComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../../api';
-import { Base } from '../../../../common/Base';
-import { Button } from '../../../../common/Button';
-import { ButtonGroup } from '../../../../common/ButtonGroup';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { FormGroup } from '../../../../common/FormGroup';
-import { Text } from '../../../../common/Text';
+import { Base, Button, ButtonGroup, Column, Flex, FormGroup, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { CatalogEvent, CatalogPurchasedEvent } from '../../../../events';
 import { CatalogInitGiftEvent } from '../../../../events/catalog/CatalogInitGiftEvent';
 import { BatchUpdates, SendMessageHook, useUiEvent } from '../../../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroLayoutGiftCardView } from '../../../../layout';
 import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { FurniImageView } from '../../../../views/shared/furni-image/FurniImageView';
 import { useCatalogContext } from '../../CatalogContext';
@@ -184,7 +177,7 @@ export const CatalogGiftView: FC<{}> = props =>
                     { receiverNotFound &&
                         <Base className="invalid-feedback">{ LocalizeText('catalog.gift_wrapping.receiver_not_found.title') }</Base> }
                 </FormGroup>
-                <NitroLayoutGiftCardView figure={ GetSessionDataManager().figure } userName={ GetSessionDataManager().userName } message={ message } editable={ true } onChange={ (value) => setMessage(value) } />
+                <LayoutGiftTagView figure={ GetSessionDataManager().figure } userName={ GetSessionDataManager().userName } message={ message } editable={ true } onChange={ (value) => setMessage(value) } />
                 <Base className="form-check">
                     <input className="form-check-input" type="checkbox" name="showMyFace" checked={ showMyFace } onChange={ (e) => setShowMyFace(value => !value) } />
                     <label className="form-check-label">{ LocalizeText('catalog.gift_wrapping.show_face.title') }</label>

@@ -1,7 +1,6 @@
 import { FC, useMemo } from 'react';
 import { GetSessionDataManager } from '../../../../api';
-import { NitroLayoutFlex } from '../../../../layout';
-import { NitroLayoutBase } from '../../../../layout/base';
+import { Base, Flex } from '../../../../common';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { GroupType } from '../../common/GroupType';
 import { MessengerThread } from '../../common/MessengerThread';
@@ -39,13 +38,13 @@ export const FriendsMessengerThreadGroup: FC<FriendsMessengerThreadGroupProps> =
                 { group.chats.map((chat, index) =>
                     {
                         return (
-                            <NitroLayoutBase key={ index } className="text-break">
+                            <Base key={ index } className="text-break">
                                 { chat.type === MessengerThreadChat.SECURITY_NOTIFICATION &&
-                                    <NitroLayoutBase className="bg-light rounded mb-2 d-flex gap-2 px-2 py-1 small text-muted align-items-center">
-                                        <NitroLayoutBase className="nitro-friends-spritesheet icon-warning flex-shrink-0" />
-                                        <NitroLayoutBase>{ chat.message }</NitroLayoutBase>
-                                    </NitroLayoutBase> }
-                            </NitroLayoutBase>
+                                    <Base className="bg-light rounded mb-2 d-flex gap-2 px-2 py-1 small text-muted align-items-center">
+                                        <Base className="nitro-friends-spritesheet icon-warning flex-shrink-0" />
+                                        <Base>{ chat.message }</Base>
+                                    </Base> }
+                            </Base>
                         );
                     }) }
             </div>
@@ -53,29 +52,29 @@ export const FriendsMessengerThreadGroup: FC<FriendsMessengerThreadGroupProps> =
     }
     
     return (
-        <NitroLayoutFlex className={ 'w-100 justify-content-' + (isOwnChat ? 'end' : 'start') } gap={ 2 }>
-                <NitroLayoutBase className="message-avatar flex-shrink-0">
+        <Flex className={ 'w-100 justify-content-' + (isOwnChat ? 'end' : 'start') } gap={ 2 }>
+                <Base className="message-avatar flex-shrink-0">
                 { (group.type === GroupType.PRIVATE_CHAT && !isOwnChat) &&
                     <AvatarImageView figure={ thread.participant.figure } direction={ 2 } />
                 }
                 { (group.type === GroupType.GROUP_CHAT && !isOwnChat) &&
                     <AvatarImageView figure={ getGroupChatData(group.chats[0].extraData).figure } direction={ 2} />
                 }
-                </NitroLayoutBase>
-            <NitroLayoutBase className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat ? 'right' : 'left') }>
-                <NitroLayoutBase className='fw-bold'>
+                </Base>
+            <Base className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat ? 'right' : 'left') }>
+                <Base className='fw-bold'>
                     {
                         (isOwnChat) && GetSessionDataManager().userName
                     }
                     { (!isOwnChat) && ((group.type === GroupType.GROUP_CHAT) ? getGroupChatData(group.chats[0].extraData).username : thread.participant.name)
                     }
-                </NitroLayoutBase>
-                { group.chats.map((chat, index) =><NitroLayoutBase key={ index } className="text-break">{ chat.message }</NitroLayoutBase>) }
-            </NitroLayoutBase>
+                </Base>
+                { group.chats.map((chat, index) =><Base key={ index } className="text-break">{ chat.message }</Base>) }
+            </Base>
             { (isOwnChat) &&
-                <NitroLayoutBase className="message-avatar flex-shrink-0">
+                <Base className="message-avatar flex-shrink-0">
                     <AvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
-                </NitroLayoutBase> }
-        </NitroLayoutFlex>
+                </Base> }
+        </Flex>
     );
 }

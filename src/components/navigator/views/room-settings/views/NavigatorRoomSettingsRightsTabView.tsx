@@ -1,13 +1,13 @@
 import { RemoveAllRightsMessageComposer, RoomTakeRightsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../../../../api';
+import { UserProfileIconView } from '../../../../../common';
 import { Button } from '../../../../../common/Button';
 import { Column } from '../../../../../common/Column';
 import { Flex } from '../../../../../common/Flex';
 import { Grid } from '../../../../../common/Grid';
 import { Text } from '../../../../../common/Text';
 import { SendMessageHook } from '../../../../../hooks';
-import { UserProfileIconView } from '../../../../../layout';
 import { NavigatorRoomSettingsTabViewProps } from './NavigatorRoomSettingsTabViewProps.types';
 
 export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>

@@ -1,9 +1,9 @@
 import { GuideOnDutyStatusMessageEvent, GuideSessionAttachedMessageEvent, GuideSessionDetachedMessageEvent, GuideSessionEndedMessageEvent, GuideSessionInvitedToGuideRoomMessageEvent, GuideSessionMessageMessageEvent, GuideSessionOnDutyUpdateMessageComposer, GuideSessionPartnerIsTypingMessageEvent, GuideSessionStartedMessageEvent, ILinkEventTracker, PerkAllowancesMessageEvent, PerkEnum } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetConfiguration, GetSessionDataManager, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { GuideToolEvent, NotificationAlertEvent } from '../../events';
 import { CreateMessageHook, dispatchUiEvent, SendMessageHook, useUiEvent } from '../../hooks';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../layout';
 import { GuideSessionState } from './common/GuideSessionState';
 import { GuideToolMessage } from './common/GuideToolMessage';
 import { GuideToolMessageGroup } from './common/GuideToolMessageGroup';

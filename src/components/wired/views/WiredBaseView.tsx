@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../api';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
 import { Button } from '../../../common/Button';
 import { Column } from '../../../common/Column';
 import { Flex } from '../../../common/Flex';
@@ -7,7 +8,6 @@ import { Text } from '../../../common/Text';
 import { WiredEvent } from '../../../events';
 import { BatchUpdates } from '../../../hooks';
 import { dispatchUiEvent } from '../../../hooks/events';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../layout';
 import { WiredFurniType } from '../common/WiredFurniType';
 import { WiredSelectionVisualizer } from '../common/WiredSelectionVisualizer';
 import { useWiredContext } from '../context/WiredContext';

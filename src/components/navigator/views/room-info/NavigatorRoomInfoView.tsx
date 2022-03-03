@@ -3,18 +3,9 @@ import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, Security
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration, GetGroupInformation, GetSessionDataManager, LocalizeText } from '../../../../api';
-import { Button } from '../../../../common/Button';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
-import { NavigatorEvent } from '../../../../events';
-import { FloorplanEditorEvent } from '../../../../events/floorplan-editor/FloorplanEditorEvent';
-import { RoomWidgetThumbnailEvent } from '../../../../events/room-widgets/thumbnail';
-import { BatchUpdates } from '../../../../hooks';
-import { dispatchUiEvent } from '../../../../hooks/events';
-import { SendMessageHook } from '../../../../hooks/messages';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, UserProfileIconView } from '../../../../layout';
-import { RoomThumbnailView } from '../../../../layout/room-thumbnail/RoomThumbnailView';
+import { Button, Column, Flex, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, UserProfileIconView } from '../../../../common';
+import { FloorplanEditorEvent, NavigatorEvent, RoomWidgetThumbnailEvent } from '../../../../events';
+import { BatchUpdates, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
 import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
 import { useNavigatorContext } from '../../NavigatorContext';
 import { NavigatorActions } from '../../reducers/NavigatorReducer';
@@ -132,9 +123,9 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                 { roomInfoData.enteredGuestRoom &&
                     <>
                         <Flex gap={ 2 } overflow="hidden">
-                            <RoomThumbnailView customUrl={ roomInfoData.enteredGuestRoom.officialRoomPicRef }>
+                            <LayoutRoomThumbnailView customUrl={ roomInfoData.enteredGuestRoom.officialRoomPicRef }>
                                 { hasPermission('settings') && <i className="icon icon-camera-small position-absolute b-0 r-0 m-1 cursor-pointer" onClick={ () => processAction('open_room_thumbnail_camera') } /> }
-                            </RoomThumbnailView>
+                            </LayoutRoomThumbnailView>
                             <Column grow gap={ 1 } overflow="hidden">
                                 <Flex gap={ 1 }>
                                     <Column grow gap={ 1 }>

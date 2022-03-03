@@ -1,5 +1,5 @@
 import { NotificationConfirmItem } from '../../common/NotificationConfirmItem';
-import { NotificationDefaultConfirmView } from './default/NotificationDefaultConfirmView';
+import { NotificationDefaultConfirmView } from './NotificationDefaultConfirmView';
 
 export const GetConfirmLayout = (item: NotificationConfirmItem, close: () => void) =>
 {

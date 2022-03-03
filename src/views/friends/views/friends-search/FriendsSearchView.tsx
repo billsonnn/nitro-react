@@ -1,9 +1,8 @@
 import { HabboSearchComposer, HabboSearchResultData, HabboSearchResultEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText, OpenMessengerChat } from '../../../../api';
+import { Base, Flex, NitroCardAccordionItemView, NitroCardAccordionSetView, NitroCardAccordionView, UserProfileIconView } from '../../../../common';
 import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../hooks';
-import { NitroCardAccordionItemView, NitroCardAccordionSetView, NitroCardAccordionView, NitroLayoutFlex, UserProfileIconView } from '../../../../layout';
-import { NitroLayoutBase } from '../../../../layout/base';
 import { useFriendsContext } from '../../FriendsContext';
 
 export const FriendsSearchView: FC<{}> = props =>
@@ -50,11 +49,11 @@ export const FriendsSearchView: FC<{}> = props =>
                             return (
                                 <NitroCardAccordionItemView key={ result.avatarId }>
                                     <UserProfileIconView userId={ result.avatarId } />
-                                    <NitroLayoutBase>{ result.avatarName }</NitroLayoutBase>
-                                    <NitroLayoutFlex className="ms-auto align-items-center" gap={ 1 }>
+                                    <Flex>{ result.avatarName }</Flex>
+                                    <Flex className="ms-auto align-items-center" gap={ 1 }>
                                         { result.isAvatarOnline &&
-                                            <NitroLayoutBase className="nitro-friends-spritesheet icon-chat cursor-pointer" onClick={ event => OpenMessengerChat(result.avatarId) } title={ LocalizeText('friendlist.tip.im') } /> }
-                                    </NitroLayoutFlex>
+                                            <Base className="nitro-friends-spritesheet icon-chat cursor-pointer" onClick={ event => OpenMessengerChat(result.avatarId) } title={ LocalizeText('friendlist.tip.im') } /> }
+                                    </Flex>
                                 </NitroCardAccordionItemView>
                             );
                         }) }
@@ -65,11 +64,11 @@ export const FriendsSearchView: FC<{}> = props =>
                             return (
                                 <NitroCardAccordionItemView key={ result.avatarId }>
                                     <UserProfileIconView userId={ result.avatarId } />
-                                    <NitroLayoutBase>{ result.avatarName }</NitroLayoutBase>
-                                    <NitroLayoutFlex className="ms-auto align-items-center" gap={ 1 }>
+                                    <Base>{ result.avatarName }</Base>
+                                    <Flex className="ms-auto align-items-center" gap={ 1 }>
                                         { canRequestFriend(result.avatarId) &&
-                                            <NitroLayoutBase className="nitro-friends-spritesheet icon-add cursor-pointer" onClick={ event => requestFriend(result.avatarId, result.avatarName) } title={ LocalizeText('friendlist.tip.addfriend') } /> }
-                                    </NitroLayoutFlex>
+                                            <Base className="nitro-friends-spritesheet icon-add cursor-pointer" onClick={ event => requestFriend(result.avatarId, result.avatarName) } title={ LocalizeText('friendlist.tip.addfriend') } /> }
+                                    </Flex>
                                 </NitroCardAccordionItemView>
                             );
                         }) }
