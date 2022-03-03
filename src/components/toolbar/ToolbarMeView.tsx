@@ -1,8 +1,7 @@
 import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { GetRoomEngine, GetRoomSession } from '../../api';
-import { Base, Flex } from '../../common';
-import { ItemCountView } from '../../views/shared/item-count/ItemCountView';
+import { Base, Flex, LayoutItemCountView } from '../../common';
 import { ToolbarViewItems } from './common/ToolbarViewItems';
 
 export interface ToolbarMeViewProps
@@ -31,7 +30,7 @@ export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
                 <Base pointer className="navigation-item icon icon-me-helper-tool" onClick={ () => handleToolbarItemClick(ToolbarViewItems.GUIDE_TOOL_ITEM) } /> }
             <Base pointer className="navigation-item icon icon-me-achievements" onClick={ () => handleToolbarItemClick(ToolbarViewItems.ACHIEVEMENTS_ITEM) }>
                 { (unseenAchievementCount > 0) &&
-                    <ItemCountView count={ unseenAchievementCount } /> }
+                    <LayoutItemCountView count={ unseenAchievementCount } /> }
             </Base>
             <Base pointer className="navigation-item icon icon-me-profile" onClick={ () => handleToolbarItemClick(ToolbarViewItems.PROFILE_ITEM) } />
             <Base pointer className="navigation-item icon icon-me-rooms" />

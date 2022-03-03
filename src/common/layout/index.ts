@@ -2,6 +2,7 @@ export * from './LayoutCurrencyIcon';
 export * from './LayoutGiftTagView';
 export * from './LayoutGridItem';
 export * from './LayoutImage';
+export * from './LayoutItemCountView';
 export * from './LayoutLoadingSpinnerView';
 export * from './LayoutMiniCameraView';
 export * from './LayoutNotificationAlertView';

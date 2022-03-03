@@ -1,12 +1,11 @@
 import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, RoomInviteEvent, SendMessageComposer as SendMessageComposerPacket } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, MESSENGER_MESSAGE_RECEIVED, MESSENGER_NEW_THREAD, PlaySound, RemoveLinkEventTracker, SendMessageComposer } from '../../../../api';
-import { Base, Button, ButtonGroup, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
+import { Base, Button, ButtonGroup, Column, Flex, Grid, LayoutItemCountView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { FriendsMessengerIconEvent } from '../../../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
-import { ItemCountView } from '../../../shared/item-count/ItemCountView';
 import { MessengerThread } from '../../common/MessengerThread';
 import { MessengerThreadChat } from '../../common/MessengerThreadChat';
 import { useFriendsContext } from '../../FriendsContext';
@@ -267,7 +266,7 @@ export const FriendsMessengerView: FC<{}> = props =>
                             return (
                                 <Flex key={index} className={`open-chat-entry p-1 cursor-pointer rounded ${activeThreadIndex === messageThreadIndex ? 'active' : ''}`} onClick={event => setActiveThreadIndex(messageThreadIndex)}>
                                     {thread.unread &&
-                                            <ItemCountView count={ thread.unreadCount }/>
+                                            <LayoutItemCountView count={ thread.unreadCount }/>
                                     }
                                     <div className="friend-head rounded flex-shrink-0">
                                         

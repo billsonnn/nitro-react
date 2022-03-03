@@ -1,8 +1,8 @@
 import { FC, useMemo } from 'react';
-import { ItemCountView } from '../../views/shared/item-count/ItemCountView';
 import { LimitedEditionStyledNumberView } from '../../views/shared/limited-edition/LimitedEditionStyledNumberView';
 import { Base } from '../Base';
 import { Column, ColumnProps } from '../Column';
+import { LayoutItemCountView } from './LayoutItemCountView';
 
 export interface LayoutGridItemProps extends ColumnProps
 {
@@ -61,7 +61,7 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
     return (
         <Column center={ center } pointer position={ position } overflow={ overflow } column={ column } classNames={ getClassNames } style={ getStyle } { ...rest }>
             { (itemCount > itemCountMinimum) &&
-                <ItemCountView count={ itemCount } /> }
+                <LayoutItemCountView count={ itemCount } /> }
             { (itemUniqueNumber > 0) && 
                 <>
                     <Base fit className="unique-bg-override" style={ { backgroundImage: `url(${ itemImage })` } } />

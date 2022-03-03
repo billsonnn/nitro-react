@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { FC, MouseEventHandler } from 'react';
-import { ItemCountView } from '../../../views/shared/item-count/ItemCountView';
+import { LayoutItemCountView } from '../../layout';
 
 interface NitroCardTabsItemViewProps
 {
@@ -17,7 +17,7 @@ export const NitroCardTabsItemView: FC<NitroCardTabsItemViewProps> = props =>
         <li className={ 'nav-link cursor-pointer position-relative' + classNames({ ' active': isActive }) } onClick={ onClick }>
             { children }
             { (count > 0) &&
-                <ItemCountView count={ count } /> }
+                <LayoutItemCountView count={ count } /> }
         </li>
     );
 }

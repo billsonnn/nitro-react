@@ -1,11 +1,10 @@
 import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, PerkAllowancesMessageEvent, PerkEnum, Queue, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GetUserProfile, GoToDesktop, OpenMessengerChat } from '../../api';
-import { Base, Flex, TransitionAnimation, TransitionAnimationTypes } from '../../common';
+import { Base, Flex, LayoutItemCountView, TransitionAnimation, TransitionAnimationTypes } from '../../common';
 import { AchievementsUIEvent, AchievementsUIUnseenCountEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, InventoryEvent, ModToolsEvent, NavigatorEvent, UnseenItemTrackerUpdateEvent, UserSettingsUIEvent } from '../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { AvatarImageView } from '../../views/shared/avatar-image/AvatarImageView';
-import { ItemCountView } from '../../views/shared/item-count/ItemCountView';
 import { ToolbarViewItems } from './common/ToolbarViewItems';
 import { ToolbarMeView } from './ToolbarMeView';
 
@@ -199,7 +198,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                         <Flex center pointer className={ 'navigation-item item-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ event => setMeExpanded(!isMeExpanded) }>
                             <AvatarImageView figure={ userFigure } direction={ 2 } />
                             { (unseenAchievementCount > 0) &&
-                                <ItemCountView count={ unseenAchievementCount } /> }
+                                <LayoutItemCountView count={ unseenAchievementCount } /> }
                         </Flex>
                         { isInRoom &&
                             <Base pointer className="navigation-item icon icon-habbo" onClick={ visitDesktop } /> }
@@ -209,7 +208,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                         <Base pointer className="navigation-item icon icon-catalog" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CATALOG_ITEM) } />
                         <Base pointer className="navigation-item icon icon-inventory" onClick={ event => handleToolbarItemClick(ToolbarViewItems.INVENTORY_ITEM) }>
                             { (unseenInventoryCount > 0) &&
-                                <ItemCountView count={ unseenInventoryCount } /> }
+                                <LayoutItemCountView count={ unseenInventoryCount } /> }
                         </Base>
                         { isInRoom &&
                             <Base pointer className="navigation-item icon icon-camera" onClick={ event => handleToolbarItemClick(ToolbarViewItems.CAMERA_ITEM) } /> }
@@ -222,7 +221,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                     <Flex gap={ 2 }>
                         <Base pointer className="navigation-item icon icon-friendall" onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_LIST_ITEM) }>
                             { (unseenFriendRequestCount > 0) &&
-                                <ItemCountView count={ unseenFriendRequestCount } /> }
+                                <LayoutItemCountView count={ unseenFriendRequestCount } /> }
                         </Base>
                         { ((chatIconType === CHAT_ICON_SHOWING) || (chatIconType === CHAT_ICON_UNREAD)) &&
                             <Base pointer className={ `navigation-item icon icon-message ${ (chatIconType === CHAT_ICON_UNREAD) && 'is-unread' }` } onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_CHAT_ITEM) } /> }
