@@ -2,11 +2,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GroupAdminGiveComposer, GroupAdminTakeComposer, GroupConfirmMemberRemoveEvent, GroupConfirmRemoveMemberComposer, GroupMemberParser, GroupMembersComposer, GroupMembersEvent, GroupMembershipAcceptComposer, GroupMembershipDeclineComposer, GroupMembersParser, GroupRank, GroupRemoveMemberComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../../api';
-import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
+import { Base, Button, Column, Flex, Grid, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { BatchUpdates, UseMessageEventHook } from '../../../hooks';
 import { NotificationUtilities } from '../../../views/notification-center/common/NotificationUtilities';
 import { AvatarImageView } from '../../../views/shared/avatar-image/AvatarImageView';
-import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
 
 export const GroupMembersView: FC<{}> = props =>
 {
@@ -167,7 +166,7 @@ export const GroupMembersView: FC<{}> = props =>
             <NitroCardContentView overflow="hidden">
                 <Flex gap={ 2 }>
                     <Flex center className="group-badge">
-                        <BadgeImageView badgeCode={ membersData.badge } isGroup={ true } className="mx-auto d-block"/>
+                        <LayoutBadgeImageView badgeCode={ membersData.badge } isGroup={ true } className="mx-auto d-block"/>
                     </Flex>
                     <Column fullWidth gap={ 1 }>
                         <input type="text" className="form-control form-control-sm w-100" placeholder={ LocalizeText('group.members.searchinfo') } value={ searchQuery } onChange={ event => setSearchQuery(event.target.value) } />

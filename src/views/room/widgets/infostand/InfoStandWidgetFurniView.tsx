@@ -2,9 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CrackableDataType, GroupInformationComposer, GroupInformationEvent, RoomControllerLevel, RoomObjectCategory, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage, RoomWidgetUpdateInfostandFurniEvent, SendMessageComposer } from '../../../../api';
-import { Button, Column, Flex, Text, UserProfileIconView } from '../../../../common';
+import { Button, Column, Flex, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../common';
 import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
-import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../shared/rarity-level/RarityLevelView';
 import { useRoomContext } from '../../context/RoomContext';
@@ -308,7 +307,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                             <>
                                 <hr className="m-0" />
                                 <Flex pointer alignItems="center" gap={ 2 } onClick={ () => GetGroupInformation(furniData.groupId) }>
-                                    <BadgeImageView badgeCode={ getGroupBadgeCode() } isGroup={ true } />
+                                    <LayoutBadgeImageView badgeCode={ getGroupBadgeCode() } isGroup={ true } />
                                     <Text variant="white" underline>{ groupName }</Text>
                                 </Flex>
                             </> }

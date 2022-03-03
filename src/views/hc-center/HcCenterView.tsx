@@ -1,14 +1,11 @@
-import { ClubGiftInfoEvent, FriendlyTime, GetClubGiftInfo, ILinkEventTracker, RequestBadgesComposer, ScrKickbackData, ScrSendKickbackInfoMessageEvent, UserInfoEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
-import { BadgesEvent, FigureUpdateEvent } from '@nitrots/nitro-renderer/src';
-import { ScrGetKickbackInfoMessageComposer } from '@nitrots/nitro-renderer/src/nitro/communication/messages/outgoing/user/ScrGetKickbackInfoMessageComposer';
+import { BadgesEvent, ClubGiftInfoEvent, FigureUpdateEvent, FriendlyTime, GetClubGiftInfo, ILinkEventTracker, RequestBadgesComposer, ScrGetKickbackInfoMessageComposer, ScrKickbackData, ScrSendKickbackInfoMessageEvent, UserInfoEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { AddEventLinkTracker, CreateLinkEvent, GetConfiguration, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
+import { LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { HcCenterEvent } from '../../events';
 import { UseMessageEventHook, UseUiEvent } from '../../hooks';
 import { AvatarImageView } from '../shared/avatar-image/AvatarImageView';
-import { BadgeImageView } from '../shared/badge-image/BadgeImageView';
 import { BadgeResolver } from './util/BadgeResolver';
 import { ClubStatus } from './util/ClubStatus';
 
@@ -221,7 +218,7 @@ export const HcCenterView: FC<{}> = props =>
             </div>
             <NitroCardContentView>
                 <div className="d-flex flex-row mb-1">
-                    <BadgeImageView badgeCode={badgeCode} className="align-self-center flex-shrink-0 me-1" />
+                    <LayoutBadgeImageView badgeCode={badgeCode} className="align-self-center flex-shrink-0 me-1" />
                     <div className="w-100 text-black streak-info">
                         <h6 className="mb-0">{LocalizeText('hccenter.status.' + clubStatus)}</h6>
                         <div dangerouslySetInnerHTML={{ __html: getInfoText() }} />

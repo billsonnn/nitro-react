@@ -1,9 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
 import { LocalizeText, RoomWidgetUpdateInfostandUserEvent } from '../../../../api';
-import { Column, Flex, Text } from '../../../../common';
+import { Column, Flex, LayoutBadgeImageView, Text } from '../../../../common';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
-import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 
 interface InfoStandWidgetBotViewProps
 {
@@ -35,7 +34,7 @@ export const InfoStandWidgetBotView: FC<InfoStandWidgetBotViewProps> = props =>
                         <Column grow center gap={ 0 }>
                             { (botData.badges.length > 0) && botData.badges.map(result =>
                             {
-                                return <BadgeImageView key={ result } badgeCode={ result } showInfo={ true } />;
+                                return <LayoutBadgeImageView key={ result } badgeCode={ result } showInfo={ true } />;
                             }) }
                         </Column>
                     </Flex>

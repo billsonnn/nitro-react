@@ -1,6 +1,5 @@
 import { FC } from 'react';
-import { Grid, LayoutGridItem } from '../../../common';
-import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
+import { Grid, LayoutBadgeImageView, LayoutGridItem } from '../../../common';
 
 interface BadgesContainerViewProps
 {
@@ -18,7 +17,7 @@ export const BadgesContainerView: FC<BadgesContainerViewProps> = props =>
                         {
                             return (
                                 <LayoutGridItem key={ index }>
-                                    <BadgeImageView badgeCode={ badge }/>
+                                    <LayoutBadgeImageView badgeCode={ badge }/>
                                 </LayoutGridItem>
                             )
                         }) }

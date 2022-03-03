@@ -1,7 +1,6 @@
 import { StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useMemo } from 'react';
-import { BaseProps } from '../../../../../common';
-import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
+import { BaseProps, LayoutBadgeImageView } from '../../../../../common';
 import { useCatalogContext } from '../../../CatalogContext';
 
 interface CatalogGuildBadgeWidgetViewProps extends BaseProps<HTMLDivElement>
@@ -28,5 +27,5 @@ export const CatalogGuildBadgeWidgetView: FC<CatalogGuildBadgeWidgetViewProps> =
 
     if(!badgeCode) return null;
 
-    return <BadgeImageView badgeCode={ badgeCode } isGroup={ true } { ...rest } />;
+    return <LayoutBadgeImageView badgeCode={ badgeCode } isGroup={ true } { ...rest } />;
 }

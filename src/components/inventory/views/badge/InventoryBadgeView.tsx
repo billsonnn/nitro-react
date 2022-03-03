@@ -1,8 +1,7 @@
 import { RequestBadgesComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { GetConfiguration, LocalizeBadgeName, LocalizeText, SendMessageComposer } from '../../../../api';
-import { AutoGrid, Button, Column, Flex, Grid, Text } from '../../../../common';
-import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
+import { AutoGrid, Button, Column, Flex, Grid, LayoutBadgeImageView, Text } from '../../../../common';
 import { useInventoryContext } from '../../InventoryContext';
 import { InventoryBadgeActions } from '../../reducers/InventoryBadgeReducer';
 import { InventoryBadgeItemView } from './InventoryBadgeItemView';
@@ -92,7 +91,7 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
                 { badge && (badge.length > 0) &&
                     <Column grow justifyContent="end" gap={ 2 }>
                         <Flex alignItems="center" gap={ 2 }>
-                            <BadgeImageView badgeCode={ badge } />
+                            <LayoutBadgeImageView badgeCode={ badge } />
                             <Text>{ LocalizeBadgeName(badge) }</Text>
                         </Flex>
                         <Button variant={ (isWearingBadge(badge) ? 'danger' : 'success') } disabled={ !isWearingBadge(badge) && !canWearBadges() } onClick={ toggleBadge }>{ LocalizeText(isWearingBadge(badge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>

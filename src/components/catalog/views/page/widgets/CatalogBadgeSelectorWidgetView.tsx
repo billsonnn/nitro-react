@@ -1,9 +1,8 @@
 import { StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AutoGrid, AutoGridProps, LayoutGridItem } from '../../../../../common';
+import { AutoGrid, AutoGridProps, LayoutBadgeImageView, LayoutGridItem } from '../../../../../common';
 import { InventoryBadgesRequestEvent, InventoryBadgesUpdatedEvent } from '../../../../../events';
 import { DispatchUiEvent, UseUiEvent } from '../../../../../hooks';
-import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
 import { useCatalogContext } from '../../../CatalogContext';
 
 const EXCLUDED_BADGE_CODES: string[] = [];
@@ -62,7 +61,7 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
                 {
                     return (
                         <LayoutGridItem key={ code } itemActive={ (currentBadge === code) } onClick={ event => setCurrentBadge(code) }> 
-                            <BadgeImageView badgeCode={ code } />
+                            <LayoutBadgeImageView badgeCode={ code } />
                         </LayoutGridItem>
                     );
                 }) }

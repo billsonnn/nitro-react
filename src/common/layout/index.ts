@@ -1,3 +1,4 @@
+export * from './LayoutBadgeImageView';
 export * from './LayoutCurrencyIcon';
 export * from './LayoutGiftTagView';
 export * from './LayoutGridItem';

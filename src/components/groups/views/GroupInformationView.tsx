@@ -1,9 +1,8 @@
 import { GroupInformationParser, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, LocalizeText, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
-import { Button, Column, Flex, Grid, Text } from '../../../common';
+import { Button, Column, Flex, Grid, LayoutBadgeImageView, Text } from '../../../common';
 import { NotificationUtilities } from '../../../views/notification-center/common/NotificationUtilities';
-import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
 import { CatalogPageName } from '../../catalog/common/CatalogPageName';
 import { GroupMembershipType } from '../common/GroupMembershipType';
 import { GroupType } from '../common/GroupType';
@@ -103,7 +102,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
         <Grid overflow="hidden">
             <Column center size={ 3 } overflow="hidden">
                 <Flex alignItems="center" overflow="hidden" className="group-badge">
-                    <BadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } scale={ 2 } />
+                    <LayoutBadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } scale={ 2 } />
                 </Flex>
                 <Column alignItems="center" gap={ 1 }>
                     <Text small underline pointer onClick={ () => handleAction('members') }>{ LocalizeText('group.membercount', [ 'totalMembers' ], [ groupInformation.membersCount.toString() ]) }</Text>

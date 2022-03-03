@@ -1,10 +1,10 @@
 import { BadgeImageReadyEvent, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
-import { GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
-import { Base, BaseProps } from '../../../common/Base';
-import { BadgeInformationView } from './badge-info/BadgeInformationView';
+import { GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../api';
+import { BadgeInformationView } from '../../views/shared/badge-image/badge-info/BadgeInformationView';
+import { Base, BaseProps } from '../Base';
 
-export interface BadgeImageViewProps extends BaseProps<HTMLDivElement>
+export interface LayoutBadgeImageViewProps extends BaseProps<HTMLDivElement>
 {
     badgeCode: string;
     isGroup?: boolean;
@@ -14,7 +14,7 @@ export interface BadgeImageViewProps extends BaseProps<HTMLDivElement>
     scale?: number;
 }
 
-export const BadgeImageView: FC<BadgeImageViewProps> = props =>
+export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
 {
     const { badgeCode = null, isGroup = false, showInfo = false, customTitle = null, isGrayscale = false, scale = 1, classNames = [], style = {}, children = null, ...rest } = props;
     const [ badgeUrl, setBadgeUrl ] = useState<string>('');

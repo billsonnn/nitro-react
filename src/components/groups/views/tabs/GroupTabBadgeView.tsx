@@ -1,8 +1,7 @@
 import { GroupSaveBadgeComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../api';
-import { Column, Flex, Grid } from '../../../../common';
-import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
+import { Column, Flex, Grid, LayoutBadgeImageView } from '../../../../common';
 import { GroupBadgePart } from '../../common/GroupBadgePart';
 import { IGroupData } from '../../common/IGroupData';
 import { useGroupsContext } from '../../GroupsContext';
@@ -112,7 +111,7 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
         <Grid overflow="hidden" gap={ 1 }>
             <Column size={ 2 }>
                 <Flex center className="bg-muted rounded p-1">
-                    <BadgeImageView badgeCode={ getModifiedBadgeCode() } isGroup={ true } />
+                    <LayoutBadgeImageView badgeCode={ getModifiedBadgeCode() } isGroup={ true } />
                 </Flex>
             </Column>
             <Column size={ 10 } overflow="auto">

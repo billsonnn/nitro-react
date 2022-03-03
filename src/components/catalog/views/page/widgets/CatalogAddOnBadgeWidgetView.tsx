@@ -1,6 +1,5 @@
 import { FC } from 'react';
-import { BaseProps } from '../../../../../common/Base';
-import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
+import { BaseProps, LayoutBadgeImageView } from '../../../../../common';
 import { useCatalogContext } from '../../../CatalogContext';
 
 interface CatalogAddOnBadgeWidgetViewProps extends BaseProps<HTMLDivElement>
@@ -15,5 +14,5 @@ export const CatalogAddOnBadgeWidgetView: FC<CatalogAddOnBadgeWidgetViewProps> =
 
     if(!currentOffer || !currentOffer.badgeCode || !currentOffer.badgeCode.length) return null;
 
-    return <BadgeImageView badgeCode={ currentOffer.badgeCode } { ...rest } />;
+    return <LayoutBadgeImageView badgeCode={ currentOffer.badgeCode } { ...rest } />;
 }

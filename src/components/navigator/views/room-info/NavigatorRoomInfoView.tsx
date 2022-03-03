@@ -3,10 +3,9 @@ import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, Security
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration, GetGroupInformation, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
-import { Button, Column, Flex, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, UserProfileIconView } from '../../../../common';
+import { Button, Column, Flex, LayoutBadgeImageView, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, UserProfileIconView } from '../../../../common';
 import { FloorplanEditorEvent, NavigatorEvent, RoomWidgetThumbnailEvent } from '../../../../events';
 import { BatchUpdates, DispatchUiEvent } from '../../../../hooks';
-import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
 import { useNavigatorContext } from '../../NavigatorContext';
 import { NavigatorActions } from '../../reducers/NavigatorReducer';
 
@@ -165,7 +164,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                 <Text overflow="auto">{ roomInfoData.enteredGuestRoom.description }</Text>
                                 { (roomInfoData.enteredGuestRoom.habboGroupId > 0) &&
                                     <Flex pointer alignItems="center" gap={ 1 } onClick={ () => processAction('open_group_info') }>
-                                        <BadgeImageView className="flex-none" badgeCode={ roomInfoData.enteredGuestRoom.groupBadgeCode } isGroup={ true } />
+                                        <LayoutBadgeImageView className="flex-none" badgeCode={ roomInfoData.enteredGuestRoom.groupBadgeCode } isGroup={ true } />
                                         <Text underline>
                                             { LocalizeText('navigator.guildbase', ['groupName'], [roomInfoData.enteredGuestRoom.groupName]) }
                                         </Text>

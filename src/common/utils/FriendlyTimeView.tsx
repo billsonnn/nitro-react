@@ -1,6 +1,6 @@
 import { FriendlyTime } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Base, BaseProps } from '../../../common';
+import { Base, BaseProps } from '..';
 
 interface FriendlyTimeViewProps extends BaseProps<HTMLDivElement>
 {

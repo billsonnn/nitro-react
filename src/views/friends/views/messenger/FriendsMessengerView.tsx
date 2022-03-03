@@ -1,11 +1,10 @@
 import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, RoomInviteEvent, SendMessageComposer as SendMessageComposerPacket } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, MESSENGER_MESSAGE_RECEIVED, MESSENGER_NEW_THREAD, PlaySound, RemoveLinkEventTracker, SendMessageComposer } from '../../../../api';
-import { Base, Button, ButtonGroup, Column, Flex, Grid, LayoutItemCountView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
+import { Base, Button, ButtonGroup, Column, Flex, Grid, LayoutBadgeImageView, LayoutItemCountView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { FriendsMessengerIconEvent } from '../../../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
-import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { MessengerThread } from '../../common/MessengerThread';
 import { MessengerThreadChat } from '../../common/MessengerThreadChat';
 import { useFriendsContext } from '../../FriendsContext';
@@ -271,7 +270,7 @@ export const FriendsMessengerView: FC<{}> = props =>
                                     <div className="friend-head rounded flex-shrink-0">
                                         
                                         {thread.participant.id > 0 && <AvatarImageView figure={thread.participant.figure} headOnly={true} direction={3} />}
-                                        {thread.participant.id <= 0 && <BadgeImageView isGroup={true} badgeCode={thread.participant.figure} />}
+                                        {thread.participant.id <= 0 && <LayoutBadgeImageView isGroup={true} badgeCode={thread.participant.figure} />}
 
                                     </div>
                                     <Base className='d-flex text-truncate text-black ms-1 align-items-center'>{thread.participant.name}</Base>

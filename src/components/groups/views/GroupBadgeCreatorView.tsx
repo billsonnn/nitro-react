@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
-import { Base, Column, Flex, Grid } from '../../../common';
-import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
+import { Base, Column, Flex, Grid, LayoutBadgeImageView } from '../../../common';
 import { GroupBadgePart } from '../common/GroupBadgePart';
 import { useGroupsContext } from '../GroupsContext';
 
@@ -40,7 +39,7 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
                         <Flex key={ index } alignItems="center" justifyContent="between" gap={ 2 } className="bg-muted rounded px-2 py-1">
                             <Flex pointer center className="bg-muted rounded p-1" onClick={ event => setSelectedIndex(index) }>
                                 { (badgeParts[index].code && (badgeParts[index].code.length > 0)) &&
-                                <BadgeImageView badgeCode={ badgeParts[index].code } isGroup={ true } /> }
+                                <LayoutBadgeImageView badgeCode={ badgeParts[index].code } isGroup={ true } /> }
                                 { (!badgeParts[index].code || !badgeParts[index].code.length) &&
                                     <Flex center className="badge-image group-badge">
                                         <FontAwesomeIcon icon="plus" />
@@ -74,7 +73,7 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
                         {
                             return (
                                 <Column key={ index } pointer center className="bg-muted rounded p-1" onClick={ event => setPartProperty(selectedIndex, 'key', item.id) }>
-                                    <BadgeImageView badgeCode={ GroupBadgePart.getCode(badgeParts[selectedIndex].type, item.id, badgeParts[selectedIndex].color, 4) } isGroup={ true } />
+                                    <LayoutBadgeImageView badgeCode={ GroupBadgePart.getCode(badgeParts[selectedIndex].type, item.id, badgeParts[selectedIndex].color, 4) } isGroup={ true } />
                                 </Column>
                             );
                         }) }

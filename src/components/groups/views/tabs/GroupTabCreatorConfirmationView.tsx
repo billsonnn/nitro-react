@@ -1,7 +1,6 @@
 import { Dispatch, FC, SetStateAction } from 'react';
 import { LocalizeText } from '../../../../api';
-import { Base, Column, Flex, Grid, Text } from '../../../../common';
-import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
+import { Base, Column, Flex, Grid, LayoutBadgeImageView, Text } from '../../../../common';
 import { IGroupData } from '../../common/IGroupData';
 import { useGroupsContext } from '../../GroupsContext';
 
@@ -42,7 +41,7 @@ export const GroupTabCreatorConfirmationView: FC<GroupTabCreatorConfirmationView
             <Column size={ 3 }>
                 <Column center className="bg-muted rounded p-1" gap={ 2 }>
                     <Text bold center>{ LocalizeText('group.create.confirm.guildbadge') }</Text>
-                    <BadgeImageView badgeCode={ getCompleteBadgeCode() } isGroup={ true } />
+                    <LayoutBadgeImageView badgeCode={ getCompleteBadgeCode() } isGroup={ true } />
                 </Column>
                 <Column center className="bg-muted rounded p-1" gap={ 2 }>
                     <Text bold center>{ LocalizeText('group.edit.color.guild.color') }</Text>

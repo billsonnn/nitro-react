@@ -2,8 +2,8 @@ import { GroupFavoriteComposer, GroupInformationComposer, GroupInformationEvent,
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../api';
+import { LayoutBadgeImageView } from '../../../common';
 import { UseMessageEventHook } from '../../../hooks';
-import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
 import { GroupInformationView } from '../../groups/views/GroupInformationView';
 
 interface GroupsContainerViewProps
@@ -58,7 +58,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
                         {
                             return <div key={ index } onClick={ () => setSelectedGroupId(group.groupId) } className={ 'profile-groups-item position-relative flex-shrink-0 d-flex align-items-center justify-content-center cursor-pointer' + classNames({ ' active': selectedGroupId === group.groupId }) }>
                                 { itsMe && <i className={ 'position-absolute icon icon-group-' + (group.favourite ? 'favorite' : 'not-favorite') } onClick={ () => favoriteGroup(group.groupId) } /> }
-                                <BadgeImageView badgeCode={ group.badgeCode } isGroup={ true } />
+                                <LayoutBadgeImageView badgeCode={ group.badgeCode } isGroup={ true } />
                             </div>
                         }) }
                 </div>

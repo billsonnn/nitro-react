@@ -2,9 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { BotRemoveComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo } from 'react';
 import { LocalizeText, RoomWidgetUpdateInfostandRentableBotEvent, SendMessageComposer } from '../../../../api';
-import { Button, Column, Flex, Text, UserProfileIconView } from '../../../../common';
+import { Button, Column, Flex, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../common';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
-import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { BotSkillsEnum } from '../avatar-info/common/BotSkillsEnum';
 
 interface InfoStandWidgetRentableBotViewProps
@@ -49,7 +48,7 @@ export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewPr
                             <Column grow center gap={ 0 }>
                                 { (rentableBotData.badges.length > 0) && rentableBotData.badges.map(result =>
                                 {
-                                    return <BadgeImageView key={ result } badgeCode={ result } showInfo={ true } />;
+                                    return <LayoutBadgeImageView key={ result } badgeCode={ result } showInfo={ true } />;
                                 }) }
                             </Column>
                         </Flex>

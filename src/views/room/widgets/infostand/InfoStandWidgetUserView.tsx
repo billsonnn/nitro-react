@@ -2,10 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomSessionUserBadgesEvent, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration, GetGroupInformation, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent, SendMessageComposer } from '../../../../api';
-import { Base, Column, Flex, Text, UserProfileIconView } from '../../../../common';
+import { Base, Column, Flex, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../common';
 import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../hooks';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
-import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { useRoomContext } from '../../context/RoomContext';
 import { InfoStandWidgetUserRelationshipsView } from './InfoStandWidgetUserRelationshipsView';
 
@@ -110,27 +109,27 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                         <Column grow gap={ 0 }>
                             <Flex gap={ 1 }>
                                 <Base className="badge-image">
-                                    { badges[0] && <BadgeImageView badgeCode={ badges[0] } showInfo={ true } /> }
+                                    { badges[0] && <LayoutBadgeImageView badgeCode={ badges[0] } showInfo={ true } /> }
                                 </Base>
                                 <Base pointer={ ( userData.groupId > 0) } className="badge-image" onClick={ event => GetGroupInformation(userData.groupId) }>
                                     { userData.groupId > 0 &&
-                                        <BadgeImageView badgeCode={ userData.groupBadgeId } isGroup={ true } showInfo={ true } customTitle={ userData.groupName } /> }
+                                        <LayoutBadgeImageView badgeCode={ userData.groupBadgeId } isGroup={ true } showInfo={ true } customTitle={ userData.groupName } /> }
                                 </Base>
                             </Flex>
                             <Flex gap={ 1 }>
                                 <Base className="badge-image">
-                                    { badges[1] && <BadgeImageView badgeCode={ badges[1] } showInfo={ true } /> }
+                                    { badges[1] && <LayoutBadgeImageView badgeCode={ badges[1] } showInfo={ true } /> }
                                 </Base>
                                 <Base className="badge-image">
-                                    { badges[2] && <BadgeImageView badgeCode={ badges[2] } showInfo={ true } /> }
+                                    { badges[2] && <LayoutBadgeImageView badgeCode={ badges[2] } showInfo={ true } /> }
                                 </Base>
                             </Flex>
                             <Flex gap={ 1 }>
                                 <Base className="badge-image">
-                                    { badges[3] && <BadgeImageView badgeCode={ badges[3] } showInfo={ true } /> }
+                                    { badges[3] && <LayoutBadgeImageView badgeCode={ badges[3] } showInfo={ true } /> }
                                 </Base>
                                 <Base className="badge-image">
-                                    { badges[4] && <BadgeImageView badgeCode={ badges[4] } showInfo={ true } /> }
+                                    { badges[4] && <LayoutBadgeImageView badgeCode={ badges[4] } showInfo={ true } /> }
                                 </Base>
                             </Flex>
                         </Column>
