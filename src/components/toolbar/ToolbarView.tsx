@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GetUserProfile, GoToDesktop, OpenMessengerChat } from '../../api';
 import { Base, Flex, TransitionAnimationTypes } from '../../common';
 import { TransitionAnimation } from '../../common/transitions/TransitionAnimation';
-import { AvatarEditorEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, InventoryEvent, NavigatorEvent, RoomWidgetCameraEvent } from '../../events';
+import { FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, InventoryEvent, NavigatorEvent } from '../../events';
 import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events/achievements';
 import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
 import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
@@ -155,10 +155,10 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 dispatchUiEvent(new FriendsEvent(FriendsEvent.TOGGLE_FRIEND_LIST));
                 return;
             case ToolbarViewItems.CAMERA_ITEM:
-                dispatchUiEvent(new RoomWidgetCameraEvent(RoomWidgetCameraEvent.TOGGLE_CAMERA));
+                CreateLinkEvent('camera/toggle');
                 return;
             case ToolbarViewItems.CLOTHING_ITEM:
-                dispatchUiEvent(new AvatarEditorEvent(AvatarEditorEvent.TOGGLE_EDITOR));
+                CreateLinkEvent('avatar-editor/toggle');
                 setMeExpanded(false);
                 return;
             case ToolbarViewItems.MOD_TOOLS_ITEM:

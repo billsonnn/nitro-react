@@ -1,15 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, IAvatarFigureContainer, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
+import { AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, IAvatarFigureContainer, ILinkEventTracker, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText } from '../../api';
+import { AddEventLinkTracker, GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { Button } from '../../common/Button';
 import { ButtonGroup } from '../../common/ButtonGroup';
 import { Column } from '../../common/Column';
 import { Grid } from '../../common/Grid';
-import { AvatarEditorEvent } from '../../events/avatar-editor';
 import { CreateMessageHook, SendMessageHook } from '../../hooks';
-import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { AvatarEditorAction } from './common/AvatarEditorAction';
 import { AvatarEditorUtilities } from './common/AvatarEditorUtilities';
 import { BodyModel } from './common/BodyModel';
@@ -43,34 +41,6 @@ export const AvatarEditorView: FC<{}> = props =>
     const [ isInitalized, setIsInitalized ] = useState(false);
 
     const maxWardrobeSlots = useMemo(() => GetConfiguration<number>('avatar.wardrobe.max.slots', 10), []);
-
-    const onAvatarEditorEvent = useCallback((event: AvatarEditorEvent) =>
-    {
-        switch(event.type)
-        {
-            case AvatarEditorEvent.SHOW_EDITOR:
-                setIsVisible(true);
-                setNeedsReset(true);
-                return;
-            case AvatarEditorEvent.HIDE_EDITOR:
-                setIsVisible(false);
-                return;   
-            case AvatarEditorEvent.TOGGLE_EDITOR:
-                setIsVisible(prevValue =>
-                    {
-                        const flag = !prevValue;
-
-                        if(flag) setNeedsReset(true);
-                        
-                        return flag;
-                    });
-                return;
-        }
-    }, []);
-
-    useUiEvent(AvatarEditorEvent.SHOW_EDITOR, onAvatarEditorEvent);
-    useUiEvent(AvatarEditorEvent.HIDE_EDITOR, onAvatarEditorEvent);
-    useUiEvent(AvatarEditorEvent.TOGGLE_EDITOR, onAvatarEditorEvent);
 
     const onFigureSetIdsMessageEvent = useCallback((event: FigureSetIdsMessageEvent) =>
     {
@@ -194,6 +164,45 @@ export const AvatarEditorView: FC<{}> = props =>
 
         setFigureData(figures.get(gender));
     }, [ figures ]);
+
+    const linkReceived = useCallback((url: string) =>
+    {
+        const parts = url.split('/');
+
+        if(parts.length < 2) return;
+
+        switch(parts[1])
+        {
+            case 'show':
+                setIsVisible(true);
+                return;
+            case 'hide':
+                setIsVisible(false);
+                return;
+            case 'toggle':
+                setIsVisible(prevValue =>
+                    {
+                        const flag = !prevValue;
+
+                        if(flag) setNeedsReset(true);
+                        
+                        return flag;
+                    });
+                return;
+        }
+    }, []);
+
+    useEffect(() =>
+    {
+        const linkTracker: ILinkEventTracker = {
+            linkReceived,
+            eventUrlPrefix: 'avatar-editor/'
+        };
+
+        AddEventLinkTracker(linkTracker);
+
+        return () => RemoveLinkEventTracker(linkTracker);
+    }, [ linkReceived ]);
 
     useEffect(() =>
     {

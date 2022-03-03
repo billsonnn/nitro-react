@@ -1,10 +1,8 @@
-import { InitCameraMessageEvent, IRoomCameraWidgetEffect, RequestCameraConfigurationComposer, RoomCameraWidgetManagerEvent, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { ILinkEventTracker, InitCameraMessageEvent, IRoomCameraWidgetEffect, RequestCameraConfigurationComposer, RoomCameraWidgetManagerEvent, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetRoomCameraWidgetManager } from '../../api';
-import { RoomWidgetCameraEvent } from '../../events/camera/RoomWidgetCameraEvent';
+import { AddEventLinkTracker, GetRoomCameraWidgetManager, RemoveLinkEventTracker } from '../../api';
 import { useRoomSessionManagerEvent } from '../../hooks';
 import { useCameraEvent } from '../../hooks/events/nitro/camera/camera-event';
-import { useUiEvent } from '../../hooks/events/ui/ui-event';
 import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
 import { CameraWidgetContextProvider } from './CameraWidgetContext';
 import { CameraPicture } from './common/CameraPicture';
@@ -26,30 +24,6 @@ export const CameraWidgetView: FC<{}> = props =>
     const [ myLevel, setMyLevel ] = useState(10);
     const [ base64Url, setSavedPictureUrl ] = useState<string>(null);
     const [ price, setPrice ] = useState<{ credits: number, duckets: number, publishDucketPrice: number }>(null);
-
-    const onNitroEvent = useCallback((event: RoomWidgetCameraEvent) =>
-    {
-        switch(event.type)
-        {
-            case RoomWidgetCameraEvent.SHOW_CAMERA:
-                setMode(MODE_CAPTURE);
-                return;
-            case RoomWidgetCameraEvent.HIDE_CAMERA:
-                setMode(MODE_NONE);
-                return;   
-            case RoomWidgetCameraEvent.TOGGLE_CAMERA:
-                setMode(prevValue =>
-                    {
-                        if(!prevValue) return MODE_CAPTURE;
-                        else return MODE_NONE;
-                    });
-                return;
-        }
-    }, []);
-
-    useUiEvent(RoomWidgetCameraEvent.SHOW_CAMERA, onNitroEvent);
-    useUiEvent(RoomWidgetCameraEvent.HIDE_CAMERA, onNitroEvent);
-    useUiEvent(RoomWidgetCameraEvent.TOGGLE_CAMERA, onNitroEvent);
 
     const onRoomCameraWidgetManagerEvent = useCallback((event: RoomCameraWidgetManagerEvent) =>
     {
@@ -117,6 +91,42 @@ export const CameraWidgetView: FC<{}> = props =>
         setSavedPictureUrl(pictureUrl);
         setMode(MODE_CHECKOUT);
     }, []);
+
+    const linkReceived = useCallback((url: string) =>
+    {
+        const parts = url.split('/');
+
+        if(parts.length < 2) return;
+
+        switch(parts[1])
+        {
+            case 'show':
+                setMode(MODE_CAPTURE);
+                return;
+            case 'hide':
+                setMode(MODE_NONE);
+                return;
+            case 'toggle':
+                setMode(prevValue =>
+                    {
+                        if(!prevValue) return MODE_CAPTURE;
+                        else return MODE_NONE;
+                    });
+                return;
+        }
+    }, []);
+
+    useEffect(() =>
+    {
+        const linkTracker: ILinkEventTracker = {
+            linkReceived,
+            eventUrlPrefix: 'camera/'
+        };
+
+        AddEventLinkTracker(linkTracker);
+
+        return () => RemoveLinkEventTracker(linkTracker);
+    }, [ linkReceived ]);
 
     if(mode === MODE_NONE) return null;
 

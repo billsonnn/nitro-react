@@ -1,6 +1,4 @@
 export * from './achievements';
-export * from './avatar-editor';
-export * from './camera';
 export * from './catalog';
 export * from './floorplan-editor';
 export * from './friends';

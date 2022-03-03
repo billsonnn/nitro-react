@@ -1,9 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AvatarAction, AvatarExpressionEnum, RoomControllerLevel, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { GetCanStandUp, GetCanUseExpression, GetOwnPosture, GetUserProfile, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUserActionMessage } from '../../../../api';
+import { CreateLinkEvent, GetCanStandUp, GetCanUseExpression, GetOwnPosture, GetUserProfile, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUserActionMessage } from '../../../../api';
 import { Flex } from '../../../../common';
-import { AvatarEditorEvent } from '../../../../events';
 import { HelpNameChangeEvent } from '../../../../events/help/HelpNameChangeEvent';
 import { dispatchUiEvent } from '../../../../hooks';
 import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
@@ -55,7 +54,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         dispatchUiEvent(new HelpNameChangeEvent(HelpNameChangeEvent.INIT));
                         break;
                     case 'change_looks':
-                        dispatchUiEvent(new AvatarEditorEvent(AvatarEditorEvent.SHOW_EDITOR));
+                        CreateLinkEvent('avatar-editor/show');
                         break;
                     case 'expressions':
                         hideMenu = false;
