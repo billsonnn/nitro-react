@@ -12,6 +12,4 @@ export interface IPurse
     minutesUntilExpiration: number;
     minutesSinceLastModified: number;
     clubLevel: number;
-    notifier: () => void
-    notify(): void;
 }

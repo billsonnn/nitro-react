@@ -15,7 +15,6 @@ export class Purse implements IPurse
     private _minutesUntilExpiration: number = 0;
     private _minutesSinceLastModified: number;
     private _lastUpdated: number;
-    private _notifier: () => void;
 
     public get credits(): number
     {
@@ -137,16 +136,6 @@ export class Purse implements IPurse
         return this._lastUpdated;
     }
 
-    public get notifier(): () => void
-    {
-        return this._notifier;
-    }
-
-    public set notifier(notifier: () => void)
-    {
-        this._notifier = notifier;
-    }
-
     public get clubLevel(): number
     {
         if(((this.clubDays === 0) && (this.clubPeriods === 0))) return HabboClubLevelEnum.NO_CLUB;
@@ -154,10 +143,5 @@ export class Purse implements IPurse
         if(this.isVip) return HabboClubLevelEnum.VIP;
 
         return HabboClubLevelEnum.CLUB;
-    }
-
-    public notify(): void
-    {
-        if(this._notifier) this._notifier();
     }
 }
