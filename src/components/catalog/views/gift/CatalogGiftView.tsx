@@ -3,11 +3,9 @@ import { PurchaseFromCatalogAsGiftComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
-import { Base, Button, ButtonGroup, Column, Flex, FormGroup, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { CatalogEvent, CatalogPurchasedEvent } from '../../../../events';
-import { CatalogInitGiftEvent } from '../../../../events/catalog/CatalogInitGiftEvent';
+import { Base, Button, ButtonGroup, Column, Flex, FormGroup, LayoutCurrencyIcon, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { CatalogEvent, CatalogInitGiftEvent, CatalogPurchasedEvent } from '../../../../events';
 import { BatchUpdates, UseUiEvent } from '../../../../hooks';
-import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { FurniImageView } from '../../../../views/shared/furni-image/FurniImageView';
 import { useCatalogContext } from '../../CatalogContext';
 import { ProductTypeEnum } from '../../common/ProductTypeEnum';
@@ -201,7 +199,7 @@ export const CatalogGiftView: FC<{}> = props =>
                                 <Text fontWeight="bold">{ LocalizeText(boxName) }</Text>
                                 <Flex alignItems="center" gap={ 1 }>
                                     { LocalizeText(priceText, ['price'], [giftConfiguration.price.toString()]) }
-                                    <CurrencyIcon type={ -1 } />
+                                    <LayoutCurrencyIcon type={ -1 } />
                                 </Flex>
                             </Column>
                         </Flex>

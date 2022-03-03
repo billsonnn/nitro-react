@@ -2,9 +2,8 @@
 import { HabboClubLevelEnum, RoomCreateComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetConfiguration, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
-import { Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../common';
+import { Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { IRoomModel, RoomModels } from '../../common/RoomModels';
 import { useNavigatorContext } from '../../NavigatorContext';
 
@@ -105,7 +104,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                                         <img alt="" src={ getRoomModelImage(model.name) } />
                                     </Flex>
                                     <Text bold>{ model.tileSize } { LocalizeText('navigator.createroom.tilesize') }</Text>
-                                    { model.clubLevel > HabboClubLevelEnum.NO_CLUB && <CurrencyIcon position="absolute" className="top-1 end-1" type="hc" /> }
+                                    { model.clubLevel > HabboClubLevelEnum.NO_CLUB && <LayoutCurrencyIcon position="absolute" className="top-1 end-1" type="hc" /> }
                                 </LayoutGridItem>);
                             })
                     }

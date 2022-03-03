@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LayoutGridItem, LayoutGridItemProps } from '../../../../common/layout/LayoutGridItem';
-import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
+import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../../common';
 import { AvatarEditorGridPartItem } from '../../common/AvatarEditorGridPartItem';
 import { AvatarEditorIcon } from '../AvatarEditorIcon';
 
@@ -31,7 +30,7 @@ export const AvatarEditorFigureSetItemView: FC<AvatarEditorFigureSetItemViewProp
 
     return (
         <LayoutGridItem itemImage={ (partItem.isClear ? undefined : partItem.imageUrl) } itemActive={ partItem.isSelected } { ...rest }>
-            { partItem.isHC && <CurrencyIcon className="position-absolute end-1 bottom-1" type={ 'hc' } /> }
+            { partItem.isHC && <LayoutCurrencyIcon className="position-absolute end-1 bottom-1" type={ 'hc' } /> }
             { partItem.isClear && <AvatarEditorIcon icon="clear" /> }
             { partItem.isSellable && <AvatarEditorIcon icon="sellable" position="absolute" className="end-1 bottom-1" /> }
             { children }

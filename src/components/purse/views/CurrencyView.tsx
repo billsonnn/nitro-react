@@ -1,8 +1,7 @@
 import { FC, useMemo } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { LocalizeFormattedNumber, LocalizeShortNumber } from '../../../api';
-import { Flex, Text } from '../../../common';
-import { CurrencyIcon } from '../../../views/shared/currency-icon/CurrencyIcon';
+import { Flex, LayoutCurrencyIcon, Text } from '../../../common';
 
 interface CurrencyViewProps
 {
@@ -20,7 +19,7 @@ export const CurrencyView: FC<CurrencyViewProps> = props =>
         return (
             <Flex justifyContent="end" pointer gap={ 1 } className="nitro-purse-button rounded">
                 <Text truncate textEnd variant="white" grow>{ short ? LocalizeShortNumber(amount) : LocalizeFormattedNumber(amount) }</Text>
-                <CurrencyIcon type={ type } />
+                <LayoutCurrencyIcon type={ type } />
             </Flex>);
     }, [ amount, short, type ]);
 

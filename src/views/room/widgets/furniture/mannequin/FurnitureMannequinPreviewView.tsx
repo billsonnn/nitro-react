@@ -1,7 +1,6 @@
 import { FC } from 'react';
-import { Base } from '../../../../../common';
+import { Base, LayoutCurrencyIcon } from '../../../../../common';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
-import { CurrencyIcon } from '../../../../shared/currency-icon/CurrencyIcon';
 
 interface FurnitureMannequinPreviewViewProps
 {
@@ -17,7 +16,7 @@ export const FurnitureMannequinPreviewView: FC<FurnitureMannequinPreviewViewProp
         <Base position="relative" className="mannequin-preview">
             <AvatarImageView figure={ figure } direction={ 2 } />
             { (clubLevel > 0) &&
-                <CurrencyIcon className="position-absolute end-2 bottom-2" type="hc" /> }
+                <LayoutCurrencyIcon className="position-absolute end-2 bottom-2" type="hc" /> }
         </Base>
     );
 }

@@ -18,6 +18,8 @@ $nitro-card-tabs-height: 33px;
             background-color: $primary;
 
             &.bg-tertiary-split {
+                min-height: 28px;
+                max-height: 28px;
                 position: relative;
                 border-bottom: 2px solid darken($quaternary, 5);
                 box-shadow: 0 2px white;
@@ -32,6 +34,12 @@ $nitro-card-tabs-height: 33px;
                     width: 100%;
                     height: 2px;
                     background-color: rgba($white, 0.3);
+                }
+
+                .nitro-card-header-text {
+                    color: $white;
+                    text-shadow: 0px 4px 4px rgba($black, 0.25);
+                    @include font-size($h5-font-size);
                 }
             }
 
@@ -72,6 +80,7 @@ $nitro-card-tabs-height: 33px;
 }
 
 .nitro-card-header {
+    position: relative;
     height: 100%;
 
     .header-close {

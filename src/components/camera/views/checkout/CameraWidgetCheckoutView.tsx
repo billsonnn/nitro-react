@@ -1,10 +1,9 @@
 import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraStorageUrlMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
-import { Button, Column, Flex, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { Button, Column, Flex, LayoutCurrencyIcon, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { InventoryEvent } from '../../../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
-import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 
 export interface CameraWidgetCheckoutViewProps
 {
@@ -116,12 +115,12 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                                 { (price.credits > 0) &&
                                     <Flex gap={ 1 }>
                                         <Text bold>{ price.credits }</Text>
-                                        <CurrencyIcon type={ -1 } />
+                                        <LayoutCurrencyIcon type={ -1 } />
                                     </Flex> }
                                 { (price.duckets > 0) &&
                                     <Flex gap={ 1 }>
                                         <Text bold>{ price.duckets }</Text>
-                                        <CurrencyIcon type={ 5 } />
+                                        <LayoutCurrencyIcon type={ 5 } />
                                     </Flex> }
                             </Flex> }
                         { (picturesBought > 0) &&
@@ -148,7 +147,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                                 <Text>{ LocalizeText('catalog.purchase.confirmation.dialog.cost') }</Text>
                                 <Flex gap={ 1 }>
                                     <Text bold>{ price.publishDucketPrice }</Text>
-                                    <CurrencyIcon type={ 5 } />
+                                    <LayoutCurrencyIcon type={ 5 } />
                                 </Flex>
                             </Flex> }
                         { (publishCooldown > 0) && <div className="mt-1 text-center fw-bold">{ LocalizeText('camera.publish.wait', [ 'minutes' ], [ Math.ceil( publishCooldown / 60).toString() ]) }</div> }

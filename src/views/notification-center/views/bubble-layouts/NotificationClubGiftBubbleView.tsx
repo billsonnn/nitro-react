@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../api';
-import { LayoutNotificationBubbleView } from '../../../../common';
-import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
+import { LayoutCurrencyIcon, LayoutNotificationBubbleView } from '../../../../common';
 import { NotificationUtilities } from '../../common/NotificationUtilities';
 import { NotificationBubbleLayoutViewProps } from './NotificationBubbleLayoutView.types';
 
@@ -12,7 +11,7 @@ export const NotificationClubGiftBubbleView: FC<NotificationBubbleLayoutViewProp
     return (
         <LayoutNotificationBubbleView fadesOut={ false } className="flex-column club-gift" close={ close } { ...rest }>
             <div className="d-flex align-items-center gap-2 mb-2">
-                <CurrencyIcon type="hc" className="flex-shrink-0" />
+                <LayoutCurrencyIcon type="hc" className="flex-shrink-0" />
                 <span className="ms-1">{ LocalizeText('notifications.text.club_gift') }</span>
             </div>
             <div className="d-flex align-items-center justify-content-end gap-2">

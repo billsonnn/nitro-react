@@ -1,10 +1,9 @@
 import { ActivityPointNotificationMessageEvent, FriendlyTime, HabboClubLevelEnum, UserCreditsEvent, UserCurrencyComposer, UserCurrencyEvent, UserSubscriptionComposer, UserSubscriptionEvent, UserSubscriptionParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateLinkEvent, CREDITS, DUCKETS, GetConfiguration, LocalizeText, PlaySound, SendMessageComposer } from '../../api';
-import { Column, Flex, Grid, Text } from '../../common';
+import { Column, Flex, Grid, LayoutCurrencyIcon, Text } from '../../common';
 import { HcCenterEvent, UserSettingsUIEvent } from '../../events';
 import { DispatchUiEvent, UseMessageEventHook } from '../../hooks';
-import { CurrencyIcon } from '../../views/shared/currency-icon/CurrencyIcon';
 import { IPurse } from './common/IPurse';
 import { Purse } from './common/Purse';
 import { PurseContextProvider } from './PurseContext';
@@ -177,7 +176,7 @@ export const PurseView: FC<{}> = props =>
                             { getCurrencyElements(0, 2) }
                         </Column>
                         <Column center pointer size={ 4 } gap={ 1 } className="nitro-purse-subscription rounded" onClick={ event => DispatchUiEvent(new HcCenterEvent(HcCenterEvent.TOGGLE_HC_CENTER)) }>
-                            <CurrencyIcon type="hc" />
+                            <LayoutCurrencyIcon type="hc" />
                             <Text variant="white">{ getClubText }</Text>
                         </Column>
                         <Column justifyContent="center" size={ 2 } gap={ 0 }>

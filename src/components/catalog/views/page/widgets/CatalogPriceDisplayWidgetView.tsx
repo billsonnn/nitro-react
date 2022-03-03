@@ -1,8 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
-import { Flex } from '../../../../../common/Flex';
-import { Text } from '../../../../../common/Text';
-import { CurrencyIcon } from '../../../../../views/shared/currency-icon/CurrencyIcon';
+import { Flex, LayoutCurrencyIcon, Text } from '../../../../../common';
 import { useCatalogContext } from '../../../CatalogContext';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 
@@ -25,14 +23,14 @@ export const CatalogPriceDisplayWidgetView: FC<CatalogPriceDisplayWidgetViewProp
             { (offer.priceInCredits > 0) &&
                 <Flex alignItems="center" gap={ 1 }>
                     <Text bold>{ (offer.priceInCredits * quantity) }</Text>
-                    <CurrencyIcon type={ -1 } />
+                    <LayoutCurrencyIcon type={ -1 } />
                 </Flex> }
             { separator && (offer.priceInCredits > 0) && (offer.priceInActivityPoints > 0) &&
                 <FontAwesomeIcon size="xs" color="black" icon="plus" /> }
             { (offer.priceInActivityPoints > 0) &&
                 <Flex alignItems="center" gap={ 1 }>
                     <Text bold>{ (offer.priceInActivityPoints * quantity) }</Text>
-                    <CurrencyIcon type={ offer.activityPointType } />
+                    <LayoutCurrencyIcon type={ offer.activityPointType } />
                 </Flex> }
         </>
     );

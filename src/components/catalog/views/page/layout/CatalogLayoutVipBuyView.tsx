@@ -1,10 +1,9 @@
 import { ClubOfferData, GetClubOffersMessageComposer, PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
-import { AutoGrid, Button, Column, Flex, Grid, LayoutGridItem, LayoutLoadingSpinnerView, Text } from '../../../../../common';
+import { AutoGrid, Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, LayoutLoadingSpinnerView, Text } from '../../../../../common';
 import { CatalogEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent } from '../../../../../events';
 import { UseUiEvent } from '../../../../../hooks';
-import { CurrencyIcon } from '../../../../../views/shared/currency-icon/CurrencyIcon';
 import { GetCurrencyAmount } from '../../../../purse/common/CurrencyHelper';
 import { GLOBAL_PURSE } from '../../../../purse/PurseView';
 import { useCatalogContext } from '../../../CatalogContext';
@@ -151,12 +150,12 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
                                             { (offer.priceCredits > 0) &&
                                                 <Flex alignItems="center" justifyContent="end" gap={ 1 }>
                                                     <Text>{ offer.priceCredits }</Text>
-                                                    <CurrencyIcon type={ -1 } />
+                                                    <LayoutCurrencyIcon type={ -1 } />
                                                 </Flex> }
                                             { (offer.priceActivityPoints > 0) &&
                                                 <Flex alignItems="center" justifyContent="end" gap={ 1 }>
                                                     <Text>{ offer.priceActivityPoints }</Text>
-                                                    <CurrencyIcon type={ offer.priceActivityPointsType } />
+                                                    <LayoutCurrencyIcon type={ offer.priceActivityPointsType } />
                                                 </Flex> }
                                         </Flex>
                                     </Column>
@@ -182,12 +181,12 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
                                 { (pendingOffer.priceCredits > 0) &&
                                     <Flex alignItems="center" justifyContent="end" gap={ 1 }>
                                         <Text>{ pendingOffer.priceCredits }</Text>
-                                        <CurrencyIcon type={ -1 } />
+                                        <LayoutCurrencyIcon type={ -1 } />
                                     </Flex> }
                                 { (pendingOffer.priceActivityPoints > 0) &&
                                     <Flex alignItems="center" justifyContent="end" gap={ 1 }>
                                         <Text>{ pendingOffer.priceActivityPoints }</Text>
-                                        <CurrencyIcon type={ pendingOffer.priceActivityPointsType } />
+                                        <LayoutCurrencyIcon type={ pendingOffer.priceActivityPointsType } />
                                     </Flex> }
                             </Column>
                         </Flex>

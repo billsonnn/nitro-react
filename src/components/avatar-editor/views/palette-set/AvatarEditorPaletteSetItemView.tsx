@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LayoutGridItem, LayoutGridItemProps } from '../../../../common/layout/LayoutGridItem';
-import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
+import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../../common';
 import { AvatarEditorGridColorItem } from '../../common/AvatarEditorGridColorItem';
 
 export interface AvatarEditorPaletteSetItemProps extends LayoutGridItemProps
@@ -27,7 +26,7 @@ export const AvatarEditorPaletteSetItem: FC<AvatarEditorPaletteSetItemProps> = p
 
     return (
         <LayoutGridItem itemHighlight itemColor={ colorItem.color } itemActive={ colorItem.isSelected } className="clear-bg" { ...rest }>
-            { colorItem.isHC && <CurrencyIcon className="position-absolute end-1 bottom-1" type={ 'hc' } /> }
+            { colorItem.isHC && <LayoutCurrencyIcon className="position-absolute end-1 bottom-1" type={ 'hc' } /> }
             { children }
         </LayoutGridItem>
     );

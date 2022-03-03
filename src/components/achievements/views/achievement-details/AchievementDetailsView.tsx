@@ -1,11 +1,7 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../../api';
-import { Base } from '../../../../common/Base';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
-import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
+import { Base, Column, Flex, LayoutCurrencyIcon, Text } from '../../../../common';
 import { AchievementUtilities } from '../../common/AchievementUtilities';
 import { GetAchievementLevel } from '../../common/GetAchievementLevel';
 import { GetScaledProgressPercent } from '../../common/GetScaledProgressPercent';
@@ -51,7 +47,7 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
                                 </Text>
                                 <Flex center className="fw-bold small" gap={ 1 }>
                                     { achievement.levelRewardPoints }
-                                    <CurrencyIcon type={ achievement.levelRewardPointType } />
+                                    <LayoutCurrencyIcon type={ achievement.levelRewardPointType } />
                                 </Flex>
                             </Flex> }
                         { (achievement.scoreLimit > 0) &&

@@ -1,10 +1,9 @@
 import { ApproveNameMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../../api';
-import { Column, Flex, Text } from '../../../../../../common';
+import { Column, Flex, LayoutCurrencyIcon, Text } from '../../../../../../common';
 import { CatalogPurchasedEvent } from '../../../../../../events';
 import { UseUiEvent } from '../../../../../../hooks';
-import { CurrencyIcon } from '../../../../../../views/shared/currency-icon/CurrencyIcon';
 import { IPurchasableOffer } from '../../../../common/IPurchasableOffer';
 import { Offer } from '../../../../common/Offer';
 import { CatalogPurchaseWidgetView } from '../../widgets/CatalogPurchaseWidgetView';
@@ -50,12 +49,12 @@ export const CatalogLayoutPetPurchaseView: FC<CatalogLayoutPetPurchaseViewProps>
                     { ((offer.priceType === Offer.PRICE_TYPE_CREDITS_ACTIVITYPOINTS) || (offer.priceType === Offer.PRICE_TYPE_CREDITS)) &&
                         <Flex alignItems="center" justifyContent="end" gap={ 1 }>
                             <Text>{ offer.priceInCredits }</Text>
-                            <CurrencyIcon type={ -1 } />
+                            <LayoutCurrencyIcon type={ -1 } />
                         </Flex> }
                     { ((offer.priceType === Offer.PRICE_TYPE_CREDITS_ACTIVITYPOINTS) || (offer.priceType === Offer.PRICE_TYPE_ACTIVITYPOINTS)) &&
                         <Flex alignItems="center" justifyContent="end" gap={ 1 }>
                             <Text>{ offer.priceInActivityPoints }</Text>
-                            <CurrencyIcon type={ offer.activityPointType } />
+                            <LayoutCurrencyIcon type={ offer.activityPointType } />
                         </Flex> }
                 </Column>
             </Flex>

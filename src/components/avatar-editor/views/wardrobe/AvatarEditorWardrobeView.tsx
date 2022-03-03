@@ -1,9 +1,8 @@
 import { IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
 import { GetAvatarRenderManager, GetSessionDataManager, SendMessageComposer } from '../../../../api';
-import { AutoGrid, Base, Button, Flex, LayoutGridItem } from '../../../../common';
+import { AutoGrid, Base, Button, Flex, LayoutCurrencyIcon, LayoutGridItem } from '../../../../common';
 import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
-import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { FigureData } from '../../common/FigureData';
 
 export interface AvatarEditorWardrobeViewProps
@@ -59,7 +58,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
                         { figureContainer &&
                             <AvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } /> }
                         <Base className="avatar-shadow" />
-                        { (clubLevel > 0) && <CurrencyIcon className="position-absolute top-1 start-1" type="hc" /> }
+                        { (clubLevel > 0) && <LayoutCurrencyIcon className="position-absolute top-1 start-1" type="hc" /> }
                         <Flex gap={ 1 } className="button-container">
                             <Button variant="link" fullWidth onClick={ event => saveFigureAtWardrobeIndex(index) }>Save</Button>
                             { figureContainer &&

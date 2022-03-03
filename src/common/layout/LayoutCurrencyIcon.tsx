@@ -1,13 +1,13 @@
 import { CSSProperties, FC, useMemo } from 'react';
-import { GetConfiguration } from '../../../api';
-import { Base, BaseProps } from '../../../common/Base';
+import { GetConfiguration } from '../../api';
+import { Base, BaseProps } from '../Base';
 
 export interface CurrencyIconProps extends BaseProps<HTMLDivElement>
 {
     type: number | string;
 }
 
-export const CurrencyIcon: FC<CurrencyIconProps> = props =>
+export const LayoutCurrencyIcon: FC<CurrencyIconProps> = props =>
 {
     const { type = '', classNames = [], style = {}, ...rest } = props;
 
