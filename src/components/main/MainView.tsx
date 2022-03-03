@@ -2,7 +2,7 @@ import { HabboWebTools, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetCommunication, RemoveLinkEventTracker } from '../../api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from '../../common';
-import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
+import { UseRoomSessionManagerEvent } from '../../hooks';
 import { CampaignView } from '../../views/campaign/CampaignView';
 import { FloorplanEditorView } from '../../views/floorplan-editor/FloorplanEditorView';
 import { FriendsView } from '../../views/friends/FriendsView';
@@ -45,8 +45,8 @@ export const MainView: FC<{}> = props =>
         }
     }, []);
 
-    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
     const onLinkReceived = useCallback((link: string) =>
     {

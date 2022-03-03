@@ -1,7 +1,8 @@
 import { GroupFavoriteComposer, GroupInformationComposer, GroupInformationEvent, GroupInformationParser, HabboGroupEntryData } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { CreateMessageHook, SendMessageHook } from '../../../hooks';
+import { SendMessageComposer } from '../../../api';
+import { UseMessageEventHook } from '../../../hooks';
 import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
 import { GroupInformationView } from '../../groups/views/GroupInformationView';
 
@@ -30,7 +31,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
         setGroupInformation(parser);
     }, [ groupInformation, selectedGroupId ]);
 
-    CreateMessageHook(GroupInformationEvent, onGroupInformationEvent);
+    UseMessageEventHook(GroupInformationEvent, onGroupInformationEvent);
 
     useEffect(() =>
     {
@@ -39,12 +40,12 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
 
     useEffect(() =>
     {
-        if(selectedGroupId) SendMessageHook(new GroupInformationComposer(selectedGroupId, false));
+        if(selectedGroupId) SendMessageComposer(new GroupInformationComposer(selectedGroupId, false));
     }, [ selectedGroupId ]);
 
     const favoriteGroup = useCallback((groupId: number) =>
     {
-        SendMessageHook(new GroupFavoriteComposer(groupId));
+        SendMessageComposer(new GroupFavoriteComposer(groupId));
     }, []);
 
     if(!groups) return null;

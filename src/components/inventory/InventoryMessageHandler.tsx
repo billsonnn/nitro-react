@@ -1,10 +1,10 @@
 import { AdvancedMap, BadgePointLimitsEvent, BadgeReceivedEvent, BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, RequestBadgesComposer, TradingAcceptEvent, TradingCloseEvent, TradingCompletedEvent, TradingConfirmationEvent, TradingListItemEvent, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingYouAreNotAllowedEvent, UnseenItemsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { GetLocalization, GetRoomSession, GetSessionDataManager, LocalizeText } from '../../api';
+import { GetLocalization, GetRoomSession, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../api';
 import { InventoryBadgesUpdatedEvent } from '../../events';
 import { InventoryBadgesRequestEvent } from '../../events/inventory/InventoryBadgesRequestEvent';
-import { dispatchUiEvent, useUiEvent } from '../../hooks';
-import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
+import { DispatchUiEvent, UseUiEvent } from '../../hooks';
+import { UseMessageEventHook } from '../../hooks/messages/UseMessageEventHook';
 import { NotificationUtilities } from '../../views/notification-center/common/NotificationUtilities';
 import { mergeFurniFragments } from './common/FurnitureUtilities';
 import { mergePetFragments } from './common/PetUtilities';
@@ -326,45 +326,45 @@ export const InventoryMessageHandler: FC<{}> = props =>
         for(const data of parser.data) GetLocalization().setBadgePointLimit(data.badgeId, data.limit);
     }, []);
 
-    CreateMessageHook(FurnitureListAddOrUpdateEvent, onFurnitureListAddOrUpdateEvent);
-    CreateMessageHook(FurnitureListEvent, onFurnitureListEvent);
-    CreateMessageHook(FurnitureListInvalidateEvent, onFurnitureListInvalidateEvent);
-    CreateMessageHook(FurnitureListRemovedEvent, onFurnitureListRemovedEvent);
-    CreateMessageHook(FurniturePostItPlacedEvent, onFurniturePostItPlacedEvent);
-    CreateMessageHook(BotInventoryMessageEvent, onBotInventoryMessageEvent);
-    CreateMessageHook(BotRemovedFromInventoryEvent, onBotRemovedFromInventoryEvent);
-    CreateMessageHook(BotAddedToInventoryEvent, onBotAddedToInventoryEvent);
-    CreateMessageHook(PetInventoryEvent, onPetInventoryEvent);
-    CreateMessageHook(PetRemovedFromInventory, onPetRemovedFromInventory);
-    CreateMessageHook(PetAddedToInventoryEvent, onPetAddedToInventoryEvent);
-    CreateMessageHook(BadgesEvent, onBadgesEvent);
-    CreateMessageHook(BadgeReceivedEvent, onBadgeReceivedEvent);
-    CreateMessageHook(TradingAcceptEvent, onTradingAcceptEvent);
-    CreateMessageHook(TradingCloseEvent, onTradingCloseEvent);
-    CreateMessageHook(TradingCompletedEvent, onTradingCompletedEvent);
-    CreateMessageHook(TradingConfirmationEvent, onTradingConfirmationEvent);
-    CreateMessageHook(TradingListItemEvent, onTradingListItemEvent);
-    CreateMessageHook(TradingNotOpenEvent, onTradingNotOpenEvent);
-    CreateMessageHook(TradingOpenEvent, onTradingOpenEvent);
-    CreateMessageHook(TradingOpenFailedEvent, onTradingOpenFailedEvent);
-    CreateMessageHook(TradingOtherNotAllowedEvent, onTradingOtherNotAllowedEvent);
-    CreateMessageHook(TradingYouAreNotAllowedEvent, onTradingYouAreNotAllowedEvent);
-    CreateMessageHook(UnseenItemsEvent, onUnseenItemsEvent);
-    CreateMessageHook(BadgePointLimitsEvent, onBadgePointLimitsEvent);
+    UseMessageEventHook(FurnitureListAddOrUpdateEvent, onFurnitureListAddOrUpdateEvent);
+    UseMessageEventHook(FurnitureListEvent, onFurnitureListEvent);
+    UseMessageEventHook(FurnitureListInvalidateEvent, onFurnitureListInvalidateEvent);
+    UseMessageEventHook(FurnitureListRemovedEvent, onFurnitureListRemovedEvent);
+    UseMessageEventHook(FurniturePostItPlacedEvent, onFurniturePostItPlacedEvent);
+    UseMessageEventHook(BotInventoryMessageEvent, onBotInventoryMessageEvent);
+    UseMessageEventHook(BotRemovedFromInventoryEvent, onBotRemovedFromInventoryEvent);
+    UseMessageEventHook(BotAddedToInventoryEvent, onBotAddedToInventoryEvent);
+    UseMessageEventHook(PetInventoryEvent, onPetInventoryEvent);
+    UseMessageEventHook(PetRemovedFromInventory, onPetRemovedFromInventory);
+    UseMessageEventHook(PetAddedToInventoryEvent, onPetAddedToInventoryEvent);
+    UseMessageEventHook(BadgesEvent, onBadgesEvent);
+    UseMessageEventHook(BadgeReceivedEvent, onBadgeReceivedEvent);
+    UseMessageEventHook(TradingAcceptEvent, onTradingAcceptEvent);
+    UseMessageEventHook(TradingCloseEvent, onTradingCloseEvent);
+    UseMessageEventHook(TradingCompletedEvent, onTradingCompletedEvent);
+    UseMessageEventHook(TradingConfirmationEvent, onTradingConfirmationEvent);
+    UseMessageEventHook(TradingListItemEvent, onTradingListItemEvent);
+    UseMessageEventHook(TradingNotOpenEvent, onTradingNotOpenEvent);
+    UseMessageEventHook(TradingOpenEvent, onTradingOpenEvent);
+    UseMessageEventHook(TradingOpenFailedEvent, onTradingOpenFailedEvent);
+    UseMessageEventHook(TradingOtherNotAllowedEvent, onTradingOtherNotAllowedEvent);
+    UseMessageEventHook(TradingYouAreNotAllowedEvent, onTradingYouAreNotAllowedEvent);
+    UseMessageEventHook(UnseenItemsEvent, onUnseenItemsEvent);
+    UseMessageEventHook(BadgePointLimitsEvent, onBadgePointLimitsEvent);
 
     const onInventoryBadgesRequestEvent = useCallback((event: InventoryBadgesRequestEvent) =>
     {
         if(badgeState.needsBadgeUpdate)
         {
-            SendMessageHook(new RequestBadgesComposer());
+            SendMessageComposer(new RequestBadgesComposer());
 
             return;
         }
 
-        dispatchUiEvent(new InventoryBadgesUpdatedEvent(InventoryBadgesUpdatedEvent.BADGES_UPDATED, badgeState.badges));
+        DispatchUiEvent(new InventoryBadgesUpdatedEvent(InventoryBadgesUpdatedEvent.BADGES_UPDATED, badgeState.badges));
     }, [ badgeState ])
 
-    useUiEvent(InventoryBadgesRequestEvent.REQUEST_BADGES, onInventoryBadgesRequestEvent);
+    UseUiEvent(InventoryBadgesRequestEvent.REQUEST_BADGES, onInventoryBadgesRequestEvent);
 
     return null;
 }

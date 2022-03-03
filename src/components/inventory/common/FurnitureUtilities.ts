@@ -1,9 +1,7 @@
 import { FurnitureListItemParser, FurniturePlacePaintComposer, IObjectData, RoomObjectCategory, RoomObjectPlacementSource } from '@nitrots/nitro-renderer';
-import { GetRoomEngine } from '../../../api';
-import { InventoryEvent } from '../../../events';
-import { CatalogPostMarketplaceOfferEvent } from '../../../events/catalog/CatalogPostMarketplaceOfferEvent';
-import { dispatchUiEvent } from '../../../hooks/events/ui/ui-event';
-import { SendMessageHook } from '../../../hooks/messages/message-event';
+import { GetRoomEngine, SendMessageComposer } from '../../../api';
+import { CatalogPostMarketplaceOfferEvent, InventoryEvent } from '../../../events';
+import { DispatchUiEvent } from '../../../hooks';
 import { FurniCategory } from './FurniCategory';
 import { FurnitureItem } from './FurnitureItem';
 import { GroupItem } from './GroupItem';
@@ -23,13 +21,13 @@ export function attemptItemPlacement(groupItem: GroupItem, flag: boolean = false
     {
         if(flag) return false;
 
-        SendMessageHook(new FurniturePlacePaintComposer(item.id));
+        SendMessageComposer(new FurniturePlacePaintComposer(item.id));
 
         return false;
     }
     else
     {
-        dispatchUiEvent(new InventoryEvent(InventoryEvent.HIDE_INVENTORY));
+        DispatchUiEvent(new InventoryEvent(InventoryEvent.HIDE_INVENTORY));
 
         let category    = 0;
         let isMoving    = false;
@@ -64,7 +62,7 @@ export function attemptPlaceMarketplaceOffer(groupItem: GroupItem): boolean
 
     if(!item.sellable) return false;
 
-    dispatchUiEvent(new CatalogPostMarketplaceOfferEvent(item));
+    DispatchUiEvent(new CatalogPostMarketplaceOfferEvent(item));
 }
 
 function cancelRoomObjectPlacement(): void
@@ -180,7 +178,7 @@ export function removeFurniItemById(id: number, set: GroupItem[]): GroupItem
 
                 if(!attemptItemPlacement(group))
                 {
-                    setTimeout(() => dispatchUiEvent(new InventoryEvent(InventoryEvent.SHOW_INVENTORY)), 1);
+                    setTimeout(() => DispatchUiEvent(new InventoryEvent(InventoryEvent.SHOW_INVENTORY)), 1);
                 }
             }
 

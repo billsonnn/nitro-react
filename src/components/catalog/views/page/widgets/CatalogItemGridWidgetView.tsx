@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { AutoGrid, AutoGridProps } from '../../../../../common/AutoGrid';
 import { CatalogSetExtraPurchaseParameterEvent } from '../../../../../events';
-import { dispatchUiEvent } from '../../../../../hooks';
+import { DispatchUiEvent } from '../../../../../hooks';
 import { useCatalogContext } from '../../../CatalogContext';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
@@ -29,7 +29,7 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
 
         if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
         {
-            dispatchUiEvent(new CatalogSetExtraPurchaseParameterEvent(offer.product.extraParam));
+            DispatchUiEvent(new CatalogSetExtraPurchaseParameterEvent(offer.product.extraParam));
         }
     }
 

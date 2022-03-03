@@ -1,10 +1,9 @@
-import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, RoomInviteEvent, SendMessageComposer } from '@nitrots/nitro-renderer';
+import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, RoomInviteEvent, SendMessageComposer as SendMessageComposerPacket } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
-import { MESSENGER_MESSAGE_RECEIVED, MESSENGER_NEW_THREAD, PlaySound } from '../../../../api/utils/PlaySound';
+import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, MESSENGER_MESSAGE_RECEIVED, MESSENGER_NEW_THREAD, PlaySound, RemoveLinkEventTracker, SendMessageComposer } from '../../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { FriendsMessengerIconEvent } from '../../../../events';
-import { BatchUpdates, CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
+import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { ItemCountView } from '../../../shared/item-count/ItemCountView';
@@ -26,7 +25,7 @@ export const FriendsMessengerView: FC<{}> = props =>
 
     const followFriend = useCallback(() =>
     {
-        SendMessageHook(new FollowFriendMessageComposer(messageThreads[activeThreadIndex].participant.id));
+        SendMessageComposer(new FollowFriendMessageComposer(messageThreads[activeThreadIndex].participant.id));
     }, [messageThreads, activeThreadIndex]);
 
     const openProfile = useCallback(() =>
@@ -102,7 +101,7 @@ export const FriendsMessengerView: FC<{}> = props =>
         setMessageThreads(prevValue => [...prevValue]);
     }, [getMessageThreadWithIndex]);
 
-    CreateMessageHook(NewConsoleMessageEvent, onNewConsoleMessageEvent);
+    UseMessageEventHook(NewConsoleMessageEvent, onNewConsoleMessageEvent);
 
     const onRoomInviteEvent = useCallback((event: RoomInviteEvent) =>
     {
@@ -117,7 +116,7 @@ export const FriendsMessengerView: FC<{}> = props =>
         setMessageThreads(prevValue => [...prevValue]);
     }, [getMessageThreadWithIndex]);
 
-    CreateMessageHook(RoomInviteEvent, onRoomInviteEvent);
+    UseMessageEventHook(RoomInviteEvent, onRoomInviteEvent);
 
     const sendMessage = useCallback(() =>
     {
@@ -129,7 +128,7 @@ export const FriendsMessengerView: FC<{}> = props =>
 
         if(!thread) return;
 
-        SendMessageHook(new SendMessageComposer(thread.participant.id, messageText));
+        SendMessageComposer(new SendMessageComposerPacket(thread.participant.id, messageText));
 
         if(messageThreads.length === 1 && thread.groups.length === 1) PlaySound(MESSENGER_NEW_THREAD);
 
@@ -229,7 +228,7 @@ export const FriendsMessengerView: FC<{}> = props =>
         {
             setIsVisible(false);
 
-            dispatchUiEvent(new FriendsMessengerIconEvent(FriendsMessengerIconEvent.UPDATE_ICON, FriendsMessengerIconEvent.HIDE_ICON));
+            DispatchUiEvent(new FriendsMessengerIconEvent(FriendsMessengerIconEvent.UPDATE_ICON, FriendsMessengerIconEvent.HIDE_ICON));
 
             return;
         }
@@ -248,7 +247,7 @@ export const FriendsMessengerView: FC<{}> = props =>
 
         if(isUnread) PlaySound(MESSENGER_MESSAGE_RECEIVED);
 
-        dispatchUiEvent(new FriendsMessengerIconEvent(FriendsMessengerIconEvent.UPDATE_ICON, isUnread ? FriendsMessengerIconEvent.UNREAD_ICON : FriendsMessengerIconEvent.SHOW_ICON));
+        DispatchUiEvent(new FriendsMessengerIconEvent(FriendsMessengerIconEvent.UPDATE_ICON, isUnread ? FriendsMessengerIconEvent.UNREAD_ICON : FriendsMessengerIconEvent.SHOW_ICON));
     }, [visibleThreads, updateValue]);
 
     if(!isVisible) return null;

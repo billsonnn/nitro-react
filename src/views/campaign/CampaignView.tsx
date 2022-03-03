@@ -1,7 +1,7 @@
 import { CampaignCalendarData, CampaignCalendarDataMessageEvent, CampaignCalendarDoorOpenedMessageEvent, OpenCampaignCalendarDoorAsStaffComposer, OpenCampaignCalendarDoorComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, RemoveLinkEventTracker } from '../../api';
-import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../hooks';
+import { AddEventLinkTracker, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { BatchUpdates, UseMessageEventHook } from '../../hooks';
 import { CalendarView } from './views/calendar/CalendarView';
 
 export const CampaignView: FC<{}> = props =>
@@ -19,7 +19,7 @@ export const CampaignView: FC<{}> = props =>
         setCalendarData(parser.calendarData);
     }, []);
 
-    CreateMessageHook(CampaignCalendarDataMessageEvent, onCampaignCalendarDataMessageEvent);
+    UseMessageEventHook(CampaignCalendarDataMessageEvent, onCampaignCalendarDataMessageEvent);
 
     const onCampaignCalendarDoorOpenedMessageEvent = useCallback((event: CampaignCalendarDoorOpenedMessageEvent) =>
     {
@@ -54,7 +54,7 @@ export const CampaignView: FC<{}> = props =>
         setLastOpenAttempt(-1);
     }, [lastOpenAttempt]);
 
-    CreateMessageHook(CampaignCalendarDoorOpenedMessageEvent, onCampaignCalendarDoorOpenedMessageEvent);
+    UseMessageEventHook(CampaignCalendarDoorOpenedMessageEvent, onCampaignCalendarDoorOpenedMessageEvent);
 
     const openPackage = useCallback((id: number, asStaff = false) =>
     {
@@ -64,12 +64,12 @@ export const CampaignView: FC<{}> = props =>
 
         if(asStaff)
         {
-            SendMessageHook(new OpenCampaignCalendarDoorAsStaffComposer(calendarData.campaignName, id));
+            SendMessageComposer(new OpenCampaignCalendarDoorAsStaffComposer(calendarData.campaignName, id));
         }
 
         else
         {
-            SendMessageHook(new OpenCampaignCalendarDoorComposer(calendarData.campaignName, id));
+            SendMessageComposer(new OpenCampaignCalendarDoorComposer(calendarData.campaignName, id));
         }
     }, [calendarData]);
 

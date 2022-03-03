@@ -1,13 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, IAvatarFigureContainer, ILinkEventTracker, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AddEventLinkTracker, GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { AddEventLinkTracker, GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { Button } from '../../common/Button';
 import { ButtonGroup } from '../../common/ButtonGroup';
 import { Column } from '../../common/Column';
 import { Grid } from '../../common/Grid';
-import { CreateMessageHook, SendMessageHook } from '../../hooks';
+import { UseMessageEventHook } from '../../hooks';
 import { AvatarEditorAction } from './common/AvatarEditorAction';
 import { AvatarEditorUtilities } from './common/AvatarEditorUtilities';
 import { BodyModel } from './common/BodyModel';
@@ -50,7 +50,7 @@ export const AvatarEditorView: FC<{}> = props =>
         setBoundFurnitureNames(parser.boundsFurnitureNames);
     }, []);
 
-    CreateMessageHook(FigureSetIdsMessageEvent, onFigureSetIdsMessageEvent);
+    UseMessageEventHook(FigureSetIdsMessageEvent, onFigureSetIdsMessageEvent);
 
     const onUserWardrobePageEvent = useCallback((event: UserWardrobePageEvent) =>
     {
@@ -76,7 +76,7 @@ export const AvatarEditorView: FC<{}> = props =>
         setSavedFigures(savedFigures)
     }, [ maxWardrobeSlots ]);
 
-    CreateMessageHook(UserWardrobePageEvent, onUserWardrobePageEvent);
+    UseMessageEventHook(UserWardrobePageEvent, onUserWardrobePageEvent);
 
     const selectCategory = useCallback((name: string) =>
     {
@@ -152,7 +152,7 @@ export const AvatarEditorView: FC<{}> = props =>
                 resetCategories();
                 return;
             case AvatarEditorAction.ACTION_SAVE:
-                SendMessageHook(new UserFigureComposer(figureData.gender, figureData.getFigureString()));
+                SendMessageComposer(new UserFigureComposer(figureData.gender, figureData.getFigureString()));
                 setIsVisible(false);
                 return;
         }
@@ -214,7 +214,7 @@ export const AvatarEditorView: FC<{}> = props =>
         if(!isWardrobeVisible) return;
 
         setActiveCategory(null);
-        SendMessageHook(new GetWardrobeMessageComposer());
+        SendMessageComposer(new GetWardrobeMessageComposer());
     }, [ isWardrobeVisible ]);
 
     useEffect(() =>

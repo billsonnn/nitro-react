@@ -1,9 +1,9 @@
 import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraStorageUrlMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetConfiguration, GetRoomEngine, LocalizeText } from '../../../../api';
+import { GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { InventoryEvent } from '../../../../events';
-import { BatchUpdates, CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
+import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 
 export interface CameraWidgetCheckoutViewProps
@@ -33,7 +33,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
         });
     }, []);
 
-    CreateMessageHook(CameraPurchaseOKMessageEvent, onCameraPurchaseOKMessageEvent);
+    UseMessageEventHook(CameraPurchaseOKMessageEvent, onCameraPurchaseOKMessageEvent);
 
     const onCameraPublishStatusMessageEvent = useCallback((event: CameraPublishStatusMessageEvent) =>
     {
@@ -48,7 +48,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
         });
     }, []);
 
-    CreateMessageHook(CameraPublishStatusMessageEvent, onCameraPublishStatusMessageEvent);
+    UseMessageEventHook(CameraPublishStatusMessageEvent, onCameraPublishStatusMessageEvent);
 
     const onCameraStorageUrlMessageEvent = useCallback((event: CameraStorageUrlMessageEvent) =>
     {
@@ -57,7 +57,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
         setPictureUrl(GetConfiguration<string>('camera.url') + '/' + parser.url);
     }, []);
 
-    CreateMessageHook(CameraStorageUrlMessageEvent, onCameraStorageUrlMessageEvent);
+    UseMessageEventHook(CameraStorageUrlMessageEvent, onCameraStorageUrlMessageEvent);
 
     const processAction = (type: string, value: string | number = null) =>
     {
@@ -70,13 +70,13 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                 if(isWaiting) return;
 
                 setIsWaiting(true);
-                SendMessageHook(new PurchasePhotoMessageComposer(''));
+                SendMessageComposer(new PurchasePhotoMessageComposer(''));
                 return;
             case 'publish':
                 if(isWaiting) return;
 
                 setIsWaiting(true);
-                SendMessageHook(new PublishPhotoMessageComposer());
+                SendMessageComposer(new PublishPhotoMessageComposer());
                 return;
             case 'cancel':
                 onCancelClick();
@@ -127,7 +127,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                         { (picturesBought > 0) &&
                             <Text>
                                 <Text bold>{ LocalizeText('camera.purchase.count.info') }</Text> { picturesBought }
-                                <u className="ms-1 cursor-pointer" onClick={ () => dispatchUiEvent(new InventoryEvent(InventoryEvent.SHOW_INVENTORY)) }>{ LocalizeText('camera.open.inventory') }</u>
+                                <u className="ms-1 cursor-pointer" onClick={ () => DispatchUiEvent(new InventoryEvent(InventoryEvent.SHOW_INVENTORY)) }>{ LocalizeText('camera.open.inventory') }</u>
                             </Text> }
                     </Column>
                     <Flex alignItems="center">

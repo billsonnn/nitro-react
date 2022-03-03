@@ -1,9 +1,9 @@
 import { GetRoomVisitsMessageComposer, RoomVisitsData, RoomVisitsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AutoSizer, List, ListRowProps } from 'react-virtualized';
-import { TryVisitRoom } from '../../../../api';
+import { SendMessageComposer, TryVisitRoom } from '../../../../api';
 import { Base, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
+import { UseMessageEventHook } from '../../../../hooks';
 
 interface ModToolsUserRoomVisitsViewProps
 {
@@ -25,7 +25,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
         setRoomVisitData(parser.data);
     }, [ userId ]);
 
-    CreateMessageHook(RoomVisitsEvent, onModtoolReceivedRoomsUserEvent);
+    UseMessageEventHook(RoomVisitsEvent, onModtoolReceivedRoomsUserEvent);
 
     const RowRenderer = (props: ListRowProps) =>
     {
@@ -42,7 +42,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
 
     useEffect(() =>
     {
-        SendMessageHook(new GetRoomVisitsMessageComposer(userId));
+        SendMessageComposer(new GetRoomVisitsMessageComposer(userId));
     }, [userId]);
 
     if(!userId) return null;

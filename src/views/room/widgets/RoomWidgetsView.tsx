@@ -2,7 +2,7 @@ import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngi
 import { FC, useCallback } from 'react';
 import { CanManipulateFurniture, GetRoomEngine, GetSessionDataManager, IsFurnitureSelectionDisabled, LocalizeText, ProcessRoomObjectOperation, RoomWidgetFurniToWidgetMessage, RoomWidgetUpdateRoomEngineEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
 import { FriendRequestEvent } from '../../../events';
-import { useRoomEngineEvent, useRoomSessionManagerEvent, useUiEvent } from '../../../hooks';
+import { UseRoomEngineEvent, UseRoomSessionManagerEvent, UseUiEvent } from '../../../hooks';
 import { NotificationAlertType } from '../../notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../notification-center/common/NotificationUtilities';
 import { useRoomContext } from '../context/RoomContext';
@@ -49,9 +49,9 @@ export const RoomWidgetsView: FC<{}> = props =>
         }
     }, [ eventDispatcher ]);
 
-    useRoomEngineEvent(RoomEngineEvent.NORMAL_MODE, onRoomEngineEvent);
-    useRoomEngineEvent(RoomEngineEvent.GAME_MODE, onRoomEngineEvent);
-    useRoomEngineEvent(RoomZoomEvent.ROOM_ZOOM, onRoomEngineEvent);
+    UseRoomEngineEvent(RoomEngineEvent.NORMAL_MODE, onRoomEngineEvent);
+    UseRoomEngineEvent(RoomEngineEvent.GAME_MODE, onRoomEngineEvent);
+    UseRoomEngineEvent(RoomZoomEvent.ROOM_ZOOM, onRoomEngineEvent);
 
     const handleRoomAdClick = useCallback((event: RoomEngineRoomAdEvent) =>
     {
@@ -211,47 +211,47 @@ export const RoomWidgetsView: FC<{}> = props =>
         }
     }, [ roomSession, widgetHandler, handleRoomAdClick, handleRoomAdTooltip ]);
 
-    useRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.DESELECTED, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.ADDED, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.REMOVED, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.PLACED, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.REQUEST_MOVE, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.REQUEST_ROTATE, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.REQUEST_MANIPULATION, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.MOUSE_ENTER, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineObjectEvent.MOUSE_LEAVE, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_CREDITFURNI, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_STICKIE, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PRESENT, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_TROPHY, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_TEASER, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ECOTRONBOX, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_DIMMER, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PLACEHOLDER, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_CLOTHING_CHANGE, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PLAYLIST_EDITOR, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_WIDGET, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_WIDGET, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REMOVE_DIMMER, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_INTERNAL_LINK, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ROOM_LINK, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineRoomAdEvent.FURNI_CLICK, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineRoomAdEvent.FURNI_DOUBLE_CLICK, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineRoomAdEvent.TOOLTIP_SHOW, onRoomEngineObjectEvent);
-    useRoomEngineEvent(RoomEngineRoomAdEvent.TOOLTIP_HIDE, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.DESELECTED, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.ADDED, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.REMOVED, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.PLACED, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.REQUEST_MOVE, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.REQUEST_ROTATE, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.REQUEST_MANIPULATION, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.MOUSE_ENTER, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.MOUSE_LEAVE, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_CREDITFURNI, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_STICKIE, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PRESENT, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_TROPHY, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_TEASER, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ECOTRONBOX, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_DIMMER, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PLACEHOLDER, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_CLOTHING_CHANGE, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PLAYLIST_EDITOR, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_WIDGET, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_WIDGET, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REMOVE_DIMMER, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_INTERNAL_LINK, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ROOM_LINK, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineRoomAdEvent.FURNI_CLICK, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineRoomAdEvent.FURNI_DOUBLE_CLICK, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineRoomAdEvent.TOOLTIP_SHOW, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineRoomAdEvent.TOOLTIP_HIDE, onRoomEngineObjectEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
@@ -260,27 +260,27 @@ export const RoomWidgetsView: FC<{}> = props =>
         widgetHandler.processEvent(event);
     }, [ widgetHandler ]);
 
-    useRoomSessionManagerEvent(RoomSessionChatEvent.CHAT_EVENT, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionChatEvent.FLOOD_EVENT, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionDanceEvent.RSDE_DANCE, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionUserBadgesEvent.RSUBE_BADGES, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionUserFigureUpdateEvent.USER_FIGURE, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionPetStatusUpdateEvent.PET_STATUS_UPDATE, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionDoorbellEvent.DOORBELL, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionDoorbellEvent.RSDE_REJECTED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionDoorbellEvent.RSDE_ACCEPTED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionDimmerPresetsEvent.ROOM_DIMMER_PRESETS, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionFriendRequestEvent.RSFRE_FRIEND_REQUEST, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionPresentEvent.RSPE_PRESENT_OPENED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionPetInfoUpdateEvent.PET_INFO, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionWordQuizEvent.ANSWERED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionWordQuizEvent.FINISHED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionWordQuizEvent.QUESTION, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionPollEvent.OFFER, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionPollEvent.ERROR, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionPollEvent.CONTENT, onRoomSessionEvent);
-    useUiEvent(FriendRequestEvent.ACCEPTED, onRoomSessionEvent);
-    useUiEvent(FriendRequestEvent.DECLINED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionChatEvent.CHAT_EVENT, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionChatEvent.FLOOD_EVENT, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionDanceEvent.RSDE_DANCE, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionUserBadgesEvent.RSUBE_BADGES, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionUserFigureUpdateEvent.USER_FIGURE, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionPetStatusUpdateEvent.PET_STATUS_UPDATE, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionDoorbellEvent.DOORBELL, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionDoorbellEvent.RSDE_REJECTED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionDoorbellEvent.RSDE_ACCEPTED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionDimmerPresetsEvent.ROOM_DIMMER_PRESETS, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionFriendRequestEvent.RSFRE_FRIEND_REQUEST, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionPresentEvent.RSPE_PRESENT_OPENED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionPetInfoUpdateEvent.PET_INFO, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionWordQuizEvent.ANSWERED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionWordQuizEvent.FINISHED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionWordQuizEvent.QUESTION, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionPollEvent.OFFER, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionPollEvent.ERROR, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionPollEvent.CONTENT, onRoomSessionEvent);
+    UseUiEvent(FriendRequestEvent.ACCEPTED, onRoomSessionEvent);
+    UseUiEvent(FriendRequestEvent.DECLINED, onRoomSessionEvent);
 
     const onRoomSessionErrorMessageEvent = useCallback((event: RoomSessionErrorMessageEvent) =>
     {
@@ -335,18 +335,18 @@ export const RoomWidgetsView: FC<{}> = props =>
         NotificationUtilities.simpleAlert(errorMessage, NotificationAlertType.DEFAULT, null, null, errorTitle);
     }, []);
 
-    useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_KICKED, onRoomSessionErrorMessageEvent);
-    useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_PETS_FORBIDDEN_IN_HOTEL, onRoomSessionErrorMessageEvent);
-    useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_PETS_FORBIDDEN_IN_FLAT, onRoomSessionErrorMessageEvent);
-    useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_MAX_PETS, onRoomSessionErrorMessageEvent);
-    useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_MAX_NUMBER_OF_OWN_PETS, onRoomSessionErrorMessageEvent);
-    useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_NO_FREE_TILES_FOR_PET, onRoomSessionErrorMessageEvent);
-    useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_SELECTED_TILE_NOT_FREE_FOR_PET, onRoomSessionErrorMessageEvent);
-    useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_BOTS_FORBIDDEN_IN_HOTEL, onRoomSessionErrorMessageEvent);
-    useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_BOTS_FORBIDDEN_IN_FLAT, onRoomSessionErrorMessageEvent);
-    useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_BOT_LIMIT_REACHED, onRoomSessionErrorMessageEvent);
-    useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_SELECTED_TILE_NOT_FREE_FOR_BOT, onRoomSessionErrorMessageEvent);
-    useRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_BOT_NAME_NOT_ACCEPTED, onRoomSessionErrorMessageEvent);
+    UseRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_KICKED, onRoomSessionErrorMessageEvent);
+    UseRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_PETS_FORBIDDEN_IN_HOTEL, onRoomSessionErrorMessageEvent);
+    UseRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_PETS_FORBIDDEN_IN_FLAT, onRoomSessionErrorMessageEvent);
+    UseRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_MAX_PETS, onRoomSessionErrorMessageEvent);
+    UseRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_MAX_NUMBER_OF_OWN_PETS, onRoomSessionErrorMessageEvent);
+    UseRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_NO_FREE_TILES_FOR_PET, onRoomSessionErrorMessageEvent);
+    UseRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_SELECTED_TILE_NOT_FREE_FOR_PET, onRoomSessionErrorMessageEvent);
+    UseRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_BOTS_FORBIDDEN_IN_HOTEL, onRoomSessionErrorMessageEvent);
+    UseRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_BOTS_FORBIDDEN_IN_FLAT, onRoomSessionErrorMessageEvent);
+    UseRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_BOT_LIMIT_REACHED, onRoomSessionErrorMessageEvent);
+    UseRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_SELECTED_TILE_NOT_FREE_FOR_BOT, onRoomSessionErrorMessageEvent);
+    UseRoomSessionManagerEvent(RoomSessionErrorMessageEvent.RSEME_BOT_NAME_NOT_ACCEPTED, onRoomSessionErrorMessageEvent);
 
     if(!widgetHandler) return null;
 

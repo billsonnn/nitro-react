@@ -2,7 +2,7 @@ import { HighScoreDataType, ObjectDataFactory, RoomEngineTriggerWidgetEvent, Roo
 import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, LocalizeText } from '../../../../../api';
 import { Column, Flex, Text } from '../../../../../common';
-import { useRoomEngineEvent } from '../../../../../hooks';
+import { UseRoomEngineEvent } from '../../../../../hooks';
 import { useRoomContext } from '../../../context/RoomContext';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListView } from '../../context-menu/ContextMenuListView';
@@ -50,8 +50,8 @@ export const FurnitureHighScoreView: FC<{}> = props =>
         }
     }, [roomSession, objectId, close]);
 
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY, onRoomEngineTriggerWidgetEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY, onRoomEngineTriggerWidgetEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY, onRoomEngineTriggerWidgetEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY, onRoomEngineTriggerWidgetEvent);
 
     if((objectId === -1) || !stuffData) return null;
 

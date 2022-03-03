@@ -4,10 +4,7 @@ import { GetCommunication, GetConfiguration, GetNitroInstance } from './api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from './common';
 import { LoadingView } from './components/loading/LoadingView';
 import { MainView } from './components/main/MainView';
-import { useConfigurationEvent } from './hooks/events/core/configuration/configuration-event';
-import { useLocalizationEvent } from './hooks/events/nitro/localization/localization-event';
-import { dispatchMainEvent, useMainEvent } from './hooks/events/nitro/main-event';
-import { useRoomEngineEvent } from './hooks/events/nitro/room/room-engine-event';
+import { DispatchUiEvent, UseConfigurationEvent, UseLocalizationEvent, UseMainEvent, UseRoomEngineEvent } from './hooks';
 
 export const App: FC<{}> = props =>
 {
@@ -105,21 +102,21 @@ export const App: FC<{}> = props =>
         }
     }, [ getPreloadAssetUrls ]);
 
-    useMainEvent(Nitro.WEBGL_UNAVAILABLE, handler);
-    useMainEvent(Nitro.WEBGL_CONTEXT_LOST, handler);
-    useMainEvent(NitroCommunicationDemoEvent.CONNECTION_HANDSHAKING, handler);
-    useMainEvent(NitroCommunicationDemoEvent.CONNECTION_HANDSHAKE_FAILED, handler);
-    useMainEvent(NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED, handler);
-    useMainEvent(NitroCommunicationDemoEvent.CONNECTION_ERROR, handler);
-    useMainEvent(NitroCommunicationDemoEvent.CONNECTION_CLOSED, handler);
-    useRoomEngineEvent(RoomEngineEvent.ENGINE_INITIALIZED, handler);
-    useLocalizationEvent(NitroLocalizationEvent.LOADED, handler);
-    useConfigurationEvent(ConfigurationEvent.LOADED, handler);
-    useConfigurationEvent(ConfigurationEvent.FAILED, handler);
+    UseMainEvent(Nitro.WEBGL_UNAVAILABLE, handler);
+    UseMainEvent(Nitro.WEBGL_CONTEXT_LOST, handler);
+    UseMainEvent(NitroCommunicationDemoEvent.CONNECTION_HANDSHAKING, handler);
+    UseMainEvent(NitroCommunicationDemoEvent.CONNECTION_HANDSHAKE_FAILED, handler);
+    UseMainEvent(NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED, handler);
+    UseMainEvent(NitroCommunicationDemoEvent.CONNECTION_ERROR, handler);
+    UseMainEvent(NitroCommunicationDemoEvent.CONNECTION_CLOSED, handler);
+    UseRoomEngineEvent(RoomEngineEvent.ENGINE_INITIALIZED, handler);
+    UseLocalizationEvent(NitroLocalizationEvent.LOADED, handler);
+    UseConfigurationEvent(ConfigurationEvent.LOADED, handler);
+    UseConfigurationEvent(ConfigurationEvent.FAILED, handler);
 
     if(!WebGL.isWebGLAvailable())
     {
-        dispatchMainEvent(new NitroEvent(Nitro.WEBGL_UNAVAILABLE));
+        DispatchUiEvent(new NitroEvent(Nitro.WEBGL_UNAVAILABLE));
     }
     else
     {

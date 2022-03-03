@@ -1,8 +1,8 @@
 import { GroupDeleteComposer, GroupSaveInformationComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { CreateLinkEvent, LocalizeText } from '../../../../api';
+import { CreateLinkEvent, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Button, Column, Flex, Text } from '../../../../common';
-import { BatchUpdates, SendMessageHook } from '../../../../hooks';
+import { BatchUpdates } from '../../../../hooks';
 import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
 import { IGroupData } from '../../common/IGroupData';
 
@@ -28,7 +28,7 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
 
         NotificationUtilities.confirm(LocalizeText('group.deleteconfirm.desc'), () =>
             {
-                SendMessageHook(new GroupDeleteComposer(groupData.groupId));
+                SendMessageComposer(new GroupDeleteComposer(groupData.groupId));
             }, null, null, null, LocalizeText('group.deleteconfirm.title'));
     }
 
@@ -56,7 +56,7 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
             return true;
         }
 
-        SendMessageHook(new GroupSaveInformationComposer(groupData.groupId, groupName, (groupDescription || '')));
+        SendMessageComposer(new GroupSaveInformationComposer(groupData.groupId, groupName, (groupDescription || '')));
 
         return true;
     }, [ groupData, groupName, groupDescription, groupHomeroomId, setGroupData ]);

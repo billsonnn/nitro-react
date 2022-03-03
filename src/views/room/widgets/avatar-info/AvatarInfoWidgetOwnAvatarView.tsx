@@ -3,8 +3,8 @@ import { AvatarAction, AvatarExpressionEnum, RoomControllerLevel, RoomObjectCate
 import { FC, useCallback, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetCanStandUp, GetCanUseExpression, GetOwnPosture, GetUserProfile, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUserActionMessage } from '../../../../api';
 import { Flex } from '../../../../common';
-import { HelpNameChangeEvent } from '../../../../events/help/HelpNameChangeEvent';
-import { dispatchUiEvent } from '../../../../hooks';
+import { HelpNameChangeEvent } from '../../../../events';
+import { DispatchUiEvent } from '../../../../hooks';
 import { CurrencyIcon } from '../../../shared/currency-icon/CurrencyIcon';
 import { useRoomContext } from '../../context/RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
@@ -51,7 +51,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         eventDispatcher.dispatchEvent(new RoomWidgetUpdateDecorateModeEvent(true));
                         break;
                     case 'change_name':
-                        dispatchUiEvent(new HelpNameChangeEvent(HelpNameChangeEvent.INIT));
+                        DispatchUiEvent(new HelpNameChangeEvent(HelpNameChangeEvent.INIT));
                         break;
                     case 'change_looks':
                         CreateLinkEvent('avatar-editor/show');

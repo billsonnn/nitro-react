@@ -1,6 +1,7 @@
 import { UnseenResetCategoryComposer, UnseenResetItemsComposer } from '@nitrots/nitro-renderer';
+import { SendMessageComposer } from '../../../../api';
 import { UnseenItemTrackerUpdateEvent } from '../../../../events';
-import { dispatchUiEvent, SendMessageHook } from '../../../../hooks';
+import { DispatchUiEvent } from '../../../../hooks';
 import { IUnseenItemTracker } from './IUnseenItemTracker';
 
 export class UnseenItemTracker implements IUnseenItemTracker
@@ -130,16 +131,16 @@ export class UnseenItemTracker implements IUnseenItemTracker
 
     private dispatchUpdateEvent(): void
     {
-        dispatchUiEvent(new UnseenItemTrackerUpdateEvent(this.getFullCount()));
+        DispatchUiEvent(new UnseenItemTrackerUpdateEvent(this.getFullCount()));
     }
 
     private sendResetCategoryMessage(category: number): void
     {
-        SendMessageHook(new UnseenResetCategoryComposer(category));
+        SendMessageComposer(new UnseenResetCategoryComposer(category));
     }
 
     private sendResetItemsMessage(category: number, itemIds: number[]): void
     {
-        SendMessageHook(new UnseenResetItemsComposer(category, ...itemIds));
+        SendMessageComposer(new UnseenResetItemsComposer(category, ...itemIds));
     }
 }

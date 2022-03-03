@@ -1,8 +1,7 @@
 import { GuideSessionRequesterCancelsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { LocalizeText } from '../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Text } from '../../../common';
-import { SendMessageHook } from '../../../hooks';
 
 interface GuideToolUserPendingViewProps
 {
@@ -14,7 +13,7 @@ export const GuideToolUserPendingView: FC<GuideToolUserPendingViewProps> = props
 {
     const { helpRequestDescription = null, helpRequestAverageTime = 0 } = props;
 
-    const cancelRequest = () => SendMessageHook(new GuideSessionRequesterCancelsMessageComposer());
+    const cancelRequest = () => SendMessageComposer(new GuideSessionRequesterCancelsMessageComposer());
 
     return (
         <Column>

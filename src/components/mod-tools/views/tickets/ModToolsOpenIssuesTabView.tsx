@@ -1,7 +1,7 @@
 import { IssueMessageData, PickIssuesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
+import { SendMessageComposer } from '../../../../api';
 import { Base, Button, Column, Grid } from '../../../../common';
-import { SendMessageHook } from '../../../../hooks';
 
 interface ModToolsOpenIssuesTabViewProps
 {
@@ -12,7 +12,7 @@ export const ModToolsOpenIssuesTabView: FC<ModToolsOpenIssuesTabViewProps> = pro
 {
     const { openIssues = null } = props;
 
-    const onPickIssue = (issueId: number) => SendMessageHook(new PickIssuesMessageComposer([issueId], false, 0, 'pick issue button'));
+    const onPickIssue = (issueId: number) => SendMessageComposer(new PickIssuesMessageComposer([issueId], false, 0, 'pick issue button'));
 
     return (
         <Column gap={ 0 } overflow="hidden">

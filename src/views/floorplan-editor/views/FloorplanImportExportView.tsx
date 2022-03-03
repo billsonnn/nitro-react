@@ -1,8 +1,8 @@
 import { UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText } from '../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../api';
 import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
-import { SendMessageHook, UseMountEffect } from '../../../hooks';
+import { UseMountEffect } from '../../../hooks';
 import { convertNumbersForSaving } from '../common/Utils';
 import { useFloorplanEditorContext } from '../context/FloorplanEditorContext';
 
@@ -25,7 +25,7 @@ export const FloorplanImportExportView: FC<FloorplanImportExportViewProps> = pro
 
     const saveFloorChanges = useCallback(() =>
     {
-        SendMessageHook(new UpdateFloorPropertiesMessageComposer(
+        SendMessageComposer(new UpdateFloorPropertiesMessageComposer(
             map.split('\n').join('\r'),
             originalFloorplanSettings.entryPoint[0],
             originalFloorplanSettings.entryPoint[1],

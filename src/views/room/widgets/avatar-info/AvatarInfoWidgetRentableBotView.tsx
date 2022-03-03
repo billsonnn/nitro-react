@@ -1,8 +1,8 @@
 import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, RequestBotCommandConfigurationComposer, RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetNitroInstance, LocalizeText, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateRentableBotChatEvent } from '../../../../api';
+import { GetNitroInstance, LocalizeText, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateRentableBotChatEvent, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Text } from '../../../../common';
-import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
+import { UseMessageEventHook } from '../../../../hooks';
 import { useRoomContext } from '../../context/RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
@@ -66,9 +66,9 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
         }
     }, [ rentableBotData, eventDispatcher, close ]);
 
-    CreateMessageHook(BotCommandConfigurationEvent, onBotCommandConfigurationEvent);
+    UseMessageEventHook(BotCommandConfigurationEvent, onBotCommandConfigurationEvent);
 
-    const requestBotCommandConfiguration = (skillType: number) => SendMessageHook(new RequestBotCommandConfigurationComposer(rentableBotData.webID, skillType));
+    const requestBotCommandConfiguration = (skillType: number) => SendMessageComposer(new RequestBotCommandConfigurationComposer(rentableBotData.webID, skillType));
 
     const processAction = (name: string) =>
     {
@@ -80,45 +80,45 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
             {
                 case 'donate_to_all':
                     requestBotCommandConfiguration(BotSkillsEnum.DONATE_TO_ALL);
-                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DONATE_TO_ALL, ''));
+                    SendMessageComposer(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DONATE_TO_ALL, ''));
                     break;
                 case 'donate_to_user':
                     requestBotCommandConfiguration(BotSkillsEnum.DONATE_TO_USER);
-                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DONATE_TO_USER, ''));
+                    SendMessageComposer(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DONATE_TO_USER, ''));
                     break;
                 case 'change_bot_name':
                     requestBotCommandConfiguration(BotSkillsEnum.CHANGE_BOT_NAME);
                     hideMenu = false;
                     break;
                 case 'save_bot_name':
-                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.CHANGE_BOT_NAME, newName));
+                    SendMessageComposer(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.CHANGE_BOT_NAME, newName));
                     break;
                 case 'change_bot_motto':
                     requestBotCommandConfiguration(BotSkillsEnum.CHANGE_BOT_MOTTO);
                     hideMenu = false;
                     break;
                 case 'save_bot_motto':
-                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.CHANGE_BOT_MOTTO, newMotto));
+                    SendMessageComposer(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.CHANGE_BOT_MOTTO, newMotto));
                     break;
                 case 'dress_up':
-                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DRESS_UP, ''));
+                    SendMessageComposer(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DRESS_UP, ''));
                     break;
                 case 'random_walk':
-                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.RANDOM_WALK, ''));
+                    SendMessageComposer(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.RANDOM_WALK, ''));
                     break;
                 case 'setup_chat':
                     requestBotCommandConfiguration(BotSkillsEnum.SETUP_CHAT);
                     hideMenu = false;
                     break;
                 case 'dance':
-                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DANCE, ''));
+                    SendMessageComposer(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.DANCE, ''));
                     break;
                 case 'nux_take_tour':
                     GetNitroInstance().createLinkEvent('help/tour');
-                    SendMessageHook(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.NUX_TAKE_TOUR, ''));
+                    SendMessageComposer(new BotSkillSaveComposer(rentableBotData.webID, BotSkillsEnum.NUX_TAKE_TOUR, ''));
                     break;
                 case 'pick':
-                    SendMessageHook(new BotRemoveComposer(rentableBotData.webID));
+                    SendMessageComposer(new BotRemoveComposer(rentableBotData.webID));
                     break;
                 default:
                     break;

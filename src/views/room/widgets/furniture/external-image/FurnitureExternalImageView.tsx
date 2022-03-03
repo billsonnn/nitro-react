@@ -1,7 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { IPhotoData, LocalizeText, RoomWidgetUpdateExternalImageEvent } from '../../../../../api';
 import { Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { BatchUpdates, CreateEventDispatcherHook } from '../../../../../hooks';
+import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../context/RoomContext';
 
 export const FurnitureExternalImageView: FC<{}> = props =>
@@ -31,7 +31,7 @@ export const FurnitureExternalImageView: FC<{}> = props =>
         }
     }, []);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateExternalImageEvent.UPDATE_EXTERNAL_IMAGE, eventDispatcher, onRoomWidgetUpdateExternalImageEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateExternalImageEvent.UPDATE_EXTERNAL_IMAGE, eventDispatcher, onRoomWidgetUpdateExternalImageEvent);
 
     if((objectId === -1) || !photoData) return null;
     

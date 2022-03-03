@@ -1,7 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { RoomWidgetRoomObjectMessage, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
 import { Column } from '../../../../common';
-import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
+import { UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../context/RoomContext';
 import { InfoStandWidgetBotView } from './InfoStandWidgetBotView';
 import { InfoStandWidgetFurniView } from './InfoStandWidgetFurniView';
@@ -81,16 +81,16 @@ export const InfoStandWidgetView: FC<{}> = props =>
         }
     }, [ widgetHandler, closeInfostand ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_SELECTED, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandFurniEvent.FURNI, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.OWN_USER, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.BOT, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT, eventDispatcher, onRoomWidgetUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandPetEvent.PET_INFO, eventDispatcher, onRoomWidgetUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_SELECTED, eventDispatcher, onRoomWidgetUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, eventDispatcher, onRoomWidgetUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomWidgetUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandFurniEvent.FURNI, eventDispatcher, onRoomWidgetUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.OWN_USER, eventDispatcher, onRoomWidgetUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.BOT, eventDispatcher, onRoomWidgetUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT, eventDispatcher, onRoomWidgetUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandPetEvent.PET_INFO, eventDispatcher, onRoomWidgetUpdateEvent);
 
     const getInfostandView = useCallback(() =>
     {

@@ -1,8 +1,8 @@
 import { RoomBannedUsersComposer, RoomBannedUsersEvent, RoomSettingsEvent, RoomUsersWithRightsComposer, RoomUsersWithRightsEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText } from '../../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';
-import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
+import { UseMessageEventHook } from '../../../../hooks';
 import RoomSettingsData from '../../common/RoomSettingsData';
 import { NavigatorRoomSettingsAccessTabView } from './views/NavigatorRoomSettingsAccessTabView';
 import { NavigatorRoomSettingsBasicTabView } from './views/NavigatorRoomSettingsBasicTabView';
@@ -35,8 +35,8 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
         if(!parser) return;
 
         setRoomSettingsData(new RoomSettingsData(parser));
-        SendMessageHook(new RoomUsersWithRightsComposer(parser.roomId));
-        SendMessageHook(new RoomBannedUsersComposer(parser.roomId));
+        SendMessageComposer(new RoomUsersWithRightsComposer(parser.roomId));
+        SendMessageComposer(new RoomBannedUsersComposer(parser.roomId));
     }, []);
 
     const onRoomUsersWithRightsEvent = useCallback((event: RoomUsersWithRightsEvent) =>
@@ -69,13 +69,13 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
         setRoomSettingsData(data);
     }, [roomSettingsData]);
 
-    CreateMessageHook(RoomSettingsEvent, onRoomSettingsEvent);
-    CreateMessageHook(RoomUsersWithRightsEvent, onRoomUsersWithRightsEvent);
-    CreateMessageHook(RoomBannedUsersEvent, onRoomBannedUsersEvent);
+    UseMessageEventHook(RoomSettingsEvent, onRoomSettingsEvent);
+    UseMessageEventHook(RoomUsersWithRightsEvent, onRoomUsersWithRightsEvent);
+    UseMessageEventHook(RoomBannedUsersEvent, onRoomBannedUsersEvent);
 
     const saveSettings = useCallback((data: RoomSettingsData) =>
     {
-        SendMessageHook(
+        SendMessageComposer(
             new SaveRoomSettingsComposer(
                 data.roomId,
                 data.roomName,

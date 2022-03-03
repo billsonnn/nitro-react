@@ -1,8 +1,6 @@
 import { NitroEvent, RoomSessionPollEvent, RoomWidgetEnum } from '@nitrots/nitro-renderer';
-import { RoomWidgetPollUpdateEvent } from '../events/RoomWidgetPollUpdateEvent';
-import { RoomWidgetUpdateEvent } from '../events/RoomWidgetUpdateEvent';
-import { RoomWidgetMessage } from '../messages/RoomWidgetMessage';
-import { RoomWidgetPollMessage } from '../messages/RoomWidgetPollMessage';
+import { RoomWidgetPollUpdateEvent, RoomWidgetUpdateEvent } from '../events';
+import { RoomWidgetMessage, RoomWidgetPollMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
 
 export class PollWidgetHandler extends RoomWidgetHandler

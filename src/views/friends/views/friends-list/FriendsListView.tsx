@@ -1,8 +1,7 @@
 import { RemoveFriendComposer, SendRoomInviteComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { LocalizeText } from '../../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { NitroCardAccordionSetView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';
-import { SendMessageHook } from '../../../../hooks';
 import { MessengerFriend } from '../../common/MessengerFriend';
 import { MessengerRequest } from '../../common/MessengerRequest';
 import { FriendsGroupView } from '../friends-group/FriendsGroupView';
@@ -75,7 +74,7 @@ export const FriendsListView: FC<FriendsListViewProps> = props =>
     {
         if(selectedFriendsIds.length === 0 || !message || message.length === 0) return;
         
-        SendMessageHook(new SendRoomInviteComposer(message, ...selectedFriendsIds));
+        SendMessageComposer(new SendRoomInviteComposer(message, ...selectedFriendsIds));
         setShowRoomInvite(false);
     }, [ selectedFriendsIds, setShowRoomInvite ]);
 
@@ -83,7 +82,7 @@ export const FriendsListView: FC<FriendsListViewProps> = props =>
     {
         if(selectedFriendsIds.length === 0) return;
 
-        SendMessageHook(new RemoveFriendComposer(...selectedFriendsIds));
+        SendMessageComposer(new RemoveFriendComposer(...selectedFriendsIds));
         setSelectedFriendsIds([]);
         setShowRemoveFriendsConfirmation(false);
     }, [ selectedFriendsIds ]);

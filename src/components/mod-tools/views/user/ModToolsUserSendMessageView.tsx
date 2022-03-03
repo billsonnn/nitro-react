@@ -1,8 +1,9 @@
 import { ModMessageMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
+import { SendMessageComposer } from '../../../../api';
 import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { NotificationAlertEvent } from '../../../../events';
-import { dispatchUiEvent, SendMessageHook } from '../../../../hooks';
+import { DispatchUiEvent } from '../../../../hooks';
 import { ISelectedUser } from '../../utils/ISelectedUser';
 
 interface ModToolsUserSendMessageViewProps
@@ -20,12 +21,12 @@ export const ModToolsUserSendMessageView: FC<ModToolsUserSendMessageViewProps> =
     {
         if(message.trim().length === 0)
         {
-            dispatchUiEvent(new NotificationAlertEvent([ 'Please write a message to user.' ], null, null, null, 'Error', null));
+            DispatchUiEvent(new NotificationAlertEvent([ 'Please write a message to user.' ], null, null, null, 'Error', null));
             
             return;
         }
 
-        SendMessageHook(new ModMessageMessageComposer(user.userId, message, -999));
+        SendMessageComposer(new ModMessageMessageComposer(user.userId, message, -999));
 
         onCloseClick();
     }, [ message, user, onCloseClick ]);

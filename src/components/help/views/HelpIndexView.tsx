@@ -1,11 +1,9 @@
 import { GetCfhStatusMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../api';
-import { Button } from '../../../common/Button';
-import { Column } from '../../../common/Column';
-import { Text } from '../../../common/Text';
-import { GuideToolEvent } from '../../../events/guide-tool/GuideToolEvent';
-import { dispatchUiEvent, SendMessageHook } from '../../../hooks';
+import { LocalizeText, SendMessageComposer } from '../../../api';
+import { Button, Column, Text } from '../../../common';
+import { GuideToolEvent } from '../../../events';
+import { DispatchUiEvent } from '../../../hooks';
 import { useHelpContext } from '../HelpContext';
 
 export const HelpIndexView: FC<{}> = props =>
@@ -21,12 +19,12 @@ export const HelpIndexView: FC<{}> = props =>
 
     const onRequestMySanctionStatusClick = useCallback(() =>
     {
-        SendMessageHook(new GetCfhStatusMessageComposer(false));
+        SendMessageComposer(new GetCfhStatusMessageComposer(false));
     }, []);
 
     const onNewHelpRequestClick = useCallback(() =>
     {
-        dispatchUiEvent(new GuideToolEvent(GuideToolEvent.CREATE_HELP_REQUEST));
+        DispatchUiEvent(new GuideToolEvent(GuideToolEvent.CREATE_HELP_REQUEST));
     }, []);
 
     return (

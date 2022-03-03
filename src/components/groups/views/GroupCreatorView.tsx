@@ -1,8 +1,8 @@
 import { GroupBuyComposer, GroupBuyDataComposer, GroupBuyDataEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { HasHabboClub, LocalizeText } from '../../../api';
+import { HasHabboClub, LocalizeText, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../hooks';
+import { BatchUpdates, UseMessageEventHook } from '../../../hooks';
 import { IGroupData } from '../common/IGroupData';
 import { GroupTabBadgeView } from './tabs/GroupTabBadgeView';
 import { GroupTabColorsView } from './tabs/GroupTabColorsView';
@@ -49,7 +49,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
             }
         });
 
-        SendMessageHook(new GroupBuyComposer(groupData.groupName, groupData.groupDescription, groupData.groupHomeroomId, groupData.groupColors[0], groupData.groupColors[1], badge));
+        SendMessageComposer(new GroupBuyComposer(groupData.groupName, groupData.groupDescription, groupData.groupHomeroomId, groupData.groupColors[0], groupData.groupColors[1], badge));
     }
 
     const previousStep = () =>
@@ -101,7 +101,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
         });
     }, []);
 
-    CreateMessageHook(GroupBuyDataEvent, onGroupBuyDataEvent);
+    UseMessageEventHook(GroupBuyDataEvent, onGroupBuyDataEvent);
 
     useEffect(() =>
     {
@@ -121,7 +121,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
             });
         });
         
-        SendMessageHook(new GroupBuyDataComposer());
+        SendMessageComposer(new GroupBuyDataComposer());
     }, [ setGroupData ]);
 
     if(!groupData) return null;

@@ -1,9 +1,9 @@
 import { FriendlyTime, GetModeratorUserInfoMessageComposer, ModeratorUserInfoData, ModeratorUserInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { LocalizeText } from '../../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
-import { ModToolsOpenUserChatlogEvent } from '../../../../events/mod-tools/ModToolsOpenUserChatlogEvent';
-import { CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
+import { ModToolsOpenUserChatlogEvent } from '../../../../events';
+import { DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 import { ModToolsUserModActionView } from './ModToolsUserModActionView';
 import { ModToolsUserRoomVisitsView } from './ModToolsUserRoomVisitsView';
 import { ModToolsUserSendMessageView } from './ModToolsUserSendMessageView';
@@ -31,7 +31,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
         setUserInfo(parser.data);
     }, [ userId ]);
 
-    CreateMessageHook(ModeratorUserInfoEvent, onModtoolUserInfoEvent);
+    UseMessageEventHook(ModeratorUserInfoEvent, onModtoolUserInfoEvent);
 
     const userProperties = useMemo(() =>
     {
@@ -100,7 +100,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
 
     useEffect(() =>
     {
-        SendMessageHook(new GetModeratorUserInfoMessageComposer(userId));
+        SendMessageComposer(new GetModeratorUserInfoMessageComposer(userId));
     }, [ userId ]);
 
     if(!userInfo) return null;
@@ -132,7 +132,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
                             </table>
                         </Column>
                         <Column size={ 4 } gap={ 1 }>
-                            <Button onClick={ event => dispatchUiEvent(new ModToolsOpenUserChatlogEvent(userId)) }>
+                            <Button onClick={ event => DispatchUiEvent(new ModToolsOpenUserChatlogEvent(userId)) }>
                                 Room Chat
                             </Button>
                             <Button onClick={ event => setSendMessageVisible(!sendMessageVisible) }>

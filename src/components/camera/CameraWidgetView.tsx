@@ -1,9 +1,7 @@
 import { ILinkEventTracker, InitCameraMessageEvent, IRoomCameraWidgetEffect, RequestCameraConfigurationComposer, RoomCameraWidgetManagerEvent, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, GetRoomCameraWidgetManager, RemoveLinkEventTracker } from '../../api';
-import { useRoomSessionManagerEvent } from '../../hooks';
-import { useCameraEvent } from '../../hooks/events/nitro/camera/camera-event';
-import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
+import { AddEventLinkTracker, GetRoomCameraWidgetManager, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { UseCameraEvent, UseMessageEventHook, UseRoomSessionManagerEvent } from '../../hooks';
 import { CameraWidgetContextProvider } from './CameraWidgetContext';
 import { CameraPicture } from './common/CameraPicture';
 import { CameraWidgetCaptureView } from './views/capture/CameraWidgetCaptureView';
@@ -30,7 +28,7 @@ export const CameraWidgetView: FC<{}> = props =>
         setAvailableEffects(Array.from(GetRoomCameraWidgetManager().effects.values()))
     }, []);
 
-    useCameraEvent(RoomCameraWidgetManagerEvent.INITIALIZED, onRoomCameraWidgetManagerEvent);
+    UseCameraEvent(RoomCameraWidgetManagerEvent.INITIALIZED, onRoomCameraWidgetManagerEvent);
 
     const onCameraConfigurationEvent = useCallback((event: InitCameraMessageEvent) =>
     {
@@ -39,14 +37,14 @@ export const CameraWidgetView: FC<{}> = props =>
         setPrice({ credits: parser.creditPrice, duckets: parser.ducketPrice, publishDucketPrice: parser.publishDucketPrice });
     }, []);
 
-    CreateMessageHook(InitCameraMessageEvent, onCameraConfigurationEvent);
+    UseMessageEventHook(InitCameraMessageEvent, onCameraConfigurationEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
         setMode(MODE_NONE);
     }, []);
 
-    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
     useEffect(() =>
     {
@@ -54,7 +52,7 @@ export const CameraWidgetView: FC<{}> = props =>
         {
             GetRoomCameraWidgetManager().init();
 
-            SendMessageHook(new RequestCameraConfigurationComposer());
+            SendMessageComposer(new RequestCameraConfigurationComposer());
 
             return;
         }

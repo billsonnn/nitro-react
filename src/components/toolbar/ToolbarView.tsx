@@ -1,15 +1,9 @@
 import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, PerkAllowancesMessageEvent, PerkEnum, Queue, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetRoomSession, GetRoomSessionManager, GetSessionDataManager, GetUserProfile, GoToDesktop, OpenMessengerChat } from '../../api';
-import { Base, Flex, TransitionAnimationTypes } from '../../common';
-import { TransitionAnimation } from '../../common/transitions/TransitionAnimation';
-import { FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, InventoryEvent, NavigatorEvent } from '../../events';
-import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events/achievements';
-import { UnseenItemTrackerUpdateEvent } from '../../events/inventory/UnseenItemTrackerUpdateEvent';
-import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
-import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
-import { BatchUpdates, dispatchUiEvent, useRoomEngineEvent, useUiEvent } from '../../hooks';
-import { CreateMessageHook } from '../../hooks/messages/message-event';
+import { Base, Flex, TransitionAnimation, TransitionAnimationTypes } from '../../common';
+import { AchievementsUIEvent, AchievementsUIUnseenCountEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, InventoryEvent, ModToolsEvent, NavigatorEvent, UnseenItemTrackerUpdateEvent, UserSettingsUIEvent } from '../../events';
+import { BatchUpdates, DispatchUiEvent, UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { AvatarImageView } from '../../views/shared/avatar-image/AvatarImageView';
 import { ItemCountView } from '../../views/shared/item-count/ItemCountView';
 import { ToolbarViewItems } from './common/ToolbarViewItems';
@@ -49,7 +43,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
         });
     }, []);
 
-    CreateMessageHook(UserInfoEvent, onUserInfoEvent);
+    UseMessageEventHook(UserInfoEvent, onUserInfoEvent);
 
     const onUserFigureEvent = useCallback((event: FigureUpdateEvent) =>
     {
@@ -58,7 +52,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
         setUserFigure(parser.figure);
     }, []);
     
-    CreateMessageHook(FigureUpdateEvent, onUserFigureEvent);
+    UseMessageEventHook(FigureUpdateEvent, onUserFigureEvent);
 
     const onPerkAllowancesMessageEvent = useCallback((event: PerkAllowancesMessageEvent) =>
     {
@@ -67,35 +61,35 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
         setUseGuideTool(parser.isAllowed(PerkEnum.USE_GUIDE_TOOL));
     }, [ setUseGuideTool ]);
     
-    CreateMessageHook(PerkAllowancesMessageEvent, onPerkAllowancesMessageEvent);
+    UseMessageEventHook(PerkAllowancesMessageEvent, onPerkAllowancesMessageEvent);
 
     const onFriendsMessengerIconEvent = useCallback((event: FriendsMessengerIconEvent) =>
     {
         setChatIconType(event.iconType);
     }, []);
 
-    useUiEvent(FriendsMessengerIconEvent.UPDATE_ICON, onFriendsMessengerIconEvent);
+    UseUiEvent(FriendsMessengerIconEvent.UPDATE_ICON, onFriendsMessengerIconEvent);
 
     const onUnseenItemTrackerUpdateEvent = useCallback((event: UnseenItemTrackerUpdateEvent) =>
     {
         setUnseenInventoryCount(event.count);
     }, []);
 
-    useUiEvent(UnseenItemTrackerUpdateEvent.UPDATE_COUNT, onUnseenItemTrackerUpdateEvent);
+    UseUiEvent(UnseenItemTrackerUpdateEvent.UPDATE_COUNT, onUnseenItemTrackerUpdateEvent);
 
     const onAchievementsUIUnseenCountEvent = useCallback((event: AchievementsUIUnseenCountEvent) =>
     {
         setUnseenAchievementCount(event.count);
     }, []);
 
-    useUiEvent(AchievementsUIUnseenCountEvent.UNSEEN_COUNT, onAchievementsUIUnseenCountEvent);
+    UseUiEvent(AchievementsUIUnseenCountEvent.UNSEEN_COUNT, onAchievementsUIUnseenCountEvent);
 
     const onFriendsRequestCountEvent = useCallback((event: FriendsRequestCountEvent) =>
     {
         setFriendRequestCount(event.count);
     }, []);
 
-    useUiEvent(FriendsRequestCountEvent.UPDATE_COUNT, onFriendsRequestCountEvent);
+    UseUiEvent(FriendsRequestCountEvent.UPDATE_COUNT, onFriendsRequestCountEvent);
 
     const animationIconToToolbar = useCallback((iconName: string, image: HTMLImageElement, x: number, y: number) =>
     {
@@ -136,23 +130,23 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
         animationIconToToolbar('icon-inventory', event.image, event.x, event.y);
     }, [ animationIconToToolbar ]);
 
-    useRoomEngineEvent(NitroToolbarAnimateIconEvent.ANIMATE_ICON, onNitroToolbarAnimateIconEvent);
+    UseRoomEngineEvent(NitroToolbarAnimateIconEvent.ANIMATE_ICON, onNitroToolbarAnimateIconEvent);
 
     const handleToolbarItemClick = useCallback((item: string) =>
     {
         switch(item)
         {
             case ToolbarViewItems.NAVIGATOR_ITEM:
-                dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_NAVIGATOR));
+                DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_NAVIGATOR));
                 return;
             case ToolbarViewItems.INVENTORY_ITEM:
-                dispatchUiEvent(new InventoryEvent(InventoryEvent.TOGGLE_INVENTORY));
+                DispatchUiEvent(new InventoryEvent(InventoryEvent.TOGGLE_INVENTORY));
                 return;
             case ToolbarViewItems.CATALOG_ITEM:
                 CreateLinkEvent('catalog/toggle');
                 return;
             case ToolbarViewItems.FRIEND_LIST_ITEM:
-                dispatchUiEvent(new FriendsEvent(FriendsEvent.TOGGLE_FRIEND_LIST));
+                DispatchUiEvent(new FriendsEvent(FriendsEvent.TOGGLE_FRIEND_LIST));
                 return;
             case ToolbarViewItems.CAMERA_ITEM:
                 CreateLinkEvent('camera/toggle');
@@ -162,10 +156,10 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 setMeExpanded(false);
                 return;
             case ToolbarViewItems.MOD_TOOLS_ITEM:
-                dispatchUiEvent(new ModToolsEvent(ModToolsEvent.TOGGLE_MOD_TOOLS));
+                DispatchUiEvent(new ModToolsEvent(ModToolsEvent.TOGGLE_MOD_TOOLS));
                 return;
             case ToolbarViewItems.ACHIEVEMENTS_ITEM:
-                dispatchUiEvent(new AchievementsUIEvent(AchievementsUIEvent.TOGGLE_ACHIEVEMENTS));
+                DispatchUiEvent(new AchievementsUIEvent(AchievementsUIEvent.TOGGLE_ACHIEVEMENTS));
                 setMeExpanded(false);
                 return;
             case ToolbarViewItems.PROFILE_ITEM:
@@ -173,11 +167,11 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 setMeExpanded(false);
                 return;
             case ToolbarViewItems.SETTINGS_ITEM:
-                dispatchUiEvent(new UserSettingsUIEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS));
+                DispatchUiEvent(new UserSettingsUIEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS));
                 setMeExpanded(false);
                 return;
             case ToolbarViewItems.GUIDE_TOOL_ITEM:
-                dispatchUiEvent(new GuideToolEvent(GuideToolEvent.TOGGLE_GUIDE_TOOL));
+                DispatchUiEvent(new GuideToolEvent(GuideToolEvent.TOGGLE_GUIDE_TOOL));
                 setMeExpanded(false);
                 return;
             case ToolbarViewItems.FRIEND_CHAT_ITEM:

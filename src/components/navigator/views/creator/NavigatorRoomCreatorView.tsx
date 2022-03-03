@@ -1,15 +1,9 @@
 /* eslint-disable no-template-curly-in-string */
 import { HabboClubLevelEnum, RoomCreateComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetConfiguration, GetSessionDataManager, LocalizeText } from '../../../../api';
-import { Button } from '../../../../common/Button';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Grid } from '../../../../common/Grid';
-import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
-import { Text } from '../../../../common/Text';
+import { GetConfiguration, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
+import { Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { SendMessageHook } from '../../../../hooks/messages';
 import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { IRoomModel, RoomModels } from '../../common/RoomModels';
 import { useNavigatorContext } from '../../NavigatorContext';
@@ -39,7 +33,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
     const createRoom = () =>
     {
-        SendMessageHook(new RoomCreateComposer(name, description, 'model_' + selectedModelName, Number(category), Number(visitorsCount), tradesSetting));
+        SendMessageComposer(new RoomCreateComposer(name, description, 'model_' + selectedModelName, Number(category), Number(visitorsCount), tradesSetting));
     }
 
     useEffect(() =>

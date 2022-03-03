@@ -1,12 +1,9 @@
 import { IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent, TradingCancelComposer, TradingCloseComposer, TradingOpenComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useReducer, useState } from 'react';
-import { GetRoomEngine, LocalizeText } from '../../api';
+import { GetRoomEngine, LocalizeText, SendMessageComposer } from '../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { InventoryBadgesUpdatedEvent, InventoryEvent, InventoryTradeRequestEvent } from '../../events';
-import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
-import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
-import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
-import { SendMessageHook } from '../../hooks/messages';
+import { DispatchUiEvent, UseRoomEngineEvent, UseRoomSessionManagerEvent, UseUiEvent } from '../../hooks';
 import { isObjectMoverRequested, setObjectMoverRequested } from './common/InventoryUtilities';
 import { TradeState } from './common/TradeState';
 import { IUnseenItemTracker } from './common/unseen/IUnseenItemTracker';
@@ -50,10 +47,10 @@ export const InventoryView: FC<{}> = props =>
             switch(furnitureState.tradeData.state)
             {
                 case TradeState.TRADING_STATE_RUNNING:
-                    SendMessageHook(new TradingCloseComposer());
+                    SendMessageComposer(new TradingCloseComposer());
                     return;
                 default:
-                    SendMessageHook(new TradingCancelComposer());
+                    SendMessageComposer(new TradingCancelComposer());
                     return;
             }
         }
@@ -88,15 +85,15 @@ export const InventoryView: FC<{}> = props =>
             case InventoryTradeRequestEvent.REQUEST_TRADE: {
                 const tradeEvent = (event as InventoryTradeRequestEvent);
 
-                SendMessageHook(new TradingOpenComposer(tradeEvent.objectId));
+                SendMessageComposer(new TradingOpenComposer(tradeEvent.objectId));
             }
         }
     }, [ isVisible, close ]);
 
-    useUiEvent(InventoryEvent.SHOW_INVENTORY, onInventoryEvent);
-    useUiEvent(InventoryEvent.HIDE_INVENTORY, onInventoryEvent);
-    useUiEvent(InventoryEvent.TOGGLE_INVENTORY, onInventoryEvent);
-    useUiEvent(InventoryTradeRequestEvent.REQUEST_TRADE, onInventoryEvent);
+    UseUiEvent(InventoryEvent.SHOW_INVENTORY, onInventoryEvent);
+    UseUiEvent(InventoryEvent.HIDE_INVENTORY, onInventoryEvent);
+    UseUiEvent(InventoryEvent.TOGGLE_INVENTORY, onInventoryEvent);
+    UseUiEvent(InventoryTradeRequestEvent.REQUEST_TRADE, onInventoryEvent);
 
     const onRoomEngineObjectPlacedEvent = useCallback((event: RoomEngineObjectPlacedEvent) =>
     {
@@ -107,7 +104,7 @@ export const InventoryView: FC<{}> = props =>
         if(!event.placedInRoom) setIsVisible(true);
     }, []);
 
-    useRoomEngineEvent(RoomEngineObjectEvent.PLACED, onRoomEngineObjectPlacedEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.PLACED, onRoomEngineObjectPlacedEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
@@ -123,8 +120,8 @@ export const InventoryView: FC<{}> = props =>
         }
     }, []);
 
-    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
     const resetTrackerForTab = useCallback((name: string) =>
     {
@@ -192,7 +189,7 @@ export const InventoryView: FC<{}> = props =>
     {
         if(!badgeState.badges) return;
         
-        dispatchUiEvent(new InventoryBadgesUpdatedEvent(InventoryBadgesUpdatedEvent.BADGES_UPDATED, badgeState.badges));
+        DispatchUiEvent(new InventoryBadgesUpdatedEvent(InventoryBadgesUpdatedEvent.BADGES_UPDATED, badgeState.badges));
     }, [ badgeState.badges ]);
 
     return (

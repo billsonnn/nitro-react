@@ -2,8 +2,7 @@ import { IRoomSession, RoomEngineEvent, RoomId, RoomSessionEvent } from '@nitrot
 import { FC, useCallback, useState } from 'react';
 import { GetRoomSession, SetActiveRoomId, StartRoomSession } from '../../api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from '../../common';
-import { useRoomEngineEvent } from '../../hooks/events/nitro/room/room-engine-event';
-import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
+import { UseRoomEngineEvent, UseRoomSessionManagerEvent } from '../../hooks';
 import { RoomView } from '../../views/room/RoomView';
 
 export const RoomHostView: FC<{}> = props =>
@@ -30,8 +29,8 @@ export const RoomHostView: FC<{}> = props =>
         }
     }, []);
 
-    useRoomEngineEvent(RoomEngineEvent.INITIALIZED, onRoomEngineEvent);
-    useRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
+    UseRoomEngineEvent(RoomEngineEvent.INITIALIZED, onRoomEngineEvent);
+    UseRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
@@ -46,8 +45,8 @@ export const RoomHostView: FC<{}> = props =>
         }
     }, []);
 
-    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
     return (
         <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ !!roomSession } timeout={ 300 }>

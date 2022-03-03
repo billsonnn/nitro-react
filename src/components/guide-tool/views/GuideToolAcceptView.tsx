@@ -1,8 +1,7 @@
 import { GuideSessionGuideDecidesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { LocalizeText } from '../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Text } from '../../../common';
-import { SendMessageHook } from '../../../hooks';
 
 interface GuideToolAcceptViewProps
 {
@@ -14,7 +13,7 @@ export const GuideToolAcceptView: FC<GuideToolAcceptViewProps> = props =>
 {
     const { helpRequestDescription = null, helpRequestAverageTime = 0 } = props;
     
-    const answerRequest = (response: boolean) => SendMessageHook(new GuideSessionGuideDecidesMessageComposer(response));
+    const answerRequest = (response: boolean) => SendMessageComposer(new GuideSessionGuideDecidesMessageComposer(response));
 
     return (
         <Column>

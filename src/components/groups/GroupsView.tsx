@@ -1,7 +1,7 @@
 import { GroupBadgePartsComposer, GroupBadgePartsEvent, GroupPurchasedEvent, GroupSettingsComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, RemoveLinkEventTracker, TryVisitRoom } from '../../api';
-import { CreateMessageHook, SendMessageHook } from '../../hooks';
+import { AddEventLinkTracker, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
+import { UseMessageEventHook } from '../../hooks';
 import { CompareId } from './common/CompareId';
 import { IGroupCustomize } from './common/IGroupCustomize';
 import { GroupsContextProvider } from './GroupsContext';
@@ -23,7 +23,7 @@ export const GroupsView: FC<{}> = props =>
         TryVisitRoom(parser.roomId);
     }, []);
 
-    CreateMessageHook(GroupPurchasedEvent, onGroupPurchasedEvent);
+    UseMessageEventHook(GroupPurchasedEvent, onGroupPurchasedEvent);
 
     const onGroupBadgePartsEvent = useCallback((event: GroupBadgePartsEvent) =>
     {
@@ -52,7 +52,7 @@ export const GroupsView: FC<{}> = props =>
         setGroupCustomize(customize);
     }, [ setGroupCustomize ]);
 
-    CreateMessageHook(GroupBadgePartsEvent, onGroupBadgePartsEvent);
+    UseMessageEventHook(GroupBadgePartsEvent, onGroupBadgePartsEvent);
 
     const linkReceived = useCallback((url: string) =>
     {
@@ -69,7 +69,7 @@ export const GroupsView: FC<{}> = props =>
                 if(!parts[2]) return;
 
                 setCreatorVisible(false);
-                SendMessageHook(new GroupSettingsComposer(Number(parts[2])));
+                SendMessageComposer(new GroupSettingsComposer(Number(parts[2])));
                 return;
         }
     }, []);
@@ -88,7 +88,7 @@ export const GroupsView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        SendMessageHook(new GroupBadgePartsComposer());
+        SendMessageComposer(new GroupBadgePartsComposer());
     }, []);
     
     return (

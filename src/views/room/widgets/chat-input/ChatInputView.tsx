@@ -2,7 +2,7 @@ import { HabboClubLevelEnum, RoomControllerLevel } from '@nitrots/nitro-renderer
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { GetConfiguration, GetSessionDataManager, LocalizeText, RoomWidgetChatMessage, RoomWidgetChatTypingMessage, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
-import { CreateEventDispatcherHook } from '../../../../hooks/events';
+import { UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../context/RoomContext';
 import { ChatInputStyleSelectorView } from './ChatInputStyleSelectorView';
 
@@ -181,14 +181,14 @@ export const ChatInputView: FC<{}> = props =>
         setSelectedUsername('');
     }, []);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
 
     const onRoomWidgetUpdateInfostandUserEvent = useCallback((event: RoomWidgetUpdateInfostandUserEvent) =>
     {
         setSelectedUsername(event.name);
     }, []);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateInfostandUserEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateInfostandUserEvent);
 
     const onRoomWidgetChatInputContentUpdateEvent = useCallback((event: RoomWidgetUpdateChatInputContentEvent) =>
     {
@@ -203,7 +203,7 @@ export const ChatInputView: FC<{}> = props =>
         }
     }, [ chatModeIdWhisper ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateChatInputContentEvent.CHAT_INPUT_CONTENT, eventDispatcher, onRoomWidgetChatInputContentUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateChatInputContentEvent.CHAT_INPUT_CONTENT, eventDispatcher, onRoomWidgetChatInputContentUpdateEvent);
 
     const selectChatStyleId = useCallback((styleId: number) =>
     {

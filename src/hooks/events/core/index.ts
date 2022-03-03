@@ -1,2 +1,2 @@
-export * from './communication';
-export * from './configuration';
+export * from './UseCommunicationEvent';
+export * from './UseConfigurationEvent';

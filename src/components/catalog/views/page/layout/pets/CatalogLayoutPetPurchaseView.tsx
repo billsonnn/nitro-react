@@ -1,12 +1,9 @@
 import { ApproveNameMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText } from '../../../../../../api';
-import { Column } from '../../../../../../common/Column';
-import { Flex } from '../../../../../../common/Flex';
-import { Text } from '../../../../../../common/Text';
+import { LocalizeText, SendMessageComposer } from '../../../../../../api';
+import { Column, Flex, Text } from '../../../../../../common';
 import { CatalogPurchasedEvent } from '../../../../../../events';
-import { useUiEvent } from '../../../../../../hooks/events/ui/ui-event';
-import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
+import { UseUiEvent } from '../../../../../../hooks';
 import { CurrencyIcon } from '../../../../../../views/shared/currency-icon/CurrencyIcon';
 import { IPurchasableOffer } from '../../../../common/IPurchasableOffer';
 import { Offer } from '../../../../common/Offer';
@@ -31,11 +28,11 @@ export const CatalogLayoutPetPurchaseView: FC<CatalogLayoutPetPurchaseViewProps>
         setNameApproved(false);
     }, []);
 
-    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
+    UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
 
     const beforePurchase = useCallback(() =>
     {
-        SendMessageHook(new ApproveNameMessageComposer(petNameValue, 1));
+        SendMessageComposer(new ApproveNameMessageComposer(petNameValue, 1));
     }, [ petNameValue ]);
 
     const extraData = `${ petNameValue }\n${ extra }`;

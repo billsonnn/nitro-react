@@ -1,7 +1,7 @@
 import { ChangeUserNameMessageComposer, UserNameChangeMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../../../api';
-import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
+import { GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
+import { UseMessageEventHook } from '../../../../hooks';
 import { NameChangeLayoutViewProps } from './NameChangeView.types';
 
 export const NameChangeConfirmationView:FC<NameChangeLayoutViewProps> = props =>
@@ -21,14 +21,14 @@ export const NameChangeConfirmationView:FC<NameChangeLayoutViewProps> = props =>
         onAction('close');
     }, [ onAction ]);
     
-    CreateMessageHook(UserNameChangeMessageEvent, onUserNameChangeMessageEvent);
+    UseMessageEventHook(UserNameChangeMessageEvent, onUserNameChangeMessageEvent);
 
     const confirm = useCallback(() =>
     {
         if(isConfirming) return;
 
         setIsConfirming(true);
-        SendMessageHook(new ChangeUserNameMessageComposer(username));
+        SendMessageComposer(new ChangeUserNameMessageComposer(username));
     }, [ isConfirming, username ]);
 
     return (

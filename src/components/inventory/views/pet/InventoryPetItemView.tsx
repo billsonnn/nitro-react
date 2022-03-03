@@ -1,6 +1,6 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useEffect, useState } from 'react';
-import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
+import { LayoutGridItem } from '../../../../common';
 import { PetImageView } from '../../../../views/shared/pet-image/PetImageView';
 import { PetItem } from '../../common/PetItem';
 import { attemptPetPlacement } from '../../common/PetUtilities';

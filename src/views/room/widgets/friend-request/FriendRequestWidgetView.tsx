@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from 'react';
 import { RoomWidgetUpdateFriendRequestEvent } from '../../../../api';
-import { CreateEventDispatcherHook } from '../../../../hooks';
+import { UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../context/RoomContext';
 import { FriendRequestDialogView } from './FriendRequestDialogView';
 
@@ -54,8 +54,8 @@ export const FriendRequestWidgetView: FC<{}> = props =>
         }
     }, [ showFriendRequest, hideFriendRequest ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateFriendRequestEvent.SHOW_FRIEND_REQUEST, eventDispatcher, onRoomWidgetUpdateFriendRequestEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateFriendRequestEvent.HIDE_FRIEND_REQUEST, eventDispatcher, onRoomWidgetUpdateFriendRequestEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateFriendRequestEvent.SHOW_FRIEND_REQUEST, eventDispatcher, onRoomWidgetUpdateFriendRequestEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateFriendRequestEvent.HIDE_FRIEND_REQUEST, eventDispatcher, onRoomWidgetUpdateFriendRequestEvent);
 
     if(!friendRequests.length) return null;
 

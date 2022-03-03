@@ -3,12 +3,8 @@ import { RoomEngineObjectEvent, RoomObjectCategory } from '@nitrots/nitro-render
 import { FC, useCallback, useReducer, useState } from 'react';
 import { GetRoomSession } from '../../api';
 import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
-import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
-import { ModToolsOpenRoomChatlogEvent } from '../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
-import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRoomInfoEvent';
-import { ModToolsOpenUserInfoEvent } from '../../events/mod-tools/ModToolsOpenUserInfoEvent';
-import { useRoomEngineEvent } from '../../hooks/events';
-import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
+import { ModToolsEvent, ModToolsOpenRoomChatlogEvent, ModToolsOpenRoomInfoEvent, ModToolsOpenUserInfoEvent } from '../../events';
+import { DispatchUiEvent, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { ModToolsContextProvider } from './ModToolsContext';
 import { ModToolsMessageHandler } from './ModToolsMessageHandler';
 import { initialModTools, ModToolsActions, ModToolsReducer } from './reducers/ModToolsReducer';
@@ -43,9 +39,9 @@ export const ModToolsView: FC<{}> = props =>
         }
     }, []);
 
-    useUiEvent(ModToolsEvent.SHOW_MOD_TOOLS, onModToolsEvent);
-    useUiEvent(ModToolsEvent.HIDE_MOD_TOOLS, onModToolsEvent);
-    useUiEvent(ModToolsEvent.TOGGLE_MOD_TOOLS, onModToolsEvent);
+    UseUiEvent(ModToolsEvent.SHOW_MOD_TOOLS, onModToolsEvent);
+    UseUiEvent(ModToolsEvent.HIDE_MOD_TOOLS, onModToolsEvent);
+    UseUiEvent(ModToolsEvent.TOGGLE_MOD_TOOLS, onModToolsEvent);
     
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
@@ -62,7 +58,7 @@ export const ModToolsView: FC<{}> = props =>
         setSelectedUser({ userId: userData.webID, username: userData.name });
     }, []);
     
-    useRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
 
     const handleClick = useCallback((action: string, value?: string) =>
     {
@@ -73,7 +69,7 @@ export const ModToolsView: FC<{}> = props =>
             case 'toggle_room': {
                 if(!openRooms)
                 {
-                    dispatchUiEvent(new ModToolsOpenRoomInfoEvent(currentRoomId));
+                    DispatchUiEvent(new ModToolsOpenRoomInfoEvent(currentRoomId));
                     return;
                 }
 
@@ -83,7 +79,7 @@ export const ModToolsView: FC<{}> = props =>
                 }
                 else
                 {
-                    dispatchUiEvent(new ModToolsOpenRoomInfoEvent(currentRoomId));
+                    DispatchUiEvent(new ModToolsOpenRoomInfoEvent(currentRoomId));
                 }
                 return;
             }
@@ -104,7 +100,7 @@ export const ModToolsView: FC<{}> = props =>
             case 'toggle_room_chatlog': {
                 if(!openRoomChatlogs)
                 {
-                    dispatchUiEvent(new ModToolsOpenRoomChatlogEvent(currentRoomId));
+                    DispatchUiEvent(new ModToolsOpenRoomChatlogEvent(currentRoomId));
                     return;
                 }
 
@@ -114,7 +110,7 @@ export const ModToolsView: FC<{}> = props =>
                 }
                 else
                 {
-                    dispatchUiEvent(new ModToolsOpenRoomChatlogEvent(currentRoomId));
+                    DispatchUiEvent(new ModToolsOpenRoomChatlogEvent(currentRoomId));
                 }
                 return;
             }
@@ -140,7 +136,7 @@ export const ModToolsView: FC<{}> = props =>
 
                 if(!openUserInfo)
                 {
-                    dispatchUiEvent(new ModToolsOpenUserInfoEvent(userId));
+                    DispatchUiEvent(new ModToolsOpenUserInfoEvent(userId));
                     return;
                 }
 
@@ -150,7 +146,7 @@ export const ModToolsView: FC<{}> = props =>
                 }
                 else
                 {
-                    dispatchUiEvent(new ModToolsOpenUserInfoEvent(userId));
+                    DispatchUiEvent(new ModToolsOpenUserInfoEvent(userId));
                 }
                 return;
             }

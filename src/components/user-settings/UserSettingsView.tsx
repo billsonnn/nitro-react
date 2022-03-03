@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NitroSettingsEvent, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer, UserSettingsSoundComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../api';
+import { LocalizeText, SendMessageComposer } from '../../api';
 import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
-import { CreateMessageHook, dispatchMainEvent, SendMessageHook, useUiEvent } from '../../hooks';
+import { UserSettingsUIEvent } from '../../events';
+import { DispatchUiEvent, UseMessageEventHook, UseUiEvent } from '../../hooks';
 
 export const UserSettingsView: FC<{}> = props =>
 {
@@ -27,9 +27,9 @@ export const UserSettingsView: FC<{}> = props =>
         }
     }, []);
 
-    useUiEvent(UserSettingsUIEvent.SHOW_USER_SETTINGS, onUserSettingsUIEvent);
-    useUiEvent(UserSettingsUIEvent.HIDE_USER_SETTINGS, onUserSettingsUIEvent);
-    useUiEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS, onUserSettingsUIEvent);
+    UseUiEvent(UserSettingsUIEvent.SHOW_USER_SETTINGS, onUserSettingsUIEvent);
+    UseUiEvent(UserSettingsUIEvent.HIDE_USER_SETTINGS, onUserSettingsUIEvent);
+    UseUiEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS, onUserSettingsUIEvent);
 
     const onUserSettingsEvent = useCallback((event: UserSettingsEvent) =>
     {
@@ -48,7 +48,7 @@ export const UserSettingsView: FC<{}> = props =>
         setUserSettings(settingsEvent);
     }, []);
 
-    CreateMessageHook(UserSettingsEvent, onUserSettingsEvent);
+    UseMessageEventHook(UserSettingsEvent, onUserSettingsEvent);
 
     const processAction = useCallback((type: string, value?: boolean | number | string) =>
     {
@@ -64,15 +64,15 @@ export const UserSettingsView: FC<{}> = props =>
                 return;
             case 'oldchat':
                 clone.oldChat = value as boolean;
-                SendMessageHook(new UserSettingsOldChatComposer(clone.oldChat));
+                SendMessageComposer(new UserSettingsOldChatComposer(clone.oldChat));
                 break;
             case 'room_invites':
                 clone.roomInvites = value as boolean;
-                SendMessageHook(new UserSettingsRoomInvitesComposer(clone.roomInvites));
+                SendMessageComposer(new UserSettingsRoomInvitesComposer(clone.roomInvites));
                 break;
             case 'camera_follow':
                 clone.cameraFollow = value as boolean;
-                SendMessageHook(new UserSettingsCameraFollowComposer(clone.cameraFollow));
+                SendMessageComposer(new UserSettingsCameraFollowComposer(clone.cameraFollow));
                 break;
             case 'system_volume':
                 clone.volumeSystem = value as number;
@@ -99,7 +99,7 @@ export const UserSettingsView: FC<{}> = props =>
         switch(type)
         {
             case 'volume':
-                SendMessageHook(new UserSettingsSoundComposer(Math.round(userSettings.volumeSystem), Math.round(userSettings.volumeFurni), Math.round(userSettings.volumeTrax)));
+                SendMessageComposer(new UserSettingsSoundComposer(Math.round(userSettings.volumeSystem), Math.round(userSettings.volumeFurni), Math.round(userSettings.volumeTrax)));
                 break;
         }
     }, [userSettings]);
@@ -108,7 +108,7 @@ export const UserSettingsView: FC<{}> = props =>
     {
         if(!userSettings) return;
 
-        dispatchMainEvent(userSettings);
+        DispatchUiEvent(userSettings);
     }, [userSettings]);
 
     if(!isVisible) return null;

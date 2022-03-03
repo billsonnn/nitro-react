@@ -1,7 +1,7 @@
 import { AchievementNotificationMessageEvent, ActivityPointNotificationMessageEvent, ClubGiftNotificationEvent, ClubGiftSelectedEvent, HabboBroadcastMessageEvent, HotelClosedAndOpensEvent, HotelClosesAndWillOpenAtEvent, HotelWillCloseInMinutesEvent, InfoFeedEnableMessageEvent, MaintenanceStatusMessageEvent, ModeratorCautionEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent, PetLevelNotificationEvent, PetReceivedMessageEvent, RespectReceivedEvent, RoomEnterEvent, UserBannedMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetConfiguration, GetRoomEngine, GetSessionDataManager, LocalizeBadgeName, LocalizeText } from '../../api';
-import { CreateMessageHook } from '../../hooks/messages';
+import { UseMessageEventHook } from '../../hooks';
 import { NotificationBubbleType } from './common/NotificationBubbleType';
 import { NotificationUtilities } from './common/NotificationUtilities';
 import { ProductImageUtility } from './common/ProductImageUtility';
@@ -22,7 +22,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.showSingleBubble(text2, NotificationBubbleType.RESPECT);
     }, []);
 
-    CreateMessageHook(RespectReceivedEvent, onRespectReceivedEvent);
+    UseMessageEventHook(RespectReceivedEvent, onRespectReceivedEvent);
 
     const onHabboBroadcastMessageEvent = useCallback((event: HabboBroadcastMessageEvent) =>
     {
@@ -31,7 +31,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.simpleAlert(parser.message.replace(/\\r/g, '\r'), null, null, LocalizeText('notifications.broadcast.title'));
     }, []);
 
-    CreateMessageHook(HabboBroadcastMessageEvent, onHabboBroadcastMessageEvent);
+    UseMessageEventHook(HabboBroadcastMessageEvent, onHabboBroadcastMessageEvent);
 
     const onAchievementNotificationMessageEvent = useCallback((event: AchievementNotificationMessageEvent) =>
     {
@@ -45,7 +45,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.showSingleBubble((text1 + ' ' + badgeName), NotificationBubbleType.ACHIEVEMENT, badgeImage, internalLink);
     }, []);
 
-    CreateMessageHook(AchievementNotificationMessageEvent, onAchievementNotificationMessageEvent);
+    UseMessageEventHook(AchievementNotificationMessageEvent, onAchievementNotificationMessageEvent);
 
     const onClubGiftNotificationEvent = useCallback((event: ClubGiftNotificationEvent) =>
     {
@@ -54,7 +54,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.showClubGiftNotification(parser.numGifts);
     }, []);
 
-    CreateMessageHook(ClubGiftNotificationEvent, onClubGiftNotificationEvent);
+    UseMessageEventHook(ClubGiftNotificationEvent, onClubGiftNotificationEvent);
 
     const onModeratorMessageEvent = useCallback((event: ModeratorMessageEvent) =>
     {
@@ -63,7 +63,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.handleModeratorMessage(parser.message, parser.url);
     }, []);
 
-    CreateMessageHook(ModeratorMessageEvent, onModeratorMessageEvent);
+    UseMessageEventHook(ModeratorMessageEvent, onModeratorMessageEvent);
 
     const onActivityPointNotificationMessageEvent = useCallback((event: ActivityPointNotificationMessageEvent) =>
     {
@@ -83,7 +83,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.showSingleBubble(LocalizeText('notifications.text.loyalty.received', [ 'AMOUNT' ], [ parser.amountChanged.toString() ]), NotificationBubbleType.INFO, imageUrl);
     }, []);
 
-    CreateMessageHook(ActivityPointNotificationMessageEvent, onActivityPointNotificationMessageEvent);
+    UseMessageEventHook(ActivityPointNotificationMessageEvent, onActivityPointNotificationMessageEvent);
 
     const onUserBannedMessageEvent = useCallback((event: UserBannedMessageEvent) =>
     {
@@ -92,7 +92,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.handleUserBannedMessage(parser.message);
     }, []);
 
-    CreateMessageHook(UserBannedMessageEvent, onUserBannedMessageEvent);
+    UseMessageEventHook(UserBannedMessageEvent, onUserBannedMessageEvent);
 
     const onHotelClosesAndWillOpenAtEvent = useCallback((event: HotelClosesAndWillOpenAtEvent) =>
     {
@@ -101,7 +101,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.handleHotelClosedMessage(parser.openHour, parser.openMinute, parser.userThrowOutAtClose);
     }, []);
 
-    CreateMessageHook(HotelClosesAndWillOpenAtEvent, onHotelClosesAndWillOpenAtEvent);
+    UseMessageEventHook(HotelClosesAndWillOpenAtEvent, onHotelClosesAndWillOpenAtEvent);
 
     const onPetReceivedMessageEvent = useCallback((event: PetReceivedMessageEvent) =>
     {
@@ -118,7 +118,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.showSingleBubble(text, NotificationBubbleType.PETLEVEL, imageUrl);
     }, []);
 
-    CreateMessageHook(PetReceivedMessageEvent, onPetReceivedMessageEvent);
+    UseMessageEventHook(PetReceivedMessageEvent, onPetReceivedMessageEvent);
 
     const onRoomEnterEvent = useCallback((event: RoomEnterEvent) =>
     {
@@ -127,7 +127,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.showModerationDisclaimer();
     }, []);
 
-    CreateMessageHook(RoomEnterEvent, onRoomEnterEvent);
+    UseMessageEventHook(RoomEnterEvent, onRoomEnterEvent);
 
     const onMOTDNotificationEvent = useCallback((event: MOTDNotificationEvent) =>
     {
@@ -136,7 +136,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.handleMOTD(parser.messages);
     }, []);
 
-    CreateMessageHook(MOTDNotificationEvent, onMOTDNotificationEvent);
+    UseMessageEventHook(MOTDNotificationEvent, onMOTDNotificationEvent);
 
     const onPetLevelNotificationEvent = useCallback((event: PetLevelNotificationEvent) =>
     {
@@ -151,7 +151,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.showSingleBubble(LocalizeText('notifications.text.petlevel', [ 'pet_name', 'level' ], [ parser.petName, parser.level.toString() ]), NotificationBubbleType.PETLEVEL, imageUrl);
     }, []);
 
-    CreateMessageHook(PetLevelNotificationEvent, onPetLevelNotificationEvent);
+    UseMessageEventHook(PetLevelNotificationEvent, onPetLevelNotificationEvent);
 
     const onInfoFeedEnableMessageEvent = useCallback((event: InfoFeedEnableMessageEvent) =>
     {
@@ -160,7 +160,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.BUBBLES_DISABLED = !(parser.enabled);
     }, []);
 
-    CreateMessageHook(InfoFeedEnableMessageEvent, onInfoFeedEnableMessageEvent);
+    UseMessageEventHook(InfoFeedEnableMessageEvent, onInfoFeedEnableMessageEvent);
 
     const onClubGiftSelectedEvent = useCallback((event: ClubGiftSelectedEvent) =>
     {
@@ -175,7 +175,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.showSingleBubble(LocalizeText('notifications.text.club_gift.selected'), NotificationBubbleType.INFO, ProductImageUtility.getProductImageUrl(productData.productType, productData.furniClassId, productData.extraParam))
     }, []);
 
-    CreateMessageHook(ClubGiftSelectedEvent, onClubGiftSelectedEvent);
+    UseMessageEventHook(ClubGiftSelectedEvent, onClubGiftSelectedEvent);
 
     const onMaintenanceStatusMessageEvent = useCallback((event: MaintenanceStatusMessageEvent) =>
     {
@@ -184,7 +184,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.handleHotelMaintenanceMessage(parser.minutesUntilMaintenance, parser.duration);
     }, []);
 
-    CreateMessageHook(MaintenanceStatusMessageEvent, onMaintenanceStatusMessageEvent);
+    UseMessageEventHook(MaintenanceStatusMessageEvent, onMaintenanceStatusMessageEvent);
 
     const onModeratorCautionEvent = useCallback((event: ModeratorCautionEvent) =>
     {
@@ -193,7 +193,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.handleModeratorCaution(parser.message, parser.url);
     }, []);
 
-    CreateMessageHook(ModeratorCautionEvent, onModeratorCautionEvent);
+    UseMessageEventHook(ModeratorCautionEvent, onModeratorCautionEvent);
 
     const onNotificationDialogMessageEvent = useCallback((event: NotificationDialogMessageEvent) =>
     {
@@ -202,7 +202,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.showNotification(parser.type, parser.parameters);
     }, []);
 
-    CreateMessageHook(NotificationDialogMessageEvent, onNotificationDialogMessageEvent);
+    UseMessageEventHook(NotificationDialogMessageEvent, onNotificationDialogMessageEvent);
 
     const onHotelWillCloseInMinutesEvent = useCallback((event: HotelWillCloseInMinutesEvent) =>
     {
@@ -211,7 +211,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.handleHotelClosingMessage(parser.openMinute);
     }, []);
 
-    CreateMessageHook(HotelWillCloseInMinutesEvent, onHotelWillCloseInMinutesEvent);
+    UseMessageEventHook(HotelWillCloseInMinutesEvent, onHotelWillCloseInMinutesEvent);
 
     const onHotelClosedAndOpensEvent = useCallback((event: HotelClosedAndOpensEvent) =>
     {
@@ -220,7 +220,7 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
         NotificationUtilities.handleLoginFailedHotelClosedMessage(parser.openHour, parser.openMinute);
     }, []);
 
-    CreateMessageHook(HotelClosedAndOpensEvent, onHotelClosedAndOpensEvent);
+    UseMessageEventHook(HotelClosedAndOpensEvent, onHotelClosedAndOpensEvent);
 
     return null;
 }

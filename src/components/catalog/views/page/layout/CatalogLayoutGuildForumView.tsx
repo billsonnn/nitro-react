@@ -1,11 +1,7 @@
 import { CatalogGroupsComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { Base } from '../../../../../common/Base';
-import { Column } from '../../../../../common/Column';
-import { Flex } from '../../../../../common/Flex';
-import { Grid } from '../../../../../common/Grid';
-import { Text } from '../../../../../common/Text';
-import { SendMessageHook } from '../../../../../hooks/messages';
+import { SendMessageComposer } from '../../../../../api';
+import { Base, Column, Flex, Grid, Text } from '../../../../../common';
 import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogFirstProductSelectorWidgetView } from '../widgets/CatalogFirstProductSelectorWidgetView';
 import { CatalogGuildSelectorWidgetView } from '../widgets/CatalogGuildSelectorWidgetView';
@@ -22,7 +18,7 @@ export const CatalogLayouGuildForumView: FC<CatalogLayoutProps> = props =>
 
     useEffect(() =>
     {
-        SendMessageHook(new CatalogGroupsComposer());
+        SendMessageComposer(new CatalogGroupsComposer());
     }, [ page ]);
     
     return (

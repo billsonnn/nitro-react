@@ -1,7 +1,7 @@
 import { RoomEnterEffect, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { GetRoomSession, GetSessionDataManager, RoomWidgetObjectNameEvent, RoomWidgetRoomObjectMessage, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRentableBotChatEvent, RoomWidgetUpdateRoomEngineEvent, RoomWidgetUpdateRoomObjectEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../../../../api';
-import { CreateEventDispatcherHook } from '../../../../hooks/events/event-dispatcher.base';
+import { UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../context/RoomContext';
 import { AvatarInfoRentableBotChatView } from './AvatarInfoRentableBotChatView';
 import { AvatarInfoUseProductConfirmView } from './AvatarInfoUseProductConfirmView';
@@ -88,8 +88,8 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         }
     }, [ isGameMode ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomEngineEvent.NORMAL_MODE, eventDispatcher, onRoomWidgetRoomEngineUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomEngineEvent.GAME_MODE, eventDispatcher, onRoomWidgetRoomEngineUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomEngineEvent.NORMAL_MODE, eventDispatcher, onRoomWidgetRoomEngineUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomEngineEvent.GAME_MODE, eventDispatcher, onRoomWidgetRoomEngineUpdateEvent);
 
     const onRoomObjectRemoved = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
     {
@@ -152,8 +152,8 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         }
     }, [ name, infoStandEvent, nameBubbles, productBubbles, removeNameBubble, clearInfoStandEvent ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, eventDispatcher, onRoomObjectRemoved);
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomObjectRemoved);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, eventDispatcher, onRoomObjectRemoved);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomObjectRemoved);
 
     const onObjectRolled = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
     {
@@ -180,8 +180,8 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         }
     }, [ infoStandEvent, name, widgetHandler ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OVER, eventDispatcher, onObjectRolled);
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OUT, eventDispatcher, onObjectRolled);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OVER, eventDispatcher, onObjectRolled);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OUT, eventDispatcher, onObjectRolled);
 
     const onObjectDeselected = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
     {
@@ -189,7 +189,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         if(productBubbles.length) setProductBubbles([]);
     }, [ infoStandEvent, productBubbles, clearInfoStandEvent ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, eventDispatcher, onObjectDeselected);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, eventDispatcher, onObjectDeselected);
 
     const onRoomWidgetObjectNameEvent = useCallback((event: RoomWidgetObjectNameEvent) =>
     {
@@ -199,7 +199,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         clearProductBubbles();
     }, [ clearProductBubbles ]);
 
-    CreateEventDispatcherHook(RoomWidgetObjectNameEvent.TYPE, eventDispatcher, onRoomWidgetObjectNameEvent);
+    UseEventDispatcherHook(RoomWidgetObjectNameEvent.TYPE, eventDispatcher, onRoomWidgetObjectNameEvent);
 
     const onRoomWidgetUpdateInfostandEvent = useCallback((event: RoomWidgetUpdateInfostandEvent) =>
     {
@@ -211,26 +211,26 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         clearProductBubbles();
     }, [ name, clearInfoStandEvent, clearProductBubbles ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandFurniEvent.FURNI, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.OWN_USER, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.BOT, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateInfostandPetEvent.PET_INFO, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandFurniEvent.FURNI, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.OWN_USER, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.PEER, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.BOT, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandPetEvent.PET_INFO, eventDispatcher, onRoomWidgetUpdateInfostandEvent);
 
     const onRoomWidgetUpdateDanceStatusEvent = useCallback((event: RoomWidgetUpdateDanceStatusEvent) =>
     {
         setIsDancing(event.isDancing);
     }, []);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateDanceStatusEvent.UPDATE_DANCE, eventDispatcher, onRoomWidgetUpdateDanceStatusEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateDanceStatusEvent.UPDATE_DANCE, eventDispatcher, onRoomWidgetUpdateDanceStatusEvent);
 
     const onRoomWidgetUpdateRentableBotChatEvent = useCallback((event: RoomWidgetUpdateRentableBotChatEvent) =>
     {
         setRentableBotChatEvent(event);
     }, []);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateRentableBotChatEvent.UPDATE_CHAT, eventDispatcher, onRoomWidgetUpdateRentableBotChatEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRentableBotChatEvent.UPDATE_CHAT, eventDispatcher, onRoomWidgetUpdateRentableBotChatEvent);
 
     const onRoomWidgetUseProductBubbleEvent = useCallback((event: RoomWidgetUseProductBubbleEvent) =>
     {
@@ -252,7 +252,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
             });
     }, []);
 
-    CreateEventDispatcherHook(RoomWidgetUseProductBubbleEvent.USE_PRODUCT_BUBBLES, eventDispatcher, onRoomWidgetUseProductBubbleEvent);
+    UseEventDispatcherHook(RoomWidgetUseProductBubbleEvent.USE_PRODUCT_BUBBLES, eventDispatcher, onRoomWidgetUseProductBubbleEvent);
 
     // const onFriendEnteredRoomEvent = useCallback((event: FriendEnteredRoomEvent) =>
     // {
@@ -269,7 +269,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         setIsDecorating(event.isDecorating);
     }, []);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateDecorateModeEvent.UPDATE_DECORATE, eventDispatcher, onRoomWidgetUpdateDecorateModeEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateDecorateModeEvent.UPDATE_DECORATE, eventDispatcher, onRoomWidgetUpdateDecorateModeEvent);
 
     const decorateView = useMemo(() =>
     {

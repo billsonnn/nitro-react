@@ -2,7 +2,7 @@ import { GroupBadgePart, GroupInformationEvent, GroupSettingsEvent } from '@nitr
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../api';
 import { Base, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../common';
-import { CreateMessageHook } from '../../../hooks';
+import { UseMessageEventHook } from '../../../hooks';
 import { IGroupData } from '../common/IGroupData';
 import { GroupTabBadgeView } from './tabs/GroupTabBadgeView';
 import { GroupTabColorsView } from './tabs/GroupTabColorsView';
@@ -55,7 +55,7 @@ export const GroupManagerView: FC<{}> = props =>
             });
     }, [ groupData ]);
 
-    CreateMessageHook(GroupInformationEvent, onGroupInformationEvent);
+    UseMessageEventHook(GroupInformationEvent, onGroupInformationEvent);
 
     const onGroupSettingsEvent = useCallback((event: GroupSettingsEvent) =>
     {
@@ -85,7 +85,7 @@ export const GroupManagerView: FC<{}> = props =>
         });
     }, [ setGroupData ]);
 
-    CreateMessageHook(GroupSettingsEvent, onGroupSettingsEvent);
+    UseMessageEventHook(GroupSettingsEvent, onGroupSettingsEvent);
 
     if(!groupData || (groupData.groupId <= 0)) return null;
     

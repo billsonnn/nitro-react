@@ -2,11 +2,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PurchaseFromCatalogAsGiftComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../../../api';
+import { GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, FormGroup, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { CatalogEvent, CatalogPurchasedEvent } from '../../../../events';
 import { CatalogInitGiftEvent } from '../../../../events/catalog/CatalogInitGiftEvent';
-import { BatchUpdates, SendMessageHook, useUiEvent } from '../../../../hooks';
+import { BatchUpdates, UseUiEvent } from '../../../../hooks';
 import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { FurniImageView } from '../../../../views/shared/furni-image/FurniImageView';
 import { useCatalogContext } from '../../CatalogContext';
@@ -75,9 +75,9 @@ export const CatalogGiftView: FC<{}> = props =>
         }
     }, [ close ]);
 
-    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
-    useUiEvent(CatalogEvent.INIT_GIFT, onCatalogEvent);
-    useUiEvent(CatalogEvent.GIFT_RECEIVER_NOT_FOUND, onCatalogEvent);
+    UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
+    UseUiEvent(CatalogEvent.INIT_GIFT, onCatalogEvent);
+    UseUiEvent(CatalogEvent.GIFT_RECEIVER_NOT_FOUND, onCatalogEvent);
 
     const isBoxDefault = useMemo(() =>
     {
@@ -123,7 +123,7 @@ export const CatalogGiftView: FC<{}> = props =>
                     return;
                 }
                 
-                SendMessageHook(new PurchaseFromCatalogAsGiftComposer(pageId, offerId, extraData, receiverName, message, selectedColorId, selectedBoxIndex, selectedRibbonIndex, showMyFace));
+                SendMessageComposer(new PurchaseFromCatalogAsGiftComposer(pageId, offerId, extraData, receiverName, message, selectedColorId, selectedBoxIndex, selectedRibbonIndex, showMyFace));
                 return;
         }
     }, [ extraData, maxBoxIndex, maxRibbonIndex, message, offerId, pageId, receiverName, selectedBoxIndex, selectedColorId, selectedRibbonIndex, showMyFace ]);

@@ -1,10 +1,7 @@
 import { CatalogGroupsComposer, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { Base } from '../../../../../common/Base';
-import { Button } from '../../../../../common/Button';
-import { Flex } from '../../../../../common/Flex';
-import { SendMessageHook } from '../../../../../hooks';
+import { LocalizeText, SendMessageComposer } from '../../../../../api';
+import { Base, Button, Flex } from '../../../../../common';
 import { useCatalogContext } from '../../../CatalogContext';
 
 export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
@@ -43,7 +40,7 @@ export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        SendMessageHook(new CatalogGroupsComposer());
+        SendMessageComposer(new CatalogGroupsComposer());
     }, []);
 
     if(!groups || !groups.length)

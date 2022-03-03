@@ -1,7 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, RoomWidgetCreditFurniRedeemMessage, RoomWidgetUpdateCreditFurniEvent } from '../../../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { BatchUpdates, CreateEventDispatcherHook } from '../../../../../hooks';
+import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../context/RoomContext';
 
 export const FurnitureExchangeCreditView: FC<{}> = props =>
@@ -19,7 +19,7 @@ export const FurnitureExchangeCreditView: FC<{}> = props =>
         });
     }, []);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateCreditFurniEvent.CREDIT_FURNI_UPDATE, eventDispatcher, onRoomWidgetUpdateCreditFurniEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateCreditFurniEvent.CREDIT_FURNI_UPDATE, eventDispatcher, onRoomWidgetUpdateCreditFurniEvent);
 
     const close = () =>
     {

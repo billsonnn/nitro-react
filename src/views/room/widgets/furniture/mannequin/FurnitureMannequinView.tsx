@@ -1,8 +1,8 @@
 import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, HabboClubLevelEnum, IAvatarFigureContainer, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import { GetAvatarRenderManager, GetSessionDataManager, LocalizeText, RoomWidgetUpdateMannequinEvent } from '../../../../../api';
+import { GetAvatarRenderManager, GetSessionDataManager, LocalizeText, RoomWidgetUpdateMannequinEvent, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { BatchUpdates, CreateEventDispatcherHook, SendMessageHook } from '../../../../../hooks';
+import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { CurrencyIcon } from '../../../../shared/currency-icon/CurrencyIcon';
 import { useRoomContext } from '../../../context/RoomContext';
@@ -74,7 +74,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
         });
     }, [ roomSession ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateMannequinEvent.MANNEQUIN_UPDATE, eventDispatcher, onRoomWidgetUpdateMannequinEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateMannequinEvent.MANNEQUIN_UPDATE, eventDispatcher, onRoomWidgetUpdateMannequinEvent);
 
     const getMergedFigureContainer = (figure: string, targetFigure: string) =>
     {
@@ -108,13 +108,13 @@ export const FurnitureMannequinView: FC<{}> = props =>
         switch(action)
         {
             case ACTION_SAVE:
-                SendMessageHook(new FurnitureMannequinSaveLookComposer(objectId));
+                SendMessageComposer(new FurnitureMannequinSaveLookComposer(objectId));
                 break;
             case ACTION_WEAR:
-                SendMessageHook(new FurnitureMultiStateComposer(objectId));
+                SendMessageComposer(new FurnitureMultiStateComposer(objectId));
                 break;
             case ACTION_SET_NAME:
-                SendMessageHook(new FurnitureMannequinSaveNameComposer(objectId, name));
+                SendMessageComposer(new FurnitureMannequinSaveNameComposer(objectId, name));
                 return;
         }
 

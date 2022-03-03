@@ -1,8 +1,9 @@
 import { GroupSavePreferencesComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { SendMessageComposer } from '../../../../api';
 import { LocalizeText } from '../../../../api/utils/LocalizeText';
 import { Column, Flex, HorizontalRule, Text } from '../../../../common';
-import { BatchUpdates, SendMessageHook } from '../../../../hooks';
+import { BatchUpdates } from '../../../../hooks';
 import { IGroupData } from '../../common/IGroupData';
 
 const STATES: string[] = [ 'regular', 'exclusive', 'private' ];
@@ -41,7 +42,7 @@ export const GroupTabSettingsView: FC<GroupTabSettingsViewProps> = props =>
             return true;
         }
 
-        SendMessageHook(new GroupSavePreferencesComposer(groupData.groupId, groupState, groupDecorate ? 0 : 1));
+        SendMessageComposer(new GroupSavePreferencesComposer(groupData.groupId, groupState, groupDecorate ? 0 : 1));
 
         return true;
     }, [ groupData, groupState, groupDecorate, setGroupData ]);

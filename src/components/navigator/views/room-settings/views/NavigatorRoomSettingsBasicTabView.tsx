@@ -1,11 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomDeleteComposer } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { Base } from '../../../../../common/Base';
-import { Flex } from '../../../../../common/Flex';
-import { Text } from '../../../../../common/Text';
-import { SendMessageHook } from '../../../../../hooks';
+import { LocalizeText, SendMessageComposer } from '../../../../../api';
+import { Base, Flex, Text } from '../../../../../common';
 import { NotificationUtilities } from '../../../../../views/notification-center/common/NotificationUtilities';
 import { GetMaxVisitorsList } from '../../../common/RoomSettingsUtils';
 import { useNavigatorContext } from '../../../NavigatorContext';
@@ -24,7 +21,7 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
     {
         NotificationUtilities.confirm(LocalizeText('navigator.roomsettings.deleteroom.confirm.message'), () =>
         {
-            SendMessageHook(new RoomDeleteComposer(roomSettingsData.roomId));
+            SendMessageComposer(new RoomDeleteComposer(roomSettingsData.roomId));
         },
         null, null, null, LocalizeText('navigator.roomsettings.deleteroom.confirm.title'));
     }

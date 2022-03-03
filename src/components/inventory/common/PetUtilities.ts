@@ -1,7 +1,7 @@
 import { PetData, RoomObjectCategory, RoomObjectPlacementSource, RoomObjectType } from '@nitrots/nitro-renderer';
 import { GetRoomEngine, GetRoomSessionManager } from '../../../api';
 import { InventoryEvent } from '../../../events';
-import { dispatchUiEvent } from '../../../hooks/events/ui/ui-event';
+import { DispatchUiEvent } from '../../../hooks';
 import { getPlacingItemId, setObjectMoverRequested, setPlacingItemId } from './InventoryUtilities';
 import { PetItem } from './PetItem';
 import { IUnseenItemTracker } from './unseen/IUnseenItemTracker';
@@ -32,7 +32,7 @@ export function attemptPetPlacement(petItem: PetItem, flag: boolean = false): bo
         if(!session.allowPets) return false;
     }
 
-    dispatchUiEvent(new InventoryEvent(InventoryEvent.HIDE_INVENTORY));
+    DispatchUiEvent(new InventoryEvent(InventoryEvent.HIDE_INVENTORY));
 
     if(GetRoomEngine().processRoomObjectPlacement(RoomObjectPlacementSource.INVENTORY, -(petData.id), RoomObjectCategory.UNIT, RoomObjectType.PET, petData.figureData.figuredata))
     {
@@ -117,7 +117,7 @@ export function removePetItemById(id: number, set: PetItem[]): PetItem
             {
                 cancelRoomObjectPlacement();
                 
-                setTimeout(() => dispatchUiEvent(new InventoryEvent(InventoryEvent.SHOW_INVENTORY)), 1);
+                setTimeout(() => DispatchUiEvent(new InventoryEvent(InventoryEvent.SHOW_INVENTORY)), 1);
             }
             
             set.splice(index, 1);

@@ -1,6 +1,6 @@
 import { SetActivatedBadgesComposer } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
-import { SendMessageHook } from '../../../hooks/messages/message-event';
+import { SendMessageComposer } from '../../../api';
 
 export interface IInventoryBadgeState
 {
@@ -102,7 +102,7 @@ export const InventoryBadgeReducer: Reducer<IInventoryBadgeState, IInventoryBadg
                 composer.addActivatedBadge(badgeCode);
             }
 
-            SendMessageHook(composer);
+            SendMessageComposer(composer);
 
             return { ...state, activeBadges };
         }
@@ -124,7 +124,7 @@ export const InventoryBadgeReducer: Reducer<IInventoryBadgeState, IInventoryBadg
                 composer.addActivatedBadge(badgeCode);
             }
 
-            SendMessageHook(composer);
+            SendMessageComposer(composer);
 
             return { ...state, activeBadges };
         }

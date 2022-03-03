@@ -1,8 +1,7 @@
 import { ColorConverter, NitroAdjustmentFilter, NitroContainer, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineDimmerStateEvent, RoomEngineEvent, RoomId, RoomObjectHSLColorEnabledEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetNitroInstance, GetRoomEngine, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomViewEvent } from '../../api';
-import { UseMountEffect } from '../../hooks';
-import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../hooks/events';
+import { UseEventDispatcherHook, UseMountEffect, UseRoomEngineEvent } from '../../hooks';
 import { useRoomContext } from './context/RoomContext';
 
 export const RoomColorView: FC<{}> = props =>
@@ -143,16 +142,16 @@ export const RoomColorView: FC<{}> = props =>
         }
     }, [ widgetHandler, updateRoomBackgroundColor, updateRoomFilterColor ]);
 
-    useRoomEngineEvent(RoomObjectHSLColorEnabledEvent.ROOM_BACKGROUND_COLOR, onRoomEngineEvent);
-    useRoomEngineEvent(RoomBackgroundColorEvent.ROOM_COLOR, onRoomEngineEvent);
-    useRoomEngineEvent(RoomEngineDimmerStateEvent.ROOM_COLOR, onRoomEngineEvent);
+    UseRoomEngineEvent(RoomObjectHSLColorEnabledEvent.ROOM_BACKGROUND_COLOR, onRoomEngineEvent);
+    UseRoomEngineEvent(RoomBackgroundColorEvent.ROOM_COLOR, onRoomEngineEvent);
+    UseRoomEngineEvent(RoomEngineDimmerStateEvent.ROOM_COLOR, onRoomEngineEvent);
 
     const onRoomWidgetUpdateRoomViewEvent = useCallback((event: RoomWidgetUpdateRoomViewEvent) =>
     {
         updateRoomBackground(roomBackgroundColor);
     }, [ roomBackgroundColor, updateRoomBackground ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomViewEvent.SIZE_CHANGED, eventDispatcher, onRoomWidgetUpdateRoomViewEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomViewEvent.SIZE_CHANGED, eventDispatcher, onRoomWidgetUpdateRoomViewEvent);
 
     const onRoomWidgetUpdateBackgroundColorPreviewEvent = useCallback((event: RoomWidgetUpdateBackgroundColorPreviewEvent) =>
     {
@@ -172,8 +171,8 @@ export const RoomColorView: FC<{}> = props =>
         }
     }, [ originalRoomBackgroundColor, updateRoomBackgroundColor, updateRoomBackground ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW, eventDispatcher, onRoomWidgetUpdateBackgroundColorPreviewEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW, eventDispatcher, onRoomWidgetUpdateBackgroundColorPreviewEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW, eventDispatcher, onRoomWidgetUpdateBackgroundColorPreviewEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW, eventDispatcher, onRoomWidgetUpdateBackgroundColorPreviewEvent);
 
     UseMountEffect(updateRoomBackground);
 

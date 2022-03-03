@@ -1,8 +1,7 @@
 import { GuideSessionFeedbackMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, Text } from '../../../common';
-import { SendMessageHook } from '../../../hooks';
 
 interface GuideToolUserFeedbackViewProps
 {
@@ -15,7 +14,7 @@ export const GuideToolUserFeedbackView: FC<GuideToolUserFeedbackViewProps> = pro
 
     const giveFeedback = useCallback((recommend: boolean) =>
     {
-        SendMessageHook(new GuideSessionFeedbackMessageComposer(recommend));
+        SendMessageComposer(new GuideSessionFeedbackMessageComposer(recommend));
     }, []);
 
     return (

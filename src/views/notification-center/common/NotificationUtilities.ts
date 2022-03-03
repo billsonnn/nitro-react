@@ -3,7 +3,7 @@ import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText } fro
 import { CatalogPageName } from '../../../components/catalog/common/CatalogPageName';
 import { NotificationAlertEvent, NotificationConfirmEvent } from '../../../events';
 import { NotificationBubbleEvent } from '../../../events/notification-center/NotificationBubbleEvent';
-import { dispatchUiEvent } from '../../../hooks';
+import { DispatchUiEvent } from '../../../hooks';
 import { NotificationAlertType } from './NotificationAlertType';
 import { NotificationBubbleType } from './NotificationBubbleType';
 
@@ -93,7 +93,7 @@ export class NotificationUtilities
     {
         if(this.BUBBLES_DISABLED) return;
 
-        dispatchUiEvent(new NotificationBubbleEvent(message, type, imageUrl, internalLink));
+        DispatchUiEvent(new NotificationBubbleEvent(message, type, imageUrl, internalLink));
     }
 
     public static showClubGiftNotification(numGifts: number): void
@@ -107,7 +107,7 @@ export class NotificationUtilities
     {
         messages = messages.map(message => this.cleanText(message));
 
-        dispatchUiEvent(new NotificationAlertEvent(messages, NotificationAlertType.MOTD, null, null, LocalizeText('notifications.motd.title')));
+        DispatchUiEvent(new NotificationAlertEvent(messages, NotificationAlertType.MOTD, null, null, LocalizeText('notifications.motd.title')));
     }
 
     public static confirm(message: string, onConfirm: Function, onCancel: Function, confirmText: string = null, cancelText: string = null, title: string = null, type: string = null): void
@@ -118,7 +118,7 @@ export class NotificationUtilities
 
         if(!title || !title.length) title = LocalizeText('notifications.broadcast.title');
 
-        dispatchUiEvent(new NotificationConfirmEvent(type, this.cleanText(message), onConfirm, onCancel, confirmText, cancelText, title));
+        DispatchUiEvent(new NotificationConfirmEvent(type, this.cleanText(message), onConfirm, onCancel, confirmText, cancelText, title));
     }
 
     public static simpleAlert(message: string, type: string = null, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null): void
@@ -127,7 +127,7 @@ export class NotificationUtilities
 
         if(!type || !type.length) type = NotificationAlertType.DEFAULT;
 
-        dispatchUiEvent(new NotificationAlertEvent([ this.cleanText(message) ], type, clickUrl, clickUrlText, title, imageUrl));
+        DispatchUiEvent(new NotificationAlertEvent([ this.cleanText(message) ], type, clickUrl, clickUrlText, title, imageUrl));
     }
 
     public static showModeratorMessage(message: string, url: string = null, showHabboWay: boolean = true): void

@@ -1,12 +1,7 @@
 import { FurnitureListComposer, IRoomSession, RoomObjectVariable, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetRoomEngine, GetSessionDataManager, LocalizeText } from '../../../../api';
-import { AutoGrid } from '../../../../common/AutoGrid';
-import { Button } from '../../../../common/Button';
-import { Column } from '../../../../common/Column';
-import { Grid } from '../../../../common/Grid';
-import { Text } from '../../../../common/Text';
-import { SendMessageHook } from '../../../../hooks/messages';
+import { GetRoomEngine, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
+import { AutoGrid, Button, Column, Grid, Text } from '../../../../common';
 import { LimitedEditionCompactPlateView } from '../../../../views/shared/limited-edition/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../../views/shared/rarity-level/RarityLevelView';
 import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomPreviewerView';
@@ -43,7 +38,7 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                 }
             });
 
-            SendMessageHook(new FurnitureListComposer());
+            SendMessageComposer(new FurnitureListComposer());
         }
         else
         {

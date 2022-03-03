@@ -1,14 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorInitComposer, NavigatorSearchComposer, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { AddEventLinkTracker, GoToDesktop, LocalizeText, RemoveLinkEventTracker, TryVisitRoom } from '../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { Column } from '../../common/Column';
+import { AddEventLinkTracker, GoToDesktop, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
+import { Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { NavigatorEvent, UpdateDoorStateEvent } from '../../events';
-import { UseMountEffect } from '../../hooks';
-import { useRoomSessionManagerEvent } from '../../hooks/events/nitro/session/room-session-manager-event';
-import { useUiEvent } from '../../hooks/events/ui/ui-event';
-import { SendMessageHook } from '../../hooks/messages/message-event';
+import { UseMountEffect, UseRoomSessionManagerEvent, UseUiEvent } from '../../hooks';
 import { NavigatorContextProvider } from './NavigatorContext';
 import { NavigatorMessageHandler } from './NavigatorMessageHandler';
 import { initialNavigator, NavigatorActions, NavigatorReducer } from './reducers/NavigatorReducer';
@@ -53,11 +49,11 @@ export const NavigatorView: FC<{}> = props =>
         }
     }, []);
 
-    useUiEvent(NavigatorEvent.SHOW_NAVIGATOR, onNavigatorEvent);
-    useUiEvent(NavigatorEvent.HIDE_NAVIGATOR, onNavigatorEvent);
-    useUiEvent(NavigatorEvent.TOGGLE_NAVIGATOR, onNavigatorEvent);
-    useUiEvent(NavigatorEvent.TOGGLE_ROOM_INFO, onNavigatorEvent);
-    useUiEvent(NavigatorEvent.TOGGLE_ROOM_LINK, onNavigatorEvent);
+    UseUiEvent(NavigatorEvent.SHOW_NAVIGATOR, onNavigatorEvent);
+    UseUiEvent(NavigatorEvent.HIDE_NAVIGATOR, onNavigatorEvent);
+    UseUiEvent(NavigatorEvent.TOGGLE_NAVIGATOR, onNavigatorEvent);
+    UseUiEvent(NavigatorEvent.TOGGLE_ROOM_INFO, onNavigatorEvent);
+    UseUiEvent(NavigatorEvent.TOGGLE_ROOM_LINK, onNavigatorEvent);
 
     const onUpdateDoorStateEvent = useCallback((event: UpdateDoorStateEvent) =>
     {
@@ -95,12 +91,12 @@ export const NavigatorView: FC<{}> = props =>
         }
     }, []);
 
-    useUiEvent(UpdateDoorStateEvent.START_DOORBELL, onUpdateDoorStateEvent);
-    useUiEvent(UpdateDoorStateEvent.START_PASSWORD, onUpdateDoorStateEvent);
-    useUiEvent(UpdateDoorStateEvent.STATE_WAITING, onUpdateDoorStateEvent);
-    useUiEvent(UpdateDoorStateEvent.STATE_NO_ANSWER, onUpdateDoorStateEvent);
-    useUiEvent(UpdateDoorStateEvent.STATE_WRONG_PASSWORD, onUpdateDoorStateEvent);
-    useUiEvent(UpdateDoorStateEvent.STATE_ACCEPTED, onUpdateDoorStateEvent);
+    UseUiEvent(UpdateDoorStateEvent.START_DOORBELL, onUpdateDoorStateEvent);
+    UseUiEvent(UpdateDoorStateEvent.START_PASSWORD, onUpdateDoorStateEvent);
+    UseUiEvent(UpdateDoorStateEvent.STATE_WAITING, onUpdateDoorStateEvent);
+    UseUiEvent(UpdateDoorStateEvent.STATE_NO_ANSWER, onUpdateDoorStateEvent);
+    UseUiEvent(UpdateDoorStateEvent.STATE_WRONG_PASSWORD, onUpdateDoorStateEvent);
+    UseUiEvent(UpdateDoorStateEvent.STATE_ACCEPTED, onUpdateDoorStateEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
@@ -113,12 +109,12 @@ export const NavigatorView: FC<{}> = props =>
         }
     }, []);
 
-    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
+    UseRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
 
     const sendSearch = useCallback((searchValue: string, contextCode: string) =>
     {
         setCreatorOpen(false);
-        SendMessageHook(new NavigatorSearchComposer(contextCode, searchValue));
+        SendMessageComposer(new NavigatorSearchComposer(contextCode, searchValue));
     }, []);
 
     const goToHomeRoom = useCallback(() =>
@@ -185,7 +181,7 @@ export const NavigatorView: FC<{}> = props =>
 
     const enterRoomWebRequest = useCallback((k: string, _arg_2:boolean=false, _arg_3:string=null) =>
     {
-        SendMessageHook(new ConvertGlobalRoomIdMessageComposer(k));
+        SendMessageComposer(new ConvertGlobalRoomIdMessageComposer(k));
     }, []);
 
     UseMountEffect(() =>
@@ -204,7 +200,7 @@ export const NavigatorView: FC<{}> = props =>
             }
         });
         
-        SendMessageHook(new NavigatorInitComposer());
+        SendMessageComposer(new NavigatorInitComposer());
     }, [ isVisible, needsNavigatorUpdate ]);
 
     useEffect(() =>

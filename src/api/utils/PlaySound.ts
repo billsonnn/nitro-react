@@ -1,9 +1,9 @@
 import { NitroSoundEvent } from '@nitrots/nitro-renderer/src/nitro/events/NitroSoundEvent';
-import { dispatchMainEvent } from '../../hooks';
+import { DispatchMainEvent } from '../../hooks';
 
 export function PlaySound(sampleCode: string): void
 {
-    dispatchMainEvent(new NitroSoundEvent(NitroSoundEvent.PLAY_SOUND, sampleCode));
+    DispatchMainEvent(new NitroSoundEvent(NitroSoundEvent.PLAY_SOUND, sampleCode));
 }
 
 export const CAMERA_SHUTTER = 'camera_shutter';

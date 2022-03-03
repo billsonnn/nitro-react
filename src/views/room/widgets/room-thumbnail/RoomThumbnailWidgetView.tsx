@@ -2,8 +2,8 @@ import { NitroRenderTexture } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { LayoutMiniCameraView } from '../../../../common';
-import { RoomWidgetThumbnailEvent } from '../../../../events/room-widgets/thumbnail';
-import { useUiEvent } from '../../../../hooks/events';
+import { RoomWidgetThumbnailEvent } from '../../../../events';
+import { UseUiEvent } from '../../../../hooks';
 import { useRoomContext } from '../../context/RoomContext';
 
 export const RoomThumbnailWidgetView: FC<{}> = props =>
@@ -27,9 +27,9 @@ export const RoomThumbnailWidgetView: FC<{}> = props =>
         }
     }, []);
 
-    useUiEvent(RoomWidgetThumbnailEvent.SHOW_THUMBNAIL, onNitroEvent);
-    useUiEvent(RoomWidgetThumbnailEvent.HIDE_THUMBNAIL, onNitroEvent);
-    useUiEvent(RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL, onNitroEvent);
+    UseUiEvent(RoomWidgetThumbnailEvent.SHOW_THUMBNAIL, onNitroEvent);
+    UseUiEvent(RoomWidgetThumbnailEvent.HIDE_THUMBNAIL, onNitroEvent);
+    UseUiEvent(RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL, onNitroEvent);
 
     const receiveTexture = useCallback((texture: NitroRenderTexture) =>
     {

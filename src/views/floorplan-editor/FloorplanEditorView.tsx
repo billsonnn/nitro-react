@@ -1,9 +1,9 @@
 import { FloorHeightMapEvent, NitroPoint, RoomEngineEvent, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText } from '../../api';
+import { LocalizeText, SendMessageComposer } from '../../api';
 import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
-import { FloorplanEditorEvent } from '../../events/floorplan-editor/FloorplanEditorEvent';
-import { CreateMessageHook, SendMessageHook, UseMountEffect, useRoomEngineEvent, useUiEvent } from '../../hooks';
+import { FloorplanEditorEvent } from '../../events';
+import { UseMessageEventHook, UseMountEffect, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { FloorplanEditor } from './common/FloorplanEditor';
 import { convertNumbersForSaving, convertSettingToNumber } from './common/Utils';
 import { FloorplanEditorContextProvider } from './context/FloorplanEditorContext';
@@ -41,9 +41,9 @@ export const FloorplanEditorView: FC<{}> = props =>
         }
     }, [isVisible]);
 
-    useUiEvent(FloorplanEditorEvent.HIDE_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
-    useUiEvent(FloorplanEditorEvent.SHOW_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
-    useUiEvent(FloorplanEditorEvent.TOGGLE_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
+    UseUiEvent(FloorplanEditorEvent.HIDE_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
+    UseUiEvent(FloorplanEditorEvent.SHOW_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
+    UseUiEvent(FloorplanEditorEvent.TOGGLE_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
 
     UseMountEffect(() =>
     {
@@ -55,7 +55,7 @@ export const FloorplanEditorView: FC<{}> = props =>
         setIsVisible(false);
     }, []);
 
-    useRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
+    UseRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
 
     const onFloorHeightMapEvent = useCallback((event: FloorHeightMapEvent) =>
     {
@@ -74,7 +74,7 @@ export const FloorplanEditorView: FC<{}> = props =>
 
     }, [originalFloorplanSettings, visualizationSettings]);
 
-    CreateMessageHook(FloorHeightMapEvent, onFloorHeightMapEvent);
+    UseMessageEventHook(FloorHeightMapEvent, onFloorHeightMapEvent);
 
     const onRoomVisualizationSettingsEvent = useCallback((event: RoomVisualizationSettingsEvent) =>
     {
@@ -94,11 +94,11 @@ export const FloorplanEditorView: FC<{}> = props =>
         setVisualizationSettings(vSettings);
     }, [originalFloorplanSettings, visualizationSettings]);
 
-    CreateMessageHook(RoomVisualizationSettingsEvent, onRoomVisualizationSettingsEvent);
+    UseMessageEventHook(RoomVisualizationSettingsEvent, onRoomVisualizationSettingsEvent);
 
     const saveFloorChanges = useCallback(() =>
     {
-        SendMessageHook(new UpdateFloorPropertiesMessageComposer(
+        SendMessageComposer(new UpdateFloorPropertiesMessageComposer(
             FloorplanEditor.instance.getCurrentTilemapString(),
             FloorplanEditor.instance.doorLocation.x,
             FloorplanEditor.instance.doorLocation.y,

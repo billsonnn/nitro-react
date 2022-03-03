@@ -1,8 +1,8 @@
 import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetSessionDataManager, GetUserProfile, LocalizeText } from '../../api';
+import { GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
 import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
-import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../hooks';
+import { BatchUpdates, UseMessageEventHook } from '../../hooks';
 import { BadgesContainerView } from './views/BadgesContainerView';
 import { FriendsContainerView } from './views/FriendsContainerView';
 import { GroupsContainerView } from './views/GroupsContainerView';
@@ -41,7 +41,7 @@ export const UserProfileView: FC<{}> = props =>
         setUserBadges(parser.badges);
     }, [ userProfile ]);
 
-    CreateMessageHook(UserCurrentBadgesEvent, onUserCurrentBadgesEvent);
+    UseMessageEventHook(UserCurrentBadgesEvent, onUserCurrentBadgesEvent);
 
     const OnUserRelationshipsEvent = useCallback((event: RelationshipStatusInfoEvent) =>
     {
@@ -52,7 +52,7 @@ export const UserProfileView: FC<{}> = props =>
         setUserRelationships(parser);
     }, [ userProfile ]);
 
-    CreateMessageHook(RelationshipStatusInfoEvent, OnUserRelationshipsEvent);
+    UseMessageEventHook(RelationshipStatusInfoEvent, OnUserRelationshipsEvent);
 
     const onUserProfileEvent = useCallback((event: UserProfileEvent) =>
     {
@@ -70,11 +70,11 @@ export const UserProfileView: FC<{}> = props =>
         
         setUserProfile(parser);
 
-        SendMessageHook(new UserCurrentBadgesComposer(parser.id));
-        SendMessageHook(new UserRelationshipsComposer(parser.id));
+        SendMessageComposer(new UserCurrentBadgesComposer(parser.id));
+        SendMessageComposer(new UserRelationshipsComposer(parser.id));
     }, [ userProfile ]);
 
-    CreateMessageHook(UserProfileEvent, onUserProfileEvent);
+    UseMessageEventHook(UserProfileEvent, onUserProfileEvent);
 
     if(!userProfile) return null;
 

@@ -1,8 +1,6 @@
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../../../../api';
-import { Column } from '../../../../../common/Column';
-import { Flex } from '../../../../../common/Flex';
-import { Text } from '../../../../../common/Text';
+import { Column, Flex, Text } from '../../../../../common';
 import { NavigatorRoomSettingsTabViewProps } from './NavigatorRoomSettingsTabViewProps.types';
 
 export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>

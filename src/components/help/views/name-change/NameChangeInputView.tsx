@@ -1,7 +1,7 @@
 import { CheckUserNameMessageComposer, CheckUserNameResultMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { CreateMessageHook, SendMessageHook } from '../../../../hooks';
+import { LocalizeText, SendMessageComposer } from '../../../../api';
+import { UseMessageEventHook } from '../../../../hooks';
 import { NameChangeLayoutViewProps } from './NameChangeView.types';
 
 const AVAILABLE: number = 0;
@@ -52,7 +52,7 @@ export const NameChangeInputView:FC<NameChangeLayoutViewProps> = props =>
         }
     }, []);
     
-    CreateMessageHook(CheckUserNameResultMessageEvent, onCheckUserNameResultMessageEvent);
+    UseMessageEventHook(CheckUserNameResultMessageEvent, onCheckUserNameResultMessageEvent);
 
     const check = useCallback(() =>
     {
@@ -63,7 +63,7 @@ export const NameChangeInputView:FC<NameChangeLayoutViewProps> = props =>
         setErrorCode(null);
 
         setIsChecking(true);
-        SendMessageHook(new CheckUserNameMessageComposer(newUsername));
+        SendMessageComposer(new CheckUserNameMessageComposer(newUsername));
     }, [ newUsername ]);
 
     const handleUsernameChange = useCallback((username: string) =>

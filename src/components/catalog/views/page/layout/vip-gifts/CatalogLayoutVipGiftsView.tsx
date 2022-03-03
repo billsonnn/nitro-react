@@ -1,9 +1,7 @@
 import { SelectClubGiftComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../../../api';
-import { AutoGrid } from '../../../../../../common/AutoGrid';
-import { Text } from '../../../../../../common/Text';
-import { SendMessageHook } from '../../../../../../hooks';
+import { LocalizeText, SendMessageComposer } from '../../../../../../api';
+import { AutoGrid, Text } from '../../../../../../common';
 import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
 import { useCatalogContext } from '../../../../CatalogContext';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
@@ -31,7 +29,7 @@ export const CatalogLayoutVipGiftsView: FC<CatalogLayoutProps> = props =>
     {
         NotificationUtilities.confirm(LocalizeText('catalog.club_gift.confirm'), () =>
             {
-                SendMessageHook(new SelectClubGiftComposer(localizationId));
+                SendMessageComposer(new SelectClubGiftComposer(localizationId));
 
                 setCatalogOptions(prevValue =>
                     {

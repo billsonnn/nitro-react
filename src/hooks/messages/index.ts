@@ -1,1 +1,1 @@
-export * from './message-event';
+export * from './UseMessageEventHook';

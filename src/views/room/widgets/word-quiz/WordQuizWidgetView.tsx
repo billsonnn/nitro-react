@@ -1,8 +1,7 @@
 import { IQuestion } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { RoomWidgetWordQuizUpdateEvent } from '../../../../api/nitro/room/widgets/events/RoomWidgetWordQuizUpdateEvent';
-import { RoomWidgetPollMessage } from '../../../../api/nitro/room/widgets/messages/RoomWidgetPollMessage';
-import { BatchUpdates, CreateEventDispatcherHook } from '../../../../hooks';
+import { RoomWidgetPollMessage, RoomWidgetWordQuizUpdateEvent } from '../../../../api';
+import { BatchUpdates, UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../context/RoomContext';
 import { VALUE_KEY_DISLIKE, VALUE_KEY_LIKE, VoteValue } from './common/VoteValue';
 import { WordQuizQuestionView } from './WordQuizQuestionView';
@@ -102,9 +101,9 @@ export const WordQuizWidgetView: FC<{}> = props =>
         }
     }, [ question, roomSession.userDataManager, userAnswers, clearQuestion ]);
 
-    CreateEventDispatcherHook(RoomWidgetWordQuizUpdateEvent.NEW_QUESTION, eventDispatcher, onRoomWidgetWordQuizUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetWordQuizUpdateEvent.QUESTION_ANSWERED, eventDispatcher, onRoomWidgetWordQuizUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetWordQuizUpdateEvent.QUESTION_FINISHED, eventDispatcher, onRoomWidgetWordQuizUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetWordQuizUpdateEvent.NEW_QUESTION, eventDispatcher, onRoomWidgetWordQuizUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetWordQuizUpdateEvent.QUESTION_ANSWERED, eventDispatcher, onRoomWidgetWordQuizUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetWordQuizUpdateEvent.QUESTION_FINISHED, eventDispatcher, onRoomWidgetWordQuizUpdateEvent);
 
     const vote = useCallback((vote: string) =>
     {

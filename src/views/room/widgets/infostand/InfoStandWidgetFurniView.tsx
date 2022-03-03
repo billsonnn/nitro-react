@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CrackableDataType, GroupInformationComposer, GroupInformationEvent, RoomControllerLevel, RoomObjectCategory, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage, RoomWidgetUpdateInfostandFurniEvent } from '../../../../api';
+import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage, RoomWidgetUpdateInfostandFurniEvent, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Text, UserProfileIconView } from '../../../../common';
-import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../hooks';
+import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/LimitedEditionCompactPlateView';
 import { RarityLevelView } from '../../../shared/rarity-level/RarityLevelView';
@@ -139,7 +139,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
             setGroupName(null);
         });
         
-        if(furniData.groupId) SendMessageHook(new GroupInformationComposer(furniData.groupId, false));
+        if(furniData.groupId) SendMessageComposer(new GroupInformationComposer(furniData.groupId, false));
     }, [ roomSession, furniData ]);
 
     const onGroupInformationEvent = useCallback((event: GroupInformationEvent) =>
@@ -153,7 +153,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         setGroupName(parser.title);
     }, [ furniData, groupName ]);
 
-    CreateMessageHook(GroupInformationEvent, onGroupInformationEvent);
+    UseMessageEventHook(GroupInformationEvent, onGroupInformationEvent);
 
     const onFurniSettingChange = useCallback((index: number, value: string) =>
     {
@@ -234,7 +234,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                     if((key && key.length) && (value && value.length)) map.set(key, value);
                 }
 
-                SendMessageHook(new SetObjectDataMessageComposer(furniData.id, map));
+                SendMessageComposer(new SetObjectDataMessageComposer(furniData.id, map));
                 break;
         }
 

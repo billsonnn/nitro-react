@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DesktopViewEvent, GetGuestRoomResultEvent, GroupInformationComposer, GroupInformationEvent, GroupInformationParser, GroupRemoveMemberComposer, HabboGroupDeactivatedMessageEvent, RoomEntryInfoMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetGroupInformation, GetSessionDataManager, LocalizeText, TryJoinGroup } from '../../../api';
-import { GetGroupManager } from '../../../api/groups/GetGroupManager';
+import { GetGroupInformation, GetGroupManager, GetSessionDataManager, LocalizeText, SendMessageComposer, TryJoinGroup } from '../../../api';
 import { Base, Button, Column, Flex, Text } from '../../../common';
-import { CreateMessageHook, SendMessageHook } from '../../../hooks';
+import { UseMessageEventHook } from '../../../hooks';
 import { NotificationUtilities } from '../../../views/notification-center/common/NotificationUtilities';
 import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
 import { GroupMembershipType } from '../common/GroupMembershipType';
@@ -22,7 +21,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
         setGroupInformation(null);
     }, []);
 
-    CreateMessageHook(DesktopViewEvent, onDesktopViewEvent);
+    UseMessageEventHook(DesktopViewEvent, onDesktopViewEvent);
 
     const onRoomEntryInfoMessageEvent = useCallback((event: RoomEntryInfoMessageEvent) =>
     {
@@ -30,7 +29,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
         setGroupInformation(null);
     }, []);
 
-    CreateMessageHook(RoomEntryInfoMessageEvent, onRoomEntryInfoMessageEvent);
+    UseMessageEventHook(RoomEntryInfoMessageEvent, onRoomEntryInfoMessageEvent);
 
     const onGetGuestRoomResultEvent = useCallback((event: GetGuestRoomResultEvent) =>
     {
@@ -41,7 +40,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
         if(parser.data.habboGroupId > 0)
         {
             setExpectedGroupId(parser.data.habboGroupId);
-            SendMessageHook(new GroupInformationComposer(parser.data.habboGroupId, false));
+            SendMessageComposer(new GroupInformationComposer(parser.data.habboGroupId, false));
         }
         else
         {
@@ -50,7 +49,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
         }
     }, []);
 
-    CreateMessageHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
+    UseMessageEventHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
 
     const onHabboGroupDeactivatedMessageEvent = useCallback((event: HabboGroupDeactivatedMessageEvent) =>
     {
@@ -62,7 +61,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
         setGroupInformation(null);
     }, [ expectedGroupId, groupInformation ]);
 
-    CreateMessageHook(HabboGroupDeactivatedMessageEvent, onHabboGroupDeactivatedMessageEvent);
+    UseMessageEventHook(HabboGroupDeactivatedMessageEvent, onHabboGroupDeactivatedMessageEvent);
 
     const onGroupInformationEvent = useCallback((event: GroupInformationEvent) =>
     {
@@ -73,13 +72,13 @@ export const GroupRoomInformationView: FC<{}> = props =>
         setGroupInformation(parser);
     }, [ expectedGroupId ]);
 
-    CreateMessageHook(GroupInformationEvent, onGroupInformationEvent);
+    UseMessageEventHook(GroupInformationEvent, onGroupInformationEvent);
 
     const leaveGroup = () =>
     {
         NotificationUtilities.confirm(LocalizeText('group.leaveconfirm.desc'), () =>
             {
-                SendMessageHook(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
+                SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
             }, null);
     }
 

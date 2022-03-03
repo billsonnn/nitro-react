@@ -1,10 +1,7 @@
-import { ContextMenuEnum, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
-import { GroupFurniContextMenuInfoMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/room/furniture/GroupFurniContextMenuInfoMessageEvent';
+import { ContextMenuEnum, GroupFurniContextMenuInfoMessageEvent, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetGroupInformation, GetRoomEngine, IsOwnerOfFurniture, LocalizeText, RoomWidgetFurniActionMessage, TryVisitRoom } from '../../../../../api';
-import { TryJoinGroup } from '../../../../../api/groups/TryJoinGroup';
-import { BatchUpdates, CreateMessageHook } from '../../../../../hooks';
-import { useRoomEngineEvent } from '../../../../../hooks/events';
+import { GetGroupInformation, GetRoomEngine, IsOwnerOfFurniture, LocalizeText, RoomWidgetFurniActionMessage, TryJoinGroup, TryVisitRoom } from '../../../../../api';
+import { BatchUpdates, UseMessageEventHook, UseRoomEngineEvent } from '../../../../../hooks';
 import { useRoomContext } from '../../../context/RoomContext';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/ContextMenuListItemView';
@@ -118,11 +115,11 @@ export const FurnitureContextMenuView: FC<{}> = props =>
         }
     }, [ roomSession, objectId, close ]);
 
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU, onRoomEngineTriggerWidgetEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU, onRoomEngineTriggerWidgetEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_MONSTERPLANT_SEED_PLANT_CONFIRMATION_DIALOG, onRoomEngineTriggerWidgetEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PURCHASABLE_CLOTHING_CONFIRMATION_DIALOG, onRoomEngineTriggerWidgetEvent);
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_EFFECTBOX_OPEN_DIALOG, onRoomEngineTriggerWidgetEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU, onRoomEngineTriggerWidgetEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU, onRoomEngineTriggerWidgetEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_MONSTERPLANT_SEED_PLANT_CONFIRMATION_DIALOG, onRoomEngineTriggerWidgetEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PURCHASABLE_CLOTHING_CONFIRMATION_DIALOG, onRoomEngineTriggerWidgetEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_EFFECTBOX_OPEN_DIALOG, onRoomEngineTriggerWidgetEvent);
 
     const onGroupFurniContextMenuInfoMessageEvent = useCallback((event: GroupFurniContextMenuInfoMessageEvent) =>
     {
@@ -137,7 +134,7 @@ export const FurnitureContextMenuView: FC<{}> = props =>
         });
     }, []);
 
-    CreateMessageHook(GroupFurniContextMenuInfoMessageEvent, onGroupFurniContextMenuInfoMessageEvent);
+    UseMessageEventHook(GroupFurniContextMenuInfoMessageEvent, onGroupFurniContextMenuInfoMessageEvent);
 
     const processAction = (name: string) =>
     {

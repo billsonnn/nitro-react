@@ -1,10 +1,8 @@
 import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
+import { SendMessageComposer } from '../../..';
 import { GetNitroInstance, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
-import { InventoryTradeRequestEvent, WiredSelectObjectEvent } from '../../../../../events';
-import { FriendsSendFriendRequestEvent } from '../../../../../events/friends/FriendsSendFriendRequestEvent';
-import { HelpReportUserEvent } from '../../../../../events/help/HelpReportUserEvent';
-import { dispatchUiEvent } from '../../../../../hooks/events';
-import { SendMessageHook } from '../../../../../hooks/messages';
+import { FriendsSendFriendRequestEvent, HelpReportUserEvent, InventoryTradeRequestEvent, WiredSelectObjectEvent } from '../../../../../events';
+import { DispatchUiEvent } from '../../../../../hooks';
 import { FriendsHelper } from '../../../../../views/friends/common/FriendsHelper';
 import { PetSupplementEnum } from '../../../../../views/room/widgets/avatar-info/common/PetSupplementEnum';
 import { LocalizeText } from '../../../../utils/LocalizeText';
@@ -81,7 +79,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             case RoomWidgetRoomObjectMessage.GET_OBJECT_INFO:
                 return this.processObjectInfoMessage((message as RoomWidgetRoomObjectMessage));
             case RoomWidgetUserActionMessage.SEND_FRIEND_REQUEST:
-                dispatchUiEvent(new FriendsSendFriendRequestEvent(userData.webID, userData.name));
+                DispatchUiEvent(new FriendsSendFriendRequestEvent(userData.webID, userData.name));
                 break;
             case RoomWidgetUserActionMessage.RESPECT_USER:
                 GetSessionDataManager().giveRespect(userId);
@@ -122,7 +120,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 this.container.roomSession.sendTakeRightsMessage((message as RoomWidgetUserActionMessage).userId);
                 break;
             case RoomWidgetUserActionMessage.START_TRADING:
-                dispatchUiEvent(new InventoryTradeRequestEvent(userData.roomIndex, userData.name));
+                DispatchUiEvent(new InventoryTradeRequestEvent(userData.roomIndex, userData.name));
                 break;
             // case RoomWidgetUserActionMessage.RWUAM_OPEN_HOME_PAGE:
             //     this._container.sessionDataManager._Str_21275((message as RoomWidgetUserActionMessage).userId, _local_3.name);
@@ -146,22 +144,22 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 this.container.roomSession.removePetSaddle(userId);
                 break;
             case RoomWidgetUserActionMessage.PASS_CARRY_ITEM:
-                SendMessageHook(new RoomUnitGiveHandItemComposer(userId));
+                SendMessageComposer(new RoomUnitGiveHandItemComposer(userId));
                 break;
             case RoomWidgetUserActionMessage.GIVE_CARRY_ITEM_TO_PET:
-                SendMessageHook(new RoomUnitGiveHandItemPetComposer(userId));
+                SendMessageComposer(new RoomUnitGiveHandItemPetComposer(userId));
                 break;
             case RoomWidgetUserActionMessage.GIVE_WATER_TO_PET:
-                SendMessageHook(new PetSupplementComposer(userId, PetSupplementEnum.WATER));
+                SendMessageComposer(new PetSupplementComposer(userId, PetSupplementEnum.WATER));
                 break;
             case RoomWidgetUserActionMessage.GIVE_LIGHT_TO_PET:
-                SendMessageHook(new PetSupplementComposer(userId, PetSupplementEnum.LIGHT));
+                SendMessageComposer(new PetSupplementComposer(userId, PetSupplementEnum.LIGHT));
                 break;
             case RoomWidgetUserActionMessage.TREAT_PET:
-                SendMessageHook(new PetRespectComposer(userId));
+                SendMessageComposer(new PetRespectComposer(userId));
                 break;
             case RoomWidgetUserActionMessage.DROP_CARRY_ITEM:
-                SendMessageHook(new RoomUnitDropHandItemComposer());
+                SendMessageComposer(new RoomUnitDropHandItemComposer());
                 break;
             case RoomWidgetUserActionMessage.REQUEST_PET_UPDATE:
                 this.container.roomSession.userDataManager.requestPetInfo(userId);
@@ -169,7 +167,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             case RoomWidgetUserActionMessage.REPORT:
                 return;
             case RoomWidgetUserActionMessage.REPORT_CFH_OTHER:
-                dispatchUiEvent(new HelpReportUserEvent(userId));
+                DispatchUiEvent(new HelpReportUserEvent(userId));
                 return;
             case RoomWidgetUserActionMessage.AMBASSADOR_ALERT_USER:
                 this.container.roomSession.sendAmbassadorAlertMessage(userId);
@@ -391,7 +389,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 event.tileSizeX = furnitureData.tileSizeX;
                 event.tileSizeY = furnitureData.tileSizeY;
 
-                dispatchUiEvent(new WiredSelectObjectEvent(event.id, event.category));
+                DispatchUiEvent(new WiredSelectObjectEvent(event.id, event.category));
             }
         }
 

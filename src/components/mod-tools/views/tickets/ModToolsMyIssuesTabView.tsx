@@ -1,7 +1,7 @@
 import { IssueMessageData, ReleaseIssuesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
+import { SendMessageComposer } from '../../../../api';
 import { Base, Button, Column, Grid } from '../../../../common';
-import { SendMessageHook } from '../../../../hooks';
 
 interface ModToolsMyIssuesTabViewProps
 {
@@ -13,7 +13,7 @@ export const ModToolsMyIssuesTabView: FC<ModToolsMyIssuesTabViewProps> = props =
 {
     const { myIssues = null, onIssueHandleClick = null } = props;
 
-    const onReleaseIssue = (issueId: number) => SendMessageHook(new ReleaseIssuesMessageComposer([issueId]));
+    const onReleaseIssue = (issueId: number) => SendMessageComposer(new ReleaseIssuesMessageComposer([issueId]));
 
     return (
         <Column gap={ 0 } overflow="hidden">

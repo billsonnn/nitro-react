@@ -1,19 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ApproveNameMessageComposer, ColorConverter, GetSellablePetPalettesComposer, PurchaseFromCatalogComposer, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { LocalizeText } from '../../../../../../api';
-import { AutoGrid } from '../../../../../../common/AutoGrid';
-import { Base } from '../../../../../../common/Base';
-import { Button } from '../../../../../../common/Button';
-import { Column } from '../../../../../../common/Column';
-import { Flex } from '../../../../../../common/Flex';
-import { Grid } from '../../../../../../common/Grid';
-import { LayoutGridItem } from '../../../../../../common/layout/LayoutGridItem';
-import { Text } from '../../../../../../common/Text';
-import { CatalogNameResultEvent, CatalogPurchaseFailureEvent } from '../../../../../../events';
-import { CatalogWidgetEvent } from '../../../../../../events/catalog/CatalogWidgetEvent';
-import { BatchUpdates, dispatchUiEvent, useUiEvent } from '../../../../../../hooks';
-import { SendMessageHook } from '../../../../../../hooks/messages/message-event';
+import { LocalizeText, SendMessageComposer } from '../../../../../../api';
+import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../../../common';
+import { CatalogNameResultEvent, CatalogPurchaseFailureEvent, CatalogWidgetEvent } from '../../../../../../events';
+import { BatchUpdates, DispatchUiEvent, UseUiEvent } from '../../../../../../hooks';
 import { PetImageView } from '../../../../../../views/shared/pet-image/PetImageView';
 import { useCatalogContext } from '../../../../CatalogContext';
 import { GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../common/CatalogUtilities';
@@ -103,14 +94,14 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
     {
         if(approvalResult === -1)
         {
-            SendMessageHook(new ApproveNameMessageComposer(petName, 1));
+            SendMessageComposer(new ApproveNameMessageComposer(petName, 1));
 
             return;
         }
 
         if(approvalResult === 0)
         {
-            SendMessageHook(new PurchaseFromCatalogComposer(page.pageId, currentOffer.offerId, `${ petName }\n${ petPurchaseString }`, 1));
+            SendMessageComposer(new PurchaseFromCatalogComposer(page.pageId, currentOffer.offerId, `${ petName }\n${ petPurchaseString }`, 1));
 
             return;
         }
@@ -121,10 +112,10 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
         setApprovalResult(event.result);
 
         if(event.result === 0) purchasePet();
-        else dispatchUiEvent(new CatalogPurchaseFailureEvent(-1));
+        else DispatchUiEvent(new CatalogPurchaseFailureEvent(-1));
     }, [ purchasePet ]);
 
-    useUiEvent(CatalogWidgetEvent.APPROVE_RESULT, onCatalogNameResultEvent);
+    UseUiEvent(CatalogWidgetEvent.APPROVE_RESULT, onCatalogNameResultEvent);
 
     useEffect(() =>
     {
@@ -176,7 +167,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
             setSellablePalettes([]);
         });
 
-        SendMessageHook(new GetSellablePetPalettesComposer(productData.type));
+        SendMessageComposer(new GetSellablePetPalettesComposer(productData.type));
     }, [ currentOffer, petPalettes ]);
 
     useEffect(() =>

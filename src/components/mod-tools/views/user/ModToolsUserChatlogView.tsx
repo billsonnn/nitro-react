@@ -1,7 +1,8 @@
 import { ChatRecordData, GetUserChatlogMessageComposer, UserChatlogEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { SendMessageComposer } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
-import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../hooks';
+import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
 import { ChatlogView } from '../chatlog/ChatlogView';
 
 interface ModToolsUserChatlogViewProps
@@ -29,11 +30,11 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
         });
     }, [ userId ]);
 
-    CreateMessageHook(UserChatlogEvent, onModtoolUserChatlogEvent);
+    UseMessageEventHook(UserChatlogEvent, onModtoolUserChatlogEvent);
 
     useEffect(() =>
     {
-        SendMessageHook(new GetUserChatlogMessageComposer(userId));
+        SendMessageComposer(new GetUserChatlogMessageComposer(userId));
     }, [ userId ]);
 
     return (

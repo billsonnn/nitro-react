@@ -1,12 +1,8 @@
 import { CfhSanctionMessageEvent, CfhTopicsInitEvent, IssueDeletedMessageEvent, IssueInfoMessageEvent, IssuePickFailedMessageEvent, ModeratorActionResultMessageEvent, ModeratorInitMessageEvent, ModeratorToolPreferencesEvent, RoomEngineEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { MODTOOLS_NEW_TICKET, PlaySound } from '../../api/utils/PlaySound';
-import { ModToolsEvent } from '../../events/mod-tools/ModToolsEvent';
-import { ModToolsOpenRoomChatlogEvent } from '../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
-import { ModToolsOpenRoomInfoEvent } from '../../events/mod-tools/ModToolsOpenRoomInfoEvent';
-import { ModToolsOpenUserChatlogEvent } from '../../events/mod-tools/ModToolsOpenUserChatlogEvent';
-import { ModToolsOpenUserInfoEvent } from '../../events/mod-tools/ModToolsOpenUserInfoEvent';
-import { CreateMessageHook, useRoomEngineEvent, useUiEvent } from '../../hooks';
+import { MODTOOLS_NEW_TICKET, PlaySound } from '../../api';
+import { ModToolsEvent, ModToolsOpenRoomChatlogEvent, ModToolsOpenRoomInfoEvent, ModToolsOpenUserChatlogEvent, ModToolsOpenUserInfoEvent } from '../../events';
+import { UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { NotificationAlertType } from '../../views/notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../views/notification-center/common/NotificationUtilities';
 import { SetCfhCategories } from './common/GetCFHCategories';
@@ -152,14 +148,14 @@ export const ModToolsMessageHandler: FC<{}> = props =>
         // todo: update sanction data
     }, []);
 
-    CreateMessageHook(ModeratorInitMessageEvent, onModeratorInitMessageEvent);
-    CreateMessageHook(IssueInfoMessageEvent, onIssueInfoMessageEvent);
-    CreateMessageHook(ModeratorToolPreferencesEvent, onModeratorToolPreferencesEvent);
-    CreateMessageHook(IssuePickFailedMessageEvent, onIssuePickFailedMessageEvent);
-    CreateMessageHook(IssueDeletedMessageEvent, onIssueDeletedMessageEvent);
-    CreateMessageHook(ModeratorActionResultMessageEvent, onModeratorActionResultMessageEvent);
-    CreateMessageHook(CfhTopicsInitEvent, onCfhTopicsInitEvent);
-    CreateMessageHook(CfhSanctionMessageEvent, onCfhSanctionMessageEvent);
+    UseMessageEventHook(ModeratorInitMessageEvent, onModeratorInitMessageEvent);
+    UseMessageEventHook(IssueInfoMessageEvent, onIssueInfoMessageEvent);
+    UseMessageEventHook(ModeratorToolPreferencesEvent, onModeratorToolPreferencesEvent);
+    UseMessageEventHook(IssuePickFailedMessageEvent, onIssuePickFailedMessageEvent);
+    UseMessageEventHook(IssueDeletedMessageEvent, onIssueDeletedMessageEvent);
+    UseMessageEventHook(ModeratorActionResultMessageEvent, onModeratorActionResultMessageEvent);
+    UseMessageEventHook(CfhTopicsInitEvent, onCfhTopicsInitEvent);
+    UseMessageEventHook(CfhSanctionMessageEvent, onCfhSanctionMessageEvent);
 
     const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
     {
@@ -184,8 +180,8 @@ export const ModToolsMessageHandler: FC<{}> = props =>
         }
     }, [ dispatchModToolsState ]);
 
-    useRoomEngineEvent(RoomEngineEvent.INITIALIZED, onRoomEngineEvent);
-    useRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
+    UseRoomEngineEvent(RoomEngineEvent.INITIALIZED, onRoomEngineEvent);
+    UseRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
 
     const onModToolsEvent = useCallback((event: ModToolsEvent) =>
     {
@@ -254,10 +250,10 @@ export const ModToolsMessageHandler: FC<{}> = props =>
         }
     }, [openRooms, dispatchModToolsState, openRoomChatlogs, openUserInfo, openUserChatlogs]);
     
-    useUiEvent(ModToolsEvent.OPEN_ROOM_INFO, onModToolsEvent);
-    useUiEvent(ModToolsEvent.OPEN_ROOM_CHATLOG, onModToolsEvent);
-    useUiEvent(ModToolsEvent.OPEN_USER_INFO, onModToolsEvent);
-    useUiEvent(ModToolsEvent.OPEN_USER_CHATLOG, onModToolsEvent);
+    UseUiEvent(ModToolsEvent.OPEN_ROOM_INFO, onModToolsEvent);
+    UseUiEvent(ModToolsEvent.OPEN_ROOM_CHATLOG, onModToolsEvent);
+    UseUiEvent(ModToolsEvent.OPEN_USER_INFO, onModToolsEvent);
+    UseUiEvent(ModToolsEvent.OPEN_USER_CHATLOG, onModToolsEvent);
 
     return null;
 }

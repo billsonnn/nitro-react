@@ -1,7 +1,7 @@
 import { BotData, RoomObjectCategory, RoomObjectPlacementSource, RoomObjectType } from '@nitrots/nitro-renderer';
 import { GetRoomEngine, GetRoomSessionManager } from '../../../api';
 import { InventoryEvent } from '../../../events';
-import { dispatchUiEvent } from '../../../hooks/events/ui/ui-event';
+import { DispatchUiEvent } from '../../../hooks';
 import { BotItem } from './BotItem';
 import { getPlacingItemId, setObjectMoverRequested, setPlacingItemId } from './InventoryUtilities';
 import { IUnseenItemTracker } from './unseen/IUnseenItemTracker';
@@ -27,7 +27,7 @@ export function attemptBotPlacement(botItem: BotItem, flag: boolean = false): bo
 
     if(!session || !session.isRoomOwner) return false;
 
-    dispatchUiEvent(new InventoryEvent(InventoryEvent.HIDE_INVENTORY));
+    DispatchUiEvent(new InventoryEvent(InventoryEvent.HIDE_INVENTORY));
 
     if(GetRoomEngine().processRoomObjectPlacement(RoomObjectPlacementSource.INVENTORY, -(botData.id), RoomObjectCategory.UNIT, RoomObjectType.RENTABLE_BOT, botData.figure))
     {
@@ -98,7 +98,7 @@ export function removeBotItemById(id: number, set: BotItem[]): BotItem
             {
                 cancelRoomObjectPlacement();
                 
-                setTimeout(() => dispatchUiEvent(new InventoryEvent(InventoryEvent.SHOW_INVENTORY)), 1);
+                setTimeout(() => DispatchUiEvent(new InventoryEvent(InventoryEvent.SHOW_INVENTORY)), 1);
             }
             
             set.splice(index, 1);

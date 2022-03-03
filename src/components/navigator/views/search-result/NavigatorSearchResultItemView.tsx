@@ -2,11 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomDataParser } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent } from 'react';
 import { CreateRoomSession, GetSessionDataManager, TryVisitRoom } from '../../../../api';
-import { Flex } from '../../../../common/Flex';
-import { LayoutGridItemProps } from '../../../../common/layout/LayoutGridItem';
-import { Text } from '../../../../common/Text';
+import { Flex, LayoutGridItemProps, Text } from '../../../../common';
 import { UpdateDoorStateEvent } from '../../../../events';
-import { dispatchUiEvent } from '../../../../hooks';
+import { DispatchUiEvent } from '../../../../hooks';
 
 export interface NavigatorSearchResultItemViewProps extends LayoutGridItemProps
 {
@@ -59,10 +57,10 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
             switch(roomData.doorMode)
             {
                 case RoomDataParser.DOORBELL_STATE:
-                    dispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.START_DOORBELL, roomData));
+                    DispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.START_DOORBELL, roomData));
                     return;
                 case RoomDataParser.PASSWORD_STATE:
-                    dispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.START_PASSWORD, roomData));
+                    DispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.START_PASSWORD, roomData));
                     return;
             }
         }

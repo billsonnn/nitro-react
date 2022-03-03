@@ -14,6 +14,7 @@ export * from './RoomWidgetFurniActionMessage';
 export * from './RoomWidgetFurniToWidgetMessage';
 export * from './RoomWidgetLetUserInMessage';
 export * from './RoomWidgetMessage';
+export * from './RoomWidgetPollMessage';
 export * from './RoomWidgetPresentOpenMessage';
 export * from './RoomWidgetRequestWidgetMessage';
 export * from './RoomWidgetRoomObjectMessage';

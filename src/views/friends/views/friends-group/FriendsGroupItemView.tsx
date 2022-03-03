@@ -1,9 +1,8 @@
 import { FollowFriendMessageComposer, SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText, OpenMessengerChat } from '../../../../api';
+import { LocalizeText, OpenMessengerChat, SendMessageComposer } from '../../../../api';
 import { Base, Flex, FlexProps, UserProfileIconView } from '../../../../common';
-import { SendMessageHook } from '../../../../hooks';
 import { MessengerFriend } from '../../common/MessengerFriend';
 
 interface FriendsGroupItemViewProps extends FlexProps
@@ -23,7 +22,7 @@ export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
     {
         if(!friend) return;
         
-        SendMessageHook(new FollowFriendMessageComposer(friend.id));
+        SendMessageComposer(new FollowFriendMessageComposer(friend.id));
     }, [ friend ]);
 
     const openMessengerChat = useCallback((e) =>
@@ -58,7 +57,7 @@ export const FriendsGroupItemView: FC<FriendsGroupItemViewProps> = props =>
     {
         e.stopPropagation();
         
-        if(type !== friend.relationshipStatus) SendMessageHook(new SetRelationshipStatusComposer(friend.id, type));
+        if(type !== friend.relationshipStatus) SendMessageComposer(new SetRelationshipStatusComposer(friend.id, type));
         
         setIsExpanded(false);
     }, [ friend ]);

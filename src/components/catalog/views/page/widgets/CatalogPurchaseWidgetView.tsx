@@ -1,9 +1,9 @@
 import { PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { CreateLinkEvent, GetClubMemberLevel, LocalizeText } from '../../../../../api';
+import { CreateLinkEvent, GetClubMemberLevel, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Button, LayoutLoadingSpinnerView } from '../../../../../common';
 import { CatalogEvent, CatalogInitGiftEvent, CatalogInitPurchaseEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, CatalogWidgetEvent } from '../../../../../events';
-import { dispatchUiEvent, SendMessageHook, useUiEvent } from '../../../../../hooks';
+import { DispatchUiEvent, UseUiEvent } from '../../../../../hooks';
 import { GetCurrencyAmount } from '../../../../purse/common/CurrencyHelper';
 import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogPurchaseState } from '../../../common/CatalogPurchaseState';
@@ -31,7 +31,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         // offer, page.pageId, extraData, quantity, previewStuffData, null, true, null
     }, [ currentOffer ]);
 
-    useUiEvent(CatalogWidgetEvent.INIT_PURCHASE, onCatalogInitPurchaseEvent);
+    UseUiEvent(CatalogWidgetEvent.INIT_PURCHASE, onCatalogInitPurchaseEvent);
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
@@ -52,10 +52,10 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         }
     }, []);
 
-    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
-    useUiEvent(CatalogPurchaseFailureEvent.PURCHASE_FAILED, onCatalogEvent);
-    useUiEvent(CatalogPurchaseNotAllowedEvent.NOT_ALLOWED, onCatalogEvent);
-    useUiEvent(CatalogPurchaseSoldOutEvent.SOLD_OUT, onCatalogEvent);
+    UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
+    UseUiEvent(CatalogPurchaseFailureEvent.PURCHASE_FAILED, onCatalogEvent);
+    UseUiEvent(CatalogPurchaseNotAllowedEvent.NOT_ALLOWED, onCatalogEvent);
+    UseUiEvent(CatalogPurchaseSoldOutEvent.SOLD_OUT, onCatalogEvent);
 
     const isLimitedSoldOut = useMemo(() =>
     {
@@ -86,7 +86,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
 
         if(isGift)
         {
-            dispatchUiEvent(new CatalogInitGiftEvent(currentOffer.page.pageId, currentOffer.offerId, extraData));
+            DispatchUiEvent(new CatalogInitGiftEvent(currentOffer.page.pageId, currentOffer.offerId, extraData));
 
             return;
         }
@@ -109,7 +109,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         //     if(nodes) pageId = nodes[0].pageId;
         // }
 
-        SendMessageHook(new PurchaseFromCatalogComposer(pageId, currentOffer.offerId, extraData, quantity));
+        SendMessageComposer(new PurchaseFromCatalogComposer(pageId, currentOffer.offerId, extraData, quantity));
     }, [ currentOffer, purchaseCallback, extraData, quantity ]);
 
     useEffect(() =>

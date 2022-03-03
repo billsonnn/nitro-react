@@ -2,7 +2,7 @@ import { SanctionStatusEvent, SanctionStatusMessageParser } from '@nitrots/nitro
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../api';
 import { Base, Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
-import { CreateMessageHook } from '../../../hooks';
+import { UseMessageEventHook } from '../../../hooks';
 
 export const SanctionSatusView:FC<{}> = props =>
 {
@@ -17,7 +17,7 @@ export const SanctionSatusView:FC<{}> = props =>
         setSanctionInfo(parser);
     }, []);
     
-    CreateMessageHook(SanctionStatusEvent, onSanctionStatusEvent);
+    UseMessageEventHook(SanctionStatusEvent, onSanctionStatusEvent);
 
     const sanctionLocalization = useCallback((param: string, sanctionName: string, length?: number) =>
     {

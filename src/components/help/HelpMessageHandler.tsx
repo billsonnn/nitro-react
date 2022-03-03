@@ -1,7 +1,7 @@
 import { CallForHelpResultMessageEvent, GetPendingCallsForHelpMessageComposer, IssueCloseNotificationMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../api';
-import { CreateMessageHook, SendMessageHook } from '../../hooks/messages/message-event';
+import { LocalizeText, SendMessageComposer } from '../../api';
+import { UseMessageEventHook } from '../../hooks';
 import { NotificationAlertType } from '../../views/notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../views/notification-center/common/NotificationUtilities';
 import { CallForHelpResult } from './common/CallForHelpResult';
@@ -18,7 +18,7 @@ export const HelpMessageHandler: FC<{}> = props =>
         switch(parser.resultType)
         {
             case CallForHelpResult.TOO_MANY_PENDING_CALLS_CODE:
-                SendMessageHook(new GetPendingCallsForHelpMessageComposer());
+                SendMessageComposer(new GetPendingCallsForHelpMessageComposer());
                 NotificationUtilities.simpleAlert(LocalizeText('help.cfh.error.pending'), NotificationAlertType.MODERATION, null, null, LocalizeText('help.cfh.error.title'));
                 break;
             case CallForHelpResult.HAS_ABUSIVE_CALL_CODE:
@@ -33,7 +33,7 @@ export const HelpMessageHandler: FC<{}> = props =>
         }
     }, []);
 
-    CreateMessageHook(CallForHelpResultMessageEvent, onCallForHelpResultMessageEvent);
+    UseMessageEventHook(CallForHelpResultMessageEvent, onCallForHelpResultMessageEvent);
 
     const onIssueCloseNotificationMessageEvent = useCallback((event: IssueCloseNotificationMessageEvent) =>
     {
@@ -44,7 +44,7 @@ export const HelpMessageHandler: FC<{}> = props =>
         NotificationUtilities.simpleAlert(message, NotificationAlertType.MODERATION, null, null, LocalizeText('mod.alert.title'));
     }, []);
 
-    CreateMessageHook(IssueCloseNotificationMessageEvent, onIssueCloseNotificationMessageEvent);
+    UseMessageEventHook(IssueCloseNotificationMessageEvent, onIssueCloseNotificationMessageEvent);
 
     return null;
 }

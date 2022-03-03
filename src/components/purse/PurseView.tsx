@@ -1,12 +1,9 @@
 import { ActivityPointNotificationMessageEvent, FriendlyTime, HabboClubLevelEnum, UserCreditsEvent, UserCurrencyComposer, UserCurrencyEvent, UserSubscriptionComposer, UserSubscriptionEvent, UserSubscriptionParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { CreateLinkEvent, GetConfiguration, LocalizeText } from '../../api';
-import { CREDITS, DUCKETS, PlaySound } from '../../api/utils/PlaySound';
+import { CreateLinkEvent, CREDITS, DUCKETS, GetConfiguration, LocalizeText, PlaySound, SendMessageComposer } from '../../api';
 import { Column, Flex, Grid, Text } from '../../common';
-import { HcCenterEvent } from '../../events/hc-center/HcCenterEvent';
-import { UserSettingsUIEvent } from '../../events/user-settings/UserSettingsUIEvent';
-import { CreateMessageHook, dispatchUiEvent } from '../../hooks';
-import { SendMessageHook } from '../../hooks/messages/message-event';
+import { HcCenterEvent, UserSettingsUIEvent } from '../../events';
+import { DispatchUiEvent, UseMessageEventHook } from '../../hooks';
 import { CurrencyIcon } from '../../views/shared/currency-icon/CurrencyIcon';
 import { IPurse } from './common/IPurse';
 import { Purse } from './common/Purse';
@@ -85,7 +82,7 @@ export const PurseView: FC<{}> = props =>
             });
     }, []);
 
-    CreateMessageHook(UserCreditsEvent, onUserCreditsEvent);
+    UseMessageEventHook(UserCreditsEvent, onUserCreditsEvent);
 
     const onUserCurrencyEvent = useCallback((event: UserCurrencyEvent) =>
     {
@@ -101,7 +98,7 @@ export const PurseView: FC<{}> = props =>
             });
     }, []);
 
-    CreateMessageHook(UserCurrencyEvent, onUserCurrencyEvent);
+    UseMessageEventHook(UserCurrencyEvent, onUserCurrencyEvent);
 
     const onActivityPointNotificationMessageEvent = useCallback((event: ActivityPointNotificationMessageEvent) =>
     {
@@ -121,7 +118,7 @@ export const PurseView: FC<{}> = props =>
             });
     }, []);
 
-    CreateMessageHook(ActivityPointNotificationMessageEvent, onActivityPointNotificationMessageEvent);
+    UseMessageEventHook(ActivityPointNotificationMessageEvent, onActivityPointNotificationMessageEvent);
 
     const onUserSubscriptionEvent = useCallback((event: UserSubscriptionEvent) =>
     {
@@ -147,7 +144,7 @@ export const PurseView: FC<{}> = props =>
             });
     }, []);
 
-    CreateMessageHook(UserSubscriptionEvent, onUserSubscriptionEvent);
+    UseMessageEventHook(UserSubscriptionEvent, onUserSubscriptionEvent);
 
     useEffect(() =>
     {
@@ -156,16 +153,16 @@ export const PurseView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        SendMessageHook(new UserSubscriptionComposer('habbo_club'));
+        SendMessageComposer(new UserSubscriptionComposer('habbo_club'));
 
-        const interval = setInterval(() => SendMessageHook(new UserSubscriptionComposer('habbo_club')), 50000);
+        const interval = setInterval(() => SendMessageComposer(new UserSubscriptionComposer('habbo_club')), 50000);
 
         return () => clearInterval(interval);
     }, [ purse ]);
 
     useEffect(() =>
     {
-        SendMessageHook(new UserCurrencyComposer());
+        SendMessageComposer(new UserCurrencyComposer());
     }, []);
 
     if(!purse) return null;
@@ -179,7 +176,7 @@ export const PurseView: FC<{}> = props =>
                             <CurrencyView type={ -1 } amount={ purse.credits } short={ currencyDisplayNumberShort } />
                             { getCurrencyElements(0, 2) }
                         </Column>
-                        <Column center pointer size={ 4 } gap={ 1 } className="nitro-purse-subscription rounded" onClick={ event => dispatchUiEvent(new HcCenterEvent(HcCenterEvent.TOGGLE_HC_CENTER)) }>
+                        <Column center pointer size={ 4 } gap={ 1 } className="nitro-purse-subscription rounded" onClick={ event => DispatchUiEvent(new HcCenterEvent(HcCenterEvent.TOGGLE_HC_CENTER)) }>
                             <CurrencyIcon type="hc" />
                             <Text variant="white">{ getClubText }</Text>
                         </Column>
@@ -187,7 +184,7 @@ export const PurseView: FC<{}> = props =>
                             <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => CreateLinkEvent('help/show') }>
                                 <i className="icon icon-help"/>
                             </Flex>
-                            <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => dispatchUiEvent(new UserSettingsUIEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS)) } >
+                            <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => DispatchUiEvent(new UserSettingsUIEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS)) } >
                                 <i className="icon icon-cog"/>
                             </Flex>
                         </Column>

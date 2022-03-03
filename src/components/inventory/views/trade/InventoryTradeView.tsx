@@ -1,16 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FurnitureListComposer, IObjectData, TradingAcceptComposer, TradingConfirmationComposer, TradingListAddItemComposer, TradingListAddItemsComposer, TradingListItemRemoveComposer, TradingUnacceptComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { AutoGrid } from '../../../../common/AutoGrid';
-import { Base } from '../../../../common/Base';
-import { Button } from '../../../../common/Button';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Grid } from '../../../../common/Grid';
-import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
-import { Text } from '../../../../common/Text';
-import { SendMessageHook } from '../../../../hooks/messages';
+import { LocalizeText, SendMessageComposer } from '../../../../api';
+import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../common';
 import { NotificationAlertType } from '../../../../views/notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
 import { FurniCategory } from '../../common/FurniCategory';
@@ -93,7 +85,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         {
             if(!coreItem.isGroupable && (itemIds.length))
             {
-                SendMessageHook(new TradingListAddItemComposer(itemIds.pop()));
+                SendMessageComposer(new TradingListAddItemComposer(itemIds.pop()));
             }
             else
             {
@@ -111,11 +103,11 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                 {
                     if(tradeIds.length === 1)
                     {
-                        SendMessageHook(new TradingListAddItemComposer(tradeIds.pop()));
+                        SendMessageComposer(new TradingListAddItemComposer(tradeIds.pop()));
                     }
                     else
                     {
-                        SendMessageHook(new TradingListAddItemsComposer(...tradeIds));
+                        SendMessageComposer(new TradingListAddItemsComposer(...tradeIds));
                     }
                 }
             }
@@ -132,7 +124,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
         if(!item) return;
 
-        SendMessageHook(new TradingListItemRemoveComposer(item.id));
+        SendMessageComposer(new TradingListItemRemoveComposer(item.id));
     }
 
     const progressTrade = () =>
@@ -147,15 +139,15 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
                 if(tradeData.ownUser.accepts)
                 {
-                    SendMessageHook(new TradingUnacceptComposer());
+                    SendMessageComposer(new TradingUnacceptComposer());
                 }
                 else
                 {
-                    SendMessageHook(new TradingAcceptComposer());
+                    SendMessageComposer(new TradingAcceptComposer());
                 }
                 return;
             case TradeState.TRADING_STATE_CONFIRMING:
-                SendMessageHook(new TradingConfirmationComposer());
+                SendMessageComposer(new TradingConfirmationComposer());
 
                 dispatchFurnitureState({
                     type: InventoryFurnitureActions.SET_TRADE_STATE,
@@ -186,7 +178,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                 }
             });
 
-            SendMessageHook(new FurnitureListComposer());
+            SendMessageComposer(new FurnitureListComposer());
         }
 
     }, [ needsFurniUpdate, groupItems, dispatchFurnitureState ]);

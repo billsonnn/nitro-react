@@ -1,7 +1,7 @@
 import { GroupInformationComposer } from '@nitrots/nitro-renderer';
-import { SendMessageHook } from '../../hooks';
+import { SendMessageComposer } from '..';
 
 export function GetGroupInformation(groupId: number): void
 {
-    SendMessageHook(new GroupInformationComposer(groupId, true));
+    SendMessageComposer(new GroupInformationComposer(groupId, true));
 }

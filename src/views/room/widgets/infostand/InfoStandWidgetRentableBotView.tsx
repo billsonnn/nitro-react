@@ -1,9 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { BotRemoveComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo } from 'react';
-import { LocalizeText, RoomWidgetUpdateInfostandRentableBotEvent } from '../../../../api';
+import { LocalizeText, RoomWidgetUpdateInfostandRentableBotEvent, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Text, UserProfileIconView } from '../../../../common';
-import { SendMessageHook } from '../../../../hooks';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { BotSkillsEnum } from '../avatar-info/common/BotSkillsEnum';
@@ -27,7 +26,7 @@ export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewPr
         return true;
     }, [ rentableBotData ]);
 
-    const pickupBot = () => SendMessageHook(new BotRemoveComposer(rentableBotData.webID));
+    const pickupBot = () => SendMessageComposer(new BotRemoveComposer(rentableBotData.webID));
     
     if(!rentableBotData) return;
 

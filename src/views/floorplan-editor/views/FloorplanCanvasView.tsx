@@ -1,7 +1,8 @@
 import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, NitroPoint, RoomEntryTileMessageEvent, RoomOccupiedTilesMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { SendMessageComposer } from '../../../api';
 import { Flex } from '../../../common';
-import { CreateMessageHook, SendMessageHook, UseMountEffect } from '../../../hooks';
+import { UseMessageEventHook, UseMountEffect } from '../../../hooks';
 import { FloorplanEditor } from '../common/FloorplanEditor';
 import { useFloorplanEditorContext } from '../context/FloorplanEditorContext';
 
@@ -23,8 +24,8 @@ export const FloorplanCanvasView: FC<{}> = props =>
 
     UseMountEffect(() =>
     {
-        SendMessageHook(new GetRoomEntryTileMessageComposer());
-        SendMessageHook(new GetOccupiedTilesMessageComposer());
+        SendMessageComposer(new GetRoomEntryTileMessageComposer());
+        SendMessageComposer(new GetOccupiedTilesMessageComposer());
         FloorplanEditor.instance.tilemapRenderer.interactive = true;
         elementRef.current.appendChild(FloorplanEditor.instance.renderer.view);
     });
@@ -46,7 +47,7 @@ export const FloorplanCanvasView: FC<{}> = props =>
         elementRef.current.scrollTo(FloorplanEditor.instance.view.width / 3, 0);
     }, [originalFloorplanSettings, setOriginalFloorplanSettings]);
 
-    CreateMessageHook(RoomOccupiedTilesMessageEvent, onRoomOccupiedTilesMessageEvent);
+    UseMessageEventHook(RoomOccupiedTilesMessageEvent, onRoomOccupiedTilesMessageEvent);
 
     const onRoomEntryTileMessageEvent = useCallback((event: RoomEntryTileMessageEvent) =>
     {
@@ -67,7 +68,7 @@ export const FloorplanCanvasView: FC<{}> = props =>
         setEntryTileReceived(true);
     }, [originalFloorplanSettings, setOriginalFloorplanSettings, setVisualizationSettings, visualizationSettings]);
 
-    CreateMessageHook(RoomEntryTileMessageEvent, onRoomEntryTileMessageEvent);
+    UseMessageEventHook(RoomEntryTileMessageEvent, onRoomEntryTileMessageEvent);
 
     const onClickArrowButton = useCallback((scrollDirection: string) =>
     {

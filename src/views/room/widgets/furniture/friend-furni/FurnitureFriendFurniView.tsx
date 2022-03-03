@@ -2,7 +2,7 @@ import { FriendFurniConfirmLockMessageComposer, LoveLockFurniFinishedEvent, Love
 import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, GetRoomSession, LocalizeText, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { DraggableWindow, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../common';
-import { CreateEventDispatcherHook, CreateMessageHook, useRoomEngineEvent } from '../../../../../hooks';
+import { UseEventDispatcherHook, UseMessageEventHook, UseRoomEngineEvent } from '../../../../../hooks';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../../context/RoomContext';
 import { FurnitureEngravingLockData } from './FriendFurniLockData';
@@ -49,8 +49,8 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
         }
     };
 
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onNitroEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING, onNitroEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onNitroEvent);
 
     const onLoveLockFurniStartEvent = useCallback((event: LoveLockFurniStartEvent) =>
     {
@@ -65,7 +65,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
 
     }, []);
 
-    CreateMessageHook(LoveLockFurniStartEvent, onLoveLockFurniStartEvent);
+    UseMessageEventHook(LoveLockFurniStartEvent, onLoveLockFurniStartEvent);
 
     const processAction = useCallback((type: string, value: string = null) =>
     {
@@ -93,8 +93,8 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
         processAction('close_request');
     }, [ processAction ]);
 
-    CreateMessageHook(LoveLockFurniFinishedEvent, onLoveLockDoneEvent);
-    CreateMessageHook(LoveLockFurniFriendConfirmedEvent, onLoveLockDoneEvent);
+    UseMessageEventHook(LoveLockFurniFinishedEvent, onLoveLockDoneEvent);
+    UseMessageEventHook(LoveLockFurniFriendConfirmedEvent, onLoveLockDoneEvent);
 
     return (
         <>

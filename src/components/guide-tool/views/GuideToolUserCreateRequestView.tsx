@@ -1,8 +1,7 @@
 import { GuideSessionCreateMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { LocalizeText } from '../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Text } from '../../../common';
-import { SendMessageHook } from '../../../hooks';
 
 interface GuideToolUserCreateRequestViewProps
 {
@@ -20,7 +19,7 @@ export const GuideToolUserCreateRequestView: FC<GuideToolUserCreateRequestViewPr
     const sendRequest = () =>
     {
         setIsPending(true);
-        SendMessageHook(new GuideSessionCreateMessageComposer(1, userRequest));
+        SendMessageComposer(new GuideSessionCreateMessageComposer(1, userRequest));
     }
 
     return (

@@ -1,10 +1,9 @@
 import { GetModeratorRoomInfoMessageComposer, ModerateRoomMessageComposer, ModeratorActionMessageComposer, ModeratorRoomInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { TryVisitRoom } from '../../../../api';
+import { SendMessageComposer, TryVisitRoom } from '../../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { ModToolsOpenRoomChatlogEvent } from '../../../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
-import { BatchUpdates, dispatchUiEvent } from '../../../../hooks';
-import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
+import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 
 interface ModToolsRoomViewProps
 {
@@ -48,7 +47,7 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
         });
     }, [ roomId ]);
 
-    CreateMessageHook(ModeratorRoomInfoEvent, onModtoolRoomInfoEvent);
+    UseMessageEventHook(ModeratorRoomInfoEvent, onModtoolRoomInfoEvent);
 
     const handleClick = useCallback((action: string, value?: string) =>
     {
@@ -59,13 +58,13 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
             case 'alert_only':
                 if(message.trim().length === 0) return;
 
-                SendMessageHook(new ModeratorActionMessageComposer(ModeratorActionMessageComposer.ACTION_ALERT, message, ''));
+                SendMessageComposer(new ModeratorActionMessageComposer(ModeratorActionMessageComposer.ACTION_ALERT, message, ''));
                 return;
             case 'send_message':
                 if(message.trim().length === 0) return;
 
-                SendMessageHook(new ModeratorActionMessageComposer(ModeratorActionMessageComposer.ACTION_MESSAGE, message, ''));
-                SendMessageHook(new ModerateRoomMessageComposer(roomId, lockRoom ? 1 : 0, changeRoomName ? 1 : 0, kickUsers ? 1 : 0))
+                SendMessageComposer(new ModeratorActionMessageComposer(ModeratorActionMessageComposer.ACTION_MESSAGE, message, ''));
+                SendMessageComposer(new ModerateRoomMessageComposer(roomId, lockRoom ? 1 : 0, changeRoomName ? 1 : 0, kickUsers ? 1 : 0))
                 return;
         }
     }, [ changeRoomName, kickUsers, lockRoom, message, roomId ]);
@@ -74,7 +73,7 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
     {
         if(infoRequested) return;
         
-        SendMessageHook(new GetModeratorRoomInfoMessageComposer(roomId));
+        SendMessageComposer(new GetModeratorRoomInfoMessageComposer(roomId));
         setInfoRequested(true);
     }, [ roomId, infoRequested, setInfoRequested ]);
 
@@ -99,7 +98,7 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
                     </Column>
                     <Column gap={ 1 }>
                         <Button onClick={ event => TryVisitRoom(roomId) }>Visit Room</Button>
-                        <Button onClick={ event => dispatchUiEvent(new ModToolsOpenRoomChatlogEvent(roomId)) }>Chatlog</Button>
+                        <Button onClick={ event => DispatchUiEvent(new ModToolsOpenRoomChatlogEvent(roomId)) }>Chatlog</Button>
                     </Column>
                 </Flex>
                 <Column className="bg-muted rounded p-2" gap={ 1 }>

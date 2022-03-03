@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GroupAdminGiveComposer, GroupAdminTakeComposer, GroupConfirmMemberRemoveEvent, GroupConfirmRemoveMemberComposer, GroupMemberParser, GroupMembersComposer, GroupMembersEvent, GroupMembershipAcceptComposer, GroupMembershipDeclineComposer, GroupMembersParser, GroupRank, GroupRemoveMemberComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker } from '../../../api';
+import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../hooks';
+import { BatchUpdates, UseMessageEventHook } from '../../../hooks';
 import { NotificationUtilities } from '../../../views/notification-center/common/NotificationUtilities';
 import { AvatarImageView } from '../../../views/shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
@@ -36,15 +36,15 @@ export const GroupMembersView: FC<{}> = props =>
     {
         if((groupId === -1) || (levelId === -1) || (pageId === -1)) return;
 
-        SendMessageHook(new GroupMembersComposer(groupId, pageId, searchQuery, levelId));
+        SendMessageComposer(new GroupMembersComposer(groupId, pageId, searchQuery, levelId));
     }, [ groupId, levelId, pageId, searchQuery ]);
 
     const toggleAdmin = (member: GroupMemberParser) =>
     {
         if(!membersData.admin || (member.rank === GroupRank.OWNER)) return;
         
-        if(member.rank !== GroupRank.ADMIN) SendMessageHook(new GroupAdminGiveComposer(membersData.groupId, member.id));
-        else SendMessageHook(new GroupAdminTakeComposer(membersData.groupId, member.id));
+        if(member.rank !== GroupRank.ADMIN) SendMessageComposer(new GroupAdminGiveComposer(membersData.groupId, member.id));
+        else SendMessageComposer(new GroupAdminTakeComposer(membersData.groupId, member.id));
 
         refreshMembers();
     }
@@ -53,7 +53,7 @@ export const GroupMembersView: FC<{}> = props =>
     {
         if(!membersData.admin || (member.rank !== GroupRank.REQUESTED)) return;
         
-        SendMessageHook(new GroupMembershipAcceptComposer(membersData.groupId, member.id));
+        SendMessageComposer(new GroupMembershipAcceptComposer(membersData.groupId, member.id));
 
         refreshMembers();
     }
@@ -64,7 +64,7 @@ export const GroupMembersView: FC<{}> = props =>
 
         if(member.rank === GroupRank.REQUESTED)
         {
-            SendMessageHook(new GroupMembershipDeclineComposer(membersData.groupId, member.id));
+            SendMessageComposer(new GroupMembershipDeclineComposer(membersData.groupId, member.id));
 
             refreshMembers();
 
@@ -72,7 +72,7 @@ export const GroupMembersView: FC<{}> = props =>
         }
         
         setRemovingMemberName(member.name);
-        SendMessageHook(new GroupConfirmRemoveMemberComposer(membersData.groupId, member.id));
+        SendMessageComposer(new GroupConfirmRemoveMemberComposer(membersData.groupId, member.id));
     }
 
     const onGroupMembersEvent = useCallback((event: GroupMembersEvent) =>
@@ -87,7 +87,7 @@ export const GroupMembersView: FC<{}> = props =>
         });
     }, []);
 
-    CreateMessageHook(GroupMembersEvent, onGroupMembersEvent);
+    UseMessageEventHook(GroupMembersEvent, onGroupMembersEvent);
 
     const onGroupConfirmMemberRemoveEvent = useCallback((event: GroupConfirmMemberRemoveEvent) =>
     {
@@ -95,7 +95,7 @@ export const GroupMembersView: FC<{}> = props =>
 
         NotificationUtilities.confirm(LocalizeText(((parser.furnitureCount > 0) ? 'group.kickconfirm.desc' : 'group.kickconfirm_nofurni.desc'), [ 'user', 'amount' ], [ removingMemberName, parser.furnitureCount.toString() ]), () =>
             {
-                SendMessageHook(new GroupRemoveMemberComposer(membersData.groupId, parser.userId));
+                SendMessageComposer(new GroupRemoveMemberComposer(membersData.groupId, parser.userId));
 
                 refreshMembers();
             }, null);
@@ -103,7 +103,7 @@ export const GroupMembersView: FC<{}> = props =>
         setRemovingMemberName(null);
     }, [ membersData, removingMemberName, refreshMembers ]);
 
-    CreateMessageHook(GroupConfirmMemberRemoveEvent, onGroupConfirmMemberRemoveEvent);
+    UseMessageEventHook(GroupConfirmMemberRemoveEvent, onGroupConfirmMemberRemoveEvent);
 
     const linkReceived = useCallback((url: string) =>
     {
@@ -142,7 +142,7 @@ export const GroupMembersView: FC<{}> = props =>
     {
         if((groupId === -1) || (levelId === -1) || (pageId === -1)) return;
 
-        SendMessageHook(new GroupMembersComposer(groupId, pageId, searchQuery, levelId));
+        SendMessageComposer(new GroupMembersComposer(groupId, pageId, searchQuery, levelId));
     }, [ groupId, levelId, pageId, searchQuery ]);
 
     useEffect(() =>

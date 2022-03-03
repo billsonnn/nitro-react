@@ -1,6 +1,6 @@
 import { NitroEvent, RoomSessionFriendRequestEvent, RoomWidgetEnum } from '@nitrots/nitro-renderer';
 import { FriendRequestEvent, FriendsAcceptFriendRequestEvent, FriendsDeclineFriendRequestEvent } from '../../../../../events';
-import { dispatchUiEvent } from '../../../../../hooks';
+import { DispatchUiEvent } from '../../../../../hooks';
 import { RoomWidgetUpdateEvent, RoomWidgetUpdateFriendRequestEvent } from '../events';
 import { RoomWidgetFriendRequestMessage, RoomWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
@@ -30,10 +30,10 @@ export class FriendRequestHandler extends RoomWidgetHandler
         switch(message.type)
         {
             case RoomWidgetFriendRequestMessage.ACCEPT:
-                dispatchUiEvent(new FriendsAcceptFriendRequestEvent(friendMessage.requestId));
+                DispatchUiEvent(new FriendsAcceptFriendRequestEvent(friendMessage.requestId));
                 break;
             case RoomWidgetFriendRequestMessage.DECLINE:
-                dispatchUiEvent(new FriendsDeclineFriendRequestEvent(friendMessage.requestId));
+                DispatchUiEvent(new FriendsDeclineFriendRequestEvent(friendMessage.requestId));
                 break;
 
         }

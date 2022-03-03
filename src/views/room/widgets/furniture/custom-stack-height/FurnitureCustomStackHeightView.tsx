@@ -1,9 +1,9 @@
 import { FurnitureStackHeightComposer, FurnitureStackHeightEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { LocalizeText, RoomWidgetUpdateCustomStackHeightEvent } from '../../../../../api';
+import { LocalizeText, RoomWidgetUpdateCustomStackHeightEvent, SendMessageComposer } from '../../../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { BatchUpdates, CreateEventDispatcherHook, CreateMessageHook, SendMessageHook } from '../../../../../hooks';
+import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../context/RoomContext';
 
 const MAX_HEIGHT: number = 40;
@@ -51,7 +51,7 @@ export const FurnitureCustomStackHeightView: FC<{}> = props =>
         }
     }, [ updateHeight ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateCustomStackHeightEvent.UPDATE_CUSTOM_STACK_HEIGHT, eventDispatcher, onRoomWidgetUpdateCustomStackHeightEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateCustomStackHeightEvent.UPDATE_CUSTOM_STACK_HEIGHT, eventDispatcher, onRoomWidgetUpdateCustomStackHeightEvent);
 
     const onFurnitureStackHeightEvent = useCallback((event: FurnitureStackHeightEvent) =>
     {
@@ -62,11 +62,11 @@ export const FurnitureCustomStackHeightView: FC<{}> = props =>
         updateHeight(parser.height, true);
     }, [ objectId, updateHeight ]);
 
-    CreateMessageHook(FurnitureStackHeightEvent, onFurnitureStackHeightEvent);
+    UseMessageEventHook(FurnitureStackHeightEvent, onFurnitureStackHeightEvent);
 
     const sendUpdate = useCallback((height: number) =>
     {
-        SendMessageHook(new FurnitureStackHeightComposer(objectId, ~~(height)));
+        SendMessageComposer(new FurnitureStackHeightComposer(objectId, ~~(height)));
     }, [ objectId ]);
 
     useEffect(() =>

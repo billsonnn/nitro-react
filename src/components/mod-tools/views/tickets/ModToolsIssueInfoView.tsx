@@ -1,9 +1,9 @@
 import { CloseIssuesMessageComposer, ReleaseIssuesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
-import { LocalizeText } from '../../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { ModToolsOpenUserInfoEvent } from '../../../../events/mod-tools/ModToolsOpenUserInfoEvent';
-import { dispatchUiEvent, SendMessageHook } from '../../../../hooks';
+import { ModToolsOpenUserInfoEvent } from '../../../../events';
+import { DispatchUiEvent } from '../../../../hooks';
 import { getSourceName } from '../../common/IssueCategoryNames';
 import { useModToolsContext } from '../../ModToolsContext';
 import { CfhChatlogView } from './CfhChatlogView';
@@ -30,19 +30,19 @@ export const ModToolsIssueInfoView: FC<IssueInfoViewProps> = props =>
 
     const releaseIssue = (issueId: number) =>
     {
-        SendMessageHook(new ReleaseIssuesMessageComposer([ issueId ]));
+        SendMessageComposer(new ReleaseIssuesMessageComposer([ issueId ]));
 
         onIssueInfoClosed(issueId);
     }
 
     const closeIssue = (resolutionType: number) =>
     {
-        SendMessageHook(new CloseIssuesMessageComposer([ issueId ], resolutionType));
+        SendMessageComposer(new CloseIssuesMessageComposer([ issueId ], resolutionType));
 
         onIssueInfoClosed(issueId)
     }
 
-    const openUserInfo = (userId: number) => dispatchUiEvent(new ModToolsOpenUserInfoEvent(userId));
+    const openUserInfo = (userId: number) => DispatchUiEvent(new ModToolsOpenUserInfoEvent(userId));
     
     return (
         <>

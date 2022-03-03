@@ -1,9 +1,8 @@
 import { FC, useCallback, useEffect } from 'react';
 import { LocalizeText } from '../../../api';
-import { Column } from '../../../common/Column';
-import { Text } from '../../../common/Text';
+import { Column, Text } from '../../../common';
 import { WiredSelectObjectEvent } from '../../../events';
-import { useUiEvent } from '../../../hooks/events';
+import { UseUiEvent } from '../../../hooks';
 import { WiredSelectionVisualizer } from '../common/WiredSelectionVisualizer';
 import { useWiredContext } from '../context/WiredContext';
 
@@ -45,7 +44,7 @@ export const WiredFurniSelectorView: FC<{}> = props =>
             });
     }, [ trigger, setFurniIds ]);
 
-    useUiEvent(WiredSelectObjectEvent.SELECT_OBJECT, onWiredSelectObjectEvent);
+    UseUiEvent(WiredSelectObjectEvent.SELECT_OBJECT, onWiredSelectObjectEvent);
 
     useEffect(() =>
     {

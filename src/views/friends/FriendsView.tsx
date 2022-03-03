@@ -2,12 +2,9 @@ import { AcceptFriendMessageComposer, FriendListFragmentEvent, FriendListUpdateE
 import { DeclineFriendMessageComposer } from '@nitrots/nitro-renderer/src';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { GetRoomSession } from '../../api';
-import { FriendEnteredRoomEvent, FriendListContentEvent, FriendRequestEvent, FriendsAcceptFriendRequestEvent, FriendsDeclineFriendRequestEvent, FriendsEvent, FriendsRequestCountEvent } from '../../events';
-import { FriendsSendFriendRequestEvent } from '../../events/friends/FriendsSendFriendRequestEvent';
-import { CreateMessageHook, useRoomEngineEvent } from '../../hooks';
-import { dispatchUiEvent, useUiEvent } from '../../hooks/events/ui/ui-event';
-import { SendMessageHook } from '../../hooks/messages/message-event';
+import { GetRoomSession, SendMessageComposer } from '../../api';
+import { FriendEnteredRoomEvent, FriendListContentEvent, FriendRequestEvent, FriendsAcceptFriendRequestEvent, FriendsDeclineFriendRequestEvent, FriendsEvent, FriendsRequestCountEvent, FriendsSendFriendRequestEvent } from '../../events';
+import { DispatchUiEvent, UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { FriendsHelper } from './common/FriendsHelper';
 import { MessengerFriend } from './common/MessengerFriend';
 import { MessengerRequest } from './common/MessengerRequest';
@@ -64,7 +61,7 @@ export const FriendsView: FC<{}> = props =>
                 return newSentRequests;
             });
 
-        SendMessageHook(new RequestFriendComposer(userName));
+        SendMessageComposer(new RequestFriendComposer(userName));
     }, [ sentRequests, canRequestFriend ]);
 
     const acceptFriend = useCallback((userId: number) =>
@@ -77,9 +74,9 @@ export const FriendsView: FC<{}> = props =>
 
                 if(index >= 0)
                 {
-                    SendMessageHook(new AcceptFriendMessageComposer(newRequests[index].id));
+                    SendMessageComposer(new AcceptFriendMessageComposer(newRequests[index].id));
 
-                    dispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.ACCEPTED, userId));
+                    DispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.ACCEPTED, userId));
 
                     newRequests.splice(index, 1);
                 }
@@ -94,9 +91,9 @@ export const FriendsView: FC<{}> = props =>
             {
                 if(declineAll)
                 {
-                    SendMessageHook(new DeclineFriendMessageComposer(true));
+                    SendMessageComposer(new DeclineFriendMessageComposer(true));
 
-                    for(const request of prevValue) dispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.DECLINED, request.requesterUserId));
+                    for(const request of prevValue) DispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.DECLINED, request.requesterUserId));
 
                     return [];
                 }
@@ -108,9 +105,9 @@ export const FriendsView: FC<{}> = props =>
 
                     if(index >= 0)
                     {
-                        SendMessageHook(new DeclineFriendMessageComposer(false, newRequests[index].id));
+                        SendMessageComposer(new DeclineFriendMessageComposer(false, newRequests[index].id));
 
-                        dispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.DECLINED, userId));
+                        DispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.DECLINED, userId));
 
                         newRequests.splice(index, 1);
                     }
@@ -130,10 +127,10 @@ export const FriendsView: FC<{}> = props =>
             parser.extendedFriendLimit,
             parser.categories));
 
-        SendMessageHook(new GetFriendRequestsComposer());
+        SendMessageComposer(new GetFriendRequestsComposer());
     }, []);
 
-    CreateMessageHook(MessengerInitEvent, onMessengerInitEvent);
+    UseMessageEventHook(MessengerInitEvent, onMessengerInitEvent);
 
     const onFriendsFragmentEvent = useCallback((event: FriendListFragmentEvent) =>
     {
@@ -158,7 +155,7 @@ export const FriendsView: FC<{}> = props =>
             });
     }, []);
 
-    CreateMessageHook(FriendListFragmentEvent, onFriendsFragmentEvent);
+    UseMessageEventHook(FriendListFragmentEvent, onFriendsFragmentEvent);
 
     const onFriendsUpdateEvent = useCallback((event: FriendListUpdateEvent) =>
     {
@@ -200,7 +197,7 @@ export const FriendsView: FC<{}> = props =>
             });
     }, []);
 
-    CreateMessageHook(FriendListUpdateEvent, onFriendsUpdateEvent);
+    UseMessageEventHook(FriendListUpdateEvent, onFriendsUpdateEvent);
 
     const onFriendRequestsEvent = useCallback((event: FriendRequestsEvent) =>
     {
@@ -226,7 +223,7 @@ export const FriendsView: FC<{}> = props =>
             });
     }, []);
 
-    CreateMessageHook(FriendRequestsEvent, onFriendRequestsEvent);
+    UseMessageEventHook(FriendRequestsEvent, onFriendRequestsEvent);
 
     const onNewFriendRequestEvent = useCallback((event: NewFriendRequestEvent) =>
     {
@@ -251,7 +248,7 @@ export const FriendsView: FC<{}> = props =>
             });
     }, []);
 
-    CreateMessageHook(NewFriendRequestEvent, onNewFriendRequestEvent);
+    UseMessageEventHook(NewFriendRequestEvent, onNewFriendRequestEvent);
 
     const onFriendsEvent = useCallback((event: FriendsEvent) =>
     {
@@ -268,29 +265,29 @@ export const FriendsView: FC<{}> = props =>
                 requestFriend(requestEvent.userId, requestEvent.userName);
                 return;
             case FriendsEvent.REQUEST_FRIEND_LIST:
-                dispatchUiEvent(new FriendListContentEvent(friends));
+                DispatchUiEvent(new FriendListContentEvent(friends));
                 return;
         }
     }, [ friends, requestFriend ]);
 
-    useUiEvent(FriendsEvent.SHOW_FRIEND_LIST, onFriendsEvent);
-    useUiEvent(FriendsEvent.TOGGLE_FRIEND_LIST, onFriendsEvent);
-    useUiEvent(FriendsSendFriendRequestEvent.SEND_FRIEND_REQUEST, onFriendsEvent);
-    useUiEvent(FriendsEvent.REQUEST_FRIEND_LIST, onFriendsEvent);
+    UseUiEvent(FriendsEvent.SHOW_FRIEND_LIST, onFriendsEvent);
+    UseUiEvent(FriendsEvent.TOGGLE_FRIEND_LIST, onFriendsEvent);
+    UseUiEvent(FriendsSendFriendRequestEvent.SEND_FRIEND_REQUEST, onFriendsEvent);
+    UseUiEvent(FriendsEvent.REQUEST_FRIEND_LIST, onFriendsEvent);
 
     const onFriendsAcceptFriendRequestEvent = useCallback((event: FriendsAcceptFriendRequestEvent) =>
     {
         acceptFriend(event.requestId);
     }, [ acceptFriend ]);
 
-    useUiEvent(FriendsAcceptFriendRequestEvent.ACCEPT_FRIEND_REQUEST, onFriendsAcceptFriendRequestEvent);
+    UseUiEvent(FriendsAcceptFriendRequestEvent.ACCEPT_FRIEND_REQUEST, onFriendsAcceptFriendRequestEvent);
 
     const onFriendsDeclineFriendRequestEvent = useCallback((event: FriendsDeclineFriendRequestEvent) =>
     {
         declineFriend(event.requestId);
     }, [ declineFriend ]);
 
-    useUiEvent(FriendsDeclineFriendRequestEvent.DECLINE_FRIEND_REQUEST, onFriendsDeclineFriendRequestEvent);
+    UseUiEvent(FriendsDeclineFriendRequestEvent.DECLINE_FRIEND_REQUEST, onFriendsDeclineFriendRequestEvent);
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
@@ -308,10 +305,10 @@ export const FriendsView: FC<{}> = props =>
 
         if(!friend) return;
 
-        dispatchUiEvent(new FriendEnteredRoomEvent(userData.roomIndex, RoomObjectCategory.UNIT, userData.webID, userData.name, userData.type));
+        DispatchUiEvent(new FriendEnteredRoomEvent(userData.roomIndex, RoomObjectCategory.UNIT, userData.webID, userData.name, userData.type));
     }, [ getFriend ]);
 
-    useRoomEngineEvent(RoomEngineObjectEvent.ADDED, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineObjectEvent.ADDED, onRoomEngineObjectEvent);
 
     const onlineFriends = useMemo(() =>
     {
@@ -347,7 +344,7 @@ export const FriendsView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        SendMessageHook(new MessengerInitComposer());
+        SendMessageComposer(new MessengerInitComposer());
     }, []);
 
     useEffect(() =>
@@ -359,7 +356,7 @@ export const FriendsView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        dispatchUiEvent(new FriendsRequestCountEvent(requests.length));
+        DispatchUiEvent(new FriendsRequestCountEvent(requests.length));
     }, [ requests ]);
 
     return (

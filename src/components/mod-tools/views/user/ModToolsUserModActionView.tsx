@@ -1,8 +1,7 @@
 import { CallForHelpTopicData, DefaultSanctionMessageComposer, ModAlertMessageComposer, ModBanMessageComposer, ModKickMessageComposer, ModMessageMessageComposer, ModMuteMessageComposer, ModTradingLockMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
-import { LocalizeText } from '../../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { SendMessageHook } from '../../../../hooks';
 import { NotificationAlertType } from '../../../../views/notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
 import { useModToolsContext } from '../../ModToolsContext';
@@ -61,7 +60,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
 
     const sendDefaultSanction = () =>
     {
-        SendMessageHook(new DefaultSanctionMessageComposer(user.userId, selectedTopic, message));
+        SendMessageComposer(new DefaultSanctionMessageComposer(user.userId, selectedTopic, message));
 
         onCloseClick();
     }
@@ -104,11 +103,11 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                     return;
                 }
 
-                SendMessageHook(new ModAlertMessageComposer(user.userId, message, category.id));
+                SendMessageComposer(new ModAlertMessageComposer(user.userId, message, category.id));
                 break;
             }
             case ModActionDefinition.MUTE: 
-                SendMessageHook(new ModMuteMessageComposer(user.userId, messageOrDefault, category.id));
+                SendMessageComposer(new ModMuteMessageComposer(user.userId, messageOrDefault, category.id));
                 break;
             case ModActionDefinition.BAN: {
                 if(!settings.banPermission)
@@ -118,7 +117,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                     return;
                 }
 
-                SendMessageHook(new ModBanMessageComposer(user.userId, messageOrDefault, category.id, selectedAction, (sanction.actionId === 106)));
+                SendMessageComposer(new ModBanMessageComposer(user.userId, messageOrDefault, category.id, selectedAction, (sanction.actionId === 106)));
                 break;
             }
             case ModActionDefinition.KICK: {
@@ -128,13 +127,13 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                     return;
                 }
 
-                SendMessageHook(new ModKickMessageComposer(user.userId, messageOrDefault, category.id));
+                SendMessageComposer(new ModKickMessageComposer(user.userId, messageOrDefault, category.id));
                 break;
             }
             case ModActionDefinition.TRADE_LOCK: {
                 const numSeconds = (sanction.actionLengthHours * 60);
 
-                SendMessageHook(new ModTradingLockMessageComposer(user.userId, messageOrDefault, numSeconds, category.id));
+                SendMessageComposer(new ModTradingLockMessageComposer(user.userId, messageOrDefault, numSeconds, category.id));
                 break;
             }
             case ModActionDefinition.MESSAGE: {
@@ -145,7 +144,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                     return;
                 }
 
-                SendMessageHook(new ModMessageMessageComposer(user.userId, message,  category.id));
+                SendMessageComposer(new ModMessageMessageComposer(user.userId, message,  category.id));
                 break;
             }
         }

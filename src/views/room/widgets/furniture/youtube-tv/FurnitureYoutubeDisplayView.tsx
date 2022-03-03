@@ -1,9 +1,9 @@
 import { ControlYoutubeDisplayPlaybackMessageComposer, SetYoutubeDisplayPlaylistMessageComposer, YoutubeControlVideoMessageEvent, YoutubeDisplayPlaylist, YoutubeDisplayPlaylistsEvent, YoutubeDisplayVideoMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
-import { FurnitureYoutubeDisplayWidgetHandler, LocalizeText, RoomWidgetUpdateYoutubeDisplayEvent } from '../../../../../api';
+import { FurnitureYoutubeDisplayWidgetHandler, LocalizeText, RoomWidgetUpdateYoutubeDisplayEvent, SendMessageComposer } from '../../../../../api';
 import { Grid, LayoutGridItem, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../common';
-import { BatchUpdates, CreateEventDispatcherHook, CreateMessageHook, SendMessageHook } from '../../../../../hooks';
+import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../context/RoomContext';
 import { YoutubeVideoPlaybackStateEnum } from './utils/YoutubeVideoPlaybackStateEnum';
 
@@ -43,7 +43,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
         setCurrentVideoState(-1);
     }, []);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateYoutubeDisplayEvent.UPDATE_YOUTUBE_DISPLAY, eventDispatcher, onRoomWidgetUpdateYoutubeDisplayEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateYoutubeDisplayEvent.UPDATE_YOUTUBE_DISPLAY, eventDispatcher, onRoomWidgetUpdateYoutubeDisplayEvent);
 
     const onVideo = useCallback((event: YoutubeDisplayVideoMessageEvent) =>
     {
@@ -104,40 +104,40 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
         }
     }, [objectId, player]);
 
-    CreateMessageHook(YoutubeDisplayVideoMessageEvent, onVideo);
-    CreateMessageHook(YoutubeDisplayPlaylistsEvent, onPlaylists);
-    CreateMessageHook(YoutubeControlVideoMessageEvent, onControlVideo);
+    UseMessageEventHook(YoutubeDisplayVideoMessageEvent, onVideo);
+    UseMessageEventHook(YoutubeDisplayPlaylistsEvent, onPlaylists);
+    UseMessageEventHook(YoutubeControlVideoMessageEvent, onControlVideo);
 
     const processAction = useCallback((action: string) =>
     {
         switch(action)
         {
             case 'playlist_prev':
-                SendMessageHook(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, FurnitureYoutubeDisplayWidgetHandler.CONTROL_COMMAND_PREVIOUS_VIDEO));
+                SendMessageComposer(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, FurnitureYoutubeDisplayWidgetHandler.CONTROL_COMMAND_PREVIOUS_VIDEO));
                 break;
             case 'playlist_next':
-                SendMessageHook(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, FurnitureYoutubeDisplayWidgetHandler.CONTROL_COMMAND_NEXT_VIDEO));
+                SendMessageComposer(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, FurnitureYoutubeDisplayWidgetHandler.CONTROL_COMMAND_NEXT_VIDEO));
                 break;
             case 'video_pause':
                 if(hasControl && videoId && videoId.length)
                 {
-                    SendMessageHook(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, FurnitureYoutubeDisplayWidgetHandler.CONTROL_COMMAND_PAUSE_VIDEO));
+                    SendMessageComposer(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, FurnitureYoutubeDisplayWidgetHandler.CONTROL_COMMAND_PAUSE_VIDEO));
                 }
                 break;
             case 'video_play':
                 if(hasControl && videoId && videoId.length)
                 {
-                    SendMessageHook(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, FurnitureYoutubeDisplayWidgetHandler.CONTROL_COMMAND_CONTINUE_VIDEO));
+                    SendMessageComposer(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, FurnitureYoutubeDisplayWidgetHandler.CONTROL_COMMAND_CONTINUE_VIDEO));
                 }
                 break;
             default:
                 if(selectedItem === action)
                 {
                     setSelectedItem(null);
-                    SendMessageHook(new SetYoutubeDisplayPlaylistMessageComposer(objectId, ''));
+                    SendMessageComposer(new SetYoutubeDisplayPlaylistMessageComposer(objectId, ''));
                     return;
                 }
-                SendMessageHook(new SetYoutubeDisplayPlaylistMessageComposer(objectId, action));
+                SendMessageComposer(new SetYoutubeDisplayPlaylistMessageComposer(objectId, action));
                 setSelectedItem(action);
         }
     }, [hasControl, objectId, selectedItem, videoId]);

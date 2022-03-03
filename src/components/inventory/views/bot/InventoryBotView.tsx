@@ -1,12 +1,7 @@
 import { GetBotInventoryComposer, IRoomSession, RoomObjectVariable, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { GetRoomEngine, LocalizeText } from '../../../../api';
-import { AutoGrid } from '../../../../common/AutoGrid';
-import { Button } from '../../../../common/Button';
-import { Column } from '../../../../common/Column';
-import { Grid } from '../../../../common/Grid';
-import { Text } from '../../../../common/Text';
-import { SendMessageHook } from '../../../../hooks/messages/message-event';
+import { GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
+import { AutoGrid, Button, Column, Grid, Text } from '../../../../common';
 import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomPreviewerView';
 import { attemptBotPlacement } from '../../common/BotUtilities';
 import { useInventoryContext } from '../../InventoryContext';
@@ -37,7 +32,7 @@ export const InventoryBotView: FC<InventoryBotViewProps> = props =>
                 }
             });
             
-            SendMessageHook(new GetBotInventoryComposer());
+            SendMessageComposer(new GetBotInventoryComposer());
         }
         else
         {

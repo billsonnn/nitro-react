@@ -4,7 +4,7 @@ import { CreateLinkEvent, GetRoomEngine, GetSessionDataManager, LocalizeText, Ro
 import { Button, Column, Flex, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
 import { ProductTypeEnum } from '../../../../../components/catalog/common/ProductTypeEnum';
 import { BatchUpdates } from '../../../../../hooks';
-import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
+import { UseEventDispatcherHook } from '../../../../../hooks/events/UseEventDispatcherHook';
 import { useRoomContext } from '../../../context/RoomContext';
 
 const FLOOR: string = 'floor';
@@ -122,13 +122,13 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
         }
     }, [ openRequested, getGiftImageUrl ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.PACKAGEINFO, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS_FLOOR, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS_LANDSCAPE, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS_WALLPAPER, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS_CLUB, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS_IMAGE, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
+    UseEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.PACKAGEINFO, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
+    UseEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
+    UseEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS_FLOOR, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
+    UseEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS_LANDSCAPE, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
+    UseEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS_WALLPAPER, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
+    UseEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS_CLUB, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
+    UseEventDispatcherHook(RoomWidgetUpdatePresentDataEvent.CONTENTS_IMAGE, eventDispatcher, onRoomWidgetUpdatePresentDataEvent);
 
     const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
     {
@@ -140,7 +140,7 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
         }
     }, [ objectId, placedItemId, placedInRoom, clearGift ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
 
     const close = useCallback(() =>
     {

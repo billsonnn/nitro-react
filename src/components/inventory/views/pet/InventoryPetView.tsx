@@ -1,12 +1,7 @@
 import { IRoomSession, RequestPetsComposer, RoomObjectVariable, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { GetRoomEngine, LocalizeText } from '../../../../api';
-import { AutoGrid } from '../../../../common/AutoGrid';
-import { Button } from '../../../../common/Button';
-import { Column } from '../../../../common/Column';
-import { Grid } from '../../../../common/Grid';
-import { Text } from '../../../../common/Text';
-import { SendMessageHook } from '../../../../hooks/messages/message-event';
+import { GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
+import { AutoGrid, Button, Column, Grid, Text } from '../../../../common';
 import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomPreviewerView';
 import { attemptPetPlacement } from '../../common/PetUtilities';
 import { useInventoryContext } from '../../InventoryContext';
@@ -37,7 +32,7 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
                 }
             });
             
-            SendMessageHook(new RequestPetsComposer());
+            SendMessageComposer(new RequestPetsComposer());
         }
         else
         {

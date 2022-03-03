@@ -1,7 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, RoomWidgetDoorbellEvent, RoomWidgetLetUserInMessage } from '../../../../api';
 import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
-import { BatchUpdates, CreateEventDispatcherHook } from '../../../../hooks';
+import { BatchUpdates, UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../context/RoomContext';
 
 export const DoorbellWidgetView: FC<{}> = props =>
@@ -50,9 +50,9 @@ export const DoorbellWidgetView: FC<{}> = props =>
         }
     }, [ addUser, removeUser ]);
 
-    CreateEventDispatcherHook(RoomWidgetDoorbellEvent.RINGING, eventDispatcher, onRoomWidgetDoorbellEvent);
-    CreateEventDispatcherHook(RoomWidgetDoorbellEvent.REJECTED, eventDispatcher, onRoomWidgetDoorbellEvent);
-    CreateEventDispatcherHook(RoomWidgetDoorbellEvent.ACCEPTED, eventDispatcher, onRoomWidgetDoorbellEvent);
+    UseEventDispatcherHook(RoomWidgetDoorbellEvent.RINGING, eventDispatcher, onRoomWidgetDoorbellEvent);
+    UseEventDispatcherHook(RoomWidgetDoorbellEvent.REJECTED, eventDispatcher, onRoomWidgetDoorbellEvent);
+    UseEventDispatcherHook(RoomWidgetDoorbellEvent.ACCEPTED, eventDispatcher, onRoomWidgetDoorbellEvent);
 
     const answer = useCallback((userName: string, flag: boolean) =>
     {

@@ -1,11 +1,7 @@
 import { GroupInformationParser, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CreateLinkEvent, GetSessionDataManager, LocalizeText, TryVisitRoom } from '../../../api';
-import { GetGroupManager } from '../../../api/groups/GetGroupManager';
-import { GetGroupMembers } from '../../../api/groups/GetGroupMembers';
-import { TryJoinGroup } from '../../../api/groups/TryJoinGroup';
+import { CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, LocalizeText, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
 import { Button, Column, Flex, Grid, Text } from '../../../common';
-import { SendMessageHook } from '../../../hooks';
 import { NotificationUtilities } from '../../../views/notification-center/common/NotificationUtilities';
 import { BadgeImageView } from '../../../views/shared/badge-image/BadgeImageView';
 import { CatalogPageName } from '../../catalog/common/CatalogPageName';
@@ -33,7 +29,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
     {
         NotificationUtilities.confirm(LocalizeText('group.leaveconfirm.desc'), () =>
             {
-                SendMessageHook(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
+                SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
 
                 if(onClose) onClose();
             }, null);

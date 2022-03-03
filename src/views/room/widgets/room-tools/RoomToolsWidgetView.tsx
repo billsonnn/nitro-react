@@ -1,12 +1,10 @@
 import { GetGuestRoomResultEvent, RoomLikeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { CreateLinkEvent, LocalizeText, RoomWidgetZoomToggleMessage } from '../../../../api';
+import { CreateLinkEvent, LocalizeText, RoomWidgetZoomToggleMessage, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
 import { NavigatorEvent } from '../../../../events';
-import { BatchUpdates } from '../../../../hooks';
-import { dispatchUiEvent } from '../../../../hooks/events';
-import { CreateMessageHook, SendMessageHook } from '../../../../hooks/messages';
+import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 import { useRoomContext } from '../../context/RoomContext';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
@@ -25,7 +23,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
         switch(action)
         {
             case 'settings':
-                dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_INFO));
+                DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_INFO));
                 return;
             case 'zoom':
                 widgetHandler.processWidgetMessage(new RoomWidgetZoomToggleMessage(!isZoomedIn));
@@ -37,11 +35,11 @@ export const RoomToolsWidgetView: FC<{}> = props =>
             case 'like_room':
                 if(isLiked) return;
 
-                SendMessageHook(new RoomLikeRoomComposer(1));
+                SendMessageComposer(new RoomLikeRoomComposer(1));
                 setIsLiked(true);
                 return;
             case 'toggle_room_link':
-                dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK));
+                DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK));
                 return;
         }
     }
@@ -58,7 +56,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
         });
     }, [ roomName, roomOwner, roomTags ]);
 
-    CreateMessageHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
+    UseMessageEventHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
 
     useEffect(() =>
     {

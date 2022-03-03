@@ -1,8 +1,7 @@
 import { IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
-import { GetAvatarRenderManager, GetSessionDataManager } from '../../../../api';
+import { GetAvatarRenderManager, GetSessionDataManager, SendMessageComposer } from '../../../../api';
 import { AutoGrid, Base, Button, Flex, LayoutGridItem } from '../../../../common';
-import { SendMessageHook } from '../../../../hooks';
 import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
 import { CurrencyIcon } from '../../../../views/shared/currency-icon/CurrencyIcon';
 import { FigureData } from '../../common/FigureData';
@@ -40,7 +39,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
         newFigures[index] = [ GetAvatarRenderManager().createFigureContainer(figure), gender ];
 
         setSavedFigures(newFigures);
-        SendMessageHook(new SaveWardrobeOutfitMessageComposer((index + 1), figure, gender));
+        SendMessageComposer(new SaveWardrobeOutfitMessageComposer((index + 1), figure, gender));
     }, [ figureData, savedFigures, setSavedFigures ]);
 
     const figures = useMemo(() =>

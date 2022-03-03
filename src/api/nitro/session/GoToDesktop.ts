@@ -1,7 +1,7 @@
 import { DesktopViewComposer } from '@nitrots/nitro-renderer';
-import { SendMessageHook } from '../../../hooks';
+import { SendMessageComposer } from '..';
 
 export function GoToDesktop(): void
 {
-    SendMessageHook(new DesktopViewComposer());
+    SendMessageComposer(new DesktopViewComposer());
 }

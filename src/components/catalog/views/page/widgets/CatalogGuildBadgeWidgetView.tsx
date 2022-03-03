@@ -1,6 +1,6 @@
 import { StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useMemo } from 'react';
-import { BaseProps } from '../../../../../common/Base';
+import { BaseProps } from '../../../../../common';
 import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
 import { useCatalogContext } from '../../../CatalogContext';
 

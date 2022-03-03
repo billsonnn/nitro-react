@@ -1,9 +1,8 @@
 import { GroupSaveColorsComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { AutoGrid, Base, Column, Flex, Grid, Text } from '../../../../common';
-import { SendMessageHook } from '../../../../hooks';
 import { IGroupData } from '../../common/IGroupData';
 import { useGroupsContext } from '../../GroupsContext';
 
@@ -59,7 +58,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
             return true;
         }
         
-        SendMessageHook(new GroupSaveColorsComposer(groupData.groupId, colors[0], colors[1]));
+        SendMessageComposer(new GroupSaveColorsComposer(groupData.groupId, colors[0], colors[1]));
 
         return true;
     }, [ groupData, colors, setGroupData ]);

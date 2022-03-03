@@ -1,8 +1,7 @@
 import { FollowFriendMessageComposer, MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { GetUserProfile, LocalizeText, OpenMessengerChat } from '../../../../api';
+import { GetUserProfile, LocalizeText, OpenMessengerChat, SendMessageComposer } from '../../../../api';
 import { Base } from '../../../../common';
-import { SendMessageHook } from '../../../../hooks/messages';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { MessengerFriend } from '../../common/MessengerFriend';
@@ -20,7 +19,7 @@ export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
 
     const followFriend = useCallback(() =>
     {
-        SendMessageHook(new FollowFriendMessageComposer(friend.id));
+        SendMessageComposer(new FollowFriendMessageComposer(friend.id));
     }, [ friend ]);
 
     const openMessengerChat = useCallback(() =>

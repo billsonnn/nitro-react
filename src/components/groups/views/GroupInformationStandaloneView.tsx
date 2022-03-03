@@ -2,7 +2,7 @@ import { GroupInformationEvent, GroupInformationParser } from '@nitrots/nitro-re
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText } from '../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
-import { CreateMessageHook } from '../../../hooks';
+import { UseMessageEventHook } from '../../../hooks';
 import { GroupInformationView } from './GroupInformationView';
 
 export const GroupInformationStandaloneView: FC<{}> = props =>
@@ -16,7 +16,7 @@ export const GroupInformationStandaloneView: FC<{}> = props =>
         if((groupInformation && (groupInformation.id === parser.id)) || parser.flag) setGroupInformation(parser);
     }, [ groupInformation ]);
 
-    CreateMessageHook(GroupInformationEvent, onGroupInformationEvent);
+    UseMessageEventHook(GroupInformationEvent, onGroupInformationEvent);
 
     if(!groupInformation) return null;
 

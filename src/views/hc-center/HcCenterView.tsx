@@ -3,10 +3,10 @@ import { BadgesEvent, FigureUpdateEvent } from '@nitrots/nitro-renderer/src';
 import { ScrGetKickbackInfoMessageComposer } from '@nitrots/nitro-renderer/src/nitro/communication/messages/outgoing/user/ScrGetKickbackInfoMessageComposer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
-import { AddEventLinkTracker, CreateLinkEvent, GetConfiguration, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { AddEventLinkTracker, CreateLinkEvent, GetConfiguration, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
-import { HcCenterEvent } from '../../events/hc-center/HcCenterEvent';
-import { CreateMessageHook, SendMessageHook, useUiEvent } from '../../hooks';
+import { HcCenterEvent } from '../../events';
+import { UseMessageEventHook, UseUiEvent } from '../../hooks';
 import { AvatarImageView } from '../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../shared/badge-image/BadgeImageView';
 import { BadgeResolver } from './util/BadgeResolver';
@@ -73,8 +73,8 @@ export const HcCenterView: FC<{}> = props =>
         setUserFigure(parser.figure);
     }, []);
 
-    CreateMessageHook(UserInfoEvent, onUserInfoEvent);
-    CreateMessageHook(FigureUpdateEvent, onUserFigureEvent);
+    UseMessageEventHook(UserInfoEvent, onUserInfoEvent);
+    UseMessageEventHook(FigureUpdateEvent, onUserFigureEvent);
 
     const onHcCenterEvent = useCallback((event: HcCenterEvent) =>
     {
@@ -86,7 +86,7 @@ export const HcCenterView: FC<{}> = props =>
         }
     }, [isVisible]);
 
-    useUiEvent(HcCenterEvent.TOGGLE_HC_CENTER, onHcCenterEvent);
+    UseUiEvent(HcCenterEvent.TOGGLE_HC_CENTER, onHcCenterEvent);
 
     const onClubGiftInfoEvent = useCallback((event: ClubGiftInfoEvent) =>
     {
@@ -109,15 +109,15 @@ export const HcCenterView: FC<{}> = props =>
         setBadgeCode(BadgeResolver.getClubBadge(parser.getAllBadgeCodes()));
     }, [])
 
-    CreateMessageHook(ClubGiftInfoEvent, onClubGiftInfoEvent);
-    CreateMessageHook(ScrSendKickbackInfoMessageEvent, onScrSendKickbackInfo);
-    CreateMessageHook(BadgesEvent, onBadges);
+    UseMessageEventHook(ClubGiftInfoEvent, onClubGiftInfoEvent);
+    UseMessageEventHook(ScrSendKickbackInfoMessageEvent, onScrSendKickbackInfo);
+    UseMessageEventHook(BadgesEvent, onBadges);
 
     useEffect(() =>
     {
-        SendMessageHook(new GetClubGiftInfo());
-        SendMessageHook(new ScrGetKickbackInfoMessageComposer());
-        SendMessageHook(new RequestBadgesComposer());
+        SendMessageComposer(new GetClubGiftInfo());
+        SendMessageComposer(new ScrGetKickbackInfoMessageComposer());
+        SendMessageComposer(new RequestBadgesComposer());
     }, []);
 
     const onUserSubscriptionEvent = useCallback((event: UserSubscriptionEvent) =>
@@ -141,7 +141,7 @@ export const HcCenterView: FC<{}> = props =>
 
     }, [clubDays, pastClubDays]);
 
-    CreateMessageHook(UserSubscriptionEvent, onUserSubscriptionEvent);
+    UseMessageEventHook(UserSubscriptionEvent, onUserSubscriptionEvent);
 
     const getClubText = useCallback(() =>
     {

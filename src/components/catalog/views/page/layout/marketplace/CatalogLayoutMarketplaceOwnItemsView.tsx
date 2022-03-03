@@ -1,11 +1,8 @@
 import { CancelMarketplaceOfferMessageComposer, GetMarketplaceOwnOffersMessageComposer, MarketplaceCancelOfferResultEvent, MarketplaceOwnOffersEvent, RedeemMarketplaceOfferCreditsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { LocalizeText } from '../../../../../../api';
-import { Button } from '../../../../../../common/Button';
-import { Column } from '../../../../../../common/Column';
-import { Grid } from '../../../../../../common/Grid';
-import { Text } from '../../../../../../common/Text';
-import { BatchUpdates, CreateMessageHook, SendMessageHook, UseMountEffect } from '../../../../../../hooks';
+import { LocalizeText, SendMessageComposer } from '../../../../../../api';
+import { Button, Column, Grid, Text } from '../../../../../../common';
+import { BatchUpdates, UseMessageEventHook, UseMountEffect } from '../../../../../../hooks';
 import { NotificationAlertType } from '../../../../../../views/notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
@@ -40,7 +37,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
         });
     }, []);
 
-    CreateMessageHook(MarketplaceOwnOffersEvent, onMarketPlaceOwnOffersEvent);
+    UseMessageEventHook(MarketplaceOwnOffersEvent, onMarketPlaceOwnOffersEvent);
 
     const onMarketplaceCancelOfferResultEvent = useCallback((event:MarketplaceCancelOfferResultEvent) =>
     {
@@ -58,7 +55,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
         setOffers(prevValue => prevValue.filter(value => (value.offerId !== parser.offerId)));
     }, []);
 
-    CreateMessageHook(MarketplaceCancelOfferResultEvent, onMarketplaceCancelOfferResultEvent);
+    UseMessageEventHook(MarketplaceCancelOfferResultEvent, onMarketplaceCancelOfferResultEvent);
 
     const soldOffers = useMemo(() =>
     {
@@ -74,17 +71,17 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
             return prevValue.filter(value => (idsToDelete.indexOf(value.offerId) === -1));
         })
         
-        SendMessageHook(new RedeemMarketplaceOfferCreditsMessageComposer());
+        SendMessageComposer(new RedeemMarketplaceOfferCreditsMessageComposer());
     }, [ soldOffers ]);
 
     const takeItemBack = (offerData: MarketplaceOfferData) =>
     {
-        SendMessageHook(new CancelMarketplaceOfferMessageComposer(offerData.offerId));
+        SendMessageComposer(new CancelMarketplaceOfferMessageComposer(offerData.offerId));
     };
 
     UseMountEffect(() =>
     {
-        SendMessageHook(new GetMarketplaceOwnOffersMessageComposer());
+        SendMessageComposer(new GetMarketplaceOwnOffersMessageComposer());
     });
 
     return (

@@ -1,13 +1,7 @@
 import { RequestBadgesComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { GetConfiguration, LocalizeBadgeName, LocalizeText } from '../../../../api';
-import { AutoGrid } from '../../../../common/AutoGrid';
-import { Button } from '../../../../common/Button';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Grid } from '../../../../common/Grid';
-import { Text } from '../../../../common/Text';
-import { SendMessageHook } from '../../../../hooks/messages/message-event';
+import { GetConfiguration, LocalizeBadgeName, LocalizeText, SendMessageComposer } from '../../../../api';
+import { AutoGrid, Button, Column, Flex, Grid, Text } from '../../../../common';
 import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
 import { useInventoryContext } from '../../InventoryContext';
 import { InventoryBadgeActions } from '../../reducers/InventoryBadgeReducer';
@@ -62,7 +56,7 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
                 }
             });
             
-            SendMessageHook(new RequestBadgesComposer());
+            SendMessageComposer(new RequestBadgesComposer());
         }
         else
         {

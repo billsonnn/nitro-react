@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RedeemVoucherMessageComposer, VoucherRedeemErrorMessageEvent, VoucherRedeemOkMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { Button } from '../../../../../common/Button';
-import { Flex } from '../../../../../common/Flex';
-import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../../hooks';
+import { LocalizeText, SendMessageComposer } from '../../../../../api';
+import { Button, Flex } from '../../../../../common';
+import { BatchUpdates, UseMessageEventHook } from '../../../../../hooks';
 import { NotificationUtilities } from '../../../../../views/notification-center/common/NotificationUtilities';
 
 export interface CatalogRedeemVoucherViewProps
@@ -22,7 +21,7 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
     {
         if(!voucher || !voucher.length || isWaiting) return;
 
-        SendMessageHook(new RedeemVoucherMessageComposer(voucher));
+        SendMessageComposer(new RedeemVoucherMessageComposer(voucher));
 
         setIsWaiting(true);
     }
@@ -44,7 +43,7 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
         });
     }, []);
 
-    CreateMessageHook(VoucherRedeemOkMessageEvent, onVoucherRedeemOkMessageEvent);
+    UseMessageEventHook(VoucherRedeemOkMessageEvent, onVoucherRedeemOkMessageEvent);
 
     const onVoucherRedeemErrorMessageEvent = useCallback((event: VoucherRedeemErrorMessageEvent) =>
     {
@@ -55,7 +54,7 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
         setIsWaiting(false);
     }, []);
 
-    CreateMessageHook(VoucherRedeemErrorMessageEvent, onVoucherRedeemErrorMessageEvent);
+    UseMessageEventHook(VoucherRedeemErrorMessageEvent, onVoucherRedeemErrorMessageEvent);
 
     return (
         <Flex gap={ 1 }>

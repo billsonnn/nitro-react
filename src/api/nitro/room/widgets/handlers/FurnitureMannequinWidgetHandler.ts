@@ -1,8 +1,8 @@
 import { NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable, RoomWidgetEnum } from '@nitrots/nitro-renderer';
 import { RoomWidgetUpdateMannequinEvent } from '..';
 import { GetRoomEngine } from '../../GetRoomEngine';
-import { RoomWidgetUpdateEvent } from '../events/RoomWidgetUpdateEvent';
-import { RoomWidgetMessage } from '../messages/RoomWidgetMessage';
+import { RoomWidgetUpdateEvent } from '../events';
+import { RoomWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
 
 export class FurnitureMannequinWidgetHandler extends RoomWidgetHandler

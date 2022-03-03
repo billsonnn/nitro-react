@@ -1,10 +1,8 @@
 import { NitroEvent, RoomControllerLevel, RoomEngineDimmerStateEvent, RoomEngineTriggerWidgetEvent, RoomSessionDimmerPresetsEvent, RoomWidgetEnum } from '@nitrots/nitro-renderer';
 import { GetRoomEngine } from '../..';
 import { GetSessionDataManager } from '../../..';
-import { RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateEvent } from '../events';
-import { RoomWidgetUpdateDimmerStateEvent } from '../events/RoomWidgetUpdateDimmerStateEvent';
-import { RoomWidgetDimmerChangeStateMessage, RoomWidgetDimmerPreviewMessage, RoomWidgetFurniToWidgetMessage, RoomWidgetMessage } from '../messages';
-import { RoomWidgetDimmerSavePresetMessage } from '../messages/RoomWidgetDimmerSavePresetMessage';
+import { RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateDimmerStateEvent, RoomWidgetUpdateEvent } from '../events';
+import { RoomWidgetDimmerChangeStateMessage, RoomWidgetDimmerPreviewMessage, RoomWidgetDimmerSavePresetMessage, RoomWidgetFurniToWidgetMessage, RoomWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
 
 export class FurnitureDimmerWidgetHandler extends RoomWidgetHandler

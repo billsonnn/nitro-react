@@ -1,12 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomSessionUserBadgesEvent, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import { GetConfiguration, GetGroupInformation, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent } from '../../../../api';
-import { Column, Text, UserProfileIconView } from '../../../../common';
-import { Base } from '../../../../common/Base';
-import { Flex } from '../../../../common/Flex';
-import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../hooks';
-import { CreateEventDispatcherHook } from '../../../../hooks/events';
+import { GetConfiguration, GetGroupInformation, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent, SendMessageComposer } from '../../../../api';
+import { Base, Column, Flex, Text, UserProfileIconView } from '../../../../common';
+import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../hooks';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
 import { BadgeImageView } from '../../../shared/badge-image/BadgeImageView';
 import { useRoomContext } from '../../context/RoomContext';
@@ -59,7 +56,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
         setBadges(event.badges);
     }, [ userData ]);
 
-    CreateEventDispatcherHook(RoomSessionUserBadgesEvent.RSUBE_BADGES, eventDispatcher, onRoomSessionUserBadgesEvent);
+    UseEventDispatcherHook(RoomSessionUserBadgesEvent.RSUBE_BADGES, eventDispatcher, onRoomSessionUserBadgesEvent);
 
     const onUserRelationshipsEvent = useCallback((event: RelationshipStatusInfoEvent) =>
     {
@@ -70,7 +67,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
         setUserRelationships(parser);
     }, [ userData ]);
 
-    CreateMessageHook(RelationshipStatusInfoEvent, onUserRelationshipsEvent);
+    UseMessageEventHook(RelationshipStatusInfoEvent, onUserRelationshipsEvent);
 
     useEffect(() =>
     {
@@ -81,7 +78,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
             setMotto(userData.motto);
         });
         
-        SendMessageHook(new UserRelationshipsComposer(userData.webID));
+        SendMessageComposer(new UserRelationshipsComposer(userData.webID));
 
         return () => 
         {

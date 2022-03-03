@@ -1,9 +1,9 @@
 import { ImageResult, MakeOfferMessageComposer, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine, LocalizeText } from '../../../../../../api';
+import { GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../../../api';
 import { Base, Button, Column, Grid, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../../common';
 import { CatalogPostMarketplaceOfferEvent } from '../../../../../../events';
-import { BatchUpdates, SendMessageHook, useUiEvent } from '../../../../../../hooks';
+import { BatchUpdates, UseUiEvent } from '../../../../../../hooks';
 import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
 import { FurnitureItem } from '../../../../../inventory/common/FurnitureItem';
 import { useCatalogContext } from '../../../../CatalogContext';
@@ -29,7 +29,7 @@ export const MarketplacePostOfferView : FC<{}> = props =>
         setItem(event.item);
     }, []);
 
-    useUiEvent(CatalogPostMarketplaceOfferEvent.POST_MARKETPLACE, onCatalogPostMarketplaceOfferEvent);
+    UseUiEvent(CatalogPostMarketplaceOfferEvent.POST_MARKETPLACE, onCatalogPostMarketplaceOfferEvent);
 
     const getItemImage = useCallback( () =>
     {
@@ -79,7 +79,7 @@ export const MarketplacePostOfferView : FC<{}> = props =>
 
         NotificationUtilities.confirm(LocalizeText('inventory.marketplace.confirm_offer.info', ['furniname', 'price'], [getFurniTitle(), askingPrice.toString()]), () =>
             {
-                SendMessageHook(new MakeOfferMessageComposer(askingPrice, item.isWallItem ? 2 : 1, item.id));
+                SendMessageComposer(new MakeOfferMessageComposer(askingPrice, item.isWallItem ? 2 : 1, item.id));
                 setItem(null);
             },
             () => { setItem(null)}, null, null, LocalizeText('inventory.marketplace.confirm_offer.title'));

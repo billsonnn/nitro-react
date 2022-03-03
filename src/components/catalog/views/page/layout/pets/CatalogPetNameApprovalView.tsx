@@ -1,7 +1,7 @@
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../../../api';
 import { CatalogEvent, CatalogNameResultEvent } from '../../../../../../events';
-import { useUiEvent } from '../../../../../../hooks/events/ui/ui-event';
+import { UseUiEvent } from '../../../../../../hooks';
 
 export interface CatalogPetNameApprovalViewProps
 {
@@ -28,7 +28,7 @@ export const CatalogPetNameApprovalView: FC<CatalogPetNameApprovalViewProps> = p
         setValidationResult(event.result);
     }, [ setNameApproved ]);
 
-    useUiEvent(CatalogEvent.APPROVE_NAME_RESULT, onCatalogNameResultEvent);
+    UseUiEvent(CatalogEvent.APPROVE_NAME_RESULT, onCatalogNameResultEvent);
 
     const validationErrorMessage = () =>
     {

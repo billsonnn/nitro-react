@@ -4,7 +4,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { ColorUtils, GetConfiguration, LocalizeText, RoomWidgetDimmerChangeStateMessage, RoomWidgetDimmerPreviewMessage, RoomWidgetDimmerSavePresetMessage, RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateDimmerStateEvent } from '../../../../../api';
 import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../../common';
-import { BatchUpdates, CreateEventDispatcherHook } from '../../../../../hooks';
+import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../context/RoomContext';
 import { DimmerFurnitureWidgetPresetItem } from './DimmerFurnitureWidgetPresetItem';
 
@@ -73,9 +73,9 @@ export const FurnitureDimmerView: FC<{}> = props =>
         }
     }, [ dimmerState ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateDimmerEvent.PRESETS, eventDispatcher, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateDimmerEvent.HIDE, eventDispatcher, onNitroEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateDimmerStateEvent.DIMMER_STATE, eventDispatcher, onNitroEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateDimmerEvent.PRESETS, eventDispatcher, onNitroEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateDimmerEvent.HIDE, eventDispatcher, onNitroEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateDimmerStateEvent.DIMMER_STATE, eventDispatcher, onNitroEvent);
 
     const selectPresetId = useCallback((id: number) =>
     {

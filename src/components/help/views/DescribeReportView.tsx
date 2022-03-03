@@ -1,8 +1,7 @@
 import { CallForHelpMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { CreateLinkEvent, LocalizeText } from '../../../api';
+import { CreateLinkEvent, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Text } from '../../../common';
-import { SendMessageHook } from '../../../hooks';
 import { useHelpContext } from '../HelpContext';
 
 export const DescribeReportView: FC<{}> = props =>
@@ -24,7 +23,7 @@ export const DescribeReportView: FC<{}> = props =>
             chats.push(entry.message);
         });
 
-        SendMessageHook(new CallForHelpMessageComposer(message, cfhTopic, reportedUserId, roomId, chats));
+        SendMessageComposer(new CallForHelpMessageComposer(message, cfhTopic, reportedUserId, roomId, chats));
 
         CreateLinkEvent('help/hide');
     }

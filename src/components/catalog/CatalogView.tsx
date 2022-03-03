@@ -1,14 +1,9 @@
 import { FrontPageItem, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, GetMarketplaceConfigurationMessageComposer, ILinkEventTracker, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, GetRoomEngine, LocalizeText, RemoveLinkEventTracker } from '../../api';
-import { CREDITS, PlaySound } from '../../api/utils/PlaySound';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { Column } from '../../common/Column';
-import { Grid } from '../../common/Grid';
+import { AddEventLinkTracker, CREDITS, GetRoomEngine, LocalizeText, PlaySound, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { CatalogPurchasedEvent } from '../../events';
-import { BatchUpdates } from '../../hooks';
-import { useUiEvent } from '../../hooks/events/ui/ui-event';
-import { SendMessageHook } from '../../hooks/messages/message-event';
+import { BatchUpdates, UseUiEvent } from '../../hooks';
 import { CatalogContextProvider } from './CatalogContext';
 import { CatalogMessageHandler } from './CatalogMessageHandler';
 import { CatalogPage } from './common/CatalogPage';
@@ -119,7 +114,7 @@ export const CatalogView: FC<{}> = props =>
             setPageId(pageId);
         });
 
-        if(pageId > -1) SendMessageHook(new GetCatalogPageComposer(pageId, offerId, currentType));
+        if(pageId > -1) SendMessageComposer(new GetCatalogPageComposer(pageId, offerId, currentType));
     }, [ currentType ]);
 
     const showCatalogPage = useCallback((pageId: number, layoutCode: string, localization: IPageLocalization, offers: IPurchasableOffer[], offerId: number, acceptSeasonCurrencyAsCredits: boolean) =>
@@ -276,7 +271,7 @@ export const CatalogView: FC<{}> = props =>
         PlaySound(CREDITS);
     }, []);
 
-    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
+    UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
 
     const linkReceived = useCallback((url: string) =>
     {
@@ -352,10 +347,10 @@ export const CatalogView: FC<{}> = props =>
     {
         if(!isVisible || rootNode) return;
 
-        SendMessageHook(new GetMarketplaceConfigurationMessageComposer());
-        SendMessageHook(new GetGiftWrappingConfigurationComposer());
-        SendMessageHook(new GetClubGiftInfo());
-        SendMessageHook(new GetCatalogIndexComposer(currentType));
+        SendMessageComposer(new GetMarketplaceConfigurationMessageComposer());
+        SendMessageComposer(new GetGiftWrappingConfigurationComposer());
+        SendMessageComposer(new GetClubGiftInfo());
+        SendMessageComposer(new GetCatalogIndexComposer(currentType));
     }, [ isVisible, rootNode, currentType ]);
 
     useEffect(() =>

@@ -1,7 +1,7 @@
 import { FC, ReactNode, useCallback, useMemo, useState } from 'react';
 import { NotificationAlertEvent, NotificationConfirmEvent } from '../../events';
 import { NotificationBubbleEvent } from '../../events/notification-center/NotificationBubbleEvent';
-import { useUiEvent } from '../../hooks/events';
+import { UseUiEvent } from '../../hooks';
 import { NotificationAlertItem } from './common/NotificationAlertItem';
 import { NotificationBubbleItem } from './common/NotificationBubbleItem';
 import { NotificationBubbleType } from './common/NotificationBubbleType';
@@ -25,7 +25,7 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
         setAlerts(prevValue => [ alertItem, ...prevValue ]);
     }, []);
 
-    useUiEvent(NotificationAlertEvent.ALERT, onNotificationAlertEvent);
+    UseUiEvent(NotificationAlertEvent.ALERT, onNotificationAlertEvent);
 
     const onNotificationBubbleEvent = useCallback((event: NotificationBubbleEvent) =>
     {
@@ -34,7 +34,7 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
         setBubbleAlerts(prevValue => [ notificationItem, ...prevValue ]);
     }, []);
 
-    useUiEvent(NotificationBubbleEvent.NEW_BUBBLE, onNotificationBubbleEvent);
+    UseUiEvent(NotificationBubbleEvent.NEW_BUBBLE, onNotificationBubbleEvent);
 
     const onNotificationConfirmEvent = useCallback((event: NotificationConfirmEvent) =>
     {
@@ -43,7 +43,7 @@ export const NotificationCenterView: FC<NotificationCenterViewProps> = props =>
         setConfirms(prevValue => [ confirmItem, ...prevValue ]);
     }, []);
 
-    useUiEvent(NotificationConfirmEvent.CONFIRM, onNotificationConfirmEvent);
+    UseUiEvent(NotificationConfirmEvent.CONFIRM, onNotificationConfirmEvent);
 
     const closeAlert = useCallback((alert: NotificationAlertItem) =>
     {

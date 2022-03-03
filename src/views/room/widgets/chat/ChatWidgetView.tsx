@@ -1,7 +1,7 @@
 import { NitroPoint, RoomDragEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { RoomWidgetChatSelectAvatarMessage, RoomWidgetRoomObjectMessage, RoomWidgetUpdateChatEvent } from '../../../../api';
-import { CreateEventDispatcherHook, useRoomEngineEvent } from '../../../../hooks/events';
+import { UseEventDispatcherHook, UseRoomEngineEvent } from '../../../../hooks';
 import { useRoomContext } from '../../context/RoomContext';
 import { ChatWidgetMessageView } from './ChatWidgetMessageView';
 import { ChatBubbleMessage } from './common/ChatBubbleMessage';
@@ -73,7 +73,7 @@ export const ChatWidgetView: FC<{}> = props =>
         addChat(chatMessage);
     }, [ addChat ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateChatEvent.CHAT_EVENT, eventDispatcher, onRoomWidgetUpdateChatEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateChatEvent.CHAT_EVENT, eventDispatcher, onRoomWidgetUpdateChatEvent);
 
     const onRoomDragEvent = useCallback((event: RoomDragEvent) =>
     {
@@ -89,7 +89,7 @@ export const ChatWidgetView: FC<{}> = props =>
             });
     }, [ roomSession, chatMessages ]);
 
-    useRoomEngineEvent(RoomDragEvent.ROOM_DRAG, onRoomDragEvent);
+    UseRoomEngineEvent(RoomDragEvent.ROOM_DRAG, onRoomDragEvent);
 
     const onChatClicked = useCallback((chat: ChatBubbleMessage) =>
     {

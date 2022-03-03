@@ -1,14 +1,9 @@
 import { AchievementData, AchievementEvent, AchievementsEvent, AchievementsScoreEvent, RequestAchievementsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetConfiguration, LocalizeText } from '../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView } from '../../common';
-import { Base } from '../../common/Base';
-import { Column } from '../../common/Column';
-import { Flex } from '../../common/Flex';
-import { Text } from '../../common/Text';
-import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events/achievements';
-import { BatchUpdates, CreateMessageHook, dispatchUiEvent, SendMessageHook } from '../../hooks';
-import { useUiEvent } from '../../hooks/events';
+import { GetConfiguration, LocalizeText, SendMessageComposer } from '../../api';
+import { Base, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView, Text } from '../../common';
+import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events';
+import { BatchUpdates, DispatchUiEvent, UseMessageEventHook, UseUiEvent } from '../../hooks';
 import { AchievementCategory } from './common/AchievementCategory';
 import { AchievementUtilities } from './common/AchievementUtilities';
 import { AchievementsCategoryListView } from './views/category-list/AchievementsCategoryListView';
@@ -38,9 +33,9 @@ export const AchievementsView: FC<{}> = props =>
         }
     }, []);
 
-    useUiEvent(AchievementsUIEvent.SHOW_ACHIEVEMENTS, onAchievementsUIEvent);
-    useUiEvent(AchievementsUIEvent.HIDE_ACHIEVEMENTS, onAchievementsUIEvent);
-    useUiEvent(AchievementsUIEvent.TOGGLE_ACHIEVEMENTS, onAchievementsUIEvent);
+    UseUiEvent(AchievementsUIEvent.SHOW_ACHIEVEMENTS, onAchievementsUIEvent);
+    UseUiEvent(AchievementsUIEvent.HIDE_ACHIEVEMENTS, onAchievementsUIEvent);
+    UseUiEvent(AchievementsUIEvent.TOGGLE_ACHIEVEMENTS, onAchievementsUIEvent);
 
     const onAchievementEvent = useCallback((event: AchievementEvent) =>
     {
@@ -89,7 +84,7 @@ export const AchievementsView: FC<{}> = props =>
         setAchievementCategories(newCategories);
     }, [ achievementCategories ]);
 
-    CreateMessageHook(AchievementEvent, onAchievementEvent);
+    UseMessageEventHook(AchievementEvent, onAchievementEvent);
 
     const onAchievementsEvent = useCallback((event: AchievementsEvent) =>
     {
@@ -119,7 +114,7 @@ export const AchievementsView: FC<{}> = props =>
         });
     }, []);
 
-    CreateMessageHook(AchievementsEvent, onAchievementsEvent);
+    UseMessageEventHook(AchievementsEvent, onAchievementsEvent);
 
     const onAchievementsScoreEvent = useCallback((event: AchievementsScoreEvent) =>
     {
@@ -128,7 +123,7 @@ export const AchievementsView: FC<{}> = props =>
         setAchievementScore(parser.score);
     }, []);
 
-    CreateMessageHook(AchievementsScoreEvent, onAchievementsScoreEvent);
+    UseMessageEventHook(AchievementsScoreEvent, onAchievementsScoreEvent);
 
     const getTotalUnseen = useMemo(() =>
     {
@@ -204,12 +199,12 @@ export const AchievementsView: FC<{}> = props =>
     {
         if(!isVisible || !isInitalized) return;
 
-        SendMessageHook(new RequestAchievementsMessageComposer());
+        SendMessageComposer(new RequestAchievementsMessageComposer());
     }, [ isVisible, isInitalized ]);
 
     useEffect(() =>
     {
-        dispatchUiEvent(new AchievementsUIUnseenCountEvent(getTotalUnseen));
+        DispatchUiEvent(new AchievementsUIUnseenCountEvent(getTotalUnseen));
     }, [ getTotalUnseen ]);
 
     if(!isVisible || !isInitalized) return null;

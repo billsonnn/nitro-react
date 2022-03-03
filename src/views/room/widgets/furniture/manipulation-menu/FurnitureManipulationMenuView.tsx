@@ -2,8 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { ProcessRoomObjectOperation, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
-import { BatchUpdates } from '../../../../../hooks';
-import { CreateEventDispatcherHook } from '../../../../../hooks/events/event-dispatcher.base';
+import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../context/RoomContext';
 import { ObjectLocationView } from '../../object-location/ObjectLocationView';
 
@@ -66,8 +65,8 @@ export const FurnitureManipulationMenuView: FC<{}> = props =>
         }
     }, [ objectId ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_REQUEST_MANIPULATION, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_REQUEST_MANIPULATION, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
 
     const onRoomWidgetUpdateDecorateModeEvent = useCallback((event: RoomWidgetUpdateDecorateModeEvent) =>
     {
@@ -83,7 +82,7 @@ export const FurnitureManipulationMenuView: FC<{}> = props =>
         });
     }, [ moveFurniture ]);
 
-    CreateEventDispatcherHook(RoomWidgetUpdateDecorateModeEvent.UPDATE_DECORATE, eventDispatcher, onRoomWidgetUpdateDecorateModeEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateDecorateModeEvent.UPDATE_DECORATE, eventDispatcher, onRoomWidgetUpdateDecorateModeEvent);
 
     useEffect(() =>
     {

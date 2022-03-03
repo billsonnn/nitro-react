@@ -1,6 +1,5 @@
 import { GetProductOfferComposer, IFurnitureData } from '@nitrots/nitro-renderer';
-import { GetProductDataForLocalization } from '../../../api';
-import { SendMessageHook } from '../../../hooks';
+import { GetProductDataForLocalization, SendMessageComposer } from '../../../api';
 import { ICatalogPage } from './ICatalogPage';
 import { IProduct } from './IProduct';
 import { IPurchasableOffer } from './IPurchasableOffer';
@@ -21,7 +20,7 @@ export class FurnitureOffer implements IPurchasableOffer
 
     public activate(): void
     {
-        SendMessageHook(new GetProductOfferComposer((this._furniData.rentOfferId > -1) ? this._furniData.rentOfferId : this._furniData.purchaseOfferId));
+        SendMessageComposer(new GetProductOfferComposer((this._furniData.rentOfferId > -1) ? this._furniData.rentOfferId : this._furniData.purchaseOfferId));
     }
 
     public get offerId(): number

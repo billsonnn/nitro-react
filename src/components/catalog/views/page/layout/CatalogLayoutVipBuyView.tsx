@@ -1,18 +1,9 @@
 import { ClubOfferData, GetClubOffersMessageComposer, PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { AutoGrid } from '../../../../../common/AutoGrid';
-import { Button } from '../../../../../common/Button';
-import { Column } from '../../../../../common/Column';
-import { Flex } from '../../../../../common/Flex';
-import { Grid } from '../../../../../common/Grid';
-import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
-import { LayoutLoadingSpinnerView } from '../../../../../common/layout/LayoutLoadingSpinnerView';
-import { Text } from '../../../../../common/Text';
-import { CatalogPurchasedEvent, CatalogPurchaseFailureEvent } from '../../../../../events';
-import { CatalogEvent } from '../../../../../events/catalog/CatalogEvent';
-import { useUiEvent } from '../../../../../hooks';
-import { SendMessageHook } from '../../../../../hooks/messages/message-event';
+import { LocalizeText, SendMessageComposer } from '../../../../../api';
+import { AutoGrid, Button, Column, Flex, Grid, LayoutGridItem, LayoutLoadingSpinnerView, Text } from '../../../../../common';
+import { CatalogEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent } from '../../../../../events';
+import { UseUiEvent } from '../../../../../hooks';
 import { CurrencyIcon } from '../../../../../views/shared/currency-icon/CurrencyIcon';
 import { GetCurrencyAmount } from '../../../../purse/common/CurrencyHelper';
 import { GLOBAL_PURSE } from '../../../../purse/PurseView';
@@ -40,8 +31,8 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
         }
     }, []);
 
-    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
-    useUiEvent(CatalogPurchaseFailureEvent.PURCHASE_FAILED, onCatalogEvent);
+    UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
+    UseUiEvent(CatalogPurchaseFailureEvent.PURCHASE_FAILED, onCatalogEvent);
 
     const getOfferText = useCallback((offer: ClubOfferData) =>
     {
@@ -103,7 +94,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
         if(!pendingOffer) return;
 
         setPurchaseState(CatalogPurchaseState.PURCHASE);
-        SendMessageHook(new PurchaseFromCatalogComposer(currentPage.pageId, pendingOffer.offerId, null, 1));
+        SendMessageComposer(new PurchaseFromCatalogComposer(currentPage.pageId, pendingOffer.offerId, null, 1));
     }, [ pendingOffer, currentPage ]);
 
     const setOffer = useCallback((offer: ClubOfferData) =>
@@ -142,7 +133,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
 
     useEffect(() =>
     {
-        if(!clubOffers) SendMessageHook(new GetClubOffersMessageComposer(1));
+        if(!clubOffers) SendMessageComposer(new GetClubOffersMessageComposer(1));
     }, [ clubOffers ]);
 
     return (

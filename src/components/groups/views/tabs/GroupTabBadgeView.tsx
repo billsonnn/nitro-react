@@ -1,7 +1,7 @@
 import { GroupSaveBadgeComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { SendMessageComposer } from '../../../../api';
 import { Column, Flex, Grid } from '../../../../common';
-import { SendMessageHook } from '../../../../hooks';
 import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
 import { GroupBadgePart } from '../../common/GroupBadgePart';
 import { IGroupData } from '../../common/IGroupData';
@@ -64,7 +64,7 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
             badge.push(part.position);
         });
         
-        SendMessageHook(new GroupSaveBadgeComposer(groupData.groupId, badge));
+        SendMessageComposer(new GroupSaveBadgeComposer(groupData.groupId, badge));
 
         return true;
     }, [ groupData, badgeParts, setGroupData ]);

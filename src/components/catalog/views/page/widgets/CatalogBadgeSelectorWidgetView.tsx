@@ -1,10 +1,8 @@
 import { StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AutoGrid, AutoGridProps } from '../../../../../common/AutoGrid';
-import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
-import { InventoryBadgesUpdatedEvent } from '../../../../../events';
-import { InventoryBadgesRequestEvent } from '../../../../../events/inventory/InventoryBadgesRequestEvent';
-import { dispatchUiEvent, useUiEvent } from '../../../../../hooks';
+import { AutoGrid, AutoGridProps, LayoutGridItem } from '../../../../../common';
+import { InventoryBadgesRequestEvent, InventoryBadgesUpdatedEvent } from '../../../../../events';
+import { DispatchUiEvent, UseUiEvent } from '../../../../../hooks';
 import { BadgeImageView } from '../../../../../views/shared/badge-image/BadgeImageView';
 import { useCatalogContext } from '../../../CatalogContext';
 
@@ -27,7 +25,7 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
         setBadges(event.badges);
     }, []);
 
-    useUiEvent(InventoryBadgesUpdatedEvent.BADGES_UPDATED, onInventoryBadgesUpdatedEvent);
+    UseUiEvent(InventoryBadgesUpdatedEvent.BADGES_UPDATED, onInventoryBadgesUpdatedEvent);
 
     const previewStuffData = useMemo(() =>
     {
@@ -55,7 +53,7 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
 
     useEffect(() =>
     {
-        dispatchUiEvent(new InventoryBadgesRequestEvent(InventoryBadgesRequestEvent.REQUEST_BADGES));
+        DispatchUiEvent(new InventoryBadgesRequestEvent(InventoryBadgesRequestEvent.REQUEST_BADGES));
     }, []);
 
     return (

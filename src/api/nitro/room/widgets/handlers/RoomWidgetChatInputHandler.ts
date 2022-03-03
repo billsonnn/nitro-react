@@ -1,9 +1,8 @@
 import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomRotatingEffect, RoomSessionChatEvent, RoomSettingsComposer, RoomShakingEffect, RoomWidgetEnum, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
-import { GetConfiguration, GetNitroInstance } from '../../..';
+import { GetConfiguration, GetNitroInstance, SendMessageComposer } from '../../..';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText } from '../../../..';
 import { FloorplanEditorEvent } from '../../../../../events/floorplan-editor/FloorplanEditorEvent';
-import { dispatchUiEvent } from '../../../../../hooks';
-import { SendMessageHook } from '../../../../../hooks/messages';
+import { DispatchUiEvent } from '../../../../../hooks';
 import { NotificationUtilities } from '../../../../../views/notification-center/common/NotificationUtilities';
 import { RoomWidgetFloodControlEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetChatMessage, RoomWidgetChatSelectAvatarMessage, RoomWidgetChatTypingMessage, RoomWidgetMessage, RoomWidgetRequestWidgetMessage } from '../messages';
@@ -160,7 +159,7 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
                             if(this.container.roomSession.controllerLevel >= RoomControllerLevel.ROOM_OWNER)
                             {
                                 //this.container.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.FLOOR_EDITOR));
-                                dispatchUiEvent(new FloorplanEditorEvent(FloorplanEditorEvent.SHOW_FLOORPLAN_EDITOR));
+                                DispatchUiEvent(new FloorplanEditorEvent(FloorplanEditorEvent.SHOW_FLOORPLAN_EDITOR));
                             }
 
                             return null;
@@ -179,7 +178,7 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
                         case ':settings':
                             if(this.container.roomSession.isRoomOwner || GetSessionDataManager().isModerator)
                             {
-                                SendMessageHook(new RoomSettingsComposer(this.container.roomSession.roomId));
+                                SendMessageComposer(new RoomSettingsComposer(this.container.roomSession.roomId));
                             }
 
                             return null;

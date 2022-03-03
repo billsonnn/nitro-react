@@ -1,8 +1,8 @@
 import { HabboSearchComposer, HabboSearchResultData, HabboSearchResultEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText, OpenMessengerChat } from '../../../../api';
+import { LocalizeText, OpenMessengerChat, SendMessageComposer } from '../../../../api';
 import { Base, Flex, NitroCardAccordionItemView, NitroCardAccordionSetView, NitroCardAccordionView, UserProfileIconView } from '../../../../common';
-import { BatchUpdates, CreateMessageHook, SendMessageHook } from '../../../../hooks';
+import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
 import { useFriendsContext } from '../../FriendsContext';
 
 export const FriendsSearchView: FC<{}> = props =>
@@ -23,7 +23,7 @@ export const FriendsSearchView: FC<{}> = props =>
         });
     }, []);
 
-    CreateMessageHook(HabboSearchResultEvent, onHabboSearchResultEvent);
+    UseMessageEventHook(HabboSearchResultEvent, onHabboSearchResultEvent);
 
     useEffect(() =>
     {
@@ -33,7 +33,7 @@ export const FriendsSearchView: FC<{}> = props =>
         {
             if(!searchValue || !searchValue.length) return;
 
-            SendMessageHook(new HabboSearchComposer(searchValue));
+            SendMessageComposer(new HabboSearchComposer(searchValue));
         }, 500);
 
         return () => clearTimeout(timeout);

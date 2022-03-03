@@ -2,10 +2,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, SecurityLevel, UserHomeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetConfiguration, GetGroupInformation, GetSessionDataManager, LocalizeText } from '../../../../api';
+import { GetConfiguration, GetGroupInformation, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, UserProfileIconView } from '../../../../common';
 import { FloorplanEditorEvent, NavigatorEvent, RoomWidgetThumbnailEvent } from '../../../../events';
-import { BatchUpdates, dispatchUiEvent, SendMessageHook } from '../../../../hooks';
+import { BatchUpdates, DispatchUiEvent } from '../../../../hooks';
 import { BadgeImageView } from '../../../../views/shared/badge-image/BadgeImageView';
 import { useNavigatorContext } from '../../NavigatorContext';
 import { NavigatorActions } from '../../reducers/NavigatorReducer';
@@ -57,32 +57,32 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                     }
                 });
 
-                SendMessageHook(new UserHomeRoomComposer(newRoomId));
+                SendMessageComposer(new UserHomeRoomComposer(newRoomId));
                 return;
             case 'navigator_search_tag':
                 return;
             case 'open_room_thumbnail_camera':
-                dispatchUiEvent(new RoomWidgetThumbnailEvent(RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL));
+                DispatchUiEvent(new RoomWidgetThumbnailEvent(RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL));
                 return;
             case 'open_group_info':
                 GetGroupInformation(roomInfoData.enteredGuestRoom.habboGroupId);
                 return;
             case 'toggle_room_link':
-                dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK));
+                DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK));
                 return;
             case 'open_room_settings':
-                SendMessageHook(new RoomSettingsComposer(roomInfoData.enteredGuestRoom.roomId));
+                SendMessageComposer(new RoomSettingsComposer(roomInfoData.enteredGuestRoom.roomId));
                 return;
             case 'toggle_pick':
                 setIsRoomPicked(value => !value);
-                SendMessageHook(new RoomStaffPickComposer(roomInfoData.enteredGuestRoom.roomId));
+                SendMessageComposer(new RoomStaffPickComposer(roomInfoData.enteredGuestRoom.roomId));
                 return;
             case 'toggle_mute':
                 setIsRoomMuted(value => !value);
-                SendMessageHook(new RoomMuteComposer());
+                SendMessageComposer(new RoomMuteComposer());
             return;
             case 'open_floorplan_editor':
-                dispatchUiEvent(new FloorplanEditorEvent(FloorplanEditorEvent.TOGGLE_FLOORPLAN_EDITOR));
+                DispatchUiEvent(new FloorplanEditorEvent(FloorplanEditorEvent.TOGGLE_FLOORPLAN_EDITOR));
                 return;
             case 'close':
                 onCloseClick();
@@ -153,7 +153,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                     <Column gap={ 1 }>
                                         <Flex gap={ 1 }>
                                             <i onClick={ () => processAction('set_home_room') } className={ 'flex-shrink-0 icon icon-house-small cursor-pointer' + classNames({ ' gray': homeRoomId !== roomInfoData.enteredGuestRoom.roomId }) } />
-                                            <FontAwesomeIcon icon="link" title={ LocalizeText('navigator.embed.caption') } className="cursor-pointer" onClick={ event => dispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK)) } />
+                                            <FontAwesomeIcon icon="link" title={ LocalizeText('navigator.embed.caption') } className="cursor-pointer" onClick={ event => DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK)) } />
                                         </Flex>
                                         { hasPermission('settings') &&
                                             <Flex gap={ 1 }>

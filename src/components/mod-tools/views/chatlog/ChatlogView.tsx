@@ -1,10 +1,10 @@
 import { ChatRecordData, UserProfileComposer } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, Key, useCallback } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps } from 'react-virtualized';
-import { TryVisitRoom } from '../../../../api';
+import { SendMessageComposer, TryVisitRoom } from '../../../../api';
 import { Base, Button, Column, Flex, Grid, Text } from '../../../../common';
 import { ModToolsOpenRoomInfoEvent } from '../../../../events/mod-tools/ModToolsOpenRoomInfoEvent';
-import { dispatchUiEvent, SendMessageHook } from '../../../../hooks';
+import { DispatchUiEvent } from '../../../../hooks';
 
 interface ChatlogViewProps
 {
@@ -29,7 +29,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
             >
                 <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
                     <Text className="g-col-2">{ chatlogEntry.timestamp }</Text>
-                    <Text className="g-col-3" bold underline pointer onClick={ event => SendMessageHook(new UserProfileComposer(chatlogEntry.userId)) }>{ chatlogEntry.userName }</Text>
+                    <Text className="g-col-3" bold underline pointer onClick={ event => SendMessageComposer(new UserProfileComposer(chatlogEntry.userId)) }>{ chatlogEntry.userName }</Text>
                     <Text textBreak wrap className="g-col-7">{ chatlogEntry.message }</Text>
                 </Grid>
             </CellMeasurer>
@@ -79,7 +79,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                 { !isRoomInfo &&
                     <Grid key={ props.key } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
                         <Text className="g-col-2">{ chatlogEntry.timestamp }</Text>
-                        <Text className="g-col-3" bold underline pointer onClick={ event => SendMessageHook(new UserProfileComposer(chatlogEntry.userId)) }>{ chatlogEntry.userName }</Text>
+                        <Text className="g-col-3" bold underline pointer onClick={ event => SendMessageComposer(new UserProfileComposer(chatlogEntry.userId)) }>{ chatlogEntry.userName }</Text>
                         <Text textBreak wrap className="g-col-7">{ chatlogEntry.message }</Text>
                     </Grid> }
             </CellMeasurer>
@@ -109,7 +109,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                 </Flex>
                 <Flex gap={ 1 }>
                     <Button onClick={ event => TryVisitRoom(props.roomId) }>Visit Room</Button>
-                    <Button onClick={ event => dispatchUiEvent(new ModToolsOpenRoomInfoEvent(props.roomId)) }>Room Tools</Button>
+                    <Button onClick={ event => DispatchUiEvent(new ModToolsOpenRoomInfoEvent(props.roomId)) }>Room Tools</Button>
                 </Flex>
             </Flex>
         );

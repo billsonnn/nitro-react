@@ -1,9 +1,9 @@
 import { ApplyTonerComposer, RoomControllerLevel, RoomEngineObjectEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
+import { GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomObjectEvent, SendMessageComposer } from '../../../../../api';
 import { Button, Column, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { BatchUpdates, CreateEventDispatcherHook, SendMessageHook, useRoomEngineEvent } from '../../../../../hooks';
+import { BatchUpdates, UseEventDispatcherHook, UseRoomEngineEvent } from '../../../../../hooks';
 import { useRoomContext } from '../../../context/RoomContext';
 
 export const FurnitureBackgroundColorView: FC<{}> = props =>
@@ -59,15 +59,15 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
         }
     }, [ objectId, canOpenBackgroundToner, close ]);
 
-    useRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, onRoomEngineObjectEvent);
-    CreateEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomEngineObjectEvent);
+    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, onRoomEngineObjectEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, eventDispatcher, onRoomEngineObjectEvent);
 
     const processAction = useCallback((name: string) =>
     {
         switch(name)
         {
             case 'apply':
-                SendMessageHook(new ApplyTonerComposer(objectId, hue, saturation, lightness));
+                SendMessageComposer(new ApplyTonerComposer(objectId, hue, saturation, lightness));
                 break;
             case 'toggle':
                 roomSession.useMultistateItem(objectId);

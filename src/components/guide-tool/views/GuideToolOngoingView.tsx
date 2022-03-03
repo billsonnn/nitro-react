@@ -1,9 +1,9 @@
 import { GuideSessionGetRequesterRoomMessageComposer, GuideSessionInviteRequesterMessageComposer, GuideSessionRequesterRoomMessageEvent, GuideSessionResolvedMessageComposer } from '@nitrots/nitro-renderer';
 import { GuideSessionMessageMessageComposer } from '@nitrots/nitro-renderer/src';
 import { FC, KeyboardEvent, useCallback, useState } from 'react';
-import { GetSessionDataManager, LocalizeText, TryVisitRoom } from '../../../api';
+import { GetSessionDataManager, LocalizeText, SendMessageComposer, TryVisitRoom } from '../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, Text } from '../../../common';
-import { CreateMessageHook, SendMessageHook } from '../../../hooks';
+import { UseMessageEventHook } from '../../../hooks';
 import { AvatarImageView } from '../../../views/shared/avatar-image/AvatarImageView';
 import { GuideToolMessageGroup } from '../common/GuideToolMessageGroup';
 
@@ -25,17 +25,17 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
 
     const visit = useCallback(() =>
     {
-        SendMessageHook(new GuideSessionGetRequesterRoomMessageComposer());
+        SendMessageComposer(new GuideSessionGetRequesterRoomMessageComposer());
     }, []);
 
     const invite = useCallback(() =>
     {
-        SendMessageHook(new GuideSessionInviteRequesterMessageComposer());
+        SendMessageComposer(new GuideSessionInviteRequesterMessageComposer());
     }, []);
 
     const resolve = useCallback(() =>
     {
-        SendMessageHook(new GuideSessionResolvedMessageComposer());
+        SendMessageComposer(new GuideSessionResolvedMessageComposer());
     }, []);
 
     const onGuideSessionRequesterRoomMessageEvent = useCallback((event: GuideSessionRequesterRoomMessageEvent) =>
@@ -45,13 +45,13 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
         TryVisitRoom(parser.requesterRoomId);
     }, []);
 
-    CreateMessageHook(GuideSessionRequesterRoomMessageEvent, onGuideSessionRequesterRoomMessageEvent);
+    UseMessageEventHook(GuideSessionRequesterRoomMessageEvent, onGuideSessionRequesterRoomMessageEvent);
 
     const sendMessage = useCallback(() =>
     {
         if(!messageText || !messageText.length) return;
 
-        SendMessageHook(new GuideSessionMessageMessageComposer(messageText));
+        SendMessageComposer(new GuideSessionMessageMessageComposer(messageText));
         setMessageText('');
     }, [ messageText ]);
 
