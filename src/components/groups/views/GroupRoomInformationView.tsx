@@ -90,18 +90,15 @@ export const GroupRoomInformationView: FC<{}> = props =>
     {
         if(isRealOwner) return 'group.manage';
 
-        if(groupInformation.type === GroupType.PRIVATE) return '';        
+        if(groupInformation.type === GroupType.PRIVATE) return '';
 
         if(groupInformation.membershipType === GroupMembershipType.MEMBER) return 'group.leave';
 
-        if(groupInformation.membershipType === GroupMembershipType.NOT_MEMBER && groupInformation.type === GroupType.REGULAR) return 'group.join';
+        if((groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) && groupInformation.type === GroupType.REGULAR) return 'group.join';
 
-        if(groupInformation.type === GroupType.EXCLUSIVE)
-        {
-            if(groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) return 'group.requestmembership';
+        if(groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return 'group.membershippending';
 
-            if(groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return 'group.membershippending';
-        }
+        if((groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) && groupInformation.type === GroupType.EXCLUSIVE) return 'group.requestmembership';
     }
 
     const handleButtonClick = () =>

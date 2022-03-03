@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GroupAdminGiveComposer, GroupAdminTakeComposer, GroupConfirmMemberRemoveEvent, GroupConfirmRemoveMemberComposer, GroupMemberParser, GroupMembersComposer, GroupMembersEvent, GroupMembershipAcceptComposer, GroupMembershipDeclineComposer, GroupMembersParser, GroupRank, GroupRemoveMemberComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
-import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker } from '../../../api';
 import { Base, Button, Column, Flex, Grid, Text } from '../../../common';
@@ -19,10 +18,6 @@ export const GroupMembersView: FC<{}> = props =>
     const [ totalPages, setTotalPages ] = useState<number>(0);
     const [ searchQuery, setSearchQuery ] = useState<string>('');
     const [ removingMemberName, setRemovingMemberName ] = useState<string>(null);
-
-    const previousPage = () => setPageId(prevValue => (prevValue - 1));
-
-    const nextPage = () => setPageId(prevValue => (prevValue + 1));
 
     const getRankDescription = (member: GroupMemberParser) =>
     {
@@ -47,7 +42,7 @@ export const GroupMembersView: FC<{}> = props =>
 
     const toggleAdmin = (member: GroupMemberParser) =>
     {
-        if(member.rank === GroupRank.OWNER) return;
+        if(!membersData.admin || (member.rank === GroupRank.OWNER)) return;
         
         if(member.rank !== GroupRank.ADMIN) SendMessageHook(new GroupAdminGiveComposer(membersData.groupId, member.id));
         else SendMessageHook(new GroupAdminTakeComposer(membersData.groupId, member.id));
@@ -57,7 +52,7 @@ export const GroupMembersView: FC<{}> = props =>
 
     const acceptMembership = (member: GroupMemberParser) =>
     {
-        if(member.rank !== GroupRank.REQUESTED) return;
+        if(!membersData.admin || (member.rank !== GroupRank.REQUESTED)) return;
         
         SendMessageHook(new GroupMembershipAcceptComposer(membersData.groupId, member.id));
 
@@ -66,6 +61,8 @@ export const GroupMembersView: FC<{}> = props =>
 
     const removeMemberOrDeclineMembership = (member: GroupMemberParser) =>
     {
+        if(!membersData.admin) return;
+
         if(member.rank === GroupRank.REQUESTED)
         {
             SendMessageHook(new GroupMembershipDeclineComposer(membersData.groupId, member.id));
@@ -191,22 +188,22 @@ export const GroupMembersView: FC<{}> = props =>
                                         <AvatarImageView figure={ member.figure } headOnly={ true } direction={ 2 } />
                                     </div>
                                     <Column grow gap={ 1 }>
-                                        <Text bold small pointer onClick={ () => GetUserProfile(member.id) }>{ member.name }</Text>
+                                        <Text bold small pointer onClick={ event => GetUserProfile(member.id) }>{ member.name }</Text>
                                         { (member.rank !== GroupRank.REQUESTED) &&
-                                            <Text small italics variant="muted">{ LocalizeText('group.members.since', ['date'], [member.joinedAt]) }</Text> }
+                                            <Text small italics variant="muted">{ LocalizeText('group.members.since', [ 'date' ], [ member.joinedAt ]) }</Text> }
                                     </Column>
                                     <Column gap={ 1 }>
                                         { (member.rank !== GroupRank.REQUESTED) &&
                                             <Flex center>
-                                                <i className={ 'icon icon-group-small-' + classNames({ 'owner': (member.rank === GroupRank.OWNER), 'admin': (member.rank === GroupRank.ADMIN), 'not-admin': (member.rank === GroupRank.MEMBER), 'cursor-pointer': membersData.admin }) } title={ LocalizeText(getRankDescription(member)) } onClick={ () => toggleAdmin(member) } />
+                                                <Base pointer={ membersData.admin } className={ `icon icon-group-small-${ ((member.rank === GroupRank.OWNER) ? 'owner' : (member.rank === GroupRank.ADMIN) ? 'admin' : (membersData.admin && (member.rank === GroupRank.MEMBER)) ? 'not-admin' : '') }` } title={ LocalizeText(getRankDescription(member)) } onClick={ event => toggleAdmin(member) } />
                                             </Flex> }
-                                        { (member.rank === GroupRank.REQUESTED) &&
+                                        { membersData.admin && (member.rank === GroupRank.REQUESTED) &&
                                             <Flex alignItems="center">
-                                                <Base pointer className="nitro-friends-spritesheet icon-accept" title={ LocalizeText('group.members.accept') } onClick={ () => acceptMembership(member) }></Base>
+                                                <Base pointer className="nitro-friends-spritesheet icon-accept" title={ LocalizeText('group.members.accept') } onClick={ event => acceptMembership(member) }></Base>
                                             </Flex> }
-                                        { (member.rank !== GroupRank.OWNER) && membersData.admin && (member.id !== GetSessionDataManager().userId) &&
+                                        { membersData.admin && (member.rank !== GroupRank.OWNER) && (member.id !== GetSessionDataManager().userId) &&
                                             <Flex alignItems="center">
-                                                <Base pointer className="nitro-friends-spritesheet icon-deny" title={ LocalizeText(member.rank === GroupRank.REQUESTED ? 'group.members.reject' : 'group.members.kick') } onClick={ () => removeMemberOrDeclineMembership(member) }></Base>
+                                                <Base pointer className="nitro-friends-spritesheet icon-deny" title={ LocalizeText(member.rank === GroupRank.REQUESTED ? 'group.members.reject' : 'group.members.kick') } onClick={ event => removeMemberOrDeclineMembership(member) }></Base>
                                             </Flex> }
                                     </Column>
                                 </Flex>
@@ -214,13 +211,13 @@ export const GroupMembersView: FC<{}> = props =>
                         }) }
                 </Grid>
                 <Flex gap={ 1 } justifyContent="between" alignItems="center">
-                    <Button disabled={ (membersData.pageIndex === 0) } onClick={ previousPage }>
+                    <Button disabled={ (membersData.pageIndex === 0) } onClick={ event => setPageId(prevValue => (prevValue - 1)) }>
                         <FontAwesomeIcon icon="chevron-left" />
                     </Button>
                     <Text small>
                         { LocalizeText('group.members.pageinfo', ['amount', 'page', 'totalPages'], [membersData.totalMembersCount.toString(), (membersData.pageIndex + 1).toString(), totalPages.toString()]) }
                     </Text>
-                    <Button disabled={ (membersData.pageIndex === (totalPages - 1)) } onClick={ nextPage }>
+                    <Button disabled={ (membersData.pageIndex === (totalPages - 1)) } onClick={ event => setPageId(prevValue => (prevValue + 1)) }>
                         <FontAwesomeIcon icon="chevron-right" />
                     </Button>
                 </Flex>

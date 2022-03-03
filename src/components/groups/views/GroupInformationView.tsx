@@ -25,7 +25,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 {
     const { groupInformation = null, onClose = null } = props;    
 
-    const isRealOwner = () => (groupInformation && (groupInformation.ownerName === GetSessionDataManager().userName));
+    const isRealOwner = (groupInformation && (groupInformation.ownerName === GetSessionDataManager().userName));
     
     const joinGroup = () => (groupInformation && TryJoinGroup(groupInformation.id));
 
@@ -43,7 +43,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
     {
         if(groupInformation.membershipType === GroupMembershipType.NOT_MEMBER || groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return null;
 
-        if(isRealOwner()) return <i className="icon icon-group-owner" title={ LocalizeText('group.youareowner') } />;
+        if(isRealOwner) return <i className="icon icon-group-owner" title={ LocalizeText('group.youareowner') } />;
 
         if(groupInformation.isAdmin) return <i className="icon icon-group-admin" title={ LocalizeText('group.youareadmin') } />;
 
@@ -52,20 +52,17 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 
     const getButtonText = () =>
     {
-        if(groupInformation.type === GroupType.PRIVATE) return '';
+        if(isRealOwner) return 'group.youareowner';
 
-        if(isRealOwner()) return 'group.youareowner';
+        if(groupInformation.type === GroupType.PRIVATE) return '';
 
         if(groupInformation.membershipType === GroupMembershipType.MEMBER) return 'group.leave';
 
-        if(groupInformation.membershipType === GroupMembershipType.NOT_MEMBER && groupInformation.type === GroupType.REGULAR) return 'group.join';
+        if((groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) && groupInformation.type === GroupType.REGULAR) return 'group.join';
 
-        if(groupInformation.type === GroupType.EXCLUSIVE)
-        {
-            if(groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) return 'group.requestmembership';
+        if(groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return 'group.membershippending';
 
-            if(groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return 'group.membershippending';
-        }
+        if((groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) && groupInformation.type === GroupType.EXCLUSIVE) return 'group.requestmembership';
     }
 
     const handleButtonClick = () =>
@@ -143,7 +140,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                         <Text small underline pointer>{ LocalizeText('group.showgroups') }</Text>
                     </Column>
                     { (groupInformation.type !== GroupType.PRIVATE) && 
-                        <Button disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) || isRealOwner() } onClick={ handleButtonClick }>
+                        <Button disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) || isRealOwner } onClick={ handleButtonClick }>
                             { LocalizeText(getButtonText()) }
                         </Button> }
                 </Column>
