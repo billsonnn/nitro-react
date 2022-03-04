@@ -3,10 +3,9 @@ import { PurchaseFromCatalogAsGiftComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
-import { Base, Button, ButtonGroup, Column, Flex, FormGroup, LayoutCurrencyIcon, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { Base, Button, ButtonGroup, Column, Flex, FormGroup, LayoutCurrencyIcon, LayoutFurniImageView, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { CatalogEvent, CatalogInitGiftEvent, CatalogPurchasedEvent } from '../../../../events';
 import { BatchUpdates, UseUiEvent } from '../../../../hooks';
-import { FurniImageView } from '../../../../views/shared/furni-image/FurniImageView';
 import { useCatalogContext } from '../../CatalogContext';
 import { ProductTypeEnum } from '../../common/ProductTypeEnum';
 
@@ -183,7 +182,7 @@ export const CatalogGiftView: FC<{}> = props =>
                 <Flex alignItems="center" gap={ 2 }>
                     { selectedColorId &&
                         <Base className="gift-preview">
-                            <FurniImageView productType={ ProductTypeEnum.FLOOR } productClassId={ selectedColorId } extraData={ boxExtraData } />
+                            <LayoutFurniImageView productType={ ProductTypeEnum.FLOOR } productClassId={ selectedColorId } extraData={ boxExtraData } />
                         </Base> }
                     <Column gap={ 1 }>
                         <Flex gap={ 2 }>

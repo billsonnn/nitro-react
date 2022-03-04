@@ -1,10 +1,10 @@
 import { IGetImageListener, ImageResult, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetRoomEngine } from '../../../api';
-import { Base } from '../../../common/Base';
-import { ProductTypeEnum } from '../../../components/catalog/common/ProductTypeEnum';
+import { GetRoomEngine } from '../../api';
+import { ProductTypeEnum } from '../../components/catalog/common/ProductTypeEnum';
+import { Base } from '../Base';
 
-interface FurniImageViewProps
+interface LayoutFurniImageViewProps
 {
     productType: string;
     productClassId: number;
@@ -13,7 +13,7 @@ interface FurniImageViewProps
     scale?: number;
 }
 
-export const FurniImageView: FC<FurniImageViewProps> = props =>
+export const LayoutFurniImageView: FC<LayoutFurniImageViewProps> = props =>
 {
     const { productType = 's', productClassId = -1, direction = 0, extraData = '', scale = 1 } = props;
     const [ imageElement, setImageElement ] = useState<HTMLImageElement>(null);
