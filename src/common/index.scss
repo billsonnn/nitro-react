@@ -78,32 +78,24 @@
     }
 
     .trophy-header {
+        height: 22px;
+
         .trophy-close {
-            position: absolute;
-            cursor: pointer;
             width: 15px;
             height: 15px;
+            right: 5.5px;
             top: 5px;
-            right: 5px;
-        }
-
-        .trophy-title {
-            padding-top: 3px;
         }
     }
 
     .trophy-content {
         width: 297px;
-        height: 110px;
-        margin-top: 3px;
-        margin-left: 23px;
+        height: 116px;
         white-space: pre-wrap;
     }
 
     .trophy-footer {
         width: 297px;
-        margin-top: 5px;
-        margin-left: 23px;
     }
 }
 

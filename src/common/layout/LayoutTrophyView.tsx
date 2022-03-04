@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Base, Column, Flex, Text } from '..';
 import { LocalizeText } from '../../api';
 import { DraggableWindow } from '../draggable-window';
 
@@ -18,22 +19,21 @@ export const LayoutTrophyView: FC<LayoutTrophyViewProps> = props =>
 
     return (
         <DraggableWindow handleSelector=".drag-handler">
-            <div className={ `nitro-layout-trophy trophy-${ color }` }>
-                <div className="trophy-header drag-handler">
-                    <div className="float-end trophy-close" onClick={ onCloseClick }></div>
-                    <div className="trophy-title fw-bold text-center">
-                        { LocalizeText('widget.furni.trophy.title') }
-                    </div>
-                </div>
-                <div className="trophy-content">
-                    { customTitle && <div className="mb-2 fw-bold">{ customTitle }</div> }
+            <Column gap={ 0 } alignItems="center" className={ `nitro-layout-trophy trophy-${ color }` }>
+                <Flex center fullWidth position="relative" className="trophy-header drag-handler">
+                    <Base position="absolute" pointer className="trophy-close" onClick={ onCloseClick } />
+                    <Text bold>{ LocalizeText('widget.furni.trophy.title') }</Text>
+                </Flex>
+                <Column className="trophy-content py-1" gap={ 1 }>
+                    { customTitle &&
+                        <Text bold>{ customTitle }</Text> }
                     { message }
-                </div>
-                <div className="trophy-footer d-flex justify-content-between fw-bold">
-                    <div>{ date }</div>
-                    <div>{ senderName }</div>
-                </div>
-            </div>
+                </Column>
+                <Flex alignItems="center" justifyContent="between" className="trophy-footer mt-1">
+                    <Text bold>{ date }</Text>
+                    <Text bold>{ senderName }</Text>
+                </Flex>
+            </Column>
         </DraggableWindow>
     );
 }
