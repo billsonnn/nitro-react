@@ -1,8 +1,7 @@
 import { IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
 import { GetAvatarRenderManager, GetSessionDataManager, SendMessageComposer } from '../../../../api';
-import { AutoGrid, Base, Button, Flex, LayoutCurrencyIcon, LayoutGridItem } from '../../../../common';
-import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
+import { AutoGrid, Base, Button, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, LayoutGridItem } from '../../../../common';
 import { FigureData } from '../../common/FigureData';
 
 export interface AvatarEditorWardrobeViewProps
@@ -56,7 +55,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
                 items.push(
                     <LayoutGridItem key={ index } position="relative" overflow="hidden" className="nitro-avatar-editor-wardrobe-figure-preview">
                         { figureContainer &&
-                            <AvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } /> }
+                            <LayoutAvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } /> }
                         <Base className="avatar-shadow" />
                         { (clubLevel > 0) && <LayoutCurrencyIcon className="position-absolute top-1 start-1" type="hc" /> }
                         <Flex gap={ 1 } className="button-container">

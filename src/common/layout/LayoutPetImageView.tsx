@@ -1,8 +1,8 @@
 import { PetCustomPart, PetFigureData, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
-import { GetRoomEngine } from '../../../api';
+import { GetRoomEngine } from '../../api';
 
-interface PetImageViewProps
+interface LayoutPetImageViewProps
 {
     figure?: string;
     typeId?: number;
@@ -15,7 +15,7 @@ interface PetImageViewProps
     scale?: number;
 }
 
-export const PetImageView: FC<PetImageViewProps> = props =>
+export const LayoutPetImageView: FC<LayoutPetImageViewProps> = props =>
 {
     const { figure = '', typeId = -1, paletteId = -1, color = 0xFFFFFF, customParts = [], posture = 'std', headOnly = false, direction = 0, scale = 1 } = props;
     const [ petUrl, setPetUrl ] = useState<string>(null);

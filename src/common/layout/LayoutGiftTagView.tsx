@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../api';
-import { AvatarImageView } from '../../views/shared/avatar-image/AvatarImageView';
+import { LayoutAvatarImageView } from './LayoutAvatarImageView';
 
 interface LayoutGiftTagViewProps
 {
@@ -20,7 +20,7 @@ export const LayoutGiftTagView: FC<LayoutGiftTagViewProps> = props =>
             <div className="d-flex align-items-center justify-content-center gift-face flex-shrink-0">
                 { !userName && <div className="gift-incognito"></div> }
                 { figure && <div className="gift-avatar">
-                    <AvatarImageView figure={ figure } direction={ 2 } headOnly={ true } />
+                    <LayoutAvatarImageView figure={ figure } direction={ 2 } headOnly={ true } />
                 </div> }
             </div>
             <div className="d-flex flex-column w-100 pt-4 pb-4 pe-4 ps-3">

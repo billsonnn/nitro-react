@@ -1,11 +1,11 @@
 import { NitroToolbarAnimateIconEvent, TextureUtils, ToolbarIconEnum } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
 import { GetRoomEngine } from '../../../../api';
+import { LayoutRoomPreviewerView, LayoutRoomPreviewerViewProps } from '../../../../common';
 import { CatalogPurchasedEvent } from '../../../../events';
 import { UseUiEvent } from '../../../../hooks';
-import { RoomPreviewerView, RoomPreviewerViewProps } from '../../../../views/shared/room-previewer/RoomPreviewerView';
 
-export const CatalogRoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
+export const CatalogRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =>
 {
     const { roomPreviewer = null } = props;
     const elementRef = useRef<HTMLDivElement>(null);
@@ -43,7 +43,7 @@ export const CatalogRoomPreviewerView: FC<RoomPreviewerViewProps> = props =>
 
     return (
         <div ref={ elementRef }>
-            <RoomPreviewerView { ...props } />
+            <LayoutRoomPreviewerView { ...props } />
         </div>
     );
 }

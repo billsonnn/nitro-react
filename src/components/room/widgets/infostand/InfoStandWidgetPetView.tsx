@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
 import { LocalizeText, RoomWidgetUpdateInfostandPetEvent } from '../../../../api';
-import { Base, Column, Flex, Text, UserProfileIconView } from '../../../../common';
-import { PetImageView } from '../../../../views/shared/pet-image/PetImageView';
+import { Base, Column, Flex, LayoutPetImageView, Text, UserProfileIconView } from '../../../../common';
 
 interface InfoStandWidgetPetViewProps
 {
@@ -30,7 +29,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                 <Column gap={ 1 }>
                     <Flex gap={ 1 }>
                         <Column fullWidth overflow="hidden" className="body-image pet p-1">
-                            <PetImageView figure={ petData.petFigure } posture={ petData.posture } direction={ 4 } />
+                            <LayoutPetImageView figure={ petData.petFigure } posture={ petData.posture } direction={ 4 } />
                         </Column>
                         <Column grow gap={ 1 }>
                             <Text variant="white" center small wrap>{ LocalizeText('pet.level', [ 'level', 'maxlevel' ], [ petData.level.toString(), petData.maximumLevel.toString() ]) }</Text>

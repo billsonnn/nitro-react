@@ -1,8 +1,7 @@
 import { FollowFriendMessageComposer, MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { GetUserProfile, LocalizeText, OpenMessengerChat, SendMessageComposer } from '../../../../api';
-import { Base, LayoutBadgeImageView } from '../../../../common';
-import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
+import { Base, LayoutAvatarImageView, LayoutBadgeImageView } from '../../../../common';
 import { MessengerFriend } from '../../common/MessengerFriend';
 
 interface FriendBarItemViewProps
@@ -63,7 +62,7 @@ export const FriendBarItemView: FC<FriendBarItemViewProps> = props =>
     return (
         <div ref={ elementRef } className={'btn btn-success friend-bar-item ' + (isVisible ? 'friend-bar-item-active' : '')} onClick={ event => setVisible(prevValue => !prevValue) }>
             <div className={`friend-bar-item-head position-absolute ${friend.id > 0 ? 'avatar': 'group'}`}>
-                { friend.id > 0 && <AvatarImageView headOnly={ true } figure={ friend.figure } direction={ 2 } /> }
+                { friend.id > 0 && <LayoutAvatarImageView headOnly={ true } figure={ friend.figure } direction={ 2 } /> }
                 { friend.id <= 0 && <LayoutBadgeImageView isGroup={ true } badgeCode={ friend.figure} />} 
             </div>
             <div className="text-truncate">{ friend.name }</div>

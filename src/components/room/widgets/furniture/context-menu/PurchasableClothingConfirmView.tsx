@@ -1,8 +1,7 @@
 import { RedeemItemClothingComposer, RoomObjectCategory, UserFigureComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetAvatarRenderManager, GetConnection, GetFurnitureDataForRoomObject, GetSessionDataManager, LocalizeText } from '../../../../../api';
-import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { AvatarImageView } from '../../../../../views/shared/avatar-image/AvatarImageView';
+import { Base, Button, Column, Flex, LayoutAvatarImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
 import { FigureData } from '../../../../avatar-editor/common/FigureData';
 import { FurniCategory } from '../../../../inventory/common/FurniCategory';
 import { useRoomContext } from '../../../RoomContext';
@@ -87,7 +86,7 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
                 <Flex gap={ 2 } overflow="hidden">
                     <Column>
                         <Base className="mannequin-preview">
-                            <AvatarImageView figure={ newFigure } direction={ 2 } />
+                            <LayoutAvatarImageView figure={ newFigure } direction={ 2 } />
                         </Base>
                     </Column>
                     <Column justifyContent="between" overflow="auto">

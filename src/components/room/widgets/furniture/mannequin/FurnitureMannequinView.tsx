@@ -1,9 +1,8 @@
 import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, HabboClubLevelEnum, IAvatarFigureContainer, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { GetAvatarRenderManager, GetSessionDataManager, LocalizeText, RoomWidgetUpdateMannequinEvent, SendMessageComposer } from '../../../../../api';
-import { Base, Button, Column, Flex, LayoutCurrencyIcon, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
+import { Base, Button, Column, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
 import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
-import { AvatarImageView } from '../../../../../views/shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../../RoomContext';
 
 const MODE_NONE: number = -1;
@@ -179,7 +178,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
                 <Flex gap={ 2 } overflow="hidden">
                     <Column>
                         <Base position="relative" className="mannequin-preview">
-                            <AvatarImageView figure={ renderedFigure } direction={ 2 } />
+                            <LayoutAvatarImageView figure={ renderedFigure } direction={ 2 } />
                             { (clubLevel > 0) &&
                                 <LayoutCurrencyIcon className="position-absolute end-2 bottom-2" type="hc" /> }
                         </Base>

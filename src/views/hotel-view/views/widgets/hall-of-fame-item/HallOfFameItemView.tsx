@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { LocalizeFormattedNumber, LocalizeText } from '../../../../../api';
-import { UserProfileIconView } from '../../../../../common';
-import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
+import { LayoutAvatarImageView, UserProfileIconView } from '../../../../../common';
 import { HallOfFameItemViewProps } from './HallOfFameItemView.types';
 
 export const HallOfFameItemView: FC<HallOfFameItemViewProps> = props =>
@@ -16,7 +15,7 @@ export const HallOfFameItemView: FC<HallOfFameItemViewProps> = props =>
                 </div>
                 <div className="small text-center text-white">{ LocalizeText('landing.view.competition.hof.points', [ 'points' ], [ LocalizeFormattedNumber(data.currentScore).toString() ])}</div>
             </div>
-            <AvatarImageView figure={ data.figure } direction={ 2 } />
+            <LayoutAvatarImageView figure={ data.figure } direction={ 2 } />
         </div>
     );
 }

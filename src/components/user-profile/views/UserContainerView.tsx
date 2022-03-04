@@ -1,7 +1,7 @@
 import { FriendlyTime, UserProfileParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../api';
-import { AvatarImageView } from '../../../views/shared/avatar-image/AvatarImageView';
+import { LayoutAvatarImageView } from '../../../common';
 
 interface UserContainerViewProps
 {
@@ -32,7 +32,7 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
     return (
         <div className="row">
             <div className="col-auto px-0 d-flex align-items-center">
-                <AvatarImageView figure={userProfile.figure} direction={2} />
+                <LayoutAvatarImageView figure={userProfile.figure} direction={2} />
             </div>
             <div className="col">
                 <div className="user-info-container">

@@ -1,7 +1,7 @@
 import { RelationshipStatusEnum, RelationshipStatusInfo, RelationshipStatusInfoMessageParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetUserProfile, LocalizeText } from '../../../api';
-import { AvatarImageView } from '../../../views/shared/avatar-image/AvatarImageView';
+import { LayoutAvatarImageView } from '../../../common';
 
 interface RelationshipsContainerViewProps
 {
@@ -46,7 +46,7 @@ export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = p
                         }
                         {
                             (!simple && relationshipInfo && relationshipInfo.friendCount > 0) &&
-                            <AvatarImageView figure={relationshipInfo.randomFriendFigure} headOnly={true} direction={4} />
+                            <LayoutAvatarImageView figure={relationshipInfo.randomFriendFigure} headOnly={true} direction={4} />
                         }
                     </span>
 

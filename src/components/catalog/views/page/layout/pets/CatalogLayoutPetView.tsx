@@ -2,10 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ApproveNameMessageComposer, ColorConverter, GetSellablePetPalettesComposer, PurchaseFromCatalogComposer, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../../api';
-import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../../../common';
+import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, LayoutPetImageView, Text } from '../../../../../../common';
 import { CatalogNameResultEvent, CatalogPurchaseFailureEvent, CatalogWidgetEvent } from '../../../../../../events';
 import { BatchUpdates, DispatchUiEvent, UseUiEvent } from '../../../../../../hooks';
-import { PetImageView } from '../../../../../../views/shared/pet-image/PetImageView';
 import { useCatalogContext } from '../../../../CatalogContext';
 import { GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../common/CatalogUtilities';
 import { CatalogAddOnBadgeWidgetView } from '../../widgets/CatalogAddOnBadgeWidgetView';
@@ -213,7 +212,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
                         {
                             return (
                                 <LayoutGridItem key={ index } itemActive={ (selectedPaletteIndex === index) } onClick={ event => setSelectedPaletteIndex(index) }>
-                                    <PetImageView typeId={ petIndex } paletteId={ palette.paletteId } direction={ 2 } headOnly={ true } />
+                                    <LayoutPetImageView typeId={ petIndex } paletteId={ palette.paletteId } direction={ 2 } headOnly={ true } />
                                 </LayoutGridItem>
                             );
                         })}

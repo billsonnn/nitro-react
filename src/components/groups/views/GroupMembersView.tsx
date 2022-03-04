@@ -2,10 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GroupAdminGiveComposer, GroupAdminTakeComposer, GroupConfirmMemberRemoveEvent, GroupConfirmRemoveMemberComposer, GroupMemberParser, GroupMembersComposer, GroupMembersEvent, GroupMembershipAcceptComposer, GroupMembershipDeclineComposer, GroupMembersParser, GroupRank, GroupRemoveMemberComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../../api';
-import { Base, Button, Column, Flex, Grid, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
+import { Base, Button, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { BatchUpdates, UseMessageEventHook } from '../../../hooks';
 import { NotificationUtilities } from '../../../views/notification-center/common/NotificationUtilities';
-import { AvatarImageView } from '../../../views/shared/avatar-image/AvatarImageView';
 
 export const GroupMembersView: FC<{}> = props =>
 {
@@ -183,7 +182,7 @@ export const GroupMembersView: FC<{}> = props =>
                             return (
                                 <Flex key={ index } gap={ 2 } alignItems="center" overflow="hidden" className="member-list-item bg-white rounded p-2">
                                     <div className="avatar-head cursor-pointer" onClick={ () => GetUserProfile(member.id) }>
-                                        <AvatarImageView figure={ member.figure } headOnly={ true } direction={ 2 } />
+                                        <LayoutAvatarImageView figure={ member.figure } headOnly={ true } direction={ 2 } />
                                     </div>
                                     <Column grow gap={ 1 }>
                                         <Text bold small pointer onClick={ event => GetUserProfile(member.id) }>{ member.name }</Text>

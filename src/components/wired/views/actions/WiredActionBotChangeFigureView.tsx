@@ -1,11 +1,7 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../../api';
-import { Button } from '../../../../common/Button';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
+import { Button, Column, Flex, LayoutAvatarImageView, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
 import { WiredFurniType } from '../../common/WiredFurniType';
 import { WIRED_STRING_DELIMETER } from '../../common/WiredStringDelimeter';
 import { useWiredContext } from '../../context/WiredContext';
@@ -47,7 +43,7 @@ export const WiredActionBotChangeFigureView: FC<{}> = props =>
                 <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
             </Column>
             <Flex center>
-                <AvatarImageView figure={ figure } direction={ 4 } />
+                <LayoutAvatarImageView figure={ figure } direction={ 4 } />
                 <Button onClick={ copyLooks }>{ LocalizeText('wiredfurni.params.capture.figure') }</Button>
             </Flex>
         </WiredActionBaseView>

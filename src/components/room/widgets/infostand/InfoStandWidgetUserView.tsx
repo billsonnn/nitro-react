@@ -2,9 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomSessionUserBadgesEvent, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { GetConfiguration, GetGroupInformation, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent, SendMessageComposer } from '../../../../api';
-import { Base, Column, Flex, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../common';
+import { Base, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../common';
 import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../hooks';
-import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../RoomContext';
 import { InfoStandWidgetUserRelationshipsView } from './InfoStandWidgetUserRelationshipsView';
 
@@ -104,7 +103,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                 <Column gap={ 1 }>
                     <Flex gap={ 1 }>
                         <Column fullWidth className="body-image">
-                            <AvatarImageView figure={ userData.figure } direction={ 4 } />
+                            <LayoutAvatarImageView figure={ userData.figure } direction={ 4 } />
                         </Column>
                         <Column grow gap={ 0 }>
                             <Flex gap={ 1 }>

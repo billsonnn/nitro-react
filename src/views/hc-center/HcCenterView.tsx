@@ -2,10 +2,9 @@ import { BadgesEvent, ClubGiftInfoEvent, FigureUpdateEvent, FriendlyTime, GetClu
 import { FC, useCallback, useEffect, useState } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { AddEventLinkTracker, CreateLinkEvent, GetConfiguration, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
-import { LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
+import { LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { HcCenterEvent } from '../../events';
 import { UseMessageEventHook, UseUiEvent } from '../../hooks';
-import { AvatarImageView } from '../shared/avatar-image/AvatarImageView';
 import { BadgeResolver } from './util/BadgeResolver';
 import { ClubStatus } from './util/ClubStatus';
 
@@ -213,7 +212,7 @@ export const HcCenterView: FC<{}> = props =>
                     {LocalizeText(clubStatus === ClubStatus.ACTIVE ? 'hccenter.btn.extend' : 'hccenter.btn.buy')}
                 </button>
                 <div className="position-absolute end-0 p-4 top-0 habbo-avatar">
-                    <AvatarImageView figure={userFigure} direction={4} scale={2} />
+                    <LayoutAvatarImageView figure={userFigure} direction={4} scale={2} />
                 </div>
             </div>
             <NitroCardContentView>

@@ -1,9 +1,8 @@
 import { FriendFurniConfirmLockMessageComposer, LoveLockFurniFinishedEvent, LoveLockFurniFriendConfirmedEvent, LoveLockFurniStartEvent, NitroEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, GetRoomSession, LocalizeText, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
-import { DraggableWindow, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../common';
+import { DraggableWindow, LayoutAvatarImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../common';
 import { UseEventDispatcherHook, UseMessageEventHook, UseRoomEngineEvent } from '../../../../../hooks';
-import { AvatarImageView } from '../../../../../views/shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../../RoomContext';
 import { FurnitureEngravingLockData } from './FriendFurniLockData';
 
@@ -119,10 +118,10 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                     <div className="engraving-lock-close" onClick={ event => processAction('close_view') }></div>
                     <div className="d-flex justify-content-center">
                         <div className="engraving-lock-avatar">
-                            <AvatarImageView figure={ engravingLockData.figures[0] } direction={ 2 } />
+                            <LayoutAvatarImageView figure={ engravingLockData.figures[0] } direction={ 2 } />
                         </div>
                         <div className="engraving-lock-avatar">
-                            <AvatarImageView figure={ engravingLockData.figures[1] } direction={ 4 } />
+                            <LayoutAvatarImageView figure={ engravingLockData.figures[1] } direction={ 4 } />
                         </div>
                     </div>
                     <div className="text-center mt-1">

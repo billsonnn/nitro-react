@@ -1,8 +1,6 @@
 import { AvatarDirectionAngle } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Base } from '../../../../common/Base';
-import { Column } from '../../../../common/Column';
-import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
+import { Base, Column, LayoutAvatarImageView } from '../../../../common';
 import { FigureData } from '../../common/FigureData';
 import { AvatarEditorIcon } from '../AvatarEditorIcon';
 
@@ -50,7 +48,7 @@ export const AvatarEditorFigurePreviewView: FC<AvatarEditorFigurePreviewViewProp
 
     return (
         <Column className="figure-preview-container" overflow="hidden" position="relative">
-            <AvatarImageView figure={ figureData.getFigureString() } direction={ figureData.direction } scale={ 2 } />
+            <LayoutAvatarImageView figure={ figureData.getFigureString() } direction={ figureData.direction } scale={ 2 } />
             <AvatarEditorIcon className="avatar-spotlight" icon="spotlight" />
             <Base className="avatar-shadow" />
             <Base className="arrow-container">

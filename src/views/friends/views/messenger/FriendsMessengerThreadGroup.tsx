@@ -1,7 +1,6 @@
 import { FC, useMemo } from 'react';
 import { GetSessionDataManager } from '../../../../api';
-import { Base, Flex } from '../../../../common';
-import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
+import { Base, Flex, LayoutAvatarImageView } from '../../../../common';
 import { GroupType } from '../../common/GroupType';
 import { MessengerThread } from '../../common/MessengerThread';
 import { MessengerThreadChat } from '../../common/MessengerThreadChat';
@@ -55,10 +54,10 @@ export const FriendsMessengerThreadGroup: FC<FriendsMessengerThreadGroupProps> =
         <Flex className={ 'w-100 justify-content-' + (isOwnChat ? 'end' : 'start') } gap={ 2 }>
                 <Base className="message-avatar flex-shrink-0">
                 { (group.type === GroupType.PRIVATE_CHAT && !isOwnChat) &&
-                    <AvatarImageView figure={ thread.participant.figure } direction={ 2 } />
+                    <LayoutAvatarImageView figure={ thread.participant.figure } direction={ 2 } />
                 }
                 { (group.type === GroupType.GROUP_CHAT && !isOwnChat) &&
-                    <AvatarImageView figure={ getGroupChatData(group.chats[0].extraData).figure } direction={ 2} />
+                    <LayoutAvatarImageView figure={ getGroupChatData(group.chats[0].extraData).figure } direction={ 2} />
                 }
                 </Base>
             <Base className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat ? 'right' : 'left') }>
@@ -73,7 +72,7 @@ export const FriendsMessengerThreadGroup: FC<FriendsMessengerThreadGroupProps> =
             </Base>
             { (isOwnChat) &&
                 <Base className="message-avatar flex-shrink-0">
-                    <AvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
+                    <LayoutAvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
                 </Base> }
         </Flex>
     );

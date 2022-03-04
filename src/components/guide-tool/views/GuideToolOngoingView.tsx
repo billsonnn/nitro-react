@@ -1,10 +1,8 @@
-import { GuideSessionGetRequesterRoomMessageComposer, GuideSessionInviteRequesterMessageComposer, GuideSessionRequesterRoomMessageEvent, GuideSessionResolvedMessageComposer } from '@nitrots/nitro-renderer';
-import { GuideSessionMessageMessageComposer } from '@nitrots/nitro-renderer/src';
+import { GuideSessionGetRequesterRoomMessageComposer, GuideSessionInviteRequesterMessageComposer, GuideSessionMessageMessageComposer, GuideSessionRequesterRoomMessageEvent, GuideSessionResolvedMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, SendMessageComposer, TryVisitRoom } from '../../../api';
-import { Base, Button, ButtonGroup, Column, Flex, Text } from '../../../common';
+import { Base, Button, ButtonGroup, Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
 import { UseMessageEventHook } from '../../../hooks';
-import { AvatarImageView } from '../../../views/shared/avatar-image/AvatarImageView';
 import { GuideToolMessageGroup } from '../common/GuideToolMessageGroup';
 
 interface GuideToolOngoingViewProps
@@ -90,7 +88,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                                 <Flex fullWidth justifyContent={ isOwnChat(group.userId) ? 'end' : 'start' } gap={ 2 }>
                                     <Base shrink className="message-avatar">
                                         { (!isOwnChat(group.userId)) &&
-                                            <AvatarImageView figure={ userFigure } direction={ 2 } /> }
+                                            <LayoutAvatarImageView figure={ userFigure } direction={ 2 } /> }
                                     </Base>
                                     <Base className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat(group.userId) ? 'right' : 'left') }>
                                         <Text bold>
@@ -101,7 +99,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                                     </Base>
                                     { (isOwnChat(group.userId)) &&
                                         <Base className="message-avatar flex-shrink-0">
-                                            <AvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
+                                            <LayoutAvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
                                         </Base> }
                                 </Flex>
                             );

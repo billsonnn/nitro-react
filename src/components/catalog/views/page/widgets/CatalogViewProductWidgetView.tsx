@@ -1,10 +1,7 @@
 import { Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { GetAvatarRenderManager, GetSessionDataManager } from '../../../../../api';
-import { AutoGrid } from '../../../../../common/AutoGrid';
-import { Column } from '../../../../../common/Column';
-import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
-import { RoomPreviewerView } from '../../../../../views/shared/room-previewer/RoomPreviewerView';
+import { AutoGrid, Column, LayoutGridItem, LayoutRoomPreviewerView } from '../../../../../common';
 import { useCatalogContext } from '../../../CatalogContext';
 import { FurniCategory } from '../../../common/FurniCategory';
 import { Offer } from '../../../common/Offer';
@@ -102,5 +99,5 @@ export const CatalogViewProductWidgetView: FC<{}> = props =>
         );
     }
     
-    return <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />;
+    return <LayoutRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />;
 }

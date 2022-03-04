@@ -1,7 +1,6 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useEffect, useState } from 'react';
-import { LayoutGridItem } from '../../../../common';
-import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
+import { LayoutAvatarImageView, LayoutGridItem } from '../../../../common';
 import { BotItem } from '../../common/BotItem';
 import { attemptBotPlacement } from '../../common/BotUtilities';
 import { useInventoryContext } from '../../InventoryContext';
@@ -51,7 +50,7 @@ export const InventoryBotItemView: FC<InventoryBotItemViewProps> = props =>
 
     return (
         <LayoutGridItem itemActive={ isActive } itemUnseen={ botItem.isUnseen } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
-            <AvatarImageView figure={ botItem.botData.figure } direction={ 3 } headOnly={ true } />
+            <LayoutAvatarImageView figure={ botItem.botData.figure } direction={ 3 } headOnly={ true } />
         </LayoutGridItem>
     );
 }

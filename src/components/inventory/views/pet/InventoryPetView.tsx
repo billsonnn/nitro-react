@@ -1,8 +1,7 @@
 import { IRoomSession, RequestPetsComposer, RoomObjectVariable, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
-import { AutoGrid, Button, Column, Grid, Text } from '../../../../common';
-import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomPreviewerView';
+import { AutoGrid, Button, Column, Grid, LayoutRoomPreviewerView, Text } from '../../../../common';
 import { attemptPetPlacement } from '../../common/PetUtilities';
 import { useInventoryContext } from '../../InventoryContext';
 import { InventoryPetActions } from '../../reducers/InventoryPetReducer';
@@ -78,7 +77,7 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
             </Column>
             <Column size={ 5 } overflow="auto">
                 <Column overflow="hidden" position="relative">
-                    <RoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                    <LayoutRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                 </Column>
                 { petItem &&
                     <Column grow justifyContent="between" gap={ 2 }>

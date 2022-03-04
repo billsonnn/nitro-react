@@ -1,9 +1,9 @@
 import { AvatarScaleType, AvatarSetType } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
-import { GetAvatarRenderManager } from '../../../api';
-import { Base, BaseProps } from '../../../common/Base';
+import { GetAvatarRenderManager } from '../../api';
+import { Base, BaseProps } from '../Base';
 
-export interface AvatarImageViewProps extends BaseProps<HTMLDivElement>
+export interface LayoutAvatarImageViewProps extends BaseProps<HTMLDivElement>
 {
     figure: string;
     gender?: string;
@@ -12,7 +12,7 @@ export interface AvatarImageViewProps extends BaseProps<HTMLDivElement>
     scale?: number;
 }
 
-export const AvatarImageView: FC<AvatarImageViewProps> = props =>
+export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
 {
     const { figure = '', gender = 'M', headOnly = false, direction = 0, scale = 1, classNames = [], style = {}, ...rest } = props;
     const [ avatarUrl, setAvatarUrl ] = useState<string>(null);

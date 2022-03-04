@@ -1,3 +1,4 @@
+export * from './LayoutAvatarImageView';
 export * from './LayoutBadgeImageView';
 export * from './LayoutCurrencyIcon';
 export * from './LayoutFurniImageView';
@@ -9,7 +10,9 @@ export * from './LayoutLoadingSpinnerView';
 export * from './LayoutMiniCameraView';
 export * from './LayoutNotificationAlertView';
 export * from './LayoutNotificationBubbleView';
+export * from './LayoutPetImageView';
 export * from './LayoutRarityLevelView';
+export * from './LayoutRoomPreviewerView';
 export * from './LayoutRoomThumbnailView';
 export * from './LayoutTrophyView';
 export * from './UserProfileIconView';
