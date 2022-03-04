@@ -4,7 +4,7 @@ import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 
 import { GetConfiguration, GetGroupInformation, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../common';
 import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../hooks';
-import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
+import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../RoomContext';
 import { InfoStandWidgetUserRelationshipsView } from './InfoStandWidgetUserRelationshipsView';
 

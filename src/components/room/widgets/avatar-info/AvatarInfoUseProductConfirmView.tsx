@@ -2,8 +2,8 @@ import { IFurnitureData, PetCustomPart, PetFigureData, RoomObjectCategory, RoomO
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetFurnitureDataForRoomObject, GetRoomEngine, LocalizeText, RoomWidgetUseProductMessage, UseProductItem } from '../../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { FurniCategory } from '../../../../components/inventory/common/FurniCategory';
-import { PetImageView } from '../../../shared/pet-image/PetImageView';
+import { PetImageView } from '../../../../views/shared/pet-image/PetImageView';
+import { FurniCategory } from '../../../inventory/common/FurniCategory';
 import { useRoomContext } from '../../RoomContext';
 
 interface AvatarInfoUseProductConfirmViewProps

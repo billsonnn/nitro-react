@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
 import { LocalizeText, RoomWidgetUpdateInfostandPetEvent } from '../../../../api';
 import { Base, Column, Flex, Text, UserProfileIconView } from '../../../../common';
-import { PetImageView } from '../../../shared/pet-image/PetImageView';
+import { PetImageView } from '../../../../views/shared/pet-image/PetImageView';
 
 interface InfoStandWidgetPetViewProps
 {

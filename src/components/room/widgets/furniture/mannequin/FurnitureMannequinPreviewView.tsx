@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Base, LayoutCurrencyIcon } from '../../../../../common';
-import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
+import { AvatarImageView } from '../../../../../views/shared/avatar-image/AvatarImageView';
 
 interface FurnitureMannequinPreviewViewProps
 {

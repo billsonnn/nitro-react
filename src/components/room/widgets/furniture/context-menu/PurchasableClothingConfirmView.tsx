@@ -2,9 +2,9 @@ import { RedeemItemClothingComposer, RoomObjectCategory, UserFigureComposer } fr
 import { FC, useEffect, useState } from 'react';
 import { GetAvatarRenderManager, GetConnection, GetFurnitureDataForRoomObject, GetSessionDataManager, LocalizeText } from '../../../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { FigureData } from '../../../../../components/avatar-editor/common/FigureData';
-import { FurniCategory } from '../../../../../components/inventory/common/FurniCategory';
-import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
+import { AvatarImageView } from '../../../../../views/shared/avatar-image/AvatarImageView';
+import { FigureData } from '../../../../avatar-editor/common/FigureData';
+import { FurniCategory } from '../../../../inventory/common/FurniCategory';
 import { useRoomContext } from '../../../RoomContext';
 
 interface PurchasableClothingConfirmViewProps

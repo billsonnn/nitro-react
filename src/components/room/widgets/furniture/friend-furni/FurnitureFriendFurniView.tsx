@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, GetRoomSession, LocalizeText, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { DraggableWindow, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../common';
 import { UseEventDispatcherHook, UseMessageEventHook, UseRoomEngineEvent } from '../../../../../hooks';
-import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
+import { AvatarImageView } from '../../../../../views/shared/avatar-image/AvatarImageView';
 import { useRoomContext } from '../../../RoomContext';
 import { FurnitureEngravingLockData } from './FriendFurniLockData';
 

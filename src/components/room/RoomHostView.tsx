@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { GetRoomSession, SetActiveRoomId, StartRoomSession } from '../../api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from '../../common';
 import { UseRoomEngineEvent, UseRoomSessionManagerEvent } from '../../hooks';
-import { RoomView } from '../../views/room/RoomView';
+import { RoomView } from './RoomView';
 
 export const RoomHostView: FC<{}> = props =>
 {

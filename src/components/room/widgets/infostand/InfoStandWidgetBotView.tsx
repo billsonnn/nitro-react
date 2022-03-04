@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
 import { LocalizeText, RoomWidgetUpdateInfostandUserEvent } from '../../../../api';
 import { Column, Flex, LayoutBadgeImageView, Text } from '../../../../common';
-import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
+import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
 
 interface InfoStandWidgetBotViewProps
 {

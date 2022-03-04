@@ -3,7 +3,7 @@ import { BotRemoveComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo } from 'react';
 import { LocalizeText, RoomWidgetUpdateInfostandRentableBotEvent, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../common';
-import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
+import { AvatarImageView } from '../../../../views/shared/avatar-image/AvatarImageView';
 import { BotSkillsEnum } from '../avatar-info/common/BotSkillsEnum';
 
 interface InfoStandWidgetRentableBotViewProps

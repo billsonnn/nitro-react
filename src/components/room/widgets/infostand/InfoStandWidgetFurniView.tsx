@@ -4,7 +4,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage, RoomWidgetUpdateInfostandFurniEvent, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, LayoutBadgeImageView, LayoutRarityLevelView, Text, UserProfileIconView } from '../../../../common';
 import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
-import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/LimitedEditionCompactPlateView';
+import { LimitedEditionCompactPlateView } from '../../../../views/shared/limited-edition/LimitedEditionCompactPlateView';
 import { useRoomContext } from '../../RoomContext';
 
 interface InfoStandWidgetFurniViewProps

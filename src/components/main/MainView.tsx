@@ -21,7 +21,7 @@ import { InventoryView } from '../inventory/InventoryView';
 import { ModToolsView } from '../mod-tools/ModToolsView';
 import { NavigatorView } from '../navigator/NavigatorView';
 import { RightSideView } from '../right-side/RightSideView';
-import { RoomHostView } from '../room-host/RoomHostView';
+import { RoomHostView } from '../room/RoomHostView';
 import { ToolbarView } from '../toolbar/ToolbarView';
 import { UserProfileView } from '../user-profile/UserProfileView';
 import { UserSettingsView } from '../user-settings/UserSettingsView';
