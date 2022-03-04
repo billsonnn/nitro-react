@@ -1,12 +1,12 @@
 import { FC, useMemo } from 'react';
-import { Base, BaseProps } from '../../../common';
+import { Base, BaseProps } from '..';
 
-interface RarityLevelViewProps extends BaseProps<HTMLDivElement>
+interface LayoutRarityLevelViewProps extends BaseProps<HTMLDivElement>
 {
     level: number;
 }
 
-export const RarityLevelView: FC<RarityLevelViewProps> = props =>
+export const LayoutRarityLevelView: FC<LayoutRarityLevelViewProps> = props =>
 {
     const { level = 0, classNames = [], children = null, ...rest } = props;
 

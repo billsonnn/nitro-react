@@ -9,6 +9,7 @@ export * from './LayoutLoadingSpinnerView';
 export * from './LayoutMiniCameraView';
 export * from './LayoutNotificationAlertView';
 export * from './LayoutNotificationBubbleView';
+export * from './LayoutRarityLevelView';
 export * from './LayoutRoomThumbnailView';
 export * from './LayoutTrophyView';
 export * from './UserProfileIconView';

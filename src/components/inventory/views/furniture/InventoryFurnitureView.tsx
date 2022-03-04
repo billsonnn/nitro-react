@@ -1,9 +1,8 @@
 import { FurnitureListComposer, IRoomSession, RoomObjectVariable, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
-import { AutoGrid, Button, Column, Grid, Text } from '../../../../common';
+import { AutoGrid, Button, Column, Grid, LayoutRarityLevelView, Text } from '../../../../common';
 import { LimitedEditionCompactPlateView } from '../../../../views/shared/limited-edition/LimitedEditionCompactPlateView';
-import { RarityLevelView } from '../../../../views/shared/rarity-level/RarityLevelView';
 import { RoomPreviewerView } from '../../../../views/shared/room-previewer/RoomPreviewerView';
 import { FurniCategory } from '../../common/FurniCategory';
 import { attemptItemPlacement, attemptPlaceMarketplaceOffer } from '../../common/FurnitureUtilities';
@@ -120,7 +119,7 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                     { groupItem && groupItem.stuffData.isUnique &&
                         <LimitedEditionCompactPlateView className="top-2 end-2" position="absolute" uniqueNumber={ groupItem.stuffData.uniqueNumber } uniqueSeries={ groupItem.stuffData.uniqueSeries } /> }
                     { (groupItem && groupItem.stuffData.rarityLevel > -1) &&
-                        <RarityLevelView className="top-2 end-2" position="absolute" level={ groupItem.stuffData.rarityLevel } /> }
+                        <LayoutRarityLevelView className="top-2 end-2" position="absolute" level={ groupItem.stuffData.rarityLevel } /> }
                 </Column>
                 { groupItem &&
                     <Column grow justifyContent="between" gap={ 2 }>
