@@ -122,7 +122,7 @@ export const FloorplanEditorView: FC<{}> = props =>
         <>
             <FloorplanEditorContextProvider value={{ originalFloorplanSettings: originalFloorplanSettings, setOriginalFloorplanSettings: setOriginalFloorplanSettings, visualizationSettings: visualizationSettings, setVisualizationSettings: setVisualizationSettings }}>
                 {isVisible &&
-                    <NitroCardView uniqueKey="floorpan-editor" className="nitro-floorplan-editor" simple={ true }>
+                    <NitroCardView uniqueKey="floorpan-editor" className="nitro-floorplan-editor" theme="primary-slim">
                         <NitroCardHeaderView headerText={LocalizeText('floor.plan.editor.title')} onCloseClick={() => setIsVisible(false)} />
                         <NitroCardContentView>
                             <Grid>

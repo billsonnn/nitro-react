@@ -46,7 +46,7 @@ export const ModToolsIssueInfoView: FC<IssueInfoViewProps> = props =>
     
     return (
         <>
-            <NitroCardView className="nitro-mod-tools-handle-issue" simple>
+            <NitroCardView className="nitro-mod-tools-handle-issue" theme="primary-slim">
                 <NitroCardHeaderView headerText={'Resolving issue ' + issueId} onCloseClick={() => onIssueInfoClosed(issueId)} />
                 <NitroCardContentView className="text-black">
                     <Text fontSize={ 4 }>Issue Information</Text>

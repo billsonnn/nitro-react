@@ -210,7 +210,7 @@ export const AchievementsView: FC<{}> = props =>
     if(!isVisible || !isInitalized) return null;
 
     return (
-        <NitroCardView uniqueKey="achievements" className="nitro-achievements" simple={ true }>
+        <NitroCardView uniqueKey="achievements" className="nitro-achievements" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('inventory.achievements') } onCloseClick={ event => setIsVisible(false) } />
             { getSelectedCategory &&
                 <NitroCardSubHeaderView position="relative" className="justify-content-center align-items-center cursor-pointer" gap={ 3 }>

@@ -15,38 +15,98 @@ $nitro-card-tabs-height: 33px;
         .nitro-card-header {
             min-height: 33px;
             max-height: 33px;
-            background-color: $primary;
-
-            &.bg-tertiary-split {
-                min-height: 28px;
-                max-height: 28px;
-                position: relative;
-                border-bottom: 2px solid darken($quaternary, 5);
-                box-shadow: 0 2px white;
-                width: 100%;
-                margin: 0;
-        
-                &:before {
-                    position: absolute;
-                    content: " ";
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 2px;
-                    background-color: rgba($white, 0.3);
-                }
-
-                .nitro-card-header-text {
-                    color: $white;
-                    text-shadow: 0px 4px 4px rgba($black, 0.25);
-                    @include font-size($h5-font-size);
-                }
-            }
+            background: $primary;
 
             .nitro-card-header-text {
                 color: $white;
                 text-shadow: 0px 4px 4px rgba($black, 0.25);
                 @include font-size($h4-font-size);
+            }
+
+            .nitro-card-header-close {
+                cursor: pointer;
+                padding: 1px 3px;
+                line-height: 1;
+                border-radius: $border-radius;
+                box-shadow: 0 0 0 1.6px $white;
+                border: 2px solid #921911;
+                background: repeating-linear-gradient(
+                    rgba(245, 80, 65, 1),
+                    rgba(245, 80, 65, 1) 50%,
+                    rgba(194, 48, 39, 1) 50%,
+                    rgba(194, 48, 39, 1) 100%
+                );
+        
+                &:hover {
+                    filter: brightness(1.2);
+                }
+        
+                &:active {
+                    filter: brightness(0.8);
+                }
+            }
+        }
+
+        .nitro-card-tabs {
+            background-color: $secondary;
+        }
+
+        .content-area {
+            background-color: $light;
+        }
+    }
+
+    &.theme-primary-slim {
+        border: $border-width solid $border-color;
+
+        .nitro-card-header {
+            position: relative;
+            min-height: 27px;
+            max-height: 27px;
+            background: repeating-linear-gradient($tertiary, $tertiary 50%, $quaternary 50%, $quaternary 100%);
+            border-bottom: 2px solid darken($quaternary, 5);
+            box-shadow: 0 2px white;
+            width: 100%;
+            margin: 0;
+            
+            &:before {
+                position: absolute;
+                content: " ";
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background-color: rgba($white, 0.3);
+            }
+
+            .nitro-card-header-text {
+                color: $white;
+                text-shadow: 0px 4px 4px rgba($black, 0.25);
+                @include font-size($h5-font-size);
+            }
+
+            .nitro-card-header-close {
+                cursor: pointer;
+                padding: 0px 2px;
+                line-height: 1;
+                @include font-size($h7-font-size);
+                border-radius: $border-radius;
+                box-shadow: 0 0 0 1.6px $white;
+                border: 2px solid #921911;
+                background: repeating-linear-gradient(
+                    rgba(245, 80, 65, 1),
+                    rgba(245, 80, 65, 1) 50%,
+                    rgba(194, 48, 39, 1) 50%,
+                    rgba(194, 48, 39, 1) 100%
+                );
+
+                &:hover {
+                    filter: brightness(1.2);
+                }
+        
+                &:active {
+                    filter: brightness(0.8);
+                }
             }
         }
 
@@ -82,30 +142,6 @@ $nitro-card-tabs-height: 33px;
 .nitro-card-header {
     position: relative;
     height: 100%;
-
-    .header-close {
-        right: 6px;
-        border-radius: $border-radius;
-        box-shadow: 0 0 0 1.5px $white;
-        border: 2px solid #921911;
-        background: repeating-linear-gradient(
-            rgba(245, 80, 65, 1),
-            rgba(245, 80, 65, 1) 50%,
-            rgba(194, 48, 39, 1) 50%,
-            rgba(194, 48, 39, 1) 100%
-        );
-        cursor: pointer;
-        line-height: 1;
-        padding: 1px 3px;
-
-        &:hover {
-            filter: brightness(1.2);
-        }
-
-        &:active {
-            filter: brightness(0.8);
-        }
-    }
 }
 
 .nitro-card-tabs {

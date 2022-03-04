@@ -79,7 +79,7 @@ export const UserProfileView: FC<{}> = props =>
     if(!userProfile) return null;
 
     return (
-        <NitroCardView className="user-profile" simple>
+        <NitroCardView className="user-profile" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('extendedprofile.caption') } onCloseClick={ onClose } />
             <NitroCardContentView>
                 <Grid>

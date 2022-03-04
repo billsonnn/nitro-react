@@ -76,7 +76,7 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
     }, [ trigger, setIntParams, setStringParam, setFurniIds ]);
 
     return (
-        <NitroCardView uniqueKey="nitro-wired" className="nitro-wired" simple={ true }>
+        <NitroCardView uniqueKey="nitro-wired" className="nitro-wired" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('wiredfurni.title') } onCloseClick={ close } />
             <NitroCardContentView>
                 <Column gap={ 1 }>

@@ -116,7 +116,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
     if(!roomInfoData) return null;
     
     return (
-        <NitroCardView className="nitro-room-info" simple={ true }>
+        <NitroCardView className="nitro-room-info" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('navigator.roomsettings.roominfo') } onCloseClick={ () => processAction('close') } />
             <NitroCardContentView className="text-black">
                 { roomInfoData.enteredGuestRoom &&

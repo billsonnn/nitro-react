@@ -48,7 +48,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
     if(!userId) return null;
 
     return (
-        <NitroCardView className="nitro-mod-tools-user-visits" simple>
+        <NitroCardView className="nitro-mod-tools-user-visits" theme="primary-slim">
             <NitroCardHeaderView headerText={ 'User Visits' } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black" gap={ 1 }>
                 <Column gap={ 0 } overflow="hidden">

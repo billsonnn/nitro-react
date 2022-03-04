@@ -34,7 +34,7 @@ export const NavigatorRoomPasswordView: FC<NavigatorRoomPasswordViewProps> = pro
     }, [ roomData, password, onClose ]);
 
     return (
-        <NitroCardView className="nitro-navigator-password" simple={ true }>
+        <NitroCardView className="nitro-navigator-password" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('navigator.password.title') } onCloseClick={ close } />
             <NitroCardContentView>
                 <Column gap={ 1 }>

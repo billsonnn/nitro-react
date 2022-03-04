@@ -35,7 +35,7 @@ export const NavigatorRoomDoorbellView: FC<NavigatorRoomDoorbellViewProps> = pro
     }
 
     return (
-        <NitroCardView className="nitro-navigator-doorbell" simple={ true }>
+        <NitroCardView className="nitro-navigator-doorbell" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('navigator.doorbell.title') } onCloseClick={ close } />
             <NitroCardContentView>
                 <Column gap={ 1 }>

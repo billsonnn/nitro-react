@@ -3,12 +3,10 @@ import { createContext, FC, ProviderProps, useContext } from 'react';
 interface INitroCardContext
 {
     theme: string;
-    simple: boolean;
 }
 
 const NitroCardContext = createContext<INitroCardContext>({
-    theme: null,
-    simple: false
+    theme: null
 });
 
 export const NitroCardContextProvider: FC<ProviderProps<INitroCardContext>> = props =>

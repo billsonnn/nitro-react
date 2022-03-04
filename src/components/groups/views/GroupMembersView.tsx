@@ -161,7 +161,7 @@ export const GroupMembersView: FC<{}> = props =>
     if((groupId === -1) || !membersData) return null;
 
     return (
-        <NitroCardView className="nitro-group-members" simple>
+        <NitroCardView className="nitro-group-members" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('group.members.title', ['groupName'], [ membersData ? membersData.groupTitle : '' ]) } onCloseClick={ event => setGroupId(-1) } />
             <NitroCardContentView overflow="hidden">
                 <Flex gap={ 2 }>

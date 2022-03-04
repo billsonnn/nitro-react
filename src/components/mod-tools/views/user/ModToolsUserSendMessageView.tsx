@@ -34,7 +34,7 @@ export const ModToolsUserSendMessageView: FC<ModToolsUserSendMessageViewProps> =
     if(!user) return null;
 
     return (
-        <NitroCardView className="nitro-mod-tools-user-message" simple>
+        <NitroCardView className="nitro-mod-tools-user-message" theme="primary-slim">
             <NitroCardHeaderView headerText={'Send Message'} onCloseClick={ () => onCloseClick() } />
             <NitroCardContentView className="text-black">
                 <Text>Message To: { user.username }</Text>

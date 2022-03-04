@@ -185,7 +185,7 @@ export const ModToolsView: FC<{}> = props =>
         <ModToolsContextProvider value={ { modToolsState, dispatchModToolsState } }>
             <ModToolsMessageHandler />
             { isVisible &&
-                <NitroCardView uniqueKey="mod-tools" className="nitro-mod-tools" simple={ false }>
+                <NitroCardView uniqueKey="mod-tools" className="nitro-mod-tools">
                     <NitroCardHeaderView headerText={ 'Mod Tools' } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardContentView className="text-black" gap={ 1 }>
                         <Button gap={ 1 } onClick={ event => handleClick('toggle_room') } disabled={ !currentRoomId }>

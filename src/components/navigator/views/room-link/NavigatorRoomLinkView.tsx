@@ -51,7 +51,7 @@ export const NavigatorRoomLinkView: FC<NavigatorRoomLinkViewProps> = props =>
     if(!roomInfoData) return null;
     
     return (
-        <NitroCardView className="nitro-room-link" simple={ true }>
+        <NitroCardView className="nitro-room-link" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('navigator.embed.title') } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black d-flex align-items-center">
                 <Flex gap={ 2 }>

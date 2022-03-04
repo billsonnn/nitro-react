@@ -205,7 +205,7 @@ export const HcCenterView: FC<{}> = props =>
     );
 
     return (
-        <NitroCardView simple={true} className="nitro-hc-center">
+        <NitroCardView theme="primary-slim" className="nitro-hc-center">
             <NitroCardHeaderView headerText={LocalizeText('generic.hccenter')} onCloseClick={() => setIsVisible(false)} />
             <div className="bg-muted p-2 position-relative">
                 <div className="hc-logo mb-2" />

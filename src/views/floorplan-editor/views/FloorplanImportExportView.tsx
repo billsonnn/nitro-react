@@ -42,7 +42,7 @@ export const FloorplanImportExportView: FC<FloorplanImportExportViewProps> = pro
     });
 
     return (
-        <NitroCardView simple={true} className="floorplan-import-export">
+        <NitroCardView theme="primary-slim" className="floorplan-import-export">
             <NitroCardHeaderView headerText={LocalizeText('floor.plan.editor.import.export')} onCloseClick={ onCloseClick } />
             <NitroCardContentView>
                 <Column size={ 12 } className="h-100">

@@ -81,7 +81,7 @@ export const FurnitureCustomStackHeightView: FC<{}> = props =>
     if(objectId === -1) return null;
 
     return (
-        <NitroCardView className="nitro-widget-custom-stack-height" simple>
+        <NitroCardView className="nitro-widget-custom-stack-height" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('widget.custom.stack.height.title') } onCloseClick={ close } />
             <NitroCardContentView justifyContent="between">
                 <Text>{ LocalizeText('widget.custom.stack.height.text') }</Text>

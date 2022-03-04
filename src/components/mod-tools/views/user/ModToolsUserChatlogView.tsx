@@ -38,7 +38,7 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
     }, [ userId ]);
 
     return (
-        <NitroCardView className="nitro-mod-tools-chatlog" simple>
+        <NitroCardView className="nitro-mod-tools-chatlog" theme="primary-slim">
             <NitroCardHeaderView headerText={ `User Chatlog: ${ username || '' }` } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black h-100">
                 { userChatlog &&

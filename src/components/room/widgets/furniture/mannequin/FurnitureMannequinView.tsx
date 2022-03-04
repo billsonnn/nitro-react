@@ -173,7 +173,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
     if(mode === MODE_NONE) return null;
 
     return (
-        <NitroCardView className="nitro-mannequin" simple>
+        <NitroCardView className="nitro-mannequin" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('mannequin.widget.title') } onCloseClick={ event => setMode(MODE_NONE) } />
             <NitroCardContentView center>
                 <Flex gap={ 2 } overflow="hidden">
