@@ -1,7 +1,7 @@
 import { BuyMarketplaceOfferMessageComposer, GetMarketplaceOffersMessageComposer, MarketplaceBuyOfferResultEvent, MarketPlaceOffersEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../../api';
-import { Button, ButtonGroup, Column, Grid, Text } from '../../../../../../common';
+import { Button, ButtonGroup, Column, Text } from '../../../../../../common';
 import { BatchUpdates, UseMessageEventHook } from '../../../../../../hooks';
 import { NotificationAlertType } from '../../../../../../views/notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
@@ -159,11 +159,11 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                 <Text truncate shrink fontWeight="bold">
                     { LocalizeText('catalog.marketplace.items_found', [ 'count' ], [ offers.size.toString() ]) }
                 </Text>
-                <Grid className="nitro-catalog-layout-marketplace-grid" overflow="auto">
+                <Column className="nitro-catalog-layout-marketplace-grid" overflow="auto">
                     { 
                         Array.from(offers.values()).map( (entry, index) => <CatalogLayoutMarketplaceItemView key={ index } offerData={ entry } type={ PUBLIC_OFFER } onClick={purchaseItem} />)
                     }
-            </Grid>
+                </Column>
             </Column>
         </>
     );

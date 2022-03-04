@@ -1,7 +1,7 @@
 import { CancelMarketplaceOfferMessageComposer, GetMarketplaceOwnOffersMessageComposer, MarketplaceCancelOfferResultEvent, MarketplaceOwnOffersEvent, RedeemMarketplaceOfferCreditsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../../api';
-import { Button, Column, Grid, Text } from '../../../../../../common';
+import { Button, Column, Text } from '../../../../../../common';
 import { BatchUpdates, UseMessageEventHook, UseMountEffect } from '../../../../../../hooks';
 import { NotificationAlertType } from '../../../../../../views/notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
@@ -103,9 +103,9 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
                 <Text truncate shrink fontWeight="bold">
                     { LocalizeText('catalog.marketplace.items_found', [ 'count' ], [ offers.length.toString() ]) }
                 </Text>
-                <Grid overflow="auto" className="nitro-catalog-layout-marketplace-grid">
-                { (offers.length > 0) && offers.map(offer => <CatalogLayoutMarketplaceItemView key={ offer.offerId } offerData={ offer } type={ OWN_OFFER } onClick={ takeItemBack } />) }
-            </Grid>
+                <Column overflow="auto" className="nitro-catalog-layout-marketplace-grid">
+                    { (offers.length > 0) && offers.map(offer => <CatalogLayoutMarketplaceItemView key={ offer.offerId } offerData={ offer } type={ OWN_OFFER } onClick={ takeItemBack } />) }
+                </Column>
             </Column>
         </Column>
     );
