@@ -2,7 +2,7 @@ import { FC, useCallback, useState } from 'react';
 import { IPhotoData, LocalizeText, RoomWidgetUpdateExternalImageEvent } from '../../../../../api';
 import { Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
 import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 
 export const FurnitureExternalImageView: FC<{}> = props =>
 {

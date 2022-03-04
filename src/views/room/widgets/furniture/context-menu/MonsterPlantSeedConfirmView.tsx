@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { GetFurnitureDataForRoomObject, LocalizeText, RoomWidgetUseProductMessage } from '../../../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
 import { FurniCategory } from '../../../../../components/inventory/common/FurniCategory';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 
 interface MonsterPlantSeedConfirmViewProps
 {

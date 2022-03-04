@@ -2,7 +2,7 @@ import { ColorConverter, NitroAdjustmentFilter, NitroContainer, NitroSprite, Nit
 import { FC, useCallback, useState } from 'react';
 import { GetNitroInstance, GetRoomEngine, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomViewEvent } from '../../api';
 import { UseEventDispatcherHook, UseMountEffect, UseRoomEngineEvent } from '../../hooks';
-import { useRoomContext } from './context/RoomContext';
+import { useRoomContext } from './RoomContext';
 
 export const RoomColorView: FC<{}> = props =>
 {

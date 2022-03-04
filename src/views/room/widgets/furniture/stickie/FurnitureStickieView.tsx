@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { ColorUtils, GetRoomEngine, GetRoomSession, GetSessionDataManager, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { DraggableWindow, DraggableWindowPosition } from '../../../../../common';
 import { UseEventDispatcherHook, UseRoomEngineEvent } from '../../../../../hooks';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 import { FurnitureStickieData } from './FurnitureStickieData';
 import { getStickieColorName, STICKIE_COLORS } from './FurnitureStickieUtils';
 

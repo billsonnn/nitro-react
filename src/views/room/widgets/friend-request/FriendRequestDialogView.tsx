@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { LocalizeText, RoomWidgetFriendRequestMessage } from '../../../../api';
 import { Base, Button, Column, Flex, Text } from '../../../../common';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { UserLocationView } from '../user-location/UserLocationView';
 
 interface FriendRequestDialogViewProps

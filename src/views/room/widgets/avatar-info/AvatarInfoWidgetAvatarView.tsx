@@ -3,7 +3,7 @@ import { RoomControllerLevel, RoomObjectCategory, RoomObjectVariable } from '@ni
 import { FC, useEffect, useMemo, useState } from 'react';
 import { GetOwnRoomObject, GetUserProfile, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUserActionMessage } from '../../../../api';
 import { BatchUpdates } from '../../../../hooks';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../context-menu/ContextMenuView';

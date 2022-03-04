@@ -5,7 +5,7 @@ import { GetConfiguration, GetGroupInformation, LocalizeText, RoomWidgetChangeMo
 import { Base, Column, Flex, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../common';
 import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../hooks';
 import { AvatarImageView } from '../../../shared/avatar-image/AvatarImageView';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { InfoStandWidgetUserRelationshipsView } from './InfoStandWidgetUserRelationshipsView';
 
 interface InfoStandWidgetUserViewProps

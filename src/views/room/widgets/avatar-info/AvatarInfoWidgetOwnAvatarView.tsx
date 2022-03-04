@@ -5,7 +5,7 @@ import { CreateLinkEvent, GetCanStandUp, GetCanUseExpression, GetOwnPosture, Get
 import { Flex, LayoutCurrencyIcon } from '../../../../common';
 import { HelpNameChangeEvent } from '../../../../events';
 import { DispatchUiEvent } from '../../../../hooks';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../context-menu/ContextMenuView';

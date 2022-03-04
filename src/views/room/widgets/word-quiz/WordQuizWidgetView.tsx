@@ -2,7 +2,7 @@ import { IQuestion } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { RoomWidgetPollMessage, RoomWidgetWordQuizUpdateEvent } from '../../../../api';
 import { BatchUpdates, UseEventDispatcherHook } from '../../../../hooks';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { VALUE_KEY_DISLIKE, VALUE_KEY_LIKE, VoteValue } from './common/VoteValue';
 import { WordQuizQuestionView } from './WordQuizQuestionView';
 import { WordQuizVoteView } from './WordQuizVoteView';

@@ -4,7 +4,7 @@ import ReactSlider from 'react-slider';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomObjectEvent, SendMessageComposer } from '../../../../../api';
 import { Button, Column, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
 import { BatchUpdates, UseEventDispatcherHook, UseRoomEngineEvent } from '../../../../../hooks';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 
 export const FurnitureBackgroundColorView: FC<{}> = props =>
 {

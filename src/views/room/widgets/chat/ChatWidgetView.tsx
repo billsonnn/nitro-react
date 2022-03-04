@@ -2,7 +2,7 @@ import { NitroPoint, RoomDragEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { RoomWidgetChatSelectAvatarMessage, RoomWidgetRoomObjectMessage, RoomWidgetUpdateChatEvent } from '../../../../api';
 import { UseEventDispatcherHook, UseRoomEngineEvent } from '../../../../hooks';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { ChatWidgetMessageView } from './ChatWidgetMessageView';
 import { ChatBubbleMessage } from './common/ChatBubbleMessage';
 

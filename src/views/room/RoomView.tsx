@@ -1,18 +1,19 @@
-import { EventDispatcher, NitroRectangle, RoomGeometry, RoomVariableEnum, Vector3d } from '@nitrots/nitro-renderer';
+import { EventDispatcher, IRoomSession, NitroRectangle, RoomGeometry, RoomVariableEnum, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
-import { DispatchMouseEvent, DispatchTouchEvent, DoorbellWidgetHandler, FriendRequestHandler, FurniChooserWidgetHandler, FurnitureContextMenuWidgetHandler, FurnitureCreditWidgetHandler, FurnitureCustomStackHeightWidgetHandler, FurnitureDimmerWidgetHandler, FurnitureExternalImageWidgetHandler, FurnitureMannequinWidgetHandler, FurniturePresentWidgetHandler, GetNitroInstance, GetRoomEngine, InitializeRoomInstanceRenderingCanvas, IRoomWidgetHandlerManager, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler, RoomWidgetRoomToolsHandler, RoomWidgetUpdateRoomViewEvent, UserChooserWidgetHandler } from '../../api';
-import { FurnitureYoutubeDisplayWidgetHandler } from '../../api/nitro/room/widgets/handlers/FurnitureYoutubeDisplayWidgetHandler';
-import { PollWidgetHandler } from '../../api/nitro/room/widgets/handlers/PollWidgetHandler';
-import { WordQuizWidgetHandler } from '../../api/nitro/room/widgets/handlers/WordQuizWidgetHandler';
-import { RoomContextProvider } from './context/RoomContext';
+import { DispatchMouseEvent, DispatchTouchEvent, DoorbellWidgetHandler, FriendRequestHandler, FurniChooserWidgetHandler, FurnitureContextMenuWidgetHandler, FurnitureCreditWidgetHandler, FurnitureCustomStackHeightWidgetHandler, FurnitureDimmerWidgetHandler, FurnitureExternalImageWidgetHandler, FurnitureMannequinWidgetHandler, FurniturePresentWidgetHandler, FurnitureYoutubeDisplayWidgetHandler, GetNitroInstance, GetRoomEngine, InitializeRoomInstanceRenderingCanvas, IRoomWidgetHandlerManager, PollWidgetHandler, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler, RoomWidgetRoomToolsHandler, RoomWidgetUpdateRoomViewEvent, UserChooserWidgetHandler, WordQuizWidgetHandler } from '../../api';
+import { Base } from '../../common';
 import { RoomColorView } from './RoomColorView';
-import { RoomViewProps } from './RoomView.types';
+import { RoomContextProvider } from './RoomContext';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
+
+interface RoomViewProps
+{
+    roomSession: IRoomSession;
+}
 
 export const RoomView: FC<RoomViewProps> = props =>
 {
     const { roomSession = null } = props;
-    const [ roomCanvas, setRoomCanvas ] = useState<HTMLCanvasElement>(null);
     const [ canvasId, setCanvasId ] = useState(-1);
     const [ widgetHandler, setWidgetHandler ] = useState<IRoomWidgetHandlerManager>(null);
     const elementRef = useRef<HTMLDivElement>();
@@ -23,7 +24,6 @@ export const RoomView: FC<RoomViewProps> = props =>
         {
             window.onresize = null;
 
-            setRoomCanvas(null);
             setCanvasId(-1);
             setWidgetHandler(null);
 
@@ -121,7 +121,6 @@ export const RoomView: FC<RoomViewProps> = props =>
 
         if(elementRef && elementRef.current) elementRef.current.appendChild(canvas);
 
-        setRoomCanvas(canvas);
         setCanvasId(canvasId);
     }, [ roomSession ]);
 
@@ -129,7 +128,7 @@ export const RoomView: FC<RoomViewProps> = props =>
 
     return (
         <RoomContextProvider value={ { roomSession, canvasId, eventDispatcher: (widgetHandler && widgetHandler.eventDispatcher), widgetHandler } }>
-            <div ref={ elementRef } id="room-view" className="nitro-room-container" />
+            <Base innerRef={ elementRef } id="room-view" className="nitro-room-container" />
             { widgetHandler && 
                 <>
                     <RoomColorView />

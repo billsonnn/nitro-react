@@ -2,7 +2,7 @@ import { ContextMenuEnum, GroupFurniContextMenuInfoMessageEvent, GroupFurniConte
 import { FC, useCallback, useState } from 'react';
 import { GetGroupInformation, GetRoomEngine, IsOwnerOfFurniture, LocalizeText, RoomWidgetFurniActionMessage, TryJoinGroup, TryVisitRoom } from '../../../../../api';
 import { BatchUpdates, UseMessageEventHook, UseRoomEngineEvent } from '../../../../../hooks';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';

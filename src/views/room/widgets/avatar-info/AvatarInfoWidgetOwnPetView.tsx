@@ -2,7 +2,7 @@ import { PetType, RoomObjectCategory, RoomObjectType, RoomObjectVariable } from 
 import { FC, useEffect, useMemo, useState } from 'react';
 import { GetOwnRoomObject, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUserActionMessage } from '../../../../api';
 import { BatchUpdates } from '../../../../hooks';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../context-menu/ContextMenuView';

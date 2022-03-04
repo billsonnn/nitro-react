@@ -4,7 +4,7 @@ import ReactSlider from 'react-slider';
 import { LocalizeText, RoomWidgetUpdateCustomStackHeightEvent, SendMessageComposer } from '../../../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
 import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../../hooks';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 
 const MAX_HEIGHT: number = 40;
 

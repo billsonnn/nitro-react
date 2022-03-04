@@ -4,7 +4,7 @@ import YouTube, { Options } from 'react-youtube';
 import { FurnitureYoutubeDisplayWidgetHandler, LocalizeText, RoomWidgetUpdateYoutubeDisplayEvent, SendMessageComposer } from '../../../../../api';
 import { Grid, LayoutGridItem, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../common';
 import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../../hooks';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 import { YoutubeVideoPlaybackStateEnum } from './utils/YoutubeVideoPlaybackStateEnum';
 
 export const FurnitureYoutubeDisplayView: FC<{}> = props =>

@@ -1,7 +1,7 @@
 import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { LocalizeText, RoomWidgetUpdateDecorateModeEvent } from '../../../../api';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
 import { ContextMenuListView } from '../context-menu/ContextMenuListView';
 import { ContextMenuView } from '../context-menu/ContextMenuView';

@@ -1,7 +1,6 @@
 import { BadgeImageReadyEvent, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
 import { GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../api';
-import { BadgeInformationView } from '../../views/shared/badge-image/badge-info/BadgeInformationView';
 import { Base, BaseProps } from '../Base';
 
 export interface LayoutBadgeImageViewProps extends BaseProps<HTMLDivElement>
@@ -86,9 +85,22 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
         return () => GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
     }, [ badgeCode, isGroup ]);
 
+    const BadgeInformationView = (props: { title: string, description: string }) =>
+    {
+        const { title = null, description = null } = props;
+
+        return (
+            <Base className="badge-information text-black py-1 px-2 small">
+                <div className="fw-bold mb-1">{ title }</div>
+                <div>{ description }</div>
+            </Base>
+        );
+    };
+
     return (
         <Base classNames={ getClassNames } style={ getStyle } { ...rest }>
-            { showInfo && <BadgeInformationView title={ isGroup ? customTitle : LocalizeBadgeName(badgeCode) } description={ isGroup ? LocalizeText('group.badgepopup.body') : LocalizeBadgeDescription(badgeCode) } /> }
+            { showInfo &&
+                <BadgeInformationView title={ isGroup ? customTitle : LocalizeBadgeName(badgeCode) } description={ isGroup ? LocalizeText('group.badgepopup.body') : LocalizeBadgeDescription(badgeCode) } /> }
             { children }
         </Base>
     );

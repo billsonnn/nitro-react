@@ -5,7 +5,7 @@ import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, 
 import { FigureData } from '../../../../../components/avatar-editor/common/FigureData';
 import { FurniCategory } from '../../../../../components/inventory/common/FurniCategory';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 
 interface PurchasableClothingConfirmViewProps
 {

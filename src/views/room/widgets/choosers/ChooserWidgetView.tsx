@@ -3,7 +3,7 @@ import { AutoSizer, List, ListRowProps, ListRowRenderer } from 'react-virtualize
 import { RoomObjectItem, RoomWidgetRoomObjectMessage } from '../../../../api';
 import { LocalizeText } from '../../../../api/utils';
 import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 
 interface ChooserWidgetViewProps
 {

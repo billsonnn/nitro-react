@@ -4,7 +4,7 @@ import { GetFurnitureDataForRoomObject, GetRoomEngine, LocalizeText, RoomWidgetU
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { FurniCategory } from '../../../../components/inventory/common/FurniCategory';
 import { PetImageView } from '../../../shared/pet-image/PetImageView';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 
 interface AvatarInfoUseProductConfirmViewProps
 {

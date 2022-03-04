@@ -1,7 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRequestWidgetMessage, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
 import { BatchUpdates, UseEventDispatcherHook } from '../../../../hooks';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { ChooserWidgetView } from './ChooserWidgetView';
 
 export const UserChooserWidgetView: FC<{}> = props =>

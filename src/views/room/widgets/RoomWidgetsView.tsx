@@ -5,7 +5,7 @@ import { FriendRequestEvent } from '../../../events';
 import { UseRoomEngineEvent, UseRoomSessionManagerEvent, UseUiEvent } from '../../../hooks';
 import { NotificationAlertType } from '../../notification-center/common/NotificationAlertType';
 import { NotificationUtilities } from '../../notification-center/common/NotificationUtilities';
-import { useRoomContext } from '../context/RoomContext';
+import { useRoomContext } from '../RoomContext';
 import { AvatarInfoWidgetView } from './avatar-info/AvatarInfoWidgetView';
 import { ChatInputView } from './chat-input/ChatInputView';
 import { ChatWidgetView } from './chat/ChatWidgetView';

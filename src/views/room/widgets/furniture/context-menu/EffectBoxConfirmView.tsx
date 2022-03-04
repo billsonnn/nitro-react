@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 
 interface EffectBoxConfirmViewProps
 {

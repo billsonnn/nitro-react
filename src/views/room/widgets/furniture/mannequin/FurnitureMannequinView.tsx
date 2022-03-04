@@ -4,7 +4,7 @@ import { GetAvatarRenderManager, GetSessionDataManager, LocalizeText, RoomWidget
 import { Base, Button, Column, Flex, LayoutCurrencyIcon, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
 import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
 import { AvatarImageView } from '../../../../shared/avatar-image/AvatarImageView';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 
 const MODE_NONE: number = -1;
 const MODE_CONTROLLER: number = 0;

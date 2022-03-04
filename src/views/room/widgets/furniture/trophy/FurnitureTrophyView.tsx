@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { LayoutTrophyView } from '../../../../../common';
 import { UseEventDispatcherHook, UseRoomEngineEvent } from '../../../../../hooks';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 import { FurnitureTrophyData } from './FurnitureTrophyData';
 
 export const FurnitureTrophyView: FC<{}> = props =>

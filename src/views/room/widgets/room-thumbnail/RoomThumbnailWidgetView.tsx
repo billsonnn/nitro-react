@@ -4,7 +4,7 @@ import { GetRoomEngine } from '../../../../api';
 import { LayoutMiniCameraView } from '../../../../common';
 import { RoomWidgetThumbnailEvent } from '../../../../events';
 import { UseUiEvent } from '../../../../hooks';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 
 export const RoomThumbnailWidgetView: FC<{}> = props =>
 {

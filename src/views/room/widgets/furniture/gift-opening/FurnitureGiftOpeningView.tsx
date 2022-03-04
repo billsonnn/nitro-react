@@ -5,7 +5,7 @@ import { Button, Column, Flex, LayoutGiftTagView, NitroCardContentView, NitroCar
 import { ProductTypeEnum } from '../../../../../components/catalog/common/ProductTypeEnum';
 import { BatchUpdates } from '../../../../../hooks';
 import { UseEventDispatcherHook } from '../../../../../hooks/events/UseEventDispatcherHook';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 
 const FLOOR: string = 'floor';
 const WALLPAPER: string = 'wallpaper';

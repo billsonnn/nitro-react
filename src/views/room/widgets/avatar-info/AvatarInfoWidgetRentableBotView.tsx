@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { GetNitroInstance, LocalizeText, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateRentableBotChatEvent, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Text } from '../../../../common';
 import { UseMessageEventHook } from '../../../../hooks';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../context-menu/ContextMenuView';

@@ -1,7 +1,7 @@
 import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { BaseProps } from '../../../../common';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { ObjectLocationView } from '../object-location/ObjectLocationView';
 
 interface UserLocationViewProps extends BaseProps<HTMLDivElement>

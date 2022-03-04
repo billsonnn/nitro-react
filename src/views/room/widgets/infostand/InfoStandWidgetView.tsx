@@ -2,7 +2,7 @@ import { FC, useCallback, useState } from 'react';
 import { RoomWidgetRoomObjectMessage, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
 import { Column } from '../../../../common';
 import { UseEventDispatcherHook } from '../../../../hooks';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { InfoStandWidgetBotView } from './InfoStandWidgetBotView';
 import { InfoStandWidgetFurniView } from './InfoStandWidgetFurniView';
 import { InfoStandWidgetPetView } from './InfoStandWidgetPetView';

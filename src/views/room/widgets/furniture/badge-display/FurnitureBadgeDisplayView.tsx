@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, LocalizeBadgeDescription, LocalizeBadgeName, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { LayoutTrophyView } from '../../../../../common';
 import { UseEventDispatcherHook, UseRoomEngineEvent } from '../../../../../hooks';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 import { FurnitureTrophyData } from '../trophy/FurnitureTrophyData';
 
 export const FurnitureBadgeDisplayView: FC<{}> = props =>

@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, LocalizeText } from '../../../../../api';
 import { Column, Flex, Text } from '../../../../../common';
 import { UseRoomEngineEvent } from '../../../../../hooks';
-import { useRoomContext } from '../../../context/RoomContext';
+import { useRoomContext } from '../../../RoomContext';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListView } from '../../context-menu/ContextMenuListView';
 import { ObjectLocationView } from '../../object-location/ObjectLocationView';

@@ -1,7 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { RoomWidgetUpdateFriendRequestEvent } from '../../../../api';
 import { UseEventDispatcherHook } from '../../../../hooks';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 import { FriendRequestDialogView } from './FriendRequestDialogView';
 
 export const FriendRequestWidgetView: FC<{}> = props =>

@@ -5,7 +5,7 @@ import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, Room
 import { Button, Column, Flex, LayoutBadgeImageView, LayoutRarityLevelView, Text, UserProfileIconView } from '../../../../common';
 import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
 import { LimitedEditionCompactPlateView } from '../../../shared/limited-edition/LimitedEditionCompactPlateView';
-import { useRoomContext } from '../../context/RoomContext';
+import { useRoomContext } from '../../RoomContext';
 
 interface InfoStandWidgetFurniViewProps
 {
