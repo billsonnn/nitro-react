@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../api';
 import { Column, Flex, LayoutGridItem, Text } from '../../../common';
@@ -19,17 +19,18 @@ export const FloorplanOptionsView: FC<{}> = props =>
     const [ floorAction, setFloorAction ] = useState(FloorAction.SET);
     const [ floorHeight, setFloorHeight ] = useState(0);
     
-    const selectAction = useCallback((action: number) =>
+    const selectAction = (action: number) =>
     {
         setFloorAction(action);
-        FloorplanEditor.instance.actionSettings.currentAction = action;
-    }, []);
 
-    const changeDoorDirection = useCallback(() =>
+        FloorplanEditor.instance.actionSettings.currentAction = action;
+    }
+
+    const changeDoorDirection = () =>
     {
         setVisualizationSettings(prevValue =>
             {
-                const newValue = Object.assign({}, prevValue);
+                const newValue = { ...prevValue };
 
                 if(newValue.entryPointDir < 7)
                 {
@@ -42,9 +43,9 @@ export const FloorplanOptionsView: FC<{}> = props =>
 
                 return newValue;
             });
-    }, [ setVisualizationSettings ]);
+    }
 
-    const onFloorHeightChange = useCallback((value: number) =>
+    const onFloorHeightChange = (value: number) =>
     {
         if(isNaN(value) || (value <= 0)) value = 0;
 
@@ -53,31 +54,33 @@ export const FloorplanOptionsView: FC<{}> = props =>
         setFloorHeight(value);
 
         FloorplanEditor.instance.actionSettings.currentHeight = value.toString(36);
-    }, []);
+    }
 
-    const onFloorThicknessChange = useCallback((value: number) =>
+    const onFloorThicknessChange = (value: number) =>
     {
         setVisualizationSettings(prevValue =>
         {
-            const newValue = Object.assign({}, prevValue);
+            const newValue = { ...prevValue };
+
             newValue.thicknessFloor = value;
 
             return newValue;
         });
-    }, [setVisualizationSettings]);
+    }
 
-    const onWallThicknessChange = useCallback((value: number) =>
+    const onWallThicknessChange = (value: number) =>
     {
         setVisualizationSettings(prevValue =>
             {
-                const newValue = Object.assign({}, prevValue);
+                const newValue = { ...prevValue };
+
                 newValue.thicknessWall = value;
     
                 return newValue;
             });
-    }, [setVisualizationSettings]);
+    }
 
-    const onWallHeightChange = useCallback((value: number) =>
+    const onWallHeightChange = (value: number) =>
     {
         if(isNaN(value) || (value <= 0)) value = MIN_WALL_HEIGHT;
 
@@ -85,15 +88,15 @@ export const FloorplanOptionsView: FC<{}> = props =>
 
         setVisualizationSettings(prevValue =>
             {
-                const newValue = Object.assign({}, prevValue);
+                const newValue = { ...prevValue };
 
                 newValue.wallHeight = value;
 
                 return newValue;
             });
-    }, [ setVisualizationSettings ]);
+    }
 
-    function increaseWallHeight(): void
+    const increaseWallHeight = () =>
     {
         let height = (visualizationSettings.wallHeight + 1);
 
@@ -102,7 +105,7 @@ export const FloorplanOptionsView: FC<{}> = props =>
         onWallHeightChange(height);
     }
 
-    function decreaseWallHeight(): void
+    const decreaseWallHeight = () =>
     {
         let height = (visualizationSettings.wallHeight - 1);
 

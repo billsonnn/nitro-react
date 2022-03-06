@@ -4,7 +4,6 @@ import { AddEventLinkTracker, GetCommunication, RemoveLinkEventTracker } from '.
 import { Base, TransitionAnimation, TransitionAnimationTypes } from '../../common';
 import { UseRoomSessionManagerEvent } from '../../hooks';
 import { CampaignView } from '../../views/campaign/CampaignView';
-import { FloorplanEditorView } from '../../views/floorplan-editor/FloorplanEditorView';
 import { FriendsView } from '../../views/friends/FriendsView';
 import { HcCenterView } from '../../views/hc-center/HcCenterView';
 import { HotelView } from '../../views/hotel-view/HotelView';
@@ -14,6 +13,7 @@ import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CameraWidgetView } from '../camera/CameraWidgetView';
 import { CatalogView } from '../catalog/CatalogView';
 import { ChatHistoryView } from '../chat-history/ChatHistoryView';
+import { FloorplanEditorView } from '../floorplan-editor/FloorplanEditorView';
 import { GroupsView } from '../groups/GroupsView';
 import { GuideToolView } from '../guide-tool/GuideToolView';
 import { HelpView } from '../help/HelpView';

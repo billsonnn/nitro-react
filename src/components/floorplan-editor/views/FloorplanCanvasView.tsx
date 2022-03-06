@@ -164,25 +164,6 @@ export const FloorplanCanvasView: FC<FloorplanCanvasViewProps> = props =>
                     </Button>
                 </Column>
             </Grid>
-            {/* <Flex center className="d-md-none">
-                <Button onClick={ event => onClickArrowButton('up') }>
-                    <FontAwesomeIcon icon="arrow-up" />
-                </Button>
-            </Flex>
-            <Flex center gap={ 1 }>
-                <Button className="d-md-none" onClick={ event => onClickArrowButton('left') }>
-                    <FontAwesomeIcon icon="arrow-left" />
-                </Button>
-                <Base overflow="auto" innerRef={ elementRef } />
-                <Button className="d-md-none" onClick={ event => onClickArrowButton('right') }>
-                    <FontAwesomeIcon icon="arrow-right" />
-                </Button>
-            </Flex>
-            <Flex center className="d-md-none">
-                <Button onClick={ event => onClickArrowButton('down') }>
-                    <FontAwesomeIcon icon="arrow-down" />
-                </Button>
-            </Flex> */}
             { children }
         </Column>
     );
