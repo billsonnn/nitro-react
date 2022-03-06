@@ -1,20 +1,6 @@
 .nitro-floorplan-editor {
-    width: 760px;
-    height: 575px;
-
-    .editor-area {
-        width: 100%;
-        height: 300px;
-        min-height: 300px;
-        overflow: scroll;
-    }
-
-    .arrow-button {
-
-        @include media-breakpoint-up(md) {
-            display:none;
-        }
-    }
+    width: $nitro-floor-editor-width;
+    height: $nitro-floor-editor-height;
 }
 
 .floorplan-import-export {

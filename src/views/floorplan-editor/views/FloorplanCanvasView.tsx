@@ -1,51 +1,49 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, NitroPoint, RoomEntryTileMessageEvent, RoomOccupiedTilesMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { SendMessageComposer } from '../../../api';
-import { Flex } from '../../../common';
-import { UseMessageEventHook, UseMountEffect } from '../../../hooks';
+import { Base, Button, Column, ColumnProps, Flex, Grid } from '../../../common';
+import { UseMessageEventHook } from '../../../hooks';
 import { FloorplanEditor } from '../common/FloorplanEditor';
-import { useFloorplanEditorContext } from '../context/FloorplanEditorContext';
+import { IFloorplanSettings } from '../common/IFloorplanSettings';
+import { useFloorplanEditorContext } from '../FloorplanEditorContext';
 
-export const FloorplanCanvasView: FC<{}> = props =>
+interface FloorplanCanvasViewProps extends ColumnProps
 {
-    const { originalFloorplanSettings = null, setOriginalFloorplanSettings = null, visualizationSettings = null, setVisualizationSettings = null } = useFloorplanEditorContext();
+
+}
+
+export const FloorplanCanvasView: FC<FloorplanCanvasViewProps> = props =>
+{
+    const { gap = 1, children = null, ...rest } = props;
     const [ occupiedTilesReceived , setOccupiedTilesReceived ] = useState(false);
     const [ entryTileReceived, setEntryTileReceived ] = useState(false);
+    const { originalFloorplanSettings = null, setOriginalFloorplanSettings = null, setVisualizationSettings = null } = useFloorplanEditorContext();
     const elementRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() =>
-    {
-        return ( () =>
-        {
-            FloorplanEditor.instance.clear();
-            setVisualizationSettings( prev => {return { wallHeight: originalFloorplanSettings.wallHeight, thicknessWall: originalFloorplanSettings.thicknessWall, thicknessFloor: originalFloorplanSettings.thicknessFloor, entryPointDir: prev.entryPointDir } }); 
-        });
-    }, [originalFloorplanSettings.thicknessFloor, originalFloorplanSettings.thicknessWall, originalFloorplanSettings.wallHeight, setVisualizationSettings]);
-
-    UseMountEffect(() =>
-    {
-        SendMessageComposer(new GetRoomEntryTileMessageComposer());
-        SendMessageComposer(new GetOccupiedTilesMessageComposer());
-        FloorplanEditor.instance.tilemapRenderer.interactive = true;
-        elementRef.current.appendChild(FloorplanEditor.instance.renderer.view);
-    });
 
     const onRoomOccupiedTilesMessageEvent = useCallback((event: RoomOccupiedTilesMessageEvent) =>
     {
         const parser = event.getParser();
 
-        if(!parser) return;
+        let newFloorPlanSettings: IFloorplanSettings = null;
 
-        const settings = Object.assign({}, originalFloorplanSettings);
-        settings.reservedTiles = parser.blockedTilesMap;
-        setOriginalFloorplanSettings(settings);
+        setOriginalFloorplanSettings(prevValue =>
+            {
+                const newValue = { ...prevValue };
+
+                newValue.reservedTiles = parser.blockedTilesMap;
+
+                newFloorPlanSettings = newValue;
+
+                return newValue;
+            });
         
-        FloorplanEditor.instance.setTilemap(originalFloorplanSettings.tilemap, parser.blockedTilesMap);
+        FloorplanEditor.instance.setTilemap(newFloorPlanSettings.tilemap, parser.blockedTilesMap);
 
         setOccupiedTilesReceived(true);
         
-        elementRef.current.scrollTo(FloorplanEditor.instance.view.width / 3, 0);
-    }, [originalFloorplanSettings, setOriginalFloorplanSettings]);
+        elementRef.current.scrollTo((FloorplanEditor.instance.view.width / 3), 0);
+    }, [ setOriginalFloorplanSettings ]);
 
     UseMessageEventHook(RoomOccupiedTilesMessageEvent, onRoomOccupiedTilesMessageEvent);
 
@@ -53,24 +51,33 @@ export const FloorplanCanvasView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if(!parser) return;
+        setOriginalFloorplanSettings(prevValue =>
+            {
+                const newValue = { ...prevValue };
 
-        const settings = Object.assign({}, originalFloorplanSettings);
-        settings.entryPoint = [parser.x, parser.y];
-        settings.entryPointDir = parser.direction;
-        setOriginalFloorplanSettings(settings);
+                newValue.entryPoint = [ parser.x, parser.y ];
+                newValue.entryPointDir = parser.direction;
 
-        const vSettings = Object.assign({}, visualizationSettings);
-        vSettings.entryPointDir = parser.direction;
-        setVisualizationSettings(vSettings);
+                return newValue;
+            });
+
+        setVisualizationSettings(prevValue =>
+            {
+                const newValue = { ...prevValue };
+
+                newValue.entryPointDir = parser.direction;
+
+                return newValue;
+            });
         
         FloorplanEditor.instance.doorLocation = new NitroPoint(parser.x, parser.y);
+
         setEntryTileReceived(true);
-    }, [originalFloorplanSettings, setOriginalFloorplanSettings, setVisualizationSettings, visualizationSettings]);
+    }, [ setOriginalFloorplanSettings, setVisualizationSettings ]);
 
     UseMessageEventHook(RoomEntryTileMessageEvent, onRoomEntryTileMessageEvent);
 
-    const onClickArrowButton = useCallback((scrollDirection: string) =>
+    const onClickArrowButton = (scrollDirection: string) =>
     {
         const element = elementRef.current;
 
@@ -91,29 +98,92 @@ export const FloorplanCanvasView: FC<{}> = props =>
                 element.scrollBy({ left: 10 });
                 break;
         }
-    }, []);
+    }
 
     useEffect(() =>
     {
-        if(entryTileReceived && occupiedTilesReceived)
-            FloorplanEditor.instance.renderTiles();
-    }, [entryTileReceived, occupiedTilesReceived])
+        return () =>
+        {
+            FloorplanEditor.instance.clear();
+
+            setVisualizationSettings(prevValue =>
+                {
+                    return {
+                        wallHeight: originalFloorplanSettings.wallHeight,
+                        thicknessWall: originalFloorplanSettings.thicknessWall,
+                        thicknessFloor: originalFloorplanSettings.thicknessFloor,
+                        entryPointDir: prevValue.entryPointDir
+                    }
+                });
+        }
+    }, [ originalFloorplanSettings.thicknessFloor, originalFloorplanSettings.thicknessWall, originalFloorplanSettings.wallHeight, setVisualizationSettings ]);
+
+    useEffect(() =>
+    {
+        if(!entryTileReceived || !occupiedTilesReceived) return;
+        
+        FloorplanEditor.instance.renderTiles();
+    }, [ entryTileReceived, occupiedTilesReceived ]);
+
+    useEffect(() =>
+    {
+        SendMessageComposer(new GetRoomEntryTileMessageComposer());
+        SendMessageComposer(new GetOccupiedTilesMessageComposer());
+
+        FloorplanEditor.instance.tilemapRenderer.interactive = true;
+
+        if(!elementRef.current) return;
+
+        elementRef.current.appendChild(FloorplanEditor.instance.renderer.view);
+    }, []);
 
     return (
-        <>
-        <Flex className="align-items-center justify-content-center">
-            <div className="arrow-button"><button className="btn btn-primary" onClick={() => onClickArrowButton('up')}><i className="fas fa-arrow-up"/></button></div>
-        </Flex>
-        <Flex className="align-items-center justify-content-center">
-            <div className="arrow-button"><button className="btn btn-primary" onClick={() => onClickArrowButton('left')}><i className="fas fa-arrow-left"/></button></div>
-            <div className="rounded-2 overflow-hidden">
-                <div ref={elementRef} className="editor-area" />
-            </div>
-            <div className="arrow-button"><button className="btn btn-primary" onClick={() => onClickArrowButton('right')}><i className="fas fa-arrow-right"/></button></div>
-        </Flex>
-        <Flex className="align-items-center justify-content-center">
-            <div className="arrow-button"><button className="btn btn-primary" onClick={() => onClickArrowButton('down')}><i className="fas fa-arrow-down"/></button></div>
-        </Flex>
-        </>
+        <Column gap={ gap } { ...rest }>
+            <Grid overflow="hidden" gap={ 1 }>
+                <Column center size={ 1 }>
+                    <Button className="d-md-none" onClick={ event => onClickArrowButton('left') }>
+                        <FontAwesomeIcon icon="arrow-left" />
+                    </Button>
+                </Column>
+                <Column overflow="hidden" size={ 10 } gap={ 1 }>
+                    <Flex justifyContent="center" className="d-md-none">
+                        <Button shrink onClick={ event => onClickArrowButton('up') }>
+                            <FontAwesomeIcon icon="arrow-up" />
+                        </Button>
+                    </Flex>
+                    <Base overflow="auto" innerRef={ elementRef } />
+                    <Flex justifyContent="center" className="d-md-none">
+                        <Button shrink onClick={ event => onClickArrowButton('down') }>
+                            <FontAwesomeIcon icon="arrow-down" />
+                        </Button>
+                    </Flex>
+                </Column>
+                <Column center size={ 1 }>
+                    <Button className="d-md-none" onClick={ event => onClickArrowButton('right') }>
+                        <FontAwesomeIcon icon="arrow-right" />
+                    </Button>
+                </Column>
+            </Grid>
+            {/* <Flex center className="d-md-none">
+                <Button onClick={ event => onClickArrowButton('up') }>
+                    <FontAwesomeIcon icon="arrow-up" />
+                </Button>
+            </Flex>
+            <Flex center gap={ 1 }>
+                <Button className="d-md-none" onClick={ event => onClickArrowButton('left') }>
+                    <FontAwesomeIcon icon="arrow-left" />
+                </Button>
+                <Base overflow="auto" innerRef={ elementRef } />
+                <Button className="d-md-none" onClick={ event => onClickArrowButton('right') }>
+                    <FontAwesomeIcon icon="arrow-right" />
+                </Button>
+            </Flex>
+            <Flex center className="d-md-none">
+                <Button onClick={ event => onClickArrowButton('down') }>
+                    <FontAwesomeIcon icon="arrow-down" />
+                </Button>
+            </Flex> */}
+            { children }
+        </Column>
     );
 }
