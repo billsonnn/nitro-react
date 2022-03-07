@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NitroRectangle, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
-import { CAMERA_SHUTTER, GetRoomEngine, GetRoomSession, LocalizeText, PlaySound } from '../../../../api';
+import { GetRoomEngine, GetRoomSession, LocalizeText, PlaySound, SoundNames } from '../../../../api';
 import { Column, DraggableWindow, Flex } from '../../../../common';
 import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
 import { useCameraWidgetContext } from '../../CameraWidgetContext';
@@ -52,7 +52,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
             clone.pop();
         }
 
-        PlaySound(CAMERA_SHUTTER);
+        PlaySound(SoundNames.CAMERA_SHUTTER);
         clone.push(new CameraPicture(texture, TextureUtils.generateImageUrl(texture)));
 
         setCameraRoll(clone);

@@ -1,6 +1,6 @@
 import { FrontPageItem, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, GetMarketplaceConfigurationMessageComposer, ILinkEventTracker, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, CREDITS, GetRoomEngine, LocalizeText, PlaySound, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { AddEventLinkTracker, GetRoomEngine, LocalizeText, PlaySound, RemoveLinkEventTracker, SendMessageComposer, SoundNames } from '../../api';
 import { Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { CatalogPurchasedEvent } from '../../events';
 import { BatchUpdates, UseUiEvent } from '../../hooks';
@@ -268,7 +268,7 @@ export const CatalogView: FC<{}> = props =>
 
     const onCatalogPurchasedEvent = useCallback((event: CatalogPurchasedEvent) =>
     {
-        PlaySound(CREDITS);
+        PlaySound(SoundNames.CREDITS);
     }, []);
 
     UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);

@@ -1,6 +1,6 @@
 import { ActivityPointNotificationMessageEvent, FriendlyTime, HabboClubLevelEnum, UserCreditsEvent, UserCurrencyComposer, UserCurrencyEvent, UserSubscriptionComposer, UserSubscriptionEvent, UserSubscriptionParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { CreateLinkEvent, CREDITS, DUCKETS, GetConfiguration, LocalizeText, PlaySound, SendMessageComposer } from '../../api';
+import { CreateLinkEvent, GetConfiguration, LocalizeText, PlaySound, SendMessageComposer, SoundNames } from '../../api';
 import { Column, Flex, Grid, LayoutCurrencyIcon, Text } from '../../common';
 import { HcCenterEvent, UserSettingsUIEvent } from '../../events';
 import { DispatchUiEvent, UseMessageEventHook } from '../../hooks';
@@ -75,7 +75,7 @@ export const PurseView: FC<{}> = props =>
 
                 newValue.credits = parseFloat(parser.credits);
 
-                if(prevValue.credits !== newValue.credits) PlaySound(CREDITS);
+                if(prevValue.credits !== newValue.credits) PlaySound(SoundNames.CREDITS);
 
                 return newValue;
             });
@@ -111,7 +111,7 @@ export const PurseView: FC<{}> = props =>
 
                 newValue.activityPoints.set(parser.type, parser.amount);
 
-                if(parser.type === 0) PlaySound(DUCKETS)
+                if(parser.type === 0) PlaySound(SoundNames.DUCKETS)
 
                 return newValue;
             });

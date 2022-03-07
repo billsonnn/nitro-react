@@ -1,6 +1,6 @@
 import { CfhSanctionMessageEvent, CfhTopicsInitEvent, IssueDeletedMessageEvent, IssueInfoMessageEvent, IssuePickFailedMessageEvent, ModeratorActionResultMessageEvent, ModeratorInitMessageEvent, ModeratorToolPreferencesEvent, RoomEngineEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { MODTOOLS_NEW_TICKET, PlaySound } from '../../api';
+import { PlaySound, SoundNames } from '../../api';
 import { ModToolsEvent, ModToolsOpenRoomChatlogEvent, ModToolsOpenRoomInfoEvent, ModToolsOpenUserChatlogEvent, ModToolsOpenUserInfoEvent } from '../../events';
 import { UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { NotificationAlertType } from '../../views/notification-center/common/NotificationAlertType';
@@ -54,7 +54,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
         else 
         {
             newTickets.push(parser.issueData);
-            PlaySound(MODTOOLS_NEW_TICKET);
+            PlaySound(SoundNames.MODTOOLS_NEW_TICKET);
         }
 
         dispatchModToolsState({
