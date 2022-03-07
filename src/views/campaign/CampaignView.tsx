@@ -2,7 +2,7 @@ import { CampaignCalendarData, CampaignCalendarDataMessageEvent, CampaignCalenda
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { BatchUpdates, UseMessageEventHook } from '../../hooks';
-import { CalendarView } from './views/calendar/CalendarView';
+import { CalendarView } from './CalendarView';
 
 export const CampaignView: FC<{}> = props =>
 {
