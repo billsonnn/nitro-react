@@ -116,7 +116,29 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                     </Column>
                     <Column size={ 1 } />
                 </Grid>
-                <Grid fullHeight alignItems="center" gap={ 1 }>
+                <Flex fullHeight gap={ 2 }>
+                    <Flex center>
+                        <Base pointer className="campaign-spritesheet prev" onClick={ onClickPrev } />
+                    </Flex>
+                    <Column center fullWidth>
+                        <Grid fit columnCount={ TOTAL_SHOWN_ITEMS } gap={ 1 }>
+                            { [...Array(TOTAL_SHOWN_ITEMS)].map((e, i) =>
+                                {
+                                    const day = (index + i);
+                                    
+                                    return (
+                                        <Column key={ i } overflow="hidden">
+                                            <CalendarItemView itemId={ day } state={ getDayState(day) } active={ (selectedDay === day) } productName={ receivedProducts.has(day) ? receivedProducts.get(day) : null } onClick={ onClickItem } />
+                                        </Column>
+                                    );
+                                }) }
+                        </Grid>
+                    </Column>
+                    <Flex center>
+                        <Base pointer className="campaign-spritesheet next" onClick={ onClickNext } />
+                    </Flex>
+                </Flex>
+                {/* <Grid fullHeight alignItems="center" gap={ 1 }>
                     <Column fullHeight center size={ 1 }>
                         <Base pointer className="campaign-spritesheet prev" onClick={ onClickPrev } />
                     </Column>
@@ -137,7 +159,7 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                     <Column fullHeight center size={ 1 }>
                         <Base pointer className="campaign-spritesheet next" onClick={ onClickNext } />
                     </Column>
-                </Grid>
+                </Grid> */}
             </NitroCardContentView>
         </NitroCardView>
     )
