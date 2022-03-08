@@ -4,7 +4,6 @@ import { AlignItemType, AlignSelfType, JustifyContentType, SpacingType } from '.
 
 export interface FlexProps extends BaseProps<HTMLDivElement>
 {
-    inline?: boolean;
     column?: boolean;
     reverse?: boolean;
     gap?: SpacingType;
@@ -16,14 +15,11 @@ export interface FlexProps extends BaseProps<HTMLDivElement>
 
 export const Flex: FC<FlexProps> = props =>
 {
-    const { inline = false, column = undefined, reverse = false, gap = null, center = false, alignSelf = null, alignItems = null, justifyContent = null, classNames = [], ...rest } = props;
+    const { display = 'flex', column = undefined, reverse = false, gap = null, center = false, alignSelf = null, alignItems = null, justifyContent = null, classNames = [], ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
         const newClassNames: string[] = [];
-
-        if(inline) newClassNames.push('d-inline-flex');
-        else newClassNames.push('d-flex');
 
         if(column)
         {
@@ -48,7 +44,7 @@ export const Flex: FC<FlexProps> = props =>
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ inline, column, reverse, gap, center, alignSelf, alignItems, justifyContent, classNames ]);
+    }, [ column, reverse, gap, center, alignSelf, alignItems, justifyContent, classNames ]);
 
-    return <Base classNames={ getClassNames } { ...rest } />;
+    return <Base display={ display } classNames={ getClassNames } { ...rest } />;
 }

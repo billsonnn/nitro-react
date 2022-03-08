@@ -3,6 +3,7 @@ export * from './AlignSelfType';
 export * from './ButtonSizeType';
 export * from './ColorVariantType';
 export * from './ColumnSizesType';
+export * from './DisplayType';
 export * from './FloatType';
 export * from './FontSizeType';
 export * from './FontWeightType';

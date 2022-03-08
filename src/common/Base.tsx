@@ -4,6 +4,7 @@ import { ColorVariantType, FloatType, OverflowType, PositionType } from './types
 export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttributes<T>, T>
 {
     innerRef?: LegacyRef<T>;
+    display?: string;
     fit?: boolean;
     grow?: boolean;
     shrink?: boolean;
@@ -20,11 +21,13 @@ export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttrib
 
 export const Base: FC<BaseProps<HTMLDivElement>> = props =>
 {
-    const { ref = null, innerRef = null, fit = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, float = null, pointer = false, visible = null, textColor = null, classNames = [], className = '', style = {}, ...rest } = props;
+    const { ref = null, innerRef = null, display = null, fit = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, float = null, pointer = false, visible = null, textColor = null, classNames = [], className = '', style = {}, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
         const newClassNames: string[] = [];
+
+        if(display && display.length) newClassNames.push('d-' + display);
 
         if(fit || fullWidth) newClassNames.push('w-100');
 
@@ -49,7 +52,7 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ fit, grow, shrink, fullWidth, fullHeight, overflow, position, float, pointer, visible, textColor, classNames ]);
+    }, [ display, fit, grow, shrink, fullWidth, fullHeight, overflow, position, float, pointer, visible, textColor, classNames ]);
 
     const getClassName = useMemo(() =>
     {
