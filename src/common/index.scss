@@ -209,12 +209,9 @@
     font-size: $font-size-sm;
     margin-bottom: 5px;
 
-    .bubble-image {
-        width: 30px;
-        height: 30px;
-        overflow: hidden;
-        object-fit: none;
-        margin-right: 5px;
+    .bubble-image-container {
+        min-width: 50px;
+        min-height: 50px;
     }
 }
 

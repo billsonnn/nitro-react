@@ -150,15 +150,11 @@ $nitro-card-tabs-height: 33px;
     border-bottom: $nav-tabs-border-width solid $nav-tabs-border-color;
 }
 
-.nitro-card-accordion {
-    display: flex;
-    height: 100%;
-}
-
 .nitro-card-accordion-set {
 
     &.active {
         height: 100%;
+        overflow: hidden;
         background: rgba($white, 0.5);
         border-bottom: 1px solid rgba($black, 0.2);
     }

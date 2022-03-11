@@ -1,8 +1,8 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { Base, BaseProps } from '..';
+import { Flex, FlexProps } from '..';
 import { TransitionAnimation, TransitionAnimationTypes } from '../transitions';
 
-interface LayoutNotificationBubbleViewProps extends BaseProps<HTMLDivElement>
+interface LayoutNotificationBubbleViewProps extends FlexProps
 {
     fadesOut?: boolean;
     timeoutMs?: number;
@@ -11,7 +11,7 @@ interface LayoutNotificationBubbleViewProps extends BaseProps<HTMLDivElement>
 
 export const LayoutNotificationBubbleView: FC<LayoutNotificationBubbleViewProps> = props =>
 {
-    const { fadesOut = true, timeoutMs = 8000, close = null, classNames = [], ...rest } = props;
+    const { fadesOut = false, timeoutMs = 8000, close = null, overflow='hidden', classNames = [], ...rest } = props;
     const [ isVisible, setIsVisible ] = useState(false);
 
     const getClassNames = useMemo(() =>
@@ -46,7 +46,7 @@ export const LayoutNotificationBubbleView: FC<LayoutNotificationBubbleViewProps>
 
     return (
         <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isVisible } timeout={ 300 }>
-            <Base classNames={ getClassNames } onClick={ close } { ...rest } />
+            <Flex overflow={ overflow } classNames={ getClassNames } onClick={ close } { ...rest } />
         </TransitionAnimation>
     );
 }

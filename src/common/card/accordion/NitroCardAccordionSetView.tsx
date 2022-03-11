@@ -1,9 +1,9 @@
-import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Base, BaseProps, Flex } from '../..';
+import { Column, ColumnProps, Flex, Text } from '../..';
 import { useNitroCardAccordionContext } from './NitroCardAccordionContext';
 
-interface NitroCardAccordionSetViewProps extends BaseProps<HTMLDivElement>
+export interface NitroCardAccordionSetViewProps extends ColumnProps
 {
     headerText: string;
     isExpanded?: boolean;
@@ -11,44 +11,29 @@ interface NitroCardAccordionSetViewProps extends BaseProps<HTMLDivElement>
 
 export const NitroCardAccordionSetView: FC<NitroCardAccordionSetViewProps> = props =>
 {
-    const { headerText = '', isExpanded = false, className = '', children = null, ...rest } = props;
+    const { headerText = '', isExpanded = false, gap = 0, classNames = [], children = null, ...rest } = props;
     const [ isOpen, setIsOpen ] = useState(false);
     const { setClosers = null, closeAll = null } = useNitroCardAccordionContext();
 
-    const getClassName = useMemo(() =>
-    {
-        let newClassName = 'nitro-card-accordion-set';
-
-        if(isOpen) newClassName += ' active';
-
-        if(className && className.length) newClassName += ` ${ className }`;
-
-        return newClassName;
-    }, [ className, isOpen ]);
-
-    const onClick = useCallback(() =>
+    const onClick = () =>
     {
         closeAll();
         
         setIsOpen(prevValue => !prevValue);
-        // if(isOpen)
-        // {
-        //     closeAll();
-        // }
-        // else
-        // {
-        //     BatchUpdates(() =>
-        //     {
-        //         closeAll();
-        //         setIsOpen(true);
-        //     });
-        // }
-    }, [ closeAll ]);
+    }
 
-    const close = useCallback(() =>
+    const close = useCallback(() => setIsOpen(false), []);
+
+    const getClassNames = useMemo(() =>
     {
-        setIsOpen(false);
-    }, []);
+        const newClassNames = [ 'nitro-card-accordion-set' ];
+
+        if(isOpen) newClassNames.push('active');
+
+        if(classNames && classNames.length) newClassNames.push(...classNames);
+
+        return newClassNames;
+    }, [ isOpen, classNames ]);
 
     useEffect(() =>
     {
@@ -84,18 +69,15 @@ export const NitroCardAccordionSetView: FC<NitroCardAccordionSetViewProps> = pro
     }, [ close, setClosers ]);
 
     return (
-        <Base className={ getClassName } { ...rest }>
-            <Flex className="nitro-card-accordion-set-header px-2 py-1" onClick={ onClick }>
-                <div className="w-100">
-                    { headerText }
-                </div>
-                <div className="justify-self-center">
-                    <i className={ 'fas fa-caret-' + (isOpen ? 'up' : 'down') } />
-                </div>
+        <Column classNames={ getClassNames } gap={ gap } { ...rest }>
+            <Flex pointer justifyContent="between" className="nitro-card-accordion-set-header px-2 py-1" onClick={ onClick }>
+                <Text>{ headerText }</Text>
+                <FontAwesomeIcon icon={ isOpen ? 'caret-up' : 'caret-down' } />
             </Flex>
-            <Base className={ 'nitro-card-accordion-set-content ' + classNames({ 'd-none': !isOpen }) }>
-                { children }
-            </Base>
-        </Base>
+            { isOpen &&
+                <Column fullHeight overflow="auto" gap={ 0 } className="nitro-card-accordion-set-content">
+                    { children }
+                </Column> }
+        </Column>
     );
 }

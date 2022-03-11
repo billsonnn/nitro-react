@@ -1,21 +1,17 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { Flex, FlexProps } from '../..';
 
-export const NitroCardAccordionItemView: FC<FlexProps> = props =>
+export interface NitroCardAccordionItemViewProps extends FlexProps
 {
-    const { alignItems = 'center', gap = 1, classNames = [], children = null, ...rest } = props;
 
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames: string[] = [ 'px-2, py-1' ];
+}
 
-        if(classNames.length) newClassNames.push(...classNames);
-
-        return newClassNames;
-    }, [ classNames ]);
+export const NitroCardAccordionItemView: FC<NitroCardAccordionItemViewProps> = props =>
+{
+    const { alignItems = 'center', gap = 1, children = null, ...rest } = props;
 
     return (
-        <Flex alignItems={ alignItems } gap={ gap } classNames={ getClassNames } { ...rest }>
+        <Flex alignItems={ alignItems } gap={ gap } { ...rest }>
             { children }
         </Flex>
     );
