@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
+import { Button, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 
 interface FriendsRemoveConfirmationViewProps
 {
@@ -15,14 +15,14 @@ export const FriendsRemoveConfirmationView: FC<FriendsRemoveConfirmationViewProp
     const { selectedFriendsIds = null, removeFriendsText = null, removeSelectedFriends = null, onCloseClick = null } = props;
 
     return (
-        <NitroCardView className="nitro-friends-remove-confirmation" uniqueKey="nitro-friends-remove-confirmation" theme="primary-slim">
+        <NitroCardView className="nitro-friends-remove-confirmation" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('friendlist.removefriendconfirm.title') } onCloseClick={ onCloseClick } />
-            <NitroCardContentView className="text-black d-flex flex-column gap-3">
+            <NitroCardContentView className="text-black">
                <div>{ removeFriendsText }</div>
-               <div className="d-flex gap-2">
-                    <button className="btn btn-danger w-100" disabled={ selectedFriendsIds.length === 0 } onClick={ removeSelectedFriends }>{ LocalizeText('generic.ok') }</button>
-                    <button className="btn btn-primary w-100" onClick={ onCloseClick }>{ LocalizeText('generic.cancel') }</button>
-                </div>
+               <Flex gap={ 1 }>
+                    <Button fullWidth variant="danger" disabled={ (selectedFriendsIds.length === 0) } onClick={ removeSelectedFriends }>{ LocalizeText('generic.ok') }</Button>
+                    <Button fullWidth onClick={ onCloseClick }>{ LocalizeText('generic.cancel') }</Button>
+                </Flex>
             </NitroCardContentView>
         </NitroCardView>
     );

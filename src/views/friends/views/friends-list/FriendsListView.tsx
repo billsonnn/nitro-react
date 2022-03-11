@@ -1,14 +1,14 @@
 import { RemoveFriendComposer, SendRoomInviteComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../api';
-import { NitroCardAccordionSetView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';
+import { Button, Flex, NitroCardAccordionSetView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { MessengerFriend } from '../../common/MessengerFriend';
 import { MessengerRequest } from '../../common/MessengerRequest';
-import { FriendsGroupView } from '../friends-group/FriendsGroupView';
-import { FriendsRemoveConfirmationView } from '../friends-remove-confirmation/FriendsRemoveConfirmationView';
-import { FriendsRequestView } from '../friends-request/FriendsRequestView';
-import { FriendsRoomInviteView } from '../friends-room-invite/FriendsRoomInviteView';
-import { FriendsSearchView } from '../friends-search/FriendsSearchView';
+import { FriendsListGroupView } from './friends-list-group/FriendsListGroupView';
+import { FriendsListRequestView } from './friends-list-request/FriendsListRequestView';
+import { FriendsRemoveConfirmationView } from './FriendsRemoveConfirmationView';
+import { FriendsRoomInviteView } from './FriendsRoomInviteView';
+import { FriendsSearchView } from './FriendsSearchView';
 
 interface FriendsListViewProps
 {
@@ -18,15 +18,11 @@ interface FriendsListViewProps
     friendRequests: MessengerRequest[];
 }
 
-const MODE_FRIENDS: number = 0;
-const MODE_SEARCH: number = 1;
-
 export const FriendsListView: FC<FriendsListViewProps> = props =>
 {
     const { onlineFriends = [], offlineFriends = [], friendRequests = [], onCloseClick = null } = props;
 
     const [ selectedFriendsIds, setSelectedFriendsIds ] = useState<number[]>([]);
-    const [ mode, setMode ] = useState<number>(0);
     
     const [ showRoomInvite, setShowRoomInvite ] = useState<boolean>(false);
     const [ showRemoveFriendsConfirmation, setShowRemoveFriendsConfirmation ] = useState<boolean>(false);
@@ -89,42 +85,30 @@ export const FriendsListView: FC<FriendsListViewProps> = props =>
 
     return (
         <>
-            <NitroCardView className="nitro-friends" uniqueKey="nitro-friends">
+            <NitroCardView className="nitro-friends" uniqueKey="nitro-friends" theme="primary-slim">
                 <NitroCardHeaderView headerText={ LocalizeText('friendlist.friends') } onCloseClick={ onCloseClick } />
-                <NitroCardTabsView>
-                    <NitroCardTabsItemView isActive={ (mode === MODE_FRIENDS) } count={ friendRequests.length } onClick={ event => setMode(MODE_FRIENDS) }>
-                        { LocalizeText('friendlist.friends') }
-                    </NitroCardTabsItemView>
-                    <NitroCardTabsItemView isActive={ (mode === MODE_SEARCH) } onClick={ event => setMode(MODE_SEARCH) }>
-                        { LocalizeText('generic.search') }
-                    </NitroCardTabsItemView>
-                </NitroCardTabsView>
-                <NitroCardContentView className="p-0 text-black">
-                    { (mode === MODE_FRIENDS) &&
-                        <>
-                            <NitroCardAccordionView className="overflow-y-auto">
-                                <NitroCardAccordionSetView headerText={ LocalizeText('friendlist.friends') + ` (${onlineFriends.length})` } isExpanded={ true }>
-                                    <FriendsGroupView list={ onlineFriends } selectedFriendsIds={ selectedFriendsIds } selectFriend={ selectFriend } />
-                                </NitroCardAccordionSetView>
-                                <NitroCardAccordionSetView headerText={ LocalizeText('friendlist.friends.offlinecaption') + ` (${offlineFriends.length})` }>
-                                    <FriendsGroupView list={ offlineFriends } selectedFriendsIds={ selectedFriendsIds } selectFriend={ selectFriend } />
-                                </NitroCardAccordionSetView>
-                                <FriendsRequestView requests={ friendRequests } />
-                            </NitroCardAccordionView>
-                            { selectedFriendsIds && selectedFriendsIds.length > 0 && <div className="d-flex gap-2 p-2">
-                                <button className="btn btn-primary w-100" onClick={ () => setShowRoomInvite(true) }>Invite</button>
-                                <button className="btn btn-danger w-100" onClick={ () => setShowRemoveFriendsConfirmation(true) }>Delete</button>
-                            </div> } 
-                        </>
-                        }
-                    { (mode === MODE_SEARCH) &&
-                        <FriendsSearchView /> }
+                <NitroCardContentView overflow="hidden" gap={ 1 } className="text-black p-0">
+                    <NitroCardAccordionView fullHeight overflow="hidden">
+                        <NitroCardAccordionSetView headerText={ LocalizeText('friendlist.friends') + ` (${onlineFriends.length})` } isExpanded={ true }>
+                            <FriendsListGroupView list={ onlineFriends } selectedFriendsIds={ selectedFriendsIds } selectFriend={ selectFriend } />
+                        </NitroCardAccordionSetView>
+                        <NitroCardAccordionSetView headerText={ LocalizeText('friendlist.friends.offlinecaption') + ` (${offlineFriends.length})` }>
+                            <FriendsListGroupView list={ offlineFriends } selectedFriendsIds={ selectedFriendsIds } selectFriend={ selectFriend } />
+                        </NitroCardAccordionSetView>
+                        <FriendsListRequestView headerText={ LocalizeText('friendlist.tab.friendrequests') + ` (${ friendRequests.length })` } isExpanded={ true } requests={ friendRequests } />
+                        <FriendsSearchView headerText={ LocalizeText('people.search.title') } />
+                    </NitroCardAccordionView>
+                    { selectedFriendsIds && selectedFriendsIds.length > 0 &&
+                        <Flex gap={ 1 } className="p-1">
+                            <Button fullWidth onClick={ () => setShowRoomInvite(true) }>{ LocalizeText('friendlist.tip.invite') }</Button>
+                            <Button fullWidth variant="danger" onClick={ event => setShowRemoveFriendsConfirmation(true) }>{ LocalizeText('generic.delete') }</Button>
+                        </Flex> } 
                 </NitroCardContentView>
             </NitroCardView>
             { showRoomInvite &&
-            <FriendsRoomInviteView selectedFriendsIds={ selectedFriendsIds } onCloseClick={ () => setShowRoomInvite(false) } sendRoomInvite={ sendRoomInvite } /> }
+                <FriendsRoomInviteView selectedFriendsIds={ selectedFriendsIds } onCloseClick={ () => setShowRoomInvite(false) } sendRoomInvite={ sendRoomInvite } /> }
             { showRemoveFriendsConfirmation && 
-            <FriendsRemoveConfirmationView selectedFriendsIds={ selectedFriendsIds } removeFriendsText={ removeFriendsText } onCloseClick={ () => setShowRemoveFriendsConfirmation(false) } removeSelectedFriends={ removeSelectedFriends } /> }
+                <FriendsRemoveConfirmationView selectedFriendsIds={ selectedFriendsIds } removeFriendsText={ removeFriendsText } onCloseClick={ () => setShowRemoveFriendsConfirmation(false) } removeSelectedFriends={ removeSelectedFriends } /> }
         </>
     );
 };

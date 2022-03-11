@@ -61,8 +61,8 @@ $nitro-card-tabs-height: 33px;
 
         .nitro-card-header {
             position: relative;
-            min-height: 27px;
-            max-height: 27px;
+            min-height: 28px;
+            max-height: 28px;
             background: repeating-linear-gradient($tertiary, $tertiary 50%, $quaternary 50%, $quaternary 100%);
             border-bottom: 2px solid darken($quaternary, 5);
             box-shadow: 0 2px white;
@@ -87,7 +87,7 @@ $nitro-card-tabs-height: 33px;
 
             .nitro-card-header-close {
                 cursor: pointer;
-                padding: 0px 2px;
+                padding: 0px 1px;
                 line-height: 1;
                 @include font-size($h7-font-size);
                 border-radius: $border-radius;
