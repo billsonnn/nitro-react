@@ -1,16 +1,15 @@
-import { DetailsHTMLAttributes, FC, useCallback } from 'react';
-import { LocalizeText, NotificationUtilities } from '../../../../api';
-import { Base, Button, Column, LayoutNotificationAlertView } from '../../../../common';
-import { NotificationAlertLayoutViewProps } from './NotificationAlertLayoutView.types';
+import { FC, useCallback } from 'react';
+import { LocalizeText, NotificationAlertItem, NotificationUtilities } from '../../../../api';
+import { Base, Button, Column, LayoutNotificationAlertView, LayoutNotificationAlertViewProps } from '../../../../common';
 
-interface NotificationDefaultAlertViewProps extends NotificationAlertLayoutViewProps, DetailsHTMLAttributes<HTMLDivElement>
+interface NotificationDefaultAlertViewProps extends LayoutNotificationAlertViewProps
 {
-
+    item: NotificationAlertItem;
 }
 
 export const NotificationDefaultAlertView: FC<NotificationDefaultAlertViewProps> = props =>
 {
-    const { item = null, close = null, ...rest } = props;
+    const { item = null, title = (props.title || ''), close = null, ...rest } = props;
 
     const visitUrl = useCallback(() =>
     {
@@ -20,7 +19,7 @@ export const NotificationDefaultAlertView: FC<NotificationDefaultAlertViewProps>
     }, [ item, close ]);
 
     return (
-        <LayoutNotificationAlertView title={ item.title } close={ close } { ...rest }>
+        <LayoutNotificationAlertView title={ title } close={ close } { ...rest }>
             { (item.messages.length > 0) && item.messages.map((message, index) =>
                 {
                     const htmlText = message.replace(/\r\n|\r|\n/g, '<br />');

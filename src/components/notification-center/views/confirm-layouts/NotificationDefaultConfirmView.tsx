@@ -1,10 +1,10 @@
-import { DetailsHTMLAttributes, FC } from 'react';
-import { LayoutNotificationAlertView } from '../../../../common';
-import { NotificationConfirmLayoutViewProps } from './NotificationConfirmLayoutView.types';
+import { FC } from 'react';
+import { NotificationConfirmItem } from '../../../../api';
+import { LayoutNotificationAlertView, LayoutNotificationAlertViewProps } from '../../../../common';
 
-export interface NotificationDefaultConfirmViewProps extends NotificationConfirmLayoutViewProps, DetailsHTMLAttributes<HTMLDivElement>
+export interface NotificationDefaultConfirmViewProps extends LayoutNotificationAlertViewProps
 {
-
+    item: NotificationConfirmItem;
 }
 
 export const NotificationDefaultConfirmView: FC<NotificationDefaultConfirmViewProps> = props =>

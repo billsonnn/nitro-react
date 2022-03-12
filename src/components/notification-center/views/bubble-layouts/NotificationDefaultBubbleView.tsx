@@ -1,10 +1,10 @@
-import { DetailsHTMLAttributes, FC } from 'react';
-import { Flex, LayoutNotificationBubbleView, Text } from '../../../../common';
-import { NotificationBubbleLayoutViewProps } from './NotificationBubbleLayoutView.types';
+import { FC } from 'react';
+import { NotificationBubbleItem } from '../../../../api';
+import { Flex, LayoutNotificationBubbleView, LayoutNotificationBubbleViewProps, Text } from '../../../../common';
 
-interface NotificationDefaultBubbleViewProps extends NotificationBubbleLayoutViewProps, DetailsHTMLAttributes<HTMLDivElement>
+export interface NotificationDefaultBubbleViewProps extends LayoutNotificationBubbleViewProps
 {
-
+    item: NotificationBubbleItem;
 }
 
 export const NotificationDefaultBubbleView: FC<NotificationDefaultBubbleViewProps> = props =>

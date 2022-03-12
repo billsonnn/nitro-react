@@ -3,7 +3,7 @@ import { NitroCardContentView, NitroCardHeaderView, NitroCardView, NitroCardView
 
 export interface LayoutNotificationAlertViewProps extends NitroCardViewProps
 {
-    title: string;
+    title?: string;
     close: () => void;
 }
 

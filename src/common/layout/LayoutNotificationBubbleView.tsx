@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { Flex, FlexProps } from '..';
 import { TransitionAnimation, TransitionAnimationTypes } from '../transitions';
 
-interface LayoutNotificationBubbleViewProps extends FlexProps
+export interface LayoutNotificationBubbleViewProps extends FlexProps
 {
     fadesOut?: boolean;
     timeoutMs?: number;

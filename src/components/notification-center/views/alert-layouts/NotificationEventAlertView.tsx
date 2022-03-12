@@ -1,16 +1,15 @@
-import { DetailsHTMLAttributes, FC, useCallback } from 'react';
-import { LocalizeText, NotificationUtilities } from '../../../../api';
-import { LayoutNotificationAlertView } from '../../../../common';
-import { NotificationAlertLayoutViewProps } from './NotificationAlertLayoutView.types';
+import { FC, useCallback } from 'react';
+import { LocalizeText, NotificationAlertItem, NotificationUtilities } from '../../../../api';
+import { LayoutNotificationAlertView, LayoutNotificationAlertViewProps } from '../../../../common';
 
-interface NotificationEventAlertViewProps extends NotificationAlertLayoutViewProps, DetailsHTMLAttributes<HTMLDivElement>
+export interface NotificationEventAlertViewProps extends LayoutNotificationAlertViewProps
 {
-
+    item: NotificationAlertItem;
 }
 
 export const NotificationEventAlertView: FC<NotificationEventAlertViewProps> = props =>
 {
-    const { item = null, close = null, ...rest } = props;
+    const { item = null, title = (props.title || ''), close = null, ...rest } = props;
 
     const visitUrl = useCallback(() =>
     {

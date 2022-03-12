@@ -1,9 +1,13 @@
 import { FC } from 'react';
-import { LocalizeText, NotificationUtilities } from '../../../../api';
-import { LayoutCurrencyIcon, LayoutNotificationBubbleView } from '../../../../common';
-import { NotificationBubbleLayoutViewProps } from './NotificationBubbleLayoutView.types';
+import { LocalizeText, NotificationBubbleItem, NotificationUtilities } from '../../../../api';
+import { LayoutCurrencyIcon, LayoutNotificationBubbleView, LayoutNotificationBubbleViewProps } from '../../../../common';
 
-export const NotificationClubGiftBubbleView: FC<NotificationBubbleLayoutViewProps> = props =>
+export interface NotificationClubGiftBubbleViewProps extends LayoutNotificationBubbleViewProps
+{
+    item: NotificationBubbleItem;
+}
+
+export const NotificationClubGiftBubbleView: FC<NotificationClubGiftBubbleViewProps> = props =>
 {
     const { item = null, close = null, ...rest } = props;
 
