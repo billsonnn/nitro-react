@@ -1,6 +1,5 @@
 import { FC } from 'react';
-import { Base, BaseProps } from '../../../../../common/Base';
-import { LimitedEditionCompletePlateView } from '../../../../../views/shared/limited-edition/LimitedEditionCompletePlateView';
+import { Base, BaseProps, LayoutLimitedEditionCompletePlateView } from '../../../../../common';
 import { useCatalogContext } from '../../../CatalogContext';
 import { Offer } from '../../../common/Offer';
 
@@ -13,7 +12,7 @@ export const CatalogLimitedItemWidgetView: FC<BaseProps<HTMLDivElement>> = props
     
     return (
         <Base { ...rest }>
-            <LimitedEditionCompletePlateView className="mx-auto" uniqueLimitedItemsLeft={ currentOffer.product.uniqueLimitedItemsLeft } uniqueLimitedSeriesSize={ currentOffer.product.uniqueLimitedItemSeriesSize } />
+            <LayoutLimitedEditionCompletePlateView className="mx-auto" uniqueLimitedItemsLeft={ currentOffer.product.uniqueLimitedItemsLeft } uniqueLimitedSeriesSize={ currentOffer.product.uniqueLimitedItemSeriesSize } />
             { children }
         </Base>
     );

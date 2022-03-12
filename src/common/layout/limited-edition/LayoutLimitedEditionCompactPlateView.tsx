@@ -1,14 +1,14 @@
 import { FC, useMemo } from 'react';
-import { Base, BaseProps } from '../../../common/Base';
-import { LimitedEditionStyledNumberView } from './LimitedEditionStyledNumberView';
+import { Base, BaseProps } from '../../Base';
+import { LayoutLimitedEditionStyledNumberView } from './LayoutLimitedEditionStyledNumberView';
 
-export interface LimitedEditionCompactPlateViewProps extends BaseProps<HTMLDivElement>
+interface LayoutLimitedEditionCompactPlateViewProps extends BaseProps<HTMLDivElement>
 {
     uniqueNumber: number;
     uniqueSeries: number;
 }
 
-export const LimitedEditionCompactPlateView: FC<LimitedEditionCompactPlateViewProps> = props =>
+export const LayoutLimitedEditionCompactPlateView: FC<LayoutLimitedEditionCompactPlateViewProps> = props =>
 {
     const { uniqueNumber = 0, uniqueSeries = 0, classNames = [], children = null, ...rest } = props;
 
@@ -24,10 +24,10 @@ export const LimitedEditionCompactPlateView: FC<LimitedEditionCompactPlateViewPr
     return (
         <Base classNames={ getClassNames } { ...rest }>
             <div>
-                <LimitedEditionStyledNumberView value={ uniqueNumber } />
+                <LayoutLimitedEditionStyledNumberView value={ uniqueNumber } />
             </div>
             <div>
-                <LimitedEditionStyledNumberView value={ uniqueSeries } />
+                <LayoutLimitedEditionStyledNumberView value={ uniqueSeries } />
             </div>
             { children }
         </Base>

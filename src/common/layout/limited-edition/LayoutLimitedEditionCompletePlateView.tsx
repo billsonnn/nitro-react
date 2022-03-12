@@ -1,17 +1,17 @@
 import { FC, useMemo } from 'react';
 import { LocalizeText } from '../../../api';
-import { Base, BaseProps } from '../../../common/Base';
-import { Column } from '../../../common/Column';
-import { Flex } from '../../../common/Flex';
-import { LimitedEditionStyledNumberView } from './LimitedEditionStyledNumberView';
+import { Base, BaseProps } from '../../Base';
+import { Column } from '../../Column';
+import { Flex } from '../../Flex';
+import { LayoutLimitedEditionStyledNumberView } from './LayoutLimitedEditionStyledNumberView';
 
-export interface LimitedEditionCompletePlateViewProps extends BaseProps<HTMLDivElement>
+interface LayoutLimitedEditionCompletePlateViewProps extends BaseProps<HTMLDivElement>
 {
     uniqueLimitedItemsLeft: number;
     uniqueLimitedSeriesSize: number;
 }
 
-export const LimitedEditionCompletePlateView: FC<LimitedEditionCompletePlateViewProps> = props =>
+export const LayoutLimitedEditionCompletePlateView: FC<LayoutLimitedEditionCompletePlateViewProps> = props =>
 {
     const { uniqueLimitedItemsLeft = 0, uniqueLimitedSeriesSize = 0, classNames = [], ...rest } = props;
 
@@ -29,11 +29,11 @@ export const LimitedEditionCompletePlateView: FC<LimitedEditionCompletePlateView
             <Column className="plate-container" gap={ 0 }>
                 <Flex justifyContent="between" alignItems="center">
                     { LocalizeText('unique.items.left') }
-                    <LimitedEditionStyledNumberView value={ uniqueLimitedItemsLeft } />
+                    <LayoutLimitedEditionStyledNumberView value={ uniqueLimitedItemsLeft } />
                 </Flex>
                 <Flex justifyContent="between" alignItems="center">
                     { LocalizeText('unique.items.number.sold') }
-                    <LimitedEditionStyledNumberView value={ uniqueLimitedSeriesSize } />
+                    <LayoutLimitedEditionStyledNumberView value={ uniqueLimitedSeriesSize } />
                 </Flex>
             </Column>
         </Base>

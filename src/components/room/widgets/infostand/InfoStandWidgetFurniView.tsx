@@ -2,9 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CrackableDataType, GroupInformationComposer, GroupInformationEvent, RoomControllerLevel, RoomObjectCategory, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage, RoomWidgetUpdateInfostandFurniEvent, SendMessageComposer } from '../../../../api';
-import { Button, Column, Flex, LayoutBadgeImageView, LayoutRarityLevelView, Text, UserProfileIconView } from '../../../../common';
+import { Button, Column, Flex, LayoutBadgeImageView, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, Text, UserProfileIconView } from '../../../../common';
 import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
-import { LimitedEditionCompactPlateView } from '../../../../views/shared/limited-edition/LimitedEditionCompactPlateView';
 import { useRoomContext } from '../../RoomContext';
 
 interface InfoStandWidgetFurniViewProps
@@ -267,7 +266,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                         <Flex position="relative" gap={ 1 }>
                             { furniData.stuffData.isUnique &&
                                 <div className="position-absolute end-0">
-                                    <LimitedEditionCompactPlateView uniqueNumber={ furniData.stuffData.uniqueNumber } uniqueSeries={ furniData.stuffData.uniqueSeries } />
+                                    <LayoutLimitedEditionCompactPlateView uniqueNumber={ furniData.stuffData.uniqueNumber } uniqueSeries={ furniData.stuffData.uniqueSeries } />
                                 </div> }
                             { (furniData.stuffData.rarityLevel > -1) &&
                                 <div className="position-absolute end-0">

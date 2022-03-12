@@ -1,8 +1,8 @@
 import { FC, useMemo } from 'react';
-import { LimitedEditionStyledNumberView } from '../../views/shared/limited-edition/LimitedEditionStyledNumberView';
 import { Base } from '../Base';
 import { Column, ColumnProps } from '../Column';
 import { LayoutItemCountView } from './LayoutItemCountView';
+import { LayoutLimitedEditionStyledNumberView } from './limited-edition';
 
 export interface LayoutGridItemProps extends ColumnProps
 {
@@ -66,7 +66,7 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
                 <>
                     <Base fit className="unique-bg-override" style={ { backgroundImage: `url(${ itemImage })` } } />
                     <div className="position-absolute bottom-0 unique-item-counter">
-                        <LimitedEditionStyledNumberView value={ itemUniqueNumber } />
+                        <LayoutLimitedEditionStyledNumberView value={ itemUniqueNumber } />
                     </div>
                 </> }
             { children }

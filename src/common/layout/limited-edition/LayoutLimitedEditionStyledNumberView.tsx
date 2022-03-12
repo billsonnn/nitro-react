@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
-export interface LimitedEditionStyledNumberViewProps
+interface LayoutLimitedEditionStyledNumberViewProps
 {
     value: number;
 }
 
-export const LimitedEditionStyledNumberView: FC<LimitedEditionStyledNumberViewProps> = props =>
+export const LayoutLimitedEditionStyledNumberView: FC<LayoutLimitedEditionStyledNumberViewProps> = props =>
 {
     const { value = 0 } = props;
 
