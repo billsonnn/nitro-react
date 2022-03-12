@@ -1,5 +1,5 @@
 import { NitroEvent } from '@nitrots/nitro-renderer';
-import { MessengerFriend } from '../../views/friends/common/MessengerFriend';
+import { MessengerFriend } from '../../components/friends/common/MessengerFriend';
 
 export class FriendListContentEvent extends NitroEvent
 {

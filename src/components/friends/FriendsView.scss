@@ -1,0 +1,239 @@
+.nitro-friends-spritesheet {
+    background: url('../../assets/images/friends/friends-spritesheet.png') transparent no-repeat;
+
+    &.icon-friendbar-visit {
+        width: 21px; height: 21px;
+        background-position: -38px -5px;
+    }
+    
+    &.icon-heart {
+        width: 16px; height: 14px;
+        background-position: -5px -67px;
+    }
+    
+    &.icon-new-message {
+        width: 14px; height: 14px;
+        background-position: -96px -53px;
+    }
+    
+    &.icon-none {
+        width: 16px; height: 14px;
+        background-position: -31px -67px;
+    }
+    
+    &.icon-profile {
+        width: 21px; height: 21px;
+        background-position: -5px -36px;
+    }
+    
+    &.icon-profile-sm {
+        width: 13px; height: 11px;
+        background-position: -51px -91px;
+
+        &:hover {
+            width: 13px; height: 11px;
+            background-position: -74px -91px;
+        }
+    }
+    
+    &.icon-smile {
+        width: 16px; height: 14px;
+        background-position: -57px -67px;
+    }
+    
+    &.icon-warning {
+        width: 23px; height: 21px;
+        background-position: -5px -5px;
+    }
+    
+    &.icon-accept {
+        width: 13px; height: 14px;
+        background-position: -5px -91px;
+    }
+    
+    &.icon-add {
+        width: 16px; height: 15px;
+        background-position: -69px -31px;
+    }
+    
+    &.icon-bobba {
+        width: 16px; height: 14px;
+        background-position: -96px -5px;
+    }
+    
+    &.icon-chat {
+        width: 17px; height: 16px;
+        background-position: -69px -5px;
+    }
+    
+    &.icon-deny {
+        width: 13px; height: 14px;
+        background-position: -28px -91px;
+    }
+    
+    &.icon-follow {
+        width: 16px; height: 14px;
+        background-position: -96px -29px;
+    }
+    
+    &.icon-friendbar-chat {
+        width: 20px; height: 21px;
+        background-position: -36px -36px;
+    }
+}
+
+.nitro-friends {
+    width: $friends-list-width;
+    height: $friends-list-height;
+
+    .search-input {
+        border: 0;
+        border-bottom: 1px solid rgba($black, 0.2);
+    }
+}
+
+.nitro-friends-room-invite {
+    width: $friends-list-width;
+}
+
+.nitro-friends-remove-confirmation {
+    width: $friends-list-width;
+}
+
+.friend-bar {
+
+    .friend-bar-button {
+        z-index: 2;
+    }
+
+    .friend-bar-item {
+        width: 130px;
+        margin: 0 3px;
+        z-index: 0;
+        position: relative;
+        padding-left:38px;
+        text-align: left;
+    
+        &.friend-bar-item-active {
+            margin-bottom:21px;
+        }
+    
+        .friend-bar-item-head {
+            &.avatar {
+                top: -30px;
+                left: -30px;
+            }
+            &.group {
+                top: -5px;
+                left: -5px;
+            }
+    
+            pointer-events: none;
+        }
+    
+        &.friend-bar-search {
+            .friend-bar-item-head {
+                top: -3px;
+                left: 5px;
+                width: 31px;
+                height: 34px;
+                background-image: url('../../assets/images/toolbar/friend-search.png');
+            } 
+        }
+    }
+}
+
+.nitro-friends-messenger {
+    width: $messenger-width;
+    height: $messenger-height;
+
+    .layout-grid-item {
+        height: 50px;
+    }
+
+    .friend-head {
+        width: 50px;
+        height: 45px;
+        overflow: hidden;
+
+        .avatar-image {
+            margin-top: 90px;
+        }
+    }
+
+    .open-chat-entry {
+        position: relative;
+        border: 2px solid;
+        border-color: $light;
+
+        &.active {
+            border-color: #fffde9;
+            background-color: #ececec
+        }
+
+        .friend-head {
+            width: 45px;
+            height: 45px;
+            overflow: hidden;
+    
+            .avatar-image {
+                position: absolute;
+                margin-left: -27px;
+                margin-top: -27px;
+            }
+        }
+    }
+
+    .chat-title {
+        margin-top: -21px;
+    }
+
+    .chat-messages {
+        overflow-y: auto;
+
+        .message-avatar {
+            position: relative;
+            overflow: hidden;
+            width: 50px;
+            height: 50px;
+
+            .avatar-image {
+                position: absolute;
+                margin-left: -22px;
+                margin-top: -25px;
+            }
+        }
+
+        .messages-group-left {
+            position: relative;
+            
+            &:before {
+                position: absolute;
+                content: ' ';
+                width: 0;
+                height: 0;
+                border-right: 8px solid rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+                border-top: 8px solid transparent;
+                border-bottom: 8px solid transparent;
+                top: 10px;
+                left: -8px;
+            }
+        }
+
+        .messages-group-right {
+            position: relative;
+            
+            &:before {
+                position: absolute;
+                content: ' ';
+                width: 0;
+                height: 0;
+                border-left: 8px solid rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+                border-top: 8px solid transparent;
+                border-bottom: 8px solid transparent;
+                top: 10px;
+                right: -8px;
+            }
+        }
+    }
+}

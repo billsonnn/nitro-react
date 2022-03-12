@@ -1,10 +1,10 @@
 import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
 import { SendMessageComposer } from '../../..';
 import { GetNitroInstance, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
+import { FriendsHelper } from '../../../../../components/friends/common/FriendsHelper';
 import { PetSupplementEnum } from '../../../../../components/room/widgets/avatar-info/common/PetSupplementEnum';
 import { FriendsSendFriendRequestEvent, HelpReportUserEvent, InventoryTradeRequestEvent, WiredSelectObjectEvent } from '../../../../../events';
 import { DispatchUiEvent } from '../../../../../hooks';
-import { FriendsHelper } from '../../../../../views/friends/common/FriendsHelper';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { RoomWidgetObjectNameEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
 import { RoomWidgetChangeMottoMessage, RoomWidgetFurniActionMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUserActionMessage } from '../messages';
