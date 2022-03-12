@@ -5,7 +5,6 @@ import { Base, TransitionAnimation, TransitionAnimationTypes } from '../../commo
 import { UseRoomSessionManagerEvent } from '../../hooks';
 import { HcCenterView } from '../../views/hc-center/HcCenterView';
 import { HotelView } from '../../views/hotel-view/HotelView';
-import { NitropediaView } from '../../views/nitropedia/NitropediaView';
 import { AchievementsView } from '../achievements/AchievementsView';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CameraWidgetView } from '../camera/CameraWidgetView';
@@ -20,6 +19,7 @@ import { HelpView } from '../help/HelpView';
 import { InventoryView } from '../inventory/InventoryView';
 import { ModToolsView } from '../mod-tools/ModToolsView';
 import { NavigatorView } from '../navigator/NavigatorView';
+import { NitropediaView } from '../nitropedia/NitropediaView';
 import { RightSideView } from '../right-side/RightSideView';
 import { RoomHostView } from '../room/RoomHostView';
 import { ToolbarView } from '../toolbar/ToolbarView';
