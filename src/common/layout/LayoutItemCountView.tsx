@@ -8,7 +8,7 @@ interface LayoutItemCountViewProps extends BaseProps<HTMLDivElement>
 
 export const LayoutItemCountView: FC<LayoutItemCountViewProps> = props =>
 {
-    const { count = 0, position = 'aboslute', classNames = [], children = null, ...rest } = props;
+    const { count = 0, position = 'absolute', classNames = [], children = null, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {

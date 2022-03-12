@@ -1,7 +1,8 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, RoomInviteEvent, SendMessageComposer as SendMessageComposerPacket } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, PlaySound, RemoveLinkEventTracker, SendMessageComposer, SoundNames } from '../../../../api';
-import { Base, Button, ButtonGroup, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, LayoutItemCountView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
+import { Base, Button, ButtonGroup, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, LayoutGridItem, LayoutItemCountView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { FriendsMessengerIconEvent } from '../../../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 import { MessengerThread } from '../../common/MessengerThread';
@@ -253,61 +254,66 @@ export const FriendsMessengerView: FC<{}> = props =>
         <NitroCardView className="nitro-friends-messenger" uniqueKey="nitro-friends-messenger" theme="primary-slim">
             <NitroCardHeaderView headerText={LocalizeText('messenger.window.title', ['OPEN_CHAT_COUNT'], [visibleThreads.length.toString()])} onCloseClick={event => setIsVisible(false)} />
             <NitroCardContentView>
-            <Grid>
-                <Column size={ 4 }>
-                        <Base className='text-black fw-bold fs-5'>{LocalizeText('toolbar.icon.label.messenger')}</Base>
-                        <Column className='h-100 overflow-auto'>
-                        {visibleThreads && (visibleThreads.length > 0) && visibleThreads.map((thread, index) =>
-                        {
-                            const messageThreadIndex = messageThreads.indexOf(thread);
+                <Grid overflow="hidden">
+                    <Column size={ 4 }>
+                        <Text bold>{ LocalizeText('toolbar.icon.label.messenger') }</Text>
+                        <Column fullHeight overflow="auto">
+                            { visibleThreads && (visibleThreads.length > 0) && visibleThreads.map((thread, index) =>
+                            {
+                                const messageThreadIndex = messageThreads.indexOf(thread);
 
-                            return (
-                                <Flex key={index} className={`open-chat-entry p-1 cursor-pointer rounded ${activeThreadIndex === messageThreadIndex ? 'active' : ''}`} onClick={event => setActiveThreadIndex(messageThreadIndex)}>
-                                    {thread.unread &&
-                                            <LayoutItemCountView count={ thread.unreadCount }/>
-                                    }
-                                    <div className="friend-head rounded flex-shrink-0">
-                                        
-                                        {thread.participant.id > 0 && <LayoutAvatarImageView figure={thread.participant.figure} headOnly={true} direction={3} />}
-                                        {thread.participant.id <= 0 && <LayoutBadgeImageView isGroup={true} badgeCode={thread.participant.figure} />}
-
-                                    </div>
-                                    <Base className='d-flex text-truncate text-black ms-1 align-items-center'>{thread.participant.name}</Base>
-                                </Flex>
-                            );
-                        })}
+                                return (
+                                    <LayoutGridItem key={ index } itemActive={ (activeThreadIndex === messageThreadIndex) } onClick={ event => setActiveThreadIndex(messageThreadIndex) }>
+                                        { thread.unread &&
+                                            <LayoutItemCountView count={ thread.unreadCount } /> }
+                                        <Flex fullWidth alignItems="center" gap={ 1 }>
+                                            <Flex alignItems="center" className="friend-head px-1">
+                                                { (thread.participant.id > 0) &&
+                                                    <LayoutAvatarImageView figure={ thread.participant.figure } headOnly={ true } direction={ 3 } /> }
+                                                { (thread.participant.id <= 0) &&
+                                                    <LayoutBadgeImageView isGroup={ true } badgeCode={ thread.participant.figure } /> }
+                                            </Flex>
+                                            <Text truncate grow>{ thread.participant.name }</Text>
+                                        </Flex>
+                                    </LayoutGridItem>
+                                );
+                            })}
                         </Column>
                     </Column>
-                    <Column size={ 8 }>
-                        {(activeThreadIndex >= 0) &&
+                    <Column size={ 8 } overflow="hidden">
+                        { (activeThreadIndex >= 0) &&
                             <>
-                                <Base className='mb-2 text-black text-center fw-bold fs-6'>{LocalizeText('messenger.window.separator', ['FRIEND_NAME'], [messageThreads[activeThreadIndex].participant.name])}</Base>
-                                <Flex className="mb-2" gap={2}>
-                                    <ButtonGroup>
-                                        <Button variant="primary" onClick={ followFriend }>
-                                            <Base className="nitro-friends-spritesheet icon-follow" />
+                                <Text bold center>{ LocalizeText('messenger.window.separator', [ 'FRIEND_NAME' ], [ messageThreads[activeThreadIndex].participant.name ]) }</Text>
+                                <Flex alignItems="center" justifyContent="between" gap={ 1 }>
+                                    <Flex gap={ 1 }>
+                                        <ButtonGroup>
+                                            <Button onClick={ followFriend }>
+                                                <Base className="nitro-friends-spritesheet icon-follow" />
+                                            </Button>
+                                            <Button onClick={ openProfile }>
+                                                <Base className="nitro-friends-spritesheet icon-profile-sm" />
+                                            </Button>
+                                        </ButtonGroup>
+                                        <Button variant="danger" onClick={ openProfile }>
+                                            {LocalizeText('messenger.window.button.report')}
                                         </Button>
-                                        <Button variant="primary" onClick={ openProfile }>
-                                            <Base className="nitro-friends-spritesheet icon-profile-sm" />
-                                        </Button>
-                                    </ButtonGroup>
-                                    <Button variant="danger" onClick={ openProfile }>
-                                        {LocalizeText('messenger.window.button.report')}
-                                    </Button>
-                                    <Button className="ms-auto" onClick={ event => closeThread(activeThreadIndex) }>
-                                        <Base className="fas fa-times" />
+                                    </Flex>
+                                    <Button onClick={ event => closeThread(activeThreadIndex) }>
+                                        <FontAwesomeIcon icon="times" />
                                     </Button>
                                 </Flex>
-                                <Column innerRef={messagesBox} className="bg-muted p-2 rounded chat-messages mb-2 h-100 w-100">
-                                    <FriendsMessengerThreadView thread={messageThreads[activeThreadIndex]} />
+                                <Column fit innerRef={ messagesBox } className="bg-muted p-2 rounded chat-messages">
+                                    <Column overflow="auto">
+                                        <FriendsMessengerThreadView thread={ messageThreads[activeThreadIndex] } />
+                                    </Column>
                                 </Column>
-                                <Flex gap={2}>
-                                    <input type="text" className="form-control form-control-sm" maxLength={ 255 } placeholder={LocalizeText('messenger.window.input.default', ['FRIEND_NAME'], [messageThreads[activeThreadIndex].participant.name])} value={messageText} onChange={event => setMessageText(event.target.value)} onKeyDown={onKeyDown} />
-                                    <Button variant="success" onClick={sendMessage}>
-                                        {LocalizeText('widgets.chatinput.say')}
+                                <Flex gap={ 1 }>
+                                    <input type="text" className="form-control form-control-sm" maxLength={ 255 } placeholder={ LocalizeText('messenger.window.input.default', [ 'FRIEND_NAME' ], [ messageThreads[activeThreadIndex].participant.name ]) } value={ messageText } onChange={ event => setMessageText(event.target.value) } onKeyDown={ onKeyDown } />
+                                    <Button variant="success" onClick={ sendMessage }>
+                                        { LocalizeText('widgets.chatinput.say') }
                                     </Button>
                                 </Flex>
-                            </>}
+                            </> }
                     </Column>
                 </Grid>
             </NitroCardContentView>

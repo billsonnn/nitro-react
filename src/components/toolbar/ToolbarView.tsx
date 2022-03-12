@@ -223,7 +223,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                                 <LayoutItemCountView count={ unseenFriendRequestCount } /> }
                         </Base>
                         { ((chatIconType === CHAT_ICON_SHOWING) || (chatIconType === CHAT_ICON_UNREAD)) &&
-                            <Base pointer className={ `navigation-item icon icon-message ${ (chatIconType === CHAT_ICON_UNREAD) && 'is-unread' }` } onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_CHAT_ITEM) } /> }
+                            <Base pointer className={ `navigation-item icon icon-message ${ (chatIconType === CHAT_ICON_UNREAD) && 'is-unseen' }` } onClick={ event => handleToolbarItemClick(ToolbarViewItems.FRIEND_CHAT_ITEM) } /> }
                     </Flex>
                     <Base id="toolbar-friend-bar-container" className="d-none d-lg-block" />
                 </Flex>

@@ -2,6 +2,20 @@
     width: $messenger-width;
     height: $messenger-height;
 
+    .layout-grid-item {
+        height: 50px;
+    }
+
+    .friend-head {
+        width: 50px;
+        height: 45px;
+        overflow: hidden;
+
+        .avatar-image {
+            margin-top: 90px;
+        }
+    }
+
     .open-chat-entry {
         position: relative;
         border: 2px solid;
