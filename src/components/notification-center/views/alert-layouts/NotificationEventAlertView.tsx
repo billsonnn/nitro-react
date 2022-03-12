@@ -1,7 +1,6 @@
 import { DetailsHTMLAttributes, FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../api';
+import { LocalizeText, NotificationUtilities } from '../../../../api';
 import { LayoutNotificationAlertView } from '../../../../common';
-import { NotificationUtilities } from '../../common/NotificationUtilities';
 import { NotificationAlertLayoutViewProps } from './NotificationAlertLayoutView.types';
 
 interface NotificationEventAlertViewProps extends NotificationAlertLayoutViewProps, DetailsHTMLAttributes<HTMLDivElement>

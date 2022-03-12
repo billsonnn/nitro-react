@@ -1,9 +1,8 @@
 import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomRotatingEffect, RoomSessionChatEvent, RoomSettingsComposer, RoomShakingEffect, RoomWidgetEnum, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
 import { GetConfiguration, GetNitroInstance, SendMessageComposer } from '../../..';
-import { GetRoomEngine, GetSessionDataManager, LocalizeText } from '../../../..';
+import { GetRoomEngine, GetSessionDataManager, LocalizeText, NotificationUtilities } from '../../../..';
 import { FloorplanEditorEvent } from '../../../../../events/floorplan-editor/FloorplanEditorEvent';
 import { DispatchUiEvent } from '../../../../../hooks';
-import { NotificationUtilities } from '../../../../../views/notification-center/common/NotificationUtilities';
 import { RoomWidgetFloodControlEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetChatMessage, RoomWidgetChatSelectAvatarMessage, RoomWidgetChatTypingMessage, RoomWidgetMessage, RoomWidgetRequestWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';

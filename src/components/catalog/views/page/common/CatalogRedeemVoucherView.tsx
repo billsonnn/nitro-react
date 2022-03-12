@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RedeemVoucherMessageComposer, VoucherRedeemErrorMessageEvent, VoucherRedeemOkMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../../api';
+import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../api';
 import { Button, Flex } from '../../../../../common';
 import { BatchUpdates, UseMessageEventHook } from '../../../../../hooks';
-import { NotificationUtilities } from '../../../../../views/notification-center/common/NotificationUtilities';
 
 export interface CatalogRedeemVoucherViewProps
 {

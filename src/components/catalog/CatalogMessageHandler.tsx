@@ -1,11 +1,9 @@
 import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, MarketplaceConfigurationEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
 import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/user/GuildMembershipsMessageEvent';
 import { FC, useCallback } from 'react';
-import { GetFurnitureData, GetProductDataForLocalization, LocalizeText } from '../../api';
+import { GetFurnitureData, GetProductDataForLocalization, LocalizeText, NotificationAlertType, NotificationUtilities } from '../../api';
 import { CatalogGiftReceiverNotFoundEvent, CatalogNameResultEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, CatalogSetExtraPurchaseParameterEvent } from '../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../hooks';
-import { NotificationAlertType } from '../../views/notification-center/common/NotificationAlertType';
-import { NotificationUtilities } from '../../views/notification-center/common/NotificationUtilities';
 import { useCatalogContext } from './CatalogContext';
 import { CatalogNode } from './common/CatalogNode';
 import { CatalogPetPalette } from './common/CatalogPetPalette';

@@ -77,7 +77,7 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
                         {
                             if(activeBadges.indexOf(code) >= 0) return null;
 
-                            return <InventoryBadgeItemView key={ code } badgeCode={ code } />
+                            return <InventoryBadgeItemView key={ index } badgeCode={ code } />
                         }) }
                 </AutoGrid>
             </Column>

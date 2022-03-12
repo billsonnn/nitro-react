@@ -1,9 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomDeleteComposer } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../../api';
+import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../api';
 import { Base, Flex, Text } from '../../../../../common';
-import { NotificationUtilities } from '../../../../../views/notification-center/common/NotificationUtilities';
 import { GetMaxVisitorsList } from '../../../common/RoomSettingsUtils';
 import { useNavigatorContext } from '../../../NavigatorContext';
 import { NavigatorRoomSettingsTabViewProps } from './NavigatorRoomSettingsTabViewProps.types';

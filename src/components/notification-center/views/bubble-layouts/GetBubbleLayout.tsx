@@ -1,5 +1,4 @@
-import { NotificationBubbleItem } from '../../common/NotificationBubbleItem';
-import { NotificationBubbleType } from '../../common/NotificationBubbleType';
+import { NotificationBubbleItem, NotificationBubbleType } from '../../../../api';
 import { NotificationClubGiftBubbleView } from './NotificationClubGiftBubbleView';
 import { NotificationDefaultBubbleView } from './NotificationDefaultBubbleView';
 

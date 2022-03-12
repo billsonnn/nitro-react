@@ -1,13 +1,9 @@
 import { AchievementNotificationMessageEvent, ActivityPointNotificationMessageEvent, ClubGiftNotificationEvent, ClubGiftSelectedEvent, HabboBroadcastMessageEvent, HotelClosedAndOpensEvent, HotelClosesAndWillOpenAtEvent, HotelWillCloseInMinutesEvent, InfoFeedEnableMessageEvent, MaintenanceStatusMessageEvent, ModeratorCautionEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent, PetLevelNotificationEvent, PetReceivedMessageEvent, RespectReceivedEvent, RoomEnterEvent, UserBannedMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { GetConfiguration, GetRoomEngine, GetSessionDataManager, LocalizeBadgeName, LocalizeText } from '../../api';
+import { GetConfiguration, GetRoomEngine, GetSessionDataManager, LocalizeBadgeName, LocalizeText, NotificationBubbleType, NotificationUtilities, ProductImageUtility } from '../../api';
 import { UseMessageEventHook } from '../../hooks';
-import { NotificationBubbleType } from './common/NotificationBubbleType';
-import { NotificationUtilities } from './common/NotificationUtilities';
-import { ProductImageUtility } from './common/ProductImageUtility';
-import { INotificationCenterMessageHandlerProps } from './NotificationCenterMessageHandler.types';
 
-export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHandlerProps> = props =>
+export const NotificationCenterMessageHandler: FC<{}> = props =>
 {
     const onRespectReceivedEvent = useCallback((event: RespectReceivedEvent) =>
     {
@@ -71,16 +67,9 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
 
         if(parser.amountChanged <= 0) return;
 
-        let imageUrl: string = null;
+        const imageUrl = GetConfiguration<string>('currency.asset.icon.url', '').replace('%type%', parser.type.toString());
 
-        switch(parser.type)
-        {
-            case 5:
-                imageUrl = GetConfiguration<string>('currency.asset.icon.url', '').replace('%type%', parser.type.toString());
-                break;
-        }
-
-        NotificationUtilities.showSingleBubble(LocalizeText('notifications.text.loyalty.received', [ 'AMOUNT' ], [ parser.amountChanged.toString() ]), NotificationBubbleType.INFO, imageUrl);
+        NotificationUtilities.showSingleBubble(LocalizeText(`notifications.text.activitypoints.${ parser.type }`, [ 'AMOUNT' ], [ parser.amountChanged.toString() ]), NotificationBubbleType.INFO, imageUrl);
     }, []);
 
     UseMessageEventHook(ActivityPointNotificationMessageEvent, onActivityPointNotificationMessageEvent);
@@ -198,6 +187,8 @@ export const NotificationCenterMessageHandler: FC<INotificationCenterMessageHand
     const onNotificationDialogMessageEvent = useCallback((event: NotificationDialogMessageEvent) =>
     {
         const parser = event.getParser();
+
+        console.log(parser);
 
         NotificationUtilities.showNotification(parser.type, parser.parameters);
     }, []);

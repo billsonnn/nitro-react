@@ -1,8 +1,7 @@
 import { GroupInformationParser, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, LocalizeText, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
+import { CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, LocalizeText, NotificationUtilities, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
 import { Button, Column, Flex, Grid, LayoutBadgeImageView, Text } from '../../../common';
-import { NotificationUtilities } from '../../../views/notification-center/common/NotificationUtilities';
 import { CatalogPageName } from '../../catalog/common/CatalogPageName';
 import { GroupMembershipType } from '../common/GroupMembershipType';
 import { GroupType } from '../common/GroupType';

@@ -1,9 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NitroRectangle, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
-import { GetRoomEngine, GetRoomSession, LocalizeText, PlaySound, SoundNames } from '../../../../api';
+import { GetRoomEngine, GetRoomSession, LocalizeText, NotificationUtilities, PlaySound, SoundNames } from '../../../../api';
 import { Column, DraggableWindow, Flex } from '../../../../common';
-import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
 import { useCameraWidgetContext } from '../../CameraWidgetContext';
 import { CameraPicture } from '../../common/CameraPicture';
 

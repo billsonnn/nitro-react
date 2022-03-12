@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GroupAdminGiveComposer, GroupAdminTakeComposer, GroupConfirmMemberRemoveEvent, GroupConfirmRemoveMemberComposer, GroupMemberParser, GroupMembersComposer, GroupMembersEvent, GroupMembershipAcceptComposer, GroupMembershipDeclineComposer, GroupMembersParser, GroupRank, GroupRemoveMemberComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../../api';
+import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, NotificationUtilities, RemoveLinkEventTracker, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { BatchUpdates, UseMessageEventHook } from '../../../hooks';
-import { NotificationUtilities } from '../../../views/notification-center/common/NotificationUtilities';
 
 export const GroupMembersView: FC<{}> = props =>
 {

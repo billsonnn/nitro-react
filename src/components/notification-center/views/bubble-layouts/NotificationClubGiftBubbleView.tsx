@@ -1,7 +1,6 @@
 import { FC } from 'react';
-import { LocalizeText } from '../../../../api';
+import { LocalizeText, NotificationUtilities } from '../../../../api';
 import { LayoutCurrencyIcon, LayoutNotificationBubbleView } from '../../../../common';
-import { NotificationUtilities } from '../../common/NotificationUtilities';
 import { NotificationBubbleLayoutViewProps } from './NotificationBubbleLayoutView.types';
 
 export const NotificationClubGiftBubbleView: FC<NotificationBubbleLayoutViewProps> = props =>

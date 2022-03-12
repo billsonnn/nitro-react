@@ -1,9 +1,7 @@
 import { CallForHelpTopicData, DefaultSanctionMessageComposer, ModAlertMessageComposer, ModBanMessageComposer, ModKickMessageComposer, ModMessageMessageComposer, ModMuteMessageComposer, ModTradingLockMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../api';
+import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { NotificationAlertType } from '../../../../views/notification-center/common/NotificationAlertType';
-import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
 import { useModToolsContext } from '../../ModToolsContext';
 import { ISelectedUser } from '../../utils/ISelectedUser';
 import { ModActionDefinition } from '../../utils/ModActionDefinition';

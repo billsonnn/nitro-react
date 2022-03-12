@@ -1,10 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FurnitureListComposer, IObjectData, TradingAcceptComposer, TradingConfirmationComposer, TradingListAddItemComposer, TradingListAddItemsComposer, TradingListItemRemoveComposer, TradingUnacceptComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../api';
+import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../api';
 import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../common';
-import { NotificationAlertType } from '../../../../views/notification-center/common/NotificationAlertType';
-import { NotificationUtilities } from '../../../../views/notification-center/common/NotificationUtilities';
 import { FurniCategory } from '../../common/FurniCategory';
 import { GroupItem } from '../../common/GroupItem';
 import { IFurnitureItem } from '../../common/IFurnitureItem';

@@ -1,9 +1,7 @@
 import { CallForHelpResultMessageEvent, GetPendingCallsForHelpMessageComposer, IssueCloseNotificationMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../api';
+import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../api';
 import { UseMessageEventHook } from '../../hooks';
-import { NotificationAlertType } from '../../views/notification-center/common/NotificationAlertType';
-import { NotificationUtilities } from '../../views/notification-center/common/NotificationUtilities';
 import { CallForHelpResult } from './common/CallForHelpResult';
 import { GetCloseReasonKey } from './common/GetCloseReasonKey';
  

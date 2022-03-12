@@ -1,8 +1,7 @@
 import { SelectClubGiftComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../../../api';
+import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
 import { AutoGrid, Text } from '../../../../../../common';
-import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
 import { useCatalogContext } from '../../../../CatalogContext';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { VipGiftItem } from './VipGiftItemView';

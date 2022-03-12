@@ -1,4 +1,4 @@
-import { NotificationConfirmItem } from '../../common/NotificationConfirmItem';
+import { NotificationConfirmItem } from '../../../../api';
 
 export interface NotificationConfirmLayoutViewProps
 {

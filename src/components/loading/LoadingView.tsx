@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
+import { NotificationUtilities } from '../../api';
 import { Base, Column } from '../../common';
-import { NotificationUtilities } from '../../views/notification-center/common/NotificationUtilities';
 
 interface LoadingViewProps
 {

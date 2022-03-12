@@ -1,4 +1,4 @@
-import { NotificationAlertItem } from '../../common/NotificationAlertItem';
+import { NotificationAlertItem } from '../../../../api';
 
 export interface NotificationAlertLayoutViewProps
 {

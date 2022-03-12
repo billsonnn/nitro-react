@@ -1,5 +1,4 @@
-import { NotificationAlertItem } from '../../common/NotificationAlertItem';
-import { NotificationAlertType } from '../../common/NotificationAlertType';
+import { NotificationAlertItem, NotificationAlertType } from '../../../../api';
 import { NotificationDefaultAlertView } from './NotificationDefaultAlertView';
 import { NotificationEventAlertView } from './NotificationEventAlertView';
 

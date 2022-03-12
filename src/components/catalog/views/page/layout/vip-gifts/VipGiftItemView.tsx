@@ -1,11 +1,7 @@
 import { CatalogPageMessageOfferData } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../../../api';
-import { Button } from '../../../../../../common/Button';
-import { LayoutGridItem } from '../../../../../../common/layout/LayoutGridItem';
-import { LayoutImage } from '../../../../../../common/layout/LayoutImage';
-import { Text } from '../../../../../../common/Text';
-import { ProductImageUtility } from '../../../../../../views/notification-center/common/ProductImageUtility';
+import { LocalizeText, ProductImageUtility } from '../../../../../../api';
+import { Button, LayoutGridItem, LayoutImage, Text } from '../../../../../../common';
 
 export interface VipGiftItemViewProps
 {

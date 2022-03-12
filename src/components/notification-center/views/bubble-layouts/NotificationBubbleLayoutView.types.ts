@@ -1,4 +1,4 @@
-import { NotificationBubbleItem } from '../../common/NotificationBubbleItem';
+import { NotificationBubbleItem } from '../../../../api';
 
 export interface NotificationBubbleLayoutViewProps
 {

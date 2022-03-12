@@ -1,9 +1,9 @@
 import { HabboWebTools, RoomEnterEffect } from '@nitrots/nitro-renderer';
-import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText } from '../../../api';
-import { CatalogPageName } from '../../../components/catalog/common/CatalogPageName';
-import { NotificationAlertEvent, NotificationConfirmEvent } from '../../../events';
-import { NotificationBubbleEvent } from '../../../events/notification-center/NotificationBubbleEvent';
-import { DispatchUiEvent } from '../../../hooks';
+import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText } from '..';
+import { CatalogPageName } from '../../components/catalog/common/CatalogPageName';
+import { NotificationAlertEvent, NotificationConfirmEvent } from '../../events';
+import { NotificationBubbleEvent } from '../../events/notification-center/NotificationBubbleEvent';
+import { DispatchUiEvent } from '../../hooks';
 import { NotificationAlertType } from './NotificationAlertType';
 import { NotificationBubbleType } from './NotificationBubbleType';
 
@@ -78,6 +78,8 @@ export class NotificationUtilities
         const linkTitle = this.getNotificationPart(options, type, 'linkTitle', false);
         const linkUrl = this.getNotificationPart(options, type, 'linkUrl', false);
         const image = this.getNotificationImageUrl(options, type);
+
+        console.log(image, LocalizeText(image));
 
         if(options.get('display') === 'BUBBLE')
         {

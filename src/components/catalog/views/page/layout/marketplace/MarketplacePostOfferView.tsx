@@ -1,10 +1,9 @@
 import { ImageResult, MakeOfferMessageComposer, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../../../api';
+import { GetRoomEngine, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
 import { Base, Button, Column, Grid, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../../common';
 import { CatalogPostMarketplaceOfferEvent } from '../../../../../../events';
 import { BatchUpdates, UseUiEvent } from '../../../../../../hooks';
-import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
 import { FurnitureItem } from '../../../../../inventory/common/FurnitureItem';
 import { useCatalogContext } from '../../../../CatalogContext';
 

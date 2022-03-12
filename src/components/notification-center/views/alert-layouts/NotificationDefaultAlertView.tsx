@@ -1,7 +1,6 @@
 import { DetailsHTMLAttributes, FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../api';
-import { LayoutNotificationAlertView } from '../../../../common';
-import { NotificationUtilities } from '../../common/NotificationUtilities';
+import { LocalizeText, NotificationUtilities } from '../../../../api';
+import { Base, Button, Column, LayoutNotificationAlertView } from '../../../../common';
 import { NotificationAlertLayoutViewProps } from './NotificationAlertLayoutView.types';
 
 interface NotificationDefaultAlertViewProps extends NotificationAlertLayoutViewProps, DetailsHTMLAttributes<HTMLDivElement>
@@ -26,15 +25,13 @@ export const NotificationDefaultAlertView: FC<NotificationDefaultAlertViewProps>
                 {
                     const htmlText = message.replace(/\r\n|\r|\n/g, '<br />');
 
-                    return (
-                        <div key={ index } dangerouslySetInnerHTML={ { __html: htmlText } } />
-                    );
+                    return <Base grow fullHeight overflow="auto" key={ index } dangerouslySetInnerHTML={ { __html: htmlText } } />;
                 }) }
-            <div className="d-flex justify-content-center align-items-center mt-1">
-                <button type="button" className="btn btn-primary" onClick={ close }>{ LocalizeText('generic.close') }</button>
-            </div>
-            { item.clickUrl && item.clickUrl.length &&
-                <button type="button" className="btn btn-link" onClick={ visitUrl }>{ LocalizeText(item.clickUrlText) }</button> }
+            <Column alignItems="center" center gap={ 1 }>
+                <Button onClick={ close }>{ LocalizeText('generic.close') }</Button>
+                { item.clickUrl && item.clickUrl.length &&
+                    <Button variant="link" onClick={ visitUrl }>{ LocalizeText(item.clickUrlText) }</Button> }
+            </Column>
         </LayoutNotificationAlertView>
     );
 }

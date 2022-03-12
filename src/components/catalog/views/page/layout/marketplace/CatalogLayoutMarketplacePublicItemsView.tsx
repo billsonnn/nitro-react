@@ -1,10 +1,8 @@
 import { BuyMarketplaceOfferMessageComposer, GetMarketplaceOffersMessageComposer, MarketplaceBuyOfferResultEvent, MarketPlaceOffersEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../../../api';
+import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
 import { Button, ButtonGroup, Column, Text } from '../../../../../../common';
 import { BatchUpdates, UseMessageEventHook } from '../../../../../../hooks';
-import { NotificationAlertType } from '../../../../../../views/notification-center/common/NotificationAlertType';
-import { NotificationUtilities } from '../../../../../../views/notification-center/common/NotificationUtilities';
 import { GetCurrencyAmount } from '../../../../../purse/common/CurrencyHelper';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, PUBLIC_OFFER } from './CatalogLayoutMarketplaceItemView';
