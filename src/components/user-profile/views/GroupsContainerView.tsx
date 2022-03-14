@@ -79,7 +79,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
                         }) }
                 </AutoGrid>
             </Column>
-            <Column size={ 10 }>
+            <Column size={ 10 } overflow="hidden">
                 { groupInformation &&
                     <GroupInformationView groupInformation={ groupInformation } onClose={ onLeaveGroup } /> }
             </Column>

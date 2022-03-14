@@ -1,14 +1,14 @@
 import { GroupInformationParser, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, LocalizeText, NotificationUtilities, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
-import { Button, Column, Flex, Grid, LayoutBadgeImageView, Text } from '../../../common';
+import { Button, Column, Flex, Grid, GridProps, LayoutBadgeImageView, Text } from '../../../common';
 import { CatalogPageName } from '../../catalog/common/CatalogPageName';
 import { GroupMembershipType } from '../common/GroupMembershipType';
 import { GroupType } from '../common/GroupType';
 
 const STATES: string[] = [ 'regular', 'exclusive', 'private' ];
 
-interface GroupInformationViewProps
+interface GroupInformationViewProps extends GridProps
 {
     groupInformation: GroupInformationParser;
     onJoin?: () => void;
@@ -17,7 +17,7 @@ interface GroupInformationViewProps
 
 export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 {
-    const { groupInformation = null, onClose = null } = props;    
+    const { groupInformation = null, onClose = null, overflow = 'hidden', ...rest } = props;    
 
     const isRealOwner = (groupInformation && (groupInformation.ownerName === GetSessionDataManager().userName));
     
@@ -98,7 +98,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
     if(!groupInformation) return null;
 
     return (
-        <Grid overflow="hidden">
+        <Grid overflow={ overflow } { ...rest }>
             <Column center size={ 3 } overflow="hidden">
                 <Flex alignItems="center" overflow="hidden" className="group-badge">
                     <LayoutBadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } scale={ 2 } />
