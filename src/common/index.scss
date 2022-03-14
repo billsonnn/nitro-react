@@ -1,5 +1,5 @@
 .layout-grid-item {
-    height: var(--nitro-grid-column-min-height, 45px);
+    height: var(--nitro-grid-column-min-height, unset);
     background-position: center;
     background-repeat: no-repeat;
     background-color: $grid-bg-color;

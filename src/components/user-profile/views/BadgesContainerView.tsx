@@ -1,27 +1,25 @@
 import { FC } from 'react';
-import { Grid, LayoutBadgeImageView, LayoutGridItem } from '../../../common';
+import { Column, FlexProps, LayoutBadgeImageView } from '../../../common';
 
-interface BadgesContainerViewProps
+interface BadgesContainerViewProps extends FlexProps
 {
     badges: string[];
 }
 
 export const BadgesContainerView: FC<BadgesContainerViewProps> = props =>
 {
-    const { badges = null } = props;
+    const { badges = null, gap = 1, justifyContent = 'between', ...rest } = props;
 
     return (
-        <div className="row">
-            <Grid>
-                { badges && (badges.length > 0) && badges.map((badge, index) =>
-                        {
-                            return (
-                                <LayoutGridItem key={ index }>
-                                    <LayoutBadgeImageView badgeCode={ badge }/>
-                                </LayoutGridItem>
-                            )
-                        }) }
-            </Grid>
-        </div>
-    )
+        <>
+        { badges && (badges.length > 0) && badges.map((badge, index) =>
+            {
+                return (
+                    <Column key={ badge } center>
+                        <LayoutBadgeImageView key={ badge } badgeCode={ badge } />
+                    </Column>
+                );
+            }) }
+        </>
+    );
 }

@@ -1,7 +1,7 @@
 import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
-import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
+import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { BatchUpdates, UseMessageEventHook } from '../../hooks';
 import { BadgesContainerView } from './views/BadgesContainerView';
 import { FriendsContainerView } from './views/FriendsContainerView';
@@ -26,10 +26,9 @@ export const UserProfileView: FC<{}> = props =>
 
     const onLeaveGroup = useCallback(() =>
     {
-        if(userProfile && userProfile.id === GetSessionDataManager().userId)
-        {
-            GetUserProfile(userProfile.id);
-        }
+        if(!userProfile || (userProfile.id !== GetSessionDataManager().userId)) return;
+        
+        GetUserProfile(userProfile.id);
     }, [ userProfile ]);
     
     const onUserCurrentBadgesEvent = useCallback((event: UserCurrentBadgesEvent) =>
@@ -43,7 +42,7 @@ export const UserProfileView: FC<{}> = props =>
 
     UseMessageEventHook(UserCurrentBadgesEvent, onUserCurrentBadgesEvent);
 
-    const OnUserRelationshipsEvent = useCallback((event: RelationshipStatusInfoEvent) =>
+    const onUserRelationshipsEvent = useCallback((event: RelationshipStatusInfoEvent) =>
     {
         const parser = event.getParser();
 
@@ -52,27 +51,22 @@ export const UserProfileView: FC<{}> = props =>
         setUserRelationships(parser);
     }, [ userProfile ]);
 
-    UseMessageEventHook(RelationshipStatusInfoEvent, OnUserRelationshipsEvent);
+    UseMessageEventHook(RelationshipStatusInfoEvent, onUserRelationshipsEvent);
 
     const onUserProfileEvent = useCallback((event: UserProfileEvent) =>
     {
         const parser = event.getParser();
-
-        if(userProfile)
-        {
-            BatchUpdates(() =>
-            {
-                setUserProfile(null);
-                setUserBadges([]);
-                setUserRelationships(null);
-            });
-        }
         
-        setUserProfile(parser);
+        BatchUpdates(() =>
+        {
+            setUserProfile(parser);
+            setUserBadges([]);
+            setUserRelationships(null);
+        });
 
         SendMessageComposer(new UserCurrentBadgesComposer(parser.id));
         SendMessageComposer(new UserRelationshipsComposer(parser.id));
-    }, [ userProfile ]);
+    }, []);
 
     UseMessageEventHook(UserProfileEvent, onUserProfileEvent);
 
@@ -81,22 +75,26 @@ export const UserProfileView: FC<{}> = props =>
     return (
         <NitroCardView className="user-profile" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('extendedprofile.caption') } onCloseClick={ onClose } />
-            <NitroCardContentView>
-                <Grid>
-                    <Column size={ 7 } className="user-container">
+            <NitroCardContentView overflow="hidden">
+                <Grid fullHeight={ false } gap={ 2 }>
+                    <Column size={ 7 } gap={ 1 } className="user-container pe-2">
                         <UserContainerView userProfile={ userProfile } />
-                        <BadgesContainerView badges={ userBadges } />
+                        <Grid columnCount={ 5 } fullHeight className="bg-muted rounded px-2 py-1">
+                            <BadgesContainerView fullWidth center badges={ userBadges } />
+                        </Grid>
                     </Column>
                     <Column size={ 5 }>
-                        {
-                            userRelationships && <FriendsContainerView relationships={userRelationships} friendsCount={userProfile.friendsCount} />
-                        }
+                        { userRelationships &&
+                            <FriendsContainerView relationships={ userRelationships } friendsCount={ userProfile.friendsCount } /> }
                     </Column>
                 </Grid>
-                <Flex alignItems="center" className="rooms-button-container">
-                    <i className="icon icon-rooms" /><span className="rooms-button">{LocalizeText('extendedprofile.rooms')}</span>
+                <Flex alignItems="center" className="rooms-button-container px-2 py-1">
+                    <Flex alignItems="center" gap={ 1 }>
+                        <i className="icon icon-rooms" />
+                        <Text bold underline pointer>{ LocalizeText('extendedprofile.rooms') }</Text>
+                    </Flex>
                 </Flex>
-                <GroupsContainerView itsMe={ userProfile.id === GetSessionDataManager().userId } groups={ userProfile.groups } onLeaveGroup={ onLeaveGroup } />
+                <GroupsContainerView fullWidth itsMe={ userProfile.id === GetSessionDataManager().userId } groups={ userProfile.groups } onLeaveGroup={ onLeaveGroup } />
             </NitroCardContentView>
         </NitroCardView>
     )

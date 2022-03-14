@@ -1,7 +1,7 @@
 import { FriendlyTime, UserProfileParser } from '@nitrots/nitro-renderer';
-import { FC, useCallback } from 'react';
+import { FC } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../api';
-import { LayoutAvatarImageView } from '../../../common';
+import { Button, Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
 
 interface UserContainerViewProps
 {
@@ -11,42 +11,51 @@ interface UserContainerViewProps
 export const UserContainerView: FC<UserContainerViewProps> = props =>
 {
     const { userProfile = null } = props;
-
-    const OnlineIcon = useCallback(() => 
-{
-        if(userProfile.isOnline) return (<i className="icon icon-pf-online" />);
-        else return (<i className="icon icon-pf-offline" />);
-    }, [ userProfile ]);
-
-    const FriendRequestComponent = useCallback(() => 
-{
-        if(userProfile.id === GetSessionDataManager().userId) return (<span><i className="icon icon-pf-tick" />{LocalizeText('extendedprofile.me')}</span> );
-
-        if(userProfile.isMyFriend) return (<span><i className="icon icon-pf-tick" />{LocalizeText('extendedprofile.friend')}</span>);
-
-        if(userProfile.requestSent) return (<span><i className="icon icon-pf-tick" />{LocalizeText('extendedprofile.friendrequestsent')}</span>);
-
-        return (<button className="btn btn-success btn-sm add-friend">{LocalizeText('extendedprofile.addasafriend')}</button>)
-    }, [ userProfile ]);
+    const isOwnProfile = (userProfile.id === GetSessionDataManager().userId);
+    const canSendFriendRequest = (!isOwnProfile && !userProfile.isMyFriend && !userProfile.requestSent);
 
     return (
-        <div className="row">
-            <div className="col-auto px-0 d-flex align-items-center">
-                <LayoutAvatarImageView figure={userProfile.figure} direction={2} />
-            </div>
-            <div className="col">
-                <div className="user-info-container">
-                    <div className="fw-bold">{userProfile.username}</div>
-                    <div className="fst-italic text-break small">{userProfile.motto}</div>
-                    <div dangerouslySetInnerHTML={{ __html: LocalizeText('extendedprofile.created', ['created'], [userProfile.registration]) }} />
-                    <div dangerouslySetInnerHTML={{ __html: LocalizeText('extendedprofile.last.login', ['lastlogin'], [FriendlyTime.format(userProfile.secondsSinceLastVisit, '.ago', 2)]) }} />
-                    <div><b>{LocalizeText('extendedprofile.achievementscore')}</b> {userProfile.achievementPoints}</div>
-                    <div className="d-flex flex-row align-items-center gap-2">
-                        <OnlineIcon />
-                        <FriendRequestComponent />
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Flex gap={ 2 }>
+            <Column center className="avatar-container">
+                <LayoutAvatarImageView figure={ userProfile.figure } direction={ 2 } />
+            </Column>
+            <Column>
+                <Column gap={ 0}>
+                    <Text bold>{ userProfile.username }</Text>
+                    <Text italics textBreak small>{ userProfile.motto }&nbsp;</Text>
+                </Column>
+                <Column gap={ 1 }>
+                    <Text small>
+                        <b>{ LocalizeText('extendedprofile.created') }</b> { userProfile.registration }
+                    </Text>
+                    <Text small>
+                        <b>{ LocalizeText('extendedprofile.last.login') }</b> { FriendlyTime.format(userProfile.secondsSinceLastVisit, '.ago', 2) }
+                    </Text>
+                    <Text small>
+                        <b>{ LocalizeText('extendedprofile.achievementscore') }</b> { userProfile.achievementPoints }
+                    </Text>
+                </Column>
+                <Flex gap={ 1 }>
+                    { userProfile.isOnline &&
+                        <i className="icon icon-pf-online" /> }
+                    { !userProfile.isOnline &&
+                        <i className="icon icon-pf-offline" /> }
+                    <Flex alignItems="center" gap={ 1 }>
+                        { canSendFriendRequest &&
+                            <Button variant="success" className="add-friend">{ LocalizeText('extendedprofile.addasafriend') }</Button> }
+                        { !canSendFriendRequest &&
+                            <>
+                                <i className="icon icon-pf-tick" />
+                                { isOwnProfile &&
+                                    <Text>{ LocalizeText('extendedprofile.me') }</Text> }
+                                { userProfile.isMyFriend &&
+                                    <Text>{ LocalizeText('extendedprofile.friend') }</Text> }
+                                { userProfile.requestSent &&
+                                    <Text>{ LocalizeText('extendedprofile.friendrequestsent') }</Text> }
+                            </> }
+                    </Flex>
+                </Flex>
+            </Column>
+        </Flex>
     )
 }
