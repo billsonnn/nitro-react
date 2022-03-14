@@ -1,10 +1,10 @@
-import { ConfigurationEvent, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
+import { AvatarRenderEvent, ConfigurationEvent, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetCommunication, GetConfiguration, GetNitroInstance } from './api';
+import { GetAvatarRenderManager, GetCommunication, GetConfiguration, GetNitroInstance } from './api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from './common';
 import { LoadingView } from './components/loading/LoadingView';
 import { MainView } from './components/main/MainView';
-import { DispatchUiEvent, UseConfigurationEvent, UseLocalizationEvent, UseMainEvent, UseRoomEngineEvent } from './hooks';
+import { DispatchUiEvent, UseAvatarEvent, UseConfigurationEvent, UseLocalizationEvent, UseMainEvent, UseRoomEngineEvent } from './hooks';
 
 export const App: FC<{}> = props =>
 {
@@ -64,7 +64,7 @@ export const App: FC<{}> = props =>
 			case NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED:
                 setMessage('Finishing Up');
 
-                GetNitroInstance().init();
+                GetAvatarRenderManager().init();
 
                 if(LegacyExternalInterface.available) LegacyExternalInterface.call('legacyTrack', 'authentication', 'authok', []);
 				return;
@@ -79,6 +79,9 @@ export const App: FC<{}> = props =>
                 setMessage('Connection Error');
 
                 HabboWebTools.send(-1, 'client.init.handshake.fail');
+                return;
+            case AvatarRenderEvent.AVATAR_RENDER_READY:
+                GetNitroInstance().init();
                 return;
             case RoomEngineEvent.ENGINE_INITIALIZED:
                 setIsReady(true);
@@ -113,6 +116,7 @@ export const App: FC<{}> = props =>
     UseLocalizationEvent(NitroLocalizationEvent.LOADED, handler);
     UseConfigurationEvent(ConfigurationEvent.LOADED, handler);
     UseConfigurationEvent(ConfigurationEvent.FAILED, handler);
+    UseAvatarEvent(AvatarRenderEvent.AVATAR_RENDER_READY, handler);
 
     if(!WebGL.isWebGLAvailable())
     {
