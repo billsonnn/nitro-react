@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { NotificationConfirmItem } from '../../../../api';
-import { LayoutNotificationAlertView, LayoutNotificationAlertViewProps } from '../../../../common';
+import { Button, Flex, LayoutNotificationAlertView, LayoutNotificationAlertViewProps, Text } from '../../../../common';
 
 export interface NotificationDefaultConfirmViewProps extends LayoutNotificationAlertViewProps
 {
@@ -28,11 +28,13 @@ export const NotificationDefaultConfirmView: FC<NotificationDefaultConfirmViewPr
 
     return (
         <LayoutNotificationAlertView title={ title } close={ close } { ...rest }>
-            { message }
-            <div className="d-flex justify-content-between align-items-center">
-            <button type="button" className="btn btn-danger" onClick={ cancel }>{ cancelText }</button>
-                <button type="button" className="btn btn-primary" onClick={ confirm }>{ confirmText }</button>
-            </div>
+            <Flex grow center>
+                <Text>{ message }</Text>
+            </Flex>
+            <Flex gap={ 1 }>
+                <Button fullWidth variant="danger" onClick={ cancel }>{ cancelText }</Button>
+                <Button fullWidth onClick={ confirm }>{ confirmText }</Button>
+            </Flex>
         </LayoutNotificationAlertView>
     );
 }

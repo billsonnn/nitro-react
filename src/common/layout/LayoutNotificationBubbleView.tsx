@@ -11,7 +11,7 @@ export interface LayoutNotificationBubbleViewProps extends FlexProps
 
 export const LayoutNotificationBubbleView: FC<LayoutNotificationBubbleViewProps> = props =>
 {
-    const { fadesOut = false, timeoutMs = 8000, close = null, overflow='hidden', classNames = [], ...rest } = props;
+    const { fadesOut = true, timeoutMs = 8000, close = null, overflow = 'hidden', classNames = [], ...rest } = props;
     const [ isVisible, setIsVisible ] = useState(false);
 
     const getClassNames = useMemo(() =>
