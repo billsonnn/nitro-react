@@ -2,9 +2,9 @@ import { CallForHelpTopicData, DefaultSanctionMessageComposer, ModAlertMessageCo
 import { FC, useMemo, useState } from 'react';
 import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { ISelectedUser } from '../../common/ISelectedUser';
+import { ModActionDefinition } from '../../common/ModActionDefinition';
 import { useModToolsContext } from '../../ModToolsContext';
-import { ISelectedUser } from '../../utils/ISelectedUser';
-import { ModActionDefinition } from '../../utils/ModActionDefinition';
 
 interface ModToolsUserModActionViewProps
 {

@@ -50,7 +50,7 @@ export const ModToolsIssueInfoView: FC<IssueInfoViewProps> = props =>
                 <NitroCardHeaderView headerText={'Resolving issue ' + issueId} onCloseClick={() => onIssueInfoClosed(issueId)} />
                 <NitroCardContentView className="text-black">
                     <Text fontSize={ 4 }>Issue Information</Text>
-                    <Grid>
+                    <Grid overflow="auto">
                         <Column size={ 8 }>
                             <table className="table table-striped table-sm table-text-small text-black m-0">
                                 <tbody>
@@ -60,11 +60,11 @@ export const ModToolsIssueInfoView: FC<IssueInfoViewProps> = props =>
                                     </tr>
                                     <tr>
                                         <th>Category</th>
-                                        <td>{ LocalizeText('help.cfh.topic.' + ticket.reportedCategoryId) }</td>
+                                        <td className="text-break">{ LocalizeText('help.cfh.topic.' + ticket.reportedCategoryId) }</td>
                                     </tr>
                                     <tr>
                                         <th>Description</th>
-                                        <td>{ ticket.message }</td>
+                                        <td className="text-break">{ ticket.message }</td>
                                     </tr>
                                     <tr>
                                         <th>Caller</th>

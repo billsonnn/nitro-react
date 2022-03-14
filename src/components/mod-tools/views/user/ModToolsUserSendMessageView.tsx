@@ -4,7 +4,7 @@ import { SendMessageComposer } from '../../../../api';
 import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { NotificationAlertEvent } from '../../../../events';
 import { DispatchUiEvent } from '../../../../hooks';
-import { ISelectedUser } from '../../utils/ISelectedUser';
+import { ISelectedUser } from '../../common/ISelectedUser';
 
 interface ModToolsUserSendMessageViewProps
 {
