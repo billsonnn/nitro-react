@@ -1,7 +1,7 @@
-import { FriendlyTime, UserProfileParser } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../../api';
-import { Button, Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
+import { FriendlyTime, RequestFriendComposer, UserProfileParser } from '@nitrots/nitro-renderer';
+import { FC, useEffect, useState } from 'react';
+import { GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../api';
+import { Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
 
 interface UserContainerViewProps
 {
@@ -11,8 +11,21 @@ interface UserContainerViewProps
 export const UserContainerView: FC<UserContainerViewProps> = props =>
 {
     const { userProfile = null } = props;
+    const [ requestSent, setRequestSent ] = useState(userProfile.requestSent);
     const isOwnProfile = (userProfile.id === GetSessionDataManager().userId);
-    const canSendFriendRequest = (!isOwnProfile && !userProfile.isMyFriend && !userProfile.requestSent);
+    const canSendFriendRequest = !requestSent && (!isOwnProfile && !userProfile.isMyFriend && !userProfile.requestSent);
+
+    const addFriend = () =>
+    {
+        setRequestSent(true);
+
+        SendMessageComposer(new RequestFriendComposer(userProfile.username));
+    }
+
+    useEffect(() =>
+    {
+        setRequestSent(userProfile.requestSent);
+    }, [ userProfile ])
 
     return (
         <Flex gap={ 2 }>
@@ -42,7 +55,7 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
                         <i className="icon icon-pf-offline" /> }
                     <Flex alignItems="center" gap={ 1 }>
                         { canSendFriendRequest &&
-                            <Button variant="success" className="add-friend">{ LocalizeText('extendedprofile.addasafriend') }</Button> }
+                            <Text small underline pointer onClick={ addFriend }>{ LocalizeText('extendedprofile.addasafriend') }</Text> }
                         { !canSendFriendRequest &&
                             <>
                                 <i className="icon icon-pf-tick" />
@@ -50,7 +63,7 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
                                     <Text>{ LocalizeText('extendedprofile.me') }</Text> }
                                 { userProfile.isMyFriend &&
                                     <Text>{ LocalizeText('extendedprofile.friend') }</Text> }
-                                { userProfile.requestSent &&
+                                { (requestSent || userProfile.requestSent) &&
                                     <Text>{ LocalizeText('extendedprofile.friendrequestsent') }</Text> }
                             </> }
                     </Flex>
