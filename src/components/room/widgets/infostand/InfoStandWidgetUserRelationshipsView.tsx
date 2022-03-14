@@ -29,9 +29,9 @@ export const InfoStandWidgetUserRelationshipsView: FC<InfoStandWidgetUserRelatio
             <Flex alignItems="center" gap={ 1 }>
                 <i className={`nitro-friends-spritesheet icon-${relationshipName}`} />
                 <Flex alignItems="center" gap={ 0 }>
-                    <Text variant="white" onClick={ event => GetUserProfile(relationshipInfo.randomFriendId) }>{ relationshipInfo.randomFriendName }</Text>
+                    <Text small variant="white" onClick={ event => GetUserProfile(relationshipInfo.randomFriendId) }>{ relationshipInfo.randomFriendName }</Text>
                     { (relationshipInfo.friendCount > 1) &&
-                        <Text variant="white">{ ' ' + LocalizeText(`extendedprofile.relstatus.others.${ relationshipName }`, [ 'count' ], [ (relationshipInfo.friendCount - 1).toString() ]) }</Text> }
+                        <Text small variant="white">{ ' ' + LocalizeText(`extendedprofile.relstatus.others.${ relationshipName }`, [ 'count' ], [ (relationshipInfo.friendCount - 1).toString() ]) }</Text> }
                 </Flex>
             </Flex>
         );

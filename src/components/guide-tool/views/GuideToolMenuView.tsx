@@ -68,7 +68,7 @@ export const GuideToolMenuView: FC<GuideToolMenuViewProps> = props =>
             </Flex>
             <hr className="bg-dark m-0" />
             <Flex justifyContent="between" gap={ 2 }>
-                <Button onClick={ event => processAction('forum_link') }>{ LocalizeText('guide.help.guide.tool.forum.link') }</Button>
+                <Button disabled onClick={ event => processAction('forum_link') }>{ LocalizeText('guide.help.guide.tool.forum.link') }</Button>
                 <Button disabled>{ LocalizeText('guide.help.guide.tool.skill.link') }</Button>
             </Flex>
         </Column>
