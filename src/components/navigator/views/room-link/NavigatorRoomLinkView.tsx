@@ -55,7 +55,7 @@ export const NavigatorRoomLinkView: FC<NavigatorRoomLinkViewProps> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('navigator.embed.title') } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black d-flex align-items-center">
                 <Flex gap={ 2 }>
-                    <LayoutRoomThumbnailView customUrl={ roomInfoData.enteredGuestRoom.officialRoomPicRef } />
+                    <LayoutRoomThumbnailView roomId={ roomInfoData.enteredGuestRoom.roomId } customUrl={ roomInfoData.enteredGuestRoom.officialRoomPicRef } />
                     <Column>
                         <Text bold fontSize={ 5 }>{ LocalizeText('navigator.embed.headline') }</Text>
                         <Text>{ LocalizeText('navigator.embed.info') }</Text>

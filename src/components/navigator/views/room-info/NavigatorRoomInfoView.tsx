@@ -122,7 +122,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                 { roomInfoData.enteredGuestRoom &&
                     <>
                         <Flex gap={ 2 } overflow="hidden">
-                            <LayoutRoomThumbnailView customUrl={ roomInfoData.enteredGuestRoom.officialRoomPicRef }>
+                            <LayoutRoomThumbnailView roomId={ roomInfoData.enteredGuestRoom.roomId } customUrl={ roomInfoData.enteredGuestRoom.officialRoomPicRef }>
                                 { hasPermission('settings') && <i className="icon icon-camera-small position-absolute b-0 r-0 m-1 cursor-pointer" onClick={ () => processAction('open_room_thumbnail_camera') } /> }
                             </LayoutRoomThumbnailView>
                             <Column grow gap={ 1 } overflow="hidden">
