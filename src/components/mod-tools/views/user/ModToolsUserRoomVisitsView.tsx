@@ -32,7 +32,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
         const item = roomVisitData.rooms[props.index];
 
         return (
-            <Grid key={ props.key } style={ props.style } gap={ 1 } alignItems="center" className="text-black py-1 border-bottom">
+            <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="text-black py-1 border-bottom">
                 <Text className="g-col-2">{ item.enterHour.toString().padStart(2, '0') }: { item.enterMinute.toString().padStart(2, '0') }</Text>
                 <Text className="g-col-7">{ item.roomName }</Text>
                 <Text bold underline pointer variant="primary" className="g-col-3" onClick={ event => TryVisitRoom(item.roomId) }>Visit Room</Text>
@@ -69,7 +69,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
                                                 width={ width }
                                                 height={ height }
                                                 rowCount={ roomVisitData.rooms.length }
-                                                rowHeight={ 20 }
+                                                rowHeight={ 25 }
                                                 className={'log-entry-container' }
                                                 rowRenderer={ RowRenderer }
                                             />

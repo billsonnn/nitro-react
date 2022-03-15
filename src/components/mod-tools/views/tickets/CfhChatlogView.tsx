@@ -34,7 +34,7 @@ export const CfhChatlogView: FC<CfhChatlogViewProps> = props =>
     UseMessageEventHook(CfhChatlogEvent, onCfhChatlogEvent);
 
     return (
-        <NitroCardView className="nitro-mod-tools-cfh-chatlog" theme="primary-slim">
+        <NitroCardView className="nitro-mod-tools-chatlog" theme="primary-slim">
             <NitroCardHeaderView headerText={'Issue Chatlog'} onCloseClick={onCloseClick} />
             <NitroCardContentView className="text-black">
                 { chatlogData && <ChatlogView records={[chatlogData.chatRecord]} />}

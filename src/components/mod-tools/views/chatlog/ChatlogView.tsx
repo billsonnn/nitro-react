@@ -77,7 +77,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                 { (isRoomInfo && currentRecord) &&
                     <RoomInfo roomId={ currentRecord.roomId } roomName={ currentRecord.roomName } uniqueKey={ props.key } style={ props.style } /> }
                 { !isRoomInfo &&
-                    <Grid key={ props.key } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
+                    <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
                         <Text className="g-col-2">{ chatlogEntry.timestamp }</Text>
                         <Text className="g-col-3" bold underline pointer onClick={ event => SendMessageComposer(new UserProfileComposer(chatlogEntry.userId)) }>{ chatlogEntry.userName }</Text>
                         <Text textBreak wrap className="g-col-7">{ chatlogEntry.message }</Text>
