@@ -2,22 +2,12 @@ image: node:16.13
 
 stages:
     - install-dependencies
-    - test
     - build
 
 Install Dependencies:
     stage: install-dependencies
     script:
         - yarn install
-    cache:
-        key: ${CI_COMMIT_BRANCH}
-        paths:
-            - node_modules
-
-ESLinter:
-    stage: test
-    script:
-        - node ./node_modules/eslint/bin/eslint.js src/
     cache:
         key: ${CI_COMMIT_BRANCH}
         paths:
