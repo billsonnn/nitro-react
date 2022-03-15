@@ -1,7 +1,7 @@
 import { GetModeratorRoomInfoMessageComposer, ModerateRoomMessageComposer, ModeratorActionMessageComposer, ModeratorRoomInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer, TryVisitRoom } from '../../../../api';
-import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { Button, Column, DraggableWindowPosition, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { ModToolsOpenRoomChatlogEvent } from '../../../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 
@@ -78,7 +78,7 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
     }, [ roomId, infoRequested, setInfoRequested ]);
 
     return (
-        <NitroCardView className="nitro-mod-tools-room" theme="primary-slim">
+        <NitroCardView className="nitro-mod-tools-room" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT}>
             <NitroCardHeaderView headerText={ 'Room Info' + (name ? ': ' + name : '') } onCloseClick={ event => onCloseClick() } />
             <NitroCardContentView className="text-black">
                 <Flex gap={ 2 }>
