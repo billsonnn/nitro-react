@@ -188,8 +188,6 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        console.log(parser);
-
         NotificationUtilities.showNotification(parser.type, parser.parameters);
     }, []);
 
