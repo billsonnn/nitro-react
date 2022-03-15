@@ -194,7 +194,7 @@
 
 .nitro-alert {
     width: 350px;
-    min-height: 130px;
+    min-height: 150px;
     max-height: 350px;
 }
 
@@ -223,12 +223,7 @@
     @include media-breakpoint-down(lg) {
         display: flex;
         justify-content: center;
-
-        .draggable-window {
-            top: unset !important;
-            left: unset !important;
-            transform: none !important;
-        }
+        align-items: center;
     }
 
     .draggable-window {

@@ -23,7 +23,7 @@ export const LayoutNotificationAlertView: FC<LayoutNotificationAlertViewProps> =
     return (
         <NitroCardView classNames={ getClassNames } theme="primary-slim" { ...rest }>
             <NitroCardHeaderView headerText={ title } onCloseClick={ close } />
-            <NitroCardContentView justifyContent="between" overflow="hidden" className="text-black">
+            <NitroCardContentView grow justifyContent="between" overflow="hidden" className="text-black">
                 { children }
             </NitroCardContentView>
         </NitroCardView>
