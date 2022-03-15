@@ -31,10 +31,10 @@ export const DescribeReportView: FC<{}> = props =>
     return (
         <>
             <Column gap={ 1 }>
-                <Text fontSize={ 3 }>{ LocalizeText('help.emergency.chat_report.subtitle') }</Text>
+                <Text fontSize={ 4 }>{ LocalizeText('help.emergency.chat_report.subtitle') }</Text>
                 <Text>{ LocalizeText('help.cfh.input.text') }</Text>
             </Column>
-            <textarea className="form-control" value={ message } onChange={ event => setMessage(event.target.value) } />
+            <textarea className="form-control h-100" value={ message } onChange={ event => setMessage(event.target.value) } />
             <Button variant="success" disabled={ (message.length < 15) } onClick={ submitReport }>
                 { LocalizeText('help.bully.submit') }
             </Button>

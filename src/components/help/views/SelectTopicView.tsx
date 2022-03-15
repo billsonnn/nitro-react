@@ -39,7 +39,7 @@ export const SelectTopicView: FC<{}> = props =>
     return (
         <>
             <Column gap={ 1 }>
-                <Text fontSize={ 3 }>{ LocalizeText('help.emergency.chat_report.subtitle') }</Text>
+                <Text fontSize={ 4 }>{ LocalizeText('help.emergency.chat_report.subtitle') }</Text>
                 <Text>{ LocalizeText('help.cfh.pick.topic') }</Text>
             </Column>
             <Column gap={ 1 } overflow="auto">

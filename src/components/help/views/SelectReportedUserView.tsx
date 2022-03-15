@@ -1,7 +1,7 @@
 import { RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../api';
-import { Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../common';
+import { AutoGrid, Button, Column, Flex, LayoutGridItem, Text } from '../../../common';
 import { ChatEntryType } from '../../chat-history/common/ChatEntryType';
 import { GetChatHistory } from '../../chat-history/common/GetChatHistory';
 import { IReportedUser } from '../common/IReportedUser';
@@ -62,15 +62,15 @@ export const SelectReportedUserView: FC<{}> = props =>
     return (
         <>
             <Column gap={ 1 }>
-                <Text fontSize={ 3 }>{ LocalizeText('help.emergency.main.step.two.title') }</Text>
+                <Text fontSize={ 4 }>{ LocalizeText('help.emergency.main.step.two.title') }</Text>
                 { (availableUsers.length > 0) &&
                     <Text>{ LocalizeText('report.user.pick.user') }</Text> }
             </Column>
-            <Column gap={ 1 }>
+            <Column gap={ 1 } overflow="hidden">
                 { !!!availableUsers.length &&
                     <Text>{ LocalizeText('report.user.error.nolist') }</Text> }
                 { (availableUsers.length > 0) &&
-                    <Grid gap={ 1 } columnCount={ 1 } overflow="auto">
+                    <AutoGrid columnCount={ 1 } columnMinHeight={ 25 } gap={ 1 }>
                         { availableUsers.map((user, index) =>
                             {
                                 return (
@@ -79,7 +79,7 @@ export const SelectReportedUserView: FC<{}> = props =>
                                     </LayoutGridItem>
                                 );
                             }) }
-                    </Grid> }
+                    </AutoGrid> }
             </Column>
             <Flex gap={ 2 } justifyContent="between">
                 <Button variant="secondary" onClick={ back }>

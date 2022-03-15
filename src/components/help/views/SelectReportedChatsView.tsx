@@ -1,7 +1,7 @@
 import { RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../api';
-import { Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../common';
+import { AutoGrid, Button, Column, Flex, LayoutGridItem, Text } from '../../../common';
 import { ChatEntryType } from '../../chat-history/common/ChatEntryType';
 import { GetChatHistory } from '../../chat-history/common/GetChatHistory';
 import { IChatEntry } from '../../chat-history/common/IChatEntry';
@@ -54,14 +54,14 @@ export const SelectReportedChatsView: FC<{}> = props =>
     return (
         <>
             <Column gap={ 1 }>
-                <Text fontSize={ 3 }>{ LocalizeText('help.emergency.chat_report.subtitle') }</Text>
+                <Text fontSize={ 4 }>{ LocalizeText('help.emergency.chat_report.subtitle') }</Text>
                 <Text>{ LocalizeText('help.emergency.chat_report.description') }</Text>
             </Column>
-            <Column gap={ 1 }>
+            <Column gap={ 1 } overflow="hidden">
                 { !!!userChats.length &&
                     <Text>{ LocalizeText('help.cfh.error.no_user_data') }</Text> }
                 { (userChats.length > 0) &&
-                    <Grid gap={ 1 } columnCount={ 1 } overflow="auto">
+                    <AutoGrid gap={ 1 } columnCount={ 1 } columnMinHeight={ 25 } overflow="auto">
                         { userChats.map((chat, index) =>
                             {
                                 return (
@@ -70,7 +70,7 @@ export const SelectReportedChatsView: FC<{}> = props =>
                                     </LayoutGridItem>
                                 );
                             }) }
-                    </Grid> }
+                    </AutoGrid> }
             </Column>
             <Flex gap={ 2 } justifyContent="between">
                 <Button variant="secondary" onClick={ back }>
