@@ -1,7 +1,7 @@
 import { FriendlyTime, GetModeratorUserInfoMessageComposer, ModeratorUserInfoData, ModeratorUserInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../api';
-import { Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
+import { Button, Column, DraggableWindowPosition, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { ModToolsOpenUserChatlogEvent } from '../../../../events';
 import { DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 import { ModToolsUserModActionView } from './ModToolsUserModActionView';
@@ -107,7 +107,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
 
     return (
         <>
-            <NitroCardView className="nitro-mod-tools-user" theme="primary-slim">
+            <NitroCardView className="nitro-mod-tools-user" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT}>
                 <NitroCardHeaderView headerText={ LocalizeText('modtools.userinfo.title', [ 'username' ], [ userInfo.userName ]) } onCloseClick={ () => onCloseClick() } />
                 <NitroCardContentView className="text-black">
                     <Grid overflow="hidden">

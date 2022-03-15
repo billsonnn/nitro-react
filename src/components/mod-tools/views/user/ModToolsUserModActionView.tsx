@@ -1,7 +1,7 @@
 import { CallForHelpTopicData, DefaultSanctionMessageComposer, ModAlertMessageComposer, ModBanMessageComposer, ModKickMessageComposer, ModMessageMessageComposer, ModMuteMessageComposer, ModTradingLockMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
 import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../api';
-import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { Button, Column, DraggableWindowPosition, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { ISelectedUser } from '../../common/ISelectedUser';
 import { ModActionDefinition } from '../../common/ModActionDefinition';
 import { useModToolsContext } from '../../ModToolsContext';
@@ -153,7 +153,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
     if(!user) return null;
 
     return (
-        <NitroCardView className="nitro-mod-tools-user-action" theme="primary-slim">
+        <NitroCardView className="nitro-mod-tools-user-action" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT}>
             <NitroCardHeaderView headerText={'Mod Action: ' + (user ? user.username : '')} onCloseClick={ () => onCloseClick() } />
             <NitroCardContentView className="text-black">
                 <select className="form-select form-select-sm" value={ selectedTopic } onChange={ event => setSelectedTopic(parseInt(event.target.value)) }>

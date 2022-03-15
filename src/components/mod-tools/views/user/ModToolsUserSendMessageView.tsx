@@ -1,7 +1,7 @@
 import { ModMessageMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { SendMessageComposer } from '../../../../api';
-import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { NotificationAlertEvent } from '../../../../events';
 import { DispatchUiEvent } from '../../../../hooks';
 import { ISelectedUser } from '../../common/ISelectedUser';
@@ -34,7 +34,7 @@ export const ModToolsUserSendMessageView: FC<ModToolsUserSendMessageViewProps> =
     if(!user) return null;
 
     return (
-        <NitroCardView className="nitro-mod-tools-user-message" theme="primary-slim">
+        <NitroCardView className="nitro-mod-tools-user-message" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT}>
             <NitroCardHeaderView headerText={'Send Message'} onCloseClick={ () => onCloseClick() } />
             <NitroCardContentView className="text-black">
                 <Text>Message To: { user.username }</Text>

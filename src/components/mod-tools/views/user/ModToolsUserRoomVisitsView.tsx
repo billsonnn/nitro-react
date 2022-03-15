@@ -2,7 +2,7 @@ import { GetRoomVisitsMessageComposer, RoomVisitsData, RoomVisitsEvent } from '@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AutoSizer, List, ListRowProps } from 'react-virtualized';
 import { SendMessageComposer, TryVisitRoom } from '../../../../api';
-import { Base, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { Base, Column, DraggableWindowPosition, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { UseMessageEventHook } from '../../../../hooks';
 
 interface ModToolsUserRoomVisitsViewProps
@@ -48,7 +48,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
     if(!userId) return null;
 
     return (
-        <NitroCardView className="nitro-mod-tools-user-visits" theme="primary-slim">
+        <NitroCardView className="nitro-mod-tools-user-visits" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT}>
             <NitroCardHeaderView headerText={ 'User Visits' } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black" gap={ 1 }>
                 <Column gap={ 0 } overflow="hidden">
