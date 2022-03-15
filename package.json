@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "start": "BROWSER=none craco start",
-    "build": "GENERATE_SOURCEMAP=false craco build",
+    "start": "cross-env BROWSER=none craco start",
+    "build": "cross-env GENERATE_SOURCEMAP=false craco build",
     "build:prod": "npx browserslist@latest --update-db && yarn build",
     "test": "craco test",
     "eject": "react-scripts eject"
@@ -17,6 +17,7 @@
     "@nitrots/nitro-renderer": "^1.1.6",
     "animate.css": "^4.1.1",
     "classnames": "^2.3.1",
+    "cross-env": "^7.0.3",
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-alpha.2",
