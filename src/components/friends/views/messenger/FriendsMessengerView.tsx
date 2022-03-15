@@ -302,8 +302,8 @@ export const FriendsMessengerView: FC<{}> = props =>
                                         <FontAwesomeIcon icon="times" />
                                     </Button>
                                 </Flex>
-                                <Column fit innerRef={ messagesBox } className="bg-muted p-2 rounded chat-messages">
-                                    <Column overflow="auto">
+                                <Column fit className="bg-muted p-2 rounded chat-messages">
+                                    <Column innerRef={ messagesBox } overflow="auto">
                                         <FriendsMessengerThreadView thread={ messageThreads[activeThreadIndex] } />
                                     </Column>
                                 </Column>
