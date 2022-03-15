@@ -9,7 +9,7 @@ interface NotificationDefaultAlertViewProps extends LayoutNotificationAlertViewP
 
 export const NotificationDefaultAlertView: FC<NotificationDefaultAlertViewProps> = props =>
 {
-    const { item = null, title = (props.title || ''), close = null, ...rest } = props;
+    const { item = null, title = ((props.item && props.item.title) || ''), close = null, ...rest } = props;
 
     const visitUrl = useCallback(() =>
     {

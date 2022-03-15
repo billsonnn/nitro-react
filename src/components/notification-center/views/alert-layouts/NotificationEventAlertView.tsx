@@ -9,7 +9,7 @@ export interface NotificationEventAlertViewProps extends LayoutNotificationAlert
 
 export const NotificationEventAlertView: FC<NotificationEventAlertViewProps> = props =>
 {
-    const { item = null, title = (props.title || ''), close = null, ...rest } = props;
+    const { item = null, title = ((props.item && props.item.title) || ''), close = null, ...rest } = props;
 
     const visitUrl = useCallback(() =>
     {
