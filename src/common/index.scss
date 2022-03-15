@@ -194,11 +194,8 @@
 
 .nitro-alert {
     width: 350px;
-
-    .content-area {
-        min-height: 125px;
-        max-height: 300px;
-    }
+    min-height: 130px;
+    max-height: 350px;
 }
 
 .nitro-notification-bubble {
