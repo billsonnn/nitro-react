@@ -1,46 +1,50 @@
-# Getting Started with Create React App
+# Nitro React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Prerequisites
 
-## Available Scripts
+-   You must have [git](https://git-scm.com/) installed
+-   You must have [NodeJS](https://nodejs.org/) >= 16.13 installed
+-   We recommend you use [Yarn](https://yarnpkg.com/) over [npm](https://npmjs.com/)
+    -   `npm i yarn -g`
 
-In the project directory, you can run:
+## Installation
 
-### `npm start`
+-   First you should open terminal and navigate to the folder where you want to clone Nitro
+-   Clone Nitro
+    -   `git clone https://git.krews.org/nitro/nitro-react.git`
+-   Install the dependencies
+    -   `yarn install`
+    -   This may take some time, please be patient
+-   Rename a few files
+    -   Rename `public/renderer-config.json.example` to `public/renderer-config.json`
+    -   Rename `public/ui-config.json.example` to `public/ui-config.json`
+-   Set your links
+    -   Open `public/renderer-config.json`
+        -   Update `socket.url, asset.url, image.library.url, & hof.furni.url`
+    -   Open `public/ui-config.json`
+        -   Update `camera.url, thumbnails.url, url.prefix, habbopages.url`
+    -   You can override any variable by passing it to `NitroConfig` in the index.html
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Usage
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+-   To use Nitro you need `.nitro` assets generated, see [nitro-converter](https://git.krews.org/nitro/nitro-converter) for instructions
+-   See [Morningstar Websockets](https://git.krews.org/nitro/ms-websockets) for instructions on configuring websockets on your server
 
-### `npm test`
+### Development
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Run Nitro in development mode when you are editing the files, this way you can see the changes in your browser instantly
 
-### `npm run build`
+```
+yarn start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Production
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To build a production version of Nitro just run the following command
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+yarn build:prod
+```
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+-   A `build` folder will be generated, these are the files that must be uploaded to your webserver
+-   Consult your CMS documentation for compatibility with Nitro and how to add the production files

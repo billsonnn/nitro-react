@@ -1,13 +1,14 @@
 {
   "name": "nitro-react",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "start": "craco start",
-    "build": "craco --max_old_space_size=8048 build",
-    "build:prod": "npx browserslist@latest --update-db && yarn install && yarn build",
+    "build": "GENERATE_SOURCEMAP=false BROWSER=none craco build",
+    "build:prod": "npx browserslist@latest --update-db && yarn build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "node ./post-install.js"
   },
   "dependencies": {
     "@craco/craco": "^6.3.0",
