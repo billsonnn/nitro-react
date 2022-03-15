@@ -3,12 +3,11 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "start": "craco start",
-    "build": "GENERATE_SOURCEMAP=false BROWSER=none craco build",
+    "start": "BROWSER=none craco start",
+    "build": "GENERATE_SOURCEMAP=false craco build",
     "build:prod": "npx browserslist@latest --update-db && yarn build",
     "test": "craco test",
-    "eject": "react-scripts eject",
-    "postinstall": "node ./post-install.js"
+    "eject": "react-scripts eject"
   },
   "dependencies": {
     "@craco/craco": "^6.3.0",
