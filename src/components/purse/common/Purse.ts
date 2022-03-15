@@ -13,8 +13,27 @@ export class Purse implements IPurse
     private _pastVipDays: number = 0;
     private _isExpiring: boolean = false;
     private _minutesUntilExpiration: number = 0;
-    private _minutesSinceLastModified: number;
-    private _lastUpdated: number;
+    private _minutesSinceLastModified: number = 0;
+    private _lastUpdated: number = 0;
+
+    public static from(purse: Purse): Purse
+    {
+        const newPurse = new Purse();
+
+        newPurse._credits = purse._credits;
+        newPurse._activityPoints = purse._activityPoints;
+        newPurse._clubDays = purse._clubDays;
+        newPurse._clubPeriods = purse._clubPeriods;
+        newPurse._isVIP = purse._isVIP;
+        newPurse._pastClubDays = purse._pastClubDays;
+        newPurse._pastVipDays = purse._pastVipDays;
+        newPurse._isExpiring = purse._isExpiring;
+        newPurse._minutesUntilExpiration = purse._minutesUntilExpiration;
+        newPurse._minutesSinceLastModified = purse._minutesSinceLastModified;
+        newPurse._lastUpdated = purse._lastUpdated;
+
+        return newPurse;
+    }
 
     public get credits(): number
     {

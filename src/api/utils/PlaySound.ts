@@ -1,4 +1,4 @@
-import { MouseEventType, TouchEventType } from '@nitrots/nitro-renderer';
+import { MouseEventType } from '@nitrots/nitro-renderer';
 import { NitroSoundEvent } from '@nitrots/nitro-renderer/src/nitro/events/NitroSoundEvent';
 import { DispatchMainEvent } from '../../hooks';
 
@@ -11,7 +11,7 @@ export const PlaySound = (sampleCode: string) =>
     DispatchMainEvent(new NitroSoundEvent(NitroSoundEvent.PLAY_SOUND, sampleCode));
 }
 
-const eventTypes = [ MouseEventType.MOUSE_CLICK, MouseEventType.MOUSE_MOVE, MouseEventType.MOUSE_MOVE, TouchEventType.TOUCH_MOVE, 'focus' ];
+const eventTypes = [ MouseEventType.MOUSE_CLICK ];
 
 const startListening = () =>
 {

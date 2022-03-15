@@ -72,7 +72,7 @@ export const PurseView: FC<{}> = props =>
 
         setPurse(prevValue =>
             {
-                const newValue = { ...prevValue };
+                const newValue = Purse.from(prevValue as Purse);
 
                 newValue.credits = parseFloat(parser.credits);
 
@@ -90,7 +90,7 @@ export const PurseView: FC<{}> = props =>
 
         setPurse(prevValue =>
             {
-                const newValue = { ...prevValue };
+                const newValue = Purse.from(prevValue as Purse);
 
                 newValue.activityPoints = parser.currencies;
 
@@ -106,7 +106,7 @@ export const PurseView: FC<{}> = props =>
 
         setPurse(prevValue =>
             {
-                const newValue = { ...prevValue };
+                const newValue = Purse.from(prevValue as Purse);
 
                 newValue.activityPoints = new Map(newValue.activityPoints);
 
@@ -129,7 +129,7 @@ export const PurseView: FC<{}> = props =>
 
         setPurse(prevValue =>
             {
-                const newValue = { ...prevValue };
+                const newValue = Purse.from(prevValue as Purse);
 
                 newValue.clubDays = Math.max(0, parser.daysToPeriodEnd);
                 newValue.clubPeriods = Math.max(0, parser.periodsSubscribedAhead);
