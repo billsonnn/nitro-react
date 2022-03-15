@@ -63,7 +63,7 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
                     <FontAwesomeIcon icon={ isExtended ? 'minus' : 'plus' } className="text-secondary" />
                     <Text>{ LocalizeText(getResultTitle()) }</Text>
                 </Flex>
-                <FontAwesomeIcon icon={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 'bars' : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 'th' : null) } className="text-secondary" onClick={ toggleDisplayMode } />
+                <FontAwesomeIcon icon={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 'th' : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 'bars' : null) } className="text-secondary" onClick={ toggleDisplayMode } />
             </Flex>
             { isExtended &&
                 <Grid columnCount={ (gridHasTwoColumns ? 2 : 1) } className={ 'navigator-grid' + (gridHasTwoColumns ? ' two-columns' : '') } gap={ 0 }>

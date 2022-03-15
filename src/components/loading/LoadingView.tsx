@@ -6,11 +6,12 @@ interface LoadingViewProps
 {
     isError: boolean;
     message: string;
+    percent: number;
 }
 
 export const LoadingView: FC<LoadingViewProps> = props =>
 {
-    const { isError = false, message = '' } = props;
+    const { isError = false, message = '', percent = 0 } = props;
     const [ loadingShowing, setLoadingShowing ] = useState(false);
 
     useEffect(() =>
@@ -28,10 +29,26 @@ export const LoadingView: FC<LoadingViewProps> = props =>
     }, []);
     
     return (
-        <Column fit center position="relative" className="nitro-loading">
-            <Base className="connecting-duck" />
-            { isError && (message && message.length) &&
-                <Base className="m-auto bottom-3 fs-4 text-shadow" position="absolute">{ message }</Base> }
+        <Column position="relative" className="nitro-loading h-100">
+            <div className="container h-100">
+                <div className="row h-100 justify-content-center">
+                    <Base className="connecting-duck" />
+                    <div className="col-6 align-self-end text-center py-4">
+                        { isError && (message && message.length) ?
+                            <Base className="fs-4 text-shadow">{message}</Base>
+                            :
+                            <>
+                                <Base className="fs-4 text-shadow">{percent.toFixed()}%</Base>
+                                <div className="nitro-loading-bar mt-4">
+                                    <div className="nitro-loading-bar-inner" style={{ 'width': `${ percent }%` }}/>
+                                </div>   
+                            </>
+                        }
+                        
+                    </div>
+                </div>
+            </div>
+            
         </Column>
     );
 }

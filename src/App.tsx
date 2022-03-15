@@ -10,7 +10,8 @@ export const App: FC<{}> = props =>
 {
     const [ isReady, setIsReady ] = useState(false);
     const [ isError, setIsError ] = useState(false);
-    const [ message, setMessage ] = useState('Getting Ready');
+    const [message, setMessage] = useState('Getting Ready');
+    const [percent, setPercent] = useState(0);
 
     //@ts-ignore
     if(!NitroConfig) throw new Error('NitroConfig is not defined!');
@@ -34,12 +35,18 @@ export const App: FC<{}> = props =>
         return urls;
     }, []);
 
+    const loadPercent = useCallback(() =>
+    {
+        setPercent(percent + 16.66);
+    }, [setPercent,percent]);
+
     const handler = useCallback((event: NitroEvent) =>
     {
         switch(event.type)
         {
             case ConfigurationEvent.LOADED:
                 GetNitroInstance().localization.init();
+                loadPercent();
                 return;
             case ConfigurationEvent.FAILED:
                 setIsError(true);
@@ -55,7 +62,8 @@ export const App: FC<{}> = props =>
 
                 setTimeout(() => window.location.reload(), 1500);
                 return;
-			case NitroCommunicationDemoEvent.CONNECTION_HANDSHAKING:
+            case NitroCommunicationDemoEvent.CONNECTION_HANDSHAKING:
+                loadPercent();
 				return;
 			case NitroCommunicationDemoEvent.CONNECTION_HANDSHAKE_FAILED:
                 setIsError(true);
@@ -63,6 +71,7 @@ export const App: FC<{}> = props =>
 				return;
 			case NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED:
                 setMessage('Finishing Up');
+                loadPercent();
 
                 GetAvatarRenderManager().init();
 
@@ -82,9 +91,14 @@ export const App: FC<{}> = props =>
                 return;
             case AvatarRenderEvent.AVATAR_RENDER_READY:
                 GetNitroInstance().init();
+                loadPercent();
                 return;
             case RoomEngineEvent.ENGINE_INITIALIZED:
-                setIsReady(true);
+                loadPercent();
+                setTimeout(() =>
+                { 
+                    setIsReady(true);
+                }, 200)
                 return;
             case NitroLocalizationEvent.LOADED:
                 GetNitroInstance().core.asset.downloadAssets(getPreloadAssetUrls(), (status: boolean) =>
@@ -94,6 +108,8 @@ export const App: FC<{}> = props =>
                         setMessage('Connecting');
                         
                         GetCommunication().init();
+
+                        loadPercent();
                     }
                     else
                     {
@@ -103,7 +119,7 @@ export const App: FC<{}> = props =>
                 });
                 return;
         }
-    }, [ getPreloadAssetUrls ]);
+    }, [ getPreloadAssetUrls,loadPercent ]);
 
     UseMainEvent(Nitro.WEBGL_UNAVAILABLE, handler);
     UseMainEvent(Nitro.WEBGL_CONTEXT_LOST, handler);
@@ -130,7 +146,7 @@ export const App: FC<{}> = props =>
     return (
         <Base fit overflow="hidden">
             { (!isReady || isError) &&
-                <LoadingView isError={ isError } message={ message } /> }
+                <LoadingView isError={isError} message={message} percent={ percent } /> }
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ (isReady && !isError) }>
                 <MainView />
             </TransitionAnimation>

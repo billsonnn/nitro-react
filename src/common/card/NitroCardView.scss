@@ -83,11 +83,12 @@ $nitro-card-tabs-height: 33px;
                 color: $white;
                 text-shadow: 0px 4px 4px rgba($black, 0.25);
                 @include font-size($h5-font-size);
+                min-height: 21px;
             }
 
             .nitro-card-header-close {
                 cursor: pointer;
-                padding: 0px 1px;
+                padding: 0px 2px;
                 line-height: 1;
                 @include font-size($h7-font-size);
                 border-radius: $border-radius;

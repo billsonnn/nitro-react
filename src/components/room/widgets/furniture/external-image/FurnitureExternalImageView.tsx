@@ -36,7 +36,7 @@ export const FurnitureExternalImageView: FC<{}> = props =>
     if((objectId === -1) || !photoData) return null;
     
     return (
-        <NitroCardView className="nitro-external-image-widget">
+        <NitroCardView className="nitro-external-image-widget" theme="primary-slim">
             <NitroCardHeaderView headerText={ '' } onCloseClick={ close } />
             <NitroCardContentView>
                 <Flex center className="picture-preview border border-black" style={ photoData.w ? { backgroundImage: 'url(' + photoData.w + ')' } : {} }>

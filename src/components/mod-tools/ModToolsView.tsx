@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomEngineObjectEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useReducer, useState } from 'react';
 import { GetRoomSession } from '../../api';
-import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
+import { Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { ModToolsEvent, ModToolsOpenRoomChatlogEvent, ModToolsOpenRoomInfoEvent, ModToolsOpenUserInfoEvent } from '../../events';
 import { DispatchUiEvent, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { ISelectedUser } from './common/ISelectedUser';
@@ -185,7 +185,7 @@ export const ModToolsView: FC<{}> = props =>
         <ModToolsContextProvider value={ { modToolsState, dispatchModToolsState } }>
             <ModToolsMessageHandler />
             { isVisible &&
-                <NitroCardView uniqueKey="mod-tools" className="nitro-mod-tools">
+                <NitroCardView uniqueKey="mod-tools" className="nitro-mod-tools" windowPosition={ DraggableWindowPosition.TOP_LEFT } theme="primary-slim" >
                     <NitroCardHeaderView headerText={ 'Mod Tools' } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardContentView className="text-black" gap={ 1 }>
                         <Button gap={ 1 } onClick={ event => handleClick('toggle_room') } disabled={ !currentRoomId }>

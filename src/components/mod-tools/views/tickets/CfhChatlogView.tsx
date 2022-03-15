@@ -28,6 +28,7 @@ export const CfhChatlogView: FC<CfhChatlogViewProps> = props =>
         if(!parser || parser.data.issueId !== issueId) return;
 
         setChatlogData(parser.data);
+        console.log(parser.data)
     }, [issueId]);
 
     UseMessageEventHook(CfhChatlogEvent, onCfhChatlogEvent);
