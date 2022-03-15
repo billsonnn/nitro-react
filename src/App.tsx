@@ -35,7 +35,7 @@ export const App: FC<{}> = props =>
         return urls;
     }, []);
 
-    const loadPercent = useCallback(() => setPercent(prevValue => (prevValue + 16.66)), []);
+    const loadPercent = useCallback(() => setPercent(prevValue => (prevValue + 20)), []);
 
     const handler = useCallback((event: NitroEvent) =>
     {
@@ -78,9 +78,9 @@ export const App: FC<{}> = props =>
                 setMessage('Connection Error');
 				return;
 			case NitroCommunicationDemoEvent.CONNECTION_CLOSED:
-                if(GetNitroInstance().roomEngine) GetNitroInstance().roomEngine.dispose();
+                //if(GetNitroInstance().roomEngine) GetNitroInstance().roomEngine.dispose();
 
-                setIsError(true);
+                //setIsError(true);
                 setMessage('Connection Error');
 
                 HabboWebTools.send(-1, 'client.init.handshake.fail');
@@ -88,7 +88,7 @@ export const App: FC<{}> = props =>
             case RoomEngineEvent.ENGINE_INITIALIZED:
                 loadPercent();
 
-                setTimeout(() => setIsReady(true), 200);
+                setTimeout(() => setIsReady(true), 300);
                 return;
             case NitroLocalizationEvent.LOADED:
                 GetNitroInstance().core.asset.downloadAssets(getPreloadAssetUrls(), (status: boolean) =>
@@ -134,7 +134,7 @@ export const App: FC<{}> = props =>
         <Base fit overflow="hidden">
             { (!isReady || isError) &&
                 <LoadingView isError={isError} message={message} percent={ percent } /> }
-            <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ (isReady && !isError) }>
+            <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ (isReady) }>
                 <MainView />
             </TransitionAnimation>
             <Base id="draggable-windows-container" />
