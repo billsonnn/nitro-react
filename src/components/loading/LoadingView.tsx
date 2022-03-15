@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { NotificationUtilities } from '../../api';
-import { Base, Column } from '../../common';
+import { Base, Column, Text } from '../../common';
 
 interface LoadingViewProps
 {
@@ -12,7 +12,6 @@ interface LoadingViewProps
 export const LoadingView: FC<LoadingViewProps> = props =>
 {
     const { isError = false, message = '', percent = 0 } = props;
-    const [ loadingShowing, setLoadingShowing ] = useState(false);
 
     useEffect(() =>
     {
@@ -20,35 +19,27 @@ export const LoadingView: FC<LoadingViewProps> = props =>
 
         NotificationUtilities.simpleAlert(message, null, null, null, 'Connection Error');
     }, [ isError, message ]);
-
-    useEffect(() =>
-    {
-        const timeout = setTimeout(() => setLoadingShowing(true), 500);
-
-        return () => clearTimeout(timeout);
-    }, []);
     
     return (
-        <Column position="relative" className="nitro-loading h-100">
-            <div className="container h-100">
-                <div className="row h-100 justify-content-center">
+        <Column fullHeight position="relative" className="nitro-loading">
+            <Base fullHeight className="container h-100">
+                <Column fullHeight alignItems="center" justifyContent="end">
                     <Base className="connecting-duck" />
-                    <div className="col-6 align-self-end text-center py-4">
+                    <Column size={ 6 } className="text-center py-4">
                         { isError && (message && message.length) ?
                             <Base className="fs-4 text-shadow">{message}</Base>
                             :
                             <>
-                                <Base className="fs-4 text-shadow">{percent.toFixed()}%</Base>
-                                <div className="nitro-loading-bar mt-4">
+                                <Text fontSize={ 4 } variant="white" className="text-shadow">{ percent.toFixed() }%</Text>
+                                <div className="nitro-loading-bar mt-2">
                                     <div className="nitro-loading-bar-inner" style={{ 'width': `${ percent }%` }}/>
                                 </div>   
                             </>
                         }
                         
-                    </div>
-                </div>
-            </div>
-            
+                    </Column>
+                </Column>
+            </Base>
         </Column>
     );
 }

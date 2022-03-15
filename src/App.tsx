@@ -1,10 +1,10 @@
-import { AvatarRenderEvent, ConfigurationEvent, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
+import { ConfigurationEvent, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetAvatarRenderManager, GetCommunication, GetConfiguration, GetNitroInstance } from './api';
+import { GetCommunication, GetConfiguration, GetNitroInstance } from './api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from './common';
 import { LoadingView } from './components/loading/LoadingView';
 import { MainView } from './components/main/MainView';
-import { DispatchUiEvent, UseAvatarEvent, UseConfigurationEvent, UseLocalizationEvent, UseMainEvent, UseRoomEngineEvent } from './hooks';
+import { DispatchUiEvent, UseConfigurationEvent, UseLocalizationEvent, UseMainEvent, UseRoomEngineEvent } from './hooks';
 
 export const App: FC<{}> = props =>
 {
@@ -35,10 +35,7 @@ export const App: FC<{}> = props =>
         return urls;
     }, []);
 
-    const loadPercent = useCallback(() =>
-    {
-        setPercent(percent + 16.66);
-    }, [setPercent,percent]);
+    const loadPercent = useCallback(() => setPercent(prevValue => (prevValue + 16.66)), []);
 
     const handler = useCallback((event: NitroEvent) =>
     {
@@ -70,10 +67,9 @@ export const App: FC<{}> = props =>
                 setMessage('Handshake Failed');
 				return;
 			case NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED:
-                setMessage('Finishing Up');
                 loadPercent();
 
-                GetAvatarRenderManager().init();
+                GetNitroInstance().init();
 
                 if(LegacyExternalInterface.available) LegacyExternalInterface.call('legacyTrack', 'authentication', 'authok', []);
 				return;
@@ -89,24 +85,16 @@ export const App: FC<{}> = props =>
 
                 HabboWebTools.send(-1, 'client.init.handshake.fail');
                 return;
-            case AvatarRenderEvent.AVATAR_RENDER_READY:
-                GetNitroInstance().init();
-                loadPercent();
-                return;
             case RoomEngineEvent.ENGINE_INITIALIZED:
                 loadPercent();
-                setTimeout(() =>
-                { 
-                    setIsReady(true);
-                }, 200)
+
+                setTimeout(() => setIsReady(true), 200);
                 return;
             case NitroLocalizationEvent.LOADED:
                 GetNitroInstance().core.asset.downloadAssets(getPreloadAssetUrls(), (status: boolean) =>
                 {
                     if(status)
                     {
-                        setMessage('Connecting');
-                        
                         GetCommunication().init();
 
                         loadPercent();
@@ -132,7 +120,6 @@ export const App: FC<{}> = props =>
     UseLocalizationEvent(NitroLocalizationEvent.LOADED, handler);
     UseConfigurationEvent(ConfigurationEvent.LOADED, handler);
     UseConfigurationEvent(ConfigurationEvent.FAILED, handler);
-    UseAvatarEvent(AvatarRenderEvent.AVATAR_RENDER_READY, handler);
 
     if(!WebGL.isWebGLAvailable())
     {
