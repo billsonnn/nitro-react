@@ -2,29 +2,13 @@ module.exports = {
     eslint: {
         enable: false
     },
-    style: {
-        css: {
-            loaderOptions: O => { return { url: false } }
-        }
-    },
     webpack: {
         configure: (webpackConfig) => ({
             ...webpackConfig,
             module: {
                 ...webpackConfig.module,
                 rules: [
-                    ...webpackConfig.module.rules,
-                    // {
-                    //     test: /\.(png|jpg|gif)$/i,
-                    //     use: [
-                    //         {
-                    //             loader: 'url-loader',
-                    //             options: {
-                    //                 limit: false,
-                    //             },
-                    //       } ,
-                    //     ],
-                    // }
+                    ...webpackConfig.module.rules
                 ].map(rule =>
                     {
                         if(!rule.oneOf) return rule;

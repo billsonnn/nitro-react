@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "start": "cross-env BROWSER=none craco start",
-    "build": "cross-env GENERATE_SOURCEMAP=false craco build",
+    "start": "cross-env BROWSER=none IMAGE_INLINE_SIZE_LIMIT=100000 craco start",
+    "build": "cross-env GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=100000 craco build",
     "build:prod": "npx browserslist@latest --update-db && yarn build",
     "test": "craco test",
     "eject": "react-scripts eject"

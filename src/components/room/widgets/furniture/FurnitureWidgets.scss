@@ -17,7 +17,7 @@
     .dimmer-banner {
         width: 56px;
         height: 79px;
-        background: url('/images/room-widgets/dimmer-widget/dimmer_banner.png') center no-repeat;
+        background: url('../../../../assets/images/room-widgets/dimmer-widget/dimmer_banner.png') center no-repeat;
     }
 
     .color-swatch {
@@ -36,7 +36,7 @@
     height: $nitro-widget-exchange-credit-height;
 
     .exchange-image {
-        background-image: url('/images/room-widgets/exchange-credit/exchange-credit-image.png');
+        background-image: url('../../../../assets/images/room-widgets/exchange-credit/exchange-credit-image.png');
         width: 103px;
         height: 103px;
     }
@@ -63,7 +63,7 @@
     align-items: center;
     width: 83px;
     height: 130px;
-    background-image: url('/images/room-widgets/mannequin-widget/mannequin-spritesheet.png');
+    background-image: url('../../../../assets/images/room-widgets/mannequin-widget/mannequin-spritesheet.png');
     overflow: hidden;
 }
 
