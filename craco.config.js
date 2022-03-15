@@ -2,6 +2,11 @@ module.exports = {
     eslint: {
         enable: false
     },
+    style: {
+        css: {
+            loaderOptions: O => { return { url: false } }
+        }
+    },
     webpack: {
         configure: (webpackConfig) => ({
             ...webpackConfig,

@@ -58,7 +58,7 @@
 }
 
 .nitro-stickie-image {
-    background-image: url('../../../../../assets/images/room-widgets/stickie-widget/stickie-spritesheet.png');
+    background-image: url('..//images/room-widgets/stickie-widget/stickie-spritesheet.png');
 
     &.stickie-blue,
     &.stickie-yellow,
@@ -73,7 +73,7 @@
     }
 
     &.stickie-yellow {
-        background-image: url('../../../../../assets/images/room-widgets/stickie-widget/stickie-yellow.png');
+        background-image: url('..//images/room-widgets/stickie-widget/stickie-yellow.png');
         //background-position: -191px -184px;
     }
 
