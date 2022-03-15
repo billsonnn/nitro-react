@@ -54,17 +54,11 @@
         }
     }
 
-    .logo {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-        right: 0;
-        left: 0;
-        width: 35%;
-        height: 35%;
-        background: url('../../assets/images/nitro/nitro-light.svg') no-repeat center;
-        z-index: -1;
+    .nitro-logo {
+        width: 47px;
+        height: 65px;
+        background: transparent url('https://assets.nitrodev.co/logos/react-loader.png') no-repeat center;
+        z-index: 1;
     }
 
     .nitro-loading-bar {

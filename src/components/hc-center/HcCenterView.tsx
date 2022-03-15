@@ -5,8 +5,8 @@ import { AddEventLinkTracker, CreateLinkEvent, GetConfiguration, LocalizeText, R
 import { Base, Button, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { HcCenterEvent } from '../../events';
 import { UseMessageEventHook, UseUiEvent } from '../../hooks';
-import { BadgeResolver } from './util/BadgeResolver';
-import { ClubStatus } from './util/ClubStatus';
+import { BadgeResolver } from './common/BadgeResolver';
+import { ClubStatus } from './common/ClubStatus';
 
 
 export const HcCenterView: FC<{}> = props =>
