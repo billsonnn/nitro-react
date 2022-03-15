@@ -1,5 +1,5 @@
-import { NitroPoint, NitroTilemap, PixiApplicationProxy, PixiInteractionEventProxy, POINT_STRUCT_SIZE } from '@nitrots/nitro-renderer';
-import { GetConfiguration } from '../../../api';
+import { IGraphicAssetCollection, NitroPoint, NitroTilemap, PixiApplicationProxy, PixiInteractionEventProxy, POINT_STRUCT_SIZE } from '@nitrots/nitro-renderer';
+import { GetNitroCore } from '../../../api';
 import { ActionSettings } from './ActionSettings';
 import { FloorAction, HEIGHT_SCHEME, MAX_NUM_TILE_PER_AXIS, TILE_SIZE } from './Constants';
 import { Tile } from './Tile';
@@ -7,7 +7,7 @@ import { getScreenPositionForTile, getTileFromScreenPosition } from './Utils';
 
 export class FloorplanEditor extends PixiApplicationProxy
 {
-    private static _instance: FloorplanEditor = new FloorplanEditor();
+    private static _INSTANCE: FloorplanEditor = null;
 
     private static readonly TILE_BLOCKED = 'r_blocked';
     private static readonly TILE_DOOR = 'r_door';
@@ -22,7 +22,9 @@ export class FloorplanEditor extends PixiApplicationProxy
     private _actionSettings: ActionSettings;
     private _isInitialized: boolean;
 
-    private constructor()
+    private _assetCollection: IGraphicAssetCollection;
+
+    constructor()
     {
         const width = TILE_SIZE * MAX_NUM_TILE_PER_AXIS + 20;
         const height = (TILE_SIZE * MAX_NUM_TILE_PER_AXIS) / 2 + 100;
@@ -49,18 +51,20 @@ export class FloorplanEditor extends PixiApplicationProxy
 
     public initialize(): void
     {
-        if(!this._isInitialized)
-        {
-            this.loader.add('tiles', GetConfiguration<string>('floorplan.tile.url'));
+        if(this._isInitialized) return;
 
-            this.loader.load((_, resources) =>
-            {
-                this._tilemapRenderer = new NitroTilemap(resources['tiles'].spritesheet.baseTexture);
-                this.registerEventListeners();
-                this.stage.addChild(this._tilemapRenderer);
-            });
-            this._isInitialized = true;
-        }
+        const collection = GetNitroCore().asset.getCollection('floor_editor');
+
+        if(!collection) return;
+
+        this._assetCollection = collection;
+        this._tilemapRenderer = new NitroTilemap(collection.baseTexture);
+
+        this.registerEventListeners();
+
+        this.stage.addChild(this._tilemapRenderer);
+        
+        this._isInitialized = true;
     }
 
     private registerEventListeners(): void
@@ -72,7 +76,7 @@ export class FloorplanEditor extends PixiApplicationProxy
         this._tilemapRenderer.containsPoint = (position) =>
         {
             this._tilemapRenderer.worldTransform.applyInverse(position, tempPoint);
-            return this.tileHitDettection(tempPoint, false);
+            return this.tileHitDetection(tempPoint, false);
         };
 
         this._tilemapRenderer.on('pointerup', () =>
@@ -94,7 +98,7 @@ export class FloorplanEditor extends PixiApplicationProxy
 
 
             const location = event.data.global;
-            this.tileHitDettection(location, true);
+            this.tileHitDetection(location, true);
         });
 
         this._tilemapRenderer.on('click', (event: PixiInteractionEventProxy) =>
@@ -105,11 +109,11 @@ export class FloorplanEditor extends PixiApplicationProxy
             if(pointerEvent.button === 2) return;
 
             const location = event.data.global;
-            this.tileHitDettection(location, true, true);
+            this.tileHitDetection(location, true, true);
         });
     }
 
-    private tileHitDettection(tempPoint: NitroPoint, setHolding: boolean, isClick: boolean = false): boolean
+    private tileHitDetection(tempPoint: NitroPoint, setHolding: boolean, isClick: boolean = false): boolean
     {
         // @ts-ignore
         const buffer = this._tilemapRenderer.pointsBuf;
@@ -241,7 +245,8 @@ export class FloorplanEditor extends PixiApplicationProxy
 
                 //if((tile.height === 'x') || tile.height === 'X') continue;
                 const [positionX, positionY] = getScreenPositionForTile(x, y);
-                this._tilemapRenderer.tile(`${assetName}.png`, positionX, positionY);
+                
+                this._tilemapRenderer.tile(this._assetCollection.getTexture(`floor_editor_${ assetName }`), positionX, positionY);
             }
         }
     }
@@ -404,11 +409,11 @@ export class FloorplanEditor extends PixiApplicationProxy
 
     public static get instance(): FloorplanEditor
     {
-        if(!FloorplanEditor._instance)
+        if(!FloorplanEditor._INSTANCE)
         {
-            FloorplanEditor._instance = new FloorplanEditor();
+            FloorplanEditor._INSTANCE = new FloorplanEditor();
         }
 
-        return FloorplanEditor._instance;
+        return FloorplanEditor._INSTANCE;
     }
 }

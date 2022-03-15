@@ -4,7 +4,6 @@
     "camera.url": "https://camera.com",
     "thumbnails.url": "https://camera.com/thumbnail/%thumbnail%.png",
     "url.prefix": "https://website.com",
-    "floorplan.tile.url": "${asset.url}/floorplan-editor/tiles.json",
     "habbopages.url": "${url.prefix}/",
     "group.homepage.url": "${url.prefix}/groups/%groupid%/id",
     "guide.help.alpha.groupid": 0,
