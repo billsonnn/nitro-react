@@ -1,6 +1,6 @@
 import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, HabboClubLevelEnum, IAvatarFigureContainer, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import { GetAvatarRenderManager, GetSessionDataManager, LocalizeText, RoomWidgetUpdateMannequinEvent, SendMessageComposer } from '../../../../../api';
+import { GetAvatarRenderManager, GetClubMemberLevel, GetSessionDataManager, LocalizeText, RoomWidgetUpdateMannequinEvent, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Column, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
 import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../RoomContext';
@@ -61,7 +61,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
                 setMode(MODE_WRONG_GENDER);
             }
 
-            else if(GetSessionDataManager().clubLevel < figureClubLevel)
+            else if(GetClubMemberLevel() < figureClubLevel)
             {
                 setMode(MODE_NO_CLUB);
             }

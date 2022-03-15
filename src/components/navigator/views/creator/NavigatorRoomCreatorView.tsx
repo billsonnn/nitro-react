@@ -1,7 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
 import { HabboClubLevelEnum, RoomCreateComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetConfiguration, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
+import { GetClubMemberLevel, GetConfiguration, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
 import { IRoomModel, RoomModels } from '../../common/RoomModels';
@@ -25,7 +25,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
     {
         if(!model) return;
 
-        if(model.clubLevel > GetSessionDataManager().clubLevel) return;
+        if(model.clubLevel > GetClubMemberLevel()) return;
 
         setSelectedModelName(name);
     }
@@ -99,7 +99,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                     {
                         RoomModels.map(model =>
                             {
-                                return (<LayoutGridItem fullHeight key={ model.name } onClick={ () => selectModel(model) } itemActive={ (selectedModelName === model.name) } overflow="unset" gap={ 0 } className="p-1" disabled={ (GetSessionDataManager().clubLevel < model.clubLevel) }>
+                                return (<LayoutGridItem fullHeight key={ model.name } onClick={ () => selectModel(model) } itemActive={ (selectedModelName === model.name) } overflow="unset" gap={ 0 } className="p-1" disabled={ (GetClubMemberLevel() < model.clubLevel) }>
                                     <Flex fullHeight center overflow="hidden">
                                         <img alt="" src={ getRoomModelImage(model.name) } />
                                     </Flex>

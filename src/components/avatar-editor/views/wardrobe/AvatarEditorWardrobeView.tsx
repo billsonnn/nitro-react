@@ -1,6 +1,6 @@
 import { IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
-import { GetAvatarRenderManager, GetSessionDataManager, SendMessageComposer } from '../../../../api';
+import { GetAvatarRenderManager, GetClubMemberLevel, SendMessageComposer } from '../../../../api';
 import { AutoGrid, Base, Button, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, LayoutGridItem } from '../../../../common';
 import { FigureData } from '../../common/FigureData';
 
@@ -61,7 +61,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
                         <Flex gap={ 1 } className="button-container">
                             <Button variant="link" fullWidth onClick={ event => saveFigureAtWardrobeIndex(index) }>Save</Button>
                             { figureContainer &&
-                                <Button variant="link" fullWidth onClick={ event => wearFigureAtIndex(index) } disabled={ (clubLevel > GetSessionDataManager().clubLevel) }>Use</Button> }
+                                <Button variant="link" fullWidth onClick={ event => wearFigureAtIndex(index) } disabled={ (clubLevel > GetClubMemberLevel()) }>Use</Button> }
                         </Flex>
                     </LayoutGridItem>
                 );

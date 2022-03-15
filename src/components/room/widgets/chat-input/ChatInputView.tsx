@@ -1,7 +1,7 @@
 import { HabboClubLevelEnum, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { GetConfiguration, GetSessionDataManager, LocalizeText, RoomWidgetChatMessage, RoomWidgetChatTypingMessage, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
+import { GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText, RoomWidgetChatMessage, RoomWidgetChatTypingMessage, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
 import { UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ChatInputStyleSelectorView } from './ChatInputStyleSelectorView';
@@ -240,7 +240,7 @@ export const ChatInputView: FC<{}> = props =>
 
             if(GetConfiguration<number[]>('chat.styles.disabled').indexOf(style.styleId) >= 0) continue;
 
-            if(style.isHcOnly && (GetSessionDataManager().clubLevel >= HabboClubLevelEnum.CLUB))
+            if(style.isHcOnly && (GetClubMemberLevel() >= HabboClubLevelEnum.CLUB))
             {
                 styleIds.push(style.styleId);
 

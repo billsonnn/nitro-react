@@ -1,5 +1,5 @@
 import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomRotatingEffect, RoomSessionChatEvent, RoomSettingsComposer, RoomShakingEffect, RoomWidgetEnum, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
-import { GetConfiguration, GetNitroInstance, SendMessageComposer } from '../../..';
+import { GetClubMemberLevel, GetConfiguration, GetNitroInstance, SendMessageComposer } from '../../..';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText, NotificationUtilities } from '../../../..';
 import { FloorplanEditorEvent } from '../../../../../events/floorplan-editor/FloorplanEditorEvent';
 import { DispatchUiEvent } from '../../../../../hooks';
@@ -77,7 +77,7 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
                             return null;
                         case ':d':
                         case ';d':
-                            if(GetSessionDataManager().clubLevel === HabboClubLevelEnum.VIP)
+                            if(GetClubMemberLevel() === HabboClubLevelEnum.VIP)
                             {
                                 this.container.roomSession.sendExpressionMessage(AvatarExpressionEnum.LAUGH.ordinal);
                             }
@@ -89,7 +89,7 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
 
                             return null;
                         case ':kiss':
-                            if(GetSessionDataManager().clubLevel === HabboClubLevelEnum.VIP)
+                            if(GetClubMemberLevel() === HabboClubLevelEnum.VIP)
                             {
                                 this.container.roomSession.sendExpressionMessage(AvatarExpressionEnum.BLOW.ordinal);
 
@@ -98,7 +98,7 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
 
                             break;
                         case ':jump':
-                            if(GetSessionDataManager().clubLevel === HabboClubLevelEnum.VIP)
+                            if(GetClubMemberLevel() === HabboClubLevelEnum.VIP)
                             {
                                 this.container.roomSession.sendExpressionMessage(AvatarExpressionEnum.JUMP.ordinal);
 

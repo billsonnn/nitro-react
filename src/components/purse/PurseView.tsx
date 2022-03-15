@@ -16,6 +16,7 @@ export const PurseView: FC<{}> = props =>
 {
     const [ purse, setPurse ] = useState<IPurse>(new Purse());
 
+    const hcDisabled = useMemo(() => GetConfiguration<boolean>('hc.disabled', false), []);
     const displayedCurrencies = useMemo(() => GetConfiguration<number[]>('system.currency.types', []), []);
     const currencyDisplayNumberShort = useMemo(() => GetConfiguration<boolean>('currency.display.number.short', false), []);
 
@@ -152,12 +153,14 @@ export const PurseView: FC<{}> = props =>
 
     useEffect(() =>
     {
+        if(hcDisabled) return;
+
         SendMessageComposer(new UserSubscriptionComposer('habbo_club'));
 
         const interval = setInterval(() => SendMessageComposer(new UserSubscriptionComposer('habbo_club')), 50000);
 
         return () => clearInterval(interval);
-    }, [ purse ]);
+    }, [ hcDisabled ]);
 
     useEffect(() =>
     {
@@ -168,17 +171,18 @@ export const PurseView: FC<{}> = props =>
 
     return (
         <PurseContextProvider value={ { purse } }>
-            <Column className="nitro-purse-container" gap={ 1 }>
+            <Column alignItems="end" className="nitro-purse-container" gap={ 1 }>
                 <Flex className="nitro-purse rounded-bottom p-1">
                     <Grid fullWidth gap={ 1 }>
-                        <Column justifyContent="center" size={ 6 } gap={ 0 }>
+                        <Column justifyContent="center" size={ hcDisabled ? 10 : 6 } gap={ 0 }>
                             <CurrencyView type={ -1 } amount={ purse.credits } short={ currencyDisplayNumberShort } />
                             { getCurrencyElements(0, 2) }
                         </Column>
-                        <Column center pointer size={ 4 } gap={ 1 } className="nitro-purse-subscription rounded" onClick={ event => DispatchUiEvent(new HcCenterEvent(HcCenterEvent.TOGGLE_HC_CENTER)) }>
-                            <LayoutCurrencyIcon type="hc" />
-                            <Text variant="white">{ getClubText }</Text>
-                        </Column>
+                        { !hcDisabled &&
+                            <Column center pointer size={ 4 } gap={ 1 } className="nitro-purse-subscription rounded" onClick={ event => DispatchUiEvent(new HcCenterEvent(HcCenterEvent.TOGGLE_HC_CENTER)) }>
+                                <LayoutCurrencyIcon type="hc" />
+                                <Text variant="white">{ getClubText }</Text>
+                            </Column> }
                         <Column justifyContent="center" size={ 2 } gap={ 0 }>
                             <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => CreateLinkEvent('help/show') }>
                                 <i className="icon icon-help"/>
