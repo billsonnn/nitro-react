@@ -212,6 +212,8 @@ export const FriendsMessengerView: FC<{}> = props =>
 
         const activeThread = messageThreads[activeThreadIndex];
 
+        if(!activeThread) return;
+
         if(activeThread.unread)
         {
             messagesBox.current.scrollTop = messagesBox.current.scrollHeight;
@@ -281,7 +283,7 @@ export const FriendsMessengerView: FC<{}> = props =>
                         </Column>
                     </Column>
                     <Column size={ 8 } overflow="hidden">
-                        { (activeThreadIndex >= 0) &&
+                        { visibleThreads && (visibleThreads.length > 0) && (activeThreadIndex >= 0) &&
                             <>
                                 <Text bold center>{ LocalizeText('messenger.window.separator', [ 'FRIEND_NAME' ], [ messageThreads[activeThreadIndex].participant.name ]) }</Text>
                                 <Flex alignItems="center" justifyContent="between" gap={ 1 }>
