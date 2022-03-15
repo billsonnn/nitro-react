@@ -9,7 +9,6 @@
         "source.fixAll.sortJSON": false,
         "source.organizeImports": true
     },
-    "emmet.showExpandedAbbreviation": "never",
 	"git.ignoreLimitWarning": true,
     "files.eol": "\n",
     "files.insertFinalNewline": true,

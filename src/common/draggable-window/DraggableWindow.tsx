@@ -182,6 +182,10 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
                 element.style.top = `calc(50vh - ${ (element.offsetHeight / 2) }px)`;
                 element.style.left = `calc(50vw - ${ (element.offsetWidth / 2) }px)`;
                 break;
+            case DraggableWindowPosition.TOP_LEFT:
+                element.style.top = '50px';
+                element.style.left = '50px';
+                break;
         }
 
         if(uniqueKey !== null)
