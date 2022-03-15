@@ -65,11 +65,11 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if(parser.amountChanged <= 0) return;
+        if((parser.amountChanged <= 0) || (parser.type !== 5)) return;
 
         const imageUrl = GetConfiguration<string>('currency.asset.icon.url', '').replace('%type%', parser.type.toString());
 
-        NotificationUtilities.showSingleBubble(LocalizeText(`notifications.text.activitypoints.${ parser.type }`, [ 'AMOUNT' ], [ parser.amountChanged.toString() ]), NotificationBubbleType.INFO, imageUrl);
+        NotificationUtilities.showSingleBubble(LocalizeText('notifications.text.loyalty.received', [ 'amount' ], [ parser.amountChanged.toString() ]), NotificationBubbleType.INFO, imageUrl);
     }, []);
 
     UseMessageEventHook(ActivityPointNotificationMessageEvent, onActivityPointNotificationMessageEvent);

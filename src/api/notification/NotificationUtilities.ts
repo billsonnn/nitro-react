@@ -59,10 +59,9 @@ export class NotificationUtilities
     {
         let imageUrl = options.get('image');
 
-        // eslint-disable-next-line no-template-curly-in-string
-        if(!imageUrl) imageUrl = ('${image.library.url}notifications/' + type.replace(/\./g, '_') + '.png');
+        if(!imageUrl) imageUrl = GetConfiguration<string>('image.library.notifications.url', '').replace('%image', type.replace(/\./g, '_'));
 
-        return imageUrl;
+        return LocalizeText(imageUrl);
     }
 
     public static showNotification(type: string, options: Map<string, string> = null): void
@@ -79,11 +78,9 @@ export class NotificationUtilities
         const linkUrl = this.getNotificationPart(options, type, 'linkUrl', false);
         const image = this.getNotificationImageUrl(options, type);
 
-        console.log(image, LocalizeText(image));
-
         if(options.get('display') === 'BUBBLE')
         {
-            this.showSingleBubble(LocalizeText(message), NotificationBubbleType.INFO, LocalizeText(image), linkUrl);
+            this.showSingleBubble(LocalizeText(message), NotificationBubbleType.INFO, image, linkUrl);
         }
         else
         {
