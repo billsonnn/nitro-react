@@ -29,7 +29,7 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
 
         if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
         {
-            DispatchUiEvent(new CatalogSetExtraPurchaseParameterEvent(offer.product.extraParam));
+            setTimeout(() => DispatchUiEvent(new CatalogSetExtraPurchaseParameterEvent(offer.product.extraParam)), 0);
         }
     }
 
