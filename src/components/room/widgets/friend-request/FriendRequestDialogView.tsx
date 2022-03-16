@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
 import { LocalizeText, RoomWidgetFriendRequestMessage } from '../../../../api';
 import { Base, Button, Column, Flex, Text } from '../../../../common';
@@ -28,7 +29,10 @@ export const FriendRequestDialogView: FC<FriendRequestDialogViewProps> = props =
         <UserLocationView userId={ userId }>
             <Base className="nitro-friend-request-dialog nitro-context-menu p-2">
                 <Column>
-                    <Text variant="white" fontSize={ 6 }>{ LocalizeText('widget.friendrequest.from', [ 'username' ], [ userName ]) }</Text>
+                    <Flex alignItems="center" justifyContent="between" gap={ 2 }>
+                        <Text variant="white" fontSize={ 6 }>{ LocalizeText('widget.friendrequest.from', [ 'username' ], [ userName ]) }</Text>
+                        <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ close } />
+                    </Flex>
                     <Flex justifyContent="end" gap={ 1 }>
                         <Button variant="danger" onClick={ event => respond(false) }>{ LocalizeText('widget.friendrequest.decline') }</Button>
                         <Button variant="success" onClick={ event => respond(true) }>{ LocalizeText('widget.friendrequest.accept') }</Button>
