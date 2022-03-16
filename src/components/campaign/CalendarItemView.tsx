@@ -1,15 +1,15 @@
 import { FC } from 'react';
 import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../../api';
 import { Base, Column, Flex, LayoutImage } from '../../common';
-import { CalendarItem } from './common/CalendarItem';
 import { CalendarItemState } from './common/CalendarItemState';
+import { ICalendarItem } from './common/ICalendarItem';
 
 interface CalendarItemViewProps
 {
     itemId: number;
     state: number;
     active?: boolean;
-    product?: CalendarItem;
+    product?: ICalendarItem;
     onClick: (itemId: number) => void;
 }
 
