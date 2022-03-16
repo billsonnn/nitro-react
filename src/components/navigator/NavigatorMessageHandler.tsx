@@ -1,7 +1,7 @@
-import { CantConnectMessageParser, GenericErrorEvent, GetGuestRoomResultEvent, LegacyExternalInterface, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomInfoComposer, RoomSettingsUpdatedEvent, UserInfoEvent } from '@nitrots/nitro-renderer';
+import { CantConnectMessageParser, GenericErrorEvent, GetGuestRoomResultEvent, LegacyExternalInterface, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomInfoComposer, RoomSettingsUpdatedEvent, UserInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateRoomSession, GetSessionDataManager, LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer, VisitDesktop } from '../../api';
-import { UpdateDoorStateEvent } from '../../events';
+import { NavigatorEvent, UpdateDoorStateEvent } from '../../events';
 import { DispatchUiEvent, UseMessageEventHook } from '../../hooks';
 import { useNavigatorContext } from './NavigatorContext';
 import { NavigatorActions } from './reducers/NavigatorReducer';
@@ -221,6 +221,11 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         VisitDesktop();
     }, []);
 
+    const onRoomCreatorEvent = useCallback((event: RoomEnterErrorEvent) =>
+    {
+        DispatchUiEvent(new NavigatorEvent(NavigatorEvent.SHOW_ROOM_CREATOR));
+    },[]);
+
     UseMessageEventHook(UserInfoEvent, onUserInfoEvent);
     UseMessageEventHook(RoomForwardEvent, onRoomForwardEvent);
     UseMessageEventHook(RoomEntryInfoMessageEvent, onRoomEntryInfoMessageEvent);
@@ -236,6 +241,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
     UseMessageEventHook(NavigatorHomeRoomEvent, onNavigatorHomeRoomEvent);
     UseMessageEventHook(RoomSettingsUpdatedEvent, onRoomSettingsUpdatedEvent);
     UseMessageEventHook(RoomEnterErrorEvent, onRoomEnterErrorEvent);
+    UseMessageEventHook(NavigatorOpenRoomCreatorEvent, onRoomCreatorEvent);
 
     return null;
 }

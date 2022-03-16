@@ -18,6 +18,8 @@ export const NotificationDefaultAlertView: FC<NotificationDefaultAlertViewProps>
         close();
     }, [ item, close ]);
 
+    const isAction = (item.clickUrl && item.clickUrl.startsWith('event:'));
+
     return (
         <LayoutNotificationAlertView title={ title } close={ close } { ...rest }>
             { (item.messages.length > 0) && item.messages.map((message, index) =>
@@ -27,9 +29,12 @@ export const NotificationDefaultAlertView: FC<NotificationDefaultAlertViewProps>
                     return <Base grow fullHeight overflow="auto" key={ index } dangerouslySetInnerHTML={ { __html: htmlText } } />;
                 }) }
             <Column alignItems="center" center gap={ 1 }>
-                <Button onClick={ close }>{ LocalizeText('generic.close') }</Button>
-                { item.clickUrl && item.clickUrl.length &&
+                { !isAction &&
+                    <Button onClick={ close }>{ LocalizeText('generic.close') }</Button> }
+                { !isAction && item.clickUrl && (item.clickUrl.length > 0) &&
                     <Button variant="link" onClick={ visitUrl }>{ LocalizeText(item.clickUrlText) }</Button> }
+                { isAction && item.clickUrl && (item.clickUrl.length > 0) &&
+                    <Button onClick={ visitUrl }>{ LocalizeText(item.clickUrlText) }</Button> }
             </Column>
         </LayoutNotificationAlertView>
     );

@@ -138,14 +138,18 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                 <Column gap={ 1 }>
                     <Flex alignItems="center" className="bg-light-dark rounded py-1 px-2">
                         { (userData.type !== RoomWidgetUpdateInfostandUserEvent.OWN_USER) &&
-                            <Text fullWidth wrap textBreak variant="white" small className="motto-content">{ motto }</Text> }
+                            <Flex grow alignItems="center" className="motto-content">
+                                <Text fullWidth pointer wrap textBreak small variant="white">{ motto }</Text>
+                            </Flex> }
                         { userData.type === RoomWidgetUpdateInfostandUserEvent.OWN_USER &&
                             <Flex grow alignItems="center" gap={ 2 }>
                                 <FontAwesomeIcon icon="pencil-alt" className="small" />
-                                { !isEditingMotto &&
-                                    <Text fullWidth pointer wrap textBreak small variant="white" className="motto-content" onClick={ event => setIsEditingMotto(true) }>{ motto }</Text> }
-                                { isEditingMotto &&
-                                    <input type="text" className="motto-input" maxLength={ 38 } value={ motto } onChange={ event => setMotto(event.target.value) } onBlur={ onMottoBlur } onKeyDown={ onMottoKeyDown } autoFocus={ true } /> }
+                                <Flex grow alignItems="center" className="motto-content">
+                                    { !isEditingMotto &&
+                                        <Text fullWidth pointer wrap textBreak small variant="white" onClick={ event => setIsEditingMotto(true) }>{ motto }</Text> }
+                                    { isEditingMotto &&
+                                        <input type="text" className="motto-input" maxLength={ 38 } value={ motto } onChange={ event => setMotto(event.target.value) } onBlur={ onMottoBlur } onKeyDown={ onMottoKeyDown } autoFocus={ true } /> }
+                                </Flex>
                             </Flex> }
                     </Flex>
                     <hr className="m-0" />

@@ -52,8 +52,7 @@
     width: 400px;
 
     .list-container {
-        min-height: 100px;
-        max-height: 100px;
+        height: 100px;
 
         .list-item {
             background-color: $grid-active-bg-color;

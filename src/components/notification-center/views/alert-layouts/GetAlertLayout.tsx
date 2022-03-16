@@ -1,6 +1,5 @@
-import { NotificationAlertItem, NotificationAlertType } from '../../../../api';
+import { NotificationAlertItem } from '../../../../api';
 import { NotificationDefaultAlertView } from './NotificationDefaultAlertView';
-import { NotificationEventAlertView } from './NotificationEventAlertView';
 
 export const GetAlertLayout = (item: NotificationAlertItem, close: () => void) =>
 {
@@ -8,11 +7,5 @@ export const GetAlertLayout = (item: NotificationAlertItem, close: () => void) =
 
     const props = { key: item.id, item, close };
 
-    switch(item.alertType)
-    {
-        case NotificationAlertType.EVENT:
-            return <NotificationEventAlertView { ...props } />
-        default:
-            return <NotificationDefaultAlertView { ...props } />
-    }
+    return <NotificationDefaultAlertView { ...props } />
 }

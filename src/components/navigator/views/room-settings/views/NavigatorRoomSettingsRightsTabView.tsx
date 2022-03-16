@@ -23,22 +23,24 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
     }, [ roomSettingsData, handleChange ]);
 
     return (
-        <Grid overflow="auto">
+        <Grid>
             <Column size={ 6 }>
                 <Text bold>
                     { LocalizeText('navigator.flatctrls.userswithrights', [ 'displayed', 'total' ], [ roomSettingsData.usersWithRights.size.toString(), roomSettingsData.usersWithRights.size.toString() ]) }
                 </Text>
-                <Column fullWidth className="bg-white rounded list-container p-2" overflow="auto" gap={ 1 }>
-                    { Array.from(roomSettingsData.usersWithRights.entries()).map(([id, name], index) =>
-                        {
-                            return (
-                                <Flex key={ index } alignItems="center" gap={ 1 } overflow="hidden">
-                                    <UserProfileIconView userName={ name } />
-                                    <Text pointer grow key={index} onClick={ event => removeUserRights(id) }> { name }</Text>
-                                </Flex>
-                            );
-                        }) }
-                </Column>
+                <Flex overflow="hidden" className="bg-white rounded list-container p-2">
+                    <Column fullWidth overflow="auto" gap={ 1 }>
+                        { Array.from(roomSettingsData.usersWithRights.entries()).map(([id, name], index) =>
+                            {
+                                return (
+                                    <Flex key={ index } shrink alignItems="center" gap={ 1 } overflow="hidden">
+                                        <UserProfileIconView userName={ name } />
+                                        <Text pointer grow key={index} onClick={ event => removeUserRights(id) }> { name }</Text>
+                                    </Flex>
+                                );
+                            }) }
+                    </Column>
+                </Flex>
                 <Button variant="danger" disabled={ !roomSettingsData.usersWithRights.size } onClick={ removeAllRights } >
                     { LocalizeText('navigator.flatctrls.clear') }
                 </Button>

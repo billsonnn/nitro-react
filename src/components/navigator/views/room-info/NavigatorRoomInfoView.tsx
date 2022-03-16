@@ -111,7 +111,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                     <>
                         <Flex gap={ 2 } overflow="hidden">
                             <LayoutRoomThumbnailView roomId={ roomInfoData.enteredGuestRoom.roomId } customUrl={ roomInfoData.enteredGuestRoom.officialRoomPicRef }>
-                                { hasPermission('settings') && <i className="icon icon-camera-small position-absolute b-0 r-0 m-1 cursor-pointer" onClick={ () => processAction('open_room_thumbnail_camera') } /> }
+                                { hasPermission('settings') && <i className="icon icon-camera-small position-absolute b-0 r-0 m-1 cursor-pointer top-0" onClick={ () => processAction('open_room_thumbnail_camera') } /> }
                             </LayoutRoomThumbnailView>
                             <Column grow gap={ 1 } overflow="hidden">
                                 <Flex gap={ 1 }>
@@ -140,12 +140,10 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                                     }) }
                                             </Flex> }
                                     </Column>
-                                    <Column>
-                                        <Flex alignItems="center" gap={ 1 }>
-                                            <FontAwesomeIcon icon="link" title={ LocalizeText('navigator.embed.caption') } className="cursor-pointer" onClick={ event => DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK)) } />
-                                            { hasPermission('settings') &&
-                                                <i className="icon icon-cog cursor-pointer" title={ LocalizeText('navigator.room.popup.info.room.settings') } onClick={ event => processAction('open_room_settings') } /> }
-                                        </Flex>
+                                    <Column alignItems="center" gap={ 1 }>
+                                        { hasPermission('settings') &&
+                                            <i className="icon icon-cog cursor-pointer" title={ LocalizeText('navigator.room.popup.info.room.settings') } onClick={ event => processAction('open_room_settings') } /> }
+                                        <FontAwesomeIcon icon="link" title={ LocalizeText('navigator.embed.caption') } className="cursor-pointer" onClick={ event => DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK)) } />
                                     </Column>
                                 </Flex>
                                 <Text overflow="auto" style={ { maxHeight: 50 } }>{ roomInfoData.enteredGuestRoom.description }</Text>
