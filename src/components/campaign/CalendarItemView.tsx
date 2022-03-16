@@ -1,6 +1,7 @@
 import { FC } from 'react';
-import { GetRoomEngine, GetSessionDataManager } from '../../api';
+import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../../api';
 import { Base, Column, Flex, LayoutImage } from '../../common';
+import { CalendarItem } from './common/CalendarItem';
 import { CalendarItemState } from './common/CalendarItemState';
 
 interface CalendarItemViewProps
@@ -8,13 +9,13 @@ interface CalendarItemViewProps
     itemId: number;
     state: number;
     active?: boolean;
-    productName?: string;
+    product?: CalendarItem;
     onClick: (itemId: number) => void;
 }
 
 export const CalendarItemView: FC<CalendarItemViewProps> = props =>
 {
-    const { itemId = -1, state = null, productName = null, active = false, onClick = null } = props;
+    const { itemId = -1, state = null, product = null, active = false, onClick = null } = props;
     
     const getFurnitureIcon = (name: string) =>
     {
@@ -37,8 +38,8 @@ export const CalendarItemView: FC<CalendarItemViewProps> = props =>
             { (state === CalendarItemState.STATE_UNLOCKED) &&
                 <Flex center className="campaign-spritesheet unlocked-bg">
                     <Flex center className="campaign-spritesheet campaign-opened">
-                        { productName &&
-                            <LayoutImage imageUrl={ getFurnitureIcon(productName) } /> }
+                        { product &&
+                            <LayoutImage imageUrl={ product.customImage ? GetConfiguration<string>('image.library.url') + product.customImage : getFurnitureIcon(product.productName) } /> }
                     </Flex>
                 </Flex> }
             { (state !== CalendarItemState.STATE_UNLOCKED) &&
