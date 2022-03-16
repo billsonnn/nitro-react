@@ -4,7 +4,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../api';
 import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { UserSettingsUIEvent } from '../../events';
-import { DispatchUiEvent, UseMessageEventHook, UseUiEvent } from '../../hooks';
+import { DispatchMainEvent, DispatchUiEvent, UseMessageEventHook, UseUiEvent } from '../../hooks';
 
 export const UserSettingsView: FC<{}> = props =>
 {
@@ -46,6 +46,7 @@ export const UserSettingsView: FC<{}> = props =>
         settingsEvent.chatType = parser.chatType;
 
         setUserSettings(settingsEvent);
+        DispatchMainEvent(settingsEvent);
     }, []);
 
     UseMessageEventHook(UserSettingsEvent, onUserSettingsEvent);
@@ -92,6 +93,7 @@ export const UserSettingsView: FC<{}> = props =>
         }
 
         if(doUpdate) setUserSettings(clone);
+        DispatchMainEvent(clone)
     }, [userSettings]);
 
     const saveRangeSlider = useCallback((type: string) =>
