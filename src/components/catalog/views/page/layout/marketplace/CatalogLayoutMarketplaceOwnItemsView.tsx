@@ -93,7 +93,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
                     <Text>
                         { LocalizeText('catalog.marketplace.redeem.get_credits', ['count', 'credits'], [ soldOffers.length.toString(), creditsWaiting.toString() ]) }
                     </Text>
-                    <Button size="sm" className="mt-1" onClick={ redeemSoldOffers }>
+                    <Button className="mt-1" onClick={ redeemSoldOffers }>
                         { LocalizeText('catalog.marketplace.offer.redeem') }
                     </Button>
                 </Column> }

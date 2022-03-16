@@ -49,9 +49,9 @@ export const NavigatorRoomPasswordView: FC<NavigatorRoomPasswordViewProps> = pro
                     <Text>{ LocalizeText('navigator.password.enter') }</Text>
                     <input type="password" className="form-control form-control-sm" onChange={ event => setPassword(event.target.value) } />
                 </Column>
-                <Button variant="success" size="sm" onClick={ tryEntering }>
+                <Button variant="success" onClick={ tryEntering }>
                     { LocalizeText('navigator.password.button.try') }</Button>
-                <Button variant="danger" size="sm" onClick={ close }>
+                <Button variant="danger" onClick={ close }>
                         { LocalizeText('generic.cancel') }
                     </Button>
             </NitroCardContentView>

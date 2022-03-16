@@ -154,7 +154,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                     </Column>
                     { !wasPicturePublished &&
                         <Flex className="d-flex align-items-end">
-                            <Button variant="success" size="sm" disabled={ (isWaiting || (publishCooldown > 0)) } onClick={ event => processAction('publish') }>
+                            <Button variant="success" disabled={ (isWaiting || (publishCooldown > 0)) } onClick={ event => processAction('publish') }>
                                 { LocalizeText('camera.publish.button.text') }
                             </Button>
                         </Flex> }

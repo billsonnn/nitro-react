@@ -69,7 +69,7 @@ export const SearchFormView: FC<SearchFormViewProps> = props =>
                             <input className="form-control form-control-sm" type="number" min={ 0 } value={ max } onChange={ event => setMax(event.target.valueAsNumber) } />
                         </Flex>
                     </Flex>
-                    <Button variant="secondary" size="sm" className="mx-auto" onClick={ onClickSearch }>{ LocalizeText('generic.search') }</Button>
+                    <Button variant="secondary" className="mx-auto" onClick={ onClickSearch }>{ LocalizeText('generic.search') }</Button>
                 </> }
         </Column>
     );

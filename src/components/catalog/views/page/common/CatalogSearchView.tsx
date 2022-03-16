@@ -118,11 +118,11 @@ export const CatalogSearchView: FC<{}> = props =>
                 <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => updateSearchValue(event.target.value) } onKeyDown={ event => ((event.code === 'Enter') || (event.code === 'NumpadEnter')) && processSearch(searchValue) } />
             </Flex>
             { (!searchValue || !searchValue.length) &&
-                <Button variant="primary" size="sm" className="catalog-search-button">
+                <Button variant="primary" className="catalog-search-button">
                     <FontAwesomeIcon icon="search" />
                 </Button> }
             { searchValue && !!searchValue.length &&
-                <Button variant="primary" size="sm" className="catalog-search-button" onClick={ event => updateSearchValue('') }>
+                <Button variant="primary" className="catalog-search-button" onClick={ event => updateSearchValue('') }>
                     <FontAwesomeIcon icon="times" />
                 </Button> }
         </Flex>

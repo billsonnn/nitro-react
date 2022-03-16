@@ -116,7 +116,7 @@ export const MarketplacePostOfferView : FC<{}> = props =>
                                         { LocalizeText('inventory.marketplace.make_offer.final_price', [ 'commission', 'finalprice' ], [ marketplaceConfiguration.commission.toString(), (askingPrice + marketplaceConfiguration.commission).toString() ]) }
                                     </Base> }
                             </div>
-                            <Button size="sm" disabled={ ((askingPrice < marketplaceConfiguration.minimumPrice) || (askingPrice > marketplaceConfiguration.maximumPrice) || isNaN(askingPrice)) } onClick={ postItem }>
+                            <Button disabled={ ((askingPrice < marketplaceConfiguration.minimumPrice) || (askingPrice > marketplaceConfiguration.maximumPrice) || isNaN(askingPrice)) } onClick={ postItem }>
                                 { LocalizeText('inventory.marketplace.make_offer.post') }
                             </Button>
                         </Column>

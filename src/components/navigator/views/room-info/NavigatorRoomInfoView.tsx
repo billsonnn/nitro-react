@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, SecurityLevel, UserHomeRoomComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { FC, useCallback, useEffect, useState } from 'react';
-import { GetConfiguration, GetGroupInformation, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
+import { FC, useEffect, useState } from 'react';
+import { GetGroupInformation, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, LayoutBadgeImageView, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, UserProfileIconView } from '../../../../common';
 import { FloorplanEditorEvent, NavigatorEvent, RoomWidgetThumbnailEvent } from '../../../../events';
 import { BatchUpdates, DispatchUiEvent } from '../../../../hooks';
@@ -35,7 +35,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
         }
     }
     
-    const processAction = useCallback((action: string, value?: string) =>
+    const processAction = (action: string, value?: string) =>
     {
         if(!roomInfoData || !roomInfoData.enteredGuestRoom) return;
 
@@ -88,26 +88,14 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                 return;
         }
         
-    }, [ onCloseClick, dispatchNavigatorState, roomInfoData, homeRoomId ]);
+    }
 
     useEffect(() =>
     {
         if(!roomInfoData || !roomInfoData.enteredGuestRoom) return;
 
-        let thumbnailUrl: string = null;
-        
-        if(roomInfoData.enteredGuestRoom.officialRoomPicRef)
-        {
-            thumbnailUrl = (GetConfiguration<string>('image.library.url') + roomInfoData.enteredGuestRoom.officialRoomPicRef);
-        }
-        else
-        {
-            thumbnailUrl = (GetConfiguration<string>('thumbnails.url').replace('%thumbnail%', roomInfoData.enteredGuestRoom.roomId.toString()));
-        }
-
         BatchUpdates(() =>
         {
-            setRoomThumbnail(thumbnailUrl);
             setIsRoomPicked(roomInfoData.enteredGuestRoom.roomPicker);
             setIsRoomMuted(roomInfoData.enteredGuestRoom.allInRoomMuted);
         });
@@ -141,9 +129,10 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                             <Text variant="muted">{ LocalizeText('navigator.roomrating') }</Text>
                                             <Text>{ roomInfoData.enteredGuestRoom.score }</Text>
                                         </Flex>
-                                        { (roomInfoData.enteredGuestRoom.tags.length > 0) &&
+                                        {
                                             <Flex alignItems="center" gap={ 1 }>
-                                                { roomInfoData.enteredGuestRoom.tags.map(tag =>
+                                                <Text pointer className="bg-muted rounded p-1" onClick={ event => processAction('navigator_search_tag', 'test') }>#test</Text>
+                                                { (roomInfoData.enteredGuestRoom.tags.length > 0) && roomInfoData.enteredGuestRoom.tags.map(tag =>
                                                     {
                                                         return <Text key={ tag } pointer className="bg-muted rounded p-1" onClick={ event => processAction('navigator_search_tag', tag) }>#{ tag }</Text>
                                                     }) }
@@ -161,7 +150,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                             </Flex> } 
                                     </Column>
                                 </Flex>
-                                <Text overflow="auto">{ roomInfoData.enteredGuestRoom.description }</Text>
+                                <Text overflow="auto" style={ { maxHeight: 50 } }>{ roomInfoData.enteredGuestRoom.description }</Text>
                                 { (roomInfoData.enteredGuestRoom.habboGroupId > 0) &&
                                     <Flex pointer alignItems="center" gap={ 1 } onClick={ () => processAction('open_group_info') }>
                                         <LayoutBadgeImageView className="flex-none" badgeCode={ roomInfoData.enteredGuestRoom.groupBadgeCode } isGroup={ true } />
@@ -173,16 +162,18 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                         </Flex>
                     <Column gap={ 1 }>
                         { hasPermission('staff_pick') &&
-                            <Button size="sm" onClick={ () => processAction('toggle_pick') }>
+                            <Button onClick={ () => processAction('toggle_pick') }>
                                 { LocalizeText(isRoomPicked ? 'navigator.staffpicks.unpick' : 'navigator.staffpicks.pick') }
                             </Button> }
-                        <Button size="sm" variant="danger" disabled>
+                        <Button variant="danger" disabled>
                             { LocalizeText('help.emergency.main.report.room') }
                         </Button>
                         { hasPermission('settings') &&
-                            <Button size="sm" onClick={ () => processAction('toggle_mute') }>
-                                { LocalizeText(isRoomMuted ? 'navigator.muteall_on' : 'navigator.muteall_off') }
-                            </Button> }
+                            <>
+                                <Button onClick={ () => processAction('toggle_mute') }>
+                                    { LocalizeText(isRoomMuted ? 'navigator.muteall_on' : 'navigator.muteall_off') }
+                                </Button>
+                            </> }
                     </Column>
                 </> }
                 

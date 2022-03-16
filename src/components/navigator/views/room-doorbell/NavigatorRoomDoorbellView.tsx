@@ -50,10 +50,10 @@ export const NavigatorRoomDoorbellView: FC<NavigatorRoomDoorbellViewProps> = pro
                 </Column>
                 <Column gap={ 1 }>
                     { (state === UpdateDoorStateEvent.START_DOORBELL) &&
-                        <Button variant="success" size="sm" onClick={ ring }>
+                        <Button variant="success" onClick={ ring }>
                             { LocalizeText('navigator.doorbell.button.ring') }
                         </Button> }
-                    <Button variant="danger" size="sm" onClick={ close }>
+                    <Button variant="danger" onClick={ close }>
                         { LocalizeText('generic.cancel') }
                     </Button>
                 </Column>

@@ -310,17 +310,17 @@ export const AvatarEditorView: FC<{}> = props =>
                         <AvatarEditorFigurePreviewView figureData={ figureData } />
                         <Column grow gap={ 1 }>
                             <ButtonGroup>
-                                <Button variant="secondary" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_RESET) }>
+                                <Button variant="secondary" onClick={ event => processAction(AvatarEditorAction.ACTION_RESET) }>
                                     <FontAwesomeIcon icon="undo" />
                                 </Button>
-                                <Button variant="secondary" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_CLEAR) }>
+                                <Button variant="secondary" onClick={ event => processAction(AvatarEditorAction.ACTION_CLEAR) }>
                                     <FontAwesomeIcon icon="trash" />
                                 </Button>
-                                <Button variant="secondary" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_RANDOMIZE) }>
+                                <Button variant="secondary" onClick={ event => processAction(AvatarEditorAction.ACTION_RANDOMIZE) }>
                                     <FontAwesomeIcon icon="dice" />
                                 </Button>
                             </ButtonGroup>
-                            <Button className="w-100" variant="success" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_SAVE) }>
+                            <Button className="w-100" variant="success" onClick={ event => processAction(AvatarEditorAction.ACTION_SAVE) }>
                                 { LocalizeText('avatareditor.save') }
                             </Button>
                         </Column>

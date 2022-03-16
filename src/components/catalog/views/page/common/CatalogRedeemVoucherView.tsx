@@ -58,7 +58,7 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
     return (
         <Flex gap={ 1 }>
             <input type="text" className="form-control form-control-sm" placeholder={ text } value={ voucher } onChange={ event => setVoucher(event.target.value) } />
-            <Button variant="primary" size="sm" onClick={ redeemVoucher } disabled={ isWaiting }>
+            <Button variant="primary" onClick={ redeemVoucher } disabled={ isWaiting }>
                 <FontAwesomeIcon icon="tag" />
             </Button>
         </Flex>

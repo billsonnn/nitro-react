@@ -204,21 +204,21 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                         </Column>
                         <Flex justifyContent="between">
                             <ButtonGroup>
-                                <Button size="sm" onClick={ event => processAction('clear_effects') }>
+                                <Button onClick={ event => processAction('clear_effects') }>
                                     <FontAwesomeIcon icon="trash" />
                                 </Button>
-                                <Button size="sm" onClick={ event => processAction('download') }>
+                                <Button onClick={ event => processAction('download') }>
                                     <FontAwesomeIcon icon="save" />
                                 </Button>
-                                <Button size="sm" onClick={ event => processAction('zoom') }>
+                                <Button onClick={ event => processAction('zoom') }>
                                     <FontAwesomeIcon icon={ isZoomed ? 'search-minus' : 'search-plus' } />
                                 </Button>
                             </ButtonGroup>
                             <Flex gap={ 1 }>
-                                <Button size="sm" onClick={ event => processAction('cancel') }>
+                                <Button onClick={ event => processAction('cancel') }>
                                     { LocalizeText('generic.cancel') }
                                 </Button>
-                                <Button size="sm" onClick={ event => processAction('checkout') }>
+                                <Button onClick={ event => processAction('checkout') }>
                                     { LocalizeText('camera.preview.button.text') }
                                 </Button>
                             </Flex>

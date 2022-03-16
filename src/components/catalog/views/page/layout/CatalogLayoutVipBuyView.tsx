@@ -108,25 +108,25 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
 
         if(pendingOffer.priceCredits > GetCurrencyAmount(-1))
         {
-            return <Button fullWidth variant="danger" size="sm">{ LocalizeText('catalog.alert.notenough.title') }</Button>;
+            return <Button fullWidth variant="danger">{ LocalizeText('catalog.alert.notenough.title') }</Button>;
         }
 
         if(pendingOffer.priceActivityPoints > GetCurrencyAmount(pendingOffer.priceActivityPointsType))
         {
-            return <Button fullWidth variant="danger" size="sm">{ LocalizeText('catalog.alert.notenough.activitypoints.title.' + pendingOffer.priceActivityPointsType) }</Button>;
+            return <Button fullWidth variant="danger">{ LocalizeText('catalog.alert.notenough.activitypoints.title.' + pendingOffer.priceActivityPointsType) }</Button>;
         }
 
         switch(purchaseState)
         {
             case CatalogPurchaseState.CONFIRM:
-                return <Button fullWidth variant="warning" size="sm" onClick={ purchaseSubscription }>{ LocalizeText('catalog.marketplace.confirm_title') }</Button>;
+                return <Button fullWidth variant="warning" onClick={ purchaseSubscription }>{ LocalizeText('catalog.marketplace.confirm_title') }</Button>;
             case CatalogPurchaseState.PURCHASE:
-                return <Button fullWidth variant="primary" size="sm" disabled><LayoutLoadingSpinnerView /></Button>;
+                return <Button fullWidth variant="primary" disabled><LayoutLoadingSpinnerView /></Button>;
             case CatalogPurchaseState.FAILED:
-                return <Button fullWidth variant="danger" size="sm" disabled>{ LocalizeText('generic.failed') }</Button>;
+                return <Button fullWidth variant="danger" disabled>{ LocalizeText('generic.failed') }</Button>;
             case CatalogPurchaseState.NONE:
             default:
-                return <Button fullWidth variant="success" size="sm" onClick={ () => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('buy') }</Button>;
+                return <Button fullWidth variant="success" onClick={ () => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('buy') }</Button>;
         }
     }, [ pendingOffer, purchaseState, purchaseSubscription ]);
 
