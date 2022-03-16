@@ -1,5 +1,5 @@
 import { HabboWebTools, RoomEnterEffect } from '@nitrots/nitro-renderer';
-import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText, PlaySound } from '..';
+import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText } from '..';
 import { CatalogPageName } from '../../components/catalog/common/CatalogPageName';
 import { NotificationAlertEvent, NotificationConfirmEvent } from '../../events';
 import { NotificationBubbleEvent } from '../../events/notification-center/NotificationBubbleEvent';
@@ -86,8 +86,6 @@ export class NotificationUtilities
         {
             this.simpleAlert(message, NotificationAlertType.EVENT, linkUrl, linkTitle, title, image);
         }
-
-        if(options.get('sound')) PlaySound(options.get('sound'));
     }
 
     public static showSingleBubble(message: string, type: string, imageUrl: string = null, internalLink: string = null): void
