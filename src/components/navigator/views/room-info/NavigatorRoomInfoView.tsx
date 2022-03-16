@@ -116,7 +116,10 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                             <Column grow gap={ 1 } overflow="hidden">
                                 <Flex gap={ 1 }>
                                     <Column grow gap={ 1 }>
-                                        <Text bold>{ roomInfoData.enteredGuestRoom.roomName }</Text>
+                                        <Flex gap={ 1 }>
+                                            <i onClick={ () => processAction('set_home_room') } className={ 'flex-shrink-0 icon icon-house-small cursor-pointer' + classNames({ ' gray': homeRoomId !== roomInfoData.enteredGuestRoom.roomId }) } />
+                                            <Text bold>{ roomInfoData.enteredGuestRoom.roomName }</Text>
+                                        </Flex>
                                         { roomInfoData.enteredGuestRoom.showOwner &&
                                             <Flex alignItems="center" gap={ 1 }>
                                                 <Text variant="muted">{ LocalizeText('navigator.roomownercaption') }</Text>
@@ -129,25 +132,20 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                             <Text variant="muted">{ LocalizeText('navigator.roomrating') }</Text>
                                             <Text>{ roomInfoData.enteredGuestRoom.score }</Text>
                                         </Flex>
-                                        {
+                                        { (roomInfoData.enteredGuestRoom.tags.length > 0) &&
                                             <Flex alignItems="center" gap={ 1 }>
-                                                <Text pointer className="bg-muted rounded p-1" onClick={ event => processAction('navigator_search_tag', 'test') }>#test</Text>
-                                                { (roomInfoData.enteredGuestRoom.tags.length > 0) && roomInfoData.enteredGuestRoom.tags.map(tag =>
+                                                { roomInfoData.enteredGuestRoom.tags.map(tag =>
                                                     {
                                                         return <Text key={ tag } pointer className="bg-muted rounded p-1" onClick={ event => processAction('navigator_search_tag', tag) }>#{ tag }</Text>
                                                     }) }
                                             </Flex> }
                                     </Column>
-                                    <Column gap={ 1 }>
-                                        <Flex gap={ 1 }>
-                                            <i onClick={ () => processAction('set_home_room') } className={ 'flex-shrink-0 icon icon-house-small cursor-pointer' + classNames({ ' gray': homeRoomId !== roomInfoData.enteredGuestRoom.roomId }) } />
+                                    <Column>
+                                        <Flex alignItems="center" gap={ 1 }>
                                             <FontAwesomeIcon icon="link" title={ LocalizeText('navigator.embed.caption') } className="cursor-pointer" onClick={ event => DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK)) } />
+                                            { hasPermission('settings') &&
+                                                <i className="icon icon-cog cursor-pointer" title={ LocalizeText('navigator.room.popup.info.room.settings') } onClick={ event => processAction('open_room_settings') } /> }
                                         </Flex>
-                                        { hasPermission('settings') &&
-                                            <Flex gap={ 1 }>
-                                                <FontAwesomeIcon icon="cogs" title={ LocalizeText('navigator.room.popup.info.room.settings') } className="cursor-pointer" onClick={ event => processAction('open_room_settings') } />
-                                                <FontAwesomeIcon icon="tools" title={ LocalizeText('open.floor.plan.editor') } className="cursor-pointer" onClick={ event => processAction('open_floorplan_editor') } />
-                                            </Flex> } 
                                     </Column>
                                 </Flex>
                                 <Text overflow="auto" style={ { maxHeight: 50 } }>{ roomInfoData.enteredGuestRoom.description }</Text>
@@ -172,6 +170,9 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                             <>
                                 <Button onClick={ () => processAction('toggle_mute') }>
                                     { LocalizeText(isRoomMuted ? 'navigator.muteall_on' : 'navigator.muteall_off') }
+                                </Button>
+                                <Button onClick={ () => processAction('open_floorplan_editor') }>
+                                    { LocalizeText('open.floor.plan.editor') }
                                 </Button>
                             </> }
                     </Column>
