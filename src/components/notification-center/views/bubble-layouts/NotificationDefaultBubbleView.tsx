@@ -10,6 +10,8 @@ export interface NotificationDefaultBubbleViewProps extends LayoutNotificationBu
 export const NotificationDefaultBubbleView: FC<NotificationDefaultBubbleViewProps> = props =>
 {
     const { item = null, close = null, ...rest } = props;
+    
+    const htmlText = item.message.replace(/\r\n|\r|\n/g, '<br />');
 
     return (
         <LayoutNotificationBubbleView close={ close } gap={ 2 } alignItems="center" { ...rest }>
@@ -17,7 +19,7 @@ export const NotificationDefaultBubbleView: FC<NotificationDefaultBubbleViewProp
                 { (item.iconUrl && item.iconUrl.length) &&
                     <img className="no-select" src={ item.iconUrl } alt="" /> }
             </Flex>
-            <Text wrap variant="white">{ item.message }</Text>
+            <Text wrap variant="white" dangerouslySetInnerHTML={ { __html: htmlText } } />
         </LayoutNotificationBubbleView>
     );
 }
