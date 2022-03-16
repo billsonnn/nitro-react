@@ -93,7 +93,6 @@ export const ChatWidgetView: FC<{}> = props =>
 
     const onChatClicked = useCallback((chat: ChatBubbleMessage) =>
     {
-        console.log('ehre')
         widgetHandler.processWidgetMessage(new RoomWidgetRoomObjectMessage(RoomWidgetRoomObjectMessage.GET_OBJECT_INFO, chat.senderId, chat.senderCategory));
         widgetHandler.processWidgetMessage(new RoomWidgetChatSelectAvatarMessage(RoomWidgetChatSelectAvatarMessage.MESSAGE_SELECT_AVATAR, chat.senderId, chat.username, chat.roomId));
     }, [ widgetHandler ]);
