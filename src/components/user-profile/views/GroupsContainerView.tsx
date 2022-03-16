@@ -1,6 +1,6 @@
-import { GroupFavoriteComposer, GroupInformationComposer, GroupInformationEvent, GroupInformationParser, HabboGroupEntryData } from '@nitrots/nitro-renderer';
+import { GroupInformationComposer, GroupInformationEvent, GroupInformationParser, HabboGroupEntryData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { SendMessageComposer } from '../../../api';
+import { SendMessageComposer, ToggleFavoriteGroup } from '../../../api';
 import { AutoGrid, Base, Column, Flex, Grid, GridProps, LayoutBadgeImageView, LayoutGridItem } from '../../../common';
 import { BatchUpdates, UseMessageEventHook } from '../../../hooks';
 import { GroupInformationView } from '../../groups/views/GroupInformationView';
@@ -18,18 +18,14 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
     const [ selectedGroupId, setSelectedGroupId ] = useState<number>(null);
     const [ groupInformation, setGroupInformation ] = useState<GroupInformationParser>(null);
 
-    const favoriteGroup = (groupId: number) => SendMessageComposer(new GroupFavoriteComposer(groupId));
-
     const onGroupInformationEvent = useCallback((event: GroupInformationEvent) =>
     {
         const parser = event.getParser();
 
         if(!selectedGroupId || (selectedGroupId !== parser.id) || parser.flag) return;
 
-        if(groupInformation) setGroupInformation(null);
-
         setGroupInformation(parser);
-    }, [ groupInformation, selectedGroupId ]);
+    }, [ selectedGroupId ]);
 
     UseMessageEventHook(GroupInformationEvent, onGroupInformationEvent);
 
@@ -46,7 +42,18 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
         {
             setGroupInformation(null);
 
-            if(groups.length > 0) setSelectedGroupId(groups[0].groupId);
+            if(groups.length > 0)
+            {
+                setSelectedGroupId(prevValue =>
+                    {
+                        if(prevValue === groups[0].groupId)
+                        {
+                            SendMessageComposer(new GroupInformationComposer(groups[0].groupId, false));
+                        }
+    
+                        return groups[0].groupId;
+                    });
+            }
         });
     }, [ groups ]);
 
@@ -72,7 +79,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
                             return (
                                 <LayoutGridItem key={ index } overflow="unset" itemActive={ (selectedGroupId === group.groupId) } onClick={ () => setSelectedGroupId(group.groupId) } className="p-1">
                                     { itsMe &&
-                                        <i className={ 'position-absolute end-0 top-0 z-index-1 icon icon-group-' + (group.favourite ? 'favorite' : 'not-favorite') } onClick={ () => favoriteGroup(group.groupId) } /> }
+                                        <i className={ 'position-absolute end-0 top-0 z-index-1 icon icon-group-' + (group.favourite ? 'favorite' : 'not-favorite') } onClick={ () => ToggleFavoriteGroup(group) } /> }
                                     <LayoutBadgeImageView badgeCode={ group.badgeCode } isGroup={ true } />
                                 </LayoutGridItem>
                             )
