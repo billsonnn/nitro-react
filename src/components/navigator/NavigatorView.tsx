@@ -46,6 +46,10 @@ export const NavigatorView: FC<{}> = props =>
             case NavigatorEvent.TOGGLE_ROOM_LINK:
                 setRoomLinkOpen(value => !value);
                 return;
+            case NavigatorEvent.SHOW_ROOM_CREATOR:
+                setIsVisible(true);
+                setCreatorOpen(true);
+                return;
         }
     }, []);
 
@@ -54,6 +58,7 @@ export const NavigatorView: FC<{}> = props =>
     UseUiEvent(NavigatorEvent.TOGGLE_NAVIGATOR, onNavigatorEvent);
     UseUiEvent(NavigatorEvent.TOGGLE_ROOM_INFO, onNavigatorEvent);
     UseUiEvent(NavigatorEvent.TOGGLE_ROOM_LINK, onNavigatorEvent);
+    UseUiEvent(NavigatorEvent.SHOW_ROOM_CREATOR, onNavigatorEvent);
 
     const onUpdateDoorStateEvent = useCallback((event: UpdateDoorStateEvent) =>
     {
