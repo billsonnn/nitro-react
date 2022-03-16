@@ -59,6 +59,10 @@
         "catalog.buy": "habbo_club",
         "catalog.gifts": "club_gifts"
     },
+    "respect.options": {
+        "enabled": false,
+        "sound": "sound_respect_received"
+    },
     "currency.display.number.short": false,
     "currency.asset.icon.url": "${images.url}/wallet/%type%.png",
     "catalog.asset.url": "${image.library.url}catalogue",
