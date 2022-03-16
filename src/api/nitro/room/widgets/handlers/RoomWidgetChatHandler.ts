@@ -1,5 +1,5 @@
 import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, IAvatarImageListener, INitroPoint, IVector3D, NitroEvent, NitroPoint, PetFigureData, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomWidgetEnum, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
-import { GetAvatarRenderManager, GetRoomEngine } from '../../../..';
+import { GetAvatarRenderManager, GetConfigurationManager, GetRoomEngine, PlaySound } from '../../../..';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { RoomWidgetUpdateChatEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage } from '../messages';
@@ -64,6 +64,8 @@ export class RoomWidgetChatHandler extends RoomWidgetHandler implements IAvatarI
                 {
                     case RoomSessionChatEvent.CHAT_TYPE_RESPECT:
                         text = LocalizeText('widgets.chatbubble.respect', [ 'username' ], [ username ]);
+                        if(GetConfigurationManager().getValue('respect.options')['enabled'])
+                            PlaySound(GetConfigurationManager().getValue('respect.options')['sound'])
                         break;
                     case RoomSessionChatEvent.CHAT_TYPE_PETRESPECT:
                         text = LocalizeText('widget.chatbubble.petrespect', [ 'petname' ], [ username ]);
