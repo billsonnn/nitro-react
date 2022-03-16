@@ -33,6 +33,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
     const [ crackableHits, setCrackableHits ] = useState(0);
     const [ crackableTarget, setCrackableTarget ] = useState(0);
     const [ godMode, setGodMode ] = useState(false);
+    const [ canSeeFurniId, setCanSeeFurniId ] = useState(false);
     const [ groupName, setGroupName ] = useState<string>(null);
 
     useEffect(() =>
@@ -49,6 +50,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         let crackableHits = 0;
         let crackableTarget = 0;
         let godMode = false;
+        let canSeeFurniId = false;
         
         const isValidController = (furniData.roomControllerLevel >= RoomControllerLevel.GUEST);
 
@@ -58,6 +60,11 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
             canRotate = !furniData.isWallItem;
 
             if(furniData.roomControllerLevel >= RoomControllerLevel.MODERATOR) godMode = true;
+        }
+
+        if(furniData.isAnyRoomController)
+        {
+            canSeeFurniId = true;
         }
         
         if((((furniData.usagePolicy === RoomWidgetFurniInfoUsagePolicyEnum.EVERYBODY) || ((furniData.usagePolicy === RoomWidgetFurniInfoUsagePolicyEnum.CONTROLLER) && isValidController)) || ((furniData.extraParam === RoomWidgetEnumItemExtradataParameter.JUKEBOX) && isValidController)) || ((furniData.extraParam === RoomWidgetEnumItemExtradataParameter.USABLE_PRODUCT) && isValidController)) canUse = true;
@@ -133,6 +140,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
             setCrackableHits(crackableHits);
             setCrackableTarget(crackableTarget);
             setGodMode(godMode);
+            setCanSeeFurniId(canSeeFurniId);
             setGroupName(null);
         });
         
@@ -312,7 +320,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                         { godMode &&
                             <>
                                 <hr className="m-0" />
-                                <Text small wrap variant="white">ID: { furniData.id }</Text>
+                                { canSeeFurniId && <Text small wrap variant="white">ID: { furniData.id }</Text> }
                                 { (furniKeys.length > 0) &&
                                     <>
                                         <hr className="m-0"/>
