@@ -3,12 +3,13 @@ import { GetSessionDataManager, LocalizeText } from '../../api';
 import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { CalendarItemView } from './CalendarItemView';
 import { CalendarItemState } from './common/CalendarItemState';
+import { ICalendarItem } from './common/ICalendarItem';
 
 interface CalendarViewProps
 {
     close(): void;
     openPackage(id: number, asStaff: boolean): void;
-    receivedProducts: Map<number, string>;
+    receivedProducts: Map<number, ICalendarItem>;
     campaignName: string;
     currentDay: number;
     numDays: number;
@@ -128,7 +129,7 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                                     
                                     return (
                                         <Column key={ i } overflow="hidden">
-                                            <CalendarItemView itemId={ day } state={ getDayState(day) } active={ (selectedDay === day) } productName={ receivedProducts.has(day) ? receivedProducts.get(day) : null } onClick={ onClickItem } />
+                                            <CalendarItemView itemId={ day } state={ getDayState(day) } active={ (selectedDay === day) } product={ receivedProducts.has(day) ? receivedProducts.get(day) : null } onClick={ onClickItem } />
                                         </Column>
                                     );
                                 }) }
@@ -138,28 +139,6 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                         <Base pointer className="campaign-spritesheet next" onClick={ onClickNext } />
                     </Flex>
                 </Flex>
-                {/* <Grid fullHeight alignItems="center" gap={ 1 }>
-                    <Column fullHeight center size={ 1 }>
-                        <Base pointer className="campaign-spritesheet prev" onClick={ onClickPrev } />
-                    </Column>
-                    <Column fullHeight size={ 10 }>
-                        <Grid fullHeight columnCount={ TOTAL_SHOWN_ITEMS } gap={ 1 }>
-                            { [...Array(TOTAL_SHOWN_ITEMS)].map((e, i) =>
-                                {
-                                    const day = (index + i);
-                                    
-                                    return (
-                                        <Column key={ i } overflow="hidden">
-                                            <CalendarItemView itemId={ day } state={ getDayState(day) } active={ (selectedDay === day) } productName={ receivedProducts.has(day) ? receivedProducts.get(day) : null } onClick={ onClickItem } />
-                                        </Column>
-                                    );
-                                }) }
-                        </Grid>
-                    </Column>
-                    <Column fullHeight center size={ 1 }>
-                        <Base pointer className="campaign-spritesheet next" onClick={ onClickNext } />
-                    </Column>
-                </Grid> */}
             </NitroCardContentView>
         </NitroCardView>
     )
