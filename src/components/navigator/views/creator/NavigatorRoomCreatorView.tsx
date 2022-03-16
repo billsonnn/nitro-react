@@ -21,13 +21,13 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
     const getRoomModelImage = (name: string) => GetConfiguration<string>('images.url') + `/navigator/models/model_${ name }.png`;
 
-    const selectModel = (model: IRoomModel) =>
+    const selectModel = (model: IRoomModel, index) =>
     {
         if(!model) return;
 
         if(model.clubLevel > GetClubMemberLevel()) return;
 
-        setSelectedModelName(name);
+        setSelectedModelName(RoomModels[index].name);
     }
 
     const createRoom = () =>
@@ -97,9 +97,9 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                 </Column>
                 <Column size={ 6 } gap={ 1 } overflow="auto">
                     {
-                        RoomModels.map(model =>
+                        RoomModels.map((model, index )=>
                             {
-                                return (<LayoutGridItem fullHeight key={ model.name } onClick={ () => selectModel(model) } itemActive={ (selectedModelName === model.name) } overflow="unset" gap={ 0 } className="p-1" disabled={ (GetClubMemberLevel() < model.clubLevel) }>
+                                return (<LayoutGridItem fullHeight key={ model.name } onClick={ () => selectModel(model, index) } itemActive={ (selectedModelName === model.name) } overflow="unset" gap={ 0 } className="p-1" disabled={ (GetClubMemberLevel() < model.clubLevel) }>
                                     <Flex fullHeight center overflow="hidden">
                                         <img alt="" src={ getRoomModelImage(model.name) } />
                                     </Flex>
