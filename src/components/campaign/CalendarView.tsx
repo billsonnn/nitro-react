@@ -2,13 +2,14 @@ import { FC, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../api';
 import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { CalendarItemView } from './CalendarItemView';
+import { CalendarItem } from './common/CalendarItem';
 import { CalendarItemState } from './common/CalendarItemState';
 
 interface CalendarViewProps
 {
     close(): void;
     openPackage(id: number, asStaff: boolean): void;
-    receivedProducts: Map<number, string>;
+    receivedProducts: Map<number, CalendarItem>;
     campaignName: string;
     currentDay: number;
     numDays: number;
@@ -128,7 +129,7 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                                     
                                     return (
                                         <Column key={ i } overflow="hidden">
-                                            <CalendarItemView itemId={ day } state={ getDayState(day) } active={ (selectedDay === day) } productName={ receivedProducts.has(day) ? receivedProducts.get(day) : null } onClick={ onClickItem } />
+                                            <CalendarItemView itemId={ day } state={ getDayState(day) } active={ (selectedDay === day) } product={ receivedProducts.has(day) ? receivedProducts.get(day) : null } onClick={ onClickItem } />
                                         </Column>
                                     );
                                 }) }
