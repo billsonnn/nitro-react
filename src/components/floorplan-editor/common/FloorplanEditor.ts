@@ -192,9 +192,11 @@ export class FloorplanEditor extends PixiApplicationProxy
                 }
                 return;
             case FloorAction.UP:
+                if(tile.height === 'x') return;
                 futureHeightIndex = heightIndex + 1;
                 break;
             case FloorAction.DOWN:
+                if(tile.height === 'x' || (heightIndex <= 1)) return;
                 futureHeightIndex = heightIndex - 1;
                 break;
             case FloorAction.SET:
