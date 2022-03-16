@@ -258,33 +258,33 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         <ContextMenuListItemView onClick={ event => processAction('sign_10') }>
                             10
                         </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_11') }>
+                            <i className="icon icon-sign-heart" />
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_12') }>
+                            <i className="icon icon-sign-skull" />
+                        </ContextMenuListItemView>
+                    </Flex>
+                    <Flex className="menu-list-split-3">
                         <ContextMenuListItemView onClick={ event => processAction('sign_0') }>
                             0
+                        </ContextMenuListItemView>
+                        <ContextMenuListItemView onClick={ event => processAction('sign_13') }>
+                            <i className="icon icon-sign-exclamation" />
                         </ContextMenuListItemView>
                         <ContextMenuListItemView onClick={ event => processAction('sign_15') }>
                             <i className="icon icon-sign-smile" />
                         </ContextMenuListItemView>
                     </Flex>
                     <Flex className="menu-list-split-3">
-                        <ContextMenuListItemView onClick={ event => processAction('sign_12') }>
-                            <i className="icon icon-sign-skull" />
-                        </ContextMenuListItemView>
                         <ContextMenuListItemView onClick={ event => processAction('sign_14') }>
                             <i className="icon icon-sign-soccer" />
                         </ContextMenuListItemView>
                         <ContextMenuListItemView onClick={ event => processAction('sign_17') }>
                             <i className="icon icon-sign-yellow" />
                         </ContextMenuListItemView>
-                    </Flex>
-                    <Flex className="menu-list-split-3">
                         <ContextMenuListItemView onClick={ event => processAction('sign_16') }>
                             <i className="icon icon-sign-red" />
-                        </ContextMenuListItemView>
-                        <ContextMenuListItemView onClick={ event => processAction('sign_13') }>
-                            <i className="icon icon-sign-exclamation" />
-                        </ContextMenuListItemView>
-                        <ContextMenuListItemView onClick={ event => processAction('sign_11') }>
-                            <i className="icon icon-sign-heart" />
                         </ContextMenuListItemView>
                     </Flex>
                     <ContextMenuListItemView onClick={ event => processAction('back') }>
