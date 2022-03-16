@@ -83,7 +83,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
     });
 
     return (
-        <Column>
+        <Column overflow="hidden">
             { (creditsWaiting <= 0) &&
                 <Text center className="bg-muted rounded p-1">
                     { LocalizeText('catalog.marketplace.redeem.no_sold_items') }
