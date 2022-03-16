@@ -1,5 +1,5 @@
 import { ColorConverter, IRoomRenderingCanvas, RoomPreviewer, TextureUtils } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { GetNitroInstance } from '../../api';
 
 export interface LayoutRoomPreviewerViewProps
@@ -13,6 +13,20 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
     const { roomPreviewer = null, height = 0 } = props;
     const [ renderingCanvas, setRenderingCanvas ] = useState<IRoomRenderingCanvas>(null);
     const elementRef = useRef<HTMLDivElement>();
+
+    const onClick = (event: MouseEvent<HTMLDivElement>) =>
+    {
+        if(!roomPreviewer) return;
+
+        if(event.shiftKey)
+        {
+            roomPreviewer.changeRoomObjectDirection();
+        }
+        else
+        {
+            roomPreviewer.changeRoomObjectState();
+        }
+    }
 
     const update = useCallback((time: number) =>
     {
@@ -83,7 +97,7 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
 
     return (
         <div className="room-preview-container">
-            <div ref={ elementRef } className="room-preview-image" style={ { height } } />
+            <div ref={ elementRef } className="room-preview-image" style={ { height } } onClick={ onClick } />
             { props.children }
         </div>
     );
