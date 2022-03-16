@@ -59,12 +59,13 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
                 if(message.trim().length === 0) return;
 
                 SendMessageComposer(new ModeratorActionMessageComposer(ModeratorActionMessageComposer.ACTION_ALERT, message, ''));
+                SendMessageComposer(new ModerateRoomMessageComposer(roomId, lockRoom ? 1 : 0, changeRoomName ? 1 : 0, kickUsers ? 1 : 0));
                 return;
             case 'send_message':
                 if(message.trim().length === 0) return;
 
                 SendMessageComposer(new ModeratorActionMessageComposer(ModeratorActionMessageComposer.ACTION_MESSAGE, message, ''));
-                SendMessageComposer(new ModerateRoomMessageComposer(roomId, lockRoom ? 1 : 0, changeRoomName ? 1 : 0, kickUsers ? 1 : 0))
+                SendMessageComposer(new ModerateRoomMessageComposer(roomId, lockRoom ? 1 : 0, changeRoomName ? 1 : 0, kickUsers ? 1 : 0));
                 return;
         }
     }, [ changeRoomName, kickUsers, lockRoom, message, roomId ]);
