@@ -1,6 +1,6 @@
-import { GenericErrorEvent, GetGuestRoomResultEvent, LegacyExternalInterface, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomInfoComposer, RoomSettingsUpdatedEvent, UserInfoEvent } from '@nitrots/nitro-renderer';
+import { CantConnectMessageParser, GenericErrorEvent, GetGuestRoomResultEvent, LegacyExternalInterface, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomInfoComposer, RoomSettingsUpdatedEvent, UserInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CreateRoomSession, GetSessionDataManager, SendMessageComposer } from '../../api';
+import { CreateRoomSession, GetSessionDataManager, LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer, VisitDesktop } from '../../api';
 import { UpdateDoorStateEvent } from '../../events';
 import { DispatchUiEvent, UseMessageEventHook } from '../../hooks';
 import { useNavigatorContext } from './NavigatorContext';
@@ -194,6 +194,33 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         SendMessageComposer(new RoomInfoComposer(parser.roomId, false, false));
     }, []);
 
+    const onRoomEnterErrorEvent = useCallback((event: RoomEnterErrorEvent) =>
+    {
+        const parser = event.getParser();
+
+        switch(parser.reason)
+        {
+            case CantConnectMessageParser.REASON_FULL:
+                NotificationUtilities.simpleAlert(LocalizeText('navigator.guestroomfull.text'), NotificationAlertType.DEFAULT, null, null, LocalizeText('navigator.guestroomfull.title'));
+
+                break;
+            case CantConnectMessageParser.REASON_QUEUE_ERROR:
+                NotificationUtilities.simpleAlert(LocalizeText(`room.queue.error.${ parser.parameter }`), NotificationAlertType.DEFAULT, null, null, LocalizeText('room.queue.error.title'));
+
+                break;
+            case CantConnectMessageParser.REASON_BANNED:
+                NotificationUtilities.simpleAlert(LocalizeText('navigator.banned.text'), NotificationAlertType.DEFAULT, null, null, LocalizeText('navigator.banned.title'));
+
+                break;
+            default:
+                NotificationUtilities.simpleAlert(LocalizeText('room.queue.error.title'), NotificationAlertType.DEFAULT, null, null, LocalizeText('room.queue.error.title'));
+
+                break;
+        }
+
+        VisitDesktop();
+    }, []);
+
     UseMessageEventHook(UserInfoEvent, onUserInfoEvent);
     UseMessageEventHook(RoomForwardEvent, onRoomForwardEvent);
     UseMessageEventHook(RoomEntryInfoMessageEvent, onRoomEntryInfoMessageEvent);
@@ -208,6 +235,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
     UseMessageEventHook(RoomCreatedEvent, onRoomCreatedEvent);
     UseMessageEventHook(NavigatorHomeRoomEvent, onNavigatorHomeRoomEvent);
     UseMessageEventHook(RoomSettingsUpdatedEvent, onRoomSettingsUpdatedEvent);
+    UseMessageEventHook(RoomEnterErrorEvent, onRoomEnterErrorEvent);
 
     return null;
 }
