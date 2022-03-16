@@ -1,5 +1,5 @@
 import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraStorageUrlMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, LayoutCurrencyIcon, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { InventoryEvent } from '../../../../events';
@@ -22,6 +22,8 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
     const [ wasPicturePublished, setWasPicturePublished ] = useState(false);
     const [ isWaiting, setIsWaiting ] = useState(false);
     const [ publishCooldown, setPublishCooldown ] = useState(0);
+
+    const publishDisabled = useMemo(() => GetConfiguration<boolean>('camera.publish.disabled', false), []);
 
     const onCameraPurchaseOKMessageEvent = useCallback((event: CameraPurchaseOKMessageEvent) =>
     {
@@ -105,7 +107,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                         </Flex> }
                 </Flex>
                 <Flex justifyContent="between" alignItems="center" className="bg-muted rounded p-2">
-                    <Column gap={ 1 }>
+                    <Column size={ publishDisabled ? 10 : 6 } gap={ 1 }>
                         <Text bold>
                             { LocalizeText('camera.purchase.header') }
                         </Text>
@@ -133,6 +135,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                         <Button variant="success" disabled={ isWaiting } onClick={ event => processAction('buy') }>{ LocalizeText(!picturesBought ? 'buy' : 'camera.buy.another.button.text') }</Button>
                     </Flex>
                 </Flex>
+                { !publishDisabled &&
                 <Flex justifyContent="between" alignItems="center" className="bg-muted rounded p-2">
                     <Column gap={ 1 }>
                         <Text bold>
@@ -158,7 +161,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                                 { LocalizeText('camera.publish.button.text') }
                             </Button>
                         </Flex> }
-                </Flex>
+                </Flex> }
                 <Text center>{ LocalizeText('camera.warning.disclaimer') }</Text>
                 <Flex justifyContent="end">
                     <Button onClick={ event => processAction('cancel') }>{ LocalizeText('generic.cancel') }</Button>
