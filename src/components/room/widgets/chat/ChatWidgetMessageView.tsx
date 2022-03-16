@@ -14,7 +14,7 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
     const [ isVisible, setIsVisible ] = useState(false);
     const elementRef = useRef<HTMLDivElement>();
 
-    const onMouseDown = (event: MouseEvent<HTMLDivElement>) => ((event.shiftKey) && onChatClicked(chat));
+    const onMouseDown = (event: MouseEvent<HTMLDivElement>) => onChatClicked(chat);
 
     useEffect(() =>
     {
@@ -57,7 +57,7 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
     useEffect(() => setIsVisible(chat.visible), [ chat.visible ]);
 
     return (
-        <div ref={ elementRef } className="bubble-container" style={ { visibility: (isVisible ? 'visible' : 'hidden') } } onMouseDown={ onMouseDown }>
+        <div ref={ elementRef } className="bubble-container" style={ { visibility: (isVisible ? 'visible' : 'hidden') } } onClick={ onMouseDown }>
             { (chat.styleId === 0) && <div className="user-container-bg" style={ { backgroundColor: chat.color } } /> }
             <div className={ 'chat-bubble bubble-' + chat.styleId + ' type-' + chat.type }>
                 <div className="user-container">
