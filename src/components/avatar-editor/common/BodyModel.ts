@@ -1,10 +1,10 @@
-import { AvatarEditorFigureCategory, AvatarScaleType, AvatarSetType, IAvatarImageListener } from '@nitrots/nitro-renderer';
+import { AvatarEditorFigureCategory, AvatarScaleType, AvatarSetType } from '@nitrots/nitro-renderer';
 import { GetAvatarRenderManager } from '../../../api';
 import { AvatarEditorUtilities } from './AvatarEditorUtilities';
 import { CategoryBaseModel } from './CategoryBaseModel';
 import { FigureData } from './FigureData';
 
-export class BodyModel extends CategoryBaseModel implements IAvatarImageListener
+export class BodyModel extends CategoryBaseModel
 {
     private _imageCallBackHandled: boolean = false;
 
@@ -43,31 +43,25 @@ export class BodyModel extends CategoryBaseModel implements IAvatarImageListener
 
         for(const part of category.parts)
         {
-            const figure = AvatarEditorUtilities.CURRENT_FIGURE.getFigureStringWithFace(part.id);
-            const avatarImage = GetAvatarRenderManager().createAvatarImage(figure, AvatarScaleType.LARGE, null, this);
-
-            const sprite = avatarImage.getImageAsSprite(AvatarSetType.HEAD);
-
-            if(sprite)
+            const resetFigure = (figure: string) =>
             {
-                sprite.y = 10;
-
-                part.thumbContainer = sprite;
-
-                setTimeout(() => avatarImage.dispose(), 0);
+                const figureString = AvatarEditorUtilities.CURRENT_FIGURE.getFigureStringWithFace(part.id);
+                const avatarImage = GetAvatarRenderManager().createAvatarImage(figureString, AvatarScaleType.LARGE, null, { resetFigure, dispose: null, disposed: false });
+    
+                const sprite = avatarImage.getImageAsSprite(AvatarSetType.HEAD);
+    
+                if(sprite)
+                {
+                    sprite.y = 10;
+    
+                    part.thumbContainer = sprite;
+    
+                    setTimeout(() => avatarImage.dispose(), 0);
+                }
             }
+
+            resetFigure(null);
         }
-
-        // if (this._Str_2271) this._Str_2271._Str_5614(k, _local_4.length);
-    }
-
-    public resetFigure(figure: string): void
-    {
-        if(this._imageCallBackHandled) return;
-
-        this._imageCallBackHandled = true;
-
-        this.updateSelectionsFromFigure(FigureData.FACE);
     }
 
     public get canSetGender(): boolean
