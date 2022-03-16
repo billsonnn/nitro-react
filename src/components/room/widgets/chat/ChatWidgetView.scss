@@ -39,11 +39,6 @@
     // -webkit-animation-name: bounceIn; 
     // animation-name: bounceIn;
 
-    &:hover,
-    &:active {
-        pointer-events: none;
-    }
-
     .user-container-bg {
         position: absolute;
         top: -1px;
