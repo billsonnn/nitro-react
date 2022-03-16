@@ -99,7 +99,7 @@ export class NotificationUtilities
     {
         if(numGifts <= 0) return;
 
-        this.showSingleBubble(numGifts.toString(), NotificationBubbleType.CLUBGIFT, null, ('catalog/open/' + CatalogPageName.CLUB_GIFTS));
+        this.showSingleBubble(numGifts.toString(), NotificationBubbleType.CLUBGIFT, null, ('catalog/open/' + GetConfiguration('hc.center')['catalog.gifts']));
     }
 
     public static handleMOTD(messages: string[]): void
