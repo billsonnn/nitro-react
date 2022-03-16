@@ -354,14 +354,14 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                     <Button variant="dark" onClick={ event => processButtonAction('rotate') }>
                         { LocalizeText('infostand.button.rotate') }
                     </Button> }
-                { canUse &&
-                    <Button variant="dark" onClick={ event => processButtonAction('use') }>
-                        { LocalizeText('infostand.button.use') }
-                    </Button>}
                 { (pickupMode !== PICKUP_MODE_NONE) &&
                     <Button variant="dark" onClick={ event => processButtonAction('pickup') }>
                         { LocalizeText((pickupMode === PICKUP_MODE_EJECT) ? 'infostand.button.eject' : 'infostand.button.pickup') }
                     </Button> }
+                { canUse &&
+                    <Button variant="dark" onClick={ event => processButtonAction('use') }>
+                        { LocalizeText('infostand.button.use') }
+                    </Button>}
                 { ((furniKeys.length > 0 && furniValues.length > 0) && (furniKeys.length === furniValues.length)) &&
                     <Button variant="dark" onClick={ () => processButtonAction('save_branding_configuration') }>
                         { LocalizeText('save') }
