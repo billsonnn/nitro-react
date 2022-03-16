@@ -3,7 +3,7 @@ import { Flex, FlexProps } from '../..';
 
 export const NitroCardTabsView: FC<FlexProps> = props =>
 {
-    const { justifyContent = 'center', classNames = [], children = null, ...rest } = props;
+    const { justifyContent = 'center', gap = 1, classNames = [], children = null, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -15,10 +15,8 @@ export const NitroCardTabsView: FC<FlexProps> = props =>
     }, [ classNames ]);
 
     return (
-        <Flex justifyContent={ justifyContent } classNames={ getClassNames } { ...rest }>
-            <ul className="nav nav-tabs border-0 gap-1">
-                { children }
-            </ul>
+        <Flex justifyContent={ justifyContent } gap={ gap } classNames={ getClassNames } { ...rest }>
+            { children }
         </Flex>
     );
 }
