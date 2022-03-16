@@ -8,6 +8,7 @@ export class NavigatorEvent extends NitroEvent
     public static TOGGLE_ROOM_INFO: string = 'NE_TOGGLE_ROOM_INFO';
     public static TOGGLE_ROOM_LINK: string = 'NE_TOGGLE_ROOM_LINK';
     public static TOGGLE_ROOM_SETTINGS: string = 'NE_TOGGLE_ROOM_SETTINGS';
+    public static SHOW_ROOM_CREATOR: string = 'NE_TOGGLE_CREATOR';
 
     private _roomId: number;
     private _password: string;
