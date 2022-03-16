@@ -1,8 +1,8 @@
-import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
+import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectType, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
+import { GetRoomSession, GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
 import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../hooks';
+import { BatchUpdates, UseMessageEventHook, UseRoomEngineEvent } from '../../hooks';
 import { BadgesContainerView } from './views/BadgesContainerView';
 import { FriendsContainerView } from './views/FriendsContainerView';
 import { GroupsContainerView } from './views/GroupsContainerView';
@@ -69,6 +69,21 @@ export const UserProfileView: FC<{}> = props =>
     }, []);
 
     UseMessageEventHook(UserProfileEvent, onUserProfileEvent);
+
+    const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
+    {
+        if(!userProfile) return;
+        
+        if(event.category !== RoomObjectCategory.UNIT) return;
+
+        const userData = GetRoomSession().userDataManager.getUserDataByIndex(event.objectId);
+
+        if(userData.type !== RoomObjectType.USER) return;
+
+        GetUserProfile(userData.webID);
+    }, [ userProfile ]);
+
+    UseRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
 
     if(!userProfile) return null;
 
