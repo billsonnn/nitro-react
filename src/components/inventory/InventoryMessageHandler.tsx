@@ -1,23 +1,26 @@
-import { AdvancedMap, BadgePointLimitsEvent, BadgeReceivedEvent, BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, RequestBadgesComposer, TradingAcceptEvent, TradingCloseEvent, TradingCompletedEvent, TradingConfirmationEvent, TradingListItemEvent, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingYouAreNotAllowedEvent, UnseenItemsEvent } from '@nitrots/nitro-renderer';
+import { AdvancedMap, BadgePointLimitsEvent, BadgeReceivedEvent, BadgesEvent, BotAddedToInventoryEvent, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent, PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, RequestBadgesComposer, TradingAcceptEvent, TradingCloseEvent, TradingCloseParser, TradingCompletedEvent, TradingConfirmationEvent, TradingListItemEvent, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOpenFailedParser, TradingOtherNotAllowedEvent, TradingYouAreNotAllowedEvent, UnseenItemsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { GetLocalization, GetRoomSession, GetSessionDataManager, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../api';
+import { GetLocalization, GetRoomSession, GetSessionDataManager, SendMessageComposer } from '../../api';
 import { InventoryBadgesRequestEvent, InventoryBadgesUpdatedEvent } from '../../events';
 import { DispatchUiEvent, UseMessageEventHook, UseUiEvent } from '../../hooks';
 import { mergeFurniFragments } from './common/FurnitureUtilities';
 import { mergePetFragments } from './common/PetUtilities';
 import { TradeState } from './common/TradeState';
 import { TradeUserData } from './common/TradeUserData';
+import { TradingNotificationMessage } from './common/TradingNotificationMessage';
+import { TradingNotificationType } from './common/TradingNotificationType';
 import { useInventoryContext } from './InventoryContext';
 import { InventoryBadgeActions } from './reducers/InventoryBadgeReducer';
 import { InventoryBotActions } from './reducers/InventoryBotReducer';
 import { InventoryFurnitureActions } from './reducers/InventoryFurnitureReducer';
 import { InventoryPetActions } from './reducers/InventoryPetReducer';
+
 let furniMsgFragments: Map<number, FurnitureListItemParser>[] = null;
 let petMsgFragments: Map<number, PetData>[] = null;
  
 export const InventoryMessageHandler: FC<{}> = props =>
 {
-    const { dispatchFurnitureState = null, dispatchBotState = null, dispatchPetState = null, badgeState = null, dispatchBadgeState = null, unseenTracker = null } = useInventoryContext();
+    const { dispatchFurnitureState = null, dispatchBotState = null, dispatchPetState = null, badgeState = null, dispatchBadgeState = null, unseenTracker = null, furnitureState = null } = useInventoryContext();
 
     const onFurnitureListAddOrUpdateEvent = useCallback((event: FurnitureListAddOrUpdateEvent) =>
     {
@@ -192,11 +195,23 @@ export const InventoryMessageHandler: FC<{}> = props =>
     {
         const parser = event.getParser();
 
+        if(parser.reason === TradingCloseParser.ERROR_WHILE_COMMIT)
+        {
+            TradingNotificationMessage(TradingNotificationType.ERROR_WHILE_COMMIT);
+        }
+        else
+        {
+            if(parser.userID !== (furnitureState && furnitureState.tradeData.ownUser.userId))
+            {
+                TradingNotificationMessage(TradingNotificationType.ALERT_OTHER_CANCELLED);
+            }
+        }
+
         dispatchFurnitureState({
             type: InventoryFurnitureActions.CLOSE_TRADE,
             payload: {}
         });
-    }, [ dispatchFurnitureState ]);
+    }, [ furnitureState, dispatchFurnitureState ]);
 
     const onTradingCompletedEvent = useCallback((event: TradingCompletedEvent) =>
     {
@@ -287,21 +302,23 @@ export const InventoryMessageHandler: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        NotificationUtilities.simpleAlert(LocalizeText(`inventory.trading.openfail.${ parser.reason }`, [ 'otherusername' ], [ parser.otherUserName ]), null, null, null, LocalizeText('inventory.trading.openfail.title'));
+        if((parser.reason !== TradingOpenFailedParser.REASON_YOU_ARE_ALREADY_TRADING && (parser.reason !== TradingOpenFailedParser.REASON_OTHER_USER_ALREADY_TRADING))) return;
+
+        TradingNotificationMessage(TradingNotificationType.ALERT_ALREADY_OPEN);
     }, []);
 
     const onTradingOtherNotAllowedEvent = useCallback((event: TradingOtherNotAllowedEvent) =>
     {
         const parser = event.getParser();
 
-        console.log(parser);
+        TradingNotificationMessage(TradingNotificationType.ALERT_OTHER_DISABLED);
     }, []);
 
     const onTradingYouAreNotAllowedEvent = useCallback((event: TradingYouAreNotAllowedEvent) =>
     {
         const parser = event.getParser();
 
-        console.log(parser);
+        TradingNotificationMessage(TradingNotificationType.YOU_NOT_ALLOWED);
     }, []);
 
     const onUnseenItemsEvent = useCallback((event: UnseenItemsEvent) =>
