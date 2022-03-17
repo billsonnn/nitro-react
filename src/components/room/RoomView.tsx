@@ -1,7 +1,6 @@
 import { EventDispatcher, IRoomSession, NitroRectangle, RoomGeometry, RoomVariableEnum, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
-import { DispatchMouseEvent, DispatchTouchEvent, DoorbellWidgetHandler, FriendRequestHandler, FurniChooserWidgetHandler, FurnitureContextMenuWidgetHandler, FurnitureCreditWidgetHandler, FurnitureCustomStackHeightWidgetHandler, FurnitureDimmerWidgetHandler, FurnitureExternalImageWidgetHandler, FurnitureMannequinWidgetHandler, FurniturePresentWidgetHandler, FurnitureYoutubeDisplayWidgetHandler, GetNitroInstance, GetRoomEngine, InitializeRoomInstanceRenderingCanvas, IRoomWidgetHandlerManager, PollWidgetHandler, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler, RoomWidgetRoomToolsHandler, RoomWidgetUpdateRoomViewEvent, UserChooserWidgetHandler, WordQuizWidgetHandler } from '../../api';
-import { FurnitureInternalLinkHandler } from '../../api/nitro/room/widgets/handlers/FurnitureInternalLinkHandler';
+import { DispatchMouseEvent, DispatchTouchEvent, DoorbellWidgetHandler, FriendRequestHandler, FurniChooserWidgetHandler, FurnitureContextMenuWidgetHandler, FurnitureCreditWidgetHandler, FurnitureCustomStackHeightWidgetHandler, FurnitureDimmerWidgetHandler, FurnitureExternalImageWidgetHandler, FurnitureInternalLinkHandler, FurnitureMannequinWidgetHandler, FurniturePresentWidgetHandler, FurnitureRoomLinkHandler, FurnitureYoutubeDisplayWidgetHandler, GetNitroInstance, GetRoomEngine, InitializeRoomInstanceRenderingCanvas, IRoomWidgetHandlerManager, PollWidgetHandler, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler, RoomWidgetRoomToolsHandler, RoomWidgetUpdateRoomViewEvent, UserChooserWidgetHandler, WordQuizWidgetHandler } from '../../api';
 import { Base } from '../../common';
 import { RoomColorView } from './RoomColorView';
 import { RoomContextProvider } from './RoomContext';
@@ -54,6 +53,7 @@ export const RoomView: FC<RoomViewProps> = props =>
         widgetHandlerManager.registerHandler(new FurnitureYoutubeDisplayWidgetHandler());
         widgetHandlerManager.registerHandler(new FurnitureMannequinWidgetHandler());
         widgetHandlerManager.registerHandler(new FurnitureInternalLinkHandler());
+        widgetHandlerManager.registerHandler(new FurnitureRoomLinkHandler());
 
         setWidgetHandler(widgetHandlerManager);
 

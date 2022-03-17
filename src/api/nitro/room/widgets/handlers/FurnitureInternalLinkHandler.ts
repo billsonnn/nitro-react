@@ -25,7 +25,6 @@ export class FurnitureInternalLinkHandler extends RoomWidgetHandler
                 {
                     let data = object.model.getValue<any>(RoomObjectVariable.FURNITURE_DATA);
                     let link = data[FurnitureInternalLinkHandler.INTERNALLINK];
-                    console.log(link);
                     if(!link || !link.length) link = object.model.getValue<string>(RoomObjectVariable.FURNITURE_INTERNAL_LINK);
                     if(link && link.length) CreateLinkEvent(link);
                 }
