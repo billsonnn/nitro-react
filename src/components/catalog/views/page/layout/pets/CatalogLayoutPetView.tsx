@@ -216,7 +216,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
                                 </LayoutGridItem>
                             );
                         })}
-                    { colorsShowing && (sellableColors.length > 0) && sellableColors.map((colorSet, index) => <LayoutGridItem key={ index } itemActive={ (selectedColorIndex === index) } itemColor={ ColorConverter.int2rgb(colorSet[0]) } onClick={ event => setSelectedColorIndex(index) } />) }
+                    { colorsShowing && (sellableColors.length > 0) && sellableColors.map((colorSet, index) => <LayoutGridItem itemHighlight key={ index } itemActive={ (selectedColorIndex === index) } itemColor={ ColorConverter.int2rgb(colorSet[0]) } className="clear-bg" onClick={ event => setSelectedColorIndex(index) } />) }
                 </AutoGrid>
             </Column>
             <Column center={ !currentOffer } size={ 5 } overflow="hidden">
