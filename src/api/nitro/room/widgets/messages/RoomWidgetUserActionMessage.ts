@@ -48,6 +48,11 @@ export class RoomWidgetUserActionMessage extends RoomWidgetMessage
     public static AMBASSADOR_MUTE_USER_10MIN: string = 'RWUAM_AMBASSADOR_MUTE_10MIN';
     public static AMBASSADOR_MUTE_USER_60MIN: string = 'RWUAM_AMBASSADOR_MUTE_60MIN';
     public static AMBASSADOR_MUTE_USER_18HOUR: string = 'RWUAM_AMBASSADOR_MUTE_18HOUR';
+    public static RELATIONSHIP_NONE: string = 'RWUAM_RELATIONSHIP_NONE';
+    public static RELATIONSHIP_HEART: string = 'RWUAM_RELATIONSHIP_HEART';
+    public static RELATIONSHIP_SMILE: string = 'RWUAM_RELATIONSHIP_SMILE';
+    public static RELATIONSHIP_BOBBA: string = 'RWUAM_RELATIONSHIP_BOBBA';
+
 
     private _userId: number;
 

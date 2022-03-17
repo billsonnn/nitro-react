@@ -1,5 +1,7 @@
-import { NitroEvent, RoomEngineUseProductEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionDanceEvent, RoomSessionPetStatusUpdateEvent, RoomSessionUserDataUpdateEvent, RoomWidgetEnum } from '@nitrots/nitro-renderer';
+import { NitroEvent, RoomEngineUseProductEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionDanceEvent, RoomSessionPetStatusUpdateEvent, RoomSessionUserDataUpdateEvent, RoomWidgetEnum, SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
+import { SendMessageComposer } from '../../..';
 import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
+import { MessengerFriend } from '../../../../../components/friends/common/MessengerFriend';
 import { FurniCategory } from '../../../../../components/inventory/common/FurniCategory';
 import { RoomWidgetAvatarInfoEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateUserDataEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../events';
 import { RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUseProductMessage, RoomWidgetUserActionMessage } from '../messages';
@@ -80,6 +82,22 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
                 const postureMessage = (message as RoomWidgetChangePostureMessage);
 
                 this.container.roomSession.sendPostureMessage(postureMessage.posture);
+                break;
+            }
+            case RoomWidgetUserActionMessage.RELATIONSHIP_NONE: {
+                SendMessageComposer(new SetRelationshipStatusComposer(userId, MessengerFriend.RELATIONSHIP_NONE));
+                break;
+            }
+            case RoomWidgetUserActionMessage.RELATIONSHIP_HEART: {
+                SendMessageComposer(new SetRelationshipStatusComposer(userId, MessengerFriend.RELATIONSHIP_HEART));
+                break;
+            }
+            case RoomWidgetUserActionMessage.RELATIONSHIP_SMILE: {
+                SendMessageComposer(new SetRelationshipStatusComposer(userId, MessengerFriend.RELATIONSHIP_SMILE));
+                break;
+            }
+            case RoomWidgetUserActionMessage.RELATIONSHIP_BOBBA: {
+                SendMessageComposer(new SetRelationshipStatusComposer(userId, MessengerFriend.RELATIONSHIP_BOBBA));
                 break;
             }
         }
@@ -206,6 +224,10 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
             RoomWidgetDanceMessage.DANCE,
             RoomWidgetAvatarExpressionMessage.AVATAR_EXPRESSION,
             RoomWidgetChangePostureMessage.CHANGE_POSTURE,
+            RoomWidgetUserActionMessage.RELATIONSHIP_NONE,
+            RoomWidgetUserActionMessage.RELATIONSHIP_HEART,
+            RoomWidgetUserActionMessage.RELATIONSHIP_SMILE,
+            RoomWidgetUserActionMessage.RELATIONSHIP_BOBBA
         ];
     }
 }
