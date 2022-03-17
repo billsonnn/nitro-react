@@ -12,7 +12,7 @@ export const LayoutItemCountView: FC<LayoutItemCountViewProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'badge', 'border', 'bg-danger', 'px-1', 'rounded-circle', 'nitro-item-count' ];
+        const newClassNames: string[] = [ 'badge', 'border', 'border-black', 'bg-danger', 'px-1', 'nitro-item-count' ];
 
         if(classNames.length) newClassNames.push(...classNames);
 
