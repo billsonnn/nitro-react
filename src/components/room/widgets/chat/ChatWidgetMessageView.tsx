@@ -1,5 +1,4 @@
 import { FC, MouseEvent, useEffect, useRef, useState } from 'react';
-import { RoomChatFormatter } from '../../../../api';
 import { ChatBubbleMessage } from './common/ChatBubbleMessage';
 
 interface ChatWidgetMessageViewProps
@@ -14,7 +13,6 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
     const { chat = null, makeRoom = null, onChatClicked = null } = props;
     const [ isVisible, setIsVisible ] = useState(false);
     const elementRef = useRef<HTMLDivElement>();
-    const [formatted, setFormatted] = useState(null);
 
     const onMouseDown = (event: MouseEvent<HTMLDivElement>) => onChatClicked(chat);
 
@@ -50,13 +48,11 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
             chat.visible = true;
         }
 
-        if(!formatted) setFormatted(RoomChatFormatter(chat.text));
-
         return () =>
         {
             chat.elementRef = null;
         }
-    }, [ elementRef, chat, makeRoom,formatted ]);
+    }, [ elementRef, chat, makeRoom ]);
 
     useEffect(() => setIsVisible(chat.visible), [ chat.visible ]);
 
@@ -68,8 +64,8 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
                     { (chat.imageUrl && (chat.imageUrl !== '')) && <div className="user-image" style={ { backgroundImage: 'url(' + chat.imageUrl + ')' } } /> }
                 </div>
                 <div className="chat-content">
-                    <b className="username mr-1" dangerouslySetInnerHTML={ { __html: `${ chat.username }: ` } } />
-                    <span className="message" dangerouslySetInnerHTML={{ __html: formatted }} />
+                    <b className="username mr-1" dangerouslySetInnerHTML={ { __html: chat.username } } />
+                    <span className="message" dangerouslySetInnerHTML={{ __html: chat.formattedText }} />
                 </div>
                 <div className="pointer"></div>
             </div>

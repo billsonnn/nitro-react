@@ -1,6 +1,6 @@
 import { NitroPoint, RoomDragEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { RoomWidgetChatSelectAvatarMessage, RoomWidgetRoomObjectMessage, RoomWidgetUpdateChatEvent } from '../../../../api';
+import { RoomChatFormatter, RoomWidgetChatSelectAvatarMessage, RoomWidgetRoomObjectMessage, RoomWidgetUpdateChatEvent } from '../../../../api';
 import { UseEventDispatcherHook, UseRoomEngineEvent } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ChatWidgetMessageView } from './ChatWidgetMessageView';
@@ -63,6 +63,7 @@ export const ChatWidgetView: FC<{}> = props =>
             event.userCategory,
             event.roomId,
             event.text,
+            RoomChatFormatter(event.text),
             event.userName,
             new NitroPoint(event.userX, event.userY),
             event.chatType,

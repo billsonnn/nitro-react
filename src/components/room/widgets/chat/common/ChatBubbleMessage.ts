@@ -18,6 +18,7 @@ export class ChatBubbleMessage
         public senderCategory: number = -1,
         public roomId: number = -1,
         public text: string = '',
+        public formattedText: string = '',
         public username: string = '',
         public location: INitroPoint = null,
         public type: number = 0,
