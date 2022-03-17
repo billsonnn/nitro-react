@@ -64,8 +64,8 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
                     { (chat.imageUrl && (chat.imageUrl !== '')) && <div className="user-image" style={ { backgroundImage: 'url(' + chat.imageUrl + ')' } } /> }
                 </div>
                 <div className="chat-content">
-                    <b className="username mr-1" dangerouslySetInnerHTML={ { __html: chat.username } } />
-                    <span className="message" dangerouslySetInnerHTML={{ __html: chat.formattedText }} />
+                    <b className="username mr-1" dangerouslySetInnerHTML={ { __html: `${ chat.username }: ` } } />
+                    <span className="message" dangerouslySetInnerHTML={{ __html: `${ chat.formattedText }` }} />
                 </div>
                 <div className="pointer"></div>
             </div>
