@@ -74,7 +74,7 @@ export const NitropediaView: FC<{}> = props =>
     if(!content) return null;
 
     return (
-        <NitroCardView className="nitropedia">
+        <NitroCardView className="nitropedia" theme="primary-slim">
             <NitroCardHeaderView headerText={header} onCloseClick={() => setContent(null)}/>
             <NitroCardContentView>
                 <Base fit innerRef={ elementRef } className="text-black" dangerouslySetInnerHTML={{ __html: content }} />
