@@ -60,11 +60,11 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                 <Column size={ 6 } gap={ 1 } overflow="auto">
                     <Column gap={ 1 }>
                         <Text>{ LocalizeText('navigator.createroom.roomnameinfo') }</Text>
-                        <input type="text" className="form-control form-control-sm" maxLength={ 60 } onChange={ event => setName(event.target.value) } />
+                        <input type="text" className="form-control form-control-sm" maxLength={ 60 } onChange={ event => setName(event.target.value) } placeholder={ LocalizeText('navigator.createroom.roomnameinfo') } />
                     </Column>
                     <Column grow gap={ 1 }>
                         <Text>{ LocalizeText('navigator.createroom.roomdescinfo') }</Text>
-                        <textarea className="flex-grow-1 form-control w-100" maxLength={ 255 } onChange={ event => setDescription(event.target.value) } />
+                        <textarea className="flex-grow-1 form-control w-100" maxLength={255} onChange={event => setDescription(event.target.value)} placeholder={ LocalizeText('navigator.createroom.roomdescinfo') } />
                     </Column>
                     <Column gap={ 1 }>
                         <Text>{ LocalizeText('navigator.category') }</Text>
@@ -108,7 +108,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                     }
                 </Column>
             </Grid>
-            <Button fullWidth variant="success" onClick={ createRoom } disabled={ (!name || (name.length < 3)) }>{ LocalizeText('navigator.createroom.create') }</Button>
+            <Button fullWidth variant={ (!name || (name.length < 3)) ? 'danger' : 'success' } onClick={ createRoom } disabled={ (!name || (name.length < 3)) }>{ LocalizeText('navigator.createroom.create') }</Button>
         </Column>
     );
 }
