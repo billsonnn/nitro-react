@@ -2,22 +2,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavigatorSearchResultList } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
+import { AutoGrid, AutoGridProps } from '../../../../common';
 import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
-import { Grid } from '../../../../common/Grid';
 import { Text } from '../../../../common/Text';
 import { BatchUpdates } from '../../../../hooks';
 import { NavigatorSearchResultViewDisplayMode } from '../../common/NavigatorSearchResultViewDisplayMode';
 import { NavigatorSearchResultItemView } from './NavigatorSearchResultItemView';
 
-export interface NavigatorSearchResultViewProps
+export interface NavigatorSearchResultViewProps extends AutoGridProps
 {
     searchResult: NavigatorSearchResultList;
 }
 
 export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = props =>
 {
-    const { searchResult = null } = props;
+    const { searchResult = null, ...rest } = props;
 
     const [ isExtended, setIsExtended ] = useState(true);
     const [ displayMode, setDisplayMode ] = useState<number>(0);
@@ -52,7 +52,7 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
             //setIsExtended(searchResult.closed);
             setDisplayMode(searchResult.mode);
         });
-    }, [ searchResult ]);
+    }, [ searchResult,props ]);
 
     const gridHasTwoColumns = (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS);
     
@@ -64,11 +64,16 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
                     <Text>{ LocalizeText(getResultTitle()) }</Text>
                 </Flex>
                 <FontAwesomeIcon icon={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 'th' : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 'bars' : null) } className="text-secondary" onClick={ toggleDisplayMode } />
-            </Flex>
-            { isExtended &&
-                <Grid columnCount={ (gridHasTwoColumns ? 2 : 1) } className={ 'navigator-grid' + (gridHasTwoColumns ? ' two-columns' : '') } gap={ 0 }>
-                    { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={ index } roomData={ room } />) }
-            </Grid> }
+            </Flex> {isExtended && 
+                <>
+                {
+                    gridHasTwoColumns ? <AutoGrid columnCount={3} {...rest} columnMinWidth={110} columnMinHeight={130}>
+                        {searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={index} roomData={room} thumbnail={ true } />) }
+                        </AutoGrid> : <>
+                    { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={index} roomData={room} />) }
+            </> }
+                </>
+            }
         </Column>
         // <div className="nitro-navigator-search-result bg-white rounded mb-2 overflow-hidden">
         //     <div className="d-flex flex-column">
