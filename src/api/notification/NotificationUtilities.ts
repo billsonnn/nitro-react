@@ -58,7 +58,7 @@ export class NotificationUtilities
     {
         let imageUrl = options.get('image');
 
-        if(!imageUrl) imageUrl = GetConfiguration<string>('image.library.notifications.url', '').replace('%image', type.replace(/\./g, '_'));
+        if(!imageUrl) imageUrl = GetConfiguration<string>('image.library.notifications.url', '').replace('%image%', type.replace(/\./g, '_'));
 
         return LocalizeText(imageUrl);
     }
