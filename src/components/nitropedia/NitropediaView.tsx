@@ -1,4 +1,3 @@
-import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AddEventLinkTracker, GetConfiguration, NotificationUtilities, RemoveLinkEventTracker } from '../../api';
 import { Base, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
@@ -29,17 +28,6 @@ export const NitropediaView: FC<{}> = props =>
         });
     }, []);
 
-    const onClick = useCallback((event: MouseEvent) =>
-    {
-        if(!(event.target instanceof HTMLAnchorElement)) return;
-        
-        event.preventDefault();
-            
-        const link = event.target.href;
-
-        NotificationUtilities.openUrl(link);
-    }, []);
-
     const onLinkReceived = useCallback((link: string) =>
     {
         const value = link.split('/');
@@ -59,17 +47,6 @@ export const NitropediaView: FC<{}> = props =>
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, [ onLinkReceived ]);
-
-    useEffect(() =>
-    {
-        const element = elementRef.current;
-
-        if(!element) return;
-        
-        element.addEventListener(MouseEventType.MOUSE_CLICK, onClick);
-
-        return () => element.removeEventListener(MouseEventType.MOUSE_CLICK, onClick);
-    }, [ onClick, content ]);
 
     useEffect(() =>
     {
