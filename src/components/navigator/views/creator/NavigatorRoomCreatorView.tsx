@@ -21,11 +21,9 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
     const getRoomModelImage = (name: string) => GetConfiguration<string>('images.url') + `/navigator/models/model_${ name }.png`;
 
-    const selectModel = (model: IRoomModel, index) =>
+    const selectModel = (model: IRoomModel, index: number) =>
     {
-        if(!model) return;
-
-        if(model.clubLevel > GetClubMemberLevel()) return;
+        if(!model || (model.clubLevel > GetClubMemberLevel())) return;
 
         setSelectedModelName(RoomModels[index].name);
     }
@@ -53,7 +51,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if(categories) setCategory(categories[0].id);
+        if(categories && categories.length) setCategory(categories[0].id);
     }, [ categories ]);
 
     return (
@@ -62,12 +60,16 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                 <Column size={ 6 } gap={ 1 } overflow="auto">
                     <Column gap={ 1 }>
                         <Text>{ LocalizeText('navigator.createroom.roomnameinfo') }</Text>
-                        <input type="text" className="form-control form-control-sm" onChange={ event => setName(event.target.value) } />
+                        <input type="text" className="form-control form-control-sm" maxLength={ 60 } onChange={ event => setName(event.target.value) } />
+                    </Column>
+                    <Column grow gap={ 1 }>
+                        <Text>{ LocalizeText('navigator.createroom.roomdescinfo') }</Text>
+                        <textarea className="flex-grow-1 form-control w-100" maxLength={ 255 } onChange={ event => setDescription(event.target.value) } />
                     </Column>
                     <Column gap={ 1 }>
                         <Text>{ LocalizeText('navigator.category') }</Text>
                         <select className="form-select form-select-sm" onChange={ event => setCategory(Number(event.target.value)) }>
-                            { categories && categories.map(category =>
+                            { categories && (categories.length > 0) && categories.map(category =>
                                 {
                                     return <option key={ category.id } value={ category.id }>{ LocalizeText(category.name) }</option>
                                 }) }
@@ -89,10 +91,6 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                             <option value="1">{ LocalizeText('navigator.roomsettings.trade_not_with_Controller') }</option>
                             <option value="2">{ LocalizeText('navigator.roomsettings.trade_allowed') }</option>
                         </select>
-                    </Column>
-                    <Column gap={ 1 }>
-                        <Text>{ LocalizeText('navigator.createroom.roomdescinfo') }</Text>
-                        <input type="text" className="form-control form-control-sm" onChange={ event => setDescription(event.target.value) } />
                     </Column>
                 </Column>
                 <Column size={ 6 } gap={ 1 } overflow="auto">
