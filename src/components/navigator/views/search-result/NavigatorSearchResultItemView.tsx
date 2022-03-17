@@ -71,8 +71,8 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
     }
 
     if(thumbnail) return (
-        <Flex pointer overflow="hidden" column={ true } alignItems="center" onClick={visitRoom} gap={2} className="navigator-item p-2 bg-muted rounded-3 small mx-1 mb-1 flex-column" {...rest}>
-            <LayoutRoomThumbnailView roomId={roomData.roomId} customUrl={roomData.officialRoomPicRef} className="d-flex flex-column align-items-center justify-content-end w-100">
+        <Flex pointer overflow="hidden" column={ true } alignItems="center" onClick={visitRoom} gap={0} className="navigator-item p-1 bg-light rounded-3 small mb-1 flex-column border border-muted" {...rest}>
+            <LayoutRoomThumbnailView roomId={roomData.roomId} customUrl={roomData.officialRoomPicRef} className="d-flex flex-column align-items-center justify-content-end mb-1">
                 <LayoutBadgeImageView badgeCode={roomData.groupBadgeCode} isGroup={true} className={ 'position-absolute top-0 start-0 m-1' } />
                 <Flex center className={ 'badge p-1 position-absolute m-1 ' + getUserCounterColor() } gap={ 1 }>
                     <FontAwesomeIcon icon="user" />
