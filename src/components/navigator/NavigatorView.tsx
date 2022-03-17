@@ -235,8 +235,6 @@ export const NavigatorView: FC<{}> = props =>
     {
         if(!isVisible || !LAST_SEARCH || !LAST_SEARCH.length) return;
 
-        console.log(LAST_SEARCH)
-
         CreateLinkEvent(`navigator/search/${ LAST_SEARCH }`);
     }, [ isVisible ]);
 

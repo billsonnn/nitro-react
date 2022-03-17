@@ -47,6 +47,8 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
     useEffect(() =>
     {
+        if(!searchResult || !searchResult.data) return;
+        
         const searchResultDataParts = searchResult.data.split(':');
 
         LAST_SEARCH = `${ topLevelContext.code }/${ searchResult.data }`;

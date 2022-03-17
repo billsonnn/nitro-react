@@ -71,6 +71,27 @@ export const NitropediaView: FC<{}> = props =>
         return () => element.removeEventListener(MouseEventType.MOUSE_CLICK, onClick);
     }, [ onClick, content ]);
 
+    useEffect(() =>
+    {
+        const handle = (event: MouseEvent) =>
+            {
+                if(!(event.target instanceof HTMLAnchorElement)) return;
+
+                const link = event.target.href;
+
+                if(!link || !link.length) return;
+
+                NotificationUtilities.openUrl(link);
+            }
+
+        document.addEventListener('click', handle);
+
+        return () =>
+        {
+            document.removeEventListener('click', handle);
+        }
+    }, []);
+
     if(!content) return null;
 
     return (
