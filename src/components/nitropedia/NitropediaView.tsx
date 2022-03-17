@@ -77,6 +77,8 @@ export const NitropediaView: FC<{}> = props =>
             {
                 if(!(event.target instanceof HTMLAnchorElement)) return;
 
+                event.preventDefault();
+
                 const link = event.target.href;
 
                 if(!link || !link.length) return;
