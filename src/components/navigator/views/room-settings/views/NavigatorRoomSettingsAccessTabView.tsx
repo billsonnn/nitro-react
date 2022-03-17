@@ -1,3 +1,4 @@
+import { RoomDataParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { Column, Flex, Text } from '../../../../../common';
@@ -33,22 +34,22 @@ export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabView
                 <Column gap={ 1 }>
                     <Text bold>{ LocalizeText('navigator.roomsettings.doormode') }</Text>
                     <Flex alignItems="center" gap={ 1 }>
-                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomSettingsData.lockState === 0) } onChange={ event => handleChange('lock_state', 0) } />
+                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomSettingsData.lockState === RoomDataParser.OPEN_STATE) } onChange={ event => handleChange('lock_state', RoomDataParser.OPEN_STATE) } />
                         <Text>{ LocalizeText('navigator.roomsettings.doormode.open') }</Text>
                     </Flex>
                     <Flex alignItems="center" gap={ 1 }>
-                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomSettingsData.lockState === 1) } onChange={ event => handleChange('lock_state', 1) } />
+                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomSettingsData.lockState === RoomDataParser.DOORBELL_STATE) } onChange={ event => handleChange('lock_state', RoomDataParser.DOORBELL_STATE) } />
                         <Text>{ LocalizeText('navigator.roomsettings.doormode.doorbell') }</Text>
                     </Flex>
                     <Flex alignItems="center" gap={ 1 }>
-                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomSettingsData.lockState === 2) } onChange={ event => handleChange('lock_state', 2) } />
+                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomSettingsData.lockState === RoomDataParser.INVISIBLE_STATE) } onChange={ event => handleChange('lock_state', RoomDataParser.INVISIBLE_STATE) } />
                         <Text>{ LocalizeText('navigator.roomsettings.doormode.invisible') }</Text>
                     </Flex>
                     <Flex fullWidth gap={ 1 }>
-                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomSettingsData.lockState === 3) } onChange={ event => handleChange('lock_state', 3) } />
-                        { (roomSettingsData.lockState !== 3) &&
+                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomSettingsData.lockState === RoomDataParser.PASSWORD_STATE) } onChange={ event => handleChange('lock_state', RoomDataParser.PASSWORD_STATE) } />
+                        { (roomSettingsData.lockState !== RoomDataParser.PASSWORD_STATE) &&
                             <Text>{ LocalizeText('navigator.roomsettings.doormode.password') }</Text> }
-                        { (roomSettingsData.lockState === 3) &&
+                        { (roomSettingsData.lockState === RoomDataParser.PASSWORD_STATE) &&
                             <Column gap={ 1 }>
                                 <Text>{ LocalizeText('navigator.roomsettings.doormode.password') }</Text>
                                 <input type="password" className="form-control form-control-sm col-4" value={ roomSettingsData.password ?? '' } onChange={ (e) => handleChange('password', e.target.value) } onBlur={ trySave } placeholder={ LocalizeText('navigator.roomsettings.password') } />
