@@ -203,12 +203,12 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         </ContextMenuListItemView> }
                     { GetCanUseExpression() &&
                         <ContextMenuListItemView disabled={ !HasHabboVip() } onClick={ event => processAction('laugh') }>
-                            <LayoutCurrencyIcon type="hc" />
+                        { !HasHabboVip() && <LayoutCurrencyIcon type="hc" /> }
                             { LocalizeText('widget.memenu.laugh') }
                         </ContextMenuListItemView> }
                     { GetCanUseExpression() &&
                         <ContextMenuListItemView disabled={ !HasHabboVip() } onClick={ event => processAction('blow') }>
-                            <LayoutCurrencyIcon type="hc" />
+                        { !HasHabboVip() && <LayoutCurrencyIcon type="hc" /> }
                             { LocalizeText('widget.memenu.blow') }
                         </ContextMenuListItemView> }
                     <ContextMenuListItemView onClick={ event => processAction('idle') }>
