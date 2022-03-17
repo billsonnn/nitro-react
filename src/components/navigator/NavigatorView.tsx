@@ -4,7 +4,7 @@ import { FC, useCallback, useEffect, useMemo, useReducer, useState } from 'react
 import { AddEventLinkTracker, GoToDesktop, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
 import { Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { NavigatorEvent, UpdateDoorStateEvent } from '../../events';
-import { UseMountEffect, UseRoomSessionManagerEvent, UseUiEvent } from '../../hooks';
+import { BatchUpdates, UseMountEffect, UseRoomSessionManagerEvent, UseUiEvent } from '../../hooks';
 import { NavigatorContextProvider } from './NavigatorContext';
 import { NavigatorMessageHandler } from './NavigatorMessageHandler';
 import { initialNavigator, NavigatorActions, NavigatorReducer } from './reducers/NavigatorReducer';
@@ -154,11 +154,29 @@ export const NavigatorView: FC<{}> = props =>
                 }
                 return;
             case 'create':
-                setIsVisible(true);
-                setCreatorOpen(true);
+                BatchUpdates(() =>
+                {
+                    setIsVisible(true);
+                    setCreatorOpen(true);
+                });
+                return;
+            case 'search':
+                if(parts.length > 2)
+                {
+                    const topLevelContextCode = parts[2];
+
+                    let searchValue = '';
+
+                    if(parts.length > 3) searchValue = parts[3];
+
+                    console.log(searchValue, topLevelContextCode)
+
+                    setIsVisible(true);
+                    sendSearch(searchValue, topLevelContextCode);
+                }
                 return;
         } 
-    }, [ goToHomeRoom ]);
+    }, [ goToHomeRoom, sendSearch ]);
 
     const closePendingDoorState = useCallback((state: string) =>
     {

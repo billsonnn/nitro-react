@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC, KeyboardEvent, useCallback, useState } from 'react';
+import React, { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { Button } from '../../../../common/Button';
 import { Flex } from '../../../../common/Flex';
@@ -18,7 +18,7 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
     const [ searchValue, setSearchValue ] = useState('');
     const [ lastSearchQuery, setLastSearchQuery ] = useState('');
     const { navigatorState = null } = useNavigatorContext();
-    const { topLevelContext = null } = navigatorState;
+    const { topLevelContext = null, searchResult = null } = navigatorState;
 
     const processSearch = useCallback(() =>
     {
@@ -42,6 +42,19 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
         processSearch();
     };
+
+    useEffect(() =>
+    {
+        const searchResultDataParts = searchResult.data.split(':');
+
+        if(searchResultDataParts.length === 2)
+        {
+            let searchFilterIndex = SearchFilterOptions.findIndex(option => (option.query === searchResultDataParts[0]));
+
+            if(searchFilterIndex > -1) setSearchFilterIndex(searchFilterIndex);
+            setSearchValue(searchResultDataParts[1]);
+        }
+    }, [ searchResult ]);
 
     return (
         <Flex fullWidth gap={ 1 }>

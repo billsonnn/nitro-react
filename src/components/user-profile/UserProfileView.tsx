@@ -1,6 +1,6 @@
 import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectType, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetRoomSession, GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
+import { CreateLinkEvent, GetRoomSession, GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
 import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { BatchUpdates, UseMessageEventHook, UseRoomEngineEvent } from '../../hooks';
 import { BadgesContainerView } from './views/BadgesContainerView';
@@ -104,7 +104,7 @@ export const UserProfileView: FC<{}> = props =>
                     </Column>
                 </Grid>
                 <Flex alignItems="center" className="rooms-button-container px-2 py-1">
-                    <Flex alignItems="center" gap={ 1 }>
+                    <Flex alignItems="center" gap={ 1 } onClick={ event => CreateLinkEvent(`navigator/search/hotel_view/owner:${ userProfile.username }`)}>
                         <i className="icon icon-rooms" />
                         <Text bold underline pointer>{ LocalizeText('extendedprofile.rooms') }</Text>
                     </Flex>
