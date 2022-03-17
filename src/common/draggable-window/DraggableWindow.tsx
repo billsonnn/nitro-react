@@ -16,12 +16,14 @@ export interface DraggableWindowProps
     handleSelector?: string;
     windowPosition?: string;
     disableDrag?: boolean;
-    dragStyle?: CSSProperties
+    dragStyle?: CSSProperties;
+    offsetLeft?: number;
+    offsetTop?: number;
 }
 
 export const DraggableWindow: FC<DraggableWindowProps> = props =>
 {
-    const { uniqueKey = null, handleSelector = '.drag-handler', windowPosition = DraggableWindowPosition.CENTER, disableDrag = false, dragStyle = {}, children = null } = props;
+    const { uniqueKey = null, handleSelector = '.drag-handler', windowPosition = DraggableWindowPosition.CENTER, disableDrag = false, dragStyle = {}, children = null, offsetLeft = 0, offsetTop = 0 } = props;
     const [ delta, setDelta ] = useState<{ x: number, y: number }>(null);
     const [ offset, setOffset ] = useState<{ x: number, y: number }>(null);
     const [ start, setStart ] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
@@ -175,16 +177,16 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
         switch(windowPosition)
         {
             case DraggableWindowPosition.TOP_CENTER:
-                element.style.top = '50px';
-                element.style.left = `calc(50vw - ${ (element.offsetWidth / 2) }px)`;
+                element.style.top = 50 + offsetTop + 'px';
+                element.style.left = `calc(50vw - ${ (element.offsetWidth / 2 + offsetLeft) }px)`;
                 break;
             case DraggableWindowPosition.CENTER:
-                element.style.top = `calc(50vh - ${ (element.offsetHeight / 2) }px)`;
-                element.style.left = `calc(50vw - ${ (element.offsetWidth / 2) }px)`;
+                element.style.top = `calc(50vh - ${ (element.offsetHeight / 2) + offsetTop }px)`;
+                element.style.left = `calc(50vw - ${ (element.offsetWidth / 2) + offsetLeft }px)`;
                 break;
             case DraggableWindowPosition.TOP_LEFT:
-                element.style.top = '50px';
-                element.style.left = '50px';
+                element.style.top = 50 + offsetTop + 'px';
+                element.style.left = 50 + offsetLeft + 'px';
                 break;
         }
 
