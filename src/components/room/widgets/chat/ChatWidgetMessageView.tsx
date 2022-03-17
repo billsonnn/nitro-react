@@ -1,4 +1,5 @@
 import { FC, MouseEvent, useEffect, useRef, useState } from 'react';
+import { RoomChatFormatter } from '../../../../api';
 import { ChatBubbleMessage } from './common/ChatBubbleMessage';
 
 interface ChatWidgetMessageViewProps
@@ -48,6 +49,8 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
             chat.visible = true;
         }
 
+        chat.text = RoomChatFormatter(chat.text);
+
         return () =>
         {
             chat.elementRef = null;
@@ -65,7 +68,7 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
                 </div>
                 <div className="chat-content">
                     <b className="username mr-1" dangerouslySetInnerHTML={ { __html: `${ chat.username }: ` } } />
-                    <span className="message">{ chat.text }</span>
+                    <span className="message" dangerouslySetInnerHTML={{ __html: chat.text }} />
                 </div>
                 <div className="pointer"></div>
             </div>
