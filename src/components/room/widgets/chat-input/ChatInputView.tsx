@@ -1,8 +1,9 @@
 import { HabboClubLevelEnum, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText, RoomWidgetChatMessage, RoomWidgetChatTypingMessage, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
-import { UseEventDispatcherHook } from '../../../../hooks';
+import { GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText, RoomWidgetChatMessage, RoomWidgetChatTypingMessage, RoomWidgetFloodControlEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
+import { Text } from '../../../../common';
+import { BatchUpdates, UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ChatInputStyleSelectorView } from './ChatInputStyleSelectorView';
 
@@ -15,6 +16,8 @@ export const ChatInputView: FC<{}> = props =>
     const [ isIdle, setIsIdle ] = useState(false);
     const [ chatStyleId, setChatStyleId ] = useState(GetSessionDataManager().chatStyle);
     const [ needsChatStyleUpdate, setNeedsChatStyleUpdate ] = useState(false);
+    const [ floodBlocked, setFloodBlocked ] = useState(false);
+    const [ floodBlockedSeconds, setFloodBlockedSeconds ] = useState(0);
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const inputRef = useRef<HTMLInputElement>();
 
@@ -146,7 +149,7 @@ export const ChatInputView: FC<{}> = props =>
 
     const onKeyDownEvent = useCallback((event: KeyboardEvent) =>
     {
-        if(!inputRef.current || anotherInputHasFocus()) return;
+        if(floodBlocked || !inputRef.current || anotherInputHasFocus()) return;
 
         if(document.activeElement !== inputRef.current) setInputFocus();
 
@@ -174,7 +177,7 @@ export const ChatInputView: FC<{}> = props =>
                 return;
         }
         
-    }, [ inputRef, chatModeIdWhisper, anotherInputHasFocus, setInputFocus, checkSpecialKeywordForInput, sendChatValue ]);
+    }, [ floodBlocked, inputRef, chatModeIdWhisper, anotherInputHasFocus, setInputFocus, checkSpecialKeywordForInput, sendChatValue ]);
 
     const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
     {
@@ -204,6 +207,17 @@ export const ChatInputView: FC<{}> = props =>
     }, [ chatModeIdWhisper ]);
 
     UseEventDispatcherHook(RoomWidgetUpdateChatInputContentEvent.CHAT_INPUT_CONTENT, eventDispatcher, onRoomWidgetChatInputContentUpdateEvent);
+
+    const onRoomWidgetFloodControlEvent = useCallback((event: RoomWidgetFloodControlEvent) =>
+    {
+        BatchUpdates(() =>
+        {
+            setFloodBlocked(true);
+            setFloodBlockedSeconds(event.seconds);
+        });
+    }, []);
+
+    UseEventDispatcherHook(RoomWidgetFloodControlEvent.FLOOD_CONTROL, eventDispatcher, onRoomWidgetFloodControlEvent);
 
     const selectChatStyleId = useCallback((styleId: number) =>
     {
@@ -302,6 +316,32 @@ export const ChatInputView: FC<{}> = props =>
 
     useEffect(() =>
     {
+        if(!floodBlocked) return;
+
+        let seconds = 0;
+
+        const interval = setInterval(() =>
+        {
+            setFloodBlockedSeconds(prevValue =>
+                {
+                    seconds = ((prevValue || 0) - 1);
+
+                    return seconds;
+                });
+
+            if(seconds < 0)
+            {
+                clearInterval(interval);
+
+                setFloodBlocked(false);
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [ floodBlocked ])
+
+    useEffect(() =>
+    {
         document.body.addEventListener('keydown', onKeyDownEvent);
 
         return () =>
@@ -320,8 +360,11 @@ export const ChatInputView: FC<{}> = props =>
     return (
         createPortal(
         <div className="nitro-chat-input-container">
-            <div className="input-sizer">
-                <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxChatLength } onChange={ event => updateChatInput(event.target.value) } onMouseDown={ event => setInputFocus() } />
+            <div className="input-sizer align-items-center">
+                { !floodBlocked &&
+                    <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxChatLength } onChange={ event => updateChatInput(event.target.value) } onMouseDown={ event => setInputFocus() } /> }
+                { floodBlocked &&
+                    <Text variant="danger">{ LocalizeText('chat.input.alert.flood', [ 'time' ], [ floodBlockedSeconds.toString() ]) } </Text>}
             </div>
             <ChatInputStyleSelectorView chatStyleId={ chatStyleId } chatStyleIds={ chatStyleIds } selectChatStyleId={ selectChatStyleId } />
         </div>, document.getElementById('toolbar-chat-input-container'))

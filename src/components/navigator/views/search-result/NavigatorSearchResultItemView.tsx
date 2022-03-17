@@ -5,6 +5,7 @@ import { CreateRoomSession, GetSessionDataManager, TryVisitRoom } from '../../..
 import { Flex, LayoutGridItemProps, Text } from '../../../../common';
 import { UpdateDoorStateEvent } from '../../../../events';
 import { DispatchUiEvent } from '../../../../hooks';
+import { NavigatorSearchResultItemInfoView } from './NavigatorSearchResultItemInfoView';
 
 export interface NavigatorSearchResultItemViewProps extends LayoutGridItemProps
 {
@@ -76,7 +77,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
             </Flex>
             <Text truncate className="flex-grow-1">{ roomData.roomName }</Text>
             <Flex reverse alignItems="center" gap={ 1 }>
-                <i className="icon icon-navigator-info" onClick={ openInfo } />
+                <NavigatorSearchResultItemInfoView roomData={ roomData } />
                 { roomData.habboGroupId > 0 && <i className="icon icon-navigator-room-group" /> }
                 { (roomData.doorMode !== RoomDataParser.OPEN_STATE) && 
                     <i className={ ('icon icon-navigator-room-' + ((roomData.doorMode === RoomDataParser.DOORBELL_STATE) ? 'locked' : (roomData.doorMode === RoomDataParser.PASSWORD_STATE) ? 'password' : (roomData.doorMode === RoomDataParser.INVISIBLE_STATE) ? 'invisible' : '')) } /> }

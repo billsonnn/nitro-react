@@ -13,5 +13,6 @@
     "files.eol": "\n",
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
-    "editor.wordWrap": "on"
+    "editor.wordWrap": "on",
+    "emmet.showExpandedAbbreviation": "never"
 }
