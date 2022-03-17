@@ -196,7 +196,7 @@ export const InventoryView: FC<{}> = props =>
         <InventoryContextProvider value={ { furnitureState, dispatchFurnitureState, botState, dispatchBotState, petState, dispatchPetState, badgeState, dispatchBadgeState, unseenTracker } }>
             <InventoryMessageHandler />
             { isVisible &&
-                <NitroCardView uniqueKey={ 'inventory' } className="nitro-inventory">
+                <NitroCardView uniqueKey={'inventory'} className="nitro-inventory" theme={ furnitureState.tradeData ? 'primary-slim' : '' } >
                     <NitroCardHeaderView headerText={ LocalizeText('inventory.title') } onCloseClick={ close } />
                     { !furnitureState.tradeData &&
                         <>
