@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavigatorSearchResultList } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
-import { AutoGrid, AutoGridProps } from '../../../../common';
+import { AutoGrid, AutoGridProps, Grid } from '../../../../common';
 import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
 import { Text } from '../../../../common/Text';
@@ -69,9 +69,10 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
                 {
                     gridHasTwoColumns ? <AutoGrid columnCount={3} {...rest} columnMinWidth={110} columnMinHeight={130}>
                         {searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={index} roomData={room} thumbnail={ true } />) }
-                        </AutoGrid> : <>
-                    { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={index} roomData={room} />) }
-            </> }
+                        </AutoGrid> : <Grid columnCount={ 1 } className='navigator-grid' gap={ 0 }>
+                        { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={ index } roomData={ room } />) }
+                    </Grid>
+ }
                 </>
             }
         </Column>

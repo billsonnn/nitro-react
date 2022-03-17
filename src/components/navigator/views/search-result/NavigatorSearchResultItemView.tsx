@@ -85,7 +85,6 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
                 <Text truncate className="flex-grow-1">{roomData.roomName}</Text>
                 <Flex reverse alignItems="center" gap={ 1 }>
                     <NavigatorSearchResultItemInfoView roomData={ roomData } />
-                    { roomData.habboGroupId > 0 && <i className="icon icon-navigator-room-group" /> }
                 </Flex>
                 { children } 
             </Flex>
