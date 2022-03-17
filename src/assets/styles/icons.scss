@@ -580,6 +580,17 @@
         height: 45px;
     }
 
+    &.icon-tickets {
+        background-image: url('../images/icons/tickets.png');
+        width: 17px;
+        height: 17px;
+    }
+    &.icon-user {
+        background-image: url('../images/icons/user.png');
+        width: 18px;
+        height: 19px;
+    }
+
     &.spin {
         animation: rotating 1s linear infinite;
     }

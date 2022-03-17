@@ -1,8 +1,7 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomEngineObjectEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useReducer, useState } from 'react';
 import { GetRoomSession } from '../../api';
-import { Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
+import { Base, Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { ModToolsEvent, ModToolsOpenRoomChatlogEvent, ModToolsOpenRoomInfoEvent, ModToolsOpenUserInfoEvent } from '../../events';
 import { DispatchUiEvent, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { ISelectedUser } from './common/ISelectedUser';
@@ -188,17 +187,17 @@ export const ModToolsView: FC<{}> = props =>
                 <NitroCardView uniqueKey="mod-tools" className="nitro-mod-tools" windowPosition={ DraggableWindowPosition.TOP_LEFT } theme="primary-slim" >
                     <NitroCardHeaderView headerText={ 'Mod Tools' } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardContentView className="text-black" gap={ 1 }>
-                        <Button gap={ 1 } onClick={ event => handleClick('toggle_room') } disabled={ !currentRoomId }>
-                            <FontAwesomeIcon icon="home" /> Room Tool
+                        <Button gap={ 1 } onClick={ event => handleClick('toggle_room') } disabled={ !currentRoomId } className="position-relative">
+                            <Base className="icon icon-small-room position-absolute start-1"/> Room Tool
                         </Button>
-                        <Button gap={ 1 } onClick={ event => handleClick('toggle_room_chatlog') } disabled={ !currentRoomId }>
-                            <FontAwesomeIcon icon="comments" /> Chatlog Tool
+                        <Button gap={ 1 } onClick={ event => handleClick('toggle_room_chatlog') } disabled={ !currentRoomId } className="position-relative">
+                        <Base className="icon icon-chat-history position-absolute start-1"/> Chatlog Tool
                         </Button>
-                        <Button gap={ 1 } onClick={ () => handleClick('toggle_user_info') } disabled={ !selectedUser }>
-                            <FontAwesomeIcon icon="user" /> User: { selectedUser ? selectedUser.username : '' }
+                        <Button gap={ 1 } onClick={ () => handleClick('toggle_user_info') } disabled={ !selectedUser } className="position-relative">
+                        <Base className="icon icon-user position-absolute start-1"/> User: { selectedUser ? selectedUser.username : '' }
                         </Button>
-                        <Button gap={ 1 } onClick={ () => setIsTicketsVisible(value => !value) }>
-                            <FontAwesomeIcon icon="exclamation-circle" /> Report Tool
+                        <Button gap={ 1 } onClick={ () => setIsTicketsVisible(value => !value) } className="position-relative">
+                        <Base className="icon icon-tickets position-absolute start-1"/> Report Tool
                         </Button>
                     </NitroCardContentView>
                 </NitroCardView> }
