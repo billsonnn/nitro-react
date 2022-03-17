@@ -67,6 +67,35 @@ export class RoomWidgetChatHandler extends RoomWidgetHandler implements IAvatarI
                         if(GetConfigurationManager().getValue('respect.options')['enabled'])
                             PlaySound(GetConfigurationManager().getValue('respect.options')['sound'])
                         break;
+                    case RoomSessionChatEvent.CHAT_TYPE_PETREVIVE:
+                    case RoomSessionChatEvent.CHAT_TYPE_PET_REBREED_FERTILIZE:
+                    case RoomSessionChatEvent.CHAT_TYPE_PET_SPEED_FERTILIZE: {
+                        let textKey = 'widget.chatbubble.petrevived';
+
+                        if(chatType === RoomSessionChatEvent.CHAT_TYPE_PET_REBREED_FERTILIZE)
+                        {
+                            textKey = 'widget.chatbubble.petrefertilized;';
+                        }
+
+                        else if(chatType === RoomSessionChatEvent.CHAT_TYPE_PET_SPEED_FERTILIZE)
+                        {
+                            textKey = 'widget.chatbubble.petspeedfertilized';
+                        }
+
+                        let targetUserName: string = null;
+
+                        const newRoomObject = GetRoomEngine().getRoomObject(chatEvent.session.roomId, chatEvent.extraParam, RoomObjectCategory.UNIT);
+
+                        if(newRoomObject)
+                        {
+                            const newUserData = this.container.roomSession.userDataManager.getUserDataByIndex(roomObject.id);
+
+                            if(newUserData) targetUserName = newUserData.name;
+                        }
+
+                        text = LocalizeText(textKey, [ 'petName', 'userName' ], [ username, targetUserName ]);
+                        break;
+                    }
                     case RoomSessionChatEvent.CHAT_TYPE_PETRESPECT:
                         text = LocalizeText('widget.chatbubble.petrespect', [ 'petname' ], [ username ]);
                         break;
