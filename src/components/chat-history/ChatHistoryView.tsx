@@ -1,7 +1,6 @@
 import { ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps, ListRowRenderer, Size } from 'react-virtualized';
-import { RenderedRows } from 'react-virtualized/dist/es/List';
 import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { BatchUpdates } from '../../hooks';
@@ -15,7 +14,6 @@ import { RoomHistoryState } from './common/RoomHistoryState';
 export const ChatHistoryView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
-    const [ needsScroll, setNeedsScroll ] = useState(false);
     const [ chatHistoryUpdateId, setChatHistoryUpdateId ] = useState(-1);
     const [ roomHistoryUpdateId, setRoomHistoryUpdateId ] = useState(-1);
     const [ chatHistoryState, setChatHistoryState ] = useState(new ChatHistoryState());
@@ -50,16 +48,6 @@ export const ChatHistoryView: FC<{}> = props =>
     };
 
     const onResize = (info: Size) => cache.clearAll();
-
-    const onRowsRendered = (info: RenderedRows) =>
-    {
-        if(elementRef && elementRef.current && isVisible && needsScroll)
-        {
-            elementRef.current.scrollToRow(chatHistoryState.chats.length);
-            
-            setNeedsScroll(false);
-        }
-    }
 
     const linkReceived = useCallback((url: string) =>
     {
@@ -118,10 +106,8 @@ export const ChatHistoryView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if(elementRef && elementRef.current && isVisible) elementRef.current.scrollToRow(chatHistoryState.chats.length);
-        
-       setNeedsScroll(true);
-    }, [ isVisible, chatHistoryState.chats, chatHistoryUpdateId ]);
+        if(elementRef && elementRef.current && isVisible) elementRef.current.scrollToRow(-1);
+    }, [ isVisible ]);
 
     return (
         <ChatHistoryContextProvider value={ { chatHistoryState, roomHistoryState } }>
@@ -142,7 +128,6 @@ export const ChatHistoryView: FC<{}> = props =>
                                             rowHeight={ cache.rowHeight }
                                             className={ 'chat-history-list' }
                                             rowRenderer={ RowRenderer }
-                                            onRowsRendered={ onRowsRendered }
                                             deferredMeasurementCache={ cache } />
                                     )
                                 } }
