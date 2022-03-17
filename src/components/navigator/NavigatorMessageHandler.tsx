@@ -93,18 +93,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
     const onRoomScoreEvent = useCallback((event: RoomScoreEvent) =>
     {
         const parser = event.getParser();
-
-        const roomInfoData = navigatorState.roomInfoData;
-        roomInfoData.canRate = parser.canLike;
-        roomInfoData.enteredGuestRoom.score = parser.totalLikes;
-
-        dispatchNavigatorState({
-            type: NavigatorActions.SET_ROOM_INFO_DATA,
-            payload: {
-                roomInfoData: roomInfoData
-            }
-        });
-    }, [ dispatchNavigatorState, navigatorState ]);
+    }, [ ]);
 
     const onRoomDoorbellEvent = useCallback((event: RoomDoorbellEvent) =>
     {
