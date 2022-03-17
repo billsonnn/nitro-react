@@ -51,7 +51,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
         <NitroCardView className="nitro-mod-tools-user-visits" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT}>
             <NitroCardHeaderView headerText={ 'User Visits' } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black" gap={ 1 }>
-                <Column gap={ 0 } overflow="hidden">
+                <Column fullHeight gap={ 0 } overflow="hidden">
                     <Column gap={ 2 }>
                         <Grid gap={ 1 } className="text-black fw-bold border-bottom pb-1">
                             <Base className="g-col-2">Time</Base>
