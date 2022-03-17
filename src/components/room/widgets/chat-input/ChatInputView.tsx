@@ -155,8 +155,9 @@ export const ChatInputView: FC<{}> = props =>
 
         const value = (event.target as HTMLInputElement).value;
 
-        switch(event.code)
+        switch(event.key)
         {
+            case ' ':
             case 'Space':
                 checkSpecialKeywordForInput();
                 return;
