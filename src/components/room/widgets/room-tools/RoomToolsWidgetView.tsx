@@ -48,6 +48,8 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
+        if(!parser.roomEnter) return;
+
         BatchUpdates(() =>
         {
             if(roomName !== parser.data.roomName) setRoomName(parser.data.roomName);
