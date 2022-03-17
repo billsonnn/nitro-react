@@ -1,7 +1,13 @@
 import { FC, useCallback } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { Column, Flex, Text } from '../../../../../common';
-import { NavigatorRoomSettingsTabViewProps } from './NavigatorRoomSettingsTabViewProps.types';
+import RoomSettingsData from '../../../common/RoomSettingsData';
+
+interface NavigatorRoomSettingsTabViewProps
+{
+    roomSettingsData: RoomSettingsData;
+    handleChange: (field: string, value: string | number | boolean) => void;
+}
 
 export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>
 {

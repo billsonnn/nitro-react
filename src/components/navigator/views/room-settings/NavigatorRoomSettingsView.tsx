@@ -231,7 +231,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
             </NitroCardTabsView>
             <NitroCardContentView>
                 { currentTab === TABS[0] &&
-                    <NavigatorRoomSettingsBasicTabView roomSettingsData={ roomSettingsData } handleChange={ handleChange } /> }
+                    <NavigatorRoomSettingsBasicTabView roomSettingsData={ roomSettingsData } handleChange={ handleChange } close={ () => processAction('close') } /> }
                 { currentTab === TABS[1] &&
                     <NavigatorRoomSettingsAccessTabView roomSettingsData={ roomSettingsData } handleChange={ handleChange } /> }
                 { currentTab === TABS[2] &&

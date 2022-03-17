@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorInitComposer, NavigatorSearchComposer, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { AddEventLinkTracker, GoToDesktop, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
+import { AddEventLinkTracker, CreateLinkEvent, GoToDesktop, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
 import { Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { NavigatorEvent, UpdateDoorStateEvent } from '../../events';
 import { BatchUpdates, UseMountEffect, UseRoomSessionManagerEvent, UseUiEvent } from '../../hooks';
@@ -15,7 +15,7 @@ import { NavigatorRoomLinkView } from './views/room-link/NavigatorRoomLinkView';
 import { NavigatorRoomPasswordView } from './views/room-password/NavigatorRoomPasswordView';
 import { NavigatorRoomSettingsView } from './views/room-settings/NavigatorRoomSettingsView';
 import { NavigatorSearchResultView } from './views/search-result/NavigatorSearchResultView';
-import { NavigatorSearchView } from './views/search/NavigatorSearchView';
+import { LAST_SEARCH, NavigatorSearchView } from './views/search/NavigatorSearchView';
 
 export const NavigatorView: FC<{}> = props =>
 {
@@ -169,8 +169,6 @@ export const NavigatorView: FC<{}> = props =>
 
                     if(parts.length > 3) searchValue = parts[3];
 
-                    console.log(searchValue, topLevelContextCode)
-
                     setIsVisible(true);
                     sendSearch(searchValue, topLevelContextCode);
                 }
@@ -232,6 +230,15 @@ export const NavigatorView: FC<{}> = props =>
 
         sendSearch('', topLevelContexts[0].code);
     }, [ topLevelContexts, sendSearch ]);
+
+    useEffect(() =>
+    {
+        if(!isVisible || !LAST_SEARCH || !LAST_SEARCH.length) return;
+
+        console.log(LAST_SEARCH)
+
+        CreateLinkEvent(`navigator/search/${ LAST_SEARCH }`);
+    }, [ isVisible ]);
 
     const getRoomDoorState = useMemo(() =>
     {

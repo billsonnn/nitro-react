@@ -11,6 +11,8 @@ export interface NavigatorSearchViewProps
     sendSearch: (searchValue: string, contextCode: string) => void;
 }
 
+export let LAST_SEARCH: string = null;
+
 export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 {
     const { sendSearch = null } = props;
@@ -47,6 +49,8 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
     {
         const searchResultDataParts = searchResult.data.split(':');
 
+        LAST_SEARCH = `${ topLevelContext.code }/${ searchResult.data }`;
+
         if(searchResultDataParts.length === 2)
         {
             let searchFilterIndex = SearchFilterOptions.findIndex(option => (option.query === searchResultDataParts[0]));
@@ -54,7 +58,7 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
             if(searchFilterIndex > -1) setSearchFilterIndex(searchFilterIndex);
             setSearchValue(searchResultDataParts[1]);
         }
-    }, [ searchResult ]);
+    }, [ searchResult, topLevelContext ]);
 
     return (
         <Flex fullWidth gap={ 1 }>

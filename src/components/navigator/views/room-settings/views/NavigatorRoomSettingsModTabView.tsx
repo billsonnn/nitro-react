@@ -2,7 +2,13 @@ import { RoomUnbanUserComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Column, Grid, Text } from '../../../../../common';
-import { NavigatorRoomSettingsTabViewProps } from './NavigatorRoomSettingsTabViewProps.types';
+import RoomSettingsData from '../../../common/RoomSettingsData';
+
+interface NavigatorRoomSettingsTabViewProps
+{
+    roomSettingsData: RoomSettingsData;
+    handleChange: (field: string, value: string | number | boolean) => void;
+}
 
 export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>
 {

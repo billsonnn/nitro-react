@@ -2,7 +2,13 @@ import { RemoveAllRightsMessageComposer, RoomTakeRightsComposer } from '@nitrots
 import { FC, useCallback } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Button, Column, Flex, Grid, Text, UserProfileIconView } from '../../../../../common';
-import { NavigatorRoomSettingsTabViewProps } from './NavigatorRoomSettingsTabViewProps.types';
+import RoomSettingsData from '../../../common/RoomSettingsData';
+
+interface NavigatorRoomSettingsTabViewProps
+{
+    roomSettingsData: RoomSettingsData;
+    handleChange: (field: string, value: string | number | boolean) => void;
+}
 
 export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>
 {

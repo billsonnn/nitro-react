@@ -1,10 +1,13 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
-import { Column } from '../../../../../common/Column';
-import { Flex } from '../../../../../common/Flex';
-import { Grid } from '../../../../../common/Grid';
-import { Text } from '../../../../../common/Text';
-import { NavigatorRoomSettingsTabViewProps } from './NavigatorRoomSettingsTabViewProps.types';
+import { Column, Flex, Grid, Text } from '../../../../../common';
+import RoomSettingsData from '../../../common/RoomSettingsData';
+
+interface NavigatorRoomSettingsTabViewProps
+{
+    roomSettingsData: RoomSettingsData;
+    handleChange: (field: string, value: string | number | boolean) => void;
+}
 
 export const NavigatorRoomSettingsVipChatTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>
 {

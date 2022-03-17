@@ -1,17 +1,25 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomDeleteComposer } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../api';
+import { CreateLinkEvent, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../api';
 import { Base, Flex, Text } from '../../../../../common';
+import RoomSettingsData from '../../../common/RoomSettingsData';
 import { GetMaxVisitorsList } from '../../../common/RoomSettingsUtils';
 import { useNavigatorContext } from '../../../NavigatorContext';
-import { NavigatorRoomSettingsTabViewProps } from './NavigatorRoomSettingsTabViewProps.types';
 
 const DESC_MAX_LENGTH = 255;
 
+interface NavigatorRoomSettingsTabViewProps
+{
+    roomSettingsData: RoomSettingsData;
+    handleChange: (field: string, value: string | number | boolean) => void;
+    close: () => void;
+}
+
+
 export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>
 {
-    const { roomSettingsData = null, handleChange = null } = props;
+    const { roomSettingsData = null, handleChange = null, close = null } = props;
     const [ maxVisitorsList, setMaxVisitorsList ] = useState(GetMaxVisitorsList());
     const { navigatorState = null } = useNavigatorContext();
     const { categories = null } = navigatorState;
@@ -21,6 +29,10 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
         NotificationUtilities.confirm(LocalizeText('navigator.roomsettings.deleteroom.confirm.message'), () =>
         {
             SendMessageComposer(new RoomDeleteComposer(roomSettingsData.roomId));
+
+            if(close) close();
+
+            CreateLinkEvent('navigator/search/myworld_view');
         },
         null, null, null, LocalizeText('navigator.roomsettings.deleteroom.confirm.title'));
     }
