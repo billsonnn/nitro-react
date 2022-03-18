@@ -8,6 +8,7 @@ export const FurniChooserWidgetView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ items, setItems ] = useState<RoomObjectItem[]>(null);
+    const [ isModerator, setIsmModerator ] = useState<boolean>(false);
     const [ refreshTimeout, setRefreshTimeout ] = useState<ReturnType<typeof setTimeout>>(null);
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
 
@@ -28,6 +29,7 @@ export const FurniChooserWidgetView: FC<{}> = props =>
         BatchUpdates(() =>
         {
             setItems(event.items);
+            setIsmModerator(event.isModerator);
             setIsVisible(true);
         });
     }, []);
@@ -61,5 +63,5 @@ export const FurniChooserWidgetView: FC<{}> = props =>
 
     if(!items) return null;
 
-    return <ChooserWidgetView title={ LocalizeText('widget.chooser.furni.title') } displayItemId={ true } items={ items } onCloseClick={ close } />;
+    return <ChooserWidgetView title={ LocalizeText('widget.chooser.furni.title') } displayItemId={ isModerator } items={ items } onCloseClick={ close } />;
 }
