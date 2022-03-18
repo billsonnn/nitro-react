@@ -57,11 +57,11 @@ export const FurnitureHighScoreView: FC<{}> = props =>
 
     return (
         <ObjectLocationView objectId={ objectId } category={ RoomObjectCategory.FLOOR }>
-            <div className="nitro-widget-high-score nitro-context-menu">
+            <div className="nitro-widget-high-score nitro-context-menu d-flex flex-column">
                 <ContextMenuHeaderView>
                     { LocalizeText('high.score.display.caption', [ 'scoretype', 'cleartype' ], [ LocalizeText(`high.score.display.scoretype.${ SCORE_TYPES[stuffData.scoreType] }`), LocalizeText(`high.score.display.cleartype.${ CLEAR_TYPES[stuffData.clearType] }`)]) }
                 </ContextMenuHeaderView>
-                <ContextMenuListView overflow="hidden" gap={ 1 }>
+                <ContextMenuListView overflow="hidden" gap={ 1 } className="h-100">
                     <Column gap={ 1 }>
                         <Flex alignItems="center">
                             <Text center bold variant="white" className="col-8">
@@ -73,7 +73,7 @@ export const FurnitureHighScoreView: FC<{}> = props =>
                         </Flex>
                         <hr className="m-0" />
                     </Column>
-                    <Column overflow="auto" gap={ 1 }>
+                    <Column overflow="auto" gap={ 1 } className="overflow-y-scroll">
                         { stuffData.entries.map((entry, index) =>
                             {
                                 return (
@@ -86,7 +86,7 @@ export const FurnitureHighScoreView: FC<{}> = props =>
                                         </Text>
                                     </Flex>
                                 );
-                            }) }
+                        })}
                     </Column>
                 </ContextMenuListView>
             </div>
