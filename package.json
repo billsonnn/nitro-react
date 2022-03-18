@@ -1,6 +1,7 @@
 {
   "name": "nitro-react",
   "version": "2.0.0",
+  "homepage": ".",
   "private": true,
   "scripts": {
     "start": "cross-env BROWSER=none IMAGE_INLINE_SIZE_LIMIT=100000 craco start",
