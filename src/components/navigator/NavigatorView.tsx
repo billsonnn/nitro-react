@@ -220,9 +220,12 @@ export const NavigatorView: FC<{}> = props =>
                 flag: false
             }
         });
-        
-        SendMessageComposer(new NavigatorInitComposer());
     }, [ isVisible, needsNavigatorUpdate ]);
+
+    useEffect(() =>
+    {
+        SendMessageComposer(new NavigatorInitComposer());
+    }, []);
 
     useEffect(() =>
     {

@@ -197,7 +197,7 @@ export const AchievementsView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if(!isVisible || !isInitalized) return;
+        if(!isVisible || isInitalized) return;
 
         SendMessageComposer(new RequestAchievementsMessageComposer());
     }, [ isVisible, isInitalized ]);
