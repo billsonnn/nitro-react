@@ -25,7 +25,7 @@ export const NavigatorView: FC<{}> = props =>
     const [ isRoomLinkOpen, setRoomLinkOpen ] = useState(false);
     const [ pendingDoorState, setPendingDoorState ] = useState<{ roomData: RoomDataParser, state: string }>(null);
     const [ navigatorState, dispatchNavigatorState ] = useReducer(NavigatorReducer, initialNavigator);
-    const { needsNavigatorUpdate = false, topLevelContext = null, topLevelContexts = null, homeRoomId } = navigatorState;
+    const { needsNavigatorUpdate = true, topLevelContext = null, topLevelContexts = null, homeRoomId } = navigatorState;
 
     const onNavigatorEvent = useCallback((event: NavigatorEvent) =>
     {
@@ -212,7 +212,7 @@ export const NavigatorView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if(!isVisible || !needsNavigatorUpdate) return;
+        if(!needsNavigatorUpdate) return;
         
         dispatchNavigatorState({
             type: NavigatorActions.SET_NEEDS_UPDATE,
@@ -220,12 +220,16 @@ export const NavigatorView: FC<{}> = props =>
                 flag: false
             }
         });
-    }, [ isVisible, needsNavigatorUpdate ]);
+
+        SendMessageComposer(new NavigatorInitComposer());
+    }, [ needsNavigatorUpdate ]);
 
     useEffect(() =>
     {
-        SendMessageComposer(new NavigatorInitComposer());
-    }, []);
+        if(!isVisible || !topLevelContext) return;
+
+        sendSearch('', topLevelContext.code);
+    }, [isVisible, sendSearch, topLevelContext])
 
     useEffect(() =>
     {
