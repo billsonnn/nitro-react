@@ -19,7 +19,7 @@ export const UserChooserWidgetView: FC<{}> = props =>
             {
                 if(prevValue) clearTimeout(prevValue);
 
-                return setTimeout(() => widgetHandler.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.FURNI_CHOOSER)), 100);
+                return setTimeout(() => widgetHandler.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.USER_CHOOSER)), 100);
             })
     }, [ isVisible, widgetHandler ]);
 
