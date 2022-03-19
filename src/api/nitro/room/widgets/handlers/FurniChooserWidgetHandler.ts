@@ -72,7 +72,7 @@ export class FurniChooserWidgetHandler extends RoomWidgetHandler
                 return (a.name < b.name) ? -1 : 1;
             });
 
-        this.container.eventDispatcher.dispatchEvent(new RoomWidgetChooserContentEvent(RoomWidgetChooserContentEvent.FURNI_CHOOSER_CONTENT, items, GetSessionDataManager().isModerator));
+        this.container.eventDispatcher.dispatchEvent(new RoomWidgetChooserContentEvent(RoomWidgetChooserContentEvent.FURNI_CHOOSER_CONTENT, items));
     }
 
     private selectRoomObject(message: RoomWidgetRoomObjectMessage): void
