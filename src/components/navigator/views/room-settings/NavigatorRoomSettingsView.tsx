@@ -1,4 +1,4 @@
-import { RoomBannedUsersComposer, RoomBannedUsersEvent, RoomSettingsEvent, RoomUsersWithRightsComposer, RoomUsersWithRightsEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
+import { RoomBannedUsersComposer, RoomSettingsEvent, RoomUsersWithRightsComposer, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';
@@ -23,6 +23,59 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
     const [ roomSettingsData, setRoomSettingsData ] = useState<RoomSettingsData>(null);
     const [ currentTab, setCurrentTab ] = useState(TABS[0]);
 
+    // const onFlatControllersEvent = useCallback((event: FlatControllersEvent) =>
+    // {
+    //     const parser = event.getParser();
+
+    //     if(!parser || !roomSettingsData) return;
+
+    //     if(roomSettingsData.roomId !== parser.roomId) return;
+
+    //     const data = Object.assign({}, roomSettingsData);
+
+    //     data.usersWithRights = new Map(parser.users);
+
+    //     setRoomSettingsData(data);
+    // }, [ roomSettingsData] );
+
+    // UseMessageEventHook(FlatControllersEvent, onFlatControllersEvent);
+
+    // const onFlatControllerAddedEvent = useCallback((event: FlatControllerAddedEvent) =>
+    // {
+    //     const parser = event.getParser();
+
+    //     if(!parser || !roomSettingsData) return;
+
+    //     if(roomSettingsData.roomId !== parser.roomId) return;
+
+    //     const data = Object.assign({}, roomSettingsData);
+
+    //     // add new controller
+
+    //     setRoomSettingsData(data);
+    // }, [ roomSettingsData] );
+
+    // UseMessageEventHook(FlatControllerAddedEvent, onFlatControllerAddedEvent);
+
+    // const onFlatControllerRemovedEvent = useCallback((event: FlatControllerRemovedEvent) =>
+    // {
+    //     const parser = event.getParser();
+
+    //     if(!parser || !roomSettingsData) return;
+
+    //     if(roomSettingsData.roomId !== parser.roomId) return;
+
+    //     const data = Object.assign({}, roomSettingsData);
+
+    //     // remove controller
+
+    //     setRoomSettingsData(data);
+    // }, [ roomSettingsData] );
+
+    // UseMessageEventHook(FlatControllerRemovedEvent, onFlatControllerRemovedEvent);
+
+
+
     const updateSettings = useCallback((roomSettings: RoomSettingsData) =>
     {
         setRoomSettingsData(roomSettings);
@@ -39,39 +92,24 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
         SendMessageComposer(new RoomBannedUsersComposer(parser.roomId));
     }, []);
 
-    const onRoomUsersWithRightsEvent = useCallback((event: RoomUsersWithRightsEvent) =>
-    {
-        const parser = event.getParser();
-
-        if(!parser || !roomSettingsData) return;
-
-        if(roomSettingsData.roomId !== parser.roomId) return;
-
-        const data = Object.assign({}, roomSettingsData);
-
-        data.usersWithRights = new Map(parser.users);
-
-        setRoomSettingsData(data);
-    }, [roomSettingsData]);
-
-    const onRoomBannedUsersEvent = useCallback((event: RoomBannedUsersEvent) =>
-    {
-        const parser = event.getParser();
-
-        if(!parser || !roomSettingsData) return;
-
-        if(roomSettingsData.roomId !== parser.roomId) return;
-
-        const data = Object.assign({}, roomSettingsData);
-
-        data.bannedUsers = new Map(parser.users);
-
-        setRoomSettingsData(data);
-    }, [roomSettingsData]);
-
     UseMessageEventHook(RoomSettingsEvent, onRoomSettingsEvent);
-    UseMessageEventHook(RoomUsersWithRightsEvent, onRoomUsersWithRightsEvent);
-    UseMessageEventHook(RoomBannedUsersEvent, onRoomBannedUsersEvent);
+
+    // const onBannedUsersFromRoomEvent = useCallback((event: BannedUsersFromRoomEvent) =>
+    // {
+    //     const parser = event.getParser();
+
+    //     if(!parser || !roomSettingsData) return;
+
+    //     if(roomSettingsData.roomId !== parser.roomId) return;
+
+    //     const data = Object.assign({}, roomSettingsData);
+
+    //     data.bannedUsers = parser.bannedUsers;
+
+    //     setRoomSettingsData(data);
+    // }, [roomSettingsData]);
+
+    // UseMessageEventHook(BannedUsersFromRoomEvent, onBannedUsersFromRoomEvent);
 
     const saveSettings = useCallback((data: RoomSettingsData) =>
     {
@@ -196,10 +234,13 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
                 roomSettings.chatDistance = Number(value);
                 save = false;
                 break;
-            case 'unban_user':
-                roomSettings.bannedUsers.delete(Number(value));
+            case 'unban_user': {
+                const index = roomSettings.bannedUsers.findIndex(user => (user.userId === Number(value)))
+
+                if(index > -1) roomSettings.bannedUsers.splice(index, 1);
                 save = false;
                 break;
+            }
             case 'remove_rights_user':
                 roomSettings.usersWithRights.delete(Number(value));
                 save = false;

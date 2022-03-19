@@ -26,19 +26,19 @@ export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewPro
     return (
         <Grid overflow="auto">
             <Column size={ 6 }>
-            <Text bold>{ LocalizeText('navigator.roomsettings.moderation.banned.users') } ({ roomSettingsData.bannedUsers.size })</Text>
+            <Text bold>{ LocalizeText('navigator.roomsettings.moderation.banned.users') } ({ roomSettingsData.bannedUsers.length })</Text>
                 <Column className="bg-white rounded" overflow="hidden">
                     <Base className="list-container" overflow="auto">
-                        { Array.from(roomSettingsData.bannedUsers.entries()).map(([id, name], index) =>
+                        { roomSettingsData.bannedUsers.map((user, index) =>
                             {
-                                return <Text key={index} className={ ((id === selectedUserId) ? 'selected' : '') } onClick={ event => setSelectedUserId(id)}> { name }</Text>
+                                return <Text key={ index } className={ ((user.userId === selectedUserId) ? 'selected' : '') } onClick={ event => setSelectedUserId(user.userId)}>{ user.userName }</Text>
                             }) }
                     </Base>
                 </Column>
             </Column>
             <Column size={ 6 } justifyContent="end">
                 <Button disabled={ (selectedUserId < 1) } onClick={ event => unBanUser(selectedUserId) }>
-                    { LocalizeText('navigator.roomsettings.moderation.unban')} {selectedUserId > 0 && roomSettingsData.bannedUsers.get(selectedUserId) }
+                    {/* { LocalizeText('navigator.roomsettings.moderation.unban')} {selectedUserId > 0 && roomSettingsData.bannedUsers.get(selectedUserId) } */}
                 </Button>
             </Column>
         </Grid>

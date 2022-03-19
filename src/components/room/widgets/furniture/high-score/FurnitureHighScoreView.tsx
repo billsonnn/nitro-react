@@ -4,8 +4,6 @@ import { GetRoomEngine, LocalizeText } from '../../../../../api';
 import { Column, Flex, Text } from '../../../../../common';
 import { UseRoomEngineEvent } from '../../../../../hooks';
 import { useRoomContext } from '../../../RoomContext';
-import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
-import { ContextMenuListView } from '../../context-menu/ContextMenuListView';
 import { ObjectLocationView } from '../../object-location/ObjectLocationView';
 
 const SCORE_TYPES = ['perteam', 'mostwins', 'classic'];
@@ -56,12 +54,12 @@ export const FurnitureHighScoreView: FC<{}> = props =>
     if((objectId === -1) || !stuffData) return null;
 
     return (
-        <ObjectLocationView objectId={ objectId } category={ RoomObjectCategory.FLOOR }>
+        <ObjectLocationView objectId={ objectId } category={ RoomObjectCategory.FLOOR } overflow="hidden">
             <div className="nitro-widget-high-score nitro-context-menu">
-                <ContextMenuHeaderView>
+                {/* <ContextMenuHeaderView>
                     { LocalizeText('high.score.display.caption', [ 'scoretype', 'cleartype' ], [ LocalizeText(`high.score.display.scoretype.${ SCORE_TYPES[stuffData.scoreType] }`), LocalizeText(`high.score.display.cleartype.${ CLEAR_TYPES[stuffData.clearType] }`)]) }
-                </ContextMenuHeaderView>
-                <ContextMenuListView overflow="hidden" gap={ 1 }>
+                </ContextMenuHeaderView> */}
+                <Column gap={ 1 } overflow="hidden">
                     <Column gap={ 1 }>
                         <Flex alignItems="center">
                             <Text center bold variant="white" className="col-8">
@@ -73,7 +71,7 @@ export const FurnitureHighScoreView: FC<{}> = props =>
                         </Flex>
                         <hr className="m-0" />
                     </Column>
-                    <Column overflow="auto" gap={ 1 }>
+                    <Column gap={ 1 } overflow="auto">
                         { stuffData.entries.map((entry, index) =>
                             {
                                 return (
@@ -88,7 +86,7 @@ export const FurnitureHighScoreView: FC<{}> = props =>
                                 );
                             }) }
                     </Column>
-                </ContextMenuListView>
+                </Column>
             </div>
         </ObjectLocationView>
 

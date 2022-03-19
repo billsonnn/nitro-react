@@ -3,8 +3,7 @@ import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, LocalizeText, RoomWidgetZoomToggleMessage, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
-import { NavigatorEvent } from '../../../../events';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
+import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
@@ -23,7 +22,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
         switch(action)
         {
             case 'settings':
-                DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_INFO));
+                CreateLinkEvent('navigator/toggle-room-info');
                 return;
             case 'zoom':
                 widgetHandler.processWidgetMessage(new RoomWidgetZoomToggleMessage(!isZoomedIn));
@@ -39,7 +38,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 setIsLiked(true);
                 return;
             case 'toggle_room_link':
-                DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK));
+                CreateLinkEvent('navigator/toggle-room-link');
                 return;
         }
     }

@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import React, { FC, KeyboardEvent, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { Button } from '../../../../common/Button';
 import { Flex } from '../../../../common/Flex';
@@ -11,18 +11,15 @@ export interface NavigatorSearchViewProps
     sendSearch: (searchValue: string, contextCode: string) => void;
 }
 
-export let LAST_SEARCH: string = null;
-
 export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 {
     const { sendSearch = null } = props;
     const [ searchFilterIndex, setSearchFilterIndex ] = useState(0);
     const [ searchValue, setSearchValue ] = useState('');
     const [ lastSearchQuery, setLastSearchQuery ] = useState('');
-    const { navigatorState = null } = useNavigatorContext();
-    const { topLevelContext = null, searchResult = null } = navigatorState;
+    const { topLevelContext = null, lastSearchValue = null } = useNavigatorContext();
 
-    const processSearch = useCallback(() =>
+    const processSearch = () =>
     {
         if(!topLevelContext) return;
 
@@ -36,7 +33,9 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
         setLastSearchQuery(searchQuery);
         sendSearch((searchQuery || ''), topLevelContext.code);
-    }, [ lastSearchQuery, searchFilterIndex, searchValue, topLevelContext, sendSearch ]);
+
+        lastSearchValue.current = (searchQuery || '');
+    }
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) =>
     {
@@ -44,23 +43,6 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
         processSearch();
     };
-
-    useEffect(() =>
-    {
-        if(!searchResult || !searchResult.data) return;
-        
-        const searchResultDataParts = searchResult.data.split(':');
-
-        LAST_SEARCH = `${ topLevelContext.code }/${ searchResult.data }`;
-
-        if(searchResultDataParts.length === 2)
-        {
-            let searchFilterIndex = SearchFilterOptions.findIndex(option => (option.query === searchResultDataParts[0]));
-
-            if(searchFilterIndex > -1) setSearchFilterIndex(searchFilterIndex);
-            setSearchValue(searchResultDataParts[1]);
-        }
-    }, [ searchResult, topLevelContext ]);
 
     return (
         <Flex fullWidth gap={ 1 }>
