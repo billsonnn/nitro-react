@@ -11,6 +11,10 @@ body {
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     scrollbar-width: thin;
+
+    * {
+        -webkit-font-smoothing: antialiased;
+    }
 }
 
 img {
