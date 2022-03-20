@@ -2,7 +2,7 @@ import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, Nitro
 import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetSessionDataManager, GetUserProfile, OpenMessengerChat, VisitDesktop } from '../../api';
 import { Base, Flex, LayoutAvatarImageView, LayoutItemCountView, TransitionAnimation, TransitionAnimationTypes } from '../../common';
-import { AchievementsUIEvent, AchievementsUIUnseenCountEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, InventoryEvent, ModToolsEvent, NavigatorEvent, UnseenItemTrackerUpdateEvent, UserSettingsUIEvent } from '../../events';
+import { AchievementsUIEvent, AchievementsUIUnseenCountEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, InventoryEvent, ModToolsEvent, UnseenItemTrackerUpdateEvent, UserSettingsUIEvent } from '../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { ToolbarViewItems } from './common/ToolbarViewItems';
 import { ToolbarMeView } from './ToolbarMeView';
@@ -135,7 +135,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
         switch(item)
         {
             case ToolbarViewItems.NAVIGATOR_ITEM:
-                DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_NAVIGATOR));
+                CreateLinkEvent('navigator/toggle');
                 return;
             case ToolbarViewItems.INVENTORY_ITEM:
                 DispatchUiEvent(new InventoryEvent(InventoryEvent.TOGGLE_INVENTORY));

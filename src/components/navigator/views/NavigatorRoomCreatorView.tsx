@@ -1,11 +1,11 @@
 /* eslint-disable no-template-curly-in-string */
 import { HabboClubLevelEnum, RoomCreateComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetClubMemberLevel, GetConfiguration, LocalizeText, SendMessageComposer } from '../../../../api';
-import { Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
-import { IRoomModel, RoomModels } from '../../common/RoomModels';
-import { useNavigatorContext } from '../../NavigatorContext';
+import { GetClubMemberLevel, GetConfiguration, LocalizeText, SendMessageComposer } from '../../../api';
+import { Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../common';
+import { BatchUpdates } from '../../../hooks';
+import { IRoomModel, RoomModels } from '../common/RoomModels';
+import { useNavigatorContext } from '../NavigatorContext';
 
 export const NavigatorRoomCreatorView: FC<{}> = props =>
 {
@@ -16,8 +16,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
     const [ visitorsCount, setVisitorsCount ] = useState<number>(null);
     const [ tradesSetting, setTradesSetting ] = useState<number>(0);
     const [ selectedModelName, setSelectedModelName ] = useState<string>(RoomModels[0].name);
-    const { navigatorState = null } = useNavigatorContext();
-    const { categories = null } = navigatorState;
+    const { categories = null } = useNavigatorContext();
 
     const getRoomModelImage = (name: string) => GetConfiguration<string>('images.url') + `/navigator/models/model_${ name }.png`;
 
@@ -64,7 +63,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                     </Column>
                     <Column grow gap={ 1 }>
                         <Text>{ LocalizeText('navigator.createroom.roomdescinfo') }</Text>
-                        <textarea className="flex-grow-1 form-control w-100" maxLength={255} onChange={event => setDescription(event.target.value)} placeholder={ LocalizeText('navigator.createroom.roomdescinfo') } />
+                        <textarea className="flex-grow-1 form-control form-control-sm w-100" maxLength={255} onChange={event => setDescription(event.target.value)} placeholder={ LocalizeText('navigator.createroom.roomdescinfo') } />
                     </Column>
                     <Column gap={ 1 }>
                         <Text>{ LocalizeText('navigator.category') }</Text>

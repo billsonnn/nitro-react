@@ -33,7 +33,7 @@ export default class RoomSettingsData
     public muteState: number;
     public kickState: number;
     public banState: number;
-    public bannedUsers: Map<number, string>;
+    public bannedUsers: any[];
     public selectedUserToUnban: number;
 
     constructor(parser: RoomSettingsParser)
@@ -71,6 +71,6 @@ export default class RoomSettingsData
         this.muteState              = parser.moderationSettings.allowMute;
         this.kickState              = parser.moderationSettings.allowKick;
         this.banState               = parser.moderationSettings.allowBan;
-        this.bannedUsers            = new Map<number, string>();
+        this.bannedUsers            = [];
     }
 }

@@ -3,19 +3,19 @@ import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, LocalizeText, RoomWidgetZoomToggleMessage, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
-import { NavigatorEvent } from '../../../../events';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
+import { BatchUpdates, UseMessageEventHook, useSharedState } from '../../../../hooks';
+import { NavigatorData } from '../../../navigator/common/NavigatorData';
 import { useRoomContext } from '../../RoomContext';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
 {
     const [ isZoomedIn, setIsZoomedIn ] = useState(false);
-    const [ isLiked, setIsLiked ] = useState(false);
     const [ roomName, setRoomName ] = useState(null);
     const [ roomOwner, setRoomOwner ] = useState(null);
     const [ roomTags, setRoomTags ] = useState(null);
     const [ roomInfoDisplay, setRoomInfoDisplay ] = useState(false);
     const [ isOpen, setIsOpen ] = useState(false);
+    const [ navigatorData, setNavigatorData ] = useSharedState<NavigatorData>('@navigatorData');
     const { widgetHandler = null } = useRoomContext();
 
     const handleToolClick = (action: string) =>
@@ -23,7 +23,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
         switch(action)
         {
             case 'settings':
-                DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_INFO));
+                CreateLinkEvent('navigator/toggle-room-info');
                 return;
             case 'zoom':
                 widgetHandler.processWidgetMessage(new RoomWidgetZoomToggleMessage(!isZoomedIn));
@@ -33,13 +33,10 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 CreateLinkEvent('chat-history/toggle');
                 return;
             case 'like_room':
-                if(isLiked) return;
-
                 SendMessageComposer(new RoomLikeRoomComposer(1));
-                setIsLiked(true);
                 return;
             case 'toggle_room_link':
-                DispatchUiEvent(new NavigatorEvent(NavigatorEvent.TOGGLE_ROOM_LINK));
+                CreateLinkEvent('navigator/toggle-room-link');
                 return;
         }
     }
@@ -68,6 +65,11 @@ export const RoomToolsWidgetView: FC<{}> = props =>
 
         return () => clearTimeout(timeout);
     }, [ roomName, roomOwner, roomTags ]);
+
+    useEffect(() =>
+    {
+        console.log(navigatorData);
+    }, [ navigatorData ]);
     
     return (
         <Flex className="nitro-room-tools-container" gap={ 2 }>
@@ -75,7 +77,8 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 <Base pointer title={ LocalizeText('room.settings.button.text') } className="icon icon-cog" onClick={ () => handleToolClick('settings') } />
                 <Base pointer title={ LocalizeText('room.zoom.button.text') } onClick={ () => handleToolClick('zoom') } className={ 'icon ' + classNames({ 'icon-zoom-less': !isZoomedIn, 'icon-zoom-more': isZoomedIn }) } />
                 <Base pointer title={ LocalizeText('room.chathistory.button.text') } onClick={ () => handleToolClick('chat_history') } className="icon icon-chat-history" />
-                { !isLiked && <Base pointer title={ LocalizeText('room.like.button.text') } onClick={ () => handleToolClick('like_room') } className="icon icon-like-room" /> }
+                { navigatorData.canRate &&
+                    <Base pointer title={ LocalizeText('room.like.button.text') } onClick={ () => handleToolClick('like_room') } className="icon icon-like-room" /> }
             </Column>
             <Column justifyContent="center">
                 <TransitionAnimation type={ TransitionAnimationTypes.SLIDE_LEFT } inProp={ isOpen } timeout={ 300 }>

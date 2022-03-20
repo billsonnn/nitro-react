@@ -93,14 +93,12 @@ export const GroupsView: FC<{}> = props =>
     
     return (
         <GroupsContextProvider value={ { groupCustomize, setGroupCustomize } }>
-            <div className="nitro-groups">
-                { isCreatorVisible &&
-                    <GroupCreatorView onClose={ () => setCreatorVisible(false) } /> }
-                { !isCreatorVisible &&
-                    <GroupManagerView /> }
-                <GroupMembersView />
-                <GroupInformationStandaloneView />
-            </div>
+            { isCreatorVisible &&
+                <GroupCreatorView onClose={ () => setCreatorVisible(false) } /> }
+            { !isCreatorVisible &&
+                <GroupManagerView /> }
+            <GroupMembersView />
+            <GroupInformationStandaloneView />
         </GroupsContextProvider>
     );
 };

@@ -1,8 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import React, { FC, KeyboardEvent, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { Button } from '../../../../common/Button';
 import { Flex } from '../../../../common/Flex';
+import { BatchUpdates } from '../../../../hooks';
+import { INavigatorSearchFilter } from '../../common/INavigatorSearchFilter';
 import { SearchFilterOptions } from '../../common/SearchFilterOptions';
 import { useNavigatorContext } from '../../NavigatorContext';
 
@@ -11,18 +13,14 @@ export interface NavigatorSearchViewProps
     sendSearch: (searchValue: string, contextCode: string) => void;
 }
 
-export let LAST_SEARCH: string = null;
-
 export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 {
     const { sendSearch = null } = props;
     const [ searchFilterIndex, setSearchFilterIndex ] = useState(0);
     const [ searchValue, setSearchValue ] = useState('');
-    const [ lastSearchQuery, setLastSearchQuery ] = useState('');
-    const { navigatorState = null } = useNavigatorContext();
-    const { topLevelContext = null, searchResult = null } = navigatorState;
+    const { topLevelContext = null, searchResult = null } = useNavigatorContext();
 
-    const processSearch = useCallback(() =>
+    const processSearch = () =>
     {
         if(!topLevelContext) return;
 
@@ -32,11 +30,8 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
         const searchQuery = ((searchFilter.query ? (searchFilter.query + ':') : '') + searchValue);
 
-        if(lastSearchQuery === searchQuery) return;
-
-        setLastSearchQuery(searchQuery);
         sendSearch((searchQuery || ''), topLevelContext.code);
-    }, [ lastSearchQuery, searchFilterIndex, searchValue, topLevelContext, sendSearch ]);
+    }
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) =>
     {
@@ -47,20 +42,33 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
     useEffect(() =>
     {
-        if(!searchResult || !searchResult.data) return;
-        
-        const searchResultDataParts = searchResult.data.split(':');
+        if(!searchResult) return null;
 
-        LAST_SEARCH = `${ topLevelContext.code }/${ searchResult.data }`;
+        const split = searchResult.data.split(':');
 
-        if(searchResultDataParts.length === 2)
+        let filter: INavigatorSearchFilter = null;
+        let value: string = '';
+
+        if(split.length >= 2)
         {
-            let searchFilterIndex = SearchFilterOptions.findIndex(option => (option.query === searchResultDataParts[0]));
+            const [ query, ...rest ] = split;
 
-            if(searchFilterIndex > -1) setSearchFilterIndex(searchFilterIndex);
-            setSearchValue(searchResultDataParts[1]);
+            filter = SearchFilterOptions.find(option => (option.query === query));
+            value = rest.join(':');
         }
-    }, [ searchResult, topLevelContext ]);
+        else
+        {
+            value = searchResult.data;
+        }
+
+        if(!filter) filter = SearchFilterOptions[0];
+
+        BatchUpdates(() =>
+        {
+            setSearchFilterIndex(SearchFilterOptions.findIndex(option => (option === filter)));
+            setSearchValue(value);
+        });
+    }, [ searchResult ]);
 
     return (
         <Flex fullWidth gap={ 1 }>

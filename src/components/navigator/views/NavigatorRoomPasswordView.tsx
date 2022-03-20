@@ -1,11 +1,11 @@
 import { RoomDataParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { CreateRoomSession, LocalizeText } from '../../../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
-import { Button } from '../../../../common/Button';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
-import { UpdateDoorStateEvent } from '../../../../events';
+import { CreateRoomSession, LocalizeText } from '../../../api';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
+import { Button } from '../../../common/Button';
+import { Column } from '../../../common/Column';
+import { Text } from '../../../common/Text';
+import { UpdateDoorStateEvent } from '../../../events';
 
 export interface NavigatorRoomPasswordViewProps
 {
