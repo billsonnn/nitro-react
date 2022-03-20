@@ -121,7 +121,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                             </Flex> }
                                         <Flex alignItems="center" gap={ 1 }>
                                             <Text variant="muted">{ LocalizeText('navigator.roomrating') }</Text>
-                                            <Text>{ navigatorData.enteredGuestRoom.score }</Text>
+                                            <Text>{ navigatorData.currentRoomRating }</Text>
                                         </Flex>
                                         { (navigatorData.enteredGuestRoom.tags.length > 0) &&
                                             <Flex alignItems="center" gap={ 1 }>
