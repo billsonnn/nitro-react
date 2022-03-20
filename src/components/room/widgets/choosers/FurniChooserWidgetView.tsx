@@ -1,5 +1,6 @@
+import { SecurityLevel } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText, RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRequestWidgetMessage, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
+import { GetSessionDataManager, LocalizeText, RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRequestWidgetMessage, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
 import { BatchUpdates, UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ChooserWidgetView } from './ChooserWidgetView';
@@ -61,5 +62,5 @@ export const FurniChooserWidgetView: FC<{}> = props =>
 
     if(!items) return null;
 
-    return <ChooserWidgetView title={ LocalizeText('widget.chooser.furni.title') } displayItemId={ true } items={ items } onCloseClick={ close } />;
+    return <ChooserWidgetView title={ LocalizeText('widget.chooser.furni.title') } displayItemId={ GetSessionDataManager().hasSecurity(SecurityLevel.MODERATOR) } items={ items } onCloseClick={ close } />;
 }

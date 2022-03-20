@@ -20,13 +20,15 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
     const [ isRoomPicked, setIsRoomPicked ] = useState(false);
     const [ isRoomMuted, setIsRoomMuted ] = useState(false);
     const { navigatorData = null } = useNavigatorContext();
+    const isMod = GetSessionDataManager().isModerator;
+
 
     const hasPermission = (permission: string) =>
     {
         switch(permission)
         {
             case 'settings':
-                return (GetSessionDataManager().userId === navigatorData.enteredGuestRoom.ownerId);
+                return (GetSessionDataManager().userId === navigatorData.enteredGuestRoom.ownerId || isMod );
             case 'staff_pick':
                 return GetSessionDataManager().securityLevel >= SecurityLevel.COMMUNITY;
             default: return false;
