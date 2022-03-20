@@ -1,14 +1,15 @@
 import { RoomBannedUsersComposer, RoomSettingsEvent, RoomUsersWithRightsComposer, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
+import { BannedUsersFromRoomEvent, FlatControllerAddedEvent, FlatControllerRemovedEvent, FlatControllersEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/roomsettings';
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';
 import { UseMessageEventHook } from '../../../../hooks';
 import RoomSettingsData from '../../common/RoomSettingsData';
-import { NavigatorRoomSettingsAccessTabView } from './views/NavigatorRoomSettingsAccessTabView';
-import { NavigatorRoomSettingsBasicTabView } from './views/NavigatorRoomSettingsBasicTabView';
-import { NavigatorRoomSettingsModTabView } from './views/NavigatorRoomSettingsModTabView';
-import { NavigatorRoomSettingsRightsTabView } from './views/NavigatorRoomSettingsRightsTabView';
-import { NavigatorRoomSettingsVipChatTabView } from './views/NavigatorRoomSettingsVipChatTabView';
+import { NavigatorRoomSettingsAccessTabView } from './NavigatorRoomSettingsAccessTabView';
+import { NavigatorRoomSettingsBasicTabView } from './NavigatorRoomSettingsBasicTabView';
+import { NavigatorRoomSettingsModTabView } from './NavigatorRoomSettingsModTabView';
+import { NavigatorRoomSettingsRightsTabView } from './NavigatorRoomSettingsRightsTabView';
+import { NavigatorRoomSettingsVipChatTabView } from './NavigatorRoomSettingsVipChatTabView';
 
 const TABS: string[] = [
     'navigator.roomsettings.tab.1',
@@ -23,58 +24,56 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
     const [ roomSettingsData, setRoomSettingsData ] = useState<RoomSettingsData>(null);
     const [ currentTab, setCurrentTab ] = useState(TABS[0]);
 
-    // const onFlatControllersEvent = useCallback((event: FlatControllersEvent) =>
-    // {
-    //     const parser = event.getParser();
+    const onFlatControllersEvent = useCallback((event: FlatControllersEvent) =>
+    {
+        const parser = event.getParser();
 
-    //     if(!parser || !roomSettingsData) return;
+        if(!parser || !roomSettingsData) return;
 
-    //     if(roomSettingsData.roomId !== parser.roomId) return;
+        if(roomSettingsData.roomId !== parser.roomId) return;
 
-    //     const data = Object.assign({}, roomSettingsData);
+        const data = Object.assign({}, roomSettingsData);
 
-    //     data.usersWithRights = new Map(parser.users);
+        data.usersWithRights = new Map(parser.users);
 
-    //     setRoomSettingsData(data);
-    // }, [ roomSettingsData] );
+        setRoomSettingsData(data);
+    }, [ roomSettingsData] );
 
-    // UseMessageEventHook(FlatControllersEvent, onFlatControllersEvent);
+    UseMessageEventHook(FlatControllersEvent, onFlatControllersEvent);
 
-    // const onFlatControllerAddedEvent = useCallback((event: FlatControllerAddedEvent) =>
-    // {
-    //     const parser = event.getParser();
+    const onFlatControllerAddedEvent = useCallback((event: FlatControllerAddedEvent) =>
+    {
+        const parser = event.getParser();
 
-    //     if(!parser || !roomSettingsData) return;
+        if(!parser || !roomSettingsData) return;
 
-    //     if(roomSettingsData.roomId !== parser.roomId) return;
+        if(roomSettingsData.roomId !== parser.roomId) return;
 
-    //     const data = Object.assign({}, roomSettingsData);
+        const data = Object.assign({}, roomSettingsData);
 
-    //     // add new controller
+        // add new controller
 
-    //     setRoomSettingsData(data);
-    // }, [ roomSettingsData] );
+        setRoomSettingsData(data);
+    }, [ roomSettingsData] );
 
-    // UseMessageEventHook(FlatControllerAddedEvent, onFlatControllerAddedEvent);
+    UseMessageEventHook(FlatControllerAddedEvent, onFlatControllerAddedEvent);
 
-    // const onFlatControllerRemovedEvent = useCallback((event: FlatControllerRemovedEvent) =>
-    // {
-    //     const parser = event.getParser();
+    const onFlatControllerRemovedEvent = useCallback((event: FlatControllerRemovedEvent) =>
+    {
+        const parser = event.getParser();
 
-    //     if(!parser || !roomSettingsData) return;
+        if(!parser || !roomSettingsData) return;
 
-    //     if(roomSettingsData.roomId !== parser.roomId) return;
+        if(roomSettingsData.roomId !== parser.roomId) return;
 
-    //     const data = Object.assign({}, roomSettingsData);
+        const data = Object.assign({}, roomSettingsData);
 
-    //     // remove controller
+        // remove controller
 
-    //     setRoomSettingsData(data);
-    // }, [ roomSettingsData] );
+        setRoomSettingsData(data);
+    }, [ roomSettingsData] );
 
-    // UseMessageEventHook(FlatControllerRemovedEvent, onFlatControllerRemovedEvent);
-
-
+    UseMessageEventHook(FlatControllerRemovedEvent, onFlatControllerRemovedEvent);
 
     const updateSettings = useCallback((roomSettings: RoomSettingsData) =>
     {
@@ -94,22 +93,22 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
 
     UseMessageEventHook(RoomSettingsEvent, onRoomSettingsEvent);
 
-    // const onBannedUsersFromRoomEvent = useCallback((event: BannedUsersFromRoomEvent) =>
-    // {
-    //     const parser = event.getParser();
+    const onBannedUsersFromRoomEvent = useCallback((event: BannedUsersFromRoomEvent) =>
+    {
+        const parser = event.getParser();
 
-    //     if(!parser || !roomSettingsData) return;
+        if(!parser || !roomSettingsData) return;
 
-    //     if(roomSettingsData.roomId !== parser.roomId) return;
+        if(roomSettingsData.roomId !== parser.roomId) return;
 
-    //     const data = Object.assign({}, roomSettingsData);
+        const data = Object.assign({}, roomSettingsData);
 
-    //     data.bannedUsers = parser.bannedUsers;
+        data.bannedUsers = parser.bannedUsers;
 
-    //     setRoomSettingsData(data);
-    // }, [roomSettingsData]);
+        setRoomSettingsData(data);
+    }, [roomSettingsData]);
 
-    // UseMessageEventHook(BannedUsersFromRoomEvent, onBannedUsersFromRoomEvent);
+    UseMessageEventHook(BannedUsersFromRoomEvent, onBannedUsersFromRoomEvent);
 
     const saveSettings = useCallback((data: RoomSettingsData) =>
     {

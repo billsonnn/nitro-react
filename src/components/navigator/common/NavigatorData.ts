@@ -12,4 +12,6 @@ export interface NavigatorData
     avatarId: number;
     roomPicker: boolean;
     eventMod: boolean;
+    currentRoomRating: number;
+    canRate: boolean;
 }

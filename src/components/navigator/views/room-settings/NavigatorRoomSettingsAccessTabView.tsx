@@ -1,8 +1,8 @@
 import { RoomDataParser } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { Column, Flex, Text } from '../../../../../common';
-import RoomSettingsData from '../../../common/RoomSettingsData';
+import { LocalizeText } from '../../../../api';
+import { Column, Flex, Text } from '../../../../common';
+import RoomSettingsData from '../../common/RoomSettingsData';
 
 interface NavigatorRoomSettingsTabViewProps
 {

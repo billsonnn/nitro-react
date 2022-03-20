@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { GetConfiguration, LocalizeText } from '../../../../api';
-import { Column, Flex, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { useNavigatorContext } from '../../NavigatorContext';
+import { GetConfiguration, LocalizeText } from '../../../api';
+import { Column, Flex, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
+import { useNavigatorContext } from '../NavigatorContext';
 
 export class NavigatorRoomLinkViewProps
 {

@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { Column, Flex, Grid, Text } from '../../../../../common';
-import RoomSettingsData from '../../../common/RoomSettingsData';
+import { LocalizeText } from '../../../../api';
+import { Column, Flex, Grid, Text } from '../../../../common';
+import RoomSettingsData from '../../common/RoomSettingsData';
 
 interface NavigatorRoomSettingsTabViewProps
 {

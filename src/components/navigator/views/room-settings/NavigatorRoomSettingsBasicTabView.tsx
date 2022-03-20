@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomDeleteComposer } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { CreateLinkEvent, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../api';
-import { Base, Flex, Text } from '../../../../../common';
-import RoomSettingsData from '../../../common/RoomSettingsData';
-import { GetMaxVisitorsList } from '../../../common/RoomSettingsUtils';
-import { useNavigatorContext } from '../../../NavigatorContext';
+import { CreateLinkEvent, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../api';
+import { Base, Flex, Text } from '../../../../common';
+import RoomSettingsData from '../../common/RoomSettingsData';
+import { GetMaxVisitorsList } from '../../common/RoomSettingsUtils';
+import { useNavigatorContext } from '../../NavigatorContext';
 
 const DESC_MAX_LENGTH = 255;
 

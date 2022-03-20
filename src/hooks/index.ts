@@ -5,3 +5,4 @@ export * from './events/nitro';
 export * from './events/ui';
 export * from './messages';
 export * from './UseMountEffect';
+export * from './UseSharedState';

@@ -1,5 +1,5 @@
 import { NavigatorCategoryDataParser, NavigatorSearchResultSet, NavigatorTopLevelContext } from '@nitrots/nitro-renderer';
-import { createContext, Dispatch, FC, MutableRefObject, ProviderProps, SetStateAction, useContext } from 'react';
+import { createContext, Dispatch, FC, ProviderProps, SetStateAction, useContext } from 'react';
 import { NavigatorData } from './common/NavigatorData';
 
 interface INavigatorContext
@@ -14,7 +14,6 @@ interface INavigatorContext
     setNavigatorData: Dispatch<SetStateAction<NavigatorData>>;
     searchResult: NavigatorSearchResultSet;
     setSearchResult: Dispatch<SetStateAction<NavigatorSearchResultSet>>;
-    lastSearchValue: MutableRefObject<string>;
 }
 
 const NavigatorContext = createContext<INavigatorContext>({
@@ -27,8 +26,7 @@ const NavigatorContext = createContext<INavigatorContext>({
     navigatorData: null,
     setNavigatorData: null,
     searchResult: null,
-    setSearchResult: null,
-    lastSearchValue: null
+    setSearchResult: null
 });
 
 export const NavigatorContextProvider: FC<ProviderProps<INavigatorContext>> = props =>

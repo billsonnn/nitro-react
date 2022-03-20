@@ -1,4 +1,4 @@
-import { CantConnectMessageParser, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomResultEvent, HabboWebTools, LegacyExternalInterface, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomInfoComposer, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
+import { CanCreateRoomEventEvent, CantConnectMessageParser, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomResultEvent, HabboWebTools, LegacyExternalInterface, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomInfoComposer, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateLinkEvent, CreateRoomSession, GetConfiguration, GetSessionDataManager, LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
 import { UpdateDoorStateEvent } from '../../events';
@@ -18,21 +18,21 @@ export const NavigatorMessageHandler: FC<{}> = props =>
 
     UseMessageEventHook(RoomSettingsUpdatedEvent, onRoomSettingsUpdatedEvent);
 
-    // const onCanCreateRoomEventEvent = useCallback((event: CanCreateRoomEventEvent) =>
-    // {
-    //     const parser = event.getParser();
+    const onCanCreateRoomEventEvent = useCallback((event: CanCreateRoomEventEvent) =>
+    {
+        const parser = event.getParser();
 
-    //     if(parser.canCreate)
-    //     {
-    //         // show room event cvreate
+        if(parser.canCreate)
+        {
+            // show room event cvreate
 
-    //         return;
-    //     }
+            return;
+        }
 
-    //     NotificationUtilities.simpleAlert(LocalizeText(`navigator.cannotcreateevent.error.${ parser.errorCode }`), null, null, null, LocalizeText('navigator.cannotcreateevent.title'));
-    // }, []);
+        NotificationUtilities.simpleAlert(LocalizeText(`navigator.cannotcreateevent.error.${ parser.errorCode }`), null, null, null, LocalizeText('navigator.cannotcreateevent.title'));
+    }, []);
     
-    // UseMessageEventHook(CanCreateRoomEventEvent, onCanCreateRoomEventEvent);
+    UseMessageEventHook(CanCreateRoomEventEvent, onCanCreateRoomEventEvent);
 
     const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
     {
@@ -97,7 +97,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                     const newValue = { ...prevValue };
 
                     newValue.enteredGuestRoom = parser.data;
-                    //newValue.currentRoomIsStaffPick = parser.staffPick;
+                    newValue.currentRoomIsStaffPick = parser.staffPick;
 
                     const isCreated = (newValue.createdFlatId === parser.data.roomId);
 
@@ -131,7 +131,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                 }
             }
 
-            // if((parser.data.doorMode === RoomDataParser.NOOB_STATE) && !GetSessionDataManager().isAmbassador && !GetSessionDataManager().isRealNoob && !GetSessionDataManager().isModerator) return;
+            if((parser.data.doorMode === RoomDataParser.NOOB_STATE) && !GetSessionDataManager().isAmbassador && !GetSessionDataManager().isRealNoob && !GetSessionDataManager().isModerator) return;
 
             CreateRoomSession(parser.data.roomId);
         }
@@ -142,7 +142,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                     const newValue = { ...prevValue };
 
                     newValue.enteredGuestRoom = parser.data;
-                    //newValue.currentRoomIsStaffPick = parser.staffPick;
+                    newValue.currentRoomIsStaffPick = parser.staffPick;
 
                     return newValue;
                 });
@@ -152,7 +152,17 @@ export const NavigatorMessageHandler: FC<{}> = props =>
     const onRoomScoreEvent = useCallback((event: RoomScoreEvent) =>
     {
         const parser = event.getParser();
-    }, [ ]);
+
+        setNavigatorData(prevValue =>
+            {
+                const newValue = { ...prevValue };
+
+                newValue.currentRoomRating = parser.totalLikes;
+                newValue.canRate = parser.canLike;
+
+                return newValue;
+            });
+    }, [ setNavigatorData ]);
 
     const onRoomDoorbellEvent = useCallback((event: RoomDoorbellEvent) =>
     {

@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomDataParser } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent } from 'react';
 import { CreateRoomSession, GetSessionDataManager, TryVisitRoom } from '../../../../api';
-import { Flex, LayoutBadgeImageView, LayoutGridItemProps, LayoutRoomThumbnailView, Text } from '../../../../common';
+import { Column, Flex, LayoutBadgeImageView, LayoutGridItemProps, LayoutRoomThumbnailView, Text } from '../../../../common';
 import { UpdateDoorStateEvent } from '../../../../events';
 import { DispatchUiEvent } from '../../../../hooks';
 import { NavigatorSearchResultItemInfoView } from './NavigatorSearchResultItemInfoView';
@@ -39,13 +39,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
         return bg;
     }
 
-    function openInfo(event: MouseEvent): void
-    {
-        event.stopPropagation();
-        console.log('info');
-    }
-
-    function visitRoom(): void
+    const visitRoom = (event: MouseEvent) =>
     {
         if(roomData.ownerId !== GetSessionDataManager().userId)
         {
@@ -71,7 +65,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
     }
 
     if(thumbnail) return (
-        <Flex pointer overflow="hidden" column={ true } alignItems="center" onClick={visitRoom} gap={0} className="navigator-item p-1 bg-light rounded-3 small mb-1 flex-column border border-muted" {...rest}>
+        <Column pointer overflow="hidden" alignItems="center" onClick={ visitRoom } gap={ 0 } className="navigator-item p-1 bg-light rounded-3 small mb-1 flex-column border border-muted" {...rest}>
             <LayoutRoomThumbnailView roomId={roomData.roomId} customUrl={roomData.officialRoomPicRef} className="d-flex flex-column align-items-center justify-content-end mb-1">
                 <LayoutBadgeImageView badgeCode={roomData.groupBadgeCode} isGroup={true} className={ 'position-absolute top-0 start-0 m-1' } />
                 <Flex center className={ 'badge p-1 position-absolute m-1 ' + getUserCounterColor() } gap={ 1 }>
@@ -89,7 +83,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
                 { children } 
             </Flex>
 
-        </Flex>
+        </Column>
     );
 
     return (
@@ -98,7 +92,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
                 <FontAwesomeIcon icon="user" />
                 { roomData.userCount }
             </Flex>
-            <Text truncate className="flex-grow-1">{ roomData.roomName }</Text>
+            <Text truncate grow>{ roomData.roomName }</Text>
             <Flex reverse alignItems="center" gap={ 1 }>
                 <NavigatorSearchResultItemInfoView roomData={ roomData } />
                 { roomData.habboGroupId > 0 && <i className="icon icon-navigator-room-group" /> }

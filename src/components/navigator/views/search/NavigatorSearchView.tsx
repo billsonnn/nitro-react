@@ -1,8 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC, KeyboardEvent, useState } from 'react';
+import React, { FC, KeyboardEvent, useEffect, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { Button } from '../../../../common/Button';
 import { Flex } from '../../../../common/Flex';
+import { BatchUpdates } from '../../../../hooks';
+import { INavigatorSearchFilter } from '../../common/INavigatorSearchFilter';
 import { SearchFilterOptions } from '../../common/SearchFilterOptions';
 import { useNavigatorContext } from '../../NavigatorContext';
 
@@ -16,8 +18,7 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
     const { sendSearch = null } = props;
     const [ searchFilterIndex, setSearchFilterIndex ] = useState(0);
     const [ searchValue, setSearchValue ] = useState('');
-    const [ lastSearchQuery, setLastSearchQuery ] = useState('');
-    const { topLevelContext = null, lastSearchValue = null } = useNavigatorContext();
+    const { topLevelContext = null, searchResult = null } = useNavigatorContext();
 
     const processSearch = () =>
     {
@@ -29,12 +30,7 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
         const searchQuery = ((searchFilter.query ? (searchFilter.query + ':') : '') + searchValue);
 
-        if(lastSearchQuery === searchQuery) return;
-
-        setLastSearchQuery(searchQuery);
         sendSearch((searchQuery || ''), topLevelContext.code);
-
-        lastSearchValue.current = (searchQuery || '');
     }
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) =>
@@ -43,6 +39,36 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
         processSearch();
     };
+
+    useEffect(() =>
+    {
+        if(!searchResult) return null;
+
+        const split = searchResult.data.split(':');
+
+        let filter: INavigatorSearchFilter = null;
+        let value: string = '';
+
+        if(split.length >= 2)
+        {
+            const [ query, ...rest ] = split;
+
+            filter = SearchFilterOptions.find(option => (option.query === query));
+            value = rest.join(':');
+        }
+        else
+        {
+            value = searchResult.data;
+        }
+
+        if(!filter) filter = SearchFilterOptions[0];
+
+        BatchUpdates(() =>
+        {
+            setSearchFilterIndex(SearchFilterOptions.findIndex(option => (option === filter)));
+            setSearchValue(value);
+        });
+    }, [ searchResult ]);
 
     return (
         <Flex fullWidth gap={ 1 }>

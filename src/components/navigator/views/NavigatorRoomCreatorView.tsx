@@ -1,11 +1,11 @@
 /* eslint-disable no-template-curly-in-string */
 import { HabboClubLevelEnum, RoomCreateComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetClubMemberLevel, GetConfiguration, LocalizeText, SendMessageComposer } from '../../../../api';
-import { Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
-import { IRoomModel, RoomModels } from '../../common/RoomModels';
-import { useNavigatorContext } from '../../NavigatorContext';
+import { GetClubMemberLevel, GetConfiguration, LocalizeText, SendMessageComposer } from '../../../api';
+import { Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../common';
+import { BatchUpdates } from '../../../hooks';
+import { IRoomModel, RoomModels } from '../common/RoomModels';
+import { useNavigatorContext } from '../NavigatorContext';
 
 export const NavigatorRoomCreatorView: FC<{}> = props =>
 {

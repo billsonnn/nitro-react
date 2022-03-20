@@ -2,32 +2,35 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorCategoryDataParser, NavigatorInitComposer, NavigatorSearchComposer, NavigatorSearchResultSet, NavigatorTopLevelContext, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AddEventLinkTracker, GoToDesktop, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
-import { Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
+import { Base, Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { UpdateDoorStateEvent } from '../../events';
-import { BatchUpdates, UseRoomSessionManagerEvent, UseUiEvent } from '../../hooks';
+import { BatchUpdates, UseRoomSessionManagerEvent, useSharedState, UseUiEvent } from '../../hooks';
 import { NavigatorData } from './common/NavigatorData';
 import { NavigatorContextProvider } from './NavigatorContext';
 import { NavigatorMessageHandler } from './NavigatorMessageHandler';
-import { NavigatorRoomCreatorView } from './views/creator/NavigatorRoomCreatorView';
-import { NavigatorRoomDoorbellView } from './views/room-doorbell/NavigatorRoomDoorbellView';
-import { NavigatorRoomInfoView } from './views/room-info/NavigatorRoomInfoView';
-import { NavigatorRoomLinkView } from './views/room-link/NavigatorRoomLinkView';
-import { NavigatorRoomPasswordView } from './views/room-password/NavigatorRoomPasswordView';
+import { NavigatorRoomCreatorView } from './views/NavigatorRoomCreatorView';
+import { NavigatorRoomDoorbellView } from './views/NavigatorRoomDoorbellView';
+import { NavigatorRoomInfoView } from './views/NavigatorRoomInfoView';
+import { NavigatorRoomLinkView } from './views/NavigatorRoomLinkView';
+import { NavigatorRoomPasswordView } from './views/NavigatorRoomPasswordView';
 import { NavigatorRoomSettingsView } from './views/room-settings/NavigatorRoomSettingsView';
-import { NavigatorSearchResultView } from './views/search-result/NavigatorSearchResultView';
+import { NavigatorSearchResultView } from './views/search/NavigatorSearchResultView';
 import { NavigatorSearchView } from './views/search/NavigatorSearchView';
 
 export const NavigatorView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
+    const [ isReady, setIsReady ] = useState(false);
     const [ isCreatorOpen, setCreatorOpen ] = useState(false);
     const [ isRoomInfoOpen, setRoomInfoOpen ] = useState(false);
     const [ isRoomLinkOpen, setRoomLinkOpen ] = useState(false);
-    const [ needsUpdate, setNeedsUpdate ] = useState(true);
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ needsInit, setNeedsInit ] = useState(true);
+    const [ needsSearch, setNeedsSearch ] = useState(false);
     const [ categories, setCategories ] = useState<NavigatorCategoryDataParser[]>(null);
     const [ topLevelContext, setTopLevelContext ] = useState<NavigatorTopLevelContext>(null);
     const [ topLevelContexts, setTopLevelContexts ] = useState<NavigatorTopLevelContext[]>(null);
-    const [ navigatorData, setNavigatorData ] = useState<NavigatorData>({
+    const [ navigatorData, setNavigatorData ] = useSharedState<NavigatorData>('@navigatorData', {
         settingsReceived: false,
         homeRoomId: 0,
         enteredGuestRoom: null,
@@ -37,11 +40,13 @@ export const NavigatorView: FC<{}> = props =>
         createdFlatId: 0,
         avatarId: 0,
         roomPicker: false,
-        eventMod: false
+        eventMod: false,
+        currentRoomRating: 0,
+        canRate: true
     });
     const [ searchResult, setSearchResult ] = useState<NavigatorSearchResultSet>(null);
     const [ pendingDoorState, setPendingDoorState ] = useState<{ roomData: RoomDataParser, state: string }>(null);
-    const lastSearchValue = useRef<string>();
+    const pendingSearch = useRef<{ value: string, code: string }>(null);
 
     const onUpdateDoorStateEvent = useCallback((event: UpdateDoorStateEvent) =>
     {
@@ -102,24 +107,56 @@ export const NavigatorView: FC<{}> = props =>
 
     UseRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
 
-    const sendSearch = useCallback((searchValue: string, contextCode: string) =>
-    {
-        setCreatorOpen(false);
-
-        SendMessageComposer(new NavigatorSearchComposer(contextCode, searchValue));
-    }, []);
-
     const closePendingDoorState = useCallback((state: string) =>
     {
         if(state !== null)
         {
             setPendingDoorState(prevValue =>
                 {
-                    return { roomData: prevValue.roomData, state };
+                    return { ...prevValue, state };
                 });
         }
         else setPendingDoorState(null);
     }, []);
+
+    const sendSearch = useCallback((searchValue: string, contextCode: string) =>
+    {
+        setCreatorOpen(false);
+
+        SendMessageComposer(new NavigatorSearchComposer(contextCode, searchValue));
+
+        setIsLoading(true);
+    }, []);
+
+    const reloadCurrentSearch = useCallback(() =>
+    {
+        if(!isReady)
+        {
+            setNeedsSearch(true);
+            
+            return;
+        }
+
+        if(pendingSearch.current)
+        {
+            sendSearch(pendingSearch.current.value, pendingSearch.current.code);
+
+            pendingSearch.current = null;
+
+            return;
+        }
+
+        if(searchResult)
+        {
+            sendSearch(searchResult.data, searchResult.code);
+
+            return;
+        }
+
+        if(!topLevelContext) return;
+        
+        sendSearch('', topLevelContext.code);
+    }, [ isReady, searchResult, topLevelContext, sendSearch ]);
 
     const linkReceived = useCallback((url: string) =>
     {
@@ -129,15 +166,32 @@ export const NavigatorView: FC<{}> = props =>
 
         switch(parts[1])
         {
-            case 'show':
-                setIsVisible(true);
+            case 'show': {
+                BatchUpdates(() =>
+                {
+                    setIsVisible(true);
+                    setNeedsSearch(true);
+                });
                 return;
+            }
             case 'hide':
                 setIsVisible(false);
                 return;
-            case 'toggle':
-                setIsVisible(prevValue => !prevValue);
+            case 'toggle': {
+                if(isVisible)
+                {
+                    setIsVisible(false);
+
+                    return;
+                }
+
+                BatchUpdates(() =>
+                {
+                    setIsVisible(true);
+                    setNeedsSearch(true);
+                });
                 return;
+            }
             case 'toggle-room-info':
                 setRoomInfoOpen(value => !value);
                 return;
@@ -177,12 +231,17 @@ export const NavigatorView: FC<{}> = props =>
 
                     if(parts.length > 3) searchValue = parts[3];
 
-                    setIsVisible(true);
-                    sendSearch(searchValue, topLevelContextCode);
+                    pendingSearch.current = { value: searchValue, code: topLevelContextCode };
+
+                    BatchUpdates(() =>
+                    {
+                        setIsVisible(true);
+                        setNeedsSearch(true);
+                    });
                 }
                 return;
         } 
-    }, [ navigatorData.homeRoomId, sendSearch ]);
+    }, [ isVisible, navigatorData.homeRoomId ]);
 
     useEffect(() =>
     {
@@ -196,47 +255,42 @@ export const NavigatorView: FC<{}> = props =>
         return () => RemoveLinkEventTracker(linkTracker);
     }, [ linkReceived ]);
 
-    // useEffect(() =>
-    // {
-    //     if(!isVisible) return;
+    useEffect(() =>
+    {
+        if(!searchResult) return;
 
-    //     sendSearch(lastSearch)
-    // }, [ isVisible ]);
+        setIsLoading(false);
+    }, [ searchResult ]);
 
     useEffect(() =>
     {
-        if(!needsUpdate) return;
+        if(!isVisible || !isReady || !needsSearch) return;
+
+        reloadCurrentSearch();
+
+        setNeedsSearch(false);
+    }, [ isVisible, isReady, needsSearch, reloadCurrentSearch ]);
+
+    useEffect(() =>
+    {
+        if(isReady || !topLevelContext) return;
+
+        setIsReady(true);
+    }, [ isReady, topLevelContext ]);
+
+    useEffect(() =>
+    {
+        if(!isVisible || !needsInit) return;
 
         SendMessageComposer(new NavigatorInitComposer());
 
-        setNeedsUpdate(false);
-    }, [ needsUpdate ]);
+        setNeedsInit(false);
+    }, [ isVisible, needsInit ]);
 
     useEffect(() =>
     {
         LegacyExternalInterface.addCallback(HabboWebTools.OPENROOM, (k: string, _arg_2: boolean = false, _arg_3: string = null) => SendMessageComposer(new ConvertGlobalRoomIdMessageComposer(k)));
     }, []);
-
-    // useEffect(() =>
-    // {
-    //     if(!isVisible || !topLevelContext) return;
-
-    //     sendSearch('', topLevelContext.code);
-    // }, [ isVisible, sendSearch, topLevelContext ])
-
-    // useEffect(() =>
-    // {
-    //     if(!topLevelContexts || !topLevelContexts.length) return;
-
-    //     sendSearch('', topLevelContexts[0].code);
-    // }, [ topLevelContexts, sendSearch ]);
-
-    // useEffect(() =>
-    // {
-    //     if(!isVisible || !LAST_SEARCH || !LAST_SEARCH.length) return;
-
-    //     CreateLinkEvent(`navigator/search/${ LAST_SEARCH }`);
-    // }, [ isVisible ]);
 
     const getRoomDoorState = useMemo(() =>
     {
@@ -257,7 +311,7 @@ export const NavigatorView: FC<{}> = props =>
     }, [ pendingDoorState, closePendingDoorState ]);
 
     return (
-        <NavigatorContextProvider value={ { categories, setCategories, topLevelContext, setTopLevelContext, topLevelContexts, setTopLevelContexts, navigatorData, setNavigatorData, searchResult, setSearchResult, lastSearchValue } }>
+        <NavigatorContextProvider value={ { categories, setCategories, topLevelContext, setTopLevelContext, topLevelContexts, setTopLevelContexts, navigatorData, setNavigatorData, searchResult, setSearchResult } }>
             <NavigatorMessageHandler />
             { getRoomDoorState }
             { isVisible &&
@@ -276,7 +330,9 @@ export const NavigatorView: FC<{}> = props =>
                             <FontAwesomeIcon icon="plus" />
                         </NitroCardTabsItemView>
                     </NitroCardTabsView>
-                    <NitroCardContentView>
+                    <NitroCardContentView position='relative'>
+                        { isLoading &&
+                            <Base fit position="absolute" className="top-0 start-0 z-index-1 bg-muted opacity-0-5" /> }
                         { !isCreatorOpen &&
                             <>
                                 <NavigatorSearchView sendSearch={ sendSearch } />
