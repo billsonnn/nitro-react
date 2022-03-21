@@ -23,11 +23,7 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
 
     const canOpenBackgroundToner = useCallback(() =>
     {
-        const isRoomOwner = roomSession.isRoomOwner;
-        const hasLevel = (roomSession.controllerLevel >= RoomControllerLevel.GUEST);
-        const isGodMode = GetSessionDataManager().isGodMode;
-
-        return (isRoomOwner || hasLevel || isGodMode);
+        return (roomSession.isRoomOwner || (roomSession.controllerLevel >= RoomControllerLevel.GUEST) || GetSessionDataManager().isModerator);
     }, [ roomSession ]);
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>

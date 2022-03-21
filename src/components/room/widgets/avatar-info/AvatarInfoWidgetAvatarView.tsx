@@ -199,7 +199,6 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                     break;
                 case 'rship_none':
                     messageType = RoomWidgetUserActionMessage.RELATIONSHIP_NONE;
-                    console.log('here')
                     break;
             }
 
