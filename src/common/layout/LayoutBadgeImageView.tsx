@@ -1,6 +1,6 @@
 import { BadgeImageReadyEvent, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
-import { GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../api';
+import { GetConfiguration, GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../api';
 import { Base, BaseProps } from '../Base';
 
 export interface LayoutBadgeImageViewProps extends BaseProps<HTMLDivElement>
@@ -88,6 +88,8 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
     const BadgeInformationView = (props: { title: string, description: string }) =>
     {
         const { title = null, description = null } = props;
+
+        if(!GetConfiguration('badge.descriptions.enabled', true)) return null;
 
         return (
             <Base className="badge-information text-black py-1 px-2 small">

@@ -13,6 +13,7 @@
     "user.badges.max.slots": 5,
     "camera.publish.disabled": false,
     "hc.disabled": false,
+    "badge.descriptions.enabled": true,
     "hotelview": {
         "show.avatar": true,
         "widgets": {
