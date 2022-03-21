@@ -1,4 +1,4 @@
-import { NotificationBubbleType } from './NotificationBubbleType';
+import { NotificationAlertType } from './NotificationAlertType';
 
 export class NotificationAlertItem
 {
@@ -12,7 +12,7 @@ export class NotificationAlertItem
     private _title: string;
     private _imageUrl: string;
 
-    constructor(messages: string[], alertType: string = NotificationBubbleType.INFO, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null)
+    constructor(messages: string[], alertType: string = NotificationAlertType.DEFAULT, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null)
     {
         NotificationAlertItem.ITEM_ID += 1;
 

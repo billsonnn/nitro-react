@@ -14,7 +14,6 @@ export const NitropediaView: FC<{}> = props =>
     
     const openPage = useCallback(async (link: string) =>
     {
-        console.log(link);
         try
         {
             const response = await fetch(link);
