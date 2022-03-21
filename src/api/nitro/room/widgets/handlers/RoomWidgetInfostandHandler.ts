@@ -732,7 +732,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         if(moderation) flag = checkSetting(event, moderation);
 
-        return (flag && (event.roomControllerLevel < RoomControllerLevel.ROOM_OWNER));
+        return (flag && (event.targetRoomControllerLevel < RoomControllerLevel.ROOM_OWNER));
     }
 
     public get type(): string
