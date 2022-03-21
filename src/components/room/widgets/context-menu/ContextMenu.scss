@@ -1,6 +1,4 @@
 .nitro-context-menu {
-    width: 125px;
-    max-width: 125px;
     padding: 2px;
     background-color: $gable-green;
     border: 2px solid rgba($white, 0.5);
@@ -22,19 +20,23 @@
         font-size: 18px;
     }
 
-    &:not(.name-only):after {
-        content: "";
-        position: absolute;
-        bottom: -7px;
-        left: 0;
-        right: 0;
-        margin: auto;
-        height: 10px;
-        width: 10px;
-        transform: rotate(45deg);
-        border-color: transparent rgba($white, 0.5) rgba($white, 0.5) transparent;
-        border-style: solid;
-        border-width: 5px;
+    &:not(.name-only) {
+        min-width: 125px;
+
+        &:after {
+            content: "";
+            position: absolute;
+            bottom: -7px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            height: 10px;
+            width: 10px;
+            transform: rotate(45deg);
+            border-color: transparent rgba($white, 0.5) rgba($white, 0.5) transparent;
+            border-style: solid;
+            border-width: 5px;
+        }
     }
 
     .menu-header {
