@@ -1,4 +1,4 @@
-import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, IAvatarImageListener, INitroPoint, IVector3D, NitroEvent, NitroPoint, PetFigureData, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomWidgetEnum, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
+import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, IAvatarImageListener, INitroPoint, IVector3D, NitroEvent, NitroPoint, PetFigureData, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomUserData, RoomWidgetEnum, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { GetAvatarRenderManager, GetConfigurationManager, GetRoomEngine, PlaySound } from '../../../..';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { RoomWidgetUpdateChatEvent, RoomWidgetUpdateEvent } from '../events';
@@ -20,11 +20,9 @@ export class RoomWidgetChatHandler extends RoomWidgetHandler implements IAvatarI
 
                 const roomObject = GetRoomEngine().getRoomObject(chatEvent.session.roomId, chatEvent.objectId, RoomObjectCategory.UNIT);
 
-                if(!roomObject) return;
-
-                const objectLocation = roomObject.getLocation();
+                const objectLocation = roomObject ? roomObject.getLocation() : new Vector3d();
                 const bubbleLocation = this.getBubbleLocation(chatEvent.session.roomId, objectLocation);
-                const userData = this.container.roomSession.userDataManager.getUserDataByIndex(chatEvent.objectId);
+                const userData = roomObject ? this.container.roomSession.userDataManager.getUserDataByIndex(chatEvent.objectId) : new RoomUserData(-1);
 
                 let username = '';
                 let avatarColor = 0;
