@@ -2,7 +2,7 @@ import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, Nitro
 import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetSessionDataManager, GetUserProfile, OpenMessengerChat, VisitDesktop } from '../../api';
 import { Base, Flex, LayoutAvatarImageView, LayoutItemCountView, TransitionAnimation, TransitionAnimationTypes } from '../../common';
-import { AchievementsUIEvent, AchievementsUIUnseenCountEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, InventoryEvent, ModToolsEvent, UnseenItemTrackerUpdateEvent, UserSettingsUIEvent } from '../../events';
+import { AchievementsUIUnseenCountEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, InventoryEvent, ModToolsEvent, UnseenItemTrackerUpdateEvent, UserSettingsUIEvent } from '../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { ToolbarViewItems } from './common/ToolbarViewItems';
 import { ToolbarMeView } from './ToolbarMeView';
@@ -157,7 +157,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
                 DispatchUiEvent(new ModToolsEvent(ModToolsEvent.TOGGLE_MOD_TOOLS));
                 return;
             case ToolbarViewItems.ACHIEVEMENTS_ITEM:
-                DispatchUiEvent(new AchievementsUIEvent(AchievementsUIEvent.TOGGLE_ACHIEVEMENTS));
+                CreateLinkEvent('achievements/toggle');
                 setMeExpanded(false);
                 return;
             case ToolbarViewItems.PROFILE_ITEM:

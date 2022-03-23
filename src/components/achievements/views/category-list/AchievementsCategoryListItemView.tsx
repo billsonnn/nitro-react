@@ -1,9 +1,6 @@
 import { FC, useCallback, useMemo } from 'react';
-import { GetConfiguration, LocalizeText } from '../../../../api';
-import { LayoutGridItem, LayoutGridItemProps } from '../../../../common/layout/LayoutGridItem';
-import { LayoutImage } from '../../../../common/layout/LayoutImage';
-import { Text } from '../../../../common/Text';
-import { AchievementCategory } from '../../common/AchievementCategory';
+import { AchievementCategory, GetConfiguration, LocalizeText } from '../../../../api';
+import { LayoutGridItem, LayoutGridItemProps, LayoutImage, Text } from '../../../../common';
 
 export interface AchievementCategoryListItemViewProps extends LayoutGridItemProps
 {

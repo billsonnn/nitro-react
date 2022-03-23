@@ -1,10 +1,10 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { Column } from '../../../../common/Column';
-import { AchievementCategory } from '../../common/AchievementCategory';
-import { AchievementDetailsView } from '../achievement-details/AchievementDetailsView';
-import { AchievementListView } from '../achievement-list/AchievementListView';
+import { AchievementCategory } from '../../../api';
+import { Column } from '../../../common';
+import { AchievementListView } from './achievement-list/AchievementListView';
+import { AchievementDetailsView } from './AchievementDetailsView';
 
-export class AchievementCategoryViewProps
+interface AchievementCategoryViewProps
 {
     category: AchievementCategory;
     setAchievementSeen: (code: string, achievementId: number) => void;

@@ -1,13 +1,11 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../../api';
-import { Base, Column, Flex, LayoutCurrencyIcon, Text } from '../../../../common';
-import { AchievementUtilities } from '../../common/AchievementUtilities';
-import { GetAchievementLevel } from '../../common/GetAchievementLevel';
-import { GetScaledProgressPercent } from '../../common/GetScaledProgressPercent';
-import { AchievementBadgeView } from '../achievement-badge/AchievementBadgeView';
+import { GetAchievementBadgeCode, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
+import { GetAchievementLevel } from '../../../api/achievements/GetAchievementLevel';
+import { Column, Flex, LayoutCurrencyIcon, LayoutProgressBar, Text } from '../../../common';
+import { AchievementBadgeView } from './AchievementBadgeView';
 
-export interface AchievementDetailsViewProps
+interface AchievementDetailsViewProps
 {
     achievement: AchievementData;
 }
@@ -19,7 +17,6 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
     if(!achievement) return null;
 
     const achievementLevel = GetAchievementLevel(achievement);
-    const scaledProgressPercent = GetScaledProgressPercent(achievement);
 
     return (
         <Flex shrink className="bg-muted rounded p-2 text-black" gap={ 2 } overflow="hidden">
@@ -32,10 +29,10 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
             <Column fullWidth justifyContent="center" overflow="hidden">
                 <Column gap={ 1 }>
                     <Text fontWeight="bold" truncate>
-                        { LocalizeBadgeName(AchievementUtilities.getBadgeCode(achievement)) }
+                        { LocalizeBadgeName(GetAchievementBadgeCode(achievement)) }
                     </Text>
-                    <Text truncate>
-                        { LocalizeBadgeDescription(AchievementUtilities.getBadgeCode(achievement)) }
+                    <Text textBreak>
+                        { LocalizeBadgeDescription(GetAchievementBadgeCode(achievement)) }
                     </Text>
                 </Column>
                 { ((achievement.levelRewardPoints > 0) || (achievement.scoreLimit > 0)) &&
@@ -51,10 +48,7 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
                                 </Flex>
                             </Flex> }
                         { (achievement.scoreLimit > 0) &&
-                            <Base className="progress" position="relative">
-                                <Flex fit center position="absolute" className="text-black"> { LocalizeText('achievements.details.progress', [ 'progress', 'limit' ], [ (achievement.currentPoints + achievement.scoreAtStartOfLevel).toString(), (achievement.scoreLimit + achievement.scoreAtStartOfLevel).toString() ]) }</Flex>
-                                <Base className="progress-bar" style={ { width: (scaledProgressPercent + '%') }} />
-                            </Base> }
+                            <LayoutProgressBar text={ LocalizeText('achievements.details.progress', [ 'progress', 'limit' ], [ (achievement.currentPoints + achievement.scoreAtStartOfLevel).toString(), (achievement.scoreLimit + achievement.scoreAtStartOfLevel).toString() ]) } progress={ (achievement.currentPoints + achievement.scoreAtStartOfLevel) } maxProgress={ (achievement.scoreLimit + achievement.scoreAtStartOfLevel) } /> }
                     </Column> }
             </Column>
         </Flex>
