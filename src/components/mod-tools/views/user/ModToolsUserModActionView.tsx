@@ -58,8 +58,12 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
 
     const sendDefaultSanction = () =>
     {
-        SendMessageComposer(new DefaultSanctionMessageComposer(user.userId, selectedTopic, message));
-
+        let errorMessage: string = null;
+        const category = topics[selectedTopic];
+        if(selectedTopic === -1) errorMessage = 'You must select a CFH topic';
+        if(errorMessage) return sendAlert(errorMessage);
+        const messageOrDefault = (message.trim().length === 0) ? LocalizeText(`help.cfh.topic.${category.id}`) : message;
+        SendMessageComposer(new DefaultSanctionMessageComposer(user.userId, selectedTopic, messageOrDefault));
         onCloseClick();
     }
 
@@ -77,7 +81,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
 
         if(errorMessage)
         {
-            sendAlert('You must select a sanction');
+            sendAlert(errorMessage);
             
             return;
         }
