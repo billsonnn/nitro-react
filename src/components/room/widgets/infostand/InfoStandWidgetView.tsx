@@ -91,6 +91,7 @@ export const InfoStandWidgetView: FC<{}> = props =>
     UseEventDispatcherHook(RoomWidgetUpdateInfostandUserEvent.BOT, eventDispatcher, onRoomWidgetUpdateEvent);
     UseEventDispatcherHook(RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT, eventDispatcher, onRoomWidgetUpdateEvent);
     UseEventDispatcherHook(RoomWidgetUpdateInfostandPetEvent.PET_INFO, eventDispatcher, onRoomWidgetUpdateEvent);
+    UseEventDispatcherHook(RoomWidgetUpdateInfostandPetEvent.PET_INFO, eventDispatcher, onRoomWidgetUpdateEvent);
 
     const getInfostandView = useCallback(() =>
     {
@@ -102,7 +103,7 @@ export const InfoStandWidgetView: FC<{}> = props =>
                 return <InfoStandWidgetFurniView furniData={ (infoStandEvent as RoomWidgetUpdateInfostandFurniEvent) } close={ closeInfostand } />;
             case RoomWidgetUpdateInfostandUserEvent.OWN_USER:
             case RoomWidgetUpdateInfostandUserEvent.PEER:
-                return <InfoStandWidgetUserView userData={ (infoStandEvent as RoomWidgetUpdateInfostandUserEvent) } close={ closeInfostand } />;
+                return <InfoStandWidgetUserView userData={ (infoStandEvent as RoomWidgetUpdateInfostandUserEvent) } setUserData={ setInfoStandEvent} close={ closeInfostand } />;
             case RoomWidgetUpdateInfostandUserEvent.BOT:
                 return <InfoStandWidgetBotView botData={ (infoStandEvent as RoomWidgetUpdateInfostandUserEvent) } close={ closeInfostand } />;
             case RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT:

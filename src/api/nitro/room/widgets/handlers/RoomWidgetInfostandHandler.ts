@@ -1,4 +1,4 @@
-import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
+import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionFavoriteGroupUpdateEvent, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
 import { SendMessageComposer } from '../../..';
 import { GetNitroInstance, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
 import { FriendsHelper } from '../../../../../components/friends/common/FriendsHelper';
@@ -23,7 +23,10 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 this.container.eventDispatcher.dispatchEvent(event);
                 return;
             case RoomSessionUserFigureUpdateEvent.USER_FIGURE:
-                this.processRoomSessionUserFigureUpdateEvent((event as RoomSessionUserFigureUpdateEvent));
+                this.container.eventDispatcher.dispatchEvent(event);
+                return;
+            case RoomSessionFavoriteGroupUpdateEvent.FAVOURITE_GROUP_UPDATE:
+                this.container.eventDispatcher.dispatchEvent(event);
                 return;
         }
     }
@@ -528,7 +531,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
             // this._Str_16287(_local_12, _local_13);
         }
 
-        event.groupId = parseInt(userData.guildId);
+        event.groupId = userData.groupId;
         event.groupBadgeId = GetSessionDataManager().getGroupBadge(event.groupId);
         event.groupName = userData.groupName;
         event.badges = this.container.roomSession.userDataManager.getUserBadges(userData.webID);
@@ -662,17 +665,6 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         this.container.eventDispatcher.dispatchEvent(infostandEvent);
     }
 
-    private processRoomSessionUserFigureUpdateEvent(event: RoomSessionUserFigureUpdateEvent): void
-    {
-        const userData = this.container.roomSession.userDataManager.getUserDataByIndex(event.userId);
-
-        if(!userData) return;
-
-        // update active infostand figure
-        // update motto
-        // update activity points
-    }
-
     private checkGuildSetting(event: RoomWidgetUpdateInfostandUserEvent): boolean
     {
         if(event.isGuildRoom) return (event.roomControllerLevel >= RoomControllerLevel.GUILD_ADMIN);
@@ -740,33 +732,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         if(moderation) flag = checkSetting(event, moderation);
 
-        return (flag && (event.roomControllerLevel < RoomControllerLevel.ROOM_OWNER));
-    }
-
-    private getPetType(figure: string): number
-    {
-        return this.getPetFigurePart(figure, 0);
-    }
-
-    private getPetBreed(figure: string): number
-    {
-        return this.getPetFigurePart(figure, 1);
-    }
-
-    private getPetColor(figure: string): number
-    {
-        return this.getPetFigurePart(figure, 2);
-    }
-
-    private getPetFigurePart(figure: string, index: number): number
-    {
-        if(!figure || !figure.length) return -1;
-
-        const parts = figure.split(' ');
-
-        if(parts.length > 0) return parseInt(parts[index]);
-
-        return -1;
+        return (flag && (event.targetRoomControllerLevel < RoomControllerLevel.ROOM_OWNER));
     }
 
     public get type(): string
@@ -779,7 +745,8 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         return [
             RoomSessionPetInfoUpdateEvent.PET_INFO,
             RoomSessionUserBadgesEvent.RSUBE_BADGES,
-            RoomSessionUserFigureUpdateEvent.USER_FIGURE
+            RoomSessionUserFigureUpdateEvent.USER_FIGURE,
+            RoomSessionFavoriteGroupUpdateEvent.FAVOURITE_GROUP_UPDATE
         ];
     }
 

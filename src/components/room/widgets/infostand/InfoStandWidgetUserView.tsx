@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomSessionUserBadgesEvent, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
-import { FC, FocusEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import { GetConfiguration, GetGroupInformation, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent, SendMessageComposer } from '../../../../api';
+import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomSessionFavoriteGroupUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
+import { Dispatch, FC, FocusEvent, KeyboardEvent, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { CloneObject, GetConfiguration, GetGroupInformation, GetSessionDataManager, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../common';
 import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
@@ -10,23 +10,22 @@ import { InfoStandWidgetUserRelationshipsView } from './InfoStandWidgetUserRelat
 interface InfoStandWidgetUserViewProps
 {
     userData: RoomWidgetUpdateInfostandUserEvent;
+    setUserData: Dispatch<SetStateAction<RoomWidgetUpdateInfostandUserEvent>>;
     close: () => void;
 }
 
 export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =>
 {
-    const { userData = null, close = null } = props;
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
-    const [ badges, setBadges ] = useState<string[]>([]);
-    const [ motto, setMotto ] = useState(null);
+    const { userData = null, setUserData = null, close = null } = props;
+    const [ motto, setMotto ] = useState<string>(null);
     const [ isEditingMotto, setIsEditingMotto ] = useState(false);
-    const [ userRelationships, setUserRelationships ] = useState<RelationshipStatusInfoMessageParser>(null);
-
+    const [ relationships, setRelationships ] = useState<RelationshipStatusInfoMessageParser>(null);
+    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const maxBadgeCount = GetConfiguration<number>('user.badges.max.slots', 5);
 
     const saveMotto = (motto: string) =>
     {
-        if(motto.length > 38) return;
+        if(!isEditingMotto || (motto.length > 38)) return;
 
         widgetHandler.processWidgetMessage(new RoomWidgetChangeMottoMessage(motto));
 
@@ -51,18 +50,63 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
     {
         if(!userData || (userData.webID !== event.userId)) return;
 
-        setBadges(event.badges);
-    }, [ userData ]);
+        setUserData(prevValue =>
+            {
+                const newValue = CloneObject(prevValue);
+
+                newValue.badges = event.badges;
+
+                return newValue;
+            });
+    }, [ userData, setUserData ]);
 
     UseEventDispatcherHook(RoomSessionUserBadgesEvent.RSUBE_BADGES, eventDispatcher, onRoomSessionUserBadgesEvent);
+
+    const onRoomSessionUserFigureUpdateEvent = useCallback((event: RoomSessionUserFigureUpdateEvent) =>
+    {
+        if(!userData || (userData.roomIndex !== event.roomIndex)) return;
+
+        setUserData(prevValue =>
+            {
+                const newValue = CloneObject(prevValue);
+
+                newValue.figure = event.figure;
+                newValue.motto = event.customInfo;
+                newValue.achievementScore = event.activityPoints;
+
+                return newValue;
+            });
+    }, [ userData, setUserData ]);
+
+    UseEventDispatcherHook(RoomSessionUserFigureUpdateEvent.USER_FIGURE, eventDispatcher, onRoomSessionUserFigureUpdateEvent);
+
+    const onRoomSessionFavoriteGroupUpdateEvent = useCallback((event: RoomSessionFavoriteGroupUpdateEvent) =>
+    {
+        if(!userData || (userData.roomIndex !== event.roomIndex)) return;
+
+        setUserData(prevValue =>
+            {
+                const newValue = CloneObject(prevValue);
+
+                const clearGroup = ((event.status === -1) || (event.habboGroupId <= 0));
+
+                newValue.groupId = clearGroup ? -1 : event.habboGroupId;
+                newValue.groupName = clearGroup ? null : event.habboGroupName
+                newValue.groupBadgeId = clearGroup ? null : GetSessionDataManager().getGroupBadge(event.habboGroupId);
+
+                return newValue;
+            });
+    }, [ userData, setUserData ]);
+
+    UseEventDispatcherHook(RoomSessionFavoriteGroupUpdateEvent.FAVOURITE_GROUP_UPDATE, eventDispatcher, onRoomSessionFavoriteGroupUpdateEvent);
 
     const onUserRelationshipsEvent = useCallback((event: RelationshipStatusInfoEvent) =>
     {
         const parser = event.getParser();
 
         if(!userData || (userData.webID !== parser.userId)) return;
-        
-        setUserRelationships(parser);
+
+        setRelationships(parser);
     }, [ userData ]);
 
     UseMessageEventHook(RelationshipStatusInfoEvent, onUserRelationshipsEvent);
@@ -71,7 +115,6 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
     {
         BatchUpdates(() =>
         {
-            setBadges(userData.badges);
             setIsEditingMotto(false);
             setMotto(userData.motto);
         });
@@ -80,8 +123,12 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
         return () => 
         {
-            setBadges([]);
-            setUserRelationships(null);
+            BatchUpdates(() =>
+            {
+                setIsEditingMotto(false);
+                setMotto(null);
+                setRelationships(null);
+            });
         }
     }, [ userData ]);
 
@@ -108,7 +155,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                         <Column grow gap={ 0 }>
                             <Flex gap={ 1 }>
                                 <Base className="badge-image">
-                                    { badges[0] && <LayoutBadgeImageView badgeCode={ badges[0] } showInfo={ true } /> }
+                                    { userData.badges[0] && <LayoutBadgeImageView badgeCode={ userData.badges[0] } showInfo={ true } /> }
                                 </Base>
                                 <Base pointer={ ( userData.groupId > 0) } className="badge-image" onClick={ event => GetGroupInformation(userData.groupId) }>
                                     { userData.groupId > 0 &&
@@ -117,18 +164,18 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                             </Flex>
                             <Flex gap={ 1 }>
                                 <Base className="badge-image">
-                                    { badges[1] && <LayoutBadgeImageView badgeCode={ badges[1] } showInfo={ true } /> }
+                                    { userData.badges[1] && <LayoutBadgeImageView badgeCode={ userData.badges[1] } showInfo={ true } /> }
                                 </Base>
                                 <Base className="badge-image">
-                                    { badges[2] && <LayoutBadgeImageView badgeCode={ badges[2] } showInfo={ true } /> }
+                                    { userData.badges[2] && <LayoutBadgeImageView badgeCode={ userData.badges[2] } showInfo={ true } /> }
                                 </Base>
                             </Flex>
                             <Flex gap={ 1 }>
                                 <Base className="badge-image">
-                                    { badges[3] && <LayoutBadgeImageView badgeCode={ badges[3] } showInfo={ true } /> }
+                                    { userData.badges[3] && <LayoutBadgeImageView badgeCode={ userData.badges[3] } showInfo={ true } /> }
                                 </Base>
                                 <Base className="badge-image">
-                                    { badges[4] && <LayoutBadgeImageView badgeCode={ badges[4] } showInfo={ true } /> }
+                                    { userData.badges[4] && <LayoutBadgeImageView badgeCode={ userData.badges[4] } showInfo={ true } /> }
                                 </Base>
                             </Flex>
                         </Column>
@@ -167,7 +214,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                         </> }
                 </Column>
                 <Column gap={ 1 }>
-                    <InfoStandWidgetUserRelationshipsView relationships={ userRelationships } />
+                    <InfoStandWidgetUserRelationshipsView relationships={ relationships } />
                 </Column>
             </Column>
         </Column>

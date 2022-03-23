@@ -1,6 +1,6 @@
 import { SetActivatedBadgesComposer } from '@nitrots/nitro-renderer';
 import { Reducer } from 'react';
-import { SendMessageComposer } from '../../../api';
+import { GetConfiguration, SendMessageComposer } from '../../../api';
 
 export interface IInventoryBadgeState
 {
@@ -97,10 +97,7 @@ export const InventoryBadgeReducer: Reducer<IInventoryBadgeState, IInventoryBadg
 
             const composer = new SetActivatedBadgesComposer();
 
-            for(const badgeCode of activeBadges)
-            {
-                composer.addActivatedBadge(badgeCode);
-            }
+            for(let i = 0; i < GetConfiguration<number>('user.badges.max.slots', 5); i++) composer.addActivatedBadge(activeBadges[i] || null);
 
             SendMessageComposer(composer);
 
@@ -119,10 +116,7 @@ export const InventoryBadgeReducer: Reducer<IInventoryBadgeState, IInventoryBadg
 
             const composer = new SetActivatedBadgesComposer();
 
-            for(const badgeCode of activeBadges)
-            {
-                composer.addActivatedBadge(badgeCode);
-            }
+            for(let i = 0; i < GetConfiguration<number>('user.badges.max.slots', 5); i++) composer.addActivatedBadge(activeBadges[i] || null);
 
             SendMessageComposer(composer);
 

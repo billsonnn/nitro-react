@@ -130,6 +130,11 @@ export class NotificationUtilities
         DispatchUiEvent(new NotificationAlertEvent([ this.cleanText(message) ], type, clickUrl, clickUrlText, title, imageUrl));
     }
 
+    public static showNitroAlert(): void
+    {
+        DispatchUiEvent(new NotificationAlertEvent(null, NotificationAlertType.NITRO));
+    }
+
     public static showModeratorMessage(message: string, url: string = null, showHabboWay: boolean = true): void
     {
         this.simpleAlert(message, NotificationAlertType.MODERATION, url, LocalizeText('mod.alert.link'), LocalizeText('mod.alert.title'));

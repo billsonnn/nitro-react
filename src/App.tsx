@@ -1,10 +1,12 @@
 import { ConfigurationEvent, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetCommunication, GetConfiguration, GetNitroInstance } from './api';
+import { GetCommunication, GetConfiguration, GetNitroInstance, GetUIVersion } from './api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from './common';
 import { LoadingView } from './components/loading/LoadingView';
 import { MainView } from './components/main/MainView';
 import { DispatchUiEvent, UseConfigurationEvent, UseLocalizationEvent, UseMainEvent, UseRoomEngineEvent } from './hooks';
+
+NitroVersion.UI_VERSION = GetUIVersion();
 
 export const App: FC<{}> = props =>
 {
@@ -16,11 +18,7 @@ export const App: FC<{}> = props =>
     //@ts-ignore
     if(!NitroConfig) throw new Error('NitroConfig is not defined!');
 
-    if(!GetNitroInstance())
-    {
-        NitroVersion.UI_VERSION = '2.0.0';
-        Nitro.bootstrap();
-    }
+    if(!GetNitroInstance()) Nitro.bootstrap();
 
     const getPreloadAssetUrls = useCallback(() =>
     {

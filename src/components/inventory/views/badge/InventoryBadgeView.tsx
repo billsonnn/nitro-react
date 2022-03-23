@@ -72,7 +72,7 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
     return (
         <Grid>
             <Column size={ 7 } overflow="hidden">
-                <AutoGrid columnCount={ 5 }>
+                <AutoGrid columnCount={ 4 }>
                     { badges && (badges.length > 0) && badges.map((code, index) =>
                         {
                             if(activeBadges.indexOf(code) >= 0) return null;

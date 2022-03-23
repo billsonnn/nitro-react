@@ -8,7 +8,4 @@ import './index.scss';
 //@ts-ignore
 library.add(fas);
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
+ReactDOM.render(<App />, document.getElementById('root'));

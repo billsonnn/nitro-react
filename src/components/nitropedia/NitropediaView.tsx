@@ -1,3 +1,4 @@
+import { NitroLogger } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AddEventLinkTracker, GetConfiguration, NotificationUtilities, RemoveLinkEventTracker } from '../../api';
 import { Base, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
@@ -13,19 +14,27 @@ export const NitropediaView: FC<{}> = props =>
     
     const openPage = useCallback(async (link: string) =>
     {
-        const response = await fetch(link);
-
-        if(!response) return;
-
-        const text = await response.text();
-
-        const splitData = text.split(NEW_LINE_REGEX);
-        
-        BatchUpdates(() =>
+        try
         {
-            setHeader(splitData.shift());
-            setContent(splitData.join(''));
-        });
+            const response = await fetch(link);
+
+            if(!response) return;
+    
+            const text = await response.text();
+    
+            const splitData = text.split(NEW_LINE_REGEX);
+            
+            BatchUpdates(() =>
+            {
+                setHeader(splitData.shift());
+                setContent(splitData.join(''));
+            });
+        }
+
+        catch (error)
+        {
+            NitroLogger.error(`Failed to fetch ${ link }`);
+        }
     }, []);
 
     const onLinkReceived = useCallback((link: string) =>

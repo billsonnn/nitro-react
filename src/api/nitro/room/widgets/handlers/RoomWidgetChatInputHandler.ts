@@ -138,11 +138,14 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
                             newWindow.document.write(image.outerHTML);
                             return null;
                         case ':pickall':
-                            NotificationUtilities.confirm(LocalizeText('room.confirm.pick_all'), () =>
-                                {
-                                    GetSessionDataManager().sendSpecialCommandMessage(':pickall');
-                                },
-                                null, null, null, LocalizeText('generic.alert.title'));
+                            if(this.container.roomSession.isRoomOwner || GetSessionDataManager().isModerator)
+                            {
+                                NotificationUtilities.confirm(LocalizeText('room.confirm.pick_all'), () =>
+                                    {
+                                        GetSessionDataManager().sendSpecialCommandMessage(':pickall');
+                                    },
+                                    null, null, null, LocalizeText('generic.alert.title'));
+                            }
 
                             return null;
                         case ':furni':
@@ -171,8 +174,7 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
                         case ':client':
                         case ':nitro':
                         case ':billsonnn':
-                            // this.container.notificationService.alertWithScrollableMessages([
-                            //     '<div class="d-flex flex-column justify-content-center align-items-center"><div class="nitro-info-box"></div><b>Version: ' + Nitro.RELEASE_VERSION + '</b><br />This client is powered by Nitro HTML5<br /><br /><div class="d-flex"><a class="btn btn-primary" href="https://discord.gg/66UR68FPgy" target="_blank">Discord</a><a class="btn btn-primary" href="https://git.krews.org/nitro" target="_blank">Git</a></div><br /></div>'], 'Nitro HTML5');
+                            NotificationUtilities.showNitroAlert();
                             return null;
                         case ':settings':
                             if(this.container.roomSession.isRoomOwner || GetSessionDataManager().isModerator)

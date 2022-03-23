@@ -121,7 +121,7 @@ export const RoomView: FC<RoomViewProps> = props =>
             GetNitroInstance().render();
         }
 
-        if(elementRef && elementRef.current) elementRef.current.appendChild(canvas);
+        if(elementRef && elementRef.current) elementRef.current.replaceChildren(canvas);
 
         setCanvasId(canvasId);
     }, [ roomSession ]);

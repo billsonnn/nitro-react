@@ -65,11 +65,6 @@ export const RoomToolsWidgetView: FC<{}> = props =>
 
         return () => clearTimeout(timeout);
     }, [ roomName, roomOwner, roomTags ]);
-
-    useEffect(() =>
-    {
-        console.log(navigatorData);
-    }, [ navigatorData ]);
     
     return (
         <Flex className="nitro-room-tools-container" gap={ 2 }>
