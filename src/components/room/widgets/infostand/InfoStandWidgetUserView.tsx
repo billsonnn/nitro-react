@@ -25,7 +25,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     const saveMotto = (motto: string) =>
     {
-        if(!isEditingMotto || (motto.length > 38)) return;
+        if(!isEditingMotto || (motto.length > GetConfiguration<number>('motto.max.legnth', 38))) return;
 
         widgetHandler.processWidgetMessage(new RoomWidgetChangeMottoMessage(motto));
 
@@ -195,7 +195,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                                     { !isEditingMotto &&
                                         <Text fullWidth pointer wrap textBreak small variant="white" onClick={ event => setIsEditingMotto(true) }>{ motto }&nbsp;</Text> }
                                     { isEditingMotto &&
-                                        <input type="text" className="motto-input" maxLength={ 38 } value={ motto } onChange={ event => setMotto(event.target.value) } onBlur={ onMottoBlur } onKeyDown={ onMottoKeyDown } autoFocus={ true } /> }
+                                        <input type="text" className="motto-input" maxLength={ GetConfiguration<number>('motto.max.legnth', 38) } value={ motto } onChange={ event => setMotto(event.target.value) } onBlur={ onMottoBlur } onKeyDown={ onMottoKeyDown } autoFocus={ true } /> }
                                 </Flex>
                             </Flex> }
                     </Flex>
