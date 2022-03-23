@@ -55,14 +55,18 @@
         0,
         5
     ],
+    "catalog.links": {
+        "hc.buy_hc": "habbo_club",
+        "hc.hc_gifts": "club_gifts",
+        "pets.buy_food": "pets_food",
+        "pets.buy_saddle": "horse_saddles"
+    },
     "hc.center": {
         "benefits.info": true,
         "payday.info": true,
         "gift.info": true,
         "benefits.habbopage": "habboclub",
         "payday.habbopage": "hcpayday",
-        "catalog.buy": "habbo_club",
-        "catalog.gifts": "club_gifts"
     },
     "respect.options": {
         "enabled": false,

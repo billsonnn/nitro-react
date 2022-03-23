@@ -1,6 +1,6 @@
 import { PetType, RoomObjectCategory, RoomObjectType, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { GetOwnRoomObject, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUserActionMessage } from '../../../../api';
+import { CreateLinkEvent, GetConfiguration, GetOwnRoomObject, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUserActionMessage } from '../../../../api';
 import { BatchUpdates } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
@@ -116,7 +116,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                     messageType = RoomWidgetUserActionMessage.COMPOST_PLANT;
                     break;
                 case 'buy_saddle':
-                    //this.openCatalogPage(this._Str_11220);
+                    CreateLinkEvent('catalog/open/' + GetConfiguration('catalog.links')['pets.buy_saddle']);
                     break;
             }
 
