@@ -1,6 +1,6 @@
 import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, RequestBotCommandConfigurationComposer, RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetNitroInstance, LocalizeText, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateRentableBotChatEvent, SendMessageComposer } from '../../../../api';
+import { GetConfiguration, GetNitroInstance, LocalizeText, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateRentableBotChatEvent, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Text } from '../../../../common';
 import { UseMessageEventHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
@@ -182,7 +182,7 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
             { (mode === MODE_CHANGE_NAME) &&
                 <Column className="menu-item" onClick={ null } gap={ 1 }>
                     <Text variant="white">{ LocalizeText('bot.skill.name.configuration.new.name') }</Text>
-                    <input type="text" className="form-control form-control-sm" value={ newName } onChange={ event => setNewName(event.target.value) } />
+                    <input type="text" className="form-control form-control-sm" value={ newName } maxLength={ GetConfiguration<number>('bot.name.max.length', 15) } onChange={ event => setNewName(event.target.value) } />
                     <Flex alignItems="center" justifyContent="between" gap={ 1 }>
                         <Button fullWidth variant="secondary" onClick={ event => processAction(null) }>{ LocalizeText('cancel') }</Button>
                         <Button fullWidth variant="success" onClick={ event => processAction('save_bot_name') }>{ LocalizeText('save') }</Button>
@@ -191,7 +191,7 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
             { (mode === MODE_CHANGE_MOTTO) &&
                 <Column className="menu-item" onClick={ null } gap={ 1 }>
                     <Text variant="white">{ LocalizeText('bot.skill.name.configuration.new.motto') }</Text>
-                    <input type="text" className="form-control form-control-sm" value={ newMotto } onChange={ event => setNewMotto(event.target.value) } />
+                    <input type="text" className="form-control form-control-sm" value={ newMotto } maxLength={ GetConfiguration<number>('motto.max.legnth', 38) } onChange={ event => setNewMotto(event.target.value) } />
                     <Flex alignItems="center" justifyContent="between" gap={ 1 }>
                         <Button fullWidth variant="secondary" onClick={ event => processAction(null) }>{ LocalizeText('cancel') }</Button>
                         <Button fullWidth variant="success" onClick={ event => processAction('save_bot_motto') }>{ LocalizeText('save') }</Button>

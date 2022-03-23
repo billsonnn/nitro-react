@@ -91,7 +91,7 @@ export const InventoryBadgeView: FC<InventoryBadgeViewProps> = props =>
                 { badge && (badge.length > 0) &&
                     <Column grow justifyContent="end" gap={ 2 }>
                         <Flex alignItems="center" gap={ 2 }>
-                            <LayoutBadgeImageView badgeCode={ badge } />
+                            <LayoutBadgeImageView shrink badgeCode={ badge } />
                             <Text>{ LocalizeBadgeName(badge) }</Text>
                         </Flex>
                         <Button variant={ (isWearingBadge(badge) ? 'danger' : 'success') } disabled={ !isWearingBadge(badge) && !canWearBadges() } onClick={ toggleBadge }>{ LocalizeText(isWearingBadge(badge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>
