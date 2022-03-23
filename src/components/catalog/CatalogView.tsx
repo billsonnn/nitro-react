@@ -39,7 +39,7 @@ export const CatalogView: FC<{}> = props =>
     const [ frontPageItems, setFrontPageItems ] = useState<FrontPageItem[]>([]);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
     const [ navigationHidden, setNavigationHidden ] = useState(false);
-    const [ purchaseOptions, setPurchaseOptions ] = useState<IPurchaseOptions>({});
+    const [ purchaseOptions, setPurchaseOptions ] = useState<IPurchaseOptions>({ quantity: 1, extraData: null, extraParamRequired: false, previewStuffData: null });
     const [ catalogOptions, setCatalogOptions ] = useState<ICatalogOptions>({});
 
     const resetState = useCallback(() =>

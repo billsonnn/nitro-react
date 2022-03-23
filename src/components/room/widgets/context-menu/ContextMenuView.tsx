@@ -28,7 +28,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     const [ opacity, setOpacity ] = useState(1);
     const [ isFading, setIsFading ] = useState(false);
     const [ fadeTime, setFadeTime ] = useState(0);
-    const [ frozen, setFrozen ] = useState(false);
+    const [ isFrozen, setIsFrozen ] = useState(false);
     const elementRef = useRef<HTMLDivElement>();
 
     const getOffset = useCallback((bounds: NitroRectangle) =>
@@ -156,7 +156,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     {
         let added = false;
 
-        if(!frozen)
+        if(!isFrozen)
         {
             added = true;
 
@@ -167,7 +167,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         {
             if(added) GetTicker().remove(update);
         }
-    }, [ frozen, update ]);
+    }, [ isFrozen, update ]);
 
     useEffect(() =>
     {
@@ -178,5 +178,5 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         return () => clearTimeout(timeout);
     }, [ fades ]);
 
-    return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } { ...rest } />;
+    return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } onMouseOver={ event => setIsFrozen(true) } onMouseOut={ event => setIsFrozen(false) } { ...rest } />;
 }

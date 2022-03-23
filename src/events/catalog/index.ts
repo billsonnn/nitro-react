@@ -9,7 +9,6 @@ export * from './CatalogPurchaseFailureEvent';
 export * from './CatalogPurchaseNotAllowedEvent';
 export * from './CatalogPurchaseOverrideEvent';
 export * from './CatalogPurchaseSoldOutEvent';
-export * from './CatalogSetExtraPurchaseParameterEvent';
 export * from './CatalogSetRoomPreviewerStuffDataEvent';
 export * from './CatalogWidgetEvent';
 export * from './SetRoomPreviewerStuffDataEvent';

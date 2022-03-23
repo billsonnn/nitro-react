@@ -2,7 +2,7 @@ import { PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetClubMemberLevel, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Button, LayoutLoadingSpinnerView } from '../../../../../common';
-import { CatalogEvent, CatalogInitGiftEvent, CatalogInitPurchaseEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, CatalogSetExtraPurchaseParameterEvent, CatalogWidgetEvent } from '../../../../../events';
+import { CatalogEvent, CatalogInitGiftEvent, CatalogInitPurchaseEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, CatalogWidgetEvent } from '../../../../../events';
 import { DispatchUiEvent, UseUiEvent } from '../../../../../hooks';
 import { GetCurrencyAmount } from '../../../../purse/common/CurrencyHelper';
 import { useCatalogContext } from '../../../CatalogContext';
@@ -31,22 +31,6 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
     }, [ currentOffer ]);
 
     UseUiEvent(CatalogWidgetEvent.INIT_PURCHASE, onCatalogInitPurchaseEvent);
-
-    const onCatalogSetExtraPurchaseParameterEvent = useCallback((event: CatalogSetExtraPurchaseParameterEvent) =>
-    {
-        if(!currentOffer) return;
-
-        setPurchaseOptions(prevValue =>
-            {
-                const newValue = { ...prevValue };
-
-                newValue.extraData = event.parameter;
-
-                return newValue;
-            });
-    }, [ currentOffer, setPurchaseOptions ]);
-
-    UseUiEvent(CatalogWidgetEvent.SET_EXTRA_PARM, onCatalogSetExtraPurchaseParameterEvent);
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
@@ -134,7 +118,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         return () =>
         {
             setPurchaseState(CatalogPurchaseState.NONE);
-            setPurchaseOptions({ quantity: 1, extraData: '', extraParamRequired: false, previewStuffData: null });
+            setPurchaseOptions({ quantity: 1, extraData: null, extraParamRequired: false, previewStuffData: null });
         }
     }, [ currentOffer, setPurchaseOptions ]);
 

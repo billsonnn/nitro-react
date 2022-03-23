@@ -77,10 +77,12 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
 
         setPurchaseOptions(prevValue =>
             {
-                const extraData = selectedOfferForGroup[selectedGroupIndex].product.extraParam;
-                const extraParamRequired = true;
+                const newValue = { ...prevValue };
+                
+                newValue.extraData = selectedOfferForGroup[selectedGroupIndex].product.extraParam;
+                newValue.extraParamRequired = true;
 
-                return { ...prevValue, extraData, extraParamRequired };
+                return newValue;
             });
     }, [ currentOffer, selectedGroupIndex, selectedOfferForGroup, setPurchaseOptions ]);
 
