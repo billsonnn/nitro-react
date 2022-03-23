@@ -2,7 +2,7 @@ import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent
 import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/user/GuildMembershipsMessageEvent';
 import { FC, useCallback } from 'react';
 import { GetFurnitureData, GetProductDataForLocalization, LocalizeText, NotificationAlertType, NotificationUtilities } from '../../api';
-import { CatalogGiftReceiverNotFoundEvent, CatalogNameResultEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, CatalogSetExtraPurchaseParameterEvent } from '../../events';
+import { CatalogGiftReceiverNotFoundEvent, CatalogNameResultEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent } from '../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../hooks';
 import { useCatalogContext } from './CatalogContext';
 import { CatalogNode } from './common/CatalogNode';
@@ -20,7 +20,7 @@ import { SubscriptionInfo } from './common/SubscriptionInfo';
 
 export const CatalogMessageHandler: FC<{}> = props =>
 {
-    const { setIsBusy, pageId, currentType, setRootNode, setOffersToNodes, currentPage, setCurrentOffer, setFrontPageItems, resetState, showCatalogPage, setCatalogOptions = null } = useCatalogContext();
+    const { setIsBusy, pageId, currentType, setRootNode, setOffersToNodes, currentPage, setCurrentOffer, setFrontPageItems, resetState, showCatalogPage, setCatalogOptions, setPurchaseOptions } = useCatalogContext();
 
     const onCatalogPagesListEvent = useCallback((event: CatalogPagesListEvent) =>
     {
@@ -153,11 +153,21 @@ export const CatalogMessageHandler: FC<{}> = props =>
 
         if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
         {
-            DispatchUiEvent(new CatalogSetExtraPurchaseParameterEvent(offer.product.extraParam));
+            if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
+            {
+                setPurchaseOptions(prevValue =>
+                    {
+                        const newValue = { ...prevValue };
+        
+                        newValue.extraData =( offer.product.extraParam || null);
+        
+                        return newValue;
+                    });
+            }
         }
 
         // (this._isObjectMoverRequested) && (this._purchasableOffer)
-    }, [ currentType, currentPage, setCurrentOffer ]);
+    }, [ currentType, currentPage, setCurrentOffer, setPurchaseOptions ]);
 
     const onSellablePetPalettesMessageEvent = useCallback((event: SellablePetPalettesMessageEvent) =>
     {

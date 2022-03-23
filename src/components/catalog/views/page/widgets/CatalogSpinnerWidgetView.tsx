@@ -24,9 +24,11 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
 
         setPurchaseOptions(prevValue =>
             {
-                const quantity = value;
+                const newValue = { ...prevValue };
 
-                return { ...prevValue, quantity };
+                newValue.quantity = value;
+
+                return newValue;
             });
     }
 

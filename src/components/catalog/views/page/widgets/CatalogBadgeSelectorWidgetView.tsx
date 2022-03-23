@@ -43,10 +43,13 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
 
         setPurchaseOptions(prevValue =>
             {
-                const extraParamRequired = true;
-                const extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
+                const newValue = { ...prevValue };
 
-                return { ...prevValue, extraParamRequired, extraData, previewStuffData };
+                newValue.extraParamRequired = true;
+                newValue.extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
+                newValue.previewStuffData = previewStuffData;
+
+                return newValue;
             });
     }, [ currentOffer, previewStuffData, setPurchaseOptions ]);
 
@@ -57,10 +60,10 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
 
     return (
         <AutoGrid columnCount={ columnCount } { ...rest }>
-            { badges && (badges.length > 0) && badges.map(code =>
+            { badges && (badges.length > 0) && badges.map((code, index) =>
                 {
                     return (
-                        <LayoutGridItem key={ code } itemActive={ (currentBadge === code) } onClick={ event => setCurrentBadge(code) }> 
+                        <LayoutGridItem key={ index } itemActive={ (currentBadge === code) } onClick={ event => setCurrentBadge(code) }> 
                             <LayoutBadgeImageView badgeCode={ code } />
                         </LayoutGridItem>
                     );
