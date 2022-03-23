@@ -7,7 +7,6 @@ export * from './hc-center';
 export * from './help';
 export * from './inventory';
 export * from './mod-tools';
-export * from './navigator';
 export * from './notification-center';
 export * from './room-widgets';
 export * from './room-widgets/thumbnail';

@@ -1,6 +1,6 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction } from 'react';
-import { AutoGrid } from '../../../../common/AutoGrid';
+import { AutoGrid } from '../../../../common';
 import { AchievementListItemView } from './AchievementListItemView';
 
 export interface AchievementListViewProps

@@ -1,4 +1,4 @@
-import { NavigatorCategoryDataParser, NavigatorSearchResultSet, NavigatorTopLevelContext } from '@nitrots/nitro-renderer';
+import { NavigatorCategoryDataParser, NavigatorSearchResultSet, NavigatorTopLevelContext, RoomDataParser } from '@nitrots/nitro-renderer';
 import { createContext, Dispatch, FC, ProviderProps, SetStateAction, useContext } from 'react';
 import { NavigatorData } from './common/NavigatorData';
 
@@ -12,6 +12,8 @@ interface INavigatorContext
     setTopLevelContexts: Dispatch<SetStateAction<NavigatorTopLevelContext[]>>;
     navigatorData: NavigatorData;
     setNavigatorData: Dispatch<SetStateAction<NavigatorData>>;
+    doorData: { roomInfo: RoomDataParser, state: number };
+    setDoorData: Dispatch<SetStateAction<{ roomInfo: RoomDataParser, state: number }>>;
     searchResult: NavigatorSearchResultSet;
     setSearchResult: Dispatch<SetStateAction<NavigatorSearchResultSet>>;
 }
@@ -25,6 +27,8 @@ const NavigatorContext = createContext<INavigatorContext>({
     setTopLevelContexts: null,
     navigatorData: null,
     setNavigatorData: null,
+    doorData: null,
+    setDoorData: null,
     searchResult: null,
     setSearchResult: null
 });

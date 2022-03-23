@@ -3,8 +3,8 @@ import { RoomDataParser } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent } from 'react';
 import { CreateRoomSession, GetSessionDataManager, TryVisitRoom } from '../../../../api';
 import { Column, Flex, LayoutBadgeImageView, LayoutGridItemProps, LayoutRoomThumbnailView, Text } from '../../../../common';
-import { UpdateDoorStateEvent } from '../../../../events';
-import { DispatchUiEvent } from '../../../../hooks';
+import { DoorStateType } from '../../common/DoorStateType';
+import { useNavigatorContext } from '../../NavigatorContext';
 import { NavigatorSearchResultItemInfoView } from './NavigatorSearchResultItemInfoView';
 
 export interface NavigatorSearchResultItemViewProps extends LayoutGridItemProps
@@ -16,6 +16,7 @@ export interface NavigatorSearchResultItemViewProps extends LayoutGridItemProps
 export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProps> = props =>
 {
     const { roomData = null, children = null, thumbnail = false, ...rest } = props;
+    const { setDoorData = null } = useNavigatorContext();
 
     function getUserCounterColor(): string
     {
@@ -53,10 +54,26 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
             switch(roomData.doorMode)
             {
                 case RoomDataParser.DOORBELL_STATE:
-                    DispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.START_DOORBELL, roomData));
+                    setDoorData(prevValue =>
+                        {
+                            const newValue = { ...prevValue };
+        
+                            newValue.roomInfo = roomData;
+                            newValue.state = DoorStateType.START_DOORBELL;
+        
+                            return newValue;
+                        });
                     return;
                 case RoomDataParser.PASSWORD_STATE:
-                    DispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.START_PASSWORD, roomData));
+                    setDoorData(prevValue =>
+                        {
+                            const newValue = { ...prevValue };
+        
+                            newValue.roomInfo = roomData;
+                            newValue.state = DoorStateType.START_PASSWORD;
+        
+                            return newValue;
+                        });
                     return;
             }
         }

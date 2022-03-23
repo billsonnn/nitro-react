@@ -10,8 +10,8 @@ import { WiredMessageHandler } from './WiredMessageHandler';
 export const WiredView: FC<{}> = props =>
 {
     const [ trigger, setTrigger ] = useState<Triggerable>(null);
-    const [ intParams, setIntParams ] = useState<number[]>(null);
-    const [ stringParam, setStringParam ] = useState<string>(null);
+    const [ intParams, setIntParams ] = useState<number[]>([]);
+    const [ stringParam, setStringParam ] = useState<string>('');
     const [ furniIds, setFurniIds ] = useState<number[]>([]);
     const [ actionDelay, setActionDelay ] = useState<number>(null);
 

@@ -1,3 +1,4 @@
+export * from './achievements';
 export * from './common';
 export * from './core';
 export * from './friends';

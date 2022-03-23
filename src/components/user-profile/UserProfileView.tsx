@@ -56,12 +56,23 @@ export const UserProfileView: FC<{}> = props =>
     const onUserProfileEvent = useCallback((event: UserProfileEvent) =>
     {
         const parser = event.getParser();
+
+        let isSameProfile = false;
         
         BatchUpdates(() =>
         {
-            setUserProfile(parser);
-            setUserBadges([]);
-            setUserRelationships(null);
+            setUserProfile(prevValue =>
+                {
+                    if(prevValue && prevValue.id) isSameProfile = (prevValue.id === parser.id);
+
+                    return parser;
+                });
+
+            if(!isSameProfile)
+            {
+                setUserBadges([]);
+                setUserRelationships(null);
+            }
         });
 
         SendMessageComposer(new UserCurrentBadgesComposer(parser.id));

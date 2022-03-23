@@ -1,6 +1,6 @@
 import { Dispatch, FC, SetStateAction } from 'react';
-import { AutoGrid } from '../../../../common/AutoGrid';
-import { AchievementCategory } from '../../common/AchievementCategory';
+import { AchievementCategory } from '../../../../api';
+import { AutoGrid } from '../../../../common';
 import { AchievementsCategoryListItemView } from './AchievementsCategoryListItemView';
 
 export interface AchievementsCategoryListViewProps

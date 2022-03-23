@@ -33,7 +33,7 @@ export const WiredActionBotFollowAvatarView: FC<{}> = props =>
     }, [ trigger ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
             <Column gap={ 1 }>
                 <label className="fw-bold">{ LocalizeText('wiredfurni.params.bot.name') }</label>
                 <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />

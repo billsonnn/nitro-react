@@ -1,13 +1,13 @@
 import { CanCreateRoomEventEvent, CantConnectMessageParser, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomResultEvent, HabboWebTools, LegacyExternalInterface, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomInfoComposer, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateLinkEvent, CreateRoomSession, GetConfiguration, GetSessionDataManager, LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
-import { UpdateDoorStateEvent } from '../../events';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../hooks';
+import { BatchUpdates, UseMessageEventHook } from '../../hooks';
+import { DoorStateType } from './common/DoorStateType';
 import { useNavigatorContext } from './NavigatorContext';
 
 export const NavigatorMessageHandler: FC<{}> = props =>
 {
-    const { setCategories = null, setTopLevelContext = null, topLevelContexts = null, setTopLevelContexts = null, setNavigatorData = null, setSearchResult = null } = useNavigatorContext();
+    const { setCategories = null, setTopLevelContext = null, topLevelContexts = null, setTopLevelContexts = null, setNavigatorData = null, setDoorData = null, setSearchResult = null } = useNavigatorContext();
 
     const onRoomSettingsUpdatedEvent = useCallback((event: RoomSettingsUpdatedEvent) =>
     {
@@ -92,6 +92,8 @@ export const NavigatorMessageHandler: FC<{}> = props =>
 
         if(parser.roomEnter)
         {
+            setDoorData({ roomInfo: null, state: DoorStateType.NONE });
+            
             setNavigatorData(prevValue =>
                 {
                     const newValue = { ...prevValue };
@@ -123,10 +125,26 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                 switch(parser.data.doorMode)
                 {
                     case RoomDataParser.DOORBELL_STATE:
-                        DispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.START_DOORBELL, parser.data));
+                        setDoorData(prevValue =>
+                            {
+                                const newValue = { ...prevValue };
+
+                                newValue.roomInfo = parser.data;
+                                newValue.state = DoorStateType.START_DOORBELL;
+
+                                return newValue;
+                            });
                         return;
                     case RoomDataParser.PASSWORD_STATE:
-                        DispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.START_PASSWORD, parser.data));
+                        setDoorData(prevValue =>
+                            {
+                                const newValue = { ...prevValue };
+
+                                newValue.roomInfo = parser.data;
+                                newValue.state = DoorStateType.START_PASSWORD;
+
+                                return newValue;
+                            });
                         return;
                 }
             }
@@ -147,7 +165,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                     return newValue;
                 });
         }
-    }, [ setNavigatorData ]);
+    }, [ setNavigatorData, setDoorData ]);
 
     const onRoomScoreEvent = useCallback((event: RoomScoreEvent) =>
     {
@@ -170,9 +188,16 @@ export const NavigatorMessageHandler: FC<{}> = props =>
 
         if(!parser.userName || (parser.userName.length === 0))
         {
-            DispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.STATE_WAITING));
+            setDoorData(prevValue =>
+                {
+                    const newValue = { ...prevValue };
+
+                    newValue.state = DoorStateType.STATE_WAITING;
+
+                    return newValue;
+                });
         }
-    }, []);
+    }, [ setDoorData ]);
 
     const onRoomDoorbellAcceptedEvent = useCallback((event: RoomDoorbellAcceptedEvent) =>
     {
@@ -180,9 +205,16 @@ export const NavigatorMessageHandler: FC<{}> = props =>
 
         if(!parser.userName || (parser.userName.length === 0))
         {
-            DispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.STATE_ACCEPTED));
+            setDoorData(prevValue =>
+                {
+                    const newValue = { ...prevValue };
+
+                    newValue.state = DoorStateType.STATE_ACCEPTED;
+
+                    return newValue;
+                });
         }
-    }, []);
+    }, [ setDoorData ]);
 
     const onRoomDoorbellRejectedEvent = useCallback((event: RoomDoorbellRejectedEvent) =>
     {
@@ -190,9 +222,16 @@ export const NavigatorMessageHandler: FC<{}> = props =>
 
         if(!parser.userName || (parser.userName.length === 0))
         {
-            DispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.STATE_NO_ANSWER));
+            setDoorData(prevValue =>
+                {
+                    const newValue = { ...prevValue };
+
+                    newValue.state = DoorStateType.STATE_NO_ANSWER;
+
+                    return newValue;
+                });
         }
-    }, []);
+    }, [ setDoorData ]);
 
     const onGenericErrorEvent = useCallback((event: GenericErrorEvent) =>
     {
@@ -201,10 +240,33 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         switch(parser.errorCode)
         {
             case -100002:
-                DispatchUiEvent(new UpdateDoorStateEvent(UpdateDoorStateEvent.STATE_WRONG_PASSWORD));
-                break;
+                setDoorData(prevValue =>
+                    {
+                        const newValue = { ...prevValue };
+    
+                        newValue.state = DoorStateType.STATE_WRONG_PASSWORD;
+    
+                        return newValue;
+                    });
+                return;
+            case 4009:
+                NotificationUtilities.simpleAlert(LocalizeText('navigator.alert.need.to.be.vip'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
+
+                return;
+            case 4010:
+                NotificationUtilities.simpleAlert(LocalizeText('navigator.alert.invalid_room_name'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
+
+                return;
+            case 4011:
+                NotificationUtilities.simpleAlert(LocalizeText('navigator.alert.cannot_perm_ban'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
+
+                return;
+            case 4013:
+                NotificationUtilities.simpleAlert(LocalizeText('navigator.alert.room_in_maintenance'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
+
+                return;
         }
-    }, []);
+    }, [ setDoorData ]);
 
     const onNavigatorMetadataEvent = useCallback((event: NavigatorMetadataEvent) =>
     {
@@ -296,7 +358,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         let forwardType = -1;
         let forwardId = -1;
 
-        if(GetConfiguration<string>('friend.id') !== undefined)
+        if((GetConfiguration<string>('friend.id') !== undefined) && (parseInt(GetConfiguration<string>('friend.id')) > 0))
         {
             forwardType = 0;
             SendMessageComposer(new FollowFriendMessageComposer(parseInt(GetConfiguration<string>('friend.id'))));
@@ -316,16 +378,13 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         else if((forwardType === -1) && (parser.roomIdToEnter > 0))
         {
             CreateLinkEvent('navigator/close');
-            CreateRoomSession(parser.roomIdToEnter);
 
             if(parser.roomIdToEnter !== parser.homeRoomId)
             {
-                CreateLinkEvent('navigator/close');
                 CreateRoomSession(parser.roomIdToEnter);
             }
             else
             {
-                CreateLinkEvent('navigator/close');
                 CreateRoomSession(parser.homeRoomId);
             }
         }

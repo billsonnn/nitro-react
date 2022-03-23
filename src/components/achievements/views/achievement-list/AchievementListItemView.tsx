@@ -1,9 +1,9 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { LayoutGridItem, LayoutGridItemProps } from '../../../../common/layout/LayoutGridItem';
-import { AchievementBadgeView } from '../achievement-badge/AchievementBadgeView';
+import { LayoutGridItem, LayoutGridItemProps } from '../../../../common';
+import { AchievementBadgeView } from '../AchievementBadgeView';
 
-export interface AchievementListItemViewProps extends LayoutGridItemProps
+interface AchievementListItemViewProps extends LayoutGridItemProps
 {
     achievement: AchievementData;
 }

@@ -11,13 +11,14 @@ import { WiredBaseView } from '../WiredBaseView';
 
 export interface WiredActionBaseViewProps
 {
+    hasSpecialInput: boolean;
     requiresFurni: number;
     save: () => void;
 }
 
 export const WiredActionBaseView: FC<WiredActionBaseViewProps> = props =>
 {
-    const { requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, children = null } = props;
+    const { requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, hasSpecialInput = false, children = null } = props;
     const [ delay, setDelay ] = useState(-1);
     const { trigger = null, setActionDelay = null } = useWiredContext();
 
@@ -34,7 +35,7 @@ export const WiredActionBaseView: FC<WiredActionBaseViewProps> = props =>
     }, [ delay, save, setActionDelay ]);
 
     return (
-        <WiredBaseView wiredType="action" requiresFurni={ requiresFurni } save={ onSave }>
+        <WiredBaseView wiredType="action" requiresFurni={ requiresFurni } save={ onSave } hasSpecialInput={ hasSpecialInput }>
             { children }
             { !!children && <hr className="m-0 bg-dark" /> }
             <Column>
