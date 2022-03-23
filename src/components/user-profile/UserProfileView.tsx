@@ -63,7 +63,7 @@ export const UserProfileView: FC<{}> = props =>
         {
             setUserProfile(prevValue =>
                 {
-                    isSameProfile = (prevValue.id === parser.id);
+                    if(prevValue && prevValue.id) isSameProfile = (prevValue.id === parser.id);
 
                     return parser;
                 });
