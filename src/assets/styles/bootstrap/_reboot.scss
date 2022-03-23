@@ -65,7 +65,7 @@ body {
 hr {
     margin: $hr-margin-y 0;
     color: $hr-color; // 1
-    background-color: currentColor;
+    background-color: rgba(black,.2);
     border: 0;
     opacity: $hr-opacity;
 }
