@@ -12,13 +12,14 @@ export interface WiredBaseViewProps
 {
     wiredType: string;
     requiresFurni: number;
+    hasSpecialInput: boolean;
     save: () => void;
     validate?: () => boolean;
 }
 
 export const WiredBaseView: FC<WiredBaseViewProps> = props =>
 {
-    const { wiredType = '', requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, validate = null, children = null } = props;
+    const { wiredType = '', requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, validate = null, children = null, hasSpecialInput = false } = props;
     const [ wiredName, setWiredName ] = useState<string>(null);
     const [ wiredDescription, setWiredDescription ] = useState<string>(null);
     const { trigger = null, setTrigger = null, setIntParams = null, setStringParam = null, setFurniIds = null } = useWiredContext();
@@ -57,23 +58,30 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                 setWiredDescription(furniData.description);
             }
 
-            setIntParams(trigger.intData);
-            setStringParam(trigger.stringData);
-            setFurniIds(prevValue =>
-                {
-                    if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
-
-                    if(trigger.selectedItems && trigger.selectedItems.length)
+            if(hasSpecialInput)
+            {
+                setIntParams(trigger.intData);
+                setStringParam(trigger.stringData);
+            }
+            
+            if(requiresFurni > WiredFurniType.STUFF_SELECTION_OPTION_NONE)
+            {
+                setFurniIds(prevValue =>
                     {
-                        WiredSelectionVisualizer.applySelectionShaderToFurni(trigger.selectedItems);
-
-                        return trigger.selectedItems;
-                    }
-
-                    return [];
-                });
+                        if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
+    
+                        if(trigger.selectedItems && trigger.selectedItems.length)
+                        {
+                            WiredSelectionVisualizer.applySelectionShaderToFurni(trigger.selectedItems);
+    
+                            return trigger.selectedItems;
+                        }
+    
+                        return [];
+                    });
+            }
         });
-    }, [ trigger, setIntParams, setStringParam, setFurniIds ]);
+    }, [trigger, setIntParams, setStringParam, setFurniIds, hasSpecialInput, requiresFurni]);
 
     return (
         <NitroCardView uniqueKey="nitro-wired" className="nitro-wired" theme="primary-slim">
