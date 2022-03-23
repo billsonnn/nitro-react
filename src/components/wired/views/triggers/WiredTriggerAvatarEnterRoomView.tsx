@@ -30,7 +30,7 @@ export const WiredTriggerAvatarEnterRoomView: FC<{}> = props =>
     }, [ trigger ]);
 
     return (
-        <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+        <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
             <Column gap={ 1 }>
                 <Text bold>{ LocalizeText('wiredfurni.params.picktriggerer') }</Text>
                 <Flex alignItems="center" gap={ 1 }>

@@ -1,5 +1,6 @@
 import { WiredFurniActionEvent, WiredFurniConditionEvent, WiredFurniTriggerEvent, WiredOpenEvent, WiredRewardResultMessageEvent, WiredSaveSuccessEvent, WiredValidationErrorEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
+import { LocalizeText, NotificationAlertType, NotificationUtilities } from '../../api';
 import { UseMessageEventHook } from '../../hooks/messages';
 import { useWiredContext } from './context/WiredContext';
 
@@ -51,6 +52,7 @@ export const WiredMessageHandler: FC<{}> = props =>
     {
         const parser = event.getParser();
 
+        NotificationUtilities.simpleAlert(parser.info, NotificationAlertType.DEFAULT, null, null, LocalizeText('error.title'));
         console.log(parser);
     }, []);
 
