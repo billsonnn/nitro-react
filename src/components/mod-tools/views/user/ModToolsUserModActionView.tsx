@@ -15,8 +15,8 @@ interface ModToolsUserModActionViewProps
 const MOD_ACTION_DEFINITIONS = [
     new ModActionDefinition(1, 'Alert', ModActionDefinition.ALERT, 1, 0),
     new ModActionDefinition(2, 'Mute 1h', ModActionDefinition.MUTE, 2, 0),
-    new ModActionDefinition(4, 'Ban 7 days', ModActionDefinition.BAN, 4, 0),
     new ModActionDefinition(3, 'Ban 18h', ModActionDefinition.BAN, 3, 0),
+    new ModActionDefinition(4, 'Ban 7 days', ModActionDefinition.BAN, 4, 0),
     new ModActionDefinition(5, 'Ban 30 days (step 1)', ModActionDefinition.BAN, 5, 0),
     new ModActionDefinition(7, 'Ban 30 days (step 2)', ModActionDefinition.BAN, 7, 0),
     new ModActionDefinition(6, 'Ban 100 years', ModActionDefinition.BAN, 6, 0),
@@ -98,14 +98,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                     return;
                 }
 
-                if(message.trim().length === 0)
-                {
-                    sendAlert('Please write a message to user');
-
-                    return;
-                }
-
-                SendMessageComposer(new ModAlertMessageComposer(user.userId, message, category.id));
+                SendMessageComposer(new ModAlertMessageComposer(user.userId, messageOrDefault, category.id));
                 break;
             }
             case ModActionDefinition.MUTE: 
@@ -172,9 +165,9 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                     <Text small>Optional message type, overrides default</Text>
                     <textarea className="form-control" value={ message } onChange={ event => setMessage(event.target.value) }/>
                 </Column>
-                <Flex justifyContent="between" gap={ 1 }>
-                    <Button variant="danger" onClick={ sendSanction }>Sanction</Button>
-                    <Button variant="success" onClick={ sendDefaultSanction }>Default Sanction</Button>
+                <Flex justifyContent="between" gap={1}>
+                    <Button variant="primary" onClick={ sendDefaultSanction }>Default Sanction</Button>
+                    <Button variant="success" onClick={ sendSanction }>Sanction</Button>
                 </Flex>
             </NitroCardContentView>
         </NitroCardView>
