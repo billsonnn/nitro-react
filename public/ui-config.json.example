@@ -14,6 +14,8 @@
     "camera.publish.disabled": false,
     "hc.disabled": false,
     "badge.descriptions.enabled": true,
+    "motto.max.length": 38,
+    "bot.name.max.length": 15,
     "hotelview": {
         "show.avatar": true,
         "widgets": {
