@@ -4,13 +4,14 @@ import { WiredBaseView } from '../WiredBaseView';
 
 export interface WiredConditionBaseViewProps
 {
+    hasSpecialInput: boolean;
     requiresFurni: number;
     save: () => void;
 }
 
 export const WiredConditionBaseView: FC<WiredConditionBaseViewProps> = props =>
 {
-    const { requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, children = null } = props;
+    const { requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, hasSpecialInput = false, children = null } = props;
     
     const onSave = useCallback(() =>
     {
@@ -18,7 +19,7 @@ export const WiredConditionBaseView: FC<WiredConditionBaseViewProps> = props =>
     }, [ save ]);
 
     return (
-        <WiredBaseView wiredType="condition" requiresFurni={ requiresFurni } save={ onSave }>
+        <WiredBaseView wiredType="condition" requiresFurni={ requiresFurni } hasSpecialInput={ hasSpecialInput } save={ onSave }>
             { children }
         </WiredBaseView>
     );
