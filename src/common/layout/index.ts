@@ -11,6 +11,7 @@ export * from './LayoutMiniCameraView';
 export * from './LayoutNotificationAlertView';
 export * from './LayoutNotificationBubbleView';
 export * from './LayoutPetImageView';
+export * from './LayoutProgressBar';
 export * from './LayoutRarityLevelView';
 export * from './LayoutRoomPreviewerView';
 export * from './LayoutRoomThumbnailView';
