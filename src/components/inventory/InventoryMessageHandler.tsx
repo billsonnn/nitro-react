@@ -48,6 +48,8 @@ export const InventoryMessageHandler: FC<{}> = props =>
             type: InventoryFurnitureActions.PROCESS_FRAGMENT,
             payload: { fragment, unseenTracker }
         });
+
+        furniMsgFragments = null;
     }, [ unseenTracker, dispatchFurnitureState ]);
 
     const onFurnitureListInvalidateEvent = useCallback((event: FurnitureListInvalidateEvent) =>
