@@ -9,12 +9,12 @@ import { useRoomContext } from '../../RoomContext';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
 {
-    const [ isZoomedIn, setIsZoomedIn ] = useState(false);
-    const [ roomName, setRoomName ] = useState(null);
-    const [ roomOwner, setRoomOwner ] = useState(null);
-    const [ roomTags, setRoomTags ] = useState(null);
-    const [ roomInfoDisplay, setRoomInfoDisplay ] = useState(false);
-    const [ isOpen, setIsOpen ] = useState(false);
+    const [ isZoomedIn, setIsZoomedIn ] = useState<boolean>(false);
+    const [ roomName, setRoomName ] = useState<string>(null);
+    const [ roomOwner, setRoomOwner ] = useState<string>(null);
+    const [ roomTags, setRoomTags ] = useState<string[]>(null);
+    const [ roomInfoDisplay, setRoomInfoDisplay ] = useState<boolean>(false);
+    const [ isOpen, setIsOpen ] = useState<boolean>(false);
     const [ navigatorData, setNavigatorData ] = useSharedState<NavigatorData>('@navigatorData');
     const { widgetHandler = null } = useRoomContext();
 
@@ -85,7 +85,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                             </Column>
                             { roomTags && roomTags.length > 0 &&
                                 <Flex gap={ 2 }>
-                                    { roomTags.map((tag: string) => <Text small variant="white" className="rounded bg-primary p-1">#{ tag }</Text>) }
+                                    { roomTags.map((tag, index) => <Text key={ index } small variant="white" className="rounded bg-primary p-1">#{ tag }</Text>) }
                                 </Flex> }
                         </Column>
                     </Column>
