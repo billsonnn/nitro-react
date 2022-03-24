@@ -1,11 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Flex, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 const directionOptions: { value: number, icon: string }[] = [
@@ -47,10 +44,7 @@ export const WiredActionMoveFurniView: FC<{}> = props =>
     const [ rotation, setRotation ] = useState(-1);
     const { trigger = null, setIntParams = null } = useWiredContext();
 
-    const save = useCallback(() =>
-    {
-        setIntParams([ movement, rotation ]);
-    }, [ movement, rotation, setIntParams ]);
+    const save = () => setIntParams([ movement, rotation ]);
 
     useEffect(() =>
     {

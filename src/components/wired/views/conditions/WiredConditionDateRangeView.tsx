@@ -1,10 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredDateToString, WiredFurniType } from '../../../../api';
+import { Column, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { useWiredContext } from '../../WiredContext';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 export const WiredConditionDateRangeView: FC<{}> = props =>
@@ -13,12 +11,7 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
     const [ endDate, setEndDate ] = useState('');
     const { trigger = null, setIntParams = null } = useWiredContext();
 
-    const dateToString = useCallback((date: Date) =>
-    {
-        return `${date.getFullYear()}/${('0' + (date.getMonth() + 1)).slice(-2)}/${('0' + date.getDate()).slice(-2)}${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}`;
-    }, []);
-
-    const save = useCallback(() =>
+    const save = () =>
     {
         let startDateMili = 0;
         let endDateMili = 0;
@@ -33,7 +26,7 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
         }
 
         setIntParams([startDateMili, endDateMili]);
-    }, [ startDate, endDate, setIntParams ]);
+    }
 
     useEffect(() =>
     {
@@ -48,11 +41,11 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
 
             BatchUpdates(() =>
             {
-                setStartDate(dateToString(startDate));
-                setEndDate(dateToString(endDate));
+                setStartDate(WiredDateToString(startDate));
+                setEndDate(WiredDateToString(endDate));
             });
         }
-    }, [ trigger, dateToString ]);
+    }, [ trigger ]);
     
     return (
         <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>

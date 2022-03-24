@@ -1,12 +1,9 @@
 import { WiredActionDefinition } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
-import { GetWiredTimeLocale } from '../../common/GetWiredTimeLocale';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { GetWiredTimeLocale, LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Text } from '../../../../common';
+import { useWiredContext } from '../../WiredContext';
 import { WiredBaseView } from '../WiredBaseView';
 
 export interface WiredActionBaseViewProps

@@ -1,14 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { LocalizeText } from '../../../../api';
+import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Button } from '../../../../common/Button';
 import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
 import { Text } from '../../../../common/Text';
 import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionGiveRewardView: FC<{}> = props =>

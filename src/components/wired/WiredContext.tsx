@@ -13,6 +13,7 @@ export interface IWiredContext
     setFurniIds: Dispatch<SetStateAction<number[]>>;
     actionDelay: number;
     setActionDelay: Dispatch<SetStateAction<number>>;
+    saveWired: () => void;
 }
 
 const WiredContext = createContext<IWiredContext>({
@@ -25,7 +26,8 @@ const WiredContext = createContext<IWiredContext>({
     furniIds: null,
     setFurniIds: null,
     actionDelay: null,
-    setActionDelay: null
+    setActionDelay: null,
+    saveWired: null
 });
 
 export const WiredContextProvider: FC<ProviderProps<IWiredContext>> = props =>

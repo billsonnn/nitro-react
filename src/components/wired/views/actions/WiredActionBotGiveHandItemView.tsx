@@ -1,10 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 const ALLOWED_HAND_ITEM_IDS: number[] = [ 2, 5, 7, 8, 9, 10, 27 ];
@@ -15,14 +13,14 @@ export const WiredActionBotGiveHandItemView: FC<{}> = props =>
     const [ handItemId, setHandItemId ] = useState(-1);
     const { trigger = null, setStringParam = null, setIntParams = null } = useWiredContext();
 
-    const save = useCallback(() =>
+    const save = () =>
     {
         BatchUpdates(() =>
         {
             setStringParam(botName);
             setIntParams([ handItemId ]);
         });
-    }, [ handItemId, botName, setStringParam, setIntParams ]);
+    }
 
     useEffect(() =>
     {
@@ -43,10 +41,7 @@ export const WiredActionBotGiveHandItemView: FC<{}> = props =>
                 <Text bold>{ LocalizeText('wiredfurni.params.handitem') }</Text>
                 <select className="form-select form-select-sm" value={ handItemId } onChange={ event => setHandItemId(parseInt(event.target.value)) }>
                     <option value="0">------</option>
-                    { ALLOWED_HAND_ITEM_IDS.map(value =>
-                        {
-                            return <option key={ value } value={ value }>{ LocalizeText(`handitem${ value }`) }</option>
-                        }) }
+                    { ALLOWED_HAND_ITEM_IDS.map(value => <option key={ value } value={ value }>{ LocalizeText(`handitem${ value }`) }</option>) }
                 </select>
             </Column>
         </WiredActionBaseView>

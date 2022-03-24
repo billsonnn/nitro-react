@@ -1,11 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Flex, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { useWiredContext } from '../../WiredContext';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
 
 export const WiredTriggerAvatarEnterRoomView: FC<{}> = props =>
@@ -14,11 +11,7 @@ export const WiredTriggerAvatarEnterRoomView: FC<{}> = props =>
     const [ avatarMode, setAvatarMode ] = useState(0);
     const { trigger = null, setStringParam = null } = useWiredContext();
 
-    const save = useCallback(() =>
-    {
-        if(avatarMode === 1) setStringParam(username);
-        else setStringParam('');
-    }, [ username, avatarMode, setStringParam ]);
+    const save = () => setStringParam((avatarMode === 1) ? username : '');
 
     useEffect(() =>
     {

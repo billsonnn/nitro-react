@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { WiredFurniType } from '../../common/WiredFurniType';
+import { WiredFurniType } from '../../../../api';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionCallAnotherStackView: FC<{}> = props =>

@@ -1,9 +1,7 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Text } from '../../../../common';
+import { useWiredContext } from '../../WiredContext';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 const ALLOWED_HAND_ITEM_IDS: number[] = [ 2, 5, 7, 8, 9, 10, 27 ];
@@ -13,10 +11,7 @@ export const WiredConditionActorHasHandItemView: FC<{}> = props =>
     const [ handItemId, setHandItemId ] = useState(-1);
     const { trigger = null, setIntParams = null } = useWiredContext();
 
-    const save = useCallback(() =>
-    {
-        setIntParams([ handItemId ]);
-    }, [ handItemId, setIntParams ]);
+    const save = () => setIntParams([ handItemId ]);
 
     useEffect(() =>
     {

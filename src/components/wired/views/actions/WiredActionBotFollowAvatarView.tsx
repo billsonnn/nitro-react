@@ -1,11 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Flex, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionBotFollowAvatarView: FC<{}> = props =>
@@ -14,14 +11,14 @@ export const WiredActionBotFollowAvatarView: FC<{}> = props =>
     const [ followMode, setFollowMode ] = useState(-1);
     const { trigger = null, setStringParam = null, setIntParams = null } = useWiredContext();
 
-    const save = useCallback(() =>
+    const save = () =>
     {
         BatchUpdates(() =>
         {
             setStringParam(botName);
-            setIntParams([followMode]);
+            setIntParams([ followMode ]);
         });
-    }, [ followMode, botName, setStringParam, setIntParams ]);
+    }
 
     useEffect(() =>
     {
@@ -35,7 +32,7 @@ export const WiredActionBotFollowAvatarView: FC<{}> = props =>
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
             <Column gap={ 1 }>
-                <label className="fw-bold">{ LocalizeText('wiredfurni.params.bot.name') }</label>
+                <Text bold>{ LocalizeText('wiredfurni.params.bot.name') }</Text>
                 <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
             </Column>
             <Column gap={ 1 }>

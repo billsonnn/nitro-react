@@ -1,10 +1,9 @@
-import { FC, useCallback, useEffect } from 'react';
-import { LocalizeText } from '../../../api';
+import { FC, useCallback } from 'react';
+import { LocalizeText, WiredSelectionVisualizer } from '../../../api';
 import { Column, Text } from '../../../common';
 import { WiredSelectObjectEvent } from '../../../events';
 import { UseUiEvent } from '../../../hooks';
-import { WiredSelectionVisualizer } from '../common/WiredSelectionVisualizer';
-import { useWiredContext } from '../context/WiredContext';
+import { useWiredContext } from '../WiredContext';
 
 export const WiredFurniSelectorView: FC<{}> = props =>
 {
@@ -14,13 +13,11 @@ export const WiredFurniSelectorView: FC<{}> = props =>
     {
         const furniId = event.objectId;
 
-        if(furniId === -1) return;
-
-        let newFurniIds: number[] = null;
+        if(furniId <= 0) return;
 
         setFurniIds(prevValue =>
             {
-                newFurniIds = [ ...prevValue ];
+                const newFurniIds = [ ...prevValue ];
 
                 const index = prevValue.indexOf(furniId);
 
@@ -30,14 +27,12 @@ export const WiredFurniSelectorView: FC<{}> = props =>
 
                     WiredSelectionVisualizer.hide(furniId);
                 }
-                else
-                {
-                    if(newFurniIds.length < trigger.maximumItemSelectionCount)
-                    {
-                        newFurniIds.push(furniId);
 
-                        WiredSelectionVisualizer.show(furniId);
-                    }
+                else if(newFurniIds.length < trigger.maximumItemSelectionCount)
+                {
+                    newFurniIds.push(furniId);
+
+                    WiredSelectionVisualizer.show(furniId);
                 }
 
                 return newFurniIds;
@@ -45,35 +40,6 @@ export const WiredFurniSelectorView: FC<{}> = props =>
     }, [ trigger, setFurniIds ]);
 
     UseUiEvent(WiredSelectObjectEvent.SELECT_OBJECT, onWiredSelectObjectEvent);
-
-    useEffect(() =>
-    {
-        if(!trigger) return;
-
-        setFurniIds(prevValue =>
-            {
-                if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
-
-                if(trigger.selectedItems && trigger.selectedItems.length)
-                {
-                    WiredSelectionVisualizer.applySelectionShaderToFurni(trigger.selectedItems);
-
-                    return trigger.selectedItems;
-                }
-
-                return [];
-            });
-
-        return () =>
-        {
-            setFurniIds(prevValue =>
-                {
-                    WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
-
-                    return [];
-                });
-        }
-    }, [ trigger, setFurniIds ]);
     
     return (
         <Column gap={ 1 }>

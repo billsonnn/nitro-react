@@ -2,7 +2,7 @@ import { WiredFurniActionEvent, WiredFurniConditionEvent, WiredFurniTriggerEvent
 import { FC, useCallback } from 'react';
 import { LocalizeText, NotificationAlertType, NotificationUtilities } from '../../api';
 import { UseMessageEventHook } from '../../hooks/messages';
-import { useWiredContext } from './context/WiredContext';
+import { useWiredContext } from './WiredContext';
 
 export const WiredMessageHandler: FC<{}> = props =>
 {

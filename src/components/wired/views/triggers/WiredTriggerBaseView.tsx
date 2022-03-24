@@ -1,5 +1,5 @@
-import { FC, useCallback } from 'react';
-import { WiredFurniType } from '../../common/WiredFurniType';
+import { FC } from 'react';
+import { WiredFurniType } from '../../../../api';
 import { WiredBaseView } from '../WiredBaseView';
 
 export interface WiredTriggerBaseViewProps
@@ -13,10 +13,7 @@ export const WiredTriggerBaseView: FC<WiredTriggerBaseViewProps> = props =>
 {
     const { requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, hasSpecialInput = false, children = null } = props;
     
-    const onSave = useCallback(() =>
-    {
-        if(save) save();
-    }, [ save ]);
+    const onSave = () => (save && save());
 
     return (
         <WiredBaseView wiredType="trigger" requiresFurni={ requiresFurni } hasSpecialInput={ hasSpecialInput } save={ onSave }>

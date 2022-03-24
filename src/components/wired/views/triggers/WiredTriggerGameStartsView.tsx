@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { WiredFurniType } from '../../common/WiredFurniType';
+import { WiredFurniType } from '../../../../api';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
 
 export const WiredTriggerGameStartsView: FC<{}> = props =>

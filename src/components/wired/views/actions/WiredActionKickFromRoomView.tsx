@@ -1,9 +1,7 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Text } from '../../../../common';
+import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionKickFromRoomView: FC<{}> = props =>
@@ -11,10 +9,7 @@ export const WiredActionKickFromRoomView: FC<{}> = props =>
     const [ message, setMessage ] = useState('');
     const { trigger = null, setStringParam = null } = useWiredContext();
 
-    const save = useCallback(() =>
-    {
-        setStringParam(message);
-    }, [ message, setStringParam ]);
+    const save = () => setStringParam(message);
 
     useEffect(() =>
     {

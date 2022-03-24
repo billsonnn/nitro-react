@@ -1,3 +1,4 @@
+import { WiredTriggerLayout } from '../../../api';
 import { WiredTriggerAvatarEnterRoomView } from '../views/triggers/WiredTriggerAvatarEnterRoomView';
 import { WiredTriggerAvatarSaysSomethingView } from '../views/triggers/WiredTriggerAvatarSaysSomethingView';
 import { WiredTriggerAvatarWalksOffFurniView } from '../views/triggers/WiredTriggerAvatarWalksOffFurniView';
@@ -12,7 +13,6 @@ import { WiredTriggerGameEndsView } from '../views/triggers/WiredTriggerGameEnds
 import { WiredTriggerGameStartsView } from '../views/triggers/WiredTriggerGameStartsView';
 import { WiredTriggeScoreAchievedView } from '../views/triggers/WiredTriggerScoreAchievedView';
 import { WiredTriggerToggleFurniView } from '../views/triggers/WiredTriggerToggleFurniView';
-import { WiredTriggerLayout } from './WiredTriggerLayoutCode';
 
 export const GetWiredTriggerLayout = (code: number) =>
 {

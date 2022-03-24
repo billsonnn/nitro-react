@@ -1,10 +1,7 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Flex, Text } from '../../../../common';
+import { useWiredContext } from '../../WiredContext';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 const teamIds: number[] = [ 1, 2, 3, 4 ];
@@ -14,10 +11,7 @@ export const WiredConditionActorIsTeamMemberView: FC<{}> = props =>
     const [ selectedTeam, setSelectedTeam ] = useState(-1);
     const { trigger = null, setIntParams = null } = useWiredContext();
 
-    const save = useCallback(() =>
-    {
-        setIntParams([ selectedTeam ]);
-    }, [ selectedTeam, setIntParams ]);
+    const save = () => setIntParams([ selectedTeam ]);
 
     useEffect(() =>
     {

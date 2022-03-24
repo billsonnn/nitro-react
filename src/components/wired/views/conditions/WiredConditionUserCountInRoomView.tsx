@@ -1,11 +1,9 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { useWiredContext } from '../../WiredContext';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 export const WiredConditionUserCountInRoomView: FC<{}> = props =>
@@ -14,10 +12,7 @@ export const WiredConditionUserCountInRoomView: FC<{}> = props =>
     const [ max, setMax ] = useState(1);
     const { trigger = null, setIntParams = null } = useWiredContext();
 
-    const save = useCallback(() =>
-    {
-        setIntParams([ min, max ]);
-    }, [ min, max, setIntParams ]);
+    const save = () => setIntParams([ min, max ]);
 
     useEffect(() =>
     {

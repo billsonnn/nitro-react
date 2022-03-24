@@ -1,12 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredFurniType, WIRED_STRING_DELIMETER } from '../../../../api';
+import { Column, Flex, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { WIRED_STRING_DELIMETER } from '../../common/WiredStringDelimeter';
-import { useWiredContext } from '../../context/WiredContext';
+import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionBotTalkView: FC<{}> = props =>
@@ -16,14 +12,14 @@ export const WiredActionBotTalkView: FC<{}> = props =>
     const [ talkMode, setTalkMode ] = useState(-1);
     const { trigger = null, setStringParam = null, setIntParams = null } = useWiredContext();
 
-    const save = useCallback(() =>
+    const save = () =>
     {
         BatchUpdates(() =>
         {
             setStringParam(botName + WIRED_STRING_DELIMETER + message);
             setIntParams([ talkMode ]);
         });
-    }, [ botName, message, talkMode, setStringParam, setIntParams ]);
+    }
 
     useEffect(() =>
     {

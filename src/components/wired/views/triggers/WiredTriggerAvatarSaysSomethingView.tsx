@@ -1,11 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
+import { FC, useEffect, useState } from 'react';
+import { GetSessionDataManager, LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Flex, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { useWiredContext } from '../../WiredContext';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
 
 export const WiredTriggerAvatarSaysSomethingView: FC<{}> = props =>
@@ -14,14 +11,14 @@ export const WiredTriggerAvatarSaysSomethingView: FC<{}> = props =>
     const [ triggererAvatar, setTriggererAvatar ] = useState(-1);
     const { trigger = null, setStringParam = null, setIntParams = null } = useWiredContext();
 
-    const save = useCallback(() =>
+    const save = () =>
     {
         BatchUpdates(() =>
         {
             setStringParam(message);
             setIntParams([ triggererAvatar ]);
         });
-    }, [ message, triggererAvatar, setStringParam, setIntParams ]);
+    }
 
     useEffect(() =>
     {

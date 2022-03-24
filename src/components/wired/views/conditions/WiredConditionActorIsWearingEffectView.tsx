@@ -1,9 +1,7 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Text } from '../../../../common';
+import { useWiredContext } from '../../WiredContext';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 export const WiredConditionActorIsWearingEffectView: FC<{}> = props =>
@@ -11,10 +9,7 @@ export const WiredConditionActorIsWearingEffectView: FC<{}> = props =>
     const [ effect, setEffect ] = useState(-1);
     const { trigger = null, setIntParams = null } = useWiredContext();
 
-    const save = useCallback(() =>
-    {
-        setIntParams([ effect ]);
-    }, [ effect, setIntParams ]);
+    const save = () => setIntParams([ effect ]);
 
     useEffect(() =>
     {

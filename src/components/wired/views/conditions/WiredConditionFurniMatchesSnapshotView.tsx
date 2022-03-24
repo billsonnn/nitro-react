@@ -1,11 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Flex, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { useWiredContext } from '../../WiredContext';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 export const WiredConditionFurniMatchesSnapshotView: FC<{}> = props =>
@@ -15,10 +12,7 @@ export const WiredConditionFurniMatchesSnapshotView: FC<{}> = props =>
     const [ positionFlag, setPositionFlag ] = useState(-1);
     const { trigger = null, setIntParams = null } = useWiredContext();
 
-    const save = useCallback(() =>
-    {
-        setIntParams([ stateFlag, directionFlag, positionFlag ]);
-    }, [ directionFlag, positionFlag, stateFlag, setIntParams ]);
+    const save = () => setIntParams([ stateFlag, directionFlag, positionFlag ]);
 
     useEffect(() =>
     {

@@ -1,3 +1,4 @@
+import { WiredConditionlayout } from '../../../api';
 import { WiredConditionActorHasHandItemView } from '../views/conditions/WiredConditionActorHasHandItem';
 import { WiredConditionActorIsGroupMemberView } from '../views/conditions/WiredConditionActorIsGroupMemberView';
 import { WiredConditionActorIsOnFurniView } from '../views/conditions/WiredConditionActorIsOnFurniView';
@@ -13,7 +14,6 @@ import { WiredConditionFurniMatchesSnapshotView } from '../views/conditions/Wire
 import { WiredConditionTimeElapsedLessView } from '../views/conditions/WiredConditionTimeElapsedLessView';
 import { WiredConditionTimeElapsedMoreView } from '../views/conditions/WiredConditionTimeElapsedMoreView';
 import { WiredConditionUserCountInRoomView } from '../views/conditions/WiredConditionUserCountInRoomView';
-import { WiredConditionlayout } from './WiredConditionLayoutCode';
 
 export const GetWiredConditionLayout = (code: number) =>
 {

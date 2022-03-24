@@ -1,3 +1,4 @@
+import { WiredActionLayout } from '../../../api';
 import { WiredActionBotChangeFigureView } from '../views/actions/WiredActionBotChangeFigureView';
 import { WiredActionBotFollowAvatarView } from '../views/actions/WiredActionBotFollowAvatarView';
 import { WiredActionBotGiveHandItemView } from '../views/actions/WiredActionBotGiveHandItemView';
@@ -23,7 +24,6 @@ import { WiredActionResetView } from '../views/actions/WiredActionResetView';
 import { WiredActionSetFurniStateToView } from '../views/actions/WiredActionSetFurniStateToView';
 import { WiredActionTeleportView } from '../views/actions/WiredActionTeleportView';
 import { WiredActionToggleFurniStateView } from '../views/actions/WiredActionToggleFurniStateView';
-import { WiredActionLayout } from './WiredActionLayoutCode';
 
 export const GetWiredActionLayout = (code: number) =>
 {

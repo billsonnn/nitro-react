@@ -1,11 +1,9 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionMuteUserView: FC<{}> = props =>
@@ -14,14 +12,14 @@ export const WiredActionMuteUserView: FC<{}> = props =>
     const [ message, setMessage ] = useState('');
     const { trigger = null, setIntParams = null, setStringParam = null } = useWiredContext();
 
-    const save = useCallback(() =>
+    const save = () =>
     {
         BatchUpdates(() =>
         {
             setIntParams([ time ]);
             setStringParam(message);
         });
-    }, [ time, message, setIntParams, setStringParam ]);
+    }
 
     useEffect(() =>
     {

@@ -1,4 +1,5 @@
 export * from './achievements';
+export * from './campaign';
 export * from './common';
 export * from './core';
 export * from './friends';
@@ -18,3 +19,4 @@ export * from './nitro/session';
 export * from './notification';
 export * from './user';
 export * from './utils';
+export * from './wired';

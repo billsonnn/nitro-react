@@ -1,10 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../../../api';
+import { FC, useEffect, useState } from 'react';
+import { GetSessionDataManager, LocalizeText, WiredFurniType, WIRED_STRING_DELIMETER } from '../../../../api';
 import { Button, Column, Flex, LayoutAvatarImageView, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { WIRED_STRING_DELIMETER } from '../../common/WiredStringDelimeter';
-import { useWiredContext } from '../../context/WiredContext';
+import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 const DEFAULT_FIGURE: string = 'hd-180-1.ch-210-66.lg-270-82.sh-290-81';
@@ -15,15 +13,7 @@ export const WiredActionBotChangeFigureView: FC<{}> = props =>
     const [ figure, setFigure ] = useState('');
     const { trigger = null, setStringParam = null } = useWiredContext();
 
-    const copyLooks = useCallback(() =>
-    {
-        setFigure(GetSessionDataManager().figure);
-    }, []);
-
-    const save = useCallback(() =>
-    {
-        setStringParam((botName + WIRED_STRING_DELIMETER + figure));
-    }, [ botName, figure, setStringParam ]);
+    const save = () => setStringParam((botName + WIRED_STRING_DELIMETER + figure));
 
     useEffect(() =>
     {
@@ -44,7 +34,7 @@ export const WiredActionBotChangeFigureView: FC<{}> = props =>
             </Column>
             <Flex center>
                 <LayoutAvatarImageView figure={ figure } direction={ 4 } />
-                <Button onClick={ copyLooks }>{ LocalizeText('wiredfurni.params.capture.figure') }</Button>
+                <Button onClick={ event => setFigure(GetSessionDataManager().figure) }>{ LocalizeText('wiredfurni.params.capture.figure') }</Button>
             </Flex>
         </WiredActionBaseView>
     );
