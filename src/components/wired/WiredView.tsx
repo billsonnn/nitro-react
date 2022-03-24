@@ -11,7 +11,7 @@ export const WiredView: FC<{}> = props =>
     const [ intParams, setIntParams ] = useState<number[]>([]);
     const [ stringParam, setStringParam ] = useState<string>('');
     const [ furniIds, setFurniIds ] = useState<number[]>([]);
-    const [ actionDelay, setActionDelay ] = useState<number>(null);
+    const [ actionDelay, setActionDelay ] = useState<number>(0);
 
     const saveWired = () =>
     {
