@@ -7,7 +7,7 @@ export interface LayoutImageProps extends DetailedHTMLProps<HTMLAttributes<HTMLI
 
 export const LayoutImage: FC<LayoutImageProps> = props =>
 {
-    const { imageUrl = null, style = null, ...rest } = props;
+    const { imageUrl = null, ...rest } = props;
 
     return <img src={ imageUrl } alt="" { ...rest } />;
 }
