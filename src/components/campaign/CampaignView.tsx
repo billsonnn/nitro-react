@@ -1,9 +1,8 @@
 import { CampaignCalendarData, CampaignCalendarDataMessageEvent, CampaignCalendarDoorOpenedMessageEvent, OpenCampaignCalendarDoorAsStaffComposer, OpenCampaignCalendarDoorComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { AddEventLinkTracker, CalendarItem, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { BatchUpdates, UseMessageEventHook } from '../../hooks';
 import { CalendarView } from './CalendarView';
-import { CalendarItem } from './common/CalendarItem';
 
 export const CampaignView: FC<{}> = props =>
 {

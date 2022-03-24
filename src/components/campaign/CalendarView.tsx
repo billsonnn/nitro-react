@@ -1,9 +1,7 @@
 import { FC, useState } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../api';
+import { CalendarItemState, GetSessionDataManager, ICalendarItem, LocalizeText } from '../../api';
 import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { CalendarItemView } from './CalendarItemView';
-import { CalendarItemState } from './common/CalendarItemState';
-import { ICalendarItem } from './common/ICalendarItem';
 
 interface CalendarViewProps
 {

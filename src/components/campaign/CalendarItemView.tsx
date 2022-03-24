@@ -1,8 +1,7 @@
 import { FC } from 'react';
-import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../../api';
+import { CalendarItemState, GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../../api';
+import { ICalendarItem } from '../../api/campaign/ICalendarItem';
 import { Base, Column, Flex, LayoutImage } from '../../common';
-import { CalendarItemState } from './common/CalendarItemState';
-import { ICalendarItem } from './common/ICalendarItem';
 
 interface CalendarItemViewProps
 {
