@@ -254,6 +254,8 @@ export const CatalogMessageHandler: FC<{}> = props =>
     const onCatalogPublishedMessageEvent = useCallback((event: CatalogPublishedMessageEvent) =>
     {
         resetState();
+
+        NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.published.description'), null, null, null, LocalizeText('catalog.alert.published.title'));
     }, [ resetState ]);
 
     const onGiftWrappingConfigurationEvent = useCallback((event: GiftWrappingConfigurationEvent) =>

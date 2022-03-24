@@ -55,6 +55,7 @@ export const CatalogView: FC<{}> = props =>
             setActiveNodes([]);
             setSearchResult(null);
             setFrontPageItems([]);
+            setIsVisible(false);
         });
     }, []);
 
