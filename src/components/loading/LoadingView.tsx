@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { NotificationUtilities } from '../../api';
-import { Base, Column, Text } from '../../common';
+import { Base, Column, LayoutProgressBar, Text } from '../../common';
 
 interface LoadingViewProps
 {
@@ -31,9 +31,7 @@ export const LoadingView: FC<LoadingViewProps> = props =>
                             :
                             <>
                                 <Text fontSize={ 4 } variant="white" className="text-shadow">{ percent.toFixed() }%</Text>
-                                <div className="nitro-loading-bar mt-2">
-                                    <div className="nitro-loading-bar-inner" style={{ 'width': `${ percent }%` }}/>
-                                </div>   
+                                <LayoutProgressBar progress={ percent } className="mt-2 large" />
                             </>
                         }
                         
