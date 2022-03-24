@@ -1,10 +1,11 @@
 import { FC, useCallback, useMemo } from 'react';
-import { GetRoomEngine, LocalizeText } from '../../../../../../api';
+import { LocalizeText } from '../../../../../../api';
+import { LayoutFurniIconImageView } from '../../../../../../common';
 import { Button } from '../../../../../../common/Button';
 import { Column } from '../../../../../../common/Column';
 import { LayoutGridItem } from '../../../../../../common/layout/LayoutGridItem';
-import { LayoutImage } from '../../../../../../common/layout/LayoutImage';
 import { Text } from '../../../../../../common/Text';
+import { ProductTypeEnum } from '../../../../common/ProductTypeEnum';
 import { MarketplaceOfferData } from './common/MarketplaceOfferData';
 import { MarketPlaceOfferState } from './common/MarketplaceOfferState';
 
@@ -21,21 +22,6 @@ export const PUBLIC_OFFER = 2;
 export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = props =>
 {
     const { offerData = null, type = PUBLIC_OFFER, onClick = null } = props;
-
-    const getImageUrlForOffer = useCallback( () =>
-    {
-        if(!offerData) return '';
-
-        switch(offerData.furniType)
-        {
-            case MarketplaceOfferData.TYPE_FLOOR:
-                return GetRoomEngine().getFurnitureFloorIconUrl(offerData.furniId);
-            case MarketplaceOfferData.TYPE_WALL:
-                return GetRoomEngine().getFurnitureWallIconUrl(offerData.furniId, offerData.extraData);
-        }
-
-        return '';
-    }, [offerData]);
     
     const getMarketplaceOfferTitle = useMemo(() =>
     {
@@ -68,7 +54,7 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
 
     return (
         <LayoutGridItem shrink center={ false } column={ false } alignItems="center" className="p-1">
-            <LayoutImage imageUrl={ getImageUrlForOffer() } style={ { width: 50, height: 50 }} />
+            <LayoutFurniIconImageView productType={ offerData.furniType === MarketplaceOfferData.TYPE_FLOOR ? ProductTypeEnum.FLOOR : ProductTypeEnum.WALL } productClassId={ offerData.furniId } extraData={ offerData.extraData } style={ { width: 50, height: 50 } } />
             <Column grow gap={ 0 }>
                 <Text fontWeight="bold">{ getMarketplaceOfferTitle }</Text>
                 { (type === OWN_OFFER) &&
