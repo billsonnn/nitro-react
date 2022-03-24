@@ -19,21 +19,28 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
     const { wiredType = '', requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, validate = null, children = null, hasSpecialInput = false } = props;
     const [ wiredName, setWiredName ] = useState<string>(null);
     const [ wiredDescription, setWiredDescription ] = useState<string>(null);
+    const [ needsSave, setNeedsSave ] = useState<boolean>(false);
     const { trigger = null, setTrigger = null, setIntParams = null, setStringParam = null, setFurniIds = null, saveWired = null } = useWiredContext();
 
+    const close = () => setTrigger(null);
+    
     const onSave = () =>
     {
         if(validate && !validate()) return;
 
         if(save) save();
 
-        saveWired();
+        setNeedsSave(true);
     }
 
-    const close = () =>
+    useEffect(() =>
     {
-        setTrigger(null);
-    }
+        if(!needsSave) return;
+
+        saveWired();
+
+        setNeedsSave(false);
+    }, [ needsSave, saveWired ]);
 
     useEffect(() =>
     {
@@ -83,6 +90,7 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
         {
             BatchUpdates(() =>
             {
+                setNeedsSave(false);
                 setIntParams([]);
                 setStringParam(null);
                 setFurniIds(prevValue =>
