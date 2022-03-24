@@ -539,4 +539,30 @@
     }
 }
 
+.nitro-progress-bar {
+    border: 1px solid $white;
+    padding: 2px;
+    height: 20px;
+    border-radius: $border-radius;
+    overflow: hidden;
+    background: $primary;
+
+    &.large {
+        height: 30px;
+    }
+
+    .nitro-progress-bar-inner {
+        height: 100%;
+        z-index: 1;
+        transition: all 1s;
+        border-radius: calc(#{$border-radius} / 2);
+        background: repeating-linear-gradient($tertiary, $tertiary 50%, $quaternary 50%, $quaternary 100%);
+    }
+
+    .nitro-progress-bar-text {
+        text-shadow: 0px 4px 4px rgba($black, 0.25);
+        z-index: 2;
+    }
+}
+
 @import './card/NitroCardView';

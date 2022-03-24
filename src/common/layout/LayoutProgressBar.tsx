@@ -1,20 +1,20 @@
 import { FC, useMemo } from 'react';
-import { Base, BaseProps, Flex } from '..';
+import { Base, Column, ColumnProps, Flex } from '..';
 
-interface LayoutProgressBarProps extends BaseProps<HTMLDivElement>
+interface LayoutProgressBarProps extends ColumnProps
 {
-    text: string;
+    text?: string;
     progress: number;
     maxProgress?: number;
 }
 
 export const LayoutProgressBar: FC<LayoutProgressBarProps> = props =>
 {
-    const { text = '', progress = 0, maxProgress = 0, position = 'relative', classNames = [], children = null, ...rest } = props;
+    const { text = '', progress = 0, maxProgress = 100, position = 'relative', justifyContent = 'center', classNames = [], children = null, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'progress', 'text-black' ];
+        const newClassNames: string[] = [ 'nitro-progress-bar', 'text-white' ];
 
         if(classNames.length) newClassNames.push(...classNames);
 
@@ -22,10 +22,11 @@ export const LayoutProgressBar: FC<LayoutProgressBarProps> = props =>
     }, [ classNames ]);
 
     return (
-        <Base position={ position } classNames={ getClassNames } { ...rest }>
-            <Flex fit center position="absolute">{ text }</Flex>
-            <Base className="progress-bar bg-success" style={ { width: (~~((((progress - 0) * (100 - 0)) / (maxProgress - 0)) + 0) + '%') }} />
+        <Column position={ position } justifyContent={ justifyContent } classNames={ getClassNames } { ...rest }>
+            { text && (text.length > 0) &&
+                <Flex fit center position="absolute" className="nitro-progress-bar-text small">{ text }</Flex> }
+            <Base className="nitro-progress-bar-inner" style={ { width: (~~((((progress - 0) * (100 - 0)) / (maxProgress - 0)) + 0) + '%') }} />
             { children }
-        </Base>
+        </Column>
     );
 }
