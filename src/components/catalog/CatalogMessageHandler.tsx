@@ -1,4 +1,4 @@
-import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, MarketplaceConfigurationEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
+import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
 import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/user/GuildMembershipsMessageEvent';
 import { FC, useCallback } from 'react';
 import { GetFurnitureData, GetProductDataForLocalization, LocalizeText, NotificationAlertType, NotificationUtilities } from '../../api';
@@ -289,18 +289,6 @@ export const CatalogMessageHandler: FC<{}> = props =>
         NotificationUtilities.simpleAlert(message, NotificationAlertType.DEFAULT, null, null, title);
     }, []);
 
-    const onMarketplaceConfigurationEvent = useCallback((event: MarketplaceConfigurationEvent) =>
-    {
-        const parser = event.getParser();
-
-        setCatalogOptions(prevValue =>
-            {
-                const marketplaceConfiguration = parser;
-
-                return { ...prevValue, marketplaceConfiguration };
-            });
-    }, [ setCatalogOptions ]);
-
     const onClubGiftInfoEvent = useCallback((event: ClubGiftInfoEvent) =>
     {
         const parser = event.getParser();
@@ -330,7 +318,6 @@ export const CatalogMessageHandler: FC<{}> = props =>
     UseMessageEventHook(GiftWrappingConfigurationEvent, onGiftWrappingConfigurationEvent);
     UseMessageEventHook(ClubGiftInfoEvent, onClubGiftInfoEvent);
     UseMessageEventHook(MarketplaceMakeOfferResult, onMarketplaceMakeOfferResult);
-    UseMessageEventHook(MarketplaceConfigurationEvent, onMarketplaceConfigurationEvent);
 
     return null;
 }

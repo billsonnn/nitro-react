@@ -1,4 +1,4 @@
-import { FrontPageItem, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, GetMarketplaceConfigurationMessageComposer, ILinkEventTracker, RoomPreviewer } from '@nitrots/nitro-renderer';
+import { FrontPageItem, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, ILinkEventTracker, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetRoomEngine, LocalizeText, PlaySound, RemoveLinkEventTracker, SendMessageComposer, SoundNames } from '../../api';
 import { Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
@@ -346,7 +346,6 @@ export const CatalogView: FC<{}> = props =>
     {
         if(!isVisible || rootNode) return;
 
-        SendMessageComposer(new GetMarketplaceConfigurationMessageComposer());
         SendMessageComposer(new GetGiftWrappingConfigurationComposer());
         SendMessageComposer(new GetClubGiftInfo());
         SendMessageComposer(new GetCatalogIndexComposer(currentType));
