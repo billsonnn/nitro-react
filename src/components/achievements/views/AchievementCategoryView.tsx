@@ -24,18 +24,7 @@ export const AchievementCategoryView: FC<AchievementCategoryViewProps> = props =
 
     useEffect(() =>
     {
-        let achievementId = 0;
-
-        if(!category || !category.achievements.length)
-        {
-            achievementId = 0;
-        }
-        else
-        {
-            achievementId = category.achievements[0].achievementId;
-        }
-
-        setSelectedAchievementId(achievementId);
+        setSelectedAchievementId((!category || !category.achievements.length) ? 0 : category.achievements[0].achievementId);
     }, [ category ]);
 
     useEffect(() =>

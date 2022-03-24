@@ -1,7 +1,6 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { GetAchievementBadgeCode, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
-import { GetAchievementLevel } from '../../../api/achievements/GetAchievementLevel';
+import { GetAchievementBadgeCode, GetAchievementLevel, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
 import { Column, Flex, LayoutCurrencyIcon, LayoutProgressBar, Text } from '../../../common';
 import { AchievementBadgeView } from './AchievementBadgeView';
 
@@ -16,14 +15,12 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
 
     if(!achievement) return null;
 
-    const achievementLevel = GetAchievementLevel(achievement);
-
     return (
         <Flex shrink className="bg-muted rounded p-2 text-black" gap={ 2 } overflow="hidden">
-            <Column center>
+            <Column center gap={ 1 }>
                 <AchievementBadgeView className="nitro-achievements-badge-image" achievement={ achievement } scale={ 2 } />
                 <Text fontWeight="bold">
-                    { LocalizeText('achievements.details.level', [ 'level', 'limit' ], [ achievementLevel.toString(), achievement.levelCount.toString() ]) }
+                    { LocalizeText('achievements.details.level', [ 'level', 'limit' ], [ GetAchievementLevel(achievement).toString(), achievement.levelCount.toString() ]) }
                 </Text>
             </Column>
             <Column fullWidth justifyContent="center" overflow="hidden">

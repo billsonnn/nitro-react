@@ -1,7 +1,7 @@
 import { AchievementData, AchievementEvent, AchievementsEvent, AchievementsScoreEvent, ILinkEventTracker, RequestAchievementsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AchievementCategory, AddEventLinkTracker, GetAchievementIsIgnored, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
-import { Base, Column, LayoutProgressBar, NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView, Text } from '../../common';
+import { AchievementCategory, AddEventLinkTracker, GetAchievementCategoryImageUrl, GetAchievementIsIgnored, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { Base, Column, LayoutImage, LayoutProgressBar, NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView, Text } from '../../common';
 import { AchievementsUIUnseenCountEvent } from '../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../hooks';
 import { AchievementCategoryView } from './views/AchievementCategoryView';
@@ -228,14 +228,15 @@ export const AchievementsView: FC<{}> = props =>
                         <Text fontSize={ 4 } fontWeight="bold" className="text-small">{ LocalizeText(`quests.${ getSelectedCategory.code }.name`) }</Text>
                         <Text>{ LocalizeText('achievements.details.categoryprogress', [ 'progress', 'limit' ], [ getSelectedCategory.getProgress().toString(), getSelectedCategory.getMaxProgress().toString() ]) }</Text>
                     </Column>
+                    <LayoutImage imageUrl={ GetAchievementCategoryImageUrl(getSelectedCategory) } />
                 </NitroCardSubHeaderView> }
             <NitroCardContentView gap={ 1 }>
                 { !getSelectedCategory &&
                     <>
                         <AchievementsCategoryListView categories={ achievementCategories } selectedCategoryCode={ selectedCategoryCode } setSelectedCategoryCode={ setSelectedCategoryCode } />
-                        <Column grow justifyContent="end">
+                        <Column grow justifyContent="end" gap={ 1 }>
+                            <Text small center>{ LocalizeText('achievements.categories.score', [ 'score' ], [ achievementScore.toString() ]) }</Text>
                             <LayoutProgressBar text={ LocalizeText('achievements.categories.totalprogress', [ 'progress', 'limit' ], [ getProgress.toString(), getMaxProgress.toString() ]) } progress={ getProgress } maxProgress={ getMaxProgress } />
-                            <Text className="bg-muted rounded p-1" center>{ LocalizeText('achievements.categories.score', [ 'score' ], [ achievementScore.toString() ]) }</Text>
                         </Column>
                     </> }
                 { getSelectedCategory &&

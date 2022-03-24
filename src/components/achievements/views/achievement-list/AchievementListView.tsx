@@ -16,10 +16,7 @@ export const AchievementListView: FC<AchievementListViewProps> = props =>
 
     return (
         <AutoGrid columnCount={ 6 } columnMinWidth={ 50 } columnMinHeight={ 50 }>
-            { achievements && (achievements.length > 0) && achievements.map((achievement, index) =>
-                {
-                    return <AchievementListItemView key={ index } achievement={ achievement } itemActive={ (selectedAchievementId === achievement.achievementId) } onClick={ event => setSelectedAchievementId(achievement.achievementId) } />;
-                }) }
+            { achievements && (achievements.length > 0) && achievements.map((achievement, index) => <AchievementListItemView key={ index } achievement={ achievement } itemActive={ (selectedAchievementId === achievement.achievementId) } itemUnseen={ (achievement.unseen > 0) } onClick={ event => setSelectedAchievementId(achievement.achievementId) } />) }
             { children }
         </AutoGrid>
     );

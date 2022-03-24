@@ -1,6 +1,9 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
+import { GetAchievementCategoryProgress } from '.';
+import { GetAchievementCategoryMaxProgress } from './GetAchievementCategoryMaxProgress';
+import { IAchievementCategory } from './IAchievementCategory';
 
-export class AchievementCategory
+export class AchievementCategory implements IAchievementCategory
 {
     private _code: string;
     private _achievements: AchievementData[];
@@ -13,26 +16,12 @@ export class AchievementCategory
 
     public getProgress(): number
     {
-        let progress = 0;
-
-        for(const achievement of this._achievements)
-        {
-            progress += (achievement.finalLevel ? achievement.level : (achievement.level - 1));
-        }
-
-        return progress;
+        return GetAchievementCategoryProgress(this);
     }
 
     public getMaxProgress(): number
     {
-        let progress = 0;
-
-        for(const achievement of this._achievements)
-        {
-            progress += achievement.levelCount;
-        }
-
-        return progress;
+        return GetAchievementCategoryMaxProgress(this);
     }
 
     public get code(): string

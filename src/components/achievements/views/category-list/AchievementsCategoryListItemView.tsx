@@ -1,41 +1,28 @@
-import { FC, useCallback, useMemo } from 'react';
-import { AchievementCategory, GetConfiguration, LocalizeText } from '../../../../api';
+import { FC } from 'react';
+import { GetAchievementCategoryImageUrl, GetAchievementCategoryMaxProgress, GetAchievementCategoryProgress, GetAchievementCategoryTotalUnseen, IAchievementCategory, LocalizeText } from '../../../../api';
 import { LayoutGridItem, LayoutGridItemProps, LayoutImage, Text } from '../../../../common';
 
 export interface AchievementCategoryListItemViewProps extends LayoutGridItemProps
 {
-    category: AchievementCategory;
+    category: IAchievementCategory;
 }
 
 export const AchievementsCategoryListItemView: FC<AchievementCategoryListItemViewProps> = props =>
 {
-    const { category = null, ...rest } = props;
+    const { category = null, children = null, ...rest } = props;
 
-    const progress = category.getProgress();
-    const maxProgress = category.getMaxProgress();
-
-    const getCategoryImage = useMemo(() =>
-    {
-        const imageUrl = GetConfiguration<string>('achievements.images.url');
-
-        return imageUrl.replace('%image%', `achcategory_${ category.code }_${ ((progress > 0) ? 'active' : 'inactive') }`);
-    }, [ category, progress ]);
-
-    const getTotalUnseen = useCallback(() =>
-    {
-        let unseen = 0;
-
-        for(const achievement of category.achievements) unseen += achievement.unseen;
-
-        return unseen;
-    }, [ category ]);
+    const progress = GetAchievementCategoryProgress(category);
+    const maxProgress = GetAchievementCategoryMaxProgress(category);
+    const getCategoryImage = GetAchievementCategoryImageUrl(category, progress);
+    const getTotalUnseen = GetAchievementCategoryTotalUnseen(category);
 
     return (
-        <LayoutGridItem itemCount={ getTotalUnseen() } itemCountMinimum={ 0 } gap={ 1 } { ...rest }>
+        <LayoutGridItem itemCount={ getTotalUnseen } itemCountMinimum={ 0 } gap={ 1 } { ...rest }>
             <Text fullWidth center className="small pt-1">{ LocalizeText(`quests.${ category.code }.name`) }</Text>
-            <LayoutImage position="relative" imageUrl={ getCategoryImage }>
+            <LayoutImage className="position-relative" imageUrl={ getCategoryImage }>
                 <Text fullWidth center position="absolute" variant="white" style={ { fontSize: 12, bottom: 9 } }>{ progress } / { maxProgress }</Text>
             </LayoutImage>
+            { children }
         </LayoutGridItem>
     );
 }
