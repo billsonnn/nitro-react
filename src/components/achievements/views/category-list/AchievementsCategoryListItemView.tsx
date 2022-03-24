@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { GetAchievementCategoryImageUrl, GetAchievementCategoryMaxProgress, GetAchievementCategoryProgress, GetAchievementCategoryTotalUnseen, IAchievementCategory, LocalizeText } from '../../../../api';
-import { LayoutGridItem, LayoutGridItemProps, LayoutImage, Text } from '../../../../common';
+import { LayoutBackgroundImage, LayoutGridItem, LayoutGridItemProps, Text } from '../../../../common';
 
 export interface AchievementCategoryListItemViewProps extends LayoutGridItemProps
 {
@@ -19,9 +19,9 @@ export const AchievementsCategoryListItemView: FC<AchievementCategoryListItemVie
     return (
         <LayoutGridItem itemCount={ getTotalUnseen } itemCountMinimum={ 0 } gap={ 1 } { ...rest }>
             <Text fullWidth center className="small pt-1">{ LocalizeText(`quests.${ category.code }.name`) }</Text>
-            <LayoutImage className="position-relative" imageUrl={ getCategoryImage }>
+            <LayoutBackgroundImage className="position-relative" imageUrl={ getCategoryImage }>
                 <Text fullWidth center position="absolute" variant="white" style={ { fontSize: 12, bottom: 9 } }>{ progress } / { maxProgress }</Text>
-            </LayoutImage>
+            </LayoutBackgroundImage>
             { children }
         </LayoutGridItem>
     );
