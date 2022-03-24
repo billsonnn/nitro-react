@@ -16,5 +16,5 @@ export const CatalogIconView: FC<CatalogIconViewProps> = props =>
         return ((GetConfiguration<string>('catalog.asset.icon.url')).replace('%name%', icon.toString()));
     }, [ icon ]);
 
-    return <LayoutImage imageUrl={ getIconUrl } fit={ false } className="catalog-icon-image" />;
+    return <LayoutImage imageUrl={ getIconUrl } style={ { width: 20, height: 20 } } />;
 }

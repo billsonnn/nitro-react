@@ -47,7 +47,7 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
 
     return (
         <LayoutGridItem center={ false } column={ false } alignItems="center" className="p-1">
-            <LayoutImage imageUrl={ getImageUrlForOffer() } fit={ false } style={ { width: 50, height: 50 } } />
+            <LayoutImage imageUrl={ getImageUrlForOffer() } />
             <Text grow fontWeight="bold">{ getItemTitle() }</Text>
             <Button variant="secondary" onClick={ () => onSelect(offer.localizationId) }>
                 { LocalizeText('catalog.club_gift.select') }

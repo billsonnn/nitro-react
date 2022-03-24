@@ -68,7 +68,7 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
 
     return (
         <LayoutGridItem shrink center={ false } column={ false } alignItems="center" className="p-1">
-            <LayoutImage imageUrl={ getImageUrlForOffer() } fit={ false } style={ { width: 50, height: 50 } } />
+            <LayoutImage imageUrl={ getImageUrlForOffer() } style={ { width: 50, height: 50 }} />
             <Column grow gap={ 0 }>
                 <Text fontWeight="bold">{ getMarketplaceOfferTitle }</Text>
                 { (type === OWN_OFFER) &&
