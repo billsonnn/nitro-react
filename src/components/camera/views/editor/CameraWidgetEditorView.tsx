@@ -188,7 +188,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                     </Column>
                     <Column size={ 7 } justifyContent="between" overflow="hidden">
                         <Column center>
-                            <LayoutImage fit={ false } imageUrl={ getCurrentPictureUrl } className="picture-preview" />
+                            <LayoutImage imageUrl={ getCurrentPictureUrl } className="picture-preview" />
                             { selectedEffectName &&
                                 <Column center fullWidth gap={ 1 }>
                                     <Text>{ LocalizeText('camera.effect.name.' + selectedEffectName) }</Text>

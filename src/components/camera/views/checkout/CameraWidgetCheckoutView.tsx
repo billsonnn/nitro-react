@@ -100,7 +100,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
             <NitroCardContentView>
                 <Flex center>
                     { (pictureUrl && pictureUrl.length) &&
-                        <LayoutImage fit={ false } className="picture-preview border" imageUrl={ pictureUrl } /> }
+                        <LayoutImage className="picture-preview border" imageUrl={ pictureUrl } /> }
                     { (!pictureUrl || !pictureUrl.length) &&
                         <Flex center className="picture-preview border">
                             <Text bold>{ LocalizeText('camera.loading') }</Text>
