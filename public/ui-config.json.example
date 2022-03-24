@@ -58,8 +58,8 @@
     "catalog.links": {
         "hc.buy_hc": "habbo_club",
         "hc.hc_gifts": "club_gifts",
-        "pets.buy_food": "pets_food",
-        "pets.buy_saddle": "horse_saddles"
+        "pets.buy_food": "pet_food",
+        "pets.buy_saddle": "saddles"
     },
     "hc.center": {
         "benefits.info": true,
