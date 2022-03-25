@@ -1,9 +1,15 @@
 import { FC } from 'react';
 import { BonusRareWidgetView } from './bonus-rare/BonusRareWidgetView';
-import { GetWidgetLayoutProps } from './GetWidgetLayout.types';
 import { HallOfFameWidgetView } from './hall-of-fame/HallOfFameWidgetView';
 import { PromoArticleWidgetView } from './promo-article/PromoArticleWidgetView';
 import { WidgetContainerView } from './widget-container/WidgetContainerView';
+
+export interface GetWidgetLayoutProps
+{
+  widgetType: string;
+  slot: number;
+  widgetConf: any;
+}
 
 export const GetWidgetLayout: FC<GetWidgetLayoutProps> = props =>
 {

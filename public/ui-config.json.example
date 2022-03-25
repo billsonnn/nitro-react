@@ -20,19 +20,25 @@
         "show.avatar": true,
         "widgets": {
             "slot.1.widget": "promoarticle",
-            "slot.1.conf": "",
+            "slot.1.conf": {},
             "slot.2.widget": "widgetcontainer",
-            "slot.2.conf": "image:${image.library.url}web_promo_small/spromo_Canal_Bundle.png,texts:2021NitroPromo,btnLink:https://google.com",
+            "slot.2.conf": {
+                "image": "${image.library.url}web_promo_small/spromo_Canal_Bundle.png",
+                "texts": "2021NitroPromo",
+                "btnLink": "https://google.com"
+            },
             "slot.3.widget": "promoarticle",
-            "slot.3.conf": "",
+            "slot.3.conf": {},
             "slot.4.widget": "",
-            "slot.4.conf": "",
+            "slot.4.conf": {},
             "slot.5.widget": "",
-            "slot.5.conf": "",
+            "slot.5.conf": {},
             "slot.6.widget": "achievementcompetition_hall_of_fame",
-            "slot.6.conf": "",
+            "slot.6.conf": {
+                "campaign": "habboFameComp"
+            },
             "slot.7.widget": "",
-            "slot.7.conf": ""
+            "slot.7.conf": {}
         },
         "images": {
             "background": "${asset.url}/images/reception/stretch_blue.png",
