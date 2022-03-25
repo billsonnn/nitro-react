@@ -24,7 +24,7 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
 
     const deleteRoom = () =>
     {
-        NotificationUtilities.confirm(LocalizeText('navigator.roomsettings.deleteroom.confirm.message'), () =>
+        NotificationUtilities.confirm(LocalizeText('navigator.roomsettings.deleteroom.confirm.message', [ 'room_name' ], [ roomSettingsData.roomName ] ), () =>
         {
             SendMessageComposer(new RoomDeleteComposer(roomSettingsData.roomId));
 
