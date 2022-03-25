@@ -103,19 +103,22 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
             }
         }
 
-        const roomObject = GetRoomEngine().getRoomObject(roomSession.roomId, furniData.id, (furniData.isWallItem) ? RoomObjectCategory.WALL : RoomObjectCategory.FLOOR);
-
-        if(roomObject)
+        if(godMode)
         {
-            const customVariables = roomObject.model.getValue<string[]>(RoomObjectVariable.FURNITURE_CUSTOM_VARIABLES);
-            const furnitureData = roomObject.model.getValue<{ [index: string]: string }>(RoomObjectVariable.FURNITURE_DATA);
+            const roomObject = GetRoomEngine().getRoomObject(roomSession.roomId, furniData.id, (furniData.isWallItem) ? RoomObjectCategory.WALL : RoomObjectCategory.FLOOR);
 
-            if(customVariables && customVariables.length)
+            if(roomObject)
             {
-                for(const customVariable of customVariables)
+                const customVariables = roomObject.model.getValue<string[]>(RoomObjectVariable.FURNITURE_CUSTOM_VARIABLES);
+                const furnitureData = roomObject.model.getValue<{ [index: string]: string }>(RoomObjectVariable.FURNITURE_DATA);
+
+                if(customVariables && customVariables.length)
                 {
-                    customKeyss.push(customVariable);
-                    customValuess.push((furnitureData[customVariable]) || '');
+                    for(const customVariable of customVariables)
+                    {
+                        customKeyss.push(customVariable);
+                        customValuess.push((furnitureData[customVariable]) || '');
+                    }
                 }
             }
         }
