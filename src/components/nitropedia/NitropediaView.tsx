@@ -9,7 +9,8 @@ const NEW_LINE_REGEX = /\n\r|\n|\r/mg;
 export const NitropediaView: FC<{}> = props =>
 {
     const [ content, setContent ] = useState<string>(null);
-    const [ header, setHeader ] = useState<string>('');
+    const [ header, setHeader] = useState<string>('');
+    const [wH, setWH] = useState<{w:number,h:number}>({ w:0, h:0 });
     const elementRef = useRef<HTMLDivElement>(null);
     
     const openPage = useCallback(async (link: string) =>
@@ -23,10 +24,17 @@ export const NitropediaView: FC<{}> = props =>
             const text = await response.text();
     
             const splitData = text.split(NEW_LINE_REGEX);
+
+            setWH({ w: 0, h: 0 });
             
             BatchUpdates(() =>
             {
-                setHeader(splitData.shift());
+                let line = splitData.shift().split('|');
+                setHeader(line[0]);
+
+                if(line[1] && line[1].split(';').length === 2)
+                    setWH({ w: parseInt(line[1].split(';')[0]), h: parseInt(line[1].split(';')[1]) });
+                
                 setContent(splitData.join(''));
             });
         }
@@ -83,7 +91,7 @@ export const NitropediaView: FC<{}> = props =>
     if(!content) return null;
 
     return (
-        <NitroCardView className="nitropedia" theme="primary-slim">
+        <NitroCardView className="nitropedia" theme="primary-slim" style={wH.w && wH.h ? { width: wH.w, height: wH.h } : {} }>
             <NitroCardHeaderView headerText={header} onCloseClick={() => setContent(null)}/>
             <NitroCardContentView>
                 <Base fit innerRef={ elementRef } className="text-black" dangerouslySetInnerHTML={{ __html: content }} />
