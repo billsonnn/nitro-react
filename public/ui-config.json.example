@@ -66,7 +66,7 @@
         "payday.info": true,
         "gift.info": true,
         "benefits.habbopage": "habboclub",
-        "payday.habbopage": "hcpayday",
+        "payday.habbopage": "hcpayday"
     },
     "respect.options": {
         "enabled": false,
