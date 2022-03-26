@@ -7,7 +7,7 @@ import { HallOfFameWidgetViewProps } from './HallOfFameWidgetView.types';
 
 export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props =>
 {
-    const { slot = -1, conf = '' } = props;
+    const { slot = -1, conf = null } = props;
     const [ data, setData ] = useState<CommunityGoalHallOfFameData>(null);
 
     const onCommunityGoalHallOfFameMessageEvent = useCallback((event: CommunityGoalHallOfFameMessageEvent) =>
@@ -21,7 +21,8 @@ export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props =>
 
     useEffect(() =>
     {
-        SendMessageComposer(new GetCommunityGoalHallOfFameMessageComposer(conf));
+        const campaign: string = conf ? conf['campaign'] : '';  
+        SendMessageComposer(new GetCommunityGoalHallOfFameMessageComposer(campaign));
     }, [ conf ]);
 
     if(!data) return null;
