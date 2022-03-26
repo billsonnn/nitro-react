@@ -1,6 +1,12 @@
-import { FC } from 'react';
-import { GetWidgetLayout } from '../widgets/GetWidgetLayout';
-import { WidgetSlotViewProps } from './WidgetSlotView.types';
+import { DetailsHTMLAttributes, FC } from 'react';
+import { GetWidgetLayout } from './GetWidgetLayout';
+
+export interface WidgetSlotViewProps extends DetailsHTMLAttributes<HTMLDivElement>
+{
+    widgetType: string;
+    widgetSlot: number;
+    widgetConf: any;
+}
 
 export const WidgetSlotView: FC<WidgetSlotViewProps> = props =>
 {

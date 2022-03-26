@@ -1,7 +1,13 @@
+import { HallOfFameEntryData } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { LocalizeFormattedNumber, LocalizeText } from '../../../../../api';
 import { LayoutAvatarImageView, UserProfileIconView } from '../../../../../common';
-import { HallOfFameItemViewProps } from './HallOfFameItemView.types';
+
+export interface HallOfFameItemViewProps
+{
+    data: HallOfFameEntryData;
+    level: number;
+}
 
 export const HallOfFameItemView: FC<HallOfFameItemViewProps> = props =>
 {

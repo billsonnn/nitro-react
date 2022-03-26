@@ -2,7 +2,9 @@ import { BonusRareInfoMessageEvent, GetBonusRareInfoMessageComposer } from '@nit
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../../api';
 import { UseMessageEventHook } from '../../../../../hooks';
-import { BonusRareWidgetViewProps } from './BonusRareWidgetView.types';
+
+export interface BonusRareWidgetViewProps
+{}
 
 export const BonusRareWidgetView: FC<BonusRareWidgetViewProps> = props =>
 {
