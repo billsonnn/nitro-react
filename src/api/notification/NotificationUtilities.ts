@@ -76,14 +76,14 @@ export class NotificationUtilities
         const linkTitle = this.getNotificationPart(options, type, 'linkTitle', false);
         const linkUrl = this.getNotificationPart(options, type, 'linkUrl', false);
         const image = this.getNotificationImageUrl(options, type);
-
+        
         if(options.get('display') === 'BUBBLE')
         {
             this.showSingleBubble(LocalizeText(message), NotificationBubbleType.INFO, image, linkUrl);
         }
         else
         {
-            this.simpleAlert(message, NotificationAlertType.EVENT, linkUrl, linkTitle, title, image);
+            this.simpleAlert(message, type, linkUrl, linkTitle, title, image);
         }
 
         if(options.get('sound')) PlaySound(options.get('sound'));
