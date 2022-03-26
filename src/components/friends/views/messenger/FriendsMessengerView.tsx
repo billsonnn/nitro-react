@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, RoomInviteEvent, SendMessageComposer as SendMessageComposerPacket } from '@nitrots/nitro-renderer';
+import { FollowFriendMessageComposer, ILinkEventTracker, NewConsoleMessageEvent, RoomInviteErrorEvent, RoomInviteEvent, SendMessageComposer as SendMessageComposerPacket } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, PlaySound, RemoveLinkEventTracker, SendMessageComposer, SoundNames } from '../../../../api';
+import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, NotificationAlertType, NotificationUtilities, PlaySound, RemoveLinkEventTracker, SendMessageComposer, SoundNames } from '../../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, LayoutGridItem, LayoutItemCountView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { FriendsMessengerIconEvent } from '../../../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
@@ -109,12 +109,22 @@ export const FriendsMessengerView: FC<{}> = props =>
 
         if((threadIndex === -1) || !thread) return;
 
-        thread.addMessage(parser.senderId, parser.messageText, 0, null, MessengerThreadChat.ROOM_INVITE);
+        thread.addMessage(null, parser.messageText, 0, null, MessengerThreadChat.ROOM_INVITE);
 
         setMessageThreads(prevValue => [...prevValue]);
     }, [getMessageThreadWithIndex]);
 
     UseMessageEventHook(RoomInviteEvent, onRoomInviteEvent);
+
+    const onRoomInviteErrorEvent = useCallback((event: RoomInviteErrorEvent) =>
+    {
+        const parser = event.getParser();
+        const message = ((('Received room invite error: errorCode: ' + parser.errorCode) + ', recipients: ') + parser.failedRecipients);
+            
+        NotificationUtilities.simpleAlert(message, NotificationAlertType.DEFAULT, null, null, LocalizeText('friendlist.alert.title'));
+    }, []);
+
+    UseMessageEventHook(RoomInviteErrorEvent, onRoomInviteErrorEvent);
 
     const sendMessage = useCallback(() =>
     {

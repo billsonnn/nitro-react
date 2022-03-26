@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { GetSessionDataManager } from '../../../../api';
+import { GetSessionDataManager, LocalizeText } from '../../../../api';
 import { Base, Flex, LayoutAvatarImageView } from '../../../../common';
 import { GroupType } from '../../common/GroupType';
 import { MessengerThread } from '../../common/MessengerThread';
@@ -33,20 +33,27 @@ export const FriendsMessengerThreadGroup: FC<FriendsMessengerThreadGroupProps> =
     if(!group.userId)
     {
         return (
-            <div className="d-flex gap-2 w-100 justify-content-start">
+                <>
                 { group.chats.map((chat, index) =>
                     {
                         return (
-                            <Base key={ index } className="text-break">
-                                { chat.type === MessengerThreadChat.SECURITY_NOTIFICATION &&
-                                    <Base className="bg-light rounded mb-2 d-flex gap-2 px-2 py-1 small text-muted align-items-center">
-                                        <Base className="nitro-friends-spritesheet icon-warning flex-shrink-0" />
-                                        <Base>{ chat.message }</Base>
-                                    </Base> }
-                            </Base>
+                            <div className="d-flex gap-2 w-100 justify-content-start">
+                                <Base key={ index } className="w-100 text-break">
+                                    { chat.type === MessengerThreadChat.SECURITY_NOTIFICATION &&
+                                        <Base className="bg-light rounded mb-2 d-flex gap-2 px-2 py-1 small text-muted align-items-center">
+                                            <Base className="nitro-friends-spritesheet icon-warning flex-shrink-0" />
+                                            <Base>{ chat.message }</Base>
+                                        </Base> }
+                                    { chat.type === MessengerThreadChat.ROOM_INVITE &&
+                                            <Base className="bg-light rounded mb-2 d-flex gap-2 px-2 py-1 small text-black align-items-center">
+                                            <Base className="messenger-notification-icon flex-shrink-0" />
+                                            <Base>{(LocalizeText('messenger.invitation') + ' ') }{ chat.message }</Base>
+                                        </Base> }
+                                </Base>
+                            </div>
                         );
                     }) }
-            </div>
+            </>
         );
     }
     
