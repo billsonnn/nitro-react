@@ -228,7 +228,7 @@ export const AchievementsView: FC<{}> = props =>
                         <Text fontSize={ 4 } fontWeight="bold" className="text-small">{ LocalizeText(`quests.${ getSelectedCategory.code }.name`) }</Text>
                         <Text>{ LocalizeText('achievements.details.categoryprogress', [ 'progress', 'limit' ], [ getSelectedCategory.getProgress().toString(), getSelectedCategory.getMaxProgress().toString() ]) }</Text>
                     </Column>
-                    <LayoutImage imageUrl={ GetAchievementCategoryImageUrl(getSelectedCategory) } />
+                    <LayoutImage imageUrl={ GetAchievementCategoryImageUrl(getSelectedCategory, null,true) } />
                 </NitroCardSubHeaderView> }
             <NitroCardContentView gap={ 1 }>
                 { !getSelectedCategory &&
