@@ -1,6 +1,7 @@
 import { NotificationAlertItem, NotificationAlertType } from '../../../../api';
 import { NitroSystemAlertView } from './NitroSystemAlertView';
 import { NotificationDefaultAlertView } from './NotificationDefaultAlertView';
+import { NotificationSeachAlertView } from './NotificationSearchAlertView';
 
 export const GetAlertLayout = (item: NotificationAlertItem, close: () => void) =>
 {
@@ -11,7 +12,9 @@ export const GetAlertLayout = (item: NotificationAlertItem, close: () => void) =
     switch(item.alertType)
     {
         case NotificationAlertType.NITRO:
-            return <NitroSystemAlertView { ...props } />
+            return <NitroSystemAlertView {...props} />
+        case NotificationAlertType.SEARCH:
+            return <NotificationSeachAlertView { ...props } />
         default:
             return <NotificationDefaultAlertView { ...props } />
     }

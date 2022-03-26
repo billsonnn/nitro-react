@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { LocalizeText, NotificationAlertItem, NotificationAlertType, NotificationUtilities } from '../../../../api';
 import { Base, Button, Column, Flex, LayoutNotificationAlertView, LayoutNotificationAlertViewProps } from '../../../../common';
 
@@ -11,12 +11,15 @@ export const NotificationDefaultAlertView: FC<NotificationDefaultAlertViewProps>
 {
     const { item = null, title = ((props.item && props.item.title) || ''), close = null, ...rest } = props;
 
+    const [imageFailed, setImageFailed] = useState<boolean>(false)
+
     const visitUrl = useCallback(() =>
     {
         NotificationUtilities.openUrl(item.clickUrl);
         
         close();
     }, [ item, close ]);
+    
 
     const isAction = (item.clickUrl && item.clickUrl.startsWith('event:'));
 
@@ -24,8 +27,9 @@ export const NotificationDefaultAlertView: FC<NotificationDefaultAlertViewProps>
 
     return (
         <LayoutNotificationAlertView title={title} close={close} {...rest}>
-            <Flex fullHeight overflow="auto" gap={ 2 }>
-                { hasFrank && <Base className="notification-frank flex-shrink-0" /> }
+            <Flex fullHeight overflow="auto" gap={2}>
+                {hasFrank && !item.imageUrl && <Base className="notification-frank flex-shrink-0" /> }
+                {item.imageUrl && !imageFailed && <img src={item.imageUrl} alt={ item.title } onError={() => { setImageFailed(true) } } /> }
                 { (item.messages.length > 0) && item.messages.map((message, index) =>
                 {
                     const htmlText = message.replace(/\r\n|\r|\n/g, '<br />');
