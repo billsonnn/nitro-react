@@ -1,8 +1,7 @@
 import { RemoveAllRightsMessageComposer, RoomTakeRightsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../api';
+import { LocalizeText, RoomSettingsData, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Grid, Text, UserProfileIconView } from '../../../../common';
-import RoomSettingsData from '../../common/RoomSettingsData';
 
 interface NavigatorRoomSettingsTabViewProps
 {

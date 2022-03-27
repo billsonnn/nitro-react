@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
-import { CreateRoomSession, GoToDesktop, LocalizeText } from '../../../api';
+import { CreateRoomSession, DoorStateType, GoToDesktop, LocalizeText } from '../../../api';
 import { Button, Column, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { DoorStateType } from '../common/DoorStateType';
 import { useNavigatorContext } from '../NavigatorContext';
 
 const VISIBLE_STATES = [ DoorStateType.START_DOORBELL, DoorStateType.STATE_WAITING, DoorStateType.STATE_NO_ANSWER, DoorStateType.START_PASSWORD, DoorStateType.STATE_WRONG_PASSWORD ];

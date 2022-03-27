@@ -1,6 +1,6 @@
 import { RoomSettingsParser } from '@nitrots/nitro-renderer';
 
-export default class RoomSettingsData
+export class RoomSettingsData
 {
     public roomId: number;
     public roomName: string;

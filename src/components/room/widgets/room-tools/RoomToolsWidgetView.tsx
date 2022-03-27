@@ -3,8 +3,7 @@ import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, LocalizeText, RoomWidgetZoomToggleMessage, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
-import { BatchUpdates, UseMessageEventHook, useSharedState } from '../../../../hooks';
-import { NavigatorData } from '../../../navigator/common/NavigatorData';
+import { BatchUpdates, UseMessageEventHook, useSharedNavigatorData } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
@@ -15,7 +14,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     const [ roomTags, setRoomTags ] = useState<string[]>(null);
     const [ roomInfoDisplay, setRoomInfoDisplay ] = useState<boolean>(false);
     const [ isOpen, setIsOpen ] = useState<boolean>(false);
-    const [ navigatorData, setNavigatorData ] = useSharedState<NavigatorData>('@navigatorData');
+    const [ navigatorData, setNavigatorData ] = useSharedNavigatorData();
     const { widgetHandler = null } = useRoomContext();
 
     const handleToolClick = (action: string) =>

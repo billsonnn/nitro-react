@@ -1,13 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavigatorSearchResultList } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { AutoGrid, AutoGridProps, Grid } from '../../../../common';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
+import { LocalizeText, NavigatorSearchResultViewDisplayMode } from '../../../../api';
+import { AutoGrid, AutoGridProps, Column, Flex, Grid, Text } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { NavigatorSearchResultViewDisplayMode } from '../../common/NavigatorSearchResultViewDisplayMode';
 import { NavigatorSearchResultItemView } from './NavigatorSearchResultItemView';
 
 export interface NavigatorSearchResultViewProps extends AutoGridProps

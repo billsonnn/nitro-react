@@ -1,11 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorCategoryDataParser, NavigatorInitComposer, NavigatorSearchComposer, NavigatorSearchResultSet, NavigatorTopLevelContext, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
+import { AddEventLinkTracker, DoorStateType, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
 import { Base, Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { BatchUpdates, UseRoomSessionManagerEvent, useSharedState } from '../../hooks';
-import { DoorStateType } from './common/DoorStateType';
-import { NavigatorData } from './common/NavigatorData';
+import { BatchUpdates, UseRoomSessionManagerEvent, useSharedNavigatorData } from '../../hooks';
 import { NavigatorContextProvider } from './NavigatorContext';
 import { NavigatorMessageHandler } from './NavigatorMessageHandler';
 import { NavigatorDoorStateView } from './views/NavigatorDoorStateView';
@@ -29,20 +27,7 @@ export const NavigatorView: FC<{}> = props =>
     const [ categories, setCategories ] = useState<NavigatorCategoryDataParser[]>(null);
     const [ topLevelContext, setTopLevelContext ] = useState<NavigatorTopLevelContext>(null);
     const [ topLevelContexts, setTopLevelContexts ] = useState<NavigatorTopLevelContext[]>(null);
-    const [ navigatorData, setNavigatorData ] = useSharedState<NavigatorData>('@navigatorData', {
-        settingsReceived: false,
-        homeRoomId: 0,
-        enteredGuestRoom: null,
-        currentRoomOwner: false,
-        currentRoomId: 0,
-        currentRoomIsStaffPick: false,
-        createdFlatId: 0,
-        avatarId: 0,
-        roomPicker: false,
-        eventMod: false,
-        currentRoomRating: 0,
-        canRate: true
-    });
+    const [ navigatorData, setNavigatorData ] = useSharedNavigatorData();
     const [ doorData, setDoorData ] = useState<{ roomInfo: RoomDataParser, state: number }>({ roomInfo: null, state: DoorStateType.NONE });
     const [ searchResult, setSearchResult ] = useState<NavigatorSearchResultSet>(null);
     const pendingSearch = useRef<{ value: string, code: string }>(null);
@@ -185,7 +170,7 @@ export const NavigatorView: FC<{}> = props =>
                 }
                 return;
         } 
-    }, [ isVisible, navigatorData.homeRoomId ]);
+    }, [ isVisible, navigatorData ]);
 
     useEffect(() =>
     {

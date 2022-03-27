@@ -1,8 +1,7 @@
 import { CanCreateRoomEventEvent, CantConnectMessageParser, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomResultEvent, HabboWebTools, LegacyExternalInterface, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomInfoComposer, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CreateLinkEvent, CreateRoomSession, GetConfiguration, GetSessionDataManager, LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
+import { CreateLinkEvent, CreateRoomSession, DoorStateType, GetConfiguration, GetSessionDataManager, LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
 import { BatchUpdates, UseMessageEventHook } from '../../hooks';
-import { DoorStateType } from './common/DoorStateType';
 import { useNavigatorContext } from './NavigatorContext';
 
 export const NavigatorMessageHandler: FC<{}> = props =>

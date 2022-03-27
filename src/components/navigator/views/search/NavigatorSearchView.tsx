@@ -1,11 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, KeyboardEvent, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Button } from '../../../../common/Button';
-import { Flex } from '../../../../common/Flex';
+import { INavigatorSearchFilter, LocalizeText, SearchFilterOptions } from '../../../../api';
+import { Button, Flex } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
-import { INavigatorSearchFilter } from '../../common/INavigatorSearchFilter';
-import { SearchFilterOptions } from '../../common/SearchFilterOptions';
 import { useNavigatorContext } from '../../NavigatorContext';
 
 export interface NavigatorSearchViewProps

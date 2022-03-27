@@ -23,8 +23,6 @@ export const WiredConditionFurniMatchesSnapshotView: FC<{}> = props =>
             setPositionFlag(trigger.getBoolean(2) ? 1 : 0);
         });
     }, [ trigger ]);
-
-    console.log(stateFlag, directionFlag, positionFlag);
     
     return (
         <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } hasSpecialInput={ true } save={ save }>

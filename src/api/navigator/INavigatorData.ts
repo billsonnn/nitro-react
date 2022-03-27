@@ -1,6 +1,6 @@
 import { RoomDataParser } from '@nitrots/nitro-renderer';
 
-export interface NavigatorData
+export interface INavigatorData
 {
     homeRoomId: number;
     settingsReceived: boolean;
