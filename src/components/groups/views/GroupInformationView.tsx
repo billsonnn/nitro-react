@@ -17,10 +17,10 @@ interface GroupInformationViewProps extends GridProps
 
 export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 {
-    const { groupInformation = null, onClose = null, overflow = 'hidden', ...rest } = props;    
+    const { groupInformation = null, onClose = null, overflow = 'hidden', ...rest } = props;
 
     const isRealOwner = (groupInformation && (groupInformation.ownerName === GetSessionDataManager().userName));
-    
+
     const joinGroup = () => (groupInformation && TryJoinGroup(groupInformation.id));
 
     const leaveGroup = () =>
@@ -69,7 +69,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 
             return;
         }
-        
+
         joinGroup();
     }
 
@@ -92,9 +92,12 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
             case 'furniture':
                 CreateLinkEvent('catalog/open/' + CatalogPageName.GUILD_CUSTOM_FURNI);
                 break;
+            case 'popular_groups':
+                CreateLinkEvent('navigator/search/groups');
+                break;
         }
     }, [ groupInformation ]);
-    
+
     if(!groupInformation) return null;
 
     return (
@@ -131,9 +134,9 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                     <Column gap={ 1 }>
                         <Text small underline pointer onClick={ () => handleAction('homeroom') }>{ LocalizeText('group.linktobase') }</Text>
                         <Text small underline pointer onClick={ () => handleAction('furniture') }>{ LocalizeText('group.buyfurni') }</Text>
-                        <Text small underline pointer>{ LocalizeText('group.showgroups') }</Text>
+                        <Text small underline pointer onClick={ () => handleAction('popular_groups') }>{ LocalizeText('group.showgroups') }</Text>
                     </Column>
-                    { (groupInformation.type !== GroupType.PRIVATE) && 
+                    { (groupInformation.type !== GroupType.PRIVATE) &&
                         <Button disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) || isRealOwner } onClick={ handleButtonClick }>
                             { LocalizeText(getButtonText()) }
                         </Button> }
