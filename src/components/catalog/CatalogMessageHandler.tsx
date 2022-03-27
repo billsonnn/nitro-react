@@ -1,4 +1,4 @@
-import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
+import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, ClubGiftInfoEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
 import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/user/GuildMembershipsMessageEvent';
 import { FC, useCallback } from 'react';
 import { GetFurnitureData, GetProductDataForLocalization, LocalizeText, NotificationAlertType, NotificationUtilities } from '../../api';
@@ -251,13 +251,6 @@ export const CatalogMessageHandler: FC<{}> = props =>
             });
     }, [ setCatalogOptions ]);
 
-    const onCatalogPublishedMessageEvent = useCallback((event: CatalogPublishedMessageEvent) =>
-    {
-        resetState();
-
-        NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.published.description'), null, null, null, LocalizeText('catalog.alert.published.title'));
-    }, [ resetState ]);
-
     const onGiftWrappingConfigurationEvent = useCallback((event: GiftWrappingConfigurationEvent) =>
     {
         const parser = event.getParser();
@@ -316,7 +309,6 @@ export const CatalogMessageHandler: FC<{}> = props =>
     UseMessageEventHook(GiftReceiverNotFoundEvent, onGiftReceiverNotFoundEvent);
     UseMessageEventHook(HabboClubOffersMessageEvent, onHabboClubOffersMessageEvent);
     UseMessageEventHook(UserSubscriptionEvent, onUserSubscriptionEvent);
-    UseMessageEventHook(CatalogPublishedMessageEvent, onCatalogPublishedMessageEvent);
     UseMessageEventHook(GiftWrappingConfigurationEvent, onGiftWrappingConfigurationEvent);
     UseMessageEventHook(ClubGiftInfoEvent, onClubGiftInfoEvent);
     UseMessageEventHook(MarketplaceMakeOfferResult, onMarketplaceMakeOfferResult);
