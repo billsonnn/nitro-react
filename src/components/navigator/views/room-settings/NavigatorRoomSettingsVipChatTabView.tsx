@@ -28,9 +28,9 @@ export const NavigatorRoomSettingsVipChatTabView: FC<NavigatorRoomSettingsTabVie
                         <option value="1">{LocalizeText('navigator.roomsettings.chat.mode.line.by.line')}</option>
                     </select>
                     <select className="form-select form-select-sm" value={roomSettingsData.chatBubbleWeight} onChange={event => handleChange('chat_weight', event.target.value)}>
-                        <option value="0">{LocalizeText('navigator.roomsettings.chat.bubbles.width.normal')}</option>
-                        <option value="1">{LocalizeText('navigator.roomsettings.chat.bubbles.width.thin')}</option>
-                        <option value="2">{LocalizeText('navigator.roomsettings.chat.bubbles.width.wide')}</option>
+                        <option value="1">{LocalizeText('navigator.roomsettings.chat.bubbles.width.normal')}</option>
+                        <option value="2">{LocalizeText('navigator.roomsettings.chat.bubbles.width.thin')}</option>
+                        <option value="0">{LocalizeText('navigator.roomsettings.chat.bubbles.width.wide')}</option>
                     </select>
                     <select className="form-select form-select-sm" value={roomSettingsData.chatBubbleSpeed} onChange={event => handleChange('bubble_speed', event.target.value)}>
                         <option value="0">{LocalizeText('navigator.roomsettings.chat.speed.fast')}</option>
