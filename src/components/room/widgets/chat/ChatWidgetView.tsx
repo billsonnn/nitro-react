@@ -9,26 +9,50 @@ import { DoChatsOverlap } from './common/DoChatsOverlap';
 
 export const ChatWidgetView: FC<{}> = props =>
 {
-    const [chatSettings, setChatSettings] = useState<RoomChatSettings>(null);
+    const [ chatSettings, setChatSettings ] = useState<RoomChatSettings>(null);
     const [ chatMessages, setChatMessages ] = useState<ChatBubbleMessage[]>([]);
     const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const elementRef = useRef<HTMLDivElement>();
 
     const removeHiddenChats = useCallback(() =>
     {
-        if(!chatMessages.length) return;
+        setChatMessages(prevValue =>
+            {
+                if(prevValue)
+                {
+                    const newMessages = prevValue.filter(chat => ((chat.top > (-(chat.height) * 2))));
 
-        const newMessages = chatMessages.filter(chat => ((chat.top > (-(chat.height) * 2))));
+                    if(newMessages.length !== prevValue.length) return newMessages;
+                }
 
-        if(newMessages.length !== chatMessages.length) setChatMessages(newMessages);
-    }, [ chatMessages ]);
+                return prevValue;
+            })
+    }, []);
 
     const moveAllChatsUp = useCallback((amount: number) =>
     {
-        chatMessages.forEach(chat => (chat.top -= amount));
+        setChatMessages(prevValue =>
+            {
+                if(prevValue)
+                {
+                    prevValue.forEach(chat =>
+                        {
+                            if(chat.skipMovement)
+                            {
+                                chat.skipMovement = false;
+            
+                                return;
+                            }
+            
+                            chat.top -= amount;
+                        });
+                }
+
+                return prevValue;
+            });
 
         removeHiddenChats();
-    }, [ chatMessages, removeHiddenChats ]);
+    }, [ removeHiddenChats ]);
 
     const checkOverlappingChats = useCallback((chat: ChatBubbleMessage, moved: number, tempChats: ChatBubbleMessage[]) => 
     {
@@ -42,13 +66,15 @@ export const ChatWidgetView: FC<{}> = props =>
 
             if(!collides || (chat === collides) || (tempChats.indexOf(collides) >= 0) || ((collides.top - moved) >= (chat.top + chat.height))) continue;
 
-            if(DoChatsOverlap(chat, collides, -moved))
+            if(DoChatsOverlap(chat, collides, -moved, 4))
             {
                 const amount = Math.abs((collides.top + collides.height) - chat.top);
 
                 tempChats.push(collides);
 
                 collides.top -= amount;
+
+                collides.skipMovement = true;
 
                 checkOverlappingChats(collides, amount, tempChats);
             }
@@ -59,6 +85,8 @@ export const ChatWidgetView: FC<{}> = props =>
     {
         if(chatSettings.mode === RoomChatSettings.CHAT_MODE_FREE_FLOW)
         {
+            chat.skipMovement = true;
+
             checkOverlappingChats(chat, 0, [ chat ]);
 
             removeHiddenChats();
@@ -162,7 +190,7 @@ export const ChatWidgetView: FC<{}> = props =>
         {
             if(interval) clearInterval(interval);
         }
-    }, [ chatMessages, moveAllChatsUp, getScrollSpeed ]);
+    }, [ moveAllChatsUp, getScrollSpeed ]);
 
     useEffect(() =>
     {
