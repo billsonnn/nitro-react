@@ -17,7 +17,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
     const { roomData = null, children = null, thumbnail = false, ...rest } = props;
     const { setDoorData = null } = useNavigatorContext();
 
-    function getUserCounterColor(): string
+    const getUserCounterColor = () =>
     {
         const num: number = (100 * (roomData.userCount / roomData.maxUserCount));
 

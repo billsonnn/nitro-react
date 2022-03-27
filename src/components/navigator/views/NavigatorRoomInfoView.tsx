@@ -16,11 +16,9 @@ export class NavigatorRoomInfoViewProps
 export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
 {
     const { onCloseClick = null } = props;
-    const [ roomThumbnail, setRoomThumbnail ] = useState(null);
     const [ isRoomPicked, setIsRoomPicked ] = useState(false);
     const [ isRoomMuted, setIsRoomMuted ] = useState(false);
     const { navigatorData = null } = useNavigatorContext();
-    const isMod = GetSessionDataManager().isModerator;
 
 
     const hasPermission = (permission: string) =>
@@ -28,7 +26,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
         switch(permission)
         {
             case 'settings':
-                return (GetSessionDataManager().userId === navigatorData.enteredGuestRoom.ownerId || isMod );
+                return (GetSessionDataManager().userId === navigatorData.enteredGuestRoom.ownerId || GetSessionDataManager().isModerator);
             case 'staff_pick':
                 return GetSessionDataManager().securityLevel >= SecurityLevel.COMMUNITY;
             default: return false;
@@ -49,7 +47,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                     newRoomId = navigatorData.enteredGuestRoom.roomId;
                 }
 
-                SendMessageComposer(new UserHomeRoomComposer(newRoomId));
+                if(newRoomId > 0) SendMessageComposer(new UserHomeRoomComposer(newRoomId));
                 return;
             case 'navigator_search_tag':
                 return;

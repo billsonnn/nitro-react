@@ -1,27 +1,38 @@
 import { RoomDataParser } from '@nitrots/nitro-renderer';
-import { FC, useCallback } from 'react';
-import { LocalizeText, RoomSettingsData } from '../../../../api';
+import { FC, useEffect, useState } from 'react';
+import { IRoomData, LocalizeText } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
+import { BatchUpdates } from '../../../../hooks';
 
 interface NavigatorRoomSettingsTabViewProps
 {
-    roomSettingsData: RoomSettingsData;
+    roomData: IRoomData;
     handleChange: (field: string, value: string | number | boolean) => void;
 }
 
 export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>
 {
-    const { roomSettingsData = null, handleChange = null } = props;
+    const { roomData = null, handleChange = null } = props;
+    const [ password, setPassword ] = useState<string>('');
+    const [ confirmPassword, setConfirmPassword ] = useState('');
+    const [ isTryingPassword, setIsTryingPassword ] = useState(false);
 
-    const isPasswordValid = useCallback(() =>
+    const saveRoomPassword = () =>
     {
-        return (roomSettingsData.password && (roomSettingsData.password.length > 0) && (roomSettingsData.password === roomSettingsData.confirmPassword));
-    }, [ roomSettingsData ]);
+        if(!isTryingPassword || ((password.length <= 0) || (confirmPassword.length <= 0) || (password !== confirmPassword))) return;
 
-    const trySave = useCallback(() =>
+        handleChange('password', password);
+    }
+
+    useEffect(() =>
     {
-        if(isPasswordValid()) handleChange('save', null);
-    }, [ isPasswordValid, handleChange ]);
+        BatchUpdates(() =>
+        {
+            setPassword('');
+            setConfirmPassword('');
+            setIsTryingPassword(false);
+        });
+    }, [ roomData ]);
 
     return (
         <>
@@ -33,27 +44,31 @@ export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabView
                 <Column gap={ 1 }>
                     <Text bold>{ LocalizeText('navigator.roomsettings.doormode') }</Text>
                     <Flex alignItems="center" gap={ 1 }>
-                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomSettingsData.lockState === RoomDataParser.OPEN_STATE) } onChange={ event => handleChange('lock_state', RoomDataParser.OPEN_STATE) } />
+                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomData.lockState === RoomDataParser.OPEN_STATE) && !isTryingPassword } onChange={ event => handleChange('lock_state', RoomDataParser.OPEN_STATE) } />
                         <Text>{ LocalizeText('navigator.roomsettings.doormode.open') }</Text>
                     </Flex>
                     <Flex alignItems="center" gap={ 1 }>
-                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomSettingsData.lockState === RoomDataParser.DOORBELL_STATE) } onChange={ event => handleChange('lock_state', RoomDataParser.DOORBELL_STATE) } />
+                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomData.lockState === RoomDataParser.DOORBELL_STATE) && !isTryingPassword } onChange={ event => handleChange('lock_state', RoomDataParser.DOORBELL_STATE) } />
                         <Text>{ LocalizeText('navigator.roomsettings.doormode.doorbell') }</Text>
                     </Flex>
                     <Flex alignItems="center" gap={ 1 }>
-                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomSettingsData.lockState === RoomDataParser.INVISIBLE_STATE) } onChange={ event => handleChange('lock_state', RoomDataParser.INVISIBLE_STATE) } />
+                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomData.lockState === RoomDataParser.INVISIBLE_STATE) && !isTryingPassword } onChange={ event => handleChange('lock_state', RoomDataParser.INVISIBLE_STATE) } />
                         <Text>{ LocalizeText('navigator.roomsettings.doormode.invisible') }</Text>
                     </Flex>
                     <Flex fullWidth gap={ 1 }>
-                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomSettingsData.lockState === RoomDataParser.PASSWORD_STATE) } onChange={ event => handleChange('lock_state', RoomDataParser.PASSWORD_STATE) } />
-                        { (roomSettingsData.lockState !== RoomDataParser.PASSWORD_STATE) &&
+                        <input className="form-check-input" type="radio" name="lockState" checked={ (roomData.lockState === RoomDataParser.PASSWORD_STATE) || isTryingPassword } onChange={ event => setIsTryingPassword(event.target.checked) } />
+                        { !isTryingPassword && (roomData.lockState !== RoomDataParser.PASSWORD_STATE) &&
                             <Text>{ LocalizeText('navigator.roomsettings.doormode.password') }</Text> }
-                        { (roomSettingsData.lockState === RoomDataParser.PASSWORD_STATE) &&
+                        { (isTryingPassword || (roomData.lockState === RoomDataParser.PASSWORD_STATE)) &&
                             <Column gap={ 1 }>
                                 <Text>{ LocalizeText('navigator.roomsettings.doormode.password') }</Text>
-                                <input type="password" className="form-control form-control-sm col-4" value={ roomSettingsData.password ?? '' } onChange={ (e) => handleChange('password', e.target.value) } onBlur={ trySave } placeholder={ LocalizeText('navigator.roomsettings.password') } />
-                                <input type="password" className="form-control form-control-sm col-4" value={ roomSettingsData.confirmPassword ?? '' } onChange={ (e) => handleChange('confirm_password', e.target.value) } onBlur={ trySave } placeholder={ LocalizeText('navigator.roomsettings.passwordconfirm') } />
-                                { !isPasswordValid() &&
+                                <input type="password" className="form-control form-control-sm col-4" value={ password } onChange={ event => setPassword(event.target.value) } placeholder={ LocalizeText('navigator.roomsettings.password') } onFocus={ event => setIsTryingPassword(true) } />
+                                { isTryingPassword && (password.length <= 0) &&
+                                    <Text bold small variant="danger">
+                                        { LocalizeText('navigator.roomsettings.passwordismandatory') }
+                                    </Text> }
+                                <input type="password" className="form-control form-control-sm col-4" value={ confirmPassword } onChange={ event => setConfirmPassword(event.target.value) } onBlur={ saveRoomPassword } placeholder={ LocalizeText('navigator.roomsettings.passwordconfirm') } />
+                                { isTryingPassword && ((password.length > 0) && (password !== confirmPassword)) &&
                                     <Text bold small variant="danger">
                                         { LocalizeText('navigator.roomsettings.invalidconfirm') }
                                     </Text> }
@@ -63,11 +78,11 @@ export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabView
                 <Column gap={ 1 }>
                     <Text bold>{ LocalizeText('navigator.roomsettings.pets') }</Text>
                     <Flex alignItems="center" gap={ 1 }>
-                        <input className="form-check-input" type="checkbox" checked={ roomSettingsData.allowPets } onChange={ event => handleChange('allow_pets', event.target.checked) } />
+                        <input className="form-check-input" type="checkbox" checked={ roomData.allowPets } onChange={ event => handleChange('allow_pets', event.target.checked) } />
                         <Text>{ LocalizeText('navigator.roomsettings.allowpets') }</Text>
                     </Flex>
                     <Flex alignItems="center" gap={ 1 }>
-                        <input className="form-check-input" type="checkbox" checked={ roomSettingsData.allowPetsEat } onChange={ event => handleChange('allow_pets_eat', event.target.checked) } />
+                        <input className="form-check-input" type="checkbox" checked={ roomData.allowPetsEat } onChange={ event => handleChange('allow_pets_eat', event.target.checked) } />
                         <Text>{ LocalizeText('navigator.roomsettings.allowfoodconsume') }</Text>
                     </Flex>
                 </Column>

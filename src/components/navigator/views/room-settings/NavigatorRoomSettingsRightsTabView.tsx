@@ -1,81 +1,96 @@
-import { RemoveAllRightsMessageComposer, RoomTakeRightsComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback } from 'react';
-import { LocalizeText, RoomSettingsData, SendMessageComposer } from '../../../../api';
+import { FlatControllerAddedEvent, FlatControllerRemovedEvent, FlatControllersEvent, RemoveAllRightsMessageComposer, RoomTakeRightsComposer, RoomUsersWithRightsComposer } from '@nitrots/nitro-renderer';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Grid, Text, UserProfileIconView } from '../../../../common';
+import { UseMessageEventHook } from '../../../../hooks';
 
 interface NavigatorRoomSettingsTabViewProps
 {
-    roomSettingsData: RoomSettingsData;
+    roomData: IRoomData;
     handleChange: (field: string, value: string | number | boolean) => void;
 }
 
 export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>
 {
-    const { roomSettingsData = null, handleChange = null } = props;
+    const { roomData = null } = props;
+    const [ usersWithRights, setUsersWithRights ] = useState<Map<number, string>>(new Map());
 
-    const removeUserRights = useCallback( (userId: number) =>
+    const onFlatControllersEvent = useCallback((event: FlatControllersEvent) =>
     {
-        handleChange('remove_rights_user', userId);
+        const parser = event.getParser();
 
-        SendMessageComposer(new RoomTakeRightsComposer(userId));
-    }, [ handleChange ]);
+        if(!roomData || (roomData.roomId !== parser.roomId)) return;
 
-    const removeAllRights = useCallback( () =>
+        setUsersWithRights(parser.users);
+    }, [ roomData ]);
+
+    UseMessageEventHook(FlatControllersEvent, onFlatControllersEvent);
+
+    const onFlatControllerAddedEvent = useCallback((event: FlatControllerAddedEvent) =>
     {
-        handleChange('remove_all_rights', null);
-        
-        SendMessageComposer(new RemoveAllRightsMessageComposer(roomSettingsData.roomId));
-    }, [ roomSettingsData, handleChange ]);
+        const parser = event.getParser();
+
+        if(!roomData || (roomData.roomId !== parser.roomId)) return;
+
+        setUsersWithRights(prevValue =>
+            {
+                const newValue = new Map(prevValue);
+
+                newValue.set(parser.data.userId, parser.data.userName);
+
+                return newValue;
+            });
+    }, [ roomData ]);
+
+    UseMessageEventHook(FlatControllerAddedEvent, onFlatControllerAddedEvent);
+
+    const onFlatControllerRemovedEvent = useCallback((event: FlatControllerRemovedEvent) =>
+    {
+        const parser = event.getParser();
+
+        if(!roomData || (roomData.roomId !== parser.roomId)) return;
+
+        setUsersWithRights(prevValue =>
+            {
+                const newValue = new Map(prevValue);
+
+                newValue.delete(parser.userId);
+
+                return newValue;
+            });
+    }, [ roomData ]);
+
+    UseMessageEventHook(FlatControllerRemovedEvent, onFlatControllerRemovedEvent);
+
+    useEffect(() =>
+    {
+        SendMessageComposer(new RoomUsersWithRightsComposer(roomData.roomId));
+    }, [ roomData.roomId ]);
 
     return (
         <Grid>
             <Column size={ 6 }>
                 <Text bold>
-                    { LocalizeText('navigator.flatctrls.userswithrights', [ 'displayed', 'total' ], [ roomSettingsData.usersWithRights.size.toString(), roomSettingsData.usersWithRights.size.toString() ]) }
+                    { LocalizeText('navigator.flatctrls.userswithrights', [ 'displayed', 'total' ], [ usersWithRights.size.toString(), usersWithRights.size.toString() ]) }
                 </Text>
                 <Flex overflow="hidden" className="bg-white rounded list-container p-2">
                     <Column fullWidth overflow="auto" gap={ 1 }>
-                        { Array.from(roomSettingsData.usersWithRights.entries()).map(([id, name], index) =>
+                        { Array.from(usersWithRights.entries()).map(([ id, name ], index) =>
                             {
                                 return (
                                     <Flex key={ index } shrink alignItems="center" gap={ 1 } overflow="hidden">
                                         <UserProfileIconView userName={ name } />
-                                        <Text pointer grow key={index} onClick={ event => removeUserRights(id) }> { name }</Text>
+                                        <Text pointer grow onClick={ event => SendMessageComposer(new RoomTakeRightsComposer(id)) }> { name }</Text>
                                     </Flex>
                                 );
                             }) }
                     </Column>
                 </Flex>
-                <Button variant="danger" disabled={ !roomSettingsData.usersWithRights.size } onClick={ removeAllRights } >
+            </Column>
+            <Column size={ 6 } justifyContent="end">
+                <Button variant="danger" disabled={ !usersWithRights.size } onClick={ event => SendMessageComposer(new RemoveAllRightsMessageComposer(roomData.roomId)) } >
                     { LocalizeText('navigator.flatctrls.clear') }
                 </Button>
-            </Column>
-            <Column size={ 6 }>
-                <Column gap={ 1 }>
-                    <Text bold>{ LocalizeText('navigator.roomsettings.moderation.mute.header') }</Text>
-                    <Flex alignItems="center" gap={ 1 }>
-                        <input className="form-check-input" type="checkbox" checked={ (roomSettingsData.muteState === 1) } onChange={ event => handleChange('moderation_mute', (event.target.checked ? 1 : 0)) } />
-                        <Text>{ LocalizeText('navigator.roomsettings.moderation.rights') }</Text>
-                    </Flex>
-                </Column>
-                <Column gap={ 1 }>
-                    <Text bold>{LocalizeText('navigator.roomsettings.moderation.kick.header')}</Text>
-                    <Flex alignItems="center" gap={ 1 }>
-                        <input className="form-check-input" type="checkbox" checked={ (roomSettingsData.kickState === 0) } onChange={ event => handleChange('moderation_kick', (event.target.checked ? 0 : 2)) } />
-                        <Text>{ LocalizeText('navigator.roomsettings.moderation.all') }</Text>
-                    </Flex>
-                    <Flex alignItems="center" gap={ 1 }>
-                        <input className="form-check-input" type="checkbox" checked={ ((roomSettingsData.kickState === 1) || (roomSettingsData.kickState === 0)) } disabled={ (roomSettingsData.kickState === 0) } onChange={ event => handleChange('moderation_kick', (event.target.checked ? 1 : 2)) } />
-                        <Text>{ LocalizeText('navigator.roomsettings.moderation.rights') }</Text>
-                    </Flex>
-                </Column>
-                <Column gap={ 1 }>
-                    <Text bold>{LocalizeText('navigator.roomsettings.moderation.ban.header')}</Text>
-                    <Flex alignItems="center" gap={ 1 }>
-                        <input className="form-check-input" type="checkbox" checked={ (roomSettingsData.banState === 1) } onChange={ event => handleChange('moderation_ban', (event.target.checked ? 1 : 0)) } />
-                        <Text>{ LocalizeText('navigator.roomsettings.moderation.rights') }</Text>
-                    </Flex>
-                </Column>
             </Column>
         </Grid>
     );
