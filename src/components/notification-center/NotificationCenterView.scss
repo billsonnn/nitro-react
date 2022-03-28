@@ -14,8 +14,46 @@
     }
 }
 
-.notification-frank {
-    background-image: url('../../assets/images/notifications/frank.gif');
-    width:47px;
-    height: 85px;
+.nitro-alert {
+    min-height: 150px;
+    max-height: 350px;
+
+    .notification-frank {
+        background-image: url('../../assets/images/notifications/frank.gif');
+        width:47px;
+        height: 85px;
+    }
+
+    .notification-text {
+        min-width: 250px;
+    }
+
+    &.nitro-alert-default,
+    &.nitro-alert-motd {
+        width: 350px;
+        .notification-text {
+            min-width: auto;
+        }
+    }
+
+    &.nitro-alert-moderation,
+    &.nitro-alert-alert {
+        width: 250px;
+        .notification-text {
+            min-width: 225px;
+        }
+    }
+}
+
+.nitro-notification-bubble {
+    pointer-events: all;
+    padding: 6px 5px;
+    background-color: rgba($dark,.95);
+    box-shadow: inset 0px 5px lighten(rgba($dark,.6),2.5), inset 0 -4px darken(rgba($dark,.6),4);
+    font-size: $font-size-sm;
+
+    .bubble-image-container {
+        width: 50px;
+        height: 50px;
+    }
 }
