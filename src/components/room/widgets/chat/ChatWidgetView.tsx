@@ -1,16 +1,19 @@
-import { GetGuestRoomResultEvent, NitroPoint, RoomChatSettings, RoomChatSettingsEvent, RoomDragEvent } from '@nitrots/nitro-renderer';
+import { GetGuestRoomResultEvent, IWorkerEventTracker, NitroPoint, RoomChatSettings, RoomChatSettingsEvent, RoomDragEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { GetConfiguration, RoomChatFormatter, RoomWidgetChatSelectAvatarMessage, RoomWidgetRoomObjectMessage, RoomWidgetUpdateChatEvent } from '../../../../api';
+import { AddWorkerEventTracker, GetConfiguration, RemoveWorkerEventTracker, RoomChatFormatter, RoomWidgetChatSelectAvatarMessage, RoomWidgetRoomObjectMessage, RoomWidgetUpdateChatEvent, SendWorkerEvent } from '../../../../api';
 import { UseEventDispatcherHook, UseMessageEventHook, UseRoomEngineEvent } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ChatWidgetMessageView } from './ChatWidgetMessageView';
 import { ChatBubbleMessage } from './common/ChatBubbleMessage';
 import { DoChatsOverlap } from './common/DoChatsOverlap';
 
+let TIMER_TRACKER: number = 0;
+
 export const ChatWidgetView: FC<{}> = props =>
 {
     const [ chatSettings, setChatSettings ] = useState<RoomChatSettings>(null);
     const [ chatMessages, setChatMessages ] = useState<ChatBubbleMessage[]>([]);
+    const [ timerId, setTimerId ] = useState(TIMER_TRACKER++);
     const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
     const elementRef = useRef<HTMLDivElement>();
 
@@ -184,20 +187,46 @@ export const ChatWidgetView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        const interval = setInterval(() => moveAllChatsUp(15), getScrollSpeed());
-
-        return () =>
-        {
-            if(interval) clearInterval(interval);
-        }
-    }, [ moveAllChatsUp, getScrollSpeed ]);
-
-    useEffect(() =>
-    {
         if(!elementRef || !elementRef.current) return;
 
         elementRef.current.style.height = ((document.body.offsetHeight * GetConfiguration<number>('chat.viewer.height.percentage')) + 'px');
     }, []);
+
+    const workerMessageReceived = useCallback((message: { [index: string]: any }) =>
+    {
+        switch(message.type)
+        {
+            case 'MOVE_CHATS':
+                moveAllChatsUp(15);
+                return;
+        }
+    }, [ moveAllChatsUp ]);
+
+    useEffect(() =>
+    {
+        const workerTracker: IWorkerEventTracker = {
+            workerMessageReceived
+        };
+
+        AddWorkerEventTracker(workerTracker);
+
+        SendWorkerEvent({
+            type: 'CREATE_INTERVAL',
+            time: getScrollSpeed(),
+            timerId: timerId,
+            response: { type: 'MOVE_CHATS' }
+        });
+
+        return () =>
+        {
+            SendWorkerEvent({
+                type: 'REMOVE_INTERVAL',
+                timerId
+            });
+            
+            RemoveWorkerEventTracker(workerTracker);
+        }
+    }, [ timerId, workerMessageReceived, getScrollSpeed ]);
 
     return (
         <div ref={ elementRef } className="nitro-chat-widget">
