@@ -1426,17 +1426,17 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@nitrots/nitro-renderer@^1.1.18":
-  version "1.1.18"
-  resolved "https://registry.yarnpkg.com/@nitrots/nitro-renderer/-/nitro-renderer-1.1.18.tgz#d894a2501d1b9e1ac142987446e2a468eb9dd5b4"
-  integrity sha512-KKBTlcNE8PAWRJHlQB1ggIlfECxKxYa10nUS8/H7rU3Gy73prRtEX62LzrWaGccifJbiR7yAIBnLVWdLauT++g==
+"@nitrots/nitro-renderer@^1.1.19":
+  version "1.1.19"
+  resolved "https://registry.yarnpkg.com/@nitrots/nitro-renderer/-/nitro-renderer-1.1.19.tgz#153aca15c949ff213255d00398bcdabc2fe92597"
+  integrity sha512-e9pLjOa0W7KDNM7HwgXpGmuazmdhYALIQMbiGscWcTQ3JqzWS+2tLA5a4cUv9aNhvSx4fX9b3MgpXEff3m6MZw==
   dependencies:
-    "@pixi/canvas-renderer" "^6.2.2"
-    "@pixi/extract" "^6.2.2"
+    "@pixi/canvas-renderer" "^6.3.0"
+    "@pixi/extract" "^6.3.0"
     "@pixi/filter-adjustment" "^4.1.3"
     "@pixi/tilemap" "^3.2.2"
     pako "^2.0.4"
-    pixi.js "^6.2.2"
+    pixi.js "^6.3.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1485,7 +1485,7 @@
   resolved "https://registry.yarnpkg.com/@pixi/app/-/app-6.3.0.tgz#9d8cb89e01b8a92c20700aa7d289e7ebc3f59be6"
   integrity sha512-Ud+D/VkGFCx9Z+i0OXDzXqT3zNrUJ9f3sZuoACz1VVD6nnSq+wBZPnyoOOsgfiMYo/0KYVJh+EdBKZS8aYnnVQ==
 
-"@pixi/canvas-renderer@^6.2.2":
+"@pixi/canvas-renderer@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@pixi/canvas-renderer/-/canvas-renderer-6.3.0.tgz#54e2cc71fff5a3072dc68e67516524c6c8aa05ed"
   integrity sha512-i/qAm7E8Wti4OFcOtU5PP2/w1YZcLspfg0zW2z6fUAFZfCgNrh5DdhLT04JY9wpgz990vg0NI1wjPPh1jHDjIA==
@@ -1512,7 +1512,7 @@
   resolved "https://registry.yarnpkg.com/@pixi/display/-/display-6.3.0.tgz#82781587c928ac49ea24dbc675781e885d3c4a08"
   integrity sha512-Uxc1aLTFzV55d3kOlh/g19RlE2okPXsroi5jfYGCNS0VCdFk0sp6jMNEwk12BwC0KcA5SU7217H4jLy38VCVpA==
 
-"@pixi/extract@6.3.0", "@pixi/extract@^6.2.2":
+"@pixi/extract@6.3.0", "@pixi/extract@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@pixi/extract/-/extract-6.3.0.tgz#ee1f4eaa933e98c2c54930bb0c1b3f3935e4b1ad"
   integrity sha512-p5d3Jx0hoIQZsn1msIOyYCzyRjVkfiDUNkuzpLmNo9zng7C6bwqmIZWEMr5alm7+XwqKHlQdsBuK9PeUJt9fGQ==
@@ -8767,7 +8767,7 @@ pirates@^4.0.1:
   resolved "https://registry.yarnpkg.com/pirates/-/pirates-4.0.5.tgz#feec352ea5c3268fb23a37c702ab1699f35a5f3b"
   integrity sha512-8V9+HQPupnaXMA23c5hvl69zXvTwTzyAYasnkb0Tts4XvO4CliqONMOnvlq26rkhLC3nWDFBJf73LU1e1VZLaQ==
 
-pixi.js@^6.2.2:
+pixi.js@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/pixi.js/-/pixi.js-6.3.0.tgz#466f28a06d6263337c0f91275faf229a02f6a65b"
   integrity sha512-ayOmVagMSa5lPVvznDf2e4EppwzPEDnB/q3AYdjTM9Ksw+JKT3lbLuZFo/6U0HNYF9DsJRJL/4ebReZh1hnqLQ==
