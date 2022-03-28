@@ -1,6 +1,6 @@
 import { GetGuestRoomResultEvent, IWorkerEventTracker, NitroPoint, RoomChatSettings, RoomChatSettingsEvent, RoomDragEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { AddWorkerEventTracker, GetConfiguration, RemoveWorkerEventTracker, RoomChatFormatter, RoomWidgetChatSelectAvatarMessage, RoomWidgetRoomObjectMessage, RoomWidgetUpdateChatEvent, SendWorkerEvent } from '../../../../api';
+import { AddWorkerEventTracker, GetConfiguration, IRoomChatSettings, RemoveWorkerEventTracker, RoomChatFormatter, RoomWidgetChatSelectAvatarMessage, RoomWidgetRoomObjectMessage, RoomWidgetUpdateChatEvent, SendWorkerEvent } from '../../../../api';
 import { UseEventDispatcherHook, UseMessageEventHook, UseRoomEngineEvent } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ChatWidgetMessageView } from './ChatWidgetMessageView';
@@ -11,7 +11,13 @@ let TIMER_TRACKER: number = 0;
 
 export const ChatWidgetView: FC<{}> = props =>
 {
-    const [ chatSettings, setChatSettings ] = useState<RoomChatSettings>(null);
+    const [ chatSettings, setChatSettings ] = useState<IRoomChatSettings>({
+        mode: RoomChatSettings.CHAT_MODE_FREE_FLOW,
+        weight: RoomChatSettings.CHAT_BUBBLE_WIDTH_NORMAL,
+        speed: RoomChatSettings.CHAT_SCROLL_SPEED_NORMAL,
+        distance: 50,
+        protection: RoomChatSettings.FLOOD_FILTER_NORMAL
+    });
     const [ chatMessages, setChatMessages ] = useState<ChatBubbleMessage[]>([]);
     const [ timerId, setTimerId ] = useState(TIMER_TRACKER++);
     const { roomSession = null, eventDispatcher = null, widgetHandler = null } = useRoomContext();
@@ -230,7 +236,7 @@ export const ChatWidgetView: FC<{}> = props =>
 
     return (
         <div ref={ elementRef } className="nitro-chat-widget">
-            {chatMessages.map(chat => <ChatWidgetMessageView key={ chat.id } chat={ chat } makeRoom={ makeRoom } onChatClicked={ onChatClicked } bubbleWidth={ ((chatSettings !== null) ? chatSettings.weight : RoomChatSettings.CHAT_BUBBLE_WIDTH_NORMAL) }/>)}
+            {chatMessages.map(chat => <ChatWidgetMessageView key={ chat.id } chat={ chat } makeRoom={ makeRoom } onChatClicked={ onChatClicked } bubbleWidth={ chatSettings.weight } />)}
         </div>
     );
 }
