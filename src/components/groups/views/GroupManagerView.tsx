@@ -110,7 +110,7 @@ export const GroupManagerView: FC<{}> = props =>
                 </Flex>
                 <Column grow overflow="hidden">
                     { currentTab === 1 &&
-                        <GroupTabIdentityView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } /> }
+                        <GroupTabIdentityView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } close={ close } /> }
                     { currentTab === 2 &&
                         <GroupTabBadgeView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } skipDefault={ true } /> }
                     { currentTab === 3 &&

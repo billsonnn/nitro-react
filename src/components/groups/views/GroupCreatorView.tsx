@@ -150,7 +150,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
                     </Flex>
                     <Column overflow="hidden">
                         { (currentTab === 1) &&
-                            <GroupTabIdentityView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } isCreator={ true } availableRooms={ availableRooms } /> }
+                            <GroupTabIdentityView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } close={ null } isCreator={ true } availableRooms={ availableRooms } /> }
                         { (currentTab === 2) &&
                             <GroupTabBadgeView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } /> }
                         { (currentTab === 3) &&
