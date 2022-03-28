@@ -25,7 +25,7 @@ export const NitroSystemAlertView: FC<NotificationDefaultAlertViewProps> = props
                     <Column alignItems="center">
                         <Text><b>Renderer:</b> v{ GetRendererVersion() }</Text>
                         <Column fullWidth gap={ 1 }>
-                            <Button fullWidth variant="success" onClick={ event => window.open('https://nitrots.co/discord') }>Discord</Button>
+                            <Button fullWidth variant="success" onClick={ event => window.open('https://discord.nitrodev.co') }>Discord</Button>
                             <Flex gap={ 1 }>
                                 <Button fullWidth onClick={ event => window.open('https://git.krews.org/nitro/nitro-react') }>Git</Button>
                                 <Button fullWidth onClick={ event => window.open('https://git.krews.org/nitro/nitro-react/-/issues') }>Bug Report</Button>
