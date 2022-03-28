@@ -137,7 +137,7 @@ export class NotificationUtilities
 
     public static showModeratorMessage(message: string, url: string = null, showHabboWay: boolean = true): void
     {
-        this.simpleAlert(message, NotificationAlertType.MODERATION, url, LocalizeText('mod.alert.link'), LocalizeText('mod.alert.title'));
+        this.simpleAlert(message, NotificationAlertType.DEFAULT, url, LocalizeText('mod.alert.link'), LocalizeText('mod.alert.title'));
     }
 
     public static handleModeratorCaution(message: string, url: string = null): void

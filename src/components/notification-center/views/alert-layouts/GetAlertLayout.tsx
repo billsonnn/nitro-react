@@ -14,7 +14,7 @@ export const GetAlertLayout = (item: NotificationAlertItem, close: () => void) =
         case NotificationAlertType.NITRO:
             return <NitroSystemAlertView {...props} />
         case NotificationAlertType.SEARCH:
-            return <NotificationSeachAlertView { ...props } />
+            return <NotificationSeachAlertView {...props} />
         default:
             return <NotificationDefaultAlertView { ...props } />
     }
