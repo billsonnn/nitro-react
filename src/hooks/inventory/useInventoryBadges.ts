@@ -5,7 +5,7 @@ import { BatchUpdates, UseMessageEventHook } from '..';
 import { GetConfiguration, SendMessageComposer } from '../../api';
 import { useSharedVisibility } from '../useSharedVisibility';
 
-const useInventoryBadges = () =>
+const useInventoryBadgesState = () =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ needsUpdate, setNeedsUpdate ] = useState(true);
@@ -138,9 +138,9 @@ const useInventoryBadges = () =>
     return { badgeCodes, activeBadgeCodes, selectedBadgeCode, isWearingBadge, canWearBadges, toggleBadge, selectBadge, getBadgeId, setIsVisible };
 }
 
-export const useSharedInventoryBadges = () =>
+export const useInventoryBadges = () =>
 {
-    const { setIsVisible, ...rest } = useBetween(useInventoryBadges);
+    const { setIsVisible, ...rest } = useBetween(useInventoryBadgesState);
     const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
 
     useEffect(() =>

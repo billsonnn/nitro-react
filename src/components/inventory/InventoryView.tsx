@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetLocalization, GetRoomEngine, LocalizeText, RemoveLinkEventTracker, UnseenItemCategory } from '../../api';
 import { isObjectMoverRequested, setObjectMoverRequested } from '../../api/inventory/InventoryUtilities';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { UseMessageEventHook, UseRoomEngineEvent, UseRoomSessionManagerEvent, useSharedInventoryTrade, useSharedInventoryUnseenTracker } from '../../hooks';
+import { useInventoryTrade, useInventoryUnseenTracker, UseMessageEventHook, UseRoomEngineEvent, UseRoomSessionManagerEvent } from '../../hooks';
 import { InventoryBadgeView } from './views/InventoryBadgeView';
 import { InventoryBotView } from './views/InventoryBotView';
 import { InventoryFurnitureView } from './views/InventoryFurnitureView';
@@ -23,8 +23,8 @@ export const InventoryView: FC<{}> = props =>
     const [ currentTab, setCurrentTab ] = useState<string>(TABS[0]);
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
-    const { isTrading = false, stopTrading = null } = useSharedInventoryTrade();
-    const { getCount = null, resetCategory = null } = useSharedInventoryUnseenTracker();
+    const { isTrading = false, stopTrading = null } = useInventoryTrade();
+    const { getCount = null, resetCategory = null } = useInventoryUnseenTracker();
 
     const close = () =>
     {

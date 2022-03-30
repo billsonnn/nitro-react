@@ -1,7 +1,7 @@
 import { PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, RequestPetsComposer } from '@nitrots/nitro-renderer';
 import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { useSharedInventoryUnseenTracker } from '.';
+import { useInventoryUnseenTracker } from '.';
 import { UseMessageEventHook } from '..';
 import { SendMessageComposer } from '../../api';
 import { IPetItem } from '../../api/inventory/IPetItem';
@@ -10,13 +10,13 @@ import { addSinglePetItem, mergePetFragments, processPetFragment, removePetItemB
 
 let petMsgFragments: Map<number, PetData>[] = null;
 
-const useInventoryPets = () =>
+const useInventoryPetsState = () =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ needsUpdate, setNeedsUpdate ] = useState(true);
     const [ petItems, setPetItems ] = useState<IPetItem[]>([]);
     const [ selectedPet, setSelectedPet ] = useState<IPetItem>(null);
-    const { isUnseen = null } = useSharedInventoryUnseenTracker();
+    const { isUnseen = null } = useInventoryUnseenTracker();
 
     const selectPet = (pet: IPetItem) => setSelectedPet(pet);
 
@@ -104,9 +104,9 @@ const useInventoryPets = () =>
     return { petItems, selectedPet, selectPet, setIsVisible };
 }
 
-export const useSharedInventoryPets = () =>
+export const useInventoryPets = () =>
 {
-    const { setIsVisible, ...rest } = useBetween(useInventoryPets);
+    const { setIsVisible, ...rest } = useBetween(useInventoryPetsState);
     const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
 
     useEffect(() =>

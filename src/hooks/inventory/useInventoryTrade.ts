@@ -1,19 +1,19 @@
 import { AdvancedMap, TradingAcceptComposer, TradingAcceptEvent, TradingCancelComposer, TradingCloseComposer, TradingCloseEvent, TradingCloseParser, TradingCompletedEvent, TradingConfirmationComposer, TradingConfirmationEvent, TradingListItemEvent, TradingListItemRemoveComposer, TradingNotOpenEvent, TradingOpenComposer, TradingOpenEvent, TradingOpenFailedEvent, TradingOpenFailedParser, TradingOtherNotAllowedEvent, TradingUnacceptComposer, TradingYouAreNotAllowedEvent } from '@nitrots/nitro-renderer';
 import { useCallback, useState } from 'react';
 import { useBetween } from 'use-between';
-import { useSharedInventoryFurni } from '.';
+import { useInventoryFurni } from '.';
 import { BatchUpdates, UseMessageEventHook } from '..';
 import { CloneObject, GetRoomSession, GetSessionDataManager, GroupItem, LocalizeText, NotificationUtilities, SendMessageComposer, TradeState, TradeUserData, TradingNotificationMessage, TradingNotificationType } from '../../api';
 import { InventoryTradeRequestEvent } from '../../events';
 import { UseUiEvent } from '../events';
 import { parseTradeItems } from './common';
 
-const useInventoryTrade = () =>
+const useInventoryTradeState = () =>
 {
     const [ ownUser, setOwnUser ] = useState<TradeUserData>(null);
     const [ otherUser, setOtherUser ] = useState<TradeUserData>(null);
     const [ tradeState, setTradeState ] = useState(TradeState.TRADING_STATE_READY);
-    const { groupItems = [], setGroupItems = null } = useSharedInventoryFurni();
+    const { groupItems = [], setGroupItems = null } = useInventoryFurni();
     const isTrading = (tradeState >= TradeState.TRADING_STATE_RUNNING);
 
     const progressTrade = () =>
@@ -322,4 +322,4 @@ const useInventoryTrade = () =>
     return { ownUser, otherUser, tradeState, setTradeState, isTrading, groupItems, progressTrade, removeItem, stopTrading };
 }
 
-export const useSharedInventoryTrade = () => useBetween(useInventoryTrade);
+export const useInventoryTrade = () => useBetween(useInventoryTradeState);

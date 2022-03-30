@@ -3,7 +3,7 @@ import { IObjectData, TradingListAddItemComposer, TradingListAddItemsComposer } 
 import { FC, useEffect, useState } from 'react';
 import { FurniCategory, GroupItem, IFurnitureItem, LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer, TradeState } from '../../../api';
 import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../common';
-import { useSharedInventoryTrade } from '../../../hooks';
+import { useInventoryTrade } from '../../../hooks';
 import { getGuildFurniType } from '../../../hooks/inventory/common/TradingUtilities';
 import { InventoryFurnitureSearchView } from './InventoryFurnitureSearchView';
 
@@ -22,7 +22,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
     const [ otherGroupItem, setOtherGroupItem ] = useState<GroupItem>(null);
     const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(null);
     const [ countdownTick, setCountdownTick ] = useState(3);
-    const { ownUser = null, otherUser = null, groupItems = [], tradeState = TradeState.TRADING_STATE_READY, progressTrade = null, removeItem = null, setTradeState = null } = useSharedInventoryTrade();
+    const { ownUser = null, otherUser = null, groupItems = [], tradeState = TradeState.TRADING_STATE_READY, progressTrade = null, removeItem = null, setTradeState = null } = useInventoryTrade();
 
     const canTradeItem = (isWallItem: boolean, spriteId: number, category: number, groupable: boolean, stuffData: IObjectData) =>
     {

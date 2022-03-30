@@ -1,12 +1,12 @@
 import { FC, useEffect } from 'react';
 import { LocalizeBadgeName, LocalizeText, UnseenItemCategory } from '../../../api';
 import { AutoGrid, Button, Column, Flex, Grid, LayoutBadgeImageView, LayoutGridItem, Text } from '../../../common';
-import { useSharedInventoryBadges, useSharedInventoryUnseenTracker } from '../../../hooks';
+import { useInventoryBadges, useInventoryUnseenTracker } from '../../../hooks';
 
 export const InventoryBadgeView: FC<{}> = props =>
 {
-    const { badgeCodes = [], activeBadgeCodes = [], selectedBadgeCode = null, isWearingBadge = null, canWearBadges = null, toggleBadge = null, selectBadge = null, getBadgeId = null } = useSharedInventoryBadges();
-    const { getCount = null, resetCategory = null, isUnseen = null, removeUnseen = null } = useSharedInventoryUnseenTracker();
+    const { badgeCodes = [], activeBadgeCodes = [], selectedBadgeCode = null, isWearingBadge = null, canWearBadges = null, toggleBadge = null, selectBadge = null, getBadgeId = null } = useInventoryBadges();
+    const { getCount = null, resetCategory = null, isUnseen = null, removeUnseen = null } = useInventoryUnseenTracker();
 
     useEffect(() =>
     {

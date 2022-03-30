@@ -1,7 +1,7 @@
 import { FurnitureListAddOrUpdateEvent, FurnitureListComposer, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent } from '@nitrots/nitro-renderer';
 import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { useSharedInventoryUnseenTracker } from '.';
+import { useInventoryUnseenTracker } from '.';
 import { UseMessageEventHook } from '..';
 import { attemptItemPlacement, cancelRoomObjectPlacement, CloneObject, CreateLinkEvent, FurnitureItem, getPlacingItemId, GroupItem, SendMessageComposer, UnseenItemCategory } from '../../api';
 import { useSharedVisibility } from '../useSharedVisibility';
@@ -9,13 +9,13 @@ import { addFurnitureItem, getAllItemIds, mergeFurniFragments } from './common';
 
 let furniMsgFragments: Map<number, FurnitureListItemParser>[] = null;
 
-const useInventoryFurni = () =>
+const useInventoryFurniState = () =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ needsUpdate, setNeedsUpdate ] = useState(true);
     const [ groupItems, setGroupItems ] = useState<GroupItem[]>([]);
     const [ selectedItem, setSelectedItem ] = useState<GroupItem>(null);
-    const { isUnseen = null, removeUnseen = null, resetCategory = null, getCount = null } = useSharedInventoryUnseenTracker();
+    const { isUnseen = null, removeUnseen = null, resetCategory = null, getCount = null } = useInventoryUnseenTracker();
 
     const selectItem = (item: GroupItem) =>
     {
@@ -253,9 +253,9 @@ const useInventoryFurni = () =>
     return { groupItems, setGroupItems, selectedItem, selectItem, setIsVisible };
 }
 
-export const useSharedInventoryFurni = () =>
+export const useInventoryFurni = () =>
 {
-    const { setIsVisible, ...rest } = useBetween(useInventoryFurni);
+    const { setIsVisible, ...rest } = useBetween(useInventoryFurniState);
     const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
 
     useEffect(() =>

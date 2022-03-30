@@ -2,7 +2,7 @@ import { IRoomSession, MouseEventType, RoomObjectVariable, RoomPreviewer } from 
 import { FC, MouseEvent, useEffect, useState } from 'react';
 import { attemptBotPlacement, GetRoomEngine, IBotItem, LocalizeText, UnseenItemCategory } from '../../../api';
 import { AutoGrid, Button, Column, Grid, LayoutAvatarImageView, LayoutGridItem, LayoutRoomPreviewerView, Text } from '../../../common';
-import { useSharedInventoryBots, useSharedInventoryUnseenTracker } from '../../../hooks';
+import { useInventoryBots, useInventoryUnseenTracker } from '../../../hooks';
 import { InventoryCategoryEmptyView } from './InventoryCategoryEmptyView';
 
 interface InventoryBotViewProps
@@ -14,8 +14,8 @@ interface InventoryBotViewProps
 export const InventoryBotView: FC<InventoryBotViewProps> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
-    const { botItems = [], selectedBot = null, selectBot = null } = useSharedInventoryBots();
-    const { getCount = null, resetCategory = null, isUnseen = null, removeUnseen = null } = useSharedInventoryUnseenTracker();
+    const { botItems = [], selectedBot = null, selectBot = null } = useInventoryBots();
+    const { getCount = null, resetCategory = null, isUnseen = null, removeUnseen = null } = useInventoryUnseenTracker();
 
     useEffect(() =>
     {

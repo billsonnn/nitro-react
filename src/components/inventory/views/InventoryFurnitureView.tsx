@@ -2,7 +2,7 @@ import { IRoomSession, MouseEventType, RoomObjectVariable, RoomPreviewer, Vector
 import { FC, MouseEvent, useEffect, useState } from 'react';
 import { attemptItemPlacement, FurniCategory, GetRoomEngine, GetSessionDataManager, GroupItem, LocalizeText, UnseenItemCategory } from '../../../api';
 import { AutoGrid, Button, Column, Grid, LayoutGridItem, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, LayoutRoomPreviewerView, Text } from '../../../common';
-import { useSharedInventoryFurni, useSharedInventoryUnseenTracker } from '../../../hooks';
+import { useInventoryFurni, useInventoryUnseenTracker } from '../../../hooks';
 import { attemptPlaceMarketplaceOffer } from '../../../hooks/inventory/common';
 import { InventoryCategoryEmptyView } from './InventoryCategoryEmptyView';
 import { InventoryFurnitureSearchView } from './InventoryFurnitureSearchView';
@@ -16,9 +16,9 @@ interface InventoryFurnitureViewProps
 export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
-    const { groupItems = [], selectedItem = null, selectItem = null } = useSharedInventoryFurni();
+    const { groupItems = [], selectedItem = null, selectItem = null } = useInventoryFurni();
     const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(groupItems);
-    const { getCount = null, resetCategory = null } = useSharedInventoryUnseenTracker();
+    const { getCount = null, resetCategory = null } = useInventoryUnseenTracker();
 
     useEffect(() =>
     {

@@ -2,7 +2,7 @@ import { IRoomSession, MouseEventType, RoomObjectVariable, RoomPreviewer } from 
 import { FC, MouseEvent, useEffect, useState } from 'react';
 import { attemptPetPlacement, GetRoomEngine, IPetItem, LocalizeText, UnseenItemCategory } from '../../../api';
 import { AutoGrid, Button, Column, Grid, LayoutGridItem, LayoutPetImageView, LayoutRoomPreviewerView, Text } from '../../../common';
-import { useSharedInventoryPets, useSharedInventoryUnseenTracker } from '../../../hooks';
+import { useInventoryPets, useInventoryUnseenTracker } from '../../../hooks';
 import { InventoryCategoryEmptyView } from './InventoryCategoryEmptyView';
 
 interface InventoryPetViewProps
@@ -14,8 +14,8 @@ interface InventoryPetViewProps
 export const InventoryPetView: FC<InventoryPetViewProps> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
-    const { petItems = null, selectedPet = null, selectPet = null } = useSharedInventoryPets();
-    const { getCount = null, resetCategory = null, isUnseen = null, removeUnseen = null } = useSharedInventoryUnseenTracker();
+    const { petItems = null, selectedPet = null, selectPet = null } = useInventoryPets();
+    const { getCount = null, resetCategory = null, isUnseen = null, removeUnseen = null } = useInventoryUnseenTracker();
 
     useEffect(() =>
     {

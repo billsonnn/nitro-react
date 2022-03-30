@@ -7,7 +7,7 @@ import { SendMessageComposer } from '../../api';
 const sendResetCategoryMessage = (category: number) => SendMessageComposer(new UnseenResetCategoryComposer(category));
 const sendResetItemsMessage = (category: number, itemIds: number[]) => SendMessageComposer(new UnseenResetItemsComposer(category, ...itemIds));
 
-const useInventoryUnseenTracker = () =>
+const useInventoryUnseenTrackerState = () =>
 {
     const [ unseenItems, setUnseenItems ] = useState<Map<number, number[]>>(new Map());
     const getIds = (category: number) => unseenItems.get(category);
@@ -138,4 +138,4 @@ const useInventoryUnseenTracker = () =>
     return { getIds, getCount, getFullCount, resetCategory, resetCategoryIfEmpty, resetItems, isUnseen, removeUnseen };
 }
 
-export const useSharedInventoryUnseenTracker = () => useBetween(useInventoryUnseenTracker);
+export const useInventoryUnseenTracker = () => useBetween(useInventoryUnseenTrackerState);

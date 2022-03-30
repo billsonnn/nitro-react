@@ -1,18 +1,18 @@
 import { BotAddedToInventoryEvent, BotData, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, GetBotInventoryComposer } from '@nitrots/nitro-renderer';
 import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { useSharedInventoryUnseenTracker } from '.';
+import { useInventoryUnseenTracker } from '.';
 import { UseMessageEventHook } from '..';
 import { cancelRoomObjectPlacement, CreateLinkEvent, getPlacingItemId, IBotItem, SendMessageComposer, UnseenItemCategory } from '../../api';
 import { useSharedVisibility } from '../useSharedVisibility';
 
-const useInventoryBots = () =>
+const useInventoryBotsState = () =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ needsUpdate, setNeedsUpdate ] = useState(true);
     const [ botItems, setBotItems ] = useState<IBotItem[]>([]);
     const [ selectedBot, setSelectedBot ] = useState<IBotItem>(null);
-    const { isUnseen = null } = useSharedInventoryUnseenTracker();
+    const { isUnseen = null } = useInventoryUnseenTracker();
 
     const selectBot = (bot: IBotItem) => setSelectedBot(bot);
 
@@ -151,9 +151,9 @@ const useInventoryBots = () =>
     return { botItems, selectedBot, selectBot, setIsVisible };
 }
 
-export const useSharedInventoryBots = () =>
+export const useInventoryBots = () =>
 {
-    const { setIsVisible, ...rest } = useBetween(useInventoryBots);
+    const { setIsVisible, ...rest } = useBetween(useInventoryBotsState);
     const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
 
     useEffect(() =>

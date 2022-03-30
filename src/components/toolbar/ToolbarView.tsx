@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetSessionDataManager, GetUserProfile, OpenMessengerChat, VisitDesktop } from '../../api';
 import { Base, Flex, LayoutAvatarImageView, LayoutItemCountView, TransitionAnimation, TransitionAnimationTypes } from '../../common';
 import { AchievementsUIUnseenCountEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, ModToolsEvent, UserSettingsUIEvent } from '../../events';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook, UseRoomEngineEvent, useSharedInventoryUnseenTracker, UseUiEvent } from '../../hooks';
+import { BatchUpdates, DispatchUiEvent, useInventoryUnseenTracker, UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { ToolbarViewItems } from './common/ToolbarViewItems';
 import { ToolbarMeView } from './ToolbarMeView';
 
@@ -27,7 +27,7 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     const [ chatIconType, setChatIconType ] = useState(CHAT_ICON_HIDDEN);
     const [ unseenAchievementCount, setUnseenAchievementCount ] = useState(0);
     const [ unseenFriendRequestCount, setFriendRequestCount ] = useState(0);
-    const { getFullCount = null } = useSharedInventoryUnseenTracker();
+    const { getFullCount = null } = useInventoryUnseenTracker();
     const isMod = GetSessionDataManager().isModerator;
 
     const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
