@@ -109,8 +109,6 @@ const useInventoryUnseenTracker = () =>
     {
         const parser = event.getParser();
 
-        console.log(parser);
-
         setUnseenItems(prevValue =>
             {
                 const newValue = new Map(prevValue);

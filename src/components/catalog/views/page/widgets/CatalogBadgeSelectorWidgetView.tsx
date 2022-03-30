@@ -1,6 +1,5 @@
 import { StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { IBadgeItem } from '../../../../../api';
 import { AutoGrid, AutoGridProps, LayoutBadgeImageView, LayoutGridItem } from '../../../../../common';
 import { useSharedInventoryBadges } from '../../../../../hooks';
 import { useCatalogContext } from '../../../CatalogContext';
@@ -15,20 +14,20 @@ interface CatalogBadgeSelectorWidgetViewProps extends AutoGridProps
 export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewProps> = props =>
 {
     const { columnCount = 5, ...rest } = props;
-    const [ currentBadge, setCurrentBadge ] = useState<IBadgeItem>(null);
+    const [ currentBadgeCode, setCurrentBadgeCode ] = useState<string>(null);
     const { currentOffer = null, setPurchaseOptions = null } = useCatalogContext();
-    const { badges = [] } = useSharedInventoryBadges();
+    const { badgeCodes = [] } = useSharedInventoryBadges();
 
     const previewStuffData = useMemo(() =>
     {
-        if(!currentBadge) return null;
+        if(!currentBadgeCode) return null;
 
         const stuffData = new StringDataType();
 
-        stuffData.setValue([ '0', currentBadge.badgeCode, '', '' ]);
+        stuffData.setValue([ '0', currentBadgeCode, '', '' ]);
 
         return stuffData;
-    }, [ currentBadge ]);
+    }, [ currentBadgeCode ]);
 
     useEffect(() =>
     {
@@ -48,11 +47,11 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
 
     return (
         <AutoGrid columnCount={ columnCount } { ...rest }>
-            { badges && (badges.length > 0) && badges.map((badge, index) =>
+            { badgeCodes && (badgeCodes.length > 0) && badgeCodes.map((badgeCode, index) =>
                 {
                     return (
-                        <LayoutGridItem key={ index } itemActive={ (currentBadge === badge) } onClick={ event => setCurrentBadge(badge) }> 
-                            <LayoutBadgeImageView badgeCode={ badge.badgeCode } />
+                        <LayoutGridItem key={ index } itemActive={ (currentBadgeCode === badgeCode) } onClick={ event => setCurrentBadgeCode(badgeCode) }> 
+                            <LayoutBadgeImageView badgeCode={ badgeCode } />
                         </LayoutGridItem>
                     );
                 }) }

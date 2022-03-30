@@ -1,16 +1,16 @@
 import { FC, useEffect } from 'react';
-import { IBadgeItem, LocalizeBadgeName, LocalizeText, UnseenItemCategory } from '../../../api';
+import { LocalizeBadgeName, LocalizeText, UnseenItemCategory } from '../../../api';
 import { AutoGrid, Button, Column, Flex, Grid, LayoutBadgeImageView, LayoutGridItem, Text } from '../../../common';
 import { useSharedInventoryBadges, useSharedInventoryUnseenTracker } from '../../../hooks';
 
 export const InventoryBadgeView: FC<{}> = props =>
 {
-    const { badges = [], activeBadges = [], selectedBadge = null, isWearingBadge = null, canWearBadges = null, toggleBadge = null, selectBadge = null } = useSharedInventoryBadges();
+    const { badgeCodes = [], activeBadgeCodes = [], selectedBadgeCode = null, isWearingBadge = null, canWearBadges = null, toggleBadge = null, selectBadge = null, getBadgeId = null } = useSharedInventoryBadges();
     const { getCount = null, resetCategory = null, isUnseen = null, removeUnseen = null } = useSharedInventoryUnseenTracker();
 
     useEffect(() =>
     {
-        if(!badges || !badges.length) return;
+        if(!badgeCodes || !badgeCodes.length) return;
         
         return () =>
         {
@@ -20,23 +20,24 @@ export const InventoryBadgeView: FC<{}> = props =>
 
             resetCategory(UnseenItemCategory.BADGE);
         }
-    }, [ badges, getCount, resetCategory ]);
+    }, [ badgeCodes, getCount, resetCategory ]);
 
-    const InventoryBadgeItemView: FC<{ badge: IBadgeItem }> = props =>
+    const InventoryBadgeItemView: FC<{ badgeCode: string }> = props =>
     {
-        const { badge = null, children = null, ...rest } = props;
-        const unseen = isUnseen(UnseenItemCategory.BADGE, badge.id);
+        const { badgeCode = null, children = null, ...rest } = props;
+        const badgeId = getBadgeId(badgeCode);
+        const unseen = isUnseen(UnseenItemCategory.BADGE, badgeId);
 
         const select = () =>
         {
-            selectBadge(badge);
+            selectBadge(badgeCode);
 
-            if(unseen) removeUnseen(UnseenItemCategory.BADGE, badge.id);
+            if(unseen) removeUnseen(UnseenItemCategory.BADGE, badgeId);
         }
 
         return (
-            <LayoutGridItem itemActive={ (selectedBadge === badge) } itemUnseen={ unseen } onMouseDown={ select } { ...rest }> 
-                <LayoutBadgeImageView badgeCode={ badge.badgeCode } />
+            <LayoutGridItem itemActive={ (selectedBadgeCode === badgeCode) } itemUnseen={ unseen } onMouseDown={ select } { ...rest }> 
+                <LayoutBadgeImageView badgeCode={ badgeCode } />
                 { children }
             </LayoutGridItem>
         );
@@ -46,11 +47,11 @@ export const InventoryBadgeView: FC<{}> = props =>
         <Grid>
             <Column size={ 7 } overflow="hidden">
                 <AutoGrid columnCount={ 4 }>
-                    { badges && (badges.length > 0) && badges.map((badge, index) =>
+                    { badgeCodes && (badgeCodes.length > 0) && badgeCodes.map((badgeCode, index) =>
                         {
-                            if(activeBadges.indexOf(badge) >= 0) return null;
+                            if(activeBadgeCodes.indexOf(badgeCode) >= 0) return null;
 
-                            return <InventoryBadgeItemView key={ index } badge={ badge } />
+                            return <InventoryBadgeItemView key={ index } badgeCode={ badgeCode } />
                         }) }
                 </AutoGrid>
             </Column>
@@ -58,16 +59,16 @@ export const InventoryBadgeView: FC<{}> = props =>
                 <Column overflow="hidden" gap={ 2 }>
                     <Text>{ LocalizeText('inventory.badges.activebadges') }</Text>
                     <AutoGrid columnCount={ 3 }>
-                        { activeBadges && (activeBadges.length > 0) && activeBadges.map((badge, index) => <InventoryBadgeItemView key={ index } badge={ badge } />) }
+                        { activeBadgeCodes && (activeBadgeCodes.length > 0) && activeBadgeCodes.map((badgeCode, index) => <InventoryBadgeItemView key={ index } badgeCode={ badgeCode } />) }
                     </AutoGrid>
                 </Column>
-                { !!selectedBadge &&
+                { !!selectedBadgeCode &&
                     <Column grow justifyContent="end" gap={ 2 }>
                         <Flex alignItems="center" gap={ 2 }>
-                            <LayoutBadgeImageView shrink badgeCode={ selectedBadge.badgeCode } />
-                            <Text>{ LocalizeBadgeName(selectedBadge.badgeCode) }</Text>
+                            <LayoutBadgeImageView shrink badgeCode={ selectedBadgeCode } />
+                            <Text>{ LocalizeBadgeName(selectedBadgeCode) }</Text>
                         </Flex>
-                        <Button variant={ (isWearingBadge(selectedBadge) ? 'danger' : 'success') } disabled={ !isWearingBadge(selectedBadge) && !canWearBadges() } onClick={ event => toggleBadge(selectedBadge) }>{ LocalizeText(isWearingBadge(selectedBadge) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>
+                        <Button variant={ (isWearingBadge(selectedBadgeCode) ? 'danger' : 'success') } disabled={ !isWearingBadge(selectedBadgeCode) && !canWearBadges() } onClick={ event => toggleBadge(selectedBadgeCode) }>{ LocalizeText(isWearingBadge(selectedBadgeCode) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>
                     </Column> }
             </Column>
         </Grid>

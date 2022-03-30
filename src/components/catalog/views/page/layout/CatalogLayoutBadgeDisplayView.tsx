@@ -1,10 +1,6 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
-import { Base } from '../../../../../common/Base';
-import { Column } from '../../../../../common/Column';
-import { Flex } from '../../../../../common/Flex';
-import { Grid } from '../../../../../common/Grid';
-import { Text } from '../../../../../common/Text';
+import { Base, Column, Flex, Grid, Text } from '../../../../../common';
 import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogBadgeSelectorWidgetView } from '../widgets/CatalogBadgeSelectorWidgetView';
 import { CatalogFirstProductSelectorWidgetView } from '../widgets/CatalogFirstProductSelectorWidgetView';

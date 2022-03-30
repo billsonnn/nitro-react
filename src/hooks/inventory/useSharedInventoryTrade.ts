@@ -1,9 +1,11 @@
-import { AdvancedMap, TradingAcceptComposer, TradingAcceptEvent, TradingCloseEvent, TradingCloseParser, TradingCompletedEvent, TradingConfirmationComposer, TradingConfirmationEvent, TradingListItemEvent, TradingListItemRemoveComposer, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOpenFailedParser, TradingOtherNotAllowedEvent, TradingUnacceptComposer, TradingYouAreNotAllowedEvent } from '@nitrots/nitro-renderer';
+import { AdvancedMap, TradingAcceptComposer, TradingAcceptEvent, TradingCancelComposer, TradingCloseComposer, TradingCloseEvent, TradingCloseParser, TradingCompletedEvent, TradingConfirmationComposer, TradingConfirmationEvent, TradingListItemEvent, TradingListItemRemoveComposer, TradingNotOpenEvent, TradingOpenComposer, TradingOpenEvent, TradingOpenFailedEvent, TradingOpenFailedParser, TradingOtherNotAllowedEvent, TradingUnacceptComposer, TradingYouAreNotAllowedEvent } from '@nitrots/nitro-renderer';
 import { useCallback, useState } from 'react';
 import { useBetween } from 'use-between';
 import { useSharedInventoryFurni } from '.';
 import { BatchUpdates, UseMessageEventHook } from '..';
 import { CloneObject, GetRoomSession, GetSessionDataManager, GroupItem, LocalizeText, NotificationUtilities, SendMessageComposer, TradeState, TradeUserData, TradingNotificationMessage, TradingNotificationType } from '../../api';
+import { InventoryTradeRequestEvent } from '../../events';
+import { UseUiEvent } from '../events';
 import { parseTradeItems } from './common';
 
 const useInventoryTrade = () =>
@@ -12,6 +14,7 @@ const useInventoryTrade = () =>
     const [ otherUser, setOtherUser ] = useState<TradeUserData>(null);
     const [ tradeState, setTradeState ] = useState(TradeState.TRADING_STATE_READY);
     const { groupItems = [], setGroupItems = null } = useSharedInventoryFurni();
+    const isTrading = (tradeState >= TradeState.TRADING_STATE_RUNNING);
 
     const progressTrade = () =>
     {
@@ -48,6 +51,35 @@ const useInventoryTrade = () =>
 
         SendMessageComposer(new TradingListItemRemoveComposer(item.id));
     }
+
+    const stopTrading = () =>
+    {
+        if(!isTrading) return;
+
+        switch(tradeState)
+        {
+            case TradeState.TRADING_STATE_RUNNING:
+                SendMessageComposer(new TradingCloseComposer());
+                return;
+            default:
+                SendMessageComposer(new TradingCancelComposer());
+                return;
+        }
+    }
+
+    const onInventoryTradeRequestEvent = useCallback((event: InventoryTradeRequestEvent) =>
+    {
+        switch(event.type)
+        {
+            case InventoryTradeRequestEvent.REQUEST_TRADE: {
+                const tradeEvent = (event as InventoryTradeRequestEvent);
+
+                SendMessageComposer(new TradingOpenComposer(tradeEvent.objectId));
+            }
+        }
+    }, []);
+
+    UseUiEvent(InventoryTradeRequestEvent.REQUEST_TRADE, onInventoryTradeRequestEvent);
 
     const onTradingAcceptEvent = useCallback((event: TradingAcceptEvent) =>
     {
@@ -102,6 +134,7 @@ const useInventoryTrade = () =>
         {
             setOwnUser(null);
             setOtherUser(null);
+            setTradeState(TradeState.TRADING_STATE_READY);
         });
     }, [ ownUser ]);
 
@@ -115,6 +148,7 @@ const useInventoryTrade = () =>
         {
             setOwnUser(null);
             setOtherUser(null);
+            setTradeState(TradeState.TRADING_STATE_READY);
         });
     }, []);
 
@@ -143,18 +177,18 @@ const useInventoryTrade = () =>
                 {
                     newValue.creditsCount = parser.firstUserNumCredits;
                     newValue.itemCount = parser.firstUserNumItems;
-                    newValue.items = firstUserItems;
+                    newValue.userItems = firstUserItems;
                 }
                 else
                 {
                     newValue.creditsCount = parser.secondUserNumCredits;
                     newValue.itemCount = parser.secondUserNumItems;
-                    newValue.items = secondUserItems;
+                    newValue.userItems = secondUserItems;
                 }
 
                 const tradeIds: number[] = [];
 
-                for(const groupItem of newValue.items.getValues())
+                for(const groupItem of newValue.userItems.getValues())
                 {
                     let i = 0;
 
@@ -188,13 +222,13 @@ const useInventoryTrade = () =>
                 {
                     newValue.creditsCount = parser.firstUserNumCredits;
                     newValue.itemCount = parser.firstUserNumItems;
-                    newValue.items = firstUserItems;
+                    newValue.userItems = firstUserItems;
                 }
                 else
                 {
                     newValue.creditsCount = parser.secondUserNumCredits;
                     newValue.itemCount = parser.secondUserNumItems;
-                    newValue.items = secondUserItems;
+                    newValue.userItems = secondUserItems;
                 }
 
                 return newValue;
@@ -206,8 +240,6 @@ const useInventoryTrade = () =>
     const onTradingNotOpenEvent = useCallback((event: TradingNotOpenEvent) =>
     {
         const parser = event.getParser();
-
-        console.log(parser);
     }, []);
 
     UseMessageEventHook(TradingNotOpenEvent, onTradingNotOpenEvent);
@@ -287,7 +319,7 @@ const useInventoryTrade = () =>
 
     UseMessageEventHook(TradingYouAreNotAllowedEvent, onTradingYouAreNotAllowedEvent);
 
-    return { ownUser, otherUser, tradeState, setTradeState, groupItems, progressTrade, removeItem };
+    return { ownUser, otherUser, tradeState, setTradeState, isTrading, groupItems, progressTrade, removeItem, stopTrading };
 }
 
 export const useSharedInventoryTrade = () => useBetween(useInventoryTrade);

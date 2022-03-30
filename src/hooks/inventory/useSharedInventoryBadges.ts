@@ -2,34 +2,35 @@ import { BadgeReceivedEvent, BadgesEvent, RequestBadgesComposer, SetActivatedBad
 import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { BatchUpdates, UseMessageEventHook } from '..';
-import { GetConfiguration, IBadgeItem, SendMessageComposer } from '../../api';
+import { GetConfiguration, SendMessageComposer } from '../../api';
 import { useSharedVisibility } from '../useSharedVisibility';
 
 const useInventoryBadges = () =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ needsUpdate, setNeedsUpdate ] = useState(true);
-    const [ badges, setBadges ] = useState<IBadgeItem[]>([]);
-    const [ activeBadges, setActiveBadges ] = useState<IBadgeItem[]>([]);
-    const [ selectedBadge, setSelectedBadge ] = useState<IBadgeItem>(null);
+    const [ badgeCodes, setBadgeCodes ] = useState<string[]>([]);
+    const [ badgeIds, setBadgeIds ] = useState<number[]>([]);
+    const [ activeBadgeCodes, setActiveBadgeCodes ] = useState<string[]>([]);
+    const [ selectedBadgeCode, setSelectedBadgeCode ] = useState<string>(null);
 
     const maxBadgeCount = GetConfiguration<number>('user.badges.max.slots', 5);
-    const isWearingBadge = (badge: IBadgeItem) => (activeBadges.indexOf(badge) >= 0);
-    const canWearBadges = () => (activeBadges.length < maxBadgeCount);
+    const isWearingBadge = (badgeCode: string) => (activeBadgeCodes.indexOf(badgeCode) >= 0);
+    const canWearBadges = () => (activeBadgeCodes.length < maxBadgeCount);
 
-    const toggleBadge = (badge: IBadgeItem) =>
+    const toggleBadge = (badgeCode: string) =>
     {
-        setActiveBadges(prevValue =>
+        setActiveBadgeCodes(prevValue =>
             {
                 const newValue = [ ...prevValue ];
 
-                const index = newValue.indexOf(badge);
+                const index = newValue.indexOf(badgeCode);
 
                 if(index === -1)
                 {
                     if(!canWearBadges()) return prevValue;
 
-                    newValue.push(badge);
+                    newValue.push(badgeCode);
                 }
                 else
                 {
@@ -38,7 +39,7 @@ const useInventoryBadges = () =>
 
                 const composer = new SetActivatedBadgesComposer();
 
-                for(let i = 0; i < maxBadgeCount; i++) composer.addActivatedBadge((newValue[i] && newValue[i].badgeCode) || null);
+                for(let i = 0; i < maxBadgeCount; i++) composer.addActivatedBadge(newValue[i] || null);
 
                 SendMessageComposer(composer);
 
@@ -46,11 +47,20 @@ const useInventoryBadges = () =>
             });
     }
 
-    const selectBadge = (badge: IBadgeItem) =>
+    const selectBadge = (badgeCode: string) =>
     {
-        if(badges.indexOf(badge) === -1) return;
+        if(badgeCodes.indexOf(badgeCode) === -1) return;
 
-        setSelectedBadge(badge);
+        setSelectedBadgeCode(badgeCode);
+    }
+
+    const getBadgeId = (badgeCode: string) =>
+    {
+        const index = badgeCodes.indexOf(badgeCode);
+
+        if(index === -1) return 0;
+
+        return (badgeIds[index] || 0);
     }
 
     const onBadgesEvent = useCallback((event: BadgesEvent) =>
@@ -59,25 +69,14 @@ const useInventoryBadges = () =>
 
         BatchUpdates(() =>
         {
-            setBadges(prevValue =>
-                {
-                    const newValue: IBadgeItem[] = [];
-                    const badgeCodes = parser.getAllBadgeCodes();
+            const newBadgeCodes = parser.getAllBadgeCodes();
+            const newBadgeIds: number[] = [];
 
-                    for(const badgeCode of badgeCodes) newValue.push({ id: parser.getBadgeId(badgeCode), badgeCode });
+            for(const newBadgeCode of newBadgeCodes) newBadgeIds.push(parser.getBadgeId(newBadgeCode));
 
-                    return newValue;
-                });
-
-            setActiveBadges(prevValue =>
-                {
-                    const newValue: IBadgeItem[] = [];
-                    const badgeCodes = parser.getActiveBadgeCodes();
-
-                    for(const badgeCode of badgeCodes) newValue.push({ id: parser.getBadgeId(badgeCode), badgeCode });
-
-                    return newValue;
-                });
+            setBadgeCodes(newBadgeCodes);
+            setBadgeIds(newBadgeIds);
+            setActiveBadgeCodes(parser.getActiveBadgeCodes());
         });
     }, []);
 
@@ -87,33 +86,45 @@ const useInventoryBadges = () =>
     {
         const parser = event.getParser();
 
-        setBadges(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        BatchUpdates(() =>
+        {
+            setBadgeCodes(prevValue =>
+                {
+                    const newValue = [ ...prevValue ];
 
-                newValue.push({ id: parser.badgeId, badgeCode: parser.badgeCode });
-
-                return newValue;
-            });
+                    newValue.push(parser.badgeCode);
+    
+                    return newValue;
+                });
+    
+            setBadgeIds(prevValue =>
+                {
+                    const newValue = [ ...prevValue ];
+    
+                    newValue.push(parser.badgeId);
+    
+                    return newValue;
+                })
+        });
     }, []);
 
     UseMessageEventHook(BadgeReceivedEvent, onBadgeReceivedEvent);
 
     useEffect(() =>
     {
-        if(!badges || !badges.length) return;
+        if(!badgeCodes || !badgeCodes.length) return;
 
-        setSelectedBadge(prevValue =>
+        setSelectedBadgeCode(prevValue =>
             {
                 let newValue = prevValue;
 
-                if(newValue && (badges.indexOf(newValue) === -1)) newValue = null;
+                if(newValue && (badgeCodes.indexOf(newValue) === -1)) newValue = null;
 
-                if(!newValue) newValue = badges[0];
+                if(!newValue) newValue = badgeCodes[0];
 
                 return newValue;
             });
-    }, [ badges ]);
+    }, [ badgeCodes ]);
 
     useEffect(() =>
     {
@@ -124,7 +135,7 @@ const useInventoryBadges = () =>
         setNeedsUpdate(false);
     }, [ isVisible, needsUpdate ]);
 
-    return { badges, activeBadges, selectedBadge, isWearingBadge, canWearBadges, toggleBadge, selectBadge, setIsVisible };
+    return { badgeCodes, activeBadgeCodes, selectedBadgeCode, isWearingBadge, canWearBadges, toggleBadge, selectBadge, getBadgeId, setIsVisible };
 }
 
 export const useSharedInventoryBadges = () =>

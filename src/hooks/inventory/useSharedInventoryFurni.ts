@@ -116,7 +116,12 @@ const useInventoryFurni = () =>
                         const group = newValue[index];
                         const item = group.remove(existingId);
 
-                        if(!item) index++;
+                        if(!item)
+                        {
+                            index++;
+
+                            continue;
+                        }
                         
                         if(getPlacingItemId() === item.ref)
                         {
@@ -183,7 +188,12 @@ const useInventoryFurni = () =>
                     const group = newValue[index];
                     const item = group.remove(parser.itemId);
 
-                    if(!item) index++;
+                    if(!item)
+                    {
+                        index++;
+
+                        continue;
+                    }
                     
                     if(getPlacingItemId() === item.ref)
                     {

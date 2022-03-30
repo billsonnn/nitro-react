@@ -281,8 +281,8 @@ export class GroupItem
 
         while(index < items.length)
         {
-            const item      = items[index];
-            const locked    = (itemIds.indexOf(item.ref) >= 0);
+            const item = items[index];
+            const locked = (itemIds.indexOf(item.ref) >= 0);
 
             if(item.locked !== locked)
             {

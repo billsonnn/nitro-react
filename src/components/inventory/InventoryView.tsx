@@ -1,10 +1,9 @@
-import { BadgePointLimitsEvent, ILinkEventTracker, IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent, TradingOpenComposer } from '@nitrots/nitro-renderer';
+import { BadgePointLimitsEvent, ILinkEventTracker, IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, GetLocalization, GetRoomEngine, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, UnseenItemCategory } from '../../api';
+import { AddEventLinkTracker, GetLocalization, GetRoomEngine, LocalizeText, RemoveLinkEventTracker, UnseenItemCategory } from '../../api';
 import { isObjectMoverRequested, setObjectMoverRequested } from '../../api/inventory/InventoryUtilities';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { InventoryTradeRequestEvent } from '../../events';
-import { UseMessageEventHook, UseRoomEngineEvent, UseRoomSessionManagerEvent, useSharedInventoryUnseenTracker, UseUiEvent } from '../../hooks';
+import { UseMessageEventHook, UseRoomEngineEvent, UseRoomSessionManagerEvent, useSharedInventoryTrade, useSharedInventoryUnseenTracker } from '../../hooks';
 import { InventoryBadgeView } from './views/InventoryBadgeView';
 import { InventoryBotView } from './views/InventoryBotView';
 import { InventoryFurnitureView } from './views/InventoryFurnitureView';
@@ -24,40 +23,15 @@ export const InventoryView: FC<{}> = props =>
     const [ currentTab, setCurrentTab ] = useState<string>(TABS[0]);
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
+    const { isTrading = false, stopTrading = null } = useSharedInventoryTrade();
     const { getCount = null, resetCategory = null } = useSharedInventoryUnseenTracker();
 
-    const close = useCallback(() =>
+    const close = () =>
     {
-        // close the trade
-        // if(furnitureState.tradeData)
-        // {
-        //     switch(furnitureState.tradeData.state)
-        //     {
-        //         case TradeState.TRADING_STATE_RUNNING:
-        //             SendMessageComposer(new TradingCloseComposer());
-        //             return;
-        //         default:
-        //             SendMessageComposer(new TradingCancelComposer());
-        //             return;
-        //     }
-        // }
-        
+        if(isTrading) stopTrading();
+
         setIsVisible(false);
-    }, []);
-
-    const onInventoryTradeRequestEvent = useCallback((event: InventoryTradeRequestEvent) =>
-    {
-        switch(event.type)
-        {
-            case InventoryTradeRequestEvent.REQUEST_TRADE: {
-                const tradeEvent = (event as InventoryTradeRequestEvent);
-
-                SendMessageComposer(new TradingOpenComposer(tradeEvent.objectId));
-            }
-        }
-    }, []);
-
-    UseUiEvent(InventoryTradeRequestEvent.REQUEST_TRADE, onInventoryTradeRequestEvent);
+    }
 
     const onRoomEngineObjectPlacedEvent = useCallback((event: RoomEngineObjectPlacedEvent) =>
     {
@@ -143,13 +117,8 @@ export const InventoryView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if(!isVisible)
-        {
-            // if trading show it
-        }
-    }, [ isVisible ]);
-
-    const isTrading = false;
+        if(!isVisible && isTrading) setIsVisible(true);
+    }, [ isVisible, isTrading ]);
 
     if(!isVisible) return null;
 

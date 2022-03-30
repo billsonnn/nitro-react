@@ -26,9 +26,9 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
     const canTradeItem = (isWallItem: boolean, spriteId: number, category: number, groupable: boolean, stuffData: IObjectData) =>
     {
-        if(!ownUser || ownUser.accepts || !ownUser.items) return false;
+        if(!ownUser || ownUser.accepts || !ownUser.userItems) return false;
 
-        if(ownUser.items.length < MAX_ITEMS_TO_TRADE) return true;
+        if(ownUser.userItems.length < MAX_ITEMS_TO_TRADE) return true;
 
         if(!groupable) return false;
 
@@ -50,7 +50,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
             }
         }
 
-        return !!ownUser.items.getValue(type);
+        return !!ownUser.userItems.getValue(type);
     }
 
     const attemptItemOffer = (count: number) =>
@@ -71,7 +71,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
             if(!coreItem) coreItem = item;
         }
 
-        const ownItemCount = ownUser.items.length;
+        const ownItemCount = ownUser.userItems.length;
 
         if((ownItemCount + itemIds.length) <= 1500)
         {
@@ -130,12 +130,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                 {
                     const newValue = (prevValue - 1);
 
-                    if(newValue === 0)
-                    {
-                        setTradeState(TradeState.TRADING_STATE_CONFIRMING);
-
-                        clearInterval(interval);
-                    }
+                    if(newValue === 0) clearInterval(interval);
 
                     return newValue;
                 });
@@ -143,6 +138,15 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
         return () => clearInterval(interval);
     }, [ tradeState, setTradeState ]);
+
+    useEffect(() =>
+    {
+        if(countdownTick !== 0) return;
+
+        setTradeState(TradeState.TRADING_STATE_CONFIRMING);
+    }, [ countdownTick, setTradeState ]);
+
+    if((tradeState === TradeState.TRADING_STATE_READY) || !ownUser || !otherUser) return null;
 
     return (
         <Grid>
@@ -179,7 +183,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                         <AutoGrid columnCount={ 3 }>
                             { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
                                 {
-                                    const item = (ownUser.items.getWithIndex(i) || null);
+                                    const item = (ownUser.userItems.getWithIndex(i) || null);
 
                                     if(!item) return <LayoutGridItem key={ i } />;
 
@@ -205,7 +209,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                         <AutoGrid columnCount={ 3 }>
                             { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
                                 {
-                                    const item = (otherUser.items.getWithIndex(i) || null);
+                                    const item = (otherUser.userItems.getWithIndex(i) || null);
 
                                     if(!item) return <LayoutGridItem key={ i } />;
 
