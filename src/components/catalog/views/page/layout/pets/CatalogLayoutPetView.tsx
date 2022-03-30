@@ -26,7 +26,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
     const [ approvalPending, setApprovalPending ] = useState(true);
     const [ approvalResult, setApprovalResult ] = useState(-1);
     const { currentOffer = null, setCurrentOffer = null, setPurchaseOptions = null, catalogOptions = null, roomPreviewer = null } = useCatalogContext();
-    const { petPalettes = [] } = catalogOptions;
+    const { petPalettes = null } = catalogOptions;
 
     const getColor = useMemo(() =>
     {
@@ -138,26 +138,29 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
         if(!productData) return;
 
-        for(const paletteData of petPalettes)
+        if(petPalettes)
         {
-            if(paletteData.breed !== productData.type) continue;
-
-            const palettes: SellablePetPaletteData[] = [];
-
-            for(const palette of paletteData.palettes)
+            for(const paletteData of petPalettes)
             {
-                if(!palette.sellable) continue;
-
-                palettes.push(palette);
+                if(paletteData.breed !== productData.type) continue;
+    
+                const palettes: SellablePetPaletteData[] = [];
+    
+                for(const palette of paletteData.palettes)
+                {
+                    if(!palette.sellable) continue;
+    
+                    palettes.push(palette);
+                }
+    
+                BatchUpdates(() =>
+                {
+                    setSelectedPaletteIndex((palettes.length ? 0 : -1));
+                    setSellablePalettes(palettes);
+                });
+    
+                return;
             }
-
-            BatchUpdates(() =>
-            {
-                setSelectedPaletteIndex((palettes.length ? 0 : -1));
-                setSellablePalettes(palettes);
-            });
-
-            return;
         }
 
         BatchUpdates(() =>

@@ -1,6 +1,6 @@
 import { AchievementData, AchievementEvent, AchievementsEvent, AchievementsScoreEvent, ILinkEventTracker, RequestAchievementsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AchievementCategory, AddEventLinkTracker, GetAchievementCategoryImageUrl, GetAchievementIsIgnored, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { AchievementCategory, AddEventLinkTracker, CloneObject, GetAchievementCategoryImageUrl, GetAchievementIsIgnored, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Base, Column, LayoutImage, LayoutProgressBar, NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView, Text } from '../../common';
 import { AchievementsUIUnseenCountEvent } from '../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../hooks';
@@ -36,7 +36,7 @@ export const AchievementsView: FC<{}> = props =>
                 }
                 else
                 {
-                    const category = newValue[categoryIndex];
+                    const category = CloneObject(newValue[categoryIndex]);
                     const newAchievements = [ ...category.achievements ];
                     const achievementIndex = newAchievements.findIndex(existing => (existing.achievementId === achievement.achievementId));
                     let previousAchievement: AchievementData = null;
@@ -60,6 +60,8 @@ export const AchievementsView: FC<{}> = props =>
                     }
 
                     category.achievements = newAchievements;
+
+                    newValue[categoryIndex] = category;
                 }
 
                 return newValue;
