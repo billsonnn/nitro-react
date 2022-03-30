@@ -1,11 +1,6 @@
 import { FC, useCallback, useMemo } from 'react';
-import { LocalizeText } from '../../../../../../api';
-import { LayoutFurniIconImageView } from '../../../../../../common';
-import { Button } from '../../../../../../common/Button';
-import { Column } from '../../../../../../common/Column';
-import { LayoutGridItem } from '../../../../../../common/layout/LayoutGridItem';
-import { Text } from '../../../../../../common/Text';
-import { ProductTypeEnum } from '../../../../common/ProductTypeEnum';
+import { LocalizeText, ProductTypeEnum } from '../../../../../../api';
+import { Button, Column, LayoutFurniIconImageView, LayoutGridItem, Text } from '../../../../../../common';
 import { MarketplaceOfferData } from './common/MarketplaceOfferData';
 import { MarketPlaceOfferState } from './common/MarketplaceOfferState';
 

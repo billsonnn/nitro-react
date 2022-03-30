@@ -1,7 +1,7 @@
 import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, ClubGiftInfoEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
 import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/user/GuildMembershipsMessageEvent';
 import { FC, useCallback } from 'react';
-import { GetFurnitureData, GetProductDataForLocalization, LocalizeText, NotificationAlertType, NotificationUtilities } from '../../api';
+import { GetFurnitureData, GetProductDataForLocalization, LocalizeText, NotificationAlertType, NotificationUtilities, ProductTypeEnum } from '../../api';
 import { CatalogGiftReceiverNotFoundEvent, CatalogNameResultEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent } from '../../events';
 import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../hooks';
 import { useCatalogContext } from './CatalogContext';
@@ -15,7 +15,6 @@ import { IPurchasableOffer } from './common/IPurchasableOffer';
 import { Offer } from './common/Offer';
 import { PageLocalization } from './common/PageLocalization';
 import { Product } from './common/Product';
-import { ProductTypeEnum } from './common/ProductTypeEnum';
 import { SubscriptionInfo } from './common/SubscriptionInfo';
 
 export const CatalogMessageHandler: FC<{}> = props =>

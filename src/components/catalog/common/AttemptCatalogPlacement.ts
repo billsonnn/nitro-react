@@ -1,7 +1,6 @@
 import { CatalogPageMessageOfferData, RoomObjectCategory, RoomObjectPlacementSource } from '@nitrots/nitro-renderer';
-import { GetRoomEngine } from '../../../api';
+import { GetRoomEngine, ProductTypeEnum } from '../../../api';
 import { IsCatalogOfferDraggable } from './IsCatalogOfferDraggable';
-import { ProductTypeEnum } from './ProductTypeEnum';
 
 export const AttemptCatalogPlacement = (offer: CatalogPageMessageOfferData) =>
 {

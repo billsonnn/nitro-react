@@ -1,13 +1,10 @@
 import { FC, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { AutoGrid, AutoGridProps } from '../../../../../common/AutoGrid';
-import { Button } from '../../../../../common/Button';
-import { ButtonGroup } from '../../../../../common/ButtonGroup';
+import { LocalizeText, ProductTypeEnum } from '../../../../../api';
+import { AutoGrid, AutoGridProps, Button, ButtonGroup } from '../../../../../common';
 import { BatchUpdates } from '../../../../../hooks';
 import { useCatalogContext } from '../../../CatalogContext';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 import { Offer } from '../../../common/Offer';
-import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
 import { CatalogGridOfferView } from '../common/CatalogGridOfferView';
 
 interface CatalogSpacesWidgetViewProps extends AutoGridProps

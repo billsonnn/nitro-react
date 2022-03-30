@@ -1,9 +1,8 @@
-import { GetFurnitureData, GetProductDataForLocalization, LocalizeText } from '../../../api';
+import { GetFurnitureData, GetProductDataForLocalization, LocalizeText, ProductTypeEnum } from '../../../api';
 import { ICatalogPage } from './ICatalogPage';
 import { IProduct } from './IProduct';
 import { IPurchasableOffer } from './IPurchasableOffer';
 import { Product } from './Product';
-import { ProductTypeEnum } from './ProductTypeEnum';
 
 export class Offer implements IPurchasableOffer
 {

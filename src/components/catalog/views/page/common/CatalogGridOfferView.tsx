@@ -1,5 +1,6 @@
 import { FC, useMemo } from 'react';
-import { LayoutGridItem, LayoutGridItemProps } from '../../../../../common/layout/LayoutGridItem';
+import { ProductTypeEnum } from '../../../../../api';
+import { LayoutAvatarImageView, LayoutGridItem, LayoutGridItemProps } from '../../../../../common';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 import { Offer } from '../../../common/Offer';
 
@@ -26,5 +27,10 @@ export const CatalogGridOfferView: FC<CatalogGridOfferViewProps> = props =>
 
     if(!product) return null;
 
-    return <LayoutGridItem itemImage={ iconUrl } itemCount={ ((offer.pricingModel === Offer.PRICING_MODEL_MULTI) ? product.productCount : 1) } itemUniqueSoldout={ (product.uniqueLimitedItemSeriesSize && !product.uniqueLimitedItemsLeft) } itemUniqueNumber={ product.uniqueLimitedItemSeriesSize } { ...rest } />;
+    return (
+        <LayoutGridItem itemImage={ iconUrl } itemCount={ ((offer.pricingModel === Offer.PRICING_MODEL_MULTI) ? product.productCount : 1) } itemUniqueSoldout={ (product.uniqueLimitedItemSeriesSize && !product.uniqueLimitedItemsLeft) } itemUniqueNumber={ product.uniqueLimitedItemSeriesSize } { ...rest }>
+            { (offer.product.productType === ProductTypeEnum.ROBOT) &&
+                <LayoutAvatarImageView figure={ offer.product.extraParam } headOnly={ true } direction={ 3 } /> }
+        </LayoutGridItem>
+    );
 }
