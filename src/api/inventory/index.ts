@@ -1,7 +1,6 @@
 export * from './FurniCategory';
 export * from './FurnitureItem';
 export * from './GroupItem';
-export * from './IBadgeItem';
 export * from './IBotItem';
 export * from './IFurnitureItem';
 export * from './InventoryUtilities';
