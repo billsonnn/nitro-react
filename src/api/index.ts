@@ -6,6 +6,7 @@ export * from './friends';
 export * from './GetRendererVersion';
 export * from './GetUIVersion';
 export * from './groups';
+export * from './inventory';
 export * from './navigator';
 export * from './nitro';
 export * from './nitro/avatar';

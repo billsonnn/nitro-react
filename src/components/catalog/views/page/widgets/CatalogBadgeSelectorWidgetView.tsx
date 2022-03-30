@@ -1,8 +1,8 @@
 import { StringDataType } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { IBadgeItem } from '../../../../../api';
 import { AutoGrid, AutoGridProps, LayoutBadgeImageView, LayoutGridItem } from '../../../../../common';
-import { InventoryBadgesRequestEvent, InventoryBadgesUpdatedEvent } from '../../../../../events';
-import { DispatchUiEvent, UseUiEvent } from '../../../../../hooks';
+import { useSharedInventoryBadges } from '../../../../../hooks';
 import { useCatalogContext } from '../../../CatalogContext';
 
 const EXCLUDED_BADGE_CODES: string[] = [];
@@ -15,16 +15,9 @@ interface CatalogBadgeSelectorWidgetViewProps extends AutoGridProps
 export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewProps> = props =>
 {
     const { columnCount = 5, ...rest } = props;
-    const [ badges, setBadges ] = useState<string[]>([]);
-    const [ currentBadge, setCurrentBadge ] = useState<string>(null);
+    const [ currentBadge, setCurrentBadge ] = useState<IBadgeItem>(null);
     const { currentOffer = null, setPurchaseOptions = null } = useCatalogContext();
-
-    const onInventoryBadgesUpdatedEvent = useCallback((event: InventoryBadgesUpdatedEvent) =>
-    {
-        setBadges(event.badges);
-    }, []);
-
-    UseUiEvent(InventoryBadgesUpdatedEvent.BADGES_UPDATED, onInventoryBadgesUpdatedEvent);
+    const { badges = [] } = useSharedInventoryBadges();
 
     const previewStuffData = useMemo(() =>
     {
@@ -32,7 +25,7 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
 
         const stuffData = new StringDataType();
 
-        stuffData.setValue([ '0', currentBadge, '', '' ]);
+        stuffData.setValue([ '0', currentBadge.badgeCode, '', '' ]);
 
         return stuffData;
     }, [ currentBadge ]);
@@ -53,18 +46,13 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
             });
     }, [ currentOffer, previewStuffData, setPurchaseOptions ]);
 
-    useEffect(() =>
-    {
-        DispatchUiEvent(new InventoryBadgesRequestEvent(InventoryBadgesRequestEvent.REQUEST_BADGES));
-    }, []);
-
     return (
         <AutoGrid columnCount={ columnCount } { ...rest }>
-            { badges && (badges.length > 0) && badges.map((code, index) =>
+            { badges && (badges.length > 0) && badges.map((badge, index) =>
                 {
                     return (
-                        <LayoutGridItem key={ index } itemActive={ (currentBadge === code) } onClick={ event => setCurrentBadge(code) }> 
-                            <LayoutBadgeImageView badgeCode={ code } />
+                        <LayoutGridItem key={ index } itemActive={ (currentBadge === badge) } onClick={ event => setCurrentBadge(badge) }> 
+                            <LayoutBadgeImageView badgeCode={ badge.badgeCode } />
                         </LayoutGridItem>
                     );
                 }) }

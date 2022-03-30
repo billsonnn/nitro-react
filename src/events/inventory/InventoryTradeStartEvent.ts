@@ -1,4 +1,4 @@
-import { TradeUserData } from '../../components/inventory/common/TradeUserData';
+import { TradeUserData } from '../../api';
 import { InventoryEvent } from './InventoryEvent';
 
 export class InventoryTradeStartEvent extends InventoryEvent
