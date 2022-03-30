@@ -1,6 +1,5 @@
 import { CatalogPageMessageOfferData, RoomControllerLevel } from '@nitrots/nitro-renderer';
-import { GetRoomSession } from '../../../api';
-import { ProductTypeEnum } from './ProductTypeEnum';
+import { GetRoomSession, ProductTypeEnum } from '../../../api';
 
 export const IsCatalogOfferDraggable = (offer: CatalogPageMessageOfferData) =>
 {

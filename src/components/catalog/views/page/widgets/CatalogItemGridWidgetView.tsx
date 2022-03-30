@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { AutoGrid, AutoGridProps } from '../../../../../common/AutoGrid';
+import { ProductTypeEnum } from '../../../../../api';
+import { AutoGrid, AutoGridProps } from '../../../../../common';
 import { useCatalogContext } from '../../../CatalogContext';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
-import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
 import { CatalogGridOfferView } from '../common/CatalogGridOfferView';
 
 interface CatalogItemGridWidgetViewProps extends AutoGridProps

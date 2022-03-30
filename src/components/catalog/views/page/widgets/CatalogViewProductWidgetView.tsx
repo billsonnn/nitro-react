@@ -1,11 +1,10 @@
 import { Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { GetAvatarRenderManager, GetSessionDataManager } from '../../../../../api';
+import { GetAvatarRenderManager, GetSessionDataManager, ProductTypeEnum } from '../../../../../api';
 import { AutoGrid, Column, LayoutGridItem, LayoutRoomPreviewerView } from '../../../../../common';
 import { useCatalogContext } from '../../../CatalogContext';
 import { FurniCategory } from '../../../common/FurniCategory';
 import { Offer } from '../../../common/Offer';
-import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
 
 export const CatalogViewProductWidgetView: FC<{}> = props =>
 {

@@ -1,5 +1,6 @@
 export * from './achievements';
 export * from './campaign';
+export * from './catalog';
 export * from './common';
 export * from './core';
 export * from './friends';

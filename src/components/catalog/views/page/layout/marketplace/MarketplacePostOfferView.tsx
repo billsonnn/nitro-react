@@ -1,12 +1,11 @@
 import { GetMarketplaceConfigurationMessageComposer, MakeOfferMessageComposer, MarketplaceConfigurationEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
+import { LocalizeText, NotificationUtilities, ProductTypeEnum, SendMessageComposer } from '../../../../../../api';
 import { Base, Button, Column, Grid, LayoutFurniImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../../common';
 import { CatalogPostMarketplaceOfferEvent } from '../../../../../../events';
 import { UseMessageEventHook, UseUiEvent } from '../../../../../../hooks';
 import { FurnitureItem } from '../../../../../inventory/common/FurnitureItem';
 import { useCatalogContext } from '../../../../CatalogContext';
-import { ProductTypeEnum } from '../../../../common/ProductTypeEnum';
 
 export const MarketplacePostOfferView : FC<{}> = props =>
 {

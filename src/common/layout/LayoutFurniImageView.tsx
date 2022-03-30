@@ -1,7 +1,6 @@
 import { IGetImageListener, ImageResult, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetRoomEngine } from '../../api';
-import { ProductTypeEnum } from '../../components/catalog/common/ProductTypeEnum';
+import { GetRoomEngine, ProductTypeEnum } from '../../api';
 import { Base } from '../Base';
 
 interface LayoutFurniImageViewProps

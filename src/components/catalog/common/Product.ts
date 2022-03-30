@@ -1,9 +1,8 @@
 import { IFurnitureData, IObjectData, IProductData } from '@nitrots/nitro-renderer';
-import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../../../api';
+import { GetConfiguration, GetRoomEngine, GetSessionDataManager, ProductTypeEnum } from '../../../api';
 import { GetPixelEffectIcon, GetSubscriptionProductIcon } from './CatalogUtilities';
 import { IProduct } from './IProduct';
 import { IPurchasableOffer } from './IPurchasableOffer';
-import { ProductTypeEnum } from './ProductTypeEnum';
 
 export class Product implements IProduct
 {
