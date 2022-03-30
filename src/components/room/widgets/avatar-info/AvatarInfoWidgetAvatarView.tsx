@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomControllerLevel, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetOwnRoomObject, GetUserProfile, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUserActionMessage } from '../../../../api';
 import { Base, Flex } from '../../../../common';
 import { BatchUpdates } from '../../../../hooks';
@@ -61,7 +61,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
         return flag;
     }, []);
 
-    const processAction = (name: string) =>
+    const processAction = useCallback((name: string) =>
     {
         let messageType: string = null;
         let message: RoomWidgetMessage = null;
@@ -114,20 +114,16 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                     hideMenu = false;
                     setMode(MODE_RELATIONSHIP);
                     break;
-                case 'respect':
-                    let newRespectsLeft = 0;
-
-                    setRespectsLeft(prevValue =>
-                    {
-                        newRespectsLeft = (prevValue - 1);
-
-                        return newRespectsLeft;
-                    });
+                case 'respect': {
+                    let newRespectsLeft = (respectsLeft - 1);
+                    
+                    setRespectsLeft(newRespectsLeft);
 
                     messageType = RoomWidgetUserActionMessage.RESPECT_USER;
 
                     if(newRespectsLeft > 0) hideMenu = false;
                     break;
+                }
                 case 'ignore':
                     messageType = RoomWidgetUserActionMessage.IGNORE_USER;
                     break;
@@ -208,7 +204,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
         }
 
         if(hideMenu) close();
-    }
+    }, [ userData, respectsLeft, widgetHandler, close, ]);
 
     useEffect(() =>
     {
