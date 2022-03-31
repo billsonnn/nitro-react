@@ -2,7 +2,7 @@ import { FriendParser } from '@nitrots/nitro-renderer';
 
 export class MessengerFriend
 {
-    public static RELATIONSHIP_NONE: number  = 0;
+    public static RELATIONSHIP_NONE: number = 0;
     public static RELATIONSHIP_HEART: number = 1;
     public static RELATIONSHIP_SMILE: number = 2;
     public static RELATIONSHIP_BOBBA: number = 3;

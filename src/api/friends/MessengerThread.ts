@@ -1,14 +1,16 @@
-import { LocalizeText } from '../../../api';
+import { LocalizeText } from '../utils';
+import { GetGroupChatData } from './GetGroupChatData';
 import { GroupType } from './GroupType';
 import { MessengerFriend } from './MessengerFriend';
 import { MessengerThreadChat } from './MessengerThreadChat';
 import { MessengerThreadChatGroup } from './MessengerThreadChatGroup';
-import { getGroupChatData } from './Utils';
 
 export class MessengerThread
 {
     public static MESSAGE_RECEIVED: string = 'MT_MESSAGE_RECEIVED';
+    public static THREAD_ID: number = 0;
 
+    private _threadId: number;
     private _participant: MessengerFriend;
     private _groups: MessengerThreadChatGroup[];
     private _lastUpdated: Date;
@@ -16,6 +18,7 @@ export class MessengerThread
 
     constructor(participant: MessengerFriend, isNew: boolean = true)
     {
+        this._threadId = ++MessengerThread.THREAD_ID;
         this._participant = participant;
         this._groups = [];
         this._lastUpdated = new Date();
@@ -32,7 +35,7 @@ export class MessengerThread
     public addMessage(senderId: number, message: string, secondsSinceSent: number = 0, extraData: string = null, type: number = 0): MessengerThreadChat
     {
         const isGroupChat = (senderId < 0 && extraData);
-        const userId = isGroupChat ? getGroupChatData(extraData).userId : senderId;
+        const userId = isGroupChat ? GetGroupChatData(extraData).userId : senderId;
 
         const group = this.getLastGroup(userId);
 
@@ -45,6 +48,7 @@ export class MessengerThread
         group.addChat(chat);
 
         this._lastUpdated = new Date();
+        
         this._unreadCount++;
 
         return chat;
@@ -66,6 +70,11 @@ export class MessengerThread
     public setRead(): void
     {
         this._unreadCount = 0;
+    }
+
+    public get threadId(): number
+    {
+        return this._threadId;
     }
 
     public get participant(): MessengerFriend
@@ -90,6 +99,6 @@ export class MessengerThread
 
     public get unread(): boolean
     {
-        return this._unreadCount > 0;
+        return (this._unreadCount > 0);
     }
 }

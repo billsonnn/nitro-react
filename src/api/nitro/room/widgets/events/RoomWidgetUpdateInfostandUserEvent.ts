@@ -24,12 +24,10 @@ export class RoomWidgetUpdateInfostandUserEvent extends RoomWidgetUpdateInfostan
     public carryItem: number = 0;
     public roomIndex: number = 0;
     public isSpectatorMode: boolean = false;
-    public realName: string = '';
     public allowNameChange: boolean = false;
     public amIOwner: boolean = false;
     public amIAnyRoomController: boolean = false;
     public roomControllerLevel: number = 0;
-    public canBeAskedAsFriend: boolean = false;
     public canBeKicked: boolean = false;
     public canBeBanned: boolean = false;
     public canBeMuted: boolean = false;
@@ -39,7 +37,6 @@ export class RoomWidgetUpdateInfostandUserEvent extends RoomWidgetUpdateInfostan
     public canTrade: boolean = false;
     public canTradeReason: number = 0;
     public targetRoomControllerLevel: number = 0;
-    public isFriend: boolean = false;
     public isAmbassador: boolean = false;
 
     public get isOwnUser(): boolean

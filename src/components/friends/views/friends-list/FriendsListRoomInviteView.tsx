@@ -12,7 +12,6 @@ interface FriendsRoomInviteViewProps
 export const FriendsRoomInviteView: FC<FriendsRoomInviteViewProps> = props =>
 {
     const { selectedFriendsIds = null, onCloseClick = null, sendRoomInvite = null } = props;
-    
     const [ roomInviteMessage, setRoomInviteMessage ] = useState<string>('');
 
     return (

@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomControllerLevel, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetOwnRoomObject, GetUserProfile, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUserActionMessage } from '../../../../api';
+import { CreateLinkEvent, GetOwnRoomObject, GetUserProfile, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUserActionMessage } from '../../../../api';
 import { Base, Flex } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
+import { BatchUpdates, useFriends } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
@@ -28,6 +28,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
     const { userData = null, close = null } = props;
     const [ mode, setMode ] = useState(MODE_NORMAL);
     const [ respectsLeft, setRespectsLeft ] = useState(0);
+    const { canRequestFriend = null } = useFriends();
     const { widgetHandler = null } = useRoomContext();
 
     const isShowGiveRights = useMemo(() =>
@@ -107,8 +108,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                     messageType = RoomWidgetUserActionMessage.WHISPER_USER;
                     break;
                 case 'friend':
-                    //userData.canBeAskedAsFriend = false;
-                    messageType = RoomWidgetUserActionMessage.SEND_FRIEND_REQUEST;
+                    CreateLinkEvent(`friends/request/${ userData.webID }/${ userData.name }`);
                     break;
                 case 'relationship':
                     hideMenu = false;
@@ -222,7 +222,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
             </ContextMenuHeaderView>
             { (mode === MODE_NORMAL) &&
                 <>
-                    { userData.canBeAskedAsFriend &&
+                    { canRequestFriend(userData.webID) &&
                         <ContextMenuListItemView onClick={ event => processAction('friend') }>
                             { LocalizeText('infostand.button.friend') }
                         </ContextMenuListItemView> }
@@ -236,7 +236,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                         <ContextMenuListItemView onClick={ event => processAction('respect') }>
                             { LocalizeText('infostand.button.respect', [ 'count' ], [ respectsLeft.toString() ]) }
                         </ContextMenuListItemView>}
-                    { !userData.canBeAskedAsFriend &&
+                    { !canRequestFriend(userData.webID) &&
                         <ContextMenuListItemView onClick={ event => processAction('relationship') }>
                             {LocalizeText('infostand.link.relationship')}
                             <FontAwesomeIcon icon="chevron-right" className="right" />

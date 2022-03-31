@@ -18,7 +18,6 @@ export * from './RoomWidgetUpdateDimmerEvent';
 export * from './RoomWidgetUpdateDimmerStateEvent';
 export * from './RoomWidgetUpdateEvent';
 export * from './RoomWidgetUpdateExternalImageEvent';
-export * from './RoomWidgetUpdateFriendRequestEvent';
 export * from './RoomWidgetUpdateInfostandEvent';
 export * from './RoomWidgetUpdateInfostandFurniEvent';
 export * from './RoomWidgetUpdateInfostandPetEvent';

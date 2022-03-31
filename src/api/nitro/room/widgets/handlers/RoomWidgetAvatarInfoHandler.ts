@@ -1,7 +1,7 @@
 import { NitroEvent, RoomEngineUseProductEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionDanceEvent, RoomSessionPetStatusUpdateEvent, RoomSessionUserDataUpdateEvent, RoomWidgetEnum, SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
 import { SendMessageComposer } from '../../..';
 import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
-import { MessengerFriend } from '../../../../../components/friends/common/MessengerFriend';
+import { MessengerFriend } from '../../../../friends/MessengerFriend';
 import { FurniCategory } from '../../../../inventory/FurniCategory';
 import { RoomWidgetAvatarInfoEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateUserDataEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../events';
 import { RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUseProductMessage, RoomWidgetUserActionMessage } from '../messages';

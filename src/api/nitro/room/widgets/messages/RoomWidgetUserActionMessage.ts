@@ -13,7 +13,6 @@ export class RoomWidgetUserActionMessage extends RoomWidgetMessage
     public static MUTE_USER_2MIN: string = 'RWUAM_MUTE_USER_2MIN';
     public static MUTE_USER_5MIN: string = 'RWUAM_MUTE_USER_5MIN';
     public static MUTE_USER_10MIN: string = 'RWUAM_MUTE_USER_10MIN';
-    public static SEND_FRIEND_REQUEST: string = 'RWUAM_SEND_FRIEND_REQUEST';
     public static RESPECT_USER: string = 'RWUAM_RESPECT_USER';
     public static GIVE_RIGHTS: string = 'RWUAM_GIVE_RIGHTS';
     public static TAKE_RIGHTS: string = 'RWUAM_TAKE_RIGHTS';

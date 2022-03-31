@@ -11,10 +11,10 @@ export class MessengerRequest
     {
         if(!data) return false;
 
-        this._id                = data.requestId;
-        this._name              = data.requesterName;
-        this._figureString      = data.figureString;
-        this._requesterUserId   = data.requesterUserId;
+        this._id = data.requestId;
+        this._name = data.requesterName;
+        this._figureString = data.figureString;
+        this._requesterUserId = data.requesterUserId;
 
         return true;
     }
