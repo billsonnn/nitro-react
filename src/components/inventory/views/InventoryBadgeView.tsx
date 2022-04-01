@@ -48,11 +48,11 @@ export const InventoryBadgeView: FC<{}> = props =>
             <Column size={ 7 } overflow="hidden">
                 <AutoGrid columnCount={ 4 }>
                     { badgeCodes && (badgeCodes.length > 0) && badgeCodes.map((badgeCode, index) =>
-                        {
-                            if(activeBadgeCodes.indexOf(badgeCode) >= 0) return null;
+                    {
+                        if(activeBadgeCodes.indexOf(badgeCode) >= 0) return null;
 
-                            return <InventoryBadgeItemView key={ index } badgeCode={ badgeCode } />
-                        }) }
+                        return <InventoryBadgeItemView key={ index } badgeCode={ badgeCode } />
+                    }) }
                 </AutoGrid>
             </Column>
             <Column className="justify-content-between" size={ 5 } overflow="auto">

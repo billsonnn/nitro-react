@@ -1,5 +1,5 @@
-import { AdvancedMap, TradingAcceptComposer, TradingAcceptEvent, TradingCancelComposer, TradingCloseComposer, TradingCloseEvent, TradingCloseParser, TradingCompletedEvent, TradingConfirmationComposer, TradingConfirmationEvent, TradingListItemEvent, TradingListItemRemoveComposer, TradingNotOpenEvent, TradingOpenComposer, TradingOpenEvent, TradingOpenFailedEvent, TradingOpenFailedParser, TradingOtherNotAllowedEvent, TradingUnacceptComposer, TradingYouAreNotAllowedEvent } from '@nitrots/nitro-renderer';
-import { useCallback, useState } from 'react';
+import { AdvancedMap, TradingAcceptComposer, TradingAcceptEvent, TradingCancelComposer, TradingCloseComposer, TradingCloseEvent, TradingCloseParser, TradingCompletedEvent, TradingConfirmationComposer, TradingConfirmationEvent, TradingListItemEvent, TradingListItemRemoveComposer, TradingNotOpenEvent, TradingOpenComposer, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingUnacceptComposer, TradingYouAreNotAllowedEvent } from '@nitrots/nitro-renderer';
+import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { useInventoryFurni } from '.';
 import { UseMessageEventHook } from '..';
@@ -13,7 +13,7 @@ const useInventoryTradeState = () =>
     const [ ownUser, setOwnUser ] = useState<TradeUserData>(null);
     const [ otherUser, setOtherUser ] = useState<TradeUserData>(null);
     const [ tradeState, setTradeState ] = useState(TradeState.TRADING_STATE_READY);
-    const { groupItems = [], setGroupItems = null } = useInventoryFurni();
+    const { groupItems = [], setGroupItems = null, activate = null, deactivate = null } = useInventoryFurni();
     const isTrading = (tradeState >= TradeState.TRADING_STATE_RUNNING);
 
     const progressTrade = () =>
@@ -126,7 +126,7 @@ const useInventoryTradeState = () =>
         {
             if(ownUser && (parser.userID !== ownUser.userId))
             {
-                TradingNotificationMessage(TradingNotificationType.ALERT_OTHER_CANCELLED);
+                TradingNotificationMessage(TradingNotificationType.THEY_CANCELLED);
             }
         }
 
@@ -285,9 +285,7 @@ const useInventoryTradeState = () =>
     {
         const parser = event.getParser();
 
-        if((parser.reason !== TradingOpenFailedParser.REASON_YOU_ARE_ALREADY_TRADING && (parser.reason !== TradingOpenFailedParser.REASON_OTHER_USER_ALREADY_TRADING))) return;
-
-        TradingNotificationMessage(TradingNotificationType.ALERT_ALREADY_OPEN);
+        TradingNotificationMessage(parser.reason, parser.otherUserName);
     }, []);
 
     UseMessageEventHook(TradingOpenFailedEvent, onTradingOpenFailedEvent);
@@ -296,7 +294,7 @@ const useInventoryTradeState = () =>
     {
         const parser = event.getParser();
 
-        TradingNotificationMessage(TradingNotificationType.ALERT_OTHER_DISABLED);
+        TradingNotificationMessage(TradingNotificationType.THEY_NOT_ALLOWED);
     }, []);
 
     UseMessageEventHook(TradingOtherNotAllowedEvent, onTradingOtherNotAllowedEvent);
@@ -309,6 +307,15 @@ const useInventoryTradeState = () =>
     }, []);
 
     UseMessageEventHook(TradingYouAreNotAllowedEvent, onTradingYouAreNotAllowedEvent);
+
+    useEffect(() =>
+    {
+        if(tradeState === TradeState.TRADING_STATE_READY) return;
+
+        const id = activate();
+
+        return () => deactivate(id);
+    }, [ tradeState, activate, deactivate ]);
 
     return { ownUser, otherUser, tradeState, setTradeState, isTrading, groupItems, progressTrade, removeItem, stopTrading };
 }

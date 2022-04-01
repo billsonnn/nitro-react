@@ -29,63 +29,63 @@ const useInventoryFurniState = () =>
         const parser = event.getParser();
 
         setGroupItems(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            for(const item of parser.items)
             {
-                const newValue = [ ...prevValue ];
+                let i = 0;
+                let groupItem: GroupItem = null;
 
-                for(const item of parser.items)
+                while(i < newValue.length)
                 {
-                    let i = 0;
-                    let groupItem: GroupItem = null;
+                    const group = newValue[i];
 
-                    while(i < newValue.length)
+                    let j = 0;
+
+                    while(j < group.items.length)
                     {
-                        const group = newValue[i];
+                        const furniture = group.items[j];
 
-                        let j = 0;
-
-                        while(j < group.items.length)
+                        if(furniture.id === item.itemId)
                         {
-                            const furniture = group.items[j];
+                            furniture.update(item);
 
-                            if(furniture.id === item.itemId)
-                            {
-                                furniture.update(item);
+                            const newFurniture = [ ...group.items ];
 
-                                const newFurniture = [ ...group.items ];
+                            newFurniture[j] = furniture;
 
-                                newFurniture[j] = furniture;
+                            group.items = newFurniture;
 
-                                group.items = newFurniture;
+                            groupItem = group;
 
-                                groupItem = group;
-
-                                break;
-                            }
-
-                            j++
+                            break;
                         }
 
-                        if(groupItem) break;
-
-                        i++;
+                        j++
                     }
 
-                    if(groupItem)
-                    {
-                        groupItem.hasUnseenItems = true;
+                    if(groupItem) break;
 
-                        newValue[i] = CloneObject(groupItem);
-                    }
-                    else
-                    {
-                        const furniture = new FurnitureItem(item);
-
-                        addFurnitureItem(newValue, furniture, isUnseen(UnseenItemCategory.FURNI, item.itemId));
-                    }
+                    i++;
                 }
 
-                return newValue;
-            });
+                if(groupItem)
+                {
+                    groupItem.hasUnseenItems = true;
+
+                    newValue[i] = CloneObject(groupItem);
+                }
+                else
+                {
+                    const furniture = new FurnitureItem(item);
+
+                    addFurnitureItem(newValue, furniture, isUnseen(UnseenItemCategory.FURNI, item.itemId));
+                }
+            }
+
+            return newValue;
+        });
     }, [ isUnseen ]);
 
     UseMessageEventHook(FurnitureListAddOrUpdateEvent, onFurnitureListAddOrUpdateEvent);
@@ -101,65 +101,65 @@ const useInventoryFurniState = () =>
         if(!fragment) return;
 
         setGroupItems(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+            const existingIds = getAllItemIds(newValue);
+
+            for(const existingId of existingIds)
             {
-                const newValue = [ ...prevValue ];
-                const existingIds = getAllItemIds(newValue);
+                if(fragment.get(existingId)) continue;
 
-                for(const existingId of existingIds)
+                let index = 0;
+
+                while(index < newValue.length)
                 {
-                    if(fragment.get(existingId)) continue;
+                    const group = newValue[index];
+                    const item = group.remove(existingId);
 
-                    let index = 0;
-
-                    while(index < newValue.length)
+                    if(!item)
                     {
-                        const group = newValue[index];
-                        const item = group.remove(existingId);
+                        index++;
 
-                        if(!item)
-                        {
-                            index++;
-
-                            continue;
-                        }
-                        
-                        if(getPlacingItemId() === item.ref)
-                        {
-                            cancelRoomObjectPlacement();
-
-                            if(!attemptItemPlacement(group))
-                            {
-                                CreateLinkEvent('inventory/show');
-                            }
-                        }
-
-                        if(group.getTotalCount() <= 0)
-                        {
-                            newValue.splice(index, 1);
-
-                            group.dispose();
-                        }
-
-                        break;
+                        continue;
                     }
+                        
+                    if(getPlacingItemId() === item.ref)
+                    {
+                        cancelRoomObjectPlacement();
+
+                        if(!attemptItemPlacement(group))
+                        {
+                            CreateLinkEvent('inventory/show');
+                        }
+                    }
+
+                    if(group.getTotalCount() <= 0)
+                    {
+                        newValue.splice(index, 1);
+
+                        group.dispose();
+                    }
+
+                    break;
                 }
+            }
 
-                for(const itemId of fragment.keys())
-                {
-                    if(existingIds.indexOf(itemId) >= 0) continue;
+            for(const itemId of fragment.keys())
+            {
+                if(existingIds.indexOf(itemId) >= 0) continue;
 
-                    const parser = fragment.get(itemId);
+                const parser = fragment.get(itemId);
 
-                    if(!parser) continue;
+                if(!parser) continue;
 
-                    const item = new FurnitureItem(parser);
+                const item = new FurnitureItem(parser);
 
-                    addFurnitureItem(newValue, item, isUnseen(UnseenItemCategory.FURNI, itemId));
+                addFurnitureItem(newValue, item, isUnseen(UnseenItemCategory.FURNI, itemId));
 
-                }
+            }
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         furniMsgFragments = null;
     }, [ isUnseen ]);
@@ -178,42 +178,42 @@ const useInventoryFurniState = () =>
         const parser = event.getParser();
 
         setGroupItems(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            let index = 0;
+
+            while(index < newValue.length)
             {
-                const newValue = [ ...prevValue ];
+                const group = newValue[index];
+                const item = group.remove(parser.itemId);
 
-                let index = 0;
-
-                while(index < newValue.length)
+                if(!item)
                 {
-                    const group = newValue[index];
-                    const item = group.remove(parser.itemId);
+                    index++;
 
-                    if(!item)
-                    {
-                        index++;
-
-                        continue;
-                    }
+                    continue;
+                }
                     
-                    if(getPlacingItemId() === item.ref)
-                    {
-                        cancelRoomObjectPlacement();
+                if(getPlacingItemId() === item.ref)
+                {
+                    cancelRoomObjectPlacement();
 
-                        if(!attemptItemPlacement(group)) CreateLinkEvent('inventory/show');
-                    }
-
-                    if(group.getTotalCount() <= 0)
-                    {
-                        newValue.splice(index, 1);
-
-                        group.dispose();
-                    }
-
-                    break;
+                    if(!attemptItemPlacement(group)) CreateLinkEvent('inventory/show');
                 }
 
-                return newValue;
-            });
+                if(group.getTotalCount() <= 0)
+                {
+                    newValue.splice(index, 1);
+
+                    group.dispose();
+                }
+
+                break;
+            }
+
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(FurnitureListRemovedEvent, onFurnitureListRemovedEvent);
@@ -230,15 +230,15 @@ const useInventoryFurniState = () =>
         if(!groupItems || !groupItems.length) return;
 
         setSelectedItem(prevValue =>
-            {
-                let newValue = prevValue;
+        {
+            let newValue = prevValue;
 
-                if(newValue && (groupItems.indexOf(newValue) === -1)) newValue = null;
+            if(newValue && (groupItems.indexOf(newValue) === -1)) newValue = null;
 
-                if(!newValue) newValue = groupItems[0];
+            if(!newValue) newValue = groupItems[0];
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ groupItems ]);
 
     useEffect(() =>
@@ -260,15 +260,8 @@ export const useInventoryFurni = () =>
 
     useEffect(() =>
     {
-        const id = activate();
-
-        return () => deactivate(id);
-    }, [ activate, deactivate ]);
-
-    useEffect(() =>
-    {
         setIsVisible(isVisible);
     }, [ isVisible, setIsVisible ]);
 
-    return { ...rest };
+    return { activate, deactivate, ...rest };
 }
