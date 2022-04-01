@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "start": "cross-env BROWSER=none IMAGE_INLINE_SIZE_LIMIT=100000 craco start",
-    "build": "cross-env GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=100000 craco build",
+    "start": "cross-env SKIP_PREFLIGHT_CHECK=true BROWSER=none IMAGE_INLINE_SIZE_LIMIT=100000 craco start",
+    "build": "cross-env SKIP_PREFLIGHT_CHECK=true GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=100000 craco build",
     "build:prod": "npx browserslist@latest --update-db && yarn build",
     "test": "craco test",
     "eject": "react-scripts eject"
@@ -14,7 +14,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.1.0",
     "@fortawesome/free-solid-svg-icons": "^6.1.0",
     "@fortawesome/react-fontawesome": "^0.1.17",
-    "@nitrots/nitro-renderer": "^1.1.20",
+    "@nitrots/nitro-renderer": "^1.1.21",
     "animate.css": "^4.1.1",
     "classnames": "^2.3.1",
     "cross-env": "^7.0.3",
