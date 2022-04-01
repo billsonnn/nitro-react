@@ -94,7 +94,7 @@ export const UserSettingsView: FC<{}> = props =>
 
         if(doUpdate) setUserSettings(clone);
         DispatchMainEvent(clone)
-    }, [userSettings]);
+    }, [ userSettings ]);
 
     const saveRangeSlider = useCallback((type: string) =>
     {
@@ -104,14 +104,14 @@ export const UserSettingsView: FC<{}> = props =>
                 SendMessageComposer(new UserSettingsSoundComposer(Math.round(userSettings.volumeSystem), Math.round(userSettings.volumeFurni), Math.round(userSettings.volumeTrax)));
                 break;
         }
-    }, [userSettings]);
+    }, [ userSettings ]);
 
     useEffect(() =>
     {
         if(!userSettings) return;
 
         DispatchUiEvent(userSettings);
-    }, [userSettings]);
+    }, [ userSettings ]);
 
     if(!isVisible) return null;
 

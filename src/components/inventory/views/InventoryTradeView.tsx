@@ -127,13 +127,13 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         const interval = setInterval(() =>
         {
             setCountdownTick(prevValue =>
-                {
-                    const newValue = (prevValue - 1);
+            {
+                const newValue = (prevValue - 1);
 
-                    if(newValue === 0) clearInterval(interval);
+                if(newValue === 0) clearInterval(interval);
 
-                    return newValue;
-                });
+                return newValue;
+            });
         }, 1000);
 
         return () => clearInterval(interval);
@@ -155,18 +155,18 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                 <Flex column fullHeight justifyContent="between" overflow="hidden" gap={ 2 }>
                     <AutoGrid columnCount={ 3 }>
                         { filteredGroupItems && (filteredGroupItems.length > 0) && filteredGroupItems.map((item, index) =>
-                            {
-                                const count = item.getUnlockedCount();
+                        {
+                            const count = item.getUnlockedCount();
 
-                                return (
-                                    <LayoutGridItem key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) }>
-                                        { ((count > 0) && (groupItem === item)) &&
+                            return (
+                                <LayoutGridItem key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) }>
+                                    { ((count > 0) && (groupItem === item)) &&
                                             <Button position="absolute" variant="success" className="trade-button bottom-1 end-1" onClick={ event => attemptItemOffer(1) }>
                                                 <FontAwesomeIcon icon="chevron-right" />
                                             </Button> }
-                                    </LayoutGridItem>
-                                );
-                            }) }
+                                </LayoutGridItem>
+                            );
+                        }) }
                     </AutoGrid>
                     <Base fullWidth className="badge bg-muted">
                         { groupItem ? groupItem.name : LocalizeText('catalog_selectproduct') }
@@ -182,20 +182,20 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                         </Flex>
                         <AutoGrid columnCount={ 3 }>
                             { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
-                                {
-                                    const item = (ownUser.userItems.getWithIndex(i) || null);
+                            {
+                                const item = (ownUser.userItems.getWithIndex(i) || null);
 
-                                    if(!item) return <LayoutGridItem key={ i } />;
+                                if(!item) return <LayoutGridItem key={ i } />;
 
-                                    return (
-                                        <LayoutGridItem key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) }>
-                                            { (ownGroupItem === item) &&
+                                return (
+                                    <LayoutGridItem key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) }>
+                                        { (ownGroupItem === item) &&
                                                 <Button position="absolute" variant="danger" className="trade-button bottom-1 start-1" onClick={ event => removeItem(item) }>
                                                     <FontAwesomeIcon icon="chevron-left" />
                                                 </Button> }
-                                        </LayoutGridItem>
-                                    );
-                                }) }
+                                    </LayoutGridItem>
+                                );
+                            }) }
                         </AutoGrid>
                         <Base fullWidth className="badge bg-muted">
                             { ownGroupItem ? ownGroupItem.name : LocalizeText('catalog_selectproduct') }
@@ -208,13 +208,13 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                         </Flex>
                         <AutoGrid columnCount={ 3 }>
                             { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
-                                {
-                                    const item = (otherUser.userItems.getWithIndex(i) || null);
+                            {
+                                const item = (otherUser.userItems.getWithIndex(i) || null);
 
-                                    if(!item) return <LayoutGridItem key={ i } />;
+                                if(!item) return <LayoutGridItem key={ i } />;
 
-                                    return <LayoutGridItem key={ i } itemActive={ (otherGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
-                                }) }
+                                return <LayoutGridItem key={ i } itemActive={ (otherGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
+                            }) }
                         </AutoGrid>
                         <Base fullWidth className="badge bg-muted w-100">
                             { otherGroupItem ? otherGroupItem.name : LocalizeText('catalog_selectproduct') }

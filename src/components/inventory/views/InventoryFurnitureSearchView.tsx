@@ -23,14 +23,14 @@ export const InventoryFurnitureSearchView: FC<InventoryFurnitureSearchViewProps>
             const comparison = searchValue.toLocaleLowerCase();
 
             filteredGroupItems = groupItems.filter(item =>
+            {
+                if(comparison && comparison.length)
                 {
-                    if(comparison && comparison.length)
-                    {
-                        if(item.name.toLocaleLowerCase().includes(comparison)) return item;
-                    }
+                    if(item.name.toLocaleLowerCase().includes(comparison)) return item;
+                }
 
-                    return null;
-                });
+                return null;
+            });
         }
 
         setGroupItems(filteredGroupItems);

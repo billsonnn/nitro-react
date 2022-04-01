@@ -21,30 +21,30 @@ const useInventoryBadgesState = () =>
     const toggleBadge = (badgeCode: string) =>
     {
         setActiveBadgeCodes(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            const index = newValue.indexOf(badgeCode);
+
+            if(index === -1)
             {
-                const newValue = [ ...prevValue ];
+                if(!canWearBadges()) return prevValue;
 
-                const index = newValue.indexOf(badgeCode);
+                newValue.push(badgeCode);
+            }
+            else
+            {
+                newValue.splice(index, 1);
+            }
 
-                if(index === -1)
-                {
-                    if(!canWearBadges()) return prevValue;
+            const composer = new SetActivatedBadgesComposer();
 
-                    newValue.push(badgeCode);
-                }
-                else
-                {
-                    newValue.splice(index, 1);
-                }
+            for(let i = 0; i < maxBadgeCount; i++) composer.addActivatedBadge(newValue[i] || null);
 
-                const composer = new SetActivatedBadgesComposer();
+            SendMessageComposer(composer);
 
-                for(let i = 0; i < maxBadgeCount; i++) composer.addActivatedBadge(newValue[i] || null);
-
-                SendMessageComposer(composer);
-
-                return newValue;
-            });
+            return newValue;
+        });
     }
 
     const selectBadge = (badgeCode: string) =>
@@ -89,22 +89,22 @@ const useInventoryBadgesState = () =>
         BatchUpdates(() =>
         {
             setBadgeCodes(prevValue =>
-                {
-                    const newValue = [ ...prevValue ];
+            {
+                const newValue = [ ...prevValue ];
 
-                    newValue.push(parser.badgeCode);
+                newValue.push(parser.badgeCode);
     
-                    return newValue;
-                });
+                return newValue;
+            });
     
             setBadgeIds(prevValue =>
-                {
-                    const newValue = [ ...prevValue ];
+            {
+                const newValue = [ ...prevValue ];
     
-                    newValue.push(parser.badgeId);
+                newValue.push(parser.badgeId);
     
-                    return newValue;
-                })
+                return newValue;
+            })
         });
     }, []);
 
@@ -115,15 +115,15 @@ const useInventoryBadgesState = () =>
         if(!badgeCodes || !badgeCodes.length) return;
 
         setSelectedBadgeCode(prevValue =>
-            {
-                let newValue = prevValue;
+        {
+            let newValue = prevValue;
 
-                if(newValue && (badgeCodes.indexOf(newValue) === -1)) newValue = null;
+            if(newValue && (badgeCodes.indexOf(newValue) === -1)) newValue = null;
 
-                if(!newValue) newValue = badgeCodes[0];
+            if(!newValue) newValue = badgeCodes[0];
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ badgeCodes ]);
 
     useEffect(() =>

@@ -27,13 +27,13 @@ const useInventoryUnseenTrackerState = () =>
         if(!getCount(category)) return false;
 
         setUnseenItems(prevValue =>
-            {
-                const newValue = new Map(prevValue);
+        {
+            const newValue = new Map(prevValue);
 
-                newValue.delete(category);
+            newValue.delete(category);
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         sendResetCategoryMessage(category);
 
@@ -45,13 +45,13 @@ const useInventoryUnseenTrackerState = () =>
         if(getCount(category)) return false;
 
         setUnseenItems(prevValue =>
-            {
-                const newValue = new Map(prevValue);
+        {
+            const newValue = new Map(prevValue);
 
-                newValue.delete(category);
+            newValue.delete(category);
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         sendResetCategoryMessage(category);
 
@@ -63,14 +63,14 @@ const useInventoryUnseenTrackerState = () =>
         if(!getCount(category)) return false;
 
         setUnseenItems(prevValue =>
-            {
-                const newValue = new Map(prevValue);
-                const existing = newValue.get(category);
+        {
+            const newValue = new Map(prevValue);
+            const existing = newValue.get(category);
 
-                if(existing) for(const itemId of itemIds) existing.splice(existing.indexOf(itemId), 1);
+            if(existing) for(const itemId of itemIds) existing.splice(existing.indexOf(itemId), 1);
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         sendResetItemsMessage(category, itemIds);
 
@@ -91,18 +91,18 @@ const useInventoryUnseenTrackerState = () =>
         if(!unseenItems.has(category)) return false;
 
         setUnseenItems(prevValue =>
+        {
+            const newValue = new Map(prevValue);
+            const items = newValue.get(category);
+            const index = items.indexOf(itemId);
+
+            if(index >= 0)
             {
-                const newValue = new Map(prevValue);
-                const items = newValue.get(category);
-                const index = items.indexOf(itemId);
+                items.splice(index, 1);
+            }
 
-                if(index >= 0)
-                {
-                    items.splice(index, 1);
-                }
-
-                return newValue;
-            });
+            return newValue;
+        });
     }
 
     const onUnseenItemsEvent = useCallback((event: UnseenItemsEvent) =>
@@ -110,27 +110,27 @@ const useInventoryUnseenTrackerState = () =>
         const parser = event.getParser();
 
         setUnseenItems(prevValue =>
+        {
+            const newValue = new Map(prevValue);
+
+            for(const category of parser.categories)
             {
-                const newValue = new Map(prevValue);
+                let existing = newValue.get(category);
 
-                for(const category of parser.categories)
+                if(!existing)
                 {
-                    let existing = newValue.get(category);
+                    existing = [];
 
-                    if(!existing)
-                    {
-                        existing = [];
-
-                        newValue.set(category, existing);
-                    }
-
-                    const itemIds = parser.getItemsByCategory(category);
-
-                    for(const itemId of itemIds) ((existing.indexOf(itemId) === -1) && existing.push(itemId));
+                    newValue.set(category, existing);
                 }
 
-                return newValue;
-            });
+                const itemIds = parser.getItemsByCategory(category);
+
+                for(const itemId of itemIds) ((existing.indexOf(itemId) === -1) && existing.push(itemId));
+            }
+
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(UnseenItemsEvent, onUnseenItemsEvent);
