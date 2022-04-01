@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetRoomEngine, LocalizeText, NotificationAlertType, NotificationUtilities, PlaySound, RemoveLinkEventTracker, SendMessageComposer, SoundNames } from '../../api';
 import { Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { CatalogPurchasedEvent } from '../../events';
-import { BatchUpdates, UseMessageEventHook, UseUiEvent } from '../../hooks';
+import { UseMessageEventHook, UseUiEvent } from '../../hooks';
 import { CatalogContextProvider } from './CatalogContext';
 import { CatalogMessageHandler } from './CatalogMessageHandler';
 import { CatalogPage } from './common/CatalogPage';
@@ -44,19 +44,16 @@ export const CatalogView: FC<{}> = props =>
 
     const resetState = useCallback(() =>
     {
-        BatchUpdates(() =>
-        {
-            setPageId(-1);
-            setPreviousPageId(-1);
-            setRootNode(null);
-            setOffersToNodes(null);
-            setCurrentPage(null);
-            setCurrentOffer(null);
-            setActiveNodes([]);
-            setSearchResult(null);
-            setFrontPageItems([]);
-            setIsVisible(false);
-        });
+        setPageId(-1);
+        setPreviousPageId(-1);
+        setRootNode(null);
+        setOffersToNodes(null);
+        setCurrentPage(null);
+        setCurrentOffer(null);
+        setActiveNodes([]);
+        setSearchResult(null);
+        setFrontPageItems([]);
+        setIsVisible(false);
     }, []);
 
     const onCatalogPublishedMessageEvent = useCallback((event: CatalogPublishedMessageEvent) =>
@@ -119,11 +116,8 @@ export const CatalogView: FC<{}> = props =>
     {
         if(pageId < 0) return;
         
-        BatchUpdates(() =>
-        {
-            setIsBusy(true);
-            setPageId(pageId);
-        });
+        setIsBusy(true);
+        setPageId(pageId);
 
         if(pageId > -1) SendMessageComposer(new GetCatalogPageComposer(pageId, offerId, currentType));
     }, [ currentType ]);
@@ -132,24 +126,21 @@ export const CatalogView: FC<{}> = props =>
     {
         const catalogPage = (new CatalogPage(pageId, layoutCode, localization, offers, acceptSeasonCurrencyAsCredits) as ICatalogPage);
 
-        BatchUpdates(() =>
-        {
-            setCurrentPage(catalogPage);
-            setPreviousPageId(prevValue => ((pageId !== -1) ? pageId : prevValue));
-            setNavigationHidden(false);
+        setCurrentPage(catalogPage);
+        setPreviousPageId(prevValue => ((pageId !== -1) ? pageId : prevValue));
+        setNavigationHidden(false);
 
-            if((offerId > -1) && catalogPage.offers.length)
+        if((offerId > -1) && catalogPage.offers.length)
+        {
+            for(const offer of catalogPage.offers)
             {
-                for(const offer of catalogPage.offers)
-                {
-                    if(offer.offerId !== offerId) continue;
-                    
-                    setCurrentOffer(offer)
-        
-                    break;
-                }
+                if(offer.offerId !== offerId) continue;
+                
+                setCurrentOffer(offer)
+    
+                break;
             }
-        });
+        }
     }, []);
 
     const activateNode = useCallback((targetNode: ICatalogNode, offerId: number = -1) =>
@@ -214,67 +205,58 @@ export const CatalogView: FC<{}> = props =>
 
     const openPageById = useCallback((id: number) =>
     {
-        BatchUpdates(() =>
+        setSearchResult(null);
+
+        if(!isVisible)
         {
-            setSearchResult(null);
+            REQUESTED_PAGE.requestById = id;
 
-            if(!isVisible)
-            {
-                REQUESTED_PAGE.requestById = id;
+            setIsVisible(true);
+        }
+        else
+        {
+            const node = getNodeById(id, rootNode);
 
-                setIsVisible(true);
-            }
-            else
-            {
-                const node = getNodeById(id, rootNode);
-
-                if(node) activateNode(node);
-            }
-        });
+            if(node) activateNode(node);
+        }
     }, [ isVisible, rootNode, getNodeById, activateNode ]);
 
     const openPageByName = useCallback((name: string) =>
     {
-        BatchUpdates(() =>
+        setSearchResult(null);
+
+        if(!isVisible)
         {
-            setSearchResult(null);
+            REQUESTED_PAGE.requestByName = name;
 
-            if(!isVisible)
-            {
-                REQUESTED_PAGE.requestByName = name;
+            setIsVisible(true);
+        }
+        else
+        {
+            const node = getNodeByName(name, rootNode);
 
-                setIsVisible(true);
-            }
-            else
-            {
-                const node = getNodeByName(name, rootNode);
-
-                if(node) activateNode(node);
-            }
-        });
+            if(node) activateNode(node);
+        }
     }, [ isVisible, rootNode, getNodeByName, activateNode ]);
 
     const openPageByOfferId = useCallback((offerId: number) =>
     {
-        BatchUpdates(() =>
+        setSearchResult(null);
+
+        if(!isVisible)
         {
-            setSearchResult(null);
+            REQUESTED_PAGE.requestedByOfferId = offerId;
 
-            if(!isVisible)
-            {
-                REQUESTED_PAGE.requestedByOfferId = offerId;
+            setIsVisible(true);
+        }
+        else
+        {
+            const nodes = getNodesByOfferId(offerId);
 
-                setIsVisible(true);
-            }
-            else
-            {
-                const nodes = getNodesByOfferId(offerId);
+            if(!nodes || !nodes.length) return;
 
-                if(!nodes || !nodes.length) return;
-
-                activateNode(nodes[0], offerId);
-            }
-        });
+            activateNode(nodes[0], offerId);
+        }
     }, [ isVisible, getNodesByOfferId, activateNode ]);
 
     const onCatalogPurchasedEvent = useCallback((event: CatalogPurchasedEvent) =>

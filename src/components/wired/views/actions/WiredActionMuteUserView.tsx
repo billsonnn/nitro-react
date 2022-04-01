@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -14,20 +13,14 @@ export const WiredActionMuteUserView: FC<{}> = props =>
 
     const save = () =>
     {
-        BatchUpdates(() =>
-        {
-            setIntParams([ time ]);
-            setStringParam(message);
-        });
+        setIntParams([ time ]);
+        setStringParam(message);
     }
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setTime((trigger.intData.length > 0) ? trigger.intData[0] : 0);
-            setMessage(trigger.stringData);
-        });
+        setTime((trigger.intData.length > 0) ? trigger.intData[0] : 0);
+        setMessage(trigger.stringData);
     }, [ trigger ]);
 
     return (

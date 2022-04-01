@@ -3,7 +3,6 @@ import { HabboClubLevelEnum, RoomCreateComposer } from '@nitrots/nitro-renderer'
 import { FC, useEffect, useState } from 'react';
 import { GetClubMemberLevel, GetConfiguration, IRoomModel, LocalizeText, RoomModels, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../common';
-import { BatchUpdates } from '../../../hooks';
 import { useNavigatorContext } from '../NavigatorContext';
 
 export const NavigatorRoomCreatorView: FC<{}> = props =>
@@ -39,11 +38,8 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
             for(let i = 10; i <= 100; i = i + 10) list.push(i);
 
-            BatchUpdates(() =>
-            {
-                setMaxVisitorsList(list);
-                setVisitorsCount(list[0]);
-            });
+            setMaxVisitorsList(list);
+            setVisitorsCount(list[0]);
         }
     }, [ maxVisitorsList ]);
 

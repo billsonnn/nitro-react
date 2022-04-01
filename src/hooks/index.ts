@@ -1,4 +1,3 @@
-export * from './BatchUpdates';
 export * from './events';
 export * from './events/core';
 export * from './events/nitro';

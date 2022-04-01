@@ -3,7 +3,7 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
 import { FurnitureYoutubeDisplayWidgetHandler, LocalizeText, RoomWidgetUpdateYoutubeDisplayEvent, SendMessageComposer } from '../../../../../api';
 import { Grid, LayoutGridItem, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../common';
-import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../../hooks';
+import { UseEventDispatcherHook, UseMessageEventHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../RoomContext';
 import { YoutubeVideoPlaybackStateEnum } from './utils/YoutubeVideoPlaybackStateEnum';
 
@@ -53,13 +53,10 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 
         if(objectId !== parser.furniId) return;
 
-        BatchUpdates(() =>
-        {
-            setVideoId(parser.videoId);
-            setVideoStart(parser.startAtSeconds);
-            setVideoEnd(parser.endAtSeconds);
-            setCurrentVideoState(parser.state);
-        });
+        setVideoId(parser.videoId);
+        setVideoStart(parser.startAtSeconds);
+        setVideoEnd(parser.endAtSeconds);
+        setCurrentVideoState(parser.state);
     }, [ objectId ]);
 
     const onPlaylists = useCallback((event: YoutubeDisplayPlaylistsEvent) =>
@@ -70,15 +67,12 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 
         if(objectId !== parser.furniId) return;
 
-        BatchUpdates(() =>
-        {
-            setPlaylists(parser.playlists);
-            setSelectedItem(parser.selectedPlaylistId);
-            setVideoId(null);
-            setCurrentVideoState(-1);
-            setVideoEnd(null);
-            setVideoStart(null);
-        });
+        setPlaylists(parser.playlists);
+        setSelectedItem(parser.selectedPlaylistId);
+        setVideoId(null);
+        setCurrentVideoState(-1);
+        setVideoEnd(null);
+        setVideoStart(null);
     }, [ objectId ]);
 
     const onControlVideo = useCallback((event: YoutubeControlVideoMessageEvent) =>

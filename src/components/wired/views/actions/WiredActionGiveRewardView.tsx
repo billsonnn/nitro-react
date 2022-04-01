@@ -6,7 +6,6 @@ import { Button } from '../../../../common/Button';
 import { Column } from '../../../../common/Column';
 import { Flex } from '../../../../common/Flex';
 import { Text } from '../../../../common/Text';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -65,11 +64,8 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
 
         if(stringRewards.length > 0)
         {
-            BatchUpdates(() =>
-            {
-                setStringParam(stringRewards.join(';'));
-                setIntParams([ rewardTime, uniqueRewards ? 1 : 0, rewardsLimit, limitationInterval ]);
-            });
+            setStringParam(stringRewards.join(';'));
+            setIntParams([ rewardTime, uniqueRewards ? 1 : 0, rewardsLimit, limitationInterval ]);
         }
     }, [ rewardTime, uniqueRewards, rewardsLimit, limitationInterval, rewards, setIntParams, setStringParam ]);
 
@@ -93,15 +89,12 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
 
         if(readRewards.length === 0) readRewards.push({ isBadge: false, itemCode: '', probability: null });
 
-        BatchUpdates(() =>
-        {
-            setRewardTime((trigger.intData.length > 0) ? trigger.intData[0] : 0);
-            setUniqueRewards((trigger.intData.length > 1) ? (trigger.intData[1] === 1) : false);
-            setRewardsLimit((trigger.intData.length > 2) ? trigger.intData[2] : 0);
-            setLimitationInterval((trigger.intData.length > 3) ? trigger.intData[3] : 0);
-            setLimitEnabled((trigger.intData.length > 3) ? trigger.intData[3] > 0 : false);
-            setRewards(readRewards);
-        });
+        setRewardTime((trigger.intData.length > 0) ? trigger.intData[0] : 0);
+        setUniqueRewards((trigger.intData.length > 1) ? (trigger.intData[1] === 1) : false);
+        setRewardsLimit((trigger.intData.length > 2) ? trigger.intData[2] : 0);
+        setLimitationInterval((trigger.intData.length > 3) ? trigger.intData[3] : 0);
+        setLimitEnabled((trigger.intData.length > 3) ? trigger.intData[3] > 0 : false);
+        setRewards(readRewards);
     }, [ trigger ]);
 
     return (

@@ -3,7 +3,6 @@ import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps, ListRowRenderer, Size } from 'react-virtualized';
 import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { BatchUpdates } from '../../hooks';
 import { ChatHistoryContextProvider } from './ChatHistoryContext';
 import { ChatHistoryMessageHandler } from './ChatHistoryMessageHandler';
 import { ChatEntryType } from './common/ChatEntryType';
@@ -91,11 +90,8 @@ export const ChatHistoryView: FC<{}> = props =>
         chatState.notifier = () => setChatHistoryUpdateId(prevValue => (prevValue + 1));
         roomState.notifier = () => setRoomHistoryUpdateId(prevValue => (prevValue + 1));
 
-        BatchUpdates(() =>
-        {
-            setChatHistoryState(chatState);
-            setRoomHistoryState(roomState);
-        });
+        setChatHistoryState(chatState);
+        setRoomHistoryState(roomState);
 
         return () =>
         {

@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomObjectEvent, SendMessageComposer } from '../../../../../api';
 import { Button, Column, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { BatchUpdates, UseEventDispatcherHook, UseRoomEngineEvent } from '../../../../../hooks';
+import { UseEventDispatcherHook, UseRoomEngineEvent } from '../../../../../hooks';
 import { useRoomContext } from '../../../RoomContext';
 
 export const FurnitureBackgroundColorView: FC<{}> = props =>
@@ -36,13 +36,10 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
                 const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
                 const model = roomObject.model;
 
-                BatchUpdates(() =>
-                {
-                    setObjectId(roomObject.id);
-                    setHue(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_HUE)));
-                    setSaturation(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_SATURATION)));
-                    setLightness(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_LIGHTNESS)));
-                });
+                setObjectId(roomObject.id);
+                setHue(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_HUE)));
+                setSaturation(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_SATURATION)));
+                setLightness(parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_LIGHTNESS)));
                 
                 return;
             }

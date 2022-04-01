@@ -2,7 +2,6 @@ import { RoomDataParser } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { IRoomData, LocalizeText } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 
 interface NavigatorRoomSettingsTabViewProps
 {
@@ -26,12 +25,9 @@ export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabView
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setPassword('');
-            setConfirmPassword('');
-            setIsTryingPassword(false);
-        });
+        setPassword('');
+        setConfirmPassword('');
+        setIsTryingPassword(false);
     }, [ roomData ]);
 
     return (

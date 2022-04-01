@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
 
@@ -15,11 +14,8 @@ export const WiredTriggerAvatarEnterRoomView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setUsername(trigger.stringData);
-            setAvatarMode(trigger.stringData ? 1 : 0);
-        });
+        setUsername(trigger.stringData);
+        setAvatarMode(trigger.stringData ? 1 : 0);
     }, [ trigger ]);
 
     return (

@@ -4,7 +4,7 @@ import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } 
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, NotificationAlertType, NotificationUtilities, PlaySound, RemoveLinkEventTracker, SendMessageComposer, SoundNames } from '../../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, LayoutGridItem, LayoutItemCountView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { FriendsMessengerIconEvent } from '../../../../events';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
+import { DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 import { MessengerThread } from '../../common/MessengerThread';
 import { MessengerThreadChat } from '../../common/MessengerThreadChat';
 import { useFriendsContext } from '../../FriendsContext';
@@ -142,11 +142,8 @@ export const FriendsMessengerView: FC<{}> = props =>
 
         thread.addMessage(GetSessionDataManager().userId, messageText, 0, null, MessengerThreadChat.CHAT);
 
-        BatchUpdates(() =>
-        {
-            setMessageThreads(prevValue => [ ...prevValue ]);
-            setMessageText('');
-        });
+        setMessageThreads(prevValue => [ ...prevValue ]);
+        setMessageText('');
     }, [ messageThreads, activeThreadIndex, messageText ]);
 
     const onKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) =>
@@ -173,11 +170,8 @@ export const FriendsMessengerView: FC<{}> = props =>
 
         if(threadIndex === -1) return;
 
-        BatchUpdates(() =>
-        {
-            setActiveThreadIndex(threadIndex);
-            setIsVisible(true);
-        });
+        setActiveThreadIndex(threadIndex);
+        setIsVisible(true);
     }, [ getMessageThreadWithIndex ]);
 
     const closeThread = useCallback((threadIndex: number) =>

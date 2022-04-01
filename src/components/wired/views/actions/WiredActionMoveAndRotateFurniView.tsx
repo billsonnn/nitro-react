@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -36,19 +35,16 @@ export const WiredActionMoveAndRotateFurniView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
+        if(trigger.intData.length >= 2)
         {
-            if(trigger.intData.length >= 2)
-            {
-                setMovement(trigger.intData[0]);
-                setRotation(trigger.intData[1]);
-            }
-            else
-            {
-                setMovement(-1);
-                setRotation(-1);
-            }
-        });
+            setMovement(trigger.intData[0]);
+            setRotation(trigger.intData[1]);
+        }
+        else
+        {
+            setMovement(-1);
+            setRotation(-1);
+        }
     }, [ trigger ]);
 
     return (

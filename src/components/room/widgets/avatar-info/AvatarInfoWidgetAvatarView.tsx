@@ -3,7 +3,6 @@ import { RoomControllerLevel, RoomObjectCategory, RoomObjectVariable } from '@ni
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetOwnRoomObject, GetUserProfile, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUserActionMessage } from '../../../../api';
 import { Base, Flex } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
@@ -208,11 +207,8 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setMode(MODE_NORMAL);
-            setRespectsLeft(userData.respectLeft);
-        });
+        setMode(MODE_NORMAL);
+        setRespectsLeft(userData.respectLeft);
     }, [ userData ]);
 
     return (

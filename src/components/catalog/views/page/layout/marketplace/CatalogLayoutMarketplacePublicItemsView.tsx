@@ -2,7 +2,7 @@ import { BuyMarketplaceOfferMessageComposer, GetMarketplaceOffersMessageComposer
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
 import { Button, ButtonGroup, Column, Text } from '../../../../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../../../../hooks';
+import { UseMessageEventHook } from '../../../../../../hooks';
 import { GetCurrencyAmount } from '../../../../../purse/common/CurrencyHelper';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, PUBLIC_OFFER } from './CatalogLayoutMarketplaceItemView';
@@ -75,12 +75,8 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
             latestOffers.set(entry.offerId, offerEntry);
         });
 
-        BatchUpdates(() =>
-        {
-            setTotalItemsFound(parser.totalItemsFound);
-            setOffers(latestOffers);
-        });
-        
+        setTotalItemsFound(parser.totalItemsFound);
+        setOffers(latestOffers);
     }, []);
 
     const onMarketplaceBuyOfferResultEvent = useCallback( (event: MarketplaceBuyOfferResultEvent) =>

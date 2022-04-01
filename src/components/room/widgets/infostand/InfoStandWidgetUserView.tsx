@@ -3,7 +3,7 @@ import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomS
 import { Dispatch, FC, FocusEvent, KeyboardEvent, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { CloneObject, GetConfiguration, GetGroupInformation, GetSessionDataManager, GetUserProfile, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../common';
-import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../hooks';
+import { UseEventDispatcherHook, UseMessageEventHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { InfoStandWidgetUserRelationshipsView } from './InfoStandWidgetUserRelationshipsView';
 
@@ -113,22 +113,16 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setIsEditingMotto(false);
-            setMotto(userData.motto);
-        });
+        setIsEditingMotto(false);
+        setMotto(userData.motto);
         
         SendMessageComposer(new UserRelationshipsComposer(userData.webID));
 
         return () => 
         {
-            BatchUpdates(() =>
-            {
-                setIsEditingMotto(false);
-                setMotto(null);
-                setRelationships(null);
-            });
+            setIsEditingMotto(false);
+            setMotto(null);
+            setRelationships(null);
         }
     }, [ userData ]);
 

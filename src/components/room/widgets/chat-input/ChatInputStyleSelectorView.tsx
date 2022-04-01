@@ -1,7 +1,6 @@
 import { FC, MouseEvent, useEffect, useState } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
 import { Base, Flex, Grid, NitroCardContentView } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 
 interface ChatInputStyleSelectorViewProps
 {
@@ -18,28 +17,22 @@ export const ChatInputStyleSelectorView: FC<ChatInputStyleSelectorViewProps> = p
 
     const selectStyle = (styleId: number) =>
     {
-        BatchUpdates(() =>
-        {
-            selectChatStyleId(styleId);
-            setSelectorVisible(false);
-        });
+        selectChatStyleId(styleId);
+        setSelectorVisible(false);
     }
 
     const toggleSelector = (event: MouseEvent<HTMLElement>) =>
     {
-        BatchUpdates(() =>
+        let visible = false;
+
+        setSelectorVisible(prevValue =>
         {
-            let visible = false;
+            visible = !prevValue;
 
-            setSelectorVisible(prevValue =>
-            {
-                visible = !prevValue;
+            return visible;
+        });
 
-                return visible;
-            });
-
-            if(visible) setTarget((event.target as (EventTarget & HTMLElement)));
-        })
+        if(visible) setTarget((event.target as (EventTarget & HTMLElement)));
     }
 
     useEffect(() =>

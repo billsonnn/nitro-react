@@ -5,7 +5,7 @@ import { FC, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetGroupInformation, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, LayoutBadgeImageView, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, UserProfileIconView } from '../../../common';
 import { FloorplanEditorEvent, RoomWidgetThumbnailEvent } from '../../../events';
-import { BatchUpdates, DispatchUiEvent } from '../../../hooks';
+import { DispatchUiEvent } from '../../../hooks';
 import { useNavigatorContext } from '../NavigatorContext';
 
 export class NavigatorRoomInfoViewProps
@@ -85,11 +85,9 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
     {
         if(!navigatorData) return;
 
-        BatchUpdates(() =>
-        {
-            setIsRoomPicked(navigatorData.currentRoomIsStaffPick);
-            if(navigatorData.enteredGuestRoom) setIsRoomMuted(navigatorData.enteredGuestRoom.allInRoomMuted);
-        });
+        setIsRoomPicked(navigatorData.currentRoomIsStaffPick);
+        
+        if(navigatorData.enteredGuestRoom) setIsRoomMuted(navigatorData.enteredGuestRoom.allInRoomMuted);
     }, [ navigatorData ]);
 
     if(!navigatorData.enteredGuestRoom) return null;

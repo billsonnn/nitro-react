@@ -3,7 +3,7 @@ import { CrackableDataType, GroupInformationComposer, GroupInformationEvent, Roo
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage, RoomWidgetUpdateInfostandFurniEvent, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, LayoutBadgeImageView, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, Text, UserProfileIconView } from '../../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
+import { UseMessageEventHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 
 interface InfoStandWidgetFurniViewProps
@@ -129,23 +129,20 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
         if(furniData.isStickie) pickupMode = PICKUP_MODE_NONE;
 
-        BatchUpdates(() =>
-        {
-            setPickupMode(pickupMode);
-            setCanMove(canMove);
-            setCanRotate(canRotate);
-            setCanUse(canUse);
-            setFurniKeys(furniKeyss);
-            setFurniValues(furniValuess);
-            setCustomKeys(customKeyss);
-            setCustomValues(customValuess);
-            setIsCrackable(isCrackable);
-            setCrackableHits(crackableHits);
-            setCrackableTarget(crackableTarget);
-            setGodMode(godMode);
-            setCanSeeFurniId(canSeeFurniId);
-            setGroupName(null);
-        });
+        setPickupMode(pickupMode);
+        setCanMove(canMove);
+        setCanRotate(canRotate);
+        setCanUse(canUse);
+        setFurniKeys(furniKeyss);
+        setFurniValues(furniValuess);
+        setCustomKeys(customKeyss);
+        setCustomValues(customValuess);
+        setIsCrackable(isCrackable);
+        setCrackableHits(crackableHits);
+        setCrackableTarget(crackableTarget);
+        setGodMode(godMode);
+        setCanSeeFurniId(canSeeFurniId);
+        setGroupName(null);
         
         if(furniData.groupId) SendMessageComposer(new GroupInformationComposer(furniData.groupId, false));
     }, [ roomSession, furniData ]);

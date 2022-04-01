@@ -3,7 +3,6 @@ import { NavigatorSearchResultList } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, NavigatorSearchResultViewDisplayMode } from '../../../../api';
 import { AutoGrid, AutoGridProps, Column, Flex, Grid, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { NavigatorSearchResultItemView } from './NavigatorSearchResultItemView';
 
 export interface NavigatorSearchResultViewProps extends AutoGridProps
@@ -43,11 +42,8 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
     {
         if(!searchResult) return;
 
-        BatchUpdates(() =>
-        {
-            //setIsExtended(searchResult.closed);
-            setDisplayMode(searchResult.mode);
-        });
+        //setIsExtended(searchResult.closed);
+        setDisplayMode(searchResult.mode);
     }, [ searchResult,props ]);
 
     const gridHasTwoColumns = (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS);

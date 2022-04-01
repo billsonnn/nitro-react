@@ -2,7 +2,7 @@ import { GroupBuyComposer, GroupBuyDataComposer, GroupBuyDataEvent } from '@nitr
 import { FC, useCallback, useEffect, useState } from 'react';
 import { HasHabboClub, LocalizeText, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../hooks';
+import { UseMessageEventHook } from '../../../hooks';
 import { IGroupData } from '../common/IGroupData';
 import { GroupTabBadgeView } from './tabs/GroupTabBadgeView';
 import { GroupTabColorsView } from './tabs/GroupTabColorsView';
@@ -94,31 +94,25 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
 
         parser.availableRooms.forEach((name, id) => rooms.push({ id, name }));
 
-        BatchUpdates(() =>
-        {
-            setAvailableRooms(rooms);
-            setPurchaseCost(parser.groupCost);
-        });
+        setAvailableRooms(rooms);
+        setPurchaseCost(parser.groupCost);
     }, []);
 
     UseMessageEventHook(GroupBuyDataEvent, onGroupBuyDataEvent);
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setCurrentTab(1);
+        setCurrentTab(1);
 
-            setGroupData({
-                groupId: -1,
-                groupName: null,
-                groupDescription: null,
-                groupHomeroomId: -1,
-                groupState: 1,
-                groupCanMembersDecorate: true,
-                groupColors: null,
-                groupBadgeParts: null
-            });
+        setGroupData({
+            groupId: -1,
+            groupName: null,
+            groupDescription: null,
+            groupHomeroomId: -1,
+            groupState: 1,
+            groupCanMembersDecorate: true,
+            groupColors: null,
+            groupBadgeParts: null
         });
         
         SendMessageComposer(new GroupBuyDataComposer());

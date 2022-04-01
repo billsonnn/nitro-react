@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
@@ -16,19 +15,16 @@ export const WiredConditionUserCountInRoomView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
+        if(trigger.intData.length >= 2)
         {
-            if(trigger.intData.length >= 2)
-            {
-                setMin(trigger.intData[0]);
-                setMax(trigger.intData[1]);
-            }
-            else
-            {
-                setMin(1);
-                setMax(1);
-            }
-        });
+            setMin(trigger.intData[0]);
+            setMax(trigger.intData[1]);
+        }
+        else
+        {
+            setMin(1);
+            setMax(1);
+        }
     }, [ trigger ]);
     
     return (

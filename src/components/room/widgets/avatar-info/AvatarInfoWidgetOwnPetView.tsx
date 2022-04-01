@@ -1,7 +1,6 @@
 import { PetType, RoomObjectCategory, RoomObjectType, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetConfiguration, GetOwnRoomObject, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUserActionMessage } from '../../../../api';
-import { BatchUpdates } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
@@ -130,19 +129,16 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
+        setMode(prevValue =>
         {
-            setMode(prevValue =>
-            {
-                if(petData.petType === PetType.MONSTERPLANT) return _Str_10946;
-                else if(petData.saddle && !petData.rider) return _Str_5818;
-                else if(petData.rider) return _Str_5938;
-    
-                return _Str_2906;
-            });
-    
-            setRespectsLeft(petData.respectsPetLeft);
+            if(petData.petType === PetType.MONSTERPLANT) return _Str_10946;
+            else if(petData.saddle && !petData.rider) return _Str_5818;
+            else if(petData.rider) return _Str_5938;
+
+            return _Str_2906;
         });
+
+        setRespectsLeft(petData.respectsPetLeft);
     }, [ petData ]);
 
     return (

@@ -2,7 +2,6 @@ import { GroupDeleteComposer, GroupSaveInformationComposer } from '@nitrots/nitr
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../api';
 import { Base, Button, Column, Flex, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { IGroupData } from '../../common/IGroupData';
 
 interface GroupTabIdentityViewProps
@@ -65,12 +64,9 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setGroupName(groupData.groupName || '');
-            setGroupDescription(groupData.groupDescription || '');
-            setGroupHomeroomId(groupData.groupHomeroomId);
-        });
+        setGroupName(groupData.groupName || '');
+        setGroupDescription(groupData.groupDescription || '');
+        setGroupHomeroomId(groupData.groupHomeroomId);
     }, [ groupData ]);
 
     useEffect(() =>

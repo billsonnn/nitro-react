@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetSessionDataManager, GetUserProfile, OpenMessengerChat, VisitDesktop } from '../../api';
 import { Base, Flex, LayoutAvatarImageView, LayoutItemCountView, TransitionAnimation, TransitionAnimationTypes } from '../../common';
 import { AchievementsUIUnseenCountEvent, FriendsEvent, FriendsMessengerIconEvent, FriendsRequestCountEvent, GuideToolEvent, ModToolsEvent, UserSettingsUIEvent } from '../../events';
-import { BatchUpdates, DispatchUiEvent, useInventoryUnseenTracker, UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
+import { DispatchUiEvent, useInventoryUnseenTracker, UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
 import { ToolbarViewItems } from './common/ToolbarViewItems';
 import { ToolbarMeView } from './ToolbarMeView';
 
@@ -34,11 +34,8 @@ export const ToolbarView: FC<ToolbarViewProps> = props =>
     {
         const parser = event.getParser();
 
-        BatchUpdates(() =>
-        {
-            setUserInfo(parser.userInfo);
-            setUserFigure(parser.userInfo.figure);
-        });
+        setUserInfo(parser.userInfo);
+        setUserFigure(parser.userInfo.figure);
     }, []);
 
     UseMessageEventHook(UserInfoEvent, onUserInfoEvent);

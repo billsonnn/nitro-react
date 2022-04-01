@@ -1,7 +1,7 @@
 import { CanCreateRoomEventEvent, CantConnectMessageParser, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomResultEvent, HabboWebTools, LegacyExternalInterface, NavigatorCategoriesComposer, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, NavigatorSettingsComposer, RoomCreatedEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomDoorbellEvent, RoomDoorbellRejectedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomInfoComposer, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateLinkEvent, CreateRoomSession, DoorStateType, GetConfiguration, GetSessionDataManager, LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
-import { BatchUpdates, UseMessageEventHook } from '../../hooks';
+import { UseMessageEventHook } from '../../hooks';
 import { useNavigatorContext } from './NavigatorContext';
 
 export const NavigatorMessageHandler: FC<{}> = props =>
@@ -271,49 +271,43 @@ export const NavigatorMessageHandler: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        BatchUpdates(() =>
-        {
-            setTopLevelContexts(parser.topLevelContexts);
-            setTopLevelContext(parser.topLevelContexts.length ? parser.topLevelContexts[0] : null);
-        });
+        setTopLevelContexts(parser.topLevelContexts);
+        setTopLevelContext(parser.topLevelContexts.length ? parser.topLevelContexts[0] : null);
     }, [ setTopLevelContexts, setTopLevelContext ]);
 
     const onNavigatorSearchEvent = useCallback((event: NavigatorSearchEvent) =>
     {
         const parser = event.getParser();
 
-        BatchUpdates(() =>
+        setTopLevelContext(prevValue =>
         {
-            setTopLevelContext(prevValue =>
+            let newValue = prevValue;
+
+            if(!newValue) newValue = ((topLevelContexts && topLevelContexts.length && topLevelContexts[0]) || null);
+
+            if(!newValue) return null;
+
+            if((parser.result.code !== newValue.code) && topLevelContexts && topLevelContexts.length)
             {
-                let newValue = prevValue;
-
-                if(!newValue) newValue = ((topLevelContexts && topLevelContexts.length && topLevelContexts[0]) || null);
-
-                if(!newValue) return null;
-
-                if((parser.result.code !== newValue.code) && topLevelContexts && topLevelContexts.length)
-                {
-                    for(const context of topLevelContexts)
-                    {
-                        if(context.code !== parser.result.code) continue;
-
-                        newValue = context;
-                    }
-                }
-
                 for(const context of topLevelContexts)
                 {
                     if(context.code !== parser.result.code) continue;
 
                     newValue = context;
                 }
+            }
 
-                return newValue;
-            });
+            for(const context of topLevelContexts)
+            {
+                if(context.code !== parser.result.code) continue;
 
-            setSearchResult(parser.result);
+                newValue = context;
+            }
+
+            return newValue;
         });
+
+        setSearchResult(parser.result);
     }, [ topLevelContexts, setTopLevelContext, setSearchResult ]);
 
     const onNavigatorCategoriesEvent = useCallback((event: NavigatorCategoriesEvent) =>

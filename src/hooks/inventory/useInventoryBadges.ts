@@ -1,7 +1,7 @@
 import { BadgeReceivedEvent, BadgesEvent, RequestBadgesComposer, SetActivatedBadgesComposer } from '@nitrots/nitro-renderer';
 import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { BatchUpdates, UseMessageEventHook } from '..';
+import { UseMessageEventHook } from '..';
 import { GetConfiguration, SendMessageComposer } from '../../api';
 import { useSharedVisibility } from '../useSharedVisibility';
 
@@ -21,30 +21,30 @@ const useInventoryBadgesState = () =>
     const toggleBadge = (badgeCode: string) =>
     {
         setActiveBadgeCodes(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            const index = newValue.indexOf(badgeCode);
+
+            if(index === -1)
             {
-                const newValue = [ ...prevValue ];
+                if(!canWearBadges()) return prevValue;
 
-                const index = newValue.indexOf(badgeCode);
+                newValue.push(badgeCode);
+            }
+            else
+            {
+                newValue.splice(index, 1);
+            }
 
-                if(index === -1)
-                {
-                    if(!canWearBadges()) return prevValue;
+            const composer = new SetActivatedBadgesComposer();
 
-                    newValue.push(badgeCode);
-                }
-                else
-                {
-                    newValue.splice(index, 1);
-                }
+            for(let i = 0; i < maxBadgeCount; i++) composer.addActivatedBadge(newValue[i] || null);
 
-                const composer = new SetActivatedBadgesComposer();
+            SendMessageComposer(composer);
 
-                for(let i = 0; i < maxBadgeCount; i++) composer.addActivatedBadge(newValue[i] || null);
-
-                SendMessageComposer(composer);
-
-                return newValue;
-            });
+            return newValue;
+        });
     }
 
     const selectBadge = (badgeCode: string) =>
@@ -66,18 +66,14 @@ const useInventoryBadgesState = () =>
     const onBadgesEvent = useCallback((event: BadgesEvent) =>
     {
         const parser = event.getParser();
+        const newBadgeCodes = parser.getAllBadgeCodes();
+        const newBadgeIds: number[] = [];
 
-        BatchUpdates(() =>
-        {
-            const newBadgeCodes = parser.getAllBadgeCodes();
-            const newBadgeIds: number[] = [];
+        for(const newBadgeCode of newBadgeCodes) newBadgeIds.push(parser.getBadgeId(newBadgeCode));
 
-            for(const newBadgeCode of newBadgeCodes) newBadgeIds.push(parser.getBadgeId(newBadgeCode));
-
-            setBadgeCodes(newBadgeCodes);
-            setBadgeIds(newBadgeIds);
-            setActiveBadgeCodes(parser.getActiveBadgeCodes());
-        });
+        setBadgeCodes(newBadgeCodes);
+        setBadgeIds(newBadgeIds);
+        setActiveBadgeCodes(parser.getActiveBadgeCodes());
     }, []);
 
     UseMessageEventHook(BadgesEvent, onBadgesEvent);
@@ -86,25 +82,22 @@ const useInventoryBadgesState = () =>
     {
         const parser = event.getParser();
 
-        BatchUpdates(() =>
+        setBadgeCodes(prevValue =>
         {
-            setBadgeCodes(prevValue =>
-                {
-                    const newValue = [ ...prevValue ];
+            const newValue = [ ...prevValue ];
 
-                    newValue.push(parser.badgeCode);
-    
-                    return newValue;
-                });
-    
-            setBadgeIds(prevValue =>
-                {
-                    const newValue = [ ...prevValue ];
-    
-                    newValue.push(parser.badgeId);
-    
-                    return newValue;
-                })
+            newValue.push(parser.badgeCode);
+
+            return newValue;
+        });
+
+        setBadgeIds(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            newValue.push(parser.badgeId);
+
+            return newValue;
         });
     }, []);
 
@@ -115,15 +108,15 @@ const useInventoryBadgesState = () =>
         if(!badgeCodes || !badgeCodes.length) return;
 
         setSelectedBadgeCode(prevValue =>
-            {
-                let newValue = prevValue;
+        {
+            let newValue = prevValue;
 
-                if(newValue && (badgeCodes.indexOf(newValue) === -1)) newValue = null;
+            if(newValue && (badgeCodes.indexOf(newValue) === -1)) newValue = null;
 
-                if(!newValue) newValue = badgeCodes[0];
+            if(!newValue) newValue = badgeCodes[0];
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ badgeCodes ]);
 
     useEffect(() =>

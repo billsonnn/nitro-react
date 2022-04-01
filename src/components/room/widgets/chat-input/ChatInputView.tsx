@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText, RoomWidgetChatMessage, RoomWidgetChatTypingMessage, RoomWidgetFloodControlEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
 import { Text } from '../../../../common';
-import { BatchUpdates, UseEventDispatcherHook } from '../../../../hooks';
+import { UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ChatInputStyleSelectorView } from './ChatInputStyleSelectorView';
 
@@ -211,11 +211,8 @@ export const ChatInputView: FC<{}> = props =>
 
     const onRoomWidgetFloodControlEvent = useCallback((event: RoomWidgetFloodControlEvent) =>
     {
-        BatchUpdates(() =>
-        {
-            setFloodBlocked(true);
-            setFloodBlockedSeconds(event.seconds);
-        });
+        setFloodBlocked(true);
+        setFloodBlockedSeconds(event.seconds);
     }, []);
 
     UseEventDispatcherHook(RoomWidgetFloodControlEvent.FLOOD_CONTROL, eventDispatcher, onRoomWidgetFloodControlEvent);

@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer, TryVisitRoom } from '../../../../api';
 import { Button, Column, DraggableWindowPosition, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { ModToolsOpenRoomChatlogEvent } from '../../../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
+import { DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 
 interface ModToolsRoomViewProps
 {
@@ -36,15 +36,12 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
 
         if(!parser || parser.data.flatId !== roomId) return;
 
-        BatchUpdates(() =>
-        {
-            setLoadedRoomId(parser.data.flatId);
-            setName(parser.data.room.name);
-            setOwnerId(parser.data.ownerId);
-            setOwnerName(parser.data.ownerName);
-            setOwnerInRoom(parser.data.ownerInRoom);
-            setUsersInRoom(parser.data.userCount);
-        });
+        setLoadedRoomId(parser.data.flatId);
+        setName(parser.data.room.name);
+        setOwnerId(parser.data.ownerId);
+        setOwnerName(parser.data.ownerName);
+        setOwnerInRoom(parser.data.ownerInRoom);
+        setUsersInRoom(parser.data.userCount);
     }, [ roomId ]);
 
     UseMessageEventHook(ModeratorRoomInfoEvent, onModtoolRoomInfoEvent);

@@ -2,7 +2,7 @@ import { RoomBannedUsersComposer, RoomDataParser, RoomSettingsEvent, SaveRoomSet
 import { FC, useCallback, useState } from 'react';
 import { IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
+import { UseMessageEventHook } from '../../../../hooks';
 import { NavigatorRoomSettingsAccessTabView } from './NavigatorRoomSettingsAccessTabView';
 import { NavigatorRoomSettingsBasicTabView } from './NavigatorRoomSettingsBasicTabView';
 import { NavigatorRoomSettingsModTabView } from './NavigatorRoomSettingsModTabView';
@@ -65,11 +65,8 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
 
     const close = () =>
     {
-        BatchUpdates(() =>
-        {
-            setRoomData(null);
-            setCurrentTab(TABS[0]);
-        });
+        setRoomData(null);
+        setCurrentTab(TABS[0]);
     }
 
     const handleChange = (field: string, value: string | number | boolean) =>

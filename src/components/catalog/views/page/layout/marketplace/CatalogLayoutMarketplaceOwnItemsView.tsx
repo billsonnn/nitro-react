@@ -2,7 +2,7 @@ import { CancelMarketplaceOfferMessageComposer, GetMarketplaceOwnOffersMessageCo
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
 import { Button, Column, Text } from '../../../../../../common';
-import { BatchUpdates, UseMessageEventHook, UseMountEffect } from '../../../../../../hooks';
+import { UseMessageEventHook, UseMountEffect } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, OWN_OFFER } from './CatalogLayoutMarketplaceItemView';
 import { MarketplaceOfferData } from './common/MarketplaceOfferData';
@@ -28,11 +28,8 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
             return newOffer;
         });
 
-        BatchUpdates(() =>
-        {
-            setCreditsWaiting(parser.creditsWaiting);
-            setOffers(offers);
-        });
+        setCreditsWaiting(parser.creditsWaiting);
+        setOffers(offers);
     }, []);
 
     UseMessageEventHook(MarketplaceOwnOffersEvent, onMarketPlaceOwnOffersEvent);

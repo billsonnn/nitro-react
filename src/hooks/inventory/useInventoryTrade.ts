@@ -2,7 +2,7 @@ import { AdvancedMap, TradingAcceptComposer, TradingAcceptEvent, TradingCancelCo
 import { useCallback, useState } from 'react';
 import { useBetween } from 'use-between';
 import { useInventoryFurni } from '.';
-import { BatchUpdates, UseMessageEventHook } from '..';
+import { UseMessageEventHook } from '..';
 import { CloneObject, GetRoomSession, GetSessionDataManager, GroupItem, LocalizeText, NotificationUtilities, SendMessageComposer, TradeState, TradeUserData, TradingNotificationMessage, TradingNotificationType } from '../../api';
 import { InventoryTradeRequestEvent } from '../../events';
 import { UseUiEvent } from '../events';
@@ -90,25 +90,25 @@ const useInventoryTradeState = () =>
         if(ownUser.userId === parser.userID)
         {
             setOwnUser(prevValue =>
-                {
-                    const newValue = CloneObject(prevValue);
+            {
+                const newValue = CloneObject(prevValue);
 
-                    newValue.accepts = parser.userAccepts;
+                newValue.accepts = parser.userAccepts;
 
-                    return newValue;
-                });
+                return newValue;
+            });
         }
 
         else if(otherUser.userId === parser.userID)
         {
             setOtherUser(prevValue =>
-                {
-                    const newValue = CloneObject(prevValue);
+            {
+                const newValue = CloneObject(prevValue);
 
-                    newValue.accepts = parser.userAccepts;
+                newValue.accepts = parser.userAccepts;
 
-                    return newValue;
-                });
+                return newValue;
+            });
         }
     }, [ ownUser, otherUser ]);
 
@@ -130,12 +130,9 @@ const useInventoryTradeState = () =>
             }
         }
 
-        BatchUpdates(() =>
-        {
-            setOwnUser(null);
-            setOtherUser(null);
-            setTradeState(TradeState.TRADING_STATE_READY);
-        });
+        setOwnUser(null);
+        setOtherUser(null);
+        setTradeState(TradeState.TRADING_STATE_READY);
     }, [ ownUser ]);
 
     UseMessageEventHook(TradingCloseEvent, onTradingCloseEvent);
@@ -144,12 +141,9 @@ const useInventoryTradeState = () =>
     {
         const parser = event.getParser();
 
-        BatchUpdates(() =>
-        {
-            setOwnUser(null);
-            setOtherUser(null);
-            setTradeState(TradeState.TRADING_STATE_READY);
-        });
+        setOwnUser(null);
+        setOtherUser(null);
+        setTradeState(TradeState.TRADING_STATE_READY);
     }, []);
 
     UseMessageEventHook(TradingCompletedEvent, onTradingCompletedEvent);
@@ -170,69 +164,69 @@ const useInventoryTradeState = () =>
         const secondUserItems = parseTradeItems(parser.secondUserItemArray);
 
         setOwnUser(prevValue =>
+        {
+            const newValue = CloneObject(prevValue);
+
+            if(newValue.userId === parser.firstUserID)
             {
-                const newValue = CloneObject(prevValue);
+                newValue.creditsCount = parser.firstUserNumCredits;
+                newValue.itemCount = parser.firstUserNumItems;
+                newValue.userItems = firstUserItems;
+            }
+            else
+            {
+                newValue.creditsCount = parser.secondUserNumCredits;
+                newValue.itemCount = parser.secondUserNumItems;
+                newValue.userItems = secondUserItems;
+            }
 
-                if(newValue.userId === parser.firstUserID)
+            const tradeIds: number[] = [];
+
+            for(const groupItem of newValue.userItems.getValues())
+            {
+                let i = 0;
+
+                while(i < groupItem.getTotalCount())
                 {
-                    newValue.creditsCount = parser.firstUserNumCredits;
-                    newValue.itemCount = parser.firstUserNumItems;
-                    newValue.userItems = firstUserItems;
+                    const item = groupItem.getItemByIndex(i);
+
+                    if(item) tradeIds.push(item.ref);
+
+                    i++;
                 }
-                else
-                {
-                    newValue.creditsCount = parser.secondUserNumCredits;
-                    newValue.itemCount = parser.secondUserNumItems;
-                    newValue.userItems = secondUserItems;
-                }
+            }
 
-                const tradeIds: number[] = [];
+            setGroupItems(prevValue =>
+            {
+                const newValue = [ ...prevValue ];
 
-                for(const groupItem of newValue.userItems.getValues())
-                {
-                    let i = 0;
-
-                    while(i < groupItem.getTotalCount())
-                    {
-                        const item = groupItem.getItemByIndex(i);
-
-                        if(item) tradeIds.push(item.ref);
-
-                        i++;
-                    }
-                }
-
-                setGroupItems(prevValue =>
-                    {
-                        const newValue = [ ...prevValue ];
-
-                        for(const groupItem of newValue) groupItem.lockItemIds(tradeIds);
-
-                        return newValue;
-                    });
+                for(const groupItem of newValue) groupItem.lockItemIds(tradeIds);
 
                 return newValue;
             });
+
+            return newValue;
+        });
 
         setOtherUser(prevValue =>
+        {
+            const newValue = CloneObject(prevValue);
+
+            if(newValue.userId === parser.firstUserID)
             {
-                const newValue = CloneObject(prevValue);
+                newValue.creditsCount = parser.firstUserNumCredits;
+                newValue.itemCount = parser.firstUserNumItems;
+                newValue.userItems = firstUserItems;
+            }
+            else
+            {
+                newValue.creditsCount = parser.secondUserNumCredits;
+                newValue.itemCount = parser.secondUserNumItems;
+                newValue.userItems = secondUserItems;
+            }
 
-                if(newValue.userId === parser.firstUserID)
-                {
-                    newValue.creditsCount = parser.firstUserNumCredits;
-                    newValue.itemCount = parser.firstUserNumItems;
-                    newValue.userItems = firstUserItems;
-                }
-                else
-                {
-                    newValue.creditsCount = parser.secondUserNumCredits;
-                    newValue.itemCount = parser.secondUserNumItems;
-                    newValue.userItems = secondUserItems;
-                }
-
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ setGroupItems ]);
 
     UseMessageEventHook(TradingListItemEvent, onTradingListItemEvent);
@@ -280,12 +274,9 @@ const useInventoryTradeState = () =>
             secondUser.canTrade = parser.userCanTrade;
         }
         
-        BatchUpdates(() =>
-        {
-            setOwnUser(firstUser);
-            setOtherUser(secondUser);
-            setTradeState(TradeState.TRADING_STATE_RUNNING);
-        });
+        setOwnUser(firstUser);
+        setOtherUser(secondUser);
+        setTradeState(TradeState.TRADING_STATE_RUNNING);
     }, []);
 
     UseMessageEventHook(TradingOpenEvent, onTradingOpenEvent);

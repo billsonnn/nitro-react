@@ -3,7 +3,7 @@ import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/
 import { FC, useCallback } from 'react';
 import { GetFurnitureData, GetProductDataForLocalization, LocalizeText, NotificationAlertType, NotificationUtilities, ProductTypeEnum } from '../../api';
 import { CatalogGiftReceiverNotFoundEvent, CatalogNameResultEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent } from '../../events';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../hooks';
+import { DispatchUiEvent, UseMessageEventHook } from '../../hooks';
 import { useCatalogContext } from './CatalogContext';
 import { CatalogNode } from './common/CatalogNode';
 import { CatalogPetPalette } from './common/CatalogPetPalette';
@@ -43,11 +43,8 @@ export const CatalogMessageHandler: FC<{}> = props =>
             return catalogNode;
         }
 
-        BatchUpdates(() =>
-        {
-            setRootNode(getCatalogNode(parser.root, 0, null));
-            setOffersToNodes(offers);
-        });
+        setRootNode(getCatalogNode(parser.root, 0, null));
+        setOffersToNodes(offers);
     }, [ setRootNode, setOffersToNodes ]);
 
     const onCatalogPageMessageEvent = useCallback((event: CatalogPageMessageEvent) =>
@@ -77,17 +74,14 @@ export const CatalogMessageHandler: FC<{}> = props =>
             if((currentType === CatalogType.NORMAL) || ((purchasableOffer.pricingModel !== Offer.PRICING_MODEL_BUNDLE) && (purchasableOffer.pricingModel !== Offer.PRICING_MODEL_MULTI))) purchasableOffers.push(purchasableOffer);
         }
 
-        BatchUpdates(() =>
+        if(parser.frontPageItems && parser.frontPageItems.length) setFrontPageItems(parser.frontPageItems);
+
+        setIsBusy(false);
+
+        if(pageId === parser.pageId)
         {
-            if(parser.frontPageItems && parser.frontPageItems.length) setFrontPageItems(parser.frontPageItems);
-
-            setIsBusy(false);
-
-            if(pageId === parser.pageId)
-            {
-                showCatalogPage(parser.pageId, parser.layoutCode, new PageLocalization(parser.localization.images.concat(), parser.localization.texts.concat()), purchasableOffers, parser.offerId, parser.acceptSeasonCurrencyAsCredits);
-            }
-        });
+            showCatalogPage(parser.pageId, parser.layoutCode, new PageLocalization(parser.localization.images.concat(), parser.localization.texts.concat()), purchasableOffers, parser.offerId, parser.acceptSeasonCurrencyAsCredits);
+        }
     }, [ currentType, pageId, setFrontPageItems, setIsBusy, showCatalogPage ]);
 
     const onPurchaseOKMessageEvent = useCallback((event: PurchaseOKMessageEvent) =>

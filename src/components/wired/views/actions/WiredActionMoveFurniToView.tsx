@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -35,19 +34,16 @@ export const WiredActionMoveFurniToView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
+        if(trigger.intData.length >= 2)
         {
-            if(trigger.intData.length >= 2)
-            {
-                setSpacing(trigger.intData[1]);
-                setMovement(trigger.intData[0]);
-            }
-            else
-            {
-                setSpacing(-1);
-                setMovement(-1);
-            }
-        });
+            setSpacing(trigger.intData[1]);
+            setMovement(trigger.intData[0]);
+        }
+        else
+        {
+            setSpacing(-1);
+            setMovement(-1);
+        }
     }, [ trigger ]);
 
     return (

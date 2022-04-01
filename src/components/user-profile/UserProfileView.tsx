@@ -2,7 +2,7 @@ import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomE
 import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetRoomSession, GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
 import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { BatchUpdates, UseMessageEventHook, UseRoomEngineEvent } from '../../hooks';
+import { UseMessageEventHook, UseRoomEngineEvent } from '../../hooks';
 import { BadgesContainerView } from './views/BadgesContainerView';
 import { FriendsContainerView } from './views/FriendsContainerView';
 import { GroupsContainerView } from './views/GroupsContainerView';
@@ -16,12 +16,9 @@ export const UserProfileView: FC<{}> = props =>
 
     const onClose = () =>
     {
-        BatchUpdates(() =>
-        {
-            setUserProfile(null);
-            setUserBadges([]);
-            setUserRelationships(null);
-        });
+        setUserProfile(null);
+        setUserBadges([]);
+        setUserRelationships(null);
     }
 
     const onLeaveGroup = useCallback(() =>
@@ -59,21 +56,18 @@ export const UserProfileView: FC<{}> = props =>
 
         let isSameProfile = false;
         
-        BatchUpdates(() =>
+        setUserProfile(prevValue =>
         {
-            setUserProfile(prevValue =>
-            {
-                if(prevValue && prevValue.id) isSameProfile = (prevValue.id === parser.id);
+            if(prevValue && prevValue.id) isSameProfile = (prevValue.id === parser.id);
 
-                return parser;
-            });
-
-            if(!isSameProfile)
-            {
-                setUserBadges([]);
-                setUserRelationships(null);
-            }
+            return parser;
         });
+
+        if(!isSameProfile)
+        {
+            setUserBadges([]);
+            setUserRelationships(null);
+        }
 
         SendMessageComposer(new UserCurrentBadgesComposer(parser.id));
         SendMessageComposer(new UserRelationshipsComposer(parser.id));

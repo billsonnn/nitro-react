@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -15,20 +14,14 @@ export const WiredActionBotGiveHandItemView: FC<{}> = props =>
 
     const save = () =>
     {
-        BatchUpdates(() =>
-        {
-            setStringParam(botName);
-            setIntParams([ handItemId ]);
-        });
+        setStringParam(botName);
+        setIntParams([ handItemId ]);
     }
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setBotName(trigger.stringData);
-            setHandItemId((trigger.intData.length > 0) ? trigger.intData[0] : 0);
-        });
+        setBotName(trigger.stringData);
+        setHandItemId((trigger.intData.length > 0) ? trigger.intData[0] : 0);
     }, [ trigger ]);
 
     return (

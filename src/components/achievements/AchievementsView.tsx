@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { AchievementCategory, AddEventLinkTracker, CloneObject, GetAchievementCategoryImageUrl, GetAchievementIsIgnored, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Base, Column, LayoutImage, LayoutProgressBar, NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView, Text } from '../../common';
 import { AchievementsUIUnseenCountEvent } from '../../events';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../hooks';
+import { DispatchUiEvent, UseMessageEventHook } from '../../hooks';
 import { AchievementCategoryView } from './views/AchievementCategoryView';
 import { AchievementsCategoryListView } from './views/category-list/AchievementsCategoryListView';
 
@@ -92,11 +92,8 @@ export const AchievementsView: FC<{}> = props =>
             existing.achievements.push(achievement);
         }
 
-        BatchUpdates(() =>
-        {
-            setAchievementCategories(categories);
-            setIsInitalized(true);
-        });
+        setAchievementCategories(categories);
+        setIsInitalized(true);
     }, []);
 
     UseMessageEventHook(AchievementsEvent, onAchievementsEvent);

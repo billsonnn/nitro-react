@@ -3,7 +3,6 @@ import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from '
 import { SendMessageComposer } from '../../../../api';
 import { LocalizeText } from '../../../../api/utils/LocalizeText';
 import { Column, Flex, HorizontalRule, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { IGroupData } from '../../common/IGroupData';
 
 const STATES: string[] = [ 'regular', 'exclusive', 'private' ];
@@ -49,11 +48,8 @@ export const GroupTabSettingsView: FC<GroupTabSettingsViewProps> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setGroupState(groupData.groupState);
-            setGroupDecorate(groupData.groupCanMembersDecorate);
-        });
+        setGroupState(groupData.groupState);
+        setGroupDecorate(groupData.groupCanMembersDecorate);
     }, [ groupData ]);
 
     useEffect(() =>

@@ -2,7 +2,6 @@ import { NitroLogger } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AddEventLinkTracker, GetConfiguration, NotificationUtilities, RemoveLinkEventTracker } from '../../api';
 import { Base, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
-import { BatchUpdates } from '../../hooks';
 
 const NEW_LINE_REGEX = /\n\r|\n|\r/mg;
 
@@ -25,25 +24,22 @@ export const NitropediaView: FC<{}> = props =>
             const splitData = text.split(NEW_LINE_REGEX);
             const line = splitData.shift().split('|');
 
-            BatchUpdates(() =>
+            setHeader(line[0]);
+
+            setDimensions(prevValue =>
             {
-                setHeader(line[0]);
-
-                setDimensions(prevValue =>
+                if(line[1] && (line[1].split(';').length === 2))
                 {
-                    if(line[1] && (line[1].split(';').length === 2))
-                    {
-                        return {
-                            width: parseInt(line[1].split(';')[0]),
-                            height: parseInt(line[1].split(';')[1])
-                        }
+                    return {
+                        width: parseInt(line[1].split(';')[0]),
+                        height: parseInt(line[1].split(';')[1])
                     }
+                }
 
-                    return null;
-                });
-
-                setContent(splitData.join(''));
+                return null;
             });
+
+            setContent(splitData.join(''));
         }
 
         catch (error)

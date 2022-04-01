@@ -3,7 +3,7 @@ import { RedeemVoucherMessageComposer, VoucherRedeemErrorMessageEvent, VoucherRe
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../api';
 import { Button, Flex } from '../../../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../../../hooks';
+import { UseMessageEventHook } from '../../../../../hooks';
 
 export interface CatalogRedeemVoucherViewProps
 {
@@ -35,11 +35,8 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
 
         NotificationUtilities.simpleAlert(message, null, null, null, LocalizeText('catalog.alert.voucherredeem.ok.title'));
         
-        BatchUpdates(() =>
-        {
-            setIsWaiting(false);
-            setVoucher('');
-        });
+        setIsWaiting(false);
+        setVoucher('');
     }, []);
 
     UseMessageEventHook(VoucherRedeemOkMessageEvent, onVoucherRedeemOkMessageEvent);

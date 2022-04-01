@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, ProductTypeEnum } from '../../../../../api';
 import { AutoGrid, AutoGridProps, Button, ButtonGroup } from '../../../../../common';
-import { BatchUpdates } from '../../../../../hooks';
 import { useCatalogContext } from '../../../CatalogContext';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
 import { Offer } from '../../../common/Offer';
@@ -52,12 +51,9 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
             }
         }
 
-        BatchUpdates(() =>
-        {
-            setGroupedOffers(groupedOffers);
-            setSelectedGroupIndex(0);
-            setSelectedOfferForGroup([ groupedOffers[0][0], groupedOffers[1][0], groupedOffers[2][0] ]);
-        });
+        setGroupedOffers(groupedOffers);
+        setSelectedGroupIndex(0);
+        setSelectedOfferForGroup([ groupedOffers[0][0], groupedOffers[1][0], groupedOffers[2][0] ]);
     }, [ currentPage ]);
 
     useEffect(() =>

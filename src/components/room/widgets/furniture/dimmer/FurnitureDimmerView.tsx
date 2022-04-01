@@ -4,7 +4,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { ColorUtils, GetConfiguration, LocalizeText, RoomWidgetDimmerChangeStateMessage, RoomWidgetDimmerPreviewMessage, RoomWidgetDimmerSavePresetMessage, RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateDimmerStateEvent } from '../../../../../api';
 import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../../common';
-import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
+import { UseEventDispatcherHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../RoomContext';
 import { DimmerFurnitureWidgetPresetItem } from './DimmerFurnitureWidgetPresetItem';
 
@@ -39,12 +39,9 @@ export const FurnitureDimmerView: FC<{}> = props =>
 
                 for(const preset of widgetEvent.presets) presets.push(new DimmerFurnitureWidgetPresetItem(preset.id, preset.type, preset.color, preset.brightness));
 
-                BatchUpdates(() =>
-                {
-                    setPresets(presets);
-                    setSelectedPresetId(widgetEvent.selectedPresetId);
-                    setIsVisible(true);
-                });
+                setPresets(presets);
+                setSelectedPresetId(widgetEvent.selectedPresetId);
+                setIsVisible(true);
                 return;
             }
             case RoomWidgetUpdateDimmerEvent.HIDE: {
@@ -55,18 +52,15 @@ export const FurnitureDimmerView: FC<{}> = props =>
             case RoomWidgetUpdateDimmerStateEvent.DIMMER_STATE: {
                 const widgetEvent = (event as RoomWidgetUpdateDimmerStateEvent);
 
-                BatchUpdates(() =>
-                {
-                    setLastDimmerState(dimmerState);
-                    setDimmerState(widgetEvent.state);
-                    setSelectedPresetId(widgetEvent.presetId);
-                    setEffectId(widgetEvent.effectId);
-                    setSelectedEffectId(widgetEvent.effectId);
-                    setColor(widgetEvent.color);
-                    setSelectedColor(widgetEvent.color);
-                    setBrightness(widgetEvent.brightness);
-                    setSelectedBrightness(widgetEvent.brightness);
-                });
+                setLastDimmerState(dimmerState);
+                setDimmerState(widgetEvent.state);
+                setSelectedPresetId(widgetEvent.presetId);
+                setEffectId(widgetEvent.effectId);
+                setSelectedEffectId(widgetEvent.effectId);
+                setColor(widgetEvent.color);
+                setSelectedColor(widgetEvent.color);
+                setBrightness(widgetEvent.brightness);
+                setSelectedBrightness(widgetEvent.brightness);
 
                 return;
             }
@@ -82,14 +76,11 @@ export const FurnitureDimmerView: FC<{}> = props =>
         const preset = presets[(id - 1)];
 
         if(!preset) return;
-
-        BatchUpdates(() =>
-        {
-            setSelectedPresetId(preset.id);
-            setSelectedEffectId(preset.type);
-            setSelectedColor(preset.color);
-            setSelectedBrightness(preset.light);
-        });
+        
+        setSelectedPresetId(preset.id);
+        setSelectedEffectId(preset.type);
+        setSelectedColor(preset.color);
+        setSelectedBrightness(preset.light);
     }, [ presets ]);
 
     const close = useCallback(() =>

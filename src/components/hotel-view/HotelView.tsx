@@ -2,7 +2,7 @@ import { FigureUpdateEvent, RoomSessionEvent, UserInfoDataParser, UserInfoEvent 
 import { FC, useCallback, useState } from 'react';
 import { GetConfiguration, GetConfigurationManager } from '../../api';
 import { LayoutAvatarImageView } from '../../common';
-import { BatchUpdates, UseMessageEventHook, UseRoomSessionManagerEvent } from '../../hooks';
+import { UseMessageEventHook, UseRoomSessionManagerEvent } from '../../hooks';
 import { WidgetSlotView } from './views/widgets/WidgetSlotView';
 export const HotelView: FC<{}> = props =>
 {
@@ -16,11 +16,8 @@ export const HotelView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        BatchUpdates(() =>
-        {
-            setUserInfo(parser.userInfo);
-            setUserFigure(parser.userInfo.figure);
-        });
+        setUserInfo(parser.userInfo);
+        setUserFigure(parser.userInfo.figure);
     }, []);
 
     UseMessageEventHook(UserInfoEvent, onUserInfoEvent);

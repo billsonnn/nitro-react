@@ -3,7 +3,7 @@ import { GroupAdminGiveComposer, GroupAdminTakeComposer, GroupConfirmMemberRemov
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, NotificationUtilities, RemoveLinkEventTracker, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../hooks';
+import { UseMessageEventHook } from '../../../hooks';
 
 export const GroupMembersView: FC<{}> = props =>
 {
@@ -76,12 +76,9 @@ export const GroupMembersView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        BatchUpdates(() =>
-        {
-            setMembersData(parser);
-            setLevelId(parser.level);
-            setTotalPages(Math.ceil(parser.totalMembersCount / parser.pageSize));
-        });
+        setMembersData(parser);
+        setLevelId(parser.level);
+        setTotalPages(Math.ceil(parser.totalMembersCount / parser.pageSize));
     }, []);
 
     UseMessageEventHook(GroupMembersEvent, onGroupMembersEvent);
@@ -111,11 +108,8 @@ export const GroupMembersView: FC<{}> = props =>
         const groupId = (parseInt(parts[1]) || -1);
         const levelId = (parseInt(parts[2]) || 3);
         
-        BatchUpdates(() =>
-        {
-            setGroupId(groupId);
-            setLevelId(levelId);
-        });
+        setGroupId(groupId);
+        setLevelId(levelId);
     }, []);
 
     useEffect(() =>
@@ -146,14 +140,11 @@ export const GroupMembersView: FC<{}> = props =>
     {
         if(groupId === -1) return;
 
-        BatchUpdates(() =>
-        {
-            setLevelId(-1);
-            setMembersData(null);
-            setTotalPages(0);
-            setSearchQuery('');
-            setRemovingMemberName(null); 
-        })
+        setLevelId(-1);
+        setMembersData(null);
+        setTotalPages(0);
+        setSearchQuery('');
+        setRemovingMemberName(null); 
     }, [ groupId ]);
 
     if((groupId === -1) || !membersData) return null;
