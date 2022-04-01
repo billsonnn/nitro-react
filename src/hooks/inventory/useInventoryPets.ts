@@ -31,13 +31,13 @@ const useInventoryPetsState = () =>
         if(!fragment) return;
 
         setPetItems(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        {
+            const newValue = [ ...prevValue ];
 
-                processPetFragment(newValue, fragment, isUnseen);
+            processPetFragment(newValue, fragment, isUnseen);
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         petMsgFragments = null;
     }, [ isUnseen ]);
@@ -49,13 +49,13 @@ const useInventoryPetsState = () =>
         const parser = event.getParser();
 
         setPetItems(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        {
+            const newValue = [ ...prevValue ];
 
-                addSinglePetItem(parser.pet, newValue, true);
+            addSinglePetItem(parser.pet, newValue, true);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(PetAddedToInventoryEvent, onPetAddedToInventoryEvent);
@@ -65,13 +65,13 @@ const useInventoryPetsState = () =>
         const parser = event.getParser();
 
         setPetItems(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        {
+            const newValue = [ ...prevValue ];
 
-                removePetItemById(parser.petId, newValue);
+            removePetItemById(parser.petId, newValue);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(PetRemovedFromInventory, onPetRemovedFromInventory);
@@ -81,15 +81,15 @@ const useInventoryPetsState = () =>
         if(!petItems || !petItems.length) return;
 
         setSelectedPet(prevValue =>
-            {
-                let newValue = prevValue;
+        {
+            let newValue = prevValue;
 
-                if(newValue && (petItems.indexOf(newValue) === -1)) newValue = null;
+            if(newValue && (petItems.indexOf(newValue) === -1)) newValue = null;
 
-                if(!newValue) newValue = petItems[0];
+            if(!newValue) newValue = petItems[0];
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ petItems ]);
 
     useEffect(() =>

@@ -11,15 +11,15 @@ export const useSharedVisibility = () =>
         let id = -1;
 
         setActiveIds(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        {
+            const newValue = [ ...prevValue ];
 
-                id = newValue.length ? (newValue[(newValue.length - 1)] + 1) : 0;
+            id = newValue.length ? (newValue[(newValue.length - 1)] + 1) : 0;
 
-                newValue.push(id);
+            newValue.push(id);
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         return id;
     }, []);
@@ -27,17 +27,17 @@ export const useSharedVisibility = () =>
     const deactivate = useCallback((id: number) =>
     {
         setActiveIds(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        {
+            const newValue = [ ...prevValue ];
 
-                const index = newValue.indexOf(id);
+            const index = newValue.indexOf(id);
 
-                if(index === -1) return prevValue;
+            if(index === -1) return prevValue;
 
-                newValue.splice(index, 1);
+            newValue.splice(index, 1);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     return { isVisible, activate, deactivate };

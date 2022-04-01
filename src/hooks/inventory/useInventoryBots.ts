@@ -21,55 +21,55 @@ const useInventoryBotsState = () =>
         const parser = event.getParser();
 
         setBotItems(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+            const existingIds = newValue.map(item => item.botData.id);
+            const addedDatas: BotData[] = [];
+
+            for(const botData of parser.items.values()) ((existingIds.indexOf(botData.id) === -1) && addedDatas.push(botData));
+
+            for(const existingId of existingIds)
             {
-                const newValue = [ ...prevValue ];
-                const existingIds = newValue.map(item => item.botData.id);
-                const addedDatas: BotData[] = [];
+                let remove = true;
 
-                for(const botData of parser.items.values()) ((existingIds.indexOf(botData.id) === -1) && addedDatas.push(botData));
-
-                for(const existingId of existingIds)
+                for(const botData of parser.items.values())
                 {
-                    let remove = true;
-
-                    for(const botData of parser.items.values())
+                    if(botData.id === existingId)
                     {
-                        if(botData.id === existingId)
-                        {
-                            remove = false;
+                        remove = false;
 
-                            break;
-                        }
+                        break;
                     }
-
-                    if(!remove) continue;
-
-                    const index = newValue.findIndex(item => (item.botData.id === existingId));
-                    const botItem = newValue[index];
-
-                    if((index === -1) || !botItem) continue;
-
-                    if(getPlacingItemId() === botItem.botData.id)
-                    {
-                        cancelRoomObjectPlacement();
-
-                        CreateLinkEvent('inventory/open');
-                    }
-
-                    newValue.splice(index, 1);
                 }
 
-                for(const botData of addedDatas)
-                {
-                    const botItem = { botData } as IBotItem;
-                    const unseen = isUnseen(UnseenItemCategory.BOT, botData.id);
+                if(!remove) continue;
 
-                    if(unseen) newValue.unshift(botItem);
-                    newValue.push(botItem);
+                const index = newValue.findIndex(item => (item.botData.id === existingId));
+                const botItem = newValue[index];
+
+                if((index === -1) || !botItem) continue;
+
+                if(getPlacingItemId() === botItem.botData.id)
+                {
+                    cancelRoomObjectPlacement();
+
+                    CreateLinkEvent('inventory/open');
                 }
 
-                return newValue;
-            });
+                newValue.splice(index, 1);
+            }
+
+            for(const botData of addedDatas)
+            {
+                const botItem = { botData } as IBotItem;
+                const unseen = isUnseen(UnseenItemCategory.BOT, botData.id);
+
+                if(unseen) newValue.unshift(botItem);
+                newValue.push(botItem);
+            }
+
+            return newValue;
+        });
     }, [ isUnseen ]);
 
     UseMessageEventHook(BotInventoryMessageEvent, onBotInventoryMessageEvent);
@@ -79,19 +79,19 @@ const useInventoryBotsState = () =>
         const parser = event.getParser();
 
         setBotItems(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        {
+            const newValue = [ ...prevValue ];
 
-                const index = newValue.findIndex(item => (item.botData.id === parser.item.id));
+            const index = newValue.findIndex(item => (item.botData.id === parser.item.id));
 
-                if(index >= 0) return prevValue;
+            if(index >= 0) return prevValue;
 
-                const botItem = { botData: parser.item } as IBotItem;
+            const botItem = { botData: parser.item } as IBotItem;
 
-                newValue.push(botItem);
+            newValue.push(botItem);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(BotAddedToInventoryEvent, onBotAddedToInventoryEvent);
@@ -101,24 +101,24 @@ const useInventoryBotsState = () =>
         const parser = event.getParser();
 
         setBotItems(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            const index = newValue.findIndex(item => (item.botData.id === parser.itemId));
+
+            if(index === -1) return prevValue;
+
+            newValue.splice(index, 1);
+
+            if(getPlacingItemId() === parser.itemId)
             {
-                const newValue = [ ...prevValue ];
+                cancelRoomObjectPlacement();
 
-                const index = newValue.findIndex(item => (item.botData.id === parser.itemId));
+                CreateLinkEvent('inventory/show');
+            }
 
-                if(index === -1) return prevValue;
-
-                newValue.splice(index, 1);
-
-                if(getPlacingItemId() === parser.itemId)
-                {
-                    cancelRoomObjectPlacement();
-
-                    CreateLinkEvent('inventory/show');
-                }
-
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(BotRemovedFromInventoryEvent, onBotRemovedFromInventoryEvent);
@@ -128,15 +128,15 @@ const useInventoryBotsState = () =>
         if(!botItems || !botItems.length) return;
 
         setSelectedBot(prevValue =>
-            {
-                let newValue = prevValue;
+        {
+            let newValue = prevValue;
 
-                if(newValue && (botItems.indexOf(newValue) === -1)) newValue = null;
+            if(newValue && (botItems.indexOf(newValue) === -1)) newValue = null;
 
-                if(!newValue) newValue = botItems[0];
+            if(!newValue) newValue = botItems[0];
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ botItems ]);
 
     useEffect(() =>

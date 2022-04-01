@@ -16,8 +16,8 @@ interface InventoryFurnitureViewProps
 export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
-    const { groupItems = [], selectedItem = null, selectItem = null } = useInventoryFurni();
-    const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(groupItems);
+    const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>([]);
+    const { groupItems = [], selectedItem = null, selectItem = null, activate = null, deactivate = null } = useInventoryFurni();
     const { getCount = null, resetCategory = null } = useInventoryUnseenTracker();
 
     useEffect(() =>
@@ -85,6 +85,13 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
             for(const groupItem of groupItems) groupItem.hasUnseenItems = false;
         }
     }, [ groupItems, getCount, resetCategory ]);
+
+    useEffect(() =>
+    {
+        const id = activate();
+
+        return () => deactivate(id);
+    }, [ activate, deactivate ]);
 
     if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.title') } desc={ LocalizeText('inventory.empty.desc') } />;
 

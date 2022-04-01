@@ -107,11 +107,11 @@ export const InventoryView: FC<{}> = props =>
         return () =>
         {
             setRoomPreviewer(prevValue =>
-                {
-                    prevValue.dispose();
+            {
+                prevValue.dispose();
 
-                    return null;
-                });
+                return null;
+            });
         }
     }, []);
 
@@ -129,15 +129,15 @@ export const InventoryView: FC<{}> = props =>
                 <>
                     <NitroCardTabsView>
                         { TABS.map((name, index) =>
-                            {
-                                const unseenCount = getCount(UNSEEN_CATEGORIES[index]);
+                        {
+                            const unseenCount = getCount(UNSEEN_CATEGORIES[index]);
 
-                                return (
-                                    <NitroCardTabsItemView key={ index } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) } count={ unseenCount }>
-                                        { LocalizeText(name) }
-                                    </NitroCardTabsItemView>
-                                );
-                            }) }
+                            return (
+                                <NitroCardTabsItemView key={ index } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) } count={ unseenCount }>
+                                    { LocalizeText(name) }
+                                </NitroCardTabsItemView>
+                            );
+                        }) }
                     </NitroCardTabsView>
                     <NitroCardContentView>
                         { (currentTab === TAB_FURNITURE ) &&
