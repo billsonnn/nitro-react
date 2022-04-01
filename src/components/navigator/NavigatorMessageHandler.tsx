@@ -44,14 +44,14 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setNavigatorData(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.eventMod = (parser.securityLevel >= SecurityLevel.MODERATOR);
-                newValue.roomPicker = (parser.securityLevel >= SecurityLevel.COMMUNITY);
+            newValue.eventMod = (parser.securityLevel >= SecurityLevel.MODERATOR);
+            newValue.roomPicker = (parser.securityLevel >= SecurityLevel.COMMUNITY);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ setNavigatorData ]);
 
     const onRoomForwardEvent = useCallback((event: RoomForwardEvent) =>
@@ -66,15 +66,15 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setNavigatorData(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.enteredGuestRoom = null;
-                newValue.currentRoomOwner = parser.isOwner;
-                newValue.currentRoomId = parser.roomId;
+            newValue.enteredGuestRoom = null;
+            newValue.currentRoomOwner = parser.isOwner;
+            newValue.currentRoomId = parser.roomId;
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         // close room info
         // close room settings
@@ -94,28 +94,28 @@ export const NavigatorMessageHandler: FC<{}> = props =>
             setDoorData({ roomInfo: null, state: DoorStateType.NONE });
             
             setNavigatorData(prevValue =>
+            {
+                const newValue = { ...prevValue };
+
+                newValue.enteredGuestRoom = parser.data;
+                newValue.currentRoomIsStaffPick = parser.staffPick;
+
+                const isCreated = (newValue.createdFlatId === parser.data.roomId);
+
+                if(!isCreated && parser.data.displayRoomEntryAd)
                 {
-                    const newValue = { ...prevValue };
+                    if(GetConfiguration<boolean>('roomenterad.habblet.enabled', false)) HabboWebTools.openRoomEnterAd();
+                }
 
-                    newValue.enteredGuestRoom = parser.data;
-                    newValue.currentRoomIsStaffPick = parser.staffPick;
+                newValue.createdFlatId = 0;
 
-                    const isCreated = (newValue.createdFlatId === parser.data.roomId);
+                if(newValue.enteredGuestRoom && (newValue.enteredGuestRoom.habboGroupId > 0))
+                {
+                    // close event info
+                }
 
-                    if(!isCreated && parser.data.displayRoomEntryAd)
-                    {
-                        if(GetConfiguration<boolean>('roomenterad.habblet.enabled', false)) HabboWebTools.openRoomEnterAd();
-                    }
-
-                    newValue.createdFlatId = 0;
-
-                    if(newValue.enteredGuestRoom && (newValue.enteredGuestRoom.habboGroupId > 0))
-                    {
-                        // close event info
-                    }
-
-                    return newValue;
-                });
+                return newValue;
+            });
         }
         else if(parser.roomForward)
         {
@@ -125,25 +125,25 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                 {
                     case RoomDataParser.DOORBELL_STATE:
                         setDoorData(prevValue =>
-                            {
-                                const newValue = { ...prevValue };
+                        {
+                            const newValue = { ...prevValue };
 
-                                newValue.roomInfo = parser.data;
-                                newValue.state = DoorStateType.START_DOORBELL;
+                            newValue.roomInfo = parser.data;
+                            newValue.state = DoorStateType.START_DOORBELL;
 
-                                return newValue;
-                            });
+                            return newValue;
+                        });
                         return;
                     case RoomDataParser.PASSWORD_STATE:
                         setDoorData(prevValue =>
-                            {
-                                const newValue = { ...prevValue };
+                        {
+                            const newValue = { ...prevValue };
 
-                                newValue.roomInfo = parser.data;
-                                newValue.state = DoorStateType.START_PASSWORD;
+                            newValue.roomInfo = parser.data;
+                            newValue.state = DoorStateType.START_PASSWORD;
 
-                                return newValue;
-                            });
+                            return newValue;
+                        });
                         return;
                 }
             }
@@ -155,14 +155,14 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         else
         {
             setNavigatorData(prevValue =>
-                {
-                    const newValue = { ...prevValue };
+            {
+                const newValue = { ...prevValue };
 
-                    newValue.enteredGuestRoom = parser.data;
-                    newValue.currentRoomIsStaffPick = parser.staffPick;
+                newValue.enteredGuestRoom = parser.data;
+                newValue.currentRoomIsStaffPick = parser.staffPick;
 
-                    return newValue;
-                });
+                return newValue;
+            });
         }
     }, [ setNavigatorData, setDoorData ]);
 
@@ -171,14 +171,14 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setNavigatorData(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.currentRoomRating = parser.totalLikes;
-                newValue.canRate = parser.canLike;
+            newValue.currentRoomRating = parser.totalLikes;
+            newValue.canRate = parser.canLike;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ setNavigatorData ]);
 
     const onRoomDoorbellEvent = useCallback((event: RoomDoorbellEvent) =>
@@ -188,13 +188,13 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         if(!parser.userName || (parser.userName.length === 0))
         {
             setDoorData(prevValue =>
-                {
-                    const newValue = { ...prevValue };
+            {
+                const newValue = { ...prevValue };
 
-                    newValue.state = DoorStateType.STATE_WAITING;
+                newValue.state = DoorStateType.STATE_WAITING;
 
-                    return newValue;
-                });
+                return newValue;
+            });
         }
     }, [ setDoorData ]);
 
@@ -205,13 +205,13 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         if(!parser.userName || (parser.userName.length === 0))
         {
             setDoorData(prevValue =>
-                {
-                    const newValue = { ...prevValue };
+            {
+                const newValue = { ...prevValue };
 
-                    newValue.state = DoorStateType.STATE_ACCEPTED;
+                newValue.state = DoorStateType.STATE_ACCEPTED;
 
-                    return newValue;
-                });
+                return newValue;
+            });
         }
     }, [ setDoorData ]);
 
@@ -222,13 +222,13 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         if(!parser.userName || (parser.userName.length === 0))
         {
             setDoorData(prevValue =>
-                {
-                    const newValue = { ...prevValue };
+            {
+                const newValue = { ...prevValue };
 
-                    newValue.state = DoorStateType.STATE_NO_ANSWER;
+                newValue.state = DoorStateType.STATE_NO_ANSWER;
 
-                    return newValue;
-                });
+                return newValue;
+            });
         }
     }, [ setDoorData ]);
 
@@ -240,13 +240,13 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         {
             case -100002:
                 setDoorData(prevValue =>
-                    {
-                        const newValue = { ...prevValue };
+                {
+                    const newValue = { ...prevValue };
     
-                        newValue.state = DoorStateType.STATE_WRONG_PASSWORD;
+                    newValue.state = DoorStateType.STATE_WRONG_PASSWORD;
     
-                        return newValue;
-                    });
+                    return newValue;
+                });
                 return;
             case 4009:
                 NotificationUtilities.simpleAlert(LocalizeText('navigator.alert.need.to.be.vip'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
@@ -285,32 +285,32 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         BatchUpdates(() =>
         {
             setTopLevelContext(prevValue =>
+            {
+                let newValue = prevValue;
+
+                if(!newValue) newValue = ((topLevelContexts && topLevelContexts.length && topLevelContexts[0]) || null);
+
+                if(!newValue) return null;
+
+                if((parser.result.code !== newValue.code) && topLevelContexts && topLevelContexts.length)
                 {
-                    let newValue = prevValue;
-
-                    if(!newValue) newValue = ((topLevelContexts && topLevelContexts.length && topLevelContexts[0]) || null);
-
-                    if(!newValue) return null;
-
-                    if((parser.result.code !== newValue.code) && topLevelContexts && topLevelContexts.length)
-                    {
-                        for(const context of topLevelContexts)
-                        {
-                            if(context.code !== parser.result.code) continue;
-
-                            newValue = context;
-                        }
-                    }
-
                     for(const context of topLevelContexts)
                     {
                         if(context.code !== parser.result.code) continue;
 
                         newValue = context;
                     }
+                }
 
-                    return newValue;
-                });
+                for(const context of topLevelContexts)
+                {
+                    if(context.code !== parser.result.code) continue;
+
+                    newValue = context;
+                }
+
+                return newValue;
+            });
 
             setSearchResult(parser.result);
         });
@@ -337,16 +337,16 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         let prevSettingsReceived = false;
 
         setNavigatorData(prevValue =>
-            {
-                prevSettingsReceived = prevValue.settingsReceived;
+        {
+            prevSettingsReceived = prevValue.settingsReceived;
 
-                const newValue = { ...prevValue };
+            const newValue = { ...prevValue };
 
-                newValue.homeRoomId  = parser.homeRoomId;
-                newValue.settingsReceived = true;
+            newValue.homeRoomId  = parser.homeRoomId;
+            newValue.settingsReceived = true;
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         if(prevSettingsReceived)
         {

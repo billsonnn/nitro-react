@@ -71,18 +71,18 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
             if(requiresFurni > WiredFurniType.STUFF_SELECTION_OPTION_NONE)
             {
                 setFurniIds(prevValue =>
+                {
+                    if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
+    
+                    if(trigger.selectedItems && trigger.selectedItems.length)
                     {
-                        if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
+                        WiredSelectionVisualizer.applySelectionShaderToFurni(trigger.selectedItems);
     
-                        if(trigger.selectedItems && trigger.selectedItems.length)
-                        {
-                            WiredSelectionVisualizer.applySelectionShaderToFurni(trigger.selectedItems);
+                        return trigger.selectedItems;
+                    }
     
-                            return trigger.selectedItems;
-                        }
-    
-                        return [];
-                    });
+                    return [];
+                });
             }
         });
 
@@ -94,11 +94,11 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                 setIntParams([]);
                 setStringParam(null);
                 setFurniIds(prevValue =>
-                    {
-                        if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
+                {
+                    if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
 
-                        return [];
-                    });
+                    return [];
+                });
             });
         }
     }, [ trigger, hasSpecialInput, requiresFurni, setIntParams, setStringParam, setFurniIds ]);

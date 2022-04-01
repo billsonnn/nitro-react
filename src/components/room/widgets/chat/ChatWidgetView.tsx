@@ -26,39 +26,39 @@ export const ChatWidgetView: FC<{}> = props =>
     const removeHiddenChats = useCallback(() =>
     {
         setChatMessages(prevValue =>
+        {
+            if(prevValue)
             {
-                if(prevValue)
-                {
-                    const newMessages = prevValue.filter(chat => ((chat.top > (-(chat.height) * 2))));
+                const newMessages = prevValue.filter(chat => ((chat.top > (-(chat.height) * 2))));
 
-                    if(newMessages.length !== prevValue.length) return newMessages;
-                }
+                if(newMessages.length !== prevValue.length) return newMessages;
+            }
 
-                return prevValue;
-            })
+            return prevValue;
+        })
     }, []);
 
     const moveAllChatsUp = useCallback((amount: number) =>
     {
         setChatMessages(prevValue =>
+        {
+            if(prevValue)
             {
-                if(prevValue)
+                prevValue.forEach(chat =>
                 {
-                    prevValue.forEach(chat =>
-                        {
-                            if(chat.skipMovement)
-                            {
-                                chat.skipMovement = false;
+                    if(chat.skipMovement)
+                    {
+                        chat.skipMovement = false;
             
-                                return;
-                            }
+                        return;
+                    }
             
-                            chat.top -= amount;
-                        });
-                }
+                    chat.top -= amount;
+                });
+            }
 
-                return prevValue;
-            });
+            return prevValue;
+        });
 
         removeHiddenChats();
     }, [ removeHiddenChats ]);

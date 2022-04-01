@@ -40,18 +40,18 @@ export const WordQuizWidgetView: FC<{}> = props =>
                     setUserAnswers(new Map());
 
                     setQuestionClearTimeout(prevValue =>
-                        {
-                            if(prevValue) clearTimeout(prevValue);
+                    {
+                        if(prevValue) clearTimeout(prevValue);
 
-                            if(event.duration > 0)
-                            {
-                                const delay = event.duration < 1000 ? DEFAULT_DISPLAY_DELAY : event.duration;
+                        if(event.duration > 0)
+                        {
+                            const delay = event.duration < 1000 ? DEFAULT_DISPLAY_DELAY : event.duration;
     
-                                return setTimeout(() => clearQuestion(), delay) as unknown as number;
-                            }
+                            return setTimeout(() => clearQuestion(), delay) as unknown as number;
+                        }
     
-                            return null;
-                        });
+                        return null;
+                    });
                 });
                 break;
             case RoomWidgetWordQuizUpdateEvent.QUESTION_ANSWERED: {
@@ -64,18 +64,18 @@ export const WordQuizWidgetView: FC<{}> = props =>
                     setAnswerCounts(event.answerCounts);
 
                     setUserAnswers(prevValue =>
+                    {
+                        if(!prevValue.has(userData.roomIndex))
                         {
-                            if(!prevValue.has(userData.roomIndex))
-                            {
-                                const newValue = new Map(userAnswers);
+                            const newValue = new Map(userAnswers);
 
-                                newValue.set(userData.roomIndex, { value: event.value, secondsLeft: SIGN_FADE_DELAY });
+                            newValue.set(userData.roomIndex, { value: event.value, secondsLeft: SIGN_FADE_DELAY });
 
-                                return newValue;
-                            }
+                            return newValue;
+                        }
 
-                            return prevValue;
-                        });
+                        return prevValue;
+                    });
                 });
                 break;
             }
@@ -112,7 +112,7 @@ export const WordQuizWidgetView: FC<{}> = props =>
         const updateMessage = new RoomWidgetPollMessage(RoomWidgetPollMessage.ANSWER, pollId);
 
         updateMessage.questionId = question.id;
-        updateMessage.answers = [vote];
+        updateMessage.answers = [ vote ];
 
         widgetHandler.processWidgetMessage(updateMessage);
 
@@ -167,7 +167,7 @@ export const WordQuizWidgetView: FC<{}> = props =>
             { question &&
                 <WordQuizQuestionView question={question.content} canVote={!answerSent} vote={vote} noVotes={answerCounts.get(VALUE_KEY_DISLIKE) || 0} yesVotes={answerCounts.get(VALUE_KEY_LIKE) || 0} /> }
             { userAnswers &&
-                Array.from(userAnswers.entries()).map(([key, value], index) => <WordQuizVoteView key={index} userIndex={key} vote={value.value} />) }
+                Array.from(userAnswers.entries()).map(([ key, value ], index) => <WordQuizVoteView key={index} userIndex={key} vote={value.value} />) }
         </>
     );
 }

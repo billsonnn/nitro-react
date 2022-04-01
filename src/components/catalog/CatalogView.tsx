@@ -183,31 +183,31 @@ export const CatalogView: FC<{}> = props =>
         nodes.reverse();
 
         setActiveNodes(prevValue =>
+        {
+            const isActive = (prevValue.indexOf(targetNode) >= 0);
+            const isOpen = targetNode.isOpen;
+
+            for(const existing of prevValue)
             {
-                const isActive = (prevValue.indexOf(targetNode) >= 0);
-                const isOpen = targetNode.isOpen;
+                existing.deactivate();
 
-                for(const existing of prevValue)
-                {
-                    existing.deactivate();
+                if(nodes.indexOf(existing) === -1) existing.close();
+            }
 
-                    if(nodes.indexOf(existing) === -1) existing.close();
-                }
+            for(const n of nodes)
+            {
+                n.activate();
 
-                for(const n of nodes)
-                {
-                    n.activate();
+                if(n.parent) n.open();
 
-                    if(n.parent) n.open();
+                if((n === targetNode.parent) && n.children.length) n.open();
+            }
 
-                    if((n === targetNode.parent) && n.children.length) n.open();
-                }
+            if(isActive && isOpen) targetNode.close();
+            else targetNode.open();
 
-                if(isActive && isOpen) targetNode.close();
-                else targetNode.open();
-
-                return nodes;
-            });
+            return nodes;
+        });
             
         if(targetNode.pageId > -1) loadCatalogPage(targetNode.pageId, offerId);
     }, [ setActiveNodes, loadCatalogPage ]);
@@ -346,11 +346,11 @@ export const CatalogView: FC<{}> = props =>
         return () =>
         {
             setRoomPreviewer(prevValue =>
-                {
-                    prevValue.dispose();
+            {
+                prevValue.dispose();
 
-                    return null;
-                });
+                return null;
+            });
         }
     }, []);
 
@@ -415,23 +415,26 @@ export const CatalogView: FC<{}> = props =>
             <CatalogMessageHandler />
             { isVisible &&
                 <NitroCardView uniqueKey="catalog" className="nitro-catalog">
-                    <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => { setIsVisible(false); } } />
+                    <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => 
+                    {
+                        setIsVisible(false); 
+                    } } />
                     <NitroCardTabsView>
                         { rootNode && (rootNode.children.length > 0) && rootNode.children.map(child =>
-                            {
-                                if(!child.isVisible) return null;
+                        {
+                            if(!child.isVisible) return null;
 
-                                return (
-                                    <NitroCardTabsItemView key={ child.pageId } isActive={ child.isActive } onClick={ event =>
-                                        {
-                                            if(searchResult) setSearchResult(null);
+                            return (
+                                <NitroCardTabsItemView key={ child.pageId } isActive={ child.isActive } onClick={ event =>
+                                {
+                                    if(searchResult) setSearchResult(null);
 
-                                            activateNode(child);
-                                        } }>
-                                        { child.localization }
-                                    </NitroCardTabsItemView>
-                                );
-                            }) }
+                                    activateNode(child);
+                                } }>
+                                    { child.localization }
+                                </NitroCardTabsItemView>
+                            );
+                        }) }
                     </NitroCardTabsView>
                     <NitroCardContentView>
                         <Grid>
@@ -446,8 +449,8 @@ export const CatalogView: FC<{}> = props =>
                         </Grid>
                     </NitroCardContentView>
                 </NitroCardView> }
-                <CatalogGiftView />
-                <MarketplacePostOfferView />
+            <CatalogGiftView />
+            <MarketplacePostOfferView />
         </CatalogContextProvider>
     );
 }

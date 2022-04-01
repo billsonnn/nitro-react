@@ -11,9 +11,9 @@ import { IMarketplaceSearchOptions } from './common/IMarketplaceSearchOptions';
 import { MarketplaceOfferData } from './common/MarketplaceOfferData';
 import { MarketplaceSearchType } from './common/MarketplaceSearchType';
 
-const SORT_TYPES_VALUE = [1, 2];
-const SORT_TYPES_ACTIVITY = [3, 4, 5, 6];
-const SORT_TYPES_ADVANCED = [1, 2, 3, 4, 5, 6];
+const SORT_TYPES_VALUE = [ 1, 2 ];
+const SORT_TYPES_ACTIVITY = [ 3, 4, 5, 6 ];
+const SORT_TYPES_ADVANCED = [ 1, 2, 3, 4, 5, 6 ];
 export interface CatalogLayoutMarketplacePublicItemsViewProps extends CatalogLayoutProps
 {
 
@@ -44,7 +44,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                 return SORT_TYPES_ADVANCED;
         }
         return [];
-    }, [searchType]);
+    }, [ searchType ]);
 
     const purchaseItem = useCallback((offerData: MarketplaceOfferData) =>
     {
@@ -55,10 +55,10 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
         }
         const offerId = offerData.offerId;
         NotificationUtilities.confirm(LocalizeText('catalog.marketplace.confirm_header'), () =>
-            {
-                SendMessageComposer(new BuyMarketplaceOfferMessageComposer(offerId));
-            },
-            null, null, null, LocalizeText('catalog.marketplace.confirm_title'));
+        {
+            SendMessageComposer(new BuyMarketplaceOfferMessageComposer(offerId));
+        },
+        null, null, null, LocalizeText('catalog.marketplace.confirm_title'));
     },[]);
 
     const onMarketPlaceOffersEvent = useCallback( (event: MarketPlaceOffersEvent) =>
@@ -104,8 +104,8 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                 NotificationUtilities.simpleAlert(LocalizeText('catalog.marketplace.not_available_header'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.marketplace.not_available_title'));
                 break;
             case 3:
-                // our shit was updated
-                // todo: some dialogue modal 
+            // our shit was updated
+            // todo: some dialogue modal 
                 setOffers( prev =>
                 {
                     const newVal = new Map(prev);
@@ -124,7 +124,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                 });
 
                 NotificationUtilities.confirm(LocalizeText('catalog.marketplace.confirm_higher_header') + 
-                '\n' + LocalizeText('catalog.marketplace.confirm_price', ['price'], [parser.newPrice.toString()]), () =>
+                '\n' + LocalizeText('catalog.marketplace.confirm_price', [ 'price' ], [ parser.newPrice.toString() ]), () =>
                 {
                     SendMessageComposer(new BuyMarketplaceOfferMessageComposer(parser.offerId));
                 },
@@ -134,7 +134,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                 NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.notenough.credits.description'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.alert.notenough.title'));
                 break;
         }
-    }, [lastSearch, requestOffers]);
+    }, [ lastSearch, requestOffers ]);
 
     UseMessageEventHook(MarketPlaceOffersEvent, onMarketPlaceOffersEvent);
     UseMessageEventHook(MarketplaceBuyOfferResultEvent, onMarketplaceBuyOfferResultEvent);

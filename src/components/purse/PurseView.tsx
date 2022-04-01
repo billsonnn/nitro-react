@@ -71,15 +71,15 @@ export const PurseView: FC<{}> = props =>
         const parser = event.getParser();
 
         setPurse(prevValue =>
-            {
-                const newValue = Purse.from(prevValue as Purse);
+        {
+            const newValue = Purse.from(prevValue as Purse);
 
-                newValue.credits = parseFloat(parser.credits);
+            newValue.credits = parseFloat(parser.credits);
 
-                if(prevValue.credits !== newValue.credits) PlaySound(SoundNames.CREDITS);
+            if(prevValue.credits !== newValue.credits) PlaySound(SoundNames.CREDITS);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(UserCreditsEvent, onUserCreditsEvent);
@@ -89,13 +89,13 @@ export const PurseView: FC<{}> = props =>
         const parser = event.getParser();
 
         setPurse(prevValue =>
-            {
-                const newValue = Purse.from(prevValue as Purse);
+        {
+            const newValue = Purse.from(prevValue as Purse);
 
-                newValue.activityPoints = parser.currencies;
+            newValue.activityPoints = parser.currencies;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(UserCurrencyEvent, onUserCurrencyEvent);
@@ -105,17 +105,17 @@ export const PurseView: FC<{}> = props =>
         const parser = event.getParser();
 
         setPurse(prevValue =>
-            {
-                const newValue = Purse.from(prevValue as Purse);
+        {
+            const newValue = Purse.from(prevValue as Purse);
 
-                newValue.activityPoints = new Map(newValue.activityPoints);
+            newValue.activityPoints = new Map(newValue.activityPoints);
 
-                newValue.activityPoints.set(parser.type, parser.amount);
+            newValue.activityPoints.set(parser.type, parser.amount);
 
-                if(parser.type === 0) PlaySound(SoundNames.DUCKETS)
+            if(parser.type === 0) PlaySound(SoundNames.DUCKETS)
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(ActivityPointNotificationMessageEvent, onActivityPointNotificationMessageEvent);
@@ -128,20 +128,20 @@ export const PurseView: FC<{}> = props =>
         if((productName !== 'club_habbo') && (productName !== 'habbo_club')) return;
 
         setPurse(prevValue =>
-            {
-                const newValue = Purse.from(prevValue as Purse);
+        {
+            const newValue = Purse.from(prevValue as Purse);
 
-                newValue.clubDays = Math.max(0, parser.daysToPeriodEnd);
-                newValue.clubPeriods = Math.max(0, parser.periodsSubscribedAhead);
-                newValue.isVip = parser.isVip;
-                newValue.pastClubDays = parser.pastClubDays;
-                newValue.pastVipDays = parser.pastVipDays;
-                newValue.isExpiring = ((parser.responseType === UserSubscriptionParser.RESPONSE_TYPE_DISCOUNT_AVAILABLE) ? true : false);
-                newValue.minutesUntilExpiration = parser.minutesUntilExpiration;
-                newValue.minutesSinceLastModified = parser.minutesSinceLastModified;
+            newValue.clubDays = Math.max(0, parser.daysToPeriodEnd);
+            newValue.clubPeriods = Math.max(0, parser.periodsSubscribedAhead);
+            newValue.isVip = parser.isVip;
+            newValue.pastClubDays = parser.pastClubDays;
+            newValue.pastVipDays = parser.pastVipDays;
+            newValue.isExpiring = ((parser.responseType === UserSubscriptionParser.RESPONSE_TYPE_DISCOUNT_AVAILABLE) ? true : false);
+            newValue.minutesUntilExpiration = parser.minutesUntilExpiration;
+            newValue.minutesSinceLastModified = parser.minutesSinceLastModified;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(UserSubscriptionEvent, onUserSubscriptionEvent);

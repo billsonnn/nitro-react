@@ -8,7 +8,8 @@ export class SubscriptionInfo
         public readonly clubPeriods: number = 0,
         public readonly isVip: boolean = false,
         public readonly pastDays: number = 0,
-        public readonly pastVipDays: number = 0) {}
+        public readonly pastVipDays: number = 0) 
+    {}
 
     public get lastUpdated(): number
     {

@@ -26,11 +26,11 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
     const leaveGroup = () =>
     {
         NotificationUtilities.confirm(LocalizeText('group.leaveconfirm.desc'), () =>
-            {
-                SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
+        {
+            SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
 
-                if(onClose) onClose();
-            }, null);
+            if(onClose) onClose();
+        }, null);
     }
 
     const getRoleIcon = () =>
@@ -126,7 +126,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                                     <i className="icon icon-group-decorate" title={ LocalizeText('group.memberscandecorate') } /> }
                             </Flex>
                         </Flex>
-                        <Text small>{ LocalizeText('group.created', ['date', 'owner'], [groupInformation.createdAt, groupInformation.ownerName]) }</Text>
+                        <Text small>{ LocalizeText('group.created', [ 'date', 'owner' ], [ groupInformation.createdAt, groupInformation.ownerName ]) }</Text>
                     </Column>
                     <Text small overflow="auto" className="group-description">{ groupInformation.description }</Text>
                 </Column>

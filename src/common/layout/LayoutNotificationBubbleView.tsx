@@ -35,11 +35,11 @@ export const LayoutNotificationBubbleView: FC<LayoutNotificationBubbleViewProps>
         if(!fadesOut) return;
 
         const timeout = setTimeout(() =>
-            {
-                setIsVisible(false);
+        {
+            setIsVisible(false);
 
-                setTimeout(() => close(), 300);
-            }, timeoutMs);
+            setTimeout(() => close(), 300);
+        }, timeoutMs);
 
         return () => clearTimeout(timeout);
     }, [ fadesOut, timeoutMs, close ]);

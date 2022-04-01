@@ -64,11 +64,11 @@ export const ChatInputView: FC<{}> = props =>
     const checkSpecialKeywordForInput = useCallback(() =>
     {
         setChatValue(prevValue =>
-            {
-                if((prevValue !== chatModeIdWhisper) || !selectedUsername.length) return prevValue;
+        {
+            if((prevValue !== chatModeIdWhisper) || !selectedUsername.length) return prevValue;
 
-                return (`${ prevValue } ${ selectedUsername }`);
-            });
+            return (`${ prevValue } ${ selectedUsername }`);
+        });
     }, [ selectedUsername, chatModeIdWhisper ]);
 
     const sendChat = useCallback((text: string, chatType: number, recipientName: string = '', styleId: number = 0) =>
@@ -324,11 +324,11 @@ export const ChatInputView: FC<{}> = props =>
         const interval = setInterval(() =>
         {
             setFloodBlockedSeconds(prevValue =>
-                {
-                    seconds = ((prevValue || 0) - 1);
+            {
+                seconds = ((prevValue || 0) - 1);
 
-                    return seconds;
-                });
+                return seconds;
+            });
 
             if(seconds < 0)
             {
@@ -360,14 +360,14 @@ export const ChatInputView: FC<{}> = props =>
 
     return (
         createPortal(
-        <div className="nitro-chat-input-container">
-            <div className="input-sizer align-items-center">
-                { !floodBlocked &&
+            <div className="nitro-chat-input-container">
+                <div className="input-sizer align-items-center">
+                    { !floodBlocked &&
                     <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxChatLength } onChange={ event => updateChatInput(event.target.value) } onMouseDown={ event => setInputFocus() } /> }
-                { floodBlocked &&
+                    { floodBlocked &&
                     <Text variant="danger">{ LocalizeText('chat.input.alert.flood', [ 'time' ], [ floodBlockedSeconds.toString() ]) } </Text>}
-            </div>
-            <ChatInputStyleSelectorView chatStyleId={ chatStyleId } chatStyleIds={ chatStyleIds } selectChatStyleId={ selectChatStyleId } />
-        </div>, document.getElementById('toolbar-chat-input-container'))
+                </div>
+                <ChatInputStyleSelectorView chatStyleId={ chatStyleId } chatStyleIds={ chatStyleIds } selectChatStyleId={ selectChatStyleId } />
+            </div>, document.getElementById('toolbar-chat-input-container'))
     );
 }

@@ -21,7 +21,7 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
         const productData = offer.products[0];
 
         return ProductImageUtility.getProductImageUrl(productData.productType, productData.furniClassId, productData.extraParam);
-    }, [offer]);
+    }, [ offer ]);
     
     const getItemTitle = useCallback(() =>
     {
@@ -32,7 +32,7 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
         const localizationKey = ProductImageUtility.getProductCategory(productData.productType, productData.furniClassId) === 2  ? 'wallItem.name.' + productData.furniClassId : 'roomItem.name.' + productData.furniClassId;
 
         return LocalizeText(localizationKey);
-    }, [offer]);
+    }, [ offer ]);
 
     const getItemDesc = useCallback( () =>
     {
@@ -43,7 +43,7 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
         const localizationKey = ProductImageUtility.getProductCategory(productData.productType, productData.furniClassId) === 2 ? 'wallItem.desc.' + productData.furniClassId : 'roomItem.desc.' + productData.furniClassId ;
 
         return LocalizeText(localizationKey);
-    }, [offer]);
+    }, [ offer ]);
 
     return (
         <LayoutGridItem center={ false } column={ false } alignItems="center" className="p-1">

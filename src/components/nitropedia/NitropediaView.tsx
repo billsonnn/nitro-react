@@ -9,7 +9,7 @@ const NEW_LINE_REGEX = /\n\r|\n|\r/mg;
 export const NitropediaView: FC<{}> = props =>
 {
     const [ content, setContent ] = useState<string>(null);
-    const [ header, setHeader] = useState<string>('');
+    const [ header, setHeader ] = useState<string>('');
     const [ dimensions, setDimensions ] = useState<{ width: number, height: number}>(null);
     const elementRef = useRef<HTMLDivElement>(null);
     
@@ -30,17 +30,17 @@ export const NitropediaView: FC<{}> = props =>
                 setHeader(line[0]);
 
                 setDimensions(prevValue =>
+                {
+                    if(line[1] && (line[1].split(';').length === 2))
                     {
-                        if(line[1] && (line[1].split(';').length === 2))
-                        {
-                            return {
-                                width: parseInt(line[1].split(';')[0]),
-                                height: parseInt(line[1].split(';')[1])
-                            }
+                        return {
+                            width: parseInt(line[1].split(';')[0]),
+                            height: parseInt(line[1].split(';')[1])
                         }
+                    }
 
-                        return null;
-                    });
+                    return null;
+                });
 
                 setContent(splitData.join(''));
             });
@@ -75,17 +75,17 @@ export const NitropediaView: FC<{}> = props =>
     useEffect(() =>
     {
         const handle = (event: MouseEvent) =>
-            {
-                if(!(event.target instanceof HTMLAnchorElement)) return;
+        {
+            if(!(event.target instanceof HTMLAnchorElement)) return;
 
-                event.preventDefault();
+            event.preventDefault();
 
-                const link = event.target.href;
+            const link = event.target.href;
 
-                if(!link || !link.length) return;
+            if(!link || !link.length) return;
 
-                NotificationUtilities.openUrl(link);
-            }
+            NotificationUtilities.openUrl(link);
+        }
 
         document.addEventListener('click', handle);
 

@@ -14,9 +14,9 @@ export const FriendsMessengerThreadView: FC<FriendsMessengerThreadViewProps> = p
     return (
         <>
             { (thread.groups.length > 0) && thread.groups.map((group, index) =>
-                {
-                    return <FriendsMessengerThreadGroup key={ index } thread={ thread } group={ group } />;
-                }) }
+            {
+                return <FriendsMessengerThreadGroup key={ index } thread={ thread } group={ group } />;
+            }) }
         </>
     );
 }

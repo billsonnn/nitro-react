@@ -65,14 +65,14 @@ export const WiredActionMoveFurniToView: FC<{}> = props =>
                 <Text bold>{ LocalizeText('wiredfurni.params.startdir') }</Text>
                 <Flex gap={ 1 }>
                     { directionOptions.map(value =>
-                        {
-                            return (
-                                <Flex key={ value.value } alignItems="center" gap={ 1 }>
-                                    <input className="form-check-input" type="radio" name="movement" id={ `movement${ value.value }` } checked={ (movement === value.value) } onChange={ event => setMovement(value.value) } />
-                                    <Text><i className={ `icon icon-${ value.icon }` } /></Text>
-                                </Flex>
-                            )
-                        }) }
+                    {
+                        return (
+                            <Flex key={ value.value } alignItems="center" gap={ 1 }>
+                                <input className="form-check-input" type="radio" name="movement" id={ `movement${ value.value }` } checked={ (movement === value.value) } onChange={ event => setMovement(value.value) } />
+                                <Text><i className={ `icon icon-${ value.icon }` } /></Text>
+                            </Flex>
+                        )
+                    }) }
                 </Flex>
             </Column>
         </WiredActionBaseView>

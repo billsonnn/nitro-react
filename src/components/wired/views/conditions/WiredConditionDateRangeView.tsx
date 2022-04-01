@@ -25,7 +25,7 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
             endDateMili = endDateInstance.getTime() / 1000;
         }
 
-        setIntParams([startDateMili, endDateMili]);
+        setIntParams([ startDateMili, endDateMili ]);
     }
 
     useEffect(() =>

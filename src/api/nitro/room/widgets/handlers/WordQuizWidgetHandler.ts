@@ -64,7 +64,7 @@ export class WordQuizWidgetHandler extends RoomWidgetHandler
 
     public get eventTypes(): string[]
     {
-        return [RoomSessionWordQuizEvent.ANSWERED, RoomSessionWordQuizEvent.FINISHED, RoomSessionWordQuizEvent.QUESTION];
+        return [ RoomSessionWordQuizEvent.ANSWERED, RoomSessionWordQuizEvent.FINISHED, RoomSessionWordQuizEvent.QUESTION ];
     }
 
     public get messageTypes(): string[]

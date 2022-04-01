@@ -15,7 +15,7 @@ export const ChatHistoryMessageHandler: FC<{}> = props =>
 {
     const { chatHistoryState = null, roomHistoryState = null } = useChatHistoryContext();
 
-    const [needsRoomInsert, setNeedsRoomInsert ] = useState(false);
+    const [ needsRoomInsert, setNeedsRoomInsert ] = useState(false);
 
     const addChatEntry = useCallback((entry: IChatEntry) =>
     {
@@ -32,7 +32,7 @@ export const ChatHistoryMessageHandler: FC<{}> = props =>
        
         //dispatchUiEvent(new ChatHistoryEvent(ChatHistoryEvent.CHAT_HISTORY_CHANGED));
         
-    }, [chatHistoryState]);
+    }, [ chatHistoryState ]);
 
     const addRoomHistoryEntry = useCallback((entry: IRoomHistoryEntry) =>
     {
@@ -45,7 +45,7 @@ export const ChatHistoryMessageHandler: FC<{}> = props =>
         }
 
         roomHistoryState.notify();
-    }, [roomHistoryState]);
+    }, [ roomHistoryState ]);
 
     const onChatEvent = useCallback((event: RoomSessionChatEvent) =>
     {
@@ -62,7 +62,7 @@ export const ChatHistoryMessageHandler: FC<{}> = props =>
         const entry: IChatEntry = { id: -1, entityId: userData.webID, name: userData.name, look: userData.figure, entityType: userData.type, message: event.message, timestamp: timeString, type: ChatEntryType.TYPE_CHAT, roomId: roomSession.roomId };
 
         addChatEntry(entry);
-    }, [addChatEntry]);
+    }, [ addChatEntry ]);
     
     UseRoomSessionManagerEvent(RoomSessionChatEvent.CHAT_EVENT, onChatEvent);
 
@@ -74,7 +74,7 @@ export const ChatHistoryMessageHandler: FC<{}> = props =>
                 setNeedsRoomInsert(true);
                 break;
             case RoomSessionEvent.ENDED:
-                //dispatchUiEvent(new ChatHistoryEvent(ChatHistoryEvent.HIDE_CHAT_HISTORY));
+            //dispatchUiEvent(new ChatHistoryEvent(ChatHistoryEvent.HIDE_CHAT_HISTORY));
                 break;
         }
     }, []);
@@ -104,7 +104,7 @@ export const ChatHistoryMessageHandler: FC<{}> = props =>
 
             setNeedsRoomInsert(false);
         }
-    }, [addChatEntry, addRoomHistoryEntry, needsRoomInsert]);
+    }, [ addChatEntry, addRoomHistoryEntry, needsRoomInsert ]);
 
     UseMessageEventHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
     

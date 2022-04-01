@@ -155,13 +155,13 @@ export const CatalogMessageHandler: FC<{}> = props =>
             if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
             {
                 setPurchaseOptions(prevValue =>
-                    {
-                        const newValue = { ...prevValue };
+                {
+                    const newValue = { ...prevValue };
         
-                        newValue.extraData =( offer.product.extraParam || null);
+                    newValue.extraData =( offer.product.extraParam || null);
         
-                        return newValue;
-                    });
+                    return newValue;
+                });
             }
         }
 
@@ -174,27 +174,27 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const petPalette = new CatalogPetPalette(parser.productCode, parser.palettes.slice());
 
         setCatalogOptions(prevValue =>
+        {
+            const petPalettes = [];
+
+            if(prevValue.petPalettes) petPalettes.push(...prevValue.petPalettes);
+
+            for(let i = 0; i < petPalettes.length; i++)
             {
-                const petPalettes = [];
+                const palette = petPalettes[i];
 
-                if(prevValue.petPalettes) petPalettes.push(...prevValue.petPalettes);
-
-                for(let i = 0; i < petPalettes.length; i++)
+                if(palette.breed === petPalette.breed)
                 {
-                    const palette = petPalettes[i];
+                    petPalettes.splice(i, 1);
 
-                    if(palette.breed === petPalette.breed)
-                    {
-                        petPalettes.splice(i, 1);
-
-                        break;
-                    }
+                    break;
                 }
+            }
                 
-                petPalettes.push(petPalette);
+            petPalettes.push(petPalette);
 
-                return { ...prevValue, petPalettes };
-            });
+            return { ...prevValue, petPalettes };
+        });
     }, [ setCatalogOptions ]);
 
     const onApproveNameMessageEvent = useCallback((event: ApproveNameMessageEvent) =>
@@ -214,11 +214,11 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setCatalogOptions(prevValue =>
-            {
-                const clubOffers = parser.offers;
+        {
+            const clubOffers = parser.offers;
 
-                return { ...prevValue, clubOffers };
-            });
+            return { ...prevValue, clubOffers };
+        });
     }, [ setCatalogOptions ]);
 
     const onGuildMembershipsMessageEvent = useCallback((event: GuildMembershipsMessageEvent) =>
@@ -226,11 +226,11 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setCatalogOptions(prevValue =>
-            {
-                const groups = parser.groups;
+        {
+            const groups = parser.groups;
 
-                return { ...prevValue, groups };
-            });
+            return { ...prevValue, groups };
+        });
     }, [ setCatalogOptions ]);
 
     const onUserSubscriptionEvent = useCallback((event: UserSubscriptionEvent) =>
@@ -238,16 +238,16 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setCatalogOptions(prevValue =>
-            {
-                const subscriptionInfo = new SubscriptionInfo(
-                    Math.max(0, parser.daysToPeriodEnd),
-                    Math.max(0, parser.periodsSubscribedAhead),
-                    parser.isVip,
-                    parser.pastClubDays,
-                    parser.pastVipDays);
+        {
+            const subscriptionInfo = new SubscriptionInfo(
+                Math.max(0, parser.daysToPeriodEnd),
+                Math.max(0, parser.periodsSubscribedAhead),
+                parser.isVip,
+                parser.pastClubDays,
+                parser.pastVipDays);
 
-                return { ...prevValue, subscriptionInfo };
-            });
+            return { ...prevValue, subscriptionInfo };
+        });
     }, [ setCatalogOptions ]);
 
     const onGiftWrappingConfigurationEvent = useCallback((event: GiftWrappingConfigurationEvent) =>
@@ -255,11 +255,11 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setCatalogOptions(prevValue =>
-            {
-                const giftConfiguration = new GiftWrappingConfiguration(parser);
+        {
+            const giftConfiguration = new GiftWrappingConfiguration(parser);
 
-                return { ...prevValue, giftConfiguration };
-            });
+            return { ...prevValue, giftConfiguration };
+        });
     }, [ setCatalogOptions ]);
 
     const onMarketplaceMakeOfferResult = useCallback((event: MarketplaceMakeOfferResult) =>
@@ -288,11 +288,11 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setCatalogOptions(prevValue =>
-            {
-                const clubGifts = parser;
+        {
+            const clubGifts = parser;
 
-                return { ...prevValue, clubGifts };
-            });
+            return { ...prevValue, clubGifts };
+        });
     }, [ setCatalogOptions ]);
 
     UseMessageEventHook(CatalogPagesListEvent, onCatalogPagesListEvent);

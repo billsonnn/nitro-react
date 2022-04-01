@@ -12,26 +12,26 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
     const { item = null, title = ((props.item && props.item.title) || ''), close = null, ...rest } = props;
 
     const [ searchValue, setSearchValue ] = useState('');
-    const [ results, setResults] = useState<string[]>([]);
+    const [ results, setResults ] = useState<string[]>([]);
 
     const visitUrl = useCallback(() =>
     {
         NotificationUtilities.openUrl(item.clickUrl);
         
         close();
-    }, [item, close]);
+    }, [ item, close ]);
     
     useEffect(() =>
     {
         setResults(JSON.parse(item.messages[0]));
-    }, [item])
+    }, [ item ])
     
     const updateSearchValue = useCallback((value: string) =>
     {
         let res = JSON.parse(item.messages[0]);
         setResults(res.filter((val: string) => val.includes(value)));
         setSearchValue(value);
-    },[item])
+    },[ item ])
 
     const isAction = (item.clickUrl && item.clickUrl.startsWith('event:'));
 

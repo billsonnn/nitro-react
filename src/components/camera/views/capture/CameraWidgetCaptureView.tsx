@@ -80,9 +80,9 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
                 { (cameraRoll.length > 0) &&
                     <Flex gap={ 2 } justifyContent="center" className="camera-roll d-flex justify-content-center py-2">
                         { cameraRoll.map((picture, index) =>
-                            {
-                                return <img alt="" key={ index } src={ picture.imageUrl } onClick={ event => setSelectedPictureIndex(index) } />;
-                            }) }
+                        {
+                            return <img alt="" key={ index } src={ picture.imageUrl } onClick={ event => setSelectedPictureIndex(index) } />;
+                        }) }
                     </Flex> }
             </Column>
         </DraggableWindow>

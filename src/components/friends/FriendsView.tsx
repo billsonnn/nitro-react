@@ -53,13 +53,13 @@ export const FriendsView: FC<{}> = props =>
         if(!canRequestFriend(userId)) return false;
 
         setSentRequests(prevValue =>
-            {
-                const newSentRequests = [ ...prevValue ];
+        {
+            const newSentRequests = [ ...prevValue ];
 
-                newSentRequests.push(userId);
+            newSentRequests.push(userId);
 
-                return newSentRequests;
-            });
+            return newSentRequests;
+        });
 
         SendMessageComposer(new RequestFriendComposer(userName));
     }, [ sentRequests, canRequestFriend ]);
@@ -67,6 +67,37 @@ export const FriendsView: FC<{}> = props =>
     const acceptFriend = useCallback((userId: number) =>
     {
         setRequests(prevValue =>
+        {
+            const newRequests: MessengerRequest[] = [ ...prevValue ];
+
+            const index = newRequests.findIndex(request => (request.requesterUserId === userId));
+
+            if(index >= 0)
+            {
+                SendMessageComposer(new AcceptFriendMessageComposer(newRequests[index].id));
+
+                DispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.ACCEPTED, userId));
+
+                newRequests.splice(index, 1);
+            }
+
+            return newRequests;
+        });
+    }, []);
+
+    const declineFriend = useCallback((userId: number, declineAll: boolean = false) =>
+    {
+        setRequests(prevValue =>
+        {
+            if(declineAll)
+            {
+                SendMessageComposer(new DeclineFriendMessageComposer(true));
+
+                for(const request of prevValue) DispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.DECLINED, request.requesterUserId));
+
+                return [];
+            }
+            else
             {
                 const newRequests: MessengerRequest[] = [ ...prevValue ];
 
@@ -74,47 +105,16 @@ export const FriendsView: FC<{}> = props =>
 
                 if(index >= 0)
                 {
-                    SendMessageComposer(new AcceptFriendMessageComposer(newRequests[index].id));
+                    SendMessageComposer(new DeclineFriendMessageComposer(false, newRequests[index].id));
 
-                    DispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.ACCEPTED, userId));
+                    DispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.DECLINED, userId));
 
                     newRequests.splice(index, 1);
                 }
 
                 return newRequests;
-            });
-    }, []);
-
-    const declineFriend = useCallback((userId: number, declineAll: boolean = false) =>
-    {
-        setRequests(prevValue =>
-            {
-                if(declineAll)
-                {
-                    SendMessageComposer(new DeclineFriendMessageComposer(true));
-
-                    for(const request of prevValue) DispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.DECLINED, request.requesterUserId));
-
-                    return [];
-                }
-                else
-                {
-                    const newRequests: MessengerRequest[] = [ ...prevValue ];
-
-                    const index = newRequests.findIndex(request => (request.requesterUserId === userId));
-
-                    if(index >= 0)
-                    {
-                        SendMessageComposer(new DeclineFriendMessageComposer(false, newRequests[index].id));
-
-                        DispatchUiEvent(new FriendRequestEvent(FriendRequestEvent.DECLINED, userId));
-
-                        newRequests.splice(index, 1);
-                    }
-
-                    return newRequests;
-                }
-            });
+            }
+        });
     }, []);
 
     const onMessengerInitEvent = useCallback((event: MessengerInitEvent) =>
@@ -137,22 +137,22 @@ export const FriendsView: FC<{}> = props =>
         const parser = event.getParser();
 
         setFriends(prevValue =>
+        {
+            const newFriends = [ ...prevValue ];
+
+            for(const friend of parser.fragment)
             {
-                const newFriends = [ ...prevValue ];
+                const index = newFriends.findIndex(existingFriend => (existingFriend.id === friend.id));
+                const newFriend = new MessengerFriend();
 
-                for(const friend of parser.fragment)
-                {
-                    const index = newFriends.findIndex(existingFriend => (existingFriend.id === friend.id));
-                    const newFriend = new MessengerFriend();
+                newFriend.populate(friend);
 
-                    newFriend.populate(friend);
+                if(index > -1) newFriends[index] = newFriend;
+                else newFriends.push(newFriend);
+            }
 
-                    if(index > -1) newFriends[index] = newFriend;
-                    else newFriends.push(newFriend);
-                }
-
-                return newFriends;
-            });
+            return newFriends;
+        });
     }, []);
 
     UseMessageEventHook(FriendListFragmentEvent, onFriendsFragmentEvent);
@@ -162,39 +162,39 @@ export const FriendsView: FC<{}> = props =>
         const parser = event.getParser();
 
         setFriends(prevValue =>
+        {
+            const newFriends = [ ...prevValue ];
+
+            const processUpdate = (friend: FriendParser) =>
             {
-                const newFriends = [ ...prevValue ];
+                const index = newFriends.findIndex(existingFriend => (existingFriend.id === friend.id));
 
-                const processUpdate = (friend: FriendParser) =>
+                if(index === -1)
                 {
-                    const index = newFriends.findIndex(existingFriend => (existingFriend.id === friend.id));
+                    const newFriend = new MessengerFriend();
+                    newFriend.populate(friend);
 
-                    if(index === -1)
-                    {
-                        const newFriend = new MessengerFriend();
-                        newFriend.populate(friend);
-
-                        newFriends.unshift(newFriend);
-                    }
-                    else
-                    {
-                        newFriends[index].populate(friend);
-                    }
+                    newFriends.unshift(newFriend);
                 }
-
-                for(const friend of parser.addedFriends) processUpdate(friend);
-
-                for(const friend of parser.updatedFriends) processUpdate(friend);
-
-                for(const removedFriendId of parser.removedFriendIds)
+                else
                 {
-                    const index = newFriends.findIndex(existingFriend => (existingFriend.id === removedFriendId));
-
-                    if(index > -1) newFriends.splice(index);
+                    newFriends[index].populate(friend);
                 }
+            }
 
-                return newFriends;
-            });
+            for(const friend of parser.addedFriends) processUpdate(friend);
+
+            for(const friend of parser.updatedFriends) processUpdate(friend);
+
+            for(const removedFriendId of parser.removedFriendIds)
+            {
+                const index = newFriends.findIndex(existingFriend => (existingFriend.id === removedFriendId));
+
+                if(index > -1) newFriends.splice(index);
+            }
+
+            return newFriends;
+        });
     }, []);
 
     UseMessageEventHook(FriendListUpdateEvent, onFriendsUpdateEvent);
@@ -204,23 +204,23 @@ export const FriendsView: FC<{}> = props =>
         const parser = event.getParser();
 
         setRequests(prevValue =>
+        {
+            const newRequests = [ ...prevValue ];
+
+            for(const request of parser.requests)
             {
-                const newRequests = [ ...prevValue ];
+                const index = newRequests.findIndex(existing => (existing.requesterUserId === request.requesterUserId));
 
-                for(const request of parser.requests)
-                {
-                    const index = newRequests.findIndex(existing => (existing.requesterUserId === request.requesterUserId));
+                if(index > 0) continue;
 
-                    if(index > 0) continue;
+                const newRequest = new MessengerRequest();
+                newRequest.populate(request);
 
-                    const newRequest = new MessengerRequest();
-                    newRequest.populate(request);
+                newRequests.push(newRequest);
+            }
 
-                    newRequests.push(newRequest);
-                }
-
-                return newRequests;
-            });
+            return newRequests;
+        });
     }, []);
 
     UseMessageEventHook(FriendRequestsEvent, onFriendRequestsEvent);
@@ -231,21 +231,21 @@ export const FriendsView: FC<{}> = props =>
         const request = parser.request;
 
         setRequests(prevValue =>
+        {
+            const newRequests = [ ...prevValue ];
+
+            const index = newRequests.findIndex(existing => (existing.requesterUserId === request.requesterUserId));
+
+            if(index === -1)
             {
-                const newRequests = [ ...prevValue ];
+                const newRequest = new MessengerRequest();
+                newRequest.populate(request);
 
-                const index = newRequests.findIndex(existing => (existing.requesterUserId === request.requesterUserId));
+                newRequests.push(newRequest);
+            }
 
-                if(index === -1)
-                {
-                    const newRequest = new MessengerRequest();
-                    newRequest.populate(request);
-
-                    newRequests.push(newRequest);
-                }
-
-                return newRequests;
-            });
+            return newRequests;
+        });
     }, []);
 
     UseMessageEventHook(NewFriendRequestEvent, onNewFriendRequestEvent);

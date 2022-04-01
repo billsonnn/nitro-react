@@ -101,7 +101,7 @@ export class RoomWidgetChatHandler extends RoomWidgetHandler implements IAvatarI
                         text = LocalizeText('widget.chatbubble.pettreat', [ 'petname' ], [ username ]);
                         break;
                     case RoomSessionChatEvent.CHAT_TYPE_HAND_ITEM_RECEIVED:
-                        text = LocalizeText('widget.chatbubble.handitem', [ 'username', 'handitem' ], [ username, LocalizeText(('handitem' + chatEvent.extraParam))]);
+                        text = LocalizeText('widget.chatbubble.handitem', [ 'username', 'handitem' ], [ username, LocalizeText(('handitem' + chatEvent.extraParam)) ]);
                         break;
                     case RoomSessionChatEvent.CHAT_TYPE_MUTE_REMAINING: {
                         const hours = ((chatEvent.extraParam > 0) ? Math.floor((chatEvent.extraParam / 3600)) : 0).toString();

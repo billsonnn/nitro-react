@@ -20,7 +20,7 @@ export const FloorplanEditorView: FC<{}> = props =>
     const [ originalFloorplanSettings, setOriginalFloorplanSettings ] = useState<IFloorplanSettings>({
         tilemap: '',
         reservedTiles: [],
-        entryPoint: [0, 0],
+        entryPoint: [ 0, 0 ],
         entryPointDir: 2,
         wallHeight: -1,
         thicknessWall: 1,
@@ -65,23 +65,23 @@ export const FloorplanEditorView: FC<{}> = props =>
         const parser = event.getParser();
 
         setOriginalFloorplanSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.tilemap = parser.model;
-                newValue.wallHeight = (parser.wallHeight + 1);
+            newValue.tilemap = parser.model;
+            newValue.wallHeight = (parser.wallHeight + 1);
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         setVisualizationSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.wallHeight = (parser.wallHeight + 1);
+            newValue.wallHeight = (parser.wallHeight + 1);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(FloorHeightMapEvent, onFloorHeightMapEvent);
@@ -91,24 +91,24 @@ export const FloorplanEditorView: FC<{}> = props =>
         const parser = event.getParser();
 
         setOriginalFloorplanSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.thicknessFloor = convertSettingToNumber(parser.thicknessFloor);
-                newValue.thicknessWall = convertSettingToNumber(parser.thicknessWall);
+            newValue.thicknessFloor = convertSettingToNumber(parser.thicknessFloor);
+            newValue.thicknessWall = convertSettingToNumber(parser.thicknessWall);
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         setVisualizationSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.thicknessFloor = convertSettingToNumber(parser.thicknessFloor);
-                newValue.thicknessWall = convertSettingToNumber(parser.thicknessWall);
+            newValue.thicknessFloor = convertSettingToNumber(parser.thicknessFloor);
+            newValue.thicknessWall = convertSettingToNumber(parser.thicknessWall);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(RoomVisualizationSettingsEvent, onRoomVisualizationSettingsEvent);

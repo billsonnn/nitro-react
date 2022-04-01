@@ -118,19 +118,19 @@ export const ChatHistoryView: FC<{}> = props =>
                     <NitroCardContentView>
                         <AutoSizer defaultWidth={ 300 } defaultHeight={ 200 } onResize={ onResize }>
                             { ({ height, width }) => 
-                                {
-                                    return (
-                                        <List
-                                            ref={ elementRef }
-                                            width={ width }
-                                            height={ height }
-                                            rowCount={ chatHistoryState.chats.length }
-                                            rowHeight={ cache.rowHeight }
-                                            className={ 'chat-history-list' }
-                                            rowRenderer={ RowRenderer }
-                                            deferredMeasurementCache={ cache } />
-                                    )
-                                } }
+                            {
+                                return (
+                                    <List
+                                        ref={ elementRef }
+                                        width={ width }
+                                        height={ height }
+                                        rowCount={ chatHistoryState.chats.length }
+                                        rowHeight={ cache.rowHeight }
+                                        className={ 'chat-history-list' }
+                                        rowRenderer={ RowRenderer }
+                                        deferredMeasurementCache={ cache } />
+                                )
+                            } }
                         </AutoSizer>
                     </NitroCardContentView>
                 </NitroCardView> }

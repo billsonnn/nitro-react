@@ -34,27 +34,27 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
         if(!currentOffer) return;
 
         setPurchaseOptions(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.extraParamRequired = true;
-                newValue.extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
-                newValue.previewStuffData = previewStuffData;
+            newValue.extraParamRequired = true;
+            newValue.extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
+            newValue.previewStuffData = previewStuffData;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ currentOffer, previewStuffData, setPurchaseOptions ]);
 
     return (
         <AutoGrid columnCount={ columnCount } { ...rest }>
             { badgeCodes && (badgeCodes.length > 0) && badgeCodes.map((badgeCode, index) =>
-                {
-                    return (
-                        <LayoutGridItem key={ index } itemActive={ (currentBadgeCode === badgeCode) } onClick={ event => setCurrentBadgeCode(badgeCode) }> 
-                            <LayoutBadgeImageView badgeCode={ badgeCode } />
-                        </LayoutGridItem>
-                    );
-                }) }
+            {
+                return (
+                    <LayoutGridItem key={ index } itemActive={ (currentBadgeCode === badgeCode) } onClick={ event => setCurrentBadgeCode(badgeCode) }> 
+                        <LayoutBadgeImageView badgeCode={ badgeCode } />
+                    </LayoutGridItem>
+                );
+            }) }
         </AutoGrid>
     );
 }

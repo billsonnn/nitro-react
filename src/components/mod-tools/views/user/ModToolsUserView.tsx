@@ -115,19 +115,19 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
                             <table className="table table-striped table-sm table-text-small text-black m-0">
                                 <tbody>
                                     { userProperties.map( (property, index) =>
-                                        {
+                                    {
 
-                                            return (
-                                                <tr key={ index }>
-                                                    <th scope="row">{ LocalizeText(property.localeKey) }</th>
-                                                    <td>
-                                                        { property.value }
-                                                        { property.showOnline &&
+                                        return (
+                                            <tr key={ index }>
+                                                <th scope="row">{ LocalizeText(property.localeKey) }</th>
+                                                <td>
+                                                    { property.value }
+                                                    { property.showOnline &&
                                                             <i className={ `icon icon-pf-${ userInfo.online ? 'online' : 'offline' } ms-2` } /> }
-                                                    </td>
-                                                </tr>
-                                            );
-                                        }) }
+                                                </td>
+                                            </tr>
+                                        );
+                                    }) }
                                 </tbody>
                             </table>
                         </Column>

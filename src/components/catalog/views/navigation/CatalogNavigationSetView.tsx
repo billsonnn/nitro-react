@@ -14,11 +14,11 @@ export const CatalogNavigationSetView: FC<CatalogNavigationSetViewProps> = props
     return (
         <>
             { node && (node.children.length > 0) && node.children.map((n, index) =>
-                {
-                    if(!n.isVisible) return null;
+            {
+                if(!n.isVisible) return null;
                     
-                    return <CatalogNavigationItemView key={ index } node={ n } />
-                }) }
+                return <CatalogNavigationItemView key={ index } node={ n } />
+            }) }
         </>
     );
 }

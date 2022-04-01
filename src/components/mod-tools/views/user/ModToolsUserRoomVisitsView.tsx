@@ -43,7 +43,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
     useEffect(() =>
     {
         SendMessageComposer(new GetRoomVisitsMessageComposer(userId));
-    }, [userId]);
+    }, [ userId ]);
 
     if(!userId) return null;
 
@@ -63,18 +63,18 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
                         { roomVisitData &&
                             <AutoSizer defaultWidth={ 400 } defaultHeight={ 200 }>
                                 { ({ height, width }) => 
-                                    {
-                                        return (
-                                            <List
-                                                width={ width }
-                                                height={ height }
-                                                rowCount={ roomVisitData.rooms.length }
-                                                rowHeight={ 25 }
-                                                className={'log-entry-container' }
-                                                rowRenderer={ RowRenderer }
-                                            />
-                                        );
-                                    } }
+                                {
+                                    return (
+                                        <List
+                                            width={ width }
+                                            height={ height }
+                                            rowCount={ roomVisitData.rooms.length }
+                                            rowHeight={ 25 }
+                                            className={'log-entry-container' }
+                                            rowRenderer={ RowRenderer }
+                                        />
+                                    );
+                                } }
                             </AutoSizer> }
                     </Column>
                 </Column>

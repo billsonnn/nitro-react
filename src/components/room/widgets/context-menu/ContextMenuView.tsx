@@ -55,11 +55,11 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         if(isFading)
         {
             setFadeTime(prevValue =>
-                {
-                    newFadeTime += prevValue;
+            {
+                newFadeTime += prevValue;
 
-                    return newFadeTime;
-                });
+                return newFadeTime;
+            });
 
             newOpacity = ((1 - (newFadeTime / fadeLength)) * 1);
 

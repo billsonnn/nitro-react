@@ -132,13 +132,13 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
             <NitroCardContentView>
                 <Flex center className="creator-tabs">
                     { TABS.map((tab, index) =>
-                        {
-                            return (
-                                <Flex center key={ index } className={ `tab tab-${ ((tab === 1) ? 'blue-flat' : (tab === 4) ? 'yellow' : 'blue-arrow') } ${ (currentTab === tab) ? 'active' : '' }` }>
-                                    <Text variant="white">{ LocalizeText(`group.create.steplabel.${ tab }`) }</Text>
-                                </Flex>
-                            );
-                        }) }
+                    {
+                        return (
+                            <Flex center key={ index } className={ `tab tab-${ ((tab === 1) ? 'blue-flat' : (tab === 4) ? 'yellow' : 'blue-arrow') } ${ (currentTab === tab) ? 'active' : '' }` }>
+                                <Text variant="white">{ LocalizeText(`group.create.steplabel.${ tab }`) }</Text>
+                            </Flex>
+                        );
+                    }) }
                 </Flex>
                 <Column overflow="hidden">
                     <Flex alignItems="center" gap={ 2 }>

@@ -24,11 +24,11 @@ export const NavigatorSearchResultItemInfoView: FC<NavigatorSearchResultItemInfo
             let visible = false;
 
             setIsVisible(prevValue =>
-                {
-                    visible = !prevValue;
+            {
+                visible = !prevValue;
 
-                    return visible;
-                });
+                return visible;
+            });
 
             if(visible) setTarget((event.target as (EventTarget & HTMLElement)));
         })

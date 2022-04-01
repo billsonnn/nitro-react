@@ -54,25 +54,25 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
             {
                 case RoomDataParser.DOORBELL_STATE:
                     setDoorData(prevValue =>
-                        {
-                            const newValue = { ...prevValue };
+                    {
+                        const newValue = { ...prevValue };
         
-                            newValue.roomInfo = roomData;
-                            newValue.state = DoorStateType.START_DOORBELL;
+                        newValue.roomInfo = roomData;
+                        newValue.state = DoorStateType.START_DOORBELL;
         
-                            return newValue;
-                        });
+                        return newValue;
+                    });
                     return;
                 case RoomDataParser.PASSWORD_STATE:
                     setDoorData(prevValue =>
-                        {
-                            const newValue = { ...prevValue };
+                    {
+                        const newValue = { ...prevValue };
         
-                            newValue.roomInfo = roomData;
-                            newValue.state = DoorStateType.START_PASSWORD;
+                        newValue.roomInfo = roomData;
+                        newValue.state = DoorStateType.START_PASSWORD;
         
-                            return newValue;
-                        });
+                        return newValue;
+                    });
                     return;
             }
         }

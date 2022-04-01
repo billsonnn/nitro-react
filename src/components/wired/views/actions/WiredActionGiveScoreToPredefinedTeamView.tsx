@@ -56,15 +56,15 @@ export const WiredActionGiveScoreToPredefinedTeamView: FC<{}> = props =>
             </Column>
             <Column gap={ 1 }>
                 <Text bold>{ LocalizeText('wiredfurni.params.team') }</Text>
-                { [1, 2, 3, 4].map(value =>
-                    {
-                        return (
-                            <Flex key={ value } gap={ 1 }>
-                                <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ value }` } checked={ (selectedTeam === value) } onChange={ event => setSelectedTeam(value) } />
-                                <Text>{ LocalizeText('wiredfurni.params.team.' + value) }</Text>
-                            </Flex>
-                        );
-                    }) }
+                { [ 1, 2, 3, 4 ].map(value =>
+                {
+                    return (
+                        <Flex key={ value } gap={ 1 }>
+                            <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ value }` } checked={ (selectedTeam === value) } onChange={ event => setSelectedTeam(value) } />
+                            <Text>{ LocalizeText('wiredfurni.params.team.' + value) }</Text>
+                        </Flex>
+                    );
+                }) }
             </Column>
         </WiredActionBaseView>
     );

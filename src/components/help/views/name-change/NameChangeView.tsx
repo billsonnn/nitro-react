@@ -51,7 +51,7 @@ export const NameChangeView:FC<{}> = props =>
             case INPUT: return 'tutorial.name_change.title.select';
             case CONFIRMATION: return 'tutorial.name_change.title.confirm';
         }
-    }, [layout]);
+    }, [ layout ]);
     
     if(!isVisible) return null;
 

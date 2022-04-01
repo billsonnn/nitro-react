@@ -37,40 +37,40 @@ export class FurniChooserWidgetHandler extends RoomWidgetHandler
         const floorItems = GetRoomEngine().getRoomObjects(roomId, RoomObjectCategory.FLOOR);
 
         wallItems.forEach(roomObject =>
+        {
+            let name = roomObject.type;
+
+            if(name.startsWith('poster'))
             {
-                let name = roomObject.type;
-
-                if(name.startsWith('poster'))
-                {
-                    name = LocalizeText(`poster_${ name.replace('poster', '') }_name`);
-                }
-                else
-                {
-                    const typeId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_TYPE_ID);
-                    const furniData = GetSessionDataManager().getWallItemData(typeId);
-
-                    if(furniData && furniData.name.length) name = furniData.name;
-                }
-
-                items.push(new RoomObjectItem(roomObject.id, RoomObjectCategory.WALL, name));
-            });
-
-        floorItems.forEach(roomObject =>
+                name = LocalizeText(`poster_${ name.replace('poster', '') }_name`);
+            }
+            else
             {
-                let name = roomObject.type;
-
                 const typeId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_TYPE_ID);
-                const furniData = GetSessionDataManager().getFloorItemData(typeId);
+                const furniData = GetSessionDataManager().getWallItemData(typeId);
 
                 if(furniData && furniData.name.length) name = furniData.name;
+            }
 
-                items.push(new RoomObjectItem(roomObject.id, RoomObjectCategory.FLOOR, name));
-            });
+            items.push(new RoomObjectItem(roomObject.id, RoomObjectCategory.WALL, name));
+        });
+
+        floorItems.forEach(roomObject =>
+        {
+            let name = roomObject.type;
+
+            const typeId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_TYPE_ID);
+            const furniData = GetSessionDataManager().getFloorItemData(typeId);
+
+            if(furniData && furniData.name.length) name = furniData.name;
+
+            items.push(new RoomObjectItem(roomObject.id, RoomObjectCategory.FLOOR, name));
+        });
 
         items.sort((a, b) =>
-            {
-                return (a.name < b.name) ? -1 : 1;
-            });
+        {
+            return (a.name < b.name) ? -1 : 1;
+        });
 
         this.container.eventDispatcher.dispatchEvent(new RoomWidgetChooserContentEvent(RoomWidgetChooserContentEvent.FURNI_CHOOSER_CONTENT, items));
     }

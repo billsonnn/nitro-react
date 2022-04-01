@@ -50,7 +50,7 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
                 this.processOwnCharacterInfo();
                 break;
             case RoomWidgetUserActionMessage.START_NAME_CHANGE:
-                // habbo help - start name change
+            // habbo help - start name change
                 break;
             case RoomWidgetUserActionMessage.REQUEST_PET_UPDATE:
                 break;

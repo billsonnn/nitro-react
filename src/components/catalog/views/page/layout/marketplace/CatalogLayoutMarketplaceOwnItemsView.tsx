@@ -20,13 +20,13 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
         if(!parser) return;
 
         const offers = parser.offers.map(offer =>
-            {
-                const newOffer = new MarketplaceOfferData(offer.offerId, offer.furniId, offer.furniType, offer.extraData, offer.stuffData, offer.price, offer.status, offer.averagePrice, offer.offerCount);
+        {
+            const newOffer = new MarketplaceOfferData(offer.offerId, offer.furniId, offer.furniType, offer.extraData, offer.stuffData, offer.price, offer.status, offer.averagePrice, offer.offerCount);
 
-                newOffer.timeLeftMinutes = offer.timeLeftMinutes;
+            newOffer.timeLeftMinutes = offer.timeLeftMinutes;
 
-                return newOffer;
-            });
+            return newOffer;
+        });
 
         BatchUpdates(() =>
         {
@@ -91,7 +91,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
             { (creditsWaiting > 0) &&
                 <Column center gap={ 1 } className="bg-muted rounded p-2">
                     <Text>
-                        { LocalizeText('catalog.marketplace.redeem.get_credits', ['count', 'credits'], [ soldOffers.length.toString(), creditsWaiting.toString() ]) }
+                        { LocalizeText('catalog.marketplace.redeem.get_credits', [ 'count', 'credits' ], [ soldOffers.length.toString(), creditsWaiting.toString() ]) }
                     </Text>
                     <Button className="mt-1" onClick={ redeemSoldOffers }>
                         { LocalizeText('catalog.marketplace.offer.redeem') }

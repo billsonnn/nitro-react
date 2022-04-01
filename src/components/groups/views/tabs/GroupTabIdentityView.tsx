@@ -27,11 +27,11 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
         if(!groupData || (groupData.groupId <= 0)) return;
 
         NotificationUtilities.confirm(LocalizeText('group.deleteconfirm.desc'), () =>
-            {
-                SendMessageComposer(new GroupDeleteComposer(groupData.groupId));
+        {
+            SendMessageComposer(new GroupDeleteComposer(groupData.groupId));
                 
-                if(close) close();
-            }, null, null, null, LocalizeText('group.deleteconfirm.title'));
+            if(close) close();
+        }, null, null, null, LocalizeText('group.deleteconfirm.title'));
     }
 
     const saveIdentity = useCallback(() =>
@@ -45,15 +45,15 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
             if(groupHomeroomId <= 0) return false;
 
             setGroupData(prevValue =>
-                {
-                    const newValue = { ...prevValue };
+            {
+                const newValue = { ...prevValue };
 
-                    newValue.groupName = groupName;
-                    newValue.groupDescription = groupDescription;
-                    newValue.groupHomeroomId = groupHomeroomId;
+                newValue.groupName = groupName;
+                newValue.groupDescription = groupDescription;
+                newValue.groupHomeroomId = groupHomeroomId;
 
-                    return newValue;
-                });
+                return newValue;
+            });
 
             return true;
         }

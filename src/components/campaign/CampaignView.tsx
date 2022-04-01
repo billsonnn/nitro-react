@@ -34,25 +34,25 @@ export const CampaignView: FC<{}> = props =>
             BatchUpdates(() =>
             {
                 setCalendarData(prev => 
-                    {
-                        const copy = prev.clone();
-                        copy.openedDays.push(lastOpenAttempt);
+                {
+                    const copy = prev.clone();
+                    copy.openedDays.push(lastOpenAttempt);
                         
-                        return copy;
-                    });
+                    return copy;
+                });
         
-                    setReceivedProducts(prev =>
-                    {
-                        const copy = new Map(prev);
-                        copy.set(lastAttempt, new CalendarItem(parser.productName, parser.customImage,parser.furnitureClassName));
+                setReceivedProducts(prev =>
+                {
+                    const copy = new Map(prev);
+                    copy.set(lastAttempt, new CalendarItem(parser.productName, parser.customImage,parser.furnitureClassName));
                         
-                        return copy;
-                    });
+                    return copy;
+                });
             });
         }
 
         setLastOpenAttempt(-1);
-    }, [lastOpenAttempt]);
+    }, [ lastOpenAttempt ]);
 
     UseMessageEventHook(CampaignCalendarDoorOpenedMessageEvent, onCampaignCalendarDoorOpenedMessageEvent);
 
@@ -71,7 +71,7 @@ export const CampaignView: FC<{}> = props =>
         {
             SendMessageComposer(new OpenCampaignCalendarDoorComposer(calendarData.campaignName, id));
         }
-    }, [calendarData]);
+    }, [ calendarData ]);
 
     const onCalendarClose = useCallback(() =>
     {
@@ -101,7 +101,7 @@ export const CampaignView: FC<{}> = props =>
         {
             RemoveLinkEventTracker(linkTracker);
         }
-    }, [onLinkReceived]);
+    }, [ onLinkReceived ]);
 
     return (
         <>

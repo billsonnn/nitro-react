@@ -20,15 +20,15 @@ export const WiredConditionFurniHasFurniOnView: FC<{}> = props =>
         <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } hasSpecialInput={ true } save={ save }>
             <Column gap={ 1 }>
                 <Text bold>{ LocalizeText('wiredfurni.params.requireall') }</Text>
-                { [0, 1].map(value =>
-                    {
-                        return (
-                            <Flex alignItems="center" gap={ 1 } key={ value }>
-                                <input className="form-check-input" type="radio" name="requireAll" id={ `requireAll${ value }` } checked={ (requireAll === value) } onChange={ event => setRequireAll(value) } />
-                                <Text>{ LocalizeText('wiredfurni.params.requireall.' + value) }</Text>
-                            </Flex>
-                        )
-                    }) }
+                { [ 0, 1 ].map(value =>
+                {
+                    return (
+                        <Flex alignItems="center" gap={ 1 } key={ value }>
+                            <input className="form-check-input" type="radio" name="requireAll" id={ `requireAll${ value }` } checked={ (requireAll === value) } onChange={ event => setRequireAll(value) } />
+                            <Text>{ LocalizeText('wiredfurni.params.requireall.' + value) }</Text>
+                        </Flex>
+                    )
+                }) }
             </Column>
         </WiredConditionBaseView>
     );

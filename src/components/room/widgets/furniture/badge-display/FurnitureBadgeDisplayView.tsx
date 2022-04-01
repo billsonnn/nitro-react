@@ -39,11 +39,11 @@ export const FurnitureBadgeDisplayView: FC<{}> = props =>
                 const widgetEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 setTrophyData(prevState =>
-                    {
-                        if(!prevState || (widgetEvent.id !== prevState.objectId) || (widgetEvent.category !== prevState.category)) return prevState;
+                {
+                    if(!prevState || (widgetEvent.id !== prevState.objectId) || (widgetEvent.category !== prevState.category)) return prevState;
 
-                        return null;
-                    });
+                    return null;
+                });
                 return;
             }
         }

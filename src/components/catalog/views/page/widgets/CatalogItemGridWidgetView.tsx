@@ -28,13 +28,13 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
         if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
         {
             setPurchaseOptions(prevValue =>
-                {
-                    const newValue = { ...prevValue };
+            {
+                const newValue = { ...prevValue };
     
-                    newValue.extraData = (offer.product.extraParam || null);
+                newValue.extraData = (offer.product.extraParam || null);
     
-                    return newValue;
-                });
+                return newValue;
+            });
         }
     }
 

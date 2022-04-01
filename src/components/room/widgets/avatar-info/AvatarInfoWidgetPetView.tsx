@@ -100,13 +100,13 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
         BatchUpdates(() =>
         {
             setMode(prevValue =>
-                {
-                    if(petData.petType === PetType.MONSTERPLANT) return _Str_13388;
-                    else if(petData.saddle && !petData.rider) return _Str_5818;
-                    else if(petData.rider) return _Str_5938;
+            {
+                if(petData.petType === PetType.MONSTERPLANT) return _Str_13388;
+                else if(petData.saddle && !petData.rider) return _Str_5818;
+                else if(petData.rider) return _Str_5938;
     
-                    return _Str_2906;
-                });
+                return _Str_2906;
+            });
     
             setRespectsLeft(petData.respectsPetLeft);
         });

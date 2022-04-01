@@ -329,13 +329,13 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                                         <hr className="m-0"/>
                                         <Column gap={ 1 }>
                                             { furniKeys.map((key, index) =>
-                                                {
-                                                    return (
-                                                        <Flex key={ index } alignItems="center" gap={ 1 }>
-                                                            <Text small wrap align="end" variant="white" className="col-4">{ key }</Text>
-                                                            <input type="text" className="form-control form-control-sm" value={ furniValues[index] } onChange={ event => onFurniSettingChange(index, event.target.value) }/>
-                                                        </Flex>);
-                                                }) }
+                                            {
+                                                return (
+                                                    <Flex key={ index } alignItems="center" gap={ 1 }>
+                                                        <Text small wrap align="end" variant="white" className="col-4">{ key }</Text>
+                                                        <input type="text" className="form-control form-control-sm" value={ furniValues[index] } onChange={ event => onFurniSettingChange(index, event.target.value) }/>
+                                                    </Flex>);
+                                            }) }
                                         </Column>
                                     </> }
                             </> }
@@ -344,13 +344,13 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                                 <hr className="m-0 my-1"/>
                                 <Column gap={ 1 }>
                                     { customKeys.map((key, index) =>
-                                        {
-                                            return (
-                                                <Flex key={ index } alignItems="center" gap={ 1 }>
-                                                    <Text small wrap align="end" variant="white" className="col-4">{ key }</Text>
-                                                    <input type="text" className="form-control form-control-sm" value={ customValues[index] } onChange={ event => onCustomVariableChange(index, event.target.value) }/>
-                                                </Flex>);
-                                        }) }
+                                    {
+                                        return (
+                                            <Flex key={ index } alignItems="center" gap={ 1 }>
+                                                <Text small wrap align="end" variant="white" className="col-4">{ key }</Text>
+                                                <input type="text" className="form-control form-control-sm" value={ customValues[index] } onChange={ event => onCustomVariableChange(index, event.target.value) }/>
+                                            </Flex>);
+                                    }) }
                                 </Column>
                             </> }
                     </Column>

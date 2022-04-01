@@ -23,13 +23,13 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
         if(value === quantity) return;
 
         setPurchaseOptions(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.quantity = value;
+            newValue.quantity = value;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }
 
     if(!currentOffer || !currentOffer.bundlePurchaseAllowed) return null;

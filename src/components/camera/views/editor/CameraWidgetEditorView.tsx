@@ -76,14 +76,14 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
         if(index === -1) return;
 
         setSelectedEffects(prevValue =>
-            {
-                const clone = [ ...prevValue ];
-                const currentEffect = clone[index];
+        {
+            const clone = [ ...prevValue ];
+            const currentEffect = clone[index];
 
-                clone[getCurrentEffectIndex] = new RoomCameraWidgetSelectedEffect(currentEffect.effect, alpha);
+            clone[getCurrentEffectIndex] = new RoomCameraWidgetSelectedEffect(currentEffect.effect, alpha);
 
-                return clone;
-            });
+            return clone;
+        });
     }, [ getCurrentEffectIndex, setSelectedEffects ]);
 
     const getCurrentPictureUrl = useMemo(() =>
@@ -117,9 +117,9 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 if(!effect) return;
 
                 setSelectedEffects(prevValue =>
-                    {
-                        return [ ...prevValue, new RoomCameraWidgetSelectedEffect(effect, 1) ];
-                    });
+                {
+                    return [ ...prevValue, new RoomCameraWidgetSelectedEffect(effect, 1) ];
+                });
 
                 setSelectedEffectName(effect.name);
                 return;
@@ -130,13 +130,13 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 if(existingIndex === -1) return;
 
                 setSelectedEffects(prevValue =>
-                    {
-                        const clone = [ ...prevValue ];
+                {
+                    const clone = [ ...prevValue ];
 
-                        clone.splice(existingIndex, 1);
+                    clone.splice(existingIndex, 1);
 
-                        return clone;
-                    });
+                    return clone;
+                });
 
                 if(selectedEffectName === effectName) setSelectedEffectName(null);
                 return;
@@ -177,9 +177,9 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('camera.editor.button.text') } onCloseClick={ event => processAction('close') } />
             <NitroCardTabsView>
                 { TABS.map(tab =>
-                    {
-                        return <NitroCardTabsItemView key={ tab } isActive={ currentTab === tab } onClick={ event => processAction('change_tab', tab) }><i className={ 'icon icon-camera-' + tab }></i></NitroCardTabsItemView>
-                    }) }
+                {
+                    return <NitroCardTabsItemView key={ tab } isActive={ currentTab === tab } onClick={ event => processAction('change_tab', tab) }><i className={ 'icon icon-camera-' + tab }></i></NitroCardTabsItemView>
+                }) }
             </NitroCardTabsView>
             <NitroCardContentView>
                 <Grid>

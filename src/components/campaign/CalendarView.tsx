@@ -104,7 +104,7 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                     <Column size={ 10 }>
                         <Flex justifyContent="between" alignItems="center" gap={ 1 }>
                             <Column gap={ 1 }>
-                                <Text fontSize={ 3 }>{ LocalizeText('campaign.calendar.heading.day', ['number'], [(selectedDay + 1).toString()]) }</Text>
+                                <Text fontSize={ 3 }>{ LocalizeText('campaign.calendar.heading.day', [ 'number' ], [ (selectedDay + 1).toString() ]) }</Text>
                                 <Text>{ dayMessage(selectedDay) }</Text>
                             </Column>
                             <div>
@@ -121,16 +121,16 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                     </Flex>
                     <Column center fullWidth>
                         <Grid fit columnCount={ TOTAL_SHOWN_ITEMS } gap={ 1 }>
-                            { [...Array(TOTAL_SHOWN_ITEMS)].map((e, i) =>
-                                {
-                                    const day = (index + i);
+                            { [ ...Array(TOTAL_SHOWN_ITEMS) ].map((e, i) =>
+                            {
+                                const day = (index + i);
                                     
-                                    return (
-                                        <Column key={ i } overflow="hidden">
-                                            <CalendarItemView itemId={ day } state={ getDayState(day) } active={ (selectedDay === day) } product={ receivedProducts.has(day) ? receivedProducts.get(day) : null } onClick={ onClickItem } />
-                                        </Column>
-                                    );
-                                }) }
+                                return (
+                                    <Column key={ i } overflow="hidden">
+                                        <CalendarItemView itemId={ day } state={ getDayState(day) } active={ (selectedDay === day) } product={ receivedProducts.has(day) ? receivedProducts.get(day) : null } onClick={ onClickItem } />
+                                    </Column>
+                                );
+                            }) }
                         </Grid>
                     </Column>
                     <Flex center>

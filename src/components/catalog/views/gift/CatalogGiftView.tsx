@@ -196,7 +196,7 @@ export const CatalogGiftView: FC<{}> = props =>
                             <Column gap={ 1 }>
                                 <Text fontWeight="bold">{ LocalizeText(boxName) }</Text>
                                 <Flex alignItems="center" gap={ 1 }>
-                                    { LocalizeText(priceText, ['price'], [giftConfiguration.price.toString()]) }
+                                    { LocalizeText(priceText, [ 'price' ], [ giftConfiguration.price.toString() ]) }
                                     <LayoutCurrencyIcon type={ -1 } />
                                 </Flex>
                             </Column>

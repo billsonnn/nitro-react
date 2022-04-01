@@ -42,11 +42,11 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                 const widgetEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 setEngravingLockData(prevState =>
-                    {
-                        if(!prevState || (widgetEvent.id !== prevState.objectId) || (widgetEvent.category !== prevState.category)) return prevState;
+                {
+                    if(!prevState || (widgetEvent.id !== prevState.objectId) || (widgetEvent.category !== prevState.category)) return prevState;
 
-                        return null;
-                    });
+                    return null;
+                });
                 return;
             }
         }

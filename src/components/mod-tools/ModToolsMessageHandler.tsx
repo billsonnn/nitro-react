@@ -34,7 +34,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
             }
         });
           
-    }, [dispatchModToolsState]);
+    }, [ dispatchModToolsState ]);
 
     const onIssueInfoMessageEvent = useCallback((event: IssueInfoMessageEvent) =>
     {
@@ -62,7 +62,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
             }
         });
 
-    }, [dispatchModToolsState, tickets]);
+    }, [ dispatchModToolsState, tickets ]);
 
     const onModeratorToolPreferencesEvent = useCallback((event: ModeratorToolPreferencesEvent) =>
     {
@@ -100,7 +100,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
                 tickets: newTickets
             }
         });
-    }, [dispatchModToolsState, tickets]);
+    }, [ dispatchModToolsState, tickets ]);
 
     const onModeratorActionResultMessageEvent = useCallback((event: ModeratorActionResultMessageEvent) =>
     {
@@ -135,7 +135,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         SetCfhCategories(categories);
         
-    }, [dispatchModToolsState]);
+    }, [ dispatchModToolsState ]);
 
     const onCfhSanctionMessageEvent = useCallback((event: CfhSanctionMessageEvent) =>
     {
@@ -195,7 +195,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
                 dispatchModToolsState({
                     type: ModToolsActions.SET_OPEN_ROOMS,
                     payload: {
-                        openRooms: [...rooms, castedEvent.roomId]
+                        openRooms: [ ...rooms, castedEvent.roomId ]
                     }
                 });
                 return;
@@ -210,7 +210,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
                 dispatchModToolsState({
                     type: ModToolsActions.SET_OPEN_ROOM_CHATLOGS,
                     payload: {
-                        openRoomChatlogs: [...chatlogs, castedEvent.roomId]
+                        openRoomChatlogs: [ ...chatlogs, castedEvent.roomId ]
                     }
                 });
                 return;
@@ -225,7 +225,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
                 dispatchModToolsState({
                     type: ModToolsActions.SET_OPEN_USERINFO,
                     payload: {
-                        openUserInfo: [...userInfo, castedEvent.userId]
+                        openUserInfo: [ ...userInfo, castedEvent.userId ]
                     }
                 });
                 return;
@@ -240,13 +240,13 @@ export const ModToolsMessageHandler: FC<{}> = props =>
                 dispatchModToolsState({
                     type: ModToolsActions.SET_OPEN_USER_CHATLOGS,
                     payload: {
-                        openUserChatlogs: [...userChatlog, castedEvent.userId]
+                        openUserChatlogs: [ ...userChatlog, castedEvent.userId ]
                     }
                 });
                 return;
             }
         }
-    }, [openRooms, dispatchModToolsState, openRoomChatlogs, openUserInfo, openUserChatlogs]);
+    }, [ openRooms, dispatchModToolsState, openRoomChatlogs, openUserInfo, openUserChatlogs ]);
     
     UseUiEvent(ModToolsEvent.OPEN_ROOM_INFO, onModToolsEvent);
     UseUiEvent(ModToolsEvent.OPEN_ROOM_CHATLOG, onModToolsEvent);

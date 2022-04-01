@@ -16,7 +16,7 @@ const ACTION_SET_NAME: number = 1;
 const ACTION_WEAR: number = 2;
 const ACTION_SAVE: number = 3;
 
-const MANNEQUIN_FIGURE = ['hd', 99999, [ 99998 ]];
+const MANNEQUIN_FIGURE = [ 'hd', 99999, [ 99998 ] ];
 const MANNEQUIN_CLOTHING_PART_TYPES = [
     AvatarFigurePartType.CHEST_ACCESSORY,
     AvatarFigurePartType.COAT_CHEST,

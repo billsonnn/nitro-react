@@ -32,11 +32,11 @@ export const ChatInputStyleSelectorView: FC<ChatInputStyleSelectorViewProps> = p
             let visible = false;
 
             setSelectorVisible(prevValue =>
-                {
-                    visible = !prevValue;
+            {
+                visible = !prevValue;
 
-                    return visible;
-                });
+                return visible;
+            });
 
             if(visible) setTarget((event.target as (EventTarget & HTMLElement)));
         })
@@ -57,15 +57,15 @@ export const ChatInputStyleSelectorView: FC<ChatInputStyleSelectorViewProps> = p
                     <NitroCardContentView overflow="hidden" className="bg-transparent">
                         <Grid columnCount={ 3 } overflow="auto">
                             { chatStyleIds && (chatStyleIds.length > 0) && chatStyleIds.map((styleId) =>
-                                {
-                                    return (
-                                        <Flex center pointer key={ styleId } className="bubble-parent-container" onClick={ event => selectStyle(styleId) }>
-                                            <Base key={ styleId } className="bubble-container">
-                                                <Base className={ `chat-bubble bubble-${ styleId }` }>&nbsp;</Base>
-                                            </Base>
-                                        </Flex>
-                                    );
-                                }) }
+                            {
+                                return (
+                                    <Flex center pointer key={ styleId } className="bubble-parent-container" onClick={ event => selectStyle(styleId) }>
+                                        <Base key={ styleId } className="bubble-container">
+                                            <Base className={ `chat-bubble bubble-${ styleId }` }>&nbsp;</Base>
+                                        </Base>
+                                    </Flex>
+                                );
+                            }) }
                         </Grid>
                     </NitroCardContentView>
                 </Popover>

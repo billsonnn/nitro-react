@@ -55,7 +55,7 @@ export const GuideToolView: FC<{}> = props =>
                 setNoCloseButton(true);
                 break;
             case GuideSessionState.GUIDE_ONGOING:
-                setHeaderText(LocalizeText('guide.help.request.guide.ongoing.title', ['name'], [replacement]));
+                setHeaderText(LocalizeText('guide.help.request.guide.ongoing.title', [ 'name' ], [ replacement ]));
                 setNoCloseButton(true);
                 break;
             case GuideSessionState.USER_CREATE:
@@ -67,7 +67,7 @@ export const GuideToolView: FC<{}> = props =>
                 setNoCloseButton(true);
                 break;
             case GuideSessionState.USER_ONGOING:
-                setHeaderText(LocalizeText('guide.help.request.user.ongoing.title', ['name'], [replacement]));
+                setHeaderText(LocalizeText('guide.help.request.user.ongoing.title', [ 'name' ], [ replacement ]));
                 setNoCloseButton(true);
                 break;
             case GuideSessionState.USER_FEEDBACK:
@@ -183,7 +183,7 @@ export const GuideToolView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        const messageGroups = [...ongoingMessageGroups];
+        const messageGroups = [ ...ongoingMessageGroups ];
 
         let lastGroup = messageGroups[messageGroups.length - 1];
 
@@ -203,7 +203,7 @@ export const GuideToolView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        const messageGroups = [...ongoingMessageGroups];
+        const messageGroups = [ ...ongoingMessageGroups ];
 
         let lastGroup = messageGroups[messageGroups.length - 1];
 
@@ -217,7 +217,7 @@ export const GuideToolView: FC<{}> = props =>
 
         lastGroup.addChat(new GuideToolMessage(parser.roomName, parser.roomId));
         setOngoingMessageGroups(messageGroups);
-    }, [isOnDuty, ongoingMessageGroups, ongoingUserId]);
+    }, [ isOnDuty, ongoingMessageGroups, ongoingUserId ]);
 
     UseMessageEventHook(GuideSessionInvitedToGuideRoomMessageEvent, onGuideSessionInvitedToGuideRoomMessageEvent);
 
@@ -270,7 +270,7 @@ export const GuideToolView: FC<{}> = props =>
         switch(parts[1])
         {
             case 'tour':
-                //Create Tour Request
+            //Create Tour Request
                 return;
         }
     }, []);
@@ -299,15 +299,15 @@ export const GuideToolView: FC<{}> = props =>
             case 'toggle_duty':
                 if(!isHandlingBullyReports && !isHandlingGuideRequests && !isHandlingHelpRequests)
                 {
-                    DispatchUiEvent(new NotificationAlertEvent([LocalizeText('guide.help.guide.tool.noqueueselected.message')], null, null, null, LocalizeText('guide.help.guide.tool.noqueueselected.caption'), null));
+                    DispatchUiEvent(new NotificationAlertEvent([ LocalizeText('guide.help.guide.tool.noqueueselected.message') ], null, null, null, LocalizeText('guide.help.guide.tool.noqueueselected.caption'), null));
                     return;
                 }
 
                 setIsOnDuty(v =>
-                    {
-                        SendMessageComposer(new GuideSessionOnDutyUpdateMessageComposer(!v, v ? false : isHandlingGuideRequests, v ? false : isHandlingHelpRequests, v ? false : isHandlingBullyReports));
-                        return !v;
-                    });
+                {
+                    SendMessageComposer(new GuideSessionOnDutyUpdateMessageComposer(!v, v ? false : isHandlingGuideRequests, v ? false : isHandlingHelpRequests, v ? false : isHandlingBullyReports));
+                    return !v;
+                });
                 
                 return;
             case 'forum_link':
@@ -315,7 +315,7 @@ export const GuideToolView: FC<{}> = props =>
                 window.open(url);
                 return;
         }
-    }, [isHandlingBullyReports, isHandlingGuideRequests, isHandlingHelpRequests]);
+    }, [ isHandlingBullyReports, isHandlingGuideRequests, isHandlingHelpRequests ]);
 
     if(!isVisible) return null;
 

@@ -9,15 +9,15 @@ import { YoutubeVideoPlaybackStateEnum } from './utils/YoutubeVideoPlaybackState
 
 export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 {
-    const [objectId, setObjectId] = useState(-1);
-    const [videoId, setVideoId] = useState<string>(null);
-    const [videoStart, setVideoStart] = useState<number>(null);
-    const [videoEnd, setVideoEnd] = useState<number>(null);
-    const [currentVideoState, setCurrentVideoState] = useState(-1);
-    const [selectedItem, setSelectedItem] = useState<string>(null);
-    const [playlists, setPlaylists] = useState<YoutubeDisplayPlaylist[]>(null);
-    const [hasControl, setHasControl] = useState(false);
-    const [player, setPlayer] = useState<any>(null);
+    const [ objectId, setObjectId ] = useState(-1);
+    const [ videoId, setVideoId ] = useState<string>(null);
+    const [ videoStart, setVideoStart ] = useState<number>(null);
+    const [ videoEnd, setVideoEnd ] = useState<number>(null);
+    const [ currentVideoState, setCurrentVideoState ] = useState(-1);
+    const [ selectedItem, setSelectedItem ] = useState<string>(null);
+    const [ playlists, setPlaylists ] = useState<YoutubeDisplayPlaylist[]>(null);
+    const [ hasControl, setHasControl ] = useState(false);
+    const [ player, setPlayer ] = useState<any>(null);
     const { eventDispatcher = null } = useRoomContext();
 
     const onRoomWidgetUpdateYoutubeDisplayEvent = useCallback((event: RoomWidgetUpdateYoutubeDisplayEvent) =>
@@ -60,7 +60,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
             setVideoEnd(parser.endAtSeconds);
             setCurrentVideoState(parser.state);
         });
-    }, [objectId]);
+    }, [ objectId ]);
 
     const onPlaylists = useCallback((event: YoutubeDisplayPlaylistsEvent) =>
     {
@@ -79,7 +79,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
             setVideoEnd(null);
             setVideoStart(null);
         });
-    }, [objectId]);
+    }, [ objectId ]);
 
     const onControlVideo = useCallback((event: YoutubeControlVideoMessageEvent) =>
     {
@@ -102,7 +102,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                     player.pauseVideo();
                 break;
         }
-    }, [objectId, player]);
+    }, [ objectId, player ]);
 
     UseMessageEventHook(YoutubeDisplayVideoMessageEvent, onVideo);
     UseMessageEventHook(YoutubeDisplayPlaylistsEvent, onPlaylists);
@@ -140,7 +140,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                 SendMessageComposer(new SetYoutubeDisplayPlaylistMessageComposer(objectId, action));
                 setSelectedItem(action);
         }
-    }, [hasControl, objectId, selectedItem, videoId]);
+    }, [ hasControl, objectId, selectedItem, videoId ]);
 
     const onReady = useCallback((event: any) =>
     {
@@ -158,7 +158,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                 case 1:
                     if(currentVideoState === 2)
                     {
-                        //event.target.pauseVideo();
+                    //event.target.pauseVideo();
                     }
                     if(currentVideoState !== 1)
                     {
@@ -172,7 +172,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                     }
             }
         }
-    }, [currentVideoState, objectId, processAction]);
+    }, [ currentVideoState, objectId, processAction ]);
 
     const getYoutubeOpts = useMemo( () =>
     {
@@ -204,7 +204,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                 end: videoEnd
             }
         }
-    }, [videoEnd, videoStart]);
+    }, [ videoEnd, videoStart ]);
 
     if((objectId === -1)) return null;
 

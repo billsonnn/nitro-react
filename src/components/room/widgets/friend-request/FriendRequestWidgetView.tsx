@@ -16,13 +16,13 @@ export const FriendRequestWidgetView: FC<{}> = props =>
         if(index >= 0) return;
 
         setFriendRequests(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        {
+            const newValue = [ ...prevValue ];
 
-                newValue.push({ requestId, userId, userName });
+            newValue.push({ requestId, userId, userName });
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ friendRequests ]);
 
     const hideFriendRequest = useCallback((requestId: number) =>
@@ -32,13 +32,13 @@ export const FriendRequestWidgetView: FC<{}> = props =>
         if(index === -1) return;
 
         setFriendRequests(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        {
+            const newValue = [ ...prevValue ];
 
-                newValue.splice(index, 1);
+            newValue.splice(index, 1);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ friendRequests ]);
 
     const onRoomWidgetUpdateFriendRequestEvent = useCallback((event: RoomWidgetUpdateFriendRequestEvent) =>
@@ -62,9 +62,9 @@ export const FriendRequestWidgetView: FC<{}> = props =>
     return (
         <>
             { friendRequests.map((request, index) =>
-                {
-                    return <FriendRequestDialogView key={ index } { ...request } close={ () => hideFriendRequest(request.userId) } />
-                }) }
+            {
+                return <FriendRequestDialogView key={ index } { ...request } close={ () => hideFriendRequest(request.userId) } />
+            }) }
         </>
     );
 }

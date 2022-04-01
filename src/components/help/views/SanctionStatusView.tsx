@@ -39,11 +39,11 @@ export const SanctionSatusView:FC<{}> = props =>
                 if(length > 24)
                 {
                     localizationName = (localizationName + '.days');
-                    return LocalizeText(localizationName, ['days'], [(length / 24).toString()]);
+                    return LocalizeText(localizationName, [ 'days' ], [ (length / 24).toString() ]);
                 }
         }
 
-        return LocalizeText(localizationName, ['hours'], [length.toString()]);
+        return LocalizeText(localizationName, [ 'hours' ], [ length.toString() ]);
     }, []);
     
     if(!sanctionInfo) return null;

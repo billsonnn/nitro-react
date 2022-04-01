@@ -212,13 +212,13 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
             <Column size={ 7 } overflow="hidden">
                 <AutoGrid columnCount={ 5 }>
                     { !colorsShowing && (sellablePalettes.length > 0) && sellablePalettes.map((palette, index) =>
-                        {
-                            return (
-                                <LayoutGridItem key={ index } itemActive={ (selectedPaletteIndex === index) } onClick={ event => setSelectedPaletteIndex(index) }>
-                                    <LayoutPetImageView typeId={ petIndex } paletteId={ palette.paletteId } direction={ 2 } headOnly={ true } />
-                                </LayoutGridItem>
-                            );
-                        })}
+                    {
+                        return (
+                            <LayoutGridItem key={ index } itemActive={ (selectedPaletteIndex === index) } onClick={ event => setSelectedPaletteIndex(index) }>
+                                <LayoutPetImageView typeId={ petIndex } paletteId={ palette.paletteId } direction={ 2 } headOnly={ true } />
+                            </LayoutGridItem>
+                        );
+                    })}
                     { colorsShowing && (sellableColors.length > 0) && sellableColors.map((colorSet, index) => <LayoutGridItem itemHighlight key={ index } itemActive={ (selectedColorIndex === index) } itemColor={ ColorConverter.int2rgb(colorSet[0]) } className="clear-bg" onClick={ event => setSelectedColorIndex(index) } />) }
                 </AutoGrid>
             </Column>

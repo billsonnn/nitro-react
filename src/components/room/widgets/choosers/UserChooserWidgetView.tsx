@@ -16,11 +16,11 @@ export const UserChooserWidgetView: FC<{}> = props =>
         if(!isVisible) return;
 
         setRefreshTimeout(prevValue =>
-            {
-                if(prevValue) clearTimeout(prevValue);
+        {
+            if(prevValue) clearTimeout(prevValue);
 
-                return setTimeout(() => widgetHandler.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.USER_CHOOSER)), 100);
-            })
+            return setTimeout(() => widgetHandler.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.USER_CHOOSER)), 100);
+        })
     }, [ isVisible, widgetHandler ]);
 
     const onRoomWidgetChooserContentEvent = useCallback((event: RoomWidgetChooserContentEvent) =>

@@ -75,23 +75,23 @@ export const DoorbellWidgetView: FC<{}> = props =>
                 </Column>
                 <Column overflow="auto" className="striped-children" gap={ 0 }>
                     { users && (users.length > 0) && users.map(userName =>
-                        {
-                            return (
-                                <Grid key={ userName } gap={ 1 } alignItems="center" className="text-black border-bottom p-1">
-                                    <Base className="g-col-6">{ userName }</Base>
-                                    <Base className="g-col-6">
-                                        <Flex alignItems="center" justifyContent="end" gap={ 1 }>
-                                            <Button variant="success" onClick={ () => answer(userName, true) }>
-                                                { LocalizeText('generic.accept') }
-                                            </Button>
-                                            <Button variant="danger" onClick={ () => answer(userName, false) }>
-                                                { LocalizeText('generic.deny') }
-                                            </Button>
-                                        </Flex>
-                                    </Base>
-                                </Grid>
-                            );
-                        }) }
+                    {
+                        return (
+                            <Grid key={ userName } gap={ 1 } alignItems="center" className="text-black border-bottom p-1">
+                                <Base className="g-col-6">{ userName }</Base>
+                                <Base className="g-col-6">
+                                    <Flex alignItems="center" justifyContent="end" gap={ 1 }>
+                                        <Button variant="success" onClick={ () => answer(userName, true) }>
+                                            { LocalizeText('generic.accept') }
+                                        </Button>
+                                        <Button variant="danger" onClick={ () => answer(userName, false) }>
+                                            { LocalizeText('generic.deny') }
+                                        </Button>
+                                    </Flex>
+                                </Base>
+                            </Grid>
+                        );
+                    }) }
                 </Column>
             </NitroCardContentView>
         </NitroCardView>

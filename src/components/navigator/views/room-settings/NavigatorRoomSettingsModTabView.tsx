@@ -30,15 +30,15 @@ export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewPro
     const unBanUser = useCallback((userId: number) =>
     {
         setBannedUsers(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        {
+            const newValue = [ ...prevValue ];
 
-                const index = newValue.findIndex(value => (value.userId === userId));
+            const index = newValue.findIndex(value => (value.userId === userId));
 
-                if(index >= 0) newValue.splice(index, 1);
+            if(index >= 0) newValue.splice(index, 1);
 
-                return newValue;
-            })
+            return newValue;
+        })
 
         SendMessageComposer(new RoomUnbanUserComposer(userId, roomData.roomId));
 
@@ -57,14 +57,14 @@ export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewPro
                 <Flex overflow="hidden" className="bg-white rounded list-container p-2">
                     <Column fullWidth overflow="auto" gap={ 1 }>
                         { bannedUsers && (bannedUsers.length > 0) && bannedUsers.map((user, index) =>
-                            {
-                                return (
-                                    <Flex key={ index } shrink alignItems="center" gap={ 1 } overflow="hidden">
-                                        <UserProfileIconView userName={ user.userName } />
-                                        <Text pointer grow onClick={ event => setSelectedUserId(user.userId) }> { user.userName }</Text>
-                                    </Flex>
-                                );
-                            }) }
+                        {
+                            return (
+                                <Flex key={ index } shrink alignItems="center" gap={ 1 } overflow="hidden">
+                                    <UserProfileIconView userName={ user.userName } />
+                                    <Text pointer grow onClick={ event => setSelectedUserId(user.userId) }> { user.userName }</Text>
+                                </Flex>
+                            );
+                        }) }
                     </Column>
                 </Flex>
                 <Button disabled={ (selectedUserId <= 0) } onClick={ event => unBanUser(selectedUserId) }>

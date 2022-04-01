@@ -46,7 +46,7 @@ export const SearchFormView: FC<SearchFormViewProps> = props =>
         setSortType(sortType);
 
         if(searchType === MarketplaceSearchType.BY_ACTIVITY || MarketplaceSearchType.BY_VALUE === searchType) onSearch({ minPrice: -1, maxPrice: -1, query: '', type: sortType });
-    }, [onSearch, searchType, sortTypes]);
+    }, [ onSearch, searchType, sortTypes ]);
 
     return (
         <Column gap={ 1 }>

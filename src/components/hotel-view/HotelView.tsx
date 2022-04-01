@@ -6,7 +6,7 @@ import { BatchUpdates, UseMessageEventHook, UseRoomSessionManagerEvent } from '.
 import { WidgetSlotView } from './views/widgets/WidgetSlotView';
 export const HotelView: FC<{}> = props =>
 {
-    const [isVisible, setIsVisible] = useState(true);
+    const [ isVisible, setIsVisible ] = useState(true);
     const widgetSlotCount = 7;
     const [ userFigure, setUserFigure ] = useState<string>(null);
     const [ userInfo, setUserInfo ] = useState<UserInfoDataParser>(null);

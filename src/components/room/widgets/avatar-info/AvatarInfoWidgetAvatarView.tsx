@@ -107,7 +107,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                     messageType = RoomWidgetUserActionMessage.WHISPER_USER;
                     break;
                 case 'friend':
-                    //userData.canBeAskedAsFriend = false;
+                //userData.canBeAskedAsFriend = false;
                     messageType = RoomWidgetUserActionMessage.SEND_FRIEND_REQUEST;
                     break;
                 case 'relationship':

@@ -229,13 +229,13 @@ export const NavigatorView: FC<{}> = props =>
                     <NitroCardHeaderView headerText={ LocalizeText(isCreatorOpen ? 'navigator.createroom.title' : 'navigator.title') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardTabsView>
                         { topLevelContexts && (topLevelContexts.length > 0) && topLevelContexts.map((context, index) =>
-                            {
-                                return (
-                                    <NitroCardTabsItemView key={ index } isActive={ ((topLevelContext === context) && !isCreatorOpen) } onClick={ event => sendSearch('', context.code) }>
-                                        { LocalizeText(('navigator.toplevelview.' + context.code)) }
-                                    </NitroCardTabsItemView>
-                                );
-                            }) }
+                        {
+                            return (
+                                <NitroCardTabsItemView key={ index } isActive={ ((topLevelContext === context) && !isCreatorOpen) } onClick={ event => sendSearch('', context.code) }>
+                                    { LocalizeText(('navigator.toplevelview.' + context.code)) }
+                                </NitroCardTabsItemView>
+                            );
+                        }) }
                         <NitroCardTabsItemView isActive={ isCreatorOpen } onClick={ event => setCreatorOpen(true) }>
                             <FontAwesomeIcon icon="plus" />
                         </NitroCardTabsItemView>

@@ -73,14 +73,14 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
         if((selectedGroupIndex === -1) || !selectedOfferForGroup || !currentOffer) return;
 
         setPurchaseOptions(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
                 
-                newValue.extraData = selectedOfferForGroup[selectedGroupIndex].product.extraParam;
-                newValue.extraParamRequired = true;
+            newValue.extraData = selectedOfferForGroup[selectedGroupIndex].product.extraParam;
+            newValue.extraParamRequired = true;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ currentOffer, selectedGroupIndex, selectedOfferForGroup, setPurchaseOptions ]);
 
     if(!groupedOffers || (selectedGroupIndex === -1)) return null;
@@ -98,13 +98,13 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
                     const setSelectedOffer = () =>
                     {
                         setSelectedOfferForGroup(prevValue =>
-                            {
-                                const newValue = [ ...prevValue ];
+                        {
+                            const newValue = [ ...prevValue ];
 
-                                newValue[selectedGroupIndex] = offer;
+                            newValue[selectedGroupIndex] = offer;
 
-                                return newValue;
-                            });
+                            return newValue;
+                        });
                     }
 
                     return <CatalogGridOfferView key={ index } itemActive={ (currentOffer && (currentOffer === offer)) } offer={ offer } onClick={ setSelectedOffer } />;

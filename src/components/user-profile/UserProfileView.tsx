@@ -62,11 +62,11 @@ export const UserProfileView: FC<{}> = props =>
         BatchUpdates(() =>
         {
             setUserProfile(prevValue =>
-                {
-                    if(prevValue && prevValue.id) isSameProfile = (prevValue.id === parser.id);
+            {
+                if(prevValue && prevValue.id) isSameProfile = (prevValue.id === parser.id);
 
-                    return parser;
-                });
+                return parser;
+            });
 
             if(!isSameProfile)
             {

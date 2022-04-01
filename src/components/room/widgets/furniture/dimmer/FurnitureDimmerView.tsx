@@ -8,8 +8,8 @@ import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../RoomContext';
 import { DimmerFurnitureWidgetPresetItem } from './DimmerFurnitureWidgetPresetItem';
 
-const AVAILABLE_COLORS: number[] = [7665141, 21495, 15161822, 15353138, 15923281, 8581961, 0];
-const HTML_COLORS: string[] = ['#74F5F5', '#0053F7', '#E759DE', '#EA4532', '#F2F851', '#82F349', '#000000'];
+const AVAILABLE_COLORS: number[] = [ 7665141, 21495, 15161822, 15353138, 15923281, 8581961, 0 ];
+const HTML_COLORS: string[] = [ '#74F5F5', '#0053F7', '#E759DE', '#EA4532', '#F2F851', '#82F349', '#000000' ];
 const MIN_BRIGHTNESS: number = 76;
 const MAX_BRIGHTNESS: number = 255;
 
@@ -117,13 +117,13 @@ export const FurnitureDimmerView: FC<{}> = props =>
         if(!preset || ((selectedEffectId === preset.type) && (selectedColor === preset.color) && (selectedBrightness === preset.light))) return;
 
         setPresets(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        {
+            const newValue = [ ...prevValue ];
 
-                newValue[selectedPresetIndex] = new DimmerFurnitureWidgetPresetItem(preset.id, selectedEffectId, selectedColor, selectedBrightness);
+            newValue[selectedPresetIndex] = new DimmerFurnitureWidgetPresetItem(preset.id, selectedEffectId, selectedColor, selectedBrightness);
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         widgetHandler.processWidgetMessage(new RoomWidgetDimmerSavePresetMessage(preset.id, selectedEffectId, selectedColor, selectedBrightness, true));
     }, [ widgetHandler, dimmerState, selectedPresetId, presets, selectedEffectId, selectedColor, selectedBrightness ]);
@@ -167,11 +167,11 @@ export const FurnitureDimmerView: FC<{}> = props =>
                             { !isFreeColorMode &&
                                 <Grid gap={ 1 } columnCount={ 7 }>
                                     { AVAILABLE_COLORS.map((color, index) =>
-                                        {
-                                            return (
-                                                <Column fullWidth pointer key={ index } className={ 'color-swatch rounded' + classNames({ ' active': color === selectedColor }) } onClick={ () => setSelectedColor(color) } style={{ backgroundColor: HTML_COLORS[index] }} />
-                                            );
-                                        }) }
+                                    {
+                                        return (
+                                            <Column fullWidth pointer key={ index } className={ 'color-swatch rounded' + classNames({ ' active': color === selectedColor }) } onClick={ () => setSelectedColor(color) } style={{ backgroundColor: HTML_COLORS[index] }} />
+                                        );
+                                    }) }
                                 </Grid> }
                         </Column>
                         <Column gap={ 1 }>
