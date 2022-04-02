@@ -11,18 +11,11 @@ let furniMsgFragments: Map<number, FurnitureListItemParser>[] = null;
 
 const useInventoryFurniState = () =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
     const [ needsUpdate, setNeedsUpdate ] = useState(true);
     const [ groupItems, setGroupItems ] = useState<GroupItem[]>([]);
     const [ selectedItem, setSelectedItem ] = useState<GroupItem>(null);
-    const { isUnseen = null, removeUnseen = null, resetCategory = null, getCount = null } = useInventoryUnseenTracker();
-
-    const selectItem = (item: GroupItem) =>
-    {
-        //removeUnseen(UnseenItemCategory.FURNI, item.id);
-
-        setSelectedItem(item);
-    }
+    const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
+    const { isUnseen = null, resetCategory = null } = useInventoryUnseenTracker();
 
     const onFurnitureListAddOrUpdateEvent = useCallback((event: FurnitureListAddOrUpdateEvent) =>
     {
@@ -243,6 +236,26 @@ const useInventoryFurniState = () =>
 
     useEffect(() =>
     {
+        if(!isVisible) return;
+
+        return () =>
+        {
+            if(resetCategory(UnseenItemCategory.FURNI))
+            {
+                setGroupItems(prevValue =>
+                {
+                    const newValue = [ ...prevValue ];
+        
+                    for(const newGroup of newValue) newGroup.hasUnseenItems = false;
+        
+                    return newValue;
+                });
+            }
+        }
+    }, [ isVisible, resetCategory ]);
+
+    useEffect(() =>
+    {
         if(!isVisible || !needsUpdate) return;
 
         SendMessageComposer(new FurnitureListComposer());
@@ -250,18 +263,7 @@ const useInventoryFurniState = () =>
         setNeedsUpdate(false);
     }, [ isVisible, needsUpdate ]);
 
-    return { groupItems, setGroupItems, selectedItem, selectItem, setIsVisible };
+    return { groupItems, setGroupItems, selectedItem, setSelectedItem, activate, deactivate };
 }
 
-export const useInventoryFurni = () =>
-{
-    const { setIsVisible, ...rest } = useBetween(useInventoryFurniState);
-    const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
-
-    useEffect(() =>
-    {
-        setIsVisible(isVisible);
-    }, [ isVisible, setIsVisible ]);
-
-    return { activate, deactivate, ...rest };
-}
+export const useInventoryFurni = () => useBetween(useInventoryFurniState);

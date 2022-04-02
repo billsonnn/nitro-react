@@ -14,9 +14,10 @@ interface CatalogBadgeSelectorWidgetViewProps extends AutoGridProps
 export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewProps> = props =>
 {
     const { columnCount = 5, ...rest } = props;
+    const [ isVisible, setIsVisible ] = useState(false);
     const [ currentBadgeCode, setCurrentBadgeCode ] = useState<string>(null);
     const { currentOffer = null, setPurchaseOptions = null } = useCatalogContext();
-    const { badgeCodes = [] } = useInventoryBadges();
+    const { badgeCodes = [], activate = null, deactivate = null } = useInventoryBadges();
 
     const previewStuffData = useMemo(() =>
     {
@@ -44,6 +45,22 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
             return newValue;
         });
     }, [ currentOffer, previewStuffData, setPurchaseOptions ]);
+
+    useEffect(() =>
+    {
+        if(!isVisible) return;
+
+        const id = activate();
+
+        return () => deactivate(id);
+    }, [ isVisible, activate, deactivate ]);
+
+    useEffect(() =>
+    {
+        setIsVisible(true);
+
+        return () => setIsVisible(false);
+    }, []);
 
     return (
         <AutoGrid columnCount={ columnCount } { ...rest }>

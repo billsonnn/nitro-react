@@ -8,13 +8,11 @@ import { useSharedVisibility } from '../useSharedVisibility';
 
 const useInventoryBotsState = () =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
     const [ needsUpdate, setNeedsUpdate ] = useState(true);
     const [ botItems, setBotItems ] = useState<IBotItem[]>([]);
     const [ selectedBot, setSelectedBot ] = useState<IBotItem>(null);
-    const { isUnseen = null } = useInventoryUnseenTracker();
-
-    const selectBot = (bot: IBotItem) => setSelectedBot(bot);
+    const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
+    const { isUnseen = null, resetCategory = null } = useInventoryUnseenTracker();
 
     const onBotInventoryMessageEvent = useCallback((event: BotInventoryMessageEvent) =>
     {
@@ -65,7 +63,7 @@ const useInventoryBotsState = () =>
                 const unseen = isUnseen(UnseenItemCategory.BOT, botData.id);
 
                 if(unseen) newValue.unshift(botItem);
-                newValue.push(botItem);
+                else newValue.push(botItem);
             }
 
             return newValue;
@@ -87,12 +85,14 @@ const useInventoryBotsState = () =>
             if(index >= 0) return prevValue;
 
             const botItem = { botData: parser.item } as IBotItem;
+            const unseen = isUnseen(UnseenItemCategory.BOT, botItem.botData.id);
 
-            newValue.push(botItem);
+            if(unseen) newValue.unshift(botItem);
+            else newValue.push(botItem);
 
             return newValue;
         });
-    }, []);
+    }, [ isUnseen ]);
 
     UseMessageEventHook(BotAddedToInventoryEvent, onBotAddedToInventoryEvent);
 
@@ -141,6 +141,16 @@ const useInventoryBotsState = () =>
 
     useEffect(() =>
     {
+        if(!isVisible) return;
+
+        return () =>
+        {
+            resetCategory(UnseenItemCategory.BOT);
+        }
+    }, [ isVisible, resetCategory ]);
+
+    useEffect(() =>
+    {
         if(!isVisible || !needsUpdate) return;
 
         SendMessageComposer(new GetBotInventoryComposer());
@@ -148,25 +158,7 @@ const useInventoryBotsState = () =>
         setNeedsUpdate(false);
     }, [ isVisible, needsUpdate ]);
 
-    return { botItems, selectedBot, selectBot, setIsVisible };
+    return { botItems, selectedBot, setSelectedBot, activate, deactivate };
 }
 
-export const useInventoryBots = () =>
-{
-    const { setIsVisible, ...rest } = useBetween(useInventoryBotsState);
-    const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
-
-    useEffect(() =>
-    {
-        const id = activate();
-
-        return () => deactivate(id);
-    }, [ activate, deactivate ]);
-
-    useEffect(() =>
-    {
-        setIsVisible(isVisible);
-    }, [ isVisible, setIsVisible ]);
-
-    return { ...rest };
-}
+export const useInventoryBots = () => useBetween(useInventoryBotsState);

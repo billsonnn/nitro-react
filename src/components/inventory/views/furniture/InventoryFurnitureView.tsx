@@ -1,10 +1,11 @@
-import { IRoomSession, MouseEventType, RoomObjectVariable, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, useEffect, useState } from 'react';
-import { attemptItemPlacement, FurniCategory, GetRoomEngine, GetSessionDataManager, GroupItem, LocalizeText, UnseenItemCategory } from '../../../api';
-import { AutoGrid, Button, Column, Grid, LayoutGridItem, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, LayoutRoomPreviewerView, Text } from '../../../common';
-import { useInventoryFurni, useInventoryUnseenTracker } from '../../../hooks';
-import { attemptPlaceMarketplaceOffer } from '../../../hooks/inventory/common';
-import { InventoryCategoryEmptyView } from './InventoryCategoryEmptyView';
+import { IRoomSession, RoomObjectVariable, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
+import { FC, useEffect, useState } from 'react';
+import { attemptItemPlacement, FurniCategory, GetRoomEngine, GetSessionDataManager, GroupItem, LocalizeText, UnseenItemCategory } from '../../../../api';
+import { AutoGrid, Button, Column, Grid, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, LayoutRoomPreviewerView, Text } from '../../../../common';
+import { useInventoryFurni, useInventoryUnseenTracker } from '../../../../hooks';
+import { attemptPlaceMarketplaceOffer } from '../../../../hooks/inventory/common';
+import { InventoryCategoryEmptyView } from '../InventoryCategoryEmptyView';
+import { InventoryFurnitureItemView } from './InventoryFurnitureItemView';
 import { InventoryFurnitureSearchView } from './InventoryFurnitureSearchView';
 
 interface InventoryFurnitureViewProps
@@ -16,9 +17,10 @@ interface InventoryFurnitureViewProps
 export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
+    const [ isVisible, setIsVisible ] = useState(false);
     const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>([]);
-    const { groupItems = [], selectedItem = null, selectItem = null, activate = null, deactivate = null } = useInventoryFurni();
-    const { getCount = null, resetCategory = null } = useInventoryUnseenTracker();
+    const { groupItems = [], selectedItem = null, activate = null, deactivate = null } = useInventoryFurni();
+    const { resetItems = null } = useInventoryUnseenTracker();
 
     useEffect(() =>
     {
@@ -72,65 +74,30 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 
     useEffect(() =>
     {
-        if(!groupItems || !groupItems.length) return;
-        
-        return () =>
-        {
-            const count = getCount(UnseenItemCategory.FURNI);
+        if(!selectedItem || !selectedItem.hasUnseenItems) return;
 
-            if(!count) return;
+        resetItems(UnseenItemCategory.FURNI, selectedItem.items.map(item => item.id));
 
-            resetCategory(UnseenItemCategory.FURNI);
-
-            for(const groupItem of groupItems) groupItem.hasUnseenItems = false;
-        }
-    }, [ groupItems, getCount, resetCategory ]);
+        selectedItem.hasUnseenItems = false;
+    }, [ selectedItem, resetItems ]);
 
     useEffect(() =>
     {
+        if(!isVisible) return;
+
         const id = activate();
 
         return () => deactivate(id);
-    }, [ activate, deactivate ]);
+    }, [ isVisible, activate, deactivate ]);
+
+    useEffect(() =>
+    {
+        setIsVisible(true);
+
+        return () => setIsVisible(false);
+    }, []);
 
     if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.title') } desc={ LocalizeText('inventory.empty.desc') } />;
-
-    const InventoryFurnitureItemView: FC<{ groupItem: GroupItem }> = props =>
-    {
-        const { groupItem = null } = props;
-        const [ isMouseDown, setMouseDown ] = useState(false);
-        const isActive = (groupItem === selectedItem);
-
-        const onMouseEvent = (event: MouseEvent) =>
-        {
-            switch(event.type)
-            {
-                case MouseEventType.MOUSE_DOWN:
-                    selectItem(groupItem);
-                    setMouseDown(true);
-                    return;
-                case MouseEventType.MOUSE_UP:
-                    setMouseDown(false);
-                    return;
-                case MouseEventType.ROLL_OUT:
-                    if(!isMouseDown || !isActive) return;
-
-                    attemptItemPlacement(groupItem);
-                    return;
-            }
-        }
-
-        useEffect(() =>
-        {
-            if(!isActive) return;
-
-            groupItem.hasUnseenItems = false;
-        }, [ isActive, groupItem ]);
-
-        const count = groupItem.getUnlockedCount();
-
-        return <LayoutGridItem className={ !count ? 'opacity-0-5 ' : '' } itemImage={ groupItem.iconUrl } itemCount={ count } itemActive={ isActive } itemUniqueNumber={ groupItem.stuffData.uniqueNumber } itemUnseen={ groupItem.hasUnseenItems } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent } />;
-    }
 
     return (
         <Grid>

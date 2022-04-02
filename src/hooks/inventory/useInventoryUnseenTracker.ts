@@ -22,88 +22,81 @@ const useInventoryUnseenTrackerState = () =>
         return count;
     }
 
-    const resetCategory = (category: number) =>
+    const resetCategory = useCallback((category: number) =>
     {
-        if(!getCount(category)) return false;
+        let didReset = true;
 
         setUnseenItems(prevValue =>
         {
+            if(!prevValue.has(category))
+            {
+                didReset = false;
+
+                return prevValue;
+            }
+
             const newValue = new Map(prevValue);
 
             newValue.delete(category);
 
-            return newValue;
-        });
-
-        sendResetCategoryMessage(category);
-
-        return true;
-    }
-
-    const resetCategoryIfEmpty = (category: number) =>
-    {
-        if(getCount(category)) return false;
-
-        setUnseenItems(prevValue =>
-        {
-            const newValue = new Map(prevValue);
-
-            newValue.delete(category);
+            sendResetCategoryMessage(category);
 
             return newValue;
         });
 
-        sendResetCategoryMessage(category);
+        return didReset;
+    }, []);
 
-        return true;
-    }
-
-    const resetItems = (category: number, itemIds: number[]) =>
+    const resetItems = useCallback((category: number, itemIds: number[]) =>
     {
-        if(!getCount(category)) return false;
+        let didReset = true;
 
         setUnseenItems(prevValue =>
         {
+            if(!prevValue.has(category))
+            {
+                didReset = false;
+
+                return prevValue;
+            }
+
             const newValue = new Map(prevValue);
             const existing = newValue.get(category);
 
             if(existing) for(const itemId of itemIds) existing.splice(existing.indexOf(itemId), 1);
 
+            sendResetItemsMessage(category, itemIds);
+
             return newValue;
         });
 
-        sendResetItemsMessage(category, itemIds);
+        return didReset;
+    }, []);
 
-        return true;
-    }
-
-    const isUnseen = (category: number, itemId: number) =>
+    const isUnseen = useCallback((category: number, itemId: number) =>
     {
         if(!unseenItems.has(category)) return false;
 
         const items = unseenItems.get(category);
 
         return (items.indexOf(itemId) >= 0);
-    }
+    }, [ unseenItems ]);
 
-    const removeUnseen = (category: number, itemId: number) =>
+    const removeUnseen = useCallback((category: number, itemId: number) =>
     {
-        if(!unseenItems.has(category)) return false;
-
         setUnseenItems(prevValue =>
         {
+            if(!prevValue.has(category)) return prevValue;
+
             const newValue = new Map(prevValue);
             const items = newValue.get(category);
             const index = items.indexOf(itemId);
 
-            if(index >= 0)
-            {
-                items.splice(index, 1);
-            }
+            if(index >= 0) items.splice(index, 1);
 
             return newValue;
         });
-    }
+    }, []);
 
     const onUnseenItemsEvent = useCallback((event: UnseenItemsEvent) =>
     {
@@ -135,7 +128,7 @@ const useInventoryUnseenTrackerState = () =>
 
     UseMessageEventHook(UnseenItemsEvent, onUnseenItemsEvent);
 
-    return { getIds, getCount, getFullCount, resetCategory, resetCategoryIfEmpty, resetItems, isUnseen, removeUnseen };
+    return { getIds, getCount, getFullCount, resetCategory, resetItems, isUnseen, removeUnseen };
 }
 
 export const useInventoryUnseenTracker = () => useBetween(useInventoryUnseenTrackerState);

@@ -38,7 +38,7 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
     useEffect(() =>
     {
-        if(!searchResult) return null;
+        if(!searchResult) return;
 
         const split = searchResult.data.split(':');
 

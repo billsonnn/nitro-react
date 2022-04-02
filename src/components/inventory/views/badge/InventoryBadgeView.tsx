@@ -1,47 +1,37 @@
-import { FC, useEffect } from 'react';
-import { LocalizeBadgeName, LocalizeText, UnseenItemCategory } from '../../../api';
-import { AutoGrid, Button, Column, Flex, Grid, LayoutBadgeImageView, LayoutGridItem, Text } from '../../../common';
-import { useInventoryBadges, useInventoryUnseenTracker } from '../../../hooks';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeBadgeName, LocalizeText, UnseenItemCategory } from '../../../../api';
+import { AutoGrid, Button, Column, Flex, Grid, LayoutBadgeImageView, Text } from '../../../../common';
+import { useInventoryBadges, useInventoryUnseenTracker } from '../../../../hooks';
+import { InventoryBadgeItemView } from './InventoryBadgeItemView';
 
 export const InventoryBadgeView: FC<{}> = props =>
 {
-    const { badgeCodes = [], activeBadgeCodes = [], selectedBadgeCode = null, isWearingBadge = null, canWearBadges = null, toggleBadge = null, selectBadge = null, getBadgeId = null } = useInventoryBadges();
+    const [ isVisible, setIsVisible ] = useState(false);
+    const { badgeCodes = [], activeBadgeCodes = [], selectedBadgeCode = null, isWearingBadge = null, canWearBadges = null, toggleBadge = null, getBadgeId = null, activate = null, deactivate = null } = useInventoryBadges();
     const { getCount = null, resetCategory = null, isUnseen = null, removeUnseen = null } = useInventoryUnseenTracker();
 
     useEffect(() =>
     {
-        if(!badgeCodes || !badgeCodes.length) return;
-        
-        return () =>
-        {
-            const count = getCount(UnseenItemCategory.BADGE);
+        if(!selectedBadgeCode || !isUnseen(UnseenItemCategory.BADGE, getBadgeId(selectedBadgeCode))) return;
 
-            if(!count) return;
+        removeUnseen(UnseenItemCategory.BADGE, getBadgeId(selectedBadgeCode));
+    }, [ selectedBadgeCode, isUnseen, removeUnseen, getBadgeId ]);
 
-            resetCategory(UnseenItemCategory.BADGE);
-        }
-    }, [ badgeCodes, getCount, resetCategory ]);
-
-    const InventoryBadgeItemView: FC<{ badgeCode: string }> = props =>
+    useEffect(() =>
     {
-        const { badgeCode = null, children = null, ...rest } = props;
-        const badgeId = getBadgeId(badgeCode);
-        const unseen = isUnseen(UnseenItemCategory.BADGE, badgeId);
+        if(!isVisible) return;
 
-        const select = () =>
-        {
-            selectBadge(badgeCode);
+        const id = activate();
 
-            if(unseen) removeUnseen(UnseenItemCategory.BADGE, badgeId);
-        }
+        return () => deactivate(id);
+    }, [ isVisible, activate, deactivate ]);
 
-        return (
-            <LayoutGridItem itemActive={ (selectedBadgeCode === badgeCode) } itemUnseen={ unseen } onMouseDown={ select } { ...rest }> 
-                <LayoutBadgeImageView badgeCode={ badgeCode } />
-                { children }
-            </LayoutGridItem>
-        );
-    }
+    useEffect(() =>
+    {
+        setIsVisible(true);
+
+        return () => setIsVisible(false);
+    }, []);
 
     return (
         <Grid>

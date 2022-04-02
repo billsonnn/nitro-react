@@ -2,17 +2,19 @@ import { BadgeReceivedEvent, BadgesEvent, RequestBadgesComposer, SetActivatedBad
 import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { UseMessageEventHook } from '..';
-import { GetConfiguration, SendMessageComposer } from '../../api';
+import { GetConfiguration, SendMessageComposer, UnseenItemCategory } from '../../api';
 import { useSharedVisibility } from '../useSharedVisibility';
+import { useInventoryUnseenTracker } from './useInventoryUnseenTracker';
 
 const useInventoryBadgesState = () =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
     const [ needsUpdate, setNeedsUpdate ] = useState(true);
     const [ badgeCodes, setBadgeCodes ] = useState<string[]>([]);
     const [ badgeIds, setBadgeIds ] = useState<number[]>([]);
     const [ activeBadgeCodes, setActiveBadgeCodes ] = useState<string[]>([]);
     const [ selectedBadgeCode, setSelectedBadgeCode ] = useState<string>(null);
+    const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
+    const { isUnseen = null, resetCategory = null } = useInventoryUnseenTracker();
 
     const maxBadgeCount = GetConfiguration<number>('user.badges.max.slots', 5);
     const isWearingBadge = (badgeCode: string) => (activeBadgeCodes.indexOf(badgeCode) >= 0);
@@ -47,13 +49,6 @@ const useInventoryBadgesState = () =>
         });
     }
 
-    const selectBadge = (badgeCode: string) =>
-    {
-        if(badgeCodes.indexOf(badgeCode) === -1) return;
-
-        setSelectedBadgeCode(badgeCode);
-    }
-
     const getBadgeId = (badgeCode: string) =>
     {
         const index = badgeCodes.indexOf(badgeCode);
@@ -81,12 +76,14 @@ const useInventoryBadgesState = () =>
     const onBadgeReceivedEvent = useCallback((event: BadgeReceivedEvent) =>
     {
         const parser = event.getParser();
+        const unseen = isUnseen(UnseenItemCategory.BADGE, parser.badgeId);
 
         setBadgeCodes(prevValue =>
         {
             const newValue = [ ...prevValue ];
 
-            newValue.push(parser.badgeCode);
+            if(unseen) newValue.unshift(parser.badgeCode)
+            else newValue.push(parser.badgeCode);
 
             return newValue;
         });
@@ -95,11 +92,12 @@ const useInventoryBadgesState = () =>
         {
             const newValue = [ ...prevValue ];
 
-            newValue.push(parser.badgeId);
+            if(unseen) newValue.unshift(parser.badgeId)
+            else newValue.push(parser.badgeId);
 
             return newValue;
         });
-    }, []);
+    }, [ isUnseen ]);
 
     UseMessageEventHook(BadgeReceivedEvent, onBadgeReceivedEvent);
 
@@ -121,6 +119,16 @@ const useInventoryBadgesState = () =>
 
     useEffect(() =>
     {
+        if(!isVisible) return;
+
+        return () =>
+        {
+            resetCategory(UnseenItemCategory.BADGE);
+        }
+    }, [ isVisible, resetCategory ]);
+
+    useEffect(() =>
+    {
         if(!isVisible || !needsUpdate) return;
 
         SendMessageComposer(new RequestBadgesComposer());
@@ -128,25 +136,7 @@ const useInventoryBadgesState = () =>
         setNeedsUpdate(false);
     }, [ isVisible, needsUpdate ]);
 
-    return { badgeCodes, activeBadgeCodes, selectedBadgeCode, isWearingBadge, canWearBadges, toggleBadge, selectBadge, getBadgeId, setIsVisible };
+    return { badgeCodes, activeBadgeCodes, selectedBadgeCode, setSelectedBadgeCode, isWearingBadge, canWearBadges, toggleBadge, getBadgeId, activate, deactivate };
 }
 
-export const useInventoryBadges = () =>
-{
-    const { setIsVisible, ...rest } = useBetween(useInventoryBadgesState);
-    const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
-
-    useEffect(() =>
-    {
-        const id = activate();
-
-        return () => deactivate(id);
-    }, [ activate, deactivate ]);
-
-    useEffect(() =>
-    {
-        setIsVisible(isVisible);
-    }, [ isVisible, setIsVisible ]);
-
-    return { ...rest };
-}
+export const useInventoryBadges = () => useBetween(useInventoryBadgesState);
