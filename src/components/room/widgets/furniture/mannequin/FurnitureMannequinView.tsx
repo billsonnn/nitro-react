@@ -2,7 +2,7 @@ import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMann
 import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { GetAvatarRenderManager, GetClubMemberLevel, GetSessionDataManager, LocalizeText, RoomWidgetUpdateMannequinEvent, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Column, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
+import { UseEventDispatcherHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../RoomContext';
 
 const MODE_NONE: number = -1;
@@ -16,7 +16,7 @@ const ACTION_SET_NAME: number = 1;
 const ACTION_WEAR: number = 2;
 const ACTION_SAVE: number = 3;
 
-const MANNEQUIN_FIGURE = ['hd', 99999, [ 99998 ]];
+const MANNEQUIN_FIGURE = [ 'hd', 99999, [ 99998 ] ];
 const MANNEQUIN_CLOTHING_PART_TYPES = [
     AvatarFigurePartType.CHEST_ACCESSORY,
     AvatarFigurePartType.COAT_CHEST,
@@ -43,33 +43,30 @@ export const FurnitureMannequinView: FC<{}> = props =>
         const figureContainer = GetAvatarRenderManager().createFigureContainer(event.figure);
         const figureClubLevel = GetAvatarRenderManager().getFigureClubLevel(figureContainer, event.gender, MANNEQUIN_CLOTHING_PART_TYPES);
 
-        BatchUpdates(() =>
+        setObjectId(event.objectId);
+        setFigure(event.figure);
+        setGender(event.gender);
+        setName(event.name);
+        setClubLevel(figureClubLevel);
+
+        if(roomSession.isRoomOwner || (roomSession.controllerLevel >= RoomControllerLevel.GUEST) || GetSessionDataManager().isModerator)
         {
-            setObjectId(event.objectId);
-            setFigure(event.figure);
-            setGender(event.gender);
-            setName(event.name);
-            setClubLevel(figureClubLevel);
+            setMode(MODE_CONTROLLER);
+        }
 
-            if(roomSession.isRoomOwner || (roomSession.controllerLevel >= RoomControllerLevel.GUEST) || GetSessionDataManager().isModerator)
-            {
-                setMode(MODE_CONTROLLER);
-            }
+        else if(GetSessionDataManager().gender.toLowerCase() !== event.gender.toLowerCase())
+        {
+            setMode(MODE_WRONG_GENDER);
+        }
 
-            else if(GetSessionDataManager().gender.toLowerCase() !== event.gender.toLowerCase())
-            {
-                setMode(MODE_WRONG_GENDER);
-            }
-
-            else if(GetClubMemberLevel() < figureClubLevel)
-            {
-                setMode(MODE_NO_CLUB);
-            }
-            else
-            {
-                setMode(MODE_PEER);
-            }
-        });
+        else if(GetClubMemberLevel() < figureClubLevel)
+        {
+            setMode(MODE_NO_CLUB);
+        }
+        else
+        {
+            setMode(MODE_PEER);
+        }
     }, [ roomSession ]);
 
     UseEventDispatcherHook(RoomWidgetUpdateMannequinEvent.MANNEQUIN_UPDATE, eventDispatcher, onRoomWidgetUpdateMannequinEvent);
@@ -136,11 +133,8 @@ export const FurnitureMannequinView: FC<{}> = props =>
 
                 transformAsMannequinFigure(figureContainer);
 
-                BatchUpdates(() =>
-                {
-                    setRenderedFigure(figureContainer.getFigureString());
-                    setRenderedClubLevel(clubLevel);
-                });
+                setRenderedFigure(figureContainer.getFigureString());
+                setRenderedClubLevel(clubLevel);
                 break;
             }
             case MODE_UPDATE: {
@@ -148,22 +142,16 @@ export const FurnitureMannequinView: FC<{}> = props =>
 
                 transformAsMannequinFigure(figureContainer);
 
-                BatchUpdates(() =>
-                {
-                    setRenderedFigure(figureContainer.getFigureString());
-                    setRenderedClubLevel(GetAvatarRenderManager().getFigureClubLevel(figureContainer, GetSessionDataManager().gender, MANNEQUIN_CLOTHING_PART_TYPES));
-                });
+                setRenderedFigure(figureContainer.getFigureString());
+                setRenderedClubLevel(GetAvatarRenderManager().getFigureClubLevel(figureContainer, GetSessionDataManager().gender, MANNEQUIN_CLOTHING_PART_TYPES));
                 break;
             }
             case MODE_PEER:
             case MODE_NO_CLUB: {
                 const figureContainer = getMergedFigureContainer(GetSessionDataManager().figure, figure);
 
-                BatchUpdates(() =>
-                {
-                    setRenderedFigure(figureContainer.getFigureString());
-                    setRenderedClubLevel(clubLevel);
-                });
+                setRenderedFigure(figureContainer.getFigureString());
+                setRenderedClubLevel(clubLevel);
                 break;
             }
         }

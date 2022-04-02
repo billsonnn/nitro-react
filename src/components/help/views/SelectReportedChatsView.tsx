@@ -33,22 +33,22 @@ export const SelectReportedChatsView: FC<{}> = props =>
         if(!selectedChats || (selectedChats.size <= 0)) return;
 
         setHelpReportState(prevValue =>
-            {
-                const reportedChats = Array.from(selectedChats.values());
-                const currentStep = 3;
+        {
+            const reportedChats = Array.from(selectedChats.values());
+            const currentStep = 3;
 
-                return { ...prevValue, reportedChats, currentStep };
-            });
+            return { ...prevValue, reportedChats, currentStep };
+        });
     }
 
     const back = () =>
     {
         setHelpReportState(prevValue =>
-            {
-                const currentStep = (prevValue.currentStep - 1);
+        {
+            const currentStep = (prevValue.currentStep - 1);
 
-                return { ...prevValue, currentStep };
-            });
+            return { ...prevValue, currentStep };
+        });
     }
 
     return (
@@ -63,13 +63,13 @@ export const SelectReportedChatsView: FC<{}> = props =>
                 { (userChats.length > 0) &&
                     <AutoGrid gap={ 1 } columnCount={ 1 } columnMinHeight={ 25 } overflow="auto">
                         { userChats.map((chat, index) =>
-                            {
-                                return (
-                                    <LayoutGridItem key={ chat.id } onClick={ event => selectChat(chat) } itemActive={ selectedChats.has(chat.id) }>
-                                        <Text>{ chat.message }</Text>
-                                    </LayoutGridItem>
-                                );
-                            }) }
+                        {
+                            return (
+                                <LayoutGridItem key={ chat.id } onClick={ event => selectChat(chat) } itemActive={ selectedChats.has(chat.id) }>
+                                    <Text>{ chat.message }</Text>
+                                </LayoutGridItem>
+                            );
+                        }) }
                     </AutoGrid> }
             </Column>
             <Flex gap={ 2 } justifyContent="between">

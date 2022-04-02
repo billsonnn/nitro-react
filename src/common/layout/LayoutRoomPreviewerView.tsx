@@ -74,15 +74,15 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
         GetNitroInstance().ticker.add(update);
 
         const resizeObserver = new ResizeObserver(() =>
-            {
-                if(!roomPreviewer || !elementRef.current) return;
+        {
+            if(!roomPreviewer || !elementRef.current) return;
 
-                const width = elementRef.current.parentElement.offsetWidth;
+            const width = elementRef.current.parentElement.offsetWidth;
 
-                roomPreviewer.modifyRoomCanvas(width, height);
+            roomPreviewer.modifyRoomCanvas(width, height);
 
-                update(-1);
-            });
+            update(-1);
+        });
         
         resizeObserver.observe(elementRef.current);
 

@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { ProcessRoomObjectOperation, RoomWidgetUpdateDecorateModeEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
-import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
+import { UseEventDispatcherHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../RoomContext';
 import { ObjectLocationView } from '../../object-location/ObjectLocationView';
 
@@ -33,33 +33,24 @@ export const FurnitureManipulationMenuView: FC<{}> = props =>
         switch(event.type)
         {
             case RoomWidgetUpdateRoomObjectEvent.OBJECT_REQUEST_MANIPULATION: {
-                BatchUpdates(() =>
-                {
-                    setIsVisible(true);
-                    setObjectId(event.id);
-                    setObjectType(event.category);
-                });
+                setIsVisible(true);
+                setObjectId(event.id);
+                setObjectType(event.category);
                 return;
             }
             case RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED: {
                 if(event.id === objectId)
                 {
-                    BatchUpdates(() =>
-                    {
-                        setIsVisible(false);
-                        setObjectId(-1);
-                        setObjectType(-1);
-                    });
+                    setIsVisible(false);
+                    setObjectId(-1);
+                    setObjectType(-1);
                 }
                 return;
             }
             case RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED: {
-                BatchUpdates(() =>
-                {
-                    setIsVisible(false);
-                    setObjectId(-1);
-                    setObjectType(-1);
-                });
+                setIsVisible(false);
+                setObjectId(-1);
+                setObjectType(-1);
                 return;
             }
         }
@@ -74,12 +65,9 @@ export const FurnitureManipulationMenuView: FC<{}> = props =>
 
         moveFurniture();
 
-        BatchUpdates(() =>
-        {
-            setIsVisible(false);
-            setObjectId(-1);
-            setObjectType(-1);
-        });
+        setIsVisible(false);
+        setObjectId(-1);
+        setObjectType(-1);
     }, [ moveFurniture ]);
 
     UseEventDispatcherHook(RoomWidgetUpdateDecorateModeEvent.UPDATE_DECORATE, eventDispatcher, onRoomWidgetUpdateDecorateModeEvent);

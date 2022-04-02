@@ -27,16 +27,16 @@ export const CatalogLayoutVipGiftsView: FC<CatalogLayoutProps> = props =>
     const selectGift = useCallback((localizationId: string) =>
     {
         NotificationUtilities.confirm(LocalizeText('catalog.club_gift.confirm'), () =>
+        {
+            SendMessageComposer(new SelectClubGiftComposer(localizationId));
+
+            setCatalogOptions(prevValue =>
             {
-                SendMessageComposer(new SelectClubGiftComposer(localizationId));
+                prevValue.clubGifts.giftsAvailable--;
 
-                setCatalogOptions(prevValue =>
-                    {
-                        prevValue.clubGifts.giftsAvailable--;
-
-                        return { ...prevValue };
-                    });
-            }, null);
+                return { ...prevValue };
+            });
+        }, null);
     }, [ setCatalogOptions ]);
     
     return (

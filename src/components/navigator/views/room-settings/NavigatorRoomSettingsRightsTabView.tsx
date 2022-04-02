@@ -33,13 +33,13 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
         if(!roomData || (roomData.roomId !== parser.roomId)) return;
 
         setUsersWithRights(prevValue =>
-            {
-                const newValue = new Map(prevValue);
+        {
+            const newValue = new Map(prevValue);
 
-                newValue.set(parser.data.userId, parser.data.userName);
+            newValue.set(parser.data.userId, parser.data.userName);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ roomData ]);
 
     UseMessageEventHook(FlatControllerAddedEvent, onFlatControllerAddedEvent);
@@ -51,13 +51,13 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
         if(!roomData || (roomData.roomId !== parser.roomId)) return;
 
         setUsersWithRights(prevValue =>
-            {
-                const newValue = new Map(prevValue);
+        {
+            const newValue = new Map(prevValue);
 
-                newValue.delete(parser.userId);
+            newValue.delete(parser.userId);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ roomData ]);
 
     UseMessageEventHook(FlatControllerRemovedEvent, onFlatControllerRemovedEvent);
@@ -76,14 +76,14 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
                 <Flex overflow="hidden" className="bg-white rounded list-container p-2">
                     <Column fullWidth overflow="auto" gap={ 1 }>
                         { Array.from(usersWithRights.entries()).map(([ id, name ], index) =>
-                            {
-                                return (
-                                    <Flex key={ index } shrink alignItems="center" gap={ 1 } overflow="hidden">
-                                        <UserProfileIconView userName={ name } />
-                                        <Text pointer grow onClick={ event => SendMessageComposer(new RoomTakeRightsComposer(id)) }> { name }</Text>
-                                    </Flex>
-                                );
-                            }) }
+                        {
+                            return (
+                                <Flex key={ index } shrink alignItems="center" gap={ 1 } overflow="hidden">
+                                    <UserProfileIconView userName={ name } />
+                                    <Text pointer grow onClick={ event => SendMessageComposer(new RoomTakeRightsComposer(id)) }> { name }</Text>
+                                </Flex>
+                            );
+                        }) }
                     </Column>
                 </Flex>
             </Column>

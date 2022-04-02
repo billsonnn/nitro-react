@@ -3,7 +3,7 @@ import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/
 import { FC, useCallback } from 'react';
 import { GetFurnitureData, GetProductDataForLocalization, LocalizeText, NotificationAlertType, NotificationUtilities, ProductTypeEnum } from '../../api';
 import { CatalogGiftReceiverNotFoundEvent, CatalogNameResultEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent } from '../../events';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../hooks';
+import { DispatchUiEvent, UseMessageEventHook } from '../../hooks';
 import { useCatalogContext } from './CatalogContext';
 import { CatalogNode } from './common/CatalogNode';
 import { CatalogPetPalette } from './common/CatalogPetPalette';
@@ -43,11 +43,8 @@ export const CatalogMessageHandler: FC<{}> = props =>
             return catalogNode;
         }
 
-        BatchUpdates(() =>
-        {
-            setRootNode(getCatalogNode(parser.root, 0, null));
-            setOffersToNodes(offers);
-        });
+        setRootNode(getCatalogNode(parser.root, 0, null));
+        setOffersToNodes(offers);
     }, [ setRootNode, setOffersToNodes ]);
 
     const onCatalogPageMessageEvent = useCallback((event: CatalogPageMessageEvent) =>
@@ -77,17 +74,14 @@ export const CatalogMessageHandler: FC<{}> = props =>
             if((currentType === CatalogType.NORMAL) || ((purchasableOffer.pricingModel !== Offer.PRICING_MODEL_BUNDLE) && (purchasableOffer.pricingModel !== Offer.PRICING_MODEL_MULTI))) purchasableOffers.push(purchasableOffer);
         }
 
-        BatchUpdates(() =>
+        if(parser.frontPageItems && parser.frontPageItems.length) setFrontPageItems(parser.frontPageItems);
+
+        setIsBusy(false);
+
+        if(pageId === parser.pageId)
         {
-            if(parser.frontPageItems && parser.frontPageItems.length) setFrontPageItems(parser.frontPageItems);
-
-            setIsBusy(false);
-
-            if(pageId === parser.pageId)
-            {
-                showCatalogPage(parser.pageId, parser.layoutCode, new PageLocalization(parser.localization.images.concat(), parser.localization.texts.concat()), purchasableOffers, parser.offerId, parser.acceptSeasonCurrencyAsCredits);
-            }
-        });
+            showCatalogPage(parser.pageId, parser.layoutCode, new PageLocalization(parser.localization.images.concat(), parser.localization.texts.concat()), purchasableOffers, parser.offerId, parser.acceptSeasonCurrencyAsCredits);
+        }
     }, [ currentType, pageId, setFrontPageItems, setIsBusy, showCatalogPage ]);
 
     const onPurchaseOKMessageEvent = useCallback((event: PurchaseOKMessageEvent) =>
@@ -155,13 +149,13 @@ export const CatalogMessageHandler: FC<{}> = props =>
             if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
             {
                 setPurchaseOptions(prevValue =>
-                    {
-                        const newValue = { ...prevValue };
+                {
+                    const newValue = { ...prevValue };
         
-                        newValue.extraData =( offer.product.extraParam || null);
+                    newValue.extraData =( offer.product.extraParam || null);
         
-                        return newValue;
-                    });
+                    return newValue;
+                });
             }
         }
 
@@ -174,27 +168,27 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const petPalette = new CatalogPetPalette(parser.productCode, parser.palettes.slice());
 
         setCatalogOptions(prevValue =>
+        {
+            const petPalettes = [];
+
+            if(prevValue.petPalettes) petPalettes.push(...prevValue.petPalettes);
+
+            for(let i = 0; i < petPalettes.length; i++)
             {
-                const petPalettes = [];
+                const palette = petPalettes[i];
 
-                if(prevValue.petPalettes) petPalettes.push(...prevValue.petPalettes);
-
-                for(let i = 0; i < petPalettes.length; i++)
+                if(palette.breed === petPalette.breed)
                 {
-                    const palette = petPalettes[i];
+                    petPalettes.splice(i, 1);
 
-                    if(palette.breed === petPalette.breed)
-                    {
-                        petPalettes.splice(i, 1);
-
-                        break;
-                    }
+                    break;
                 }
+            }
                 
-                petPalettes.push(petPalette);
+            petPalettes.push(petPalette);
 
-                return { ...prevValue, petPalettes };
-            });
+            return { ...prevValue, petPalettes };
+        });
     }, [ setCatalogOptions ]);
 
     const onApproveNameMessageEvent = useCallback((event: ApproveNameMessageEvent) =>
@@ -214,11 +208,11 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setCatalogOptions(prevValue =>
-            {
-                const clubOffers = parser.offers;
+        {
+            const clubOffers = parser.offers;
 
-                return { ...prevValue, clubOffers };
-            });
+            return { ...prevValue, clubOffers };
+        });
     }, [ setCatalogOptions ]);
 
     const onGuildMembershipsMessageEvent = useCallback((event: GuildMembershipsMessageEvent) =>
@@ -226,11 +220,11 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setCatalogOptions(prevValue =>
-            {
-                const groups = parser.groups;
+        {
+            const groups = parser.groups;
 
-                return { ...prevValue, groups };
-            });
+            return { ...prevValue, groups };
+        });
     }, [ setCatalogOptions ]);
 
     const onUserSubscriptionEvent = useCallback((event: UserSubscriptionEvent) =>
@@ -238,16 +232,16 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setCatalogOptions(prevValue =>
-            {
-                const subscriptionInfo = new SubscriptionInfo(
-                    Math.max(0, parser.daysToPeriodEnd),
-                    Math.max(0, parser.periodsSubscribedAhead),
-                    parser.isVip,
-                    parser.pastClubDays,
-                    parser.pastVipDays);
+        {
+            const subscriptionInfo = new SubscriptionInfo(
+                Math.max(0, parser.daysToPeriodEnd),
+                Math.max(0, parser.periodsSubscribedAhead),
+                parser.isVip,
+                parser.pastClubDays,
+                parser.pastVipDays);
 
-                return { ...prevValue, subscriptionInfo };
-            });
+            return { ...prevValue, subscriptionInfo };
+        });
     }, [ setCatalogOptions ]);
 
     const onGiftWrappingConfigurationEvent = useCallback((event: GiftWrappingConfigurationEvent) =>
@@ -255,11 +249,11 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setCatalogOptions(prevValue =>
-            {
-                const giftConfiguration = new GiftWrappingConfiguration(parser);
+        {
+            const giftConfiguration = new GiftWrappingConfiguration(parser);
 
-                return { ...prevValue, giftConfiguration };
-            });
+            return { ...prevValue, giftConfiguration };
+        });
     }, [ setCatalogOptions ]);
 
     const onMarketplaceMakeOfferResult = useCallback((event: MarketplaceMakeOfferResult) =>
@@ -288,11 +282,11 @@ export const CatalogMessageHandler: FC<{}> = props =>
         const parser = event.getParser();
 
         setCatalogOptions(prevValue =>
-            {
-                const clubGifts = parser;
+        {
+            const clubGifts = parser;
 
-                return { ...prevValue, clubGifts };
-            });
+            return { ...prevValue, clubGifts };
+        });
     }, [ setCatalogOptions ]);
 
     UseMessageEventHook(CatalogPagesListEvent, onCatalogPagesListEvent);

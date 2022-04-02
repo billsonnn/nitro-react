@@ -3,7 +3,6 @@ import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps, ListRowRenderer, Size } from 'react-virtualized';
 import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { BatchUpdates } from '../../hooks';
 import { ChatHistoryContextProvider } from './ChatHistoryContext';
 import { ChatHistoryMessageHandler } from './ChatHistoryMessageHandler';
 import { ChatEntryType } from './common/ChatEntryType';
@@ -91,11 +90,8 @@ export const ChatHistoryView: FC<{}> = props =>
         chatState.notifier = () => setChatHistoryUpdateId(prevValue => (prevValue + 1));
         roomState.notifier = () => setRoomHistoryUpdateId(prevValue => (prevValue + 1));
 
-        BatchUpdates(() =>
-        {
-            setChatHistoryState(chatState);
-            setRoomHistoryState(roomState);
-        });
+        setChatHistoryState(chatState);
+        setRoomHistoryState(roomState);
 
         return () =>
         {
@@ -118,19 +114,19 @@ export const ChatHistoryView: FC<{}> = props =>
                     <NitroCardContentView>
                         <AutoSizer defaultWidth={ 300 } defaultHeight={ 200 } onResize={ onResize }>
                             { ({ height, width }) => 
-                                {
-                                    return (
-                                        <List
-                                            ref={ elementRef }
-                                            width={ width }
-                                            height={ height }
-                                            rowCount={ chatHistoryState.chats.length }
-                                            rowHeight={ cache.rowHeight }
-                                            className={ 'chat-history-list' }
-                                            rowRenderer={ RowRenderer }
-                                            deferredMeasurementCache={ cache } />
-                                    )
-                                } }
+                            {
+                                return (
+                                    <List
+                                        ref={ elementRef }
+                                        width={ width }
+                                        height={ height }
+                                        rowCount={ chatHistoryState.chats.length }
+                                        rowHeight={ cache.rowHeight }
+                                        className={ 'chat-history-list' }
+                                        rowRenderer={ RowRenderer }
+                                        deferredMeasurementCache={ cache } />
+                                )
+                            } }
                         </AutoSizer>
                     </NitroCardContentView>
                 </NitroCardView> }

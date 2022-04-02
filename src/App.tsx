@@ -14,8 +14,8 @@ export const App: FC<{}> = props =>
 {
     const [ isReady, setIsReady ] = useState(false);
     const [ isError, setIsError ] = useState(false);
-    const [message, setMessage] = useState('Getting Ready');
-    const [percent, setPercent] = useState(0);
+    const [ message, setMessage ] = useState('Getting Ready');
+    const [ percent, setPercent ] = useState(0);
 
     //@ts-ignore
     if(!NitroConfig) throw new Error('NitroConfig is not defined!');
@@ -68,24 +68,24 @@ export const App: FC<{}> = props =>
                 return;
             case NitroCommunicationDemoEvent.CONNECTION_HANDSHAKING:
                 loadPercent();
-				return;
-			case NitroCommunicationDemoEvent.CONNECTION_HANDSHAKE_FAILED:
+                return;
+            case NitroCommunicationDemoEvent.CONNECTION_HANDSHAKE_FAILED:
                 setIsError(true);
                 setMessage('Handshake Failed');
-				return;
-			case NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED:
+                return;
+            case NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED:
                 loadPercent();
 
                 GetNitroInstance().init();
 
                 if(LegacyExternalInterface.available) LegacyExternalInterface.call('legacyTrack', 'authentication', 'authok', []);
-				return;
-			case NitroCommunicationDemoEvent.CONNECTION_ERROR:
+                return;
+            case NitroCommunicationDemoEvent.CONNECTION_ERROR:
                 setIsError(true);
                 setMessage('Connection Error');
-				return;
-			case NitroCommunicationDemoEvent.CONNECTION_CLOSED:
-                //if(GetNitroInstance().roomEngine) GetNitroInstance().roomEngine.dispose();
+                return;
+            case NitroCommunicationDemoEvent.CONNECTION_CLOSED:
+            //if(GetNitroInstance().roomEngine) GetNitroInstance().roomEngine.dispose();
 
                 //setIsError(true);
                 setMessage('Connection Error');

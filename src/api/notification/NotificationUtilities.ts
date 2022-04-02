@@ -157,7 +157,7 @@ export class NotificationUtilities
 
     public static handleHotelClosedMessage(open: number, minute: number, thrownOut: boolean): void
     {
-        this.simpleAlert( LocalizeText(('opening.hours.' + (thrownOut ? 'disconnected' : 'closed')), [ 'h', 'm'], [ this.getTimeZeroPadded(open), this.getTimeZeroPadded(minute) ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
+        this.simpleAlert( LocalizeText(('opening.hours.' + (thrownOut ? 'disconnected' : 'closed')), [ 'h', 'm' ], [ this.getTimeZeroPadded(open), this.getTimeZeroPadded(minute) ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
     }
 
     public static handleHotelMaintenanceMessage(minutesUntilMaintenance: number, duration: number): void

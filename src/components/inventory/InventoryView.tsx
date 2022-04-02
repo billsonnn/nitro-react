@@ -4,11 +4,11 @@ import { AddEventLinkTracker, GetLocalization, GetRoomEngine, LocalizeText, Remo
 import { isObjectMoverRequested, setObjectMoverRequested } from '../../api/inventory/InventoryUtilities';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { useInventoryTrade, useInventoryUnseenTracker, UseMessageEventHook, UseRoomEngineEvent, UseRoomSessionManagerEvent } from '../../hooks';
-import { InventoryBadgeView } from './views/InventoryBadgeView';
-import { InventoryBotView } from './views/InventoryBotView';
-import { InventoryFurnitureView } from './views/InventoryFurnitureView';
-import { InventoryPetView } from './views/InventoryPetView';
-import { InventoryTradeView } from './views/InventoryTradeView';
+import { InventoryBadgeView } from './views/badge/InventoryBadgeView';
+import { InventoryBotView } from './views/bot/InventoryBotView';
+import { InventoryFurnitureView } from './views/furniture/InventoryFurnitureView';
+import { InventoryTradeView } from './views/furniture/InventoryTradeView';
+import { InventoryPetView } from './views/pet/InventoryPetView';
 
 const TAB_FURNITURE: string = 'inventory.furni';
 const TAB_BOTS: string = 'inventory.bots';
@@ -19,7 +19,7 @@ const UNSEEN_CATEGORIES = [ UnseenItemCategory.FURNI, UnseenItemCategory.BOT, Un
 
 export const InventoryView: FC<{}> = props =>
 {
-    const [ isVisible, setIsVisible ]   = useState(false);
+    const [ isVisible, setIsVisible ] = useState(false);
     const [ currentTab, setCurrentTab ] = useState<string>(TABS[0]);
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
@@ -130,10 +130,8 @@ export const InventoryView: FC<{}> = props =>
                     <NitroCardTabsView>
                         { TABS.map((name, index) =>
                         {
-                            const unseenCount = getCount(UNSEEN_CATEGORIES[index]);
-
                             return (
-                                <NitroCardTabsItemView key={ index } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) } count={ unseenCount }>
+                                <NitroCardTabsItemView key={ index } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) } count={ getCount(UNSEEN_CATEGORIES[index]) }>
                                     { LocalizeText(name) }
                                 </NitroCardTabsItemView>
                             );

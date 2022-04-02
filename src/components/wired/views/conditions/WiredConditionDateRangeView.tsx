@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredDateToString, WiredFurniType } from '../../../../api';
 import { Column, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
@@ -25,7 +24,7 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
             endDateMili = endDateInstance.getTime() / 1000;
         }
 
-        setIntParams([startDateMili, endDateMili]);
+        setIntParams([ startDateMili, endDateMili ]);
     }
 
     useEffect(() =>
@@ -39,11 +38,8 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
 
             if(trigger.intData[1] > 0) endDate = new Date((trigger.intData[1] * 1000));
 
-            BatchUpdates(() =>
-            {
-                setStartDate(WiredDateToString(startDate));
-                setEndDate(WiredDateToString(endDate));
-            });
+            setStartDate(WiredDateToString(startDate));
+            setEndDate(WiredDateToString(endDate));
         }
     }, [ trigger ]);
     

@@ -14,5 +14,7 @@
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "editor.wordWrap": "on",
-    "emmet.showExpandedAbbreviation": "never"
+    "emmet.showExpandedAbbreviation": "never",
+    "eslint.validate": [ "javascript", "javascriptreact", "html", "typescriptreact" ],
+    "eslint.workingDirectories": [ "./src" ]
 }

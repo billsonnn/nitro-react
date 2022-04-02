@@ -4,7 +4,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../../api';
 import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, LayoutPetImageView, Text } from '../../../../../../common';
 import { CatalogNameResultEvent, CatalogPurchaseFailureEvent, CatalogWidgetEvent } from '../../../../../../events';
-import { BatchUpdates, DispatchUiEvent, UseUiEvent } from '../../../../../../hooks';
+import { DispatchUiEvent, UseUiEvent } from '../../../../../../hooks';
 import { useCatalogContext } from '../../../../CatalogContext';
 import { GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../common/CatalogUtilities';
 import { CatalogAddOnBadgeWidgetView } from '../../widgets/CatalogAddOnBadgeWidgetView';
@@ -122,12 +122,9 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
         const offer = page.offers[0];
 
-        BatchUpdates(() =>
-        {
-            setCurrentOffer(offer);
-            setPetIndex(GetPetIndexFromLocalization(offer.localizationId));
-            setColorsShowing(false);
-        });
+        setCurrentOffer(offer);
+        setPetIndex(GetPetIndexFromLocalization(offer.localizationId));
+        setColorsShowing(false);
     }, [ page, setCurrentOffer ]);
 
     useEffect(() =>
@@ -153,21 +150,15 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
                     palettes.push(palette);
                 }
     
-                BatchUpdates(() =>
-                {
-                    setSelectedPaletteIndex((palettes.length ? 0 : -1));
-                    setSellablePalettes(palettes);
-                });
+                setSelectedPaletteIndex((palettes.length ? 0 : -1));
+                setSellablePalettes(palettes);
     
                 return;
             }
         }
 
-        BatchUpdates(() =>
-        {
-            setSelectedPaletteIndex(-1);
-            setSellablePalettes([]);
-        });
+        setSelectedPaletteIndex(-1);
+        setSellablePalettes([]);
 
         SendMessageComposer(new GetSellablePetPalettesComposer(productData.type));
     }, [ currentOffer, petPalettes ]);
@@ -178,11 +169,8 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
         const colors = GetPetAvailableColors(petIndex, sellablePalettes);
 
-        BatchUpdates(() =>
-        {
-            setSelectedColorIndex((colors.length ? 0 : -1));
-            setSellableColors(colors);
-        });
+        setSelectedColorIndex((colors.length ? 0 : -1));
+        setSellableColors(colors);
     }, [ petIndex, sellablePalettes ]);
 
     useEffect(() =>
@@ -212,13 +200,13 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
             <Column size={ 7 } overflow="hidden">
                 <AutoGrid columnCount={ 5 }>
                     { !colorsShowing && (sellablePalettes.length > 0) && sellablePalettes.map((palette, index) =>
-                        {
-                            return (
-                                <LayoutGridItem key={ index } itemActive={ (selectedPaletteIndex === index) } onClick={ event => setSelectedPaletteIndex(index) }>
-                                    <LayoutPetImageView typeId={ petIndex } paletteId={ palette.paletteId } direction={ 2 } headOnly={ true } />
-                                </LayoutGridItem>
-                            );
-                        })}
+                    {
+                        return (
+                            <LayoutGridItem key={ index } itemActive={ (selectedPaletteIndex === index) } onClick={ event => setSelectedPaletteIndex(index) }>
+                                <LayoutPetImageView typeId={ petIndex } paletteId={ palette.paletteId } direction={ 2 } headOnly={ true } />
+                            </LayoutGridItem>
+                        );
+                    })}
                     { colorsShowing && (sellableColors.length > 0) && sellableColors.map((colorSet, index) => <LayoutGridItem itemHighlight key={ index } itemActive={ (selectedColorIndex === index) } itemColor={ ColorConverter.int2rgb(colorSet[0]) } className="clear-bg" onClick={ event => setSelectedColorIndex(index) } />) }
                 </AutoGrid>
             </Column>

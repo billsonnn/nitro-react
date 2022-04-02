@@ -140,28 +140,28 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
             <Column fullHeight size={ 7 } overflow="hidden" justifyContent="between">
                 <AutoGrid columnCount={ 1 } className="nitro-catalog-layout-vip-buy-grid">
                     { clubOffers && (clubOffers.length > 0) && clubOffers.map((offer, index) =>
-                        {
-                            return (
-                                <LayoutGridItem key={ index } column={ false } center={ false } alignItems="center" justifyContent="between" itemActive={ pendingOffer === offer } className="p-1" onClick={ () => setOffer(offer) }>
-                                    <i className="icon-hc-banner" />
-                                    <Column justifyContent="end" gap={ 0 }>
-                                        <Text textEnd>{ getOfferText(offer) }</Text>
-                                        <Flex justifyContent="end" gap={ 1 }>
-                                            { (offer.priceCredits > 0) &&
+                    {
+                        return (
+                            <LayoutGridItem key={ index } column={ false } center={ false } alignItems="center" justifyContent="between" itemActive={ pendingOffer === offer } className="p-1" onClick={ () => setOffer(offer) }>
+                                <i className="icon-hc-banner" />
+                                <Column justifyContent="end" gap={ 0 }>
+                                    <Text textEnd>{ getOfferText(offer) }</Text>
+                                    <Flex justifyContent="end" gap={ 1 }>
+                                        { (offer.priceCredits > 0) &&
                                                 <Flex alignItems="center" justifyContent="end" gap={ 1 }>
                                                     <Text>{ offer.priceCredits }</Text>
                                                     <LayoutCurrencyIcon type={ -1 } />
                                                 </Flex> }
-                                            { (offer.priceActivityPoints > 0) &&
+                                        { (offer.priceActivityPoints > 0) &&
                                                 <Flex alignItems="center" justifyContent="end" gap={ 1 }>
                                                     <Text>{ offer.priceActivityPoints }</Text>
                                                     <LayoutCurrencyIcon type={ offer.priceActivityPointsType } />
                                                 </Flex> }
-                                        </Flex>
-                                    </Column>
-                                </LayoutGridItem>
-                            );
-                        }) }
+                                    </Flex>
+                                </Column>
+                            </LayoutGridItem>
+                        );
+                    }) }
                 </AutoGrid>
                 <Text center dangerouslySetInnerHTML={{ __html: LocalizeText('catalog.vip.buy.hccenter') }}></Text>
             </Column>

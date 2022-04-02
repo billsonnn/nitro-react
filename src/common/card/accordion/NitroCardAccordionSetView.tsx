@@ -45,26 +45,26 @@ export const NitroCardAccordionSetView: FC<NitroCardAccordionSetViewProps> = pro
         const closeFunction = close;
 
         setClosers(prevValue =>
-            {
-                const newClosers = [ ...prevValue ];
+        {
+            const newClosers = [ ...prevValue ];
 
-                newClosers.push(closeFunction);
+            newClosers.push(closeFunction);
 
-                return newClosers;
-            });
+            return newClosers;
+        });
 
         return () =>
         {
             setClosers(prevValue =>
-                {
-                    const newClosers = [ ...prevValue ];
+            {
+                const newClosers = [ ...prevValue ];
 
-                    const index = newClosers.indexOf(closeFunction);
+                const index = newClosers.indexOf(closeFunction);
 
-                    if(index >= 0) newClosers.splice(index, 1);
+                if(index >= 0) newClosers.splice(index, 1);
     
-                    return newClosers;
-                });
+                return newClosers;
+            });
         }
     }, [ close, setClosers ]);
 

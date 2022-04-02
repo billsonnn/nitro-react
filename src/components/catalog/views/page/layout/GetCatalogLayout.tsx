@@ -64,7 +64,7 @@ export const GetCatalogLayout = (page: ICatalogPage, hideNavigation: () => void)
         case 'badge_display':
             return <CatalogLayoutBadgeDisplayView { ...layoutProps } />;
         //case 'default_3x3_color_grouping':
-            //return <CatalogLayoutColorGroupingView { ...layoutProps } />;
+        //return <CatalogLayoutColorGroupingView { ...layoutProps } />;
         case 'bots':
         case 'default_3x3':
         default:

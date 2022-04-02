@@ -141,10 +141,10 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
                             if(this.container.roomSession.isRoomOwner || GetSessionDataManager().isModerator)
                             {
                                 NotificationUtilities.confirm(LocalizeText('room.confirm.pick_all'), () =>
-                                    {
-                                        GetSessionDataManager().sendSpecialCommandMessage(':pickall');
-                                    },
-                                    null, null, null, LocalizeText('generic.alert.title'));
+                                {
+                                    GetSessionDataManager().sendSpecialCommandMessage(':pickall');
+                                },
+                                null, null, null, LocalizeText('generic.alert.title'));
                             }
 
                             return null;

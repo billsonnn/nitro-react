@@ -6,5 +6,6 @@ export class FurnitureEngravingLockData
         public type: number = 0,
         public usernames: string[] = [],
         public figures: string[] = [],
-        public date: string = null) {}
+        public date: string = null) 
+    {}
 }

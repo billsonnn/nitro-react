@@ -4,7 +4,7 @@ export class RoomWidgetDanceMessage extends RoomWidgetMessage
 {
     public static DANCE: string = 'RWDM_MESSAGE_DANCE';
     public static NORMAL_STYLE: number = 0;
-    public static CLUB_STYLE: number[] = [2, 3, 4];
+    public static CLUB_STYLE: number[] = [ 2, 3, 4 ];
 
     private _style: number = 0;
 

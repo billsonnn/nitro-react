@@ -3,7 +3,6 @@ import { NavigatorSearchResultList } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, NavigatorSearchResultViewDisplayMode } from '../../../../api';
 import { AutoGrid, AutoGridProps, Column, Flex, Grid, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { NavigatorSearchResultItemView } from './NavigatorSearchResultItemView';
 
 export interface NavigatorSearchResultViewProps extends AutoGridProps
@@ -32,22 +31,19 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
     const toggleDisplayMode = () =>
     {
         setDisplayMode(prevValue =>
-            {
-                if(prevValue === NavigatorSearchResultViewDisplayMode.LIST) return NavigatorSearchResultViewDisplayMode.THUMBNAILS;
+        {
+            if(prevValue === NavigatorSearchResultViewDisplayMode.LIST) return NavigatorSearchResultViewDisplayMode.THUMBNAILS;
 
-                return NavigatorSearchResultViewDisplayMode.LIST;
-            });
+            return NavigatorSearchResultViewDisplayMode.LIST;
+        });
     }
 
     useEffect(() =>
     {
         if(!searchResult) return;
 
-        BatchUpdates(() =>
-        {
-            //setIsExtended(searchResult.closed);
-            setDisplayMode(searchResult.mode);
-        });
+        //setIsExtended(searchResult.closed);
+        setDisplayMode(searchResult.mode);
     }, [ searchResult,props ]);
 
     const gridHasTwoColumns = (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS);
@@ -62,13 +58,13 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
                 <FontAwesomeIcon icon={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 'th' : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 'bars' : null) } className="text-secondary" onClick={ toggleDisplayMode } />
             </Flex> {isExtended && 
                 <>
-                {
-                    gridHasTwoColumns ? <AutoGrid columnCount={3} {...rest} columnMinWidth={110} columnMinHeight={130} className="mx-2">
-                        {searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={index} roomData={room} thumbnail={ true } />) }
+                    {
+                        gridHasTwoColumns ? <AutoGrid columnCount={3} {...rest} columnMinWidth={110} columnMinHeight={130} className="mx-2">
+                            {searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={index} roomData={room} thumbnail={ true } />) }
                         </AutoGrid> : <Grid columnCount={ 1 } className='navigator-grid' gap={ 0 }>
-                        { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={ index } roomData={ room } />) }
-                    </Grid>
- }
+                            { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={ index } roomData={ room } />) }
+                        </Grid>
+                    }
                 </>
             }
         </Column>

@@ -2,7 +2,7 @@ import { AdvancedMap, TradingAcceptComposer, TradingAcceptEvent, TradingCancelCo
 import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { useInventoryFurni } from '.';
-import { BatchUpdates, UseMessageEventHook } from '..';
+import { UseMessageEventHook } from '..';
 import { CloneObject, GetRoomSession, GetSessionDataManager, GroupItem, LocalizeText, NotificationUtilities, SendMessageComposer, TradeState, TradeUserData, TradingNotificationMessage, TradingNotificationType } from '../../api';
 import { InventoryTradeRequestEvent } from '../../events';
 import { UseUiEvent } from '../events';
@@ -130,12 +130,9 @@ const useInventoryTradeState = () =>
             }
         }
 
-        BatchUpdates(() =>
-        {
-            setOwnUser(null);
-            setOtherUser(null);
-            setTradeState(TradeState.TRADING_STATE_READY);
-        });
+        setOwnUser(null);
+        setOtherUser(null);
+        setTradeState(TradeState.TRADING_STATE_READY);
     }, [ ownUser ]);
 
     UseMessageEventHook(TradingCloseEvent, onTradingCloseEvent);
@@ -144,12 +141,9 @@ const useInventoryTradeState = () =>
     {
         const parser = event.getParser();
 
-        BatchUpdates(() =>
-        {
-            setOwnUser(null);
-            setOtherUser(null);
-            setTradeState(TradeState.TRADING_STATE_READY);
-        });
+        setOwnUser(null);
+        setOtherUser(null);
+        setTradeState(TradeState.TRADING_STATE_READY);
     }, []);
 
     UseMessageEventHook(TradingCompletedEvent, onTradingCompletedEvent);
@@ -280,12 +274,9 @@ const useInventoryTradeState = () =>
             secondUser.canTrade = parser.userCanTrade;
         }
         
-        BatchUpdates(() =>
-        {
-            setOwnUser(firstUser);
-            setOtherUser(secondUser);
-            setTradeState(TradeState.TRADING_STATE_RUNNING);
-        });
+        setOwnUser(firstUser);
+        setOtherUser(secondUser);
+        setTradeState(TradeState.TRADING_STATE_RUNNING);
     }, []);
 
     UseMessageEventHook(TradingOpenEvent, onTradingOpenEvent);

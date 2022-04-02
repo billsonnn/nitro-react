@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { AchievementCategory, AddEventLinkTracker, CloneObject, GetAchievementCategoryImageUrl, GetAchievementIsIgnored, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Base, Column, LayoutImage, LayoutProgressBar, NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView, Text } from '../../common';
 import { AchievementsUIUnseenCountEvent } from '../../events';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../hooks';
+import { DispatchUiEvent, UseMessageEventHook } from '../../hooks';
 import { AchievementCategoryView } from './views/AchievementCategoryView';
 import { AchievementsCategoryListView } from './views/category-list/AchievementsCategoryListView';
 
@@ -22,50 +22,50 @@ export const AchievementsView: FC<{}> = props =>
         const categoryName = achievement.category;
 
         setAchievementCategories(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+            const categoryIndex = newValue.findIndex(existing => (existing.code === categoryName));
+
+            if(categoryIndex === -1)
             {
-                const newValue = [ ...prevValue ];
-                const categoryIndex = newValue.findIndex(existing => (existing.code === categoryName));
+                const category = new AchievementCategory(categoryName);
 
-                if(categoryIndex === -1)
+                category.achievements.push(achievement);
+
+                newValue.push(category);
+            }
+            else
+            {
+                const category = CloneObject(newValue[categoryIndex]);
+                const newAchievements = [ ...category.achievements ];
+                const achievementIndex = newAchievements.findIndex(existing => (existing.achievementId === achievement.achievementId));
+                let previousAchievement: AchievementData = null;
+
+                if(achievementIndex === -1)
                 {
-                    const category = new AchievementCategory(categoryName);
-
-                    category.achievements.push(achievement);
-
-                    newValue.push(category);
+                    newAchievements.push(achievement);
                 }
                 else
                 {
-                    const category = CloneObject(newValue[categoryIndex]);
-                    const newAchievements = [ ...category.achievements ];
-                    const achievementIndex = newAchievements.findIndex(existing => (existing.achievementId === achievement.achievementId));
-                    let previousAchievement: AchievementData = null;
+                    previousAchievement = newAchievements[achievementIndex];
 
-                    if(achievementIndex === -1)
-                    {
-                        newAchievements.push(achievement);
-                    }
-                    else
-                    {
-                        previousAchievement = newAchievements[achievementIndex];
-
-                        newAchievements[achievementIndex] = achievement;
-                    }
-
-                    if(!GetAchievementIsIgnored(achievement))
-                    {
-                        achievement.unseen++;
-
-                        if(previousAchievement) achievement.unseen += previousAchievement.unseen;
-                    }
-
-                    category.achievements = newAchievements;
-
-                    newValue[categoryIndex] = category;
+                    newAchievements[achievementIndex] = achievement;
                 }
 
-                return newValue;
-            });
+                if(!GetAchievementIsIgnored(achievement))
+                {
+                    achievement.unseen++;
+
+                    if(previousAchievement) achievement.unseen += previousAchievement.unseen;
+                }
+
+                category.achievements = newAchievements;
+
+                newValue[categoryIndex] = category;
+            }
+
+            return newValue;
+        });
     }, []);
 
     UseMessageEventHook(AchievementEvent, onAchievementEvent);
@@ -92,11 +92,8 @@ export const AchievementsView: FC<{}> = props =>
             existing.achievements.push(achievement);
         }
 
-        BatchUpdates(() =>
-        {
-            setAchievementCategories(categories);
-            setIsInitalized(true);
-        });
+        setAchievementCategories(categories);
+        setIsInitalized(true);
     }, []);
 
     UseMessageEventHook(AchievementsEvent, onAchievementsEvent);
@@ -155,23 +152,23 @@ export const AchievementsView: FC<{}> = props =>
     const setAchievementSeen = useCallback((code: string, achievementId: number) =>
     {
         setAchievementCategories(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            for(const category of newValue)
             {
-                const newValue = [ ...prevValue ];
+                if(category.code !== code) continue;
 
-                for(const category of newValue)
+                for(const achievement of category.achievements)
                 {
-                    if(category.code !== code) continue;
+                    if(achievement.achievementId !== achievementId) continue;
 
-                    for(const achievement of category.achievements)
-                    {
-                        if(achievement.achievementId !== achievementId) continue;
-
-                        achievement.unseen = 0;
-                    }
+                    achievement.unseen = 0;
                 }
+            }
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     const linkReceived = useCallback((url: string) =>

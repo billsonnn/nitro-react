@@ -2,7 +2,7 @@ import { RoomBannedUsersComposer, RoomDataParser, RoomSettingsEvent, SaveRoomSet
 import { FC, useCallback, useState } from 'react';
 import { IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
+import { UseMessageEventHook } from '../../../../hooks';
 import { NavigatorRoomSettingsAccessTabView } from './NavigatorRoomSettingsAccessTabView';
 import { NavigatorRoomSettingsBasicTabView } from './NavigatorRoomSettingsBasicTabView';
 import { NavigatorRoomSettingsModTabView } from './NavigatorRoomSettingsModTabView';
@@ -65,117 +65,114 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
 
     const close = () =>
     {
-        BatchUpdates(() =>
-        {
-            setRoomData(null);
-            setCurrentTab(TABS[0]);
-        });
+        setRoomData(null);
+        setCurrentTab(TABS[0]);
     }
 
     const handleChange = (field: string, value: string | number | boolean) =>
     {
         setRoomData(prevValue =>
+        {
+            const newValue = { ...prevValue };
+
+            switch(field)
             {
-                const newValue = { ...prevValue };
+                case 'name':
+                    newValue.roomName = String(value);
+                    break;
+                case 'description':
+                    newValue.roomDescription = String(value);
+                    break;
+                case 'category':
+                    newValue.categoryId = Number(value);
+                    break;
+                case 'max_visitors': 
+                    newValue.userCount = Number(value);
+                    break;
+                case 'trade_state':
+                    newValue.tradeState =  Number(value);
+                    break;
+                case 'allow_walkthrough':
+                    newValue.allowWalkthrough = Boolean(value);
+                    break;
+                case 'allow_pets':
+                    newValue.allowPets = Boolean(value);
+                    break;
+                case 'allow_pets_eat':
+                    newValue.allowPetsEat = Boolean(value);
+                    break;
+                case 'hide_walls':
+                    newValue.hideWalls = Boolean(value);
+                    break;
+                case 'wall_thickness':
+                    newValue.wallThickness = Number(value);
+                    break;
+                case 'floor_thickness':
+                    newValue.floorThickness = Number(value);
+                    break;
+                case 'lock_state':
+                    newValue.lockState = Number(value);
+                    break;
+                case 'password':
+                    newValue.lockState = RoomDataParser.PASSWORD_STATE;
+                    newValue.password = String(value);
+                    break;
+                case 'moderation_mute':
+                    newValue.moderationSettings.allowMute = Number(value);
+                    break;
+                case 'moderation_kick':
+                    newValue.moderationSettings.allowKick = Number(value);
+                    break;
+                case 'moderation_ban':
+                    newValue.moderationSettings.allowBan = Number(value);
+                    break;
+                case 'bubble_mode':
+                    newValue.chatSettings.mode = Number(value);
+                    break;
+                case 'chat_weight':
+                    newValue.chatSettings.weight = Number(value);
+                    break;
+                case 'bubble_speed':
+                    newValue.chatSettings.speed = Number(value);
+                    break;
+                case 'flood_protection':
+                    newValue.chatSettings.protection = Number(value);
+                    break;
+                case 'chat_distance':
+                    newValue.chatSettings.distance = Number(value);
+                    break;
+            }
 
-                switch(field)
-                {
-                    case 'name':
-                        newValue.roomName = String(value);
-                        break;
-                    case 'description':
-                        newValue.roomDescription = String(value);
-                        break;
-                    case 'category':
-                        newValue.categoryId = Number(value);
-                        break;
-                    case 'max_visitors': 
-                        newValue.userCount = Number(value);
-                        break;
-                    case 'trade_state':
-                        newValue.tradeState =  Number(value);
-                        break;
-                    case 'allow_walkthrough':
-                        newValue.allowWalkthrough = Boolean(value);
-                        break;
-                    case 'allow_pets':
-                        newValue.allowPets = Boolean(value);
-                        break;
-                    case 'allow_pets_eat':
-                        newValue.allowPetsEat = Boolean(value);
-                        break;
-                    case 'hide_walls':
-                        newValue.hideWalls = Boolean(value);
-                        break;
-                    case 'wall_thickness':
-                        newValue.wallThickness = Number(value);
-                        break;
-                    case 'floor_thickness':
-                        newValue.floorThickness = Number(value);
-                        break;
-                    case 'lock_state':
-                        newValue.lockState = Number(value);
-                        break;
-                    case 'password':
-                        newValue.lockState = RoomDataParser.PASSWORD_STATE;
-                        newValue.password = String(value);
-                        break;
-                    case 'moderation_mute':
-                        newValue.moderationSettings.allowMute = Number(value);
-                        break;
-                    case 'moderation_kick':
-                        newValue.moderationSettings.allowKick = Number(value);
-                        break;
-                    case 'moderation_ban':
-                        newValue.moderationSettings.allowBan = Number(value);
-                        break;
-                    case 'bubble_mode':
-                        newValue.chatSettings.mode = Number(value);
-                        break;
-                    case 'chat_weight':
-                        newValue.chatSettings.weight = Number(value);
-                        break;
-                    case 'bubble_speed':
-                        newValue.chatSettings.speed = Number(value);
-                        break;
-                    case 'flood_protection':
-                        newValue.chatSettings.protection = Number(value);
-                        break;
-                    case 'chat_distance':
-                        newValue.chatSettings.distance = Number(value);
-                        break;
-                }
+            SendMessageComposer(
+                new SaveRoomSettingsComposer(
+                    newValue.roomId,
+                    newValue.roomName,
+                    newValue.roomDescription,
+                    newValue.lockState,
+                    newValue.password,
+                    newValue.userCount,
+                    newValue.categoryId,
+                    newValue.tags.length,
+                    newValue.tags,
+                    newValue.tradeState,
+                    newValue.allowPets,
+                    newValue.allowPetsEat,
+                    newValue.allowWalkthrough,
+                    newValue.hideWalls,
+                    newValue.wallThickness,
+                    newValue.floorThickness,
+                    newValue.moderationSettings.allowMute,
+                    newValue.moderationSettings.allowKick,
+                    newValue.moderationSettings.allowBan,
+                    newValue.chatSettings.mode,
+                    newValue.chatSettings.weight,
+                    newValue.chatSettings.speed,
+                    newValue.chatSettings.distance,
+                    newValue.chatSettings.protection
+                ));
 
-                SendMessageComposer(
-                    new SaveRoomSettingsComposer(
-                        newValue.roomId,
-                        newValue.roomName,
-                        newValue.roomDescription,
-                        newValue.lockState,
-                        newValue.password,
-                        newValue.userCount,
-                        newValue.categoryId,
-                        newValue.tags.length,
-                        newValue.tags,
-                        newValue.tradeState,
-                        newValue.allowPets,
-                        newValue.allowPetsEat,
-                        newValue.allowWalkthrough,
-                        newValue.hideWalls,
-                        newValue.wallThickness,
-                        newValue.floorThickness,
-                        newValue.moderationSettings.allowMute,
-                        newValue.moderationSettings.allowKick,
-                        newValue.moderationSettings.allowBan,
-                        newValue.chatSettings.mode,
-                        newValue.chatSettings.weight,
-                        newValue.chatSettings.speed,
-                        newValue.chatSettings.distance,
-                        newValue.chatSettings.protection
-                    ));
-
-                return newValue;
-            });
+            return newValue;
+        });
     }
 
     if(!roomData) return null;
@@ -185,9 +182,9 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('navigator.roomsettings') } onCloseClick={ close } />
             <NitroCardTabsView>
                 { TABS.map(tab =>
-                    {
-                        return <NitroCardTabsItemView key={ tab } isActive={ (currentTab === tab) } onClick={ event => setCurrentTab(tab) }>{ LocalizeText(tab) }</NitroCardTabsItemView>
-                    }) }
+                {
+                    return <NitroCardTabsItemView key={ tab } isActive={ (currentTab === tab) } onClick={ event => setCurrentTab(tab) }>{ LocalizeText(tab) }</NitroCardTabsItemView>
+                }) }
             </NitroCardTabsView>
             <NitroCardContentView>
                 { (currentTab === TABS[0]) &&

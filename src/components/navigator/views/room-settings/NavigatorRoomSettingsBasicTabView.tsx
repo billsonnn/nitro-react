@@ -3,7 +3,6 @@ import { RoomDeleteComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetMaxVisitorsList, IRoomData, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useNavigatorContext } from '../../NavigatorContext';
 
 const ROOM_NAME_MIN_LENGTH = 3;
@@ -54,11 +53,8 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setRoomName(roomData.roomName);
-            setRoomDescription(roomData.roomDescription);
-        });
+        setRoomName(roomData.roomName);
+        setRoomDescription(roomData.roomDescription);
     }, [ roomData ]);
 
     return (

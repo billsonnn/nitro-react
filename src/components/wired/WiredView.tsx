@@ -38,9 +38,9 @@ export const WiredView: FC<{}> = props =>
         if(!IsOwnerOfFloorFurniture(trigger.id))
         {
             NotificationUtilities.confirm(LocalizeText('wiredfurni.nonowner.change.confirm.body'), () =>
-                {
-                    save(trigger)
-                }, null, null, null, LocalizeText('wiredfurni.nonowner.change.confirm.title'));
+            {
+                save(trigger)
+            }, null, null, null, LocalizeText('wiredfurni.nonowner.change.confirm.title'));
         }
         else
         {

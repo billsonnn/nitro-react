@@ -5,7 +5,7 @@ import { FC, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetGroupInformation, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, LayoutBadgeImageView, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, UserProfileIconView } from '../../../common';
 import { FloorplanEditorEvent, RoomWidgetThumbnailEvent } from '../../../events';
-import { BatchUpdates, DispatchUiEvent } from '../../../hooks';
+import { DispatchUiEvent } from '../../../hooks';
 import { useNavigatorContext } from '../NavigatorContext';
 
 export class NavigatorRoomInfoViewProps
@@ -70,7 +70,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
             case 'toggle_mute':
                 setIsRoomMuted(value => !value);
                 SendMessageComposer(new RoomMuteComposer());
-            return;
+                return;
             case 'open_floorplan_editor':
                 DispatchUiEvent(new FloorplanEditorEvent(FloorplanEditorEvent.TOGGLE_FLOORPLAN_EDITOR));
                 return;
@@ -85,11 +85,9 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
     {
         if(!navigatorData) return;
 
-        BatchUpdates(() =>
-        {
-            setIsRoomPicked(navigatorData.currentRoomIsStaffPick);
-            if(navigatorData.enteredGuestRoom) setIsRoomMuted(navigatorData.enteredGuestRoom.allInRoomMuted);
-        });
+        setIsRoomPicked(navigatorData.currentRoomIsStaffPick);
+        
+        if(navigatorData.enteredGuestRoom) setIsRoomMuted(navigatorData.enteredGuestRoom.allInRoomMuted);
     }, [ navigatorData ]);
 
     if(!navigatorData.enteredGuestRoom) return null;
@@ -126,9 +124,9 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                         { (navigatorData.enteredGuestRoom.tags.length > 0) &&
                                             <Flex alignItems="center" gap={ 1 }>
                                                 { navigatorData.enteredGuestRoom.tags.map(tag =>
-                                                    {
-                                                        return <Text key={ tag } pointer className="bg-muted rounded p-1" onClick={ event => processAction('navigator_search_tag', tag) }>#{ tag }</Text>
-                                                    }) }
+                                                {
+                                                    return <Text key={ tag } pointer className="bg-muted rounded p-1" onClick={ event => processAction('navigator_search_tag', tag) }>#{ tag }</Text>
+                                                }) }
                                             </Flex> }
                                     </Column>
                                     <Column alignItems="center" gap={ 1 }>
@@ -142,20 +140,20 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                     <Flex pointer alignItems="center" gap={ 1 } onClick={ () => processAction('open_group_info') }>
                                         <LayoutBadgeImageView className="flex-none" badgeCode={ navigatorData.enteredGuestRoom.groupBadgeCode } isGroup={ true } />
                                         <Text underline>
-                                            { LocalizeText('navigator.guildbase', ['groupName'], [navigatorData.enteredGuestRoom.groupName]) }
+                                            { LocalizeText('navigator.guildbase', [ 'groupName' ], [ navigatorData.enteredGuestRoom.groupName ]) }
                                         </Text>
                                     </Flex> }
                             </Column>
                         </Flex>
-                    <Column gap={ 1 }>
-                        { hasPermission('staff_pick') &&
+                        <Column gap={ 1 }>
+                            { hasPermission('staff_pick') &&
                             <Button onClick={ () => processAction('toggle_pick') }>
                                 { LocalizeText(isRoomPicked ? 'navigator.staffpicks.unpick' : 'navigator.staffpicks.pick') }
                             </Button> }
-                        <Button variant="danger" disabled>
-                            { LocalizeText('help.emergency.main.report.room') }
-                        </Button>
-                        { hasPermission('settings') &&
+                            <Button variant="danger" disabled>
+                                { LocalizeText('help.emergency.main.report.room') }
+                            </Button>
+                            { hasPermission('settings') &&
                             <>
                                 <Button onClick={ () => processAction('toggle_mute') }>
                                     { LocalizeText(isRoomMuted ? 'navigator.muteall_on' : 'navigator.muteall_off') }
@@ -164,8 +162,8 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                     { LocalizeText('open.floor.plan.editor') }
                                 </Button>
                             </> }
-                    </Column>
-                </> }
+                        </Column>
+                    </> }
                 
             </NitroCardContentView>
         </NitroCardView>

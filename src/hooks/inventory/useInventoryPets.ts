@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { useInventoryUnseenTracker } from '.';
 import { UseMessageEventHook } from '..';
-import { SendMessageComposer } from '../../api';
+import { SendMessageComposer, UnseenItemCategory } from '../../api';
 import { IPetItem } from '../../api/inventory/IPetItem';
 import { useSharedVisibility } from '../useSharedVisibility';
 import { addSinglePetItem, mergePetFragments, processPetFragment, removePetItemById } from './common';
@@ -12,13 +12,11 @@ let petMsgFragments: Map<number, PetData>[] = null;
 
 const useInventoryPetsState = () =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
     const [ needsUpdate, setNeedsUpdate ] = useState(true);
     const [ petItems, setPetItems ] = useState<IPetItem[]>([]);
     const [ selectedPet, setSelectedPet ] = useState<IPetItem>(null);
-    const { isUnseen = null } = useInventoryUnseenTracker();
-
-    const selectPet = (pet: IPetItem) => setSelectedPet(pet);
+    const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
+    const { isUnseen = null, resetCategory = null } = useInventoryUnseenTracker();
 
     const onPetInventoryEvent = useCallback((event: PetInventoryEvent) =>
     {
@@ -52,11 +50,11 @@ const useInventoryPetsState = () =>
         {
             const newValue = [ ...prevValue ];
 
-            addSinglePetItem(parser.pet, newValue, true);
+            addSinglePetItem(parser.pet, newValue, isUnseen(UnseenItemCategory.PET, parser.pet.id));
 
             return newValue;
         });
-    }, []);
+    }, [ isUnseen ]);
 
     UseMessageEventHook(PetAddedToInventoryEvent, onPetAddedToInventoryEvent);
 
@@ -94,6 +92,16 @@ const useInventoryPetsState = () =>
 
     useEffect(() =>
     {
+        if(!isVisible) return;
+
+        return () =>
+        {
+            resetCategory(UnseenItemCategory.PET);
+        }
+    }, [ isVisible, resetCategory ]);
+
+    useEffect(() =>
+    {
         if(!isVisible || !needsUpdate) return;
 
         SendMessageComposer(new RequestPetsComposer());
@@ -101,25 +109,7 @@ const useInventoryPetsState = () =>
         setNeedsUpdate(false);
     }, [ isVisible, needsUpdate ]);
 
-    return { petItems, selectedPet, selectPet, setIsVisible };
+    return { petItems, selectedPet, setSelectedPet, activate, deactivate };
 }
 
-export const useInventoryPets = () =>
-{
-    const { setIsVisible, ...rest } = useBetween(useInventoryPetsState);
-    const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
-
-    useEffect(() =>
-    {
-        const id = activate();
-
-        return () => deactivate(id);
-    }, [ activate, deactivate ]);
-
-    useEffect(() =>
-    {
-        setIsVisible(isVisible);
-    }, [ isVisible, setIsVisible ]);
-
-    return { ...rest };
-}
+export const useInventoryPets = () => useBetween(useInventoryPetsState);

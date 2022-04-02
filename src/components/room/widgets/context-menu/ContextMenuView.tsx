@@ -2,7 +2,6 @@ import { FixedSizeStack, NitroPoint, NitroRectangle, RoomObjectType } from '@nit
 import { CSSProperties, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { GetNitroInstance, GetRoomEngine, GetRoomObjectBounds, GetRoomSession, GetTicker } from '../../../../api';
 import { Base, BaseProps } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 
 interface ContextMenuViewProps extends BaseProps<HTMLDivElement>
 {
@@ -55,11 +54,11 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         if(isFading)
         {
             setFadeTime(prevValue =>
-                {
-                    newFadeTime += prevValue;
+            {
+                newFadeTime += prevValue;
 
-                    return newFadeTime;
-                });
+                return newFadeTime;
+            });
 
             newOpacity = ((1 - (newFadeTime / fadeLength)) * 1);
 
@@ -102,11 +101,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         if(y < SPACE_AROUND_EDGES) y = SPACE_AROUND_EDGES;
         else if(y > maxTop) y = maxTop;
 
-        BatchUpdates(() =>
-        {
-            setCurrentDeltaY(maxStack);
-            setPos({ x, y });
-        });
+        setCurrentDeltaY(maxStack);
+        setPos({ x, y });
     }, [ deltaYStack, currentDeltaY, getOffset ]);
 
     const update = useCallback((time: number) =>
@@ -145,11 +141,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setDeltaYStack(new FixedSizeStack(LOCATION_STACK_SIZE));
-            setCurrentDeltaY(-1000000);
-        });
+        setDeltaYStack(new FixedSizeStack(LOCATION_STACK_SIZE));
+        setCurrentDeltaY(-1000000);
     }, []);
 
     useEffect(() =>

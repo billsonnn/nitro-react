@@ -14,9 +14,10 @@ interface CatalogBadgeSelectorWidgetViewProps extends AutoGridProps
 export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewProps> = props =>
 {
     const { columnCount = 5, ...rest } = props;
+    const [ isVisible, setIsVisible ] = useState(false);
     const [ currentBadgeCode, setCurrentBadgeCode ] = useState<string>(null);
     const { currentOffer = null, setPurchaseOptions = null } = useCatalogContext();
-    const { badgeCodes = [] } = useInventoryBadges();
+    const { badgeCodes = [], activate = null, deactivate = null } = useInventoryBadges();
 
     const previewStuffData = useMemo(() =>
     {
@@ -34,27 +35,43 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
         if(!currentOffer) return;
 
         setPurchaseOptions(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.extraParamRequired = true;
-                newValue.extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
-                newValue.previewStuffData = previewStuffData;
+            newValue.extraParamRequired = true;
+            newValue.extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
+            newValue.previewStuffData = previewStuffData;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ currentOffer, previewStuffData, setPurchaseOptions ]);
+
+    useEffect(() =>
+    {
+        if(!isVisible) return;
+
+        const id = activate();
+
+        return () => deactivate(id);
+    }, [ isVisible, activate, deactivate ]);
+
+    useEffect(() =>
+    {
+        setIsVisible(true);
+
+        return () => setIsVisible(false);
+    }, []);
 
     return (
         <AutoGrid columnCount={ columnCount } { ...rest }>
             { badgeCodes && (badgeCodes.length > 0) && badgeCodes.map((badgeCode, index) =>
-                {
-                    return (
-                        <LayoutGridItem key={ index } itemActive={ (currentBadgeCode === badgeCode) } onClick={ event => setCurrentBadgeCode(badgeCode) }> 
-                            <LayoutBadgeImageView badgeCode={ badgeCode } />
-                        </LayoutGridItem>
-                    );
-                }) }
+            {
+                return (
+                    <LayoutGridItem key={ index } itemActive={ (currentBadgeCode === badgeCode) } onClick={ event => setCurrentBadgeCode(badgeCode) }> 
+                        <LayoutBadgeImageView badgeCode={ badgeCode } />
+                    </LayoutGridItem>
+                );
+            }) }
         </AutoGrid>
     );
 }

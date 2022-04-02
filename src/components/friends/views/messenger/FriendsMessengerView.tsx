@@ -3,7 +3,7 @@ import { FollowFriendMessageComposer, ILinkEventTracker } from '@nitrots/nitro-r
 import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { AddEventLinkTracker, GetUserProfile, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, LayoutGridItem, LayoutItemCountView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { BatchUpdates, useMessenger } from '../../../../hooks';
+import { useMessenger } from '../../../../hooks';
 import { FriendsMessengerThreadView } from './FriendsMessengerThreadView';
 
 export const FriendsMessengerView: FC<{}> = props =>
@@ -54,11 +54,8 @@ export const FriendsMessengerView: FC<{}> = props =>
 
                         if(!thread) return;
 
-                        BatchUpdates(() =>
-                        {
-                            setActiveThread(thread);
-                            setIsVisible(true);
-                        });
+                        setActiveThread(thread);
+                        setIsVisible(true);
                     }
                 }
             },

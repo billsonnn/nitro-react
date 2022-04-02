@@ -28,15 +28,15 @@ export const FloorplanCanvasView: FC<FloorplanCanvasViewProps> = props =>
         let newFloorPlanSettings: IFloorplanSettings = null;
 
         setOriginalFloorplanSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.reservedTiles = parser.blockedTilesMap;
+            newValue.reservedTiles = parser.blockedTilesMap;
 
-                newFloorPlanSettings = newValue;
+            newFloorPlanSettings = newValue;
 
-                return newValue;
-            });
+            return newValue;
+        });
         
         FloorplanEditor.instance.setTilemap(newFloorPlanSettings.tilemap, parser.blockedTilesMap);
 
@@ -52,23 +52,23 @@ export const FloorplanCanvasView: FC<FloorplanCanvasViewProps> = props =>
         const parser = event.getParser();
 
         setOriginalFloorplanSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.entryPoint = [ parser.x, parser.y ];
-                newValue.entryPointDir = parser.direction;
+            newValue.entryPoint = [ parser.x, parser.y ];
+            newValue.entryPointDir = parser.direction;
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         setVisualizationSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.entryPointDir = parser.direction;
+            newValue.entryPointDir = parser.direction;
 
-                return newValue;
-            });
+            return newValue;
+        });
         
         FloorplanEditor.instance.doorLocation = new NitroPoint(parser.x, parser.y);
 
@@ -107,14 +107,14 @@ export const FloorplanCanvasView: FC<FloorplanCanvasViewProps> = props =>
             FloorplanEditor.instance.clear();
 
             setVisualizationSettings(prevValue =>
-                {
-                    return {
-                        wallHeight: originalFloorplanSettings.wallHeight,
-                        thicknessWall: originalFloorplanSettings.thicknessWall,
-                        thicknessFloor: originalFloorplanSettings.thicknessFloor,
-                        entryPointDir: prevValue.entryPointDir
-                    }
-                });
+            {
+                return {
+                    wallHeight: originalFloorplanSettings.wallHeight,
+                    thicknessWall: originalFloorplanSettings.thicknessWall,
+                    thicknessFloor: originalFloorplanSettings.thicknessFloor,
+                    entryPointDir: prevValue.entryPointDir
+                }
+            });
         }
     }, [ originalFloorplanSettings.thicknessFloor, originalFloorplanSettings.thicknessWall, originalFloorplanSettings.wallHeight, setVisualizationSettings ]);
 

@@ -83,8 +83,8 @@ export const NameChangeInputView:FC<NameChangeLayoutViewProps> = props =>
                 <button className="btn btn-primary" disabled={ newUsername === '' || isChecking } onClick={ check }>{ LocalizeText('tutorial.name_change.check') }</button>
             </div>
             { !errorCode && !canProceed && <div className="bg-muted rounded p-2 text-center">{ LocalizeText('help.tutorial.name.info') }</div> }
-            { errorCode && <div className="bg-danger rounded p-2 text-center text-white">{ LocalizeText(`help.tutorial.name.${errorCode}`, ['name'], [newUsername]) }</div> }
-            { canProceed && <div className="bg-success rounded p-2 text-center text-white">{ LocalizeText('help.tutorial.name.available', ['name'], [newUsername]) }</div> }
+            { errorCode && <div className="bg-danger rounded p-2 text-center text-white">{ LocalizeText(`help.tutorial.name.${errorCode}`, [ 'name' ], [ newUsername ]) }</div> }
+            { canProceed && <div className="bg-success rounded p-2 text-center text-white">{ LocalizeText('help.tutorial.name.available', [ 'name' ], [ newUsername ]) }</div> }
             { suggestions && <div className="d-flex flex-column gap-2">
                 {
                     suggestions.map((suggestion, i) => 

@@ -44,8 +44,8 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
             text = hours + ' ' + LocalizeText('catalog.marketplace.offer.hours') + ' ' + text;
         }
 
-        return LocalizeText('catalog.marketplace.offer.time_left', ['time'], [text] );
-    }, [offerData]);
+        return LocalizeText('catalog.marketplace.offer.time_left', [ 'time' ], [ text ] );
+    }, [ offerData ]);
 
     return (
         <LayoutGridItem shrink center={ false } column={ false } alignItems="center" className="p-1">
@@ -59,8 +59,8 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
                     </> }
                 { (type === PUBLIC_OFFER) &&
                     <>
-                        <Text>{ LocalizeText('catalog.marketplace.offer.price_public_item', ['price', 'average'], [offerData.price.toString(), offerData.averagePrice.toString() ]) }</Text>
-                        <Text>{ LocalizeText('catalog.marketplace.offer_count', ['count'], [offerData.offerCount.toString()]) }</Text>
+                        <Text>{ LocalizeText('catalog.marketplace.offer.price_public_item', [ 'price', 'average' ], [ offerData.price.toString(), offerData.averagePrice.toString() ]) }</Text>
+                        <Text>{ LocalizeText('catalog.marketplace.offer_count', [ 'count' ], [ offerData.offerCount.toString() ]) }</Text>
                     </> }
             </Column>
             <Column gap={ 1 }>

@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, KeyboardEvent, useEffect, useState } from 'react';
 import { INavigatorSearchFilter, LocalizeText, SearchFilterOptions } from '../../../../api';
 import { Button, Flex } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useNavigatorContext } from '../../NavigatorContext';
 
 export interface NavigatorSearchViewProps
@@ -39,7 +38,7 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
     useEffect(() =>
     {
-        if(!searchResult) return null;
+        if(!searchResult) return;
 
         const split = searchResult.data.split(':');
 
@@ -60,11 +59,8 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
         if(!filter) filter = SearchFilterOptions[0];
 
-        BatchUpdates(() =>
-        {
-            setSearchFilterIndex(SearchFilterOptions.findIndex(option => (option === filter)));
-            setSearchValue(value);
-        });
+        setSearchFilterIndex(SearchFilterOptions.findIndex(option => (option === filter)));
+        setSearchValue(value);
     }, [ searchResult ]);
 
     return (

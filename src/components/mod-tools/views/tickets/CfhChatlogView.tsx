@@ -19,7 +19,7 @@ export const CfhChatlogView: FC<CfhChatlogViewProps> = props =>
     useEffect(() =>
     {
         SendMessageComposer(new GetCfhChatlogMessageComposer(issueId));
-    }, [issueId]);
+    }, [ issueId ]);
 
     const onCfhChatlogEvent = useCallback((event: CfhChatlogEvent) =>
     {
@@ -28,7 +28,7 @@ export const CfhChatlogView: FC<CfhChatlogViewProps> = props =>
         if(!parser || parser.data.issueId !== issueId) return;
 
         setChatlogData(parser.data);
-    }, [issueId]);
+    }, [ issueId ]);
 
     UseMessageEventHook(CfhChatlogEvent, onCfhChatlogEvent);
 
@@ -36,7 +36,7 @@ export const CfhChatlogView: FC<CfhChatlogViewProps> = props =>
         <NitroCardView className="nitro-mod-tools-chatlog" theme="primary-slim">
             <NitroCardHeaderView headerText={'Issue Chatlog'} onCloseClick={onCloseClick} />
             <NitroCardContentView className="text-black">
-                { chatlogData && <ChatlogView records={[chatlogData.chatRecord]} />}
+                { chatlogData && <ChatlogView records={[ chatlogData.chatRecord ]} />}
             </NitroCardContentView>
         </NitroCardView>
     );

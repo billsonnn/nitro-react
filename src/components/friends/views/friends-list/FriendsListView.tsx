@@ -35,29 +35,29 @@ export const FriendsListView: FC<{}> = props =>
         }
 
         return LocalizeText('friendlist.removefriendconfirm.userlist', [ 'user_names' ], [ userNames.join(', ') ]);
-    }, [offlineFriends, onlineFriends, selectedFriendsIds]);
+    }, [ offlineFriends, onlineFriends, selectedFriendsIds ]);
 
     const selectFriend = useCallback((userId: number) =>
     {
         if(userId < 0) return;
 
         setSelectedFriendsIds(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            const existingUserIdIndex: number = newValue.indexOf(userId);
+
+            if(existingUserIdIndex > -1)
             {
-                const newValue = [ ...prevValue ];
+                newValue.splice(existingUserIdIndex, 1)
+            }
+            else
+            {
+                newValue.push(userId);
+            }
 
-                const existingUserIdIndex: number = newValue.indexOf(userId);
-
-                if(existingUserIdIndex > -1)
-                {
-                    newValue.splice(existingUserIdIndex, 1)
-                }
-                else
-                {
-                    newValue.push(userId);
-                }
-
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ setSelectedFriendsIds ]);
 
     const sendRoomInvite = (message: string) =>
@@ -73,11 +73,11 @@ export const FriendsListView: FC<{}> = props =>
         if(selectedFriendsIds.length === 0) return;
 
         setSelectedFriendsIds(prevValue =>
-            {
-                SendMessageComposer(new RemoveFriendComposer(...prevValue));
+        {
+            SendMessageComposer(new RemoveFriendComposer(...prevValue));
 
-                return [];
-            });
+            return [];
+        });
 
         setShowRemoveFriendsConfirmation(false);
     }

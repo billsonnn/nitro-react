@@ -7,5 +7,6 @@ export class FurnitureMannequinData
         public figure: string,
         public gender: string,
         public clubLevel: number,
-        public renderedFigure: string = null) {}
+        public renderedFigure: string = null) 
+    {}
 }

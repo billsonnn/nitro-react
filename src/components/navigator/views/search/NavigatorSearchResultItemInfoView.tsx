@@ -2,7 +2,6 @@ import { RoomDataParser } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useEffect, useState } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
 import { Base, NitroCardContentView } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 
 interface NavigatorSearchResultItemInfoViewProps
 {
@@ -19,19 +18,16 @@ export const NavigatorSearchResultItemInfoView: FC<NavigatorSearchResultItemInfo
     {
         event.stopPropagation();
         
-        BatchUpdates(() =>
+        let visible = false;
+
+        setIsVisible(prevValue =>
         {
-            let visible = false;
+            visible = !prevValue;
 
-            setIsVisible(prevValue =>
-                {
-                    visible = !prevValue;
+            return visible;
+        });
 
-                    return visible;
-                });
-
-            if(visible) setTarget((event.target as (EventTarget & HTMLElement)));
-        })
+        if(visible) setTarget((event.target as (EventTarget & HTMLElement)));
     }
 
     useEffect(() =>

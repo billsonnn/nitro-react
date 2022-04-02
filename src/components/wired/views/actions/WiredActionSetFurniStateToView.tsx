@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -16,12 +15,9 @@ export const WiredActionSetFurniStateToView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setStateFlag(trigger.getBoolean(0) ? 1 : 0);
-            setDirectionFlag(trigger.getBoolean(1) ? 1 : 0);
-            setPositionFlag(trigger.getBoolean(2) ? 1 : 0);
-        });
+        setStateFlag(trigger.getBoolean(0) ? 1 : 0);
+        setDirectionFlag(trigger.getBoolean(1) ? 1 : 0);
+        setPositionFlag(trigger.getBoolean(2) ? 1 : 0);
     }, [ trigger ]);
 
     return (

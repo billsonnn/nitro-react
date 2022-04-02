@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -35,19 +34,16 @@ export const WiredActionMoveFurniToView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
+        if(trigger.intData.length >= 2)
         {
-            if(trigger.intData.length >= 2)
-            {
-                setSpacing(trigger.intData[1]);
-                setMovement(trigger.intData[0]);
-            }
-            else
-            {
-                setSpacing(-1);
-                setMovement(-1);
-            }
-        });
+            setSpacing(trigger.intData[1]);
+            setMovement(trigger.intData[0]);
+        }
+        else
+        {
+            setSpacing(-1);
+            setMovement(-1);
+        }
     }, [ trigger ]);
 
     return (
@@ -65,14 +61,14 @@ export const WiredActionMoveFurniToView: FC<{}> = props =>
                 <Text bold>{ LocalizeText('wiredfurni.params.startdir') }</Text>
                 <Flex gap={ 1 }>
                     { directionOptions.map(value =>
-                        {
-                            return (
-                                <Flex key={ value.value } alignItems="center" gap={ 1 }>
-                                    <input className="form-check-input" type="radio" name="movement" id={ `movement${ value.value }` } checked={ (movement === value.value) } onChange={ event => setMovement(value.value) } />
-                                    <Text><i className={ `icon icon-${ value.icon }` } /></Text>
-                                </Flex>
-                            )
-                        }) }
+                    {
+                        return (
+                            <Flex key={ value.value } alignItems="center" gap={ 1 }>
+                                <input className="form-check-input" type="radio" name="movement" id={ `movement${ value.value }` } checked={ (movement === value.value) } onChange={ event => setMovement(value.value) } />
+                                <Text><i className={ `icon icon-${ value.icon }` } /></Text>
+                            </Flex>
+                        )
+                    }) }
                 </Flex>
             </Column>
         </WiredActionBaseView>

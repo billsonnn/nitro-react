@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, LocalizeText, RoomWidgetZoomToggleMessage, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
-import { BatchUpdates, UseMessageEventHook, useSharedNavigatorData } from '../../../../hooks';
+import { UseMessageEventHook, useSharedNavigatorData } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
@@ -46,12 +46,9 @@ export const RoomToolsWidgetView: FC<{}> = props =>
 
         if(!parser.roomEnter) return;
 
-        BatchUpdates(() =>
-        {
-            if(roomName !== parser.data.roomName) setRoomName(parser.data.roomName);
-            if(roomOwner !== parser.data.ownerName) setRoomOwner(parser.data.ownerName);
-            if(roomTags !== parser.data.tags) setRoomTags(parser.data.tags);
-        });
+        if(roomName !== parser.data.roomName) setRoomName(parser.data.roomName);
+        if(roomOwner !== parser.data.ownerName) setRoomOwner(parser.data.ownerName);
+        if(roomTags !== parser.data.tags) setRoomTags(parser.data.tags);
     }, [ roomName, roomOwner, roomTags ]);
 
     UseMessageEventHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);

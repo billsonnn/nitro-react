@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, LayoutCurrencyIcon, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { InventoryEvent } from '../../../../events';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
+import { DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 
 export interface CameraWidgetCheckoutViewProps
 {
@@ -27,11 +27,8 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
 
     const onCameraPurchaseOKMessageEvent = useCallback((event: CameraPurchaseOKMessageEvent) =>
     {
-        BatchUpdates(() =>
-        {
-            setPicturesBought(value => (value + 1));
-            setIsWaiting(false);
-        });
+        setPicturesBought(value => (value + 1));
+        setIsWaiting(false);
     }, []);
 
     UseMessageEventHook(CameraPurchaseOKMessageEvent, onCameraPurchaseOKMessageEvent);
@@ -40,13 +37,10 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
     {
         const parser = event.getParser();
 
-        BatchUpdates(() =>
-        {
-            setPublishUrl(parser.extraDataId);
-            setPublishCooldown(parser.secondsToWait);
-            setWasPicturePublished(parser.ok);
-            setIsWaiting(false);
-        });
+        setPublishUrl(parser.extraDataId);
+        setPublishCooldown(parser.secondsToWait);
+        setWasPicturePublished(parser.ok);
+        setIsWaiting(false);
     }, []);
 
     UseMessageEventHook(CameraPublishStatusMessageEvent, onCameraPublishStatusMessageEvent);

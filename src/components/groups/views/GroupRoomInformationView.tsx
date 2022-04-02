@@ -75,9 +75,9 @@ export const GroupRoomInformationView: FC<{}> = props =>
     const leaveGroup = () =>
     {
         NotificationUtilities.confirm(LocalizeText('group.leaveconfirm.desc'), () =>
-            {
-                SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
-            }, null);
+        {
+            SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
+        }, null);
     }
 
     const isRealOwner = (groupInformation && (groupInformation.ownerName === GetSessionDataManager().userName));
@@ -134,7 +134,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
                             <Button fullWidth variant="success" disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) } onClick={ handleButtonClick }>
                                 { LocalizeText(getButtonText()) }
                             </Button>
-                            }
+                        }
                     </> }
             </Column>
         </Base>

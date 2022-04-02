@@ -49,7 +49,7 @@ export class FurnitureRoomLinkHandler extends RoomWidgetHandler
 
     public get eventTypes(): string[]
     {
-        return [RoomEngineTriggerWidgetEvent.REQUEST_ROOM_LINK];
+        return [ RoomEngineTriggerWidgetEvent.REQUEST_ROOM_LINK ];
     }
 
     public get messageTypes(): string[]

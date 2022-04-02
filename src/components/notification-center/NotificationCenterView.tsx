@@ -44,40 +44,40 @@ export const NotificationCenterView: FC<{}> = props =>
     const closeAlert = useCallback((alert: NotificationAlertItem) =>
     {
         setAlerts(prevValue =>
-            {
-                const newAlerts = [ ...prevValue ];
-                const index = newAlerts.findIndex(value => (alert === value));
+        {
+            const newAlerts = [ ...prevValue ];
+            const index = newAlerts.findIndex(value => (alert === value));
 
-                if(index >= 0) newAlerts.splice(index, 1);
+            if(index >= 0) newAlerts.splice(index, 1);
 
-                return newAlerts;
-            });
+            return newAlerts;
+        });
     }, []);
 
     const closeBubbleAlert = useCallback((item: NotificationBubbleItem) =>
     {
         setBubbleAlerts(prevValue =>
-            {
-                const newAlerts = [ ...prevValue ];
-                const index = newAlerts.findIndex(value => (item === value));
+        {
+            const newAlerts = [ ...prevValue ];
+            const index = newAlerts.findIndex(value => (item === value));
 
-                if(index >= 0) newAlerts.splice(index, 1);
+            if(index >= 0) newAlerts.splice(index, 1);
 
-                return newAlerts;
-            })
+            return newAlerts;
+        })
     }, []);
 
     const closeConfirm = useCallback((item: NotificationConfirmItem) =>
     {
         setConfirms(prevValue =>
-            {
-                const newConfirms = [ ...prevValue ];
-                const index = newConfirms.findIndex(value => (item === value));
+        {
+            const newConfirms = [ ...prevValue ];
+            const index = newConfirms.findIndex(value => (item === value));
 
-                if(index >= 0) newConfirms.splice(index, 1);
+            if(index >= 0) newConfirms.splice(index, 1);
 
-                return newConfirms;
-            })
+            return newConfirms;
+        })
     }, []);
 
     const getAlerts = useMemo(() =>

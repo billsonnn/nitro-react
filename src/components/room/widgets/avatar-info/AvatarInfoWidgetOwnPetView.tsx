@@ -1,7 +1,6 @@
 import { PetType, RoomObjectCategory, RoomObjectType, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetConfiguration, GetOwnRoomObject, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUserActionMessage } from '../../../../api';
-import { BatchUpdates } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
@@ -72,7 +71,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                     messageType = RoomWidgetUserActionMessage.GIVE_CARRY_ITEM_TO_PET;
                     break;
                 case 'train':
-                    //this.widget._Str_23877();
+                //this.widget._Str_23877();
                     break;
                 case 'pick_up':
                     messageType = RoomWidgetUserActionMessage.PICKUP_PET;
@@ -95,10 +94,10 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                 case 'breed':
                     if(mode === _Str_2906)
                     {
-                        // _local_7 = RoomWidgetPetCommandMessage._Str_16282;
-                        // _local_8 = ("pet.command." + _local_7);
-                        // _local_9 = _Str_2268.catalog.localization.getLocalization(_local_8);
-                        // _local_4 = new RoomWidgetPetCommandMessage(RoomWidgetPetCommandMessage.RWPCM_PET_COMMAND, this._Str_594.id, ((this._Str_594.name + " ") + _local_9));
+                    // _local_7 = RoomWidgetPetCommandMessage._Str_16282;
+                    // _local_8 = ("pet.command." + _local_7);
+                    // _local_9 = _Str_2268.catalog.localization.getLocalization(_local_8);
+                    // _local_4 = new RoomWidgetPetCommandMessage(RoomWidgetPetCommandMessage.RWPCM_PET_COMMAND, this._Str_594.id, ((this._Str_594.name + " ") + _local_9));
                     }
 
                     else if(mode === _Str_10946)
@@ -130,19 +129,16 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
+        setMode(prevValue =>
         {
-            setMode(prevValue =>
-                {
-                    if(petData.petType === PetType.MONSTERPLANT) return _Str_10946;
-                    else if(petData.saddle && !petData.rider) return _Str_5818;
-                    else if(petData.rider) return _Str_5938;
-    
-                    return _Str_2906;
-                });
-    
-            setRespectsLeft(petData.respectsPetLeft);
+            if(petData.petType === PetType.MONSTERPLANT) return _Str_10946;
+            else if(petData.saddle && !petData.rider) return _Str_5818;
+            else if(petData.rider) return _Str_5938;
+
+            return _Str_2906;
         });
+
+        setRespectsLeft(petData.respectsPetLeft);
     }, [ petData ]);
 
     return (

@@ -36,7 +36,7 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
         setSelectedItem(item);
 
         widgetHandler.processWidgetMessage(new RoomWidgetRoomObjectMessage(RoomWidgetRoomObjectMessage.SELECT_OBJECT, item.id, item.category));
-    }, [ widgetHandler, setSelectedItem]);
+    }, [ widgetHandler, setSelectedItem ]);
 
     const rowRenderer: ListRowRenderer = (props: ListRowProps) =>
     {
@@ -57,14 +57,14 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
                 <Column fullHeight overflow="auto">
                     <AutoSizer defaultWidth={ 0 } defaultHeight={ 0 }>
                         { ({ width, height }) => 
-                            {
-                                return (<List
-                                    width={ width }
-                                    height={ height }
-                                    rowCount={ filteredItems.length }
-                                    rowHeight={ 20 }
-                                    rowRenderer={ rowRenderer } />)
-                            } }
+                        {
+                            return (<List
+                                width={ width }
+                                height={ height }
+                                rowCount={ filteredItems.length }
+                                rowHeight={ 20 }
+                                rowRenderer={ rowRenderer } />)
+                        } }
                     </AutoSizer>
                 </Column>
             </NitroCardContentView>

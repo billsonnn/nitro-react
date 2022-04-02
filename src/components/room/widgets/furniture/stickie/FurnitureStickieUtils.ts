@@ -1,4 +1,4 @@
-export const STICKIE_COLORS = ['9CCEFF','FF9CFF', '9CFF9C','FFFF33'];
+export const STICKIE_COLORS = [ '9CCEFF','FF9CFF', '9CFF9C','FFFF33' ];
 export const STICKIE_COLOR_NAMES = [ 'blue', 'pink', 'green', 'yellow' ];
 
 export function getStickieColorName(color: string): string

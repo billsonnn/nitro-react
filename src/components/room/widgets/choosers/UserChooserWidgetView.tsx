@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRequestWidgetMessage, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
-import { BatchUpdates, UseEventDispatcherHook } from '../../../../hooks';
+import { UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ChooserWidgetView } from './ChooserWidgetView';
 
@@ -16,20 +16,17 @@ export const UserChooserWidgetView: FC<{}> = props =>
         if(!isVisible) return;
 
         setRefreshTimeout(prevValue =>
-            {
-                if(prevValue) clearTimeout(prevValue);
+        {
+            if(prevValue) clearTimeout(prevValue);
 
-                return setTimeout(() => widgetHandler.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.USER_CHOOSER)), 100);
-            })
+            return setTimeout(() => widgetHandler.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.USER_CHOOSER)), 100);
+        })
     }, [ isVisible, widgetHandler ]);
 
     const onRoomWidgetChooserContentEvent = useCallback((event: RoomWidgetChooserContentEvent) =>
     {
-        BatchUpdates(() =>
-        {
-            setItems(event.items);
-            setIsVisible(true);
-        });
+        setItems(event.items);
+        setIsVisible(true);
     }, []);
 
     UseEventDispatcherHook(RoomWidgetChooserContentEvent.USER_CHOOSER_CONTENT, eventDispatcher, onRoomWidgetChooserContentEvent);
@@ -52,11 +49,8 @@ export const UserChooserWidgetView: FC<{}> = props =>
 
     const close = useCallback(() =>
     {
-        BatchUpdates(() =>
-        {
-            setIsVisible(false);
-            setItems(null);
-        });
+        setIsVisible(false);
+        setItems(null);
     }, []);
     
     if(!isVisible) return null;

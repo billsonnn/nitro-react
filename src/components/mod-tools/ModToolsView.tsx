@@ -17,7 +17,7 @@ import { ModToolsUserView } from './views/user/ModToolsUserView';
 export const ModToolsView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
-    const [ selectedUser, setSelectedUser] = useState<ISelectedUser>(null);
+    const [ selectedUser, setSelectedUser ] = useState<ISelectedUser>(null);
     const [ isTicketsVisible, setIsTicketsVisible ] = useState(false);
     const [ modToolsState, dispatchModToolsState ] = useReducer(ModToolsReducer, initialModTools);
     const { currentRoomId = null, openRooms = null, openRoomChatlogs = null, openUserChatlogs = null, openUserInfo = null } = modToolsState;
@@ -179,7 +179,7 @@ export const ModToolsView: FC<{}> = props =>
                 return;
             }
         }
-    }, [openRooms, currentRoomId, openRoomChatlogs, selectedUser, openUserInfo, openUserChatlogs]);
+    }, [ openRooms, currentRoomId, openRoomChatlogs, selectedUser, openUserInfo, openUserChatlogs ]);
 
     return (
         <ModToolsContextProvider value={ { modToolsState, dispatchModToolsState } }>
@@ -192,35 +192,35 @@ export const ModToolsView: FC<{}> = props =>
                             <Base className="icon icon-small-room position-absolute start-1"/> Room Tool
                         </Button>
                         <Button innerRef={ elementRef } gap={ 1 } onClick={ event => handleClick('toggle_room_chatlog') } disabled={ !currentRoomId } className="position-relative">
-                        <Base className="icon icon-chat-history position-absolute start-1"/> Chatlog Tool
+                            <Base className="icon icon-chat-history position-absolute start-1"/> Chatlog Tool
                         </Button>
                         <Button gap={ 1 } onClick={ () => handleClick('toggle_user_info') } disabled={ !selectedUser } className="position-relative">
-                        <Base className="icon icon-user position-absolute start-1"/> User: { selectedUser ? selectedUser.username : '' }
+                            <Base className="icon icon-user position-absolute start-1"/> User: { selectedUser ? selectedUser.username : '' }
                         </Button>
                         <Button gap={ 1 } onClick={ () => setIsTicketsVisible(value => !value) } className="position-relative">
-                        <Base className="icon icon-tickets position-absolute start-1"/> Report Tool
+                            <Base className="icon icon-tickets position-absolute start-1"/> Report Tool
                         </Button>
                     </NitroCardContentView>
                 </NitroCardView> }
             { openRooms && openRooms.map(roomId =>
-                {
-                    return <ModToolsRoomView key={ roomId } roomId={ roomId } onCloseClick={ () => handleClick('close_room', roomId.toString()) } />;
-                }) 
+            {
+                return <ModToolsRoomView key={ roomId } roomId={ roomId } onCloseClick={ () => handleClick('close_room', roomId.toString()) } />;
+            }) 
             }
             { openRoomChatlogs && openRoomChatlogs.map(roomId =>
-                {
-                    return <ModToolsChatlogView key={ roomId } roomId={ roomId } onCloseClick={ () => handleClick('close_room_chatlog', roomId.toString()) } />;
-                })
+            {
+                return <ModToolsChatlogView key={ roomId } roomId={ roomId } onCloseClick={ () => handleClick('close_room_chatlog', roomId.toString()) } />;
+            })
             }
             { openUserInfo && openUserInfo.map(userId =>
-                {
-                    return <ModToolsUserView key={userId} userId={userId} onCloseClick={ () => handleClick('close_user_info', userId.toString())}/>
-                })
+            {
+                return <ModToolsUserView key={userId} userId={userId} onCloseClick={ () => handleClick('close_user_info', userId.toString())}/>
+            })
             }
             { openUserChatlogs && openUserChatlogs.map(userId =>
-                {
-                    return <ModToolsUserChatlogView key={userId} userId={userId} onCloseClick={ () => handleClick('close_user_chatlog', userId.toString())}/>
-                })
+            {
+                return <ModToolsUserChatlogView key={userId} userId={userId} onCloseClick={ () => handleClick('close_user_chatlog', userId.toString())}/>
+            })
             }
             
             { isTicketsVisible && <ModToolsTicketsView onCloseClick={ () => setIsTicketsVisible(false) } /> }

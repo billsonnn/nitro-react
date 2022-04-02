@@ -67,7 +67,8 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
 
                 setRandomValue(Math.random());
             },
-            dispose: () => {},
+            dispose: () => 
+            {},
             disposed: false
         }, null);
 

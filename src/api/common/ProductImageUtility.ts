@@ -34,7 +34,7 @@ export class ProductImageUtility
                 }
                 break;
             case CatalogPageMessageProductData.E:
-                // fx_icon_furniClassId_png
+            // fx_icon_furniClassId_png
                 break;
         }
 

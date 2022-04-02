@@ -1,7 +1,7 @@
 import { CampaignCalendarData, CampaignCalendarDataMessageEvent, CampaignCalendarDoorOpenedMessageEvent, OpenCampaignCalendarDoorAsStaffComposer, OpenCampaignCalendarDoorComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, CalendarItem, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
-import { BatchUpdates, UseMessageEventHook } from '../../hooks';
+import { UseMessageEventHook } from '../../hooks';
 import { CalendarView } from './CalendarView';
 
 export const CampaignView: FC<{}> = props =>
@@ -31,28 +31,25 @@ export const CampaignView: FC<{}> = props =>
 
         if(parser.doorOpened)
         {
-            BatchUpdates(() =>
+            setCalendarData(prev => 
             {
-                setCalendarData(prev => 
-                    {
-                        const copy = prev.clone();
-                        copy.openedDays.push(lastOpenAttempt);
-                        
-                        return copy;
-                    });
-        
-                    setReceivedProducts(prev =>
-                    {
-                        const copy = new Map(prev);
-                        copy.set(lastAttempt, new CalendarItem(parser.productName, parser.customImage,parser.furnitureClassName));
-                        
-                        return copy;
-                    });
+                const copy = prev.clone();
+                copy.openedDays.push(lastOpenAttempt);
+                    
+                return copy;
+            });
+    
+            setReceivedProducts(prev =>
+            {
+                const copy = new Map(prev);
+                copy.set(lastAttempt, new CalendarItem(parser.productName, parser.customImage,parser.furnitureClassName));
+                    
+                return copy;
             });
         }
 
         setLastOpenAttempt(-1);
-    }, [lastOpenAttempt]);
+    }, [ lastOpenAttempt ]);
 
     UseMessageEventHook(CampaignCalendarDoorOpenedMessageEvent, onCampaignCalendarDoorOpenedMessageEvent);
 
@@ -71,7 +68,7 @@ export const CampaignView: FC<{}> = props =>
         {
             SendMessageComposer(new OpenCampaignCalendarDoorComposer(calendarData.campaignName, id));
         }
-    }, [calendarData]);
+    }, [ calendarData ]);
 
     const onCalendarClose = useCallback(() =>
     {
@@ -101,7 +98,7 @@ export const CampaignView: FC<{}> = props =>
         {
             RemoveLinkEventTracker(linkTracker);
         }
-    }, [onLinkReceived]);
+    }, [ onLinkReceived ]);
 
     return (
         <>

@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -13,20 +12,14 @@ export const WiredActionBotFollowAvatarView: FC<{}> = props =>
 
     const save = () =>
     {
-        BatchUpdates(() =>
-        {
-            setStringParam(botName);
-            setIntParams([ followMode ]);
-        });
+        setStringParam(botName);
+        setIntParams([ followMode ]);
     }
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setBotName(trigger.stringData);
-            setFollowMode((trigger.intData.length > 0) ? trigger.intData[0] : 0);
-        });
+        setBotName(trigger.stringData);
+        setFollowMode((trigger.intData.length > 0) ? trigger.intData[0] : 0);
     }, [ trigger ]);
 
     return (

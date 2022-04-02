@@ -90,7 +90,7 @@ export const MainView: FC<{}> = props =>
         {
             RemoveLinkEventTracker(linkTracker);
         }
-    }, [onLinkReceived]);
+    }, [ onLinkReceived ]);
 
     return (
         <Base fit>
