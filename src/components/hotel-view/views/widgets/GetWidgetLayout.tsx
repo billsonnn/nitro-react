@@ -6,9 +6,9 @@ import { WidgetContainerView } from './widget-container/WidgetContainerView';
 
 export interface GetWidgetLayoutProps
 {
-  widgetType: string;
-  slot: number;
-  widgetConf: any;
+    widgetType: string;
+    slot: number;
+    widgetConf: any;
 }
 
 export const GetWidgetLayout: FC<GetWidgetLayoutProps> = props =>

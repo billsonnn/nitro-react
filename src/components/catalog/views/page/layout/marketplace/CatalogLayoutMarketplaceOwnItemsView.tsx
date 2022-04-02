@@ -1,8 +1,8 @@
 import { CancelMarketplaceOfferMessageComposer, GetMarketplaceOwnOffersMessageComposer, MarketplaceCancelOfferResultEvent, MarketplaceOwnOffersEvent, RedeemMarketplaceOfferCreditsMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
 import { Button, Column, Text } from '../../../../../../common';
-import { UseMessageEventHook, UseMountEffect } from '../../../../../../hooks';
+import { UseMessageEventHook } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, OWN_OFFER } from './CatalogLayoutMarketplaceItemView';
 import { MarketplaceOfferData } from './common/MarketplaceOfferData';
@@ -74,10 +74,10 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
         SendMessageComposer(new CancelMarketplaceOfferMessageComposer(offerData.offerId));
     };
 
-    UseMountEffect(() =>
+    useEffect(() =>
     {
         SendMessageComposer(new GetMarketplaceOwnOffersMessageComposer());
-    });
+    }, []);
 
     return (
         <Column overflow="hidden">

@@ -2,7 +2,7 @@
     "settings": {
         "react": {
             "pragma": "React",
-            "version": "17.0.2"
+            "version": "18.0.0"
         }
     },
     "env": {
@@ -11,7 +11,8 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "plugin:react/jsx-runtime"
+        "plugin:react/jsx-runtime",
+        "plugin:react-hooks/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -26,9 +27,29 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "indent": ["error", 4, {"SwitchCase": 1}],
-        "array-bracket-spacing": ["error", "always"],
-        "brace-style": ["error", "allman"],
-        "react/prop-types": ["off"]
+        "linebreak-style": [ "off" ],
+        "quotes": [ "error", "single" ],
+        "@typescript-eslint/indent": [ "error", 4, { "SwitchCase": 1 } ],
+        "array-bracket-spacing": [ "error", "always" ],
+        "brace-style": [ "error", "allman" ],
+        "react/prop-types": [ "off" ],
+        "object-curly-spacing": [ "error", "always" ],
+        "@typescript-eslint/ban-types": [
+            "error",
+            {
+                "types": {
+                    "String": true,
+                    "Boolean": true,
+                    "Number": true,
+                    "Symbol": true,
+                    "{}": false,
+                    "Object": false,
+                    "object": false,
+                    "Function": false
+                },
+                "extendDefaults": true
+            }
+        ],
+        "no-switch-case-fall-through": [ "off" ]
     }
 }
