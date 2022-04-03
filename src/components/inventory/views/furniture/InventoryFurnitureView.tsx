@@ -2,8 +2,8 @@ import { IRoomSession, RoomObjectVariable, RoomPreviewer, Vector3d } from '@nitr
 import { FC, useEffect, useState } from 'react';
 import { attemptItemPlacement, FurniCategory, GetRoomEngine, GetSessionDataManager, GroupItem, LocalizeText, UnseenItemCategory } from '../../../../api';
 import { AutoGrid, Button, Column, Grid, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, LayoutRoomPreviewerView, Text } from '../../../../common';
-import { useInventoryFurni, useInventoryUnseenTracker } from '../../../../hooks';
-import { attemptPlaceMarketplaceOffer } from '../../../../hooks/inventory/common';
+import { CatalogPostMarketplaceOfferEvent } from '../../../../events';
+import { DispatchUiEvent, useInventoryFurni, useInventoryUnseenTracker } from '../../../../hooks';
 import { InventoryCategoryEmptyView } from '../InventoryCategoryEmptyView';
 import { InventoryFurnitureItemView } from './InventoryFurnitureItemView';
 import { InventoryFurnitureSearchView } from './InventoryFurnitureSearchView';
@@ -12,6 +12,17 @@ interface InventoryFurnitureViewProps
 {
     roomSession: IRoomSession;
     roomPreviewer: RoomPreviewer;
+}
+
+const attemptPlaceMarketplaceOffer = (groupItem: GroupItem) =>
+{
+    const item = groupItem.getLastItem();
+
+    if(!item) return false;
+
+    if(!item.sellable) return false;
+
+    DispatchUiEvent(new CatalogPostMarketplaceOfferEvent(item));
 }
 
 export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>

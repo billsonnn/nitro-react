@@ -3,9 +3,9 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { AddEventLinkTracker, LocalizeText, MessengerFriend, RemoveLinkEventTracker, SendMessageComposer } from '../../../../api';
 import { Button, Flex, NitroCardAccordionSetView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { useFriends } from '../../../../hooks';
-import { FriendsListGroupView } from './FriendsListGroupView';
+import { FriendsListGroupView } from './friends-list-group/FriendsListGroupView';
+import { FriendsListRequestView } from './friends-list-request/FriendsListRequestView';
 import { FriendsRemoveConfirmationView } from './FriendsListRemoveConfirmationView';
-import { FriendsListRequestView } from './FriendsListRequestView';
 import { FriendsRoomInviteView } from './FriendsListRoomInviteView';
 import { FriendsSearchView } from './FriendsListSearchView';
 

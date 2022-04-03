@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { createPortal } from 'react-dom';
 import { useFriends } from '../../hooks';
-import { FriendBarView } from './views/FriendBarView';
+import { FriendBarView } from './views/friends-bar/FriendsBarView';
 import { FriendsListView } from './views/friends-list/FriendsListView';
 import { FriendsMessengerView } from './views/messenger/FriendsMessengerView';
 

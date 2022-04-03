@@ -3,9 +3,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { useInventoryUnseenTracker } from '.';
 import { UseMessageEventHook } from '..';
-import { attemptItemPlacement, cancelRoomObjectPlacement, CloneObject, CreateLinkEvent, FurnitureItem, getPlacingItemId, GroupItem, SendMessageComposer, UnseenItemCategory } from '../../api';
+import { addFurnitureItem, attemptItemPlacement, cancelRoomObjectPlacement, CloneObject, CreateLinkEvent, FurnitureItem, getAllItemIds, getPlacingItemId, GroupItem, mergeFurniFragments, SendMessageComposer, UnseenItemCategory } from '../../api';
 import { useSharedVisibility } from '../useSharedVisibility';
-import { addFurnitureItem, getAllItemIds, mergeFurniFragments } from './common';
 
 let furniMsgFragments: Map<number, FurnitureListItemParser>[] = null;
 

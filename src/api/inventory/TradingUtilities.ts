@@ -1,6 +1,9 @@
 import { AdvancedMap, IObjectData, ItemDataStructure, StringDataType } from '@nitrots/nitro-renderer';
-import { createGroupItem } from '.';
-import { FurniCategory, FurnitureItem, GetSessionDataManager, GroupItem } from '../../../api';
+import { GetSessionDataManager } from '../nitro';
+import { FurniCategory } from './FurniCategory';
+import { FurnitureItem } from './FurnitureItem';
+import { createGroupItem } from './FurnitureUtilities';
+import { GroupItem } from './GroupItem';
 
 const isExternalImage = (spriteId: number) => GetSessionDataManager().getWallItemData(spriteId)?.isExternalImage || false;
 

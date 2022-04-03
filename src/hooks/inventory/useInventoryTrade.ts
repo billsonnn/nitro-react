@@ -3,10 +3,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { useInventoryFurni } from '.';
 import { UseMessageEventHook } from '..';
-import { CloneObject, GetRoomSession, GetSessionDataManager, GroupItem, LocalizeText, NotificationUtilities, SendMessageComposer, TradeState, TradeUserData, TradingNotificationMessage, TradingNotificationType } from '../../api';
+import { CloneObject, GetRoomSession, GetSessionDataManager, GroupItem, LocalizeText, NotificationUtilities, parseTradeItems, SendMessageComposer, TradeState, TradeUserData, TradingNotificationMessage, TradingNotificationType } from '../../api';
 import { InventoryTradeRequestEvent } from '../../events';
 import { UseUiEvent } from '../events';
-import { parseTradeItems } from './common';
 
 const useInventoryTradeState = () =>
 {

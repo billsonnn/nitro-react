@@ -4,14 +4,14 @@ import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { AddEventLinkTracker, GetUserProfile, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, LayoutGridItem, LayoutItemCountView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useMessenger } from '../../../../hooks';
-import { FriendsMessengerThreadView } from './FriendsMessengerThreadView';
+import { FriendsMessengerThreadView } from './messenger-thread/FriendsMessengerThreadView';
 
 export const FriendsMessengerView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ lastThreadId, setLastThreadId ] = useState(-1);
     const [ messageText, setMessageText ] = useState('');
-    const { visibleThreads = [], activeThread = null, getMessageThread = null, sendMessage = null, setActiveThread = null, closeThread = null } = useMessenger();
+    const { visibleThreads = [], activeThread = null, getMessageThread = null, sendMessage = null, setActiveThreadId = null, closeThread = null } = useMessenger();
     const messagesBox = useRef<HTMLDivElement>();
 
     const followFriend = () => (activeThread && activeThread.participant && SendMessageComposer(new FollowFriendMessageComposer(activeThread.participant.id)));
@@ -54,7 +54,7 @@ export const FriendsMessengerView: FC<{}> = props =>
 
                         if(!thread) return;
 
-                        setActiveThread(thread);
+                        setActiveThreadId(thread.threadId);
                         setIsVisible(true);
                     }
                 }
@@ -65,14 +65,7 @@ export const FriendsMessengerView: FC<{}> = props =>
         AddEventLinkTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
-    }, [ getMessageThread, setActiveThread ]);
-
-    // useEffect(() =>
-    // {
-    //     if(!isVisible || activeThread || !visibleThreads || !visibleThreads.length) return;
-
-    //     setActiveThread(visibleThreads[0]);
-    // }, [ isVisible, visibleThreads, activeThread, setActiveThread ]);
+    }, [ getMessageThread, setActiveThreadId ]);
 
     useEffect(() =>
     {
@@ -83,23 +76,26 @@ export const FriendsMessengerView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if(!activeThread) return;
-
-        return () =>
+        if(isVisible && !activeThread)
         {
-            console.log('set last thread id', activeThread.threadId);
+            if(lastThreadId > 0)
+            {
+                setActiveThreadId(lastThreadId);
+            }
+            else
+            {
+                if(visibleThreads.length > 0) setActiveThreadId(visibleThreads[0].threadId);
+            }
+
+            return;
+        }
+
+        if(!isVisible && activeThread)
+        {
             setLastThreadId(activeThread.threadId);
+            setActiveThreadId(-1);
         }
-    }, [ activeThread ]);
-
-    useEffect(() =>
-    {
-        return () =>
-        {
-            console.log('clear thread')
-            setActiveThread(null);
-        }
-    }, [ setActiveThread ]);
+    }, [ isVisible, activeThread, lastThreadId, visibleThreads, setActiveThreadId ]);
 
     if(!isVisible) return null;
 
@@ -114,7 +110,7 @@ export const FriendsMessengerView: FC<{}> = props =>
                             { visibleThreads && (visibleThreads.length > 0) && visibleThreads.map(thread =>
                             {
                                 return (
-                                    <LayoutGridItem key={ thread.threadId } itemActive={ (activeThread === thread) } onClick={ event => setActiveThread(thread) }>
+                                    <LayoutGridItem key={ thread.threadId } itemActive={ (activeThread === thread) } onClick={ event => setActiveThreadId(thread.threadId) }>
                                         { thread.unread &&
                                             <LayoutItemCountView count={ thread.unreadCount } /> }
                                         <Flex fullWidth alignItems="center" gap={ 1 }>

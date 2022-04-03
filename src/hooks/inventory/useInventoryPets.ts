@@ -3,10 +3,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { useInventoryUnseenTracker } from '.';
 import { UseMessageEventHook } from '..';
-import { SendMessageComposer, UnseenItemCategory } from '../../api';
-import { IPetItem } from '../../api/inventory/IPetItem';
+import { addSinglePetItem, IPetItem, mergePetFragments, processPetFragment, removePetItemById, SendMessageComposer, UnseenItemCategory } from '../../api';
 import { useSharedVisibility } from '../useSharedVisibility';
-import { addSinglePetItem, mergePetFragments, processPetFragment, removePetItemById } from './common';
 
 let petMsgFragments: Map<number, PetData>[] = null;
 

@@ -1,18 +1,8 @@
 import { FurnitureListItemParser, IObjectData } from '@nitrots/nitro-renderer';
-import { DispatchUiEvent } from '../..';
-import { FurniCategory, FurnitureItem, GetRoomEngine, GroupItem } from '../../../api';
-import { CatalogPostMarketplaceOfferEvent } from '../../../events';
-
-export const attemptPlaceMarketplaceOffer = (groupItem: GroupItem) =>
-{
-    const item = groupItem.getLastItem();
-
-    if(!item) return false;
-
-    if(!item.sellable) return false;
-
-    DispatchUiEvent(new CatalogPostMarketplaceOfferEvent(item));
-}
+import { GetRoomEngine } from '../nitro';
+import { FurniCategory } from './FurniCategory';
+import { FurnitureItem } from './FurnitureItem';
+import { GroupItem } from './GroupItem';
 
 export const createGroupItem = (type: number, category: number, stuffData: IObjectData, extra: number = NaN) => new GroupItem(type, category, GetRoomEngine(), stuffData, extra);
 
