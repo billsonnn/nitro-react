@@ -2,7 +2,7 @@ import { MouseEventType, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useEffect, useRef } from 'react';
 import { CreateLinkEvent, GetRoomEngine, GetRoomSession, GetSessionDataManager, GetUserProfile } from '../../api';
 import { Base, Flex, LayoutItemCountView } from '../../common';
-import { GuideToolEvent, UserSettingsUIEvent } from '../../events';
+import { GuideToolEvent } from '../../events';
 import { DispatchUiEvent } from '../../hooks';
 
 interface ToolbarMeViewProps
@@ -46,7 +46,7 @@ export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
             <Base pointer className="navigation-item icon icon-me-profile" onClick={ event => GetUserProfile(GetSessionDataManager().userId) } />
             <Base pointer className="navigation-item icon icon-me-rooms" onClick={ event => CreateLinkEvent('navigator/search/myworld_view')} />
             <Base pointer className="navigation-item icon icon-me-clothing" onClick={ event => CreateLinkEvent('avatar-editor/toggle') } />
-            <Base pointer className="navigation-item icon icon-me-settings" onClick={ event => DispatchUiEvent(new UserSettingsUIEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS)) } />
+            <Base pointer className="navigation-item icon icon-me-settings" onClick={ event => CreateLinkEvent('user-settings/toggle') } />
             { children }
         </Flex>
     );

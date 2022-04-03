@@ -6,5 +6,4 @@ export * from './mod-tools';
 export * from './notification-center';
 export * from './room-widgets';
 export * from './room-widgets/thumbnail';
-export * from './user-settings';
 export * from './wired';

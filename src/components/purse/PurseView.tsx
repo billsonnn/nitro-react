@@ -2,8 +2,7 @@ import { ActivityPointNotificationMessageEvent, FriendlyTime, HabboClubLevelEnum
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetConfiguration, LocalizeText, PlaySound, SendMessageComposer, SoundNames } from '../../api';
 import { Column, Flex, Grid, LayoutCurrencyIcon, Text } from '../../common';
-import { UserSettingsUIEvent } from '../../events';
-import { DispatchUiEvent, UseMessageEventHook } from '../../hooks';
+import { UseMessageEventHook } from '../../hooks';
 import { IPurse } from './common/IPurse';
 import { Purse } from './common/Purse';
 import { PurseContextProvider } from './PurseContext';
@@ -187,7 +186,7 @@ export const PurseView: FC<{}> = props =>
                             <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => CreateLinkEvent('help/show') }>
                                 <i className="icon icon-help"/>
                             </Flex>
-                            <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => DispatchUiEvent(new UserSettingsUIEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS)) } >
+                            <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => CreateLinkEvent('user-settings/toggle') } >
                                 <i className="icon icon-cog"/>
                             </Flex>
                         </Column>
