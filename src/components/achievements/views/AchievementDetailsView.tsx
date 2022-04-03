@@ -11,12 +11,12 @@ interface AchievementDetailsViewProps
 
 export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
 {
-    const { achievement = null } = props;
+    const { achievement = null, children = null, ...rest } = props;
 
     if(!achievement) return null;
 
     return (
-        <Flex shrink className="bg-muted rounded p-2 text-black" gap={ 2 } overflow="hidden">
+        <Flex shrink className="bg-muted rounded p-2 text-black" gap={ 2 } overflow="hidden" { ...rest }>
             <Column center gap={ 1 }>
                 <AchievementBadgeView className="nitro-achievements-badge-image" achievement={ achievement } scale={ 2 } />
                 <Text fontWeight="bold">
@@ -48,6 +48,7 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
                             <LayoutProgressBar text={ LocalizeText('achievements.details.progress', [ 'progress', 'limit' ], [ (achievement.currentPoints + achievement.scoreAtStartOfLevel).toString(), (achievement.scoreLimit + achievement.scoreAtStartOfLevel).toString() ]) } progress={ (achievement.currentPoints + achievement.scoreAtStartOfLevel) } maxProgress={ (achievement.scoreLimit + achievement.scoreAtStartOfLevel) } /> }
                     </Column> }
             </Column>
+            { children }
         </Flex>
     )
 }

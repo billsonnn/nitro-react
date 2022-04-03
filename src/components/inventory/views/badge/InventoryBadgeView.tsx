@@ -8,7 +8,7 @@ export const InventoryBadgeView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const { badgeCodes = [], activeBadgeCodes = [], selectedBadgeCode = null, isWearingBadge = null, canWearBadges = null, toggleBadge = null, getBadgeId = null, activate = null, deactivate = null } = useInventoryBadges();
-    const { getCount = null, resetCategory = null, isUnseen = null, removeUnseen = null } = useInventoryUnseenTracker();
+    const { isUnseen = null, removeUnseen = null } = useInventoryUnseenTracker();
 
     useEffect(() =>
     {

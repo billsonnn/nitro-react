@@ -2,7 +2,7 @@ import { ActivityPointNotificationMessageEvent, FriendlyTime, HabboClubLevelEnum
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetConfiguration, LocalizeText, PlaySound, SendMessageComposer, SoundNames } from '../../api';
 import { Column, Flex, Grid, LayoutCurrencyIcon, Text } from '../../common';
-import { HcCenterEvent, UserSettingsUIEvent } from '../../events';
+import { UserSettingsUIEvent } from '../../events';
 import { DispatchUiEvent, UseMessageEventHook } from '../../hooks';
 import { IPurse } from './common/IPurse';
 import { Purse } from './common/Purse';
@@ -179,7 +179,7 @@ export const PurseView: FC<{}> = props =>
                             { getCurrencyElements(0, 2) }
                         </Column>
                         { !hcDisabled &&
-                            <Column center pointer size={ 4 } gap={ 1 } className="nitro-purse-subscription rounded" onClick={ event => DispatchUiEvent(new HcCenterEvent(HcCenterEvent.TOGGLE_HC_CENTER)) }>
+                            <Column center pointer size={ 4 } gap={ 1 } className="nitro-purse-subscription rounded" onClick={ event => CreateLinkEvent('habboUI/open/hccenter') }>
                                 <LayoutCurrencyIcon type="hc" />
                                 <Text variant="white">{ getClubText }</Text>
                             </Column> }

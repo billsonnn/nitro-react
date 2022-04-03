@@ -70,9 +70,9 @@ export const NavigatorSearchResultItemInfoView: FC<NavigatorSearchResultItemInfo
                         <Flex gap={2} overflow="hidden">
                             <LayoutRoomThumbnailView roomId={roomData.roomId} customUrl={roomData.officialRoomPicRef} className="d-flex flex-column align-items-center justify-content-end mb-1">
                                 {roomData.habboGroupId > 0 && (
-                                    <LayoutBadgeImageView badgeCode={roomData.groupBadgeCode} isGroup={true} className={"position-absolute top-0 start-0 m-1 "}/>)}
+                                    <LayoutBadgeImageView badgeCode={roomData.groupBadgeCode} isGroup={true} className={'position-absolute top-0 start-0 m-1 '}/>)}
                                 {roomData.doorMode !== RoomDataParser.OPEN_STATE && (
-                                <i className={"position-absolute end-0 mb-1 me-1 icon icon-navigator-room-" + (roomData.doorMode === RoomDataParser.DOORBELL_STATE ? "locked" : roomData.doorMode === RoomDataParser.PASSWORD_STATE ? "password" : roomData.doorMode === RoomDataParser.INVISIBLE_STATE ? "invisible" : "")}/> )}
+                                    <i className={'position-absolute end-0 mb-1 me-1 icon icon-navigator-room-' + (roomData.doorMode === RoomDataParser.DOORBELL_STATE ? 'locked' : roomData.doorMode === RoomDataParser.PASSWORD_STATE ? 'password' : roomData.doorMode === RoomDataParser.INVISIBLE_STATE ? 'invisible' : '')}/> )}
                             </LayoutRoomThumbnailView>
                             <Column gap={1}>
                                 <Text bold truncate className="flex-grow-1" style={{ maxHeight: 13 }}>
@@ -80,7 +80,7 @@ export const NavigatorSearchResultItemInfoView: FC<NavigatorSearchResultItemInfo
                                 </Text>
                                 <Flex gap={1}>
                                     <Text italics variant="muted">
-                                        {LocalizeText("navigator.roomownercaption")}
+                                        {LocalizeText('navigator.roomownercaption')}
                                     </Text>
                                     <UserProfileIconView
                                         userId={roomData.ownerId}
@@ -90,7 +90,7 @@ export const NavigatorSearchResultItemInfoView: FC<NavigatorSearchResultItemInfo
                                 <Text className="flex-grow-1">
                                     {roomData.description}
                                 </Text>
-                                <Flex className={"badge p-1 position-absolute m-1 bottom-0 end-0 m-2 " + getUserCounterColor()} gap={1}>
+                                <Flex className={'badge p-1 position-absolute m-1 bottom-0 end-0 m-2 ' + getUserCounterColor()} gap={1}>
                                     <FontAwesomeIcon icon="user" />
                                     {roomData.userCount}
                                 </Flex>

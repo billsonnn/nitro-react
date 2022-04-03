@@ -1,9 +1,8 @@
 import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraStorageUrlMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
+import { CreateLinkEvent, GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, LayoutCurrencyIcon, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { InventoryEvent } from '../../../../events';
-import { DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
+import { UseMessageEventHook } from '../../../../hooks';
 
 export interface CameraWidgetCheckoutViewProps
 {
@@ -122,7 +121,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                         { (picturesBought > 0) &&
                             <Text>
                                 <Text bold>{ LocalizeText('camera.purchase.count.info') }</Text> { picturesBought }
-                                <u className="ms-1 cursor-pointer" onClick={ () => DispatchUiEvent(new InventoryEvent(InventoryEvent.SHOW_INVENTORY)) }>{ LocalizeText('camera.open.inventory') }</u>
+                                <u className="ms-1 cursor-pointer" onClick={ () => CreateLinkEvent('inventory/open') }>{ LocalizeText('camera.open.inventory') }</u>
                             </Text> }
                     </Column>
                     <Flex alignItems="center">

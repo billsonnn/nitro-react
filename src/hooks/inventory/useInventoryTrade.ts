@@ -1,11 +1,9 @@
-import { AdvancedMap, TradingAcceptComposer, TradingAcceptEvent, TradingCancelComposer, TradingCloseComposer, TradingCloseEvent, TradingCloseParser, TradingCompletedEvent, TradingConfirmationComposer, TradingConfirmationEvent, TradingListItemEvent, TradingListItemRemoveComposer, TradingNotOpenEvent, TradingOpenComposer, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingUnacceptComposer, TradingYouAreNotAllowedEvent } from '@nitrots/nitro-renderer';
+import { AdvancedMap, TradingAcceptComposer, TradingAcceptEvent, TradingCancelComposer, TradingCloseComposer, TradingCloseEvent, TradingCloseParser, TradingCompletedEvent, TradingConfirmationComposer, TradingConfirmationEvent, TradingListItemEvent, TradingListItemRemoveComposer, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingUnacceptComposer, TradingYouAreNotAllowedEvent } from '@nitrots/nitro-renderer';
 import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { useInventoryFurni } from '.';
 import { UseMessageEventHook } from '..';
 import { CloneObject, GetRoomSession, GetSessionDataManager, GroupItem, LocalizeText, NotificationUtilities, parseTradeItems, SendMessageComposer, TradeState, TradeUserData, TradingNotificationMessage, TradingNotificationType } from '../../api';
-import { InventoryTradeRequestEvent } from '../../events';
-import { UseUiEvent } from '../events';
 
 const useInventoryTradeState = () =>
 {
@@ -65,20 +63,6 @@ const useInventoryTradeState = () =>
                 return;
         }
     }
-
-    const onInventoryTradeRequestEvent = useCallback((event: InventoryTradeRequestEvent) =>
-    {
-        switch(event.type)
-        {
-            case InventoryTradeRequestEvent.REQUEST_TRADE: {
-                const tradeEvent = (event as InventoryTradeRequestEvent);
-
-                SendMessageComposer(new TradingOpenComposer(tradeEvent.objectId));
-            }
-        }
-    }, []);
-
-    UseUiEvent(InventoryTradeRequestEvent.REQUEST_TRADE, onInventoryTradeRequestEvent);
 
     const onTradingAcceptEvent = useCallback((event: TradingAcceptEvent) =>
     {

@@ -1,8 +1,8 @@
-import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionFavoriteGroupUpdateEvent, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
+import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionFavoriteGroupUpdateEvent, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, TradingOpenComposer, Vector3d } from '@nitrots/nitro-renderer';
 import { SendMessageComposer } from '../../..';
 import { GetNitroInstance, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
 import { PetSupplementEnum } from '../../../../../components/room/widgets/avatar-info/common/PetSupplementEnum';
-import { HelpReportUserEvent, InventoryTradeRequestEvent, WiredSelectObjectEvent } from '../../../../../events';
+import { HelpReportUserEvent, WiredSelectObjectEvent } from '../../../../../events';
 import { DispatchUiEvent } from '../../../../../hooks';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { RoomWidgetObjectNameEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
@@ -119,7 +119,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 this.container.roomSession.sendTakeRightsMessage((message as RoomWidgetUserActionMessage).userId);
                 break;
             case RoomWidgetUserActionMessage.START_TRADING:
-                DispatchUiEvent(new InventoryTradeRequestEvent(userData.roomIndex, userData.name));
+                SendMessageComposer(new TradingOpenComposer(userData.roomIndex));
                 break;
             // case RoomWidgetUserActionMessage.RWUAM_OPEN_HOME_PAGE:
             //     this._container.sessionDataManager._Str_21275((message as RoomWidgetUserActionMessage).userId, _local_3.name);

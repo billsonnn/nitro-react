@@ -6,7 +6,7 @@ export const GetAchievementCategoryTotalUnseen = (category: IAchievementCategory
 
     let unseen = 0;
 
-    for(const achievement of category.achievements) unseen += achievement.unseen;
+    for(const achievement of category.achievements) ((achievement.unseen > 0) && unseen++);
 
     return unseen;
 }

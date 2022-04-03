@@ -1,10 +1,9 @@
-import { BadgesEvent, ClubGiftInfoEvent, FigureUpdateEvent, FriendlyTime, GetClubGiftInfo, ILinkEventTracker, RequestBadgesComposer, ScrGetKickbackInfoMessageComposer, ScrKickbackData, ScrSendKickbackInfoMessageEvent, UserInfoEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
+import { BadgesEvent, ClubGiftInfoEvent, FriendlyTime, GetClubGiftInfo, ILinkEventTracker, RequestBadgesComposer, ScrGetKickbackInfoMessageComposer, ScrKickbackData, ScrSendKickbackInfoMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { AddEventLinkTracker, CreateLinkEvent, GetConfiguration, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Base, Button, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { HcCenterEvent } from '../../events';
-import { UseMessageEventHook, UseUiEvent } from '../../hooks';
+import { UseMessageEventHook, useSessionInfo } from '../../hooks';
 import { BadgeResolver } from './common/BadgeResolver';
 import { ClubStatus } from './common/ClubStatus';
 
@@ -12,7 +11,6 @@ import { ClubStatus } from './common/ClubStatus';
 export const HcCenterView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
-    const [ userFigure, setUserFigure ] = useState<string>(null);
     const [ kickbackData, setKickbackData ] = useState<ScrKickbackData>(null);
     const [ clubDays, setClubDays ] = useState(0);
     const [ pastClubDays, setPastClubDays ] = useState(0);
@@ -21,6 +19,7 @@ export const HcCenterView: FC<{}> = props =>
     const [ clubStatus, setClubStatus ] = useState(ClubStatus.NONE);
     const [ unclaimedGifts, setUnclaimedGifts ] = useState(0);
     const [ badgeCode, setBadgeCode ] = useState(BadgeResolver.default_badge);
+    const { userFigure = null } = useSessionInfo();
 
     const getClubText = () =>
     {
@@ -63,36 +62,6 @@ export const HcCenterView: FC<{}> = props =>
     {
         return LocalizeText('hccenter.special.sum', [ 'credits' ], [ (kickbackData.creditRewardForStreakBonus + kickbackData.creditRewardForMonthlySpent).toString() ]);
     }
-
-    const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
-    {
-        const parser = event.getParser();
-
-        setUserFigure(parser.userInfo.figure);
-    }, []);
-
-    UseMessageEventHook(UserInfoEvent, onUserInfoEvent);
-
-    const onUserFigureEvent = useCallback((event: FigureUpdateEvent) =>
-    {
-        const parser = event.getParser();
-
-        setUserFigure(parser.figure);
-    }, []);
-
-    UseMessageEventHook(FigureUpdateEvent, onUserFigureEvent);
-
-    const onHcCenterEvent = useCallback((event: HcCenterEvent) =>
-    {
-        switch(event.type)
-        {
-            case HcCenterEvent.TOGGLE_HC_CENTER:
-                setIsVisible(!isVisible);
-                break;
-        }
-    }, [ isVisible ]);
-
-    UseUiEvent(HcCenterEvent.TOGGLE_HC_CENTER, onHcCenterEvent);
 
     const onClubGiftInfoEvent = useCallback((event: ClubGiftInfoEvent) =>
     {
@@ -265,7 +234,7 @@ export const HcCenterView: FC<{}> = props =>
                                     <h5 className="ms-2 mb-1 bolder">{LocalizeText('hccenter.special.amount.title')}</h5>
                                     <div className="d-flex flex-column">
                                         <div className="w-100 text-center ms-4n">{getHcPaydayAmount()}</div>
-                                        <OverlayTrigger trigger="hover" placement="left" overlay={popover}>
+                                        <OverlayTrigger trigger={ [ 'hover', 'focus' ] } placement="left" overlay={popover}>
                                             <div className="btn btn-link align-self-end text-primary">
                                                 {LocalizeText('hccenter.breakdown.infolink')}
                                             </div>

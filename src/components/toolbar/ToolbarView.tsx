@@ -1,43 +1,23 @@
-import { Dispose, DropBounce, EaseOut, FigureUpdateEvent, JumpBy, Motions, NitroToolbarAnimateIconEvent, PerkAllowancesMessageEvent, PerkEnum, Queue, UserInfoDataParser, UserInfoEvent, Wait } from '@nitrots/nitro-renderer';
+import { Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, PerkAllowancesMessageEvent, PerkEnum, Queue, Wait } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetSessionDataManager, MessengerIconState, OpenMessengerChat, VisitDesktop } from '../../api';
 import { Base, Flex, LayoutAvatarImageView, LayoutItemCountView, TransitionAnimation, TransitionAnimationTypes } from '../../common';
-import { AchievementsUIUnseenCountEvent, ModToolsEvent } from '../../events';
-import { DispatchUiEvent, useFriends, useInventoryUnseenTracker, UseMessageEventHook, useMessenger, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
+import { ModToolsEvent } from '../../events';
+import { DispatchUiEvent, useAchievements, useFriends, useInventoryUnseenTracker, UseMessageEventHook, useMessenger, UseRoomEngineEvent, useSessionInfo } from '../../hooks';
 import { ToolbarMeView } from './ToolbarMeView';
 
 export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
 {
     const { isInRoom } = props;
 
-    const [ userInfo, setUserInfo ] = useState<UserInfoDataParser>(null);
-    const [ userFigure, setUserFigure ] = useState<string>(null);
     const [ isMeExpanded, setMeExpanded ] = useState(false);
     const [ useGuideTool, setUseGuideTool ] = useState(false);
-    const [ unseenAchievementCount, setUnseenAchievementCount ] = useState(0);
-    const { getFullCount = null } = useInventoryUnseenTracker();
+    const { userFigure = null } = useSessionInfo();
+    const { getFullCount = 0 } = useInventoryUnseenTracker();
+    const { getTotalUnseen = 0 } = useAchievements();
     const { requests = [] } = useFriends();
     const { iconState = MessengerIconState.HIDDEN } = useMessenger();
     const isMod = GetSessionDataManager().isModerator;
-
-    const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
-    {
-        const parser = event.getParser();
-
-        setUserInfo(parser.userInfo);
-        setUserFigure(parser.userInfo.figure);
-    }, []);
-
-    UseMessageEventHook(UserInfoEvent, onUserInfoEvent);
-
-    const onUserFigureEvent = useCallback((event: FigureUpdateEvent) =>
-    {
-        const parser = event.getParser();
-
-        setUserFigure(parser.figure);
-    }, []);
-    
-    UseMessageEventHook(FigureUpdateEvent, onUserFigureEvent);
 
     const onPerkAllowancesMessageEvent = useCallback((event: PerkAllowancesMessageEvent) =>
     {
@@ -47,13 +27,6 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
     }, [ setUseGuideTool ]);
     
     UseMessageEventHook(PerkAllowancesMessageEvent, onPerkAllowancesMessageEvent);
-
-    const onAchievementsUIUnseenCountEvent = useCallback((event: AchievementsUIUnseenCountEvent) =>
-    {
-        setUnseenAchievementCount(event.count);
-    }, []);
-
-    UseUiEvent(AchievementsUIUnseenCountEvent.UNSEEN_COUNT, onAchievementsUIUnseenCountEvent);
 
     const animationIconToToolbar = useCallback((iconName: string, image: HTMLImageElement, x: number, y: number) =>
     {
@@ -96,20 +69,18 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
 
     UseRoomEngineEvent(NitroToolbarAnimateIconEvent.ANIMATE_ICON, onNitroToolbarAnimateIconEvent);
 
-    const unseenInventoryCount = getFullCount();
-
     return (
         <>
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isMeExpanded } timeout={ 300 }>
-                <ToolbarMeView useGuideTool={ useGuideTool } unseenAchievementCount={ unseenAchievementCount } setMeExpanded={ setMeExpanded } />
+                <ToolbarMeView useGuideTool={ useGuideTool } unseenAchievementCount={ getTotalUnseen } setMeExpanded={ setMeExpanded } />
             </TransitionAnimation>
             <Flex alignItems="center" justifyContent="between" gap={ 2 } className="nitro-toolbar py-1 px-3">
                 <Flex gap={ 2 } alignItems="center">
                     <Flex alignItems="center" gap={ 2 }>
                         <Flex center pointer className={ 'navigation-item item-avatar ' + (isMeExpanded ? 'active ' : '') } onClick={ event => setMeExpanded(!isMeExpanded) }>
                             <LayoutAvatarImageView figure={ userFigure } direction={ 2 } />
-                            { (unseenAchievementCount > 0) &&
-                                <LayoutItemCountView count={ unseenAchievementCount } /> }
+                            { (getTotalUnseen > 0) &&
+                                <LayoutItemCountView count={ getTotalUnseen } /> }
                         </Flex>
                         { isInRoom &&
                             <Base pointer className="navigation-item icon icon-habbo" onClick={ event => VisitDesktop() } /> }
@@ -118,8 +89,8 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
                         <Base pointer className="navigation-item icon icon-rooms" onClick={ event => CreateLinkEvent('navigator/toggle') } />
                         <Base pointer className="navigation-item icon icon-catalog" onClick={ event => CreateLinkEvent('catalog/toggle') } />
                         <Base pointer className="navigation-item icon icon-inventory" onClick={ event => CreateLinkEvent('inventory/toggle') }>
-                            { (unseenInventoryCount > 0) &&
-                                <LayoutItemCountView count={ unseenInventoryCount } /> }
+                            { (getFullCount > 0) &&
+                                <LayoutItemCountView count={ getFullCount } /> }
                         </Base>
                         { isInRoom &&
                             <Base pointer className="navigation-item icon icon-camera" onClick={ event => CreateLinkEvent('camera/toggle') } /> }
