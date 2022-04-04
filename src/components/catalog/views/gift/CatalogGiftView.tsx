@@ -135,7 +135,7 @@ export const CatalogGiftView: FC<{}> = props =>
 
             if(!giftData) continue;
 
-            if(giftData.colors && giftData.colors.length > 0) newColors.push({ id: colorId, color: `#${giftData.colors[0].toString(16)}` });
+            if(giftData.colors && giftData.colors.length > 0) newColors.push({ id: colorId, color: `#${ giftData.colors[0].toString(16) }` });
         }
 
         setMaxBoxIndex(giftConfiguration.boxTypes.length - 1);
@@ -210,7 +210,7 @@ export const CatalogGiftView: FC<{}> = props =>
                         { LocalizeText('catalog.gift_wrapping.pick_color') }
                     </Text>
                     <ButtonGroup fullWidth>
-                        { colors.map(color => <Button key={ color.id } variant="dark" active={ (color.id === selectedColorId) } disabled={ !isColorable } style={{ backgroundColor: color.color }} onClick={ () => setSelectedColorId(color.id) } />) }
+                        { colors.map(color => <Button key={ color.id } variant="dark" active={ (color.id === selectedColorId) } disabled={ !isColorable } style={ { backgroundColor: color.color } } onClick={ () => setSelectedColorId(color.id) } />) }
                     </ButtonGroup>
                 </Column>
                 <Flex justifyContent="between" alignItems="center">

@@ -63,7 +63,7 @@ export const NavigatorRoomSettingsVipChatTabView: FC<NavigatorRoomSettingsTabVie
                         <option value="-1">{ LocalizeText('navigator.roomsettings.wall_thickness.thin') }</option>
                         <option value="-2">{ LocalizeText('navigator.roomsettings.wall_thickness.thinnest') }</option>
                     </select>
-                    <select className="form-select form-select-sm" value={roomData.floorThickness} onChange={ event => handleChange('floor_thickness', event.target.value) }>
+                    <select className="form-select form-select-sm" value={ roomData.floorThickness } onChange={ event => handleChange('floor_thickness', event.target.value) }>
                         <option value="0">{ LocalizeText('navigator.roomsettings.floor_thickness.normal') }</option>
                         <option value="1">{ LocalizeText('navigator.roomsettings.floor_thickness.thick') }</option>
                         <option value="-1">{ LocalizeText('navigator.roomsettings.floor_thickness.thin') }</option>

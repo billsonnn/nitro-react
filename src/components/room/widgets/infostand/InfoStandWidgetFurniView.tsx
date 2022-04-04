@@ -188,7 +188,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
         while(i < furniKeys.length)
         {
-            const key   = furniKeys[i];
+            const key = furniKeys[i];
             const value = furniValues[i];
 
             data = (data + (key + '=' + value + '\t'));
@@ -204,7 +204,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         if(!action || (action === '')) return;
 
         let messageType: string = null;
-        let objectData: string  = null;
+        let objectData: string = null;
 
         switch(action)
         {

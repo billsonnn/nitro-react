@@ -29,8 +29,8 @@ export function DispatchTouchEvent(roomId: number, canvasId: number, event: Touc
         {
             eventType = MouseEventType.DOUBLE_CLICK;
 
-            clickCount    = 0;
-            lastClick     = null;
+            clickCount = 0;
+            lastClick = null;
         }
     }
 

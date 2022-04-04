@@ -75,7 +75,7 @@ export const SelectReportedUserView: FC<{}> = props =>
                         {
                             return (
                                 <LayoutGridItem key={ user.id } onClick={ event => selectUser(user.id) } itemActive={ (selectedUserId === user.id) }>
-                                    <span dangerouslySetInnerHTML={{ __html: (user.username) }} />
+                                    <span dangerouslySetInnerHTML={ { __html: (user.username) } } />
                                 </LayoutGridItem>
                             );
                         }) }

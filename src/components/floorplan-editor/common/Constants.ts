@@ -12,7 +12,7 @@ export class FloorAction
     public static readonly UNSET = 4;
 }
 
-export const COLORMAP: object =  {
+export const COLORMAP: object = {
     'x': '101010',
     '0': '0065ff',
     '1': '0091ff',

@@ -31,28 +31,28 @@ export class FurnitureItem implements IFurnitureItem
     {
         if(!parser) return;
         
-        this._locked                = false;
-        this._id                    = parser.itemId;
-        this._type                  = parser.spriteId;
-        this._ref                   = parser.ref;
-        this._category              = parser.category;
-        this._groupable             = ((parser.isGroupable) && (!(parser.rentable)));
-        this._tradeable             = parser.tradable;
-        this._recyclable            = parser.isRecycleable;
-        this._sellable              = parser.sellable;
-        this._stuffData             = parser.stuffData;
-        this._extra                 = parser.extra;
-        this._secondsToExpiration   = parser.secondsToExpiration;
-        this._expirationTimeStamp   = parser.expirationTimeStamp;
-        this._hasRentPeriodStarted  = parser.hasRentPeriodStarted;
-        this._creationDay           = parser.creationDay;
-        this._creationMonth         = parser.creationMonth;
-        this._creationYear          = parser.creationYear;
-        this._slotId                = parser.slotId;
-        this._songId                = parser.songId;
-        this._flatId                = parser.flatId;
-        this._isRented              = parser.rentable;
-        this._isWallItem            = parser.isWallItem;
+        this._locked = false;
+        this._id = parser.itemId;
+        this._type = parser.spriteId;
+        this._ref = parser.ref;
+        this._category = parser.category;
+        this._groupable = ((parser.isGroupable) && (!(parser.rentable)));
+        this._tradeable = parser.tradable;
+        this._recyclable = parser.isRecycleable;
+        this._sellable = parser.sellable;
+        this._stuffData = parser.stuffData;
+        this._extra = parser.extra;
+        this._secondsToExpiration = parser.secondsToExpiration;
+        this._expirationTimeStamp = parser.expirationTimeStamp;
+        this._hasRentPeriodStarted = parser.hasRentPeriodStarted;
+        this._creationDay = parser.creationDay;
+        this._creationMonth = parser.creationMonth;
+        this._creationYear = parser.creationYear;
+        this._slotId = parser.slotId;
+        this._songId = parser.songId;
+        this._flatId = parser.flatId;
+        this._isRented = parser.rentable;
+        this._isWallItem = parser.isWallItem;
     }
 
     public get rentable(): boolean

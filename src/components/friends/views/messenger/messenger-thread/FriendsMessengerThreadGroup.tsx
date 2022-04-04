@@ -54,10 +54,10 @@ export const FriendsMessengerThreadGroup: FC<{ thread: MessengerThread, group: M
                 { ((group.type === GroupType.PRIVATE_CHAT) && !isOwnChat) &&
                     <LayoutAvatarImageView figure={ thread.participant.figure } direction={ 2 } /> }
                 { (groupChatData && !isOwnChat) &&
-                    <LayoutAvatarImageView figure={ groupChatData.figure } direction={ 2} /> }
+                    <LayoutAvatarImageView figure={ groupChatData.figure } direction={ 2 } /> }
             </Base>
             <Base className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat ? 'right' : 'left') }>
-                <Base className='fw-bold'>
+                <Base className="fw-bold">
                     { isOwnChat && GetSessionDataManager().userName }
                     { !isOwnChat && (groupChatData ? groupChatData.username : thread.participant.name) }
                 </Base>

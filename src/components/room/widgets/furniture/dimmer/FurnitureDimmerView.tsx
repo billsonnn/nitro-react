@@ -140,7 +140,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('widget.dimmer.title') } onCloseClick={ close } />
             { (dimmerState === 1) &&
                 <NitroCardTabsView>
-                    { presets.map(preset => <NitroCardTabsItemView key={ preset.id } isActive={ (selectedPresetId === preset.id) } onClick={ event => selectPresetId(preset.id) }>{ LocalizeText(`widget.dimmer.tab.${preset.id}`) }</NitroCardTabsItemView>) }
+                    { presets.map(preset => <NitroCardTabsItemView key={ preset.id } isActive={ (selectedPresetId === preset.id) } onClick={ event => selectPresetId(preset.id) }>{ LocalizeText(`widget.dimmer.tab.${ preset.id }`) }</NitroCardTabsItemView>) }
                 </NitroCardTabsView> }
             <NitroCardContentView>
                 { (dimmerState === 0) &&
@@ -160,7 +160,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
                                     { AVAILABLE_COLORS.map((color, index) =>
                                     {
                                         return (
-                                            <Column fullWidth pointer key={ index } className={ 'color-swatch rounded' + classNames({ ' active': color === selectedColor }) } onClick={ () => setSelectedColor(color) } style={{ backgroundColor: HTML_COLORS[index] }} />
+                                            <Column fullWidth pointer key={ index } className={ 'color-swatch rounded' + classNames({ ' active': color === selectedColor }) } onClick={ () => setSelectedColor(color) } style={ { backgroundColor: HTML_COLORS[index] } } />
                                         );
                                     }) }
                                 </Grid> }
@@ -174,7 +174,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
                                 value={ selectedBrightness }
                                 onChange={ value => setSelectedBrightness(value) }
                                 thumbClassName={ 'thumb percent' }
-                                renderThumb={ (props, state) => <div {...props}>{ scaledBrightness(state.valueNow) }</div> } />
+                                renderThumb={ (props, state) => <div { ...props }>{ scaledBrightness(state.valueNow) }</div> } />
                         </Column>
                         <Flex alignItems="center" gap={ 1 }>
                             <input className="form-check-input" type="checkbox" checked={ (selectedEffectId === 2) } onChange={ event => setSelectedEffectId(event.target.checked ? 2 : 1) } />

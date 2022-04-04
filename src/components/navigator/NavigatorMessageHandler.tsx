@@ -336,7 +336,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
 
             const newValue = { ...prevValue };
 
-            newValue.homeRoomId  = parser.homeRoomId;
+            newValue.homeRoomId = parser.homeRoomId;
             newValue.settingsReceived = true;
 
             return newValue;

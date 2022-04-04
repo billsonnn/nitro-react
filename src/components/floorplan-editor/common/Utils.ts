@@ -14,7 +14,7 @@ export const getTileFromScreenPosition = (x: number, y: number): [number, number
 {
     const translatedX = x - 1024; // after centering translation
     
-    const realX = ((translatedX /(TILE_SIZE / 2))  + (y / (TILE_SIZE / 4))) / 2;
+    const realX = ((translatedX /(TILE_SIZE / 2)) + (y / (TILE_SIZE / 4))) / 2;
     const realY = ((y /(TILE_SIZE / 4)) - (translatedX / (TILE_SIZE / 2))) / 2;
 
     return [ realX, realY ];

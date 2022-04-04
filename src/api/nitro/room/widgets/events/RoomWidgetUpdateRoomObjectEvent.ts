@@ -20,9 +20,9 @@ export class RoomWidgetUpdateRoomObjectEvent extends RoomWidgetUpdateEvent
     {
         super(type);
 
-        this._id        = id;
-        this._category  = category;
-        this._roomId    = roomId;
+        this._id = id;
+        this._category = category;
+        this._roomId = roomId;
     }
 
     public get id(): number

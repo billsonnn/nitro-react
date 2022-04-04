@@ -67,7 +67,7 @@ export const AvatarEditorModelView: FC<AvatarEditorModelViewProps> = props =>
                             <AvatarEditorIcon icon="female" selected={ (gender === FigureData.FEMALE) } />
                         </Flex>
                     </> }
-                { !model.canSetGender && model.categories &&  (model.categories.size > 0) && Array.from(model.categories.keys()).map(name =>
+                { !model.canSetGender && model.categories && (model.categories.size > 0) && Array.from(model.categories.keys()).map(name =>
                 {
                     const category = model.categories.get(name);
 

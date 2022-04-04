@@ -103,7 +103,7 @@ export const InfoStandWidgetView: FC<{}> = props =>
                 return <InfoStandWidgetFurniView furniData={ (infoStandEvent as RoomWidgetUpdateInfostandFurniEvent) } close={ closeInfostand } />;
             case RoomWidgetUpdateInfostandUserEvent.OWN_USER:
             case RoomWidgetUpdateInfostandUserEvent.PEER:
-                return <InfoStandWidgetUserView userData={ (infoStandEvent as RoomWidgetUpdateInfostandUserEvent) } setUserData={ setInfoStandEvent} close={ closeInfostand } />;
+                return <InfoStandWidgetUserView userData={ (infoStandEvent as RoomWidgetUpdateInfostandUserEvent) } setUserData={ setInfoStandEvent } close={ closeInfostand } />;
             case RoomWidgetUpdateInfostandUserEvent.BOT:
                 return <InfoStandWidgetBotView botData={ (infoStandEvent as RoomWidgetUpdateInfostandUserEvent) } close={ closeInfostand } />;
             case RoomWidgetUpdateInfostandRentableBotEvent.RENTABLE_BOT:

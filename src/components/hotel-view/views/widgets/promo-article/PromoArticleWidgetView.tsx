@@ -3,55 +3,46 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../api';
 import { UseMessageEventHook } from '../../../../../hooks';
 
-export interface PromoArticleWidgetViewProps
-{}
-
-export const PromoArticleWidgetView: FC<PromoArticleWidgetViewProps> = props =>
+export const PromoArticleWidgetView: FC<{}> = props =>
 {
     const [ articles, setArticles ] = useState<PromoArticleData[]>(null);
-  	const [ index, setIndex ] = useState(0);
+    const [ index, setIndex ] = useState(0);
 
-  	const handleSelect = (selectedIndex) => 
-  	{
-    	setIndex(selectedIndex);
-  	};
+    const onPromoArticlesMessageEvent = useCallback((event: PromoArticlesMessageEvent) =>
+    {
+        const parser = event.getParser();
+        setArticles(parser.articles);
+    }, []);
 
-  	const onPromoArticlesMessageEvent = useCallback((event: PromoArticlesMessageEvent) =>
-  	{
-    	const parser = event.getParser();
-    	setArticles(parser.articles);
-  	}, []);
+    UseMessageEventHook(PromoArticlesMessageEvent, onPromoArticlesMessageEvent);
 
-  	UseMessageEventHook(PromoArticlesMessageEvent, onPromoArticlesMessageEvent);
+    useEffect(() =>
+    {
+        SendMessageComposer(new GetPromoArticlesComposer());
+    }, []);
 
-	  useEffect(() =>
-  	{
-    	SendMessageComposer(new GetPromoArticlesComposer());
-  	}, []);
+    if(!articles) return null;
 
-  	if(!articles) return null;
-
-  	return (
+    return (
         <div className="promo-articles widget mb-2">
             <div className="d-flex flex-row align-items-center w-100 mb-1">
                 <small className="flex-shrink-0 pe-1">{ LocalizeText('landing.view.promo.article.header') }</small>
-			  	<hr className="w-100 my-0"/>
+                <hr className="w-100 my-0"/>
             </div>
-		  	<div className="d-flex flex-row mb-1">
+            <div className="d-flex flex-row mb-1">
                 {articles && (articles.length > 0) && articles.map((article, ind) =>
-                    <div className={'promo-articles-bullet cursor-pointer ' + (article === articles[index] ? 'promo-articles-bullet-active' : '')} key={article.id} onClick={event => handleSelect(ind)} />
+                    <div className={ 'promo-articles-bullet cursor-pointer ' + (article === articles[index] ? 'promo-articles-bullet-active' : '') } key={ article.id } onClick={ event => setIndex(ind) } />
                 )}
             </div>
-    		{articles && articles[index] &&
-				<div className="promo-article d-flex flex-row row mx-0">
-			  		<div className="promo-article-image" style={ { backgroundImage: `url(${articles[index].imageUrl})` } }/>
-				    <div className="col-3 d-flex flex-column h-100">
-				        <h3 className="my-0">{articles[index].title}</h3>
-				        <b>{ articles[index].bodyText }</b>
-				        <button className="btn btn-sm mt-auto btn-gainsboro" onClick={event => NotificationUtilities.openUrl(articles[index].linkContent)}>{ articles[index].buttonText }</button>
-				    </div>
-          		</div>
-       		}
-    	</div>
-  	);
+            {articles && articles[index] &&
+                <div className="promo-article d-flex flex-row row mx-0">
+                    <div className="promo-article-image" style={ { backgroundImage: `url(${ articles[index].imageUrl })` } }/>
+                    <div className="col-3 d-flex flex-column h-100">
+                        <h3 className="my-0">{articles[index].title}</h3>
+                        <b>{ articles[index].bodyText }</b>
+                        <button className="btn btn-sm mt-auto btn-gainsboro" onClick={ event => NotificationUtilities.openUrl(articles[index].linkContent) }>{ articles[index].buttonText }</button>
+                    </div>
+                </div> }
+        </div>
+    );
 }

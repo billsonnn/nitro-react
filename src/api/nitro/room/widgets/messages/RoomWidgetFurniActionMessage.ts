@@ -19,10 +19,10 @@ export class RoomWidgetFurniActionMessage extends RoomWidgetMessage
     {
         super(type);
 
-        this._furniId       = id;
+        this._furniId = id;
         this._furniCategory = category;
-        this._offerId       = offerId;
-        this._objectData    = objectData;
+        this._offerId = offerId;
+        this._objectData = objectData;
     }
 
     public get furniId(): number

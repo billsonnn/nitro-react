@@ -13,7 +13,7 @@ export class ColorUtils
             const diff = 6 - val.length;
             for(let i = 0; i < diff; i++)
             {
-                val =  '0' + val;
+                val = '0' + val;
             }
         }
         return ( '#' + val);

@@ -25,7 +25,7 @@ export const LayoutProgressBar: FC<LayoutProgressBarProps> = props =>
         <Column position={ position } justifyContent={ justifyContent } classNames={ getClassNames } { ...rest }>
             { text && (text.length > 0) &&
                 <Flex fit center position="absolute" className="nitro-progress-bar-text small">{ text }</Flex> }
-            <Base className="nitro-progress-bar-inner" style={ { width: (~~((((progress - 0) * (100 - 0)) / (maxProgress - 0)) + 0) + '%') }} />
+            <Base className="nitro-progress-bar-inner" style={ { width: (~~((((progress - 0) * (100 - 0)) / (maxProgress - 0)) + 0) + '%') } } />
             { children }
         </Column>
     );

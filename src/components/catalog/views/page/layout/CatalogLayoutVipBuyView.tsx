@@ -148,27 +148,27 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
                                     <Text textEnd>{ getOfferText(offer) }</Text>
                                     <Flex justifyContent="end" gap={ 1 }>
                                         { (offer.priceCredits > 0) &&
-                                                <Flex alignItems="center" justifyContent="end" gap={ 1 }>
-                                                    <Text>{ offer.priceCredits }</Text>
-                                                    <LayoutCurrencyIcon type={ -1 } />
-                                                </Flex> }
+                                        <Flex alignItems="center" justifyContent="end" gap={ 1 }>
+                                            <Text>{ offer.priceCredits }</Text>
+                                            <LayoutCurrencyIcon type={ -1 } />
+                                        </Flex> }
                                         { (offer.priceActivityPoints > 0) &&
-                                                <Flex alignItems="center" justifyContent="end" gap={ 1 }>
-                                                    <Text>{ offer.priceActivityPoints }</Text>
-                                                    <LayoutCurrencyIcon type={ offer.priceActivityPointsType } />
-                                                </Flex> }
+                                        <Flex alignItems="center" justifyContent="end" gap={ 1 }>
+                                            <Text>{ offer.priceActivityPoints }</Text>
+                                            <LayoutCurrencyIcon type={ offer.priceActivityPointsType } />
+                                        </Flex> }
                                     </Flex>
                                 </Column>
                             </LayoutGridItem>
                         );
                     }) }
                 </AutoGrid>
-                <Text center dangerouslySetInnerHTML={{ __html: LocalizeText('catalog.vip.buy.hccenter') }}></Text>
+                <Text center dangerouslySetInnerHTML={ { __html: LocalizeText('catalog.vip.buy.hccenter') } }></Text>
             </Column>
             <Column size={ 5 } overflow="hidden">
                 <Column fullHeight center overflow="hidden">
                     { currentPage.localization.getImage(1) && <img alt="" src={ currentPage.localization.getImage(1) } /> }
-                    <Text center overflow="auto" dangerouslySetInnerHTML={{ __html: getSubscriptionDetails }} />
+                    <Text center overflow="auto" dangerouslySetInnerHTML={ { __html: getSubscriptionDetails } } />
                 </Column>
                 { pendingOffer &&
                     <Column fullWidth grow justifyContent="end">

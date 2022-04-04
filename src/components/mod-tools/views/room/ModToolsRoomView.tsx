@@ -76,7 +76,7 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
     }, [ roomId, infoRequested, setInfoRequested ]);
 
     return (
-        <NitroCardView className="nitro-mod-tools-room" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT}>
+        <NitroCardView className="nitro-mod-tools-room" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
             <NitroCardHeaderView headerText={ 'Room Info' + (name ? ': ' + name : '') } onCloseClick={ event => onCloseClick() } />
             <NitroCardContentView className="text-black">
                 <Flex gap={ 2 }>

@@ -33,7 +33,7 @@ export const ChatHistoryView: FC<{}> = props =>
                     <Text variant="muted">{ item.timestamp }</Text>
                     { (item.type === ChatEntryType.TYPE_CHAT) &&
                         <>
-                            <Text pointer noWrap dangerouslySetInnerHTML={ { __html: (item.name + ':') }} />
+                            <Text pointer noWrap dangerouslySetInnerHTML={ { __html: (item.name + ':') } } />
                             <Text textBreak wrap grow>{ item.message }</Text>
                         </> }
                     { (item.type === ChatEntryType.TYPE_ROOM_INFO) &&

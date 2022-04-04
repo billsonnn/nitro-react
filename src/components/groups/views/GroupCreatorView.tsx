@@ -136,7 +136,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
                 </Flex>
                 <Column overflow="hidden">
                     <Flex alignItems="center" gap={ 2 }>
-                        <Base className={ `nitro-group-tab-image tab-${ currentTab }`} />
+                        <Base className={ `nitro-group-tab-image tab-${ currentTab }` } />
                         <Column grow gap={ 0 }>
                             <Text bold fontSize={ 4 }>{ LocalizeText(`group.create.stepcaption.${ currentTab }`) }</Text>
                             <Text>{ LocalizeText(`group.create.stepdesc.${ currentTab }`) }</Text>

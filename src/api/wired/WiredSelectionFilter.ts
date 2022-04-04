@@ -38,9 +38,9 @@ export class WiredSelectionFilter extends NitroFilter
         super(vertex, fragment);
 
         this.uniforms.lineColor = new Float32Array(3);
-        this.uniforms.color     = new Float32Array(3);
-        this.lineColor          = lineColor;
-        this.color              = color;
+        this.uniforms.color = new Float32Array(3);
+        this.lineColor = lineColor;
+        this.color = color;
     }
 
     public get lineColor(): number | number[]
