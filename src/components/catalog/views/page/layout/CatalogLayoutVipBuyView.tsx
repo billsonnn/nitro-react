@@ -3,9 +3,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
 import { AutoGrid, Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, LayoutLoadingSpinnerView, Text } from '../../../../../common';
 import { CatalogEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent } from '../../../../../events';
-import { UseUiEvent } from '../../../../../hooks';
-import { GetCurrencyAmount } from '../../../../purse/common/CurrencyHelper';
-import { GLOBAL_PURSE } from '../../../../purse/PurseView';
+import { usePurse, UseUiEvent } from '../../../../../hooks';
 import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogPurchaseState } from '../../../common/CatalogPurchaseState';
 import { CatalogLayoutProps } from './CatalogLayout.types';
@@ -15,7 +13,8 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
     const [ pendingOffer, setPendingOffer ] = useState<ClubOfferData>(null);
     const [ purchaseState, setPurchaseState ] = useState(CatalogPurchaseState.NONE);
     const { currentPage = null, catalogOptions = null } = useCatalogContext();
-    const { clubOffers = null, subscriptionInfo = null } = catalogOptions;
+    const { purse = null, getCurrencyAmount = null } = usePurse();
+    const { clubOffers = null } = catalogOptions;
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
@@ -54,8 +53,6 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
 
     const getPurchaseHeader = useCallback(() =>
     {
-        const purse = GLOBAL_PURSE;
-
         if(!purse) return '';
 
         const extensionOrSubscription = (purse.clubDays > 0 || purse.clubPeriods > 0) ? 'extension.' : 'subscription.';
@@ -64,7 +61,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
         const locale = LocalizeText('catalog.vip.buy.confirm.' + extensionOrSubscription + daysOrMonths);
 
         return locale.replace('%NUM_' + daysOrMonths.toUpperCase() + '%', daysOrMonthsText.toString());
-    }, [ pendingOffer ]);
+    }, [ pendingOffer, purse ]);
 
     const getPurchaseValidUntil = useCallback(() =>
     {
@@ -79,14 +76,12 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
 
     const getSubscriptionDetails = useMemo(() =>
     {
-        if(!subscriptionInfo) return '';
-
-        const clubDays = subscriptionInfo.clubDays;
-        const clubPeriods = subscriptionInfo.clubPeriods;
+        const clubDays = purse.clubDays;
+        const clubPeriods = purse.clubPeriods;
         const totalDays = (clubPeriods * 31) + clubDays;
 
         return LocalizeText('catalog.vip.extend.info', [ 'days' ], [ totalDays.toString() ]);
-    }, [ subscriptionInfo ]);
+    }, [ purse ]);
 
     const purchaseSubscription = useCallback(() =>
     {
@@ -106,12 +101,12 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
     {
         if(!pendingOffer) return null;
 
-        if(pendingOffer.priceCredits > GetCurrencyAmount(-1))
+        if(pendingOffer.priceCredits > getCurrencyAmount(-1))
         {
             return <Button fullWidth variant="danger">{ LocalizeText('catalog.alert.notenough.title') }</Button>;
         }
 
-        if(pendingOffer.priceActivityPoints > GetCurrencyAmount(pendingOffer.priceActivityPointsType))
+        if(pendingOffer.priceActivityPoints > getCurrencyAmount(pendingOffer.priceActivityPointsType))
         {
             return <Button fullWidth variant="danger">{ LocalizeText('catalog.alert.notenough.activitypoints.title.' + pendingOffer.priceActivityPointsType) }</Button>;
         }
@@ -128,7 +123,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
             default:
                 return <Button fullWidth variant="success" onClick={ () => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('buy') }</Button>;
         }
-    }, [ pendingOffer, purchaseState, purchaseSubscription ]);
+    }, [ pendingOffer, purchaseState, purchaseSubscription, getCurrencyAmount ]);
 
     useEffect(() =>
     {

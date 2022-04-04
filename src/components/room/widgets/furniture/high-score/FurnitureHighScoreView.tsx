@@ -95,7 +95,7 @@ export const FurnitureHighScoreView: FC<{}> = props =>
                                                 </Text>
                                             </Flex>
                                         );
-                                    })}
+                                    }) }
                                 </Column>
                             </ContextMenuListView>
                         </Column>

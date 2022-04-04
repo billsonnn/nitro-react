@@ -33,7 +33,7 @@ export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props =>
             {
                 return <HallOfFameItemView key={ index } data={ entry } level={ (index + 1) } />;
             }
-            )}
+            ) }
         </div>
     );
 }

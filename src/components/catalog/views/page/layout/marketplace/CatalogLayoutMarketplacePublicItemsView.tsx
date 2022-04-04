@@ -2,8 +2,7 @@ import { BuyMarketplaceOfferMessageComposer, GetMarketplaceOffersMessageComposer
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
 import { Button, ButtonGroup, Column, Text } from '../../../../../../common';
-import { UseMessageEventHook } from '../../../../../../hooks';
-import { GetCurrencyAmount } from '../../../../../purse/common/CurrencyHelper';
+import { UseMessageEventHook, usePurse } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, PUBLIC_OFFER } from './CatalogLayoutMarketplaceItemView';
 import { SearchFormView } from './CatalogLayoutMarketplaceSearchFormView';
@@ -25,6 +24,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
     const [ totalItemsFound, setTotalItemsFound ] = useState(0);
     const [ offers, setOffers ] = useState(new Map<number, MarketplaceOfferData>());
     const [ lastSearch, setLastSearch ] = useState<IMarketplaceSearchOptions>({ minPrice: -1, maxPrice: -1, query: '', type: 3 });
+    const { getCurrencyAmount = null } = usePurse();
 
     const requestOffers = useCallback((options: IMarketplaceSearchOptions) =>
     {
@@ -48,18 +48,20 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
 
     const purchaseItem = useCallback((offerData: MarketplaceOfferData) =>
     {
-        if(offerData.price > GetCurrencyAmount(-1))
+        if(offerData.price > getCurrencyAmount(-1))
         {
             NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.notenough.credits.description'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.alert.notenough.title'));
             return;
         }
+
         const offerId = offerData.offerId;
+
         NotificationUtilities.confirm(LocalizeText('catalog.marketplace.confirm_header'), () =>
         {
             SendMessageComposer(new BuyMarketplaceOfferMessageComposer(offerId));
         },
         null, null, null, LocalizeText('catalog.marketplace.confirm_title'));
-    },[]);
+    }, [ getCurrencyAmount ]);
 
     const onMarketPlaceOffersEvent = useCallback( (event: MarketPlaceOffersEvent) =>
     {

@@ -68,7 +68,7 @@ export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewPro
                     </Column>
                 </Flex>
                 <Button disabled={ (selectedUserId <= 0) } onClick={ event => unBanUser(selectedUserId) }>
-                    { LocalizeText('navigator.roomsettings.moderation.unban') } {selectedUserId > 0 && bannedUsers.find(user => (user.userId === selectedUserId))?.userName }
+                    { LocalizeText('navigator.roomsettings.moderation.unban') } { selectedUserId > 0 && bannedUsers.find(user => (user.userId === selectedUserId))?.userName }
                 </Button>
             </Column>
             <Column size={ 6 }>
@@ -80,7 +80,7 @@ export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewPro
                     </Flex>
                 </Column>
                 <Column gap={ 1 }>
-                    <Text bold>{LocalizeText('navigator.roomsettings.moderation.kick.header')}</Text>
+                    <Text bold>{ LocalizeText('navigator.roomsettings.moderation.kick.header') }</Text>
                     <Flex alignItems="center" gap={ 1 }>
                         <input className="form-check-input" type="checkbox" checked={ (roomData.moderationSettings.allowKick === 0) } onChange={ event => handleChange('moderation_kick', (event.target.checked ? 0 : 2)) } />
                         <Text>{ LocalizeText('navigator.roomsettings.moderation.all') }</Text>
@@ -91,7 +91,7 @@ export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewPro
                     </Flex>
                 </Column>
                 <Column gap={ 1 }>
-                    <Text bold>{LocalizeText('navigator.roomsettings.moderation.ban.header')}</Text>
+                    <Text bold>{ LocalizeText('navigator.roomsettings.moderation.ban.header') }</Text>
                     <Flex alignItems="center" gap={ 1 }>
                         <input className="form-check-input" type="checkbox" checked={ (roomData.moderationSettings.allowBan === 1) } onChange={ event => handleChange('moderation_ban', (event.target.checked ? 1 : 0)) } />
                         <Text>{ LocalizeText('navigator.roomsettings.moderation.rights') }</Text>

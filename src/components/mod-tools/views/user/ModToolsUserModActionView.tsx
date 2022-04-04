@@ -155,7 +155,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
             <NitroCardContentView className="text-black">
                 <select className="form-select form-select-sm" value={ selectedTopic } onChange={ event => setSelectedTopic(parseInt(event.target.value)) }>
                     <option value={ -1 } disabled>CFH Topic</option>
-                    { topics.map((topic, index) => <option key={ index } value={ index }>{LocalizeText('help.cfh.topic.' + topic.id)}</option>) }
+                    { topics.map((topic, index) => <option key={ index } value={ index }>{ LocalizeText('help.cfh.topic.' + topic.id) }</option>) }
                 </select>
                 <select className="form-select form-select-sm" value={ selectedAction } onChange={ event => setSelectedAction(parseInt(event.target.value)) }>
                     <option value={ -1 } disabled>Sanction Type</option>

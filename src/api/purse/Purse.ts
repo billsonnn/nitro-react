@@ -1,5 +1,5 @@
 import { HabboClubLevelEnum } from '@nitrots/nitro-renderer';
-import { GetNitroInstance } from '../../../api';
+import { GetNitroInstance } from '..';
 import { IPurse } from './IPurse';
 
 export class Purse implements IPurse

@@ -19,7 +19,7 @@ export const HallOfFameItemView: FC<HallOfFameItemViewProps> = props =>
                 <div className="hof-header">
                     { level }. { data.userName } <UserProfileIconView userId={ data.userId } />
                 </div>
-                <div className="small text-center text-white">{ LocalizeText('landing.view.competition.hof.points', [ 'points' ], [ LocalizeFormattedNumber(data.currentScore).toString() ])}</div>
+                <div className="small text-center text-white">{ LocalizeText('landing.view.competition.hof.points', [ 'points' ], [ LocalizeFormattedNumber(data.currentScore).toString() ]) }</div>
             </div>
             <LayoutAvatarImageView figure={ data.figure } direction={ 2 } />
         </div>

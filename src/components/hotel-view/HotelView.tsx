@@ -97,11 +97,11 @@ export const HotelView: FC<{}> = props =>
             <div className="left position-absolute" style={ (left && left.length) ? { backgroundImage: `url(${ left })` } : {} } />
             <div className="right-repeat position-absolute" style={ (rightRepeat && rightRepeat.length) ? { backgroundImage: `url(${ rightRepeat })` } : {} } />
             <div className="right position-absolute" style={ (right && right.length) ? { backgroundImage: `url(${ right })` } : {} } />
-            {GetConfiguration('hotelview')['show.avatar'] && (
+            { GetConfiguration('hotelview')['show.avatar'] && (
                 <div className="avatar-image">
                     <LayoutAvatarImageView figure={ userFigure } direction={ 2 } />
                 </div>
-            )}
+            ) }
         </div>
     );
 }

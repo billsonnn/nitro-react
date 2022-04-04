@@ -1,4 +1,4 @@
-import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, ClubGiftInfoEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent, UserSubscriptionEvent } from '@nitrots/nitro-renderer';
+import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, ClubGiftInfoEvent, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, SellablePetPalettesMessageEvent } from '@nitrots/nitro-renderer';
 import { GuildMembershipsMessageEvent } from '@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/user/GuildMembershipsMessageEvent';
 import { FC, useCallback } from 'react';
 import { GetFurnitureData, GetProductDataForLocalization, LocalizeText, NotificationAlertType, NotificationUtilities, ProductTypeEnum } from '../../api';
@@ -15,7 +15,6 @@ import { IPurchasableOffer } from './common/IPurchasableOffer';
 import { Offer } from './common/Offer';
 import { PageLocalization } from './common/PageLocalization';
 import { Product } from './common/Product';
-import { SubscriptionInfo } from './common/SubscriptionInfo';
 
 export const CatalogMessageHandler: FC<{}> = props =>
 {
@@ -227,23 +226,6 @@ export const CatalogMessageHandler: FC<{}> = props =>
         });
     }, [ setCatalogOptions ]);
 
-    const onUserSubscriptionEvent = useCallback((event: UserSubscriptionEvent) =>
-    {
-        const parser = event.getParser();
-
-        setCatalogOptions(prevValue =>
-        {
-            const subscriptionInfo = new SubscriptionInfo(
-                Math.max(0, parser.daysToPeriodEnd),
-                Math.max(0, parser.periodsSubscribedAhead),
-                parser.isVip,
-                parser.pastClubDays,
-                parser.pastVipDays);
-
-            return { ...prevValue, subscriptionInfo };
-        });
-    }, [ setCatalogOptions ]);
-
     const onGiftWrappingConfigurationEvent = useCallback((event: GiftWrappingConfigurationEvent) =>
     {
         const parser = event.getParser();
@@ -301,7 +283,6 @@ export const CatalogMessageHandler: FC<{}> = props =>
     UseMessageEventHook(ApproveNameMessageEvent, onApproveNameMessageEvent);
     UseMessageEventHook(GiftReceiverNotFoundEvent, onGiftReceiverNotFoundEvent);
     UseMessageEventHook(HabboClubOffersMessageEvent, onHabboClubOffersMessageEvent);
-    UseMessageEventHook(UserSubscriptionEvent, onUserSubscriptionEvent);
     UseMessageEventHook(GiftWrappingConfigurationEvent, onGiftWrappingConfigurationEvent);
     UseMessageEventHook(ClubGiftInfoEvent, onClubGiftInfoEvent);
     UseMessageEventHook(MarketplaceMakeOfferResult, onMarketplaceMakeOfferResult);

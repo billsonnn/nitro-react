@@ -124,7 +124,7 @@ export const FriendsMessengerView: FC<{}> = props =>
                                         </Flex>
                                     </LayoutGridItem>
                                 );
-                            })}
+                            }) }
                         </Column>
                     </Column>
                     <Column size={ 8 } overflow="hidden">
