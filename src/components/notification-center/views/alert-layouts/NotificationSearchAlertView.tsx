@@ -36,12 +36,12 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
     const isAction = (item.clickUrl && item.clickUrl.startsWith('event:'));
 
     return (
-        <LayoutNotificationAlertView title={title} close={close} {...rest}>
+        <LayoutNotificationAlertView title={ title } close={ close } { ...rest }>
             <Flex fullWidth alignItems="center" position="relative">
                 <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => updateSearchValue(event.target.value) } />
             </Flex>
             <Column fullHeight className="py-1" overflow="hidden">
-                <AutoGrid gap={1} columnCount={1}>
+                <AutoGrid gap={ 1 } columnCount={ 1 }>
                     {results && results.map((n, index) =>
                     { 
                         return <span key={ index }>{ n }</span>

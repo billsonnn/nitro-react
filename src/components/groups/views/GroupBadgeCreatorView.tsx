@@ -41,21 +41,21 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
                             { (badgeParts[index].code && (badgeParts[index].code.length > 0)) &&
                                 <LayoutBadgeImageView badgeCode={ badgeParts[index].code } isGroup={ true } /> }
                             { (!badgeParts[index].code || !badgeParts[index].code.length) &&
-                                    <Flex center className="badge-image group-badge">
-                                        <FontAwesomeIcon icon="plus" />
-                                    </Flex> }
+                            <Flex center className="badge-image group-badge">
+                                <FontAwesomeIcon icon="plus" />
+                            </Flex> }
                         </Flex>
                         { (part.type !== GroupBadgePart.BASE) &&
-                                <Grid gap={ 1 } columnCount={ 3 }>
-                                    { POSITIONS.map((position, posIndex) =>
-                                    {
-                                        return <Base key={ posIndex } pointer className={ `group-badge-position-swatch ${ (badgeParts[index].position === position) ? 'active' : '' }` } onClick={ event => setPartProperty(index, 'position', position) }></Base>
-                                    }) }
-                                </Grid> }
+                        <Grid gap={ 1 } columnCount={ 3 }>
+                            { POSITIONS.map((position, posIndex) =>
+                            {
+                                return <Base key={ posIndex } pointer className={ `group-badge-position-swatch ${ (badgeParts[index].position === position) ? 'active' : '' }` } onClick={ event => setPartProperty(index, 'position', position) }></Base>
+                            }) }
+                        </Grid> }
                         <Grid gap={ 1 } columnCount={ 8 }>
                             { (groupCustomize.badgePartColors.length > 0) && groupCustomize.badgePartColors.map((item, colorIndex) =>
                             {
-                                return <Base key={ colorIndex } pointer className={ `group-badge-color-swatch ${ (badgeParts[index].color === (colorIndex + 1)) ? 'active' : '' }` } style={{ backgroundColor: '#' + item.color }} onClick={ event => setPartProperty(index, 'color', (colorIndex + 1)) }></Base>
+                                return <Base key={ colorIndex } pointer className={ `group-badge-color-swatch ${ (badgeParts[index].color === (colorIndex + 1)) ? 'active' : '' }` } style={ { backgroundColor: '#' + item.color } } onClick={ event => setPartProperty(index, 'color', (colorIndex + 1)) }></Base>
                             }) }
                         </Grid>
                     </Flex>

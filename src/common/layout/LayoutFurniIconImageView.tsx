@@ -30,5 +30,5 @@ export const LayoutFurniIconImageView: FC<LayoutFurniIconImageViewProps> = props
         return imageUrl;
     }
 
-    return <LayoutImage imageUrl={ getImageIconUrl() } className='furni-image' { ...rest } />;
+    return <LayoutImage imageUrl={ getImageIconUrl() } className="furni-image" { ...rest } />;
 }

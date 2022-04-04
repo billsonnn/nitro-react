@@ -177,21 +177,21 @@ export const GroupMembersView: FC<{}> = props =>
                                 <Column grow gap={ 1 }>
                                     <Text bold small pointer onClick={ event => GetUserProfile(member.id) }>{ member.name }</Text>
                                     { (member.rank !== GroupRank.REQUESTED) &&
-                                            <Text small italics variant="muted">{ LocalizeText('group.members.since', [ 'date' ], [ member.joinedAt ]) }</Text> }
+                                    <Text small italics variant="muted">{ LocalizeText('group.members.since', [ 'date' ], [ member.joinedAt ]) }</Text> }
                                 </Column>
                                 <Column gap={ 1 }>
                                     { (member.rank !== GroupRank.REQUESTED) &&
-                                            <Flex center>
-                                                <Base pointer={ membersData.admin } className={ `icon icon-group-small-${ ((member.rank === GroupRank.OWNER) ? 'owner' : (member.rank === GroupRank.ADMIN) ? 'admin' : (membersData.admin && (member.rank === GroupRank.MEMBER)) ? 'not-admin' : '') }` } title={ LocalizeText(getRankDescription(member)) } onClick={ event => toggleAdmin(member) } />
-                                            </Flex> }
+                                    <Flex center>
+                                        <Base pointer={ membersData.admin } className={ `icon icon-group-small-${ ((member.rank === GroupRank.OWNER) ? 'owner' : (member.rank === GroupRank.ADMIN) ? 'admin' : (membersData.admin && (member.rank === GroupRank.MEMBER)) ? 'not-admin' : '') }` } title={ LocalizeText(getRankDescription(member)) } onClick={ event => toggleAdmin(member) } />
+                                    </Flex> }
                                     { membersData.admin && (member.rank === GroupRank.REQUESTED) &&
-                                            <Flex alignItems="center">
-                                                <Base pointer className="nitro-friends-spritesheet icon-accept" title={ LocalizeText('group.members.accept') } onClick={ event => acceptMembership(member) }></Base>
-                                            </Flex> }
+                                    <Flex alignItems="center">
+                                        <Base pointer className="nitro-friends-spritesheet icon-accept" title={ LocalizeText('group.members.accept') } onClick={ event => acceptMembership(member) }></Base>
+                                    </Flex> }
                                     { membersData.admin && (member.rank !== GroupRank.OWNER) && (member.id !== GetSessionDataManager().userId) &&
-                                            <Flex alignItems="center">
-                                                <Base pointer className="nitro-friends-spritesheet icon-deny" title={ LocalizeText(member.rank === GroupRank.REQUESTED ? 'group.members.reject' : 'group.members.kick') } onClick={ event => removeMemberOrDeclineMembership(member) }></Base>
-                                            </Flex> }
+                                    <Flex alignItems="center">
+                                        <Base pointer className="nitro-friends-spritesheet icon-deny" title={ LocalizeText(member.rank === GroupRank.REQUESTED ? 'group.members.reject' : 'group.members.kick') } onClick={ event => removeMemberOrDeclineMembership(member) }></Base>
+                                    </Flex> }
                                 </Column>
                             </Flex>
                         );

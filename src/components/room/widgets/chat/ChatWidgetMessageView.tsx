@@ -80,7 +80,7 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
                 </div>
                 <div className="chat-content">
                     <b className="username mr-1" dangerouslySetInnerHTML={ { __html: `${ chat.username }: ` } } />
-                    <span className="message" dangerouslySetInnerHTML={{ __html: `${ chat.formattedText }` }} />
+                    <span className="message" dangerouslySetInnerHTML={ { __html: `${ chat.formattedText }` } } />
                 </div>
                 <div className="pointer" />
             </div>

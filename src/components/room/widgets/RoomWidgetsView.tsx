@@ -64,8 +64,8 @@ export const RoomWidgetsView: FC<{}> = props =>
     {
         if(!roomSession || !widgetHandler) return;
 
-        const objectId  = event.objectId;
-        const category  = event.category;
+        const objectId = event.objectId;
+        const category = event.category;
 
         let updateEvent: RoomWidgetUpdateRoomObjectEvent = null;
 

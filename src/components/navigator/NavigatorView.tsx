@@ -225,7 +225,7 @@ export const NavigatorView: FC<{}> = props =>
                             <FontAwesomeIcon icon="plus" />
                         </NitroCardTabsItemView>
                     </NitroCardTabsView>
-                    <NitroCardContentView position='relative'>
+                    <NitroCardContentView position="relative">
                         { isLoading &&
                             <Base fit position="absolute" className="top-0 start-0 z-index-1 bg-muted opacity-0-5" /> }
                         { !isCreatorOpen &&

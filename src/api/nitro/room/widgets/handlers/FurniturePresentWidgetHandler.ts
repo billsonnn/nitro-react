@@ -9,10 +9,10 @@ import { RoomWidgetHandler } from './RoomWidgetHandler';
 
 export class FurniturePresentWidgetHandler extends RoomWidgetHandler implements IGetImageListener
 {
-    private static FLOOR: string       = 'floor';
-    private static WALLPAPER: string   = 'wallpaper';
-    private static LANDSCAPE: string   = 'landscape';
-    private static POSTER: string      = 'poster';
+    private static FLOOR: string = 'floor';
+    private static WALLPAPER: string = 'wallpaper';
+    private static LANDSCAPE: string = 'landscape';
+    private static POSTER: string = 'poster';
 
     private _lastFurniId: number = -1;
     private _name: string = null;

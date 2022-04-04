@@ -42,7 +42,7 @@ export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProp
                 <Column className="p-1">
                     <Column gap={ 1 }>
                         <Text variant="white">{ LocalizeText('bot.skill.chatter.configuration.chat.text') }</Text>
-                        <textarea className="form-control form-control-sm" placeholder={LocalizeText('bot.skill.chatter.configuration.text.placeholder')} value={newText} rows={7} onChange={e => setNewText(e.target.value)} />
+                        <textarea className="form-control form-control-sm" placeholder={ LocalizeText('bot.skill.chatter.configuration.text.placeholder') } value={ newText } rows={ 7 } onChange={ e => setNewText(e.target.value) } />
                     </Column>
                     <Column gap={ 1 }>
                         <Flex gap={ 1 } alignItems="center" justifyContent="between">

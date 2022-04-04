@@ -64,7 +64,7 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
                                                 </Flex>
                                                 <Flex alignItems="center" gap={ 1 }>
                                                     { result.isAvatarOnline &&
-                                                            <Base className="nitro-friends-spritesheet icon-chat cursor-pointer" onClick={ event => OpenMessengerChat(result.avatarId) } title={ LocalizeText('friendlist.tip.im') } /> }
+                                                    <Base className="nitro-friends-spritesheet icon-chat cursor-pointer" onClick={ event => OpenMessengerChat(result.avatarId) } title={ LocalizeText('friendlist.tip.im') } /> }
                                                 </Flex>
                                             </NitroCardAccordionItemView>
                                         )
@@ -91,7 +91,7 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
                                                 </Flex>
                                                 <Flex alignItems="center" gap={ 1 }>
                                                     { canRequestFriend(result.avatarId) &&
-                                                            <Base className="nitro-friends-spritesheet icon-add cursor-pointer" onClick={ event => requestFriend(result.avatarId, result.avatarName) } title={ LocalizeText('friendlist.tip.addfriend') } /> }
+                                                    <Base className="nitro-friends-spritesheet icon-add cursor-pointer" onClick={ event => requestFriend(result.avatarId, result.avatarName) } title={ LocalizeText('friendlist.tip.addfriend') } /> }
                                                 </Flex>
                                             </NitroCardAccordionItemView>
                                         )

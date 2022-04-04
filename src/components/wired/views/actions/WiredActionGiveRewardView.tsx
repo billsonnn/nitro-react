@@ -100,7 +100,7 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
             <Flex alignItems="center" gap={ 1 }>
-                <input className="form-check-input" type="checkbox" id="limitEnabled" onChange={ event => setLimitEnabled(event.target.checked)} />
+                <input className="form-check-input" type="checkbox" id="limitEnabled" onChange={ event => setLimitEnabled(event.target.checked) } />
                 <Text>{ LocalizeText('wiredfurni.params.prizelimit', [ 'amount' ], [ limitEnabled ? rewardsLimit.toString() : '' ]) }</Text>
             </Flex>
             { !limitEnabled &&
@@ -129,7 +129,7 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
             </Column>
             <hr className="m-0 bg-dark" />
             <Flex alignItems="center" gap={ 1 }>
-                <input className="form-check-input" type="checkbox" id="uniqueRewards" checked={ uniqueRewards } onChange={(e) => setUniqueRewards(e.target.checked)} />
+                <input className="form-check-input" type="checkbox" id="uniqueRewards" checked={ uniqueRewards } onChange={ (e) => setUniqueRewards(e.target.checked) } />
                 <Text>Unique rewards</Text>
             </Flex>
             <Text center small className="bg-muted rounded p-1">
@@ -148,15 +148,15 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
                     return (
                         <Flex key={ index } gap={ 1 }>
                             <Flex alignItems="center" gap={ 1 }>
-                                <input className="form-check-input" type="checkbox" checked={ reward.isBadge } onChange={(e) => updateReward(index, e.target.checked, reward.itemCode, reward.probability)} />
+                                <input className="form-check-input" type="checkbox" checked={ reward.isBadge } onChange={ (e) => updateReward(index, e.target.checked, reward.itemCode, reward.probability) } />
                                 <Text small>Badge?</Text>
                             </Flex>
                             <input type="text" className="form-control form-control-sm" value={ reward.itemCode } onChange={ e => updateReward(index, reward.isBadge, e.target.value, reward.probability) } placeholder="Item Code" />
                             <input type="number" className="form-control form-control-sm" value={ reward.probability } onChange={ e => updateReward(index, reward.isBadge, reward.itemCode, Number(e.target.value)) } placeholder="Probability" />
                             { (index > 0) &&
-                                    <Button variant="danger" onClick={ event => removeReward(index) }>
-                                        <FontAwesomeIcon icon="trash" />
-                                    </Button> }
+                            <Button variant="danger" onClick={ event => removeReward(index) }>
+                                <FontAwesomeIcon icon="trash" />
+                            </Button> }
                         </Flex>
                     )
                 }) }

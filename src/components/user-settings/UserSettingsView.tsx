@@ -126,7 +126,7 @@ export const UserSettingsView: FC<{}> = props =>
 
     return (
         <NitroCardView uniqueKey="user-settings" className="user-settings-window" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('widget.memenu.settings.title') } onCloseClick={event => processAction('close_view')} />
+            <NitroCardHeaderView headerText={ LocalizeText('widget.memenu.settings.title') } onCloseClick={ event => processAction('close_view') } />
             <NitroCardContentView className="text-black">
                 <Column gap={ 1 }>
                     <Flex alignItems="center" gap={ 1 }>

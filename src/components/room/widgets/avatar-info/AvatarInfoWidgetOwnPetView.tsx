@@ -173,7 +173,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                         { LocalizeText('infostand.button.mount') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('toggle_riding_permission') } gap={ 1 }>
-                        <input type="checkbox" checked={ !!petData.publiclyRideable } readOnly={ true }  />
+                        <input type="checkbox" checked={ !!petData.publiclyRideable } readOnly={ true } />
                         { LocalizeText('infostand.button.toggle_riding_permission') }
                     </ContextMenuListItemView>
                     { (respectsLeft > 0) &&
@@ -220,7 +220,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                     { !petData.dead && (petData.level === petData.maximumLevel) && petData.breedable &&
                         <>
                             <ContextMenuListItemView onClick={ event => processAction('toggle_breeding_permission') } gap={ 1 }>
-                                <input type="checkbox" checked={ petData.publiclyBreedable } readOnly={ true }  />
+                                <input type="checkbox" checked={ petData.publiclyBreedable } readOnly={ true } />
                                 { LocalizeText('infostand.button.toggle_breeding_permission') }
                             </ContextMenuListItemView>
                             <ContextMenuListItemView onClick={ event => processAction('breed') }>

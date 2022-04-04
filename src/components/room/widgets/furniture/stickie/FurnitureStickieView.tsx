@@ -27,13 +27,13 @@ export const FurnitureStickieView: FC<{}> = props =>
 
                 if(data.length < 6) return;
 
-                let color: string   = null;
-                let text: string    = null;
+                let color: string = null;
+                let text: string = null;
 
                 if(data.indexOf(' ') > 0)
                 {
-                    color   = data.slice(0, data.indexOf(' '));
-                    text    = data.slice((data.indexOf(' ') + 1), data.length);
+                    color = data.slice(0, data.indexOf(' '));
+                    text = data.slice((data.indexOf(' ') + 1), data.length);
                 }
                 else
                 {

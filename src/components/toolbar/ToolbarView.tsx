@@ -41,8 +41,8 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
 
         document.body.append(image);
 
-        const targetBounds  = target.getBoundingClientRect();
-        const imageBounds   = image.getBoundingClientRect();
+        const targetBounds = target.getBoundingClientRect();
+        const imageBounds = image.getBoundingClientRect();
 
         const left = (imageBounds.x - targetBounds.x);
         const top = (imageBounds.y - targetBounds.y);

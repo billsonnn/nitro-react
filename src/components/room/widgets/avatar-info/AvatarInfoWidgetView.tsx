@@ -299,7 +299,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
 
             if(nameBubbleIndex > -1) removeNameBubble(nameBubbleIndex);
 
-            return <AvatarInfoWidgetNameView nameData={ name } close={ clearName }  />;
+            return <AvatarInfoWidgetNameView nameData={ name } close={ clearName } />;
         }
 
         if(infoStandEvent)
@@ -355,13 +355,13 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
             { currentView }
             { (nameBubbles.length > 0) && nameBubbles.map((name, index) =>
             {
-                return <AvatarInfoWidgetNameView key={ index } nameData={ name } close={ () => removeNameBubble(index) }  />;
+                return <AvatarInfoWidgetNameView key={ index } nameData={ name } close={ () => removeNameBubble(index) } />;
             }) }
             { (productBubbles.length > 0) && productBubbles.map((item, index) =>
             {
-                return <AvatarInfoUseProductView key={ item.id } item={ item } updateConfirmingProduct={ updateConfirmingProduct } close={ () => removeProductBubble(index) }  />;
+                return <AvatarInfoUseProductView key={ item.id } item={ item } updateConfirmingProduct={ updateConfirmingProduct } close={ () => removeProductBubble(index) } />;
             }) }
-            { rentableBotChatEvent && <AvatarInfoRentableBotChatView chatEvent={ rentableBotChatEvent } close={ () => setRentableBotChatEvent(null)}/> }
+            { rentableBotChatEvent && <AvatarInfoRentableBotChatView chatEvent={ rentableBotChatEvent } close={ () => setRentableBotChatEvent(null) }/> }
             { confirmingProduct && <AvatarInfoUseProductConfirmView item={ confirmingProduct } close={ () => setConfirmingProduct(null) } /> }
         </>
     )

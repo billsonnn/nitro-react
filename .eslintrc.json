@@ -1,4 +1,5 @@
 {
+    "root": true,
     "settings": {
         "react": {
             "pragma": "React",
@@ -32,8 +33,13 @@
         "@typescript-eslint/indent": [ "error", 4, { "SwitchCase": 1 } ],
         "array-bracket-spacing": [ "error", "always" ],
         "brace-style": [ "error", "allman" ],
+        "template-curly-spacing": [ "error", "always" ],
+        "no-multi-spaces": [ "error" ],
         "react/prop-types": [ "off" ],
-        "object-curly-spacing": [ "error", "always" ],
+        "jsx-quotes": [ "error" ],
+        "react/jsx-curly-spacing": [ "error", "always" ],
+        "react/jsx-equals-spacing": [ "error" ],
+        "@typescript-eslint/object-curly-spacing": [ "error", "always", { "arraysInObjects": true, "objectsInObjects": false } ],
         "@typescript-eslint/ban-types": [
             "error",
             {

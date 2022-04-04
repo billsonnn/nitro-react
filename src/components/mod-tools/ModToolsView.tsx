@@ -214,12 +214,12 @@ export const ModToolsView: FC<{}> = props =>
             }
             { openUserInfo && openUserInfo.map(userId =>
             {
-                return <ModToolsUserView key={userId} userId={userId} onCloseClick={ () => handleClick('close_user_info', userId.toString())}/>
+                return <ModToolsUserView key={ userId } userId={ userId } onCloseClick={ () => handleClick('close_user_info', userId.toString()) }/>
             })
             }
             { openUserChatlogs && openUserChatlogs.map(userId =>
             {
-                return <ModToolsUserChatlogView key={userId} userId={userId} onCloseClick={ () => handleClick('close_user_chatlog', userId.toString())}/>
+                return <ModToolsUserChatlogView key={ userId } userId={ userId } onCloseClick={ () => handleClick('close_user_chatlog', userId.toString()) }/>
             })
             }
             

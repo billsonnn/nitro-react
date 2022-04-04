@@ -77,9 +77,9 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
     {
         switch(currentTab)
         {
-            case 0: return <ModToolsOpenIssuesTabView openIssues={openIssues}/>;
-            case 1: return <ModToolsMyIssuesTabView myIssues={myIssues} onIssueHandleClick={onIssueHandleClicked}/>;
-            case 2: return <ModToolsPickedIssuesTabView pickedIssues={pickedIssues}/>;
+            case 0: return <ModToolsOpenIssuesTabView openIssues={ openIssues }/>;
+            case 1: return <ModToolsMyIssuesTabView myIssues={ myIssues } onIssueHandleClick={ onIssueHandleClicked }/>;
+            case 2: return <ModToolsPickedIssuesTabView pickedIssues={ pickedIssues }/>;
             default: return null;
         }
     }, [ currentTab, myIssues, onIssueHandleClicked, openIssues, pickedIssues ]);

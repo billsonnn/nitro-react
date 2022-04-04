@@ -15,7 +15,7 @@ export const AvatarInfoWidgetNameView: FC<AvatarInfoWidgetNameViewProps> = props
     const fades = useMemo(() => (nameData.id !== GetSessionDataManager().userId), [ nameData ]);
 
     return (
-        <ContextMenuView objectId={ nameData.roomIndex } category={ nameData.category } userType={ nameData.userType } fades={ fades } className="name-only" close= { close }>
+        <ContextMenuView objectId={ nameData.roomIndex } category={ nameData.category } userType={ nameData.userType } fades={ fades } className="name-only" close={ close }>
             <div className="text-shadow">
                 { nameData.name }
             </div>

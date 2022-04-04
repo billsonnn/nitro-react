@@ -9,7 +9,7 @@ export const NitropediaView: FC<{}> = props =>
 {
     const [ content, setContent ] = useState<string>(null);
     const [ header, setHeader ] = useState<string>('');
-    const [ dimensions, setDimensions ] = useState<{ width: number, height: number}>(null);
+    const [ dimensions, setDimensions ] = useState<{ width: number, height: number }>(null);
     const elementRef = useRef<HTMLDivElement>(null);
     
     const openPage = useCallback(async (link: string) =>
@@ -95,9 +95,9 @@ export const NitropediaView: FC<{}> = props =>
 
     return (
         <NitroCardView className="nitropedia" theme="primary-slim" style={ dimensions ? { width: dimensions.width, height: dimensions.height } : {} }>
-            <NitroCardHeaderView headerText={header} onCloseClick={ () => setContent(null) }/>
+            <NitroCardHeaderView headerText={ header } onCloseClick={ () => setContent(null) }/>
             <NitroCardContentView>
-                <Base fit innerRef={ elementRef } className="text-black" dangerouslySetInnerHTML={{ __html: content }} />
+                <Base fit innerRef={ elementRef } className="text-black" dangerouslySetInnerHTML={ { __html: content } } />
             </NitroCardContentView>
         </NitroCardView>
     );

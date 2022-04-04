@@ -107,8 +107,8 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
     {
         if(!elementRef.current || !dragHandler) return;
         
-        let offsetX  = (offset.x + delta.x);
-        let offsetY  = (offset.y + delta.y);
+        let offsetX = (offset.x + delta.x);
+        let offsetY = (offset.y + delta.y);
 
         const left = elementRef.current.offsetLeft + offsetX;
         const top = elementRef.current.offsetTop + offsetY;

@@ -102,8 +102,8 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
                 <Text bold>{ LocalizeText('group.edit.color.guild.color') }</Text>
                 { groupData.groupColors && (groupData.groupColors.length > 0) &&
                     <Flex overflow="hidden" className="rounded border">
-                        <Base className="group-color-swatch" style={{ backgroundColor: '#' + getGroupColor(0) }} />
-                        <Base className="group-color-swatch" style={{ backgroundColor: '#' + getGroupColor(1) }} />
+                        <Base className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(0) } } />
+                        <Base className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(1) } } />
                     </Flex> }
             </Column>
             <Column size={ 5 } gap={ 1 } overflow="hidden">
@@ -111,7 +111,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
                 <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 }>
                     { groupData.groupColors && groupCustomize.groupColorsA && groupCustomize.groupColorsA.map((item, index) =>
                     {
-                        return <div key={ index } className={ 'group-badge-color-swatch cursor-pointer' + classNames({ ' active': (groupData.groupColors[0] === item.id) }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(0, item.id) }></div>
+                        return <div key={ index } className={ 'group-badge-color-swatch cursor-pointer' + classNames({ ' active': (groupData.groupColors[0] === item.id) }) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(0, item.id) }></div>
                     }) }
                 </AutoGrid>
             </Column>
@@ -120,7 +120,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
                 <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 }>
                     { groupData.groupColors && groupCustomize.groupColorsB && groupCustomize.groupColorsB.map((item, index) =>
                     {
-                        return <div key={ index } className={ 'group-badge-color-swatch cursor-pointer' + classNames({ ' active': (groupData.groupColors[1] === item.id) }) } style={{ backgroundColor: '#' + item.color }} onClick={ () => selectColor(1, item.id) }></div>
+                        return <div key={ index } className={ 'group-badge-color-swatch cursor-pointer' + classNames({ ' active': (groupData.groupColors[1] === item.id) }) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(1, item.id) }></div>
                     }) }
                 </AutoGrid>
             </Column>

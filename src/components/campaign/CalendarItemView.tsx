@@ -33,7 +33,7 @@ export const CalendarItemView: FC<CalendarItemViewProps> = props =>
     }
 
     return (
-        <Column fit center pointer className={`campaign-spritesheet campaign-day-generic-bg rounded calendar-item ${ active ? 'active' : '' }`} onClick={ () => onClick(itemId) }>
+        <Column fit center pointer className={ `campaign-spritesheet campaign-day-generic-bg rounded calendar-item ${ active ? 'active' : '' }` } onClick={ () => onClick(itemId) }>
             { (state === CalendarItemState.STATE_UNLOCKED) &&
                 <Flex center className="campaign-spritesheet unlocked-bg">
                     <Flex center className="campaign-spritesheet campaign-opened">

@@ -36,7 +36,7 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
         
         const time = Math.max(1, offerData.timeLeftMinutes);
         const hours = Math.floor(time / 60);
-        const minutes =  time - (hours * 60);
+        const minutes = time - (hours * 60);
 
         let text = minutes + ' ' + LocalizeText('catalog.marketplace.offer.minutes');
         if(hours > 0)

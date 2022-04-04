@@ -58,7 +58,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                     </Column>
                     <Column grow gap={ 1 }>
                         <Text>{ LocalizeText('navigator.createroom.roomdescinfo') }</Text>
-                        <textarea className="flex-grow-1 form-control form-control-sm w-100" maxLength={255} onChange={event => setDescription(event.target.value)} placeholder={ LocalizeText('navigator.createroom.roomdescinfo') } />
+                        <textarea className="flex-grow-1 form-control form-control-sm w-100" maxLength={ 255 } onChange={ event => setDescription(event.target.value) } placeholder={ LocalizeText('navigator.createroom.roomdescinfo') } />
                     </Column>
                     <Column gap={ 1 }>
                         <Text>{ LocalizeText('navigator.category') }</Text>

@@ -140,7 +140,7 @@ export const App: FC<{}> = props =>
     return (
         <Base fit overflow="hidden">
             { (!isReady || isError) &&
-                <LoadingView isError={isError} message={message} percent={ percent } /> }
+                <LoadingView isError={ isError } message={ message } percent={ percent } /> }
             <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ (isReady) }>
                 <MainView />
             </TransitionAnimation>

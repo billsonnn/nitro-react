@@ -28,8 +28,8 @@ export function DispatchMouseEvent(roomId: number, canvasId: number, event: Mous
         {
             if(!didMouseMove) eventType = MouseEventType.DOUBLE_CLICK;
 
-            clickCount  = 0;
-            lastClick   = null;
+            clickCount = 0;
+            lastClick = null;
         }
     }
 

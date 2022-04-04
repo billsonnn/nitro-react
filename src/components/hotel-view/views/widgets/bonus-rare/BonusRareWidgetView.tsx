@@ -37,7 +37,7 @@ export const BonusRareWidgetView: FC<BonusRareWidgetViewProps> = props =>
             { productType }
             <div className="bg-light-dark rounded overflow-hidden position-relative bonus-bar-container">
                 <div className="d-flex justify-content-center align-items-center w-100 h-100 position-absolute small top-0">{(totalCoinsForBonus - coinsStillRequiredToBuy) + '/' + totalCoinsForBonus}</div>
-                <div className="small bg-info rounded position-absolute top-0 h-100" style={{ width: ((totalCoinsForBonus - coinsStillRequiredToBuy) / totalCoinsForBonus) * 100 + '%' }}></div>
+                <div className="small bg-info rounded position-absolute top-0 h-100" style={ { width: ((totalCoinsForBonus - coinsStillRequiredToBuy) / totalCoinsForBonus) * 100 + '%' } }></div>
             </div>
         </div>
     );

@@ -157,7 +157,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                 </Text>
                 <Column className="nitro-catalog-layout-marketplace-grid" overflow="auto">
                     { 
-                        Array.from(offers.values()).map( (entry, index) => <CatalogLayoutMarketplaceItemView key={ index } offerData={ entry } type={ PUBLIC_OFFER } onClick={purchaseItem} />)
+                        Array.from(offers.values()).map( (entry, index) => <CatalogLayoutMarketplaceItemView key={ index } offerData={ entry } type={ PUBLIC_OFFER } onClick={ purchaseItem } />)
                     }
                 </Column>
             </Column>
