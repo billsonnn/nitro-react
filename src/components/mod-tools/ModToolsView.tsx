@@ -222,7 +222,6 @@ export const ModToolsView: FC<{}> = props =>
                 return <ModToolsUserChatlogView key={ userId } userId={ userId } onCloseClick={ () => handleClick('close_user_chatlog', userId.toString()) }/>
             })
             }
-            
             { isTicketsVisible && <ModToolsTicketsView onCloseClick={ () => setIsTicketsVisible(false) } /> }
         </ModToolsContextProvider>
     );
