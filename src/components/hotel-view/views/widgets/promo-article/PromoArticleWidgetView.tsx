@@ -30,15 +30,15 @@ export const PromoArticleWidgetView: FC<{}> = props =>
                 <hr className="w-100 my-0"/>
             </div>
             <div className="d-flex flex-row mb-1">
-                {articles && (articles.length > 0) && articles.map((article, ind) =>
+                { articles && (articles.length > 0) && articles.map((article, ind) =>
                     <div className={ 'promo-articles-bullet cursor-pointer ' + (article === articles[index] ? 'promo-articles-bullet-active' : '') } key={ article.id } onClick={ event => setIndex(ind) } />
-                )}
+                ) }
             </div>
-            {articles && articles[index] &&
+            { articles && articles[index] &&
                 <div className="promo-article d-flex flex-row row mx-0">
                     <div className="promo-article-image" style={ { backgroundImage: `url(${ articles[index].imageUrl })` } }/>
                     <div className="col-3 d-flex flex-column h-100">
-                        <h3 className="my-0">{articles[index].title}</h3>
+                        <h3 className="my-0">{ articles[index].title }</h3>
                         <b>{ articles[index].bodyText }</b>
                         <button className="btn btn-sm mt-auto btn-gainsboro" onClick={ event => NotificationUtilities.openUrl(articles[index].linkContent) }>{ articles[index].buttonText }</button>
                     </div>

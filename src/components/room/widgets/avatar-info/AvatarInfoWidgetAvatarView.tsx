@@ -215,7 +215,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
     return (
         <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ userData.userType } close={ close }>
             <ContextMenuHeaderView className="cursor-pointer" onClick={ event => GetUserProfile(userData.webID) }>
-                {userData.name}
+                { userData.name }
             </ContextMenuHeaderView>
             { (mode === MODE_NORMAL) &&
                 <>
@@ -232,10 +232,10 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                     { (respectsLeft > 0) &&
                         <ContextMenuListItemView onClick={ event => processAction('respect') }>
                             { LocalizeText('infostand.button.respect', [ 'count' ], [ respectsLeft.toString() ]) }
-                        </ContextMenuListItemView>}
+                        </ContextMenuListItemView> }
                     { !canRequestFriend(userData.webID) &&
                         <ContextMenuListItemView onClick={ event => processAction('relationship') }>
-                            {LocalizeText('infostand.link.relationship')}
+                            { LocalizeText('infostand.link.relationship') }
                             <FontAwesomeIcon icon="chevron-right" className="right" />
                         </ContextMenuListItemView> }
                     { !userData.isIgnored &&
@@ -356,7 +356,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                         <FontAwesomeIcon icon="chevron-left" className="left" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
-                </>}
+                </> }
             { (mode === MODE_RELATIONSHIP) &&
                 <>
                     <Flex className="menu-list-split-3">

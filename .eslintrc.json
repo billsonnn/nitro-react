@@ -37,7 +37,7 @@
         "no-multi-spaces": [ "error" ],
         "react/prop-types": [ "off" ],
         "jsx-quotes": [ "error" ],
-        "react/jsx-curly-spacing": [ "error", "always" ],
+        "react/jsx-curly-spacing": [ "error", { "when": "always", "children": true } ],
         "react/jsx-equals-spacing": [ "error" ],
         "@typescript-eslint/object-curly-spacing": [ "error", "always", { "arraysInObjects": true, "objectsInObjects": false } ],
         "@typescript-eslint/ban-types": [

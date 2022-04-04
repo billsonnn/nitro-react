@@ -22,13 +22,13 @@ export const NavigatorRoomSettingsVipChatTabView: FC<NavigatorRoomSettingsTabVie
     return (
         <>
             <Column gap={ 1 }>
-                <Text bold>{LocalizeText('navigator.roomsettings.vip.caption')}</Text>
-                <Text>{LocalizeText('navigator.roomsettings.vip.info')}</Text>
+                <Text bold>{ LocalizeText('navigator.roomsettings.vip.caption') }</Text>
+                <Text>{ LocalizeText('navigator.roomsettings.vip.info') }</Text>
             </Column>
             <Grid overflow="auto">
                 <Column size={ 6 } gap={ 1 }>
-                    <Text bold>{LocalizeText('navigator.roomsettings.chat_settings')}</Text>
-                    <Text>{LocalizeText('navigator.roomsettings.chat_settings.info')}</Text>
+                    <Text bold>{ LocalizeText('navigator.roomsettings.chat_settings') }</Text>
+                    <Text>{ LocalizeText('navigator.roomsettings.chat_settings.info') }</Text>
                     <select className="form-select form-select-sm" value={ roomData.chatSettings.mode } onChange={ event => handleChange('bubble_mode', event.target.value) }>
                         <option value={ RoomChatSettings.CHAT_MODE_FREE_FLOW }>{ LocalizeText('navigator.roomsettings.chat.mode.free.flow') }</option>
                         <option value={ RoomChatSettings.CHAT_MODE_LINE_BY_LINE }>{ LocalizeText('navigator.roomsettings.chat.mode.line.by.line') }</option>
@@ -52,10 +52,10 @@ export const NavigatorRoomSettingsVipChatTabView: FC<NavigatorRoomSettingsTabVie
                     <input type="number" min="0" className="form-control form-control-sm" value={ chatDistance } onChange={ event => setChatDistance(event.target.valueAsNumber) } onBlur={ event => handleChange('chat_distance', chatDistance) } />
                 </Column>
                 <Column size={ 6 } gap={ 1 }>
-                    <Text bold>{LocalizeText('navigator.roomsettings.vip_settings')}</Text>
+                    <Text bold>{ LocalizeText('navigator.roomsettings.vip_settings') }</Text>
                     <Flex alignItems="center" gap={ 1 }>
                         <input className="form-check-input" type="checkbox" checked={ roomData.hideWalls } onChange={ event => handleChange('hide_walls', event.target.checked) } />
-                        <Text>{LocalizeText('navigator.roomsettings.hide_walls')}</Text>
+                        <Text>{ LocalizeText('navigator.roomsettings.hide_walls') }</Text>
                     </Flex>
                     <select className="form-select form-select-sm" value={ roomData.wallThickness } onChange={ event => handleChange('wall_thickness', event.target.value) }>
                         <option value="0">{ LocalizeText('navigator.roomsettings.wall_thickness.normal') }</option>

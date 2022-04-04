@@ -296,7 +296,7 @@ export const AvatarEditorView: FC<{}> = props =>
                             { LocalizeText(`avatareditor.category.${ category }`) }
                         </NitroCardTabsItemView>
                     );
-                })}
+                }) }
                 <NitroCardTabsItemView isActive={ isWardrobeVisible } onClick={ event => setIsWardrobeVisible(true) }>
                     { LocalizeText('avatareditor.category.wardrobe') }
                 </NitroCardTabsItemView>

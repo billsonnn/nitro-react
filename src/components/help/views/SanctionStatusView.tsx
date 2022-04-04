@@ -58,28 +58,28 @@ export const SanctionSatusView:FC<{}> = props =>
                     </Column>
                     <Column justifyContent="between" size={ 7 } overflow="hidden">
                         { (sanctionInfo.sanctionReason === 'cfh.reason.EMPTY') 
-                            ? <div className="col-12 fw-bold">{LocalizeText('help.sanction.current.none')}</div>
+                            ? <div className="col-12 fw-bold">{ LocalizeText('help.sanction.current.none') }</div>
                             : <>
-                                {((sanctionInfo.probationHoursLeft > 0) || (sanctionInfo.isSanctionActive)) &&
-                                    <div className="col-12 fw-bold">{LocalizeText('help.sanction.probation.reminder')}</div>
+                                { ((sanctionInfo.probationHoursLeft > 0) || (sanctionInfo.isSanctionActive)) &&
+                                    <div className="col-12 fw-bold">{ LocalizeText('help.sanction.probation.reminder') }</div>
                                 }
                                 <div className={ `col-12 fw-bold ${ sanctionInfo.isSanctionNew ? 'text-danger' : '' }` }>
-                                    {LocalizeText('help.sanction.last.sanction')} {sanctionLocalization('current', sanctionInfo.sanctionName, sanctionInfo.sanctionLengthHours)}
+                                    { LocalizeText('help.sanction.last.sanction') } { sanctionLocalization('current', sanctionInfo.sanctionName, sanctionInfo.sanctionLengthHours) }
                                 </div>
-                                <div className="col-12">{LocalizeText('generic.start.time')} {sanctionInfo.sanctionCreationTime}</div>
-                                <div className="col-12">{LocalizeText('generic.reason')} {sanctionInfo.sanctionReason}</div>
-                                <div className="col-12">{LocalizeText('help.sanction.probation.days.left')} {Math.trunc((sanctionInfo.probationHoursLeft / 24)) + 1}</div>
+                                <div className="col-12">{ LocalizeText('generic.start.time') } { sanctionInfo.sanctionCreationTime }</div>
+                                <div className="col-12">{ LocalizeText('generic.reason') } { sanctionInfo.sanctionReason }</div>
+                                <div className="col-12">{ LocalizeText('help.sanction.probation.days.left') } { Math.trunc((sanctionInfo.probationHoursLeft / 24)) + 1 }</div>
                             </>
                         }
                         { ((sanctionInfo.hasCustomMute) && (!(sanctionInfo.isSanctionActive))) &&
-                        <div className="col-12 fw-bold">{LocalizeText('help.sanction.custom.mute')}</div>
+                        <div className="col-12 fw-bold">{ LocalizeText('help.sanction.custom.mute') }</div>
                         }
                         { (sanctionInfo.tradeLockExpiryTime && sanctionInfo.tradeLockExpiryTime.length > 0) &&
-                            <div className="col-12 fw-bold">{LocalizeText('trade.locked.until')} {sanctionInfo.tradeLockExpiryTime}</div>
+                            <div className="col-12 fw-bold">{ LocalizeText('trade.locked.until') } { sanctionInfo.tradeLockExpiryTime }</div>
                         }
 
-                        <div className="col-12">{sanctionLocalization('next', sanctionInfo.nextSanctionName, sanctionInfo.nextSanctionLengthHours)}</div>
-                        <Button variant="success" onClick={ event => setSanctionInfo(null) }>{LocalizeText('habbo.way.ok.button')}</Button>
+                        <div className="col-12">{ sanctionLocalization('next', sanctionInfo.nextSanctionName, sanctionInfo.nextSanctionLengthHours) }</div>
+                        <Button variant="success" onClick={ event => setSanctionInfo(null) }>{ LocalizeText('habbo.way.ok.button') }</Button>
                     </Column>
                 </Grid>
             </NitroCardContentView>

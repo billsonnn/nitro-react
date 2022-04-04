@@ -76,7 +76,7 @@ export const AvatarEditorModelView: FC<AvatarEditorModelViewProps> = props =>
                             <AvatarEditorIcon icon={ category.name } selected={ (activeCategory === category) } />
                         </Flex>
                     );
-                })}
+                }) }
             </Column>
             <Column size={ 5 } overflow="hidden">
                 <AvatarEditorFigureSetView model={ model } category={ activeCategory } setMaxPaletteCount={ setMaxPaletteCount } />

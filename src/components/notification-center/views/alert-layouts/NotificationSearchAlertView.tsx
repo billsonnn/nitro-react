@@ -42,10 +42,10 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
             </Flex>
             <Column fullHeight className="py-1" overflow="hidden">
                 <AutoGrid gap={ 1 } columnCount={ 1 }>
-                    {results && results.map((n, index) =>
+                    { results && results.map((n, index) =>
                     { 
                         return <span key={ index }>{ n }</span>
-                    })}
+                    }) }
                 </AutoGrid>
             </Column>
             <hr className="my-2"/>

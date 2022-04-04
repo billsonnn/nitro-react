@@ -121,7 +121,7 @@ export const FurnitureStickieView: FC<{}> = props =>
                             { STICKIE_COLORS.map(color =>
                             {
                                 return <div key={ color } className="stickie-color ms-1" onClick={ event => processAction('changeColor', color) } style={ { backgroundColor: ColorUtils.makeColorHex(color) } } />
-                            })}
+                            }) }
                         </> }
                     </div>
                     <div className="d-flex align-items-center nitro-stickie-image stickie-close header-close" onClick={ event => processAction('close') }></div>

@@ -25,7 +25,7 @@ export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
                     { searchResult && (searchResult.filteredNodes.length > 0) && searchResult.filteredNodes.map((n, index) =>
                     {
                         return <CatalogNavigationItemView key={ index } node={ n } />;
-                    })}
+                    }) }
                     { !searchResult &&
                         <CatalogNavigationSetView node={ node } /> }
                 </AutoGrid>
