@@ -77,7 +77,6 @@ export const SanctionSatusView:FC<{}> = props =>
                         { (sanctionInfo.tradeLockExpiryTime && sanctionInfo.tradeLockExpiryTime.length > 0) &&
                             <div className="col-12 fw-bold">{ LocalizeText('trade.locked.until') } { sanctionInfo.tradeLockExpiryTime }</div>
                         }
-
                         <div className="col-12">{ sanctionLocalization('next', sanctionInfo.nextSanctionName, sanctionInfo.nextSanctionLengthHours) }</div>
                         <Button variant="success" onClick={ event => setSanctionInfo(null) }>{ LocalizeText('habbo.way.ok.button') }</Button>
                     </Column>
