@@ -204,12 +204,12 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 
     return (
         <NitroCardView className="youtube-tv-widget">
-            <NitroCardHeaderView headerText={''} onCloseClick={close} />
+            <NitroCardHeaderView headerText={ '' } onCloseClick={ close } />
             <NitroCardContentView>
                 <div className="row w-100 h-100">
                     <div className="youtube-video-container col-9">
                         {(videoId && videoId.length > 0) &&
-                            <YouTube videoId={videoId} opts={getYoutubeOpts as Options} onReady={onReady} onStateChange={onStateChange} containerClassName={'youtubeContainer'} />
+                            <YouTube videoId={ videoId } opts={ getYoutubeOpts as Options } onReady={ onReady } onStateChange={ onStateChange } containerClassName={ 'youtubeContainer' } />
                         }
                         {(!videoId || videoId.length === 0) &&
                             <div className="empty-video w-100 h-100 justify-content-center align-items-center d-flex">{LocalizeText('widget.furni.video_viewer.no_videos')}</div>
@@ -217,15 +217,15 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                     </div>
                     <div className="playlist-container col-3">
                         <span className="playlist-controls justify-content-center d-flex">
-                            <i className="icon icon-youtube-prev cursor-pointer" onClick={() => processAction('playlist_prev')} />
-                            <i className="icon icon-youtube-next cursor-pointer" onClick={() => processAction('playlist_next')} />
+                            <i className="icon icon-youtube-prev cursor-pointer" onClick={ () => processAction('playlist_prev') } />
+                            <i className="icon icon-youtube-next cursor-pointer" onClick={ () => processAction('playlist_next') } />
                         </span>
                         <div className="mb-1">{LocalizeText('widget.furni.video_viewer.playlists')}</div>
-                        <Grid columnCount={1} className="playlist-grid">
+                        <Grid columnCount={ 1 } className="playlist-grid">
                             {playlists && playlists.map((entry, index) =>
                             {
                                 return (
-                                    <LayoutGridItem key={index} onClick={() => processAction(entry.video)} itemActive={entry.video === selectedItem}>
+                                    <LayoutGridItem key={ index } onClick={ () => processAction(entry.video) } itemActive={ entry.video === selectedItem }>
                                         <b>{entry.title}</b> - {entry.description}
                                     </LayoutGridItem>
                                 )

@@ -21,7 +21,7 @@ export const SanctionSatusView:FC<{}> = props =>
 
     const sanctionLocalization = useCallback((param: string, sanctionName: string, length?: number) =>
     {
-        let localizationName = `help.sanction.${param}`;
+        let localizationName = `help.sanction.${ param }`;
 
         switch(sanctionName)
         {
@@ -50,7 +50,7 @@ export const SanctionSatusView:FC<{}> = props =>
     
     return (
         <NitroCardView className="nitro-help" theme="primary-slim">
-            <NitroCardHeaderView headerText={LocalizeText('help.sanction.info.title')} onCloseClick={() => setSanctionInfo(null)} />
+            <NitroCardHeaderView headerText={ LocalizeText('help.sanction.info.title') } onCloseClick={ () => setSanctionInfo(null) } />
             <NitroCardContentView className="text-black">
                 <Grid>
                     <Column center size={ 5 } overflow="hidden">
@@ -63,7 +63,7 @@ export const SanctionSatusView:FC<{}> = props =>
                                 {((sanctionInfo.probationHoursLeft > 0) || (sanctionInfo.isSanctionActive)) &&
                                     <div className="col-12 fw-bold">{LocalizeText('help.sanction.probation.reminder')}</div>
                                 }
-                                <div className={`col-12 fw-bold ${sanctionInfo.isSanctionNew ? 'text-danger' : ''}`}>
+                                <div className={ `col-12 fw-bold ${ sanctionInfo.isSanctionNew ? 'text-danger' : '' }` }>
                                     {LocalizeText('help.sanction.last.sanction')} {sanctionLocalization('current', sanctionInfo.sanctionName, sanctionInfo.sanctionLengthHours)}
                                 </div>
                                 <div className="col-12">{LocalizeText('generic.start.time')} {sanctionInfo.sanctionCreationTime}</div>

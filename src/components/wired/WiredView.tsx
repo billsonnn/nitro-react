@@ -49,7 +49,7 @@ export const WiredView: FC<{}> = props =>
     }
 
     return (
-        <WiredContextProvider value={ { trigger, setTrigger, intParams, setIntParams, stringParam, setStringParam, furniIds, setFurniIds, actionDelay, setActionDelay, saveWired }}>
+        <WiredContextProvider value={ { trigger, setTrigger, intParams, setIntParams, stringParam, setStringParam, furniIds, setFurniIds, actionDelay, setActionDelay, saveWired } }>
             <WiredMessageHandler />
             { (trigger !== null) &&
                 GetWiredLayout(trigger) }

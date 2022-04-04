@@ -33,7 +33,7 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
                 <LayoutAvatarImageView figure={ userProfile.figure } direction={ 2 } />
             </Column>
             <Column>
-                <Column gap={ 0}>
+                <Column gap={ 0 }>
                     <Text bold>{ userProfile.username }</Text>
                     <Text italics textBreak small>{ userProfile.motto }&nbsp;</Text>
                 </Column>

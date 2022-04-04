@@ -272,7 +272,7 @@ export const CatalogMessageHandler: FC<{}> = props =>
             title = LocalizeText('inventory.marketplace.result.title.failure');
         }
 
-        const message = LocalizeText(`inventory.marketplace.result.${parser.result}`);
+        const message = LocalizeText(`inventory.marketplace.result.${ parser.result }`);
         
         NotificationUtilities.simpleAlert(message, NotificationAlertType.DEFAULT, null, null, title);
     }, []);

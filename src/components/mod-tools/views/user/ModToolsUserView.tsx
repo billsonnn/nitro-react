@@ -107,7 +107,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
 
     return (
         <>
-            <NitroCardView className="nitro-mod-tools-user" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT}>
+            <NitroCardView className="nitro-mod-tools-user" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
                 <NitroCardHeaderView headerText={ LocalizeText('modtools.userinfo.title', [ 'username' ], [ userInfo.userName ]) } onCloseClick={ () => onCloseClick() } />
                 <NitroCardContentView className="text-black">
                     <Grid overflow="hidden">
@@ -123,7 +123,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
                                                 <td>
                                                     { property.value }
                                                     { property.showOnline &&
-                                                            <i className={ `icon icon-pf-${ userInfo.online ? 'online' : 'offline' } ms-2` } /> }
+                                                    <i className={ `icon icon-pf-${ userInfo.online ? 'online' : 'offline' } ms-2` } /> }
                                                 </td>
                                             </tr>
                                         );

@@ -23,18 +23,18 @@ export const FurnitureTrophyView: FC<{}> = props =>
 
                 if(!roomObject) return;
                 
-                let data  = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
+                let data = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
                 let extra = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_EXTRAS);
 
                 if(!extra) extra = '0';
 
-                const color     = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_COLOR);
+                const color = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_COLOR);
                 const ownerName = data.substring(0, data.indexOf('\t'));
 
                 data = data.substring((ownerName.length + 1), data.length);
 
-                const trophyDate    = data.substring(0, data.indexOf('\t'));
-                const trophyText    = data.substr((trophyDate.length + 1), data.length);
+                const trophyDate = data.substring(0, data.indexOf('\t'));
+                const trophyText = data.substr((trophyDate.length + 1), data.length);
 
                 setTrophyData(new FurnitureTrophyData(widgetEvent.objectId, widgetEvent.category, color, ownerName, trophyDate, trophyText));
                 return;

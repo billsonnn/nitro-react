@@ -24,9 +24,9 @@ export class RoomWidgetFurniToWidgetMessage extends RoomWidgetMessage
     {
         super(type);
 
-        this._objectId  = objectId;
-        this._category  = category;
-        this._roomId    = roomId;
+        this._objectId = objectId;
+        this._category = category;
+        this._roomId = roomId;
     }
 
     public get objectId(): number

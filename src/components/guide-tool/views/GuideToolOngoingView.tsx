@@ -88,7 +88,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                             <Flex key={ index } fullWidth justifyContent={ isOwnChat(group.userId) ? 'end' : 'start' } gap={ 2 }>
                                 <Base shrink className="message-avatar">
                                     { (!isOwnChat(group.userId)) &&
-                                            <LayoutAvatarImageView figure={ userFigure } direction={ 2 } /> }
+                                    <LayoutAvatarImageView figure={ userFigure } direction={ 2 } /> }
                                 </Base>
                                 <Base className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat(group.userId) ? 'right' : 'left') }>
                                     <Text bold>
@@ -98,9 +98,9 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                                     { group.messages.map((chat, index) => <Base key={ index } className="text-break">{ chat.message }</Base>) }
                                 </Base>
                                 { (isOwnChat(group.userId)) &&
-                                        <Base className="message-avatar flex-shrink-0">
-                                            <LayoutAvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
-                                        </Base> }
+                                <Base className="message-avatar flex-shrink-0">
+                                    <LayoutAvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
+                                </Base> }
                             </Flex>
                         );
                     }) } 

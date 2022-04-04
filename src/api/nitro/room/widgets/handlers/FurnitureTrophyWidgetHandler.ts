@@ -24,7 +24,7 @@ export class FurnitureTrophyWidgetHandler extends RoomWidgetHandler
                 const color = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_COLOR);
                 const extra = parseInt(roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_EXTRAS));
 
-                let data  = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
+                let data = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
 
                 const ownerName = data.substring(0, data.indexOf('\t'));
 

@@ -46,8 +46,8 @@ export const GroupTabCreatorConfirmationView: FC<GroupTabCreatorConfirmationView
                 <Column center className="bg-muted rounded p-1" gap={ 2 }>
                     <Text bold center>{ LocalizeText('group.edit.color.guild.color') }</Text>
                     <Flex overflow="hidden" className="rounded border">
-                        <Base className="group-color-swatch" style={{ backgroundColor: '#' + getGroupColor(0) }} />
-                        <Base className="group-color-swatch" style={{ backgroundColor: '#' + getGroupColor(1) }} />
+                        <Base className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(0) } } />
+                        <Base className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(1) } } />
                     </Flex>
                 </Column>
             </Column>

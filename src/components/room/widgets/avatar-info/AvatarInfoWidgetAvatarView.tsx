@@ -360,20 +360,20 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
             { (mode === MODE_RELATIONSHIP) &&
                 <>
                     <Flex className="menu-list-split-3">
-                        <ContextMenuListItemView onClick={event => processAction('rship_heart')}>
+                        <ContextMenuListItemView onClick={ event => processAction('rship_heart') }>
                             <Base pointer className="nitro-friends-spritesheet icon-heart" />
                         </ContextMenuListItemView>
-                        <ContextMenuListItemView onClick={event => processAction('rship_smile')}>
+                        <ContextMenuListItemView onClick={ event => processAction('rship_smile') }>
                             <Base pointer className="nitro-friends-spritesheet icon-smile" />
                         </ContextMenuListItemView>
-                        <ContextMenuListItemView onClick={event => processAction('rship_bobba')}>
+                        <ContextMenuListItemView onClick={ event => processAction('rship_bobba') }>
                             <Base pointer className="nitro-friends-spritesheet icon-bobba" />
                         </ContextMenuListItemView>
                     </Flex>
-                    <ContextMenuListItemView onClick={event => processAction('rship_none')}>
+                    <ContextMenuListItemView onClick={ event => processAction('rship_none') }>
                         { LocalizeText('avatar.widget.clear_relationship') }
                     </ContextMenuListItemView>
-                    <ContextMenuListItemView onClick={event => processAction('back')}>
+                    <ContextMenuListItemView onClick={ event => processAction('back') }>
                         <FontAwesomeIcon icon="chevron-left" className="left" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>

@@ -63,34 +63,34 @@ export const NavigatorSearchResultItemInfoView: FC<NavigatorSearchResultItemInfo
 
     return (
         <>
-            <Base pointer className="icon icon-navigator-info" onClick={toggle}/>
-            <Overlay show={isVisible} target={target} placement="right">
+            <Base pointer className="icon icon-navigator-info" onClick={ toggle }/>
+            <Overlay show={ isVisible } target={ target } placement="right">
                 <Popover>
                     <NitroCardContentView overflow="hidden" className="room-info bg-transparent">
-                        <Flex gap={2} overflow="hidden">
-                            <LayoutRoomThumbnailView roomId={roomData.roomId} customUrl={roomData.officialRoomPicRef} className="d-flex flex-column align-items-center justify-content-end mb-1">
+                        <Flex gap={ 2 } overflow="hidden">
+                            <LayoutRoomThumbnailView roomId={ roomData.roomId } customUrl={ roomData.officialRoomPicRef } className="d-flex flex-column align-items-center justify-content-end mb-1">
                                 {roomData.habboGroupId > 0 && (
-                                    <LayoutBadgeImageView badgeCode={roomData.groupBadgeCode} isGroup={true} className={'position-absolute top-0 start-0 m-1 '}/>)}
+                                    <LayoutBadgeImageView badgeCode={ roomData.groupBadgeCode } isGroup={ true } className={ 'position-absolute top-0 start-0 m-1 ' }/>)}
                                 {roomData.doorMode !== RoomDataParser.OPEN_STATE && (
-                                    <i className={'position-absolute end-0 mb-1 me-1 icon icon-navigator-room-' + (roomData.doorMode === RoomDataParser.DOORBELL_STATE ? 'locked' : roomData.doorMode === RoomDataParser.PASSWORD_STATE ? 'password' : roomData.doorMode === RoomDataParser.INVISIBLE_STATE ? 'invisible' : '')}/> )}
+                                    <i className={ 'position-absolute end-0 mb-1 me-1 icon icon-navigator-room-' + (roomData.doorMode === RoomDataParser.DOORBELL_STATE ? 'locked' : roomData.doorMode === RoomDataParser.PASSWORD_STATE ? 'password' : roomData.doorMode === RoomDataParser.INVISIBLE_STATE ? 'invisible' : '') }/> )}
                             </LayoutRoomThumbnailView>
-                            <Column gap={1}>
-                                <Text bold truncate className="flex-grow-1" style={{ maxHeight: 13 }}>
+                            <Column gap={ 1 }>
+                                <Text bold truncate className="flex-grow-1" style={ { maxHeight: 13 } }>
                                     {roomData.roomName}
                                 </Text>
-                                <Flex gap={1}>
+                                <Flex gap={ 1 }>
                                     <Text italics variant="muted">
                                         {LocalizeText('navigator.roomownercaption')}
                                     </Text>
                                     <UserProfileIconView
-                                        userId={roomData.ownerId}
+                                        userId={ roomData.ownerId }
                                     />
                                     <Text italics>{roomData.ownerName}</Text>
                                 </Flex>
                                 <Text className="flex-grow-1">
                                     {roomData.description}
                                 </Text>
-                                <Flex className={'badge p-1 position-absolute m-1 bottom-0 end-0 m-2 ' + getUserCounterColor()} gap={1}>
+                                <Flex className={ 'badge p-1 position-absolute m-1 bottom-0 end-0 m-2 ' + getUserCounterColor() } gap={ 1 }>
                                     <FontAwesomeIcon icon="user" />
                                     {roomData.userCount}
                                 </Flex>

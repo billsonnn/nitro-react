@@ -29,7 +29,7 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
 
         const productData = offer.products[0];
 
-        const localizationKey = ProductImageUtility.getProductCategory(productData.productType, productData.furniClassId) === 2  ? 'wallItem.name.' + productData.furniClassId : 'roomItem.name.' + productData.furniClassId;
+        const localizationKey = ProductImageUtility.getProductCategory(productData.productType, productData.furniClassId) === 2 ? 'wallItem.name.' + productData.furniClassId : 'roomItem.name.' + productData.furniClassId;
 
         return LocalizeText(localizationKey);
     }, [ offer ]);

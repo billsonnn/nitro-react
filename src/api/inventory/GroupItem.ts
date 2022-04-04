@@ -95,8 +95,8 @@ export class GroupItem
 
         if(!furnitureItem) return items;
 
-        let found   = 0;
-        let i       = 0;
+        let found = 0;
+        let i = 0;
 
         while(i < this._items.length)
         {
@@ -201,8 +201,8 @@ export class GroupItem
     {
         if(this._category === FurniCategory.POST_IT)
         {
-            let count   = 0;
-            let index   = 0;
+            let count = 0;
+            let index = 0;
 
             while(index < this._items.length)
             {

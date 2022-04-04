@@ -124,7 +124,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
     return (
         <>
             { (records && (records.length === 1)) &&
-                <RoomInfo roomId={records[0].roomId} roomName={records[0].roomName} uniqueKey={ null } style={ {} } /> }
+                <RoomInfo roomId={ records[0].roomId } roomName={ records[0].roomName } uniqueKey={ null } style={ {} } /> }
             <Column fit gap={ 0 } overflow="hidden">
                 <Column gap={ 2 }>
                     <Grid gap={ 1 } className="text-black fw-bold border-bottom pb-1">

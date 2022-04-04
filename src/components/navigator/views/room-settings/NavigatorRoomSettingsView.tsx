@@ -90,7 +90,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
                     newValue.userCount = Number(value);
                     break;
                 case 'trade_state':
-                    newValue.tradeState =  Number(value);
+                    newValue.tradeState = Number(value);
                     break;
                 case 'allow_walkthrough':
                     newValue.allowWalkthrough = Boolean(value);
@@ -192,7 +192,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
                 { (currentTab === TABS[1]) &&
                     <NavigatorRoomSettingsAccessTabView roomData={ roomData } handleChange={ handleChange } /> }
                 { (currentTab === TABS[2]) &&
-                    <NavigatorRoomSettingsRightsTabView roomData= {roomData } handleChange={ handleChange } /> }
+                    <NavigatorRoomSettingsRightsTabView roomData={ roomData } handleChange={ handleChange } /> }
                 { (currentTab === TABS[3]) &&
                     <NavigatorRoomSettingsVipChatTabView roomData={ roomData } handleChange={ handleChange } /> }
                 { (currentTab === TABS[4]) &&

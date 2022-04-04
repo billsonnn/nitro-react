@@ -15,8 +15,8 @@ export class RoomWidgetRoomObjectMessage extends RoomWidgetMessage
     {
         super(type);
 
-        this._id        = id;
-        this._category  = category;
+        this._id = id;
+        this._category = category;
     }
 
     public get id(): number

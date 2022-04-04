@@ -96,15 +96,15 @@ export const RoomView: FC<RoomViewProps> = props =>
 
         if(!canvas) return;
 
-        canvas.onclick          = event => DispatchMouseEvent(roomSession.roomId, canvasId, event);
-        canvas.onmousemove      = event => DispatchMouseEvent(roomSession.roomId, canvasId, event);
-        canvas.onmousedown      = event => DispatchMouseEvent(roomSession.roomId, canvasId, event);
-        canvas.onmouseup        = event => DispatchMouseEvent(roomSession.roomId, canvasId, event);
+        canvas.onclick = event => DispatchMouseEvent(roomSession.roomId, canvasId, event);
+        canvas.onmousemove = event => DispatchMouseEvent(roomSession.roomId, canvasId, event);
+        canvas.onmousedown = event => DispatchMouseEvent(roomSession.roomId, canvasId, event);
+        canvas.onmouseup = event => DispatchMouseEvent(roomSession.roomId, canvasId, event);
 
-        canvas.ontouchstart     = event => DispatchTouchEvent(roomSession.roomId, canvasId, event);
-        canvas.ontouchmove      = event => DispatchTouchEvent(roomSession.roomId, canvasId, event);
-        canvas.ontouchend       = event => DispatchTouchEvent(roomSession.roomId, canvasId, event);
-        canvas.ontouchcancel    = event => DispatchTouchEvent(roomSession.roomId, canvasId, event);
+        canvas.ontouchstart = event => DispatchTouchEvent(roomSession.roomId, canvasId, event);
+        canvas.ontouchmove = event => DispatchTouchEvent(roomSession.roomId, canvasId, event);
+        canvas.ontouchend = event => DispatchTouchEvent(roomSession.roomId, canvasId, event);
+        canvas.ontouchcancel = event => DispatchTouchEvent(roomSession.roomId, canvasId, event);
 
         window.onresize = () =>
         {

@@ -39,7 +39,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                                     <Flex fit center position="absolute">
                                         <Text variant="white" small>{ petData.happyness + '/' + petData.maximumHappyness }</Text>
                                     </Flex>
-                                    <Base className="bg-info rounded pet-stats" style={{ width: (petData.happyness / petData.maximumHappyness) * 100 + '%' }} />
+                                    <Base className="bg-info rounded pet-stats" style={ { width: (petData.happyness / petData.maximumHappyness) * 100 + '%' } } />
                                 </Base>
                             </Column>
                             <Column alignItems="center" gap={ 1 }>
@@ -48,7 +48,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                                     <Flex fit center position="absolute">
                                         <Text variant="white" small>{ petData.experience + '/' + petData.levelExperienceGoal }</Text>
                                     </Flex>
-                                    <Base className="bg-purple rounded pet-stats" style={{ width: (petData.experience / petData.levelExperienceGoal) * 100 + '%' }} />
+                                    <Base className="bg-purple rounded pet-stats" style={ { width: (petData.experience / petData.levelExperienceGoal) * 100 + '%' } } />
                                 </Base>
                             </Column>
                             <Column alignItems="center" gap={ 1 }>
@@ -57,7 +57,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                                     <Flex fit center position="absolute">
                                         <Text variant="white" small>{ petData.energy + '/' + petData.maximumEnergy }</Text>
                                     </Flex>
-                                    <Base className="bg-success rounded pet-stats" style={{ width: (petData.energy / petData.maximumEnergy) * 100 + '%' }} />
+                                    <Base className="bg-success rounded pet-stats" style={ { width: (petData.energy / petData.maximumEnergy) * 100 + '%' } } />
                                 </Base>
                             </Column>
                         </Column>

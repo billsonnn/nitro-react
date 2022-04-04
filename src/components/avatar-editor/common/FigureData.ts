@@ -199,8 +199,8 @@ export class FigureData
     {
         let figureString = '';
 
-        const setTypes: string[]    = [ FigureData.FACE ];
-        const figureSets: string[]  = [];
+        const setTypes: string[] = [ FigureData.FACE ];
+        const figureSets: string[] = [];
 
         for(const setType of setTypes)
         {

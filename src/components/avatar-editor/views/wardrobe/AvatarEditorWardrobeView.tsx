@@ -55,13 +55,13 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
             items.push(
                 <LayoutGridItem key={ index } position="relative" overflow="hidden" className="nitro-avatar-editor-wardrobe-figure-preview">
                     { figureContainer &&
-                            <LayoutAvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } /> }
+                    <LayoutAvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } /> }
                     <Base className="avatar-shadow" />
                     { (clubLevel > 0) && <LayoutCurrencyIcon className="position-absolute top-1 start-1" type="hc" /> }
                     <Flex gap={ 1 } className="button-container">
                         <Button variant="link" fullWidth onClick={ event => saveFigureAtWardrobeIndex(index) }>{ LocalizeText('avatareditor.wardrobe.save') }</Button>
                         { figureContainer &&
-                                <Button variant="link" fullWidth onClick={ event => wearFigureAtIndex(index) } disabled={ (clubLevel > GetClubMemberLevel()) }>{ LocalizeText('generic_usable.button.use') }</Button> }
+                        <Button variant="link" fullWidth onClick={ event => wearFigureAtIndex(index) } disabled={ (clubLevel > GetClubMemberLevel()) }>{ LocalizeText('generic_usable.button.use') }</Button> }
                     </Flex>
                 </LayoutGridItem>
             );

@@ -176,10 +176,10 @@ export const HcCenterView: FC<{}> = props =>
                 <hr className="w-100 text-black my-1" />
                 <div>{LocalizeText('hccenter.breakdown.total', [ 'credits', 'actual' ], [ getHcPaydayAmount(),
                     ((((kickbackData.kickbackPercentage * kickbackData.totalCreditsSpent) + kickbackData.creditRewardForStreakBonus) * 100) / 100).toString() ])}</div>
-                <div className="btn btn-link text-primary p-0" onClick={() => 
+                <div className="btn btn-link text-primary p-0" onClick={ () => 
                 {
                     CreateLinkEvent('habbopages/' + GetConfiguration('hc.center')['payday.habbopage']) 
-                }}>{
+                } }>{
                         LocalizeText('hccenter.special.infolink')}
                 </div>
             </Popover.Body>
@@ -207,10 +207,10 @@ export const HcCenterView: FC<{}> = props =>
             </Flex>
             <NitroCardContentView>
                 <Flex gap={ 2 }>
-                    <LayoutBadgeImageView badgeCode={badgeCode} className="align-self-center flex-shrink-0 me-1" />
+                    <LayoutBadgeImageView badgeCode={ badgeCode } className="align-self-center flex-shrink-0 me-1" />
                     <Column size={ 5 } className="streak-info" gap={ 0 }>
                         <Text>{ LocalizeText('hccenter.status.' + clubStatus) }</Text>
-                        <Text dangerouslySetInnerHTML={{ __html: getInfoText() }} />
+                        <Text dangerouslySetInnerHTML={ { __html: getInfoText() } } />
                     </Column>
                 </Flex>
                 { GetConfiguration('hc.center')['payday.info'] &&
@@ -218,10 +218,10 @@ export const HcCenterView: FC<{}> = props =>
                         <Column className="rounded-start bg-primary p-2 payday-special mb-1">
                             <h4 className="mb-1">{LocalizeText('hccenter.special.title')}</h4>
                             <div>{LocalizeText('hccenter.special.info')}</div>
-                            <div className="btn btn-link text-white p-0 mt-auto align-self-baseline" onClick={() => 
+                            <div className="btn btn-link text-white p-0 mt-auto align-self-baseline" onClick={ () => 
                             {
                                 CreateLinkEvent('habbopages/' + GetConfiguration('hc.center')['payday.habbopage']) 
-                            }}>{LocalizeText('hccenter.special.infolink')}</div>
+                            } }>{LocalizeText('hccenter.special.infolink')}</div>
                         </Column>
                         <div className="payday flex-shrink-0 p-2">
                             <h5 className="mb-2 ms-2">{LocalizeText('hccenter.special.time.title')}</h5>
@@ -234,7 +234,7 @@ export const HcCenterView: FC<{}> = props =>
                                     <h5 className="ms-2 mb-1 bolder">{LocalizeText('hccenter.special.amount.title')}</h5>
                                     <div className="d-flex flex-column">
                                         <div className="w-100 text-center ms-4n">{getHcPaydayAmount()}</div>
-                                        <OverlayTrigger trigger={ [ 'hover', 'focus' ] } placement="left" overlay={popover}>
+                                        <OverlayTrigger trigger={ [ 'hover', 'focus' ] } placement="left" overlay={ popover }>
                                             <div className="btn btn-link align-self-end text-primary">
                                                 {LocalizeText('hccenter.breakdown.infolink')}
                                             </div>
@@ -249,22 +249,22 @@ export const HcCenterView: FC<{}> = props =>
                     <div className="rounded bg-success p-2 d-flex flex-row mb-0">
                         <div>
                             <h4 className="mb-1">{LocalizeText('hccenter.gift.title')}</h4>
-                            <div dangerouslySetInnerHTML={{ __html: unclaimedGifts > 0 ? LocalizeText('hccenter.unclaimedgifts', [ 'unclaimedgifts' ], [ unclaimedGifts.toString() ]) : LocalizeText('hccenter.gift.info') }}></div>
+                            <div dangerouslySetInnerHTML={ { __html: unclaimedGifts > 0 ? LocalizeText('hccenter.unclaimedgifts', [ 'unclaimedgifts' ], [ unclaimedGifts.toString() ]) : LocalizeText('hccenter.gift.info') } }></div>
                         </div>
-                        <button className="btn btn-primary btn-lg align-self-center ms-auto" onClick={() => 
+                        <button className="btn btn-primary btn-lg align-self-center ms-auto" onClick={ () => 
                         {
                             CreateLinkEvent('catalog/open/' + GetConfiguration('catalog.links')['hc.hc_gifts']) 
-                        }}>{LocalizeText(clubStatus === ClubStatus.ACTIVE ? 'hccenter.btn.gifts.redeem' : 'hccenter.btn.gifts.view')}</button>
+                        } }>{LocalizeText(clubStatus === ClubStatus.ACTIVE ? 'hccenter.btn.gifts.redeem' : 'hccenter.btn.gifts.view')}</button>
                     </div>
                 }
                 {GetConfiguration('hc.center')['benefits.info'] &&
                     <div className="benefits text-black py-2">
                         <h5 className="mb-1 text-primary">{LocalizeText('hccenter.general.title')}</h5>
-                        <div className="mb-2" dangerouslySetInnerHTML={{ __html: LocalizeText('hccenter.general.info') }} />
-                        <button className="btn btn-link p-0 text-primary" onClick={() => 
+                        <div className="mb-2" dangerouslySetInnerHTML={ { __html: LocalizeText('hccenter.general.info') } } />
+                        <button className="btn btn-link p-0 text-primary" onClick={ () => 
                         {
                             CreateLinkEvent('habbopages/' + GetConfiguration('hc.center')['benefits.habbopage']) 
-                        }}>{LocalizeText('hccenter.general.infolink')}</button>
+                        } }>{LocalizeText('hccenter.general.infolink')}</button>
                     </div>
                 }
             </NitroCardContentView>

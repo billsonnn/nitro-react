@@ -121,7 +121,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                         <Flex alignItems="center" gap={ 2 }>
                             <Text bold>{ groupInformation.title }</Text>
                             <Flex gap={ 1 }>
-                                <i className={ 'icon icon-group-type-' + groupInformation.type } title={ LocalizeText(`group.edit.settings.type.${ STATES[groupInformation.type] }.help`)} />
+                                <i className={ 'icon icon-group-type-' + groupInformation.type } title={ LocalizeText(`group.edit.settings.type.${ STATES[groupInformation.type] }.help`) } />
                                 { groupInformation.canMembersDecorate &&
                                     <i className="icon icon-group-decorate" title={ LocalizeText('group.memberscandecorate') } /> }
                             </Flex>
