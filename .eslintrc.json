@@ -35,11 +35,17 @@
         "brace-style": [ "error", "allman" ],
         "template-curly-spacing": [ "error", "always" ],
         "no-multi-spaces": [ "error" ],
-        "react/prop-types": [ "off" ],
         "jsx-quotes": [ "error" ],
+        "react/prop-types": [ "off" ],
         "react/jsx-curly-spacing": [ "error", { "when": "always", "children": true } ],
         "react/jsx-equals-spacing": [ "error" ],
-        "@typescript-eslint/object-curly-spacing": [ "error", "always", { "arraysInObjects": true, "objectsInObjects": false } ],
+        "react/jsx-newline": [ "error", { "prevent": true } ],
+        "@typescript-eslint/object-curly-spacing": [ "error", "always",
+            {
+                "arraysInObjects": true,
+                "objectsInObjects": false
+            }
+        ],
         "@typescript-eslint/ban-types": [
             "error",
             {
