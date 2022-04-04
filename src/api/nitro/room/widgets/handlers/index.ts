@@ -1,4 +1,3 @@
-export * from './DoorbellWidgetHandler';
 export * from './FurniChooserWidgetHandler';
 export * from './FurnitureContextMenuWidgetHandler';
 export * from './FurnitureCreditWidgetHandler';

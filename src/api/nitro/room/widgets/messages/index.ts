@@ -11,7 +11,6 @@ export * from './RoomWidgetDimmerPreviewMessage';
 export * from './RoomWidgetDimmerSavePresetMessage';
 export * from './RoomWidgetFurniActionMessage';
 export * from './RoomWidgetFurniToWidgetMessage';
-export * from './RoomWidgetLetUserInMessage';
 export * from './RoomWidgetMessage';
 export * from './RoomWidgetPollMessage';
 export * from './RoomWidgetPresentOpenMessage';

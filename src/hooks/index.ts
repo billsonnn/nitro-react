@@ -8,6 +8,7 @@ export * from './inventory';
 export * from './messages';
 export * from './navigator';
 export * from './purse';
+export * from './rooms';
 export * from './session';
 export * from './UseMountEffect';
 export * from './useSharedVisibility';
