@@ -1,7 +1,16 @@
-import { NitroRectangle } from '@nitrots/nitro-renderer';
 import { GetRoomEngine } from './GetRoomEngine';
 
-export function GetRoomObjectBounds(roomId: number, objectId: number, category: number, canvasId = 1): NitroRectangle
+export const GetRoomObjectBounds = (roomId: number, objectId: number, category: number, canvasId = 1) =>
 {
-    return GetRoomEngine().getRoomObjectBoundingRectangle(roomId, objectId, category, canvasId);
+    const rectangle = GetRoomEngine().getRoomObjectBoundingRectangle(roomId, objectId, category, canvasId);
+
+    if(!rectangle) return null;
+
+    if(window.devicePixelRatio !== 1)
+    {
+        rectangle.x /= window.devicePixelRatio;
+        rectangle.y /= window.devicePixelRatio;
+    }
+
+    return rectangle;
 }

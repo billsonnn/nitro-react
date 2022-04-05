@@ -55,7 +55,7 @@ export const RoomView: FC<RoomViewProps> = props =>
 
         setWidgetHandler(widgetHandlerManager);
 
-        GetNitroInstance().renderer.resize(window.innerWidth, window.innerHeight);
+        GetNitroInstance().renderer.resize((window.innerWidth * window.devicePixelRatio), (window.innerHeight * window.devicePixelRatio));
 
         const canvasId = 1;
 
@@ -95,6 +95,14 @@ export const RoomView: FC<RoomViewProps> = props =>
 
         if(!canvas) return;
 
+        if(window.devicePixelRatio !== 1)
+        {
+            let scaleValue = (1 / window.devicePixelRatio);
+
+            canvas.style.transform = `scale(${ scaleValue })`;
+            canvas.style.transformOrigin = 'top left';
+        }
+
         canvas.onclick = event => DispatchMouseEvent(roomSession.roomId, canvasId, event);
         canvas.onmousemove = event => DispatchMouseEvent(roomSession.roomId, canvasId, event);
         canvas.onmousedown = event => DispatchMouseEvent(roomSession.roomId, canvasId, event);
@@ -107,7 +115,7 @@ export const RoomView: FC<RoomViewProps> = props =>
 
         window.onresize = () =>
         {
-            GetNitroInstance().renderer.resize(window.innerWidth, window.innerHeight);
+            GetNitroInstance().renderer.resize((window.innerWidth * window.devicePixelRatio), (window.innerHeight * window.devicePixelRatio));
             
             InitializeRoomInstanceRenderingCanvas(roomSession.roomId, canvasId, GetNitroInstance().width, GetNitroInstance().height);
 
