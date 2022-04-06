@@ -51,6 +51,9 @@ export const DispatchTouchEvent = (event: TouchEvent, canvasId: number = 1, long
         y = event.changedTouches[0].clientY;
     }
 
+    x *= window.devicePixelRatio;
+    y *= window.devicePixelRatio;
+
     switch(eventType)
     {
         case MouseEventType.MOUSE_CLICK:
