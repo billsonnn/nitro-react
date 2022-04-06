@@ -51,8 +51,8 @@ export const DispatchTouchEvent = (event: TouchEvent, canvasId: number = 1, long
         y = event.changedTouches[0].clientY;
     }
 
-    x *= window.devicePixelRatio;
-    y *= window.devicePixelRatio;
+    x = Math.round(x / (1 / window.devicePixelRatio));
+    y = Math.round(y / (1 / window.devicePixelRatio));
 
     switch(eventType)
     {
