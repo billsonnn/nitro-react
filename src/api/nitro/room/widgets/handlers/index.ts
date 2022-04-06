@@ -19,6 +19,5 @@ export * from './RoomWidgetChatInputHandler';
 export * from './RoomWidgetHandler';
 export * from './RoomWidgetHandlerManager';
 export * from './RoomWidgetInfostandHandler';
-export * from './RoomWidgetRoomToolsHandler';
 export * from './UserChooserWidgetHandler';
 export * from './WordQuizWidgetHandler';

@@ -18,4 +18,3 @@ export * from './RoomWidgetRequestWidgetMessage';
 export * from './RoomWidgetRoomObjectMessage';
 export * from './RoomWidgetUseProductMessage';
 export * from './RoomWidgetUserActionMessage';
-export * from './RoomWidgetZoomToggleMessage';

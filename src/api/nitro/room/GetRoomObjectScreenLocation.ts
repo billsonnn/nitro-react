@@ -8,8 +8,8 @@ export const GetRoomObjectScreenLocation = (roomId: number, objectId: number, ca
 
     if(window.devicePixelRatio !== 1)
     {
-        point.x /= window.devicePixelRatio;
-        point.y /= window.devicePixelRatio;
+        point.x = Math.round(point.x / window.devicePixelRatio);
+        point.y = Math.round(point.y / window.devicePixelRatio);
     }
 
     return point;

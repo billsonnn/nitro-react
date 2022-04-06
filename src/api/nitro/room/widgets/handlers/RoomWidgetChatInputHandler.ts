@@ -124,7 +124,7 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
 
                             return null;
                         case ':zoom':
-                            GetRoomEngine().events.dispatchEvent(new RoomZoomEvent(this.container.roomSession.roomId, parseInt(secondPart), false));
+                            GetRoomEngine().events.dispatchEvent(new RoomZoomEvent(this.container.roomSession.roomId, parseFloat(secondPart), false));
 
                             return null;
                         case ':screenshot':

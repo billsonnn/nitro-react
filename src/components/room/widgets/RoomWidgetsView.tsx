@@ -35,11 +35,7 @@ export const RoomWidgetsView: FC<{}> = props =>
             case RoomZoomEvent.ROOM_ZOOM: {
                 const zoomEvent = (event as RoomZoomEvent);
 
-                let zoomLevel = ((zoomEvent.level < 1) ? 0.5 : (1 << (Math.floor(zoomEvent.level) - 1)));
-
-                if(zoomEvent.forceFlip || zoomEvent.asDelta) zoomLevel = zoomEvent.level;
-
-                GetRoomEngine().setRoomInstanceRenderingCanvasScale(event.roomId, 1, zoomLevel, null, null, false, zoomEvent.asDelta);
+                GetRoomEngine().setRoomInstanceRenderingCanvasScale(event.roomId, 1, zoomEvent.level, null, null, false, zoomEvent.asDelta);
 
                 return;
             }

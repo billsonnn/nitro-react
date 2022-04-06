@@ -27,7 +27,6 @@ export * from './RoomWidgetUpdatePresentDataEvent';
 export * from './RoomWidgetUpdateRentableBotChatEvent';
 export * from './RoomWidgetUpdateRoomEngineEvent';
 export * from './RoomWidgetUpdateRoomObjectEvent';
-export * from './RoomWidgetUpdateRoomViewEvent';
 export * from './RoomWidgetUpdateSongEvent';
 export * from './RoomWidgetUpdateTrophyEvent';
 export * from './RoomWidgetUpdateUserDataEvent';

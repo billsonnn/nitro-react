@@ -8,8 +8,8 @@ export const GetRoomObjectBounds = (roomId: number, objectId: number, category: 
 
     if(window.devicePixelRatio !== 1)
     {
-        rectangle.x /= window.devicePixelRatio;
-        rectangle.y /= window.devicePixelRatio;
+        rectangle.x = Math.round(rectangle.x / window.devicePixelRatio);
+        rectangle.y = Math.round(rectangle.y / window.devicePixelRatio);
     }
 
     return rectangle;
