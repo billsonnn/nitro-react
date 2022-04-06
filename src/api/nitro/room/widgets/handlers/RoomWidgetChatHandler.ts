@@ -1,6 +1,7 @@
-import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, IAvatarImageListener, INitroPoint, IVector3D, NitroEvent, NitroPoint, PetFigureData, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomUserData, RoomWidgetEnum, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
+import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, IAvatarImageListener, NitroEvent, PetFigureData, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomUserData, RoomWidgetEnum, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { GetAvatarRenderManager, GetConfigurationManager, GetRoomEngine, PlaySound } from '../../../..';
 import { LocalizeText } from '../../../../utils/LocalizeText';
+import { GetRoomObjectScreenLocation } from '../../GetRoomObjectScreenLocation';
 import { RoomWidgetUpdateChatEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
@@ -21,7 +22,7 @@ export class RoomWidgetChatHandler extends RoomWidgetHandler implements IAvatarI
                 const roomObject = GetRoomEngine().getRoomObject(chatEvent.session.roomId, chatEvent.objectId, RoomObjectCategory.UNIT);
 
                 const objectLocation = roomObject ? roomObject.getLocation() : new Vector3d();
-                const bubbleLocation = this.getBubbleLocation(chatEvent.session.roomId, objectLocation);
+                const bubbleLocation = GetRoomObjectScreenLocation(chatEvent.session.roomId, roomObject?.id, RoomObjectCategory.UNIT);
                 const userData = roomObject ? this.container.roomSession.userDataManager.getUserDataByIndex(chatEvent.objectId) : new RoomUserData(-1);
 
                 let username = '';
@@ -123,36 +124,6 @@ export class RoomWidgetChatHandler extends RoomWidgetHandler implements IAvatarI
     public processWidgetMessage(message: RoomWidgetMessage): RoomWidgetUpdateEvent
     {
         return null;
-    }
-
-    private getBubbleLocation(roomId: number, userLocation: IVector3D, canvasId = 1): INitroPoint
-    {
-        const geometry = GetRoomEngine().getRoomInstanceGeometry(roomId, canvasId);
-        const scale = GetRoomEngine().getRoomInstanceRenderingCanvasScale(roomId, canvasId);
-
-        let x = ((document.body.offsetWidth * scale) / 2);
-        let y = ((document.body.offsetHeight * scale) / 2);
-
-        if(geometry && userLocation)
-        {
-            const screenPoint = geometry.getScreenPoint(userLocation);
-
-            if(screenPoint)
-            {
-                x = (x + (screenPoint.x * scale));
-                y = (y + (screenPoint.y * scale));
-
-                const offsetPoint = GetRoomEngine().getRoomInstanceRenderingCanvasOffset(roomId, canvasId);
-
-                if(offsetPoint)
-                {
-                    x = (x + offsetPoint.x);
-                    y = (y + offsetPoint.y);
-                }
-            }
-        }
-
-        return new NitroPoint(x, y);
     }
 
     public getUserImage(figure: string): string

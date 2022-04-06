@@ -145,7 +145,9 @@ export const ChatWidgetView: FC<{}> = props =>
     {
         if(!chatMessages.length || (event.roomId !== roomSession.roomId)) return;
 
-        chatMessages.forEach(chat => (chat.elementRef && (chat.left += event.offsetX)));
+        const offsetX = (event.offsetX / window.devicePixelRatio);
+
+        chatMessages.forEach(chat => (chat.elementRef && (chat.left += offsetX)));
     }, [ roomSession, chatMessages ]);
 
     UseRoomEngineEvent(RoomDragEvent.ROOM_DRAG, onRoomDragEvent);
@@ -193,9 +195,44 @@ export const ChatWidgetView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if(!elementRef || !elementRef.current) return;
+        const resize = (event: UIEvent) =>
+        {
+            if(!elementRef || !elementRef.current) return;
 
-        elementRef.current.style.height = ((document.body.offsetHeight * GetConfiguration<number>('chat.viewer.height.percentage')) + 'px');
+            const currentHeight = elementRef.current.offsetHeight;
+            const newHeight = (document.body.offsetHeight * GetConfiguration<number>('chat.viewer.height.percentage'));
+
+            elementRef.current.style.height = `${ newHeight }px`;
+
+            setChatMessages(prevValue =>
+            {
+                if(prevValue)
+                {
+                    prevValue.forEach(chat =>
+                    {
+                        if(chat.skipMovement)
+                        {
+                            chat.skipMovement = false;
+                
+                            return;
+                        }
+                
+                        chat.top -= (currentHeight - newHeight);
+                    });
+                }
+    
+                return prevValue;
+            });
+        }
+
+        window.addEventListener('resize', resize);
+
+        resize(null);
+
+        return () =>
+        {
+            window.removeEventListener('resize', resize);
+        }
     }, []);
 
     const workerMessageReceived = useCallback((message: { [index: string]: any }) =>

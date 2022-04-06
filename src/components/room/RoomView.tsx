@@ -88,7 +88,7 @@ export const RoomView: FC<{}> = props =>
         const roomEngine = GetRoomEngine();
         const roomId = roomSession.roomId;
         const canvasId = 1;
-        const displayObject = roomEngine.getRoomInstanceDisplay(roomId, canvasId, GetNitroInstance().width, GetNitroInstance().height, RoomGeometry.SCALE_ZOOMED_IN);
+        const displayObject = roomEngine.getRoomInstanceDisplay(roomId, canvasId, (window.innerWidth * window.devicePixelRatio), (window.innerHeight * window.devicePixelRatio), RoomGeometry.SCALE_ZOOMED_IN);
 
         if((window.devicePixelRatio !== 1) && ((window.devicePixelRatio % 1) === 0)) roomEngine.setRoomInstanceRenderingCanvasScale(roomId, canvasId, window.devicePixelRatio);
 
@@ -151,7 +151,7 @@ export const RoomView: FC<{}> = props =>
             canvas.style.height = `${ (100 * window.devicePixelRatio) }%`;
         }
 
-        window.onresize = () =>
+        const resize = (event: UIEvent) =>
         {
             const nitroInstance = GetNitroInstance();
             const width = (window.innerWidth * window.devicePixelRatio);
@@ -166,14 +166,15 @@ export const RoomView: FC<{}> = props =>
 
         const element = elementRef.current;
 
-        if(!element) return;
+        if(element) element.appendChild(canvas);
 
-        element.appendChild(canvas);
+        window.addEventListener('resize', resize);
 
         return () =>
         {
-            element.removeChild(canvas);
-            window.onresize = null;
+            if(element) element.removeChild(canvas);
+            
+            window.removeEventListener('resize', resize);
         }
     }, []);
 

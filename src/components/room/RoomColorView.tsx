@@ -26,8 +26,6 @@ export const RoomColorView: FC<{}> = props =>
         else
         {
             roomBackground.tint = newColor;
-            roomBackground.width = GetNitroInstance().width;
-            roomBackground.height = GetNitroInstance().height;
             roomBackground.visible = true;
         }
     }, [ roomBackground ]);
@@ -97,8 +95,6 @@ export const RoomColorView: FC<{}> = props =>
                 if(!roomBackground) return;
 
                 roomBackground.tint = originalRoomBackgroundColor;
-                roomBackground.width = GetNitroInstance().width;
-                roomBackground.height = GetNitroInstance().height;
                 roomBackground.visible = true;
                 
                 return;
@@ -113,7 +109,7 @@ export const RoomColorView: FC<{}> = props =>
     {
         if(!roomSession) return;
 
-        const canvas = GetRoomEngine().getRoomInstanceRenderingCanvas(roomSession.roomId);
+        const canvas = GetRoomEngine().getRoomInstanceRenderingCanvas(GetRoomEngine().activeRoomId, 1);
 
         if(!canvas) return;
 
@@ -122,12 +118,22 @@ export const RoomColorView: FC<{}> = props =>
         const master = (canvas.master as NitroContainer);
 
         background.visible = false;
+        background.width = GetNitroInstance().width;
+        background.height = GetNitroInstance().height;
 
         master.addChildAt(background, 0);
         master.filters = [ filter ];
 
         setRoomBackground(background);
         setRoomFilter(filter);
+
+        const resize = (event: UIEvent) =>
+        {
+            background.width = GetNitroInstance().width;
+            background.height = GetNitroInstance().height;
+        }
+
+        window.addEventListener('resize', resize);
 
         return () =>
         {
@@ -146,6 +152,8 @@ export const RoomColorView: FC<{}> = props =>
             });
             
             setOriginalRoomBackgroundColor(0);
+
+            window.removeEventListener('resize', resize);
         }
     }, [ roomSession ]);
 
