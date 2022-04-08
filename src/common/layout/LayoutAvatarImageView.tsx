@@ -23,29 +23,10 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
     {
         const newClassNames: string[] = [ 'avatar-image' ];
 
-        switch(scale)
-        {
-            case .5:
-                newClassNames.push('scale-0-5');
-                break;
-            case .75:
-                newClassNames.push('scale-0-75');
-                break;
-            case 1.25:
-                newClassNames.push('scale-1-25');
-                break;
-            case 1.50:
-                newClassNames.push('scale-1-50');
-                break;
-            default:
-                newClassNames.push(`scale-${ scale }`);
-                break;
-        }
-
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ scale, classNames ]);
+    }, [ classNames ]);
 
     const getStyle = useMemo(() =>
     {
@@ -53,10 +34,17 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
 
         if(avatarUrl && avatarUrl.length) newStyle.backgroundImage = `url('${ avatarUrl }')`;
 
+        if(scale !== 1)
+        {
+            newStyle.transform = `scale(${ scale })`;
+
+            if(!(scale % 1)) newStyle.imageRendering = 'pixelated';
+        }
+
         if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [ avatarUrl, style ]);
+    }, [ avatarUrl, scale, style ]);
 
     useEffect(() =>
     {

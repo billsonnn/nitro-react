@@ -27,9 +27,10 @@ export const RoomToolsWidgetView: FC<{}> = props =>
             case 'zoom':
                 setIsZoomedIn(prevValue =>
                 {
-                    let scale = ((window.devicePixelRatio !== 1) && ((window.devicePixelRatio % 1) === 0)) ? window.devicePixelRatio : 1;
+                    let scale = GetRoomEngine().getRoomInstanceRenderingCanvasScale(roomSession.roomId, 1);
                     
                     if(!prevValue) scale /= 2;
+                    else scale *= 2;
                     
                     GetRoomEngine().setRoomInstanceRenderingCanvasScale(roomSession.roomId, 1, scale);
 

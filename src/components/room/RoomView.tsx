@@ -88,9 +88,7 @@ export const RoomView: FC<{}> = props =>
         const roomEngine = GetRoomEngine();
         const roomId = roomSession.roomId;
         const canvasId = 1;
-        const displayObject = roomEngine.getRoomInstanceDisplay(roomId, canvasId, (window.innerWidth * window.devicePixelRatio), (window.innerHeight * window.devicePixelRatio), RoomGeometry.SCALE_ZOOMED_IN);
-
-        if((window.devicePixelRatio !== 1) && ((window.devicePixelRatio % 1) === 0)) roomEngine.setRoomInstanceRenderingCanvasScale(roomId, canvasId, window.devicePixelRatio);
+        const displayObject = roomEngine.getRoomInstanceDisplay(roomId, canvasId, window.innerWidth, window.innerHeight, RoomGeometry.SCALE_ZOOMED_IN);
 
         if(!displayObject) return;
 
@@ -141,25 +139,20 @@ export const RoomView: FC<{}> = props =>
         canvas.ontouchend = event => DispatchTouchEvent(event);
         canvas.ontouchcancel = event => DispatchTouchEvent(event);
 
-        if(window.devicePixelRatio !== 1)
-        {
-            let scaleValue = (1 / window.devicePixelRatio);
-
-            canvas.style.transform = `scale(${ scaleValue })`;
-            canvas.style.transformOrigin = 'top left';
-            canvas.style.width = `${ (100 * window.devicePixelRatio) }%`;
-            canvas.style.height = `${ (100 * window.devicePixelRatio) }%`;
-        }
+        canvas.style.width = `${ Math.floor(window.innerWidth) }px`;
+        canvas.style.height = `${ Math.floor(window.innerHeight) }px`;
 
         const resize = (event: UIEvent) =>
         {
+            canvas.style.width = `${ Math.floor(window.innerWidth) }px`;
+            canvas.style.height = `${ Math.floor(window.innerHeight) }px`;
+        
             const nitroInstance = GetNitroInstance();
-            const width = (window.innerWidth * window.devicePixelRatio);
-            const height = (window.innerHeight * window.devicePixelRatio);
 
-            nitroInstance.renderer.resize(width, height);
+            nitroInstance.renderer.resolution = window.devicePixelRatio;
+            nitroInstance.renderer.resize(window.innerWidth, window.innerHeight);
             
-            InitializeRoomInstanceRenderingCanvas(width, height, 1);
+            InitializeRoomInstanceRenderingCanvas(window.innerWidth, window.innerHeight, 1);
 
             nitroInstance.render();
         }
@@ -180,8 +173,7 @@ export const RoomView: FC<{}> = props =>
 
     return (
         <RoomContextProvider value={ { roomSession, eventDispatcher: (widgetHandler && widgetHandler.eventDispatcher), widgetHandler } }>
-            <Base fit className={ (!roomSession && 'd-none') }>
-                <Base innerRef={ elementRef } />
+            <Base fit innerRef={ elementRef } className={ (!roomSession && 'd-none') }>
                 { (roomSession && widgetHandler) &&
                     <>
                         <RoomColorView />

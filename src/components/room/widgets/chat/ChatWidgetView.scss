@@ -697,15 +697,15 @@
 
             .user-image {
                 position: absolute;
-                top: -48px;
-                left: -32.5px;
-                width: 90px;
-                height: 130px;
+                top: -15px;
+                left: -9.25px;
+                width: 45px;
+                height: 65px;
                 background-repeat: no-repeat;
                 background-position: center;
                 transform: scale(0.5);
                 overflow: hidden;
-                image-rendering: -webkit-optimize-contrast;
+                image-rendering: initial;
             }
         }
 

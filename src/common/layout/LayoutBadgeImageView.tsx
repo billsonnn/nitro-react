@@ -16,22 +16,7 @@ export interface LayoutBadgeImageViewProps extends BaseProps<HTMLDivElement>
 export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
 {
     const { badgeCode = null, isGroup = false, showInfo = false, customTitle = null, isGrayscale = false, scale = 1, classNames = [], style = {}, children = null, ...rest } = props;
-    const [ badgeUrl, setBadgeUrl ] = useState<string>('');
-
-    const getScaleClass = useMemo(() =>
-    {
-        let scaleName = scale.toString();
-
-        if(scale === .5) scaleName = '0-5';
-
-        else if(scale === .75) scaleName = '0-75';
-
-        else if(scale === 1.25) scaleName = '1-25';
-
-        else if(scale === 1.50) scaleName = '1-50';
-
-        return `scale-${ scaleName }`;
-    }, [ scale ]);
+    const [ imageElement, setImageElement ] = useState<HTMLImageElement>(null);
 
     const getClassNames = useMemo(() =>
     {
@@ -41,23 +26,36 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
 
         if(isGrayscale) newClassNames.push('grayscale');
 
-        if((scale !== 1) && getScaleClass.length) newClassNames.push(getScaleClass);
-
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ classNames, isGroup, isGrayscale, scale, getScaleClass ]);
+    }, [ classNames, isGroup, isGrayscale ]);
 
     const getStyle = useMemo(() =>
     {
         let newStyle: CSSProperties = {};
 
-        if(badgeUrl && badgeUrl.length) newStyle.backgroundImage = `url(${ badgeUrl })`;
+        if(imageElement)
+        {
+            newStyle.backgroundImage = `url('${ imageElement.src }')`;
+            newStyle.width = imageElement.width;
+            newStyle.height = imageElement.height;
+
+            if(scale !== 1)
+            {
+                newStyle.transform = `scale(${ scale })`;
+
+                if(!(scale % 1)) newStyle.imageRendering = 'pixelated';
+            
+                newStyle.width = (imageElement.width * scale);
+                newStyle.height = (imageElement.height * scale);
+            }
+        }
 
         if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [ style, badgeUrl ]);
+    }, [ imageElement, scale, style ]);
 
     useEffect(() =>
     {
@@ -69,7 +67,9 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
         {
             if(event.badgeId !== badgeCode) return;
 
-            setBadgeUrl(TextureUtils.generateImageUrl(new NitroSprite(event.image)));
+            const element = TextureUtils.generateImage(new NitroSprite(event.image));
+
+            element.onload = () => setImageElement(element);
 
             didSetBadge = true;
             
@@ -80,29 +80,23 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
 
         const texture = isGroup ? GetSessionDataManager().getGroupBadgeImage(badgeCode) : GetSessionDataManager().getBadgeImage(badgeCode);
 
-        if(texture && !didSetBadge) setBadgeUrl(TextureUtils.generateImageUrl(new NitroSprite(texture)));
+        if(texture && !didSetBadge)
+        {
+            const element = TextureUtils.generateImage(new NitroSprite(texture));
+
+            element.onload = () => setImageElement(element);
+        }
 
         return () => GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
     }, [ badgeCode, isGroup ]);
 
-    const BadgeInformationView = (props: { title: string, description: string }) =>
-    {
-        const { title = null, description = null } = props;
-
-        if(!GetConfiguration('badge.descriptions.enabled', true)) return null;
-
-        return (
-            <Base className="badge-information text-black py-1 px-2 small">
-                <div className="fw-bold mb-1">{ title }</div>
-                <div>{ description }</div>
-            </Base>
-        );
-    };
-
     return (
         <Base classNames={ getClassNames } style={ getStyle } { ...rest }>
-            { showInfo &&
-                <BadgeInformationView title={ isGroup ? customTitle : LocalizeBadgeName(badgeCode) } description={ isGroup ? LocalizeText('group.badgepopup.body') : LocalizeBadgeDescription(badgeCode) } /> }
+            { (showInfo && GetConfiguration<boolean>('badge.descriptions.enabled', true)) &&
+                <Base className="badge-information text-black py-1 px-2 small">
+                    <div className="fw-bold mb-1">{ isGroup ? customTitle : LocalizeBadgeName(badgeCode) }</div>
+                    <div>{ isGroup ? LocalizeText('group.badgepopup.body') : LocalizeBadgeDescription(badgeCode) }</div>
+                </Base> }
             { children }
         </Base>
     );

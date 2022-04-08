@@ -1,13 +1,14 @@
 import { PetCustomPart, PetFigureData, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useRef, useState } from 'react';
+import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
 import { GetRoomEngine } from '../../api';
+import { Base, BaseProps } from '../Base';
 
-interface LayoutPetImageViewProps
+interface LayoutPetImageViewProps extends BaseProps<HTMLDivElement>
 {
     figure?: string;
     typeId?: number;
     paletteId?: number;
-    color?: number;
+    petColor?: number;
     customParts?: PetCustomPart[];
     posture?: string;
     headOnly?: boolean;
@@ -17,9 +18,27 @@ interface LayoutPetImageViewProps
 
 export const LayoutPetImageView: FC<LayoutPetImageViewProps> = props =>
 {
-    const { figure = '', typeId = -1, paletteId = -1, color = 0xFFFFFF, customParts = [], posture = 'std', headOnly = false, direction = 0, scale = 1 } = props;
+    const { figure = '', typeId = -1, paletteId = -1, petColor = 0xFFFFFF, customParts = [], posture = 'std', headOnly = false, direction = 0, scale = 1, style = {}, ...rest } = props;
     const [ petUrl, setPetUrl ] = useState<string>(null);
     const isDisposed = useRef(false);
+
+    const getStyle = useMemo(() =>
+    {
+        let newStyle: CSSProperties = {};
+
+        if(petUrl && petUrl.length) newStyle.backgroundImage = `url(${ petUrl })`;
+
+        if(scale !== 1)
+        {
+            newStyle.transform = `scale(${ scale })`;
+
+            if(!(scale % 1)) newStyle.imageRendering = 'pixelated';
+        }
+
+        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
+
+        return newStyle;
+    }, [ petUrl, scale, style ]);
 
     useEffect(() =>
     {
@@ -27,7 +46,7 @@ export const LayoutPetImageView: FC<LayoutPetImageViewProps> = props =>
 
         let petTypeId = typeId;
         let petPaletteId = paletteId;
-        let petColor = color;
+        let petColor1 = petColor;
         let petCustomParts = customParts;
         let petHeadOnly = headOnly;
 
@@ -37,13 +56,13 @@ export const LayoutPetImageView: FC<LayoutPetImageViewProps> = props =>
 
             petTypeId = petFigureData.typeId;
             petPaletteId = petFigureData.paletteId;
-            petColor = petFigureData.color;
+            petColor1 = petFigureData.color;
             petCustomParts = petFigureData.customParts;
         }
 
         if(petTypeId === 16) petHeadOnly = false;
 
-        const imageResult = GetRoomEngine().getRoomObjectPetImage(petTypeId, petPaletteId, petColor, new Vector3d((direction * 45)), 64, {
+        const imageResult = GetRoomEngine().getRoomObjectPetImage(petTypeId, petPaletteId, petColor1, new Vector3d((direction * 45)), 64, {
             imageReady: (id, texture, image) =>
             {
                 if(isDisposed.current) return;
@@ -65,7 +84,7 @@ export const LayoutPetImageView: FC<LayoutPetImageViewProps> = props =>
 
 
         }
-    }, [ figure, typeId, paletteId, color, customParts, posture, headOnly, direction ]);
+    }, [ figure, typeId, paletteId, petColor, customParts, posture, headOnly, direction ]);
 
     useEffect(() =>
     {
@@ -78,6 +97,6 @@ export const LayoutPetImageView: FC<LayoutPetImageViewProps> = props =>
     }, []);
 
     const url = `url('${ petUrl }')`;
-        
-    return <div className={ 'pet-image scale-' + scale.toString().replace('.', '-') } style={ (petUrl && url.length) ? { backgroundImage: url } : {} }></div>;
+
+    return <Base classNames={ [ 'pet-image' ] } style={ getStyle } { ...rest } />;
 }

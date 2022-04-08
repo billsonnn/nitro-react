@@ -109,7 +109,7 @@ export const RoomColorView: FC<{}> = props =>
     {
         if(!roomSession) return;
 
-        const canvas = GetRoomEngine().getRoomInstanceRenderingCanvas(GetRoomEngine().activeRoomId, 1);
+        const canvas = GetRoomEngine().getRoomInstanceRenderingCanvas(roomSession.roomId, 1);
 
         if(!canvas) return;
 

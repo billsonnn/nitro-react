@@ -7,8 +7,8 @@ let clickCount = 0;
 
 export const DispatchMouseEvent = (event: MouseEvent, canvasId: number = 1) =>
 {
-    const x = (event.clientX * window.devicePixelRatio);
-    const y = (event.clientY * window.devicePixelRatio);
+    const x = event.clientX;
+    const y = event.clientY;
 
     let eventType = event.type;
 

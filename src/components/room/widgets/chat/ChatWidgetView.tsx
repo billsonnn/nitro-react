@@ -145,7 +145,7 @@ export const ChatWidgetView: FC<{}> = props =>
     {
         if(!chatMessages.length || (event.roomId !== roomSession.roomId)) return;
 
-        const offsetX = (event.offsetX / window.devicePixelRatio);
+        const offsetX = event.offsetX;
 
         chatMessages.forEach(chat => (chat.elementRef && (chat.left += offsetX)));
     }, [ roomSession, chatMessages ]);
@@ -200,7 +200,7 @@ export const ChatWidgetView: FC<{}> = props =>
             if(!elementRef || !elementRef.current) return;
 
             const currentHeight = elementRef.current.offsetHeight;
-            const newHeight = (document.body.offsetHeight * GetConfiguration<number>('chat.viewer.height.percentage'));
+            const newHeight = Math.round(document.body.offsetHeight * GetConfiguration<number>('chat.viewer.height.percentage'));
 
             elementRef.current.style.height = `${ newHeight }px`;
 
@@ -208,17 +208,7 @@ export const ChatWidgetView: FC<{}> = props =>
             {
                 if(prevValue)
                 {
-                    prevValue.forEach(chat =>
-                    {
-                        if(chat.skipMovement)
-                        {
-                            chat.skipMovement = false;
-                
-                            return;
-                        }
-                
-                        chat.top -= (currentHeight - newHeight);
-                    });
+                    prevValue.forEach(chat => (chat.top -= (currentHeight - newHeight)));
                 }
     
                 return prevValue;

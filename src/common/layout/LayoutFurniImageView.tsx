@@ -1,9 +1,10 @@
 import { IGetImageListener, ImageResult, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { CSSProperties, FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { BaseProps } from '..';
 import { GetRoomEngine, ProductTypeEnum } from '../../api';
 import { Base } from '../Base';
 
-interface LayoutFurniImageViewProps
+interface LayoutFurniImageViewProps extends BaseProps<HTMLDivElement>
 {
     productType: string;
     productClassId: number;
@@ -14,8 +15,31 @@ interface LayoutFurniImageViewProps
 
 export const LayoutFurniImageView: FC<LayoutFurniImageViewProps> = props =>
 {
-    const { productType = 's', productClassId = -1, direction = 0, extraData = '', scale = 1 } = props;
+    const { productType = 's', productClassId = -1, direction = 2, extraData = '', scale = 1, style = {}, ...rest } = props;
     const [ imageElement, setImageElement ] = useState<HTMLImageElement>(null);
+
+    const getStyle = useMemo(() =>
+    {
+        let newStyle: CSSProperties = {};
+
+        if(imageElement?.src?.length)
+        {
+            newStyle.backgroundImage = `url('${ imageElement.src }')`;
+            newStyle.width = imageElement.width;
+            newStyle.height = imageElement.height;
+        }
+
+        if(scale !== 1)
+        {
+            newStyle.transform = `scale(${ scale })`;
+
+            if(!(scale % 1)) newStyle.imageRendering = 'pixelated';
+        }
+
+        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
+
+        return newStyle;
+    }, [ imageElement, scale, style ]);
 
     const buildImage = useCallback(() =>
     {
@@ -59,7 +83,5 @@ export const LayoutFurniImageView: FC<LayoutFurniImageViewProps> = props =>
 
     if(!imageElement) return null;
 
-    const imageUrl = `url('${ imageElement.src }')`;
-
-    return <Base classNames={ [ 'furni-image', `scale-${ scale }` ] } style={ { backgroundImage: imageUrl, width: imageElement.width, height: imageElement.height } } />;
+    return <Base classNames={ [ 'furni-image' ] } style={ getStyle } { ...rest } />;
 }

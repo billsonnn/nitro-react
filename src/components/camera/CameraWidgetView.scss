@@ -7,15 +7,20 @@
         border-radius: $border-radius;
         box-shadow: 0 0 0 1.5px $white;
         border: 2px solid #921911;
-        background: repeating-linear-gradient(rgba(245,80,65,1), rgba(245,80,65,1) 50%, rgba(194,48,39,1) 50%, rgba(194,48,39,1) 100%);
+        background: repeating-linear-gradient(
+            rgba(245, 80, 65, 1),
+            rgba(245, 80, 65, 1) 50%,
+            rgba(194, 48, 39, 1) 50%,
+            rgba(194, 48, 39, 1) 100%
+        );
         cursor: pointer;
         line-height: 1;
         padding: 1px 3px;
-    
+
         &:hover {
             filter: brightness(1.2);
         }
-    
+
         &:active {
             filter: brightness(0.8);
         }
@@ -28,42 +33,41 @@
         width: 320px;
         height: 320px;
     }
-    
+
     .camera-canvas {
         position: relative;
         width: 340px;
         height: 462px;
-        background-image: url('../../assets/images/room-widgets/camera-widget/camera-spritesheet.png');
+        background-image: url("../../assets/images/room-widgets/camera-widget/camera-spritesheet.png");
         background-position: -1px -1px;
         z-index: 2;
-    
+
         .camera-button {
             width: 94px;
             height: 94px;
             cursor: pointer;
             margin-top: 362px;
-    
-            background-image: url('../../assets/images/room-widgets/camera-widget/camera-spritesheet.png');
+
+            background-image: url("../../assets/images/room-widgets/camera-widget/camera-spritesheet.png");
             background-position: -343px -321px;
-    
+
             &:hover {
                 background-position: -535px -321px;
             }
-    
+
             &:active {
                 background-position: -439px -321px;
             }
         }
 
         .camera-view-finder {
-            background-image: url('../../assets/images/room-widgets/camera-widget/camera-spritesheet.png');
+            background-image: url("../../assets/images/room-widgets/camera-widget/camera-spritesheet.png");
             background-position: -343px -1px;
         }
 
         .camera-frame {
-    
             .camera-frame-preview-actions {
-                background: rgba(0, 0, 0, .5);
+                background: rgba(0, 0, 0, 0.5);
             }
         }
     }
@@ -80,6 +84,8 @@
             width: 56px;
             height: 56px;
             border: 1px solid black;
+            object-fit: contain;
+            image-rendering: initial;
         }
     }
 }
@@ -87,7 +93,7 @@
 .nitro-camera-editor {
     width: $camera-editor-width;
     height: $camera-editor-height;
-    
+
     .picture-preview {
         width: 320px;
         height: 320px;
@@ -99,7 +105,6 @@
     }
 
     .effect-thumbnail-image {
-
         img {
             width: 50px;
             height: 50px;

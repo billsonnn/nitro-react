@@ -69,7 +69,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     }
                 }
 
-                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ paletteId } color={ petFigureData.color } customParts={ petFigureData.customParts } direction={ 2 } />
+                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ paletteId } petColor={ petFigureData.color } customParts={ petFigureData.customParts } direction={ 2 } />
             }
             case FurniCategory.PET_CUSTOM_PART: {
                 if(customParts.length < 4) return null;
@@ -96,7 +96,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     _local_10++;
                 }
 
-                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } color={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
+                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } petColor={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
             }
             case FurniCategory.PET_CUSTOM_PART_SHAMPOO: {
                 if(customParts.length < 3) return null;
@@ -122,7 +122,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     _local_10++;
                 }
 
-                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } color={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
+                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } petColor={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
             }
             case FurniCategory.PET_SADDLE: {
                 if(customParts.length < 4) return null;
@@ -150,7 +150,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     }
                 }
 
-                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } color={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
+                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } petColor={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
             }
             case FurniCategory.MONSTERPLANT_REBREED:
             case FurniCategory.MONSTERPLANT_REVIVAL:
@@ -172,7 +172,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     }
                 }
 
-                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } color={ petFigureData.color } customParts={ petFigureData.customParts } posture={ posture } direction={ 2 } />;
+                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } petColor={ petFigureData.color } customParts={ petFigureData.customParts } posture={ posture } direction={ 2 } />;
             }
         }
     }, [ petData, furniData, roomSession ]);
