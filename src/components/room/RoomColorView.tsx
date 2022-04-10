@@ -21,12 +21,11 @@ export const RoomColorView: FC<{}> = props =>
 
         if(!hue && !saturation && !lightness)
         {
-            roomBackground.visible = false;
+            roomBackground.tint = 0;
         }
         else
         {
             roomBackground.tint = newColor;
-            roomBackground.visible = true;
         }
     }, [ roomBackground ]);
 
@@ -95,7 +94,6 @@ export const RoomColorView: FC<{}> = props =>
                 if(!roomBackground) return;
 
                 roomBackground.tint = originalRoomBackgroundColor;
-                roomBackground.visible = true;
                 
                 return;
             }
@@ -117,7 +115,7 @@ export const RoomColorView: FC<{}> = props =>
         const filter = new NitroAdjustmentFilter();
         const master = (canvas.master as NitroContainer);
 
-        background.visible = false;
+        background.tint = 0;
         background.width = GetNitroInstance().width;
         background.height = GetNitroInstance().height;
 
