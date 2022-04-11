@@ -15,7 +15,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.1.0",
     "@fortawesome/free-solid-svg-icons": "^6.1.0",
     "@fortawesome/react-fontawesome": "^0.1.17",
-    "@nitrots/nitro-renderer": "^1.1.23",
+    "@nitrots/nitro-renderer": "^1.2.0",
     "animate.css": "^4.1.1",
     "classnames": "^2.3.1",
     "cross-env": "^7.0.3",
