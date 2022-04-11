@@ -5,15 +5,9 @@ import { SendMessageComposer } from '../../../api';
 import { Base, Button, Column, ColumnProps, Flex, Grid } from '../../../common';
 import { UseMessageEventHook } from '../../../hooks';
 import { FloorplanEditor } from '../common/FloorplanEditor';
-import { IFloorplanSettings } from '../common/IFloorplanSettings';
 import { useFloorplanEditorContext } from '../FloorplanEditorContext';
 
-interface FloorplanCanvasViewProps extends ColumnProps
-{
-
-}
-
-export const FloorplanCanvasView: FC<FloorplanCanvasViewProps> = props =>
+export const FloorplanCanvasView: FC<ColumnProps> = props =>
 {
     const { gap = 1, children = null, ...rest } = props;
     const [ occupiedTilesReceived , setOccupiedTilesReceived ] = useState(false);
@@ -25,20 +19,16 @@ export const FloorplanCanvasView: FC<FloorplanCanvasViewProps> = props =>
     {
         const parser = event.getParser();
 
-        let newFloorPlanSettings: IFloorplanSettings = null;
-
         setOriginalFloorplanSettings(prevValue =>
         {
             const newValue = { ...prevValue };
 
             newValue.reservedTiles = parser.blockedTilesMap;
 
-            newFloorPlanSettings = newValue;
+            FloorplanEditor.instance.setTilemap(newValue.tilemap, newValue.reservedTiles);
 
             return newValue;
         });
-        
-        FloorplanEditor.instance.setTilemap(newFloorPlanSettings.tilemap, parser.blockedTilesMap);
 
         setOccupiedTilesReceived(true);
         
