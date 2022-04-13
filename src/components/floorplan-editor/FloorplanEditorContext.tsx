@@ -17,9 +17,6 @@ const FloorplanEditorContext = createContext<IFloorplanEditorContext>({
     setVisualizationSettings: null
 });
 
-export const FloorplanEditorContextProvider: FC<ProviderProps<IFloorplanEditorContext>> = props =>
-{
-    return <FloorplanEditorContext.Provider value={ props.value }>{ props.children }</FloorplanEditorContext.Provider>
-}
+export const FloorplanEditorContextProvider: FC<ProviderProps<IFloorplanEditorContext>> = props => <FloorplanEditorContext.Provider { ...props } />;
 
 export const useFloorplanEditorContext = () => useContext(FloorplanEditorContext);

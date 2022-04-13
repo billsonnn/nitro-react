@@ -1,8 +1,7 @@
 import { AvatarExpressionEnum, HabboClubLevelEnum, NitroEvent, RoomControllerLevel, RoomRotatingEffect, RoomSessionChatEvent, RoomSettingsComposer, RoomShakingEffect, RoomWidgetEnum, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
 import { GetClubMemberLevel, GetConfiguration, GetNitroInstance, SendMessageComposer } from '../../..';
 import { GetRoomEngine, GetSessionDataManager, LocalizeText, NotificationUtilities } from '../../../..';
-import { FloorplanEditorEvent } from '../../../../../events/floorplan-editor/FloorplanEditorEvent';
-import { DispatchUiEvent } from '../../../../../hooks';
+import { CreateLinkEvent } from '../../../CreateLinkEvent';
 import { RoomWidgetFloodControlEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetChatMessage, RoomWidgetChatSelectAvatarMessage, RoomWidgetChatTypingMessage, RoomWidgetMessage, RoomWidgetRequestWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
@@ -158,12 +157,8 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
                             return null;
                         case ':floor':
                         case ':bcfloor':
-                            if(this.container.roomSession.controllerLevel >= RoomControllerLevel.ROOM_OWNER)
-                            {
-                                //this.container.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.FLOOR_EDITOR));
-                                DispatchUiEvent(new FloorplanEditorEvent(FloorplanEditorEvent.SHOW_FLOORPLAN_EDITOR));
-                            }
-
+                            if(this.container.roomSession.controllerLevel >= RoomControllerLevel.ROOM_OWNER) CreateLinkEvent('floor-editor/show');
+                            
                             return null;
                         case ':togglefps': {
                             if(GetNitroInstance().ticker.maxFPS > 0) GetNitroInstance().ticker.maxFPS = 0;

@@ -1,9 +1,8 @@
-import { FloorHeightMapEvent, NitroPoint, RoomEngineEvent, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
+import { FloorHeightMapEvent, ILinkEventTracker, NitroPoint, RoomEngineEvent, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../api';
+import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Button, ButtonGroup, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
-import { FloorplanEditorEvent } from '../../events';
-import { UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
+import { UseMessageEventHook, UseRoomEngineEvent } from '../../hooks';
 import { FloorplanEditor } from './common/FloorplanEditor';
 import { IFloorplanSettings } from './common/IFloorplanSettings';
 import { IVisualizationSettings } from './common/IVisualizationSettings';
@@ -33,25 +32,27 @@ export const FloorplanEditorView: FC<{}> = props =>
         thicknessFloor: 1
     });
 
-    const onFloorplanEditorEvent = useCallback((event: FloorplanEditorEvent) =>
+    const saveFloorChanges = () =>
     {
-        switch(event.type)
-        {
-            case FloorplanEditorEvent.HIDE_FLOORPLAN_EDITOR:
-                setIsVisible(false);
-                break;
-            case FloorplanEditorEvent.SHOW_FLOORPLAN_EDITOR:
-                setIsVisible(true);
-                break;
-            case FloorplanEditorEvent.TOGGLE_FLOORPLAN_EDITOR:
-                setIsVisible(prevValue => !prevValue);
-                break;
-        }
-    }, []);
+        SendMessageComposer(new UpdateFloorPropertiesMessageComposer(
+            FloorplanEditor.instance.getCurrentTilemapString(),
+            FloorplanEditor.instance.doorLocation.x,
+            FloorplanEditor.instance.doorLocation.y,
+            visualizationSettings.entryPointDir,
+            convertNumbersForSaving(visualizationSettings.thicknessWall),
+            convertNumbersForSaving(visualizationSettings.thicknessFloor),
+            (visualizationSettings.wallHeight - 1)
+        ));
+    }
 
-    UseUiEvent(FloorplanEditorEvent.HIDE_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
-    UseUiEvent(FloorplanEditorEvent.SHOW_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
-    UseUiEvent(FloorplanEditorEvent.TOGGLE_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
+    const revertChanges = () =>
+    {
+        setVisualizationSettings({ wallHeight: originalFloorplanSettings.wallHeight, thicknessWall: originalFloorplanSettings.thicknessWall, thicknessFloor: originalFloorplanSettings.thicknessFloor, entryPointDir: originalFloorplanSettings.entryPointDir });
+        
+        FloorplanEditor.instance.doorLocation = new NitroPoint(originalFloorplanSettings.entryPoint[0], originalFloorplanSettings.entryPoint[1]);
+        FloorplanEditor.instance.setTilemap(originalFloorplanSettings.tilemap, originalFloorplanSettings.reservedTiles);
+        FloorplanEditor.instance.renderTiles();
+    }
 
     const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
     {
@@ -113,27 +114,35 @@ export const FloorplanEditorView: FC<{}> = props =>
 
     UseMessageEventHook(RoomVisualizationSettingsEvent, onRoomVisualizationSettingsEvent);
 
-    const saveFloorChanges = () =>
+    useEffect(() =>
     {
-        SendMessageComposer(new UpdateFloorPropertiesMessageComposer(
-            FloorplanEditor.instance.getCurrentTilemapString(),
-            FloorplanEditor.instance.doorLocation.x,
-            FloorplanEditor.instance.doorLocation.y,
-            visualizationSettings.entryPointDir,
-            convertNumbersForSaving(visualizationSettings.thicknessWall),
-            convertNumbersForSaving(visualizationSettings.thicknessFloor),
-            (visualizationSettings.wallHeight - 1)
-        ));
-    }
+        const linkTracker: ILinkEventTracker = {
+            linkReceived: (url: string) =>
+            {
+                const parts = url.split('/');
 
-    const revertChanges = () =>
-    {
-        setVisualizationSettings({ wallHeight: originalFloorplanSettings.wallHeight, thicknessWall: originalFloorplanSettings.thicknessWall, thicknessFloor: originalFloorplanSettings.thicknessFloor, entryPointDir: originalFloorplanSettings.entryPointDir });
+                if(parts.length < 2) return;
         
-        FloorplanEditor.instance.doorLocation = new NitroPoint(originalFloorplanSettings.entryPoint[0], originalFloorplanSettings.entryPoint[1]);
-        FloorplanEditor.instance.setTilemap(originalFloorplanSettings.tilemap, originalFloorplanSettings.reservedTiles);
-        FloorplanEditor.instance.renderTiles();
-    }
+                switch(parts[1])
+                {
+                    case 'show':
+                        setIsVisible(true);
+                        return;
+                    case 'hide':
+                        setIsVisible(false);
+                        return;
+                    case 'toggle':
+                        setIsVisible(prevValue => !prevValue);
+                        return;
+                }
+            },
+            eventUrlPrefix: 'floor-editor/'
+        };
+
+        AddEventLinkTracker(linkTracker);
+
+        return () => RemoveLinkEventTracker(linkTracker);
+    }, []);
 
     useEffect(() =>
     {

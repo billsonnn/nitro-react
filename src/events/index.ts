@@ -1,5 +1,4 @@
 export * from './catalog';
-export * from './floorplan-editor';
 export * from './guide-tool';
 export * from './help';
 export * from './mod-tools';
