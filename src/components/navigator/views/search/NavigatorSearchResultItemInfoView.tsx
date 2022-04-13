@@ -63,7 +63,7 @@ export const NavigatorSearchResultItemInfoView: FC<NavigatorSearchResultItemInfo
 
     return (
         <>
-            <Base pointer className="icon icon-navigator-info" onClick={ toggle }/>
+        <Base pointer className="icon icon-navigator-info" onMouseOver={ toggle } onMouseLeave={ toggle }>
             <Overlay show={ isVisible } target={ target } placement="right">
                 <Popover>
                     <NitroCardContentView overflow="hidden" className="room-info bg-transparent">
@@ -99,6 +99,7 @@ export const NavigatorSearchResultItemInfoView: FC<NavigatorSearchResultItemInfo
                     </NitroCardContentView>
                 </Popover>
             </Overlay>
+        </Base>
         </>
     );
 }
