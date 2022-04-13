@@ -142,7 +142,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
     }, [ petData ]);
 
     return (
-        <ContextMenuView objectId={ petData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close }>
+        <ContextMenuView objectId={ petData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close } collapsable={ true }>
             <ContextMenuHeaderView>
                 { petData.name }
             </ContextMenuHeaderView>

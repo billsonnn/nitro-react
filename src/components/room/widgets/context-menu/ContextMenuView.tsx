@@ -2,6 +2,7 @@ import { FixedSizeStack, NitroPoint, NitroRectangle, RoomObjectType } from '@nit
 import { CSSProperties, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { GetNitroInstance, GetRoomObjectBounds, GetRoomObjectScreenLocation, GetRoomSession, GetTicker } from '../../../../api';
 import { Base, BaseProps } from '../../../../common';
+import { ContextMenuCaretView } from './ContextMenuCaretView';
 
 interface ContextMenuViewProps extends BaseProps<HTMLDivElement>
 {
@@ -10,6 +11,7 @@ interface ContextMenuViewProps extends BaseProps<HTMLDivElement>
     userType?: number;
     fades?: boolean;
     close: () => void;
+    collapsable?: boolean;
 }
 
 const LOCATION_STACK_SIZE: number = 25;
@@ -18,9 +20,11 @@ const fadeDelay = 3000;
 const fadeLength = 75;
 const SPACE_AROUND_EDGES = 10;
 
+let COLLAPSED = false;
+
 export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 {
-    const { objectId = -1, category = -1, userType = -1, fades = false, close = null, position = 'absolute', classNames = [], style = {}, ...rest } = props;
+    const { objectId = -1, category = -1, userType = -1, fades = false, close = null, position = 'absolute', classNames = [], style = {}, children = null, collapsable = false, ...rest } = props;
     const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: null, y: null });
     const [ deltaYStack, setDeltaYStack ] = useState<FixedSizeStack>(null);
     const [ currentDeltaY, setCurrentDeltaY ] = useState(-1000000);
@@ -29,6 +33,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     const [ fadeTime, setFadeTime ] = useState(0);
     const [ isFrozen, setIsFrozen ] = useState(false);
     const elementRef = useRef<HTMLDivElement>();
+
+    const [ collapsed, setCollapsed ] = useState(COLLAPSED);
 
     const getOffset = useCallback((bounds: NitroRectangle) =>
     {
@@ -118,13 +124,15 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     const getClassNames = useMemo(() =>
     {
         const newClassNames: string[] = [ 'nitro-context-menu' ];
+        
+        if (collapsed) newClassNames.push('menu-hidden');
 
         newClassNames.push((pos.x !== null) ? 'visible' : 'invisible');
 
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ pos, classNames ]);
+    }, [ pos, classNames, collapsed ]);
 
     const getStyle = useMemo(() =>
     {
@@ -170,6 +178,15 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
         return () => clearTimeout(timeout);
     }, [ fades ]);
+    
 
-    return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } onMouseOver={ event => setIsFrozen(true) } onMouseOut={ event => setIsFrozen(false) } { ...rest } />;
+    const toggleCollapse = () =>
+    {
+        COLLAPSED = !COLLAPSED;
+        setCollapsed(COLLAPSED)
+    }
+    return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } onMouseOver={ event => setIsFrozen(true) } onMouseOut={ event => setIsFrozen(false) } { ...rest }>
+        { !(collapsable && COLLAPSED) && children }
+        { collapsable && <ContextMenuCaretView onClick={ () => toggleCollapse() } collapsed={ collapsed } /> }
+    </Base>;
 }
