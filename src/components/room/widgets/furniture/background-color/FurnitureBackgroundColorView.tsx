@@ -98,7 +98,7 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
                         <ReactSlider
                             className={ 'nitro-slider' }
                             min={ 0 }
-                            max={ 100 }
+                            max={ 255 }
                             value={ saturation }
                             onChange={ event => setSaturation(event) }
                             thumbClassName={ 'thumb percent' }
@@ -109,7 +109,7 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
                         <ReactSlider
                             className={ 'nitro-slider' }
                             min={ 0 }
-                            max={ 100 }
+                            max={ 255 }
                             value={ lightness }
                             onChange={ event => setLightness(event) }
                             thumbClassName={ 'thumb percent' }
