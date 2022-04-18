@@ -2,10 +2,6 @@ import { RoomWidgetMessage } from './RoomWidgetMessage';
 
 export class RoomWidgetFurniToWidgetMessage extends RoomWidgetMessage
 {
-    public static REQUEST_CREDITFURNI: string = 'RWFWM_MESSAGE_REQUEST_CREDITFURNI';
-    public static REQUEST_STICKIE: string = 'RWFWM_MESSAGE_REQUEST_STICKIE';
-    public static REQUEST_PRESENT: string = 'RWFWM_MESSAGE_REQUEST_PRESENT';
-    public static REQUEST_TROPHY: string = 'RWFWM_MESSAGE_REQUEST_TROPHY';
     public static REQUEST_TEASER: string = 'RWFWM_MESSAGE_REQUEST_TEASER';
     public static REQUEST_ECOTRONBOX: string = 'RWFWM_MESSAGE_REQUEST_ECOTRONBOX';
     public static REQUEST_DIMMER: string = 'RWFWM_MESSAGE_REQUEST_DIMMER';

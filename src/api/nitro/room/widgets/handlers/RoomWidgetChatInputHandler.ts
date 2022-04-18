@@ -3,7 +3,7 @@ import { GetClubMemberLevel, GetConfiguration, GetNitroInstance, SendMessageComp
 import { GetRoomEngine, GetSessionDataManager, LocalizeText, NotificationUtilities } from '../../../..';
 import { CreateLinkEvent } from '../../../CreateLinkEvent';
 import { RoomWidgetFloodControlEvent, RoomWidgetUpdateEvent } from '../events';
-import { RoomWidgetChatMessage, RoomWidgetChatSelectAvatarMessage, RoomWidgetChatTypingMessage, RoomWidgetMessage, RoomWidgetRequestWidgetMessage } from '../messages';
+import { RoomWidgetChatMessage, RoomWidgetChatSelectAvatarMessage, RoomWidgetChatTypingMessage, RoomWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
 
 export class RoomWidgetChatInputHandler extends RoomWidgetHandler
@@ -148,12 +148,10 @@ export class RoomWidgetChatInputHandler extends RoomWidgetHandler
 
                             return null;
                         case ':furni':
-                            this.container.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.FURNI_CHOOSER));
-
+                            CreateLinkEvent('furni-chooser/');
                             return null;
                         case ':chooser':
-                            this.container.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.USER_CHOOSER));
-
+                            CreateLinkEvent('user-chooser/');
                             return null;
                         case ':floor':
                         case ':bcfloor':

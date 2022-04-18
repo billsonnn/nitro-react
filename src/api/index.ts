@@ -21,6 +21,7 @@ export * from './nitro/room/widgets/messages';
 export * from './nitro/session';
 export * from './notification';
 export * from './purse';
+export * from './room';
 export * from './user';
 export * from './utils';
 export * from './wired';
