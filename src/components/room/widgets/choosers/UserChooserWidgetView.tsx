@@ -1,59 +1,31 @@
-import { FC, useCallback, useState } from 'react';
-import { LocalizeText, RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRequestWidgetMessage, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
-import { UseEventDispatcherHook } from '../../../../hooks';
-import { useRoomContext } from '../../RoomContext';
+import { ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { FC, useEffect } from 'react';
+import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
+import { useUserChooserWidget } from '../../../../hooks';
 import { ChooserWidgetView } from './ChooserWidgetView';
 
 export const UserChooserWidgetView: FC<{}> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
-    const [ items, setItems ] = useState<RoomObjectItem[]>(null);
-    const [ refreshTimeout, setRefreshTimeout ] = useState<ReturnType<typeof setTimeout>>(null);
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
+    const { items = null, close = null, selectItem = null, populateChooser = null } = useUserChooserWidget();
 
-    const refreshChooser = useCallback(() =>
+    useEffect(() =>
     {
-        if(!isVisible) return;
+        const linkTracker: ILinkEventTracker = {
+            linkReceived: (url: string) =>
+            {
+                const parts = url.split('/');
 
-        setRefreshTimeout(prevValue =>
-        {
-            if(prevValue) clearTimeout(prevValue);
+                populateChooser();
+            },
+            eventUrlPrefix: 'user-chooser/'
+        };
 
-            return setTimeout(() => widgetHandler.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.USER_CHOOSER)), 100);
-        })
-    }, [ isVisible, widgetHandler ]);
+        AddEventLinkTracker(linkTracker);
 
-    const onRoomWidgetChooserContentEvent = useCallback((event: RoomWidgetChooserContentEvent) =>
-    {
-        setItems(event.items);
-        setIsVisible(true);
-    }, []);
-
-    UseEventDispatcherHook(RoomWidgetChooserContentEvent.USER_CHOOSER_CONTENT, eventDispatcher, onRoomWidgetChooserContentEvent);
-
-    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
-    {
-        if(!isVisible) return;
-
-        switch(event.type)
-        {
-            case RoomWidgetUpdateRoomObjectEvent.USER_ADDED:
-            case RoomWidgetUpdateRoomObjectEvent.USER_REMOVED:
-                refreshChooser();
-                return;
-        }
-    }, [ isVisible, refreshChooser ]);
-
-    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.USER_ADDED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
-    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
-
-    const close = useCallback(() =>
-    {
-        setIsVisible(false);
-        setItems(null);
-    }, []);
+        return () => RemoveLinkEventTracker(linkTracker);
+    }, [ populateChooser ]);
     
-    if(!isVisible) return null;
+    if(!items) return null;
 
-    return <ChooserWidgetView title={ LocalizeText('widget.chooser.user.title') } displayItemId={ false } items={ items } onCloseClick={ close } />;
+    return <ChooserWidgetView title={ LocalizeText('widget.chooser.user.title') } items={ items } selectItem={ selectItem } close={ close } />;
 }

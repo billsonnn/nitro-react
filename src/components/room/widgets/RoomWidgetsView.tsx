@@ -1,7 +1,7 @@
-import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectCategory, RoomObjectOperationType, RoomObjectVariable, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionDoorbellEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFavoriteGroupUpdateEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPetStatusUpdateEvent, RoomSessionPollEvent, RoomSessionPresentEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomSessionWordQuizEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
+import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectVariable, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFavoriteGroupUpdateEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPetStatusUpdateEvent, RoomSessionPollEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomSessionWordQuizEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CanManipulateFurniture, GetRoomEngine, GetSessionDataManager, IsFurnitureSelectionDisabled, LocalizeText, NotificationAlertType, NotificationUtilities, ProcessRoomObjectOperation, RoomWidgetFurniToWidgetMessage, RoomWidgetUpdateRoomEngineEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
-import { UseRoomEngineEvent, UseRoomSessionManagerEvent } from '../../../hooks';
+import { GetRoomEngine, GetSessionDataManager, LocalizeText, NotificationAlertType, NotificationUtilities, RoomWidgetFurniToWidgetMessage, RoomWidgetUpdateRoomEngineEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
+import { DispatchUiEvent, UseRoomEngineEvent, UseRoomSessionManagerEvent } from '../../../hooks';
 import { useRoomContext } from '../RoomContext';
 import { AvatarInfoWidgetView } from './avatar-info/AvatarInfoWidgetView';
 import { ChatInputView } from './chat-input/ChatInputView';
@@ -67,73 +67,6 @@ export const RoomWidgetsView: FC<{}> = props =>
 
         switch(event.type)
         {
-            case RoomEngineObjectEvent.SELECTED:
-                if(!IsFurnitureSelectionDisabled(event)) updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_SELECTED, objectId, category, event.roomId);
-                break;
-            case RoomEngineObjectEvent.DESELECTED:
-                updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, objectId, category, event.roomId);
-                break;
-            case RoomEngineObjectEvent.ADDED: {
-                let addedEventType: string = null;
-
-                switch(category)
-                {
-                    case RoomObjectCategory.FLOOR:
-                    case RoomObjectCategory.WALL:
-                        addedEventType = RoomWidgetUpdateRoomObjectEvent.FURNI_ADDED;
-                        break;
-                    case RoomObjectCategory.UNIT:
-                        addedEventType = RoomWidgetUpdateRoomObjectEvent.USER_ADDED;
-                        break;
-                }
-
-                if(addedEventType) updateEvent = new RoomWidgetUpdateRoomObjectEvent(addedEventType, objectId, category, event.roomId);
-                break;
-            }
-            case RoomEngineObjectEvent.REMOVED: {
-                let removedEventType: string = null;
-
-                switch(category)
-                {
-                    case RoomObjectCategory.FLOOR:
-                    case RoomObjectCategory.WALL:
-                        removedEventType = RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED;
-                        break;
-                    case RoomObjectCategory.UNIT:
-                        removedEventType = RoomWidgetUpdateRoomObjectEvent.USER_REMOVED;
-                        break;
-                }
-
-                if(removedEventType) updateEvent = new RoomWidgetUpdateRoomObjectEvent(removedEventType, objectId, category, event.roomId);
-                break;
-            }
-            case RoomEngineObjectEvent.REQUEST_MOVE:
-                if(CanManipulateFurniture(roomSession, objectId, category)) ProcessRoomObjectOperation(objectId, category, RoomObjectOperationType.OBJECT_MOVE);
-                break;
-            case RoomEngineObjectEvent.REQUEST_ROTATE:
-                if(CanManipulateFurniture(roomSession, objectId, category)) ProcessRoomObjectOperation(objectId, category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE);
-                break;
-            case RoomEngineObjectEvent.REQUEST_MANIPULATION:
-                if(CanManipulateFurniture(roomSession, objectId, category)) updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_REQUEST_MANIPULATION, objectId, category, event.roomId);
-                break;
-            case RoomEngineObjectEvent.MOUSE_ENTER:
-                updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OVER, objectId, category, event.roomId);
-                break;
-            case RoomEngineObjectEvent.MOUSE_LEAVE:
-                updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OUT, objectId, category, event.roomId);
-                break;
-            case RoomEngineTriggerWidgetEvent.REQUEST_CREDITFURNI:
-                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_CREDITFURNI, objectId, category, event.roomId));
-                break;
-            case RoomEngineTriggerWidgetEvent.REQUEST_STICKIE:
-                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_STICKIE, objectId, category, event.roomId));
-                break;
-            case RoomEngineTriggerWidgetEvent.REQUEST_PRESENT:
-                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_PRESENT, objectId, category, event.roomId));
-                break;
-            case RoomEngineTriggerWidgetEvent.REQUEST_TROPHY:
-                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_TROPHY, objectId, category, event.roomId));
-                break;
             case RoomEngineTriggerWidgetEvent.REQUEST_TEASER:
                 widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_TEASER, objectId, category, event.roomId));
                 break;
@@ -173,7 +106,6 @@ export const RoomWidgetsView: FC<{}> = props =>
             case RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU:
             case RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU:
             case RoomEngineTriggerWidgetEvent.REMOVE_DIMMER:
-            case RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN:
             case RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY:
             case RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM:
             case RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR:
@@ -200,24 +132,15 @@ export const RoomWidgetsView: FC<{}> = props =>
 
             if(updateEvent instanceof RoomWidgetUpdateRoomObjectEvent) dispatchEvent = (!RoomId.isRoomPreviewerId(updateEvent.roomId));
 
-            if(dispatchEvent) widgetHandler.eventDispatcher.dispatchEvent(updateEvent);
+            if(dispatchEvent)
+            {
+                widgetHandler.eventDispatcher.dispatchEvent(updateEvent);
+
+                DispatchUiEvent(updateEvent);
+            }
         }
     }, [ roomSession, widgetHandler, handleRoomAdClick, handleRoomAdTooltip ]);
 
-    UseRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineObjectEvent.DESELECTED, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineObjectEvent.ADDED, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineObjectEvent.REMOVED, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineObjectEvent.PLACED, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineObjectEvent.REQUEST_MOVE, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineObjectEvent.REQUEST_ROTATE, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineObjectEvent.REQUEST_MANIPULATION, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineObjectEvent.MOUSE_ENTER, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineObjectEvent.MOUSE_LEAVE, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_CREDITFURNI, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_STICKIE, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PRESENT, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_TROPHY, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_TEASER, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ECOTRONBOX, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_DIMMER, onRoomEngineObjectEvent);
@@ -232,7 +155,6 @@ export const RoomWidgetsView: FC<{}> = props =>
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REMOVE_DIMMER, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, onRoomEngineObjectEvent);
@@ -260,11 +182,7 @@ export const RoomWidgetsView: FC<{}> = props =>
     UseRoomSessionManagerEvent(RoomSessionUserFigureUpdateEvent.USER_FIGURE, onRoomSessionEvent);
     UseRoomSessionManagerEvent(RoomSessionFavoriteGroupUpdateEvent.FAVOURITE_GROUP_UPDATE, onRoomSessionEvent);
     UseRoomSessionManagerEvent(RoomSessionPetStatusUpdateEvent.PET_STATUS_UPDATE, onRoomSessionEvent);
-    UseRoomSessionManagerEvent(RoomSessionDoorbellEvent.DOORBELL, onRoomSessionEvent);
-    UseRoomSessionManagerEvent(RoomSessionDoorbellEvent.RSDE_REJECTED, onRoomSessionEvent);
-    UseRoomSessionManagerEvent(RoomSessionDoorbellEvent.RSDE_ACCEPTED, onRoomSessionEvent);
     UseRoomSessionManagerEvent(RoomSessionDimmerPresetsEvent.ROOM_DIMMER_PRESETS, onRoomSessionEvent);
-    UseRoomSessionManagerEvent(RoomSessionPresentEvent.RSPE_PRESENT_OPENED, onRoomSessionEvent);
     UseRoomSessionManagerEvent(RoomSessionPetInfoUpdateEvent.PET_INFO, onRoomSessionEvent);
     UseRoomSessionManagerEvent(RoomSessionWordQuizEvent.ANSWERED, onRoomSessionEvent);
     UseRoomSessionManagerEvent(RoomSessionWordQuizEvent.FINISHED, onRoomSessionEvent);

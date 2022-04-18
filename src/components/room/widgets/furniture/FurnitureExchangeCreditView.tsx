@@ -1,35 +1,11 @@
-import { FC, useCallback, useState } from 'react';
-import { LocalizeText, RoomWidgetCreditFurniRedeemMessage, RoomWidgetUpdateCreditFurniEvent } from '../../../../../api';
-import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { UseEventDispatcherHook } from '../../../../../hooks';
-import { useRoomContext } from '../../../RoomContext';
+import { FC } from 'react';
+import { LocalizeText } from '../../../../api';
+import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { useFurnitureExchangeWidget } from '../../../../hooks';
 
 export const FurnitureExchangeCreditView: FC<{}> = props =>
 {
-    const [ objectId, setObjectId ] = useState(-1);
-    const [ value, setValue ] = useState(0);
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
-
-    const onRoomWidgetUpdateCreditFurniEvent = useCallback((event: RoomWidgetUpdateCreditFurniEvent) =>
-    {
-        setObjectId(event.objectId);
-        setValue(event.value);
-    }, []);
-
-    UseEventDispatcherHook(RoomWidgetUpdateCreditFurniEvent.CREDIT_FURNI_UPDATE, eventDispatcher, onRoomWidgetUpdateCreditFurniEvent);
-
-    const close = () =>
-    {
-        setObjectId(-1);
-        setValue(0);
-    }
-
-    const redeem = () =>
-    {
-        widgetHandler.processWidgetMessage(new RoomWidgetCreditFurniRedeemMessage(RoomWidgetCreditFurniRedeemMessage.REDEEM, objectId));
-
-        close();
-    }
+    const { objectId = -1, value = 0, close = null, redeem = null } = useFurnitureExchangeWidget();
 
     if(objectId === -1) return null;
 

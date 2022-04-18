@@ -3,13 +3,11 @@ import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { LocalizeText, MessengerRequest } from '../../../../api';
 import { Base, Button, Column, Flex, Text } from '../../../../common';
-import { useFriends } from '../../../../hooks';
 import { ObjectLocationView } from '../object-location/ObjectLocationView';
 
-export const FriendRequestDialogView: FC<{ roomIndex: number, request: MessengerRequest, hideFriendRequest: (userId: number) => void }> = props =>
+export const FriendRequestDialogView: FC<{ roomIndex: number, request: MessengerRequest, hideFriendRequest: (userId: number) => void, requestResponse: (requestId: number, flag: boolean) => void }> = props =>
 {
-    const { roomIndex = -1, request = null, hideFriendRequest = null } = props;
-    const { requestResponse = null } = useFriends();
+    const { roomIndex = -1, request = null, hideFriendRequest = null, requestResponse = null } = props;
 
     return (
         <ObjectLocationView objectId={ roomIndex } category={ RoomObjectCategory.UNIT }>

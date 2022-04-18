@@ -1,24 +1,25 @@
 import { FC } from 'react';
-import { FurnitureBackgroundColorView } from './background-color/FurnitureBackgroundColorView';
-import { FurnitureBadgeDisplayView } from './badge-display/FurnitureBadgeDisplayView';
+import { Base } from '../../../../common';
 import { FurnitureContextMenuView } from './context-menu/FurnitureContextMenuView';
-import { FurnitureCustomStackHeightView } from './custom-stack-height/FurnitureCustomStackHeightView';
 import { FurnitureDimmerView } from './dimmer/FurnitureDimmerView';
-import { FurnitureExchangeCreditView } from './exchange-credit/FurnitureExchangeCreditView';
-import { FurnitureExternalImageView } from './external-image/FurnitureExternalImageView';
 import { FurnitureFriendFurniView } from './friend-furni/FurnitureFriendFurniView';
-import { FurnitureGiftOpeningView } from './gift-opening/FurnitureGiftOpeningView';
+import { FurnitureBackgroundColorView } from './FurnitureBackgroundColorView';
+import { FurnitureBadgeDisplayView } from './FurnitureBadgeDisplayView';
+import { FurnitureCustomStackHeightView } from './FurnitureCustomStackHeightView';
+import { FurnitureExchangeCreditView } from './FurnitureExchangeCreditView';
+import { FurnitureExternalImageView } from './FurnitureExternalImageView';
+import { FurnitureGiftOpeningView } from './FurnitureGiftOpeningView';
+import { FurnitureManipulationMenuView } from './FurnitureManipulationMenuView';
+import { FurnitureMannequinView } from './FurnitureMannequinView';
+import { FurnitureStickieView } from './FurnitureStickieView';
+import { FurnitureTrophyView } from './FurnitureTrophyView';
 import { FurnitureHighScoreView } from './high-score/FurnitureHighScoreView';
-import { FurnitureManipulationMenuView } from './manipulation-menu/FurnitureManipulationMenuView';
-import { FurnitureMannequinView } from './mannequin/FurnitureMannequinView';
-import { FurnitureStickieView } from './stickie/FurnitureStickieView';
-import { FurnitureTrophyView } from './trophy/FurnitureTrophyView';
 import { FurnitureYoutubeDisplayView } from './youtube-tv/FurnitureYoutubeDisplayView';
 
 export const FurnitureWidgetsView: FC<{}> = props =>
 {
     return (
-        <div className="position-absolute nitro-room-widgets top-0 start-0 w-100 h-100">
+        <Base fit position="absolute" className="nitro-room-widgets top-0 start-0">
             <FurnitureBackgroundColorView />
             <FurnitureContextMenuView />
             <FurnitureCustomStackHeightView />
@@ -34,6 +35,6 @@ export const FurnitureWidgetsView: FC<{}> = props =>
             <FurnitureBadgeDisplayView />
             <FurnitureExternalImageView />
             <FurnitureYoutubeDisplayView />
-        </div>
+        </Base>
     );
 }
