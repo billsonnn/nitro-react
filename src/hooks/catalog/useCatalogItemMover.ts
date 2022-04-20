@@ -249,9 +249,18 @@ const useCatalogItemMoverState = (catalog: { currentType: string, pageId: number
 
                 if(roomObject) roomObject.model.setValue(RoomObjectVariable.FURNITURE_ALPHA_MULTIPLIER, 0.5);
 
-                SendMessageComposer(new PurchaseFromCatalogComposer(catalog.pageId, purchasableOffer.offerId, product.extraParam, 1));
+                if(catalogSkipPurchaseConfirmation) 
+                {
+                    SendMessageComposer(new PurchaseFromCatalogComposer(catalog.pageId, purchasableOffer.offerId, product.extraParam, 1));
 
-                if(catalogPlaceMultipleObjects) requestOfferToMover(purchasableOffer);
+                    if(catalogPlaceMultipleObjects) requestOfferToMover(purchasableOffer);
+                }
+                else
+                {
+                    // confirm
+
+                    if(catalogPlaceMultipleObjects) requestOfferToMover(purchasableOffer);
+                }
                 break;
             }
             case CatalogType.BUILDER: {
@@ -276,7 +285,7 @@ const useCatalogItemMoverState = (catalog: { currentType: string, pageId: number
                 break;
             }
         }
-    }, [ objectMoverRequested, purchasableOffer, catalogPlaceMultipleObjects, catalog, resetPlacedOfferData, resetObjectMover, resetRoomPaint, requestOfferToMover ]);
+    }, [ objectMoverRequested, purchasableOffer, catalogPlaceMultipleObjects, catalogSkipPurchaseConfirmation, catalog, resetPlacedOfferData, resetObjectMover, resetRoomPaint, requestOfferToMover ]);
 
     UseRoomEngineEvent(RoomEngineObjectPlacedEvent.PLACED, onRoomEngineObjectPlacedEvent);
 
