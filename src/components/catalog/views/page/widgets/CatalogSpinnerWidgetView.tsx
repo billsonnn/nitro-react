@@ -1,16 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
-import { Flex } from '../../../../../common/Flex';
-import { Text } from '../../../../../common/Text';
-import { useCatalogContext } from '../../../CatalogContext';
+import { Flex, Text } from '../../../../../common';
+import { useCatalog } from '../../../../../hooks';
 
 const MIN_VALUE: number = 1;
 const MAX_VALUE: number = 100;
 
 export const CatalogSpinnerWidgetView: FC<{}> = props =>
 {
-    const { currentOffer = null, purchaseOptions = null, setPurchaseOptions = null } = useCatalogContext();
+    const { currentOffer = null, purchaseOptions = null, setPurchaseOptions = null } = useCatalog();
     const { quantity = 1 } = purchaseOptions;
 
     const updateQuantity = (value: number) =>

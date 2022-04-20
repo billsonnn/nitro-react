@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ICatalogNode } from '../../common/ICatalogNode';
+import { ICatalogNode } from '../../../../api';
 import { CatalogNavigationItemView } from './CatalogNavigationItemView';
 
 export interface CatalogNavigationSetViewProps

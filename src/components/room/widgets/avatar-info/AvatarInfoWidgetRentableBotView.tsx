@@ -136,7 +136,7 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
     const canControl = (rentableBotData.amIOwner || rentableBotData.amIAnyRoomController);
 
     return (
-        <ContextMenuView objectId={ rentableBotData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.RENTABLE_BOT } close={ close }>
+        <ContextMenuView objectId={ rentableBotData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.RENTABLE_BOT } close={ close } collapsable={ true }>
             <ContextMenuHeaderView>
                 { rentableBotData.name }
             </ContextMenuHeaderView>

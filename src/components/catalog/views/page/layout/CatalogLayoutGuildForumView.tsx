@@ -2,7 +2,7 @@ import { CatalogGroupsComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../../api';
 import { Base, Column, Flex, Grid, Text } from '../../../../../common';
-import { useCatalogContext } from '../../../CatalogContext';
+import { useCatalog } from '../../../../../hooks';
 import { CatalogFirstProductSelectorWidgetView } from '../widgets/CatalogFirstProductSelectorWidgetView';
 import { CatalogGuildSelectorWidgetView } from '../widgets/CatalogGuildSelectorWidgetView';
 import { CatalogPurchaseWidgetView } from '../widgets/CatalogPurchaseWidgetView';
@@ -13,7 +13,7 @@ export const CatalogLayouGuildForumView: FC<CatalogLayoutProps> = props =>
 {
     const { page = null } = props;
     const [ selectedGroupIndex, setSelectedGroupIndex ] = useState<number>(0);
-    const { currentOffer = null, setCurrentOffer = null, catalogOptions = null } = useCatalogContext();
+    const { currentOffer = null, setCurrentOffer = null, catalogOptions = null } = useCatalog();
     const { groups = null } = catalogOptions;
 
     useEffect(() =>

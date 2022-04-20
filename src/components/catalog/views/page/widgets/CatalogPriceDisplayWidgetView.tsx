@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
+import { IPurchasableOffer } from '../../../../../api';
 import { Flex, LayoutCurrencyIcon, Text } from '../../../../../common';
-import { useCatalogContext } from '../../../CatalogContext';
-import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
+import { useCatalog } from '../../../../../hooks';
 
 interface CatalogPriceDisplayWidgetViewProps
 {
@@ -13,7 +13,7 @@ interface CatalogPriceDisplayWidgetViewProps
 export const CatalogPriceDisplayWidgetView: FC<CatalogPriceDisplayWidgetViewProps> = props =>
 {
     const { offer = null, separator = false } = props;
-    const { purchaseOptions = null } = useCatalogContext();
+    const { purchaseOptions = null } = useCatalog();
     const { quantity = 1 } = purchaseOptions;
 
     if(!offer) return null;

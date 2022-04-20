@@ -1,9 +1,6 @@
 import { FC, useEffect, useState } from 'react';
-import { Column } from '../../../../../common/Column';
-import { Flex } from '../../../../../common/Flex';
-import { Grid } from '../../../../../common/Grid';
-import { Text } from '../../../../../common/Text';
-import { useCatalogContext } from '../../../CatalogContext';
+import { Column, Flex, Grid, Text } from '../../../../../common';
+import { useCatalog } from '../../../../../hooks';
 import { CatalogItemGridWidgetView } from '../widgets/CatalogItemGridWidgetView';
 import { CatalogPurchaseWidgetView } from '../widgets/CatalogPurchaseWidgetView';
 import { CatalogTotalPriceWidget } from '../widgets/CatalogTotalPriceWidget';
@@ -14,7 +11,7 @@ export const CatalogLayoutTrophiesView: FC<CatalogLayoutProps> = props =>
 {
     const { page = null } = props;
     const [ trophyText, setTrophyText ] = useState<string>('');
-    const { currentOffer = null, setPurchaseOptions = null } = useCatalogContext();
+    const { currentOffer = null, setPurchaseOptions = null } = useCatalog();
 
     useEffect(() =>
     {

@@ -87,7 +87,7 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
     }, [ item, updateConfirmingProduct ]);
     
     return (
-        <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close }>
+        <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close } collapsable={ true }>
             <ContextMenuHeaderView>
                 { item.name }
             </ContextMenuHeaderView>

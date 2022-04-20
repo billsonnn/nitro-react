@@ -1,12 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { PurchaseFromCatalogAsGiftComposer } from '@nitrots/nitro-renderer';
+import { GiftReceiverNotFoundEvent, PurchaseFromCatalogAsGiftComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, ProductTypeEnum, SendMessageComposer } from '../../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, FormGroup, LayoutCurrencyIcon, LayoutFurniImageView, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { CatalogEvent, CatalogInitGiftEvent, CatalogPurchasedEvent } from '../../../../events';
-import { UseUiEvent } from '../../../../hooks';
-import { useCatalogContext } from '../../CatalogContext';
+import { useCatalog, UseMessageEventHook, UseUiEvent } from '../../../../hooks';
 
 export const CatalogGiftView: FC<{}> = props =>
 {
@@ -24,7 +23,7 @@ export const CatalogGiftView: FC<{}> = props =>
     const [ maxBoxIndex, setMaxBoxIndex ] = useState<number>(0);
     const [ maxRibbonIndex, setMaxRibbonIndex ] = useState<number>(0);
     const [ receiverNotFound, setReceiverNotFound ] = useState<boolean>(false);
-    const { catalogOptions = null } = useCatalogContext();
+    const { catalogOptions = null } = useCatalog();
     const { giftConfiguration = null } = catalogOptions;
 
     const close = useCallback(() =>
@@ -59,15 +58,11 @@ export const CatalogGiftView: FC<{}> = props =>
                 setExtraData(castedEvent.extraData);
                 setIsVisible(true);
                 return;
-            case CatalogEvent.GIFT_RECEIVER_NOT_FOUND:
-                setReceiverNotFound(true);
-                return;
         }
     }, [ close ]);
 
     UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
     UseUiEvent(CatalogEvent.INIT_GIFT, onCatalogEvent);
-    UseUiEvent(CatalogEvent.GIFT_RECEIVER_NOT_FOUND, onCatalogEvent);
 
     const isBoxDefault = useMemo(() =>
     {
@@ -117,6 +112,13 @@ export const CatalogGiftView: FC<{}> = props =>
                 return;
         }
     }, [ extraData, maxBoxIndex, maxRibbonIndex, message, offerId, pageId, receiverName, selectedBoxIndex, selectedColorId, selectedRibbonIndex, showMyFace ]);
+
+    const onGiftReceiverNotFoundEvent = useCallback(() =>
+    {
+        setReceiverNotFound(true);
+    }, []);
+
+    UseMessageEventHook(GiftReceiverNotFoundEvent, onGiftReceiverNotFoundEvent);
 
     useEffect(() =>
     {

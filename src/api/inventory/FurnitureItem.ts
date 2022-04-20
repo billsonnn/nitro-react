@@ -95,7 +95,7 @@ export class FurnitureItem implements IFurnitureItem
         return this._extra;
     }
 
-    public get _Str_16260(): boolean
+    public get recyclable(): boolean
     {
         return this._recyclable;
     }
@@ -135,17 +135,17 @@ export class FurnitureItem implements IFurnitureItem
         return time;
     }
 
-    public get _Str_8932(): number
+    public get creationDay(): number
     {
         return this._creationDay;
     }
 
-    public get _Str_9050(): number
+    public get creationMonth(): number
     {
         return this._creationMonth;
     }
 
-    public get _Str_9408(): number
+    public get creationYear(): number
     {
         return this._creationYear;
     }
@@ -155,7 +155,7 @@ export class FurnitureItem implements IFurnitureItem
         return this._slotId;
     }
 
-    public get _Str_3951(): number
+    public get songId(): number
     {
         return this._songId;
     }
@@ -185,7 +185,7 @@ export class FurnitureItem implements IFurnitureItem
         return this._hasRentPeriodStarted;
     }
 
-    public get _Str_10616(): number
+    public get expirationTimeStamp(): number
     {
         return this._expirationTimeStamp;
     }

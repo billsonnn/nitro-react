@@ -4,6 +4,8 @@ import { useBetween } from 'use-between';
 import { useInventoryUnseenTracker } from '.';
 import { UseMessageEventHook } from '..';
 import { addFurnitureItem, attemptItemPlacement, cancelRoomObjectPlacement, CloneObject, CreateLinkEvent, FurnitureItem, getAllItemIds, getPlacingItemId, GroupItem, mergeFurniFragments, SendMessageComposer, UnseenItemCategory } from '../../api';
+import { InventoryFurniAddedEvent } from '../../events';
+import { DispatchUiEvent } from '../events';
 import { useSharedVisibility } from '../useSharedVisibility';
 
 let furniMsgFragments: Map<number, FurnitureListItemParser>[] = null;
@@ -73,6 +75,8 @@ const useInventoryFurniState = () =>
                     const furniture = new FurnitureItem(item);
 
                     addFurnitureItem(newValue, furniture, isUnseen(UnseenItemCategory.FURNI, item.itemId));
+
+                    DispatchUiEvent(new InventoryFurniAddedEvent(furniture.id, furniture.type, furniture.category));
                 }
             }
 
@@ -147,6 +151,8 @@ const useInventoryFurniState = () =>
                 const item = new FurnitureItem(parser);
 
                 addFurnitureItem(newValue, item, isUnseen(UnseenItemCategory.FURNI, itemId));
+
+                DispatchUiEvent(new InventoryFurniAddedEvent(item.id, item.type, item.category));
 
             }
 
@@ -262,7 +268,7 @@ const useInventoryFurniState = () =>
         setNeedsUpdate(false);
     }, [ isVisible, needsUpdate ]);
 
-    return { groupItems, setGroupItems, selectedItem, setSelectedItem, activate, deactivate };
+    return { isVisible, groupItems, setGroupItems, selectedItem, setSelectedItem, activate, deactivate };
 }
 
 export const useInventoryFurni = () => useBetween(useInventoryFurniState);
