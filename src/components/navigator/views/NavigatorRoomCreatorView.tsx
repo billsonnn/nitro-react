@@ -17,6 +17,8 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
     const [ selectedModelName, setSelectedModelName ] = useState<string>('');
     const { categories = null } = useNavigatorContext();
 
+    const hcDisabled = GetConfiguration<boolean>('hc.disabled', false);
+
     const getRoomModelImage = (name: string) => GetConfiguration<string>('images.url') + `/navigator/models/model_${ name }.png`;
 
     const selectModel = (model: IRoomModel, index: number) =>
@@ -108,7 +110,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                                     <img alt="" src={ getRoomModelImage(model.name) } />
                                 </Flex>
                                 <Text bold>{ model.tileSize } { LocalizeText('navigator.createroom.tilesize') }</Text>
-                                { model.clubLevel > HabboClubLevelEnum.NO_CLUB && <LayoutCurrencyIcon position="absolute" className="top-1 end-1" type="hc" /> }
+                                { !hcDisabled && model.clubLevel > HabboClubLevelEnum.NO_CLUB && <LayoutCurrencyIcon position="absolute" className="top-1 end-1" type="hc" /> }
                             </LayoutGridItem>);
                         })
                     }
