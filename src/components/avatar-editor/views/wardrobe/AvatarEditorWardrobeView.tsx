@@ -1,6 +1,6 @@
 import { IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
-import { GetAvatarRenderManager, GetClubMemberLevel, LocalizeText, SendMessageComposer } from '../../../../api';
+import { GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, LocalizeText, SendMessageComposer } from '../../../../api';
 import { AutoGrid, Base, Button, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, LayoutGridItem } from '../../../../common';
 import { FigureData } from '../../common/FigureData';
 
@@ -15,6 +15,8 @@ export interface AvatarEditorWardrobeViewProps
 export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props =>
 {
     const { figureData = null, savedFigures = [], setSavedFigures = null, loadAvatarInEditor = null } = props;
+
+    const hcDisabled = GetConfiguration<boolean>('hc.disabled', false);
 
     const wearFigureAtIndex = useCallback((index: number) =>
     {
@@ -57,7 +59,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
                     { figureContainer &&
                     <LayoutAvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } /> }
                     <Base className="avatar-shadow" />
-                    { (clubLevel > 0) && <LayoutCurrencyIcon className="position-absolute top-1 start-1" type="hc" /> }
+                    { !hcDisabled && (clubLevel > 0) && <LayoutCurrencyIcon className="position-absolute top-1 start-1" type="hc" /> }
                     <Flex gap={ 1 } className="button-container">
                         <Button variant="link" fullWidth onClick={ event => saveFigureAtWardrobeIndex(index) }>{ LocalizeText('avatareditor.wardrobe.save') }</Button>
                         { figureContainer &&
@@ -68,7 +70,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
         });
 
         return items;
-    }, [ savedFigures, saveFigureAtWardrobeIndex, wearFigureAtIndex ]);
+    }, [ savedFigures, hcDisabled, saveFigureAtWardrobeIndex, wearFigureAtIndex ]);
 
     return (
         <AutoGrid columnCount={ 5 } columnMinWidth={ 80 } columnMinHeight={ 140 }>

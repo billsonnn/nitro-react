@@ -1,7 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
 import { HabboClubLevelEnum, RoomCreateComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetClubMemberLevel, GetConfiguration, IRoomModel, LocalizeText, RoomModels, SendMessageComposer } from '../../../api';
+import { GetClubMemberLevel, GetConfiguration, IRoomModel, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../common';
 import { useNavigatorContext } from '../NavigatorContext';
 
@@ -13,8 +13,11 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
     const [ category, setCategory ] = useState<number>(null);
     const [ visitorsCount, setVisitorsCount ] = useState<number>(null);
     const [ tradesSetting, setTradesSetting ] = useState<number>(0);
-    const [ selectedModelName, setSelectedModelName ] = useState<string>(RoomModels[0].name);
+    const [ roomModels, setRoomModels ] = useState<IRoomModel[]>([]);
+    const [ selectedModelName, setSelectedModelName ] = useState<string>('');
     const { categories = null } = useNavigatorContext();
+
+    const hcDisabled = GetConfiguration<boolean>('hc.disabled', false);
 
     const getRoomModelImage = (name: string) => GetConfiguration<string>('images.url') + `/navigator/models/model_${ name }.png`;
 
@@ -22,13 +25,13 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
     {
         if(!model || (model.clubLevel > GetClubMemberLevel())) return;
 
-        setSelectedModelName(RoomModels[index].name);
-    }
+        setSelectedModelName(roomModels[index].name);
+    };
 
     const createRoom = () =>
     {
         SendMessageComposer(new RoomCreateComposer(name, description, 'model_' + selectedModelName, Number(category), Number(visitorsCount), tradesSetting));
-    }
+    };
 
     useEffect(() =>
     {
@@ -47,6 +50,17 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
     {
         if(categories && categories.length) setCategory(categories[0].id);
     }, [ categories ]);
+
+    useEffect(() =>
+    {
+        const models = GetConfiguration<IRoomModel[]>('navigator.room.models');
+        
+        if(models && models.length)
+        {
+            setRoomModels(models);
+            setSelectedModelName(models[0].name);
+        }
+    }, []);
 
     return (
         <Column overflow="hidden">
@@ -89,14 +103,14 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                 </Column>
                 <Column size={ 6 } gap={ 1 } overflow="auto">
                     {
-                        RoomModels.map((model, index )=>
+                        roomModels.map((model, index )=>
                         {
                             return (<LayoutGridItem fullHeight key={ model.name } onClick={ () => selectModel(model, index) } itemActive={ (selectedModelName === model.name) } overflow="unset" gap={ 0 } className="p-1" disabled={ (GetClubMemberLevel() < model.clubLevel) }>
                                 <Flex fullHeight center overflow="hidden">
                                     <img alt="" src={ getRoomModelImage(model.name) } />
                                 </Flex>
                                 <Text bold>{ model.tileSize } { LocalizeText('navigator.createroom.tilesize') }</Text>
-                                { model.clubLevel > HabboClubLevelEnum.NO_CLUB && <LayoutCurrencyIcon position="absolute" className="top-1 end-1" type="hc" /> }
+                                { !hcDisabled && model.clubLevel > HabboClubLevelEnum.NO_CLUB && <LayoutCurrencyIcon position="absolute" className="top-1 end-1" type="hc" /> }
                             </LayoutGridItem>);
                         })
                     }
