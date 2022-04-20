@@ -268,7 +268,7 @@ const useInventoryFurniState = () =>
         setNeedsUpdate(false);
     }, [ isVisible, needsUpdate ]);
 
-    return { groupItems, setGroupItems, selectedItem, setSelectedItem, activate, deactivate };
+    return { isVisible, groupItems, setGroupItems, selectedItem, setSelectedItem, activate, deactivate };
 }
 
 export const useInventoryFurni = () => useBetween(useInventoryFurniState);

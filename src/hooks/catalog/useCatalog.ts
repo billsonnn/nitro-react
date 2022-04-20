@@ -1,12 +1,15 @@
-import { ApproveNameMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, FrontPageItem, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, GiftReceiverNotFoundEvent, GiftWrappingConfigurationEvent, GuildMembershipsMessageEvent, HabboClubOffersMessageEvent, LimitedEditionSoldOutEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, RoomPreviewer, SellablePetPalettesMessageEvent } from '@nitrots/nitro-renderer';
+import { BuildersClubFurniCountMessageEvent, BuildersClubPlaceRoomItemMessageComposer, BuildersClubPlaceWallItemMessageComposer, BuildersClubQueryFurniCountMessageComposer, BuildersClubSubscriptionStatusMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, FrontPageItem, FurniturePlaceComposer, FurniturePlacePaintComposer, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, GiftWrappingConfigurationEvent, GuildMembershipsMessageEvent, HabboClubOffersMessageEvent, LegacyDataType, LimitedEditionSoldOutEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseFromCatalogComposer, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, RoomControllerLevel, RoomEngineObjectPlacedEvent, RoomObjectCategory, RoomObjectPlacementSource, RoomObjectType, RoomObjectVariable, RoomPreviewer, SellablePetPalettesMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useBetween } from 'use-between';
-import { CatalogNode, CatalogPage, CatalogPetPalette, CatalogType, GetFurnitureData, GetProductDataForLocalization, GetRoomEngine, GiftWrappingConfiguration, ICatalogNode, ICatalogOptions, ICatalogPage, IPageLocalization, IProduct, IPurchasableOffer, IPurchaseOptions, LocalizeText, NotificationAlertType, NotificationUtilities, Offer, PageLocalization, PlaySound, Product, ProductTypeEnum, RequestedPage, SearchResult, SendMessageComposer, SoundNames } from '../../api';
-import { CatalogGiftReceiverNotFoundEvent, CatalogNameResultEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent } from '../../events';
-import { DispatchUiEvent, UseUiEvent } from '../events';
+import { BuilderFurniPlaceableStatus, CatalogNode, CatalogPage, CatalogPetPalette, CatalogType, CreateLinkEvent, FurniCategory, GetFurnitureData, GetNitroInstance, GetProductDataForLocalization, GetRoomEngine, GetRoomSession, GiftWrappingConfiguration, ICatalogNode, ICatalogOptions, ICatalogPage, IPageLocalization, IProduct, IPurchasableOffer, IPurchaseOptions, LocalizeText, NotificationAlertType, NotificationUtilities, Offer, PageLocalization, PlacedObjectPurchaseData, PlaySound, Product, ProductTypeEnum, RequestedPage, SearchResult, SendMessageComposer, SoundNames } from '../../api';
+import { CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, InventoryFurniAddedEvent } from '../../events';
+import { DispatchUiEvent, UseRoomEngineEvent, UseUiEvent } from '../events';
 import { UseMessageEventHook } from '../messages';
-import { useCatalogBuildersClub } from './useCatalogBuildersClub';
-import { useCatalogItemMover } from './useCatalogItemMover';
+import { useCatalogPlaceMultipleItems } from './useCatalogPlaceMultipleItems';
+import { useCatalogSkipPurchaseConfirmation } from './useCatalogSkipPurchaseConfirmation';
+
+const DUMMY_PAGE_ID_FOR_OFFER_SEARCH = -12345678;
+const DRAG_AND_DROP_ENABLED = true;
 
 const useCatalogState = () =>
 {
@@ -26,8 +29,17 @@ const useCatalogState = () =>
     const [ navigationHidden, setNavigationHidden ] = useState(false);
     const [ purchaseOptions, setPurchaseOptions ] = useState<IPurchaseOptions>({ quantity: 1, extraData: null, extraParamRequired: false, previewStuffData: null });
     const [ catalogOptions, setCatalogOptions ] = useState<ICatalogOptions>({});
-    const { furniCount = 0, furniLimit = 0, secondsLeft = 0 } = useCatalogBuildersClub();
-    const { requestOfferToMover = null, cancelObjectMover = null } = useCatalogItemMover({ currentType, pageId, currentOffer, purchaseOptions }, { furniCount, furniLimit, secondsLeft });
+    const [ objectMoverRequested, setObjectMoverRequested ] = useState(false);
+    const [ catalogPlaceMultipleObjects, setCatalogPlaceMultipleObjects ] = useCatalogPlaceMultipleItems();
+    const [ catalogSkipPurchaseConfirmation, setCatalogSkipPurchaseConfirmation ] = useCatalogSkipPurchaseConfirmation();
+    const [ purchasableOffer, setPurchaseableOffer ] = useState<IPurchasableOffer>(null);
+    const [ placedObjectPurchaseData, setPlacedObjectPurchaseData ] = useState<PlacedObjectPurchaseData>(null);
+    const [ furniCount, setFurniCount ] = useState(0);
+    const [ furniLimit, setFurniLimit ] = useState(0);
+    const [ maxFurniLimit, setMaxFurniLimit ] = useState(0);
+    const [ secondsLeft, setSecondsLeft ] = useState(0);
+    const [ updateTime, setUpdateTime ] = useState(0);
+    const [ secondsLeftWithGrace, setSecondsLeftWithGrace ] = useState(0);
     const requestedPage = useRef(new RequestedPage());
 
     const resetState = useCallback(() =>
@@ -43,6 +55,166 @@ const useCatalogState = () =>
         setFrontPageItems([]);
         setIsVisible(false);
     }, []);
+
+    const getBuilderFurniPlaceableStatus = useCallback((offer: IPurchasableOffer) =>
+    {
+        if(!offer) return BuilderFurniPlaceableStatus.MISSING_OFFER;
+
+        if((furniCount < 0) || (furniCount >= furniLimit)) return BuilderFurniPlaceableStatus.FURNI_LIMIT_REACHED;
+
+        const roomSession = GetRoomSession();
+
+        if(!roomSession) return BuilderFurniPlaceableStatus.NOT_IN_ROOM;
+
+        if(!roomSession.isRoomOwner) return BuilderFurniPlaceableStatus.NOT_ROOM_OWNER;
+
+        if(secondsLeft <= 0)
+        {
+            const roomEngine = GetRoomEngine();
+
+            let objectCount = roomEngine.getRoomObjectCount(roomSession.roomId, RoomObjectCategory.UNIT);
+
+            while(objectCount > 0)
+            {
+                const roomObject = roomEngine.getRoomObjectByIndex(roomSession.roomId, objectCount, RoomObjectCategory.UNIT);
+                const userData = roomSession.userDataManager.getUserDataByIndex(roomObject.id);
+
+                if(userData && (userData.type === RoomObjectType.USER) && (userData.roomIndex !== roomSession.ownRoomIndex) && !userData.isModerator) return BuilderFurniPlaceableStatus.VISITORS_IN_ROOM;
+
+                objectCount--;
+            }
+        }
+
+        return BuilderFurniPlaceableStatus.OKAY;
+    }, [ furniCount, furniLimit, secondsLeft ]);
+
+    const isDraggable = useCallback((offer: IPurchasableOffer) =>
+    {
+        const roomSession = GetRoomSession();
+
+        if(((DRAG_AND_DROP_ENABLED && roomSession && offer.page && (offer.page.layoutCode !== 'sold_ltd_items') && (currentType === CatalogType.NORMAL) && (roomSession.isRoomOwner || (roomSession.isGuildRoom && (roomSession.controllerLevel >= RoomControllerLevel.GUILD_MEMBER)))) || ((currentType === CatalogType.BUILDER) && (getBuilderFurniPlaceableStatus(offer) === BuilderFurniPlaceableStatus.OKAY))) && (offer.pricingModel !== Offer.PRICING_MODEL_BUNDLE) && (offer.product.productType !== ProductTypeEnum.EFFECT) && (offer.product.productType !== ProductTypeEnum.HABBO_CLUB)) return true;
+
+        return false;
+    }, [ currentType, getBuilderFurniPlaceableStatus ]);
+
+    const requestOfferToMover = useCallback((offer: IPurchasableOffer) =>
+    {
+        if(!isDraggable(offer)) return;
+
+        const product = offer.product;
+
+        if(!product) return;
+
+        let category = 0;
+
+        switch(product.productType)
+        {
+            case ProductTypeEnum.FLOOR:
+                category = RoomObjectCategory.FLOOR;
+                break;
+            case ProductTypeEnum.WALL:
+                category = RoomObjectCategory.WALL;
+                break;
+        }
+
+        if(GetRoomEngine().processRoomObjectPlacement(RoomObjectPlacementSource.CATALOG, -(offer.offerId), category, product.productClassId, product.extraParam))
+        {
+            setPurchaseableOffer(offer);
+            setObjectMoverRequested(true);
+
+            setIsVisible(false);
+        }
+    }, [ isDraggable ]);
+
+    const resetRoomPaint = useCallback((planeType: string, type: string) =>
+    {
+        const roomEngine = GetRoomEngine();
+
+        let wallType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_WALL_TYPE);
+        let floorType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_FLOOR_TYPE);
+        let landscapeType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_LANDSCAPE_TYPE);
+
+        wallType = (wallType && wallType.length) ? wallType : '101';
+        floorType = (floorType && floorType.length) ? floorType : '101';
+        landscapeType = (landscapeType && landscapeType.length) ? landscapeType : '1.1';
+
+        switch(planeType)
+        {
+            case 'floor':
+                roomEngine.updateRoomInstancePlaneType(roomEngine.activeRoomId, type, wallType, landscapeType, true);
+                return;
+            case 'wallpaper':
+                roomEngine.updateRoomInstancePlaneType(roomEngine.activeRoomId, floorType, type, landscapeType, true);
+                return;
+            case 'landscape':
+                roomEngine.updateRoomInstancePlaneType(roomEngine.activeRoomId, floorType, wallType, type, true);
+                return;
+            default:
+                roomEngine.updateRoomInstancePlaneType(roomEngine.activeRoomId, floorType, wallType, landscapeType, true);
+                return;
+        }
+    }, []);
+
+    const cancelObjectMover = useCallback(() =>
+    {
+        if(!purchasableOffer) return;
+
+        GetRoomEngine().cancelRoomObjectInsert();
+
+        setObjectMoverRequested(false);
+        setPurchaseableOffer(null);
+    }, [ purchasableOffer ]);
+
+    const resetObjectMover = useCallback((flag: boolean = true) =>
+    {
+        setObjectMoverRequested(prevValue =>
+        {
+            if(prevValue && flag)
+            {
+                CreateLinkEvent('catalog/open');
+            }
+
+            return false;
+        });
+    }, []);
+
+    const resetPlacedOfferData = useCallback((flag: boolean = false) =>
+    {
+        if(!flag) resetObjectMover();
+
+        setPlacedObjectPurchaseData(prevValue =>
+        {
+            if(prevValue)
+            {
+                switch(prevValue.category)
+                {
+                    case RoomObjectCategory.FLOOR:
+                        GetRoomEngine().removeRoomObjectFloor(prevValue.roomId, prevValue.objectId);
+                        break;
+                    case RoomObjectCategory.WALL: {
+
+                        switch(prevValue.furniData.className)
+                        {
+                            case 'floor':
+                            case 'wallpaper':
+                            case 'landscape':
+                                resetRoomPaint('reset', '');
+                                break;
+                            default:
+                                GetRoomEngine().removeRoomObjectWall(prevValue.roomId, prevValue.objectId);
+                                break;
+                        }
+                        break;
+                    }
+                    default:
+                        GetRoomEngine().deleteRoomObject(prevValue.objectId, prevValue.category);
+                        break;
+                }
+            }
+
+            return null;
+        });
+    }, [ resetObjectMover, resetRoomPaint ]);
 
     const getNodeById = useCallback((id: number, node: ICatalogNode) =>
     {
@@ -238,6 +410,11 @@ const useCatalogState = () =>
         }
     }, [ isVisible, getNodesByOfferId, activateNode ]);
 
+    const refreshBuilderStatus = useCallback(() =>
+    {
+
+    }, []);
+
     const onCatalogPagesListEvent = useCallback((event: CatalogPagesListEvent) =>
     {
         const parser = event.getParser();
@@ -421,22 +598,6 @@ const useCatalogState = () =>
 
     UseMessageEventHook(SellablePetPalettesMessageEvent, onSellablePetPalettesMessageEvent);
 
-    const onApproveNameMessageEvent = useCallback((event: ApproveNameMessageEvent) =>
-    {
-        const parser = event.getParser();
-
-        DispatchUiEvent(new CatalogNameResultEvent(parser.result, parser.validationInfo));
-    }, []);
-
-    UseMessageEventHook(ApproveNameMessageEvent, onApproveNameMessageEvent);
-
-    const onGiftReceiverNotFoundEvent = useCallback(() =>
-    {
-        DispatchUiEvent(new CatalogGiftReceiverNotFoundEvent());
-    }, []);
-
-    UseMessageEventHook(GiftReceiverNotFoundEvent, onGiftReceiverNotFoundEvent);
-
     const onHabboClubOffersMessageEvent = useCallback((event: HabboClubOffersMessageEvent) =>
     {
         const parser = event.getParser();
@@ -527,12 +688,185 @@ const useCatalogState = () =>
 
     UseMessageEventHook(CatalogPublishedMessageEvent, onCatalogPublishedMessageEvent);
 
+    const onBuildersClubFurniCountMessageEvent = useCallback((event: BuildersClubFurniCountMessageEvent) =>
+    {
+        const parser = event.getParser();
+
+        setFurniCount(parser.furniCount);
+
+        refreshBuilderStatus();
+    }, [ refreshBuilderStatus ]);
+
+    UseMessageEventHook(BuildersClubFurniCountMessageEvent, onBuildersClubFurniCountMessageEvent);
+
+    const onBuildersClubSubscriptionStatusMessageEvent = useCallback((event: BuildersClubSubscriptionStatusMessageEvent) =>
+    {
+        const parser = event.getParser();
+
+        setFurniLimit(parser._Str_15864);
+        setMaxFurniLimit(parser._Str_24094);
+        setSecondsLeft(parser._Str_3709);
+        setUpdateTime(GetNitroInstance().time);
+        setSecondsLeftWithGrace(parser._Str_24379);
+
+        refreshBuilderStatus();
+    }, [ refreshBuilderStatus ]);
+
+    UseMessageEventHook(BuildersClubSubscriptionStatusMessageEvent, onBuildersClubSubscriptionStatusMessageEvent);
+
     const onCatalogPurchasedEvent = useCallback((event: CatalogPurchasedEvent) =>
     {
         PlaySound(SoundNames.CREDITS);
     }, []);
 
     UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
+
+    const onRoomEngineObjectPlacedEvent = useCallback((event: RoomEngineObjectPlacedEvent) =>
+    {
+        if(!objectMoverRequested || (event.type !== RoomEngineObjectPlacedEvent.PLACED)) return;
+
+        resetPlacedOfferData(true);
+
+        if(!purchasableOffer)
+        {
+            resetObjectMover();
+
+            return;
+        }
+
+        let placed = false;
+
+        const product = purchasableOffer.product;
+
+        if(event.category === RoomObjectCategory.WALL)
+        {
+            switch(product.furnitureData.className)
+            {
+                case 'floor':
+                case 'wallpaper':
+                case 'landscape':
+                    placed = (event.placedOnFloor || event.placedOnWall);
+                    break;
+                default:
+                    placed = event.placedInRoom;
+                    break;
+            }
+        }
+        else
+        {
+            placed = event.placedInRoom;
+        }
+
+        if(!placed)
+        {
+            resetObjectMover();
+
+            return;
+        }
+
+        setPlacedObjectPurchaseData(new PlacedObjectPurchaseData(event.roomId, event.objectId, event.category, event.wallLocation, event.x, event.y, event.direction, purchasableOffer));
+
+        switch(currentType)
+        {
+            case CatalogType.NORMAL: {
+                switch(event.category)
+                {
+                    case RoomObjectCategory.FLOOR:
+                        GetRoomEngine().addFurnitureFloor(event.roomId, event.objectId, product.productClassId, new Vector3d(event.x, event.y, event.z), new Vector3d(event.direction), 0, new LegacyDataType());
+                        break;
+                    case RoomObjectCategory.WALL: {
+                        switch(product.furnitureData.className)
+                        {
+                            case 'floor':
+                            case 'wallpaper':
+                            case 'landscape':
+                                resetRoomPaint(product.furnitureData.className, product.extraParam);
+                                break;
+                            default:
+                                GetRoomEngine().addFurnitureWall(event.roomId, event.objectId, product.productClassId, new Vector3d(event.x, event.y, event.z), new Vector3d(event.direction * 45), 0, event.instanceData, 0);
+                                break;
+                        }
+                    }
+                }
+
+                const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
+
+                if(roomObject) roomObject.model.setValue(RoomObjectVariable.FURNITURE_ALPHA_MULTIPLIER, 0.5);
+
+                if(catalogSkipPurchaseConfirmation) 
+                {
+                    SendMessageComposer(new PurchaseFromCatalogComposer(pageId, purchasableOffer.offerId, product.extraParam, 1));
+
+                    if(catalogPlaceMultipleObjects) requestOfferToMover(purchasableOffer);
+                }
+                else
+                {
+                    // confirm
+
+                    if(catalogPlaceMultipleObjects) requestOfferToMover(purchasableOffer);
+                }
+                break;
+            }
+            case CatalogType.BUILDER: {
+                let pageId = purchasableOffer.page.pageId;
+
+                if(pageId === DUMMY_PAGE_ID_FOR_OFFER_SEARCH)
+                {
+                    pageId = -1;
+                }
+
+                switch(event.category)
+                {
+                    case RoomObjectCategory.FLOOR:
+                        SendMessageComposer(new BuildersClubPlaceRoomItemMessageComposer(pageId, purchasableOffer.offerId, product.extraParam, event.x, event.y, event.direction));
+                        break;
+                    case RoomObjectCategory.WALL:
+                        SendMessageComposer(new BuildersClubPlaceWallItemMessageComposer(pageId, purchasableOffer.offerId, product.extraParam, event.wallLocation));
+                        break;
+                }
+
+                if(catalogPlaceMultipleObjects) requestOfferToMover(purchasableOffer);
+                break;
+            }
+        }
+    }, [ objectMoverRequested, purchasableOffer, catalogPlaceMultipleObjects, catalogSkipPurchaseConfirmation, currentType, pageId, resetPlacedOfferData, resetObjectMover, resetRoomPaint, requestOfferToMover ]);
+
+    UseRoomEngineEvent(RoomEngineObjectPlacedEvent.PLACED, onRoomEngineObjectPlacedEvent);
+
+    const onInventoryFurniAddedEvent = useCallback((event: InventoryFurniAddedEvent) =>
+    {
+        const roomEngine = GetRoomEngine();
+
+        if(!placedObjectPurchaseData || (placedObjectPurchaseData.productClassId !== event.spriteId) || (placedObjectPurchaseData.roomId !== roomEngine.activeRoomId)) return;
+
+        switch(event.category)
+        {
+            case FurniCategory.FLOOR: {
+                const floorType = roomEngine.getRoomInstanceVariable(roomEngine.activeRoomId, RoomObjectVariable.ROOM_FLOOR_TYPE);
+
+                if(placedObjectPurchaseData.extraParam !== floorType) SendMessageComposer(new FurniturePlacePaintComposer(event.id));
+                break;
+            }
+            case FurniCategory.WALL_PAPER: {
+                const wallType = roomEngine.getRoomInstanceVariable(roomEngine.activeRoomId, RoomObjectVariable.ROOM_WALL_TYPE);
+
+                if(placedObjectPurchaseData.extraParam !== wallType) SendMessageComposer(new FurniturePlacePaintComposer(event.id));
+                break;
+            }
+            case FurniCategory.LANDSCAPE: {
+                const landscapeType = roomEngine.getRoomInstanceVariable(roomEngine.activeRoomId, RoomObjectVariable.ROOM_LANDSCAPE_TYPE);
+
+                if(placedObjectPurchaseData.extraParam !== landscapeType) SendMessageComposer(new FurniturePlacePaintComposer(event.id));
+                break;
+            }
+            default:
+                SendMessageComposer(new FurniturePlaceComposer(event.id, placedObjectPurchaseData.category, placedObjectPurchaseData.wallLocation, placedObjectPurchaseData.x, placedObjectPurchaseData.y, placedObjectPurchaseData.direction));
+        }
+
+        if(!catalogPlaceMultipleObjects) resetPlacedOfferData();
+    }, [ placedObjectPurchaseData, catalogPlaceMultipleObjects, resetPlacedOfferData ]);
+
+    UseUiEvent(InventoryFurniAddedEvent.FURNI_ADDED, onInventoryFurniAddedEvent);
 
     useEffect(() =>
     {
@@ -588,6 +922,7 @@ const useCatalogState = () =>
         SendMessageComposer(new GetGiftWrappingConfigurationComposer());
         SendMessageComposer(new GetClubGiftInfo());
         SendMessageComposer(new GetCatalogIndexComposer(currentType));
+        SendMessageComposer(new BuildersClubQueryFurniCountMessageComposer());
     }, [ isVisible, rootNode, currentType ]);
 
     useEffect(() =>

@@ -11,7 +11,6 @@ export class CatalogWidgetEvent extends NitroEvent
     public static COLOUR_INDEX: string = 'CWE_COLOUR_INDEX';
     public static TEXT_INPUT: string = 'CWE_TEXT_INPUT';
     public static DROPMENU_SELECT: string = 'CWE_CWE_DROPMENU_SELECT';
-    public static APPROVE_RESULT: string = 'CWE_CWE_APPROVE_RESULT';
     public static PURCHASE_OVERRIDE: string = 'CWE_PURCHASE_OVERRIDE';
     public static SELLABLE_PET_PALETTES: string = 'CWE_SELLABLE_PET_PALETTES';
     public static UPDATE_ROOM_PREVIEW: string = 'CWE_UPDATE_ROOM_PREVIEW';

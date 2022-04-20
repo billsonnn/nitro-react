@@ -10,7 +10,7 @@ import { MarketplacePostOfferView } from './views/page/layout/marketplace/Market
 
 export const CatalogView: FC<{}> = props =>
 {
-    const { isVisible = false, setIsVisible = null, rootNode = null, currentPage = null, navigationHidden = false, setNavigationHidden = null, activeNodes = [], searchResult = null, setSearchResult = null, getNodeById = null, openPageByName = null, openPageByOfferId = null, activateNode = null } = useCatalog();
+    const { isVisible = false, setIsVisible = null, rootNode = null, currentPage = null, navigationHidden = false, setNavigationHidden = null, activeNodes = [], searchResult = null, setSearchResult = null, openPageByName = null, openPageByOfferId = null, activateNode = null } = useCatalog();
 
     useEffect(() =>
     {

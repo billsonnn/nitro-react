@@ -2,7 +2,7 @@ import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useMemo, useState } from 'react';
 import { IPurchasableOffer, Offer, ProductTypeEnum } from '../../../../../api';
 import { LayoutAvatarImageView, LayoutGridItem, LayoutGridItemProps } from '../../../../../common';
-import { useCatalog } from '../../../../../hooks';
+import { useCatalog, useInventoryFurni } from '../../../../../hooks';
 
 interface CatalogGridOfferViewProps extends LayoutGridItemProps
 {
@@ -15,6 +15,7 @@ export const CatalogGridOfferView: FC<CatalogGridOfferViewProps> = props =>
     const { offer = null, selectOffer = null, itemActive = false, ...rest } = props;
     const [ isMouseDown, setMouseDown ] = useState(false);
     const { requestOfferToMover = null } = useCatalog();
+    const { isVisible = false } = useInventoryFurni();
 
     const iconUrl = useMemo(() =>
     {
@@ -38,7 +39,7 @@ export const CatalogGridOfferView: FC<CatalogGridOfferViewProps> = props =>
                 setMouseDown(false);
                 return;
             case MouseEventType.ROLL_OUT:
-                if(!isMouseDown || !itemActive) return;
+                if(!isMouseDown || !itemActive || !isVisible) return;
 
                 requestOfferToMover(offer);
                 return;
