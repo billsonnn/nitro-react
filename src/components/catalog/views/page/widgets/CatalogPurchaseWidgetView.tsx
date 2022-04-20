@@ -1,12 +1,9 @@
 import { PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { CreateLinkEvent, GetClubMemberLevel, LocalizeText, SendMessageComposer } from '../../../../../api';
+import { CatalogPurchaseState, CreateLinkEvent, GetClubMemberLevel, LocalizeText, LocalStorageKeys, Offer, SendMessageComposer } from '../../../../../api';
 import { Button, LayoutLoadingSpinnerView } from '../../../../../common';
-import { CatalogEvent, CatalogInitGiftEvent, CatalogInitPurchaseEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, CatalogWidgetEvent } from '../../../../../events';
-import { DispatchUiEvent, usePurse, UseUiEvent } from '../../../../../hooks';
-import { useCatalogContext } from '../../../CatalogContext';
-import { CatalogPurchaseState } from '../../../common/CatalogPurchaseState';
-import { Offer } from '../../../common/Offer';
+import { CatalogEvent, CatalogInitGiftEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent } from '../../../../../events';
+import { DispatchUiEvent, useCatalog, useLocalStorage, usePurse, UseUiEvent } from '../../../../../hooks';
 
 interface CatalogPurchaseWidgetViewProps
 {
@@ -19,18 +16,9 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
     const { noGiftOption = false, purchaseCallback = null } = props;
     const [ purchaseWillBeGift, setPurchaseWillBeGift ] = useState(false);
     const [ purchaseState, setPurchaseState ] = useState(CatalogPurchaseState.NONE);
-    const { currentOffer = null, currentPage = null, purchaseOptions = null, setPurchaseOptions = null } = useCatalogContext();
+    const [ catalogSkipPurchaseConfirmation, setCatalogSkipPurchaseConfirmation ] = useLocalStorage(LocalStorageKeys.CATALOG_SKIP_PURCHASE_CONFIRMATION, false);
+    const { currentOffer = null, currentPage = null, purchaseOptions = null, setPurchaseOptions = null } = useCatalog();
     const { getCurrencyAmount = null } = usePurse();
-
-    const onCatalogInitPurchaseEvent = useCallback((event: CatalogInitPurchaseEvent) =>
-    {
-        if(!currentOffer) return;
-
-        // show purchase confirmation
-        // offer, page.pageId, extraData, quantity, previewStuffData, null, true, null
-    }, [ currentOffer ]);
-
-    UseUiEvent(CatalogWidgetEvent.INIT_PURCHASE, onCatalogInitPurchaseEvent);
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {

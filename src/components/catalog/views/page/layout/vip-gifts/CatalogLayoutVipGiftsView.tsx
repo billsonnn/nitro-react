@@ -2,15 +2,14 @@ import { SelectClubGiftComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
 import { AutoGrid, Text } from '../../../../../../common';
-import { usePurse } from '../../../../../../hooks';
-import { useCatalogContext } from '../../../../CatalogContext';
+import { useCatalog, usePurse } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { VipGiftItem } from './VipGiftItemView';
 
 export const CatalogLayoutVipGiftsView: FC<CatalogLayoutProps> = props =>
 {
     const { purse = null } = usePurse();
-    const { catalogOptions = null, setCatalogOptions = null } = useCatalogContext();
+    const { catalogOptions = null, setCatalogOptions = null } = useCatalog();
     const { clubGifts = null } = catalogOptions;
     
     const giftsAvailable = useCallback(() =>

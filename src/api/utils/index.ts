@@ -5,6 +5,7 @@ export * from './LocalizeBageName';
 export * from './LocalizeFormattedNumber';
 export * from './LocalizeShortNumber';
 export * from './LocalizeText';
+export * from './LocalStorageKeys';
 export * from './PlaySound';
 export * from './ProductImageUtility';
 export * from './Randomizer';

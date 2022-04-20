@@ -1,14 +1,12 @@
 import { Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { GetAvatarRenderManager, GetSessionDataManager, ProductTypeEnum } from '../../../../../api';
+import { FurniCategory, GetAvatarRenderManager, GetSessionDataManager, Offer, ProductTypeEnum } from '../../../../../api';
 import { AutoGrid, Column, LayoutGridItem, LayoutRoomPreviewerView } from '../../../../../common';
-import { useCatalogContext } from '../../../CatalogContext';
-import { FurniCategory } from '../../../common/FurniCategory';
-import { Offer } from '../../../common/Offer';
+import { useCatalog } from '../../../../../hooks';
 
 export const CatalogViewProductWidgetView: FC<{}> = props =>
 {
-    const { currentOffer = null, roomPreviewer = null, purchaseOptions = null } = useCatalogContext();
+    const { currentOffer = null, roomPreviewer = null, purchaseOptions = null } = useCatalog();
     const { previewStuffData = null } = purchaseOptions;
 
     useEffect(() =>

@@ -1,25 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IFurnitureData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../../../../api';
-import { Button } from '../../../../../common/Button';
-import { Flex } from '../../../../../common/Flex';
-import { useCatalogContext } from '../../../CatalogContext';
-import { CatalogPage } from '../../../common/CatalogPage';
-import { CatalogType } from '../../../common/CatalogType';
-import { FilterCatalogNode, GetOfferNodes } from '../../../common/CatalogUtilities';
-import { FurnitureOffer } from '../../../common/FurnitureOffer';
-import { ICatalogNode } from '../../../common/ICatalogNode';
-import { ICatalogPage } from '../../../common/ICatalogPage';
-import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
-import { PageLocalization } from '../../../common/PageLocalization';
-import { SearchResult } from '../../../common/SearchResult';
+import { CatalogPage, CatalogType, FilterCatalogNode, FurnitureOffer, GetOfferNodes, GetSessionDataManager, ICatalogNode, ICatalogPage, IPurchasableOffer, LocalizeText, PageLocalization, SearchResult } from '../../../../../api';
+import { Button, Flex } from '../../../../../common';
+import { useCatalog } from '../../../../../hooks';
 
 export const CatalogSearchView: FC<{}> = props =>
 {
     const [ searchValue, setSearchValue ] = useState('');
     const [ needsProcessing, setNeedsProcessing ] = useState(false);
-    const { currentType = null, rootNode = null, setActiveNodes = null, offersToNodes = null, searchResult = null, setSearchResult = null, setCurrentPage = null } = useCatalogContext();
+    const { currentType = null, rootNode = null, offersToNodes = null, searchResult = null, setSearchResult = null, setCurrentPage = null } = useCatalog();
 
     const updateSearchValue = (value: string) =>
     {

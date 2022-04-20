@@ -3,12 +3,14 @@ import { ILinkEventTracker, NitroSettingsEvent, UserSettingsCameraFollowComposer
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { DispatchMainEvent, DispatchUiEvent, UseMessageEventHook } from '../../hooks';
+import { DispatchMainEvent, DispatchUiEvent, useCatalogPlaceMultipleItems, useCatalogSkipPurchaseConfirmation, UseMessageEventHook } from '../../hooks';
 
 export const UserSettingsView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ userSettings, setUserSettings ] = useState<NitroSettingsEvent>(null);
+    const [ catalogPlaceMultipleObjects, setCatalogPlaceMultipleObjects ] = useCatalogPlaceMultipleItems();
+    const [ catalogSkipPurchaseConfirmation, setCatalogSkipPurchaseConfirmation ] = useCatalogSkipPurchaseConfirmation();
 
     const onUserSettingsEvent = useCallback((event: UserSettingsEvent) =>
     {
@@ -140,6 +142,14 @@ export const UserSettingsView: FC<{}> = props =>
                     <Flex alignItems="center" gap={ 1 }>
                         <input className="form-check-input" type="checkbox" checked={ userSettings.cameraFollow } onChange={ event => processAction('camera_follow', event.target.checked) } />
                         <Text>{ LocalizeText('memenu.settings.other.disable.room.camera.follow') }</Text>
+                    </Flex>
+                    <Flex alignItems="center" gap={ 1 }>
+                        <input className="form-check-input" type="checkbox" checked={ catalogPlaceMultipleObjects } onChange={ event => setCatalogPlaceMultipleObjects(event.target.checked) } />
+                        <Text>{ LocalizeText('memenu.settings.other.place.multiple.objects') }</Text>
+                    </Flex>
+                    <Flex alignItems="center" gap={ 1 }>
+                        <input className="form-check-input" type="checkbox" checked={ catalogSkipPurchaseConfirmation } onChange={ event => setCatalogSkipPurchaseConfirmation(event.target.checked) } />
+                        <Text>{ LocalizeText('memenu.settings.other.skip.purchase.confirmation') }</Text>
                     </Flex>
                 </Column>
                 <Column>

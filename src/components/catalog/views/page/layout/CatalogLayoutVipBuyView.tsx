@@ -1,18 +1,16 @@
 import { ClubOfferData, GetClubOffersMessageComposer, PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../../api';
+import { CatalogPurchaseState, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { AutoGrid, Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, LayoutLoadingSpinnerView, Text } from '../../../../../common';
 import { CatalogEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent } from '../../../../../events';
-import { usePurse, UseUiEvent } from '../../../../../hooks';
-import { useCatalogContext } from '../../../CatalogContext';
-import { CatalogPurchaseState } from '../../../common/CatalogPurchaseState';
+import { useCatalog, usePurse, UseUiEvent } from '../../../../../hooks';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
 {
     const [ pendingOffer, setPendingOffer ] = useState<ClubOfferData>(null);
     const [ purchaseState, setPurchaseState ] = useState(CatalogPurchaseState.NONE);
-    const { currentPage = null, catalogOptions = null } = useCatalogContext();
+    const { currentPage = null, catalogOptions = null } = useCatalog();
     const { purse = null, getCurrencyAmount = null } = usePurse();
     const { clubOffers = null } = catalogOptions;
 

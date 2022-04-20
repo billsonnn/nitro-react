@@ -1,4 +1,4 @@
-import { GetConfiguration } from '../../../api';
+import { GetConfiguration } from '../nitro';
 import { IPageLocalization } from './IPageLocalization';
 
 export class PageLocalization implements IPageLocalization

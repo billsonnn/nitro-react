@@ -1,4 +1,4 @@
-import { GetFurnitureData, GetProductDataForLocalization, LocalizeText, ProductTypeEnum } from '../../../api';
+import { GetFurnitureData, GetProductDataForLocalization, LocalizeText, ProductTypeEnum } from '..';
 import { ICatalogPage } from './ICatalogPage';
 import { IProduct } from './IProduct';
 import { IPurchasableOffer } from './IPurchasableOffer';

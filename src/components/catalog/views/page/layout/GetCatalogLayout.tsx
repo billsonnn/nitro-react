@@ -1,4 +1,4 @@
-import { ICatalogPage } from '../../../common/ICatalogPage';
+import { ICatalogPage } from '../../../../../api';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 import { CatalogLayoutBadgeDisplayView } from './CatalogLayoutBadgeDisplayView';
 import { CatalogLayoutDefaultView } from './CatalogLayoutDefaultView';

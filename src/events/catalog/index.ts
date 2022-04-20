@@ -1,7 +1,6 @@
 export * from './CatalogEvent';
 export * from './CatalogGiftReceiverNotFoundEvent';
 export * from './CatalogInitGiftEvent';
-export * from './CatalogInitPurchaseEvent';
 export * from './CatalogNameResultEvent';
 export * from './CatalogPostMarketplaceOfferEvent';
 export * from './CatalogPurchasedEvent';

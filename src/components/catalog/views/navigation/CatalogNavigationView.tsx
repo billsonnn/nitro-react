@@ -1,8 +1,7 @@
 import { FC } from 'react';
-import { AutoGrid } from '../../../../common/AutoGrid';
-import { Column } from '../../../../common/Column';
-import { useCatalogContext } from '../../CatalogContext';
-import { ICatalogNode } from '../../common/ICatalogNode';
+import { ICatalogNode } from '../../../../api';
+import { AutoGrid, Column } from '../../../../common';
+import { useCatalog } from '../../../../hooks';
 import { CatalogSearchView } from '../page/common/CatalogSearchView';
 import { CatalogNavigationItemView } from './CatalogNavigationItemView';
 import { CatalogNavigationSetView } from './CatalogNavigationSetView';
@@ -15,7 +14,7 @@ export interface CatalogNavigationViewProps
 export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
 {
     const { node = null } = props;
-    const { searchResult = null } = useCatalogContext();
+    const { searchResult = null } = useCatalog();
     
     return (
         <>

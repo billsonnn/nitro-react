@@ -1,11 +1,9 @@
 import { ApproveNameMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../../../api';
+import { IPurchasableOffer, LocalizeText, Offer, SendMessageComposer } from '../../../../../../api';
 import { Column, Flex, LayoutCurrencyIcon, Text } from '../../../../../../common';
 import { CatalogPurchasedEvent } from '../../../../../../events';
 import { UseUiEvent } from '../../../../../../hooks';
-import { IPurchasableOffer } from '../../../../common/IPurchasableOffer';
-import { Offer } from '../../../../common/Offer';
 import { CatalogPurchaseWidgetView } from '../../widgets/CatalogPurchaseWidgetView';
 import { CatalogPetNameApprovalView } from './CatalogPetNameApprovalView';
 

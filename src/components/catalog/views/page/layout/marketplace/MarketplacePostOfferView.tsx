@@ -3,14 +3,13 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { FurnitureItem, LocalizeText, NotificationUtilities, ProductTypeEnum, SendMessageComposer } from '../../../../../../api';
 import { Base, Button, Column, Grid, LayoutFurniImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../../common';
 import { CatalogPostMarketplaceOfferEvent } from '../../../../../../events';
-import { UseMessageEventHook, UseUiEvent } from '../../../../../../hooks';
-import { useCatalogContext } from '../../../../CatalogContext';
+import { useCatalog, UseMessageEventHook, UseUiEvent } from '../../../../../../hooks';
 
 export const MarketplacePostOfferView : FC<{}> = props =>
 {
     const [ item, setItem ] = useState<FurnitureItem>(null);
     const [ askingPrice, setAskingPrice ] = useState(0);
-    const { catalogOptions = null, setCatalogOptions = null } = useCatalogContext();
+    const { catalogOptions = null, setCatalogOptions = null } = useCatalog();
     const { marketplaceConfiguration = null } = catalogOptions;
 
     const onMarketplaceConfigurationEvent = useCallback((event: MarketplaceConfigurationEvent) =>

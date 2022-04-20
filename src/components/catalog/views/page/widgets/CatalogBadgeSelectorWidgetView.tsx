@@ -1,8 +1,7 @@
 import { StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { AutoGrid, AutoGridProps, LayoutBadgeImageView, LayoutGridItem } from '../../../../../common';
-import { useInventoryBadges } from '../../../../../hooks';
-import { useCatalogContext } from '../../../CatalogContext';
+import { useCatalog, useInventoryBadges } from '../../../../../hooks';
 
 const EXCLUDED_BADGE_CODES: string[] = [];
 
@@ -16,7 +15,7 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
     const { columnCount = 5, ...rest } = props;
     const [ isVisible, setIsVisible ] = useState(false);
     const [ currentBadgeCode, setCurrentBadgeCode ] = useState<string>(null);
-    const { currentOffer = null, setPurchaseOptions = null } = useCatalogContext();
+    const { currentOffer = null, setPurchaseOptions = null } = useCatalog();
     const { badgeCodes = [], activate = null, deactivate = null } = useInventoryBadges();
 
     const previewStuffData = useMemo(() =>

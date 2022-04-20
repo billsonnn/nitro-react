@@ -8,7 +8,7 @@ export interface IFurnitureItem
     stuffData: IObjectData;
     extra: number;
     category: number;
-    _Str_16260: boolean;
+    recyclable: boolean;
     isTradable: boolean;
     isGroupable: boolean;
     sellable: boolean;
