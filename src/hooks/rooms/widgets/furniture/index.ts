@@ -2,6 +2,7 @@ export * from './useFurnitureBackgroundColorWidget';
 export * from './useFurnitureBadgeDisplayWidget';
 export * from './useFurnitureExchangeWidget';
 export * from './useFurnitureExternalImageWidget';
+export * from './useFurnitureFriendFurniWidget';
 export * from './useFurnitureManipulationWidget';
 export * from './useFurnitureMannequinWidget';
 export * from './useFurniturePresentWidget';
