@@ -5,12 +5,14 @@ import { Base } from '../../common';
 import { UseRoomEngineEvent, UseRoomSessionManagerEvent } from '../../hooks';
 import { RoomColorView } from './RoomColorView';
 import { RoomContextProvider } from './RoomContext';
+import { RoomSpectatorView } from './spectator/RoomSpectatorView';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
 
 export const RoomView: FC<{}> = props =>
 {
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
     const [ widgetHandler, setWidgetHandler ] = useState<IRoomWidgetHandlerManager>(null);
+    const [ isSpectator, setIsSpectator ] = useState<boolean>(false);
     const elementRef = useRef<HTMLDivElement>();
 
     const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
@@ -143,6 +145,7 @@ export const RoomView: FC<{}> = props =>
         stage.addChild(displayObject);
 
         SetActiveRoomId(roomSession.roomId);
+        setIsSpectator(roomSession.isSpectator);
     }, [ roomSession, resize ]);
 
     useEffect(() =>
@@ -184,6 +187,7 @@ export const RoomView: FC<{}> = props =>
                     <>
                         <RoomColorView />
                         <RoomWidgetsView />
+                        { isSpectator && <RoomSpectatorView /> }
                     </> }
             </Base>
         </RoomContextProvider>
