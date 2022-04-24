@@ -12,7 +12,6 @@ export const RoomView: FC<{}> = props =>
 {
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
     const [ widgetHandler, setWidgetHandler ] = useState<IRoomWidgetHandlerManager>(null);
-    const [ isSpectator, setIsSpectator ] = useState<boolean>(false);
     const elementRef = useRef<HTMLDivElement>();
 
     const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
@@ -145,7 +144,6 @@ export const RoomView: FC<{}> = props =>
         stage.addChild(displayObject);
 
         SetActiveRoomId(roomSession.roomId);
-        setIsSpectator(roomSession.isSpectator);
     }, [ roomSession, resize ]);
 
     useEffect(() =>
@@ -187,7 +185,7 @@ export const RoomView: FC<{}> = props =>
                     <>
                         <RoomColorView />
                         <RoomWidgetsView />
-                        { isSpectator && <RoomSpectatorView /> }
+                        { roomSession.isSpectator && <RoomSpectatorView /> }
                     </> }
             </Base>
         </RoomContextProvider>
