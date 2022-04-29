@@ -1,6 +1,6 @@
-import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomObjectVariable, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFavoriteGroupUpdateEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPetStatusUpdateEvent, RoomSessionPollEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomSessionWordQuizEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
+import { RoomEngineEvent, RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomSessionChatEvent, RoomSessionDanceEvent, RoomSessionDimmerPresetsEvent, RoomSessionErrorMessageEvent, RoomSessionEvent, RoomSessionFavoriteGroupUpdateEvent, RoomSessionPetInfoUpdateEvent, RoomSessionPetStatusUpdateEvent, RoomSessionPollEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomSessionWordQuizEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { GetRoomEngine, GetSessionDataManager, LocalizeText, NotificationAlertType, NotificationUtilities, RoomWidgetFurniToWidgetMessage, RoomWidgetUpdateRoomEngineEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
+import { GetRoomEngine, LocalizeText, NotificationAlertType, NotificationUtilities, RoomWidgetFurniToWidgetMessage, RoomWidgetUpdateRoomEngineEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
 import { DispatchUiEvent, UseRoomEngineEvent, UseRoomSessionManagerEvent } from '../../../hooks';
 import { useRoomContext } from '../RoomContext';
 import { AvatarInfoWidgetView } from './avatar-info/AvatarInfoWidgetView';
@@ -73,9 +73,6 @@ export const RoomWidgetsView: FC<{}> = props =>
             case RoomEngineTriggerWidgetEvent.REQUEST_ECOTRONBOX:
                 widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_ECOTRONBOX, objectId, category, event.roomId));
                 break;
-            case RoomEngineTriggerWidgetEvent.REQUEST_DIMMER:
-                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_DIMMER, objectId, category, event.roomId));
-                break;
             case RoomEngineTriggerWidgetEvent.REQUEST_PLACEHOLDER:
                 widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_PLACEHOLDER, objectId, category, event.roomId));
                 break;
@@ -85,35 +82,12 @@ export const RoomWidgetsView: FC<{}> = props =>
             case RoomEngineTriggerWidgetEvent.REQUEST_PLAYLIST_EDITOR:
                 widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_PLAYLIST_EDITOR, objectId, category, event.roomId));
                 break;
-            case RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING:
-                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING, objectId, category, event.roomId));
-                break;
-            case RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING:
-                widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_BADGE_DISPLAY_ENGRAVING, objectId, category, event.roomId));
-                break;
-            case RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED: {
-                const roomObject = GetRoomEngine().getRoomObject(event.roomId, objectId, category);
-                const ownerId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_OWNER_ID);
-
-                if(ownerId === GetSessionDataManager().userId)
-                {
-                    widgetHandler.processWidgetMessage(new RoomWidgetFurniToWidgetMessage(RoomWidgetFurniToWidgetMessage.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED, objectId, category, event.roomId));
-                }
-                break;
-            }
             case RoomEngineTriggerWidgetEvent.OPEN_WIDGET:
             case RoomEngineTriggerWidgetEvent.CLOSE_WIDGET:
             case RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU:
             case RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU:
-            case RoomEngineTriggerWidgetEvent.REMOVE_DIMMER:
             case RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY:
             case RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM:
-            case RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR:
-            case RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING:
-            case RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY:
-            case RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY:
-            case RoomEngineTriggerWidgetEvent.REQUEST_INTERNAL_LINK:
-            case RoomEngineTriggerWidgetEvent.REQUEST_ROOM_LINK:
                 widgetHandler.processEvent(event);
                 break;
             case RoomEngineRoomAdEvent.FURNI_CLICK:
@@ -143,26 +117,15 @@ export const RoomWidgetsView: FC<{}> = props =>
 
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_TEASER, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ECOTRONBOX, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_DIMMER, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PLACEHOLDER, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_CLOTHING_CHANGE, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PLAYLIST_EDITOR, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_WIDGET, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_WIDGET, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REMOVE_DIMMER, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_INVENTORY, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineUseProductEvent.USE_PRODUCT_FROM_ROOM, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_INTERNAL_LINK, onRoomEngineObjectEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ROOM_LINK, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineRoomAdEvent.FURNI_CLICK, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineRoomAdEvent.FURNI_DOUBLE_CLICK, onRoomEngineObjectEvent);
     UseRoomEngineEvent(RoomEngineRoomAdEvent.TOOLTIP_SHOW, onRoomEngineObjectEvent);

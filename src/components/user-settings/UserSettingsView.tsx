@@ -124,7 +124,7 @@ export const UserSettingsView: FC<{}> = props =>
         DispatchUiEvent(userSettings);
     }, [ userSettings ]);
 
-    if(!isVisible) return null;
+    if(!isVisible || !userSettings) return null;
 
     return (
         <NitroCardView uniqueKey="user-settings" className="user-settings-window" theme="primary-slim">

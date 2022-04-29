@@ -2,11 +2,10 @@ import { NitroEvent } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { ColorUtils, GetConfiguration, LocalizeText, RoomWidgetDimmerChangeStateMessage, RoomWidgetDimmerPreviewMessage, RoomWidgetDimmerSavePresetMessage, RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateDimmerStateEvent } from '../../../../../api';
-import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../../common';
-import { UseEventDispatcherHook } from '../../../../../hooks';
-import { useRoomContext } from '../../../RoomContext';
-import { DimmerFurnitureWidgetPresetItem } from './DimmerFurnitureWidgetPresetItem';
+import { ColorUtils, DimmerFurnitureWidgetPresetItem, GetConfiguration, LocalizeText, RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateDimmerStateEvent } from '../../../../api';
+import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../common';
+import { UseEventDispatcherHook, useFurnitureDimmerWidget } from '../../../../hooks';
+import { useRoomContext } from '../../RoomContext';
 
 const AVAILABLE_COLORS: number[] = [ 7665141, 21495, 15161822, 15353138, 15923281, 8581961, 0 ];
 const HTML_COLORS: string[] = [ '#74F5F5', '#0053F7', '#E759DE', '#EA4532', '#F2F851', '#82F349', '#000000' ];
@@ -26,6 +25,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
     const [ selectedEffectId, setSelectedEffectId ] = useState(0);
     const [ selectedColor, setSelectedColor ] = useState(0);
     const [ selectedBrightness, setSelectedBrightness ] = useState(0);
+    const { savePreset = null, changeState = null, previewDimmer = null } = useFurnitureDimmerWidget();
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
 
     const onNitroEvent = useCallback((event: NitroEvent) =>
@@ -85,15 +85,12 @@ export const FurnitureDimmerView: FC<{}> = props =>
 
     const close = useCallback(() =>
     {
-        widgetHandler.processWidgetMessage(new RoomWidgetDimmerPreviewMessage(color, brightness, (effectId === 2)));
+        previewDimmer(color, brightness, (effectId === 2));
 
         setIsVisible(false);
-    }, [ widgetHandler, color, brightness, effectId ]);
+    }, [ color, brightness, effectId, previewDimmer ]);
 
-    const toggleState = useCallback(() =>
-    {
-        widgetHandler.processWidgetMessage(new RoomWidgetDimmerChangeStateMessage());
-    }, [ widgetHandler ]);
+    const toggleState = () => changeState();
 
     const applyChanges = useCallback(() =>
     {
@@ -116,8 +113,8 @@ export const FurnitureDimmerView: FC<{}> = props =>
             return newValue;
         });
 
-        widgetHandler.processWidgetMessage(new RoomWidgetDimmerSavePresetMessage(preset.id, selectedEffectId, selectedColor, selectedBrightness, true));
-    }, [ widgetHandler, dimmerState, selectedPresetId, presets, selectedEffectId, selectedColor, selectedBrightness ]);
+        savePreset(preset.id, selectedEffectId, selectedColor, selectedBrightness, true);
+    }, [ dimmerState, selectedPresetId, presets, selectedEffectId, selectedColor, selectedBrightness, savePreset ]);
 
     const scaledBrightness = useCallback((value: number) =>
     {
@@ -130,8 +127,8 @@ export const FurnitureDimmerView: FC<{}> = props =>
     {
         if((dimmerState === 0) && (lastDimmerState === 0)) return;
 
-        widgetHandler.processWidgetMessage(new RoomWidgetDimmerPreviewMessage(selectedColor, selectedBrightness, (selectedEffectId === 2)));
-    }, [ widgetHandler, dimmerState, lastDimmerState, selectedColor, selectedBrightness, selectedEffectId ]);
+        previewDimmer(selectedColor, selectedBrightness, (selectedEffectId === 2));
+    }, [ dimmerState, lastDimmerState, selectedColor, selectedBrightness, selectedEffectId, previewDimmer ]);
 
     if(!isVisible) return null;
 

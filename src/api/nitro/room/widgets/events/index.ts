@@ -25,7 +25,6 @@ export * from './RoomWidgetUpdateRoomObjectEvent';
 export * from './RoomWidgetUpdateSongEvent';
 export * from './RoomWidgetUpdateTrophyEvent';
 export * from './RoomWidgetUpdateUserDataEvent';
-export * from './RoomWidgetUpdateYoutubeDisplayEvent';
 export * from './RoomWidgetUseProductBubbleEvent';
 export * from './RoomWidgetWordQuizUpdateEvent';
 export * from './UseProductItem';

@@ -53,12 +53,12 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if(!parser.roomEnter) return;
+        if(!parser.roomEnter || (parser.data.roomId !== roomSession.roomId)) return;
 
         if(roomName !== parser.data.roomName) setRoomName(parser.data.roomName);
         if(roomOwner !== parser.data.ownerName) setRoomOwner(parser.data.ownerName);
         if(roomTags !== parser.data.tags) setRoomTags(parser.data.tags);
-    }, [ roomName, roomOwner, roomTags ]);
+    }, [ roomSession, roomName, roomOwner, roomTags ]);
 
     UseMessageEventHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
 

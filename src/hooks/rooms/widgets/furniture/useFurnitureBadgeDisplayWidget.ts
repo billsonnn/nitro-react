@@ -1,6 +1,6 @@
-import { RoomEngineTriggerWidgetEvent, StringDataType } from '@nitrots/nitro-renderer';
+import { RoomEngineTriggerWidgetEvent, RoomObjectVariable, StringDataType } from '@nitrots/nitro-renderer';
 import { useCallback, useState } from 'react';
-import { GetRoomEngine, LocalizeBadgeDescription, LocalizeBadgeName } from '../../../../api';
+import { GetRoomEngine, GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText, NotificationUtilities } from '../../../../api';
 import { UseRoomEngineEvent } from '../../../events';
 import { useFurniRemovedEvent } from '../../useFurniRemovedEvent';
 
@@ -44,8 +44,21 @@ const useFurnitureBadgeDisplayWidgetState = () =>
         setSenderName(stringStuff.getValue(3));
     }, []);
 
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING, onRoomEngineTriggerWidgetEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING, onRoomEngineTriggerWidgetEvent);
+    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING, onRoomEngineTriggerWidgetEvent);
+    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING, onRoomEngineTriggerWidgetEvent);
+
+    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED, event =>
+    {
+        const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
+
+        if(!roomObject) return;
+
+        const ownerId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_OWNER_ID);
+
+        if(ownerId !== GetSessionDataManager().userId) return;
+        
+        NotificationUtilities.simpleAlert(`${ LocalizeText('resolution.failed.subtitle') } ${ LocalizeText('resolution.failed.text') }`, null, null, null, LocalizeText('resolution.failed.title'));
+    });
 
     useFurniRemovedEvent(((objectId !== -1) && (category !== -1)), event =>
     {

@@ -1,7 +1,7 @@
 import { EventDispatcher, IRoomSession, RoomEngineEvent, RoomGeometry, RoomId, RoomSessionEvent, RoomVariableEnum, Vector3d } from '@nitrots/nitro-renderer';
 import { useCallback, useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { FurnitureContextMenuWidgetHandler, FurnitureDimmerWidgetHandler, FurnitureInternalLinkHandler, FurnitureRoomLinkHandler, FurnitureYoutubeDisplayWidgetHandler, GetNitroInstance, GetRoomEngine, GetRoomSession, InitializeRoomInstanceRenderingCanvas, IRoomWidgetHandlerManager, PollWidgetHandler, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler, SetActiveRoomId, StartRoomSession, WordQuizWidgetHandler } from '../../api';
+import { FurnitureContextMenuWidgetHandler, GetNitroInstance, GetRoomEngine, GetRoomSession, InitializeRoomInstanceRenderingCanvas, IRoomWidgetHandlerManager, PollWidgetHandler, RoomWidgetAvatarInfoHandler, RoomWidgetChatHandler, RoomWidgetChatInputHandler, RoomWidgetHandlerManager, RoomWidgetInfostandHandler, SetActiveRoomId, StartRoomSession, WordQuizWidgetHandler } from '../../api';
 import { UseRoomEngineEvent, UseRoomSessionManagerEvent } from '../events';
 
 const useRoomState = () =>
@@ -85,10 +85,6 @@ const useRoomState = () =>
         widgetHandlerManager.registerHandler(new WordQuizWidgetHandler());
         widgetHandlerManager.registerHandler(new PollWidgetHandler());
         widgetHandlerManager.registerHandler(new FurnitureContextMenuWidgetHandler());
-        widgetHandlerManager.registerHandler(new FurnitureDimmerWidgetHandler());
-        widgetHandlerManager.registerHandler(new FurnitureYoutubeDisplayWidgetHandler());
-        widgetHandlerManager.registerHandler(new FurnitureInternalLinkHandler());
-        widgetHandlerManager.registerHandler(new FurnitureRoomLinkHandler());
 
         setWidgetHandler(widgetHandlerManager);
 
