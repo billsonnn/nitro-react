@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, WiredFurniType, WiredSelectionVisualizer } from '../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { useWiredContext } from '../WiredContext';
@@ -13,7 +13,7 @@ export interface WiredBaseViewProps
     validate?: () => boolean;
 }
 
-export const WiredBaseView: FC<WiredBaseViewProps> = props =>
+export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
 {
     const { wiredType = '', requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, validate = null, children = null, hasSpecialInput = false } = props;
     const [ wiredName, setWiredName ] = useState<string>(null);

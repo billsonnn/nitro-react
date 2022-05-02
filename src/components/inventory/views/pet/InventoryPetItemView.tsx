@@ -1,10 +1,10 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, useState } from 'react';
+import { FC, MouseEvent, PropsWithChildren, useState } from 'react';
 import { attemptPetPlacement, IPetItem, UnseenItemCategory } from '../../../../api';
 import { LayoutGridItem, LayoutPetImageView } from '../../../../common';
 import { useInventoryPets, useInventoryUnseenTracker } from '../../../../hooks';
 
-export const InventoryPetItemView: FC<{ petItem: IPetItem }> = props =>
+export const InventoryPetItemView: FC<PropsWithChildren<{ petItem: IPetItem }>> = props =>
 {
     const { petItem = null, children = null, ...rest } = props;
     const [ isMouseDown, setMouseDown ] = useState(false);

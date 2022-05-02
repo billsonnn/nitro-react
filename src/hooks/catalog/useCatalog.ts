@@ -880,7 +880,7 @@ const useCatalogState = () =>
         switch(requestedPage.current.requestType)
         {
             case RequestedPage.REQUEST_TYPE_NONE:
-                if(activeNodes && activeNodes.length) return;
+                if(currentPage) return;
 
                 if(rootNode.isBranch)
                 {
@@ -908,7 +908,7 @@ const useCatalogState = () =>
                 requestedPage.current.resetRequest();
                 return;
         }
-    }, [ isVisible, rootNode, activeNodes, activateNode, openPageById, openPageByOfferId, openPageByName ]);
+    }, [ isVisible, rootNode, currentPage, activateNode, openPageById, openPageByOfferId, openPageByName ]);
 
     useEffect(() =>
     {

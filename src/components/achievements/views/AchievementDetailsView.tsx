@@ -1,5 +1,5 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { GetAchievementBadgeCode, GetAchievementLevel, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
 import { Column, Flex, LayoutCurrencyIcon, LayoutProgressBar, Text } from '../../../common';
 import { AchievementBadgeView } from './AchievementBadgeView';
@@ -9,7 +9,7 @@ interface AchievementDetailsViewProps
     achievement: AchievementData;
 }
 
-export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
+export const AchievementDetailsView: FC<PropsWithChildren<AchievementDetailsViewProps>> = props =>
 {
     const { achievement = null, children = null, ...rest } = props;
 

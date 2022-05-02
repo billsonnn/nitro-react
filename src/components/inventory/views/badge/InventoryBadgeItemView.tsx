@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { UnseenItemCategory } from '../../../../api';
 import { LayoutBadgeImageView, LayoutGridItem } from '../../../../common';
 import { useInventoryBadges, useInventoryUnseenTracker } from '../../../../hooks';
 
-export const InventoryBadgeItemView: FC<{ badgeCode: string }> = props =>
+export const InventoryBadgeItemView: FC<PropsWithChildren<{ badgeCode: string }>> = props =>
 {
     const { badgeCode = null, children = null, ...rest } = props;
     const { selectedBadgeCode = null, setSelectedBadgeCode = null, getBadgeId = null } = useInventoryBadges();

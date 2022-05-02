@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction } from 'react';
+import { Dispatch, FC, PropsWithChildren, SetStateAction } from 'react';
 import { IAchievementCategory } from '../../../../api';
 import { AutoGrid } from '../../../../common';
 import { AchievementsCategoryListItemView } from './AchievementsCategoryListItemView';
@@ -10,7 +10,7 @@ interface AchievementsCategoryListViewProps
     setSelectedCategoryCode: Dispatch<SetStateAction<string>>;
 }
 
-export const AchievementsCategoryListView: FC<AchievementsCategoryListViewProps> = props =>
+export const AchievementsCategoryListView: FC<PropsWithChildren<AchievementsCategoryListViewProps>> = props =>
 {
     const { categories = null, selectedCategoryCode = null, setSelectedCategoryCode = null, children = null, ...rest } = props;
     

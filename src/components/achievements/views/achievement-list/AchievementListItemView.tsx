@@ -1,5 +1,5 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
-import { Dispatch, FC, SetStateAction } from 'react';
+import { Dispatch, FC, PropsWithChildren, SetStateAction } from 'react';
 import { LayoutGridItem } from '../../../../common';
 import { AchievementBadgeView } from '../AchievementBadgeView';
 
@@ -10,7 +10,7 @@ interface AchievementListItemViewProps
     setSelectedAchievementId: Dispatch<SetStateAction<number>>;
 }
 
-export const AchievementListItemView: FC<AchievementListItemViewProps> = props =>
+export const AchievementListItemView: FC<PropsWithChildren<AchievementListItemViewProps>> = props =>
 {
     const { achievement = null, selectedAchievementId = -1, setSelectedAchievementId = null, children = null, ...rest } = props;
 

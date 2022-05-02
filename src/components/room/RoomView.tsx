@@ -4,6 +4,7 @@ import { Base } from '../../common';
 import { useRoom } from '../../hooks';
 import { RoomColorView } from './RoomColorView';
 import { RoomContextProvider } from './RoomContext';
+import { RoomSpectatorView } from './spectator/RoomSpectatorView';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
 
 export const RoomView: FC<{}> = props =>
@@ -50,6 +51,7 @@ export const RoomView: FC<{}> = props =>
                     <>
                         <RoomColorView />
                         <RoomWidgetsView />
+                        { roomSession.isSpectator && <RoomSpectatorView /> }
                     </> }
             </Base>
         </RoomContextProvider>
