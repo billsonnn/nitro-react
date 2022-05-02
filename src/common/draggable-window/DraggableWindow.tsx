@@ -1,5 +1,5 @@
 import { MouseEventType, TouchEventType } from '@nitrots/nitro-renderer';
-import { CSSProperties, FC, Key, MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { CSSProperties, FC, Key, MouseEvent as ReactMouseEvent, ReactNode, TouchEvent as ReactTouchEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Base } from '..';
 import { DraggableWindowPosition } from './DraggableWindowPosition';
@@ -18,6 +18,7 @@ export interface DraggableWindowProps
     dragStyle?: CSSProperties;
     offsetLeft?: number;
     offsetTop?: number;
+    children?: ReactNode;
 }
 
 export const DraggableWindow: FC<DraggableWindowProps> = props =>

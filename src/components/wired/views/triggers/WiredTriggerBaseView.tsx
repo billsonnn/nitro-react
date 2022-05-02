@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { WiredFurniType } from '../../../../api';
 import { WiredBaseView } from '../WiredBaseView';
 
@@ -9,7 +9,7 @@ export interface WiredTriggerBaseViewProps
     save: () => void;
 }
 
-export const WiredTriggerBaseView: FC<WiredTriggerBaseViewProps> = props =>
+export const WiredTriggerBaseView: FC<PropsWithChildren<WiredTriggerBaseViewProps>> = props =>
 {
     const { requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, hasSpecialInput = false, children = null } = props;
     

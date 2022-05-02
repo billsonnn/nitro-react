@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { Transition } from 'react-transition-group';
 import { getTransitionAnimationStyle } from './TransitionAnimationStyles';
 
@@ -8,6 +8,7 @@ interface TransitionAnimationProps
     inProp: boolean;
     timeout?: number;
     className?: string;
+    children?: ReactNode;
 }
 
 export const TransitionAnimation: FC<TransitionAnimationProps> = props =>
