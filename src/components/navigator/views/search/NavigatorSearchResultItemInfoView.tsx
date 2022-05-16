@@ -43,7 +43,7 @@ export const NavigatorSearchResultItemInfoView: FC<NavigatorSearchResultItemInfo
             <Base pointer innerRef={ elementRef } className="icon icon-navigator-info" onMouseOver={ event => setIsVisible(true) } onMouseLeave={ event => setIsVisible(false) } />
             <Overlay show={ isVisible } target={ elementRef.current } placement="right">
                 <Popover>
-                    <NitroCardContentView overflow="hidden" className="room-info bg-transparent">
+                    <NitroCardContentView overflow="hidden" className="room-info image-rendering-pixelated bg-transparent">
                         <Flex gap={ 2 } overflow="hidden">
                             <LayoutRoomThumbnailView roomId={ roomData.roomId } customUrl={ roomData.officialRoomPicRef } className="d-flex flex-column align-items-center justify-content-end mb-1">
                                 { roomData.habboGroupId > 0 && (
