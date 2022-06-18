@@ -16,14 +16,14 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
     const [ categoryId, setCategoryId ] = useState<number>(1);
     const [ categories, setCategories ] = useState<INavigatorCategory[]>(null);
 
-    const onRoomAdPurchaseInfoEvent = useCallback((event: RoomAdPurchaseInfoEvent) =>
+    const onRoomAdPurchaseInfoEvent = (event: RoomAdPurchaseInfoEvent) =>
     {
         const parser = event.getParser();
 
         if(!parser) return;
 
         setAvailableRooms(parser.rooms);
-    }, []);
+    }
 
     UseMessageEventHook(RoomAdPurchaseInfoEvent, onRoomAdPurchaseInfoEvent);
 
