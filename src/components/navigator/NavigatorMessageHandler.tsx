@@ -30,7 +30,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
 
         NotificationUtilities.simpleAlert(LocalizeText(`navigator.cannotcreateevent.error.${ parser.errorCode }`), null, null, null, LocalizeText('navigator.cannotcreateevent.title'));
     }, []);
-    
+
     UseMessageEventHook(CanCreateRoomEventEvent, onCanCreateRoomEventEvent);
 
     const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
@@ -92,7 +92,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         if(parser.roomEnter)
         {
             setDoorData({ roomInfo: null, state: DoorStateType.NONE });
-            
+
             setNavigatorData(prevValue =>
             {
                 const newValue = { ...prevValue };
@@ -242,9 +242,9 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                 setDoorData(prevValue =>
                 {
                     const newValue = { ...prevValue };
-    
+
                     newValue.state = DoorStateType.STATE_WRONG_PASSWORD;
-    
+
                     return newValue;
                 });
                 return;
