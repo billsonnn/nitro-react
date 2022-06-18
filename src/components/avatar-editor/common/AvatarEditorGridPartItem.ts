@@ -5,8 +5,8 @@ import { FigureData } from './FigureData';
 export class AvatarEditorGridPartItem implements IAvatarImageListener
 {
     private static ALPHA_FILTER: NitroAlphaFilter = new NitroAlphaFilter(0.2);
-    private static THUMB_DIRECTIONS: number[]   = [2, 6, 0, 4, 3, 1];
-    private static DRAW_ORDER: string[]         = [
+    private static THUMB_DIRECTIONS: number[] = [ 2, 6, 0, 4, 3, 1 ];
+    private static DRAW_ORDER: string[] = [
         AvatarFigurePartType.LEFT_HAND_ITEM,
         AvatarFigurePartType.LEFT_HAND,
         AvatarFigurePartType.LEFT_SLEEVE,
@@ -201,13 +201,13 @@ export class AvatarEditorGridPartItem implements IAvatarImageListener
 
         if(this._partSet)
         {
-            this._isHC          = (this._partSet.clubLevel > 0);
-            this._isSellable    = this._partSet.isSellable;
+            this._isHC = (this._partSet.clubLevel > 0);
+            this._isSellable = this._partSet.isSellable;
         }
         else
         {
-            this._isHC          = false;
-            this._isSellable    = false;
+            this._isHC = false;
+            this._isSellable = false;
         }
 
         if(this._isDisabled) this.setAlpha(container, 0.2);

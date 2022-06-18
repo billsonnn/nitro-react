@@ -43,7 +43,7 @@ export class FurnitureInternalLinkHandler extends RoomWidgetHandler
 
     public get eventTypes(): string[]
     {
-        return [RoomEngineTriggerWidgetEvent.REQUEST_INTERNAL_LINK];
+        return [ RoomEngineTriggerWidgetEvent.REQUEST_INTERNAL_LINK ];
     }
 
     public get messageTypes(): string[]

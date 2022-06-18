@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
 
@@ -13,20 +12,14 @@ export const WiredTriggerAvatarSaysSomethingView: FC<{}> = props =>
 
     const save = () =>
     {
-        BatchUpdates(() =>
-        {
-            setStringParam(message);
-            setIntParams([ triggererAvatar ]);
-        });
+        setStringParam(message);
+        setIntParams([ triggererAvatar ]);
     }
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setMessage(trigger.stringData);
-            setTriggererAvatar((trigger.intData.length > 0) ? trigger.intData[0] : 0);
-        });
+        setMessage(trigger.stringData);
+        setTriggererAvatar((trigger.intData.length > 0) ? trigger.intData[0] : 0);
     }, [ trigger ]);
     
     return (

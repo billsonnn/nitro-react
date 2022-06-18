@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { LayoutImage, LayoutImageProps } from '.';
-import { GetRoomEngine } from '../../api';
-import { ProductTypeEnum } from '../../components/catalog/common/ProductTypeEnum';
+import { GetRoomEngine, ProductTypeEnum } from '../../api';
 
 interface LayoutFurniIconImageViewProps extends LayoutImageProps
 {
@@ -31,5 +30,5 @@ export const LayoutFurniIconImageView: FC<LayoutFurniIconImageViewProps> = props
         return imageUrl;
     }
 
-    return <LayoutImage imageUrl={ getImageIconUrl() } className='furni-image' { ...rest } />;
+    return <LayoutImage imageUrl={ getImageIconUrl() } className="furni-image" { ...rest } />;
 }

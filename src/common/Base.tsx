@@ -1,4 +1,4 @@
-import { CSSProperties, DetailedHTMLProps, FC, HTMLAttributes, MutableRefObject, useMemo } from 'react';
+import { CSSProperties, DetailedHTMLProps, FC, HTMLAttributes, MutableRefObject, ReactNode, useMemo } from 'react';
 import { ColorVariantType, DisplayType, FloatType, OverflowType, PositionType } from './types';
 
 export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttributes<T>, T>
@@ -17,11 +17,12 @@ export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttrib
     visible?: boolean;
     textColor?: ColorVariantType;
     classNames?: string[];
+    children?: ReactNode;
 }
 
 export const Base: FC<BaseProps<HTMLDivElement>> = props =>
 {
-    const { ref = null, innerRef = null, display = null, fit = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, float = null, pointer = false, visible = null, textColor = null, classNames = [], className = '', style = {}, ...rest } = props;
+    const { ref = null, innerRef = null, display = null, fit = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, float = null, pointer = false, visible = null, textColor = null, classNames = [], className = '', style = {}, children = null, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -72,5 +73,9 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
         return newStyle;
     }, [ style ]);
     
-    return <div ref={ innerRef } className={ getClassName } style={ getStyle } { ...rest } />;
+    return (
+        <div ref={ innerRef } className={ getClassName } style={ getStyle } { ...rest }>
+            { children }
+        </div>
+    );
 }

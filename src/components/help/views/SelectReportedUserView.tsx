@@ -17,15 +17,15 @@ export const SelectReportedUserView: FC<{}> = props =>
         const users: Map<number, IReportedUser> = new Map();
 
         GetChatHistory().chats.forEach(chat =>
+        {
+            if((chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityType === RoomObjectType.USER) && (chat.entityId !== GetSessionDataManager().userId))
             {
-                if((chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityType === RoomObjectType.USER) && (chat.entityId !== GetSessionDataManager().userId))
+                if(!users.has(chat.entityId))
                 {
-                    if(!users.has(chat.entityId))
-                    {
-                        users.set(chat.entityId, { id: chat.entityId, username: chat.name })
-                    }
+                    users.set(chat.entityId, { id: chat.entityId, username: chat.name })
                 }
-            });
+            }
+        });
 
         return Array.from(users.values());
     }, []);
@@ -35,12 +35,12 @@ export const SelectReportedUserView: FC<{}> = props =>
         if(selectedUserId <= 0) return;
 
         setHelpReportState(prevValue =>
-            {
-                const reportedUserId = selectedUserId;
-                const currentStep = 2;
+        {
+            const reportedUserId = selectedUserId;
+            const currentStep = 2;
 
-                return { ...prevValue, reportedUserId, currentStep };
-            });
+            return { ...prevValue, reportedUserId, currentStep };
+        });
     }
 
     const selectUser = (userId: number) =>
@@ -52,11 +52,11 @@ export const SelectReportedUserView: FC<{}> = props =>
     const back = () =>
     {
         setHelpReportState(prevValue =>
-            {
-                const currentStep = (prevValue.currentStep - 1);
+        {
+            const currentStep = (prevValue.currentStep - 1);
 
-                return { ...prevValue, currentStep };
-            });
+            return { ...prevValue, currentStep };
+        });
     }
 
     return (
@@ -72,13 +72,13 @@ export const SelectReportedUserView: FC<{}> = props =>
                 { (availableUsers.length > 0) &&
                     <AutoGrid columnCount={ 1 } columnMinHeight={ 25 } gap={ 1 }>
                         { availableUsers.map((user, index) =>
-                            {
-                                return (
-                                    <LayoutGridItem key={ user.id } onClick={ event => selectUser(user.id) } itemActive={ (selectedUserId === user.id) }>
-                                        <span dangerouslySetInnerHTML={{ __html: (user.username) }} />
-                                    </LayoutGridItem>
-                                );
-                            }) }
+                        {
+                            return (
+                                <LayoutGridItem key={ user.id } onClick={ event => selectUser(user.id) } itemActive={ (selectedUserId === user.id) }>
+                                    <span dangerouslySetInnerHTML={ { __html: (user.username) } } />
+                                </LayoutGridItem>
+                            );
+                        }) }
                     </AutoGrid> }
             </Column>
             <Flex gap={ 2 } justifyContent="between">

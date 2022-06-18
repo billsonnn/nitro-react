@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { MessengerFriend } from '../../../common/MessengerFriend';
+import { MessengerFriend } from '../../../../../api';
 import { FriendsListGroupItemView } from './FriendsListGroupItemView';
 
 interface FriendsListGroupViewProps
@@ -17,8 +17,7 @@ export const FriendsListGroupView: FC<FriendsListGroupViewProps> = props =>
 
     return (
         <>
-            { list.map((item, index) => <FriendsListGroupItemView key={ index } friend={ item } selected={ selectedFriendsIds && selectedFriendsIds.includes(item.id) } selectFriend={ () => selectFriend(item.id) } />) }
-        </>
-        
+            { list.map((item, index) => <FriendsListGroupItemView key={ index } friend={ item } selected={ selectedFriendsIds && (selectedFriendsIds.indexOf(item.id) >= 0) } selectFriend={ selectFriend } />) }
+        </>  
     );
 }

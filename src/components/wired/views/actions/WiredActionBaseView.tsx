@@ -1,5 +1,5 @@
 import { WiredActionDefinition } from '@nitrots/nitro-renderer';
-import { FC, useEffect } from 'react';
+import { FC, PropsWithChildren, useEffect } from 'react';
 import ReactSlider from 'react-slider';
 import { GetWiredTimeLocale, LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Text } from '../../../../common';
@@ -13,7 +13,7 @@ export interface WiredActionBaseViewProps
     save: () => void;
 }
 
-export const WiredActionBaseView: FC<WiredActionBaseViewProps> = props =>
+export const WiredActionBaseView: FC<PropsWithChildren<WiredActionBaseViewProps>> = props =>
 {
     const { requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, hasSpecialInput = false, children = null } = props;
     const { trigger = null, actionDelay = 0, setActionDelay = null } = useWiredContext();

@@ -1,9 +1,9 @@
 import { FC, useEffect } from 'react';
-import { useCatalogContext } from '../../../CatalogContext';
+import { useCatalog } from '../../../../../hooks';
 
 export const CatalogFirstProductSelectorWidgetView: FC<{}> = props =>
 {
-    const { currentPage = null, setCurrentOffer = null } = useCatalogContext();
+    const { currentPage = null, setCurrentOffer = null } = useCatalog();
 
     useEffect(() =>
     {

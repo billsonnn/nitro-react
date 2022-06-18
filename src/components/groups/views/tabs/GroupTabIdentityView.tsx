@@ -2,7 +2,6 @@ import { GroupDeleteComposer, GroupSaveInformationComposer } from '@nitrots/nitr
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../api';
 import { Base, Button, Column, Flex, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { IGroupData } from '../../common/IGroupData';
 
 interface GroupTabIdentityViewProps
@@ -10,13 +9,14 @@ interface GroupTabIdentityViewProps
     groupData: IGroupData;
     setGroupData: Dispatch<SetStateAction<IGroupData>>;
     setCloseAction: Dispatch<SetStateAction<{ action: () => boolean }>>;
+    close: () => void;
     isCreator?: boolean;
     availableRooms?: { id: number, name: string }[];
 }
 
 export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
 {
-    const { groupData = null, setGroupData = null, setCloseAction = null, isCreator = false, availableRooms = [] } = props;
+    const { groupData = null, setGroupData = null, setCloseAction = null, close = null, isCreator = false, availableRooms = [] } = props;
     const [ groupName, setGroupName ] = useState<string>('');
     const [ groupDescription, setGroupDescription ] = useState<string>('');
     const [ groupHomeroomId, setGroupHomeroomId ] = useState<number>(-1);
@@ -26,9 +26,11 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
         if(!groupData || (groupData.groupId <= 0)) return;
 
         NotificationUtilities.confirm(LocalizeText('group.deleteconfirm.desc'), () =>
-            {
-                SendMessageComposer(new GroupDeleteComposer(groupData.groupId));
-            }, null, null, null, LocalizeText('group.deleteconfirm.title'));
+        {
+            SendMessageComposer(new GroupDeleteComposer(groupData.groupId));
+                
+            if(close) close();
+        }, null, null, null, LocalizeText('group.deleteconfirm.title'));
     }
 
     const saveIdentity = useCallback(() =>
@@ -42,15 +44,15 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
             if(groupHomeroomId <= 0) return false;
 
             setGroupData(prevValue =>
-                {
-                    const newValue = { ...prevValue };
+            {
+                const newValue = { ...prevValue };
 
-                    newValue.groupName = groupName;
-                    newValue.groupDescription = groupDescription;
-                    newValue.groupHomeroomId = groupHomeroomId;
+                newValue.groupName = groupName;
+                newValue.groupDescription = groupDescription;
+                newValue.groupHomeroomId = groupHomeroomId;
 
-                    return newValue;
-                });
+                return newValue;
+            });
 
             return true;
         }
@@ -62,12 +64,9 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setGroupName(groupData.groupName || '');
-            setGroupDescription(groupData.groupDescription || '');
-            setGroupHomeroomId(groupData.groupHomeroomId);
-        });
+        setGroupName(groupData.groupName || '');
+        setGroupDescription(groupData.groupDescription || '');
+        setGroupHomeroomId(groupData.groupHomeroomId);
     }, [ groupData ]);
 
     useEffect(() =>

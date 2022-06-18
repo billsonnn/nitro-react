@@ -63,11 +63,11 @@ export class PollWidgetHandler extends RoomWidgetHandler
 
     public get eventTypes(): string[]
     {
-        return [RoomSessionPollEvent.OFFER, RoomSessionPollEvent.ERROR, RoomSessionPollEvent.CONTENT];
+        return [ RoomSessionPollEvent.OFFER, RoomSessionPollEvent.ERROR, RoomSessionPollEvent.CONTENT ];
     }
 
     public get messageTypes(): string[]
     {
-        return [RoomWidgetPollMessage.ANSWER, RoomWidgetPollMessage.REJECT, RoomWidgetPollMessage.START];
+        return [ RoomWidgetPollMessage.ANSWER, RoomWidgetPollMessage.REJECT, RoomWidgetPollMessage.START ];
     }
 }

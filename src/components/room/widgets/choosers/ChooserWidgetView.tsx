@@ -36,7 +36,7 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
         setSelectedItem(item);
 
         widgetHandler.processWidgetMessage(new RoomWidgetRoomObjectMessage(RoomWidgetRoomObjectMessage.SELECT_OBJECT, item.id, item.category));
-    }, [ widgetHandler, setSelectedItem]);
+    }, [ widgetHandler, setSelectedItem ]);
 
     const rowRenderer: ListRowRenderer = (props: ListRowProps) =>
     {
@@ -53,18 +53,18 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
         <NitroCardView className="nitro-chooser-widget" theme="primary-slim">
             <NitroCardHeaderView headerText={ title } onCloseClick={ onCloseClick } />
             <NitroCardContentView overflow="hidden">
-                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={searchValue} onChange={event => setSearchValue(event.target.value)} />
+                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
                 <Column fullHeight overflow="auto">
                     <AutoSizer defaultWidth={ 0 } defaultHeight={ 0 }>
                         { ({ width, height }) => 
-                            {
-                                return (<List
-                                    width={ width }
-                                    height={ height }
-                                    rowCount={ filteredItems.length }
-                                    rowHeight={ 20 }
-                                    rowRenderer={ rowRenderer } />)
-                            } }
+                        {
+                            return (<List
+                                width={ width }
+                                height={ height }
+                                rowCount={ filteredItems.length }
+                                rowHeight={ 20 }
+                                rowRenderer={ rowRenderer } />)
+                        } }
                     </AutoSizer>
                 </Column>
             </NitroCardContentView>

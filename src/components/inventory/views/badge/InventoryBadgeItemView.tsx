@@ -1,34 +1,19 @@
-import { MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent } from 'react';
+import { FC, PropsWithChildren } from 'react';
+import { UnseenItemCategory } from '../../../../api';
 import { LayoutBadgeImageView, LayoutGridItem } from '../../../../common';
-import { useInventoryContext } from '../../InventoryContext';
-import { InventoryBadgeActions } from '../../reducers/InventoryBadgeReducer';
+import { useInventoryBadges, useInventoryUnseenTracker } from '../../../../hooks';
 
-export interface InventoryBadgeItemViewProps
+export const InventoryBadgeItemView: FC<PropsWithChildren<{ badgeCode: string }>> = props =>
 {
-    badgeCode: string;
-}
-
-export const InventoryBadgeItemView: FC<InventoryBadgeItemViewProps> = props =>
-{
-    const { badgeCode = null } = props;
-    const { badgeState = null, dispatchBadgeState = null } = useInventoryContext();
-
-    const onMouseEvent = (event: MouseEvent) =>
-    {
-        switch(event.type)
-        {
-            case MouseEventType.MOUSE_DOWN:
-                dispatchBadgeState({
-                    type: InventoryBadgeActions.SET_BADGE,
-                    payload: { badgeCode }
-                });
-        }
-    }
+    const { badgeCode = null, children = null, ...rest } = props;
+    const { selectedBadgeCode = null, setSelectedBadgeCode = null, getBadgeId = null } = useInventoryBadges();
+    const { isUnseen = null } = useInventoryUnseenTracker();
+    const unseen = isUnseen(UnseenItemCategory.BADGE, getBadgeId(badgeCode));
 
     return (
-        <LayoutGridItem itemActive={ (badgeState.badge === badgeCode) } onMouseDown={ onMouseEvent }> 
+        <LayoutGridItem itemActive={ (selectedBadgeCode === badgeCode) } itemUnseen={ unseen } onMouseDown={ event => setSelectedBadgeCode(badgeCode) } { ...rest }> 
             <LayoutBadgeImageView badgeCode={ badgeCode } />
+            { children }
         </LayoutGridItem>
     );
 }

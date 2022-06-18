@@ -3,7 +3,7 @@ import { CrackableDataType, GroupInformationComposer, GroupInformationEvent, Roo
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, RoomWidgetFurniActionMessage, RoomWidgetUpdateInfostandFurniEvent, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, LayoutBadgeImageView, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, Text, UserProfileIconView } from '../../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
+import { UseMessageEventHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 
 interface InfoStandWidgetFurniViewProps
@@ -129,23 +129,20 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
         if(furniData.isStickie) pickupMode = PICKUP_MODE_NONE;
 
-        BatchUpdates(() =>
-        {
-            setPickupMode(pickupMode);
-            setCanMove(canMove);
-            setCanRotate(canRotate);
-            setCanUse(canUse);
-            setFurniKeys(furniKeyss);
-            setFurniValues(furniValuess);
-            setCustomKeys(customKeyss);
-            setCustomValues(customValuess);
-            setIsCrackable(isCrackable);
-            setCrackableHits(crackableHits);
-            setCrackableTarget(crackableTarget);
-            setGodMode(godMode);
-            setCanSeeFurniId(canSeeFurniId);
-            setGroupName(null);
-        });
+        setPickupMode(pickupMode);
+        setCanMove(canMove);
+        setCanRotate(canRotate);
+        setCanUse(canUse);
+        setFurniKeys(furniKeyss);
+        setFurniValues(furniValuess);
+        setCustomKeys(customKeyss);
+        setCustomValues(customValuess);
+        setIsCrackable(isCrackable);
+        setCrackableHits(crackableHits);
+        setCrackableTarget(crackableTarget);
+        setGodMode(godMode);
+        setCanSeeFurniId(canSeeFurniId);
+        setGroupName(null);
         
         if(furniData.groupId) SendMessageComposer(new GroupInformationComposer(furniData.groupId, false));
     }, [ roomSession, furniData ]);
@@ -191,7 +188,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
         while(i < furniKeys.length)
         {
-            const key   = furniKeys[i];
+            const key = furniKeys[i];
             const value = furniValues[i];
 
             data = (data + (key + '=' + value + '\t'));
@@ -207,7 +204,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         if(!action || (action === '')) return;
 
         let messageType: string = null;
-        let objectData: string  = null;
+        let objectData: string = null;
 
         switch(action)
         {
@@ -329,13 +326,13 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                                         <hr className="m-0"/>
                                         <Column gap={ 1 }>
                                             { furniKeys.map((key, index) =>
-                                                {
-                                                    return (
-                                                        <Flex key={ index } alignItems="center" gap={ 1 }>
-                                                            <Text small wrap align="end" variant="white" className="col-4">{ key }</Text>
-                                                            <input type="text" className="form-control form-control-sm" value={ furniValues[index] } onChange={ event => onFurniSettingChange(index, event.target.value) }/>
-                                                        </Flex>);
-                                                }) }
+                                            {
+                                                return (
+                                                    <Flex key={ index } alignItems="center" gap={ 1 }>
+                                                        <Text small wrap align="end" variant="white" className="col-4">{ key }</Text>
+                                                        <input type="text" className="form-control form-control-sm" value={ furniValues[index] } onChange={ event => onFurniSettingChange(index, event.target.value) }/>
+                                                    </Flex>);
+                                            }) }
                                         </Column>
                                     </> }
                             </> }
@@ -344,13 +341,13 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                                 <hr className="m-0 my-1"/>
                                 <Column gap={ 1 }>
                                     { customKeys.map((key, index) =>
-                                        {
-                                            return (
-                                                <Flex key={ index } alignItems="center" gap={ 1 }>
-                                                    <Text small wrap align="end" variant="white" className="col-4">{ key }</Text>
-                                                    <input type="text" className="form-control form-control-sm" value={ customValues[index] } onChange={ event => onCustomVariableChange(index, event.target.value) }/>
-                                                </Flex>);
-                                        }) }
+                                    {
+                                        return (
+                                            <Flex key={ index } alignItems="center" gap={ 1 }>
+                                                <Text small wrap align="end" variant="white" className="col-4">{ key }</Text>
+                                                <input type="text" className="form-control form-control-sm" value={ customValues[index] } onChange={ event => onCustomVariableChange(index, event.target.value) }/>
+                                            </Flex>);
+                                    }) }
                                 </Column>
                             </> }
                     </Column>
@@ -372,7 +369,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                 { canUse &&
                     <Button variant="dark" onClick={ event => processButtonAction('use') }>
                         { LocalizeText('infostand.button.use') }
-                    </Button>}
+                    </Button> }
                 { ((furniKeys.length > 0 && furniValues.length > 0) && (furniKeys.length === furniValues.length)) &&
                     <Button variant="dark" onClick={ () => processButtonAction('save_branding_configuration') }>
                         { LocalizeText('save') }

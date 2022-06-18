@@ -1,4 +1,4 @@
-import { ICatalogPage } from '../../../common/ICatalogPage';
+import { ICatalogPage } from '../../../../../api';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 import { CatalogLayoutBadgeDisplayView } from './CatalogLayoutBadgeDisplayView';
 import { CatalogLayoutDefaultView } from './CatalogLayoutDefaultView';
@@ -67,7 +67,7 @@ export const GetCatalogLayout = (page: ICatalogPage, hideNavigation: () => void)
         case 'roomads':
             return <CatalogLayoutRoomAdsView { ...layoutProps } />;
         //case 'default_3x3_color_grouping':
-            //return <CatalogLayoutColorGroupingView { ...layoutProps } />;
+        //return <CatalogLayoutColorGroupingView { ...layoutProps } />;
         case 'bots':
         case 'default_3x3':
         default:

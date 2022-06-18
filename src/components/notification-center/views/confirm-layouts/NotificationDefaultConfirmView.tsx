@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { NotificationConfirmItem } from '../../../../api';
+import { NotificationAlertType, NotificationConfirmItem } from '../../../../api';
 import { Button, Flex, LayoutNotificationAlertView, LayoutNotificationAlertViewProps, Text } from '../../../../common';
 
 export interface NotificationDefaultConfirmViewProps extends LayoutNotificationAlertViewProps
@@ -10,7 +10,7 @@ export interface NotificationDefaultConfirmViewProps extends LayoutNotificationA
 export const NotificationDefaultConfirmView: FC<NotificationDefaultConfirmViewProps> = props =>
 {
     const { item = null, close = null, ...rest } = props;
-    const { message = null, onConfirm = null, onCancel = null, confirmText = null, cancelText = null, title = null  } = item;
+    const { message = null, onConfirm = null, onCancel = null, confirmText = null, cancelText = null, title = null } = item;
 
     const confirm = () =>
     {
@@ -27,7 +27,7 @@ export const NotificationDefaultConfirmView: FC<NotificationDefaultConfirmViewPr
     }
 
     return (
-        <LayoutNotificationAlertView title={ title } close={ close } { ...rest }>
+        <LayoutNotificationAlertView title={ title } close={ close } { ...rest } type={ NotificationAlertType.ALERT }>
             <Flex grow center>
                 <Text>{ message }</Text>
             </Flex>

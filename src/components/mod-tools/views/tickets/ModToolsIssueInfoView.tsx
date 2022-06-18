@@ -47,7 +47,7 @@ export const ModToolsIssueInfoView: FC<IssueInfoViewProps> = props =>
     return (
         <>
             <NitroCardView className="nitro-mod-tools-handle-issue" theme="primary-slim">
-                <NitroCardHeaderView headerText={'Resolving issue ' + issueId} onCloseClick={() => onIssueInfoClosed(issueId)} />
+                <NitroCardHeaderView headerText={ 'Resolving issue ' + issueId } onCloseClick={ () => onIssueInfoClosed(issueId) } />
                 <NitroCardContentView className="text-black">
                     <Text fontSize={ 4 }>Issue Information</Text>
                     <Grid overflow="auto">
@@ -86,7 +86,7 @@ export const ModToolsIssueInfoView: FC<IssueInfoViewProps> = props =>
                             <Button onClick={ event => closeIssue(CloseIssuesMessageComposer.RESOLUTION_USELESS) }>Close as useless</Button>
                             <Button variant="danger" onClick={ event => closeIssue(CloseIssuesMessageComposer.RESOLUTION_ABUSIVE) }>Close as abusive</Button>
                             <Button variant="success" onClick={ event => closeIssue(CloseIssuesMessageComposer.RESOLUTION_RESOLVED) }>Close as resolved</Button> 
-                            <Button variant="secondary" onClick={ event => releaseIssue(issueId)} >Release</Button>
+                            <Button variant="secondary" onClick={ event => releaseIssue(issueId) } >Release</Button>
                         </Column>
                     </Grid>
                 </NitroCardContentView>

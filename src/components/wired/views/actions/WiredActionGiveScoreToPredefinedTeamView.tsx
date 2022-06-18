@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useWiredContext } from '../../WiredContext';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -17,21 +16,18 @@ export const WiredActionGiveScoreToPredefinedTeamView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
+        if(trigger.intData.length >= 2)
         {
-            if(trigger.intData.length >= 2)
-            {
-                setPoints(trigger.intData[0]);
-                setTime(trigger.intData[1]);
-                setSelectedTeam(trigger.intData[2]);
-            }
-            else
-            {
-                setPoints(1);
-                setTime(1);
-                setSelectedTeam(1);
-            }
-        });
+            setPoints(trigger.intData[0]);
+            setTime(trigger.intData[1]);
+            setSelectedTeam(trigger.intData[2]);
+        }
+        else
+        {
+            setPoints(1);
+            setTime(1);
+            setSelectedTeam(1);
+        }
     }, [ trigger ]);
 
     return (
@@ -56,15 +52,15 @@ export const WiredActionGiveScoreToPredefinedTeamView: FC<{}> = props =>
             </Column>
             <Column gap={ 1 }>
                 <Text bold>{ LocalizeText('wiredfurni.params.team') }</Text>
-                { [1, 2, 3, 4].map(value =>
-                    {
-                        return (
-                            <Flex key={ value } gap={ 1 }>
-                                <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ value }` } checked={ (selectedTeam === value) } onChange={ event => setSelectedTeam(value) } />
-                                <Text>{ LocalizeText('wiredfurni.params.team.' + value) }</Text>
-                            </Flex>
-                        );
-                    }) }
+                { [ 1, 2, 3, 4 ].map(value =>
+                {
+                    return (
+                        <Flex key={ value } gap={ 1 }>
+                            <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ value }` } checked={ (selectedTeam === value) } onChange={ event => setSelectedTeam(value) } />
+                            <Text>{ LocalizeText('wiredfurni.params.team.' + value) }</Text>
+                        </Flex>
+                    );
+                }) }
             </Column>
         </WiredActionBaseView>
     );

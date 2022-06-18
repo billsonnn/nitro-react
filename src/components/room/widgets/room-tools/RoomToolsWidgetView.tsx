@@ -1,9 +1,9 @@
 import { GetGuestRoomResultEvent, RateFlatMessageComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { CreateLinkEvent, LocalizeText, RoomWidgetZoomToggleMessage, SendMessageComposer } from '../../../../api';
+import { CreateLinkEvent, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
-import { BatchUpdates, UseMessageEventHook, useSharedNavigatorData } from '../../../../hooks';
+import { UseMessageEventHook, useSharedNavigatorData } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
@@ -15,7 +15,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     const [ roomInfoDisplay, setRoomInfoDisplay ] = useState<boolean>(false);
     const [ isOpen, setIsOpen ] = useState<boolean>(false);
     const [ navigatorData, setNavigatorData ] = useSharedNavigatorData();
-    const { widgetHandler = null } = useRoomContext();
+    const { roomSession = null, widgetHandler = null } = useRoomContext();
 
     const handleToolClick = (action: string) =>
     {
@@ -25,8 +25,17 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 CreateLinkEvent('navigator/toggle-room-info');
                 return;
             case 'zoom':
-                widgetHandler.processWidgetMessage(new RoomWidgetZoomToggleMessage(!isZoomedIn));
-                setIsZoomedIn(value => !value);
+                setIsZoomedIn(prevValue =>
+                {
+                    let scale = GetRoomEngine().getRoomInstanceRenderingCanvasScale(roomSession.roomId, 1);
+                    
+                    if(!prevValue) scale /= 2;
+                    else scale *= 2;
+                    
+                    GetRoomEngine().setRoomInstanceRenderingCanvasScale(roomSession.roomId, 1, scale);
+
+                    return !prevValue;
+                });
                 return;
             case 'chat_history':
                 CreateLinkEvent('chat-history/toggle');
@@ -46,12 +55,9 @@ export const RoomToolsWidgetView: FC<{}> = props =>
 
         if(!parser.roomEnter) return;
 
-        BatchUpdates(() =>
-        {
-            if(roomName !== parser.data.roomName) setRoomName(parser.data.roomName);
-            if(roomOwner !== parser.data.ownerName) setRoomOwner(parser.data.ownerName);
-            if(roomTags !== parser.data.tags) setRoomTags(parser.data.tags);
-        });
+        if(roomName !== parser.data.roomName) setRoomName(parser.data.roomName);
+        if(roomOwner !== parser.data.ownerName) setRoomOwner(parser.data.ownerName);
+        if(roomTags !== parser.data.tags) setRoomTags(parser.data.tags);
     }, [ roomName, roomOwner, roomTags ]);
 
     UseMessageEventHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);

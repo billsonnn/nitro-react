@@ -17,23 +17,23 @@ export const SelectTopicView: FC<{}> = props =>
         if((selectedCategory < 0) || (selectedTopic < 0)) return;
 
         setHelpReportState(prevValue =>
-            {
-                const cfhCategory = selectedCategory;
-                const cfhTopic = cfhCategories[selectedCategory].topics[selectedTopic].id;
-                const currentStep = 4;
+        {
+            const cfhCategory = selectedCategory;
+            const cfhTopic = cfhCategories[selectedCategory].topics[selectedTopic].id;
+            const currentStep = 4;
 
-                return { ...prevValue, cfhCategory, cfhTopic, currentStep };
-            });
+            return { ...prevValue, cfhCategory, cfhTopic, currentStep };
+        });
     }
 
     const back = () =>
     {
         setHelpReportState(prevValue =>
-            {
-                const currentStep = (prevValue.currentStep - 1);
+        {
+            const currentStep = (prevValue.currentStep - 1);
 
-                return { ...prevValue, currentStep };
-            });
+            return { ...prevValue, currentStep };
+        });
     }
 
     return (

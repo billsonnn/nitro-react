@@ -2,15 +2,15 @@ import { RoomWidgetUpdateEvent } from './RoomWidgetUpdateEvent';
 
 export class RoomWidgetUpdateRoomObjectEvent extends RoomWidgetUpdateEvent
 {
-    public static OBJECT_SELECTED: string               = 'RWUROE_OBJECT_SELECTED';
-    public static OBJECT_DESELECTED: string             = 'RWUROE_OBJECT_DESELECTED';
-    public static USER_REMOVED: string                  = 'RWUROE_USER_REMOVED';
-    public static FURNI_REMOVED: string                 = 'RWUROE_FURNI_REMOVED';
-    public static FURNI_ADDED: string                   = 'RWUROE_FURNI_ADDED';
-    public static USER_ADDED: string                    = 'RWUROE_USER_ADDED';
-    public static OBJECT_ROLL_OVER: string              = 'RWUROE_OBJECT_ROLL_OVER';
-    public static OBJECT_ROLL_OUT: string               = 'RWUROE_OBJECT_ROLL_OUT';
-    public static OBJECT_REQUEST_MANIPULATION: string   = 'RWUROE_OBJECT_REQUEST_MANIPULATION';
+    public static OBJECT_SELECTED: string = 'RWUROE_OBJECT_SELECTED';
+    public static OBJECT_DESELECTED: string = 'RWUROE_OBJECT_DESELECTED';
+    public static USER_REMOVED: string = 'RWUROE_USER_REMOVED';
+    public static FURNI_REMOVED: string = 'RWUROE_FURNI_REMOVED';
+    public static FURNI_ADDED: string = 'RWUROE_FURNI_ADDED';
+    public static USER_ADDED: string = 'RWUROE_USER_ADDED';
+    public static OBJECT_ROLL_OVER: string = 'RWUROE_OBJECT_ROLL_OVER';
+    public static OBJECT_ROLL_OUT: string = 'RWUROE_OBJECT_ROLL_OUT';
+    public static OBJECT_REQUEST_MANIPULATION: string = 'RWUROE_OBJECT_REQUEST_MANIPULATION';
 
     private _id: number;
     private _category: number;
@@ -20,9 +20,9 @@ export class RoomWidgetUpdateRoomObjectEvent extends RoomWidgetUpdateEvent
     {
         super(type);
 
-        this._id        = id;
-        this._category  = category;
-        this._roomId    = roomId;
+        this._id = id;
+        this._category = category;
+        this._roomId = roomId;
     }
 
     public get id(): number

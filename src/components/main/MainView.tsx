@@ -21,7 +21,7 @@ import { ModToolsView } from '../mod-tools/ModToolsView';
 import { NavigatorView } from '../navigator/NavigatorView';
 import { NitropediaView } from '../nitropedia/NitropediaView';
 import { RightSideView } from '../right-side/RightSideView';
-import { RoomHostView } from '../room/RoomHostView';
+import { RoomView } from '../room/RoomView';
 import { ToolbarView } from '../toolbar/ToolbarView';
 import { UserProfileView } from '../user-profile/UserProfileView';
 import { UserSettingsView } from '../user-settings/UserSettingsView';
@@ -90,7 +90,7 @@ export const MainView: FC<{}> = props =>
         {
             RemoveLinkEventTracker(linkTracker);
         }
-    }, [onLinkReceived]);
+    }, [ onLinkReceived ]);
 
     return (
         <Base fit>
@@ -99,7 +99,7 @@ export const MainView: FC<{}> = props =>
             </TransitionAnimation>
             <ToolbarView isInRoom={ !landingViewVisible } />
             <ModToolsView />
-            <RoomHostView />
+            <RoomView />
             <ChatHistoryView />
             <WiredView />
             <AvatarEditorView />

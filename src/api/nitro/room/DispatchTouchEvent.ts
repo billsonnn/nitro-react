@@ -6,7 +6,7 @@ let lastClick = 0;
 let clickCount = 0;
 let touchTimer: ReturnType<typeof setTimeout> = null;
 
-export function DispatchTouchEvent(roomId: number, canvasId: number, event: TouchEvent, longTouch: boolean = false, altKey: boolean = false, ctrlKey: boolean = false, shiftKey: boolean = false)
+export const DispatchTouchEvent = (event: TouchEvent, canvasId: number = 1, longTouch: boolean = false, altKey: boolean = false, ctrlKey: boolean = false, shiftKey: boolean = false) =>
 {
     let eventType = event.type;
 
@@ -29,8 +29,8 @@ export function DispatchTouchEvent(roomId: number, canvasId: number, event: Touc
         {
             eventType = MouseEventType.DOUBLE_CLICK;
 
-            clickCount    = 0;
-            lastClick     = null;
+            clickCount = 0;
+            lastClick = null;
         }
     }
 
@@ -51,8 +51,6 @@ export function DispatchTouchEvent(roomId: number, canvasId: number, event: Touc
         y = event.changedTouches[0].clientY;
     }
 
-    GetRoomEngine().setActiveRoomId(roomId);
-
     switch(eventType)
     {
         case MouseEventType.MOUSE_CLICK:
@@ -64,7 +62,7 @@ export function DispatchTouchEvent(roomId: number, canvasId: number, event: Touc
             {
                 if(didMouseMove) return;
 
-                DispatchTouchEvent(roomId, canvasId, event, true);
+                DispatchTouchEvent(event, canvasId, true);
             }, 300);
             
             eventType = MouseEventType.MOUSE_DOWN;

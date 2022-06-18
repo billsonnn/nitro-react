@@ -30,26 +30,26 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
     const removeNameBubble = useCallback((index: number) =>
     {
         setNameBubbles(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        {
+            const newValue = [ ...prevValue ];
 
-                newValue.splice(index, 1);
+            newValue.splice(index, 1);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, []);
 
     const removeProductBubble = useCallback((index: number) =>
     {
         setProductBubbles(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
-                const item = newValue.splice(index, 1)[0];
+        {
+            const newValue = [ ...prevValue ];
+            const item = newValue.splice(index, 1)[0];
 
-                if(confirmingProduct === item) setConfirmingProduct(null);
+            if(confirmingProduct === item) setConfirmingProduct(null);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ confirmingProduct ]);
 
     const clearProductBubbles = useCallback(() =>
@@ -101,21 +101,21 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         if(event.category === RoomObjectCategory.UNIT)
         {
             const nameBubbleIndex = nameBubbles.findIndex(bubble =>
-                {
-                    return (bubble.roomIndex === event.id);
-                });
+            {
+                return (bubble.roomIndex === event.id);
+            });
     
             if(nameBubbleIndex > -1) removeNameBubble(nameBubbleIndex);
 
             if(productBubbles.length)
             {
                 setProductBubbles(prevValue =>
+                {
+                    return prevValue.filter(bubble =>
                     {
-                        return prevValue.filter(bubble =>
-                            {
-                                return (bubble.id !== event.id);
-                            });
+                        return (bubble.id !== event.id);
                     });
+                });
             }
         }
 
@@ -124,12 +124,12 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
             if(productBubbles.length)
             {
                 setProductBubbles(prevValue =>
+                {
+                    return prevValue.filter(bubble =>
                     {
-                        return prevValue.filter(bubble =>
-                            {
-                                return (bubble.requestRoomObjectId !== event.id);
-                            });
+                        return (bubble.requestRoomObjectId !== event.id);
                     });
+                });
             }
         }
 
@@ -236,20 +236,20 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
     {
         setConfirmingProduct(null);
         setProductBubbles(prevValue =>
+        {
+            const newBubbles = [ ...prevValue ];
+
+            for(const item of event.items)
             {
-                const newBubbles = [ ...prevValue ];
+                const index = newBubbles.findIndex(bubble => (bubble.id === item.id));
 
-                for(const item of event.items)
-                {
-                    const index = newBubbles.findIndex(bubble => (bubble.id === item.id));
+                if(index > -1) newBubbles.splice(index, 1);
 
-                    if(index > -1) newBubbles.splice(index, 1);
+                newBubbles.push(item);
+            }
 
-                    newBubbles.push(item);
-                }
-
-                return newBubbles;
-            });
+            return newBubbles;
+        });
     }, []);
 
     UseEventDispatcherHook(RoomWidgetUseProductBubbleEvent.USE_PRODUCT_BUBBLES, eventDispatcher, onRoomWidgetUseProductBubbleEvent);
@@ -293,13 +293,13 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         if(name)
         {
             const nameBubbleIndex = nameBubbles.findIndex(bubble =>
-                {
-                    return (bubble.roomIndex === name.roomIndex);
-                });
+            {
+                return (bubble.roomIndex === name.roomIndex);
+            });
 
             if(nameBubbleIndex > -1) removeNameBubble(nameBubbleIndex);
 
-            return <AvatarInfoWidgetNameView nameData={ name } close={ clearName }  />;
+            return <AvatarInfoWidgetNameView nameData={ name } close={ clearName } />;
         }
 
         if(infoStandEvent)
@@ -313,9 +313,9 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
                     if(event.isSpectatorMode) return null;
 
                     const nameBubbleIndex = nameBubbles.findIndex(bubble =>
-                        {
-                            return (bubble.roomIndex === event.roomIndex);
-                        });
+                    {
+                        return (bubble.roomIndex === event.roomIndex);
+                    });
 
                     if(nameBubbleIndex > -1) removeNameBubble(nameBubbleIndex);
 
@@ -354,14 +354,14 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
         <>
             { currentView }
             { (nameBubbles.length > 0) && nameBubbles.map((name, index) =>
-                {
-                    return <AvatarInfoWidgetNameView key={ index } nameData={ name } close={ () => removeNameBubble(index) }  />;
-                }) }
+            {
+                return <AvatarInfoWidgetNameView key={ index } nameData={ name } close={ () => removeNameBubble(index) } />;
+            }) }
             { (productBubbles.length > 0) && productBubbles.map((item, index) =>
-                {
-                    return <AvatarInfoUseProductView key={ item.id } item={ item } updateConfirmingProduct={ updateConfirmingProduct } close={ () => removeProductBubble(index) }  />;
-                }) }
-            { rentableBotChatEvent && <AvatarInfoRentableBotChatView chatEvent={ rentableBotChatEvent } close={ () => setRentableBotChatEvent(null)}/> }
+            {
+                return <AvatarInfoUseProductView key={ item.id } item={ item } updateConfirmingProduct={ updateConfirmingProduct } close={ () => removeProductBubble(index) } />;
+            }) }
+            { rentableBotChatEvent && <AvatarInfoRentableBotChatView chatEvent={ rentableBotChatEvent } close={ () => setRentableBotChatEvent(null) }/> }
             { confirmingProduct && <AvatarInfoUseProductConfirmView item={ confirmingProduct } close={ () => setConfirmingProduct(null) } /> }
         </>
     )

@@ -1,18 +1,15 @@
 import { GetMarketplaceConfigurationMessageComposer, MakeOfferMessageComposer, MarketplaceConfigurationEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
+import { FurnitureItem, LocalizeText, NotificationUtilities, ProductTypeEnum, SendMessageComposer } from '../../../../../../api';
 import { Base, Button, Column, Grid, LayoutFurniImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../../common';
 import { CatalogPostMarketplaceOfferEvent } from '../../../../../../events';
-import { UseMessageEventHook, UseUiEvent } from '../../../../../../hooks';
-import { FurnitureItem } from '../../../../../inventory/common/FurnitureItem';
-import { useCatalogContext } from '../../../../CatalogContext';
-import { ProductTypeEnum } from '../../../../common/ProductTypeEnum';
+import { useCatalog, UseMessageEventHook, UseUiEvent } from '../../../../../../hooks';
 
 export const MarketplacePostOfferView : FC<{}> = props =>
 {
     const [ item, setItem ] = useState<FurnitureItem>(null);
     const [ askingPrice, setAskingPrice ] = useState(0);
-    const { catalogOptions = null, setCatalogOptions = null } = useCatalogContext();
+    const { catalogOptions = null, setCatalogOptions = null } = useCatalog();
     const { marketplaceConfiguration = null } = catalogOptions;
 
     const onMarketplaceConfigurationEvent = useCallback((event: MarketplaceConfigurationEvent) =>
@@ -20,13 +17,13 @@ export const MarketplacePostOfferView : FC<{}> = props =>
         const parser = event.getParser();
 
         setCatalogOptions(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.marketplaceConfiguration = parser;
+            newValue.marketplaceConfiguration = parser;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ setCatalogOptions ]);
 
     UseMessageEventHook(MarketplaceConfigurationEvent, onMarketplaceConfigurationEvent);
@@ -62,11 +59,14 @@ export const MarketplacePostOfferView : FC<{}> = props =>
         if(!item || (askingPrice <= marketplaceConfiguration.minimumPrice)) return;
 
         NotificationUtilities.confirm(LocalizeText('inventory.marketplace.confirm_offer.info', [ 'furniname', 'price' ], [ getFurniTitle, askingPrice.toString() ]), () =>
-            {
-                SendMessageComposer(new MakeOfferMessageComposer(askingPrice, item.isWallItem ? 2 : 1, item.id));
-                setItem(null);
-            },
-            () => { setItem(null) }, null, null, LocalizeText('inventory.marketplace.confirm_offer.title'));
+        {
+            SendMessageComposer(new MakeOfferMessageComposer(askingPrice, item.isWallItem ? 2 : 1, item.id));
+            setItem(null);
+        },
+        () => 
+        {
+            setItem(null) 
+        }, null, null, LocalizeText('inventory.marketplace.confirm_offer.title'));
     }
 
     return (
@@ -84,7 +84,7 @@ export const MarketplacePostOfferView : FC<{}> = props =>
                         </Column>
                         <Column overflow="auto">
                             <Text italics>
-                                { LocalizeText('inventory.marketplace.make_offer.expiration_info', ['time'], [marketplaceConfiguration.offerTime.toString()]) }
+                                { LocalizeText('inventory.marketplace.make_offer.expiration_info', [ 'time' ], [ marketplaceConfiguration.offerTime.toString() ]) }
                             </Text>
                             <div className="input-group has-validation">
                                 <input className="form-control form-control-sm" type="number" min={ 0 } value={ askingPrice } onChange={ event => setAskingPrice(parseInt(event.target.value)) } placeholder={ LocalizeText('inventory.marketplace.make_offer.price_request') } />

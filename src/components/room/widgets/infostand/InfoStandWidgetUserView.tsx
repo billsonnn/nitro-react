@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomSessionFavoriteGroupUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, FocusEvent, KeyboardEvent, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { CloneObject, GetConfiguration, GetGroupInformation, GetSessionDataManager, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent, SendMessageComposer } from '../../../../api';
+import { CloneObject, GetConfiguration, GetGroupInformation, GetSessionDataManager, GetUserProfile, LocalizeText, RoomWidgetChangeMottoMessage, RoomWidgetUpdateInfostandUserEvent, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../common';
-import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../hooks';
+import { UseEventDispatcherHook, UseMessageEventHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { InfoStandWidgetUserRelationshipsView } from './InfoStandWidgetUserRelationshipsView';
 
@@ -51,13 +51,13 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
         if(!userData || (userData.webID !== event.userId)) return;
 
         setUserData(prevValue =>
-            {
-                const newValue = CloneObject(prevValue);
+        {
+            const newValue = CloneObject(prevValue);
 
-                newValue.badges = event.badges;
+            newValue.badges = event.badges;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ userData, setUserData ]);
 
     UseEventDispatcherHook(RoomSessionUserBadgesEvent.RSUBE_BADGES, eventDispatcher, onRoomSessionUserBadgesEvent);
@@ -67,15 +67,15 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
         if(!userData || (userData.roomIndex !== event.roomIndex)) return;
 
         setUserData(prevValue =>
-            {
-                const newValue = CloneObject(prevValue);
+        {
+            const newValue = CloneObject(prevValue);
 
-                newValue.figure = event.figure;
-                newValue.motto = event.customInfo;
-                newValue.achievementScore = event.activityPoints;
+            newValue.figure = event.figure;
+            newValue.motto = event.customInfo;
+            newValue.achievementScore = event.activityPoints;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ userData, setUserData ]);
 
     UseEventDispatcherHook(RoomSessionUserFigureUpdateEvent.USER_FIGURE, eventDispatcher, onRoomSessionUserFigureUpdateEvent);
@@ -85,17 +85,17 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
         if(!userData || (userData.roomIndex !== event.roomIndex)) return;
 
         setUserData(prevValue =>
-            {
-                const newValue = CloneObject(prevValue);
+        {
+            const newValue = CloneObject(prevValue);
 
-                const clearGroup = ((event.status === -1) || (event.habboGroupId <= 0));
+            const clearGroup = ((event.status === -1) || (event.habboGroupId <= 0));
 
-                newValue.groupId = clearGroup ? -1 : event.habboGroupId;
-                newValue.groupName = clearGroup ? null : event.habboGroupName
-                newValue.groupBadgeId = clearGroup ? null : GetSessionDataManager().getGroupBadge(event.habboGroupId);
+            newValue.groupId = clearGroup ? -1 : event.habboGroupId;
+            newValue.groupName = clearGroup ? null : event.habboGroupName
+            newValue.groupBadgeId = clearGroup ? null : GetSessionDataManager().getGroupBadge(event.habboGroupId);
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ userData, setUserData ]);
 
     UseEventDispatcherHook(RoomSessionFavoriteGroupUpdateEvent.FAVOURITE_GROUP_UPDATE, eventDispatcher, onRoomSessionFavoriteGroupUpdateEvent);
@@ -113,22 +113,16 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setIsEditingMotto(false);
-            setMotto(userData.motto);
-        });
+        setIsEditingMotto(false);
+        setMotto(userData.motto);
         
         SendMessageComposer(new UserRelationshipsComposer(userData.webID));
 
         return () => 
         {
-            BatchUpdates(() =>
-            {
-                setIsEditingMotto(false);
-                setMotto(null);
-                setRelationships(null);
-            });
+            setIsEditingMotto(false);
+            setMotto(null);
+            setRelationships(null);
         }
     }, [ userData ]);
 
@@ -149,7 +143,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                 </Column>
                 <Column gap={ 1 }>
                     <Flex gap={ 1 }>
-                        <Column fullWidth className="body-image">
+                        <Column fullWidth className="body-image" onClick={ event => GetUserProfile(userData.webID) }>
                             <LayoutAvatarImageView figure={ userData.figure } direction={ 4 } />
                         </Column>
                         <Column grow gap={ 0 }>

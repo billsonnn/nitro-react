@@ -3,28 +3,30 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "start": "cross-env BROWSER=none IMAGE_INLINE_SIZE_LIMIT=100000 craco start",
-    "build": "cross-env GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=100000 craco build",
+    "start": "cross-env SKIP_PREFLIGHT_CHECK=true BROWSER=none IMAGE_INLINE_SIZE_LIMIT=100000 craco start",
+    "build": "cross-env SKIP_PREFLIGHT_CHECK=true GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=100000 craco build",
     "build:prod": "npx browserslist@latest --update-db && yarn build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "eslint": "eslint src --ext .ts,.tsx"
   },
   "dependencies": {
     "@craco/craco": "^6.3.0",
     "@fortawesome/fontawesome-svg-core": "^6.1.0",
     "@fortawesome/free-solid-svg-icons": "^6.1.0",
     "@fortawesome/react-fontawesome": "^0.1.17",
-    "@nitrots/nitro-renderer": "^1.1.18",
+    "@nitrots/nitro-renderer": "^1.2.5",
+    "@types/react-transition-group": "^4.4.4",
     "animate.css": "^4.1.1",
     "classnames": "^2.3.1",
     "cross-env": "^7.0.3",
     "emoji-toolkit": "^6.6.0",
     "node-sass": "^6.0.1",
-    "react": "^17.0.2",
-    "react-bootstrap": "^2.0.0-alpha.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.0.0",
+    "react-bootstrap": "^2.2.2",
+    "react-dom": "^18.0.0",
     "react-scripts": "4.0.3",
-    "react-slider": "^1.3.1",
+    "react-slider": "^2.0.0",
     "react-transition-group": "^4.4.2",
     "react-virtualized": "^9.22.3",
     "react-youtube": "^7.13.1",
@@ -32,16 +34,23 @@
     "use-between": "^1.3.1"
   },
   "resolutions": {
-    "react-error-overlay": "6.0.9"
+    "react-error-overlay": "6.0.9",
+    "@types/react": "^18.0.8",
+    "@types/react-dom": "^18.0.3"
   },
   "devDependencies": {
     "@types/node": "^12.20.19",
-    "@types/react": "^17.0.15",
-    "@types/react-dom": "^17.0.9",
+    "@types/react": "^18.0.8",
+    "@types/react-dom": "^18.0.3",
     "@types/react-slider": "^1.3.1",
-    "@types/react-transition-group": "^4.4.2",
     "@types/react-virtualized": "^9.21.13",
-    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "eslint": "^8.12.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.4.0",
     "react-error-overlay": "6.0.9"
   }
 }

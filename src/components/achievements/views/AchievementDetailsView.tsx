@@ -1,5 +1,5 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { GetAchievementBadgeCode, GetAchievementLevel, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
 import { Column, Flex, LayoutCurrencyIcon, LayoutProgressBar, Text } from '../../../common';
 import { AchievementBadgeView } from './AchievementBadgeView';
@@ -9,14 +9,14 @@ interface AchievementDetailsViewProps
     achievement: AchievementData;
 }
 
-export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
+export const AchievementDetailsView: FC<PropsWithChildren<AchievementDetailsViewProps>> = props =>
 {
-    const { achievement = null } = props;
+    const { achievement = null, children = null, ...rest } = props;
 
     if(!achievement) return null;
 
     return (
-        <Flex shrink className="bg-muted rounded p-2 text-black" gap={ 2 } overflow="hidden">
+        <Flex shrink className="bg-muted rounded p-2 text-black" gap={ 2 } overflow="hidden" { ...rest }>
             <Column center gap={ 1 }>
                 <AchievementBadgeView className="nitro-achievements-badge-image" achievement={ achievement } scale={ 2 } />
                 <Text fontWeight="bold">
@@ -48,6 +48,7 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
                             <LayoutProgressBar text={ LocalizeText('achievements.details.progress', [ 'progress', 'limit' ], [ (achievement.currentPoints + achievement.scoreAtStartOfLevel).toString(), (achievement.scoreLimit + achievement.scoreAtStartOfLevel).toString() ]) } progress={ (achievement.currentPoints + achievement.scoreAtStartOfLevel) } maxProgress={ (achievement.scoreLimit + achievement.scoreAtStartOfLevel) } /> }
                     </Column> }
             </Column>
+            { children }
         </Flex>
     )
 }

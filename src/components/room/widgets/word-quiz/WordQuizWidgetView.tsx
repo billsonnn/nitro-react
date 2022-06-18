@@ -1,7 +1,7 @@
 import { IQuestion } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { RoomWidgetPollMessage, RoomWidgetWordQuizUpdateEvent } from '../../../../api';
-import { BatchUpdates, UseEventDispatcherHook } from '../../../../hooks';
+import { UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { VALUE_KEY_DISLIKE, VALUE_KEY_LIKE, VoteValue } from './common/VoteValue';
 import { WordQuizQuestionView } from './WordQuizQuestionView';
@@ -31,27 +31,24 @@ export const WordQuizWidgetView: FC<{}> = props =>
         switch(event.type)
         {
             case RoomWidgetWordQuizUpdateEvent.NEW_QUESTION:
-                BatchUpdates(() =>
+                setPollId(event.id);
+                setQuestion(event.question);
+                setAnswerSent(false);
+                setAnswerCounts(new Map());
+                setUserAnswers(new Map());
+
+                setQuestionClearTimeout(prevValue =>
                 {
-                    setPollId(event.id);
-                    setQuestion(event.question);
-                    setAnswerSent(false);
-                    setAnswerCounts(new Map());
-                    setUserAnswers(new Map());
+                    if(prevValue) clearTimeout(prevValue);
 
-                    setQuestionClearTimeout(prevValue =>
-                        {
-                            if(prevValue) clearTimeout(prevValue);
+                    if(event.duration > 0)
+                    {
+                        const delay = event.duration < 1000 ? DEFAULT_DISPLAY_DELAY : event.duration;
 
-                            if(event.duration > 0)
-                            {
-                                const delay = event.duration < 1000 ? DEFAULT_DISPLAY_DELAY : event.duration;
-    
-                                return setTimeout(() => clearQuestion(), delay) as unknown as number;
-                            }
-    
-                            return null;
-                        });
+                        return setTimeout(() => clearQuestion(), delay) as unknown as number;
+                    }
+
+                    return null;
                 });
                 break;
             case RoomWidgetWordQuizUpdateEvent.QUESTION_ANSWERED: {
@@ -59,40 +56,34 @@ export const WordQuizWidgetView: FC<{}> = props =>
 
                 if(!userData) return;
 
-                BatchUpdates(() =>
+                setAnswerCounts(event.answerCounts);
+
+                setUserAnswers(prevValue =>
                 {
-                    setAnswerCounts(event.answerCounts);
+                    if(!prevValue.has(userData.roomIndex))
+                    {
+                        const newValue = new Map(userAnswers);
 
-                    setUserAnswers(prevValue =>
-                        {
-                            if(!prevValue.has(userData.roomIndex))
-                            {
-                                const newValue = new Map(userAnswers);
+                        newValue.set(userData.roomIndex, { value: event.value, secondsLeft: SIGN_FADE_DELAY });
 
-                                newValue.set(userData.roomIndex, { value: event.value, secondsLeft: SIGN_FADE_DELAY });
+                        return newValue;
+                    }
 
-                                return newValue;
-                            }
-
-                            return prevValue;
-                        });
+                    return prevValue;
                 });
                 break;
             }
             case RoomWidgetWordQuizUpdateEvent.QUESTION_FINISHED:
                 if(question && question.id === event.questionId)
                 {
-                    BatchUpdates(() =>
+                    setAnswerCounts(event.answerCounts);
+                    setAnswerSent(true);
+
+                    setQuestionClearTimeout(prevValue =>
                     {
-                        setAnswerCounts(event.answerCounts);
-                        setAnswerSent(true);
+                        if(prevValue) clearTimeout(prevValue);
 
-                        setQuestionClearTimeout(prevValue =>
-                        {
-                            if(prevValue) clearTimeout(prevValue);
-
-                            return setTimeout(() => clearQuestion(), DEFAULT_DISPLAY_DELAY) as unknown as number;
-                        });
+                        return setTimeout(() => clearQuestion(), DEFAULT_DISPLAY_DELAY) as unknown as number;
                     });
                 }
 
@@ -112,7 +103,7 @@ export const WordQuizWidgetView: FC<{}> = props =>
         const updateMessage = new RoomWidgetPollMessage(RoomWidgetPollMessage.ANSWER, pollId);
 
         updateMessage.questionId = question.id;
-        updateMessage.answers = [vote];
+        updateMessage.answers = [ vote ];
 
         widgetHandler.processWidgetMessage(updateMessage);
 
@@ -165,9 +156,9 @@ export const WordQuizWidgetView: FC<{}> = props =>
     return (
         <>
             { question &&
-                <WordQuizQuestionView question={question.content} canVote={!answerSent} vote={vote} noVotes={answerCounts.get(VALUE_KEY_DISLIKE) || 0} yesVotes={answerCounts.get(VALUE_KEY_LIKE) || 0} /> }
+                <WordQuizQuestionView question={ question.content } canVote={ !answerSent } vote={ vote } noVotes={ answerCounts.get(VALUE_KEY_DISLIKE) || 0 } yesVotes={ answerCounts.get(VALUE_KEY_LIKE) || 0 } /> }
             { userAnswers &&
-                Array.from(userAnswers.entries()).map(([key, value], index) => <WordQuizVoteView key={index} userIndex={key} vote={value.value} />) }
+                Array.from(userAnswers.entries()).map(([ key, value ], index) => <WordQuizVoteView key={ index } userIndex={ key } vote={ value.value } />) }
         </>
     );
 }

@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, KeyboardEvent, useEffect, useState } from 'react';
 import { INavigatorSearchFilter, LocalizeText, SearchFilterOptions } from '../../../../api';
 import { Button, Flex } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
 import { useNavigatorContext } from '../../NavigatorContext';
 
 export interface NavigatorSearchViewProps
@@ -39,7 +38,7 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
     useEffect(() =>
     {
-        if(!searchResult) return null;
+        if(!searchResult) return;
 
         const split = searchResult.data.split(':');
 
@@ -60,11 +59,8 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
         if(!filter) filter = SearchFilterOptions[0];
 
-        BatchUpdates(() =>
-        {
-            setSearchFilterIndex(SearchFilterOptions.findIndex(option => (option === filter)));
-            setSearchValue(value);
-        });
+        setSearchFilterIndex(SearchFilterOptions.findIndex(option => (option === filter)));
+        setSearchValue(value);
     }, [ searchResult ]);
 
     return (
@@ -78,7 +74,7 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
                 </select>
             </Flex>
             <Flex fullWidth gap={ 1 }>
-                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('navigator.filter.input.placeholder') } value={ searchValue }  onChange={ event => setSearchValue(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
+                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('navigator.filter.input.placeholder') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
                 <Button variant="primary" onClick={ processSearch }>
                     <FontAwesomeIcon icon="search" />
                 </Button>

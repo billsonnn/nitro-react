@@ -16,34 +16,34 @@ export const WiredFurniSelectorView: FC<{}> = props =>
         if(furniId <= 0) return;
 
         setFurniIds(prevValue =>
+        {
+            const newFurniIds = [ ...prevValue ];
+
+            const index = prevValue.indexOf(furniId);
+
+            if(index >= 0)
             {
-                const newFurniIds = [ ...prevValue ];
+                newFurniIds.splice(index, 1);
 
-                const index = prevValue.indexOf(furniId);
+                WiredSelectionVisualizer.hide(furniId);
+            }
 
-                if(index >= 0)
-                {
-                    newFurniIds.splice(index, 1);
+            else if(newFurniIds.length < trigger.maximumItemSelectionCount)
+            {
+                newFurniIds.push(furniId);
 
-                    WiredSelectionVisualizer.hide(furniId);
-                }
+                WiredSelectionVisualizer.show(furniId);
+            }
 
-                else if(newFurniIds.length < trigger.maximumItemSelectionCount)
-                {
-                    newFurniIds.push(furniId);
-
-                    WiredSelectionVisualizer.show(furniId);
-                }
-
-                return newFurniIds;
-            });
+            return newFurniIds;
+        });
     }, [ trigger, setFurniIds ]);
 
     UseUiEvent(WiredSelectObjectEvent.SELECT_OBJECT, onWiredSelectObjectEvent);
     
     return (
         <Column gap={ 1 }>
-            <Text bold>{ LocalizeText('wiredfurni.pickfurnis.caption', ['count', 'limit'], [ furniIds.length.toString(), trigger.maximumItemSelectionCount.toString() ]) }</Text>
+            <Text bold>{ LocalizeText('wiredfurni.pickfurnis.caption', [ 'count', 'limit' ], [ furniIds.length.toString(), trigger.maximumItemSelectionCount.toString() ]) }</Text>
             <Text small>{ LocalizeText('wiredfurni.pickfurnis.desc') }</Text>
         </Column>
     );

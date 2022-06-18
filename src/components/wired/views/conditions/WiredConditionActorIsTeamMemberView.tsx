@@ -23,14 +23,14 @@ export const WiredConditionActorIsTeamMemberView: FC<{}> = props =>
             <Column gap={ 1 }>
                 <Text bold>{ LocalizeText('wiredfurni.params.team') }</Text>
                 { teamIds.map(value =>
-                    {
-                        return (
-                            <Flex key={ value } gap={ 1 } alignItems="center">
-                                <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ value }` } checked={ (selectedTeam === value) } onChange={ event => setSelectedTeam(value) } />
-                                <Text>{ LocalizeText(`wiredfurni.params.team.${ value }`) }</Text>
-                            </Flex>
-                        ) 
-                    }) }
+                {
+                    return (
+                        <Flex key={ value } gap={ 1 } alignItems="center">
+                            <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ value }` } checked={ (selectedTeam === value) } onChange={ event => setSelectedTeam(value) } />
+                            <Text>{ LocalizeText(`wiredfurni.params.team.${ value }`) }</Text>
+                        </Flex>
+                    ) 
+                }) }
             </Column>
         </WiredConditionBaseView>
     );

@@ -26,11 +26,11 @@ function getRandomPartSet(setType: SetType, gender: string, clubLevel: number = 
     if(!setType) return null;
 
     const options = setType.partSets.getValues().filter(option =>
-        {
-            if(!option.isSelectable || ((option.gender !== 'U') && (option.gender !== gender)) || (option.clubLevel > clubLevel) || (option.isSellable && (figureSetIds.indexOf(option.id) === -1))) return null;
+    {
+        if(!option.isSelectable || ((option.gender !== 'U') && (option.gender !== gender)) || (option.clubLevel > clubLevel) || (option.isSellable && (figureSetIds.indexOf(option.id) === -1))) return null;
 
-            return option;
-        });
+        return option;
+    });
 
     if(!options || !options.length) return null;
 
@@ -42,11 +42,11 @@ function getRandomColors(palette: IPalette, partSet: IFigurePartSet, clubLevel: 
     if(!palette) return [];
 
     const options = palette.colors.getValues().filter(option =>
-        {
-            if(!option.isSelectable || (option.clubLevel > clubLevel)) return null;
+    {
+        if(!option.isSelectable || (option.clubLevel > clubLevel)) return null;
 
-            return option;
-        });
+        return option;
+    });
 
     if(!options || !options.length) return null;
 

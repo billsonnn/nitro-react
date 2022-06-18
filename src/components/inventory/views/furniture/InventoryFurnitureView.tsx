@@ -1,61 +1,43 @@
-import { FurnitureListComposer, IRoomSession, RoomObjectVariable, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
+import { IRoomSession, RoomObjectVariable, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetRoomEngine, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
+import { attemptItemPlacement, FurniCategory, GetRoomEngine, GetSessionDataManager, GroupItem, LocalizeText, UnseenItemCategory } from '../../../../api';
 import { AutoGrid, Button, Column, Grid, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, LayoutRoomPreviewerView, Text } from '../../../../common';
-import { FurniCategory } from '../../common/FurniCategory';
-import { attemptItemPlacement, attemptPlaceMarketplaceOffer } from '../../common/FurnitureUtilities';
-import { GroupItem } from '../../common/GroupItem';
-import { useInventoryContext } from '../../InventoryContext';
-import { InventoryFurnitureActions } from '../../reducers/InventoryFurnitureReducer';
-import { InventoryCategoryEmptyView } from '../category-empty/InventoryCategoryEmptyView';
+import { CatalogPostMarketplaceOfferEvent } from '../../../../events';
+import { DispatchUiEvent, useInventoryFurni, useInventoryUnseenTracker } from '../../../../hooks';
+import { InventoryCategoryEmptyView } from '../InventoryCategoryEmptyView';
 import { InventoryFurnitureItemView } from './InventoryFurnitureItemView';
 import { InventoryFurnitureSearchView } from './InventoryFurnitureSearchView';
 
-export interface InventoryFurnitureViewProps
+interface InventoryFurnitureViewProps
 {
     roomSession: IRoomSession;
     roomPreviewer: RoomPreviewer;
 }
 
+const attemptPlaceMarketplaceOffer = (groupItem: GroupItem) =>
+{
+    const item = groupItem.getLastItem();
+
+    if(!item) return false;
+
+    if(!item.sellable) return false;
+
+    DispatchUiEvent(new CatalogPostMarketplaceOfferEvent(item));
+}
+
 export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
-    const { furnitureState = null, dispatchFurnitureState = null, unseenTracker = null } = useInventoryContext();
-    const { needsFurniUpdate = false, groupItem = null, groupItems = [] } = furnitureState;
-    const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(groupItems);
+    const [ isVisible, setIsVisible ] = useState(false);
+    const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>([]);
+    const { groupItems = [], selectedItem = null, activate = null, deactivate = null } = useInventoryFurni();
+    const { resetItems = null } = useInventoryUnseenTracker();
 
     useEffect(() =>
     {
-        if(needsFurniUpdate)
-        {
-            dispatchFurnitureState({
-                type: InventoryFurnitureActions.SET_NEEDS_UPDATE,
-                payload: {
-                    flag: false
-                }
-            });
+        if(!selectedItem || !roomPreviewer) return;
 
-            SendMessageComposer(new FurnitureListComposer());
-        }
-        else
-        {
-            setFilteredGroupItems(groupItems);
-
-            dispatchFurnitureState({
-                type: InventoryFurnitureActions.SET_GROUP_ITEM,
-                payload: {
-                    groupItem: null
-                }
-            });
-        }
-
-    }, [ needsFurniUpdate, groupItems, dispatchFurnitureState ]);
-
-    useEffect(() =>
-    {
-        if(!groupItem || !roomPreviewer) return;
-
-        const furnitureItem = groupItem.getLastItem();
+        const furnitureItem = selectedItem.getLastItem();
 
         if(!furnitureItem) return;
 
@@ -75,9 +57,9 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 
         if((furnitureItem.category === FurniCategory.WALL_PAPER) || (furnitureItem.category === FurniCategory.FLOOR) || (furnitureItem.category === FurniCategory.LANDSCAPE))
         {
-            floorType = ((furnitureItem.category === FurniCategory.FLOOR) ? groupItem.stuffData.getLegacyString() : floorType);
-            wallType = ((furnitureItem.category === FurniCategory.WALL_PAPER) ? groupItem.stuffData.getLegacyString() : wallType);
-            landscapeType = ((furnitureItem.category === FurniCategory.LANDSCAPE) ? groupItem.stuffData.getLegacyString() : landscapeType);
+            floorType = ((furnitureItem.category === FurniCategory.FLOOR) ? selectedItem.stuffData.getLegacyString() : floorType);
+            wallType = ((furnitureItem.category === FurniCategory.WALL_PAPER) ? selectedItem.stuffData.getLegacyString() : wallType);
+            landscapeType = ((furnitureItem.category === FurniCategory.LANDSCAPE) ? selectedItem.stuffData.getLegacyString() : landscapeType);
 
             roomPreviewer.updateObjectRoom(floorType, wallType, landscapeType);
 
@@ -90,16 +72,41 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
         }
         else
         {
-            if(groupItem.isWallItem)
+            if(selectedItem.isWallItem)
             {
-                roomPreviewer.addWallItemIntoRoom(groupItem.type, new Vector3d(90), furnitureItem.stuffData.getLegacyString());
+                roomPreviewer.addWallItemIntoRoom(selectedItem.type, new Vector3d(90), furnitureItem.stuffData.getLegacyString());
             }
             else
             {
-                roomPreviewer.addFurnitureIntoRoom(groupItem.type, new Vector3d(90), groupItem.stuffData, (furnitureItem.extra.toString()));
+                roomPreviewer.addFurnitureIntoRoom(selectedItem.type, new Vector3d(90), selectedItem.stuffData, (furnitureItem.extra.toString()));
             }
         }
-    }, [ roomPreviewer, groupItem ]);
+    }, [ roomPreviewer, selectedItem ]);
+
+    useEffect(() =>
+    {
+        if(!selectedItem || !selectedItem.hasUnseenItems) return;
+
+        resetItems(UnseenItemCategory.FURNI, selectedItem.items.map(item => item.id));
+
+        selectedItem.hasUnseenItems = false;
+    }, [ selectedItem, resetItems ]);
+
+    useEffect(() =>
+    {
+        if(!isVisible) return;
+
+        const id = activate();
+
+        return () => deactivate(id);
+    }, [ isVisible, activate, deactivate ]);
+
+    useEffect(() =>
+    {
+        setIsVisible(true);
+
+        return () => setIsVisible(false);
+    }, []);
 
     if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.title') } desc={ LocalizeText('inventory.empty.desc') } />;
 
@@ -114,21 +121,21 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
             <Column size={ 5 } overflow="auto">
                 <Column overflow="hidden" position="relative">
                     <LayoutRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
-                    { groupItem && groupItem.stuffData.isUnique &&
-                        <LayoutLimitedEditionCompactPlateView className="top-2 end-2" position="absolute" uniqueNumber={ groupItem.stuffData.uniqueNumber } uniqueSeries={ groupItem.stuffData.uniqueSeries } /> }
-                    { (groupItem && groupItem.stuffData.rarityLevel > -1) &&
-                        <LayoutRarityLevelView className="top-2 end-2" position="absolute" level={ groupItem.stuffData.rarityLevel } /> }
+                    { selectedItem && selectedItem.stuffData.isUnique &&
+                        <LayoutLimitedEditionCompactPlateView className="top-2 end-2" position="absolute" uniqueNumber={ selectedItem.stuffData.uniqueNumber } uniqueSeries={ selectedItem.stuffData.uniqueSeries } /> }
+                    { (selectedItem && selectedItem.stuffData.rarityLevel > -1) &&
+                        <LayoutRarityLevelView className="top-2 end-2" position="absolute" level={ selectedItem.stuffData.rarityLevel } /> }
                 </Column>
-                { groupItem &&
+                { selectedItem &&
                     <Column grow justifyContent="between" gap={ 2 }>
-                        <Text grow truncate>{ groupItem.name }</Text>
+                        <Text grow truncate>{ selectedItem.name }</Text>
                         <Column gap={ 1 }>
                             { !!roomSession &&
-                                <Button variant="success" onClick={ event => attemptItemPlacement(groupItem) }>
+                                <Button variant="success" onClick={ event => attemptItemPlacement(selectedItem) }>
                                     { LocalizeText('inventory.furni.placetoroom') }
                                 </Button> }
-                            { (groupItem && groupItem.isSellable) &&
-                                <Button onClick={ event => attemptPlaceMarketplaceOffer(groupItem) }>
+                            { (selectedItem && selectedItem.isSellable) &&
+                                <Button onClick={ event => attemptPlaceMarketplaceOffer(selectedItem) }>
                                     { LocalizeText('inventory.marketplace.sell') }
                                 </Button> }
                         </Column>

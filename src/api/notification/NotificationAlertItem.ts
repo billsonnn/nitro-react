@@ -35,6 +35,11 @@ export class NotificationAlertItem
         return this._messages;
     }
 
+    public set alertType(alertType: string)
+    {
+        this._alertType = alertType;
+    }
+
     public get alertType(): string
     {
         return this._alertType;

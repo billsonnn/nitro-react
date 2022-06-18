@@ -1,118 +1,46 @@
 import { ColorConverter, NitroAdjustmentFilter, NitroContainer, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineDimmerStateEvent, RoomEngineEvent, RoomId, RoomObjectHSLColorEnabledEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
-import { GetNitroInstance, GetRoomEngine, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomViewEvent } from '../../api';
-import { UseEventDispatcherHook, UseMountEffect, UseRoomEngineEvent } from '../../hooks';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { GetNitroInstance, GetRoomEngine, RoomWidgetUpdateBackgroundColorPreviewEvent } from '../../api';
+import { UseEventDispatcherHook, UseRoomEngineEvent } from '../../hooks';
 import { useRoomContext } from './RoomContext';
 
 export const RoomColorView: FC<{}> = props =>
 {
     const [ roomBackground, setRoomBackground ] = useState<NitroSprite>(null);
-    const [ roomBackgroundColor, setRoomBackgroundColor ] = useState(0);
-    const [ originalRoomBackgroundColor, setOriginalRoomBackgroundColor ] = useState(0);
     const [ roomFilter, setRoomFilter ] = useState<NitroAdjustmentFilter>(null);
-    const { roomSession = null, canvasId = -1, widgetHandler = null, eventDispatcher = null } = useRoomContext();
-
-    const getRenderingCanvas = useCallback(() =>
-    {
-        return GetRoomEngine().getRoomInstanceRenderingCanvas(roomSession.roomId, canvasId);
-    }, [ roomSession, canvasId ]);
-
-    const getRoomBackground = useCallback(() =>
-    {
-        if(roomBackground) return roomBackground;
-
-        const canvas = getRenderingCanvas();
-
-        if(!canvas) return null;
-
-        const displayObject = (canvas.master as NitroContainer);
-        const background = new NitroSprite(NitroTexture.WHITE);
-
-        displayObject.addChildAt(background, 0);
-
-        setRoomBackground(background);
-
-        return background;
-    }, [ roomBackground, getRenderingCanvas ]);
-
-    const updateRoomBackground = useCallback((color: number) =>
-    {
-        const background = getRoomBackground();
-
-        if(!background) return;
-
-        if(color === undefined) color = 0x000000;
-
-        background.tint = color;
-        background.width = GetNitroInstance().width;
-        background.height = GetNitroInstance().height;
-    }, [ getRoomBackground ]);
+    const [ originalRoomBackgroundColor, setOriginalRoomBackgroundColor ] = useState(0);
+    const { roomSession = null, widgetHandler = null, eventDispatcher = null } = useRoomContext();
 
     const updateRoomBackgroundColor = useCallback((hue: number, saturation: number, lightness: number, original: boolean = false) =>
     {
+        if(!roomBackground) return;
+        
         const newColor = ColorConverter.hslToRGB(((((hue & 0xFF) << 16) + ((saturation & 0xFF) << 8)) + (lightness & 0xFF)));
 
-        setRoomBackgroundColor(newColor);
         if(original) setOriginalRoomBackgroundColor(newColor);
-
-        const background = getRoomBackground();
-
-        if(!background) return;
 
         if(!hue && !saturation && !lightness)
         {
-            background.visible = false;
+            roomBackground.tint = 0;
         }
         else
         {
-            updateRoomBackground(newColor);
-
-            background.visible = true;
+            roomBackground.tint = newColor;
         }
-    }, [ getRoomBackground, updateRoomBackground ]);
-
-    const getRoomFilter = useCallback(() =>
-    {
-        if(roomFilter) return roomFilter;
-
-        const canvas = getRenderingCanvas();
-
-        if(!canvas) return null;
-
-        const display = canvas.master;
-
-        if(!display) return null;
-
-        const filter = new NitroAdjustmentFilter();
-
-        setRoomFilter(filter);
-
-        display.filters = [ filter ];
-
-        return filter;
-    }, [ roomFilter, getRenderingCanvas ]);
+    }, [ roomBackground ]);
 
     const updateRoomFilter = useCallback((color: number) =>
     {
-        const colorMatrix = getRoomFilter();
-
-        if(!colorMatrix) return;
+        if(!roomFilter) return;
 
         const r = ((color >> 16) & 0xFF);
         const g = ((color >> 8) & 0xFF);
         const b = (color & 0xFF);
 
-        colorMatrix.red = (r / 255);
-        colorMatrix.green = (g / 255);
-        colorMatrix.blue = (b / 255);
-    }, [ getRoomFilter ]);
-
-    const updateRoomFilterColor = useCallback((color: number, brightness: number) =>
-    {
-        const newColor = ColorConverter.hslToRGB(((ColorConverter.rgbToHSL(color) & 0xFFFF00) + brightness));
-
-        updateRoomFilter(newColor);
-    }, [ updateRoomFilter ]);
+        roomFilter.red = (r / 255);
+        roomFilter.green = (g / 255);
+        roomFilter.blue = (b / 255);
+    }, [ roomFilter ]);
 
     const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
     {
@@ -131,8 +59,16 @@ export const RoomColorView: FC<{}> = props =>
             case RoomBackgroundColorEvent.ROOM_COLOR: {
                 const colorEvent = (event as RoomBackgroundColorEvent);
 
-                if(colorEvent.bgOnly) updateRoomFilterColor(0x000000, 0xFF);
-                else updateRoomFilterColor(colorEvent.color, colorEvent.brightness);
+                let color = 0x000000;
+                let brightness = 0xFF;
+
+                if(!colorEvent.bgOnly)
+                {
+                    color = colorEvent.color;
+                    brightness = colorEvent.brightness;
+                }
+                
+                updateRoomFilter(ColorConverter.hslToRGB(((ColorConverter.rgbToHSL(color) & 0xFFFF00) + brightness)));
 
                 return;
             }
@@ -140,18 +76,11 @@ export const RoomColorView: FC<{}> = props =>
                 widgetHandler.processEvent(event);
             }
         }
-    }, [ widgetHandler, updateRoomBackgroundColor, updateRoomFilterColor ]);
+    }, [ widgetHandler, updateRoomBackgroundColor, updateRoomFilter ]);
 
     UseRoomEngineEvent(RoomObjectHSLColorEnabledEvent.ROOM_BACKGROUND_COLOR, onRoomEngineEvent);
     UseRoomEngineEvent(RoomBackgroundColorEvent.ROOM_COLOR, onRoomEngineEvent);
     UseRoomEngineEvent(RoomEngineDimmerStateEvent.ROOM_COLOR, onRoomEngineEvent);
-
-    const onRoomWidgetUpdateRoomViewEvent = useCallback((event: RoomWidgetUpdateRoomViewEvent) =>
-    {
-        updateRoomBackground(roomBackgroundColor);
-    }, [ roomBackgroundColor, updateRoomBackground ]);
-
-    UseEventDispatcherHook(RoomWidgetUpdateRoomViewEvent.SIZE_CHANGED, eventDispatcher, onRoomWidgetUpdateRoomViewEvent);
 
     const onRoomWidgetUpdateBackgroundColorPreviewEvent = useCallback((event: RoomWidgetUpdateBackgroundColorPreviewEvent) =>
     {
@@ -162,19 +91,69 @@ export const RoomColorView: FC<{}> = props =>
                 return;
             }
             case RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW: {
-                const color = originalRoomBackgroundColor;
+                if(!roomBackground) return;
 
-                setRoomBackgroundColor(color);
-                updateRoomBackground(color);
+                roomBackground.tint = originalRoomBackgroundColor;
+                
                 return;
             }
         }
-    }, [ originalRoomBackgroundColor, updateRoomBackgroundColor, updateRoomBackground ]);
+    }, [ roomBackground, originalRoomBackgroundColor, updateRoomBackgroundColor ]);
 
     UseEventDispatcherHook(RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW, eventDispatcher, onRoomWidgetUpdateBackgroundColorPreviewEvent);
     UseEventDispatcherHook(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW, eventDispatcher, onRoomWidgetUpdateBackgroundColorPreviewEvent);
 
-    UseMountEffect(updateRoomBackground);
+    useEffect(() =>
+    {
+        if(!roomSession) return;
+
+        const canvas = GetRoomEngine().getRoomInstanceRenderingCanvas(roomSession.roomId, 1);
+
+        if(!canvas) return;
+
+        const background = new NitroSprite(NitroTexture.WHITE);
+        const filter = new NitroAdjustmentFilter();
+        const master = (canvas.master as NitroContainer);
+
+        background.tint = 0;
+        background.width = GetNitroInstance().width;
+        background.height = GetNitroInstance().height;
+
+        master.addChildAt(background, 0);
+        master.filters = [ filter ];
+
+        setRoomBackground(background);
+        setRoomFilter(filter);
+
+        const resize = (event: UIEvent) =>
+        {
+            background.width = GetNitroInstance().width;
+            background.height = GetNitroInstance().height;
+        }
+
+        window.addEventListener('resize', resize);
+
+        return () =>
+        {
+            setRoomBackground(prevValue =>
+            {
+                if(prevValue) prevValue.destroy();
+
+                return null;
+            });
+
+            setRoomFilter(prevValue =>
+            {
+                if(prevValue) prevValue.destroy();
+
+                return null;
+            });
+            
+            setOriginalRoomBackgroundColor(0);
+
+            window.removeEventListener('resize', resize);
+        }
+    }, [ roomSession ]);
 
     return null;
 }

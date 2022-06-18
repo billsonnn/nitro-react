@@ -1,15 +1,19 @@
-import { FC } from 'react';
+import { Dispatch, FC, PropsWithChildren, SetStateAction } from 'react';
 import { GetAchievementCategoryImageUrl, GetAchievementCategoryMaxProgress, GetAchievementCategoryProgress, GetAchievementCategoryTotalUnseen, IAchievementCategory, LocalizeText } from '../../../../api';
-import { LayoutBackgroundImage, LayoutGridItem, LayoutGridItemProps, Text } from '../../../../common';
+import { LayoutBackgroundImage, LayoutGridItem, Text } from '../../../../common';
 
-export interface AchievementCategoryListItemViewProps extends LayoutGridItemProps
+interface AchievementCategoryListItemViewProps
 {
     category: IAchievementCategory;
+    selectedCategoryCode: string;
+    setSelectedCategoryCode: Dispatch<SetStateAction<string>>;
 }
 
-export const AchievementsCategoryListItemView: FC<AchievementCategoryListItemViewProps> = props =>
+export const AchievementsCategoryListItemView: FC<PropsWithChildren<AchievementCategoryListItemViewProps>> = props =>
 {
-    const { category = null, children = null, ...rest } = props;
+    const { category = null, selectedCategoryCode = null, setSelectedCategoryCode = null, children = null, ...rest } = props;
+
+    if(!category) return null;
 
     const progress = GetAchievementCategoryProgress(category);
     const maxProgress = GetAchievementCategoryMaxProgress(category);
@@ -17,9 +21,9 @@ export const AchievementsCategoryListItemView: FC<AchievementCategoryListItemVie
     const getTotalUnseen = GetAchievementCategoryTotalUnseen(category);
 
     return (
-        <LayoutGridItem itemCount={ getTotalUnseen } itemCountMinimum={ 0 } gap={ 1 } { ...rest }>
-            <Text fullWidth center className="small pt-1">{ LocalizeText(`quests.${ category.code }.name`) }</Text>
-            <LayoutBackgroundImage className="position-relative" imageUrl={ getCategoryImage }>
+        <LayoutGridItem itemActive={ (selectedCategoryCode === category.code) } itemCount={ getTotalUnseen } itemCountMinimum={ 0 } gap={ 1 } onClick={ event => setSelectedCategoryCode(category.code) } { ...rest }>
+            <Text fullWidth center small className="pt-1">{ LocalizeText(`quests.${ category.code }.name`) }</Text>
+            <LayoutBackgroundImage position="relative" imageUrl={ getCategoryImage }>
                 <Text fullWidth center position="absolute" variant="white" style={ { fontSize: 12, bottom: 9 } }>{ progress } / { maxProgress }</Text>
             </LayoutBackgroundImage>
             { children }

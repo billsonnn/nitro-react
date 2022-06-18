@@ -1,7 +1,6 @@
 import { RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetFurnitureDataForRoomObject, LocalizeText, UseProductItem } from '../../../../api';
-import { FurniCategory } from '../../../inventory/common/FurniCategory';
+import { FurniCategory, GetFurnitureDataForRoomObject, LocalizeText, UseProductItem } from '../../../../api';
 import { useRoomContext } from '../../RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
@@ -88,7 +87,7 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
     }, [ item, updateConfirmingProduct ]);
     
     return (
-        <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close }>
+        <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close } collapsable={ true }>
             <ContextMenuHeaderView>
                 { item.name }
             </ContextMenuHeaderView>

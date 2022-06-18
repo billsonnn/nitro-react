@@ -4,12 +4,12 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { ColorUtils, GetConfiguration, LocalizeText, RoomWidgetDimmerChangeStateMessage, RoomWidgetDimmerPreviewMessage, RoomWidgetDimmerSavePresetMessage, RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateDimmerStateEvent } from '../../../../../api';
 import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../../common';
-import { BatchUpdates, UseEventDispatcherHook } from '../../../../../hooks';
+import { UseEventDispatcherHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../RoomContext';
 import { DimmerFurnitureWidgetPresetItem } from './DimmerFurnitureWidgetPresetItem';
 
-const AVAILABLE_COLORS: number[] = [7665141, 21495, 15161822, 15353138, 15923281, 8581961, 0];
-const HTML_COLORS: string[] = ['#74F5F5', '#0053F7', '#E759DE', '#EA4532', '#F2F851', '#82F349', '#000000'];
+const AVAILABLE_COLORS: number[] = [ 7665141, 21495, 15161822, 15353138, 15923281, 8581961, 0 ];
+const HTML_COLORS: string[] = [ '#74F5F5', '#0053F7', '#E759DE', '#EA4532', '#F2F851', '#82F349', '#000000' ];
 const MIN_BRIGHTNESS: number = 76;
 const MAX_BRIGHTNESS: number = 255;
 
@@ -39,12 +39,9 @@ export const FurnitureDimmerView: FC<{}> = props =>
 
                 for(const preset of widgetEvent.presets) presets.push(new DimmerFurnitureWidgetPresetItem(preset.id, preset.type, preset.color, preset.brightness));
 
-                BatchUpdates(() =>
-                {
-                    setPresets(presets);
-                    setSelectedPresetId(widgetEvent.selectedPresetId);
-                    setIsVisible(true);
-                });
+                setPresets(presets);
+                setSelectedPresetId(widgetEvent.selectedPresetId);
+                setIsVisible(true);
                 return;
             }
             case RoomWidgetUpdateDimmerEvent.HIDE: {
@@ -55,18 +52,15 @@ export const FurnitureDimmerView: FC<{}> = props =>
             case RoomWidgetUpdateDimmerStateEvent.DIMMER_STATE: {
                 const widgetEvent = (event as RoomWidgetUpdateDimmerStateEvent);
 
-                BatchUpdates(() =>
-                {
-                    setLastDimmerState(dimmerState);
-                    setDimmerState(widgetEvent.state);
-                    setSelectedPresetId(widgetEvent.presetId);
-                    setEffectId(widgetEvent.effectId);
-                    setSelectedEffectId(widgetEvent.effectId);
-                    setColor(widgetEvent.color);
-                    setSelectedColor(widgetEvent.color);
-                    setBrightness(widgetEvent.brightness);
-                    setSelectedBrightness(widgetEvent.brightness);
-                });
+                setLastDimmerState(dimmerState);
+                setDimmerState(widgetEvent.state);
+                setSelectedPresetId(widgetEvent.presetId);
+                setEffectId(widgetEvent.effectId);
+                setSelectedEffectId(widgetEvent.effectId);
+                setColor(widgetEvent.color);
+                setSelectedColor(widgetEvent.color);
+                setBrightness(widgetEvent.brightness);
+                setSelectedBrightness(widgetEvent.brightness);
 
                 return;
             }
@@ -82,14 +76,11 @@ export const FurnitureDimmerView: FC<{}> = props =>
         const preset = presets[(id - 1)];
 
         if(!preset) return;
-
-        BatchUpdates(() =>
-        {
-            setSelectedPresetId(preset.id);
-            setSelectedEffectId(preset.type);
-            setSelectedColor(preset.color);
-            setSelectedBrightness(preset.light);
-        });
+        
+        setSelectedPresetId(preset.id);
+        setSelectedEffectId(preset.type);
+        setSelectedColor(preset.color);
+        setSelectedBrightness(preset.light);
     }, [ presets ]);
 
     const close = useCallback(() =>
@@ -117,13 +108,13 @@ export const FurnitureDimmerView: FC<{}> = props =>
         if(!preset || ((selectedEffectId === preset.type) && (selectedColor === preset.color) && (selectedBrightness === preset.light))) return;
 
         setPresets(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
+        {
+            const newValue = [ ...prevValue ];
 
-                newValue[selectedPresetIndex] = new DimmerFurnitureWidgetPresetItem(preset.id, selectedEffectId, selectedColor, selectedBrightness);
+            newValue[selectedPresetIndex] = new DimmerFurnitureWidgetPresetItem(preset.id, selectedEffectId, selectedColor, selectedBrightness);
 
-                return newValue;
-            });
+            return newValue;
+        });
 
         widgetHandler.processWidgetMessage(new RoomWidgetDimmerSavePresetMessage(preset.id, selectedEffectId, selectedColor, selectedBrightness, true));
     }, [ widgetHandler, dimmerState, selectedPresetId, presets, selectedEffectId, selectedColor, selectedBrightness ]);
@@ -149,7 +140,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('widget.dimmer.title') } onCloseClick={ close } />
             { (dimmerState === 1) &&
                 <NitroCardTabsView>
-                    { presets.map(preset => <NitroCardTabsItemView key={ preset.id } isActive={ (selectedPresetId === preset.id) } onClick={ event => selectPresetId(preset.id) }>{ LocalizeText(`widget.dimmer.tab.${preset.id}`) }</NitroCardTabsItemView>) }
+                    { presets.map(preset => <NitroCardTabsItemView key={ preset.id } isActive={ (selectedPresetId === preset.id) } onClick={ event => selectPresetId(preset.id) }>{ LocalizeText(`widget.dimmer.tab.${ preset.id }`) }</NitroCardTabsItemView>) }
                 </NitroCardTabsView> }
             <NitroCardContentView>
                 { (dimmerState === 0) &&
@@ -167,11 +158,11 @@ export const FurnitureDimmerView: FC<{}> = props =>
                             { !isFreeColorMode &&
                                 <Grid gap={ 1 } columnCount={ 7 }>
                                     { AVAILABLE_COLORS.map((color, index) =>
-                                        {
-                                            return (
-                                                <Column fullWidth pointer key={ index } className={ 'color-swatch rounded' + classNames({ ' active': color === selectedColor }) } onClick={ () => setSelectedColor(color) } style={{ backgroundColor: HTML_COLORS[index] }} />
-                                            );
-                                        }) }
+                                    {
+                                        return (
+                                            <Column fullWidth pointer key={ index } className={ 'color-swatch rounded' + classNames({ ' active': color === selectedColor }) } onClick={ () => setSelectedColor(color) } style={ { backgroundColor: HTML_COLORS[index] } } />
+                                        );
+                                    }) }
                                 </Grid> }
                         </Column>
                         <Column gap={ 1 }>
@@ -183,7 +174,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
                                 value={ selectedBrightness }
                                 onChange={ value => setSelectedBrightness(value) }
                                 thumbClassName={ 'thumb percent' }
-                                renderThumb={ (props, state) => <div {...props}>{ scaledBrightness(state.valueNow) }</div> } />
+                                renderThumb={ (props, state) => <div { ...props }>{ scaledBrightness(state.valueNow) }</div> } />
                         </Column>
                         <Flex alignItems="center" gap={ 1 }>
                             <input className="form-check-input" type="checkbox" checked={ (selectedEffectId === 2) } onChange={ event => setSelectedEffectId(event.target.checked ? 2 : 1) } />

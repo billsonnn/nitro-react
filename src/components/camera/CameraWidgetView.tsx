@@ -70,13 +70,13 @@ export const CameraWidgetView: FC<{}> = props =>
                 return;
             case 'delete':
                 setCameraRoll(prevValue =>
-                    {
-                        const clone = [ ...prevValue ];
+                {
+                    const clone = [ ...prevValue ];
 
-                        clone.splice(selectedPictureIndex, 1);
+                    clone.splice(selectedPictureIndex, 1);
 
-                        return clone;
-                    });
+                    return clone;
+                });
                 return;
             case 'editor_cancel':
                 setMode(MODE_CAPTURE);
@@ -106,10 +106,10 @@ export const CameraWidgetView: FC<{}> = props =>
                 return;
             case 'toggle':
                 setMode(prevValue =>
-                    {
-                        if(!prevValue) return MODE_CAPTURE;
-                        else return MODE_NONE;
-                    });
+                {
+                    if(!prevValue) return MODE_CAPTURE;
+                    else return MODE_NONE;
+                });
                 return;
         }
     }, []);

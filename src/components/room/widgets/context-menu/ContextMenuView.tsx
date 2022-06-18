@@ -1,8 +1,8 @@
 import { FixedSizeStack, NitroPoint, NitroRectangle, RoomObjectType } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { GetNitroInstance, GetRoomEngine, GetRoomObjectBounds, GetRoomSession, GetTicker } from '../../../../api';
+import { GetNitroInstance, GetRoomObjectBounds, GetRoomObjectScreenLocation, GetRoomSession, GetTicker } from '../../../../api';
 import { Base, BaseProps } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
+import { ContextMenuCaretView } from './ContextMenuCaretView';
 
 interface ContextMenuViewProps extends BaseProps<HTMLDivElement>
 {
@@ -11,6 +11,7 @@ interface ContextMenuViewProps extends BaseProps<HTMLDivElement>
     userType?: number;
     fades?: boolean;
     close: () => void;
+    collapsable?: boolean;
 }
 
 const LOCATION_STACK_SIZE: number = 25;
@@ -19,9 +20,11 @@ const fadeDelay = 3000;
 const fadeLength = 75;
 const SPACE_AROUND_EDGES = 10;
 
+let COLLAPSED = false;
+
 export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 {
-    const { objectId = -1, category = -1, userType = -1, fades = false, close = null, position = 'absolute', classNames = [], style = {}, ...rest } = props;
+    const { objectId = -1, category = -1, userType = -1, fades = false, close = null, position = 'absolute', classNames = [], style = {}, children = null, collapsable = false, ...rest } = props;
     const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: null, y: null });
     const [ deltaYStack, setDeltaYStack ] = useState<FixedSizeStack>(null);
     const [ currentDeltaY, setCurrentDeltaY ] = useState(-1000000);
@@ -30,6 +33,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     const [ fadeTime, setFadeTime ] = useState(0);
     const [ isFrozen, setIsFrozen ] = useState(false);
     const elementRef = useRef<HTMLDivElement>();
+
+    const [ collapsed, setCollapsed ] = useState(COLLAPSED);
 
     const getOffset = useCallback((bounds: NitroRectangle) =>
     {
@@ -55,11 +60,11 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         if(isFading)
         {
             setFadeTime(prevValue =>
-                {
-                    newFadeTime += prevValue;
+            {
+                newFadeTime += prevValue;
 
-                    return newFadeTime;
-                });
+                return newFadeTime;
+            });
 
             newOpacity = ((1 - (newFadeTime / fadeLength)) * 1);
 
@@ -90,8 +95,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         
         const deltaY = (location.y - maxStack);
 
-        let x = Math.round(location.x - (elementRef.current.offsetWidth / 2));
-        let y = Math.round(deltaY + offset);
+        let x = ~~(location.x - (elementRef.current.offsetWidth / 2));
+        let y = ~~(deltaY + offset);
 
         const maxLeft = ((GetNitroInstance().width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
         const maxTop = ((GetNitroInstance().height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
@@ -102,11 +107,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         if(y < SPACE_AROUND_EDGES) y = SPACE_AROUND_EDGES;
         else if(y > maxTop) y = maxTop;
 
-        BatchUpdates(() =>
-        {
-            setCurrentDeltaY(maxStack);
-            setPos({ x, y });
-        });
+        setCurrentDeltaY(maxStack);
+        setPos({ x, y });
     }, [ deltaYStack, currentDeltaY, getOffset ]);
 
     const update = useCallback((time: number) =>
@@ -114,7 +116,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         if(!elementRef.current || !updateFade(time)) return;
 
         const bounds = GetRoomObjectBounds(GetRoomSession().roomId, objectId, category);
-        const location = GetRoomEngine().getRoomObjectScreenLocation(GetRoomSession().roomId, objectId, category);
+        const location = GetRoomObjectScreenLocation(GetRoomSession().roomId, objectId, category);
 
         updatePosition(bounds, location);
     }, [ objectId, category, updateFade, updatePosition ]);
@@ -122,13 +124,15 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     const getClassNames = useMemo(() =>
     {
         const newClassNames: string[] = [ 'nitro-context-menu' ];
+        
+        if (collapsed) newClassNames.push('menu-hidden');
 
         newClassNames.push((pos.x !== null) ? 'visible' : 'invisible');
 
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ pos, classNames ]);
+    }, [ pos, classNames, collapsed ]);
 
     const getStyle = useMemo(() =>
     {
@@ -145,11 +149,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setDeltaYStack(new FixedSizeStack(LOCATION_STACK_SIZE));
-            setCurrentDeltaY(-1000000);
-        });
+        setDeltaYStack(new FixedSizeStack(LOCATION_STACK_SIZE));
+        setCurrentDeltaY(-1000000);
     }, []);
 
     useEffect(() =>
@@ -177,6 +178,15 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
         return () => clearTimeout(timeout);
     }, [ fades ]);
+    
 
-    return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } onMouseOver={ event => setIsFrozen(true) } onMouseOut={ event => setIsFrozen(false) } { ...rest } />;
+    const toggleCollapse = () =>
+    {
+        COLLAPSED = !COLLAPSED;
+        setCollapsed(COLLAPSED)
+    }
+    return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } onMouseOver={ event => setIsFrozen(true) } onMouseOut={ event => setIsFrozen(false) } { ...rest }>
+        { !(collapsable && COLLAPSED) && children }
+        { collapsable && <ContextMenuCaretView onClick={ () => toggleCollapse() } collapsed={ collapsed } /> }
+    </Base>;
 }

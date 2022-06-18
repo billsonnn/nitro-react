@@ -31,7 +31,7 @@ export const LayoutGiftTagView: FC<LayoutGiftTagViewProps> = props =>
                     { editable && (onChange !== null) &&
                         <textarea className="gift-message h-100" maxLength={ 140 } value={ message } onChange={ (e) => onChange(e.target.value) } placeholder={ LocalizeText('catalog.gift_wrapping_new.message_hint') }></textarea> }
                     { userName &&
-                        <Text italics textEnd className="pe-1">{ LocalizeText('catalog.gift_wrapping_new.message_from', ['name'], [userName]) }</Text> }
+                        <Text italics textEnd className="pe-1">{ LocalizeText('catalog.gift_wrapping_new.message_from', [ 'name' ], [ userName ]) }</Text> }
                 </Column>
             </Flex>
         </Flex>

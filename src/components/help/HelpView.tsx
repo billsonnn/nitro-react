@@ -104,7 +104,7 @@ export const HelpView: FC<{}> = props =>
         }
 
         return null;
-    }, [helpReportState.currentStep]);
+    }, [ helpReportState.currentStep ]);
 
     return (
         <HelpContextProvider value={ { helpReportState, setHelpReportState } }>

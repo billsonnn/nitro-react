@@ -41,13 +41,13 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
         if(groupData.groupId <= 0)
         {
             setGroupData(prevValue =>
-                {
-                    const newValue = { ...prevValue };
+            {
+                const newValue = { ...prevValue };
 
-                    newValue.groupBadgeParts = badgeParts;
+                newValue.groupBadgeParts = badgeParts;
 
-                    return newValue;
-                });
+                return newValue;
+            });
 
             return true;
         }
@@ -81,11 +81,11 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
         ];
 
         setGroupData(prevValue =>
-            {
-                const groupBadgeParts = badgeParts;
+        {
+            const groupBadgeParts = badgeParts;
 
-                return { ...prevValue, groupBadgeParts };
-            });
+            return { ...prevValue, groupBadgeParts };
+        });
     }, [ groupData.groupBadgeParts, groupCustomize, setGroupData ]);
 
     useEffect(() =>

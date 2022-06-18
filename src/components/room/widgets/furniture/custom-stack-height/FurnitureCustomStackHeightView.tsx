@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, RoomWidgetUpdateCustomStackHeightEvent, SendMessageComposer } from '../../../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../../hooks';
+import { UseEventDispatcherHook, UseMessageEventHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../RoomContext';
 
 const MAX_HEIGHT: number = 40;
@@ -17,11 +17,8 @@ export const FurnitureCustomStackHeightView: FC<{}> = props =>
 
     const close = () =>
     {
-        BatchUpdates(() =>
-        {
-            setObjectId(-1);
-            setHeight(0);
-        });
+        setObjectId(-1);
+        setHeight(0);
     }
 
     const updateHeight = useCallback((height: number, fromServer: boolean = false) =>
@@ -32,12 +29,9 @@ export const FurnitureCustomStackHeightView: FC<{}> = props =>
 
         if(!fromServer) ((height > MAX_HEIGHT) && (height = MAX_HEIGHT));
 
-        BatchUpdates(() =>
-        {
-            setHeight(parseFloat(height.toFixed(2)));
+        setHeight(parseFloat(height.toFixed(2)));
 
-            if(!fromServer) setPendingHeight(height * 100);
-        });
+        if(!fromServer) setPendingHeight(height * 100);
     }, []);
 
     const onRoomWidgetUpdateCustomStackHeightEvent = useCallback((event: RoomWidgetUpdateCustomStackHeightEvent) =>

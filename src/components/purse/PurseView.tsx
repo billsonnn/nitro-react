@@ -1,22 +1,14 @@
-import { ActivityPointNotificationMessageEvent, FriendlyTime, HabboClubLevelEnum, UserCreditsEvent, UserCurrencyComposer, UserCurrencyEvent, UserSubscriptionComposer, UserSubscriptionEvent, UserSubscriptionParser } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { CreateLinkEvent, GetConfiguration, LocalizeText, PlaySound, SendMessageComposer, SoundNames } from '../../api';
+import { FriendlyTime, HabboClubLevelEnum } from '@nitrots/nitro-renderer';
+import { FC, useCallback, useMemo } from 'react';
+import { CreateLinkEvent, GetConfiguration, LocalizeText } from '../../api';
 import { Column, Flex, Grid, LayoutCurrencyIcon, Text } from '../../common';
-import { HcCenterEvent, UserSettingsUIEvent } from '../../events';
-import { DispatchUiEvent, UseMessageEventHook } from '../../hooks';
-import { IPurse } from './common/IPurse';
-import { Purse } from './common/Purse';
-import { PurseContextProvider } from './PurseContext';
+import { usePurse } from '../../hooks';
 import { CurrencyView } from './views/CurrencyView';
 import { SeasonalView } from './views/SeasonalView';
 
-export let GLOBAL_PURSE: IPurse = null;
-
 export const PurseView: FC<{}> = props =>
 {
-    const [ purse, setPurse ] = useState<IPurse>(new Purse());
-
-    const hcDisabled = useMemo(() => GetConfiguration<boolean>('hc.disabled', false), []);
+    const { purse = null, hcDisabled = false } = usePurse();
     const displayedCurrencies = useMemo(() => GetConfiguration<number[]>('system.currency.types', []), []);
     const currencyDisplayNumberShort = useMemo(() => GetConfiguration<boolean>('currency.display.number.short', false), []);
 
@@ -66,135 +58,32 @@ export const PurseView: FC<{}> = props =>
         return elements;
     }, [ purse, displayedCurrencies, currencyDisplayNumberShort ]);
 
-    const onUserCreditsEvent = useCallback((event: UserCreditsEvent) =>
-    {
-        const parser = event.getParser();
-
-        setPurse(prevValue =>
-            {
-                const newValue = Purse.from(prevValue as Purse);
-
-                newValue.credits = parseFloat(parser.credits);
-
-                if(prevValue.credits !== newValue.credits) PlaySound(SoundNames.CREDITS);
-
-                return newValue;
-            });
-    }, []);
-
-    UseMessageEventHook(UserCreditsEvent, onUserCreditsEvent);
-
-    const onUserCurrencyEvent = useCallback((event: UserCurrencyEvent) =>
-    {
-        const parser = event.getParser();
-
-        setPurse(prevValue =>
-            {
-                const newValue = Purse.from(prevValue as Purse);
-
-                newValue.activityPoints = parser.currencies;
-
-                return newValue;
-            });
-    }, []);
-
-    UseMessageEventHook(UserCurrencyEvent, onUserCurrencyEvent);
-
-    const onActivityPointNotificationMessageEvent = useCallback((event: ActivityPointNotificationMessageEvent) =>
-    {
-        const parser = event.getParser();
-
-        setPurse(prevValue =>
-            {
-                const newValue = Purse.from(prevValue as Purse);
-
-                newValue.activityPoints = new Map(newValue.activityPoints);
-
-                newValue.activityPoints.set(parser.type, parser.amount);
-
-                if(parser.type === 0) PlaySound(SoundNames.DUCKETS)
-
-                return newValue;
-            });
-    }, []);
-
-    UseMessageEventHook(ActivityPointNotificationMessageEvent, onActivityPointNotificationMessageEvent);
-
-    const onUserSubscriptionEvent = useCallback((event: UserSubscriptionEvent) =>
-    {
-        const parser = event.getParser();
-        const productName = parser.productName;
-
-        if((productName !== 'club_habbo') && (productName !== 'habbo_club')) return;
-
-        setPurse(prevValue =>
-            {
-                const newValue = Purse.from(prevValue as Purse);
-
-                newValue.clubDays = Math.max(0, parser.daysToPeriodEnd);
-                newValue.clubPeriods = Math.max(0, parser.periodsSubscribedAhead);
-                newValue.isVip = parser.isVip;
-                newValue.pastClubDays = parser.pastClubDays;
-                newValue.pastVipDays = parser.pastVipDays;
-                newValue.isExpiring = ((parser.responseType === UserSubscriptionParser.RESPONSE_TYPE_DISCOUNT_AVAILABLE) ? true : false);
-                newValue.minutesUntilExpiration = parser.minutesUntilExpiration;
-                newValue.minutesSinceLastModified = parser.minutesSinceLastModified;
-
-                return newValue;
-            });
-    }, []);
-
-    UseMessageEventHook(UserSubscriptionEvent, onUserSubscriptionEvent);
-
-    useEffect(() =>
-    {
-        GLOBAL_PURSE = purse;
-    }, [ purse ]);
-
-    useEffect(() =>
-    {
-        if(hcDisabled) return;
-
-        SendMessageComposer(new UserSubscriptionComposer('habbo_club'));
-
-        const interval = setInterval(() => SendMessageComposer(new UserSubscriptionComposer('habbo_club')), 50000);
-
-        return () => clearInterval(interval);
-    }, [ hcDisabled ]);
-
-    useEffect(() =>
-    {
-        SendMessageComposer(new UserCurrencyComposer());
-    }, []);
-
     if(!purse) return null;
 
     return (
-        <PurseContextProvider value={ { purse } }>
-            <Column alignItems="end" className="nitro-purse-container" gap={ 1 }>
-                <Flex className="nitro-purse rounded-bottom p-1">
-                    <Grid fullWidth gap={ 1 }>
-                        <Column justifyContent="center" size={ hcDisabled ? 10 : 6 } gap={ 0 }>
-                            <CurrencyView type={ -1 } amount={ purse.credits } short={ currencyDisplayNumberShort } />
-                            { getCurrencyElements(0, 2) }
-                        </Column>
-                        { !hcDisabled &&
-                            <Column center pointer size={ 4 } gap={ 1 } className="nitro-purse-subscription rounded" onClick={ event => DispatchUiEvent(new HcCenterEvent(HcCenterEvent.TOGGLE_HC_CENTER)) }>
-                                <LayoutCurrencyIcon type="hc" />
-                                <Text variant="white">{ getClubText }</Text>
-                            </Column> }
-                        <Column justifyContent="center" size={ 2 } gap={ 0 }>
-                            <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => CreateLinkEvent('help/show') }>
-                                <i className="icon icon-help"/>
-                            </Flex>
-                            <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => DispatchUiEvent(new UserSettingsUIEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS)) } >
-                                <i className="icon icon-cog"/>
-                            </Flex>
-                        </Column>
-                    </Grid>
-                </Flex>
-                { getCurrencyElements(2, -1, true) }
-            </Column>
-        </PurseContextProvider>
+        <Column alignItems="end" className="nitro-purse-container" gap={ 1 }>
+            <Flex className="nitro-purse rounded-bottom p-1">
+                <Grid fullWidth gap={ 1 }>
+                    <Column justifyContent="center" size={ hcDisabled ? 10 : 6 } gap={ 0 }>
+                        <CurrencyView type={ -1 } amount={ purse.credits } short={ currencyDisplayNumberShort } />
+                        { getCurrencyElements(0, 2) }
+                    </Column>
+                    { !hcDisabled &&
+                        <Column center pointer size={ 4 } gap={ 1 } className="nitro-purse-subscription rounded" onClick={ event => CreateLinkEvent('habboUI/open/hccenter') }>
+                            <LayoutCurrencyIcon type="hc" />
+                            <Text variant="white">{ getClubText }</Text>
+                        </Column> }
+                    <Column justifyContent="center" size={ 2 } gap={ 0 }>
+                        <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => CreateLinkEvent('help/show') }>
+                            <i className="icon icon-help"/>
+                        </Flex>
+                        <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => CreateLinkEvent('user-settings/toggle') } >
+                            <i className="icon icon-cog"/>
+                        </Flex>
+                    </Column>
+                </Grid>
+            </Flex>
+            { getCurrencyElements(2, -1, true) }
+        </Column>
     );
 }

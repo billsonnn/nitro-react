@@ -2,7 +2,7 @@ import { GroupInformationComposer, GroupInformationEvent, GroupInformationParser
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer, ToggleFavoriteGroup } from '../../../api';
 import { AutoGrid, Base, Column, Flex, Grid, GridProps, LayoutBadgeImageView, LayoutGridItem } from '../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../hooks';
+import { UseMessageEventHook } from '../../../hooks';
 import { GroupInformationView } from '../../groups/views/GroupInformationView';
 
 interface GroupsContainerViewProps extends GridProps
@@ -38,23 +38,20 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setGroupInformation(null);
+        setGroupInformation(null);
 
-            if(groups.length > 0)
+        if(groups.length > 0)
+        {
+            setSelectedGroupId(prevValue =>
             {
-                setSelectedGroupId(prevValue =>
-                    {
-                        if(prevValue === groups[0].groupId)
-                        {
-                            SendMessageComposer(new GroupInformationComposer(groups[0].groupId, false));
-                        }
-    
-                        return groups[0].groupId;
-                    });
-            }
-        });
+                if(prevValue === groups[0].groupId)
+                {
+                    SendMessageComposer(new GroupInformationComposer(groups[0].groupId, false));
+                }
+
+                return groups[0].groupId;
+            });
+        }
     }, [ groups ]);
 
     if(!groups || !groups.length)
@@ -75,15 +72,15 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
             <Column alignItems="center" size={ 2 } overflow="auto">
                 <AutoGrid overflow={ null } columnCount={ 1 } columnMinHeight={ 50 } className="user-groups-container">
                     { groups.map((group, index) =>
-                        {
-                            return (
-                                <LayoutGridItem key={ index } overflow="unset" itemActive={ (selectedGroupId === group.groupId) } onClick={ () => setSelectedGroupId(group.groupId) } className="p-1">
-                                    { itsMe &&
-                                        <i className={ 'position-absolute end-0 top-0 z-index-1 icon icon-group-' + (group.favourite ? 'favorite' : 'not-favorite') } onClick={ () => ToggleFavoriteGroup(group) } /> }
-                                    <LayoutBadgeImageView badgeCode={ group.badgeCode } isGroup={ true } />
-                                </LayoutGridItem>
-                            )
-                        }) }
+                    {
+                        return (
+                            <LayoutGridItem key={ index } overflow="unset" itemActive={ (selectedGroupId === group.groupId) } onClick={ () => setSelectedGroupId(group.groupId) } className="p-1">
+                                { itsMe &&
+                                <i className={ 'position-absolute end-0 top-0 z-index-1 icon icon-group-' + (group.favourite ? 'favorite' : 'not-favorite') } onClick={ () => ToggleFavoriteGroup(group) } /> }
+                                <LayoutBadgeImageView badgeCode={ group.badgeCode } isGroup={ true } />
+                            </LayoutGridItem>
+                        )
+                    }) }
                 </AutoGrid>
             </Column>
             <Column size={ 10 } overflow="hidden">

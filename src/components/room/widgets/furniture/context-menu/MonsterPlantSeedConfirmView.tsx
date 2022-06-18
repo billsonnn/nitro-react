@@ -1,8 +1,7 @@
 import { IFurnitureData, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetFurnitureDataForRoomObject, LocalizeText, RoomWidgetUseProductMessage } from '../../../../../api';
+import { FurniCategory, GetFurnitureDataForRoomObject, LocalizeText, RoomWidgetUseProductMessage } from '../../../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { FurniCategory } from '../../../../inventory/common/FurniCategory';
 import { useRoomContext } from '../../../RoomContext';
 
 interface MonsterPlantSeedConfirmViewProps

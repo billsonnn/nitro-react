@@ -288,15 +288,15 @@ export const AvatarEditorView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('avatareditor.title') } onCloseClick={ event => setIsVisible(false) } />
             <NitroCardTabsView>
                 { categories && (categories.size > 0) && Array.from(categories.keys()).map(category =>
-                    {
-                        const isActive = (activeCategory && (activeCategory.name === category));
+                {
+                    const isActive = (activeCategory && (activeCategory.name === category));
 
-                        return (
-                            <NitroCardTabsItemView key={ category } isActive={ isActive } onClick={ event => selectCategory(category) }>
-                                { LocalizeText(`avatareditor.category.${ category }`) }
-                            </NitroCardTabsItemView>
-                        );
-                    })}
+                    return (
+                        <NitroCardTabsItemView key={ category } isActive={ isActive } onClick={ event => selectCategory(category) }>
+                            { LocalizeText(`avatareditor.category.${ category }`) }
+                        </NitroCardTabsItemView>
+                    );
+                }) }
                 <NitroCardTabsItemView isActive={ isWardrobeVisible } onClick={ event => setIsWardrobeVisible(true) }>
                     { LocalizeText('avatareditor.category.wardrobe') }
                 </NitroCardTabsItemView>

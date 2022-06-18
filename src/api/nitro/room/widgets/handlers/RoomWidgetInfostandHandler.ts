@@ -1,9 +1,8 @@
-import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionFavoriteGroupUpdateEvent, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
+import { IFurnitureData, NitroEvent, ObjectDataFactory, PetFigureData, PetRespectComposer, PetSupplementComposer, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectOperationType, RoomObjectType, RoomObjectVariable, RoomSessionFavoriteGroupUpdateEvent, RoomSessionPetInfoUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, RoomTradingLevelEnum, RoomUnitDropHandItemComposer, RoomUnitGiveHandItemComposer, RoomUnitGiveHandItemPetComposer, RoomUserData, RoomWidgetEnum, RoomWidgetEnumItemExtradataParameter, TradingOpenComposer, Vector3d } from '@nitrots/nitro-renderer';
 import { SendMessageComposer } from '../../..';
 import { GetNitroInstance, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
-import { FriendsHelper } from '../../../../../components/friends/common/FriendsHelper';
 import { PetSupplementEnum } from '../../../../../components/room/widgets/avatar-info/common/PetSupplementEnum';
-import { FriendsSendFriendRequestEvent, HelpReportUserEvent, InventoryTradeRequestEvent, WiredSelectObjectEvent } from '../../../../../events';
+import { HelpReportUserEvent, WiredSelectObjectEvent } from '../../../../../events';
 import { DispatchUiEvent } from '../../../../../hooks';
 import { LocalizeText } from '../../../../utils/LocalizeText';
 import { RoomWidgetObjectNameEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateInfostandFurniEvent, RoomWidgetUpdateInfostandPetEvent, RoomWidgetUpdateInfostandRentableBotEvent, RoomWidgetUpdateInfostandUserEvent } from '../events';
@@ -81,9 +80,6 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 return this.processObjectNameMessage((message as RoomWidgetRoomObjectMessage));
             case RoomWidgetRoomObjectMessage.GET_OBJECT_INFO:
                 return this.processObjectInfoMessage((message as RoomWidgetRoomObjectMessage));
-            case RoomWidgetUserActionMessage.SEND_FRIEND_REQUEST:
-                DispatchUiEvent(new FriendsSendFriendRequestEvent(userData.webID, userData.name));
-                break;
             case RoomWidgetUserActionMessage.RESPECT_USER:
                 GetSessionDataManager().giveRespect(userId);
                 break;
@@ -123,7 +119,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
                 this.container.roomSession.sendTakeRightsMessage((message as RoomWidgetUserActionMessage).userId);
                 break;
             case RoomWidgetUserActionMessage.START_TRADING:
-                DispatchUiEvent(new InventoryTradeRequestEvent(userData.roomIndex, userData.name));
+                SendMessageComposer(new TradingOpenComposer(userData.roomIndex));
                 break;
             // case RoomWidgetUserActionMessage.RWUAM_OPEN_HOME_PAGE:
             //     this._container.sessionDataManager._Str_21275((message as RoomWidgetUserActionMessage).userId, _local_3.name);
@@ -452,11 +448,7 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         if(roomObject) event.carryItem = (roomObject.model.getValue<number>(RoomObjectVariable.FIGURE_CARRY_OBJECT) || 0);
 
-        if(eventType === RoomWidgetUpdateInfostandUserEvent.OWN_USER)
-        {
-            event.realName = GetSessionDataManager().realName;
-            event.allowNameChange = GetSessionDataManager().canChangeName;
-        }
+        if(eventType === RoomWidgetUpdateInfostandUserEvent.OWN_USER) event.allowNameChange = GetSessionDataManager().canChangeName;
 
         event.amIOwner = this.container.roomSession.isRoomOwner;
         event.isGuildRoom = this.container.roomSession.isGuildRoom;
@@ -466,19 +458,6 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
 
         if(eventType === RoomWidgetUpdateInfostandUserEvent.PEER)
         {
-            event.canBeAskedAsFriend = FriendsHelper.canRequestFriend(userData.webID);
-
-            if(!event.canBeAskedAsFriend)
-            {
-                const friend = FriendsHelper.getFriend(userData.webID);
-
-                if(friend)
-                {
-                    event.realName = friend.realName;
-                    event.isFriend = true;
-                }
-            }
-
             if(roomObject)
             {
                 const flatControl = roomObject.model.getValue<number>(RoomObjectVariable.FIGURE_FLAT_CONTROL);
@@ -755,7 +734,6 @@ export class RoomWidgetInfostandHandler extends RoomWidgetHandler
         return [
             RoomWidgetRoomObjectMessage.GET_OBJECT_INFO,
             RoomWidgetRoomObjectMessage.GET_OBJECT_NAME,
-            RoomWidgetUserActionMessage.SEND_FRIEND_REQUEST,
             RoomWidgetUserActionMessage.RESPECT_USER,
             RoomWidgetUserActionMessage.WHISPER_USER,
             RoomWidgetUserActionMessage.IGNORE_USER,

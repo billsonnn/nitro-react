@@ -20,9 +20,11 @@
         font-size: 18px;
     }
 
-    &:not(.name-only) {
+    &:not(.name-only):not(.menu-hidden) {
         min-width: 125px;
+    }
 
+    &:not(.name-only) {
         &:after {
             content: "";
             position: absolute;
@@ -47,6 +49,22 @@
         max-height: 25px;
         font-size: 16px;
         margin-bottom: 2px;
+    }
+
+    &.menu-hidden {
+        .menu-footer {
+            padding-top:2px;
+            padding-bottom:0;
+        }
+    }
+
+    .menu-footer {
+        color: $white;
+        font-size: 16px;
+        width:100%;
+        min-width: 25px;
+        padding-bottom:2px;
+        cursor: pointer;
     }
 
     .menu-list-split-3 {

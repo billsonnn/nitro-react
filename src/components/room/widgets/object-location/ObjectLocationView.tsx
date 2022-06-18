@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { GetNitroInstance, GetRoomEngine, GetRoomSession } from '../../../../api';
+import { GetNitroInstance, GetRoomObjectBounds, GetRoomSession } from '../../../../api';
 import { Base, BaseProps } from '../../../../common';
 
 interface ObjectLocationViewProps extends BaseProps<HTMLDivElement>
@@ -18,7 +18,7 @@ export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
     const getObjectLocation = useCallback(() =>
     {
         const roomSession = GetRoomSession();
-        const objectBounds = GetRoomEngine().getRoomObjectBoundingRectangle(roomSession.roomId, objectId, category, 1);
+        const objectBounds = GetRoomObjectBounds(roomSession.roomId, objectId, category, 1);
 
         return objectBounds;
     }, [ objectId, category ]);

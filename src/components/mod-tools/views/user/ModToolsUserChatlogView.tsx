@@ -2,7 +2,7 @@ import { ChatRecordData, GetUserChatlogMessageComposer, UserChatlogEvent } from 
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../api';
 import { DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
+import { UseMessageEventHook } from '../../../../hooks';
 import { ChatlogView } from '../chatlog/ChatlogView';
 
 interface ModToolsUserChatlogViewProps
@@ -23,11 +23,8 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
 
         if(!parser || parser.data.userId !== userId) return;
 
-        BatchUpdates(() =>
-        {
-            setUsername(parser.data.username);
-            setUserChatlog(parser.data.roomChatlogs);
-        });
+        setUsername(parser.data.username);
+        setUserChatlog(parser.data.roomChatlogs);
     }, [ userId ]);
 
     UseMessageEventHook(UserChatlogEvent, onModtoolUserChatlogEvent);
@@ -38,11 +35,11 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
     }, [ userId ]);
 
     return (
-        <NitroCardView className="nitro-mod-tools-chatlog" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT}>
+        <NitroCardView className="nitro-mod-tools-chatlog" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
             <NitroCardHeaderView headerText={ `User Chatlog: ${ username || '' }` } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black h-100">
                 { userChatlog &&
-                    <ChatlogView records={userChatlog} /> }
+                    <ChatlogView records={ userChatlog } /> }
             </NitroCardContentView>
         </NitroCardView>
     );

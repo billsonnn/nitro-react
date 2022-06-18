@@ -1,9 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
-import { LayoutGridItem } from '../../../../common/layout/LayoutGridItem';
-import { Text } from '../../../../common/Text';
-import { useCatalogContext } from '../../CatalogContext';
-import { ICatalogNode } from '../../common/ICatalogNode';
+import { ICatalogNode } from '../../../../api';
+import { LayoutGridItem, Text } from '../../../../common';
+import { useCatalog } from '../../../../hooks';
 import { CatalogIconView } from '../catalog-icon/CatalogIconView';
 import { CatalogNavigationSetView } from './CatalogNavigationSetView';
 
@@ -15,7 +14,7 @@ export interface CatalogNavigationItemViewProps
 export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = props =>
 {
     const { node = null } = props;
-    const { activateNode = null } = useCatalogContext();
+    const { activateNode = null } = useCatalog();
     
     return (
         <>

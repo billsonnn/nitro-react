@@ -2,7 +2,7 @@ import { FriendFurniConfirmLockMessageComposer, LoveLockFurniFinishedEvent, Love
 import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine, GetRoomSession, LocalizeText, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { DraggableWindow, LayoutAvatarImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../common';
-import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook, UseRoomEngineEvent } from '../../../../../hooks';
+import { UseEventDispatcherHook, UseMessageEventHook, UseRoomEngineEvent } from '../../../../../hooks';
 import { useRoomContext } from '../../../RoomContext';
 import { FurnitureEngravingLockData } from './FriendFurniLockData';
 
@@ -30,11 +30,8 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                 {
                     if(data.length !== 6) return;
                     
-                    BatchUpdates(() =>
-                    {
-                        setEngravingLockData(new FurnitureEngravingLockData(widgetEvent.objectId, widgetEvent.category, type, [ data[1], data[2] ], [ data[3], data[4] ], data[5]));
-                        setEngravingStage(0);
-                    });
+                    setEngravingLockData(new FurnitureEngravingLockData(widgetEvent.objectId, widgetEvent.category, type, [ data[1], data[2] ], [ data[3], data[4] ], data[5]));
+                    setEngravingStage(0);
                 }
                 return;
             }
@@ -42,11 +39,11 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                 const widgetEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 setEngravingLockData(prevState =>
-                    {
-                        if(!prevState || (widgetEvent.id !== prevState.objectId) || (widgetEvent.category !== prevState.category)) return prevState;
+                {
+                    if(!prevState || (widgetEvent.id !== prevState.objectId) || (widgetEvent.category !== prevState.category)) return prevState;
 
-                        return null;
-                    });
+                    return null;
+                });
                 return;
             }
         }
@@ -59,11 +56,8 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        BatchUpdates(() =>
-        {
-            setEngravingLockData(new FurnitureEngravingLockData(parser.furniId));
-            setEngravingStage(parser.start ? 1 : 2);
-        });
+        setEngravingLockData(new FurnitureEngravingLockData(parser.furniId));
+        setEngravingStage(parser.start ? 1 : 2);
     }, []);
 
     UseMessageEventHook(LoveLockFurniStartEvent, onLoveLockFurniStartEvent);

@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useMemo } from 'react';
 import { AchievementCategory } from '../../../api';
 import { Column } from '../../../common';
 import { AchievementListView } from './achievement-list/AchievementListView';
@@ -7,40 +7,44 @@ import { AchievementDetailsView } from './AchievementDetailsView';
 interface AchievementCategoryViewProps
 {
     category: AchievementCategory;
+    selectedAchievementId: number;
+    setSelectedAchievementId: Dispatch<SetStateAction<number>>;
     setAchievementSeen: (code: string, achievementId: number) => void;
 }
 
 export const AchievementCategoryView: FC<AchievementCategoryViewProps> = props =>
 {
-    const { category = null, setAchievementSeen = null } = props;
-    const [ selectedAchievementId, setSelectedAchievementId ] = useState(0);
+    const { category = null, selectedAchievementId = -1, setSelectedAchievementId = null, setAchievementSeen = null } = props;
 
-    const getSelectedAchievement = useMemo(() =>
+    const selectedAchievement = useMemo(() =>
     {
-        if(!category || !category.achievements.length) return null;
+        if(selectedAchievementId === -1) return null;
 
-        return category.achievements.find(existing => (existing.achievementId === selectedAchievementId));
+        return category.achievements.find(achievement => (achievement.achievementId === selectedAchievementId));
     }, [ category, selectedAchievementId ]);
 
     useEffect(() =>
     {
-        setSelectedAchievementId((!category || !category.achievements.length) ? 0 : category.achievements[0].achievementId);
-    }, [ category ]);
+        if(!selectedAchievement)
+        {
+            if(category.achievements.length) setSelectedAchievementId(category.achievements[0].achievementId);
+        }
+    }, [ selectedAchievement, category, setSelectedAchievementId ]);
 
     useEffect(() =>
     {
-        if(!getSelectedAchievement || !getSelectedAchievement.unseen) return;
+        if(!selectedAchievement) return;
 
-        setAchievementSeen(category.code, getSelectedAchievement.achievementId);
-    }, [ category, getSelectedAchievement, setAchievementSeen ]);
+        setAchievementSeen(category.code, selectedAchievement.achievementId);
+    }, [ selectedAchievement, category, setAchievementSeen ]);
 
     if(!category) return null;
 
     return (
         <Column fullHeight justifyContent="between">
             <AchievementListView achievements={ category.achievements } selectedAchievementId={ selectedAchievementId } setSelectedAchievementId={ setSelectedAchievementId } />
-            { getSelectedAchievement &&
-                <AchievementDetailsView achievement={ getSelectedAchievement } /> }
+            { !!selectedAchievement &&
+                <AchievementDetailsView achievement={ selectedAchievement } /> }
         </Column>
     );
 }

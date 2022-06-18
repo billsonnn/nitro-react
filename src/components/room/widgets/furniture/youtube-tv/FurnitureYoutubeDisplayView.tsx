@@ -3,21 +3,21 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
 import { FurnitureYoutubeDisplayWidgetHandler, LocalizeText, RoomWidgetUpdateYoutubeDisplayEvent, SendMessageComposer } from '../../../../../api';
 import { Grid, LayoutGridItem, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../../common';
-import { BatchUpdates, UseEventDispatcherHook, UseMessageEventHook } from '../../../../../hooks';
+import { UseEventDispatcherHook, UseMessageEventHook } from '../../../../../hooks';
 import { useRoomContext } from '../../../RoomContext';
 import { YoutubeVideoPlaybackStateEnum } from './utils/YoutubeVideoPlaybackStateEnum';
 
 export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 {
-    const [objectId, setObjectId] = useState(-1);
-    const [videoId, setVideoId] = useState<string>(null);
-    const [videoStart, setVideoStart] = useState<number>(null);
-    const [videoEnd, setVideoEnd] = useState<number>(null);
-    const [currentVideoState, setCurrentVideoState] = useState(-1);
-    const [selectedItem, setSelectedItem] = useState<string>(null);
-    const [playlists, setPlaylists] = useState<YoutubeDisplayPlaylist[]>(null);
-    const [hasControl, setHasControl] = useState(false);
-    const [player, setPlayer] = useState<any>(null);
+    const [ objectId, setObjectId ] = useState(-1);
+    const [ videoId, setVideoId ] = useState<string>(null);
+    const [ videoStart, setVideoStart ] = useState<number>(null);
+    const [ videoEnd, setVideoEnd ] = useState<number>(null);
+    const [ currentVideoState, setCurrentVideoState ] = useState(-1);
+    const [ selectedItem, setSelectedItem ] = useState<string>(null);
+    const [ playlists, setPlaylists ] = useState<YoutubeDisplayPlaylist[]>(null);
+    const [ hasControl, setHasControl ] = useState(false);
+    const [ player, setPlayer ] = useState<any>(null);
     const { eventDispatcher = null } = useRoomContext();
 
     const onRoomWidgetUpdateYoutubeDisplayEvent = useCallback((event: RoomWidgetUpdateYoutubeDisplayEvent) =>
@@ -53,14 +53,11 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 
         if(objectId !== parser.furniId) return;
 
-        BatchUpdates(() =>
-        {
-            setVideoId(parser.videoId);
-            setVideoStart(parser.startAtSeconds);
-            setVideoEnd(parser.endAtSeconds);
-            setCurrentVideoState(parser.state);
-        });
-    }, [objectId]);
+        setVideoId(parser.videoId);
+        setVideoStart(parser.startAtSeconds);
+        setVideoEnd(parser.endAtSeconds);
+        setCurrentVideoState(parser.state);
+    }, [ objectId ]);
 
     const onPlaylists = useCallback((event: YoutubeDisplayPlaylistsEvent) =>
     {
@@ -70,16 +67,13 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 
         if(objectId !== parser.furniId) return;
 
-        BatchUpdates(() =>
-        {
-            setPlaylists(parser.playlists);
-            setSelectedItem(parser.selectedPlaylistId);
-            setVideoId(null);
-            setCurrentVideoState(-1);
-            setVideoEnd(null);
-            setVideoStart(null);
-        });
-    }, [objectId]);
+        setPlaylists(parser.playlists);
+        setSelectedItem(parser.selectedPlaylistId);
+        setVideoId(null);
+        setCurrentVideoState(-1);
+        setVideoEnd(null);
+        setVideoStart(null);
+    }, [ objectId ]);
 
     const onControlVideo = useCallback((event: YoutubeControlVideoMessageEvent) =>
     {
@@ -102,7 +96,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                     player.pauseVideo();
                 break;
         }
-    }, [objectId, player]);
+    }, [ objectId, player ]);
 
     UseMessageEventHook(YoutubeDisplayVideoMessageEvent, onVideo);
     UseMessageEventHook(YoutubeDisplayPlaylistsEvent, onPlaylists);
@@ -140,7 +134,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                 SendMessageComposer(new SetYoutubeDisplayPlaylistMessageComposer(objectId, action));
                 setSelectedItem(action);
         }
-    }, [hasControl, objectId, selectedItem, videoId]);
+    }, [ hasControl, objectId, selectedItem, videoId ]);
 
     const onReady = useCallback((event: any) =>
     {
@@ -158,7 +152,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                 case 1:
                     if(currentVideoState === 2)
                     {
-                        //event.target.pauseVideo();
+                    //event.target.pauseVideo();
                     }
                     if(currentVideoState !== 1)
                     {
@@ -172,7 +166,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                     }
             }
         }
-    }, [currentVideoState, objectId, processAction]);
+    }, [ currentVideoState, objectId, processAction ]);
 
     const getYoutubeOpts = useMemo( () =>
     {
@@ -204,38 +198,38 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                 end: videoEnd
             }
         }
-    }, [videoEnd, videoStart]);
+    }, [ videoEnd, videoStart ]);
 
     if((objectId === -1)) return null;
 
     return (
         <NitroCardView className="youtube-tv-widget">
-            <NitroCardHeaderView headerText={''} onCloseClick={close} />
+            <NitroCardHeaderView headerText={ '' } onCloseClick={ close } />
             <NitroCardContentView>
                 <div className="row w-100 h-100">
                     <div className="youtube-video-container col-9">
-                        {(videoId && videoId.length > 0) &&
-                            <YouTube videoId={videoId} opts={getYoutubeOpts as Options} onReady={onReady} onStateChange={onStateChange} containerClassName={'youtubeContainer'} />
+                        { (videoId && videoId.length > 0) &&
+                            <YouTube videoId={ videoId } opts={ getYoutubeOpts as Options } onReady={ onReady } onStateChange={ onStateChange } containerClassName={ 'youtubeContainer' } />
                         }
-                        {(!videoId || videoId.length === 0) &&
-                            <div className="empty-video w-100 h-100 justify-content-center align-items-center d-flex">{LocalizeText('widget.furni.video_viewer.no_videos')}</div>
+                        { (!videoId || videoId.length === 0) &&
+                            <div className="empty-video w-100 h-100 justify-content-center align-items-center d-flex">{ LocalizeText('widget.furni.video_viewer.no_videos') }</div>
                         }
                     </div>
                     <div className="playlist-container col-3">
                         <span className="playlist-controls justify-content-center d-flex">
-                            <i className="icon icon-youtube-prev cursor-pointer" onClick={() => processAction('playlist_prev')} />
-                            <i className="icon icon-youtube-next cursor-pointer" onClick={() => processAction('playlist_next')} />
+                            <i className="icon icon-youtube-prev cursor-pointer" onClick={ () => processAction('playlist_prev') } />
+                            <i className="icon icon-youtube-next cursor-pointer" onClick={ () => processAction('playlist_next') } />
                         </span>
-                        <div className="mb-1">{LocalizeText('widget.furni.video_viewer.playlists')}</div>
-                        <Grid columnCount={1} className="playlist-grid">
-                            {playlists && playlists.map((entry, index) =>
+                        <div className="mb-1">{ LocalizeText('widget.furni.video_viewer.playlists') }</div>
+                        <Grid columnCount={ 1 } className="playlist-grid">
+                            { playlists && playlists.map((entry, index) =>
                             {
                                 return (
-                                    <LayoutGridItem key={index} onClick={() => processAction(entry.video)} itemActive={entry.video === selectedItem}>
-                                        <b>{entry.title}</b> - {entry.description}
+                                    <LayoutGridItem key={ index } onClick={ () => processAction(entry.video) } itemActive={ entry.video === selectedItem }>
+                                        <b>{ entry.title }</b> - { entry.description }
                                     </LayoutGridItem>
                                 )
-                            })}
+                            }) }
                         </Grid>
                     </div>
                 </div>

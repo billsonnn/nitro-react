@@ -20,11 +20,11 @@ export const GroupManagerView: FC<{}> = props =>
     const close = () =>
     {
         setCloseAction(prevValue =>
-            {
-                if(prevValue && prevValue.action) prevValue.action();
+        {
+            if(prevValue && prevValue.action) prevValue.action();
 
-                return null;
-            });
+            return null;
+        });
 
         setGroupData(null);
     }
@@ -43,16 +43,16 @@ export const GroupManagerView: FC<{}> = props =>
         if(!groupData || (groupData.groupId !== parser.id)) return;
 
         setGroupData(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.groupName = parser.title;
-                newValue.groupDescription = parser.description;
-                newValue.groupState = parser.type;
-                newValue.groupCanMembersDecorate = parser.canMembersDecorate;
+            newValue.groupName = parser.title;
+            newValue.groupDescription = parser.description;
+            newValue.groupState = parser.type;
+            newValue.groupCanMembersDecorate = parser.canMembersDecorate;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }, [ groupData ]);
 
     UseMessageEventHook(GroupInformationEvent, onGroupInformationEvent);
@@ -94,15 +94,15 @@ export const GroupManagerView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('group.window.title') } onCloseClick={ close } />
             <NitroCardTabsView>
                 { TABS.map(tab =>
-                    {
-                        return (<NitroCardTabsItemView key={ tab } isActive={ currentTab === tab } onClick={ () => changeTab(tab) }>
-                            { LocalizeText(`group.edit.tab.${tab}`) }
-                        </NitroCardTabsItemView>);
-                    }) }
+                {
+                    return (<NitroCardTabsItemView key={ tab } isActive={ currentTab === tab } onClick={ () => changeTab(tab) }>
+                        { LocalizeText(`group.edit.tab.${ tab }`) }
+                    </NitroCardTabsItemView>);
+                }) }
             </NitroCardTabsView>
             <NitroCardContentView>
                 <Flex alignItems="center" gap={ 2 }>
-                    <Base className={ `nitro-group-tab-image tab-${ currentTab }`} />
+                    <Base className={ `nitro-group-tab-image tab-${ currentTab }` } />
                     <Column grow gap={ 0 }>
                         <Text bold fontSize={ 4 }>{ LocalizeText(`group.edit.tabcaption.${ currentTab }`) }</Text>
                         <Text>{ LocalizeText(`group.edit.tabdesc.${ currentTab }`) }</Text>
@@ -110,7 +110,7 @@ export const GroupManagerView: FC<{}> = props =>
                 </Flex>
                 <Column grow overflow="hidden">
                     { currentTab === 1 &&
-                        <GroupTabIdentityView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } /> }
+                        <GroupTabIdentityView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } close={ close } /> }
                     { currentTab === 2 &&
                         <GroupTabBadgeView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } skipDefault={ true } /> }
                     { currentTab === 3 &&

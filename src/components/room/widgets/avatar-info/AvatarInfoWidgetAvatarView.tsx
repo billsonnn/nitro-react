@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomControllerLevel, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useMemo, useState } from 'react';
-import { GetOwnRoomObject, GetUserProfile, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUserActionMessage } from '../../../../api';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { CreateLinkEvent, GetOwnRoomObject, GetUserProfile, LocalizeText, RoomWidgetMessage, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUserActionMessage } from '../../../../api';
 import { Base, Flex } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
+import { useFriends } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
@@ -28,6 +28,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
     const { userData = null, close = null } = props;
     const [ mode, setMode ] = useState(MODE_NORMAL);
     const [ respectsLeft, setRespectsLeft ] = useState(0);
+    const { canRequestFriend = null } = useFriends();
     const { widgetHandler = null } = useRoomContext();
 
     const isShowGiveRights = useMemo(() =>
@@ -61,7 +62,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
         return flag;
     }, []);
 
-    const processAction = (name: string) =>
+    const processAction = useCallback((name: string) =>
     {
         let messageType: string = null;
         let message: RoomWidgetMessage = null;
@@ -107,27 +108,22 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                     messageType = RoomWidgetUserActionMessage.WHISPER_USER;
                     break;
                 case 'friend':
-                    //userData.canBeAskedAsFriend = false;
-                    messageType = RoomWidgetUserActionMessage.SEND_FRIEND_REQUEST;
+                    CreateLinkEvent(`friends/request/${ userData.webID }/${ userData.name }`);
                     break;
                 case 'relationship':
                     hideMenu = false;
                     setMode(MODE_RELATIONSHIP);
                     break;
-                case 'respect':
-                    let newRespectsLeft = 0;
-
-                    setRespectsLeft(prevValue =>
-                    {
-                        newRespectsLeft = (prevValue - 1);
-
-                        return newRespectsLeft;
-                    });
+                case 'respect': {
+                    let newRespectsLeft = (respectsLeft - 1);
+                    
+                    setRespectsLeft(newRespectsLeft);
 
                     messageType = RoomWidgetUserActionMessage.RESPECT_USER;
 
                     if(newRespectsLeft > 0) hideMenu = false;
                     break;
+                }
                 case 'ignore':
                     messageType = RoomWidgetUserActionMessage.IGNORE_USER;
                     break;
@@ -208,25 +204,22 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
         }
 
         if(hideMenu) close();
-    }
+    }, [ userData, respectsLeft, widgetHandler, close, ]);
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setMode(MODE_NORMAL);
-            setRespectsLeft(userData.respectLeft);
-        });
+        setMode(MODE_NORMAL);
+        setRespectsLeft(userData.respectLeft);
     }, [ userData ]);
 
     return (
-        <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ userData.userType } close={ close }>
+        <ContextMenuView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } userType={ userData.userType } close={ close } collapsable={ true }>
             <ContextMenuHeaderView className="cursor-pointer" onClick={ event => GetUserProfile(userData.webID) }>
-                {userData.name}
+                { userData.name }
             </ContextMenuHeaderView>
             { (mode === MODE_NORMAL) &&
                 <>
-                    { userData.canBeAskedAsFriend &&
+                    { canRequestFriend(userData.webID) &&
                         <ContextMenuListItemView onClick={ event => processAction('friend') }>
                             { LocalizeText('infostand.button.friend') }
                         </ContextMenuListItemView> }
@@ -239,10 +232,10 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                     { (respectsLeft > 0) &&
                         <ContextMenuListItemView onClick={ event => processAction('respect') }>
                             { LocalizeText('infostand.button.respect', [ 'count' ], [ respectsLeft.toString() ]) }
-                        </ContextMenuListItemView>}
-                    { !userData.canBeAskedAsFriend &&
+                        </ContextMenuListItemView> }
+                    { !canRequestFriend(userData.webID) &&
                         <ContextMenuListItemView onClick={ event => processAction('relationship') }>
-                            {LocalizeText('infostand.link.relationship')}
+                            { LocalizeText('infostand.link.relationship') }
                             <FontAwesomeIcon icon="chevron-right" className="right" />
                         </ContextMenuListItemView> }
                     { !userData.isIgnored &&
@@ -363,24 +356,24 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                         <FontAwesomeIcon icon="chevron-left" className="left" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
-                </>}
+                </> }
             { (mode === MODE_RELATIONSHIP) &&
                 <>
                     <Flex className="menu-list-split-3">
-                        <ContextMenuListItemView onClick={event => processAction('rship_heart')}>
+                        <ContextMenuListItemView onClick={ event => processAction('rship_heart') }>
                             <Base pointer className="nitro-friends-spritesheet icon-heart" />
                         </ContextMenuListItemView>
-                        <ContextMenuListItemView onClick={event => processAction('rship_smile')}>
+                        <ContextMenuListItemView onClick={ event => processAction('rship_smile') }>
                             <Base pointer className="nitro-friends-spritesheet icon-smile" />
                         </ContextMenuListItemView>
-                        <ContextMenuListItemView onClick={event => processAction('rship_bobba')}>
+                        <ContextMenuListItemView onClick={ event => processAction('rship_bobba') }>
                             <Base pointer className="nitro-friends-spritesheet icon-bobba" />
                         </ContextMenuListItemView>
                     </Flex>
-                    <ContextMenuListItemView onClick={event => processAction('rship_none')}>
+                    <ContextMenuListItemView onClick={ event => processAction('rship_none') }>
                         { LocalizeText('avatar.widget.clear_relationship') }
                     </ContextMenuListItemView>
-                    <ContextMenuListItemView onClick={event => processAction('back')}>
+                    <ContextMenuListItemView onClick={ event => processAction('back') }>
                         <FontAwesomeIcon icon="chevron-left" className="left" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>

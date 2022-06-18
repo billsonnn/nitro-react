@@ -1,4 +1,4 @@
-import { ICatalogPage } from '../../../common/ICatalogPage';
+import { ICatalogPage } from '../../../../../api';
 
 export interface CatalogLayoutProps
 {

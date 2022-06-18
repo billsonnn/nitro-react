@@ -1,7 +1,6 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, WiredFurniType, WiredSelectionVisualizer } from '../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { BatchUpdates } from '../../../hooks';
 import { useWiredContext } from '../WiredContext';
 import { WiredFurniSelectorView } from './WiredFurniSelectorView';
 
@@ -14,7 +13,7 @@ export interface WiredBaseViewProps
     validate?: () => boolean;
 }
 
-export const WiredBaseView: FC<WiredBaseViewProps> = props =>
+export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
 {
     const { wiredType = '', requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, validate = null, children = null, hasSpecialInput = false } = props;
     const [ wiredName, setWiredName ] = useState<string>(null);
@@ -49,56 +48,50 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
         const spriteId = (trigger.spriteId || -1);
         const furniData = GetSessionDataManager().getFloorItemData(spriteId);
 
-        BatchUpdates(() =>
+        if(!furniData)
         {
-            if(!furniData)
-            {
-                setWiredName(('NAME: ' + spriteId));
-                setWiredDescription(('NAME: ' + spriteId));
-            }
-            else
-            {
-                setWiredName(furniData.name);
-                setWiredDescription(furniData.description);
-            }
+            setWiredName(('NAME: ' + spriteId));
+            setWiredDescription(('NAME: ' + spriteId));
+        }
+        else
+        {
+            setWiredName(furniData.name);
+            setWiredDescription(furniData.description);
+        }
 
-            if(hasSpecialInput)
+        if(hasSpecialInput)
+        {
+            setIntParams(trigger.intData);
+            setStringParam(trigger.stringData);
+        }
+        
+        if(requiresFurni > WiredFurniType.STUFF_SELECTION_OPTION_NONE)
+        {
+            setFurniIds(prevValue =>
             {
-                setIntParams(trigger.intData);
-                setStringParam(trigger.stringData);
-            }
-            
-            if(requiresFurni > WiredFurniType.STUFF_SELECTION_OPTION_NONE)
-            {
-                setFurniIds(prevValue =>
-                    {
-                        if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
-    
-                        if(trigger.selectedItems && trigger.selectedItems.length)
-                        {
-                            WiredSelectionVisualizer.applySelectionShaderToFurni(trigger.selectedItems);
-    
-                            return trigger.selectedItems;
-                        }
-    
-                        return [];
-                    });
-            }
-        });
+                if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
+
+                if(trigger.selectedItems && trigger.selectedItems.length)
+                {
+                    WiredSelectionVisualizer.applySelectionShaderToFurni(trigger.selectedItems);
+
+                    return trigger.selectedItems;
+                }
+
+                return [];
+            });
+        }
 
         return () =>
         {
-            BatchUpdates(() =>
+            setNeedsSave(false);
+            setIntParams([]);
+            setStringParam(null);
+            setFurniIds(prevValue =>
             {
-                setNeedsSave(false);
-                setIntParams([]);
-                setStringParam(null);
-                setFurniIds(prevValue =>
-                    {
-                        if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
+                if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
 
-                        return [];
-                    });
+                return [];
             });
         }
     }, [ trigger, hasSpecialInput, requiresFurni, setIntParams, setStringParam, setFurniIds ]);

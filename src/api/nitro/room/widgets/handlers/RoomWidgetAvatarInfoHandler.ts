@@ -1,8 +1,8 @@
 import { NitroEvent, RoomEngineUseProductEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionDanceEvent, RoomSessionPetStatusUpdateEvent, RoomSessionUserDataUpdateEvent, RoomWidgetEnum, SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
 import { SendMessageComposer } from '../../..';
 import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture } from '../../../..';
-import { MessengerFriend } from '../../../../../components/friends/common/MessengerFriend';
-import { FurniCategory } from '../../../../../components/inventory/common/FurniCategory';
+import { MessengerFriend } from '../../../../friends/MessengerFriend';
+import { FurniCategory } from '../../../../inventory/FurniCategory';
 import { RoomWidgetAvatarInfoEvent, RoomWidgetUpdateDanceStatusEvent, RoomWidgetUpdateEvent, RoomWidgetUpdateUserDataEvent, RoomWidgetUseProductBubbleEvent, UseProductItem } from '../events';
 import { RoomWidgetAvatarExpressionMessage, RoomWidgetChangePostureMessage, RoomWidgetDanceMessage, RoomWidgetMessage, RoomWidgetRoomObjectMessage, RoomWidgetUseProductMessage, RoomWidgetUserActionMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
@@ -50,7 +50,7 @@ export class RoomWidgetAvatarInfoHandler extends RoomWidgetHandler
                 this.processOwnCharacterInfo();
                 break;
             case RoomWidgetUserActionMessage.START_NAME_CHANGE:
-                // habbo help - start name change
+            // habbo help - start name change
                 break;
             case RoomWidgetUserActionMessage.REQUEST_PET_UPDATE:
                 break;

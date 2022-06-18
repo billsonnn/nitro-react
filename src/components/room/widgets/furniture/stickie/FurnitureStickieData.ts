@@ -6,5 +6,6 @@ export class FurnitureStickieData
         public color: string,
         public text: string,
         public canModify: boolean = false,
-        public isEditing: boolean = false) {}
+        public isEditing: boolean = false) 
+    {}
 }

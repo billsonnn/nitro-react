@@ -26,13 +26,13 @@ export const NavigatorDoorStateView: FC<{}> = props =>
         CreateRoomSession(doorData.roomInfo.roomId);
         
         setDoorData(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.state = DoorStateType.STATE_PENDING_SERVER;
+            newValue.state = DoorStateType.STATE_PENDING_SERVER;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }
 
     const tryEntering = () =>
@@ -42,13 +42,13 @@ export const NavigatorDoorStateView: FC<{}> = props =>
         CreateRoomSession(doorData.roomInfo.roomId, password);
 
         setDoorData(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.state = DoorStateType.STATE_PENDING_SERVER;
+            newValue.state = DoorStateType.STATE_PENDING_SERVER;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }
 
     useEffect(() =>

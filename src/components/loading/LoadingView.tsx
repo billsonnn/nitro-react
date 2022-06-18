@@ -27,7 +27,7 @@ export const LoadingView: FC<LoadingViewProps> = props =>
                     <Base className="connecting-duck" />
                     <Column size={ 6 } className="text-center py-4">
                         { isError && (message && message.length) ?
-                            <Base className="fs-4 text-shadow">{message}</Base>
+                            <Base className="fs-4 text-shadow">{ message }</Base>
                             :
                             <>
                                 <Text fontSize={ 4 } variant="white" className="text-shadow">{ percent.toFixed() }%</Text>

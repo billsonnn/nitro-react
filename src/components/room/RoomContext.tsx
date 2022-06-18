@@ -5,14 +5,12 @@ import { IRoomWidgetHandlerManager } from '../../api';
 interface IRoomContext
 {
     roomSession: IRoomSession;
-    canvasId: number;
     eventDispatcher: IEventDispatcher;
     widgetHandler: IRoomWidgetHandlerManager;
 }
 
 const RoomContext = createContext<IRoomContext>({
     roomSession: null,
-    canvasId: -1,
     eventDispatcher: null,
     widgetHandler: null
 });

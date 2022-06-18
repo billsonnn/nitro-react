@@ -1,26 +1,19 @@
-import { FollowFriendMessageComposer, SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useState } from 'react';
-import { LocalizeText, OpenMessengerChat, SendMessageComposer } from '../../../../../api';
-import { Base, Flex, NitroCardAccordionItemView, NitroCardAccordionItemViewProps, UserProfileIconView } from '../../../../../common';
-import { MessengerFriend } from '../../../common/MessengerFriend';
+import { LocalizeText, MessengerFriend, OpenMessengerChat } from '../../../../../api';
+import { Base, Flex, NitroCardAccordionItemView, UserProfileIconView } from '../../../../../common';
+import { useFriends } from '../../../../../hooks';
 
-interface FriendsListGroupItemViewProps extends NitroCardAccordionItemViewProps
+export const FriendsListGroupItemView: FC<{ friend: MessengerFriend, selected: boolean, selectFriend: (userId: number) => void }> = props =>
 {
-    friend: MessengerFriend;
-    selected?: boolean;
-    selectFriend: () => void;
-}
-
-export const FriendsListGroupItemView: FC<FriendsListGroupItemViewProps> = props =>
-{
-    const { friend = null, selected = false, selectFriend = null, children = null, ...rest } = props;
+    const { friend = null, selected = false, selectFriend = null } = props;
     const [ isRelationshipOpen, setIsRelationshipOpen ] = useState<boolean>(false);
+    const { followFriend = null, updateRelationship = null } = useFriends();
 
-    const followFriend = (event: MouseEvent<HTMLDivElement>) =>
+    const clickFollowFriend = (event: MouseEvent<HTMLDivElement>) =>
     {
         event.stopPropagation();
 
-        SendMessageComposer(new FollowFriendMessageComposer(friend.id));
+        followFriend(friend);
     }
 
     const openMessengerChat = (event: MouseEvent<HTMLDivElement>) =>
@@ -37,11 +30,11 @@ export const FriendsListGroupItemView: FC<FriendsListGroupItemViewProps> = props
         setIsRelationshipOpen(true);
     }
 
-    const updateRelationship = (event: MouseEvent<HTMLDivElement>, type: number) =>
+    const clickUpdateRelationship = (event: MouseEvent<HTMLDivElement>, type: number) =>
     {
         event.stopPropagation();
 
-        if(type !== friend.relationshipStatus) SendMessageComposer(new SetRelationshipStatusComposer(friend.id, type));
+        updateRelationship(friend, type);
         
         setIsRelationshipOpen(false);
     }
@@ -62,7 +55,7 @@ export const FriendsListGroupItemView: FC<FriendsListGroupItemViewProps> = props
     if(!friend) return null;
 
     return (
-        <NitroCardAccordionItemView justifyContent="between" className={ `px-2 py-1 ${ selected && 'bg-primary text-white' }` } onClick={ selectFriend } { ...rest }>
+        <NitroCardAccordionItemView justifyContent="between" className={ `px-2 py-1 ${ selected && 'bg-primary text-white' }` } onClick={ event => selectFriend(friend.id) }>
             <Flex alignItems="center" gap={ 1 }>
                 <Base onClick={ event => event.stopPropagation() }>
                     <UserProfileIconView userId={ friend.id } />
@@ -73,7 +66,7 @@ export const FriendsListGroupItemView: FC<FriendsListGroupItemViewProps> = props
                 { !isRelationshipOpen &&
                     <>
                         { friend.followingAllowed &&
-                            <Base pointer onClick={ followFriend } className="nitro-friends-spritesheet icon-follow" title={ LocalizeText('friendlist.tip.follow') } /> }
+                            <Base pointer onClick={ clickFollowFriend } className="nitro-friends-spritesheet icon-follow" title={ LocalizeText('friendlist.tip.follow') } /> }
                         { friend.online &&
                             <Base pointer className="nitro-friends-spritesheet icon-chat" onClick={ openMessengerChat } title={ LocalizeText('friendlist.tip.im') } /> }
                         { (friend.id > 0) &&
@@ -81,13 +74,12 @@ export const FriendsListGroupItemView: FC<FriendsListGroupItemViewProps> = props
                     </> }
                 { isRelationshipOpen &&
                     <>
-                        <Base pointer className="nitro-friends-spritesheet icon-heart" onClick={ event => updateRelationship(event, MessengerFriend.RELATIONSHIP_HEART) } />
-                        <Base pointer className="nitro-friends-spritesheet icon-smile" onClick={ event => updateRelationship(event, MessengerFriend.RELATIONSHIP_SMILE) } />
-                        <Base pointer className="nitro-friends-spritesheet icon-bobba" onClick={ event => updateRelationship(event, MessengerFriend.RELATIONSHIP_BOBBA) } />
-                        <Base pointer className="nitro-friends-spritesheet icon-none" onClick={ event => updateRelationship(event, MessengerFriend.RELATIONSHIP_NONE) } />
+                        <Base pointer className="nitro-friends-spritesheet icon-heart" onClick={ event => clickUpdateRelationship(event, MessengerFriend.RELATIONSHIP_HEART) } />
+                        <Base pointer className="nitro-friends-spritesheet icon-smile" onClick={ event => clickUpdateRelationship(event, MessengerFriend.RELATIONSHIP_SMILE) } />
+                        <Base pointer className="nitro-friends-spritesheet icon-bobba" onClick={ event => clickUpdateRelationship(event, MessengerFriend.RELATIONSHIP_BOBBA) } />
+                        <Base pointer className="nitro-friends-spritesheet icon-none" onClick={ event => clickUpdateRelationship(event, MessengerFriend.RELATIONSHIP_NONE) } />
                     </> }
             </Flex>
-            { children }
         </NitroCardAccordionItemView>
     );
 }

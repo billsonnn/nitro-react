@@ -137,7 +137,7 @@ export class NotificationUtilities
 
     public static showModeratorMessage(message: string, url: string = null, showHabboWay: boolean = true): void
     {
-        this.simpleAlert(message, NotificationAlertType.MODERATION, url, LocalizeText('mod.alert.link'), LocalizeText('mod.alert.title'));
+        this.simpleAlert(message, NotificationAlertType.DEFAULT, url, LocalizeText('mod.alert.link'), LocalizeText('mod.alert.title'));
     }
 
     public static handleModeratorCaution(message: string, url: string = null): void
@@ -157,7 +157,7 @@ export class NotificationUtilities
 
     public static handleHotelClosedMessage(open: number, minute: number, thrownOut: boolean): void
     {
-        this.simpleAlert( LocalizeText(('opening.hours.' + (thrownOut ? 'disconnected' : 'closed')), [ 'h', 'm'], [ this.getTimeZeroPadded(open), this.getTimeZeroPadded(minute) ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
+        this.simpleAlert( LocalizeText(('opening.hours.' + (thrownOut ? 'disconnected' : 'closed')), [ 'h', 'm' ], [ this.getTimeZeroPadded(open), this.getTimeZeroPadded(minute) ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
     }
 
     public static handleHotelMaintenanceMessage(minutesUntilMaintenance: number, duration: number): void

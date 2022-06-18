@@ -15,7 +15,7 @@ export const HelpIndexView: FC<{}> = props =>
         const reportState = Object.assign({}, helpReportState );
         reportState.currentStep = 1;
         setHelpReportState(reportState);
-    },[helpReportState, setHelpReportState]);
+    },[ helpReportState, setHelpReportState ]);
 
     const onRequestMySanctionStatusClick = useCallback(() =>
     {

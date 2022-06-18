@@ -1,21 +1,23 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
-import { LayoutGridItem, LayoutGridItemProps } from '../../../../common';
+import { Dispatch, FC, PropsWithChildren, SetStateAction } from 'react';
+import { LayoutGridItem } from '../../../../common';
 import { AchievementBadgeView } from '../AchievementBadgeView';
 
-interface AchievementListItemViewProps extends LayoutGridItemProps
+interface AchievementListItemViewProps
 {
     achievement: AchievementData;
+    selectedAchievementId: number;
+    setSelectedAchievementId: Dispatch<SetStateAction<number>>;
 }
 
-export const AchievementListItemView: FC<AchievementListItemViewProps> = props =>
+export const AchievementListItemView: FC<PropsWithChildren<AchievementListItemViewProps>> = props =>
 {
-    const { achievement = null, children = null, ...rest } = props;
+    const { achievement = null, selectedAchievementId = -1, setSelectedAchievementId = null, children = null, ...rest } = props;
 
     if(!achievement) return null;
 
     return (
-        <LayoutGridItem itemCount={ achievement.unseen } itemCountMinimum={ 0 } { ...rest }>
+        <LayoutGridItem itemActive={ (selectedAchievementId === achievement.achievementId) } itemUnseen={ (achievement.unseen > 0) } onClick={ event => setSelectedAchievementId(achievement.achievementId) } { ...rest }>
             <AchievementBadgeView achievement={ achievement } />
             { children }
         </LayoutGridItem>

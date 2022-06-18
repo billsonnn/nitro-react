@@ -34,33 +34,33 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
     return (
         <>
             { ((selectedIndex < 0) && badgeParts && (badgeParts.length > 0)) && badgeParts.map((part, index) =>
-                {
-                    return (
-                        <Flex key={ index } alignItems="center" justifyContent="between" gap={ 2 } className="bg-muted rounded px-2 py-1">
-                            <Flex pointer center className="bg-muted rounded p-1" onClick={ event => setSelectedIndex(index) }>
-                                { (badgeParts[index].code && (badgeParts[index].code.length > 0)) &&
+            {
+                return (
+                    <Flex key={ index } alignItems="center" justifyContent="between" gap={ 2 } className="bg-muted rounded px-2 py-1">
+                        <Flex pointer center className="bg-muted rounded p-1" onClick={ event => setSelectedIndex(index) }>
+                            { (badgeParts[index].code && (badgeParts[index].code.length > 0)) &&
                                 <LayoutBadgeImageView badgeCode={ badgeParts[index].code } isGroup={ true } /> }
-                                { (!badgeParts[index].code || !badgeParts[index].code.length) &&
-                                    <Flex center className="badge-image group-badge">
-                                        <FontAwesomeIcon icon="plus" />
-                                    </Flex> }
-                            </Flex>
-                            { (part.type !== GroupBadgePart.BASE) &&
-                                <Grid gap={ 1 } columnCount={ 3 }>
-                                    { POSITIONS.map((position, posIndex) =>
-                                        {
-                                            return <Base key={ posIndex } pointer className={ `group-badge-position-swatch ${ (badgeParts[index].position === position) ? 'active' : '' }` } onClick={ event => setPartProperty(index, 'position', position) }></Base>
-                                        }) }
-                                </Grid> }
-                            <Grid gap={ 1 } columnCount={ 8 }>
-                                { (groupCustomize.badgePartColors.length > 0) && groupCustomize.badgePartColors.map((item, colorIndex) =>
-                                    {
-                                        return <Base key={ colorIndex } pointer className={ `group-badge-color-swatch ${ (badgeParts[index].color === (colorIndex + 1)) ? 'active' : '' }` } style={{ backgroundColor: '#' + item.color }} onClick={ event => setPartProperty(index, 'color', (colorIndex + 1)) }></Base>
-                                    }) }
-                            </Grid>
+                            { (!badgeParts[index].code || !badgeParts[index].code.length) &&
+                            <Flex center className="badge-image group-badge">
+                                <FontAwesomeIcon icon="plus" />
+                            </Flex> }
                         </Flex>
-                    );
-                }) }
+                        { (part.type !== GroupBadgePart.BASE) &&
+                        <Grid gap={ 1 } columnCount={ 3 }>
+                            { POSITIONS.map((position, posIndex) =>
+                            {
+                                return <Base key={ posIndex } pointer className={ `group-badge-position-swatch ${ (badgeParts[index].position === position) ? 'active' : '' }` } onClick={ event => setPartProperty(index, 'position', position) }></Base>
+                            }) }
+                        </Grid> }
+                        <Grid gap={ 1 } columnCount={ 8 }>
+                            { (groupCustomize.badgePartColors.length > 0) && groupCustomize.badgePartColors.map((item, colorIndex) =>
+                            {
+                                return <Base key={ colorIndex } pointer className={ `group-badge-color-swatch ${ (badgeParts[index].color === (colorIndex + 1)) ? 'active' : '' }` } style={ { backgroundColor: '#' + item.color } } onClick={ event => setPartProperty(index, 'color', (colorIndex + 1)) }></Base>
+                            }) }
+                        </Grid>
+                    </Flex>
+                );
+            }) }
             { (selectedIndex >= 0) &&
                 <Grid gap={ 1 } columnCount={ 5 }>
                     { (badgeParts[selectedIndex].type === GroupBadgePart.SYMBOL) &&
@@ -70,13 +70,13 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
                             </Flex>
                         </Column> }
                     { ((badgeParts[selectedIndex].type === GroupBadgePart.BASE) ? groupCustomize.badgeBases : groupCustomize.badgeSymbols).map((item, index) =>
-                        {
-                            return (
-                                <Column key={ index } pointer center className="bg-muted rounded p-1" onClick={ event => setPartProperty(selectedIndex, 'key', item.id) }>
-                                    <LayoutBadgeImageView badgeCode={ GroupBadgePart.getCode(badgeParts[selectedIndex].type, item.id, badgeParts[selectedIndex].color, 4) } isGroup={ true } />
-                                </Column>
-                            );
-                        }) }
+                    {
+                        return (
+                            <Column key={ index } pointer center className="bg-muted rounded p-1" onClick={ event => setPartProperty(selectedIndex, 'key', item.id) }>
+                                <LayoutBadgeImageView badgeCode={ GroupBadgePart.getCode(badgeParts[selectedIndex].type, item.id, badgeParts[selectedIndex].color, 4) } isGroup={ true } />
+                            </Column>
+                        );
+                    }) }
                 </Grid> }
         </>
     );

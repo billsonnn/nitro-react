@@ -27,13 +27,13 @@ export const FurnitureStickieView: FC<{}> = props =>
 
                 if(data.length < 6) return;
 
-                let color: string   = null;
-                let text: string    = null;
+                let color: string = null;
+                let text: string = null;
 
                 if(data.indexOf(' ') > 0)
                 {
-                    color   = data.slice(0, data.indexOf(' '));
-                    text    = data.slice((data.indexOf(' ') + 1), data.length);
+                    color = data.slice(0, data.indexOf(' '));
+                    text = data.slice((data.indexOf(' ') + 1), data.length);
                 }
                 else
                 {
@@ -47,11 +47,11 @@ export const FurnitureStickieView: FC<{}> = props =>
                 const widgetEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 setStickieData(prevState =>
-                    {
-                        if(!prevState || (widgetEvent.id !== prevState.objectId) || (widgetEvent.category !== prevState.category)) return prevState;
+                {
+                    if(!prevState || (widgetEvent.id !== prevState.objectId) || (widgetEvent.category !== prevState.category)) return prevState;
 
-                        return null;
-                    });
+                    return null;
+                });
                 return;
             }
         }
@@ -69,41 +69,41 @@ export const FurnitureStickieView: FC<{}> = props =>
                 return;
             case 'trash':
                 setStickieData(prevState =>
-                    {
-                        if(!prevState) return null;
+                {
+                    if(!prevState) return null;
 
-                        GetRoomEngine().deleteRoomObject(prevState.objectId, prevState.category);
+                    GetRoomEngine().deleteRoomObject(prevState.objectId, prevState.category);
 
-                        return null;
-                    });
+                    return null;
+                });
                 return;
             case 'changeColor':
                 setStickieData(prevState =>
-                    {
-                        const newStickieData = new FurnitureStickieData(prevState.objectId, prevState.category, value, prevState.text, prevState.canModify);
+                {
+                    const newStickieData = new FurnitureStickieData(prevState.objectId, prevState.category, value, prevState.text, prevState.canModify);
 
-                        GetRoomEngine().modifyRoomObjectData(newStickieData.objectId, newStickieData.category, newStickieData.color, newStickieData.text);
+                    GetRoomEngine().modifyRoomObjectData(newStickieData.objectId, newStickieData.category, newStickieData.color, newStickieData.text);
 
-                        return newStickieData;
-                    });
+                    return newStickieData;
+                });
                 return;
             case 'changeText':
                 setStickieData(prevState =>
-                    {
-                        const newStickieData = new FurnitureStickieData(prevState.objectId, prevState.category, prevState.color, value, prevState.canModify);
+                {
+                    const newStickieData = new FurnitureStickieData(prevState.objectId, prevState.category, prevState.color, value, prevState.canModify);
 
-                        GetRoomEngine().modifyRoomObjectData(newStickieData.objectId, newStickieData.category, newStickieData.color, newStickieData.text);
+                    GetRoomEngine().modifyRoomObjectData(newStickieData.objectId, newStickieData.category, newStickieData.color, newStickieData.text);
 
-                        return newStickieData;
-                    });
+                    return newStickieData;
+                });
                 return;
             case 'editMode':
                 setStickieData(prevValue =>
-                    {
-                        if(!prevValue.canModify) return prevValue;
+                {
+                    if(!prevValue.canModify) return prevValue;
 
-                        return new FurnitureStickieData(prevValue.objectId, prevValue.category, prevValue.color, prevValue.text, prevValue.canModify, true);
-                    });
+                    return new FurnitureStickieData(prevValue.objectId, prevValue.category, prevValue.color, prevValue.text, prevValue.canModify, true);
+                });
                 return;
         }
     }, []);
@@ -119,9 +119,9 @@ export const FurnitureStickieView: FC<{}> = props =>
                         <>
                             <div className="nitro-stickie-image stickie-trash header-trash" onClick={ event => processAction('trash') }></div>
                             { STICKIE_COLORS.map(color =>
-                                {
-                                    return <div key={ color } className="stickie-color ms-1" onClick={ event => processAction('changeColor', color) } style={ { backgroundColor: ColorUtils.makeColorHex(color) } } />
-                                })}
+                            {
+                                return <div key={ color } className="stickie-color ms-1" onClick={ event => processAction('changeColor', color) } style={ { backgroundColor: ColorUtils.makeColorHex(color) } } />
+                            }) }
                         </> }
                     </div>
                     <div className="d-flex align-items-center nitro-stickie-image stickie-close header-close" onClick={ event => processAction('close') }></div>

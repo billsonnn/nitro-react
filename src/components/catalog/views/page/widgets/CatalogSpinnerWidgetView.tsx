@@ -1,16 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
-import { Flex } from '../../../../../common/Flex';
-import { Text } from '../../../../../common/Text';
-import { useCatalogContext } from '../../../CatalogContext';
+import { Flex, Text } from '../../../../../common';
+import { useCatalog } from '../../../../../hooks';
 
 const MIN_VALUE: number = 1;
 const MAX_VALUE: number = 100;
 
 export const CatalogSpinnerWidgetView: FC<{}> = props =>
 {
-    const { currentOffer = null, purchaseOptions = null, setPurchaseOptions = null } = useCatalogContext();
+    const { currentOffer = null, purchaseOptions = null, setPurchaseOptions = null } = useCatalog();
     const { quantity = 1 } = purchaseOptions;
 
     const updateQuantity = (value: number) =>
@@ -23,13 +22,13 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
         if(value === quantity) return;
 
         setPurchaseOptions(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.quantity = value;
+            newValue.quantity = value;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }
 
     if(!currentOffer || !currentOffer.bundlePurchaseAllowed) return null;
@@ -39,7 +38,7 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
             <Text>{ LocalizeText('catalog.bundlewidget.spinner.select.amount') }</Text>
             <Flex alignItems="center" gap={ 1 }>
                 <FontAwesomeIcon icon="caret-left" className="text-black cursor-pointer" onClick={ event => updateQuantity(quantity - 1) } />
-                <input type="number" className="form-control form-control-sm quantity-input" value={ quantity } onChange={ event => updateQuantity(event.target.valueAsNumber)} />
+                <input type="number" className="form-control form-control-sm quantity-input" value={ quantity } onChange={ event => updateQuantity(event.target.valueAsNumber) } />
                 <FontAwesomeIcon icon="caret-right" className="text-black cursor-pointer" onClick={ event => updateQuantity(quantity + 1) } />
             </Flex>
         </>

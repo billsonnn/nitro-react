@@ -1,5 +1,4 @@
-
-@import './assets/styles';
+@import "./assets/styles";
 
 html,
 body {
@@ -8,9 +7,12 @@ body {
     height: 100%;
     overflow: hidden;
     user-select: none;
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
     scrollbar-width: thin;
+
+    .image-rendering-pixelated {
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+    }
 
     * {
         -webkit-font-smoothing: antialiased;
@@ -21,4 +23,4 @@ img {
     object-fit: none;
 }
 
-@import './App';
+@import "./App";

@@ -1,19 +1,13 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { Button, Column, Flex, NitroCardAccordionSetView, NitroCardAccordionSetViewProps } from '../../../../../common';
-import { MessengerRequest } from '../../../common/MessengerRequest';
-import { useFriendsContext } from '../../../FriendsContext';
+import { useFriends } from '../../../../../hooks';
 import { FriendsListRequestItemView } from './FriendsListRequestItemView';
 
-interface FriendsListRequestViewProps extends NitroCardAccordionSetViewProps
+export const FriendsListRequestView: FC<NitroCardAccordionSetViewProps> = props =>
 {
-    requests: MessengerRequest[];
-}
-
-export const FriendsListRequestView: FC<FriendsListRequestViewProps> = props =>
-{
-    const { requests = [], children = null, ...rest } = props;
-    const { declineFriend = null } = useFriendsContext();
+    const { children = null, ...rest } = props;
+    const { requests = [], requestResponse = null } = useFriends();
 
     if(!requests.length) return null;
 
@@ -24,7 +18,7 @@ export const FriendsListRequestView: FC<FriendsListRequestViewProps> = props =>
                     { requests.map((request, index) => <FriendsListRequestItemView key={ index } request={ request } />) }
                 </Column>
                 <Flex justifyContent="center" className="px-2 py-1">
-                    <Button onClick={ event => declineFriend(-1, true) }>
+                    <Button onClick={ event => requestResponse(-1, false) }>
                         { LocalizeText('friendlist.requests.dismissall') }
                     </Button>
                 </Flex>

@@ -1,10 +1,8 @@
 import { RoomObjectCategory, RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { CreateLinkEvent, GetRoomEngine, GetSessionDataManager, LocalizeText, RoomWidgetPresentOpenMessage, RoomWidgetUpdatePresentDataEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
+import { CreateLinkEvent, GetRoomEngine, GetSessionDataManager, LocalizeText, ProductTypeEnum, RoomWidgetPresentOpenMessage, RoomWidgetUpdatePresentDataEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../../api';
 import { Button, Column, Flex, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { BatchUpdates } from '../../../../../hooks';
 import { UseEventDispatcherHook } from '../../../../../hooks/events/UseEventDispatcherHook';
-import { ProductTypeEnum } from '../../../../catalog/common/ProductTypeEnum';
 import { useRoomContext } from '../../../RoomContext';
 
 const FLOOR: string = 'floor';
@@ -50,16 +48,13 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
         switch(event.type)
         {
             case RoomWidgetUpdatePresentDataEvent.PACKAGEINFO: {
-                BatchUpdates(() =>
-                {
-                    setOpenRequested(false);
-                    setObjectId(event.objectId);
-                    setText(event.giftMessage);
-                    setIsOwnerOfFurniture(event.isController);
-                    setSenderName(event.purchaserName);
-                    setSenderFigure(event.purchaserFigure);
-                    setImageUrl(event.imageUrl);
-                });
+                setOpenRequested(false);
+                setObjectId(event.objectId);
+                setText(event.giftMessage);
+                setIsOwnerOfFurniture(event.isController);
+                setSenderName(event.purchaserName);
+                setSenderFigure(event.purchaserFigure);
+                setImageUrl(event.imageUrl);
                 return;
             }
             case RoomWidgetUpdatePresentDataEvent.CONTENTS_FLOOR:
@@ -71,47 +66,38 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
                 else if(event.type === RoomWidgetUpdatePresentDataEvent.CONTENTS_LANDSCAPE) imageType = 'packagecard_icon_landscape';
                 else if(event.type === RoomWidgetUpdatePresentDataEvent.CONTENTS_WALLPAPER) imageType = 'packagecard_icon_wallpaper';
 
-                BatchUpdates(() =>
-                {
-                    setObjectId(event.objectId);
-                    setClassId(event.classId);
-                    setItemType(event.itemType);
-                    setText(event.giftMessage);
-                    setIsOwnerOfFurniture(event.isController);
-                    setPlacedItemId(event.placedItemId);
-                    setPlacedItemType(event.placedItemType);
-                    setPlacedInRoom(event.placedInRoom);
-                    setImageUrl(getGiftImageUrl(imageType));
-                });
+                setObjectId(event.objectId);
+                setClassId(event.classId);
+                setItemType(event.itemType);
+                setText(event.giftMessage);
+                setIsOwnerOfFurniture(event.isController);
+                setPlacedItemId(event.placedItemId);
+                setPlacedItemType(event.placedItemType);
+                setPlacedInRoom(event.placedInRoom);
+                setImageUrl(getGiftImageUrl(imageType));
                 return;
             }
             case RoomWidgetUpdatePresentDataEvent.CONTENTS_CLUB: {
-                BatchUpdates(() =>
-                {
-                    setObjectId(event.objectId);
-                    setClassId(event.classId);
-                    setItemType(event.itemType);
-                    setText(event.giftMessage);
-                    setIsOwnerOfFurniture(event.isController);
-                    setImageUrl(getGiftImageUrl('packagecard_icon_hc'));
-                });
+                setObjectId(event.objectId);
+                setClassId(event.classId);
+                setItemType(event.itemType);
+                setText(event.giftMessage);
+                setIsOwnerOfFurniture(event.isController);
+                setImageUrl(getGiftImageUrl('packagecard_icon_hc'));
                 return;
             }
             case RoomWidgetUpdatePresentDataEvent.CONTENTS: {
                 if(!openRequested) return;
 
-                BatchUpdates(() =>
-                {
-                    setObjectId(event.objectId);
-                    setClassId(event.classId);
-                    setItemType(event.itemType);
-                    setText(event.giftMessage);
-                    setIsOwnerOfFurniture(event.isController);
-                    setPlacedItemId(event.placedItemId);
-                    setPlacedItemType(event.placedItemType);
-                    setPlacedInRoom(event.placedInRoom);
-                    setImageUrl(event.imageUrl);
-                });
+                setObjectId(event.objectId);
+                setClassId(event.classId);
+                setItemType(event.itemType);
+                setText(event.giftMessage);
+                setIsOwnerOfFurniture(event.isController);
+                setPlacedItemId(event.placedItemId);
+                setPlacedItemType(event.placedItemType);
+                setPlacedInRoom(event.placedInRoom);
+                setImageUrl(event.imageUrl);
                 return;
             }
             case RoomWidgetUpdatePresentDataEvent.CONTENTS_IMAGE: {
@@ -144,15 +130,12 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
 
     const close = useCallback(() =>
     {
-        BatchUpdates(() =>
-        {
-            setObjectId(-1);
-            setOpenRequested(false);
-            setPlacedItemId(-1);
-            setPlacedInRoom(false);
-            setText(null);
-            setIsOwnerOfFurniture(false);
-        });
+        setObjectId(-1);
+        setOpenRequested(false);
+        setPlacedItemId(-1);
+        setPlacedInRoom(false);
+        setText(null);
+        setIsOwnerOfFurniture(false);
     }, []);
 
     const isSpaces = useMemo(() =>

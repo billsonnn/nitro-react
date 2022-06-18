@@ -40,37 +40,37 @@ export class RoomSettingsData
     {
         if(!parser) throw new Error('invalid_parser');
 
-        this.roomId                 = parser.roomId;
-        this.roomName               = parser.name;
-        this.roomOriginalName       = parser.name;
-        this.roomDescription        = parser.description;
-        this.categoryId             = parser.categoryId;
-        this.userCount              = parser.userCount;
-        this.tags                   = parser.tags;
-        this.tradeState             = parser.tradeMode;
-        this.allowWalkthrough       = parser.allowWalkthrough;
+        this.roomId = parser.roomId;
+        this.roomName = parser.name;
+        this.roomOriginalName = parser.name;
+        this.roomDescription = parser.description;
+        this.categoryId = parser.categoryId;
+        this.userCount = parser.userCount;
+        this.tags = parser.tags;
+        this.tradeState = parser.tradeMode;
+        this.allowWalkthrough = parser.allowWalkthrough;
 
-        this.lockState              = parser.state;
-        this.originalLockState      = parser.state;
-        this.password               = null;
-        this.confirmPassword        = null;
-        this.allowPets              = parser.allowPets;
-        this.allowPetsEat           = parser.allowPetsEat;
+        this.lockState = parser.state;
+        this.originalLockState = parser.state;
+        this.password = null;
+        this.confirmPassword = null;
+        this.allowPets = parser.allowPets;
+        this.allowPetsEat = parser.allowPetsEat;
 
-        this.usersWithRights        = new Map<number, string>();
+        this.usersWithRights = new Map<number, string>();
 
-        this.hideWalls              = parser.hideWalls;
-        this.wallThickness          = parser.thicknessWall;
-        this.floorThickness         = parser.thicknessFloor;
-        this.chatBubbleMode         = parser.chatSettings.mode;
-        this.chatBubbleWeight       = parser.chatSettings.weight;
-        this.chatBubbleSpeed        = parser.chatSettings.speed;
-        this.chatFloodProtection    = parser.chatSettings.protection;
-        this.chatDistance           = parser.chatSettings.distance;
+        this.hideWalls = parser.hideWalls;
+        this.wallThickness = parser.thicknessWall;
+        this.floorThickness = parser.thicknessFloor;
+        this.chatBubbleMode = parser.chatSettings.mode;
+        this.chatBubbleWeight = parser.chatSettings.weight;
+        this.chatBubbleSpeed = parser.chatSettings.speed;
+        this.chatFloodProtection = parser.chatSettings.protection;
+        this.chatDistance = parser.chatSettings.distance;
 
-        this.muteState              = parser.moderationSettings.allowMute;
-        this.kickState              = parser.moderationSettings.allowKick;
-        this.banState               = parser.moderationSettings.allowBan;
-        this.bannedUsers            = [];
+        this.muteState = parser.moderationSettings.allowMute;
+        this.kickState = parser.moderationSettings.allowKick;
+        this.banState = parser.moderationSettings.allowBan;
+        this.bannedUsers = [];
     }
 }

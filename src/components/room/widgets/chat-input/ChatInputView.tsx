@@ -1,9 +1,9 @@
 import { HabboClubLevelEnum, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText, RoomWidgetChatMessage, RoomWidgetChatTypingMessage, RoomWidgetFloodControlEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
+import { GetClubMemberLevel, GetConfiguration, GetRoomSession, GetSessionDataManager, LocalizeText, RoomWidgetChatMessage, RoomWidgetChatTypingMessage, RoomWidgetFloodControlEvent, RoomWidgetUpdateChatInputContentEvent, RoomWidgetUpdateInfostandUserEvent, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
 import { Text } from '../../../../common';
-import { BatchUpdates, UseEventDispatcherHook } from '../../../../hooks';
+import { UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ChatInputStyleSelectorView } from './ChatInputStyleSelectorView';
 
@@ -64,11 +64,11 @@ export const ChatInputView: FC<{}> = props =>
     const checkSpecialKeywordForInput = useCallback(() =>
     {
         setChatValue(prevValue =>
-            {
-                if((prevValue !== chatModeIdWhisper) || !selectedUsername.length) return prevValue;
+        {
+            if((prevValue !== chatModeIdWhisper) || !selectedUsername.length) return prevValue;
 
-                return (`${ prevValue } ${ selectedUsername }`);
-            });
+            return (`${ prevValue } ${ selectedUsername }`);
+        });
     }, [ selectedUsername, chatModeIdWhisper ]);
 
     const sendChat = useCallback((text: string, chatType: number, recipientName: string = '', styleId: number = 0) =>
@@ -211,11 +211,8 @@ export const ChatInputView: FC<{}> = props =>
 
     const onRoomWidgetFloodControlEvent = useCallback((event: RoomWidgetFloodControlEvent) =>
     {
-        BatchUpdates(() =>
-        {
-            setFloodBlocked(true);
-            setFloodBlockedSeconds(event.seconds);
-        });
+        setFloodBlocked(true);
+        setFloodBlockedSeconds(event.seconds);
     }, []);
 
     UseEventDispatcherHook(RoomWidgetFloodControlEvent.FLOOD_CONTROL, eventDispatcher, onRoomWidgetFloodControlEvent);
@@ -324,11 +321,11 @@ export const ChatInputView: FC<{}> = props =>
         const interval = setInterval(() =>
         {
             setFloodBlockedSeconds(prevValue =>
-                {
-                    seconds = ((prevValue || 0) - 1);
+            {
+                seconds = ((prevValue || 0) - 1);
 
-                    return seconds;
-                });
+                return seconds;
+            });
 
             if(seconds < 0)
             {
@@ -358,16 +355,18 @@ export const ChatInputView: FC<{}> = props =>
         inputRef.current.parentElement.dataset.value = chatValue;
     }, [ chatValue ]);
 
+    if(GetRoomSession().isSpectator) return null;
+
     return (
         createPortal(
-        <div className="nitro-chat-input-container">
-            <div className="input-sizer align-items-center">
-                { !floodBlocked &&
+            <div className="nitro-chat-input-container">
+                <div className="input-sizer align-items-center">
+                    { !floodBlocked &&
                     <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxChatLength } onChange={ event => updateChatInput(event.target.value) } onMouseDown={ event => setInputFocus() } /> }
-                { floodBlocked &&
-                    <Text variant="danger">{ LocalizeText('chat.input.alert.flood', [ 'time' ], [ floodBlockedSeconds.toString() ]) } </Text>}
-            </div>
-            <ChatInputStyleSelectorView chatStyleId={ chatStyleId } chatStyleIds={ chatStyleIds } selectChatStyleId={ selectChatStyleId } />
-        </div>, document.getElementById('toolbar-chat-input-container'))
+                    { floodBlocked &&
+                    <Text variant="danger">{ LocalizeText('chat.input.alert.flood', [ 'time' ], [ floodBlockedSeconds.toString() ]) } </Text> }
+                </div>
+                <ChatInputStyleSelectorView chatStyleId={ chatStyleId } chatStyleIds={ chatStyleIds } selectChatStyleId={ selectChatStyleId } />
+            </div>, document.getElementById('toolbar-chat-input-container'))
     );
 }

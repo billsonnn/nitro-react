@@ -83,27 +83,27 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
             <Column overflow="hidden" gap={ 1 } className="bg-muted rounded chat-messages p-2">
                 <Column overflow="auto">
                     { messageGroups.map((group, index) =>
-                        {
-                            return (
-                                <Flex fullWidth justifyContent={ isOwnChat(group.userId) ? 'end' : 'start' } gap={ 2 }>
-                                    <Base shrink className="message-avatar">
-                                        { (!isOwnChat(group.userId)) &&
-                                            <LayoutAvatarImageView figure={ userFigure } direction={ 2 } /> }
-                                    </Base>
-                                    <Base className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat(group.userId) ? 'right' : 'left') }>
-                                        <Text bold>
-                                            { (isOwnChat(group.userId)) && GetSessionDataManager().userName }
-                                            { (!isOwnChat(group.userId)) && userName }
-                                        </Text>
-                                        { group.messages.map((chat, index) => <Base key={ index } className="text-break">{ chat.message }</Base>) }
-                                    </Base>
-                                    { (isOwnChat(group.userId)) &&
-                                        <Base className="message-avatar flex-shrink-0">
-                                            <LayoutAvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
-                                        </Base> }
-                                </Flex>
-                            );
-                        }) } 
+                    {
+                        return (
+                            <Flex key={ index } fullWidth justifyContent={ isOwnChat(group.userId) ? 'end' : 'start' } gap={ 2 }>
+                                <Base shrink className="message-avatar">
+                                    { (!isOwnChat(group.userId)) &&
+                                    <LayoutAvatarImageView figure={ userFigure } direction={ 2 } /> }
+                                </Base>
+                                <Base className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat(group.userId) ? 'right' : 'left') }>
+                                    <Text bold>
+                                        { (isOwnChat(group.userId)) && GetSessionDataManager().userName }
+                                        { (!isOwnChat(group.userId)) && userName }
+                                    </Text>
+                                    { group.messages.map((chat, index) => <Base key={ index } className="text-break">{ chat.message }</Base>) }
+                                </Base>
+                                { (isOwnChat(group.userId)) &&
+                                <Base className="message-avatar flex-shrink-0">
+                                    <LayoutAvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
+                                </Base> }
+                            </Flex>
+                        );
+                    }) } 
                 </Column>
             </Column>
             <Column gap={ 1 }>

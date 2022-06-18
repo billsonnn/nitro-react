@@ -1,7 +1,7 @@
 import { IFurnitureData, IGetImageListener, NitroEvent, NitroRenderTexture, PetFigureData, RoomObjectCategory, RoomObjectVariable, RoomSessionPresentEvent, RoomWidgetEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { GetSessionDataManager, IsOwnerOfFurniture } from '../../..';
 import { GetRoomEngine, LocalizeText } from '../../../..';
-import { ProductTypeEnum } from '../../../../../components/catalog/common/ProductTypeEnum';
+import { ProductTypeEnum } from '../../../../catalog';
 import { RoomWidgetUpdateEvent, RoomWidgetUpdatePresentDataEvent } from '../events';
 import { RoomWidgetFurniToWidgetMessage, RoomWidgetPresentOpenMessage } from '../messages';
 import { RoomWidgetMessage } from '../messages/RoomWidgetMessage';
@@ -9,10 +9,10 @@ import { RoomWidgetHandler } from './RoomWidgetHandler';
 
 export class FurniturePresentWidgetHandler extends RoomWidgetHandler implements IGetImageListener
 {
-    private static FLOOR: string       = 'floor';
-    private static WALLPAPER: string   = 'wallpaper';
-    private static LANDSCAPE: string   = 'landscape';
-    private static POSTER: string      = 'poster';
+    private static FLOOR: string = 'floor';
+    private static WALLPAPER: string = 'wallpaper';
+    private static LANDSCAPE: string = 'landscape';
+    private static POSTER: string = 'poster';
 
     private _lastFurniId: number = -1;
     private _name: string = null;

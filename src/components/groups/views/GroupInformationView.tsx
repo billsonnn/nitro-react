@@ -1,8 +1,7 @@
 import { GroupInformationParser, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, LocalizeText, NotificationUtilities, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
+import { CatalogPageName, CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, LocalizeText, NotificationUtilities, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
 import { Button, Column, Flex, Grid, GridProps, LayoutBadgeImageView, Text } from '../../../common';
-import { CatalogPageName } from '../../catalog/common/CatalogPageName';
 import { GroupMembershipType } from '../common/GroupMembershipType';
 import { GroupType } from '../common/GroupType';
 
@@ -26,11 +25,11 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
     const leaveGroup = () =>
     {
         NotificationUtilities.confirm(LocalizeText('group.leaveconfirm.desc'), () =>
-            {
-                SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
+        {
+            SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
 
-                if(onClose) onClose();
-            }, null);
+            if(onClose) onClose();
+        }, null);
     }
 
     const getRoleIcon = () =>
@@ -121,12 +120,12 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                         <Flex alignItems="center" gap={ 2 }>
                             <Text bold>{ groupInformation.title }</Text>
                             <Flex gap={ 1 }>
-                                <i className={ 'icon icon-group-type-' + groupInformation.type } title={ LocalizeText(`group.edit.settings.type.${ STATES[groupInformation.type] }.help`)} />
+                                <i className={ 'icon icon-group-type-' + groupInformation.type } title={ LocalizeText(`group.edit.settings.type.${ STATES[groupInformation.type] }.help`) } />
                                 { groupInformation.canMembersDecorate &&
                                     <i className="icon icon-group-decorate" title={ LocalizeText('group.memberscandecorate') } /> }
                             </Flex>
                         </Flex>
-                        <Text small>{ LocalizeText('group.created', ['date', 'owner'], [groupInformation.createdAt, groupInformation.ownerName]) }</Text>
+                        <Text small>{ LocalizeText('group.created', [ 'date', 'owner' ], [ groupInformation.createdAt, groupInformation.ownerName ]) }</Text>
                     </Column>
                     <Text small overflow="auto" className="group-description">{ groupInformation.description }</Text>
                 </Column>

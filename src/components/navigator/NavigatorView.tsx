@@ -3,7 +3,7 @@ import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, L
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AddEventLinkTracker, DoorStateType, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
 import { Base, Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { BatchUpdates, UseRoomSessionManagerEvent, useSharedNavigatorData } from '../../hooks';
+import { UseRoomSessionManagerEvent, useSharedNavigatorData } from '../../hooks';
 import { NavigatorContextProvider } from './NavigatorContext';
 import { NavigatorMessageHandler } from './NavigatorMessageHandler';
 import { NavigatorDoorStateView } from './views/NavigatorDoorStateView';
@@ -37,11 +37,8 @@ export const NavigatorView: FC<{}> = props =>
         switch(event.type)
         {
             case RoomSessionEvent.CREATED:
-                BatchUpdates(() =>
-                {
-                    setIsVisible(false);
-                    setCreatorOpen(false);
-                });
+                setIsVisible(false);
+                setCreatorOpen(false);
                 return;
         }
     }, []);
@@ -96,11 +93,8 @@ export const NavigatorView: FC<{}> = props =>
         switch(parts[1])
         {
             case 'show': {
-                BatchUpdates(() =>
-                {
-                    setIsVisible(true);
-                    setNeedsSearch(true);
-                });
+                setIsVisible(true);
+                setNeedsSearch(true);
                 return;
             }
             case 'hide':
@@ -114,11 +108,8 @@ export const NavigatorView: FC<{}> = props =>
                     return;
                 }
 
-                BatchUpdates(() =>
-                {
-                    setIsVisible(true);
-                    setNeedsSearch(true);
-                });
+                setIsVisible(true);
+                setNeedsSearch(true);
                 return;
             }
             case 'toggle-room-info':
@@ -145,11 +136,8 @@ export const NavigatorView: FC<{}> = props =>
                 }
                 return;
             case 'create':
-                BatchUpdates(() =>
-                {
-                    setIsVisible(true);
-                    setCreatorOpen(true);
-                });
+                setIsVisible(true);
+                setCreatorOpen(true);
                 return;
             case 'search':
                 if(parts.length > 2)
@@ -162,11 +150,8 @@ export const NavigatorView: FC<{}> = props =>
 
                     pendingSearch.current = { value: searchValue, code: topLevelContextCode };
 
-                    BatchUpdates(() =>
-                    {
-                        setIsVisible(true);
-                        setNeedsSearch(true);
-                    });
+                    setIsVisible(true);
+                    setNeedsSearch(true);
                 }
                 return;
         } 
@@ -229,18 +214,18 @@ export const NavigatorView: FC<{}> = props =>
                     <NitroCardHeaderView headerText={ LocalizeText(isCreatorOpen ? 'navigator.createroom.title' : 'navigator.title') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardTabsView>
                         { topLevelContexts && (topLevelContexts.length > 0) && topLevelContexts.map((context, index) =>
-                            {
-                                return (
-                                    <NitroCardTabsItemView key={ index } isActive={ ((topLevelContext === context) && !isCreatorOpen) } onClick={ event => sendSearch('', context.code) }>
-                                        { LocalizeText(('navigator.toplevelview.' + context.code)) }
-                                    </NitroCardTabsItemView>
-                                );
-                            }) }
+                        {
+                            return (
+                                <NitroCardTabsItemView key={ index } isActive={ ((topLevelContext === context) && !isCreatorOpen) } onClick={ event => sendSearch('', context.code) }>
+                                    { LocalizeText(('navigator.toplevelview.' + context.code)) }
+                                </NitroCardTabsItemView>
+                            );
+                        }) }
                         <NitroCardTabsItemView isActive={ isCreatorOpen } onClick={ event => setCreatorOpen(true) }>
                             <FontAwesomeIcon icon="plus" />
                         </NitroCardTabsItemView>
                     </NitroCardTabsView>
-                    <NitroCardContentView position='relative'>
+                    <NitroCardContentView position="relative">
                         { isLoading &&
                             <Base fit position="absolute" className="top-0 start-0 z-index-1 bg-muted opacity-0-5" /> }
                         { !isCreatorOpen &&

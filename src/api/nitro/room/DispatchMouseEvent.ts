@@ -1,12 +1,11 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { GetRoomEngine } from './GetRoomEngine';
-import { SetActiveRoomId } from './SetActiveRoomId';
 
 let didMouseMove = false;
 let lastClick = 0;
 let clickCount = 0;
 
-export function DispatchMouseEvent(roomId: number, canvasId: number, event: MouseEvent)
+export const DispatchMouseEvent = (event: MouseEvent, canvasId: number = 1) =>
 {
     const x = event.clientX;
     const y = event.clientY;
@@ -28,8 +27,8 @@ export function DispatchMouseEvent(roomId: number, canvasId: number, event: Mous
         {
             if(!didMouseMove) eventType = MouseEventType.DOUBLE_CLICK;
 
-            clickCount  = 0;
-            lastClick   = null;
+            clickCount = 0;
+            lastClick = null;
         }
     }
 
@@ -51,7 +50,6 @@ export function DispatchMouseEvent(roomId: number, canvasId: number, event: Mous
             break;
         default: return;
     }
-
-    SetActiveRoomId(roomId);
+    
     GetRoomEngine().dispatchMouseEvent(canvasId, x, y, eventType, event.altKey, (event.ctrlKey || event.metaKey), event.shiftKey, false);
 }

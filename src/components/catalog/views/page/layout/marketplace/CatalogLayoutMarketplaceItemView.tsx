@@ -1,11 +1,6 @@
 import { FC, useCallback, useMemo } from 'react';
-import { LocalizeText } from '../../../../../../api';
-import { LayoutFurniIconImageView } from '../../../../../../common';
-import { Button } from '../../../../../../common/Button';
-import { Column } from '../../../../../../common/Column';
-import { LayoutGridItem } from '../../../../../../common/layout/LayoutGridItem';
-import { Text } from '../../../../../../common/Text';
-import { ProductTypeEnum } from '../../../../common/ProductTypeEnum';
+import { LocalizeText, ProductTypeEnum } from '../../../../../../api';
+import { Button, Column, LayoutFurniIconImageView, LayoutGridItem, Text } from '../../../../../../common';
 import { MarketplaceOfferData } from './common/MarketplaceOfferData';
 import { MarketPlaceOfferState } from './common/MarketplaceOfferState';
 
@@ -41,7 +36,7 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
         
         const time = Math.max(1, offerData.timeLeftMinutes);
         const hours = Math.floor(time / 60);
-        const minutes =  time - (hours * 60);
+        const minutes = time - (hours * 60);
 
         let text = minutes + ' ' + LocalizeText('catalog.marketplace.offer.minutes');
         if(hours > 0)
@@ -49,8 +44,8 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
             text = hours + ' ' + LocalizeText('catalog.marketplace.offer.hours') + ' ' + text;
         }
 
-        return LocalizeText('catalog.marketplace.offer.time_left', ['time'], [text] );
-    }, [offerData]);
+        return LocalizeText('catalog.marketplace.offer.time_left', [ 'time' ], [ text ] );
+    }, [ offerData ]);
 
     return (
         <LayoutGridItem shrink center={ false } column={ false } alignItems="center" className="p-1">
@@ -64,8 +59,8 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
                     </> }
                 { (type === PUBLIC_OFFER) &&
                     <>
-                        <Text>{ LocalizeText('catalog.marketplace.offer.price_public_item', ['price', 'average'], [offerData.price.toString(), offerData.averagePrice.toString() ]) }</Text>
-                        <Text>{ LocalizeText('catalog.marketplace.offer_count', ['count'], [offerData.offerCount.toString()]) }</Text>
+                        <Text>{ LocalizeText('catalog.marketplace.offer.price_public_item', [ 'price', 'average' ], [ offerData.price.toString(), offerData.averagePrice.toString() ]) }</Text>
+                        <Text>{ LocalizeText('catalog.marketplace.offer_count', [ 'count' ], [ offerData.offerCount.toString() ]) }</Text>
                     </> }
             </Column>
             <Column gap={ 1 }>

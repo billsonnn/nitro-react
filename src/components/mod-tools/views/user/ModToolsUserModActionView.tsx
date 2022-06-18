@@ -62,7 +62,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
         const category = topics[selectedTopic];
         if(selectedTopic === -1) errorMessage = 'You must select a CFH topic';
         if(errorMessage) return sendAlert(errorMessage);
-        const messageOrDefault = (message.trim().length === 0) ? LocalizeText(`help.cfh.topic.${category.id}`) : message;
+        const messageOrDefault = (message.trim().length === 0) ? LocalizeText(`help.cfh.topic.${ category.id }`) : message;
         SendMessageComposer(new DefaultSanctionMessageComposer(user.userId, selectedTopic, messageOrDefault));
         onCloseClick();
     }
@@ -139,7 +139,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                     return;
                 }
 
-                SendMessageComposer(new ModMessageMessageComposer(user.userId, message,  category.id));
+                SendMessageComposer(new ModMessageMessageComposer(user.userId, message, category.id));
                 break;
             }
         }
@@ -150,12 +150,12 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
     if(!user) return null;
 
     return (
-        <NitroCardView className="nitro-mod-tools-user-action" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT}>
-            <NitroCardHeaderView headerText={'Mod Action: ' + (user ? user.username : '')} onCloseClick={ () => onCloseClick() } />
+        <NitroCardView className="nitro-mod-tools-user-action" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
+            <NitroCardHeaderView headerText={ 'Mod Action: ' + (user ? user.username : '') } onCloseClick={ () => onCloseClick() } />
             <NitroCardContentView className="text-black">
                 <select className="form-select form-select-sm" value={ selectedTopic } onChange={ event => setSelectedTopic(parseInt(event.target.value)) }>
                     <option value={ -1 } disabled>CFH Topic</option>
-                    { topics.map((topic, index) => <option key={ index } value={ index }>{LocalizeText('help.cfh.topic.' + topic.id)}</option>) }
+                    { topics.map((topic, index) => <option key={ index } value={ index }>{ LocalizeText('help.cfh.topic.' + topic.id) }</option>) }
                 </select>
                 <select className="form-select form-select-sm" value={ selectedAction } onChange={ event => setSelectedAction(parseInt(event.target.value)) }>
                     <option value={ -1 } disabled>Sanction Type</option>
@@ -165,7 +165,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                     <Text small>Optional message type, overrides default</Text>
                     <textarea className="form-control" value={ message } onChange={ event => setMessage(event.target.value) }/>
                 </Column>
-                <Flex justifyContent="between" gap={1}>
+                <Flex justifyContent="between" gap={ 1 }>
                     <Button variant="primary" onClick={ sendDefaultSanction }>Default Sanction</Button>
                     <Button variant="success" onClick={ sendSanction }>Sanction</Button>
                 </Flex>
