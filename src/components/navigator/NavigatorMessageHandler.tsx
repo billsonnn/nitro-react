@@ -1,4 +1,4 @@
-import { CanCreateRoomEventEvent, CantConnectMessageParser, DoorbellMessageEvent, FlatAccessDeniedMessageEvent, FlatCreatedEvent, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomMessageComposer, GetGuestRoomResultEvent, GetUserEventCatsMessageComposer, GetUserFlatCatsMessageComposer, HabboWebTools, LegacyExternalInterface, NavigatorCategoriesEvent, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
+import { CanCreateRoomEventEvent, CantConnectMessageParser, DoorbellMessageEvent, FlatAccessDeniedMessageEvent, FlatCreatedEvent, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomMessageComposer, GetGuestRoomResultEvent, GetUserEventCatsMessageComposer, GetUserFlatCatsMessageComposer, HabboWebTools, LegacyExternalInterface, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserFlatCatsEvent, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateLinkEvent, CreateRoomSession, DoorStateType, GetConfiguration, GetSessionDataManager, LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
 import { UseMessageEventHook } from '../../hooks';
@@ -310,7 +310,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         setSearchResult(parser.result);
     }, [ topLevelContexts, setTopLevelContext, setSearchResult ]);
 
-    const onNavigatorCategoriesEvent = useCallback((event: NavigatorCategoriesEvent) =>
+    const onNavigatorCategoriesEvent = useCallback((event: UserFlatCatsEvent) =>
     {
         const parser = event.getParser();
 
@@ -427,7 +427,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
     UseMessageEventHook(GenericErrorEvent, onGenericErrorEvent);
     UseMessageEventHook(NavigatorMetadataEvent, onNavigatorMetadataEvent);
     UseMessageEventHook(NavigatorSearchEvent, onNavigatorSearchEvent);
-    UseMessageEventHook(NavigatorCategoriesEvent, onNavigatorCategoriesEvent);
+    UseMessageEventHook(UserFlatCatsEvent, onNavigatorCategoriesEvent);
     UseMessageEventHook(FlatCreatedEvent, onRoomCreatedEvent);
     UseMessageEventHook(NavigatorHomeRoomEvent, onNavigatorHomeRoomEvent);
     UseMessageEventHook(RoomEnterErrorEvent, onRoomEnterErrorEvent);
