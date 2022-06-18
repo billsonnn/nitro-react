@@ -1,4 +1,4 @@
-import { RoomSettingsParser } from '@nitrots/nitro-renderer';
+import { RoomSettingsDataParser } from '@nitrots/nitro-renderer';
 
 export class RoomSettingsData
 {
@@ -36,41 +36,43 @@ export class RoomSettingsData
     public bannedUsers: any[];
     public selectedUserToUnban: number;
 
-    constructor(parser: RoomSettingsParser)
+    constructor(parser: RoomSettingsDataParser)
     {
         if(!parser) throw new Error('invalid_parser');
 
-        this.roomId = parser.roomId;
-        this.roomName = parser.name;
-        this.roomOriginalName = parser.name;
-        this.roomDescription = parser.description;
-        this.categoryId = parser.categoryId;
-        this.userCount = parser.userCount;
-        this.tags = parser.tags;
-        this.tradeState = parser.tradeMode;
-        this.allowWalkthrough = parser.allowWalkthrough;
+        const data = parser.data;
 
-        this.lockState = parser.state;
-        this.originalLockState = parser.state;
+        this.roomId = data.roomId;
+        this.roomName = data.name;
+        this.roomOriginalName = data.name;
+        this.roomDescription = data.description;
+        this.categoryId = data.categoryId;
+        this.userCount = data.maximumVisitorsLimit;
+        this.tags = data.tags;
+        this.tradeState = data.tradeMode;
+        this.allowWalkthrough = data.allowWalkThrough;
+
+        this.lockState = data.doorMode;
+        this.originalLockState = data.doorMode;
         this.password = null;
         this.confirmPassword = null;
-        this.allowPets = parser.allowPets;
-        this.allowPetsEat = parser.allowPetsEat;
+        this.allowPets = data.allowPets;
+        this.allowPetsEat = data.allowFoodConsume;
 
         this.usersWithRights = new Map<number, string>();
 
-        this.hideWalls = parser.hideWalls;
-        this.wallThickness = parser.thicknessWall;
-        this.floorThickness = parser.thicknessFloor;
-        this.chatBubbleMode = parser.chatSettings.mode;
-        this.chatBubbleWeight = parser.chatSettings.weight;
-        this.chatBubbleSpeed = parser.chatSettings.speed;
-        this.chatFloodProtection = parser.chatSettings.protection;
-        this.chatDistance = parser.chatSettings.distance;
+        this.hideWalls = data.hideWalls;
+        this.wallThickness = data.wallThickness;
+        this.floorThickness = data.floorThickness;
+        this.chatBubbleMode = data.chatSettings.mode;
+        this.chatBubbleWeight = data.chatSettings.weight;
+        this.chatBubbleSpeed = data.chatSettings.speed;
+        this.chatFloodProtection = data.chatSettings.protection;
+        this.chatDistance = data.chatSettings.distance;
 
-        this.muteState = parser.moderationSettings.allowMute;
-        this.kickState = parser.moderationSettings.allowKick;
-        this.banState = parser.moderationSettings.allowBan;
+        this.muteState = data.roomModerationSettings.allowMute;
+        this.kickState = data.roomModerationSettings.allowKick;
+        this.banState = data.roomModerationSettings.allowBan;
         this.bannedUsers = [];
     }
 }
