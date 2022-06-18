@@ -1,4 +1,4 @@
-import { GetGuestRoomResultEvent, RoomEngineTriggerWidgetEvent, RoomInfoComposer, RoomObjectVariable } from '@nitrots/nitro-renderer';
+import { GetGuestRoomMessageComposer, GetGuestRoomResultEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { GetCommunication, GetRoomEngine, SendMessageComposer } from '../../../../api';
 import { UseRoomEngineEvent } from '../../../events';
@@ -29,7 +29,7 @@ const useFurnitureRoomLinkWidgetState = () =>
 
         setRoomIdToEnter(roomId);
 
-        SendMessageComposer(new RoomInfoComposer(roomId, false, false));
+        SendMessageComposer(new GetGuestRoomMessageComposer(roomId, false, false));
     });
 
     useEffect(() =>
