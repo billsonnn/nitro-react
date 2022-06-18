@@ -1,7 +1,7 @@
-import { GetRoomAdPurchaseInfoComposer, PurchaseRoomAdMessageComposer, RoomAdPurchaseInfoEvent, RoomEntryData } from '@nitrots/nitro-renderer';
+import { GetRoomAdPurchaseInfoComposer, GetUserEventCatsMessageComposer, PurchaseRoomAdMessageComposer, RoomAdPurchaseInfoEvent, RoomEntryData, UserEventCatsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
-import { Base, Column, Text } from '../../../../../common';
+import { Base, Button, Column, Text } from '../../../../../common';
 import { UseMessageEventHook } from '../../../../../hooks';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
@@ -10,10 +10,11 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
     const { page = null } = props;
     const [ eventName, setEventName ] = useState<string>('');
     const [ eventDesc, setEventDesc ] = useState<string>('');
-    const [ roomId, setRoomId ] = useState<number>(null);
+    const [ roomId, setRoomId ] = useState<number>(-1);
     const [ availableRooms, setAvailableRooms ] = useState<RoomEntryData[]>([]);
     const [ extended, setExtended ] = useState<boolean>(false);
-    const [ categories, setCategories ] = useState(null);
+    const [ categoryId, setCategoryId ] = useState<number>(1);
+    const [ categories, setCategories ] = useState<INavigatorCategory[]>(null);
 
     const onRoomAdPurchaseInfoEvent = useCallback((event: RoomAdPurchaseInfoEvent) =>
     {
@@ -23,7 +24,7 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
 
         setAvailableRooms(parser.rooms);
     }, []);
-    
+
     UseMessageEventHook(RoomAdPurchaseInfoEvent, onRoomAdPurchaseInfoEvent);
 
     const purchaseAd = useCallback(() =>
@@ -33,29 +34,45 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
         const flatId = roomId;
         const name = eventName;
         const desc = eventDesc;
-        const categoryId = -1;
+        const catId = categoryId;
 
-        SendMessageComposer(new PurchaseRoomAdMessageComposer(pageId, offerId, flatId, name, extended, desc, categoryId))
-    }, [eventDesc, eventName, extended, page.offers, page.pageId, roomId]);
+        SendMessageComposer(new PurchaseRoomAdMessageComposer(pageId, offerId, flatId, name, extended, desc, catId))
+    }, [ categoryId, eventDesc, eventName, extended, page.offers, page.pageId, roomId ]);
+
+
+    const onUserEventCatsEvent = (event: UserEventCatsEvent) =>
+    {
+        const parser = event.getParser();
+
+        setCategories(parser.categories);
+    }
+
+    UseMessageEventHook(UserEventCatsEvent, onUserEventCatsEvent);
 
     useEffect(() =>
     {
         SendMessageComposer(new GetRoomAdPurchaseInfoComposer());
-        //SendMessageComposer(new GetUserEventCatsMessageComposer());
+        // TODO: someone needs to fix this for morningstar
+        SendMessageComposer(new GetUserEventCatsMessageComposer());
     }, []);
 
     return (<>
-        <Text bold center>{LocalizeText('roomad.catalog_header')}</Text>
-        <Column size={12} overflow="hidden" className='text-black'>
-            <Base>{LocalizeText('roomad.catalog_text')}</Base>
-            <Base className='bg-muted rounded p-1'>
+        <Text bold center>{ LocalizeText('roomad.catalog_header') }</Text>
+        <Column size={ 12 } overflow="hidden" className="text-black">
+            <Base>{ LocalizeText('roomad.catalog_text') }</Base>
+            <Base className="bg-muted rounded p-1">
+                <Column gap={ 2 }>
+                    <select className="form-select form-select-sm" value={ categoryId } onChange={ event => setCategoryId(parseInt(event.target.value)) }>
+                        { categories && categories.map((cat, index) => <option key={ index } value={ cat.id }>{ cat.name }</option>) }
+                    </select>
+                </Column>
                 <Column gap={ 1 }>
                     <Text bold>{ LocalizeText('roomad.catalog_name') }</Text>
                     <input type="text" className="form-control form-control-sm" maxLength={ 64 } value={ eventName } onChange={ event => setEventName(event.target.value) } />
                 </Column>
                 <Column gap={ 1 }>
-                <   Text bold>{LocalizeText('roomad.catalog_description')}</Text>
-                    <textarea className='form-control form-control-sm' maxLength={ 64 } value={ eventDesc } onChange={ event => setEventDesc(event.target.value) }/>
+                    < Text bold>{ LocalizeText('roomad.catalog_description') }</Text>
+                    <textarea className="form-control form-control-sm" maxLength={ 64 } value={ eventDesc } onChange={ event => setEventDesc(event.target.value) }/>
                 </Column>
                 <Column gap={ 1 }>
                     <Text bold>{ LocalizeText('roomad.catalog_roomname') }</Text>
@@ -64,8 +81,17 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
                         { availableRooms && availableRooms.map((room, index) => <option key={ index } value={ room.roomId }>{ room.roomName }</option>) }
                     </select>
                 </Column>
+                <Column gap={ 1 }>
+                    <Button onClick={ purchaseAd }>{ LocalizeText('buy') }</Button>
+                </Column>
             </Base>
         </Column>
-        </>
+    </>
     );
+}
+
+interface INavigatorCategory {
+    id: number;
+    name: string;
+    visible: boolean;
 }

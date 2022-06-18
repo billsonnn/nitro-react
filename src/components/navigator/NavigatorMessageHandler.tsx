@@ -1,4 +1,4 @@
-import { CanCreateRoomEventEvent, CantConnectMessageParser, DoorbellMessageEvent, FlatAccessDeniedMessageEvent, FlatCreatedEvent, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomMessageComposer, GetGuestRoomResultEvent, GetUserEventCatsMessageComposer, GetUserFlatCatsMessageComposer, HabboWebTools, LegacyExternalInterface, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserFlatCatsEvent, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
+import { CanCreateRoomEventEvent, CantConnectMessageParser, DoorbellMessageEvent, FlatAccessDeniedMessageEvent, FlatCreatedEvent, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomMessageComposer, GetGuestRoomResultEvent, GetUserEventCatsMessageComposer, GetUserFlatCatsMessageComposer, HabboWebTools, LegacyExternalInterface, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserEventCatsEvent, UserFlatCatsEvent, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { CreateLinkEvent, CreateRoomSession, DoorStateType, GetConfiguration, GetSessionDataManager, LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
 import { UseMessageEventHook } from '../../hooks';
@@ -6,7 +6,7 @@ import { useNavigatorContext } from './NavigatorContext';
 
 export const NavigatorMessageHandler: FC<{}> = props =>
 {
-    const { setCategories = null, setTopLevelContext = null, topLevelContexts = null, setTopLevelContexts = null, setNavigatorData = null, setDoorData = null, setSearchResult = null } = useNavigatorContext();
+    const { setCategories = null, setEventCategories = null, setTopLevelContext = null, topLevelContexts = null, setTopLevelContexts = null, setNavigatorData = null, setDoorData = null, setSearchResult = null } = useNavigatorContext();
 
     const onRoomSettingsUpdatedEvent = useCallback((event: RoomSettingsUpdatedEvent) =>
     {
@@ -317,6 +317,14 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         setCategories(parser.categories);
     }, [ setCategories ]);
 
+    const onNavigatorEventCategoriesEvent = (event: UserEventCatsEvent) =>
+    {
+        const parser = event.getParser();
+
+        setEventCategories(parser.categories);
+        console.log(parser);
+    }
+
     const onRoomCreatedEvent = useCallback((event: FlatCreatedEvent) =>
     {
         const parser = event.getParser();
@@ -428,6 +436,7 @@ export const NavigatorMessageHandler: FC<{}> = props =>
     UseMessageEventHook(NavigatorMetadataEvent, onNavigatorMetadataEvent);
     UseMessageEventHook(NavigatorSearchEvent, onNavigatorSearchEvent);
     UseMessageEventHook(UserFlatCatsEvent, onNavigatorCategoriesEvent);
+    UseMessageEventHook(UserEventCatsEvent, onNavigatorEventCategoriesEvent);
     UseMessageEventHook(FlatCreatedEvent, onRoomCreatedEvent);
     UseMessageEventHook(NavigatorHomeRoomEvent, onNavigatorHomeRoomEvent);
     UseMessageEventHook(RoomEnterErrorEvent, onRoomEnterErrorEvent);

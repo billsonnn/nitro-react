@@ -1,4 +1,4 @@
-import { NavigatorCategoryDataParser, NavigatorSearchResultSet, NavigatorTopLevelContext, RoomDataParser } from '@nitrots/nitro-renderer';
+import { NavigatorCategoryDataParser, NavigatorEventCategoryDataParser, NavigatorSearchResultSet, NavigatorTopLevelContext, RoomDataParser } from '@nitrots/nitro-renderer';
 import { createContext, Dispatch, FC, ProviderProps, SetStateAction, useContext } from 'react';
 import { INavigatorData } from '../../api';
 
@@ -6,6 +6,8 @@ interface INavigatorContext
 {
     categories: NavigatorCategoryDataParser[];
     setCategories: Dispatch<SetStateAction<NavigatorCategoryDataParser[]>>;
+    eventCategories: NavigatorEventCategoryDataParser[];
+    setEventCategories: Dispatch<SetStateAction<NavigatorEventCategoryDataParser[]>>;
     topLevelContext: NavigatorTopLevelContext;
     setTopLevelContext: Dispatch<SetStateAction<NavigatorTopLevelContext>>;
     topLevelContexts: NavigatorTopLevelContext[];
@@ -22,6 +24,8 @@ const NavigatorContext = createContext<INavigatorContext>({
     categories: null,
     setCategories: null,
     topLevelContext: null,
+    setEventCategories: null,
+    eventCategories: null,
     setTopLevelContext: null,
     topLevelContexts: null,
     setTopLevelContexts: null,

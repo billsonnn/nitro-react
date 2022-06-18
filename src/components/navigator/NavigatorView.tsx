@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorCategoryDataParser, NavigatorInitComposer, NavigatorSearchComposer, NavigatorSearchResultSet, NavigatorTopLevelContext, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorCategoryDataParser, NavigatorEventCategoryDataParser, NavigatorInitComposer, NavigatorSearchComposer, NavigatorSearchResultSet, NavigatorTopLevelContext, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AddEventLinkTracker, DoorStateType, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
 import { Base, Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
@@ -25,6 +25,7 @@ export const NavigatorView: FC<{}> = props =>
     const [ needsInit, setNeedsInit ] = useState(true);
     const [ needsSearch, setNeedsSearch ] = useState(false);
     const [ categories, setCategories ] = useState<NavigatorCategoryDataParser[]>(null);
+    const [ eventCategories, setEventCategories ] = useState<NavigatorEventCategoryDataParser[]>(null);
     const [ topLevelContext, setTopLevelContext ] = useState<NavigatorTopLevelContext>(null);
     const [ topLevelContexts, setTopLevelContexts ] = useState<NavigatorTopLevelContext[]>(null);
     const [ navigatorData, setNavigatorData ] = useSharedNavigatorData();
@@ -59,7 +60,7 @@ export const NavigatorView: FC<{}> = props =>
         if(!isReady)
         {
             setNeedsSearch(true);
-            
+
             return;
         }
 
@@ -80,7 +81,7 @@ export const NavigatorView: FC<{}> = props =>
         }
 
         if(!topLevelContext) return;
-        
+
         sendSearch('', topLevelContext.code);
     }, [ isReady, searchResult, topLevelContext, sendSearch ]);
 
@@ -154,7 +155,7 @@ export const NavigatorView: FC<{}> = props =>
                     setNeedsSearch(true);
                 }
                 return;
-        } 
+        }
     }, [ isVisible, navigatorData ]);
 
     useEffect(() =>
@@ -207,7 +208,7 @@ export const NavigatorView: FC<{}> = props =>
     }, []);
 
     return (
-        <NavigatorContextProvider value={ { categories, setCategories, topLevelContext, setTopLevelContext, topLevelContexts, setTopLevelContexts, navigatorData, setNavigatorData, doorData, setDoorData, searchResult, setSearchResult } }>
+        <NavigatorContextProvider value={ { categories, setCategories, eventCategories, setEventCategories, topLevelContext, setTopLevelContext, topLevelContexts, setTopLevelContexts, navigatorData, setNavigatorData, doorData, setDoorData, searchResult, setSearchResult } }>
             <NavigatorMessageHandler />
             { isVisible &&
                 <NitroCardView uniqueKey="navigator" className="nitro-navigator">
