@@ -1,4 +1,4 @@
-import { GetGuestRoomResultEvent, RoomLikeRoomComposer } from '@nitrots/nitro-renderer';
+import { GetGuestRoomResultEvent, RateFlatMessageComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
@@ -41,7 +41,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 CreateLinkEvent('chat-history/toggle');
                 return;
             case 'like_room':
-                SendMessageComposer(new RoomLikeRoomComposer(1));
+                SendMessageComposer(new RateFlatMessageComposer(1));
                 return;
             case 'toggle_room_link':
                 CreateLinkEvent('navigator/toggle-room-link');

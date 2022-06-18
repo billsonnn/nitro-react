@@ -1,4 +1,4 @@
-import { RoomBannedUsersComposer, RoomDataParser, RoomSettingsEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
+import { RoomBannedUsersComposer, RoomDataParser, RoomSettingsDataEvent, SaveRoomSettingsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';
@@ -22,46 +22,48 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
     const [ roomData, setRoomData ] = useState<IRoomData>(null);
     const [ currentTab, setCurrentTab ] = useState(TABS[0]);
 
-    const onRoomSettingsEvent = useCallback((event: RoomSettingsEvent) =>
+    const onRoomSettingsEvent = useCallback((event: RoomSettingsDataEvent) =>
     {
         const parser = event.getParser();
 
         if(!parser) return;
 
+        const data = parser.data;
+
         setRoomData({
-            roomId: parser.roomId,
-            roomName: parser.name,
-            roomDescription: parser.description,
-            categoryId: parser.categoryId,
-            userCount: parser.userCount,
-            tags: parser.tags,
-            tradeState: parser.tradeMode,
-            allowWalkthrough: parser.allowWalkthrough,
-            lockState: parser.state,
+            roomId: data.roomId,
+            roomName: data.name,
+            roomDescription: data.description,
+            categoryId: data.categoryId,
+            userCount: data.maximumVisitorsLimit,
+            tags: data.tags,
+            tradeState: data.tradeMode,
+            allowWalkthrough: data.allowWalkThrough,
+            lockState: data.doorMode,
             password: null,
-            allowPets: parser.allowPets,
-            allowPetsEat: parser.allowPetsEat,
-            hideWalls: parser.hideWalls,
-            wallThickness: parser.thicknessWall,
-            floorThickness: parser.thicknessFloor,
+            allowPets: data.allowPets,
+            allowPetsEat: data.allowFoodConsume,
+            hideWalls: data.hideWalls,
+            wallThickness: data.wallThickness,
+            floorThickness: data.floorThickness,
             chatSettings: {
-                mode: parser.chatSettings.mode,
-                weight: parser.chatSettings.weight,
-                speed: parser.chatSettings.speed,
-                distance: parser.chatSettings.distance,
-                protection: parser.chatSettings.protection
+                mode: data.chatSettings.mode,
+                weight: data.chatSettings.weight,
+                speed: data.chatSettings.speed,
+                distance: data.chatSettings.distance,
+                protection: data.chatSettings.protection
             },
             moderationSettings: {
-                allowMute: parser.moderationSettings.allowMute,
-                allowKick: parser.moderationSettings.allowKick,
-                allowBan: parser.moderationSettings.allowBan
+                allowMute: data.roomModerationSettings.allowMute,
+                allowKick: data.roomModerationSettings.allowKick,
+                allowBan: data.roomModerationSettings.allowBan
             }
         });
 
-        SendMessageComposer(new RoomBannedUsersComposer(parser.roomId));
+        SendMessageComposer(new RoomBannedUsersComposer(data.roomId));
     }, []);
 
-    UseMessageEventHook(RoomSettingsEvent, onRoomSettingsEvent);
+    UseMessageEventHook(RoomSettingsDataEvent, onRoomSettingsEvent);
 
     const close = () =>
     {
@@ -86,7 +88,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
                 case 'category':
                     newValue.categoryId = Number(value);
                     break;
-                case 'max_visitors': 
+                case 'max_visitors':
                     newValue.userCount = Number(value);
                     break;
                 case 'trade_state':
@@ -176,7 +178,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
     }
 
     if(!roomData) return null;
-    
+
     return (
         <NitroCardView uniqueKey="nitro-room-settings" className="nitro-room-settings">
             <NitroCardHeaderView headerText={ LocalizeText('navigator.roomsettings') } onCloseClick={ close } />
