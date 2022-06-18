@@ -1,5 +1,5 @@
 /* eslint-disable no-template-curly-in-string */
-import { HabboClubLevelEnum, RoomCreateComposer } from '@nitrots/nitro-renderer';
+import { CreateFlatMessageComposer, HabboClubLevelEnum } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetClubMemberLevel, GetConfiguration, IRoomModel, LocalizeText, RoomModels, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../common';
@@ -28,7 +28,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
     const createRoom = () =>
     {
-        SendMessageComposer(new RoomCreateComposer(name, description, 'model_' + selectedModelName, Number(category), Number(visitorsCount), tradesSetting));
+        SendMessageComposer(new CreateFlatMessageComposer(name, description, 'model_' + selectedModelName, Number(category), Number(visitorsCount), tradesSetting));
     }
 
     useEffect(() =>
