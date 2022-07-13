@@ -24,7 +24,7 @@ export const FurnitureCustomStackHeightView: FC<{}> = props =>
                         value={ height }
                         onChange={ event => updateHeight(event) }
                         renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
-                    <input type="number" min={ 0 } max={ maxHeight } value={ height } onChange={ event => updateHeight(parseFloat(event.target.value)) } />
+                    <input className="show-number-arrows" type="number" min={ 0 } max={ maxHeight } value={ height } onChange={ event => updateHeight(parseFloat(event.target.value)) } />
                 </Flex>
                 <Column gap={ 1 }>
                     <Button onClick={ event => sendUpdate(-100) }>

@@ -4,17 +4,24 @@
     "typescript.preferences.quoteStyle": "single",
     "typescript.format.placeOpenBraceOnNewLineForControlBlocks": true,
     "typescript.format.placeOpenBraceOnNewLineForFunctions": true,
+    "typescript.format.enable": false,
     "editor.codeActionsOnSave": {
-        "source.fixAll": true,
-        "source.fixAll.sortJSON": false,
+        "source.fixAll.eslint": true,
         "source.organizeImports": true
     },
-	"git.ignoreLimitWarning": true,
+    "git.ignoreLimitWarning": true,
     "files.eol": "\n",
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "editor.wordWrap": "on",
     "emmet.showExpandedAbbreviation": "never",
-    "eslint.validate": [ "javascript", "javascriptreact", "html", "typescriptreact" ],
-    "eslint.workingDirectories": [ "./src" ]
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "html",
+        "typescriptreact"
+    ],
+    "eslint.workingDirectories": [
+        "./src"
+    ]
 }

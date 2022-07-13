@@ -31,10 +31,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     const [ opacity, setOpacity ] = useState(1);
     const [ isFading, setIsFading ] = useState(false);
     const [ fadeTime, setFadeTime ] = useState(0);
-    const [ isFrozen, setIsFrozen ] = useState(false);
+    const [ isCollapsed, setIsCollapsed ] = useState(COLLAPSED);
     const elementRef = useRef<HTMLDivElement>();
-
-    const [ collapsed, setCollapsed ] = useState(COLLAPSED);
 
     const getOffset = useCallback((bounds: NitroRectangle) =>
     {
@@ -125,14 +123,14 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     {
         const newClassNames: string[] = [ 'nitro-context-menu' ];
         
-        if (collapsed) newClassNames.push('menu-hidden');
+        if (isCollapsed) newClassNames.push('menu-hidden');
 
         newClassNames.push((pos.x !== null) ? 'visible' : 'invisible');
 
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ pos, classNames, collapsed ]);
+    }, [ pos, classNames, isCollapsed ]);
 
     const getStyle = useMemo(() =>
     {
@@ -155,20 +153,13 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
     useEffect(() =>
     {
-        let added = false;
-
-        if(!isFrozen)
-        {
-            added = true;
-
-            GetTicker().add(update);
-        }
+        GetTicker().add(update);
 
         return () =>
         {
-            if(added) GetTicker().remove(update);
+            GetTicker().remove(update);
         }
-    }, [ isFrozen, update ]);
+    }, [ update ]);
 
     useEffect(() =>
     {
@@ -183,10 +174,13 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     const toggleCollapse = () =>
     {
         COLLAPSED = !COLLAPSED;
-        setCollapsed(COLLAPSED)
+        setIsCollapsed(COLLAPSED);
+        setOpacity(0);
+
+        console.log(opacity);
     }
-    return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } onMouseOver={ event => setIsFrozen(true) } onMouseOut={ event => setIsFrozen(false) } { ...rest }>
+    return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } { ...rest }>
         { !(collapsable && COLLAPSED) && children }
-        { collapsable && <ContextMenuCaretView onClick={ () => toggleCollapse() } collapsed={ collapsed } /> }
+        { collapsable && <ContextMenuCaretView onClick={ () => toggleCollapse() } collapsed={ isCollapsed } /> }
     </Base>;
 }

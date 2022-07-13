@@ -1,5 +1,6 @@
 export * from './useFurnitureBackgroundColorWidget';
 export * from './useFurnitureBadgeDisplayWidget';
+export * from './useFurnitureContextMenuWidget';
 export * from './useFurnitureDimmerWidget';
 export * from './useFurnitureExchangeWidget';
 export * from './useFurnitureExternalImageWidget';

@@ -1,6 +1,6 @@
 import { RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useCallback, useState } from 'react';
-import { GetRoomEngine, GetRoomSession, GetSessionDataManager } from '../../../../api';
+import { GetRoomEngine, GetRoomSession, GetSessionDataManager, IsOwnerOfFurniture } from '../../../../api';
 import { UseRoomEngineEvent } from '../../../events';
 import { useFurniRemovedEvent } from '../../useFurniRemovedEvent';
 
@@ -10,8 +10,7 @@ const useFurnitureStickieWidgetState = () =>
     const [ category, setCategory ] = useState(-1);
     const [ color, setColor ] = useState('0');
     const [ text, setText ] = useState('');
-
-    const canModify = (GetRoomSession().isRoomOwner || GetSessionDataManager().isModerator);
+    const [ canModify, setCanModify ] = useState(false);
 
     const close = useCallback(() =>
     {
@@ -19,6 +18,7 @@ const useFurnitureStickieWidgetState = () =>
         setCategory(-1);
         setColor('0');
         setText('');
+        setCanModify(false);
     }, []);
 
     const updateColor = (newColor: string) =>
@@ -39,7 +39,7 @@ const useFurnitureStickieWidgetState = () =>
 
     const trash = () => GetRoomEngine().deleteRoomObject(objectId, category);
 
-    const onRoomEngineTriggerWidgetEvent = useCallback((event: RoomEngineTriggerWidgetEvent) =>
+    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_STICKIE, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 
@@ -66,9 +66,8 @@ const useFurnitureStickieWidgetState = () =>
         setCategory(event.category);
         setColor(color || '0');
         setText(text || '');
-    }, []);
-
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_STICKIE, onRoomEngineTriggerWidgetEvent);
+        setCanModify(GetRoomSession().isRoomOwner || GetSessionDataManager().isModerator || IsOwnerOfFurniture(roomObject));
+    });
 
     useFurniRemovedEvent(((objectId !== -1) && (category !== -1)), event =>
     {
