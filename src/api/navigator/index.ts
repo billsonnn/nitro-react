@@ -7,7 +7,6 @@ export * from './IRoomModel';
 export * from './IRoomModerationSettings';
 export * from './NavigatorSearchResultViewDisplayMode';
 export * from './RoomInfoData';
-export * from './RoomSettingsData';
 export * from './RoomSettingsUtils';
 export * from './SearchFilterOptions';
 export * from './TryVisitRoom';
