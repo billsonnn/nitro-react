@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ColorConverter, IFurnitureData } from '@nitrots/nitro-renderer';
+import { ColorConverter } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
 import { IPurchasableOffer } from '../../../../../api';
 import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../../common';
@@ -84,7 +84,7 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
         {
             if(!offer.product) return;
 
-            let furniData: IFurnitureData = offer.product.furnitureData;
+            const furniData = offer.product.furnitureData;
 
             if(((!(furniData)) || (!furniData.hasIndexedColor)))
             {
@@ -92,8 +92,8 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
             }
             else
             {
-                const name = furniData.fullName.split('*')[0];
-                const colorIndex = parseInt(furniData.fullName.split('*')[1]);
+                const name = furniData.className;
+                const colorIndex = furniData.colorIndex;
 
                 if(!colorableItems.has(name))
                 {
@@ -104,7 +104,7 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
                 {
                     for(let color of furniData.colors)
                     {
-                        if(color !== 0xFFFFFF)
+                        if(color !== 0xFFFFFF) // for some reason we hate the color white
                         {
                             selectedColor = color;
                         }
