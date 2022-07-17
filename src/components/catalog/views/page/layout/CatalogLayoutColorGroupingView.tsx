@@ -75,6 +75,7 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
     {
         const offers: IPurchasableOffer[] = [];
         const addedColorableItems = new Map<string, boolean>();
+        const updatedColorableItems = new Map<string, number[]>();
 
         page.offers.sort(sortByColorIndex);
 
@@ -95,9 +96,9 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
                 const name = furniData.className;
                 const colorIndex = furniData.colorIndex;
 
-                if(!colorableItems.has(name))
+                if(!updatedColorableItems.has(name))
                 {
-                    colorableItems.set(name, []);
+                    updatedColorableItems.set(name, []);
                 }
 
                 if(furniData.colors)
@@ -110,9 +111,9 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
                         }
                     }
 
-                    if(colorableItems.get(name).indexOf(selectedColor) === -1)
+                    if(updatedColorableItems.get(name).indexOf(selectedColor) === -1)
                     {
-                        colorableItems.get(name)[colorIndex] = selectedColor;
+                        updatedColorableItems.get(name)[colorIndex] = selectedColor;
                     }
 
                 }
@@ -125,8 +126,9 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
             }
         });
         offers.sort(sortyByFurnitureClassName);
+        setColorableItems(updatedColorableItems);
         return offers;
-    }, [ colorableItems, page.offers ]);
+    }, [ page.offers ]);
 
     return (
         <Grid>
