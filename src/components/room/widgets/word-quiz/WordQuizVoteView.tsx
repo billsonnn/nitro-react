@@ -1,4 +1,4 @@
-import { RoomObjectCategory } from '@nitrots/nitro-renderer/src';
+import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { Base, BaseProps, Flex } from '../../../../common';
 import { ObjectLocationView } from '../object-location/ObjectLocationView';
