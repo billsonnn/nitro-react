@@ -1,12 +1,11 @@
 import { FurnitureListAddOrUpdateEvent, FurnitureListComposer, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent } from '@nitrots/nitro-renderer';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { useInventoryUnseenTracker } from '.';
-import { UseMessageEventHook } from '..';
-import { addFurnitureItem, attemptItemPlacement, cancelRoomObjectPlacement, CloneObject, CreateLinkEvent, FurnitureItem, getAllItemIds, getPlacingItemId, GroupItem, mergeFurniFragments, SendMessageComposer, UnseenItemCategory } from '../../api';
+import { addFurnitureItem, attemptItemPlacement, cancelRoomObjectPlacement, CloneObject, CreateLinkEvent, DispatchUiEvent, FurnitureItem, getAllItemIds, getPlacingItemId, GroupItem, mergeFurniFragments, SendMessageComposer, UnseenItemCategory } from '../../api';
 import { InventoryFurniAddedEvent } from '../../events';
-import { DispatchUiEvent } from '../events';
+import { useMessageEvent } from '../events';
 import { useSharedVisibility } from '../useSharedVisibility';
+import { useInventoryUnseenTracker } from './useInventoryUnseenTracker';
 
 let furniMsgFragments: Map<number, FurnitureListItemParser>[] = null;
 
@@ -18,7 +17,7 @@ const useInventoryFurniState = () =>
     const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
     const { isUnseen = null, resetCategory = null } = useInventoryUnseenTracker();
 
-    const onFurnitureListAddOrUpdateEvent = useCallback((event: FurnitureListAddOrUpdateEvent) =>
+    useMessageEvent<FurnitureListAddOrUpdateEvent>(FurnitureListAddOrUpdateEvent, event =>
     {
         const parser = event.getParser();
 
@@ -82,11 +81,9 @@ const useInventoryFurniState = () =>
 
             return newValue;
         });
-    }, [ isUnseen ]);
+    });
 
-    UseMessageEventHook(FurnitureListAddOrUpdateEvent, onFurnitureListAddOrUpdateEvent);
-
-    const onFurnitureListEvent = useCallback((event: FurnitureListEvent) =>
+    useMessageEvent<FurnitureListEvent>(FurnitureListEvent, event =>
     {
         const parser = event.getParser();
         
@@ -160,18 +157,14 @@ const useInventoryFurniState = () =>
         });
 
         furniMsgFragments = null;
-    }, [ isUnseen ]);
+    });
 
-    UseMessageEventHook(FurnitureListEvent, onFurnitureListEvent);
-
-    const onFurnitureListInvalidateEvent = useCallback((event: FurnitureListInvalidateEvent) =>
+    useMessageEvent<FurnitureListInvalidateEvent>(FurnitureListInvalidateEvent, event =>
     {
         setNeedsUpdate(true);
-    }, []);
+    });
 
-    UseMessageEventHook(FurnitureListInvalidateEvent, onFurnitureListInvalidateEvent);
-
-    const onFurnitureListRemovedEvent = useCallback((event: FurnitureListRemovedEvent) =>
+    useMessageEvent<FurnitureListRemovedEvent>(FurnitureListRemovedEvent, event =>
     {
         const parser = event.getParser();
 
@@ -212,16 +205,12 @@ const useInventoryFurniState = () =>
 
             return newValue;
         });
-    }, []);
+    });
 
-    UseMessageEventHook(FurnitureListRemovedEvent, onFurnitureListRemovedEvent);
-
-    const onFurniturePostItPlacedEvent = useCallback((event: FurniturePostItPlacedEvent) =>
+    useMessageEvent<FurniturePostItPlacedEvent>(FurniturePostItPlacedEvent, event =>
     {
 
-    }, []);
-
-    UseMessageEventHook(FurniturePostItPlacedEvent, onFurniturePostItPlacedEvent);
+    });
 
     useEffect(() =>
     {

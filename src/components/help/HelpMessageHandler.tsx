@@ -1,7 +1,7 @@
 import { CallForHelpResultMessageEvent, GetPendingCallsForHelpMessageComposer, IssueCloseNotificationMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../api';
-import { UseMessageEventHook } from '../../hooks';
+import { useMessageEvent } from '../../hooks';
 import { CallForHelpResult } from './common/CallForHelpResult';
 import { GetCloseReasonKey } from './common/GetCloseReasonKey';
  
@@ -31,7 +31,7 @@ export const HelpMessageHandler: FC<{}> = props =>
         }
     }, []);
 
-    UseMessageEventHook(CallForHelpResultMessageEvent, onCallForHelpResultMessageEvent);
+    useMessageEvent(CallForHelpResultMessageEvent, onCallForHelpResultMessageEvent);
 
     const onIssueCloseNotificationMessageEvent = useCallback((event: IssueCloseNotificationMessageEvent) =>
     {
@@ -42,7 +42,7 @@ export const HelpMessageHandler: FC<{}> = props =>
         NotificationUtilities.simpleAlert(message, NotificationAlertType.MODERATION, null, null, LocalizeText('mod.alert.title'));
     }, []);
 
-    UseMessageEventHook(IssueCloseNotificationMessageEvent, onIssueCloseNotificationMessageEvent);
+    useMessageEvent(IssueCloseNotificationMessageEvent, onIssueCloseNotificationMessageEvent);
 
     return null;
 }

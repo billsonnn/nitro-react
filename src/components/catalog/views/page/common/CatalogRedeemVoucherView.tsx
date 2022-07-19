@@ -3,7 +3,7 @@ import { RedeemVoucherMessageComposer, VoucherRedeemErrorMessageEvent, VoucherRe
 import { FC, useCallback, useState } from 'react';
 import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../api';
 import { Button, Flex } from '../../../../../common';
-import { UseMessageEventHook } from '../../../../../hooks';
+import { useMessageEvent } from '../../../../../hooks';
 
 export interface CatalogRedeemVoucherViewProps
 {
@@ -39,7 +39,7 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
         setVoucher('');
     }, []);
 
-    UseMessageEventHook(VoucherRedeemOkMessageEvent, onVoucherRedeemOkMessageEvent);
+    useMessageEvent(VoucherRedeemOkMessageEvent, onVoucherRedeemOkMessageEvent);
 
     const onVoucherRedeemErrorMessageEvent = useCallback((event: VoucherRedeemErrorMessageEvent) =>
     {
@@ -50,7 +50,7 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
         setIsWaiting(false);
     }, []);
 
-    UseMessageEventHook(VoucherRedeemErrorMessageEvent, onVoucherRedeemErrorMessageEvent);
+    useMessageEvent(VoucherRedeemErrorMessageEvent, onVoucherRedeemErrorMessageEvent);
 
     return (
         <Flex gap={ 1 }>

@@ -1,7 +1,7 @@
 import { WiredFurniActionEvent, WiredFurniConditionEvent, WiredFurniTriggerEvent, WiredOpenEvent, WiredRewardResultMessageEvent, WiredSaveSuccessEvent, WiredValidationErrorEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { LocalizeText, NotificationAlertType, NotificationUtilities } from '../../api';
-import { UseMessageEventHook } from '../../hooks/messages';
+import { useMessageEvent } from '../../hooks';
 import { useWiredContext } from './WiredContext';
 
 export const WiredMessageHandler: FC<{}> = props =>
@@ -56,13 +56,13 @@ export const WiredMessageHandler: FC<{}> = props =>
         console.log(parser);
     }, []);
 
-    UseMessageEventHook(WiredFurniActionEvent, onWiredFurniActionEvent);
-    UseMessageEventHook(WiredFurniConditionEvent, onWiredFurniConditionEvent);
-    UseMessageEventHook(WiredFurniTriggerEvent, onWiredFurniTriggerEvent);
-    UseMessageEventHook(WiredOpenEvent, onWiredOpenEvent);
-    UseMessageEventHook(WiredRewardResultMessageEvent, onWiredRewardResultMessageEvent);
-    UseMessageEventHook(WiredSaveSuccessEvent, onWiredSaveSuccessEvent);
-    UseMessageEventHook(WiredValidationErrorEvent, onWiredValidationErrorEvent);
+    useMessageEvent(WiredFurniActionEvent, onWiredFurniActionEvent);
+    useMessageEvent(WiredFurniConditionEvent, onWiredFurniConditionEvent);
+    useMessageEvent(WiredFurniTriggerEvent, onWiredFurniTriggerEvent);
+    useMessageEvent(WiredOpenEvent, onWiredOpenEvent);
+    useMessageEvent(WiredRewardResultMessageEvent, onWiredRewardResultMessageEvent);
+    useMessageEvent(WiredSaveSuccessEvent, onWiredSaveSuccessEvent);
+    useMessageEvent(WiredValidationErrorEvent, onWiredValidationErrorEvent);
 
     return null;
 };

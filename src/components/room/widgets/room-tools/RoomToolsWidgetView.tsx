@@ -3,8 +3,7 @@ import classNames from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
-import { UseMessageEventHook, useSharedNavigatorData } from '../../../../hooks';
-import { useRoomContext } from '../../RoomContext';
+import { useMessageEvent, useRoom, useSharedNavigatorData } from '../../../../hooks';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
 {
@@ -15,7 +14,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     const [ roomInfoDisplay, setRoomInfoDisplay ] = useState<boolean>(false);
     const [ isOpen, setIsOpen ] = useState<boolean>(false);
     const [ navigatorData, setNavigatorData ] = useSharedNavigatorData();
-    const { roomSession = null, widgetHandler = null } = useRoomContext();
+    const { roomSession = null } = useRoom();
 
     const handleToolClick = (action: string) =>
     {
@@ -60,7 +59,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
         if(roomTags !== parser.data.tags) setRoomTags(parser.data.tags);
     }, [ roomSession, roomName, roomOwner, roomTags ]);
 
-    UseMessageEventHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
+    useMessageEvent(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
 
     useEffect(() =>
     {

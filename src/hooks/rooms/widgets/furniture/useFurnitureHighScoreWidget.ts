@@ -1,7 +1,7 @@
 import { HighScoreDataType, ObjectDataFactory, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
 import { GetRoomEngine } from '../../../../api';
-import { UseRoomEngineEvent } from '../../../events';
+import { useRoomEngineEvent } from '../../../events';
 import { useRoom } from '../../useRoom';
 
 const SCORE_TYPES = [ 'perteam', 'mostwins', 'classic' ];
@@ -10,12 +10,12 @@ const CLEAR_TYPES = [ 'alltime', 'daily', 'weekly', 'monthly' ];
 const useFurnitureHighScoreWidgetState = () =>
 {
     const [ stuffDatas, setStuffDatas ] = useState<Map<number, HighScoreDataType>>(new Map());
-    const { roomSession = null, widgetHandler = null } = useRoom();
+    const { roomSession = null } = useRoom();
 
     const getScoreType = (type: number) => SCORE_TYPES[type];
     const getClearType = (type: number) => CLEAR_TYPES[type];
 
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
     
@@ -36,7 +36,7 @@ const useFurnitureHighScoreWidgetState = () =>
         });
     });
 
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY, event =>
     {
         if(event.roomId !== roomSession.roomId) return;
 

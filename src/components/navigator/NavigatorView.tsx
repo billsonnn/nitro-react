@@ -3,7 +3,7 @@ import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, L
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AddEventLinkTracker, DoorStateType, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
 import { Base, Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { UseRoomSessionManagerEvent, useSharedNavigatorData } from '../../hooks';
+import { useRoomSessionManagerEvent, useSharedNavigatorData } from '../../hooks';
 import { NavigatorContextProvider } from './NavigatorContext';
 import { NavigatorMessageHandler } from './NavigatorMessageHandler';
 import { NavigatorDoorStateView } from './views/NavigatorDoorStateView';
@@ -44,7 +44,7 @@ export const NavigatorView: FC<{}> = props =>
         }
     }, []);
 
-    UseRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
 
     const sendSearch = useCallback((searchValue: string, contextCode: string) =>
     {

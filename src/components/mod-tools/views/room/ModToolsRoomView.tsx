@@ -1,9 +1,9 @@
 import { GetModeratorRoomInfoMessageComposer, ModerateRoomMessageComposer, ModeratorActionMessageComposer, ModeratorRoomInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { SendMessageComposer, TryVisitRoom } from '../../../../api';
+import { DispatchUiEvent, SendMessageComposer, TryVisitRoom } from '../../../../api';
 import { Button, Column, DraggableWindowPosition, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { ModToolsOpenRoomChatlogEvent } from '../../../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
-import { DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
+import { useMessageEvent } from '../../../../hooks';
 
 interface ModToolsRoomViewProps
 {
@@ -44,7 +44,7 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
         setUsersInRoom(parser.data.userCount);
     }, [ roomId ]);
 
-    UseMessageEventHook(ModeratorRoomInfoEvent, onModtoolRoomInfoEvent);
+    useMessageEvent(ModeratorRoomInfoEvent, onModtoolRoomInfoEvent);
 
     const handleClick = useCallback((action: string, value?: string) =>
     {

@@ -1,12 +1,12 @@
 import { RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { CreateLinkEvent, GetRoomEngine } from '../../../../api';
-import { UseRoomEngineEvent } from '../../../events';
+import { useRoomEngineEvent } from '../../../events';
 
 const INTERNALLINK = 'internalLink';
 
 const useFurnitureInternalLinkWidgetState = () =>
 {
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_INTERNAL_LINK, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_INTERNAL_LINK, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
     

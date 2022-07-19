@@ -2,7 +2,7 @@ import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomE
 import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetRoomSession, GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
 import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { UseMessageEventHook, UseRoomEngineEvent } from '../../hooks';
+import { useMessageEvent, useRoomEngineEvent } from '../../hooks';
 import { BadgesContainerView } from './views/BadgesContainerView';
 import { FriendsContainerView } from './views/FriendsContainerView';
 import { GroupsContainerView } from './views/GroupsContainerView';
@@ -37,7 +37,7 @@ export const UserProfileView: FC<{}> = props =>
         setUserBadges(parser.badges);
     }, [ userProfile ]);
 
-    UseMessageEventHook(UserCurrentBadgesEvent, onUserCurrentBadgesEvent);
+    useMessageEvent(UserCurrentBadgesEvent, onUserCurrentBadgesEvent);
 
     const onUserRelationshipsEvent = useCallback((event: RelationshipStatusInfoEvent) =>
     {
@@ -48,7 +48,7 @@ export const UserProfileView: FC<{}> = props =>
         setUserRelationships(parser);
     }, [ userProfile ]);
 
-    UseMessageEventHook(RelationshipStatusInfoEvent, onUserRelationshipsEvent);
+    useMessageEvent(RelationshipStatusInfoEvent, onUserRelationshipsEvent);
 
     const onUserProfileEvent = useCallback((event: UserProfileEvent) =>
     {
@@ -73,7 +73,7 @@ export const UserProfileView: FC<{}> = props =>
         SendMessageComposer(new UserRelationshipsComposer(parser.id));
     }, []);
 
-    UseMessageEventHook(UserProfileEvent, onUserProfileEvent);
+    useMessageEvent(UserProfileEvent, onUserProfileEvent);
 
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
@@ -88,7 +88,7 @@ export const UserProfileView: FC<{}> = props =>
         GetUserProfile(userData.webID);
     }, [ userProfile ]);
 
-    UseRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
 
     if(!userProfile) return null;
 

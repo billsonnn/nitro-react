@@ -1,5 +1,5 @@
 import { NitroEvent } from '@nitrots/nitro-renderer';
 import { GetSessionDataManager } from '../../../api';
-import { UseEventDispatcherHook } from '../UseEventDispatcherHook';
+import { useEventDispatcher } from '../useEventDispatcher';
 
-export const UseSessionDataManagerEvent = (type: string, handler: (event: NitroEvent) => void) => UseEventDispatcherHook(type, GetSessionDataManager().events, handler);
+export const useSessionDataManagerEvent = <T extends NitroEvent>(type: string | string, handler: (event: T) => void) => useEventDispatcher(type, GetSessionDataManager().events, handler);

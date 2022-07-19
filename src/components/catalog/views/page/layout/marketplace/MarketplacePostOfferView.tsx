@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { FurnitureItem, LocalizeText, NotificationUtilities, ProductTypeEnum, SendMessageComposer } from '../../../../../../api';
 import { Base, Button, Column, Grid, LayoutFurniImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../../common';
 import { CatalogPostMarketplaceOfferEvent } from '../../../../../../events';
-import { useCatalog, UseMessageEventHook, UseUiEvent } from '../../../../../../hooks';
+import { useCatalog, useMessageEvent, useUiEvent } from '../../../../../../hooks';
 
 export const MarketplacePostOfferView : FC<{}> = props =>
 {
@@ -26,14 +26,14 @@ export const MarketplacePostOfferView : FC<{}> = props =>
         });
     }, [ setCatalogOptions ]);
 
-    UseMessageEventHook(MarketplaceConfigurationEvent, onMarketplaceConfigurationEvent);
+    useMessageEvent(MarketplaceConfigurationEvent, onMarketplaceConfigurationEvent);
 
     const onCatalogPostMarketplaceOfferEvent = useCallback( (event: CatalogPostMarketplaceOfferEvent) =>
     {
         setItem(event.item);
     }, []);
 
-    UseUiEvent(CatalogPostMarketplaceOfferEvent.POST_MARKETPLACE, onCatalogPostMarketplaceOfferEvent);
+    useUiEvent(CatalogPostMarketplaceOfferEvent.POST_MARKETPLACE, onCatalogPostMarketplaceOfferEvent);
 
     useEffect(() =>
     {

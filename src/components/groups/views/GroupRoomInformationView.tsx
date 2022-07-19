@@ -3,7 +3,7 @@ import { DesktopViewEvent, GetGuestRoomResultEvent, GroupInformationComposer, Gr
 import { FC, useCallback, useState } from 'react';
 import { GetGroupInformation, GetGroupManager, GetSessionDataManager, LocalizeText, NotificationUtilities, SendMessageComposer, TryJoinGroup } from '../../../api';
 import { Base, Button, Column, Flex, LayoutBadgeImageView, Text } from '../../../common';
-import { UseMessageEventHook } from '../../../hooks';
+import { useMessageEvent } from '../../../hooks';
 import { GroupMembershipType } from '../common/GroupMembershipType';
 import { GroupType } from '../common/GroupType';
 
@@ -19,7 +19,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
         setGroupInformation(null);
     }, []);
 
-    UseMessageEventHook(DesktopViewEvent, onDesktopViewEvent);
+    useMessageEvent(DesktopViewEvent, onDesktopViewEvent);
 
     const onRoomEntryInfoMessageEvent = useCallback((event: RoomEntryInfoMessageEvent) =>
     {
@@ -27,7 +27,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
         setGroupInformation(null);
     }, []);
 
-    UseMessageEventHook(RoomEntryInfoMessageEvent, onRoomEntryInfoMessageEvent);
+    useMessageEvent(RoomEntryInfoMessageEvent, onRoomEntryInfoMessageEvent);
 
     const onGetGuestRoomResultEvent = useCallback((event: GetGuestRoomResultEvent) =>
     {
@@ -47,7 +47,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
         }
     }, []);
 
-    UseMessageEventHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
+    useMessageEvent(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
 
     const onHabboGroupDeactivatedMessageEvent = useCallback((event: HabboGroupDeactivatedMessageEvent) =>
     {
@@ -59,7 +59,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
         setGroupInformation(null);
     }, [ expectedGroupId, groupInformation ]);
 
-    UseMessageEventHook(HabboGroupDeactivatedMessageEvent, onHabboGroupDeactivatedMessageEvent);
+    useMessageEvent(HabboGroupDeactivatedMessageEvent, onHabboGroupDeactivatedMessageEvent);
 
     const onGroupInformationEvent = useCallback((event: GroupInformationEvent) =>
     {
@@ -70,7 +70,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
         setGroupInformation(parser);
     }, [ expectedGroupId ]);
 
-    UseMessageEventHook(GroupInformationEvent, onGroupInformationEvent);
+    useMessageEvent(GroupInformationEvent, onGroupInformationEvent);
 
     const leaveGroup = () =>
     {

@@ -3,7 +3,7 @@ import { GroupAdminGiveComposer, GroupAdminTakeComposer, GroupConfirmMemberRemov
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, NotificationUtilities, RemoveLinkEventTracker, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { UseMessageEventHook } from '../../../hooks';
+import { useMessageEvent } from '../../../hooks';
 
 export const GroupMembersView: FC<{}> = props =>
 {
@@ -81,7 +81,7 @@ export const GroupMembersView: FC<{}> = props =>
         setTotalPages(Math.ceil(parser.totalMembersCount / parser.pageSize));
     }, []);
 
-    UseMessageEventHook(GroupMembersEvent, onGroupMembersEvent);
+    useMessageEvent(GroupMembersEvent, onGroupMembersEvent);
 
     const onGroupConfirmMemberRemoveEvent = useCallback((event: GroupConfirmMemberRemoveEvent) =>
     {
@@ -97,7 +97,7 @@ export const GroupMembersView: FC<{}> = props =>
         setRemovingMemberName(null);
     }, [ membersData, removingMemberName, refreshMembers ]);
 
-    UseMessageEventHook(GroupConfirmMemberRemoveEvent, onGroupConfirmMemberRemoveEvent);
+    useMessageEvent(GroupConfirmMemberRemoveEvent, onGroupConfirmMemberRemoveEvent);
 
     const linkReceived = useCallback((url: string) =>
     {

@@ -7,7 +7,6 @@ export * from './useFurnitureExternalImageWidget';
 export * from './useFurnitureFriendFurniWidget';
 export * from './useFurnitureHighScoreWidget';
 export * from './useFurnitureInternalLinkWidget';
-export * from './useFurnitureManipulationWidget';
 export * from './useFurnitureMannequinWidget';
 export * from './useFurniturePresentWidget';
 export * from './useFurnitureRoomLinkWidget';

@@ -1,30 +1,24 @@
 import { RoomObjectCategory } from '@nitrots/nitro-renderer';
-import { useCallback, useEffect, useState } from 'react';
-import { GetRoomEngine, GetRoomSession, RoomObjectItem, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
-import { UI_EVENT_DISPATCHER } from '../../events';
+import { useState } from 'react';
+import { GetRoomEngine, GetRoomSession, RoomObjectItem } from '../../../api';
+import { useUserAddedEvent, useUserRemovedEvent } from '../engine';
+import { useRoom } from '../useRoom';
 
 const useUserChooserWidgetState = () =>
 {
     const [ items, setItems ] = useState<RoomObjectItem[]>(null);
+    const { roomSession = null } = useRoom();
 
-    const close = () =>
-    {
-        setItems(null);
-    }
+    const close = () => setItems(null);
 
-    const selectItem = (item: RoomObjectItem) =>
-    {
-        if(!item) return;
+    const selectItem = (item: RoomObjectItem) => item && GetRoomEngine().selectRoomObject(GetRoomSession().roomId, item.id, item.category);
 
-        GetRoomEngine().selectRoomObject(GetRoomSession().roomId, item.id, item.category);
-    }
-
-    const populateChooser = useCallback(() =>
+    const populateChooser = () =>
     {
         const roomSession = GetRoomSession();
         const roomObjects = GetRoomEngine().getRoomObjects(roomSession.roomId, RoomObjectCategory.UNIT);
 
-        const newItems = roomObjects
+        setItems(roomObjects
             .map(roomObject =>
             {
                 if(roomObject.id < 0) return null;
@@ -35,76 +29,50 @@ const useUserChooserWidgetState = () =>
 
                 return new RoomObjectItem(userData.roomIndex, RoomObjectCategory.UNIT, userData.name);
             })
-            .sort((a, b) => ((a.name < b.name) ? -1 : 1));
+            .sort((a, b) => ((a.name < b.name) ? -1 : 1)));
+    }
 
-        setItems(newItems);
-    }, []);
-
-    useEffect(() =>
+    useUserAddedEvent(!!items, event =>
     {
-        if(!items) return;
+        if(event.id < 0) return;
 
-        const onRoomWidgetUpdateRoomObjectEvent = (event: RoomWidgetUpdateRoomObjectEvent) =>
+        const userData = GetRoomSession().userDataManager.getUserDataByIndex(event.id);
+
+        if(!userData) return;
+
+        setItems(prevValue =>
         {
-            if(event.id < 0) return;
+            const newValue = [ ...prevValue ];
 
-            const userData = GetRoomSession().userDataManager.getUserDataByIndex(event.id);
+            newValue.push(new RoomObjectItem(userData.roomIndex, RoomObjectCategory.UNIT, userData.name));
+            newValue.sort((a, b) => ((a.name < b.name) ? -1 : 1));
 
-            if(!userData) return;
+            return newValue;
+        });
+    });
 
-            setItems(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
-
-                newValue.push(new RoomObjectItem(userData.roomIndex, RoomObjectCategory.UNIT, userData.name));
-                newValue.sort((a, b) => ((a.name < b.name) ? -1 : 1));
-
-                return newValue;
-            });
-        }
-
-        UI_EVENT_DISPATCHER.addEventListener(RoomWidgetUpdateRoomObjectEvent.USER_ADDED, onRoomWidgetUpdateRoomObjectEvent);
-
-        return () =>
-        {
-            UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.USER_ADDED, onRoomWidgetUpdateRoomObjectEvent);
-        }
-    }, [ items ]);
-
-    useEffect(() =>
+    useUserRemovedEvent(!!items, event =>
     {
-        if(!items) return;
+        if(event.id < 0) return;
 
-        const onRoomWidgetUpdateRoomObjectEvent = (event: RoomWidgetUpdateRoomObjectEvent) =>
+        setItems(prevValue =>
         {
-            if(event.id < 0) return;
+            const newValue = [ ...prevValue ];
 
-            setItems(prevValue =>
+            for(let i = 0; i < newValue.length; i++)
             {
-                const newValue = [ ...prevValue ];
+                const existingValue = newValue[i];
 
-                for(let i = 0; i < newValue.length; i++)
-                {
-                    const existingValue = newValue[i];
+                if((existingValue.id !== event.id) || (existingValue.category !== event.category)) continue;
 
-                    if((existingValue.id !== event.id) || (existingValue.category !== event.category)) continue;
+                newValue.splice(i, 1);
 
-                    newValue.splice(i, 1);
+                break;
+            }
 
-                    break;
-                }
-
-                return newValue;
-            });
-        }
-
-        UI_EVENT_DISPATCHER.addEventListener(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, onRoomWidgetUpdateRoomObjectEvent);
-
-        return () =>
-        {
-            UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, onRoomWidgetUpdateRoomObjectEvent);
-        }
-    }, [ items ]);
+            return newValue;
+        });
+    });
 
     return { items, close, selectItem, populateChooser };
 }

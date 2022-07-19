@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { useRoomContext } from '../../../RoomContext';
+import { useRoom } from '../../../../../hooks';
 
 interface EffectBoxConfirmViewProps
 {
@@ -12,7 +12,7 @@ interface EffectBoxConfirmViewProps
 export const EffectBoxConfirmView: FC<EffectBoxConfirmViewProps> = props =>
 {
     const { objectId = -1, close = null } = props;
-    const { roomSession = null } = useRoomContext();
+    const { roomSession = null } = useRoom();
 
     const useProduct = () =>
     {

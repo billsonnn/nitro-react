@@ -1,4 +1,5 @@
-import { LocalizeText, NotificationUtilities } from '..';
+import { NotificationUtilities } from '../notification';
+import { LocalizeText } from '../utils';
 import { TradingNotificationType } from './TradingNotificationType';
 
 export const TradingNotificationMessage = (type: number, otherUsername: string = '') =>

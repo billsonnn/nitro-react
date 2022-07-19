@@ -1,8 +1,8 @@
 import { RoomEngineTriggerWidgetEvent, RoomObjectVariable, StringDataType } from '@nitrots/nitro-renderer';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { GetRoomEngine, GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText, NotificationUtilities } from '../../../../api';
-import { UseRoomEngineEvent } from '../../../events';
-import { useFurniRemovedEvent } from '../../useFurniRemovedEvent';
+import { useRoomEngineEvent } from '../../../events';
+import { useFurniRemovedEvent } from '../../engine';
 
 const useFurnitureBadgeDisplayWidgetState = () =>
 {
@@ -14,7 +14,7 @@ const useFurnitureBadgeDisplayWidgetState = () =>
     const [ date, setDate ] = useState('');
     const [ senderName, setSenderName ] = useState('');
 
-    const close = useCallback(() =>
+    const close = () =>
     {
         setObjectId(-1);
         setCategory(-1);
@@ -23,9 +23,12 @@ const useFurnitureBadgeDisplayWidgetState = () =>
         setBadgeDesc('');
         setDate('');
         setSenderName('');
-    }, []);
+    }
 
-    const onRoomEngineTriggerWidgetEvent = useCallback((event: RoomEngineTriggerWidgetEvent) =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>([
+        RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING,
+        RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING
+    ], event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 
@@ -42,12 +45,9 @@ const useFurnitureBadgeDisplayWidgetState = () =>
         setBadgeDesc(LocalizeBadgeDescription(stringStuff.getValue(1)));
         setDate(stringStuff.getValue(2));
         setSenderName(stringStuff.getValue(3));
-    }, []);
+    });
 
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING, onRoomEngineTriggerWidgetEvent);
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING, onRoomEngineTriggerWidgetEvent);
-
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 

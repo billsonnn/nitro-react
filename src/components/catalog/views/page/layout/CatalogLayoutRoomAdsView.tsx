@@ -2,7 +2,7 @@ import { GetRoomAdPurchaseInfoComposer, GetUserEventCatsMessageComposer, Purchas
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Column, Text } from '../../../../../common';
-import { UseMessageEventHook } from '../../../../../hooks';
+import { useMessageEvent } from '../../../../../hooks';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
@@ -25,7 +25,7 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
         setAvailableRooms(parser.rooms);
     }
 
-    UseMessageEventHook(RoomAdPurchaseInfoEvent, onRoomAdPurchaseInfoEvent);
+    useMessageEvent(RoomAdPurchaseInfoEvent, onRoomAdPurchaseInfoEvent);
 
     const purchaseAd = useCallback(() =>
     {
@@ -47,7 +47,7 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
         setCategories(parser.categories);
     }
 
-    UseMessageEventHook(UserEventCatsEvent, onUserEventCatsEvent);
+    useMessageEvent(UserEventCatsEvent, onUserEventCatsEvent);
 
     useEffect(() =>
     {

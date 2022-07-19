@@ -2,7 +2,7 @@ import { RoomBannedUsersComposer, RoomDataParser, RoomSettingsDataEvent, SaveRoo
 import { FC, useCallback, useState } from 'react';
 import { IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';
-import { UseMessageEventHook } from '../../../../hooks';
+import { useMessageEvent } from '../../../../hooks';
 import { NavigatorRoomSettingsAccessTabView } from './NavigatorRoomSettingsAccessTabView';
 import { NavigatorRoomSettingsBasicTabView } from './NavigatorRoomSettingsBasicTabView';
 import { NavigatorRoomSettingsModTabView } from './NavigatorRoomSettingsModTabView';
@@ -63,7 +63,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
         SendMessageComposer(new RoomBannedUsersComposer(data.roomId));
     }, []);
 
-    UseMessageEventHook(RoomSettingsDataEvent, onRoomSettingsEvent);
+    useMessageEvent(RoomSettingsDataEvent, onRoomSettingsEvent);
 
     const close = () =>
     {

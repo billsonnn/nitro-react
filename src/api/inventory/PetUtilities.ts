@@ -2,7 +2,7 @@ import { PetData } from '@nitrots/nitro-renderer';
 import { CreateLinkEvent } from '../nitro';
 import { cancelRoomObjectPlacement, getPlacingItemId } from './InventoryUtilities';
 import { IPetItem } from './IPetItem';
-import { UnseenItemCategory } from './unseen';
+import { UnseenItemCategory } from './UnseenItemCategory';
 
 export const getAllPetIds = (petItems: IPetItem[]) => petItems.map(item => item.petData.id);
 

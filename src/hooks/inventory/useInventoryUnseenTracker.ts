@@ -1,8 +1,8 @@
 import { UnseenItemsEvent, UnseenResetCategoryComposer, UnseenResetItemsComposer } from '@nitrots/nitro-renderer';
 import { useCallback, useMemo, useState } from 'react';
 import { useBetween } from 'use-between';
-import { UseMessageEventHook } from '..';
 import { SendMessageComposer } from '../../api';
+import { useMessageEvent } from '../events';
 
 const sendResetCategoryMessage = (category: number) => SendMessageComposer(new UnseenResetCategoryComposer(category));
 const sendResetItemsMessage = (category: number, itemIds: number[]) => SendMessageComposer(new UnseenResetItemsComposer(category, ...itemIds));
@@ -98,7 +98,7 @@ const useInventoryUnseenTrackerState = () =>
         });
     }, []);
 
-    const onUnseenItemsEvent = useCallback((event: UnseenItemsEvent) =>
+    useMessageEvent<UnseenItemsEvent>(UnseenItemsEvent, event =>
     {
         const parser = event.getParser();
 
@@ -124,9 +124,7 @@ const useInventoryUnseenTrackerState = () =>
 
             return newValue;
         });
-    }, []);
-
-    UseMessageEventHook(UnseenItemsEvent, onUnseenItemsEvent);
+    });
 
     return { getCount, getFullCount, resetCategory, resetItems, isUnseen, removeUnseen };
 }

@@ -2,7 +2,7 @@ import { BannedUserData, BannedUsersFromRoomEvent, RoomBannedUsersComposer, Room
 import { FC, useCallback, useEffect, useState } from 'react';
 import { IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Grid, Text, UserProfileIconView } from '../../../../common';
-import { UseMessageEventHook } from '../../../../hooks';
+import { useMessageEvent } from '../../../../hooks';
 
 interface NavigatorRoomSettingsTabViewProps
 {
@@ -25,7 +25,7 @@ export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewPro
         setBannedUsers(parser.bannedUsers);
     }, [ roomData ]);
 
-    UseMessageEventHook(BannedUsersFromRoomEvent, onBannedUsersFromRoomEvent);
+    useMessageEvent(BannedUsersFromRoomEvent, onBannedUsersFromRoomEvent);
 
     const unBanUser = useCallback((userId: number) =>
     {

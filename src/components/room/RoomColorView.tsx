@@ -1,17 +1,16 @@
-import { ColorConverter, NitroAdjustmentFilter, NitroContainer, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineDimmerStateEvent, RoomEngineEvent, RoomId, RoomObjectHSLColorEnabledEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { ColorConverter, NitroAdjustmentFilter, NitroContainer, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineDimmerStateEvent, RoomId, RoomObjectHSLColorEnabledEvent } from '@nitrots/nitro-renderer';
+import { FC, useEffect, useState } from 'react';
 import { GetNitroInstance, GetRoomEngine, RoomWidgetUpdateBackgroundColorPreviewEvent } from '../../api';
-import { UseEventDispatcherHook, UseRoomEngineEvent } from '../../hooks';
-import { useRoomContext } from './RoomContext';
+import { useRoom, useRoomEngineEvent, useUiEvent } from '../../hooks';
 
 export const RoomColorView: FC<{}> = props =>
 {
     const [ roomBackground, setRoomBackground ] = useState<NitroSprite>(null);
     const [ roomFilter, setRoomFilter ] = useState<NitroAdjustmentFilter>(null);
     const [ originalRoomBackgroundColor, setOriginalRoomBackgroundColor ] = useState(0);
-    const { roomSession = null, widgetHandler = null, eventDispatcher = null } = useRoomContext();
+    const { roomSession = null } = useRoom();
 
-    const updateRoomBackgroundColor = useCallback((hue: number, saturation: number, lightness: number, original: boolean = false) =>
+    const updateRoomBackgroundColor = (hue: number, saturation: number, lightness: number, original: boolean = false) =>
     {
         if(!roomBackground) return;
         
@@ -27,9 +26,9 @@ export const RoomColorView: FC<{}> = props =>
         {
             roomBackground.tint = newColor;
         }
-    }, [ roomBackground ]);
+    }
 
-    const updateRoomFilter = useCallback((color: number) =>
+    const updateRoomFilter = (color: number) =>
     {
         if(!roomFilter) return;
 
@@ -40,68 +39,45 @@ export const RoomColorView: FC<{}> = props =>
         roomFilter.red = (r / 255);
         roomFilter.green = (g / 255);
         roomFilter.blue = (b / 255);
-    }, [ roomFilter ]);
+    }
 
-    const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
+    useRoomEngineEvent<RoomObjectHSLColorEnabledEvent>(RoomObjectHSLColorEnabledEvent.ROOM_BACKGROUND_COLOR, event =>
     {
         if(RoomId.isRoomPreviewerId(event.roomId)) return;
 
-        switch(event.type)
-        {
-            case RoomObjectHSLColorEnabledEvent.ROOM_BACKGROUND_COLOR: {
-                const hslColorEvent = (event as RoomObjectHSLColorEnabledEvent);
+        if(event.enable) updateRoomBackgroundColor(event.hue, event.saturation, event.lightness, true);
+        else updateRoomBackgroundColor(0, 0, 0, true);
+    });
 
-                if(hslColorEvent.enable) updateRoomBackgroundColor(hslColorEvent.hue, hslColorEvent.saturation, hslColorEvent.lightness, true);
-                else updateRoomBackgroundColor(0, 0, 0, true);
-
-                return;
-            }
-            case RoomBackgroundColorEvent.ROOM_COLOR: {
-                const colorEvent = (event as RoomBackgroundColorEvent);
-
-                let color = 0x000000;
-                let brightness = 0xFF;
-
-                if(!colorEvent.bgOnly)
-                {
-                    color = colorEvent.color;
-                    brightness = colorEvent.brightness;
-                }
-                
-                updateRoomFilter(ColorConverter.hslToRGB(((ColorConverter.rgbToHSL(color) & 0xFFFF00) + brightness)));
-
-                return;
-            }
-            case RoomEngineDimmerStateEvent.ROOM_COLOR: {
-                widgetHandler.processEvent(event);
-            }
-        }
-    }, [ widgetHandler, updateRoomBackgroundColor, updateRoomFilter ]);
-
-    UseRoomEngineEvent(RoomObjectHSLColorEnabledEvent.ROOM_BACKGROUND_COLOR, onRoomEngineEvent);
-    UseRoomEngineEvent(RoomBackgroundColorEvent.ROOM_COLOR, onRoomEngineEvent);
-    UseRoomEngineEvent(RoomEngineDimmerStateEvent.ROOM_COLOR, onRoomEngineEvent);
-
-    const onRoomWidgetUpdateBackgroundColorPreviewEvent = useCallback((event: RoomWidgetUpdateBackgroundColorPreviewEvent) =>
+    useRoomEngineEvent<RoomBackgroundColorEvent>(RoomBackgroundColorEvent.ROOM_COLOR, event =>
     {
-        switch(event.type)
+        if(RoomId.isRoomPreviewerId(event.roomId)) return;
+
+        let color = 0x000000;
+        let brightness = 0xFF;
+
+        if(!event.bgOnly)
         {
-            case RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW: {
-                updateRoomBackgroundColor(event.hue, event.saturation, event.lightness);
-                return;
-            }
-            case RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW: {
-                if(!roomBackground) return;
-
-                roomBackground.tint = originalRoomBackgroundColor;
-                
-                return;
-            }
+            color = event.color;
+            brightness = event.brightness;
         }
-    }, [ roomBackground, originalRoomBackgroundColor, updateRoomBackgroundColor ]);
+        
+        updateRoomFilter(ColorConverter.hslToRGB(((ColorConverter.rgbToHSL(color) & 0xFFFF00) + brightness)));
+    });
 
-    UseEventDispatcherHook(RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW, eventDispatcher, onRoomWidgetUpdateBackgroundColorPreviewEvent);
-    UseEventDispatcherHook(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW, eventDispatcher, onRoomWidgetUpdateBackgroundColorPreviewEvent);
+    useRoomEngineEvent<RoomEngineDimmerStateEvent>(RoomEngineDimmerStateEvent.ROOM_COLOR, event =>
+    {
+        if(RoomId.isRoomPreviewerId(event.roomId)) return;
+    });
+
+    useUiEvent<RoomWidgetUpdateBackgroundColorPreviewEvent>(RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW, event => updateRoomBackgroundColor(event.hue, event.saturation, event.lightness));
+
+    useUiEvent<RoomWidgetUpdateBackgroundColorPreviewEvent>(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW, event =>
+    {
+        if(!roomBackground) return;
+
+        roomBackground.tint = originalRoomBackgroundColor;
+    });
 
     useEffect(() =>
     {

@@ -1,9 +1,8 @@
-import { ControlYoutubeDisplayPlaybackMessageComposer, GetYoutubeDisplayStatusMessageComposer, RoomEngineTriggerWidgetEvent, SecurityLevel, SetYoutubeDisplayPlaylistMessageComposer, YoutubeControlVideoMessageEvent, YoutubeDisplayPlaylist, YoutubeDisplayPlaylistsEvent, YoutubeDisplayVideoMessageEvent } from '@nitrots/nitro-renderer';
-import { useCallback, useState } from 'react';
+import { ControlYoutubeDisplayPlaybackMessageComposer, GetYoutubeDisplayStatusMessageComposer, RoomEngineTriggerWidgetEvent, RoomId, SecurityLevel, SetYoutubeDisplayPlaylistMessageComposer, YoutubeControlVideoMessageEvent, YoutubeDisplayPlaylist, YoutubeDisplayPlaylistsEvent, YoutubeDisplayVideoMessageEvent } from '@nitrots/nitro-renderer';
+import { useState } from 'react';
 import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture, SendMessageComposer, YoutubeVideoPlaybackStateEnum } from '../../../../api';
-import { UseRoomEngineEvent } from '../../../events';
-import { UseMessageEventHook } from '../../../messages';
-import { useFurniRemovedEvent } from '../../useFurniRemovedEvent';
+import { useMessageEvent, useRoomEngineEvent } from '../../../events';
+import { useFurniRemovedEvent } from '../../engine';
 
 const CONTROL_COMMAND_PREVIOUS_VIDEO = 0;
 const CONTROL_COMMAND_NEXT_VIDEO = 1;
@@ -57,11 +56,11 @@ const useFurnitureYoutubeWidgetState = () =>
         SendMessageComposer(new SetYoutubeDisplayPlaylistMessageComposer(objectId, video));
     }
 
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_YOUTUBE, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_YOUTUBE, event =>
     {
-        const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
+        if(RoomId.isRoomPreviewerId(event.roomId)) return;
 
-        console.log(roomObject);
+        const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
     
         if(!roomObject) return;
 
@@ -69,19 +68,10 @@ const useFurnitureYoutubeWidgetState = () =>
         setCategory(event.category);
         setHasControl(GetSessionDataManager().hasSecurity(SecurityLevel.EMPLOYEE) || IsOwnerOfFurniture(roomObject));
 
-        console.log('??')
-
         SendMessageComposer(new GetYoutubeDisplayStatusMessageComposer(event.objectId));
     });
 
-    useFurniRemovedEvent(((objectId !== -1) && (category !== -1)), event =>
-    {
-        if((event.id !== objectId) || (event.category !== category)) return;
-
-        close();
-    });
-
-    const onYoutubeDisplayVideoMessageEvent = useCallback((event: YoutubeDisplayVideoMessageEvent) =>
+    useMessageEvent<YoutubeDisplayVideoMessageEvent>(YoutubeDisplayVideoMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -91,11 +81,9 @@ const useFurnitureYoutubeWidgetState = () =>
         setVideoStart(parser.startAtSeconds);
         setVideoEnd(parser.endAtSeconds);
         setCurrentVideoState(parser.state);
-    }, [ objectId ]);
+    });
 
-    UseMessageEventHook(YoutubeDisplayVideoMessageEvent, onYoutubeDisplayVideoMessageEvent);
-
-    const onYoutubeDisplayPlaylistsEvent = useCallback((event: YoutubeDisplayPlaylistsEvent) =>
+    useMessageEvent<YoutubeDisplayPlaylistsEvent>(YoutubeDisplayPlaylistsEvent, event =>
     {
         const parser = event.getParser();
 
@@ -107,11 +95,9 @@ const useFurnitureYoutubeWidgetState = () =>
         setCurrentVideoState(-1);
         setVideoEnd(null);
         setVideoStart(null);
-    }, [ objectId ]);
+    });
 
-    UseMessageEventHook(YoutubeDisplayPlaylistsEvent, onYoutubeDisplayPlaylistsEvent);
-
-    const onYoutubeControlVideoMessageEvent = useCallback((event: YoutubeControlVideoMessageEvent) =>
+    useMessageEvent<YoutubeControlVideoMessageEvent>(YoutubeControlVideoMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -126,9 +112,14 @@ const useFurnitureYoutubeWidgetState = () =>
                 setCurrentVideoState(YoutubeVideoPlaybackStateEnum.PAUSED);
                 break;
         }
-    }, [ objectId ]);
+    });
 
-    UseMessageEventHook(YoutubeControlVideoMessageEvent, onYoutubeControlVideoMessageEvent);
+    useFurniRemovedEvent(((objectId !== -1) && (category !== -1)), event =>
+    {
+        if((event.id !== objectId) || (event.category !== category)) return;
+
+        close();
+    });
 
     return { objectId, videoId, videoStart, videoEnd, currentVideoState, selectedVideo, playlists, close, previous, next, pause, play, selectVideo };
 }

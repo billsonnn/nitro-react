@@ -1,11 +1,10 @@
 import { ChatRecordData } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, Key, useCallback } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps } from 'react-virtualized';
-import { TryVisitRoom } from '../../../../api';
+import { DispatchUiEvent, TryVisitRoom } from '../../../../api';
 import { Base, Button, Column, Flex, Grid, Text } from '../../../../common';
 import { ModToolsOpenUserInfoEvent } from '../../../../events';
 import { ModToolsOpenRoomInfoEvent } from '../../../../events/mod-tools/ModToolsOpenRoomInfoEvent';
-import { DispatchUiEvent } from '../../../../hooks';
 
 interface ChatlogViewProps
 {

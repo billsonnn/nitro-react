@@ -1,6 +1,5 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
-import { GetAchievementCategoryProgress } from '.';
-import { GetAchievementCategoryMaxProgress } from './GetAchievementCategoryMaxProgress';
+import { AchievementUtilities } from './AchievementUtilities';
 import { IAchievementCategory } from './IAchievementCategory';
 
 export class AchievementCategory implements IAchievementCategory
@@ -16,12 +15,12 @@ export class AchievementCategory implements IAchievementCategory
 
     public getProgress(): number
     {
-        return GetAchievementCategoryProgress(this);
+        return AchievementUtilities.getAchievementCategoryProgress(this);
     }
 
     public getMaxProgress(): number
     {
-        return GetAchievementCategoryMaxProgress(this);
+        return AchievementUtilities.getAchievementCategoryMaxProgress(this);
     }
 
     public get code(): string

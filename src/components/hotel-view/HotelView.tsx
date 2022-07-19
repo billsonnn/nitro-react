@@ -2,7 +2,7 @@ import { RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetConfiguration, GetConfigurationManager } from '../../api';
 import { LayoutAvatarImageView } from '../../common';
-import { UseRoomSessionManagerEvent, useSessionInfo } from '../../hooks';
+import { useRoomSessionManagerEvent, useSessionInfo } from '../../hooks';
 import { WidgetSlotView } from './views/widgets/WidgetSlotView';
 
 const widgetSlotCount = 7;
@@ -25,8 +25,8 @@ export const HotelView: FC<{}> = props =>
         }
     }, []);
 
-    UseRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
-    UseRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
     if(!isVisible) return null;
 

@@ -1,5 +1,5 @@
 import { NitroEvent } from '@nitrots/nitro-renderer';
 import { GetConfigurationManager } from '../../../api';
-import { UseEventDispatcherHook } from '../UseEventDispatcherHook';
+import { useEventDispatcher } from '../useEventDispatcher';
 
-export const UseConfigurationEvent = (type: string, handler: (event: NitroEvent) => void) => UseEventDispatcherHook(type, GetConfigurationManager().events, handler);
+export const useConfigurationEvent = <T extends NitroEvent>(type: string | string[], handler: (event: T) => void) => useEventDispatcher(type, GetConfigurationManager().events, handler);

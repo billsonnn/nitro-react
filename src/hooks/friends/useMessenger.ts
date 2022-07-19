@@ -2,7 +2,7 @@ import { NewConsoleMessageEvent, RoomInviteErrorEvent, RoomInviteEvent, SendMess
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useBetween } from 'use-between';
 import { CloneObject, GetSessionDataManager, LocalizeText, MessengerIconState, MessengerThread, MessengerThreadChat, NotificationAlertType, NotificationUtilities, PlaySound, SendMessageComposer, SoundNames } from '../../api';
-import { UseMessageEventHook } from '../messages';
+import { useMessageEvent } from '../events';
 import { useFriends } from './useFriends';
 
 const useMessengerState = () =>
@@ -133,7 +133,7 @@ const useMessengerState = () =>
         });
     }, [ activeThreadId, getFriend ]);
 
-    UseMessageEventHook(NewConsoleMessageEvent, onNewConsoleMessageEvent);
+    useMessageEvent(NewConsoleMessageEvent, onNewConsoleMessageEvent);
 
     const onRoomInviteEvent = useCallback((event: RoomInviteEvent) =>
     {
@@ -174,7 +174,7 @@ const useMessengerState = () =>
         });
     }, [ activeThreadId, getFriend ]);
 
-    UseMessageEventHook(RoomInviteEvent, onRoomInviteEvent);
+    useMessageEvent(RoomInviteEvent, onRoomInviteEvent);
 
     const onRoomInviteErrorEvent = useCallback((event: RoomInviteErrorEvent) =>
     {
@@ -184,7 +184,7 @@ const useMessengerState = () =>
         NotificationUtilities.simpleAlert(message, NotificationAlertType.DEFAULT, null, null, LocalizeText('friendlist.alert.title'));
     }, []);
 
-    UseMessageEventHook(RoomInviteErrorEvent, onRoomInviteErrorEvent);
+    useMessageEvent(RoomInviteErrorEvent, onRoomInviteErrorEvent);
 
     useEffect(() =>
     {

@@ -1,8 +1,7 @@
 import { ContextMenuEnum, GroupFurniContextMenuInfoMessageEvent, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { useCallback, useState } from 'react';
-import { GetRoomEngine, IsOwnerOfFurniture, RoomWidgetFurniActionMessage, TryJoinGroup, TryVisitRoom } from '../../../../api';
-import { UseRoomEngineEvent } from '../../../events';
-import { UseMessageEventHook } from '../../../messages';
+import { GetRoomEngine, IsOwnerOfFurniture, TryJoinGroup, TryVisitRoom } from '../../../../api';
+import { useMessageEvent, useRoomEngineEvent } from '../../../events';
 import { useRoom } from '../../useRoom';
 
 const MONSTERPLANT_SEED_CONFIRMATION: string = 'MONSTERPLANT_SEED_CONFIRMATION';
@@ -18,7 +17,7 @@ const useFurnitureContextMenuWidgetState = () =>
     const [ confirmingObjectId, setConfirmingObjectId ] = useState(-1);
     const [ groupData, setGroupData ] = useState<GroupFurniContextMenuInfoMessageParser>(null);
     const [ isGroupMember, setIsGroupMember ] = useState(false);
-    const { roomSession = null, widgetHandler = null } = useRoom();
+    const { roomSession = null } = useRoom();
 
     const close = useCallback(() =>
     {
@@ -48,7 +47,7 @@ const useFurnitureContextMenuWidgetState = () =>
                     setConfirmingObjectId(objectId);
                     break;
                 case 'use_random_teleport':
-                    widgetHandler.processWidgetMessage(new RoomWidgetFurniActionMessage(RoomWidgetFurniActionMessage.USE, objectId, RoomObjectCategory.FLOOR));
+                    GetRoomEngine().useRoomObject(objectId, RoomObjectCategory.FLOOR);
                     break;
                 case 'use_purchaseable_clothing':
                     setConfirmMode(PURCHASABLE_CLOTHING_CONFIRMATION);
@@ -67,7 +66,13 @@ const useFurnitureContextMenuWidgetState = () =>
         close();
     }
 
-    const onRoomEngineTriggerWidgetEvent = useCallback((event: RoomEngineTriggerWidgetEvent) =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>([
+        RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU,
+        RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU,
+        RoomEngineTriggerWidgetEvent.REQUEST_MONSTERPLANT_SEED_PLANT_CONFIRMATION_DIALOG,
+        RoomEngineTriggerWidgetEvent.REQUEST_PURCHASABLE_CLOTHING_CONFIRMATION_DIALOG,
+        RoomEngineTriggerWidgetEvent.REQUEST_EFFECTBOX_OPEN_DIALOG
+    ], event =>
     {
         const object = GetRoomEngine().getRoomObject(roomSession.roomId, event.objectId, event.category);
 
@@ -126,9 +131,9 @@ const useFurnitureContextMenuWidgetState = () =>
                 if(object.id === objectId) close();
                 return;
         }
-    }, [ roomSession, objectId, close ]);
+    });
 
-    const onGroupFurniContextMenuInfoMessageEvent = useCallback((event: GroupFurniContextMenuInfoMessageEvent) =>
+    useMessageEvent<GroupFurniContextMenuInfoMessageEvent>(GroupFurniContextMenuInfoMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -136,15 +141,7 @@ const useFurnitureContextMenuWidgetState = () =>
         setGroupData(parser);
         setIsGroupMember(parser.userIsMember);
         setMode(GROUP_FURNITURE);
-    }, []);
-
-    UseMessageEventHook(GroupFurniContextMenuInfoMessageEvent, onGroupFurniContextMenuInfoMessageEvent);
-
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU, onRoomEngineTriggerWidgetEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU, onRoomEngineTriggerWidgetEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_MONSTERPLANT_SEED_PLANT_CONFIRMATION_DIALOG, onRoomEngineTriggerWidgetEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_PURCHASABLE_CLOTHING_CONFIRMATION_DIALOG, onRoomEngineTriggerWidgetEvent);
-    UseRoomEngineEvent(RoomEngineTriggerWidgetEvent.REQUEST_EFFECTBOX_OPEN_DIALOG, onRoomEngineTriggerWidgetEvent);
+    });
 
     return { objectId, mode, confirmMode, confirmingObjectId, groupData, isGroupMember, closeConfirm, processAction };
 }

@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { CatalogPurchaseState, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { AutoGrid, Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, LayoutLoadingSpinnerView, Text } from '../../../../../common';
 import { CatalogEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent } from '../../../../../events';
-import { useCatalog, usePurse, UseUiEvent } from '../../../../../hooks';
+import { useCatalog, usePurse, useUiEvent } from '../../../../../hooks';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
@@ -27,8 +27,8 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
         }
     }, []);
 
-    UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
-    UseUiEvent(CatalogPurchaseFailureEvent.PURCHASE_FAILED, onCatalogEvent);
+    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
+    useUiEvent(CatalogPurchaseFailureEvent.PURCHASE_FAILED, onCatalogEvent);
 
     const getOfferText = useCallback((offer: ClubOfferData) =>
     {

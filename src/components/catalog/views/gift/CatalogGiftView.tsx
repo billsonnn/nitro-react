@@ -5,7 +5,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, ProductTypeEnum, SendMessageComposer } from '../../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, FormGroup, LayoutCurrencyIcon, LayoutFurniImageView, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { CatalogEvent, CatalogInitGiftEvent, CatalogPurchasedEvent } from '../../../../events';
-import { useCatalog, UseMessageEventHook, UseUiEvent } from '../../../../hooks';
+import { useCatalog, useMessageEvent, useUiEvent } from '../../../../hooks';
 
 export const CatalogGiftView: FC<{}> = props =>
 {
@@ -61,8 +61,8 @@ export const CatalogGiftView: FC<{}> = props =>
         }
     }, [ close ]);
 
-    UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
-    UseUiEvent(CatalogEvent.INIT_GIFT, onCatalogEvent);
+    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
+    useUiEvent(CatalogEvent.INIT_GIFT, onCatalogEvent);
 
     const isBoxDefault = useMemo(() =>
     {
@@ -118,7 +118,7 @@ export const CatalogGiftView: FC<{}> = props =>
         setReceiverNotFound(true);
     }, []);
 
-    UseMessageEventHook(GiftReceiverNotFoundEvent, onGiftReceiverNotFoundEvent);
+    useMessageEvent(GiftReceiverNotFoundEvent, onGiftReceiverNotFoundEvent);
 
     useEffect(() =>
     {

@@ -2,7 +2,7 @@ import { GuideSessionGetRequesterRoomMessageComposer, GuideSessionInviteRequeste
 import { FC, KeyboardEvent, useCallback, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, SendMessageComposer, TryVisitRoom } from '../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
-import { UseMessageEventHook } from '../../../hooks';
+import { useMessageEvent } from '../../../hooks';
 import { GuideToolMessageGroup } from '../common/GuideToolMessageGroup';
 
 interface GuideToolOngoingViewProps
@@ -43,7 +43,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
         TryVisitRoom(parser.requesterRoomId);
     }, []);
 
-    UseMessageEventHook(GuideSessionRequesterRoomMessageEvent, onGuideSessionRequesterRoomMessageEvent);
+    useMessageEvent(GuideSessionRequesterRoomMessageEvent, onGuideSessionRequesterRoomMessageEvent);
 
     const sendMessage = useCallback(() =>
     {

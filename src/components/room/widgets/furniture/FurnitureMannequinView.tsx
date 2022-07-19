@@ -1,6 +1,6 @@
 import { HabboClubLevelEnum, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetAvatarRenderManager, GetClubMemberLevel, GetMergedMannequinFigureContainer, GetRoomSession, GetSessionDataManager, LocalizeText, TransformAsMannequinFigure } from '../../../../api';
+import { GetAvatarRenderManager, GetClubMemberLevel, GetRoomSession, GetSessionDataManager, LocalizeText, MannequinUtilities } from '../../../../api';
 import { Base, Button, Column, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useFurnitureMannequinWidget } from '../../../../hooks';
 
@@ -55,7 +55,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
             case MODE_WRONG_GENDER: {
                 const figureContainer = GetAvatarRenderManager().createFigureContainer(figure);
 
-                TransformAsMannequinFigure(figureContainer);
+                MannequinUtilities.transformAsMannequinFigure(figureContainer);
 
                 setRenderedFigure(figureContainer.getFigureString());
                 break;
@@ -63,14 +63,14 @@ export const FurnitureMannequinView: FC<{}> = props =>
             case MODE_UPDATE: {
                 const figureContainer = GetAvatarRenderManager().createFigureContainer(GetSessionDataManager().figure);
 
-                TransformAsMannequinFigure(figureContainer);
+                MannequinUtilities.transformAsMannequinFigure(figureContainer);
 
                 setRenderedFigure(figureContainer.getFigureString());
                 break;
             }
             case MODE_PEER:
             case MODE_NO_CLUB: {
-                const figureContainer = GetMergedMannequinFigureContainer(GetSessionDataManager().figure, figure);
+                const figureContainer = MannequinUtilities.getMergedMannequinFigureContainer(GetSessionDataManager().figure, figure);
 
                 setRenderedFigure(figureContainer.getFigureString());
                 break;

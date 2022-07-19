@@ -170,15 +170,13 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         return () => clearTimeout(timeout);
     }, [ fades ]);
     
-
     const toggleCollapse = () =>
     {
         COLLAPSED = !COLLAPSED;
         setIsCollapsed(COLLAPSED);
         setOpacity(0);
-
-        console.log(opacity);
     }
+    
     return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } { ...rest }>
         { !(collapsable && COLLAPSED) && children }
         { collapsable && <ContextMenuCaretView onClick={ () => toggleCollapse() } collapsed={ isCollapsed } /> }

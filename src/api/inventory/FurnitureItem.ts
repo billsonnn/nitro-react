@@ -1,6 +1,6 @@
 import { IFurnitureItemData, IObjectData } from '@nitrots/nitro-renderer';
-import { IFurnitureItem } from '.';
-import { GetNitroInstance } from '..';
+import { GetNitroInstance } from '../nitro';
+import { IFurnitureItem } from './IFurnitureItem';
 
 export class FurnitureItem implements IFurnitureItem
 {

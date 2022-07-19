@@ -2,7 +2,7 @@ import { AcceptFriendMessageComposer, DeclineFriendMessageComposer, FollowFriend
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useBetween } from 'use-between';
 import { CloneObject, MessengerFriend, MessengerRequest, MessengerSettings, SendMessageComposer } from '../../api';
-import { UseMessageEventHook } from '../messages';
+import { useMessageEvent } from '../events';
 
 const useFriendsState = () =>
 {
@@ -129,7 +129,7 @@ const useFriendsState = () =>
         SendMessageComposer(new GetFriendRequestsComposer());
     }, []);
 
-    UseMessageEventHook(MessengerInitEvent, onMessengerInitEvent);
+    useMessageEvent(MessengerInitEvent, onMessengerInitEvent);
 
     const onFriendsFragmentEvent = useCallback((event: FriendListFragmentEvent) =>
     {
@@ -153,7 +153,7 @@ const useFriendsState = () =>
         });
     }, []);
 
-    UseMessageEventHook(FriendListFragmentEvent, onFriendsFragmentEvent);
+    useMessageEvent(FriendListFragmentEvent, onFriendsFragmentEvent);
 
     const onFriendsUpdateEvent = useCallback((event: FriendListUpdateEvent) =>
     {
@@ -195,7 +195,7 @@ const useFriendsState = () =>
         });
     }, []);
 
-    UseMessageEventHook(FriendListUpdateEvent, onFriendsUpdateEvent);
+    useMessageEvent(FriendListUpdateEvent, onFriendsUpdateEvent);
 
     const onFriendRequestsEvent = useCallback((event: FriendRequestsEvent) =>
     {
@@ -227,7 +227,7 @@ const useFriendsState = () =>
         });
     }, []);
 
-    UseMessageEventHook(FriendRequestsEvent, onFriendRequestsEvent);
+    useMessageEvent(FriendRequestsEvent, onFriendRequestsEvent);
 
     const onNewFriendRequestEvent = useCallback((event: NewFriendRequestEvent) =>
     {
@@ -252,7 +252,7 @@ const useFriendsState = () =>
         });
     }, []);
 
-    UseMessageEventHook(NewFriendRequestEvent, onNewFriendRequestEvent);
+    useMessageEvent(NewFriendRequestEvent, onNewFriendRequestEvent);
 
     useEffect(() =>
     {

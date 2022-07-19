@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ILinkEventTracker, NitroSettingsEvent, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer, UserSettingsSoundComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { AddEventLinkTracker, DispatchMainEvent, DispatchUiEvent, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { DispatchMainEvent, DispatchUiEvent, useCatalogPlaceMultipleItems, useCatalogSkipPurchaseConfirmation, UseMessageEventHook } from '../../hooks';
+import { useCatalogPlaceMultipleItems, useCatalogSkipPurchaseConfirmation, useMessageEvent } from '../../hooks';
 
 export const UserSettingsView: FC<{}> = props =>
 {
@@ -30,7 +30,7 @@ export const UserSettingsView: FC<{}> = props =>
         DispatchMainEvent(settingsEvent);
     }, []);
 
-    UseMessageEventHook(UserSettingsEvent, onUserSettingsEvent);
+    useMessageEvent(UserSettingsEvent, onUserSettingsEvent);
 
     const processAction = useCallback((type: string, value?: boolean | number | string) =>
     {
@@ -74,6 +74,7 @@ export const UserSettingsView: FC<{}> = props =>
         }
 
         if(doUpdate) setUserSettings(clone);
+        
         DispatchMainEvent(clone)
     }, [ userSettings ]);
 

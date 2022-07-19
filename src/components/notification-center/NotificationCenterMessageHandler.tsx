@@ -1,7 +1,7 @@
 import { AchievementNotificationMessageEvent, ActivityPointNotificationMessageEvent, ClubGiftNotificationEvent, ClubGiftSelectedEvent, HabboBroadcastMessageEvent, HotelClosedAndOpensEvent, HotelClosesAndWillOpenAtEvent, HotelWillCloseInMinutesEvent, InfoFeedEnableMessageEvent, MaintenanceStatusMessageEvent, ModeratorCautionEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent, PetLevelNotificationEvent, PetReceivedMessageEvent, RespectReceivedEvent, RoomEnterEvent, UserBannedMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetConfiguration, GetRoomEngine, GetSessionDataManager, LocalizeBadgeName, LocalizeText, NotificationBubbleType, NotificationUtilities, ProductImageUtility } from '../../api';
-import { UseMessageEventHook } from '../../hooks';
+import { useMessageEvent } from '../../hooks';
 
 export const NotificationCenterMessageHandler: FC<{}> = props =>
 {
@@ -18,7 +18,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.showSingleBubble(text2, NotificationBubbleType.RESPECT);
     }, []);
 
-    UseMessageEventHook(RespectReceivedEvent, onRespectReceivedEvent);
+    useMessageEvent(RespectReceivedEvent, onRespectReceivedEvent);
 
     const onHabboBroadcastMessageEvent = useCallback((event: HabboBroadcastMessageEvent) =>
     {
@@ -27,7 +27,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.simpleAlert(parser.message.replace(/\\r/g, '\r'), null, null, LocalizeText('notifications.broadcast.title'));
     }, []);
 
-    UseMessageEventHook(HabboBroadcastMessageEvent, onHabboBroadcastMessageEvent);
+    useMessageEvent(HabboBroadcastMessageEvent, onHabboBroadcastMessageEvent);
 
     const onAchievementNotificationMessageEvent = useCallback((event: AchievementNotificationMessageEvent) =>
     {
@@ -41,7 +41,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.showSingleBubble((text1 + ' ' + badgeName), NotificationBubbleType.ACHIEVEMENT, badgeImage, internalLink);
     }, []);
 
-    UseMessageEventHook(AchievementNotificationMessageEvent, onAchievementNotificationMessageEvent);
+    useMessageEvent(AchievementNotificationMessageEvent, onAchievementNotificationMessageEvent);
 
     const onClubGiftNotificationEvent = useCallback((event: ClubGiftNotificationEvent) =>
     {
@@ -50,7 +50,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.showClubGiftNotification(parser.numGifts);
     }, []);
 
-    UseMessageEventHook(ClubGiftNotificationEvent, onClubGiftNotificationEvent);
+    useMessageEvent(ClubGiftNotificationEvent, onClubGiftNotificationEvent);
 
     const onModeratorMessageEvent = useCallback((event: ModeratorMessageEvent) =>
     {
@@ -59,7 +59,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.handleModeratorMessage(parser.message, parser.url);
     }, []);
 
-    UseMessageEventHook(ModeratorMessageEvent, onModeratorMessageEvent);
+    useMessageEvent(ModeratorMessageEvent, onModeratorMessageEvent);
 
     const onActivityPointNotificationMessageEvent = useCallback((event: ActivityPointNotificationMessageEvent) =>
     {
@@ -72,7 +72,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.showSingleBubble(LocalizeText('notifications.text.loyalty.received', [ 'AMOUNT' ], [ parser.amountChanged.toString() ]), NotificationBubbleType.INFO, imageUrl);
     }, []);
 
-    UseMessageEventHook(ActivityPointNotificationMessageEvent, onActivityPointNotificationMessageEvent);
+    useMessageEvent(ActivityPointNotificationMessageEvent, onActivityPointNotificationMessageEvent);
 
     const onUserBannedMessageEvent = useCallback((event: UserBannedMessageEvent) =>
     {
@@ -81,7 +81,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.handleUserBannedMessage(parser.message);
     }, []);
 
-    UseMessageEventHook(UserBannedMessageEvent, onUserBannedMessageEvent);
+    useMessageEvent(UserBannedMessageEvent, onUserBannedMessageEvent);
 
     const onHotelClosesAndWillOpenAtEvent = useCallback((event: HotelClosesAndWillOpenAtEvent) =>
     {
@@ -90,7 +90,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.handleHotelClosedMessage(parser.openHour, parser.openMinute, parser.userThrowOutAtClose);
     }, []);
 
-    UseMessageEventHook(HotelClosesAndWillOpenAtEvent, onHotelClosesAndWillOpenAtEvent);
+    useMessageEvent(HotelClosesAndWillOpenAtEvent, onHotelClosesAndWillOpenAtEvent);
 
     const onPetReceivedMessageEvent = useCallback((event: PetReceivedMessageEvent) =>
     {
@@ -107,7 +107,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.showSingleBubble(text, NotificationBubbleType.PETLEVEL, imageUrl);
     }, []);
 
-    UseMessageEventHook(PetReceivedMessageEvent, onPetReceivedMessageEvent);
+    useMessageEvent(PetReceivedMessageEvent, onPetReceivedMessageEvent);
 
     const onRoomEnterEvent = useCallback((event: RoomEnterEvent) =>
     {
@@ -116,7 +116,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.showModerationDisclaimer();
     }, []);
 
-    UseMessageEventHook(RoomEnterEvent, onRoomEnterEvent);
+    useMessageEvent(RoomEnterEvent, onRoomEnterEvent);
 
     const onMOTDNotificationEvent = useCallback((event: MOTDNotificationEvent) =>
     {
@@ -125,7 +125,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.handleMOTD(parser.messages);
     }, []);
 
-    UseMessageEventHook(MOTDNotificationEvent, onMOTDNotificationEvent);
+    useMessageEvent(MOTDNotificationEvent, onMOTDNotificationEvent);
 
     const onPetLevelNotificationEvent = useCallback((event: PetLevelNotificationEvent) =>
     {
@@ -140,7 +140,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.showSingleBubble(LocalizeText('notifications.text.petlevel', [ 'pet_name', 'level' ], [ parser.petName, parser.level.toString() ]), NotificationBubbleType.PETLEVEL, imageUrl);
     }, []);
 
-    UseMessageEventHook(PetLevelNotificationEvent, onPetLevelNotificationEvent);
+    useMessageEvent(PetLevelNotificationEvent, onPetLevelNotificationEvent);
 
     const onInfoFeedEnableMessageEvent = useCallback((event: InfoFeedEnableMessageEvent) =>
     {
@@ -149,7 +149,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.BUBBLES_DISABLED = !(parser.enabled);
     }, []);
 
-    UseMessageEventHook(InfoFeedEnableMessageEvent, onInfoFeedEnableMessageEvent);
+    useMessageEvent(InfoFeedEnableMessageEvent, onInfoFeedEnableMessageEvent);
 
     const onClubGiftSelectedEvent = useCallback((event: ClubGiftSelectedEvent) =>
     {
@@ -164,7 +164,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.showSingleBubble(LocalizeText('notifications.text.club_gift.selected'), NotificationBubbleType.INFO, ProductImageUtility.getProductImageUrl(productData.productType, productData.furniClassId, productData.extraParam))
     }, []);
 
-    UseMessageEventHook(ClubGiftSelectedEvent, onClubGiftSelectedEvent);
+    useMessageEvent(ClubGiftSelectedEvent, onClubGiftSelectedEvent);
 
     const onMaintenanceStatusMessageEvent = useCallback((event: MaintenanceStatusMessageEvent) =>
     {
@@ -173,7 +173,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.handleHotelMaintenanceMessage(parser.minutesUntilMaintenance, parser.duration);
     }, []);
 
-    UseMessageEventHook(MaintenanceStatusMessageEvent, onMaintenanceStatusMessageEvent);
+    useMessageEvent(MaintenanceStatusMessageEvent, onMaintenanceStatusMessageEvent);
 
     const onModeratorCautionEvent = useCallback((event: ModeratorCautionEvent) =>
     {
@@ -182,7 +182,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.handleModeratorCaution(parser.message, parser.url);
     }, []);
 
-    UseMessageEventHook(ModeratorCautionEvent, onModeratorCautionEvent);
+    useMessageEvent(ModeratorCautionEvent, onModeratorCautionEvent);
 
     const onNotificationDialogMessageEvent = useCallback((event: NotificationDialogMessageEvent) =>
     {
@@ -191,7 +191,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.showNotification(parser.type, parser.parameters);
     }, []);
 
-    UseMessageEventHook(NotificationDialogMessageEvent, onNotificationDialogMessageEvent);
+    useMessageEvent(NotificationDialogMessageEvent, onNotificationDialogMessageEvent);
 
     const onHotelWillCloseInMinutesEvent = useCallback((event: HotelWillCloseInMinutesEvent) =>
     {
@@ -200,7 +200,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.handleHotelClosingMessage(parser.openMinute);
     }, []);
 
-    UseMessageEventHook(HotelWillCloseInMinutesEvent, onHotelWillCloseInMinutesEvent);
+    useMessageEvent(HotelWillCloseInMinutesEvent, onHotelWillCloseInMinutesEvent);
 
     const onHotelClosedAndOpensEvent = useCallback((event: HotelClosedAndOpensEvent) =>
     {
@@ -209,7 +209,7 @@ export const NotificationCenterMessageHandler: FC<{}> = props =>
         NotificationUtilities.handleLoginFailedHotelClosedMessage(parser.openHour, parser.openMinute);
     }, []);
 
-    UseMessageEventHook(HotelClosedAndOpensEvent, onHotelClosedAndOpensEvent);
+    useMessageEvent(HotelClosedAndOpensEvent, onHotelClosedAndOpensEvent);
 
     return null;
 }

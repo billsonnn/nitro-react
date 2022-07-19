@@ -1,50 +1,71 @@
 import { RoomControllerLevel, RoomEngineDimmerStateEvent, RoomEngineTriggerWidgetEvent, RoomSessionDimmerPresetsEvent } from '@nitrots/nitro-renderer';
-import { GetRoomEngine, GetSessionDataManager, RoomWidgetUpdateDimmerEvent, RoomWidgetUpdateDimmerStateEvent } from '../../../../api';
-import { UseRoomEngineEvent, UseRoomSessionManagerEvent } from '../../../events';
+import { useEffect, useState } from 'react';
+import { DimmerFurnitureWidgetPresetItem, FurnitureDimmerUtilities, GetSessionDataManager } from '../../../../api';
+import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../events';
 import { useRoom } from '../../useRoom';
 
 const useFurnitureDimmerWidgetState = () =>
 {
-    const { roomSession = null, widgetHandler = null } = useRoom();
+    const [ presets, setPresets ] = useState<DimmerFurnitureWidgetPresetItem[]>([]);
+    const [ selectedPresetId, setSelectedPresetId ] = useState(0);
+    const [ dimmerState, setDimmerState ] = useState(0);
+    const [ lastDimmerState, setLastDimmerState ] = useState(0);
+    const [ effectId, setEffectId ] = useState(0);
+    const [ color, setColor ] = useState(0xFFFFFF);
+    const [ brightness, setBrightness ] = useState(0xFF);
+    const [ selectedEffectId, setSelectedEffectId ] = useState(0);
+    const [ selectedColor, setSelectedColor ] = useState(0);
+    const [ selectedBrightness, setSelectedBrightness ] = useState(0);
+    const { roomSession = null } = useRoom();
 
     const canOpenWidget = () => (roomSession.isRoomOwner || (roomSession.controllerLevel >= RoomControllerLevel.GUEST) || GetSessionDataManager().isModerator);
 
-    const savePreset = (presetNumber: number, effectTypeId: number, color: number, brightness: number, apply: boolean) =>
+    const selectPresetId = (id: number) =>
     {
-        if(!canOpenWidget()) return;
+        const preset = presets[(id - 1)];
 
-        roomSession.updateMoodlightData(presetNumber, effectTypeId, color, brightness, apply);
+        if(!preset) return;
+        
+        setSelectedPresetId(preset.id);
+        setSelectedEffectId(preset.type);
+        setSelectedColor(preset.color);
+        setSelectedBrightness(preset.light);
     }
 
-    const changeState = () =>
+    const applyChanges = () =>
     {
-        if(!canOpenWidget()) return;
+        if(dimmerState === 0) return;
 
-        roomSession.toggleMoodlightState();
+        const selectedPresetIndex = (selectedPresetId - 1);
+
+        if((selectedPresetId < 1) || (selectedPresetId > presets.length)) return;
+
+        const preset = presets[selectedPresetIndex];
+
+        if(!preset || ((selectedEffectId === preset.type) && (selectedColor === preset.color) && (selectedBrightness === preset.light))) return;
+
+        setPresets(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            newValue[selectedPresetIndex] = new DimmerFurnitureWidgetPresetItem(preset.id, selectedEffectId, selectedColor, selectedBrightness);
+
+            return newValue;
+        });
+
+        FurnitureDimmerUtilities.savePreset(preset.id, selectedEffectId, selectedColor, selectedBrightness, true);
     }
 
-    const previewDimmer = (color: number, brightness: number, bgOnly: boolean) =>
-    {
-        GetRoomEngine().updateObjectRoomColor(roomSession.roomId, color, brightness, bgOnly);
-    }
-
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_DIMMER, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_DIMMER, event =>
     {
         if(!canOpenWidget()) return;
         
         roomSession.requestMoodlightSettings();
     });
 
-    UseRoomEngineEvent<RoomEngineDimmerStateEvent>(RoomEngineDimmerStateEvent.ROOM_COLOR, event =>
+    useRoomSessionManagerEvent<RoomSessionDimmerPresetsEvent>(RoomSessionDimmerPresetsEvent.ROOM_DIMMER_PRESETS, event =>
     {
-        widgetHandler.eventDispatcher.dispatchEvent(new RoomWidgetUpdateDimmerStateEvent(event.state, event.presetId, event.effectId, event.color, event.brightness));
-    });
-
-    UseRoomSessionManagerEvent<RoomSessionDimmerPresetsEvent>(RoomSessionDimmerPresetsEvent.ROOM_DIMMER_PRESETS, event =>
-    {
-        const updateEvent = new RoomWidgetUpdateDimmerEvent(RoomWidgetUpdateDimmerEvent.PRESETS);
-
-        updateEvent.selectedPresetId = event.selectedPresetId;
+        const presets: DimmerFurnitureWidgetPresetItem[] = [];
 
         let i = 0;
 
@@ -52,20 +73,36 @@ const useFurnitureDimmerWidgetState = () =>
         {
             const preset = event.getPreset(i);
 
-            if(preset) updateEvent.setPresetValues(preset.id, preset.type, preset.color, preset.brightness);
+            if(preset) presets.push(new DimmerFurnitureWidgetPresetItem(preset.id, preset.type, preset.color, preset.brightness));
 
             i++;
         }
 
-        widgetHandler.eventDispatcher.dispatchEvent(updateEvent);
+        setPresets(presets);
+        setSelectedPresetId(event.selectedPresetId);
     });
 
-    UseRoomEngineEvent<RoomEngineDimmerStateEvent>(RoomEngineDimmerStateEvent.ROOM_COLOR, event =>
+    useRoomEngineEvent<RoomEngineDimmerStateEvent>(RoomEngineDimmerStateEvent.ROOM_COLOR, event =>
     {
-        widgetHandler.eventDispatcher.dispatchEvent(new RoomWidgetUpdateDimmerEvent(RoomWidgetUpdateDimmerEvent.HIDE));
+        setLastDimmerState(dimmerState);
+        setDimmerState(event.state);
+        setSelectedPresetId(event.presetId);
+        setEffectId(event.effectId);
+        setSelectedEffectId(event.effectId);
+        setColor(event.color);
+        setSelectedColor(event.color);
+        setBrightness(event.brightness);
+        setSelectedBrightness(event.brightness);
     });
 
-    return { savePreset, changeState, previewDimmer };
+    useEffect(() =>
+    {
+        if((dimmerState === 0) && (lastDimmerState === 0)) return;
+
+        FurnitureDimmerUtilities.previewDimmer(selectedColor, selectedBrightness, (selectedEffectId === 2));
+    }, [ dimmerState, lastDimmerState, selectedColor, selectedBrightness, selectedEffectId ]);
+
+    return { presets, selectedPresetId, dimmerState, lastDimmerState, effectId, color, brightness, selectedEffectId, setSelectedEffectId, selectedColor, setSelectedColor, selectedBrightness, setSelectedBrightness, selectPresetId, applyChanges };
 }
 
 export const useFurnitureDimmerWidget = useFurnitureDimmerWidgetState;

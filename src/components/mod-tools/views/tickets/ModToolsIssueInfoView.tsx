@@ -1,9 +1,8 @@
 import { CloseIssuesMessageComposer, ReleaseIssuesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../api';
+import { DispatchUiEvent, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { ModToolsOpenUserInfoEvent } from '../../../../events';
-import { DispatchUiEvent } from '../../../../hooks';
 import { getSourceName } from '../../common/IssueCategoryNames';
 import { useModToolsContext } from '../../ModToolsContext';
 import { CfhChatlogView } from './CfhChatlogView';

@@ -1,5 +1,5 @@
 import { NitroEvent } from '@nitrots/nitro-renderer';
 import { GetRoomEngine } from '../../../api';
-import { UseEventDispatcherHook } from '../UseEventDispatcherHook';
+import { useEventDispatcher } from '../useEventDispatcher';
 
-export const UseRoomEngineEvent = <T extends NitroEvent>(type: string, handler: (event: T) => void) => UseEventDispatcherHook(type, GetRoomEngine().events, handler);
+export const useRoomEngineEvent = <T extends NitroEvent>(type: string | string[], handler: (event: T) => void) => useEventDispatcher(type, GetRoomEngine().events, handler);

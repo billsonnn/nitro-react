@@ -3,7 +3,7 @@ import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, Nitro
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { SendMessageComposer } from '../../../api';
 import { Base, Button, Column, ColumnProps, Flex, Grid } from '../../../common';
-import { UseMessageEventHook } from '../../../hooks';
+import { useMessageEvent } from '../../../hooks';
 import { FloorplanEditor } from '../common/FloorplanEditor';
 import { useFloorplanEditorContext } from '../FloorplanEditorContext';
 
@@ -35,7 +35,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         elementRef.current.scrollTo((FloorplanEditor.instance.view.width / 3), 0);
     }, [ setOriginalFloorplanSettings ]);
 
-    UseMessageEventHook(RoomOccupiedTilesMessageEvent, onRoomOccupiedTilesMessageEvent);
+    useMessageEvent(RoomOccupiedTilesMessageEvent, onRoomOccupiedTilesMessageEvent);
 
     const onRoomEntryTileMessageEvent = useCallback((event: RoomEntryTileMessageEvent) =>
     {
@@ -65,7 +65,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         setEntryTileReceived(true);
     }, [ setOriginalFloorplanSettings, setVisualizationSettings ]);
 
-    UseMessageEventHook(RoomEntryTileMessageEvent, onRoomEntryTileMessageEvent);
+    useMessageEvent(RoomEntryTileMessageEvent, onRoomEntryTileMessageEvent);
 
     const onClickArrowButton = (scrollDirection: string) =>
     {

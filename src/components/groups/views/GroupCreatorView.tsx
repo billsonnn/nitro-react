@@ -2,7 +2,7 @@ import { GroupBuyComposer, GroupBuyDataComposer, GroupBuyDataEvent } from '@nitr
 import { FC, useCallback, useEffect, useState } from 'react';
 import { HasHabboClub, LocalizeText, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { UseMessageEventHook } from '../../../hooks';
+import { useMessageEvent } from '../../../hooks';
 import { IGroupData } from '../common/IGroupData';
 import { GroupTabBadgeView } from './tabs/GroupTabBadgeView';
 import { GroupTabColorsView } from './tabs/GroupTabColorsView';
@@ -98,7 +98,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
         setPurchaseCost(parser.groupCost);
     }, []);
 
-    UseMessageEventHook(GroupBuyDataEvent, onGroupBuyDataEvent);
+    useMessageEvent(GroupBuyDataEvent, onGroupBuyDataEvent);
 
     useEffect(() =>
     {

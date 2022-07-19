@@ -1,27 +1,20 @@
 import { RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { useCallback, useEffect, useState } from 'react';
-import { GetRoomEngine, GetRoomSession, GetSessionDataManager, LocalizeText, RoomObjectItem, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
-import { UI_EVENT_DISPATCHER } from '../../events';
+import { useState } from 'react';
+import { GetRoomEngine, GetRoomSession, GetSessionDataManager, LocalizeText, RoomObjectItem } from '../../../api';
+import { useFurniAddedEvent, useFurniRemovedEvent } from '../engine';
+import { useRoom } from '../useRoom';
 
 const useFurniChooserWidgetState = () =>
 {
     const [ items, setItems ] = useState<RoomObjectItem[]>(null);
+    const { roomSession = null } = useRoom();
 
-    const close = () =>
+    const close = () => setItems(null);
+
+    const selectItem = (item: RoomObjectItem) => item && GetRoomEngine().selectRoomObject(GetRoomSession().roomId, item.id, item.category);
+
+    const populateChooser = () =>
     {
-        setItems(null);
-    }
-
-    const selectItem = (item: RoomObjectItem) =>
-    {
-        if(!item) return;
-
-        GetRoomEngine().selectRoomObject(GetRoomSession().roomId, item.id, item.category);
-    }
-
-    const populateChooser = useCallback(() =>
-    {
-        const roomSession = GetRoomSession();
         const sessionDataManager = GetSessionDataManager();
         const wallObjects = GetRoomEngine().getRoomObjects(roomSession.roomId, RoomObjectCategory.WALL);
         const floorObjects = GetRoomEngine().getRoomObjects(roomSession.roomId, RoomObjectCategory.FLOOR);
@@ -62,100 +55,76 @@ const useFurniChooserWidgetState = () =>
         });
 
         setItems([ ...wallItems, ...floorItems ].sort((a, b) => ((a.name < b.name) ? -1 : 1)));
-    }, []);
+    }
 
-    useEffect(() =>
+    useFurniAddedEvent(!!items, event =>
     {
-        if(!items) return;
+        if(event.id < 0) return;
 
-        const onRoomWidgetUpdateRoomObjectEvent = (event: RoomWidgetUpdateRoomObjectEvent) =>
+        const roomObject = GetRoomEngine().getRoomObject(GetRoomSession().roomId, event.id, event.category);
+
+        if(!roomObject) return;
+
+        let item: RoomObjectItem = null;
+
+        switch(event.category)
         {
-            if(event.id < 0) return;
+            case RoomObjectCategory.WALL: {
+                let name = roomObject.type;
 
-            const roomObject = GetRoomEngine().getRoomObject(GetRoomSession().roomId, event.id, event.category);
-
-            if(!roomObject) return;
-
-            let item: RoomObjectItem = null;
-
-            switch(event.category)
-            {
-                case RoomObjectCategory.WALL: {
-                    let name = roomObject.type;
-
-                    if(name.startsWith('poster'))
-                    {
-                        name = LocalizeText(`poster_${ name.replace('poster', '') }_name`);
-                    }
-                    else
-                    {
-                        const typeId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_TYPE_ID);
-                        const furniData = GetSessionDataManager().getWallItemData(typeId);
-
-                        if(furniData && furniData.name.length) name = furniData.name;
-                    }
-
-                    item = new RoomObjectItem(roomObject.id, RoomObjectCategory.WALL, name);
-
-                    break;
+                if(name.startsWith('poster'))
+                {
+                    name = LocalizeText(`poster_${ name.replace('poster', '') }_name`);
                 }
-                case RoomObjectCategory.FLOOR: {
-                    let name = roomObject.type;
-
+                else
+                {
                     const typeId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_TYPE_ID);
-                    const furniData = GetSessionDataManager().getFloorItemData(typeId);
+                    const furniData = GetSessionDataManager().getWallItemData(typeId);
 
                     if(furniData && furniData.name.length) name = furniData.name;
-
-                    item = new RoomObjectItem(roomObject.id, RoomObjectCategory.FLOOR, name);
                 }
+
+                item = new RoomObjectItem(roomObject.id, RoomObjectCategory.WALL, name);
+
+                break;
+            }
+            case RoomObjectCategory.FLOOR: {
+                let name = roomObject.type;
+
+                const typeId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_TYPE_ID);
+                const furniData = GetSessionDataManager().getFloorItemData(typeId);
+
+                if(furniData && furniData.name.length) name = furniData.name;
+
+                item = new RoomObjectItem(roomObject.id, RoomObjectCategory.FLOOR, name);
+            }
+        }
+
+        setItems(prevValue => [ ...prevValue, item ].sort((a, b) => ((a.name < b.name) ? -1 : 1)));
+    });
+
+    useFurniRemovedEvent(!!items, event =>
+    {
+        if(event.id < 0) return;
+
+        setItems(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            for(let i = 0; i < newValue.length; i++)
+            {
+                const existingValue = newValue[i];
+
+                if((existingValue.id !== event.id) || (existingValue.category !== event.category)) continue;
+
+                newValue.splice(i, 1);
+
+                break;
             }
 
-            setItems(prevValue => [ ...prevValue, item ].sort((a, b) => ((a.name < b.name) ? -1 : 1)));
-        }
-
-        UI_EVENT_DISPATCHER.addEventListener(RoomWidgetUpdateRoomObjectEvent.FURNI_ADDED, onRoomWidgetUpdateRoomObjectEvent);
-
-        return () =>
-        {
-            UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.FURNI_ADDED, onRoomWidgetUpdateRoomObjectEvent);
-        }
-    }, [ items ]);
-
-    useEffect(() =>
-    {
-        if(!items) return;
-
-        const onRoomWidgetUpdateRoomObjectEvent = (event: RoomWidgetUpdateRoomObjectEvent) =>
-        {
-            if(event.id < 0) return;
-
-            setItems(prevValue =>
-            {
-                const newValue = [ ...prevValue ];
-
-                for(let i = 0; i < newValue.length; i++)
-                {
-                    const existingValue = newValue[i];
-
-                    if((existingValue.id !== event.id) || (existingValue.category !== event.category)) continue;
-
-                    newValue.splice(i, 1);
-
-                    break;
-                }
-
-                return newValue;
-            });
-        }
-
-        UI_EVENT_DISPATCHER.addEventListener(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, onRoomWidgetUpdateRoomObjectEvent);
-
-        return () =>
-        {
-            UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, onRoomWidgetUpdateRoomObjectEvent);
-        }
-    }, [ items ]);
+            return newValue;
+        });
+    });
 
     return { items, close, selectItem, populateChooser };
 }

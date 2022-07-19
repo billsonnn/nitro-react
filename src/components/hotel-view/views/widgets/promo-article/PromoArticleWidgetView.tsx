@@ -1,7 +1,7 @@
 import { GetPromoArticlesComposer, PromoArticleData, PromoArticlesMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../api';
-import { UseMessageEventHook } from '../../../../../hooks';
+import { useMessageEvent } from '../../../../../hooks';
 
 export const PromoArticleWidgetView: FC<{}> = props =>
 {
@@ -14,7 +14,7 @@ export const PromoArticleWidgetView: FC<{}> = props =>
         setArticles(parser.articles);
     }, []);
 
-    UseMessageEventHook(PromoArticlesMessageEvent, onPromoArticlesMessageEvent);
+    useMessageEvent(PromoArticlesMessageEvent, onPromoArticlesMessageEvent);
 
     useEffect(() =>
     {

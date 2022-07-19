@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 
 const useLocalStorageState = <T>(key: string, initialValue: T): [ T, Dispatch<SetStateAction<T>>] =>
 {
-    const [ storedValue, setStoredValuie ] = useState<T>(() =>
+    const [ storedValue, setStoredValue ] = useState<T>(() =>
     {
         if(typeof window === 'undefined') return initialValue;
 
@@ -26,7 +26,7 @@ const useLocalStorageState = <T>(key: string, initialValue: T): [ T, Dispatch<Se
         {
             const valueToStore = value instanceof Function ? value(storedValue) : value;
 
-            setStoredValuie(valueToStore);
+            setStoredValue(valueToStore);
 
             if(typeof window !== 'undefined') window.localStorage.setItem(key, JSON.stringify(valueToStore));
         }

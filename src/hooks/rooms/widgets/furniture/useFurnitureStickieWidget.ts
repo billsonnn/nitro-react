@@ -1,8 +1,8 @@
 import { RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { GetRoomEngine, GetRoomSession, GetSessionDataManager, IsOwnerOfFurniture } from '../../../../api';
-import { UseRoomEngineEvent } from '../../../events';
-import { useFurniRemovedEvent } from '../../useFurniRemovedEvent';
+import { useRoomEngineEvent } from '../../../events';
+import { useFurniRemovedEvent } from '../../engine';
 
 const useFurnitureStickieWidgetState = () =>
 {
@@ -12,14 +12,14 @@ const useFurnitureStickieWidgetState = () =>
     const [ text, setText ] = useState('');
     const [ canModify, setCanModify ] = useState(false);
 
-    const close = useCallback(() =>
+    const close = () =>
     {
         setObjectId(-1);
         setCategory(-1);
         setColor('0');
         setText('');
         setCanModify(false);
-    }, []);
+    }
 
     const updateColor = (newColor: string) =>
     {
@@ -39,7 +39,7 @@ const useFurnitureStickieWidgetState = () =>
 
     const trash = () => GetRoomEngine().deleteRoomObject(objectId, category);
 
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_STICKIE, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_STICKIE, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 

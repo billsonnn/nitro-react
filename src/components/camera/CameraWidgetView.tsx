@@ -1,7 +1,7 @@
 import { ILinkEventTracker, InitCameraMessageEvent, IRoomCameraWidgetEffect, RequestCameraConfigurationComposer, RoomCameraWidgetManagerEvent, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetRoomCameraWidgetManager, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
-import { UseCameraEvent, UseMessageEventHook, UseRoomSessionManagerEvent } from '../../hooks';
+import { useCameraEvent, useMessageEvent, useRoomSessionManagerEvent } from '../../hooks';
 import { CameraWidgetContextProvider } from './CameraWidgetContext';
 import { CameraPicture } from './common/CameraPicture';
 import { CameraWidgetCaptureView } from './views/capture/CameraWidgetCaptureView';
@@ -28,7 +28,7 @@ export const CameraWidgetView: FC<{}> = props =>
         setAvailableEffects(Array.from(GetRoomCameraWidgetManager().effects.values()))
     }, []);
 
-    UseCameraEvent(RoomCameraWidgetManagerEvent.INITIALIZED, onRoomCameraWidgetManagerEvent);
+    useCameraEvent(RoomCameraWidgetManagerEvent.INITIALIZED, onRoomCameraWidgetManagerEvent);
 
     const onCameraConfigurationEvent = useCallback((event: InitCameraMessageEvent) =>
     {
@@ -37,14 +37,14 @@ export const CameraWidgetView: FC<{}> = props =>
         setPrice({ credits: parser.creditPrice, duckets: parser.ducketPrice, publishDucketPrice: parser.publishDucketPrice });
     }, []);
 
-    UseMessageEventHook(InitCameraMessageEvent, onCameraConfigurationEvent);
+    useMessageEvent(InitCameraMessageEvent, onCameraConfigurationEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
         setMode(MODE_NONE);
     }, []);
 
-    UseRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
     useEffect(() =>
     {

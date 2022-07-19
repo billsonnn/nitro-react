@@ -2,7 +2,7 @@ import { BuyMarketplaceOfferMessageComposer, GetMarketplaceOffersMessageComposer
 import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
 import { Button, ButtonGroup, Column, Text } from '../../../../../../common';
-import { UseMessageEventHook, usePurse } from '../../../../../../hooks';
+import { useMessageEvent, usePurse } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, PUBLIC_OFFER } from './CatalogLayoutMarketplaceItemView';
 import { SearchFormView } from './CatalogLayoutMarketplaceSearchFormView';
@@ -134,8 +134,8 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
         }
     }, [ lastSearch, requestOffers ]);
 
-    UseMessageEventHook(MarketPlaceOffersEvent, onMarketPlaceOffersEvent);
-    UseMessageEventHook(MarketplaceBuyOfferResultEvent, onMarketplaceBuyOfferResultEvent);
+    useMessageEvent(MarketPlaceOffersEvent, onMarketPlaceOffersEvent);
+    useMessageEvent(MarketplaceBuyOfferResultEvent, onMarketplaceBuyOfferResultEvent);
     
     return (
         <>

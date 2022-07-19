@@ -2,7 +2,7 @@ import { CancelMarketplaceOfferMessageComposer, GetMarketplaceOwnOffersMessageCo
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
 import { Button, Column, Text } from '../../../../../../common';
-import { UseMessageEventHook } from '../../../../../../hooks';
+import { useMessageEvent } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, OWN_OFFER } from './CatalogLayoutMarketplaceItemView';
 import { MarketplaceOfferData } from './common/MarketplaceOfferData';
@@ -32,7 +32,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
         setOffers(offers);
     }, []);
 
-    UseMessageEventHook(MarketplaceOwnOffersEvent, onMarketPlaceOwnOffersEvent);
+    useMessageEvent(MarketplaceOwnOffersEvent, onMarketPlaceOwnOffersEvent);
 
     const onMarketplaceCancelOfferResultEvent = useCallback((event:MarketplaceCancelOfferResultEvent) =>
     {
@@ -50,7 +50,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
         setOffers(prevValue => prevValue.filter(value => (value.offerId !== parser.offerId)));
     }, []);
 
-    UseMessageEventHook(MarketplaceCancelOfferResultEvent, onMarketplaceCancelOfferResultEvent);
+    useMessageEvent(MarketplaceCancelOfferResultEvent, onMarketplaceCancelOfferResultEvent);
 
     const soldOffers = useMemo(() =>
     {

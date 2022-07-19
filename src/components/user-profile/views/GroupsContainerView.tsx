@@ -2,7 +2,7 @@ import { GroupInformationComposer, GroupInformationEvent, GroupInformationParser
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer, ToggleFavoriteGroup } from '../../../api';
 import { AutoGrid, Base, Column, Flex, Grid, GridProps, LayoutBadgeImageView, LayoutGridItem } from '../../../common';
-import { UseMessageEventHook } from '../../../hooks';
+import { useMessageEvent } from '../../../hooks';
 import { GroupInformationView } from '../../groups/views/GroupInformationView';
 
 interface GroupsContainerViewProps extends GridProps
@@ -27,7 +27,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
         setGroupInformation(parser);
     }, [ selectedGroupId ]);
 
-    UseMessageEventHook(GroupInformationEvent, onGroupInformationEvent);
+    useMessageEvent(GroupInformationEvent, onGroupInformationEvent);
 
     useEffect(() =>
     {

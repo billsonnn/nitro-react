@@ -1,9 +1,8 @@
 import { FriendFurniConfirmLockMessageComposer, LoveLockFurniFinishedEvent, LoveLockFurniFriendConfirmedEvent, LoveLockFurniStartEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { GetRoomEngine, GetRoomSession } from '../../../../api';
-import { UseRoomEngineEvent } from '../../../events';
-import { UseMessageEventHook } from '../../../messages';
-import { useFurniRemovedEvent } from '../../useFurniRemovedEvent';
+import { useMessageEvent, useRoomEngineEvent } from '../../../events';
+import { useFurniRemovedEvent } from '../../engine';
 
 const useFurnitureFriendFurniWidgetState = () =>
 {
@@ -15,7 +14,7 @@ const useFurnitureFriendFurniWidgetState = () =>
     const [ date, setDate ] = useState<string>(null);
     const [ stage, setStage ] = useState(0);
 
-    const close = useCallback(() =>
+    const close = () =>
     {
         setObjectId(-1);
         setCategory(-1);
@@ -23,7 +22,7 @@ const useFurnitureFriendFurniWidgetState = () =>
         setUsernames([]);
         setFigures([]);
         setDate(null);
-    }, []);
+    }
 
     const respond = (flag: boolean) =>
     {
@@ -32,25 +31,18 @@ const useFurnitureFriendFurniWidgetState = () =>
         close();
     }
 
-    const onLoveLockFurniStartEvent = useCallback((event: LoveLockFurniStartEvent) =>
+    useMessageEvent<LoveLockFurniStartEvent>(LoveLockFurniStartEvent, event =>
     {
         const parser = event.getParser();
 
         setObjectId(parser.furniId);
         setStage(parser.start ? 1 : 2);
-    }, []);
+    });
 
-    UseMessageEventHook(LoveLockFurniStartEvent, onLoveLockFurniStartEvent);
+    useMessageEvent<LoveLockFurniFinishedEvent>(LoveLockFurniFinishedEvent, event => close());
+    useMessageEvent<LoveLockFurniFriendConfirmedEvent>(LoveLockFurniFriendConfirmedEvent, event => close());
 
-    const onLoveLockDoneEvent = useCallback((event: LoveLockFurniFinishedEvent | LoveLockFurniFriendConfirmedEvent) =>
-    {
-        close();
-    }, [ close ]);
-
-    UseMessageEventHook(LoveLockFurniFinishedEvent, onLoveLockDoneEvent);
-    UseMessageEventHook(LoveLockFurniFriendConfirmedEvent, onLoveLockDoneEvent);
-
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 

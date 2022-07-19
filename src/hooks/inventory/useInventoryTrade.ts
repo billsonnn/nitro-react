@@ -1,9 +1,9 @@
 import { AdvancedMap, TradingAcceptComposer, TradingAcceptEvent, TradingCancelComposer, TradingCloseComposer, TradingCloseEvent, TradingCloseParser, TradingCompletedEvent, TradingConfirmationComposer, TradingConfirmationEvent, TradingListItemEvent, TradingListItemRemoveComposer, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingUnacceptComposer, TradingYouAreNotAllowedEvent } from '@nitrots/nitro-renderer';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { useInventoryFurni } from '.';
-import { UseMessageEventHook } from '..';
 import { CloneObject, GetRoomSession, GetSessionDataManager, GroupItem, LocalizeText, NotificationUtilities, parseTradeItems, SendMessageComposer, TradeState, TradeUserData, TradingNotificationMessage, TradingNotificationType } from '../../api';
+import { useMessageEvent } from '../events';
+import { useInventoryFurni } from './useInventoryFurni';
 
 const useInventoryTradeState = () =>
 {
@@ -64,7 +64,7 @@ const useInventoryTradeState = () =>
         }
     }
 
-    const onTradingAcceptEvent = useCallback((event: TradingAcceptEvent) =>
+    useMessageEvent<TradingAcceptEvent>(TradingAcceptEvent, event =>
     {
         const parser = event.getParser();
 
@@ -93,11 +93,9 @@ const useInventoryTradeState = () =>
                 return newValue;
             });
         }
-    }, [ ownUser, otherUser ]);
+    });
 
-    UseMessageEventHook(TradingAcceptEvent, onTradingAcceptEvent);
-
-    const onTradingCloseEvent = useCallback((event: TradingCloseEvent) =>
+    useMessageEvent<TradingCloseEvent>(TradingCloseEvent, event =>
     {
         const parser = event.getParser();
 
@@ -116,31 +114,25 @@ const useInventoryTradeState = () =>
         setOwnUser(null);
         setOtherUser(null);
         setTradeState(TradeState.TRADING_STATE_READY);
-    }, [ ownUser ]);
+    });
 
-    UseMessageEventHook(TradingCloseEvent, onTradingCloseEvent);
-
-    const onTradingCompletedEvent = useCallback((event: TradingCompletedEvent) =>
+    useMessageEvent<TradingCompletedEvent>(TradingCompletedEvent, event =>
     {
         const parser = event.getParser();
 
         setOwnUser(null);
         setOtherUser(null);
         setTradeState(TradeState.TRADING_STATE_READY);
-    }, []);
+    });
 
-    UseMessageEventHook(TradingCompletedEvent, onTradingCompletedEvent);
-
-    const onTradingConfirmationEvent = useCallback((event: TradingConfirmationEvent) =>
+    useMessageEvent<TradingConfirmationEvent>(TradingConfirmationEvent, event =>
     {
         const parser = event.getParser();
 
         setTradeState(TradeState.TRADING_STATE_COUNTDOWN);
-    }, []);
+    });
 
-    UseMessageEventHook(TradingConfirmationEvent, onTradingConfirmationEvent);
-
-    const onTradingListItemEvent = useCallback((event: TradingListItemEvent) =>
+    useMessageEvent<TradingListItemEvent>(TradingListItemEvent, event =>
     {
         const parser = event.getParser();
         const firstUserItems = parseTradeItems(parser.firstUserItemArray);
@@ -210,18 +202,14 @@ const useInventoryTradeState = () =>
 
             return newValue;
         });
-    }, [ setGroupItems ]);
+    });
 
-    UseMessageEventHook(TradingListItemEvent, onTradingListItemEvent);
-
-    const onTradingNotOpenEvent = useCallback((event: TradingNotOpenEvent) =>
+    useMessageEvent<TradingNotOpenEvent>(TradingNotOpenEvent, event =>
     {
         const parser = event.getParser();
-    }, []);
+    });
 
-    UseMessageEventHook(TradingNotOpenEvent, onTradingNotOpenEvent);
-
-    const onTradingOpenEvent = useCallback((event: TradingOpenEvent) =>
+    useMessageEvent<TradingOpenEvent>(TradingOpenEvent, event =>
     {
         const parser = event.getParser();
 
@@ -260,36 +248,28 @@ const useInventoryTradeState = () =>
         setOwnUser(firstUser);
         setOtherUser(secondUser);
         setTradeState(TradeState.TRADING_STATE_RUNNING);
-    }, []);
+    });
 
-    UseMessageEventHook(TradingOpenEvent, onTradingOpenEvent);
-
-    const onTradingOpenFailedEvent = useCallback((event: TradingOpenFailedEvent) =>
+    useMessageEvent<TradingOpenFailedEvent>(TradingOpenFailedEvent, event =>
     {
         const parser = event.getParser();
 
         TradingNotificationMessage(parser.reason, parser.otherUserName);
-    }, []);
+    });
 
-    UseMessageEventHook(TradingOpenFailedEvent, onTradingOpenFailedEvent);
-
-    const onTradingOtherNotAllowedEvent = useCallback((event: TradingOtherNotAllowedEvent) =>
+    useMessageEvent<TradingOtherNotAllowedEvent>(TradingOtherNotAllowedEvent, event =>
     {
         const parser = event.getParser();
 
         TradingNotificationMessage(TradingNotificationType.THEY_NOT_ALLOWED);
-    }, []);
-
-    UseMessageEventHook(TradingOtherNotAllowedEvent, onTradingOtherNotAllowedEvent);
-
-    const onTradingYouAreNotAllowedEvent = useCallback((event: TradingYouAreNotAllowedEvent) =>
+    });
+    
+    useMessageEvent<TradingYouAreNotAllowedEvent>(TradingYouAreNotAllowedEvent, event =>
     {
         const parser = event.getParser();
 
         TradingNotificationMessage(TradingNotificationType.YOU_NOT_ALLOWED);
-    }, []);
-
-    UseMessageEventHook(TradingYouAreNotAllowedEvent, onTradingYouAreNotAllowedEvent);
+    });
 
     useEffect(() =>
     {

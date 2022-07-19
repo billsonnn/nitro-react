@@ -1,8 +1,8 @@
 import { IFurnitureData, PetCustomPart, PetFigureData, RoomObjectCategory, RoomObjectVariable, RoomUserData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { FurniCategory, GetFurnitureDataForRoomObject, GetRoomEngine, LocalizeText, RoomWidgetUseProductMessage, UseProductItem } from '../../../../api';
+import { FurniCategory, GetFurnitureDataForRoomObject, GetRoomEngine, LocalizeText, UseProductItem } from '../../../../api';
 import { Base, Button, Column, Flex, LayoutPetImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { useRoomContext } from '../../RoomContext';
+import { useRoom } from '../../../../hooks';
 
 interface AvatarInfoUseProductConfirmViewProps
 {
@@ -25,7 +25,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
     const [ mode, setMode ] = useState(_Str_5091);
     const [ petData, setPetData ] = useState<RoomUserData>(null);
     const [ furniData, setFurniData ] = useState<IFurnitureData>(null);
-    const { roomSession = null, widgetHandler = null } = useRoomContext();
+    const { roomSession = null } = useRoom();
 
     const selectRoomObject = useCallback(() =>
     {
@@ -36,10 +36,10 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
     const useProduct = useCallback(() =>
     {
-        widgetHandler.processWidgetMessage(new RoomWidgetUseProductMessage(RoomWidgetUseProductMessage.PET_PRODUCT, item.requestRoomObjectId, petData.webID));
+        roomSession.usePetProduct(item.requestRoomObjectId, petData.webID);
 
         close();
-    }, [ widgetHandler, item, petData, close ]);
+    }, [ roomSession, item, petData, close ]);
 
     const getPetImage = useMemo(() =>
     {

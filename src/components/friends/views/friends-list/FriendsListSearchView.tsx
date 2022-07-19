@@ -2,7 +2,7 @@ import { HabboSearchComposer, HabboSearchResultData, HabboSearchResultEvent } fr
 import { FC, useCallback, useEffect, useState } from 'react';
 import { LocalizeText, OpenMessengerChat, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, NitroCardAccordionItemView, NitroCardAccordionSetView, NitroCardAccordionSetViewProps, Text, UserProfileIconView } from '../../../../common';
-import { useFriends, UseMessageEventHook } from '../../../../hooks';
+import { useFriends, useMessageEvent } from '../../../../hooks';
 
 interface FriendsSearchViewProps extends NitroCardAccordionSetViewProps
 {
@@ -25,7 +25,7 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
         setOtherResults(parser.others);
     }, []);
 
-    UseMessageEventHook(HabboSearchResultEvent, onHabboSearchResultEvent);
+    useMessageEvent(HabboSearchResultEvent, onHabboSearchResultEvent);
 
     useEffect(() =>
     {

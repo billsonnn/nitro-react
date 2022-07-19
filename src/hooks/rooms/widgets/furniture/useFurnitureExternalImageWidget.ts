@@ -1,8 +1,8 @@
 import { RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
 import { GetRoomEngine, IPhotoData } from '../../../../api';
-import { UseRoomEngineEvent } from '../../../events';
-import { useFurniRemovedEvent } from '../../useFurniRemovedEvent';
+import { useRoomEngineEvent } from '../../../events';
+import { useFurniRemovedEvent } from '../../engine';
 
 const useFurnitureExternalImageWidgetState = () =>
 {
@@ -17,7 +17,7 @@ const useFurnitureExternalImageWidgetState = () =>
         setPhotoData(null);
     }
 
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_EXTERNAL_IMAGE, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_EXTERNAL_IMAGE, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 

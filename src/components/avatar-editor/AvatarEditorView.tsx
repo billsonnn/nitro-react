@@ -7,7 +7,7 @@ import { Button } from '../../common/Button';
 import { ButtonGroup } from '../../common/ButtonGroup';
 import { Column } from '../../common/Column';
 import { Grid } from '../../common/Grid';
-import { UseMessageEventHook } from '../../hooks';
+import { useMessageEvent } from '../../hooks';
 import { AvatarEditorAction } from './common/AvatarEditorAction';
 import { AvatarEditorUtilities } from './common/AvatarEditorUtilities';
 import { BodyModel } from './common/BodyModel';
@@ -50,7 +50,7 @@ export const AvatarEditorView: FC<{}> = props =>
         setBoundFurnitureNames(parser.boundsFurnitureNames);
     }, []);
 
-    UseMessageEventHook(FigureSetIdsMessageEvent, onFigureSetIdsMessageEvent);
+    useMessageEvent(FigureSetIdsMessageEvent, onFigureSetIdsMessageEvent);
 
     const onUserWardrobePageEvent = useCallback((event: UserWardrobePageEvent) =>
     {
@@ -76,7 +76,7 @@ export const AvatarEditorView: FC<{}> = props =>
         setSavedFigures(savedFigures)
     }, [ maxWardrobeSlots ]);
 
-    UseMessageEventHook(UserWardrobePageEvent, onUserWardrobePageEvent);
+    useMessageEvent(UserWardrobePageEvent, onUserWardrobePageEvent);
 
     const selectCategory = useCallback((name: string) =>
     {

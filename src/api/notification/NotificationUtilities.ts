@@ -1,8 +1,9 @@
 import { HabboWebTools, RoomEnterEffect } from '@nitrots/nitro-renderer';
-import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText, PlaySound } from '..';
 import { NotificationAlertEvent, NotificationConfirmEvent } from '../../events';
 import { NotificationBubbleEvent } from '../../events/notification-center/NotificationBubbleEvent';
-import { DispatchUiEvent } from '../../hooks';
+import { DispatchUiEvent } from '../events';
+import { CreateLinkEvent, GetConfiguration, GetNitroInstance } from '../nitro';
+import { LocalizeText, PlaySound } from '../utils';
 import { NotificationAlertType } from './NotificationAlertType';
 import { NotificationBubbleType } from './NotificationBubbleType';
 

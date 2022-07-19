@@ -8,4 +8,3 @@ export * from './InitializeRoomInstanceRenderingCanvas';
 export * from './IsFurnitureSelectionDisabled';
 export * from './ProcessRoomObjectOperation';
 export * from './SetActiveRoomId';
-export * from './widgets';

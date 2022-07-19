@@ -3,13 +3,12 @@ import { DispatchMouseEvent, DispatchTouchEvent, GetNitroInstance } from '../../
 import { Base } from '../../common';
 import { useRoom } from '../../hooks';
 import { RoomColorView } from './RoomColorView';
-import { RoomContextProvider } from './RoomContext';
 import { RoomSpectatorView } from './spectator/RoomSpectatorView';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
 
 export const RoomView: FC<{}> = props =>
 {
-    const { roomSession = null, widgetHandler = null, resize = null } = useRoom();
+    const { roomSession = null, resize = null } = useRoom();
     const elementRef = useRef<HTMLDivElement>();
 
     useEffect(() =>
@@ -45,15 +44,13 @@ export const RoomView: FC<{}> = props =>
     }, [ resize ]);
 
     return (
-        <RoomContextProvider value={ { roomSession, eventDispatcher: (widgetHandler && widgetHandler.eventDispatcher), widgetHandler } }>
-            <Base fit innerRef={ elementRef } className={ (!roomSession && 'd-none') }>
-                { (roomSession && widgetHandler) &&
-                    <>
-                        <RoomColorView />
-                        <RoomWidgetsView />
-                        { roomSession.isSpectator && <RoomSpectatorView /> }
-                    </> }
-            </Base>
-        </RoomContextProvider>
+        <Base fit innerRef={ elementRef } className={ (!roomSession && 'd-none') }>
+            { roomSession &&
+                <>
+                    <RoomColorView />
+                    <RoomWidgetsView />
+                    { roomSession.isSpectator && <RoomSpectatorView /> }
+                </> }
+        </Base>
     );
 }

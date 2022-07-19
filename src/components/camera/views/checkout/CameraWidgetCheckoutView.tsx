@@ -2,7 +2,7 @@ import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraSt
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, LayoutCurrencyIcon, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { UseMessageEventHook } from '../../../../hooks';
+import { useMessageEvent } from '../../../../hooks';
 
 export interface CameraWidgetCheckoutViewProps
 {
@@ -30,7 +30,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
         setIsWaiting(false);
     }, []);
 
-    UseMessageEventHook(CameraPurchaseOKMessageEvent, onCameraPurchaseOKMessageEvent);
+    useMessageEvent(CameraPurchaseOKMessageEvent, onCameraPurchaseOKMessageEvent);
 
     const onCameraPublishStatusMessageEvent = useCallback((event: CameraPublishStatusMessageEvent) =>
     {
@@ -42,7 +42,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
         setIsWaiting(false);
     }, []);
 
-    UseMessageEventHook(CameraPublishStatusMessageEvent, onCameraPublishStatusMessageEvent);
+    useMessageEvent(CameraPublishStatusMessageEvent, onCameraPublishStatusMessageEvent);
 
     const onCameraStorageUrlMessageEvent = useCallback((event: CameraStorageUrlMessageEvent) =>
     {
@@ -51,7 +51,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
         setPictureUrl(GetConfiguration<string>('camera.url') + '/' + parser.url);
     }, []);
 
-    UseMessageEventHook(CameraStorageUrlMessageEvent, onCameraStorageUrlMessageEvent);
+    useMessageEvent(CameraStorageUrlMessageEvent, onCameraStorageUrlMessageEvent);
 
     const processAction = (type: string, value: string | number = null) =>
     {

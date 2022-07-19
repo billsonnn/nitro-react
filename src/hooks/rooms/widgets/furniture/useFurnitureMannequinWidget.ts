@@ -1,17 +1,8 @@
-import { AvatarFigurePartType, FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, HabboClubLevelEnum, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { useCallback, useState } from 'react';
-import { GetAvatarRenderManager, GetRoomEngine, SendMessageComposer } from '../../../../api';
-import { UseRoomEngineEvent } from '../../../events';
-import { useFurniRemovedEvent } from '../../useFurniRemovedEvent';
-
-const MANNEQUIN_CLOTHING_PART_TYPES = [
-    AvatarFigurePartType.CHEST_ACCESSORY,
-    AvatarFigurePartType.COAT_CHEST,
-    AvatarFigurePartType.CHEST,
-    AvatarFigurePartType.LEGS,
-    AvatarFigurePartType.SHOES,
-    AvatarFigurePartType.WAIST_ACCESSORY
-];
+import { FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, HabboClubLevelEnum, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
+import { useState } from 'react';
+import { GetAvatarRenderManager, GetRoomEngine, MannequinUtilities, SendMessageComposer } from '../../../../api';
+import { useRoomEngineEvent } from '../../../events';
+import { useFurniRemovedEvent } from '../../engine';
 
 const useFurnitureMannequinWidgetState = () =>
 {
@@ -22,14 +13,14 @@ const useFurnitureMannequinWidgetState = () =>
     const [ clubLevel, setClubLevel ] = useState(HabboClubLevelEnum.NO_CLUB);
     const [ name, setName ] = useState(null);
 
-    const close = useCallback(() =>
+    const close = () =>
     {
         setObjectId(-1);
         setCategory(-1);
         setFigure(null);
         setGender(null);
         setName(null);
-    }, []);
+    }
 
     const saveFigure = () =>
     {
@@ -56,7 +47,7 @@ const useFurnitureMannequinWidgetState = () =>
         SendMessageComposer(new FurnitureMannequinSaveNameComposer(objectId, name));
     }
 
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 
@@ -66,7 +57,7 @@ const useFurnitureMannequinWidgetState = () =>
         const figure = (model.getValue<string>(RoomObjectVariable.FURNITURE_MANNEQUIN_FIGURE) || null);
         const gender = (model.getValue<string>(RoomObjectVariable.FURNITURE_MANNEQUIN_GENDER) || null);
         const figureContainer = GetAvatarRenderManager().createFigureContainer(figure);
-        const figureClubLevel = GetAvatarRenderManager().getFigureClubLevel(figureContainer, gender, MANNEQUIN_CLOTHING_PART_TYPES);
+        const figureClubLevel = GetAvatarRenderManager().getFigureClubLevel(figureContainer, gender, MannequinUtilities.MANNEQUIN_CLOTHING_PART_TYPES);
 
         setObjectId(event.objectId);
         setCategory(event.category);

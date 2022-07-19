@@ -2,8 +2,8 @@ import { IFurnitureData, IGetImageListener, PetFigureData, RoomEngineTriggerWidg
 import { useMemo, useState } from 'react';
 import { useRoom } from '../../..';
 import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture, LocalizeText, ProductTypeEnum } from '../../../../api';
-import { UseRoomEngineEvent, UseRoomSessionManagerEvent } from '../../../events';
-import { useFurniRemovedEvent } from '../../useFurniRemovedEvent';
+import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../events';
+import { useFurniRemovedEvent } from '../../engine';
 
 const FLOOR: string = 'floor';
 const WALLPAPER: string = 'wallpaper';
@@ -25,15 +25,6 @@ const useFurniturePresentWidgetState = () =>
     const [ imageUrl, setImageUrl ] = useState<string>(null);
     const { roomSession = null } = useRoom();
 
-    const openPresent = () =>
-    {
-        if(objectId === -1) return;
-
-        roomSession.openGift(objectId);
-        
-        GetRoomEngine().changeObjectModelData(GetRoomEngine().activeRoomId, objectId, RoomObjectCategory.FLOOR, RoomObjectVariable.FURNITURE_DISABLE_PICKING_ANIMATION, 1);
-    }
-
     const close = () =>
     {
         setObjectId(-1);
@@ -47,6 +38,15 @@ const useFurniturePresentWidgetState = () =>
         setPlacedItemType(null);
         setPlacedInRoom(false);
         setImageUrl(null);
+    }
+
+    const openPresent = () =>
+    {
+        if(objectId === -1) return;
+
+        roomSession.openGift(objectId);
+        
+        GetRoomEngine().changeObjectModelData(GetRoomEngine().activeRoomId, objectId, RoomObjectCategory.FLOOR, RoomObjectVariable.FURNITURE_DISABLE_PICKING_ANIMATION, 1);
     }
 
     const imageListener: IGetImageListener = useMemo(() =>
@@ -65,7 +65,7 @@ const useFurniturePresentWidgetState = () =>
         }
     }, []);
 
-    UseRoomSessionManagerEvent<RoomSessionPresentEvent>(RoomSessionPresentEvent.RSPE_PRESENT_OPENED, event =>
+    useRoomSessionManagerEvent<RoomSessionPresentEvent>(RoomSessionPresentEvent.RSPE_PRESENT_OPENED, event =>
     {
         let furniData: IFurnitureData = null;
 
@@ -193,7 +193,7 @@ const useFurniturePresentWidgetState = () =>
         setPlacedInRoom(event.placedInRoom);
     });
 
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_PRESENT, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_PRESENT, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 

@@ -1,10 +1,10 @@
 import { ConfigurationEvent, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetCommunication, GetConfiguration, GetNitroInstance, GetUIVersion } from './api';
+import { DispatchUiEvent, GetCommunication, GetConfiguration, GetNitroInstance, GetUIVersion } from './api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from './common';
 import { LoadingView } from './components/loading/LoadingView';
 import { MainView } from './components/main/MainView';
-import { DispatchUiEvent, UseConfigurationEvent, UseLocalizationEvent, UseMainEvent, UseRoomEngineEvent } from './hooks';
+import { useConfigurationEvent, useLocalizationEvent, useMainEvent, useRoomEngineEvent } from './hooks';
 import IntervalWebWorker from './workers/IntervalWebWorker';
 import { WorkerBuilder } from './workers/WorkerBuilder';
 
@@ -107,17 +107,17 @@ export const App: FC<{}> = props =>
         }
     }, []);
 
-    UseMainEvent(Nitro.WEBGL_UNAVAILABLE, handler);
-    UseMainEvent(Nitro.WEBGL_CONTEXT_LOST, handler);
-    UseMainEvent(NitroCommunicationDemoEvent.CONNECTION_HANDSHAKING, handler);
-    UseMainEvent(NitroCommunicationDemoEvent.CONNECTION_HANDSHAKE_FAILED, handler);
-    UseMainEvent(NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED, handler);
-    UseMainEvent(NitroCommunicationDemoEvent.CONNECTION_ERROR, handler);
-    UseMainEvent(NitroCommunicationDemoEvent.CONNECTION_CLOSED, handler);
-    UseRoomEngineEvent(RoomEngineEvent.ENGINE_INITIALIZED, handler);
-    UseLocalizationEvent(NitroLocalizationEvent.LOADED, handler);
-    UseConfigurationEvent(ConfigurationEvent.LOADED, handler);
-    UseConfigurationEvent(ConfigurationEvent.FAILED, handler);
+    useMainEvent(Nitro.WEBGL_UNAVAILABLE, handler);
+    useMainEvent(Nitro.WEBGL_CONTEXT_LOST, handler);
+    useMainEvent(NitroCommunicationDemoEvent.CONNECTION_HANDSHAKING, handler);
+    useMainEvent(NitroCommunicationDemoEvent.CONNECTION_HANDSHAKE_FAILED, handler);
+    useMainEvent(NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED, handler);
+    useMainEvent(NitroCommunicationDemoEvent.CONNECTION_ERROR, handler);
+    useMainEvent(NitroCommunicationDemoEvent.CONNECTION_CLOSED, handler);
+    useRoomEngineEvent(RoomEngineEvent.ENGINE_INITIALIZED, handler);
+    useLocalizationEvent(NitroLocalizationEvent.LOADED, handler);
+    useConfigurationEvent(ConfigurationEvent.LOADED, handler);
+    useConfigurationEvent(ConfigurationEvent.FAILED, handler);
 
     useEffect(() =>
     {

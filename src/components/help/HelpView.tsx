@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { Base, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { HelpReportUserEvent } from '../../events/help/HelpReportUserEvent';
-import { UseUiEvent } from '../../hooks';
+import { useUiEvent } from '../../hooks';
 import { IHelpReportState } from './common/IHelpReportState';
 import { HelpContextProvider } from './HelpContext';
 import { HelpMessageHandler } from './HelpMessageHandler';
@@ -63,7 +63,7 @@ export const HelpView: FC<{}> = props =>
         setIsVisible(true);
     }, []);
 
-    UseUiEvent(HelpReportUserEvent.REPORT_USER, onHelpReportUserEvent);
+    useUiEvent(HelpReportUserEvent.REPORT_USER, onHelpReportUserEvent);
 
     useEffect(() =>
     {

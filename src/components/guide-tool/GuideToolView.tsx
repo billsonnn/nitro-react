@@ -1,9 +1,9 @@
 import { GuideOnDutyStatusMessageEvent, GuideSessionAttachedMessageEvent, GuideSessionDetachedMessageEvent, GuideSessionEndedMessageEvent, GuideSessionInvitedToGuideRoomMessageEvent, GuideSessionMessageMessageEvent, GuideSessionOnDutyUpdateMessageComposer, GuideSessionPartnerIsTypingMessageEvent, GuideSessionStartedMessageEvent, ILinkEventTracker, PerkAllowancesMessageEvent, PerkEnum } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, GetConfiguration, GetSessionDataManager, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { AddEventLinkTracker, DispatchUiEvent, GetConfiguration, GetSessionDataManager, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { GuideToolEvent, NotificationAlertEvent } from '../../events';
-import { DispatchUiEvent, UseMessageEventHook, UseUiEvent } from '../../hooks';
+import { useMessageEvent, useUiEvent } from '../../hooks';
 import { GuideSessionState } from './common/GuideSessionState';
 import { GuideToolMessage } from './common/GuideToolMessage';
 import { GuideToolMessageGroup } from './common/GuideToolMessageGroup';
@@ -103,10 +103,10 @@ export const GuideToolView: FC<{}> = props =>
         }
     }, [ updateSessionState ]);
 
-    UseUiEvent(GuideToolEvent.SHOW_GUIDE_TOOL, onGuideToolEvent);
-    UseUiEvent(GuideToolEvent.HIDE_GUIDE_TOOL, onGuideToolEvent);
-    UseUiEvent(GuideToolEvent.TOGGLE_GUIDE_TOOL, onGuideToolEvent);
-    UseUiEvent(GuideToolEvent.CREATE_HELP_REQUEST, onGuideToolEvent);
+    useUiEvent(GuideToolEvent.SHOW_GUIDE_TOOL, onGuideToolEvent);
+    useUiEvent(GuideToolEvent.HIDE_GUIDE_TOOL, onGuideToolEvent);
+    useUiEvent(GuideToolEvent.TOGGLE_GUIDE_TOOL, onGuideToolEvent);
+    useUiEvent(GuideToolEvent.CREATE_HELP_REQUEST, onGuideToolEvent);
 
     const onPerkAllowancesMessageEvent = useCallback((event: PerkAllowancesMessageEvent) =>
     {
@@ -119,7 +119,7 @@ export const GuideToolView: FC<{}> = props =>
         }
     }, [ isOnDuty, setIsOnDuty ]);
 
-    UseMessageEventHook(PerkAllowancesMessageEvent, onPerkAllowancesMessageEvent);
+    useMessageEvent(PerkAllowancesMessageEvent, onPerkAllowancesMessageEvent);
 
     const onGuideOnDutyStatusMessageEvent = useCallback((event: GuideOnDutyStatusMessageEvent) =>
     {
@@ -131,7 +131,7 @@ export const GuideToolView: FC<{}> = props =>
         setGuardiansOnDuty(parser.guardiansOnDuty);
     }, [ setIsOnDuty, setHelpersOnDuty, setGuidesOnDuty, setGuardiansOnDuty ]);
 
-    UseMessageEventHook(GuideOnDutyStatusMessageEvent, onGuideOnDutyStatusMessageEvent);
+    useMessageEvent(GuideOnDutyStatusMessageEvent, onGuideOnDutyStatusMessageEvent);
 
     const onGuideSessionAttachedMessageEvent = useCallback((event: GuideSessionAttachedMessageEvent) =>
     {
@@ -146,7 +146,7 @@ export const GuideToolView: FC<{}> = props =>
         
     }, [ isOnDuty, updateSessionState ]);
 
-    UseMessageEventHook(GuideSessionAttachedMessageEvent, onGuideSessionAttachedMessageEvent);
+    useMessageEvent(GuideSessionAttachedMessageEvent, onGuideSessionAttachedMessageEvent);
     
     const onGuideSessionStartedMessageEvent = useCallback((event: GuideSessionStartedMessageEvent) =>
     {
@@ -168,7 +168,7 @@ export const GuideToolView: FC<{}> = props =>
         }
     }, [ isOnDuty, updateSessionState ]);
 
-    UseMessageEventHook(GuideSessionStartedMessageEvent, onGuideSessionStartedMessageEvent);
+    useMessageEvent(GuideSessionStartedMessageEvent, onGuideSessionStartedMessageEvent);
 
     const onGuideSessionPartnerIsTypingMessageEvent = useCallback((event: GuideSessionPartnerIsTypingMessageEvent) =>
     {
@@ -177,7 +177,7 @@ export const GuideToolView: FC<{}> = props =>
         setOngoingIsTyping(parser.isTyping);
     }, []);
 
-    UseMessageEventHook(GuideSessionPartnerIsTypingMessageEvent, onGuideSessionPartnerIsTypingMessageEvent);
+    useMessageEvent(GuideSessionPartnerIsTypingMessageEvent, onGuideSessionPartnerIsTypingMessageEvent);
     
     const onGuideSessionMessageMessageEvent = useCallback((event: GuideSessionMessageMessageEvent) =>
     {
@@ -197,7 +197,7 @@ export const GuideToolView: FC<{}> = props =>
         setOngoingMessageGroups(messageGroups);
     }, [ ongoingMessageGroups ]);
 
-    UseMessageEventHook(GuideSessionMessageMessageEvent, onGuideSessionMessageMessageEvent);
+    useMessageEvent(GuideSessionMessageMessageEvent, onGuideSessionMessageMessageEvent);
 
     const onGuideSessionInvitedToGuideRoomMessageEvent = useCallback((event: GuideSessionInvitedToGuideRoomMessageEvent) =>
     {
@@ -219,7 +219,7 @@ export const GuideToolView: FC<{}> = props =>
         setOngoingMessageGroups(messageGroups);
     }, [ isOnDuty, ongoingMessageGroups, ongoingUserId ]);
 
-    UseMessageEventHook(GuideSessionInvitedToGuideRoomMessageEvent, onGuideSessionInvitedToGuideRoomMessageEvent);
+    useMessageEvent(GuideSessionInvitedToGuideRoomMessageEvent, onGuideSessionInvitedToGuideRoomMessageEvent);
 
     const onGuideSessionEndedMessageEvent = useCallback((event: GuideSessionEndedMessageEvent) =>
     {
@@ -238,7 +238,7 @@ export const GuideToolView: FC<{}> = props =>
         }
     }, [ isOnDuty, updateSessionState ]);
 
-    UseMessageEventHook(GuideSessionEndedMessageEvent, onGuideSessionEndedMessageEvent);
+    useMessageEvent(GuideSessionEndedMessageEvent, onGuideSessionEndedMessageEvent);
 
     const onGuideSessionDetachedMessageEvent = useCallback((event: GuideSessionDetachedMessageEvent) =>
     {
@@ -259,7 +259,7 @@ export const GuideToolView: FC<{}> = props =>
         }
     }, [ isOnDuty, updateSessionState ]);
 
-    UseMessageEventHook(GuideSessionDetachedMessageEvent, onGuideSessionDetachedMessageEvent);
+    useMessageEvent(GuideSessionDetachedMessageEvent, onGuideSessionDetachedMessageEvent);
 
     const linkReceived = useCallback((url: string) =>
     {

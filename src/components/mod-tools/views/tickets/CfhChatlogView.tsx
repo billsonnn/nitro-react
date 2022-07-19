@@ -2,7 +2,7 @@ import { CfhChatlogData, CfhChatlogEvent, GetCfhChatlogMessageComposer } from '@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
-import { UseMessageEventHook } from '../../../../hooks';
+import { useMessageEvent } from '../../../../hooks';
 import { ChatlogView } from '../chatlog/ChatlogView';
 
 interface CfhChatlogViewProps
@@ -30,7 +30,7 @@ export const CfhChatlogView: FC<CfhChatlogViewProps> = props =>
         setChatlogData(parser.data);
     }, [ issueId ]);
 
-    UseMessageEventHook(CfhChatlogEvent, onCfhChatlogEvent);
+    useMessageEvent(CfhChatlogEvent, onCfhChatlogEvent);
 
     return (
         <NitroCardView className="nitro-mod-tools-chatlog" theme="primary-slim">

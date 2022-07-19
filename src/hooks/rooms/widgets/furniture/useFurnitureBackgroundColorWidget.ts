@@ -1,8 +1,8 @@
 import { ApplyTonerComposer, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { useCallback, useEffect, useState } from 'react';
-import { CanManipulateFurniture, GetRoomEngine, RoomWidgetUpdateBackgroundColorPreviewEvent, SendMessageComposer } from '../../../../api';
-import { UseRoomEngineEvent } from '../../../events';
-import { useFurniRemovedEvent } from '../../useFurniRemovedEvent';
+import { useEffect, useState } from 'react';
+import { CanManipulateFurniture, DispatchUiEvent, GetRoomEngine, RoomWidgetUpdateBackgroundColorPreviewEvent, SendMessageComposer } from '../../../../api';
+import { useRoomEngineEvent } from '../../../events';
+import { useFurniRemovedEvent } from '../../engine';
 import { useRoom } from '../../useRoom';
 
 const useFurnitureBackgroundColorWidgetState = () =>
@@ -12,23 +12,23 @@ const useFurnitureBackgroundColorWidgetState = () =>
     const [ hue, setHue ] = useState(0);
     const [ saturation, setSaturation ] = useState(0);
     const [ lightness, setLightness ] = useState(0);
-    const { roomSession = null, widgetHandler = null } = useRoom();
+    const { roomSession = null } = useRoom();
 
     const applyToner = () => SendMessageComposer(new ApplyTonerComposer(objectId, hue, saturation, lightness));
     const toggleToner = () => roomSession.useMultistateItem(objectId);
 
-    const close = useCallback(() =>
+    const close = () =>
     {
-        widgetHandler.eventDispatcher.dispatchEvent(new RoomWidgetUpdateBackgroundColorPreviewEvent(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW));
+        DispatchUiEvent(new RoomWidgetUpdateBackgroundColorPreviewEvent(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW));
 
         setObjectId(-1);
         setCategory(-1);
         setHue(0);
         setSaturation(0);
         setLightness(0);
-    }, [ widgetHandler ]);
+    }
 
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, event =>
     {
         if(!CanManipulateFurniture(roomSession, event.objectId, event.category)) return;
                 
@@ -53,8 +53,8 @@ const useFurnitureBackgroundColorWidgetState = () =>
     {
         if((objectId === -1) || (category === -1)) return;
 
-        widgetHandler.eventDispatcher.dispatchEvent(new RoomWidgetUpdateBackgroundColorPreviewEvent(RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW, hue, saturation, lightness));
-    }, [ objectId, category, widgetHandler, hue, saturation, lightness ]);
+        DispatchUiEvent(new RoomWidgetUpdateBackgroundColorPreviewEvent(RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW, hue, saturation, lightness));
+    }, [ objectId, category, hue, saturation, lightness ]);
 
     return { objectId, hue, setHue, saturation, setSaturation, lightness, setLightness, applyToner, toggleToner, close };
 }

@@ -1,7 +1,7 @@
 import { GetGuestRoomMessageComposer, GetGuestRoomResultEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { useEffect, useState } from 'react';
-import { GetCommunication, GetRoomEngine, SendMessageComposer } from '../../../../api';
-import { UseRoomEngineEvent } from '../../../events';
+import { useState } from 'react';
+import { GetRoomEngine, SendMessageComposer } from '../../../../api';
+import { useMessageEvent, useRoomEngineEvent } from '../../../events';
 
 const INTERNALLINK = 'internalLink';
 
@@ -9,7 +9,7 @@ const useFurnitureRoomLinkWidgetState = () =>
 {
     const [ roomIdToEnter, setRoomIdToEnter ] = useState(0);
 
-    UseRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_ROOM_LINK, event =>
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_ROOM_LINK, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
     
@@ -32,25 +32,16 @@ const useFurnitureRoomLinkWidgetState = () =>
         SendMessageComposer(new GetGuestRoomMessageComposer(roomId, false, false));
     });
 
-    useEffect(() =>
+    useMessageEvent<GetGuestRoomResultEvent>(GetGuestRoomResultEvent, event =>
     {
         if(!roomIdToEnter) return;
 
-        const onGetGuestRoomResultEvent = (event: GetGuestRoomResultEvent) =>
-        {
-            const parser = event.getParser();
+        const parser = event.getParser();
 
-            if(parser.data.roomId !== roomIdToEnter) return;
+        if(parser.data.roomId !== roomIdToEnter) return;
 
-            setRoomIdToEnter(0);
-        }
-
-        const event = new GetGuestRoomResultEvent(onGetGuestRoomResultEvent);
-
-        GetCommunication().registerMessageEvent(event);
-        
-        return () => GetCommunication().removeMessageEvent(event);
-    }, [ roomIdToEnter ]);
+        setRoomIdToEnter(0);
+    });
 
     return {};
 }

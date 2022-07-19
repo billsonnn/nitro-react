@@ -1,5 +1,5 @@
 import { NitroEvent } from '@nitrots/nitro-renderer';
 import { GetAvatarRenderManager } from '../../../api';
-import { UseEventDispatcherHook } from '../UseEventDispatcherHook';
+import { useEventDispatcher } from '../useEventDispatcher';
 
-export const UseAvatarEvent = (type: string, handler: (event: NitroEvent) => void) => UseEventDispatcherHook(type, GetAvatarRenderManager().events, handler);
+export const useAvatarEvent = <T extends NitroEvent>(type: string | string[], handler: (event: T) => void) => useEventDispatcher(type, GetAvatarRenderManager().events, handler);

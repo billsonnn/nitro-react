@@ -2,7 +2,7 @@ import { FC, useCallback } from 'react';
 import { LocalizeText, WiredSelectionVisualizer } from '../../../api';
 import { Column, Text } from '../../../common';
 import { WiredSelectObjectEvent } from '../../../events';
-import { UseUiEvent } from '../../../hooks';
+import { useUiEvent } from '../../../hooks';
 import { useWiredContext } from '../WiredContext';
 
 export const WiredFurniSelectorView: FC<{}> = props =>
@@ -39,7 +39,7 @@ export const WiredFurniSelectorView: FC<{}> = props =>
         });
     }, [ trigger, setFurniIds ]);
 
-    UseUiEvent(WiredSelectObjectEvent.SELECT_OBJECT, onWiredSelectObjectEvent);
+    useUiEvent(WiredSelectObjectEvent.SELECT_OBJECT, onWiredSelectObjectEvent);
     
     return (
         <Column gap={ 1 }>

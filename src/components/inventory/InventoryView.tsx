@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetLocalization, GetRoomEngine, LocalizeText, RemoveLinkEventTracker, UnseenItemCategory } from '../../api';
 import { isObjectMoverRequested, setObjectMoverRequested } from '../../api/inventory/InventoryUtilities';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { useInventoryTrade, useInventoryUnseenTracker, UseMessageEventHook, UseRoomEngineEvent, UseRoomSessionManagerEvent } from '../../hooks';
+import { useInventoryTrade, useInventoryUnseenTracker, useMessageEvent, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../hooks';
 import { InventoryBadgeView } from './views/badge/InventoryBadgeView';
 import { InventoryBotView } from './views/bot/InventoryBotView';
 import { InventoryFurnitureView } from './views/furniture/InventoryFurnitureView';
@@ -42,7 +42,7 @@ export const InventoryView: FC<{}> = props =>
         if(!event.placedInRoom) setIsVisible(true);
     }, []);
 
-    UseRoomEngineEvent(RoomEngineObjectEvent.PLACED, onRoomEngineObjectPlacedEvent);
+    useRoomEngineEvent(RoomEngineObjectEvent.PLACED, onRoomEngineObjectPlacedEvent);
 
     const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
     {
@@ -58,8 +58,8 @@ export const InventoryView: FC<{}> = props =>
         }
     }, []);
 
-    UseRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
-    UseRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
     const onBadgePointLimitsEvent = useCallback((event: BadgePointLimitsEvent) =>
     {
@@ -68,7 +68,7 @@ export const InventoryView: FC<{}> = props =>
         for(const data of parser.data) GetLocalization().setBadgePointLimit(data.badgeId, data.limit);
     }, []);
 
-    UseMessageEventHook(BadgePointLimitsEvent, onBadgePointLimitsEvent);
+    useMessageEvent(BadgePointLimitsEvent, onBadgePointLimitsEvent);
 
     useEffect(() =>
     {
