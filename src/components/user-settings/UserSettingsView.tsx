@@ -12,26 +12,6 @@ export const UserSettingsView: FC<{}> = props =>
     const [ catalogPlaceMultipleObjects, setCatalogPlaceMultipleObjects ] = useCatalogPlaceMultipleItems();
     const [ catalogSkipPurchaseConfirmation, setCatalogSkipPurchaseConfirmation ] = useCatalogSkipPurchaseConfirmation();
 
-    const onUserSettingsEvent = useCallback((event: UserSettingsEvent) =>
-    {
-        const parser = event.getParser();
-        const settingsEvent = new NitroSettingsEvent();
-
-        settingsEvent.volumeSystem = parser.volumeSystem;
-        settingsEvent.volumeFurni = parser.volumeFurni;
-        settingsEvent.volumeTrax = parser.volumeTrax;
-        settingsEvent.oldChat = parser.oldChat;
-        settingsEvent.roomInvites = parser.roomInvites;
-        settingsEvent.cameraFollow = parser.cameraFollow;
-        settingsEvent.flags = parser.flags;
-        settingsEvent.chatType = parser.chatType;
-
-        setUserSettings(settingsEvent);
-        DispatchMainEvent(settingsEvent);
-    }, []);
-
-    useMessageEvent(UserSettingsEvent, onUserSettingsEvent);
-
     const processAction = useCallback((type: string, value?: boolean | number | string) =>
     {
         let doUpdate = true;
@@ -87,6 +67,24 @@ export const UserSettingsView: FC<{}> = props =>
                 break;
         }
     }, [ userSettings ]);
+
+    useMessageEvent<UserSettingsEvent>(UserSettingsEvent, event =>
+    {
+        const parser = event.getParser();
+        const settingsEvent = new NitroSettingsEvent();
+
+        settingsEvent.volumeSystem = parser.volumeSystem;
+        settingsEvent.volumeFurni = parser.volumeFurni;
+        settingsEvent.volumeTrax = parser.volumeTrax;
+        settingsEvent.oldChat = parser.oldChat;
+        settingsEvent.roomInvites = parser.roomInvites;
+        settingsEvent.cameraFollow = parser.cameraFollow;
+        settingsEvent.flags = parser.flags;
+        settingsEvent.chatType = parser.chatType;
+
+        setUserSettings(settingsEvent);
+        DispatchMainEvent(settingsEvent);
+    });
 
     useEffect(() =>
     {

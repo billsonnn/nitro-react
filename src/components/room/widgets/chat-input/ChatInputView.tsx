@@ -3,14 +3,13 @@ import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ChatMessageTypeEnum, GetClubMemberLevel, GetConfiguration, GetRoomSession, GetSessionDataManager, LocalizeText, RoomWidgetUpdateChatInputContentEvent } from '../../../../api';
 import { Text } from '../../../../common';
-import { useChatInputWidget, useUiEvent } from '../../../../hooks';
+import { useChatInputWidget, useSessionInfo, useUiEvent } from '../../../../hooks';
 import { ChatInputStyleSelectorView } from './ChatInputStyleSelectorView';
 
 export const ChatInputView: FC<{}> = props =>
 {
     const [ chatValue, setChatValue ] = useState<string>('');
-    const [ chatStyleId, setChatStyleId ] = useState(GetSessionDataManager().chatStyle);
-    const [ needsChatStyleUpdate, setNeedsChatStyleUpdate ] = useState(false);
+    const { chatStyleId = 0, updateChatStyleId = null } = useSessionInfo();
     const { selectedUsername = '', floodBlocked = false, floodBlockedSeconds = 0, setIsTyping = null, setIsIdle = null, sendChat = null } = useChatInputWidget();
     const inputRef = useRef<HTMLInputElement>();
 
@@ -90,19 +89,12 @@ export const ChatInputView: FC<{}> = props =>
 
         if(text.length <= maxChatLength)
         {
-            if(needsChatStyleUpdate)
-            {
-                GetSessionDataManager().sendChatStyleUpdate(chatStyleId);
-
-                setNeedsChatStyleUpdate(false);
-            }
-
             setChatValue('');
             sendChat(text, chatType, recipientName, chatStyleId);
         }
 
         setChatValue(append);
-    }, [ chatModeIdWhisper, chatModeIdShout, chatModeIdSpeak, maxChatLength, chatStyleId, needsChatStyleUpdate, setIsTyping, setIsIdle, sendChat ]);
+    }, [ chatModeIdWhisper, chatModeIdShout, chatModeIdSpeak, maxChatLength, chatStyleId, setIsTyping, setIsIdle, sendChat ]);
 
     const updateChatInput = useCallback((value: string) =>
     {
@@ -164,12 +156,6 @@ export const ChatInputView: FC<{}> = props =>
                 return;
         }
     });
-
-    const selectChatStyleId = useCallback((styleId: number) =>
-    {
-        setChatStyleId(styleId);
-        setNeedsChatStyleUpdate(true);
-    }, []);
 
     const chatStyleIds = useMemo(() =>
     {
@@ -248,7 +234,7 @@ export const ChatInputView: FC<{}> = props =>
                     { floodBlocked &&
                     <Text variant="danger">{ LocalizeText('chat.input.alert.flood', [ 'time' ], [ floodBlockedSeconds.toString() ]) } </Text> }
                 </div>
-                <ChatInputStyleSelectorView chatStyleId={ chatStyleId } chatStyleIds={ chatStyleIds } selectChatStyleId={ selectChatStyleId } />
+                <ChatInputStyleSelectorView chatStyleId={ chatStyleId } chatStyleIds={ chatStyleIds } selectChatStyleId={ updateChatStyleId } />
             </div>, document.getElementById('toolbar-chat-input-container'))
     );
 }
