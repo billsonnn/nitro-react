@@ -1,6 +1,7 @@
 import { ICatalogPage } from '../../../../../api';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 import { CatalogLayoutBadgeDisplayView } from './CatalogLayoutBadgeDisplayView';
+import { CatalogLayoutColorGroupingView } from './CatalogLayoutColorGroupingView';
 import { CatalogLayoutDefaultView } from './CatalogLayoutDefaultView';
 import { CatalogLayouGuildCustomFurniView } from './CatalogLayoutGuildCustomFurniView';
 import { CatalogLayouGuildForumView } from './CatalogLayoutGuildForumView';
@@ -23,7 +24,7 @@ import { CatalogLayoutVipGiftsView } from './vip-gifts/CatalogLayoutVipGiftsView
 export const GetCatalogLayout = (page: ICatalogPage, hideNavigation: () => void) =>
 {
     if(!page) return null;
-    
+
     const layoutProps: CatalogLayoutProps = { page, hideNavigation };
 
     switch(page.layoutCode)
@@ -66,8 +67,8 @@ export const GetCatalogLayout = (page: ICatalogPage, hideNavigation: () => void)
             return <CatalogLayoutBadgeDisplayView { ...layoutProps } />;
         case 'roomads':
             return <CatalogLayoutRoomAdsView { ...layoutProps } />;
-        //case 'default_3x3_color_grouping':
-        //return <CatalogLayoutColorGroupingView { ...layoutProps } />;
+        case 'default_3x3_color_grouping':
+            return <CatalogLayoutColorGroupingView { ...layoutProps } />;
         case 'bots':
         case 'default_3x3':
         default:
