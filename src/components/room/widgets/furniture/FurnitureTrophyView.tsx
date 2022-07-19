@@ -4,7 +4,7 @@ import { useFurnitureTrophyWidget } from '../../../../hooks';
 
 export const FurnitureTrophyView: FC<{}> = props =>
 {
-    const { objectId = -1, color = '1', senderName = '', date = '', message = '' } = useFurnitureTrophyWidget();
+    const { objectId = -1, color = '1', senderName = '', date = '', message = '', close = null } = useFurnitureTrophyWidget();
 
     if(objectId === -1) return null;
 
