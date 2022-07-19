@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { useWiredContext } from '../../WiredContext';
+import { useWired } from '../../../../hooks';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 export const WiredConditionFurniMatchesSnapshotView: FC<{}> = props =>
@@ -9,7 +9,7 @@ export const WiredConditionFurniMatchesSnapshotView: FC<{}> = props =>
     const [ stateFlag, setStateFlag ] = useState(0);
     const [ directionFlag, setDirectionFlag ] = useState(0);
     const [ positionFlag, setPositionFlag ] = useState(0);
-    const { trigger = null, setIntParams = null } = useWiredContext();
+    const { trigger = null, setIntParams = null } = useWired();
 
     const save = () => setIntParams([ stateFlag, directionFlag, positionFlag ]);
 

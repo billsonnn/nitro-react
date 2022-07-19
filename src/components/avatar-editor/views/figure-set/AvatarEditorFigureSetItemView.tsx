@@ -1,7 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetConfiguration } from '../../../../api';
+import { AvatarEditorGridPartItem, GetConfiguration } from '../../../../api';
 import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../../common';
-import { AvatarEditorGridPartItem } from '../../common/AvatarEditorGridPartItem';
 import { AvatarEditorIcon } from '../AvatarEditorIcon';
 
 export interface AvatarEditorFigureSetItemViewProps extends LayoutGridItemProps

@@ -1,18 +1,18 @@
 import { FC, useMemo } from 'react';
-import { GetGroupChatData, GetSessionDataManager, GroupType, LocalizeText, MessengerThread, MessengerThreadChat, MessengerThreadChatGroup } from '../../../../../api';
+import { GetGroupChatData, GetSessionDataManager, LocalizeText, MessengerGroupType, MessengerThread, MessengerThreadChat, MessengerThreadChatGroup } from '../../../../../api';
 import { Base, Flex, LayoutAvatarImageView } from '../../../../../common';
 
 export const FriendsMessengerThreadGroup: FC<{ thread: MessengerThread, group: MessengerThreadChatGroup }> = props =>
 {
     const { thread = null, group = null } = props;
 
-    const groupChatData = useMemo(() => ((group.type === GroupType.GROUP_CHAT) && GetGroupChatData(group.chats[0].extraData)), [ group ]);
+    const groupChatData = useMemo(() => ((group.type === MessengerGroupType.GROUP_CHAT) && GetGroupChatData(group.chats[0].extraData)), [ group ]);
 
     const isOwnChat = useMemo(() =>
     {
         if(!thread || !group) return false;
         
-        if((group.type === GroupType.PRIVATE_CHAT) && (group.userId === GetSessionDataManager().userId)) return true;
+        if((group.type === MessengerGroupType.PRIVATE_CHAT) && (group.userId === GetSessionDataManager().userId)) return true;
 
         if(groupChatData && group.chats.length && (groupChatData.userId === GetSessionDataManager().userId)) return true;
 
@@ -51,7 +51,7 @@ export const FriendsMessengerThreadGroup: FC<{ thread: MessengerThread, group: M
     return (
         <Flex fullWidth justifyContent={ isOwnChat ? 'end' : 'start' } gap={ 2 }>
             <Base shrink className="message-avatar">
-                { ((group.type === GroupType.PRIVATE_CHAT) && !isOwnChat) &&
+                { ((group.type === MessengerGroupType.PRIVATE_CHAT) && !isOwnChat) &&
                     <LayoutAvatarImageView figure={ thread.participant.figure } direction={ 2 } /> }
                 { (groupChatData && !isOwnChat) &&
                     <LayoutAvatarImageView figure={ groupChatData.figure } direction={ 2 } /> }

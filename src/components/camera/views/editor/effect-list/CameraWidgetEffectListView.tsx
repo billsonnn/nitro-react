@@ -1,7 +1,7 @@
 import { IRoomCameraWidgetEffect, IRoomCameraWidgetSelectedEffect } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
+import { CameraPictureThumbnail } from '../../../../../api';
 import { Grid } from '../../../../../common';
-import { CameraPictureThumbnail } from '../../../common/CameraPictureThumbnail';
 import { CameraWidgetEffectListItemView } from './CameraWidgetEffectListItemView';
 
 export interface CameraWidgetEffectListViewProps

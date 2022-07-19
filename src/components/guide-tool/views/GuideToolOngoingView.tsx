@@ -1,9 +1,8 @@
 import { GuideSessionGetRequesterRoomMessageComposer, GuideSessionInviteRequesterMessageComposer, GuideSessionMessageMessageComposer, GuideSessionRequesterRoomMessageEvent, GuideSessionResolvedMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useState } from 'react';
-import { GetSessionDataManager, LocalizeText, SendMessageComposer, TryVisitRoom } from '../../../api';
+import { GetSessionDataManager, GuideToolMessageGroup, LocalizeText, SendMessageComposer, TryVisitRoom } from '../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
-import { GuideToolMessageGroup } from '../common/GuideToolMessageGroup';
 
 interface GuideToolOngoingViewProps
 {

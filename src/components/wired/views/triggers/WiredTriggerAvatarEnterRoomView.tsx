@@ -1,14 +1,14 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { useWiredContext } from '../../WiredContext';
+import { useWired } from '../../../../hooks';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
 
 export const WiredTriggerAvatarEnterRoomView: FC<{}> = props =>
 {
     const [ username, setUsername ] = useState('');
     const [ avatarMode, setAvatarMode ] = useState(0);
-    const { trigger = null, setStringParam = null } = useWiredContext();
+    const { trigger = null, setStringParam = null } = useWired();
 
     const save = () => setStringParam((avatarMode === 1) ? username : '');
 

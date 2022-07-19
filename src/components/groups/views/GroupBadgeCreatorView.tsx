@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { GroupBadgePart } from '../../../api';
 import { Base, Column, Flex, Grid, LayoutBadgeImageView } from '../../../common';
-import { GroupBadgePart } from '../common/GroupBadgePart';
-import { useGroupsContext } from '../GroupsContext';
+import { useGroup } from '../../../hooks';
 
 interface GroupBadgeCreatorViewProps
 {
@@ -16,7 +16,7 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
 {
     const { badgeParts = [], setBadgeParts = null } = props;
     const [ selectedIndex, setSelectedIndex ] = useState<number>(-1);
-    const { groupCustomize = null } = useGroupsContext();
+    const { groupCustomize = null } = useGroup();
 
     const setPartProperty = (partIndex: number, property: string, value: number) =>
     {

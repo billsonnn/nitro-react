@@ -1,13 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Text } from '../../../../common';
-import { useWiredContext } from '../../WiredContext';
+import { useWired } from '../../../../hooks';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
 
 export const WiredTriggerBotReachedAvatarView: FC<{}> = props =>
 {
     const [ botName, setBotName ] = useState('');
-    const { trigger = null, setStringParam = null } = useWiredContext();
+    const { trigger = null, setStringParam = null } = useWired();
 
     const save = () => setStringParam(botName);
 

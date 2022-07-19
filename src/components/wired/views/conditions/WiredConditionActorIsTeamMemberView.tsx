@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { useWiredContext } from '../../WiredContext';
+import { useWired } from '../../../../hooks';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 const teamIds: number[] = [ 1, 2, 3, 4 ];
@@ -9,7 +9,7 @@ const teamIds: number[] = [ 1, 2, 3, 4 ];
 export const WiredConditionActorIsTeamMemberView: FC<{}> = props =>
 {
     const [ selectedTeam, setSelectedTeam ] = useState(-1);
-    const { trigger = null, setIntParams = null } = useWiredContext();
+    const { trigger = null, setIntParams = null } = useWired();
 
     const save = () => setIntParams([ selectedTeam ]);
 

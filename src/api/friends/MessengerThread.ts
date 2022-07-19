@@ -1,7 +1,7 @@
 import { LocalizeText } from '../utils';
 import { GetGroupChatData } from './GetGroupChatData';
-import { GroupType } from './GroupType';
 import { MessengerFriend } from './MessengerFriend';
+import { MessengerGroupType } from './MessengerGroupType';
 import { MessengerThreadChat } from './MessengerThreadChat';
 import { MessengerThreadChatGroup } from './MessengerThreadChatGroup';
 
@@ -41,7 +41,7 @@ export class MessengerThread
 
         if(!group) return;
 
-        if(isGroupChat) group.type = GroupType.GROUP_CHAT;
+        if(isGroupChat) group.type = MessengerGroupType.GROUP_CHAT;
 
         const chat = new MessengerThreadChat(senderId, message, secondsSinceSent, extraData, type);
 

@@ -2,14 +2,14 @@ import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Text } from '../../../../common';
-import { useWiredContext } from '../../WiredContext';
+import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionMuteUserView: FC<{}> = props =>
 {
     const [ time, setTime ] = useState(-1);
     const [ message, setMessage ] = useState('');
-    const { trigger = null, setIntParams = null, setStringParam = null } = useWiredContext();
+    const { trigger = null, setIntParams = null, setStringParam = null } = useWired();
 
     const save = () =>
     {

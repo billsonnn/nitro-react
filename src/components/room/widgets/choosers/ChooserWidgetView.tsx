@@ -1,7 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { AutoSizer, List, ListRowProps, ListRowRenderer } from 'react-virtualized';
-import { GetSessionDataManager, RoomObjectItem } from '../../../../api';
-import { LocalizeText } from '../../../../api/utils';
+import { GetSessionDataManager, LocalizeText, RoomObjectItem } from '../../../../api';
 import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 
 interface ChooserWidgetViewProps

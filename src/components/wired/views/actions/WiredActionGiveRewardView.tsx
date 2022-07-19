@@ -2,11 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, WiredFurniType } from '../../../../api';
-import { Button } from '../../../../common/Button';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
-import { useWiredContext } from '../../WiredContext';
+import { Button, Column, Flex, Text } from '../../../../common';
+import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionGiveRewardView: FC<{}> = props =>
@@ -17,7 +14,7 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
     const [ rewardsLimit, setRewardsLimit ] = useState(1);
     const [ limitationInterval, setLimitationInterval ] = useState(1);
     const [ rewards, setRewards ] = useState<{ isBadge: boolean, itemCode: string, probability: number }[]>([]);
-    const { trigger = null, setIntParams = null, setStringParam = null } = useWiredContext();
+    const { trigger = null, setIntParams = null, setStringParam = null } = useWired();
 
     const addReward = useCallback(() =>
     {

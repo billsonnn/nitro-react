@@ -1,14 +1,14 @@
 import { FC, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { useWiredContext } from '../../WiredContext';
+import { useWired } from '../../../../hooks';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
 
 export const WiredTriggerAvatarSaysSomethingView: FC<{}> = props =>
 {
     const [ message, setMessage ] = useState('');
     const [ triggererAvatar, setTriggererAvatar ] = useState(-1);
-    const { trigger = null, setStringParam = null, setIntParams = null } = useWiredContext();
+    const { trigger = null, setStringParam = null, setIntParams = null } = useWired();
 
     const save = () =>
     {

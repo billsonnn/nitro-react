@@ -28,7 +28,7 @@ export const FurnitureStickieView: FC<{}> = props =>
     if(objectId === -1) return null;
 
     return (
-        <DraggableWindow handleSelector=".drag-handler" windowPosition={ DraggableWindowPosition.NOTHING }>
+        <DraggableWindow handleSelector=".drag-handler" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
             <div className={ 'nitro-stickie nitro-stickie-image stickie-' + getStickieColorName(color) }>
                 <div className="d-flex align-items-center stickie-header drag-handler">
                     <div className="d-flex align-items-center flex-grow-1 h-100">

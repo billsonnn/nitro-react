@@ -1,5 +1,5 @@
 import { createContext, Dispatch, FC, ProviderProps, SetStateAction, useContext } from 'react';
-import { IHelpReportState } from './common/IHelpReportState';
+import { IHelpReportState } from '../../api';
 
 interface IHelpContext
 {

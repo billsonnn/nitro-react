@@ -1,10 +1,9 @@
 import { ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { AddEventLinkTracker, IHelpReportState, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { Base, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
-import { HelpReportUserEvent } from '../../events/help/HelpReportUserEvent';
+import { HelpReportUserEvent } from '../../events';
 import { useUiEvent } from '../../hooks';
-import { IHelpReportState } from './common/IHelpReportState';
 import { HelpContextProvider } from './HelpContext';
 import { HelpMessageHandler } from './HelpMessageHandler';
 import { DescribeReportView } from './views/DescribeReportView';

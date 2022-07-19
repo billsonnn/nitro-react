@@ -1,8 +1,7 @@
 import { GroupDeleteComposer, GroupSaveInformationComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { CreateLinkEvent, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../api';
+import { CreateLinkEvent, IGroupData, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../api';
 import { Base, Button, Column, Flex, Text } from '../../../../common';
-import { IGroupData } from '../../common/IGroupData';
 
 interface GroupTabIdentityViewProps
 {
