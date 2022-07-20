@@ -76,7 +76,7 @@ const useWiredState = () =>
 
             return newFurniIds;
         });
-    });
+    }, !!trigger);
 
     useMessageEvent<WiredFurniActionEvent>(WiredFurniActionEvent, event =>
     {
