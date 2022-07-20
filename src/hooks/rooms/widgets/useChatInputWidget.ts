@@ -1,7 +1,8 @@
-import { AvatarExpressionEnum, HabboClubLevelEnum, RoomControllerLevel, RoomEngineObjectEvent, RoomRotatingEffect, RoomSessionChatEvent, RoomSettingsComposer, RoomShakingEffect, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
+import { AvatarExpressionEnum, HabboClubLevelEnum, RoomControllerLevel, RoomEngineObjectEvent, RoomObjectCategory, RoomRotatingEffect, RoomSessionChatEvent, RoomSettingsComposer, RoomShakingEffect, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { ChatMessageTypeEnum, CreateLinkEvent, GetClubMemberLevel, GetConfiguration, GetNitroInstance, GetRoomEngine, GetSessionDataManager, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../api';
 import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../events';
+import { useObjectSelectedEvent } from '../engine';
 import { useRoom } from '../useRoom';
 
 const useChatInputWidgetState = () =>
@@ -181,7 +182,16 @@ const useChatInputWidgetState = () =>
         setFloodBlockedSeconds(parseFloat(event.message));
     });
 
-    //useUiEvent<InfostandUserInfo>(InfostandUserInfo.PEER, event => setSelectedUsername(event.name));
+    useObjectSelectedEvent(event =>
+    {
+        if(event.category !== RoomObjectCategory.UNIT) return;
+
+        const userData = roomSession.userDataManager.getUserDataByIndex(event.id);
+
+        if(!userData) return;
+
+        setSelectedUsername(userData.name);
+    });
 
     useRoomEngineEvent<RoomEngineObjectEvent>(RoomEngineObjectEvent.DESELECTED, event => setSelectedUsername(''));
 
