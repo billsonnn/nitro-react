@@ -60,6 +60,8 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
                 case AvatarInfoFurni.FURNI: {
                     const info = (avatarInfo as AvatarInfoFurni);
 
+                    if(!isDecorating) return null;
+
                     return <AvatarInfoWidgetFurniView avatarInfo={ info } close={ () => setAvatarInfo(null) } />;
                 }
                 case AvatarInfoUser.OWN_USER:

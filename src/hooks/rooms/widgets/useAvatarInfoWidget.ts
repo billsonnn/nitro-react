@@ -68,8 +68,6 @@ const useAvatarInfoWidgetState = () =>
         {
             case RoomObjectCategory.FLOOR:
             case RoomObjectCategory.WALL:
-                if(!isDecorating) break;
-                
                 info = AvatarInfoUtilities.getFurniInfo(objectId, category)
                 break;
             case RoomObjectCategory.UNIT: {
@@ -282,7 +280,7 @@ const useAvatarInfoWidgetState = () =>
 
     useObjectRollOutEvent(event =>
     {
-        if(!activeNameBubble || (activeNameBubble.roomIndex !== event.id)) return;
+        if(!activeNameBubble || (event.category !== RoomObjectCategory.UNIT) || (activeNameBubble.roomIndex !== event.id)) return;
 
         setActiveNameBubble(null);
     });
