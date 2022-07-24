@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NitroRectangle, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
-import { CameraPicture, GetRoomEngine, GetRoomSession, LocalizeText, NotificationUtilities, PlaySound, SoundNames } from '../../../api';
+import { CameraPicture, GetRoomEngine, GetRoomSession, LocalizeText, PlaySound, SoundNames } from '../../../api';
 import { Column, DraggableWindow, Flex } from '../../../common';
-import { useCamera } from '../../../hooks';
+import { useCamera, useNotification } from '../../../hooks';
 
 export interface CameraWidgetCaptureViewProps
 {
@@ -18,6 +18,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
 {
     const { onClose = null, onEdit = null, onDelete = null } = props;
     const { cameraRoll = null, setCameraRoll = null, selectedPictureIndex = -1, setSelectedPictureIndex = null } = useCamera();
+    const { simpleAlert = null } = useNotification();
     const elementRef = useRef<HTMLDivElement>();
 
     const selectedPicture = ((selectedPictureIndex > -1) ? cameraRoll[selectedPictureIndex] : null);
@@ -45,7 +46,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
 
         if(clone.length >= CAMERA_ROLL_LIMIT)
         {
-            NotificationUtilities.simpleAlert(LocalizeText('camera.full.body'));
+            simpleAlert(LocalizeText('camera.full.body'));
 
             clone.pop();
         }
@@ -54,7 +55,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
         clone.push(new CameraPicture(texture, TextureUtils.generateImageUrl(texture)));
 
         setCameraRoll(clone);
-    }, [ cameraRoll, selectedPictureIndex, getCameraBounds, setCameraRoll, setSelectedPictureIndex ]);
+    }, [ cameraRoll, selectedPictureIndex, getCameraBounds, setCameraRoll, setSelectedPictureIndex, simpleAlert ]);
 
     return (
         <DraggableWindow uniqueKey="nitro-camera-capture">

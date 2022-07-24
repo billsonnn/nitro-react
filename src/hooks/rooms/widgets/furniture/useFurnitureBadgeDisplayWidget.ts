@@ -1,7 +1,8 @@
 import { RoomEngineTriggerWidgetEvent, RoomObjectVariable, StringDataType } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
-import { GetRoomEngine, GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText, NotificationUtilities } from '../../../../api';
+import { GetRoomEngine, GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../../api';
 import { useRoomEngineEvent } from '../../../events';
+import { useNotification } from '../../../notification';
 import { useFurniRemovedEvent } from '../../engine';
 
 const useFurnitureBadgeDisplayWidgetState = () =>
@@ -13,6 +14,7 @@ const useFurnitureBadgeDisplayWidgetState = () =>
     const [ badgeDesc, setBadgeDesc ] = useState('');
     const [ date, setDate ] = useState('');
     const [ senderName, setSenderName ] = useState('');
+    const { simpleAlert = null } = useNotification();
 
     const close = () =>
     {
@@ -57,7 +59,7 @@ const useFurnitureBadgeDisplayWidgetState = () =>
 
         if(ownerId !== GetSessionDataManager().userId) return;
         
-        NotificationUtilities.simpleAlert(`${ LocalizeText('resolution.failed.subtitle') } ${ LocalizeText('resolution.failed.text') }`, null, null, null, LocalizeText('resolution.failed.title'));
+        simpleAlert(`${ LocalizeText('resolution.failed.subtitle') } ${ LocalizeText('resolution.failed.text') }`, null, null, null, LocalizeText('resolution.failed.title'));
     });
 
     useFurniRemovedEvent(((objectId !== -1) && (category !== -1)), event =>

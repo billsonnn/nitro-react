@@ -1,12 +1,13 @@
 import { CanCreateRoomEventEvent, CantConnectMessageParser, DoorbellMessageEvent, FlatAccessDeniedMessageEvent, FlatCreatedEvent, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomMessageComposer, GetGuestRoomResultEvent, GetUserEventCatsMessageComposer, GetUserFlatCatsMessageComposer, HabboWebTools, LegacyExternalInterface, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserEventCatsEvent, UserFlatCatsEvent, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CreateLinkEvent, CreateRoomSession, DoorStateType, GetConfiguration, GetSessionDataManager, LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
-import { useMessageEvent } from '../../hooks';
+import { CreateLinkEvent, CreateRoomSession, DoorStateType, GetConfiguration, GetSessionDataManager, LocalizeText, NotificationAlertType, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
+import { useMessageEvent, useNotification } from '../../hooks';
 import { useNavigatorContext } from './NavigatorContext';
 
 export const NavigatorMessageHandler: FC<{}> = props =>
 {
     const { setCategories = null, setEventCategories = null, setTopLevelContext = null, topLevelContexts = null, setTopLevelContexts = null, setNavigatorData = null, setDoorData = null, setSearchResult = null } = useNavigatorContext();
+    const { simpleAlert = null } = useNotification();
 
     const onRoomSettingsUpdatedEvent = useCallback((event: RoomSettingsUpdatedEvent) =>
     {
@@ -28,8 +29,8 @@ export const NavigatorMessageHandler: FC<{}> = props =>
             return;
         }
 
-        NotificationUtilities.simpleAlert(LocalizeText(`navigator.cannotcreateevent.error.${ parser.errorCode }`), null, null, null, LocalizeText('navigator.cannotcreateevent.title'));
-    }, []);
+        simpleAlert(LocalizeText(`navigator.cannotcreateevent.error.${ parser.errorCode }`), null, null, null, LocalizeText('navigator.cannotcreateevent.title'));
+    }, [ simpleAlert ]);
 
     useMessageEvent(CanCreateRoomEventEvent, onCanCreateRoomEventEvent);
 
@@ -249,23 +250,23 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                 });
                 return;
             case 4009:
-                NotificationUtilities.simpleAlert(LocalizeText('navigator.alert.need.to.be.vip'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
+                simpleAlert(LocalizeText('navigator.alert.need.to.be.vip'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
 
                 return;
             case 4010:
-                NotificationUtilities.simpleAlert(LocalizeText('navigator.alert.invalid_room_name'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
+                simpleAlert(LocalizeText('navigator.alert.invalid_room_name'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
 
                 return;
             case 4011:
-                NotificationUtilities.simpleAlert(LocalizeText('navigator.alert.cannot_perm_ban'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
+                simpleAlert(LocalizeText('navigator.alert.cannot_perm_ban'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
 
                 return;
             case 4013:
-                NotificationUtilities.simpleAlert(LocalizeText('navigator.alert.room_in_maintenance'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
+                simpleAlert(LocalizeText('navigator.alert.room_in_maintenance'), NotificationAlertType.DEFAULT, null, null, LocalizeText('generic.alert.title'));
 
                 return;
         }
-    }, [ setDoorData ]);
+    }, [ setDoorData, simpleAlert ]);
 
     const onNavigatorMetadataEvent = useCallback((event: NavigatorMetadataEvent) =>
     {
@@ -397,25 +398,25 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         switch(parser.reason)
         {
             case CantConnectMessageParser.REASON_FULL:
-                NotificationUtilities.simpleAlert(LocalizeText('navigator.guestroomfull.text'), NotificationAlertType.DEFAULT, null, null, LocalizeText('navigator.guestroomfull.title'));
+                simpleAlert(LocalizeText('navigator.guestroomfull.text'), NotificationAlertType.DEFAULT, null, null, LocalizeText('navigator.guestroomfull.title'));
 
                 break;
             case CantConnectMessageParser.REASON_QUEUE_ERROR:
-                NotificationUtilities.simpleAlert(LocalizeText(`room.queue.error.${ parser.parameter }`), NotificationAlertType.DEFAULT, null, null, LocalizeText('room.queue.error.title'));
+                simpleAlert(LocalizeText(`room.queue.error.${ parser.parameter }`), NotificationAlertType.DEFAULT, null, null, LocalizeText('room.queue.error.title'));
 
                 break;
             case CantConnectMessageParser.REASON_BANNED:
-                NotificationUtilities.simpleAlert(LocalizeText('navigator.banned.text'), NotificationAlertType.DEFAULT, null, null, LocalizeText('navigator.banned.title'));
+                simpleAlert(LocalizeText('navigator.banned.text'), NotificationAlertType.DEFAULT, null, null, LocalizeText('navigator.banned.title'));
 
                 break;
             default:
-                NotificationUtilities.simpleAlert(LocalizeText('room.queue.error.title'), NotificationAlertType.DEFAULT, null, null, LocalizeText('room.queue.error.title'));
+                simpleAlert(LocalizeText('room.queue.error.title'), NotificationAlertType.DEFAULT, null, null, LocalizeText('room.queue.error.title'));
 
                 break;
         }
 
         VisitDesktop();
-    }, []);
+    }, [ simpleAlert ]);
 
     const onRoomCreatorEvent = useCallback((event: NavigatorOpenRoomCreatorEvent) =>
     {

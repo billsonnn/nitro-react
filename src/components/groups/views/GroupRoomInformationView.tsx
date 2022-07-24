@@ -1,15 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DesktopViewEvent, GetGuestRoomResultEvent, GroupInformationComposer, GroupInformationEvent, GroupInformationParser, GroupRemoveMemberComposer, HabboGroupDeactivatedMessageEvent, RoomEntryInfoMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetGroupInformation, GetGroupManager, GetSessionDataManager, GroupMembershipType, GroupType, LocalizeText, NotificationUtilities, SendMessageComposer, TryJoinGroup } from '../../../api';
+import { GetGroupInformation, GetGroupManager, GetSessionDataManager, GroupMembershipType, GroupType, LocalizeText, SendMessageComposer, TryJoinGroup } from '../../../api';
 import { Base, Button, Column, Flex, LayoutBadgeImageView, Text } from '../../../common';
-import { useMessageEvent } from '../../../hooks';
+import { useMessageEvent, useNotification } from '../../../hooks';
 
 export const GroupRoomInformationView: FC<{}> = props =>
 {
     const [ expectedGroupId, setExpectedGroupId ] = useState<number>(0);
     const [ groupInformation, setGroupInformation ] = useState<GroupInformationParser>(null);
     const [ isOpen, setIsOpen ] = useState<boolean>(true);
+    const { showConfirm = null } = useNotification();
 
     const onDesktopViewEvent = useCallback((event: DesktopViewEvent) =>
     {
@@ -72,7 +73,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
 
     const leaveGroup = () =>
     {
-        NotificationUtilities.confirm(LocalizeText('group.leaveconfirm.desc'), () =>
+        showConfirm(LocalizeText('group.leaveconfirm.desc'), () =>
         {
             SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
         }, null);

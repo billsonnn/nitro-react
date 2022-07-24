@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IObjectData, TradingListAddItemComposer, TradingListAddItemsComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { FurniCategory, getGuildFurniType, GroupItem, IFurnitureItem, LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer, TradeState } from '../../../../api';
+import { FurniCategory, getGuildFurniType, GroupItem, IFurnitureItem, LocalizeText, NotificationAlertType, SendMessageComposer, TradeState } from '../../../../api';
 import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../common';
-import { useInventoryTrade } from '../../../../hooks';
+import { useInventoryTrade, useNotification } from '../../../../hooks';
 import { InventoryFurnitureSearchView } from './InventoryFurnitureSearchView';
 
 interface InventoryTradeViewProps
@@ -22,6 +22,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
     const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(null);
     const [ countdownTick, setCountdownTick ] = useState(3);
     const { ownUser = null, otherUser = null, groupItems = [], tradeState = TradeState.TRADING_STATE_READY, progressTrade = null, removeItem = null, setTradeState = null } = useInventoryTrade();
+    const { simpleAlert = null } = useNotification();
 
     const canTradeItem = (isWallItem: boolean, spriteId: number, category: number, groupable: boolean, stuffData: IObjectData) =>
     {
@@ -105,7 +106,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         }
         else
         {
-            NotificationUtilities.simpleAlert(LocalizeText('trading.items.too_many_items.desc'), NotificationAlertType.DEFAULT, null, null, LocalizeText('trading.items.too_many_items.title'));
+            simpleAlert(LocalizeText('trading.items.too_many_items.desc'), NotificationAlertType.DEFAULT, null, null, LocalizeText('trading.items.too_many_items.title'));
         }
     }
 

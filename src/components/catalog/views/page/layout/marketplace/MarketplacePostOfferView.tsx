@@ -1,9 +1,9 @@
 import { GetMarketplaceConfigurationMessageComposer, MakeOfferMessageComposer, MarketplaceConfigurationEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { FurnitureItem, LocalizeText, NotificationUtilities, ProductTypeEnum, SendMessageComposer } from '../../../../../../api';
+import { FurnitureItem, LocalizeText, ProductTypeEnum, SendMessageComposer } from '../../../../../../api';
 import { Base, Button, Column, Grid, LayoutFurniImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../../common';
 import { CatalogPostMarketplaceOfferEvent } from '../../../../../../events';
-import { useCatalog, useMessageEvent, useUiEvent } from '../../../../../../hooks';
+import { useCatalog, useMessageEvent, useNotification, useUiEvent } from '../../../../../../hooks';
 
 export const MarketplacePostOfferView : FC<{}> = props =>
 {
@@ -11,6 +11,7 @@ export const MarketplacePostOfferView : FC<{}> = props =>
     const [ askingPrice, setAskingPrice ] = useState(0);
     const { catalogOptions = null, setCatalogOptions = null } = useCatalog();
     const { marketplaceConfiguration = null } = catalogOptions;
+    const { showConfirm = null } = useNotification();
 
     const onMarketplaceConfigurationEvent = useCallback((event: MarketplaceConfigurationEvent) =>
     {
@@ -58,7 +59,7 @@ export const MarketplacePostOfferView : FC<{}> = props =>
     {
         if(!item || (askingPrice <= marketplaceConfiguration.minimumPrice)) return;
 
-        NotificationUtilities.confirm(LocalizeText('inventory.marketplace.confirm_offer.info', [ 'furniname', 'price' ], [ getFurniTitle, askingPrice.toString() ]), () =>
+        showConfirm(LocalizeText('inventory.marketplace.confirm_offer.info', [ 'furniname', 'price' ], [ getFurniTitle, askingPrice.toString() ]), () =>
         {
             SendMessageComposer(new MakeOfferMessageComposer(askingPrice, item.isWallItem ? 2 : 1, item.id));
             setItem(null);

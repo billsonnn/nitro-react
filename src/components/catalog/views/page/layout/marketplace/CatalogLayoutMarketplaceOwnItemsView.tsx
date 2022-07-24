@@ -1,8 +1,8 @@
 import { CancelMarketplaceOfferMessageComposer, GetMarketplaceOwnOffersMessageComposer, MarketplaceCancelOfferResultEvent, MarketplaceOwnOffersEvent, RedeemMarketplaceOfferCreditsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
+import { LocalizeText, NotificationAlertType, SendMessageComposer } from '../../../../../../api';
 import { Button, Column, Text } from '../../../../../../common';
-import { useMessageEvent } from '../../../../../../hooks';
+import { useMessageEvent, useNotification } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, OWN_OFFER } from './CatalogLayoutMarketplaceItemView';
 import { MarketplaceOfferData } from './common/MarketplaceOfferData';
@@ -12,6 +12,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
 {
     const [ creditsWaiting, setCreditsWaiting ] = useState(0);
     const [ offers, setOffers ] = useState<MarketplaceOfferData[]>([]);
+    const { simpleAlert = null } = useNotification();
 
     const onMarketPlaceOwnOffersEvent = useCallback((event: MarketplaceOwnOffersEvent) =>
     {
@@ -42,13 +43,13 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
 
         if(!parser.success)
         {
-            NotificationUtilities.simpleAlert(LocalizeText('catalog.marketplace.cancel_failed'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.marketplace.operation_failed.topic'));
+            simpleAlert(LocalizeText('catalog.marketplace.cancel_failed'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.marketplace.operation_failed.topic'));
 
             return;
         }
 
         setOffers(prevValue => prevValue.filter(value => (value.offerId !== parser.offerId)));
-    }, []);
+    }, [ simpleAlert ]);
 
     useMessageEvent(MarketplaceCancelOfferResultEvent, onMarketplaceCancelOfferResultEvent);
 

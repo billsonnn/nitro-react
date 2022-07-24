@@ -1,8 +1,8 @@
 import { CfhSanctionMessageEvent, CfhTopicsInitEvent, IssueDeletedMessageEvent, IssueInfoMessageEvent, IssuePickFailedMessageEvent, ModeratorActionResultMessageEvent, ModeratorInitMessageEvent, ModeratorToolPreferencesEvent, RoomEngineEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { NotificationAlertType, NotificationUtilities, PlaySound, SoundNames } from '../../api';
+import { NotificationAlertType, PlaySound, SoundNames } from '../../api';
 import { ModToolsEvent, ModToolsOpenRoomChatlogEvent, ModToolsOpenRoomInfoEvent, ModToolsOpenUserChatlogEvent, ModToolsOpenUserInfoEvent } from '../../events';
-import { useMessageEvent, useRoomEngineEvent, useUiEvent } from '../../hooks';
+import { useMessageEvent, useNotification, useRoomEngineEvent, useUiEvent } from '../../hooks';
 import { SetCfhCategories } from './common/GetCFHCategories';
 import { useModToolsContext } from './ModToolsContext';
 import { ModToolsActions } from './reducers/ModToolsReducer';
@@ -11,6 +11,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 {
     const { modToolsState = null, dispatchModToolsState = null } = useModToolsContext();
     const { openRooms = null, openRoomChatlogs = null, openUserChatlogs = null, openUserInfo = null, tickets= null } = modToolsState;
+    const { simpleAlert = null } = useNotification();
     
     const onModeratorInitMessageEvent = useCallback((event: ModeratorInitMessageEvent) =>
     {
@@ -78,8 +79,8 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         if(!parser) return;
 
-        NotificationUtilities.simpleAlert('Failed to pick issue', NotificationAlertType.DEFAULT, null, null, 'Error')
-    }, []);
+        simpleAlert('Failed to pick issue', NotificationAlertType.DEFAULT, null, null, 'Error')
+    }, [ simpleAlert ]);
 
     const onIssueDeletedMessageEvent = useCallback((event: IssueDeletedMessageEvent) =>
     {
@@ -110,13 +111,13 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         if(parser.success)
         {
-            NotificationUtilities.simpleAlert('Moderation action was successfull', NotificationAlertType.MODERATION, null, null, 'Success');
+            simpleAlert('Moderation action was successfull', NotificationAlertType.MODERATION, null, null, 'Success');
         }
         else 
         {
-            NotificationUtilities.simpleAlert('There was a problem applying tht moderation action', NotificationAlertType.MODERATION, null, null, 'Error');
+            simpleAlert('There was a problem applying tht moderation action', NotificationAlertType.MODERATION, null, null, 'Error');
         }
-    }, []);
+    }, [ simpleAlert ]);
 
     const onCfhTopicsInitEvent = useCallback((event: CfhTopicsInitEvent) =>
     {

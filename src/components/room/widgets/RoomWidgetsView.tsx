@@ -1,7 +1,7 @@
 import { RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomSessionErrorMessageEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { DispatchUiEvent, GetRoomEngine, LocalizeText, NotificationAlertType, NotificationUtilities, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
-import { useRoom, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks';
+import { DispatchUiEvent, GetRoomEngine, LocalizeText, NotificationAlertType, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
+import { useNotification, useRoom, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks';
 import { AvatarInfoWidgetView } from './avatar-info/AvatarInfoWidgetView';
 import { ChatInputView } from './chat-input/ChatInputView';
 import { ChatWidgetView } from './chat/ChatWidgetView';
@@ -17,6 +17,7 @@ import { WordQuizWidgetView } from './word-quiz/WordQuizWidgetView';
 export const RoomWidgetsView: FC<{}> = props =>
 {
     const { roomSession = null } = useRoom();
+    const { simpleAlert = null } = useNotification();
 
     useRoomEngineEvent<RoomZoomEvent>(RoomZoomEvent.ROOM_ZOOM, event => GetRoomEngine().setRoomInstanceRenderingCanvasScale(event.roomId, 1, event.level, null, null, false, event.asDelta));
 
@@ -146,7 +147,7 @@ export const RoomWidgetsView: FC<{}> = props =>
                     return;
             }
 
-            NotificationUtilities.simpleAlert(errorMessage, NotificationAlertType.DEFAULT, null, null, errorTitle);
+            simpleAlert(errorMessage, NotificationAlertType.DEFAULT, null, null, errorTitle);
         });
 
     return (

@@ -1,8 +1,9 @@
 import { AdvancedMap, TradingAcceptComposer, TradingAcceptEvent, TradingCancelComposer, TradingCloseComposer, TradingCloseEvent, TradingCloseParser, TradingCompletedEvent, TradingConfirmationComposer, TradingConfirmationEvent, TradingListItemEvent, TradingListItemRemoveComposer, TradingNotOpenEvent, TradingOpenEvent, TradingOpenFailedEvent, TradingOtherNotAllowedEvent, TradingUnacceptComposer, TradingYouAreNotAllowedEvent } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { CloneObject, GetRoomSession, GetSessionDataManager, GroupItem, LocalizeText, NotificationUtilities, parseTradeItems, SendMessageComposer, TradeState, TradeUserData, TradingNotificationMessage, TradingNotificationType } from '../../api';
+import { CloneObject, GetRoomSession, GetSessionDataManager, GroupItem, LocalizeText, parseTradeItems, SendMessageComposer, TradeState, TradeUserData, TradingNotificationType } from '../../api';
 import { useMessageEvent } from '../events';
+import { useNotification } from '../notification';
 import { useInventoryFurni } from './useInventoryFurni';
 
 const useInventoryTradeState = () =>
@@ -11,6 +12,7 @@ const useInventoryTradeState = () =>
     const [ otherUser, setOtherUser ] = useState<TradeUserData>(null);
     const [ tradeState, setTradeState ] = useState(TradeState.TRADING_STATE_READY);
     const { groupItems = [], setGroupItems = null, activate = null, deactivate = null } = useInventoryFurni();
+    const { simpleAlert = null, showTradeAlert = null } = useNotification();
     const isTrading = (tradeState >= TradeState.TRADING_STATE_RUNNING);
 
     const progressTrade = () =>
@@ -20,7 +22,7 @@ const useInventoryTradeState = () =>
             case TradeState.TRADING_STATE_RUNNING:
                 if(!otherUser.itemCount && !ownUser.accepts)
                 {
-                    NotificationUtilities.simpleAlert(LocalizeText('inventory.trading.warning.other_not_offering'), null, null, null);
+                    simpleAlert(LocalizeText('inventory.trading.warning.other_not_offering'), null, null, null);
                 }
 
                 if(ownUser.accepts)
@@ -101,13 +103,13 @@ const useInventoryTradeState = () =>
 
         if(parser.reason === TradingCloseParser.ERROR_WHILE_COMMIT)
         {
-            TradingNotificationMessage(TradingNotificationType.ERROR_WHILE_COMMIT);
+            showTradeAlert(TradingNotificationType.ERROR_WHILE_COMMIT);
         }
         else
         {
             if(ownUser && (parser.userID !== ownUser.userId))
             {
-                TradingNotificationMessage(TradingNotificationType.THEY_CANCELLED);
+                showTradeAlert(TradingNotificationType.THEY_CANCELLED);
             }
         }
 
@@ -254,21 +256,21 @@ const useInventoryTradeState = () =>
     {
         const parser = event.getParser();
 
-        TradingNotificationMessage(parser.reason, parser.otherUserName);
+        showTradeAlert(parser.reason, parser.otherUserName);
     });
 
     useMessageEvent<TradingOtherNotAllowedEvent>(TradingOtherNotAllowedEvent, event =>
     {
         const parser = event.getParser();
 
-        TradingNotificationMessage(TradingNotificationType.THEY_NOT_ALLOWED);
+        showTradeAlert(TradingNotificationType.THEY_NOT_ALLOWED);
     });
     
     useMessageEvent<TradingYouAreNotAllowedEvent>(TradingYouAreNotAllowedEvent, event =>
     {
         const parser = event.getParser();
 
-        TradingNotificationMessage(TradingNotificationType.YOU_NOT_ALLOWED);
+        showTradeAlert(TradingNotificationType.YOU_NOT_ALLOWED);
     });
 
     useEffect(() =>

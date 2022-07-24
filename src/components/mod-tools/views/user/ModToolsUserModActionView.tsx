@@ -1,7 +1,8 @@
 import { CallForHelpTopicData, DefaultSanctionMessageComposer, ModAlertMessageComposer, ModBanMessageComposer, ModKickMessageComposer, ModMessageMessageComposer, ModMuteMessageComposer, ModTradingLockMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
-import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../api';
+import { LocalizeText, NotificationAlertType, SendMessageComposer } from '../../../../api';
 import { Button, Column, DraggableWindowPosition, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { useNotification } from '../../../../hooks';
 import { ISelectedUser } from '../../common/ISelectedUser';
 import { ModActionDefinition } from '../../common/ModActionDefinition';
 import { useModToolsContext } from '../../ModToolsContext';
@@ -35,6 +36,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
     const [ message, setMessage ] = useState<string>('');
     const { modToolsState = null } = useModToolsContext();
     const { cfhCategories = null, settings = null } = modToolsState;
+    const { simpleAlert = null } = useNotification();
 
     const topics = useMemo(() =>
     {
@@ -53,7 +55,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
 
     const sendAlert = (message: string) =>
     {
-        NotificationUtilities.simpleAlert(message, NotificationAlertType.DEFAULT, null, null, 'Error');
+        simpleAlert(message, NotificationAlertType.DEFAULT, null, null, 'Error');
     }
 
     const sendDefaultSanction = () =>

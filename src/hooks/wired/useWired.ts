@@ -1,9 +1,10 @@
 import { ConditionDefinition, Triggerable, TriggerDefinition, UpdateActionMessageComposer, UpdateConditionMessageComposer, UpdateTriggerMessageComposer, WiredActionDefinition, WiredFurniActionEvent, WiredFurniConditionEvent, WiredFurniTriggerEvent, WiredSaveSuccessEvent } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { IsOwnerOfFloorFurniture, LocalizeText, NotificationUtilities, SendMessageComposer, WiredSelectionVisualizer } from '../../api';
+import { IsOwnerOfFloorFurniture, LocalizeText, SendMessageComposer, WiredSelectionVisualizer } from '../../api';
 import { WiredSelectObjectEvent } from '../../events';
 import { useMessageEvent, useUiEvent } from '../events';
+import { useNotification } from '../notification';
 
 const useWiredState = () =>
 {
@@ -12,6 +13,7 @@ const useWiredState = () =>
     const [ stringParam, setStringParam ] = useState<string>('');
     const [ furniIds, setFurniIds ] = useState<number[]>([]);
     const [ actionDelay, setActionDelay ] = useState<number>(0);
+    const { showConfirm = null } = useNotification();
 
     const saveWired = () =>
     {
@@ -37,7 +39,7 @@ const useWiredState = () =>
 
         if(!IsOwnerOfFloorFurniture(trigger.id))
         {
-            NotificationUtilities.confirm(LocalizeText('wiredfurni.nonowner.change.confirm.body'), () =>
+            showConfirm(LocalizeText('wiredfurni.nonowner.change.confirm.body'), () =>
             {
                 save(trigger)
             }, null, null, null, LocalizeText('wiredfurni.nonowner.change.confirm.title'));

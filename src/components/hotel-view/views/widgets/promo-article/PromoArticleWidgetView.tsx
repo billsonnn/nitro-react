@@ -1,6 +1,6 @@
 import { GetPromoArticlesComposer, PromoArticleData, PromoArticlesMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../api';
+import { LocalizeText, OpenUrl, SendMessageComposer } from '../../../../../api';
 import { useMessageEvent } from '../../../../../hooks';
 
 export const PromoArticleWidgetView: FC<{}> = props =>
@@ -40,7 +40,7 @@ export const PromoArticleWidgetView: FC<{}> = props =>
                     <div className="col-3 d-flex flex-column h-100">
                         <h3 className="my-0">{ articles[index].title }</h3>
                         <b>{ articles[index].bodyText }</b>
-                        <button className="btn btn-sm mt-auto btn-gainsboro" onClick={ event => NotificationUtilities.openUrl(articles[index].linkContent) }>{ articles[index].buttonText }</button>
+                        <button className="btn btn-sm mt-auto btn-gainsboro" onClick={ event => OpenUrl(articles[index].linkContent) }>{ articles[index].buttonText }</button>
                     </div>
                 </div> }
         </div>

@@ -1,7 +1,8 @@
 import { AvatarExpressionEnum, HabboClubLevelEnum, RoomControllerLevel, RoomEngineObjectEvent, RoomObjectCategory, RoomRotatingEffect, RoomSessionChatEvent, RoomSettingsComposer, RoomShakingEffect, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
-import { ChatMessageTypeEnum, CreateLinkEvent, GetClubMemberLevel, GetConfiguration, GetNitroInstance, GetRoomEngine, GetSessionDataManager, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../api';
+import { ChatMessageTypeEnum, CreateLinkEvent, GetClubMemberLevel, GetConfiguration, GetNitroInstance, GetRoomEngine, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../api';
 import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../events';
+import { useNotification } from '../../notification';
 import { useObjectSelectedEvent } from '../engine';
 import { useRoom } from '../useRoom';
 
@@ -13,6 +14,7 @@ const useChatInputWidgetState = () =>
     const [ isIdle, setIsIdle ] = useState(false);
     const [ floodBlocked, setFloodBlocked ] = useState(false);
     const [ floodBlockedSeconds, setFloodBlockedSeconds ] = useState(0);
+    const { showNitroAlert = null, showConfirm = null } = useNotification();
     const { roomSession = null } = useRoom();
 
     const sendChat = (text: string, chatType: number, recipientName: string = '', styleId: number = 0) =>
@@ -122,7 +124,7 @@ const useChatInputWidgetState = () =>
                 case ':pickall':
                     if(roomSession.isRoomOwner || GetSessionDataManager().isModerator)
                     {
-                        NotificationUtilities.confirm(LocalizeText('room.confirm.pick_all'), () =>
+                        showConfirm(LocalizeText('room.confirm.pick_all'), () =>
                         {
                             GetSessionDataManager().sendSpecialCommandMessage(':pickall');
                         },
@@ -150,7 +152,7 @@ const useChatInputWidgetState = () =>
                 case ':client':
                 case ':nitro':
                 case ':billsonnn':
-                    NotificationUtilities.showNitroAlert();
+                    showNitroAlert();
                     return null;
                 case ':settings':
                     if(roomSession.isRoomOwner || GetSessionDataManager().isModerator)

@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GroupAdminGiveComposer, GroupAdminTakeComposer, GroupConfirmMemberRemoveEvent, GroupConfirmRemoveMemberComposer, GroupMemberParser, GroupMembersComposer, GroupMembersEvent, GroupMembershipAcceptComposer, GroupMembershipDeclineComposer, GroupMembersParser, GroupRank, GroupRemoveMemberComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, NotificationUtilities, RemoveLinkEventTracker, SendMessageComposer } from '../../../api';
+import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { useMessageEvent } from '../../../hooks';
+import { useMessageEvent, useNotification } from '../../../hooks';
 
 export const GroupMembersView: FC<{}> = props =>
 {
@@ -14,6 +14,7 @@ export const GroupMembersView: FC<{}> = props =>
     const [ totalPages, setTotalPages ] = useState<number>(0);
     const [ searchQuery, setSearchQuery ] = useState<string>('');
     const [ removingMemberName, setRemovingMemberName ] = useState<string>(null);
+    const { showConfirm = null } = useNotification();
 
     const getRankDescription = (member: GroupMemberParser) =>
     {
@@ -87,7 +88,7 @@ export const GroupMembersView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        NotificationUtilities.confirm(LocalizeText(((parser.furnitureCount > 0) ? 'group.kickconfirm.desc' : 'group.kickconfirm_nofurni.desc'), [ 'user', 'amount' ], [ removingMemberName, parser.furnitureCount.toString() ]), () =>
+        showConfirm(LocalizeText(((parser.furnitureCount > 0) ? 'group.kickconfirm.desc' : 'group.kickconfirm_nofurni.desc'), [ 'user', 'amount' ], [ removingMemberName, parser.furnitureCount.toString() ]), () =>
         {
             SendMessageComposer(new GroupRemoveMemberComposer(membersData.groupId, parser.userId));
 
@@ -95,7 +96,7 @@ export const GroupMembersView: FC<{}> = props =>
         }, null);
             
         setRemovingMemberName(null);
-    }, [ membersData, removingMemberName, refreshMembers ]);
+    }, [ membersData, removingMemberName, refreshMembers, showConfirm ]);
 
     useMessageEvent(GroupConfirmMemberRemoveEvent, onGroupConfirmMemberRemoveEvent);
 

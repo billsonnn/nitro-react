@@ -1,9 +1,10 @@
 import { BuildersClubFurniCountMessageEvent, BuildersClubPlaceRoomItemMessageComposer, BuildersClubPlaceWallItemMessageComposer, BuildersClubQueryFurniCountMessageComposer, BuildersClubSubscriptionStatusMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, FrontPageItem, FurniturePlaceComposer, FurniturePlacePaintComposer, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, GiftWrappingConfigurationEvent, GuildMembershipsMessageEvent, HabboClubOffersMessageEvent, LegacyDataType, LimitedEditionSoldOutEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseFromCatalogComposer, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, RoomControllerLevel, RoomEngineObjectPlacedEvent, RoomObjectCategory, RoomObjectPlacementSource, RoomObjectType, RoomObjectVariable, RoomPreviewer, SellablePetPalettesMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useBetween } from 'use-between';
-import { BuilderFurniPlaceableStatus, CatalogNode, CatalogPage, CatalogPetPalette, CatalogType, CreateLinkEvent, DispatchUiEvent, FurniCategory, GetFurnitureData, GetNitroInstance, GetProductDataForLocalization, GetRoomEngine, GetRoomSession, GiftWrappingConfiguration, ICatalogNode, ICatalogOptions, ICatalogPage, IPageLocalization, IProduct, IPurchasableOffer, IPurchaseOptions, LocalizeText, NotificationAlertType, NotificationUtilities, Offer, PageLocalization, PlacedObjectPurchaseData, PlaySound, Product, ProductTypeEnum, RequestedPage, SearchResult, SendMessageComposer, SoundNames } from '../../api';
+import { BuilderFurniPlaceableStatus, CatalogNode, CatalogPage, CatalogPetPalette, CatalogType, CreateLinkEvent, DispatchUiEvent, FurniCategory, GetFurnitureData, GetNitroInstance, GetProductDataForLocalization, GetRoomEngine, GetRoomSession, GiftWrappingConfiguration, ICatalogNode, ICatalogOptions, ICatalogPage, IPageLocalization, IProduct, IPurchasableOffer, IPurchaseOptions, LocalizeText, NotificationAlertType, Offer, PageLocalization, PlacedObjectPurchaseData, PlaySound, Product, ProductTypeEnum, RequestedPage, SearchResult, SendMessageComposer, SoundNames } from '../../api';
 import { CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, InventoryFurniAddedEvent } from '../../events';
 import { useMessageEvent, useRoomEngineEvent, useUiEvent } from '../events';
+import { useNotification } from '../notification';
 import { useCatalogPlaceMultipleItems } from './useCatalogPlaceMultipleItems';
 import { useCatalogSkipPurchaseConfirmation } from './useCatalogSkipPurchaseConfirmation';
 
@@ -39,6 +40,7 @@ const useCatalogState = () =>
     const [ secondsLeft, setSecondsLeft ] = useState(0);
     const [ updateTime, setUpdateTime ] = useState(0);
     const [ secondsLeftWithGrace, setSecondsLeftWithGrace ] = useState(0);
+    const { simpleAlert = null } = useNotification();
     const requestedPage = useRef(new RequestedPage());
 
     const resetState = useCallback(() =>
@@ -657,8 +659,8 @@ const useCatalogState = () =>
 
         const message = LocalizeText(`inventory.marketplace.result.${ parser.result }`);
         
-        NotificationUtilities.simpleAlert(message, NotificationAlertType.DEFAULT, null, null, title);
-    }, []);
+        simpleAlert(message, NotificationAlertType.DEFAULT, null, null, title);
+    }, [ simpleAlert ]);
 
     useMessageEvent(MarketplaceMakeOfferResult, onMarketplaceMakeOfferResult);
 
@@ -682,8 +684,8 @@ const useCatalogState = () =>
 
         resetState();
 
-        if(wasVisible) NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.published.description'), NotificationAlertType.ALERT, null, null, LocalizeText('catalog.alert.published.title'));
-    }, [ isVisible, resetState ]);
+        if(wasVisible) simpleAlert(LocalizeText('catalog.alert.published.description'), NotificationAlertType.ALERT, null, null, LocalizeText('catalog.alert.published.title'));
+    }, [ isVisible, resetState, simpleAlert ]);
 
     useMessageEvent(CatalogPublishedMessageEvent, onCatalogPublishedMessageEvent);
 

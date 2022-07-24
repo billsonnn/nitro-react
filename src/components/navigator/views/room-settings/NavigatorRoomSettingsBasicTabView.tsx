@@ -1,8 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomDeleteComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { CreateLinkEvent, GetMaxVisitorsList, IRoomData, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../api';
+import { CreateLinkEvent, GetMaxVisitorsList, IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text } from '../../../../common';
+import { useNotification } from '../../../../hooks';
 import { useNavigatorContext } from '../../NavigatorContext';
 
 const ROOM_NAME_MIN_LENGTH = 3;
@@ -22,11 +23,12 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
     const { roomData = null, handleChange = null, close = null } = props;
     const [ roomName, setRoomName ] = useState<string>('');
     const [ roomDescription, setRoomDescription ] = useState<string>('');
+    const { showConfirm = null } = useNotification();
     const { categories = null } = useNavigatorContext();
 
     const deleteRoom = () =>
     {
-        NotificationUtilities.confirm(LocalizeText('navigator.roomsettings.deleteroom.confirm.message', [ 'room_name' ], [ roomData.roomName ] ), () =>
+        showConfirm(LocalizeText('navigator.roomsettings.deleteroom.confirm.message', [ 'room_name' ], [ roomData.roomName ] ), () =>
         {
             SendMessageComposer(new RoomDeleteComposer(roomData.roomId));
 
