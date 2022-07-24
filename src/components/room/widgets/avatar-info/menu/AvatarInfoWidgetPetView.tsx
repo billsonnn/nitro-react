@@ -12,15 +12,15 @@ interface AvatarInfoWidgetPetViewProps
     close: () => void;
 }
 
-const _Str_2906: number = 0;
-const _Str_5818: number = 1;
-const _Str_5938: number = 2;
-const _Str_13388: number = 3;
+const MODE_NORMAL: number = 0;
+const MODE_SADDLED_UP: number = 1;
+const MODE_RIDING: number = 2;
+const MODE_MONSTER_PLANT: number = 3;
 
 export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =>
 {
     const { avatarInfo = null, close = null } = props;
-    const [ mode, setMode ] = useState(_Str_2906);
+    const [ mode, setMode ] = useState(MODE_NORMAL);
     const [ respectsLeft, setRespectsLeft ] = useState(0);
     const { roomSession = null } = useRoom();
 
@@ -92,11 +92,11 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
     {
         setMode(prevValue =>
         {
-            if(avatarInfo.petType === PetType.MONSTERPLANT) return _Str_13388;
-            else if(avatarInfo.saddle && !avatarInfo.rider) return _Str_5818;
-            else if(avatarInfo.rider) return _Str_5938;
+            if(avatarInfo.petType === PetType.MONSTERPLANT) return MODE_MONSTER_PLANT;
+            else if(avatarInfo.saddle && !avatarInfo.rider) return MODE_SADDLED_UP;
+            else if(avatarInfo.rider) return MODE_RIDING;
 
-            return _Str_2906;
+            return MODE_NORMAL;
         });
 
         setRespectsLeft(avatarInfo.respectsPetLeft);
@@ -107,11 +107,11 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
             <ContextMenuHeaderView>
                 { avatarInfo.name }
             </ContextMenuHeaderView>
-            { (mode === _Str_2906) && (respectsLeft > 0) &&
+            { (mode === MODE_NORMAL) && (respectsLeft > 0) &&
                 <ContextMenuListItemView onClick={ event => processAction('respect') }>
                     { LocalizeText('infostand.button.petrespect', [ 'count' ], [ respectsLeft.toString() ]) }
                 </ContextMenuListItemView> }
-            { (mode === _Str_5818) &&
+            { (mode === MODE_SADDLED_UP) &&
                 <>
                     { !!avatarInfo.publiclyRideable &&
                         <ContextMenuListItemView onClick={ event => processAction('mount') }>
@@ -122,7 +122,7 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
                             { LocalizeText('infostand.button.petrespect', [ 'count' ], [ respectsLeft.toString() ]) }
                         </ContextMenuListItemView> }
                 </> }
-            { (mode === _Str_5938) &&
+            { (mode === MODE_RIDING) &&
                 <>
                     <ContextMenuListItemView onClick={ event => processAction('dismount') }>
                         { LocalizeText('infostand.button.dismount') }
@@ -132,7 +132,7 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
                             { LocalizeText('infostand.button.petrespect', [ 'count' ], [ respectsLeft.toString() ]) }
                         </ContextMenuListItemView> }
                 </> }
-            { (mode === _Str_13388) && !avatarInfo.dead && ((avatarInfo.energy / avatarInfo.maximumEnergy) < 0.98) &&
+            { (mode === MODE_MONSTER_PLANT) && !avatarInfo.dead && ((avatarInfo.energy / avatarInfo.maximumEnergy) < 0.98) &&
                 <ContextMenuListItemView onClick={ event => processAction('treat') }>
                     { LocalizeText('infostand.button.treat') }
                 </ContextMenuListItemView> }

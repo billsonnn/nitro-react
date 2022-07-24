@@ -1,6 +1,6 @@
 import { IWorkerEventTracker, RoomChatSettings } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { AddWorkerEventTracker, ChatBubbleMessage, DoChatsOverlap, GetConfiguration, GetRoomEngine, RemoveWorkerEventTracker, SendWorkerEvent } from '../../../../api';
+import { FC, useEffect, useRef, useState } from 'react';
+import { AddWorkerEventTracker, ChatBubbleMessage, DoChatsOverlap, GetConfiguration, RemoveWorkerEventTracker, SendWorkerEvent } from '../../../../api';
 import { useChatWidget } from '../../../../hooks';
 import { ChatWidgetMessageView } from './ChatWidgetMessageView';
 
@@ -12,7 +12,7 @@ export const ChatWidgetView: FC<{}> = props =>
     const { chatMessages = [], setChatMessages = null, chatSettings = null, getScrollSpeed = 6000, removeHiddenChats = null, moveAllChatsUp = null } = useChatWidget();
     const elementRef = useRef<HTMLDivElement>();
 
-    const checkOverlappingChats = useCallback((chat: ChatBubbleMessage, moved: number, tempChats: ChatBubbleMessage[]) => 
+    const checkOverlappingChats = (chat: ChatBubbleMessage, moved: number, tempChats: ChatBubbleMessage[]) => 
     {
         const totalChats = chatMessages.length;
 
@@ -37,9 +37,9 @@ export const ChatWidgetView: FC<{}> = props =>
                 checkOverlappingChats(collides, amount, tempChats);
             }
         }
-    }, [ chatMessages ]);
+    }
 
-    const makeRoom = useCallback((chat: ChatBubbleMessage) =>
+    const makeRoom = (chat: ChatBubbleMessage) =>
     {
         if(chatSettings.mode === RoomChatSettings.CHAT_MODE_FREE_FLOW)
         {
@@ -68,19 +68,11 @@ export const ChatWidgetView: FC<{}> = props =>
                 removeHiddenChats();
             }
         }
-    }, [ chatSettings, chatMessages, removeHiddenChats, checkOverlappingChats ]);
-
-    const onChatClicked = useCallback((chat: ChatBubbleMessage) =>
-    {
-        //widgetHandler.processWidgetMessage(new RoomWidgetRoomObjectMessage(RoomWidgetRoomObjectMessage.GET_OBJECT_INFO, chat.senderId, chat.senderCategory));
-
-        GetRoomEngine().setSelectedAvatar(chat.roomId, chat.senderId);
-        //widgetHandler.processWidgetMessage(new RoomWidgetChatSelectAvatarMessage(RoomWidgetChatSelectAvatarMessage.MESSAGE_SELECT_AVATAR, chat.senderId, chat.username, chat.roomId));
-    }, []);
+    }
 
     useEffect(() =>
     {
-        const resize = (event: UIEvent) =>
+        const resize = (event: UIEvent = null) =>
         {
             if(!elementRef || !elementRef.current) return;
 
@@ -102,7 +94,7 @@ export const ChatWidgetView: FC<{}> = props =>
 
         window.addEventListener('resize', resize);
 
-        resize(null);
+        resize();
 
         return () =>
         {
@@ -146,7 +138,7 @@ export const ChatWidgetView: FC<{}> = props =>
 
     return (
         <div ref={ elementRef } className="nitro-chat-widget">
-            { chatMessages.map(chat => <ChatWidgetMessageView key={ chat.id } chat={ chat } makeRoom={ makeRoom } onChatClicked={ onChatClicked } bubbleWidth={ chatSettings.weight } />) }
+            { chatMessages.map(chat => <ChatWidgetMessageView key={ chat.id } chat={ chat } makeRoom={ makeRoom } bubbleWidth={ chatSettings.weight } />) }
         </div>
     );
 }

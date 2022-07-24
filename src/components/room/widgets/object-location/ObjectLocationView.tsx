@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { GetNitroInstance, GetRoomObjectBounds, GetRoomSession } from '../../../../api';
 import { Base, BaseProps } from '../../../../common';
 
@@ -15,29 +15,29 @@ export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
     const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: -1, y: -1 });
     const elementRef = useRef<HTMLDivElement>();
 
-    const getObjectLocation = useCallback(() =>
-    {
-        const roomSession = GetRoomSession();
-        const objectBounds = GetRoomObjectBounds(roomSession.roomId, objectId, category, 1);
-
-        return objectBounds;
-    }, [ objectId, category ]);
-
-    const updatePosition = useCallback(() =>
-    {
-        const bounds = getObjectLocation();
-
-        if(!bounds || !elementRef.current) return;
-
-        setPos({
-            x: Math.round(((bounds.left + (bounds.width / 2)) - (elementRef.current.offsetWidth / 2))),
-            y: Math.round((bounds.top - elementRef.current.offsetHeight) + 10)
-        });
-    }, [ getObjectLocation ]);
-
     useEffect(() =>
     {
         let remove = false;
+
+        const getObjectLocation = () =>
+        {
+            const roomSession = GetRoomSession();
+            const objectBounds = GetRoomObjectBounds(roomSession.roomId, objectId, category, 1);
+
+            return objectBounds;
+        }
+
+        const updatePosition = () =>
+        {
+            const bounds = getObjectLocation();
+
+            if(!bounds || !elementRef.current) return;
+
+            setPos({
+                x: Math.round(((bounds.left + (bounds.width / 2)) - (elementRef.current.offsetWidth / 2))),
+                y: Math.round((bounds.top - elementRef.current.offsetHeight) + 10)
+            });
+        }
 
         if(noFollow)
         {
@@ -54,7 +54,7 @@ export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
         {
             if(remove) GetNitroInstance().ticker.remove(updatePosition);
         }
-    }, [ updatePosition, noFollow ]);
+    }, [ objectId, category, noFollow ]);
 
     return <Base innerRef={ elementRef } position={ position } visible={ (pos.x + (elementRef.current ? elementRef.current.offsetWidth : 0)) > -1 } className="object-location" style={ { left: pos.x, top: pos.y } } { ...rest } />;
 }

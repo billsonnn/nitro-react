@@ -12,15 +12,15 @@ interface AvatarInfoWidgetOwnPetViewProps
     close: () => void;
 }
 
-const _Str_2906: number = 0;
-const _Str_5818: number = 1;
-const _Str_5938: number = 2;
-const _Str_10946: number = 3;
+const MODE_NORMAL: number = 0;
+const MODE_SADDLED_UP: number = 1;
+const MODE_RIDING: number = 2;
+const MODE_MONSTER_PLANT: number = 3;
 
 export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = props =>
 {
     const { avatarInfo = null, close = null } = props;
-    const [ mode, setMode ] = useState(_Str_2906);
+    const [ mode, setMode ] = useState(MODE_NORMAL);
     const [ respectsLeft, setRespectsLeft ] = useState(0);
     const { roomSession = null } = useRoom();
 
@@ -90,7 +90,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                     roomSession.removePetSaddle(avatarInfo.id);
                     break;
                 case 'breed':
-                    if(mode === _Str_2906)
+                    if(mode === MODE_NORMAL)
                     {
                     // _local_7 = RoomWidgetPetCommandMessage._Str_16282;
                     // _local_8 = ("pet.command." + _local_7);
@@ -98,7 +98,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                     // _local_4 = new RoomWidgetPetCommandMessage(RoomWidgetPetCommandMessage.RWPCM_PET_COMMAND, this._Str_594.id, ((this._Str_594.name + " ") + _local_9));
                     }
 
-                    else if(mode === _Str_10946)
+                    else if(mode === MODE_MONSTER_PLANT)
                     {
                         // messageType = RoomWidgetUserActionMessage.REQUEST_BREED_PET;
                     }
@@ -125,11 +125,11 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
     {
         setMode(prevValue =>
         {
-            if(avatarInfo.petType === PetType.MONSTERPLANT) return _Str_10946;
-            else if(avatarInfo.saddle && !avatarInfo.rider) return _Str_5818;
-            else if(avatarInfo.rider) return _Str_5938;
+            if(avatarInfo.petType === PetType.MONSTERPLANT) return MODE_MONSTER_PLANT;
+            else if(avatarInfo.saddle && !avatarInfo.rider) return MODE_SADDLED_UP;
+            else if(avatarInfo.rider) return MODE_RIDING;
 
-            return _Str_2906;
+            return MODE_NORMAL;
         });
 
         setRespectsLeft(avatarInfo.respectsPetLeft);
@@ -140,7 +140,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
             <ContextMenuHeaderView>
                 { avatarInfo.name }
             </ContextMenuHeaderView>
-            { (mode === _Str_2906) &&
+            { (mode === MODE_NORMAL) &&
                 <>
                     { (respectsLeft > 0) &&
                         <ContextMenuListItemView onClick={ event => processAction('respect') }>
@@ -161,7 +161,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                             { LocalizeText('infostand.button.breed') }
                         </ContextMenuListItemView> }
                 </> }
-            { (mode === _Str_5818) &&
+            { (mode === MODE_SADDLED_UP) &&
                 <>
                     <ContextMenuListItemView onClick={ event => processAction('mount') }>
                         { LocalizeText('infostand.button.mount') }
@@ -184,7 +184,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                         { LocalizeText('infostand.button.saddleoff') }
                     </ContextMenuListItemView>
                 </> }
-            { (mode === _Str_5938) &&
+            { (mode === MODE_RIDING) &&
                 <>
                     <ContextMenuListItemView onClick={ event => processAction('dismount') }>
                         { LocalizeText('infostand.button.dismount') }
@@ -194,7 +194,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                             { LocalizeText('infostand.button.petrespect', [ 'count' ], [ respectsLeft.toString() ]) }
                         </ContextMenuListItemView> }
                 </> }
-            { (mode === _Str_10946) &&
+            { (mode === MODE_MONSTER_PLANT) &&
                 <>
                     <ContextMenuListItemView onClick={ event => processAction('pick_up') }>
                         { LocalizeText('infostand.button.pickup') }

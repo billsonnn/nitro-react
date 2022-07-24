@@ -1,10 +1,12 @@
 import { IEventDispatcher, NitroEvent } from '@nitrots/nitro-renderer';
 import { useEffect } from 'react';
 
-export const useEventDispatcher = <T extends NitroEvent>(type: string | string[], eventDispatcher: IEventDispatcher, handler: (event: T) => void) =>
+export const useEventDispatcher = <T extends NitroEvent>(type: string | string[], eventDispatcher: IEventDispatcher, handler: (event: T) => void, enabled: boolean = true) =>
 {
     useEffect(() =>
     {
+        if(!enabled) return;
+
         if(Array.isArray(type))
         {
             type.map(name => eventDispatcher.addEventListener(name, handler));
@@ -25,5 +27,5 @@ export const useEventDispatcher = <T extends NitroEvent>(type: string | string[]
                 eventDispatcher.removeEventListener(type, handler);
             }
         }
-    }, [ type, eventDispatcher, handler ]);
+    }, [ type, eventDispatcher, enabled, handler ]);
 }

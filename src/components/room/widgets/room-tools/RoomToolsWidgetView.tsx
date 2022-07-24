@@ -1,6 +1,6 @@
 import { GetGuestRoomResultEvent, RateFlatMessageComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
 import { useMessageEvent, useRoom, useSharedNavigatorData } from '../../../../hooks';
@@ -11,7 +11,6 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     const [ roomName, setRoomName ] = useState<string>(null);
     const [ roomOwner, setRoomOwner ] = useState<string>(null);
     const [ roomTags, setRoomTags ] = useState<string[]>(null);
-    const [ roomInfoDisplay, setRoomInfoDisplay ] = useState<boolean>(false);
     const [ isOpen, setIsOpen ] = useState<boolean>(false);
     const [ navigatorData, setNavigatorData ] = useSharedNavigatorData();
     const { roomSession = null } = useRoom();
@@ -48,7 +47,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
         }
     }
 
-    const onGetGuestRoomResultEvent = useCallback((event: GetGuestRoomResultEvent) =>
+    useMessageEvent<GetGuestRoomResultEvent>(GetGuestRoomResultEvent, event =>
     {
         const parser = event.getParser();
 
@@ -57,9 +56,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
         if(roomName !== parser.data.roomName) setRoomName(parser.data.roomName);
         if(roomOwner !== parser.data.ownerName) setRoomOwner(parser.data.ownerName);
         if(roomTags !== parser.data.tags) setRoomTags(parser.data.tags);
-    }, [ roomSession, roomName, roomOwner, roomTags ]);
-
-    useMessageEvent(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
+    });
 
     useEffect(() =>
     {

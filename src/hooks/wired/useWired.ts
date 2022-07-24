@@ -1,5 +1,5 @@
-import { ConditionDefinition, Triggerable, TriggerDefinition, UpdateActionMessageComposer, UpdateConditionMessageComposer, UpdateTriggerMessageComposer, WiredActionDefinition, WiredFurniActionEvent, WiredFurniConditionEvent, WiredFurniTriggerEvent } from '@nitrots/nitro-renderer';
-import { useState } from 'react';
+import { ConditionDefinition, Triggerable, TriggerDefinition, UpdateActionMessageComposer, UpdateConditionMessageComposer, UpdateTriggerMessageComposer, WiredActionDefinition, WiredFurniActionEvent, WiredFurniConditionEvent, WiredFurniTriggerEvent, WiredSaveSuccessEvent } from '@nitrots/nitro-renderer';
+import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { IsOwnerOfFloorFurniture, LocalizeText, NotificationUtilities, SendMessageComposer, WiredSelectionVisualizer } from '../../api';
 import { WiredSelectObjectEvent } from '../../events';
@@ -50,6 +50,8 @@ const useWiredState = () =>
 
     useUiEvent<WiredSelectObjectEvent>(WiredSelectObjectEvent.SELECT_OBJECT, event =>
     {
+        if(!trigger) return;
+        
         const furniId = event.objectId;
 
         if(furniId <= 0) return;
@@ -78,6 +80,13 @@ const useWiredState = () =>
         });
     }, !!trigger);
 
+    useMessageEvent<WiredSaveSuccessEvent>(WiredSaveSuccessEvent, event =>
+    {
+        const parser = event.getParser();
+
+        setTrigger(null);
+    });
+
     useMessageEvent<WiredFurniActionEvent>(WiredFurniActionEvent, event =>
     {
         const parser = event.getParser();
@@ -98,6 +107,19 @@ const useWiredState = () =>
 
         setTrigger(parser.definition);
     });
+
+    useEffect(() =>
+    {
+        if(!trigger) return;
+
+        return () =>
+        {
+            setIntParams([]);
+            setStringParam('');
+            setFurniIds([]);
+            setActionDelay(0);
+        }
+    }, [ trigger ]);
 
     return { trigger, setTrigger, intParams, setIntParams, stringParam, setStringParam, furniIds, setFurniIds, actionDelay, setActionDelay, saveWired };
 }

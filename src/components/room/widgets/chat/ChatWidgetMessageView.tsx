@@ -1,18 +1,17 @@
 import { RoomChatSettings } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { ChatBubbleMessage } from '../../../../api';
+import { ChatBubbleMessage, GetRoomEngine } from '../../../../api';
 
 interface ChatWidgetMessageViewProps
 {
     chat: ChatBubbleMessage;
     makeRoom: (chat: ChatBubbleMessage) => void;
-    onChatClicked: (chat: ChatBubbleMessage) => void;
     bubbleWidth?: number;
 }
 
 export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
 {
-    const { chat = null, makeRoom = null, onChatClicked = null, bubbleWidth = RoomChatSettings.CHAT_BUBBLE_WIDTH_NORMAL } = props;
+    const { chat = null, makeRoom = null, bubbleWidth = RoomChatSettings.CHAT_BUBBLE_WIDTH_NORMAL } = props;
     const [ isVisible, setIsVisible ] = useState(false);
     const elementRef = useRef<HTMLDivElement>();
 
@@ -70,7 +69,7 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
     useEffect(() => setIsVisible(chat.visible), [ chat.visible ]);
 
     return (
-        <div ref={ elementRef } className={ `bubble-container ${ isVisible ? 'visible' : 'invisible' }` } onClick={ event => onChatClicked(chat) }>
+        <div ref={ elementRef } className={ `bubble-container ${ isVisible ? 'visible' : 'invisible' }` } onClick={ event => GetRoomEngine().setSelectedAvatar(chat.roomId, chat.senderId) }>
             { (chat.styleId === 0) &&
                 <div className="user-container-bg" style={ { backgroundColor: chat.color } } /> }
             <div className={ `chat-bubble bubble-${ chat.styleId } type-${ chat.type }` } style={ { maxWidth: getBubbleWidth } }>
