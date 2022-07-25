@@ -89,9 +89,6 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
                 case AvatarInfoRentableBot.RENTABLE_BOT: {
                     return <AvatarInfoWidgetRentableBotView avatarInfo={ (avatarInfo as AvatarInfoRentableBot) } close={ () => setAvatarInfo(null) } />
                 }
-                case AvatarInfoFurni.FURNI: {
-                    return null;
-                }
             }
         }
 
