@@ -1,10 +1,10 @@
 import { PetAddedToInventoryEvent, PetData, PetInventoryEvent, PetRemovedFromInventory, RequestPetsComposer } from '@nitrots/nitro-renderer';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { useInventoryUnseenTracker } from '.';
-import { UseMessageEventHook } from '..';
 import { addSinglePetItem, IPetItem, mergePetFragments, processPetFragment, removePetItemById, SendMessageComposer, UnseenItemCategory } from '../../api';
+import { useMessageEvent } from '../events';
 import { useSharedVisibility } from '../useSharedVisibility';
+import { useInventoryUnseenTracker } from './useInventoryUnseenTracker';
 
 let petMsgFragments: Map<number, PetData>[] = null;
 
@@ -16,7 +16,7 @@ const useInventoryPetsState = () =>
     const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
     const { isUnseen = null, resetCategory = null } = useInventoryUnseenTracker();
 
-    const onPetInventoryEvent = useCallback((event: PetInventoryEvent) =>
+    useMessageEvent<PetInventoryEvent>(PetInventoryEvent, event =>
     {
         const parser = event.getParser();
 
@@ -36,11 +36,9 @@ const useInventoryPetsState = () =>
         });
 
         petMsgFragments = null;
-    }, [ isUnseen ]);
+    });
 
-    UseMessageEventHook(PetInventoryEvent, onPetInventoryEvent);
-
-    const onPetAddedToInventoryEvent = useCallback((event: PetAddedToInventoryEvent) =>
+    useMessageEvent<PetAddedToInventoryEvent>(PetAddedToInventoryEvent, event =>
     {
         const parser = event.getParser();
 
@@ -52,11 +50,9 @@ const useInventoryPetsState = () =>
 
             return newValue;
         });
-    }, [ isUnseen ]);
+    });
 
-    UseMessageEventHook(PetAddedToInventoryEvent, onPetAddedToInventoryEvent);
-
-    const onPetRemovedFromInventory = useCallback((event: PetRemovedFromInventory) =>
+    useMessageEvent<PetRemovedFromInventory>(PetRemovedFromInventory, event =>
     {
         const parser = event.getParser();
 
@@ -68,9 +64,7 @@ const useInventoryPetsState = () =>
 
             return newValue;
         });
-    }, []);
-
-    UseMessageEventHook(PetRemovedFromInventory, onPetRemovedFromInventory);
+    });
 
     useEffect(() =>
     {

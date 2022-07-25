@@ -1,7 +1,7 @@
 import { RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { FurniCategory, GetFurnitureDataForRoomObject, LocalizeText, UseProductItem } from '../../../../api';
-import { useRoomContext } from '../../RoomContext';
+import { useRoom } from '../../../../hooks';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../context-menu/ContextMenuView';
@@ -26,7 +26,7 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
 {
     const { item = null, updateConfirmingProduct = null, close = null } = props;
     const [ mode, setMode ] = useState(0);
-    const { roomSession = null } = useRoomContext();
+    const { roomSession = null } = useRoom();
 
     useEffect(() =>
     {

@@ -1,7 +1,7 @@
 import { CampaignCalendarData, CampaignCalendarDataMessageEvent, CampaignCalendarDoorOpenedMessageEvent, OpenCampaignCalendarDoorAsStaffComposer, OpenCampaignCalendarDoorComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, CalendarItem, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
-import { UseMessageEventHook } from '../../hooks';
+import { useMessageEvent } from '../../hooks';
 import { CalendarView } from './CalendarView';
 
 export const CampaignView: FC<{}> = props =>
@@ -19,7 +19,7 @@ export const CampaignView: FC<{}> = props =>
         setCalendarData(parser.calendarData);
     }, []);
 
-    UseMessageEventHook(CampaignCalendarDataMessageEvent, onCampaignCalendarDataMessageEvent);
+    useMessageEvent(CampaignCalendarDataMessageEvent, onCampaignCalendarDataMessageEvent);
 
     const onCampaignCalendarDoorOpenedMessageEvent = useCallback((event: CampaignCalendarDoorOpenedMessageEvent) =>
     {
@@ -51,7 +51,7 @@ export const CampaignView: FC<{}> = props =>
         setLastOpenAttempt(-1);
     }, [ lastOpenAttempt ]);
 
-    UseMessageEventHook(CampaignCalendarDoorOpenedMessageEvent, onCampaignCalendarDoorOpenedMessageEvent);
+    useMessageEvent(CampaignCalendarDoorOpenedMessageEvent, onCampaignCalendarDoorOpenedMessageEvent);
 
     const openPackage = useCallback((id: number, asStaff = false) =>
     {

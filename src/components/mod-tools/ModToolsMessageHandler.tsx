@@ -1,8 +1,8 @@
 import { CfhSanctionMessageEvent, CfhTopicsInitEvent, IssueDeletedMessageEvent, IssueInfoMessageEvent, IssuePickFailedMessageEvent, ModeratorActionResultMessageEvent, ModeratorInitMessageEvent, ModeratorToolPreferencesEvent, RoomEngineEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { NotificationAlertType, NotificationUtilities, PlaySound, SoundNames } from '../../api';
+import { NotificationAlertType, PlaySound, SoundNames } from '../../api';
 import { ModToolsEvent, ModToolsOpenRoomChatlogEvent, ModToolsOpenRoomInfoEvent, ModToolsOpenUserChatlogEvent, ModToolsOpenUserInfoEvent } from '../../events';
-import { UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
+import { useMessageEvent, useNotification, useRoomEngineEvent, useUiEvent } from '../../hooks';
 import { SetCfhCategories } from './common/GetCFHCategories';
 import { useModToolsContext } from './ModToolsContext';
 import { ModToolsActions } from './reducers/ModToolsReducer';
@@ -11,6 +11,7 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 {
     const { modToolsState = null, dispatchModToolsState = null } = useModToolsContext();
     const { openRooms = null, openRoomChatlogs = null, openUserChatlogs = null, openUserInfo = null, tickets= null } = modToolsState;
+    const { simpleAlert = null } = useNotification();
     
     const onModeratorInitMessageEvent = useCallback((event: ModeratorInitMessageEvent) =>
     {
@@ -78,8 +79,8 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         if(!parser) return;
 
-        NotificationUtilities.simpleAlert('Failed to pick issue', NotificationAlertType.DEFAULT, null, null, 'Error')
-    }, []);
+        simpleAlert('Failed to pick issue', NotificationAlertType.DEFAULT, null, null, 'Error')
+    }, [ simpleAlert ]);
 
     const onIssueDeletedMessageEvent = useCallback((event: IssueDeletedMessageEvent) =>
     {
@@ -110,13 +111,13 @@ export const ModToolsMessageHandler: FC<{}> = props =>
 
         if(parser.success)
         {
-            NotificationUtilities.simpleAlert('Moderation action was successfull', NotificationAlertType.MODERATION, null, null, 'Success');
+            simpleAlert('Moderation action was successfull', NotificationAlertType.MODERATION, null, null, 'Success');
         }
         else 
         {
-            NotificationUtilities.simpleAlert('There was a problem applying tht moderation action', NotificationAlertType.MODERATION, null, null, 'Error');
+            simpleAlert('There was a problem applying tht moderation action', NotificationAlertType.MODERATION, null, null, 'Error');
         }
-    }, []);
+    }, [ simpleAlert ]);
 
     const onCfhTopicsInitEvent = useCallback((event: CfhTopicsInitEvent) =>
     {
@@ -146,14 +147,14 @@ export const ModToolsMessageHandler: FC<{}> = props =>
         // todo: update sanction data
     }, []);
 
-    UseMessageEventHook(ModeratorInitMessageEvent, onModeratorInitMessageEvent);
-    UseMessageEventHook(IssueInfoMessageEvent, onIssueInfoMessageEvent);
-    UseMessageEventHook(ModeratorToolPreferencesEvent, onModeratorToolPreferencesEvent);
-    UseMessageEventHook(IssuePickFailedMessageEvent, onIssuePickFailedMessageEvent);
-    UseMessageEventHook(IssueDeletedMessageEvent, onIssueDeletedMessageEvent);
-    UseMessageEventHook(ModeratorActionResultMessageEvent, onModeratorActionResultMessageEvent);
-    UseMessageEventHook(CfhTopicsInitEvent, onCfhTopicsInitEvent);
-    UseMessageEventHook(CfhSanctionMessageEvent, onCfhSanctionMessageEvent);
+    useMessageEvent(ModeratorInitMessageEvent, onModeratorInitMessageEvent);
+    useMessageEvent(IssueInfoMessageEvent, onIssueInfoMessageEvent);
+    useMessageEvent(ModeratorToolPreferencesEvent, onModeratorToolPreferencesEvent);
+    useMessageEvent(IssuePickFailedMessageEvent, onIssuePickFailedMessageEvent);
+    useMessageEvent(IssueDeletedMessageEvent, onIssueDeletedMessageEvent);
+    useMessageEvent(ModeratorActionResultMessageEvent, onModeratorActionResultMessageEvent);
+    useMessageEvent(CfhTopicsInitEvent, onCfhTopicsInitEvent);
+    useMessageEvent(CfhSanctionMessageEvent, onCfhSanctionMessageEvent);
 
     const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
     {
@@ -178,8 +179,8 @@ export const ModToolsMessageHandler: FC<{}> = props =>
         }
     }, [ dispatchModToolsState ]);
 
-    UseRoomEngineEvent(RoomEngineEvent.INITIALIZED, onRoomEngineEvent);
-    UseRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
+    useRoomEngineEvent(RoomEngineEvent.INITIALIZED, onRoomEngineEvent);
+    useRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
 
     const onModToolsEvent = useCallback((event: ModToolsEvent) =>
     {
@@ -248,10 +249,10 @@ export const ModToolsMessageHandler: FC<{}> = props =>
         }
     }, [ openRooms, dispatchModToolsState, openRoomChatlogs, openUserInfo, openUserChatlogs ]);
     
-    UseUiEvent(ModToolsEvent.OPEN_ROOM_INFO, onModToolsEvent);
-    UseUiEvent(ModToolsEvent.OPEN_ROOM_CHATLOG, onModToolsEvent);
-    UseUiEvent(ModToolsEvent.OPEN_USER_INFO, onModToolsEvent);
-    UseUiEvent(ModToolsEvent.OPEN_USER_CHATLOG, onModToolsEvent);
+    useUiEvent(ModToolsEvent.OPEN_ROOM_INFO, onModToolsEvent);
+    useUiEvent(ModToolsEvent.OPEN_ROOM_CHATLOG, onModToolsEvent);
+    useUiEvent(ModToolsEvent.OPEN_USER_INFO, onModToolsEvent);
+    useUiEvent(ModToolsEvent.OPEN_USER_CHATLOG, onModToolsEvent);
 
     return null;
 }

@@ -1,14 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
-import { useWiredContext } from '../../WiredContext';
+import { Column, Text } from '../../../../common';
+import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionChatView: FC<{}> = props =>
 {
     const [ message, setMessage ] = useState('');
-    const { trigger = null, setStringParam = null } = useWiredContext();
+    const { trigger = null, setStringParam = null } = useWired();
 
     const save = () => setStringParam(message);
 

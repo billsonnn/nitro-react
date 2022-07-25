@@ -1,9 +1,8 @@
 import { BotSkillSaveComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
-import { GetRoomObjectBounds, GetRoomSession, LocalizeText, RoomWidgetUpdateRentableBotChatEvent, SendMessageComposer } from '../../../../api';
+import { BotSkillsEnum, GetRoomObjectBounds, GetRoomSession, LocalizeText, RoomWidgetUpdateRentableBotChatEvent, SendMessageComposer } from '../../../../api';
 import { Base, Button, Column, DraggableWindow, DraggableWindowPosition, Flex, Text } from '../../../../common';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
-import { BotSkillsEnum } from './common/BotSkillsEnum';
 
 interface AvatarInfoRentableBotChatViewProps
 {

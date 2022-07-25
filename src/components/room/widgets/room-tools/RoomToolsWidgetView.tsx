@@ -1,10 +1,9 @@
-import { GetGuestRoomResultEvent, RoomLikeRoomComposer } from '@nitrots/nitro-renderer';
+import { GetGuestRoomResultEvent, RateFlatMessageComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
-import { UseMessageEventHook, useSharedNavigatorData } from '../../../../hooks';
-import { useRoomContext } from '../../RoomContext';
+import { useMessageEvent, useRoom, useSharedNavigatorData } from '../../../../hooks';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
 {
@@ -12,10 +11,9 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     const [ roomName, setRoomName ] = useState<string>(null);
     const [ roomOwner, setRoomOwner ] = useState<string>(null);
     const [ roomTags, setRoomTags ] = useState<string[]>(null);
-    const [ roomInfoDisplay, setRoomInfoDisplay ] = useState<boolean>(false);
     const [ isOpen, setIsOpen ] = useState<boolean>(false);
     const [ navigatorData, setNavigatorData ] = useSharedNavigatorData();
-    const { roomSession = null, widgetHandler = null } = useRoomContext();
+    const { roomSession = null } = useRoom();
 
     const handleToolClick = (action: string) =>
     {
@@ -41,7 +39,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 CreateLinkEvent('chat-history/toggle');
                 return;
             case 'like_room':
-                SendMessageComposer(new RoomLikeRoomComposer(1));
+                SendMessageComposer(new RateFlatMessageComposer(1));
                 return;
             case 'toggle_room_link':
                 CreateLinkEvent('navigator/toggle-room-link');
@@ -49,18 +47,16 @@ export const RoomToolsWidgetView: FC<{}> = props =>
         }
     }
 
-    const onGetGuestRoomResultEvent = useCallback((event: GetGuestRoomResultEvent) =>
+    useMessageEvent<GetGuestRoomResultEvent>(GetGuestRoomResultEvent, event =>
     {
         const parser = event.getParser();
 
-        if(!parser.roomEnter) return;
+        if(!parser.roomEnter || (parser.data.roomId !== roomSession.roomId)) return;
 
         if(roomName !== parser.data.roomName) setRoomName(parser.data.roomName);
         if(roomOwner !== parser.data.ownerName) setRoomOwner(parser.data.ownerName);
         if(roomTags !== parser.data.tags) setRoomTags(parser.data.tags);
-    }, [ roomName, roomOwner, roomTags ]);
-
-    UseMessageEventHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
+    });
 
     useEffect(() =>
     {

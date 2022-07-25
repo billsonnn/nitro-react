@@ -1,6 +1,7 @@
 import { ICatalogPage } from '../../../../../api';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 import { CatalogLayoutBadgeDisplayView } from './CatalogLayoutBadgeDisplayView';
+import { CatalogLayoutColorGroupingView } from './CatalogLayoutColorGroupingView';
 import { CatalogLayoutDefaultView } from './CatalogLayoutDefaultView';
 import { CatalogLayouGuildCustomFurniView } from './CatalogLayoutGuildCustomFurniView';
 import { CatalogLayouGuildForumView } from './CatalogLayoutGuildForumView';
@@ -8,6 +9,7 @@ import { CatalogLayouGuildFrontpageView } from './CatalogLayoutGuildFrontpageVie
 import { CatalogLayoutInfoLoyaltyView } from './CatalogLayoutInfoLoyaltyView';
 import { CatalogLayoutPets2View } from './CatalogLayoutPets2View';
 import { CatalogLayoutPets3View } from './CatalogLayoutPets3View';
+import { CatalogLayoutRoomAdsView } from './CatalogLayoutRoomAdsView';
 import { CatalogLayoutRoomBundleView } from './CatalogLayoutRoomBundleView';
 import { CatalogLayoutSingleBundleView } from './CatalogLayoutSingleBundleView';
 import { CatalogLayoutSpacesView } from './CatalogLayoutSpacesView';
@@ -22,7 +24,7 @@ import { CatalogLayoutVipGiftsView } from './vip-gifts/CatalogLayoutVipGiftsView
 export const GetCatalogLayout = (page: ICatalogPage, hideNavigation: () => void) =>
 {
     if(!page) return null;
-    
+
     const layoutProps: CatalogLayoutProps = { page, hideNavigation };
 
     switch(page.layoutCode)
@@ -63,8 +65,10 @@ export const GetCatalogLayout = (page: ICatalogPage, hideNavigation: () => void)
             return <CatalogLayoutInfoLoyaltyView { ...layoutProps } />;
         case 'badge_display':
             return <CatalogLayoutBadgeDisplayView { ...layoutProps } />;
-        //case 'default_3x3_color_grouping':
-        //return <CatalogLayoutColorGroupingView { ...layoutProps } />;
+        case 'roomads':
+            return <CatalogLayoutRoomAdsView { ...layoutProps } />;
+        case 'default_3x3_color_grouping':
+            return <CatalogLayoutColorGroupingView { ...layoutProps } />;
         case 'bots':
         case 'default_3x3':
         default:

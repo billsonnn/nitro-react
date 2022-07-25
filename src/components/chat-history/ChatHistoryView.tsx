@@ -1,29 +1,21 @@
 import { ILinkEventTracker } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps, ListRowRenderer, Size } from 'react-virtualized';
-import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { AddEventLinkTracker, ChatEntryType, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { ChatHistoryContextProvider } from './ChatHistoryContext';
-import { ChatHistoryMessageHandler } from './ChatHistoryMessageHandler';
-import { ChatEntryType } from './common/ChatEntryType';
-import { ChatHistoryState } from './common/ChatHistoryState';
-import { SetChatHistory } from './common/GetChatHistory';
-import { RoomHistoryState } from './common/RoomHistoryState';
+import { useChatHistory } from '../../hooks';
 
 export const ChatHistoryView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
-    const [ chatHistoryUpdateId, setChatHistoryUpdateId ] = useState(-1);
-    const [ roomHistoryUpdateId, setRoomHistoryUpdateId ] = useState(-1);
-    const [ chatHistoryState, setChatHistoryState ] = useState(new ChatHistoryState());
-    const [ roomHistoryState, setRoomHistoryState ] = useState(new RoomHistoryState());
+    const { chatHistory = [] } = useChatHistory();
     const elementRef = useRef<List>(null);
 
     const cache = useMemo(() => new CellMeasurerCache({ defaultHeight: 25, fixedWidth: true }), []);
 
     const RowRenderer: ListRowRenderer = (props: ListRowProps) =>
     {
-        const item = chatHistoryState.chats[props.index];
+        const item = chatHistory[props.index];
 
         const isDark = (props.index % 2 === 0);
 
@@ -48,56 +40,34 @@ export const ChatHistoryView: FC<{}> = props =>
 
     const onResize = (info: Size) => cache.clearAll();
 
-    const linkReceived = useCallback((url: string) =>
-    {
-        const parts = url.split('/');
-
-        if(parts.length < 2) return;
-
-        switch(parts[1])
-        {
-            case 'show':
-                setIsVisible(true);
-                return;
-            case 'hide':
-                setIsVisible(false);
-                return;
-            case 'toggle':
-                setIsVisible(prevValue => !prevValue);
-                return;
-        }
-    }, []);
-
     useEffect(() =>
     {
         const linkTracker: ILinkEventTracker = {
-            linkReceived,
+            linkReceived: (url: string) =>
+            {
+                const parts = url.split('/');
+        
+                if(parts.length < 2) return;
+        
+                switch(parts[1])
+                {
+                    case 'show':
+                        setIsVisible(true);
+                        return;
+                    case 'hide':
+                        setIsVisible(false);
+                        return;
+                    case 'toggle':
+                        setIsVisible(prevValue => !prevValue);
+                        return;
+                }
+            },
             eventUrlPrefix: 'chat-history/'
         };
 
         AddEventLinkTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
-    }, [ linkReceived ]);
-
-    useEffect(() =>
-    {
-        const chatState = new ChatHistoryState();
-        const roomState = new RoomHistoryState();
-
-        SetChatHistory(chatState);
-
-        chatState.notifier = () => setChatHistoryUpdateId(prevValue => (prevValue + 1));
-        roomState.notifier = () => setRoomHistoryUpdateId(prevValue => (prevValue + 1));
-
-        setChatHistoryState(chatState);
-        setRoomHistoryState(roomState);
-
-        return () =>
-        {
-            chatState.notifier = null;
-            roomState.notifier = null;
-        };
     }, []);
 
     useEffect(() =>
@@ -105,31 +75,29 @@ export const ChatHistoryView: FC<{}> = props =>
         if(elementRef && elementRef.current && isVisible) elementRef.current.scrollToRow(-1);
     }, [ isVisible ]);
 
+    if(!isVisible) return null;
+
     return (
-        <ChatHistoryContextProvider value={ { chatHistoryState, roomHistoryState } }>
-            <ChatHistoryMessageHandler />
-            { isVisible &&
-                <NitroCardView uniqueKey="chat-history" className="nitro-chat-history" theme="primary-slim">
-                    <NitroCardHeaderView headerText={ LocalizeText('room.chathistory.button.text') } onCloseClick={ event => setIsVisible(false) }/>
-                    <NitroCardContentView>
-                        <AutoSizer defaultWidth={ 300 } defaultHeight={ 200 } onResize={ onResize }>
-                            { ({ height, width }) => 
-                            {
-                                return (
-                                    <List
-                                        ref={ elementRef }
-                                        width={ width }
-                                        height={ height }
-                                        rowCount={ chatHistoryState.chats.length }
-                                        rowHeight={ cache.rowHeight }
-                                        className={ 'chat-history-list' }
-                                        rowRenderer={ RowRenderer }
-                                        deferredMeasurementCache={ cache } />
-                                )
-                            } }
-                        </AutoSizer>
-                    </NitroCardContentView>
-                </NitroCardView> }
-        </ChatHistoryContextProvider>
+        <NitroCardView uniqueKey="chat-history" className="nitro-chat-history" theme="primary-slim">
+            <NitroCardHeaderView headerText={ LocalizeText('room.chathistory.button.text') } onCloseClick={ event => setIsVisible(false) }/>
+            <NitroCardContentView>
+                <AutoSizer defaultWidth={ 300 } defaultHeight={ 200 } onResize={ onResize }>
+                    { ({ height, width }) => 
+                    {
+                        return (
+                            <List
+                                ref={ elementRef }
+                                width={ width }
+                                height={ height }
+                                rowCount={ chatHistory.length }
+                                rowHeight={ cache.rowHeight }
+                                className={ 'chat-history-list' }
+                                rowRenderer={ RowRenderer }
+                                deferredMeasurementCache={ cache } />
+                        )
+                    } }
+                </AutoSizer>
+            </NitroCardContentView>
+        </NitroCardView>
     );
 }

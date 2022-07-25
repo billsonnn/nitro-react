@@ -2,7 +2,7 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import { LocalizeText } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { HelpNameChangeEvent } from '../../../../events';
-import { UseUiEvent } from '../../../../hooks';
+import { useUiEvent } from '../../../../hooks';
 import { NameChangeConfirmationView } from './NameChangeConfirmationView';
 import { NameChangeInitView } from './NameChangeInitView';
 import { NameChangeInputView } from './NameChangeInputView';
@@ -23,7 +23,7 @@ export const NameChangeView:FC<{}> = props =>
         setIsVisible(true);
     }, []);
 
-    UseUiEvent(HelpNameChangeEvent.INIT, onHelpNameChangeEvent);
+    useUiEvent(HelpNameChangeEvent.INIT, onHelpNameChangeEvent);
 
     const onAction = useCallback((action: string, value?: string) =>
     {

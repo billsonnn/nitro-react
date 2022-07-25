@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { useWiredContext } from '../../WiredContext';
+import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 const directionOptions: { value: number, icon: string }[] = [
@@ -28,7 +28,7 @@ export const WiredActionMoveFurniToView: FC<{}> = props =>
 {
     const [ spacing, setSpacing ] = useState(-1);
     const [ movement, setMovement ] = useState(-1);
-    const { trigger = null, setIntParams = null } = useWiredContext();
+    const { trigger = null, setIntParams = null } = useWired();
 
     const save = () => setIntParams([ movement, spacing ]);
 

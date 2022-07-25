@@ -1,6 +1,7 @@
 import { FurniturePlacePaintComposer, RoomObjectCategory, RoomObjectPlacementSource, RoomObjectType } from '@nitrots/nitro-renderer';
-import { FurniCategory, GroupItem } from '.';
-import { CreateLinkEvent, GetRoomEngine, GetRoomSessionManager, SendMessageComposer } from '..';
+import { CreateLinkEvent, GetRoomEngine, GetRoomSessionManager, SendMessageComposer } from '../nitro';
+import { FurniCategory } from './FurniCategory';
+import { GroupItem } from './GroupItem';
 import { IBotItem } from './IBotItem';
 import { IPetItem } from './IPetItem';
 

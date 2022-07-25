@@ -1,9 +1,9 @@
 import { RoomEngineObjectEvent, RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useReducer, useRef, useState } from 'react';
-import { GetRoomSession } from '../../api';
+import { DispatchUiEvent, GetRoomSession } from '../../api';
 import { Base, Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { ModToolsEvent, ModToolsOpenRoomChatlogEvent, ModToolsOpenRoomInfoEvent, ModToolsOpenUserInfoEvent } from '../../events';
-import { DispatchUiEvent, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
+import { useRoomEngineEvent, useUiEvent } from '../../hooks';
 import { ISelectedUser } from './common/ISelectedUser';
 import { ModToolsContextProvider } from './ModToolsContext';
 import { ModToolsMessageHandler } from './ModToolsMessageHandler';
@@ -39,9 +39,9 @@ export const ModToolsView: FC<{}> = props =>
         }
     }, []);
 
-    UseUiEvent(ModToolsEvent.SHOW_MOD_TOOLS, onModToolsEvent);
-    UseUiEvent(ModToolsEvent.HIDE_MOD_TOOLS, onModToolsEvent);
-    UseUiEvent(ModToolsEvent.TOGGLE_MOD_TOOLS, onModToolsEvent);
+    useUiEvent(ModToolsEvent.SHOW_MOD_TOOLS, onModToolsEvent);
+    useUiEvent(ModToolsEvent.HIDE_MOD_TOOLS, onModToolsEvent);
+    useUiEvent(ModToolsEvent.TOGGLE_MOD_TOOLS, onModToolsEvent);
     
     const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
     {
@@ -58,7 +58,7 @@ export const ModToolsView: FC<{}> = props =>
         setSelectedUser({ userId: userData.webID, username: userData.name });
     }, []);
     
-    UseRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
+    useRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
 
     const handleClick = useCallback((action: string, value?: string) =>
     {

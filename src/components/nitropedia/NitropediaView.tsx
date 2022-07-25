@@ -1,6 +1,6 @@
 import { NitroLogger } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { AddEventLinkTracker, GetConfiguration, NotificationUtilities, RemoveLinkEventTracker } from '../../api';
+import { AddEventLinkTracker, GetConfiguration, OpenUrl, RemoveLinkEventTracker } from '../../api';
 import { Base, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 
 const NEW_LINE_REGEX = /\n\r|\n|\r/mg;
@@ -80,7 +80,7 @@ export const NitropediaView: FC<{}> = props =>
 
             if(!link || !link.length) return;
 
-            NotificationUtilities.openUrl(link);
+            OpenUrl(link);
         }
 
         document.addEventListener('click', handle);

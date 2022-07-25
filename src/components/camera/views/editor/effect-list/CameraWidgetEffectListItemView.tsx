@@ -2,9 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRoomCameraWidgetEffect } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
-import { Button } from '../../../../../common/Button';
-import { LayoutGridItem } from '../../../../../common/layout/LayoutGridItem';
-import { Text } from '../../../../../common/Text';
+import { Button, LayoutGridItem, Text } from '../../../../../common';
 
 export interface CameraWidgetEffectListItemViewProps
 {

@@ -1,9 +1,8 @@
 import { GroupInformationParser, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CatalogPageName, CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, LocalizeText, NotificationUtilities, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
+import { CatalogPageName, CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, GroupMembershipType, GroupType, LocalizeText, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
 import { Button, Column, Flex, Grid, GridProps, LayoutBadgeImageView, Text } from '../../../common';
-import { GroupMembershipType } from '../common/GroupMembershipType';
-import { GroupType } from '../common/GroupType';
+import { useNotification } from '../../../hooks';
 
 const STATES: string[] = [ 'regular', 'exclusive', 'private' ];
 
@@ -17,6 +16,7 @@ interface GroupInformationViewProps extends GridProps
 export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 {
     const { groupInformation = null, onClose = null, overflow = 'hidden', ...rest } = props;
+    const { showConfirm = null } = useNotification();
 
     const isRealOwner = (groupInformation && (groupInformation.ownerName === GetSessionDataManager().userName));
 
@@ -24,7 +24,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 
     const leaveGroup = () =>
     {
-        NotificationUtilities.confirm(LocalizeText('group.leaveconfirm.desc'), () =>
+        showConfirm(LocalizeText('group.leaveconfirm.desc'), () =>
         {
             SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
 

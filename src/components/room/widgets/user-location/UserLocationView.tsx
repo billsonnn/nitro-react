@@ -1,7 +1,7 @@
 import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { BaseProps } from '../../../../common';
-import { useRoomContext } from '../../RoomContext';
+import { useRoom } from '../../../../hooks';
 import { ObjectLocationView } from '../object-location/ObjectLocationView';
 
 interface UserLocationViewProps extends BaseProps<HTMLDivElement>
@@ -12,7 +12,7 @@ interface UserLocationViewProps extends BaseProps<HTMLDivElement>
 export const UserLocationView: FC<UserLocationViewProps> = props =>
 {
     const { userId = -1, ...rest } = props;
-    const { roomSession = null } = useRoomContext();
+    const { roomSession = null } = useRoom();
 
     if((userId === -1) || !roomSession) return null;
 

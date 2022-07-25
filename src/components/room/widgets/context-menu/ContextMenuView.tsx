@@ -16,83 +16,67 @@ interface ContextMenuViewProps extends BaseProps<HTMLDivElement>
 
 const LOCATION_STACK_SIZE: number = 25;
 const BUBBLE_DROP_SPEED: number = 3;
-const fadeDelay = 3000;
-const fadeLength = 75;
+const FADE_DELAY = 5000;
+const FADE_LENGTH = 75;
 const SPACE_AROUND_EDGES = 10;
 
 let COLLAPSED = false;
+let FIXED_STACK: FixedSizeStack = null;
+let MAX_STACK = -1000000;
+let FADE_TIME = 1;
 
 export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 {
     const { objectId = -1, category = -1, userType = -1, fades = false, close = null, position = 'absolute', classNames = [], style = {}, children = null, collapsable = false, ...rest } = props;
     const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: null, y: null });
-    const [ deltaYStack, setDeltaYStack ] = useState<FixedSizeStack>(null);
-    const [ currentDeltaY, setCurrentDeltaY ] = useState(-1000000);
     const [ opacity, setOpacity ] = useState(1);
     const [ isFading, setIsFading ] = useState(false);
-    const [ fadeTime, setFadeTime ] = useState(0);
-    const [ isFrozen, setIsFrozen ] = useState(false);
+    const [ isCollapsed, setIsCollapsed ] = useState(COLLAPSED);
     const elementRef = useRef<HTMLDivElement>();
-
-    const [ collapsed, setCollapsed ] = useState(COLLAPSED);
-
-    const getOffset = useCallback((bounds: NitroRectangle) =>
-    {
-        let height = -(elementRef.current.offsetHeight);
-
-        if((userType > -1) && ((userType === RoomObjectType.USER) || (userType === RoomObjectType.BOT) || (userType === RoomObjectType.RENTABLE_BOT)))
-        {
-            height = (height + ((bounds.height > 50) ? 15 : 0));
-        }
-        else
-        {
-            height = (height - 14);
-        }
-
-        return height;
-    }, [ userType ]);
 
     const updateFade = useCallback((time: number) =>
     {
-        let newFadeTime = time;
-        let newOpacity = 1;
+        if(!isFading) return;
 
-        if(isFading)
+        FADE_TIME += time;
+
+        let newOpacity = ((1 - (FADE_TIME / FADE_LENGTH)) * 1);
+
+        if(newOpacity <= 0)
         {
-            setFadeTime(prevValue =>
-            {
-                newFadeTime += prevValue;
+            close();
 
-                return newFadeTime;
-            });
-
-            newOpacity = ((1 - (newFadeTime / fadeLength)) * 1);
-
-            if(newOpacity <= 0)
-            {
-                close();
-
-                return false;
-            }
-
-            setOpacity(newOpacity);
+            return false;
         }
 
-        return true;
+        console.log(newOpacity);
+
+        setOpacity(newOpacity);
     }, [ isFading, close ]);
 
     const updatePosition = useCallback((bounds: NitroRectangle, location: NitroPoint) =>
     {
-        if(!bounds || !location || !deltaYStack) return;
+        if(!bounds || !location || !FIXED_STACK) return;
 
-        const offset = getOffset(bounds);
+        let offset = -(elementRef.current.offsetHeight);
 
-        deltaYStack.addValue((location.y - bounds.top));
+        if((userType > -1) && ((userType === RoomObjectType.USER) || (userType === RoomObjectType.BOT) || (userType === RoomObjectType.RENTABLE_BOT)))
+        {
+            offset = (offset + ((bounds.height > 50) ? 15 : 0));
+        }
+        else
+        {
+            offset = (offset - 14);
+        }
 
-        let maxStack = deltaYStack.getMax();
+        FIXED_STACK.addValue((location.y - bounds.top));
 
-        if(maxStack < (currentDeltaY - BUBBLE_DROP_SPEED)) maxStack = (currentDeltaY - BUBBLE_DROP_SPEED);
-        
+        let maxStack = FIXED_STACK.getMax();
+
+        if(maxStack < (MAX_STACK - BUBBLE_DROP_SPEED)) maxStack = (MAX_STACK - BUBBLE_DROP_SPEED);
+
+        MAX_STACK = maxStack;
+
         const deltaY = (location.y - maxStack);
 
         let x = ~~(location.x - (elementRef.current.offsetWidth / 2));
@@ -107,32 +91,21 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         if(y < SPACE_AROUND_EDGES) y = SPACE_AROUND_EDGES;
         else if(y > maxTop) y = maxTop;
 
-        setCurrentDeltaY(maxStack);
         setPos({ x, y });
-    }, [ deltaYStack, currentDeltaY, getOffset ]);
-
-    const update = useCallback((time: number) =>
-    {
-        if(!elementRef.current || !updateFade(time)) return;
-
-        const bounds = GetRoomObjectBounds(GetRoomSession().roomId, objectId, category);
-        const location = GetRoomObjectScreenLocation(GetRoomSession().roomId, objectId, category);
-
-        updatePosition(bounds, location);
-    }, [ objectId, category, updateFade, updatePosition ]);
+    }, [ userType ]);
 
     const getClassNames = useMemo(() =>
     {
         const newClassNames: string[] = [ 'nitro-context-menu' ];
         
-        if (collapsed) newClassNames.push('menu-hidden');
+        if (isCollapsed) newClassNames.push('menu-hidden');
 
         newClassNames.push((pos.x !== null) ? 'visible' : 'invisible');
 
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ pos, classNames, collapsed ]);
+    }, [ pos, classNames, isCollapsed ]);
 
     const getStyle = useMemo(() =>
     {
@@ -149,44 +122,51 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
     useEffect(() =>
     {
-        setDeltaYStack(new FixedSizeStack(LOCATION_STACK_SIZE));
-        setCurrentDeltaY(-1000000);
-    }, []);
-
-    useEffect(() =>
-    {
-        let added = false;
-
-        if(!isFrozen)
+        if(!elementRef.current) return;
+        
+        const update = (time: number) =>
         {
-            added = true;
+            if(!elementRef.current) return;
 
-            GetTicker().add(update);
+            updateFade(time);
+
+            const bounds = GetRoomObjectBounds(GetRoomSession().roomId, objectId, category);
+            const location = GetRoomObjectScreenLocation(GetRoomSession().roomId, objectId, category);
+
+            updatePosition(bounds, location);
         }
+
+        GetTicker().add(update);
 
         return () =>
         {
-            if(added) GetTicker().remove(update);
+            GetTicker().remove(update);
         }
-    }, [ isFrozen, update ]);
+    }, [ objectId, category, updateFade, updatePosition ]);
 
     useEffect(() =>
     {
         if(!fades) return;
 
-        const timeout = setTimeout(() => setIsFading(true), fadeDelay);
+        const timeout = setTimeout(() => setIsFading(true), FADE_DELAY);
 
         return () => clearTimeout(timeout);
     }, [ fades ]);
-    
 
-    const toggleCollapse = () =>
+    useEffect(() =>
     {
-        COLLAPSED = !COLLAPSED;
-        setCollapsed(COLLAPSED)
-    }
-    return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } onMouseOver={ event => setIsFrozen(true) } onMouseOut={ event => setIsFrozen(false) } { ...rest }>
+        COLLAPSED = isCollapsed;
+    }, [ isCollapsed ]);
+
+    useEffect(() =>
+    {
+        FIXED_STACK = new FixedSizeStack(LOCATION_STACK_SIZE);
+        MAX_STACK = -1000000;
+        FADE_TIME = 1;
+    }, []);
+    
+    return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } { ...rest }>
         { !(collapsable && COLLAPSED) && children }
-        { collapsable && <ContextMenuCaretView onClick={ () => toggleCollapse() } collapsed={ collapsed } /> }
+        { collapsable && <ContextMenuCaretView onClick={ () => setIsCollapsed(!isCollapsed) } collapsed={ isCollapsed } /> }
     </Base>;
 }

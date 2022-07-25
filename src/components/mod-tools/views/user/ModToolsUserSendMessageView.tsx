@@ -1,9 +1,8 @@
 import { ModMessageMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { SendMessageComposer } from '../../../../api';
+import { DispatchUiEvent, SendMessageComposer } from '../../../../api';
 import { Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { NotificationAlertEvent } from '../../../../events';
-import { DispatchUiEvent } from '../../../../hooks';
 import { ISelectedUser } from '../../common/ISelectedUser';
 
 interface ModToolsUserSendMessageViewProps

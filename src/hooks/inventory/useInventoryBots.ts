@@ -1,10 +1,10 @@
 import { BotAddedToInventoryEvent, BotData, BotInventoryMessageEvent, BotRemovedFromInventoryEvent, GetBotInventoryComposer } from '@nitrots/nitro-renderer';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { useInventoryUnseenTracker } from '.';
-import { UseMessageEventHook } from '..';
 import { cancelRoomObjectPlacement, CreateLinkEvent, getPlacingItemId, IBotItem, SendMessageComposer, UnseenItemCategory } from '../../api';
+import { useMessageEvent } from '../events';
 import { useSharedVisibility } from '../useSharedVisibility';
+import { useInventoryUnseenTracker } from './useInventoryUnseenTracker';
 
 const useInventoryBotsState = () =>
 {
@@ -14,7 +14,7 @@ const useInventoryBotsState = () =>
     const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
     const { isUnseen = null, resetCategory = null } = useInventoryUnseenTracker();
 
-    const onBotInventoryMessageEvent = useCallback((event: BotInventoryMessageEvent) =>
+    useMessageEvent<BotInventoryMessageEvent>(BotInventoryMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -68,11 +68,9 @@ const useInventoryBotsState = () =>
 
             return newValue;
         });
-    }, [ isUnseen ]);
+    });
 
-    UseMessageEventHook(BotInventoryMessageEvent, onBotInventoryMessageEvent);
-
-    const onBotAddedToInventoryEvent = useCallback((event: BotAddedToInventoryEvent) =>
+    useMessageEvent<BotAddedToInventoryEvent>(BotAddedToInventoryEvent, event =>
     {
         const parser = event.getParser();
 
@@ -92,11 +90,9 @@ const useInventoryBotsState = () =>
 
             return newValue;
         });
-    }, [ isUnseen ]);
+    });
 
-    UseMessageEventHook(BotAddedToInventoryEvent, onBotAddedToInventoryEvent);
-
-    const onBotRemovedFromInventoryEvent = useCallback((event: BotRemovedFromInventoryEvent) =>
+    useMessageEvent<BotRemovedFromInventoryEvent>(BotRemovedFromInventoryEvent, event =>
     {
         const parser = event.getParser();
 
@@ -119,9 +115,7 @@ const useInventoryBotsState = () =>
 
             return newValue;
         });
-    }, []);
-
-    UseMessageEventHook(BotRemovedFromInventoryEvent, onBotRemovedFromInventoryEvent);
+    });
 
     useEffect(() =>
     {

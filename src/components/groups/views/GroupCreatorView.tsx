@@ -1,9 +1,8 @@
 import { GroupBuyComposer, GroupBuyDataComposer, GroupBuyDataEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { HasHabboClub, LocalizeText, SendMessageComposer } from '../../../api';
+import { HasHabboClub, IGroupData, LocalizeText, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { UseMessageEventHook } from '../../../hooks';
-import { IGroupData } from '../common/IGroupData';
+import { useMessageEvent } from '../../../hooks';
 import { GroupTabBadgeView } from './tabs/GroupTabBadgeView';
 import { GroupTabColorsView } from './tabs/GroupTabColorsView';
 import { GroupTabCreatorConfirmationView } from './tabs/GroupTabCreatorConfirmationView';
@@ -98,7 +97,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
         setPurchaseCost(parser.groupCost);
     }, []);
 
-    UseMessageEventHook(GroupBuyDataEvent, onGroupBuyDataEvent);
+    useMessageEvent(GroupBuyDataEvent, onGroupBuyDataEvent);
 
     useEffect(() =>
     {

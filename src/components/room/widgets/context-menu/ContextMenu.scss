@@ -18,6 +18,10 @@
         width: unset;
         text-align: center;
         font-size: 18px;
+
+        &.is-friend {
+            background-color: rgba($green, 0.5);
+        }
     }
 
     &:not(.name-only):not(.menu-hidden) {
@@ -53,17 +57,17 @@
 
     &.menu-hidden {
         .menu-footer {
-            padding-top:2px;
-            padding-bottom:0;
+            padding-top: 2px;
+            padding-bottom: 0;
         }
     }
 
     .menu-footer {
         color: $white;
         font-size: 16px;
-        width:100%;
+        width: 100%;
         min-width: 25px;
-        padding-bottom:2px;
+        padding-bottom: 2px;
         cursor: pointer;
     }
 
@@ -113,6 +117,12 @@
                 &.left {
                     left: 8px;
                     right: unset;
+                }
+
+                &.center {
+                    position: unset;
+                    right: unset;
+                    left: unset;
                 }
             }
         }

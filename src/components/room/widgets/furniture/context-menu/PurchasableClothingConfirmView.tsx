@@ -1,9 +1,8 @@
 import { RedeemItemClothingComposer, RoomObjectCategory, UserFigureComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { FurniCategory, GetAvatarRenderManager, GetConnection, GetFurnitureDataForRoomObject, GetSessionDataManager, LocalizeText } from '../../../../../api';
+import { FigureData, FurniCategory, GetAvatarRenderManager, GetConnection, GetFurnitureDataForRoomObject, GetSessionDataManager, LocalizeText } from '../../../../../api';
 import { Base, Button, Column, Flex, LayoutAvatarImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { FigureData } from '../../../../avatar-editor/common/FigureData';
-import { useRoomContext } from '../../../RoomContext';
+import { useRoom } from '../../../../../hooks';
 
 interface PurchasableClothingConfirmViewProps
 {
@@ -20,7 +19,7 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
     const [ mode, setMode ] = useState(MODE_DEFAULT);
     const [ gender, setGender ] = useState<string>(FigureData.MALE);
     const [ newFigure, setNewFigure ] = useState<string>(null);
-    const { roomSession = null } = useRoomContext();
+    const { roomSession = null } = useRoom();
 
     const useProduct = () =>
     {

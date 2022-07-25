@@ -1,22 +1,21 @@
 import { RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../../api';
+import { ChatEntryType, GetSessionDataManager, IReportedUser, LocalizeText } from '../../../api';
 import { AutoGrid, Button, Column, Flex, LayoutGridItem, Text } from '../../../common';
-import { ChatEntryType } from '../../chat-history/common/ChatEntryType';
-import { GetChatHistory } from '../../chat-history/common/GetChatHistory';
-import { IReportedUser } from '../common/IReportedUser';
+import { useChatHistory } from '../../../hooks';
 import { useHelpContext } from '../HelpContext';
 
 export const SelectReportedUserView: FC<{}> = props =>
 {
     const [ selectedUserId, setSelectedUserId ] = useState(-1);
+    const { chatHistory = [] } = useChatHistory();
     const { helpReportState = null, setHelpReportState = null } = useHelpContext();
 
     const availableUsers = useMemo(() =>
     {
         const users: Map<number, IReportedUser> = new Map();
 
-        GetChatHistory().chats.forEach(chat =>
+        chatHistory.forEach(chat =>
         {
             if((chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityType === RoomObjectType.USER) && (chat.entityId !== GetSessionDataManager().userId))
             {
@@ -28,7 +27,7 @@ export const SelectReportedUserView: FC<{}> = props =>
         });
 
         return Array.from(users.values());
-    }, []);
+    }, [ chatHistory ]);
 
     const submitUser = () =>
     {

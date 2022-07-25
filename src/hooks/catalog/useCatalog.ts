@@ -1,10 +1,10 @@
 import { BuildersClubFurniCountMessageEvent, BuildersClubPlaceRoomItemMessageComposer, BuildersClubPlaceWallItemMessageComposer, BuildersClubQueryFurniCountMessageComposer, BuildersClubSubscriptionStatusMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, FrontPageItem, FurniturePlaceComposer, FurniturePlacePaintComposer, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, GiftWrappingConfigurationEvent, GuildMembershipsMessageEvent, HabboClubOffersMessageEvent, LegacyDataType, LimitedEditionSoldOutEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseFromCatalogComposer, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, RoomControllerLevel, RoomEngineObjectPlacedEvent, RoomObjectCategory, RoomObjectPlacementSource, RoomObjectType, RoomObjectVariable, RoomPreviewer, SellablePetPalettesMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useBetween } from 'use-between';
-import { BuilderFurniPlaceableStatus, CatalogNode, CatalogPage, CatalogPetPalette, CatalogType, CreateLinkEvent, FurniCategory, GetFurnitureData, GetNitroInstance, GetProductDataForLocalization, GetRoomEngine, GetRoomSession, GiftWrappingConfiguration, ICatalogNode, ICatalogOptions, ICatalogPage, IPageLocalization, IProduct, IPurchasableOffer, IPurchaseOptions, LocalizeText, NotificationAlertType, NotificationUtilities, Offer, PageLocalization, PlacedObjectPurchaseData, PlaySound, Product, ProductTypeEnum, RequestedPage, SearchResult, SendMessageComposer, SoundNames } from '../../api';
+import { BuilderFurniPlaceableStatus, CatalogNode, CatalogPage, CatalogPetPalette, CatalogType, CreateLinkEvent, DispatchUiEvent, FurniCategory, GetFurnitureData, GetNitroInstance, GetProductDataForLocalization, GetRoomEngine, GetRoomSession, GiftWrappingConfiguration, ICatalogNode, ICatalogOptions, ICatalogPage, IPageLocalization, IProduct, IPurchasableOffer, IPurchaseOptions, LocalizeText, NotificationAlertType, Offer, PageLocalization, PlacedObjectPurchaseData, PlaySound, Product, ProductTypeEnum, RequestedPage, SearchResult, SendMessageComposer, SoundNames } from '../../api';
 import { CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, InventoryFurniAddedEvent } from '../../events';
-import { DispatchUiEvent, UseRoomEngineEvent, UseUiEvent } from '../events';
-import { UseMessageEventHook } from '../messages';
+import { useMessageEvent, useRoomEngineEvent, useUiEvent } from '../events';
+import { useNotification } from '../notification';
 import { useCatalogPlaceMultipleItems } from './useCatalogPlaceMultipleItems';
 import { useCatalogSkipPurchaseConfirmation } from './useCatalogSkipPurchaseConfirmation';
 
@@ -40,6 +40,7 @@ const useCatalogState = () =>
     const [ secondsLeft, setSecondsLeft ] = useState(0);
     const [ updateTime, setUpdateTime ] = useState(0);
     const [ secondsLeftWithGrace, setSecondsLeftWithGrace ] = useState(0);
+    const { simpleAlert = null } = useNotification();
     const requestedPage = useRef(new RequestedPage());
 
     const resetState = useCallback(() =>
@@ -441,7 +442,7 @@ const useCatalogState = () =>
         setOffersToNodes(offers);
     }, [ setRootNode, setOffersToNodes ]);
 
-    UseMessageEventHook(CatalogPagesListEvent, onCatalogPagesListEvent);
+    useMessageEvent(CatalogPagesListEvent, onCatalogPagesListEvent);
 
     const onCatalogPageMessageEvent = useCallback((event: CatalogPageMessageEvent) =>
     {
@@ -480,7 +481,7 @@ const useCatalogState = () =>
         }
     }, [ currentType, pageId, setFrontPageItems, setIsBusy, showCatalogPage ]);
 
-    UseMessageEventHook(CatalogPageMessageEvent, onCatalogPageMessageEvent);
+    useMessageEvent(CatalogPageMessageEvent, onCatalogPageMessageEvent);
 
     const onPurchaseOKMessageEvent = useCallback((event: PurchaseOKMessageEvent) =>
     {
@@ -489,7 +490,7 @@ const useCatalogState = () =>
         DispatchUiEvent(new CatalogPurchasedEvent(parser.offer));
     }, []);
 
-    UseMessageEventHook(PurchaseOKMessageEvent, onPurchaseOKMessageEvent);
+    useMessageEvent(PurchaseOKMessageEvent, onPurchaseOKMessageEvent);
 
     const onPurchaseErrorMessageEvent = useCallback((event: PurchaseErrorMessageEvent) =>
     {
@@ -498,7 +499,7 @@ const useCatalogState = () =>
         DispatchUiEvent(new CatalogPurchaseFailureEvent(parser.code));
     }, []);
 
-    UseMessageEventHook(PurchaseErrorMessageEvent, onPurchaseErrorMessageEvent);
+    useMessageEvent(PurchaseErrorMessageEvent, onPurchaseErrorMessageEvent);
 
     const onPurchaseNotAllowedMessageEvent = useCallback((event: PurchaseNotAllowedMessageEvent) =>
     {
@@ -507,7 +508,7 @@ const useCatalogState = () =>
         DispatchUiEvent(new CatalogPurchaseNotAllowedEvent(parser.code));
     }, []);
 
-    UseMessageEventHook(PurchaseNotAllowedMessageEvent, onPurchaseNotAllowedMessageEvent);
+    useMessageEvent(PurchaseNotAllowedMessageEvent, onPurchaseNotAllowedMessageEvent);
 
     const onLimitedEditionSoldOutEvent = useCallback((event: LimitedEditionSoldOutEvent) =>
     {
@@ -516,7 +517,7 @@ const useCatalogState = () =>
         DispatchUiEvent(new CatalogPurchaseSoldOutEvent());
     }, []);
 
-    UseMessageEventHook(LimitedEditionSoldOutEvent, onLimitedEditionSoldOutEvent);
+    useMessageEvent(LimitedEditionSoldOutEvent, onLimitedEditionSoldOutEvent);
 
     const onProductOfferEvent = useCallback((event: ProductOfferEvent) =>
     {
@@ -565,7 +566,7 @@ const useCatalogState = () =>
         // (this._isObjectMoverRequested) && (this._purchasableOffer)
     }, [ currentType, currentPage, setCurrentOffer, setPurchaseOptions ]);
 
-    UseMessageEventHook(ProductOfferEvent, onProductOfferEvent);
+    useMessageEvent(ProductOfferEvent, onProductOfferEvent);
 
     const onSellablePetPalettesMessageEvent = useCallback((event: SellablePetPalettesMessageEvent) =>
     {
@@ -596,7 +597,7 @@ const useCatalogState = () =>
         });
     }, [ setCatalogOptions ]);
 
-    UseMessageEventHook(SellablePetPalettesMessageEvent, onSellablePetPalettesMessageEvent);
+    useMessageEvent(SellablePetPalettesMessageEvent, onSellablePetPalettesMessageEvent);
 
     const onHabboClubOffersMessageEvent = useCallback((event: HabboClubOffersMessageEvent) =>
     {
@@ -610,7 +611,7 @@ const useCatalogState = () =>
         });
     }, [ setCatalogOptions ]);
 
-    UseMessageEventHook(HabboClubOffersMessageEvent, onHabboClubOffersMessageEvent);
+    useMessageEvent(HabboClubOffersMessageEvent, onHabboClubOffersMessageEvent);
 
     const onGuildMembershipsMessageEvent = useCallback((event: GuildMembershipsMessageEvent) =>
     {
@@ -624,7 +625,7 @@ const useCatalogState = () =>
         });
     }, [ setCatalogOptions ]);
 
-    UseMessageEventHook(GuildMembershipsMessageEvent, onGuildMembershipsMessageEvent);
+    useMessageEvent(GuildMembershipsMessageEvent, onGuildMembershipsMessageEvent);
 
     const onGiftWrappingConfigurationEvent = useCallback((event: GiftWrappingConfigurationEvent) =>
     {
@@ -638,7 +639,7 @@ const useCatalogState = () =>
         });
     }, [ setCatalogOptions ]);
 
-    UseMessageEventHook(GiftWrappingConfigurationEvent, onGiftWrappingConfigurationEvent);
+    useMessageEvent(GiftWrappingConfigurationEvent, onGiftWrappingConfigurationEvent);
 
     const onMarketplaceMakeOfferResult = useCallback((event: MarketplaceMakeOfferResult) =>
     {
@@ -658,10 +659,10 @@ const useCatalogState = () =>
 
         const message = LocalizeText(`inventory.marketplace.result.${ parser.result }`);
         
-        NotificationUtilities.simpleAlert(message, NotificationAlertType.DEFAULT, null, null, title);
-    }, []);
+        simpleAlert(message, NotificationAlertType.DEFAULT, null, null, title);
+    }, [ simpleAlert ]);
 
-    UseMessageEventHook(MarketplaceMakeOfferResult, onMarketplaceMakeOfferResult);
+    useMessageEvent(MarketplaceMakeOfferResult, onMarketplaceMakeOfferResult);
 
     const onClubGiftInfoEvent = useCallback((event: ClubGiftInfoEvent) =>
     {
@@ -675,7 +676,7 @@ const useCatalogState = () =>
         });
     }, [ setCatalogOptions ]);
 
-    UseMessageEventHook(ClubGiftInfoEvent, onClubGiftInfoEvent);
+    useMessageEvent(ClubGiftInfoEvent, onClubGiftInfoEvent);
 
     const onCatalogPublishedMessageEvent = useCallback((event: CatalogPublishedMessageEvent) =>
     {
@@ -683,10 +684,10 @@ const useCatalogState = () =>
 
         resetState();
 
-        if(wasVisible) NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.published.description'), NotificationAlertType.ALERT, null, null, LocalizeText('catalog.alert.published.title'));
-    }, [ isVisible, resetState ]);
+        if(wasVisible) simpleAlert(LocalizeText('catalog.alert.published.description'), NotificationAlertType.ALERT, null, null, LocalizeText('catalog.alert.published.title'));
+    }, [ isVisible, resetState, simpleAlert ]);
 
-    UseMessageEventHook(CatalogPublishedMessageEvent, onCatalogPublishedMessageEvent);
+    useMessageEvent(CatalogPublishedMessageEvent, onCatalogPublishedMessageEvent);
 
     const onBuildersClubFurniCountMessageEvent = useCallback((event: BuildersClubFurniCountMessageEvent) =>
     {
@@ -697,7 +698,7 @@ const useCatalogState = () =>
         refreshBuilderStatus();
     }, [ refreshBuilderStatus ]);
 
-    UseMessageEventHook(BuildersClubFurniCountMessageEvent, onBuildersClubFurniCountMessageEvent);
+    useMessageEvent(BuildersClubFurniCountMessageEvent, onBuildersClubFurniCountMessageEvent);
 
     const onBuildersClubSubscriptionStatusMessageEvent = useCallback((event: BuildersClubSubscriptionStatusMessageEvent) =>
     {
@@ -712,14 +713,14 @@ const useCatalogState = () =>
         refreshBuilderStatus();
     }, [ refreshBuilderStatus ]);
 
-    UseMessageEventHook(BuildersClubSubscriptionStatusMessageEvent, onBuildersClubSubscriptionStatusMessageEvent);
+    useMessageEvent(BuildersClubSubscriptionStatusMessageEvent, onBuildersClubSubscriptionStatusMessageEvent);
 
     const onCatalogPurchasedEvent = useCallback((event: CatalogPurchasedEvent) =>
     {
         PlaySound(SoundNames.CREDITS);
     }, []);
 
-    UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
+    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
 
     const onRoomEngineObjectPlacedEvent = useCallback((event: RoomEngineObjectPlacedEvent) =>
     {
@@ -831,7 +832,7 @@ const useCatalogState = () =>
         }
     }, [ objectMoverRequested, purchasableOffer, catalogPlaceMultipleObjects, catalogSkipPurchaseConfirmation, currentType, pageId, resetPlacedOfferData, resetObjectMover, resetRoomPaint, requestOfferToMover ]);
 
-    UseRoomEngineEvent(RoomEngineObjectPlacedEvent.PLACED, onRoomEngineObjectPlacedEvent);
+    useRoomEngineEvent(RoomEngineObjectPlacedEvent.PLACED, onRoomEngineObjectPlacedEvent);
 
     const onInventoryFurniAddedEvent = useCallback((event: InventoryFurniAddedEvent) =>
     {
@@ -866,7 +867,7 @@ const useCatalogState = () =>
         if(!catalogPlaceMultipleObjects) resetPlacedOfferData();
     }, [ placedObjectPurchaseData, catalogPlaceMultipleObjects, resetPlacedOfferData ]);
 
-    UseUiEvent(InventoryFurniAddedEvent.FURNI_ADDED, onInventoryFurniAddedEvent);
+    useUiEvent(InventoryFurniAddedEvent.FURNI_ADDED, onInventoryFurniAddedEvent);
 
     useEffect(() =>
     {

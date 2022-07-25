@@ -1,7 +1,7 @@
 import { BonusRareInfoMessageEvent, GetBonusRareInfoMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../../api';
-import { UseMessageEventHook } from '../../../../../hooks';
+import { useMessageEvent } from '../../../../../hooks';
 
 export interface BonusRareWidgetViewProps
 {}
@@ -23,7 +23,7 @@ export const BonusRareWidgetView: FC<BonusRareWidgetViewProps> = props =>
         setCoinsStillRequiredToBuy(parser.coinsStillRequiredToBuy);
     }, []);
 
-    UseMessageEventHook(BonusRareInfoMessageEvent, onBonusRareInfoMessageEvent);
+    useMessageEvent(BonusRareInfoMessageEvent, onBonusRareInfoMessageEvent);
 
     useEffect(() =>
     {

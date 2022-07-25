@@ -2,11 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRoomCameraWidgetEffect, IRoomCameraWidgetSelectedEffect, RoomCameraWidgetSelectedEffect } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { GetRoomCameraWidgetManager, LocalizeText } from '../../../../api';
+import { CameraEditorTabs, CameraPicture, CameraPictureThumbnail, GetRoomCameraWidgetManager, LocalizeText } from '../../../../api';
 import { Button, ButtonGroup, Column, Flex, Grid, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../common';
-import { CameraEditorTabs } from '../../common/CameraEditorTabs';
-import { CameraPicture } from '../../common/CameraPicture';
-import { CameraPictureThumbnail } from '../../common/CameraPictureThumbnail';
 import { CameraWidgetEffectListView } from './effect-list/CameraWidgetEffectListView';
 
 export interface CameraWidgetEditorViewProps

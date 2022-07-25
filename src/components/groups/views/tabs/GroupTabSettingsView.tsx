@@ -1,9 +1,7 @@
 import { GroupSavePreferencesComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { SendMessageComposer } from '../../../../api';
-import { LocalizeText } from '../../../../api/utils/LocalizeText';
+import { IGroupData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Column, Flex, HorizontalRule, Text } from '../../../../common';
-import { IGroupData } from '../../common/IGroupData';
 
 const STATES: string[] = [ 'regular', 'exclusive', 'private' ];
 

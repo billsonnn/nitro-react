@@ -3,7 +3,7 @@ import { FC, useCallback, useRef } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { LayoutRoomPreviewerView, LayoutRoomPreviewerViewProps } from '../../../../common';
 import { CatalogPurchasedEvent } from '../../../../events';
-import { UseUiEvent } from '../../../../hooks';
+import { useUiEvent } from '../../../../hooks';
 
 export const CatalogRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =>
 {
@@ -39,7 +39,7 @@ export const CatalogRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props 
         animatePurchase();
     }, [ animatePurchase ]);
 
-    UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
+    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
 
     return (
         <div ref={ elementRef }>

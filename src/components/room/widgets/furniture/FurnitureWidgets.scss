@@ -17,13 +17,14 @@
     .dimmer-banner {
         width: 56px;
         height: 79px;
-        background: url('../../../../assets/images/room-widgets/dimmer-widget/dimmer_banner.png') center no-repeat;
+        background: url("../../../../assets/images/room-widgets/dimmer-widget/dimmer_banner.png")
+            center no-repeat;
     }
 
     .color-swatch {
         height: 30px;
         border: 2px solid $white;
-        box-shadow: inset 3px 3px rgba(0, 0, 0, .2);
+        box-shadow: inset 3px 3px rgba(0, 0, 0, 0.2);
 
         &.active {
             box-shadow: none;
@@ -36,14 +37,13 @@
     height: $nitro-widget-exchange-credit-height;
 
     .exchange-image {
-        background-image: url('../../../../assets/images/room-widgets/exchange-credit/exchange-credit-image.png');
+        background-image: url("../../../../assets/images/room-widgets/exchange-credit/exchange-credit-image.png");
         width: 103px;
         height: 103px;
     }
 }
 
 .nitro-external-image-widget {
-
     .picture-preview {
         width: 320px;
         height: 320px;
@@ -51,24 +51,262 @@
 }
 
 .nitro-gift-opening {
-    
+    width: 340px;
+    resize: none;
 }
 
 .nitro-mannequin {
+    width: 300px;
+
+    .mannequin-preview {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 83px;
+        height: 130px;
+        background-image: url("../../../../assets/images/room-widgets/mannequin-widget/mannequin-spritesheet.png");
+        overflow: hidden;
+
+        .avatar-image {
+            background-position: unset;
+            top: -8px;
+        }
+    }
 }
 
-.mannequin-preview {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 83px;
-    height: 130px;
-    background-image: url('../../../../assets/images/room-widgets/mannequin-widget/mannequin-spritesheet.png');
-    overflow: hidden;
+.nitro-stickie {
+    position: relative;
+    width: 185px;
+    height: 178px;
+    top: 25px;
+    left: 25px;
+    padding: 1px;
+    pointer-events: all;
+
+    .stickie-header {
+        width: 183px;
+        height: 18px;
+        padding: 0 7px;
+
+        .header-trash,
+        .header-close {
+            cursor: pointer;
+        }
+
+        .stickie-color {
+            width: 10px;
+            height: 10px;
+            cursor: pointer;
+        }
+    }
+
+    .stickie-context {
+        width: 183px;
+        height: 145px;
+        padding: 2px 7px;
+        font-size: 12px;
+        color: $black;
+
+        .context-text {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            overflow-wrap: break-word;
+            white-space: break-spaces;
+            overflow-y: auto;
+        }
+
+        textarea {
+            background: transparent;
+            border: 0;
+            outline: none;
+            box-shadow: none;
+            resize: none;
+            font-style: italic;
+
+            &:active {
+                border: 0;
+                outline: none;
+                box-shadow: none;
+            }
+        }
+    }
 }
 
-@import './friend-furni/FurnitureFriendFurniView';
-@import './manipulation-menu/FurnitureManipulationMenuView';
-@import './stickie/FurnitureStickieView';
-@import './high-score/FurnitureHighScoreView';
-@import './youtube-tv/FurnitureYoutubeDisplayView';
+.nitro-stickie-image {
+    background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-spritesheet.png");
+
+    &.stickie-blue,
+    &.stickie-yellow,
+    &.stickie-green,
+    &.stickie-pink {
+        width: 185px;
+        height: 178px;
+    }
+
+    &.stickie-blue {
+        background-position: -2px -2px;
+    }
+
+    &.stickie-yellow {
+        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-yellow.png");
+        //background-position: -191px -184px;
+    }
+
+    &.stickie-green {
+        background-position: -191px -2px;
+    }
+
+    &.stickie-pink {
+        background-position: -2px -184px;
+    }
+
+    &.stickie-close {
+        width: 10px;
+        height: 10px;
+        background-position: -2px -366px;
+    }
+
+    &.stickie-trash {
+        width: 9px;
+        height: 10px;
+        background-position: -16px -366px;
+    }
+}
+
+.nitro-engraving-lock {
+    width: 300px;
+
+    .engraving-lock-stage-1 {
+        width: 31px;
+        height: 39px;
+        background-position: -380px -43px;
+        background-image: url('../../../../assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png');
+    }
+
+    .engraving-lock-stage-2 {
+        width: 36px;
+        height: 43px;
+        background-position: -375px 0px;
+        background-image: url('../../../../assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png');
+    }
+}
+
+.nitro-engraving-lock-view {
+    width: 375px;
+    height: 210px;
+    background-position: 0px 0px;
+    background-image: url('../../../../assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png');
+
+    color: #622e54;
+    font-weight: bold;
+    font-size: 16px;
+    text-shadow: 0px 1px white;
+    
+    &.engraving-lock-3 {
+        background-position: 0px -210px;
+        color: #614110;
+    }
+
+    &.engraving-lock-4 {
+        background-position: 0px -420px;
+        color: #f1dcc8;
+        text-shadow: 0px 2px rgba(0, 0, 0, .4);
+
+        .engraving-lock-avatar {
+            margin-bottom: 10px;
+        }
+    }
+
+    .engraving-lock-close {
+        position: absolute;
+        cursor: pointer;
+        width: 15px;
+        height: 15px;
+        top: 34px;
+        right: 27px;
+    }
+
+    .engraving-lock-avatar {
+        width: 70px;
+        height: 120px;
+
+        div {
+            position: absolute;
+            margin-top: -5px;
+        }
+
+        &:nth-child(1) {
+            div {
+                margin-left: -10px;
+            }
+        }
+
+        &:nth-child(2) {
+            div {
+                margin-left: -15px;
+            }
+        }
+    }
+}
+
+.nitro-widget-high-score {
+    width: 250px;
+    max-width: 250px;
+    height: 200px;
+}
+
+.youtube-tv-widget {
+    width: 600px;
+    height: 380px;
+
+    .youtube-video-container {
+        //min-height: 366px;
+        
+        .empty-video {
+            background-color: black;
+            color: white;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
+
+        .youtubeContainer {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            //height: 0;
+            //padding-bottom: 56.25%;
+            overflow: hidden;
+            margin-bottom: 50px;
+        }
+
+        .youtubeContainer iframe {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+
+    .playlist-container {
+        overflow-y: hidden;
+        margin-right: -10px;
+        color: black;
+        height: 100%;
+
+        .playlist-controls {
+            width: 100%;
+            .icon {
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+        }
+
+        .playlist-grid {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}

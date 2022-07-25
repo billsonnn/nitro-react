@@ -1,8 +1,8 @@
 import { ActivityPointNotificationMessageEvent, UserCreditsEvent, UserCurrencyComposer, UserCurrencyEvent, UserSubscriptionComposer, UserSubscriptionEvent, UserSubscriptionParser } from '@nitrots/nitro-renderer';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useBetween } from 'use-between';
 import { CloneObject, ClubStatus, GetConfiguration, IPurse, PlaySound, Purse, SendMessageComposer, SoundNames } from '../../api';
-import { UseMessageEventHook } from '../messages';
+import { useMessageEvent } from '../events';
 
 const usePurseState = () =>
 {
@@ -32,7 +32,7 @@ const usePurseState = () =>
         return 0;
     }
 
-    const onUserCreditsEvent = useCallback((event: UserCreditsEvent) =>
+    useMessageEvent<UserCreditsEvent>(UserCreditsEvent, event =>
     {
         const parser = event.getParser();
 
@@ -46,11 +46,9 @@ const usePurseState = () =>
 
             return newValue;
         });
-    }, []);
+    });
 
-    UseMessageEventHook(UserCreditsEvent, onUserCreditsEvent);
-
-    const onUserCurrencyEvent = useCallback((event: UserCurrencyEvent) =>
+    useMessageEvent<UserCurrencyEvent>(UserCurrencyEvent, event =>
     {
         const parser = event.getParser();
 
@@ -62,11 +60,9 @@ const usePurseState = () =>
 
             return newValue;
         });
-    }, []);
+    });
 
-    UseMessageEventHook(UserCurrencyEvent, onUserCurrencyEvent);
-
-    const onActivityPointNotificationMessageEvent = useCallback((event: ActivityPointNotificationMessageEvent) =>
+    useMessageEvent<ActivityPointNotificationMessageEvent>(ActivityPointNotificationMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -82,11 +78,9 @@ const usePurseState = () =>
 
             return newValue;
         });
-    }, []);
+    });
 
-    UseMessageEventHook(ActivityPointNotificationMessageEvent, onActivityPointNotificationMessageEvent);
-
-    const onUserSubscriptionEvent = useCallback((event: UserSubscriptionEvent) =>
+    useMessageEvent<UserSubscriptionEvent>(UserSubscriptionEvent, event =>
     {
         const parser = event.getParser();
         const productName = parser.productName;
@@ -108,9 +102,7 @@ const usePurseState = () =>
 
             return newValue;
         });
-    }, []);
-
-    UseMessageEventHook(UserSubscriptionEvent, onUserSubscriptionEvent);
+    });
 
     useEffect(() =>
     {

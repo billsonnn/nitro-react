@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { AddEventLinkTracker, ClubStatus, CreateLinkEvent, GetClubBadge, GetConfiguration, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Base, Button, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { useInventoryBadges, UseMessageEventHook, usePurse, useSessionInfo } from '../../hooks';
+import { useInventoryBadges, useMessageEvent, usePurse, useSessionInfo } from '../../hooks';
 
 
 export const HcCenterView: FC<{}> = props =>
@@ -51,7 +51,7 @@ export const HcCenterView: FC<{}> = props =>
         setUnclaimedGifts(parser.giftsAvailable);
     }, []);
 
-    UseMessageEventHook(ClubGiftInfoEvent, onClubGiftInfoEvent);
+    useMessageEvent(ClubGiftInfoEvent, onClubGiftInfoEvent);
 
     const onScrSendKickbackInfo = useCallback((event: ScrSendKickbackInfoMessageEvent) =>
     {
@@ -60,7 +60,7 @@ export const HcCenterView: FC<{}> = props =>
         setKickbackData(parser.data);
     }, []);
 
-    UseMessageEventHook(ScrSendKickbackInfoMessageEvent, onScrSendKickbackInfo);
+    useMessageEvent(ScrSendKickbackInfoMessageEvent, onScrSendKickbackInfo);
 
     useEffect(() =>
     {

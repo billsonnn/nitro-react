@@ -1,8 +1,8 @@
 import { IFurnitureData, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { FurniCategory, GetFurnitureDataForRoomObject, LocalizeText, RoomWidgetUseProductMessage } from '../../../../../api';
+import { FurniCategory, GetFurnitureDataForRoomObject, LocalizeText } from '../../../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
-import { useRoomContext } from '../../../RoomContext';
+import { useRoom } from '../../../../../hooks';
 
 interface MonsterPlantSeedConfirmViewProps
 {
@@ -18,11 +18,11 @@ export const MonsterPlantSeedConfirmView: FC<MonsterPlantSeedConfirmViewProps> =
     const { objectId = -1, close = null } = props;
     const [ furniData, setFurniData ] = useState<IFurnitureData>(null);
     const [ mode, setMode ] = useState(MODE_DEFAULT);
-    const { roomSession = null, widgetHandler = null } = useRoomContext();
+    const { roomSession = null } = useRoom();
 
     const useProduct = () =>
     {
-        widgetHandler.processWidgetMessage(new RoomWidgetUseProductMessage(RoomWidgetUseProductMessage.MONSTERPLANT_SEED, objectId));
+        roomSession.useMultistateItem(objectId);
 
         close();
     }

@@ -2,7 +2,7 @@ import { HabboWebTools, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetCommunication, RemoveLinkEventTracker } from '../../api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from '../../common';
-import { UseRoomSessionManagerEvent } from '../../hooks';
+import { useRoomSessionManagerEvent } from '../../hooks';
 import { AchievementsView } from '../achievements/AchievementsView';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CameraWidgetView } from '../camera/CameraWidgetView';
@@ -45,8 +45,8 @@ export const MainView: FC<{}> = props =>
         }
     }, []);
 
-    UseRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
-    UseRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
+    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
 
     const onLinkReceived = useCallback((link: string) =>
     {

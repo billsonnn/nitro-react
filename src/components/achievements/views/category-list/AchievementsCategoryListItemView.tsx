@@ -1,5 +1,5 @@
 import { Dispatch, FC, PropsWithChildren, SetStateAction } from 'react';
-import { GetAchievementCategoryImageUrl, GetAchievementCategoryMaxProgress, GetAchievementCategoryProgress, GetAchievementCategoryTotalUnseen, IAchievementCategory, LocalizeText } from '../../../../api';
+import { AchievementUtilities, IAchievementCategory, LocalizeText } from '../../../../api';
 import { LayoutBackgroundImage, LayoutGridItem, Text } from '../../../../common';
 
 interface AchievementCategoryListItemViewProps
@@ -15,10 +15,10 @@ export const AchievementsCategoryListItemView: FC<PropsWithChildren<AchievementC
 
     if(!category) return null;
 
-    const progress = GetAchievementCategoryProgress(category);
-    const maxProgress = GetAchievementCategoryMaxProgress(category);
-    const getCategoryImage = GetAchievementCategoryImageUrl(category, progress);
-    const getTotalUnseen = GetAchievementCategoryTotalUnseen(category);
+    const progress = AchievementUtilities.getAchievementCategoryProgress(category);
+    const maxProgress = AchievementUtilities.getAchievementCategoryMaxProgress(category);
+    const getCategoryImage = AchievementUtilities.getAchievementCategoryImageUrl(category, progress);
+    const getTotalUnseen = AchievementUtilities.getAchievementCategoryTotalUnseen(category);
 
     return (
         <LayoutGridItem itemActive={ (selectedCategoryCode === category.code) } itemCount={ getTotalUnseen } itemCountMinimum={ 0 } gap={ 1 } onClick={ event => setSelectedCategoryCode(category.code) } { ...rest }>

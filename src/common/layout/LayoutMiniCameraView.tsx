@@ -1,7 +1,6 @@
 import { NitroRectangle, NitroRenderTexture } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useRef } from 'react';
-import { GetRoomEngine, LocalizeText, SoundNames } from '../../api';
-import { PlaySound } from '../../api/utils/PlaySound';
+import { GetRoomEngine, LocalizeText, PlaySound, SoundNames } from '../../api';
 import { DraggableWindow } from '../draggable-window';
 
 interface LayoutMiniCameraViewProps

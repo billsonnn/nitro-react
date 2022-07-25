@@ -1,7 +1,7 @@
 import { AchievementData, AchievementEvent, AchievementsEvent, AchievementsScoreEvent, RequestAchievementsMessageComposer } from '@nitrots/nitro-renderer';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AchievementCategory, CloneObject, GetAchievementCategoryTotalUnseen, GetAchievementIsIgnored, SendMessageComposer } from '../../api';
-import { UseMessageEventHook } from '../messages';
+import { useEffect, useMemo, useState } from 'react';
+import { AchievementCategory, AchievementUtilities, CloneObject, SendMessageComposer } from '../../api';
+import { useMessageEvent } from '../events';
 
 const useAchievementsState = () =>
 {
@@ -15,7 +15,7 @@ const useAchievementsState = () =>
     {
         let unseen = 0;
 
-        achievementCategories.forEach(category => unseen += GetAchievementCategoryTotalUnseen(category));
+        achievementCategories.forEach(category => unseen += AchievementUtilities.getAchievementCategoryTotalUnseen(category));
 
         return unseen;
     }, [ achievementCategories ]);
@@ -43,7 +43,7 @@ const useAchievementsState = () =>
         return ~~((((getProgress - 0) * (100 - 0)) / (getMaxProgress - 0)) + 0);
     }, [ getProgress, getMaxProgress ]);
 
-    const setAchievementSeen = useCallback((categoryCode: string, achievementId: number) =>
+    const setAchievementSeen = (categoryCode: string, achievementId: number) =>
     {
         setAchievementCategories(prevValue =>
         {
@@ -63,9 +63,9 @@ const useAchievementsState = () =>
 
             return newValue;
         });
-    }, []);
+    }
 
-    const onAchievementEvent = useCallback((event: AchievementEvent) =>
+    useMessageEvent<AchievementEvent>(AchievementEvent, event =>
     {
         const parser = event.getParser();
         const achievement = parser.achievement;
@@ -101,7 +101,7 @@ const useAchievementsState = () =>
                     newAchievements[achievementIndex] = achievement;
                 }
 
-                if(!GetAchievementIsIgnored(achievement))
+                if(!AchievementUtilities.getAchievementIsIgnored(achievement))
                 {
                     achievement.unseen++;
 
@@ -115,11 +115,9 @@ const useAchievementsState = () =>
 
             return newValue;
         });
-    }, []);
+    });
 
-    UseMessageEventHook(AchievementEvent, onAchievementEvent);
-
-    const onAchievementsEvent = useCallback((event: AchievementsEvent) =>
+    useMessageEvent<AchievementsEvent>(AchievementsEvent, event =>
     {
         const parser = event.getParser();
         const categories: AchievementCategory[] = [];
@@ -141,18 +139,14 @@ const useAchievementsState = () =>
         }
 
         setAchievementCategories(categories);
-    }, []);
+    });
 
-    UseMessageEventHook(AchievementsEvent, onAchievementsEvent);
-
-    const onAchievementsScoreEvent = useCallback((event: AchievementsScoreEvent) =>
+    useMessageEvent<AchievementsScoreEvent>(AchievementsScoreEvent, event =>
     {
         const parser = event.getParser();
 
         setAchievementScore(parser.score);
-    }, []);
-
-    UseMessageEventHook(AchievementsScoreEvent, onAchievementsScoreEvent);
+    });
 
     useEffect(() =>
     {

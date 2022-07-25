@@ -1,45 +1,11 @@
-import { FC, useCallback } from 'react';
-import { LocalizeText, WiredSelectionVisualizer } from '../../../api';
+import { FC } from 'react';
+import { LocalizeText } from '../../../api';
 import { Column, Text } from '../../../common';
-import { WiredSelectObjectEvent } from '../../../events';
-import { UseUiEvent } from '../../../hooks';
-import { useWiredContext } from '../WiredContext';
+import { useWired } from '../../../hooks';
 
 export const WiredFurniSelectorView: FC<{}> = props =>
 {
-    const { trigger = null, furniIds = [], setFurniIds = null } = useWiredContext();
-
-    const onWiredSelectObjectEvent = useCallback((event: WiredSelectObjectEvent) =>
-    {
-        const furniId = event.objectId;
-
-        if(furniId <= 0) return;
-
-        setFurniIds(prevValue =>
-        {
-            const newFurniIds = [ ...prevValue ];
-
-            const index = prevValue.indexOf(furniId);
-
-            if(index >= 0)
-            {
-                newFurniIds.splice(index, 1);
-
-                WiredSelectionVisualizer.hide(furniId);
-            }
-
-            else if(newFurniIds.length < trigger.maximumItemSelectionCount)
-            {
-                newFurniIds.push(furniId);
-
-                WiredSelectionVisualizer.show(furniId);
-            }
-
-            return newFurniIds;
-        });
-    }, [ trigger, setFurniIds ]);
-
-    UseUiEvent(WiredSelectObjectEvent.SELECT_OBJECT, onWiredSelectObjectEvent);
+    const { trigger = null, furniIds = [] } = useWired();
     
     return (
         <Column gap={ 1 }>

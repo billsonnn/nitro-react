@@ -1,8 +1,7 @@
 import { Dispatch, FC, SetStateAction } from 'react';
-import { LocalizeText } from '../../../../api';
+import { IGroupData, LocalizeText } from '../../../../api';
 import { Base, Column, Flex, Grid, LayoutBadgeImageView, Text } from '../../../../common';
-import { IGroupData } from '../../common/IGroupData';
-import { useGroupsContext } from '../../GroupsContext';
+import { useGroup } from '../../../../hooks';
 
 interface GroupTabCreatorConfirmationViewProps
 {
@@ -14,7 +13,7 @@ interface GroupTabCreatorConfirmationViewProps
 export const GroupTabCreatorConfirmationView: FC<GroupTabCreatorConfirmationViewProps> = props =>
 {
     const { groupData = null, setGroupData = null, purchaseCost = 0 } = props;
-    const { groupCustomize = null } = useGroupsContext();
+    const { groupCustomize = null } = useGroup();
 
     const getCompleteBadgeCode = () =>
     {

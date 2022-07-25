@@ -1,5 +1,5 @@
 import { FC, useCallback } from 'react';
-import { GetConfigurationManager, LocalizeText, NotificationUtilities } from '../../../../../api';
+import { GetConfigurationManager, LocalizeText, OpenUrl } from '../../../../../api';
 
 export interface WidgetContainerViewProps
 {
@@ -31,7 +31,7 @@ export const WidgetContainerView: FC<WidgetContainerViewProps> = props =>
             <div className="d-flex flex-column align-self-center">
                 <h3 className="my-0">{ LocalizeText(`landing.view.${ getOption('texts') }.header`) }</h3>
                 <i>{ LocalizeText(`landing.view.${ getOption('texts') }.body`) }</i>
-                <button className="btn btn-sm btn-gainsboro align-self-start px-3 mt-auto" onClick={ event => NotificationUtilities.openUrl(getOption('btnLink')) }>{ LocalizeText(`landing.view.${ getOption('texts') }.button`) }</button>
+                <button className="btn btn-sm btn-gainsboro align-self-start px-3 mt-auto" onClick={ event => OpenUrl(getOption('btnLink')) }>{ LocalizeText(`landing.view.${ getOption('texts') }.button`) }</button>
             </div>
         </div>
   	);

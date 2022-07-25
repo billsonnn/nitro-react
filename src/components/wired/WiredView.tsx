@@ -1,58 +1,21 @@
-import { ConditionDefinition, Triggerable, TriggerDefinition, UpdateActionMessageComposer, UpdateConditionMessageComposer, UpdateTriggerMessageComposer, WiredActionDefinition } from '@nitrots/nitro-renderer';
-import { FC, useState } from 'react';
-import { IsOwnerOfFloorFurniture, LocalizeText, NotificationUtilities, SendMessageComposer } from '../../api';
-import { GetWiredLayout } from './common/GetWiredLayout';
-import { WiredContextProvider } from './WiredContext';
-import { WiredMessageHandler } from './WiredMessageHandler';
+import { ConditionDefinition, TriggerDefinition, WiredActionDefinition } from '@nitrots/nitro-renderer';
+import { FC } from 'react';
+import { useWired } from '../../hooks';
+import { WiredActionLayoutView } from './views/actions/WiredActionLayoutView';
+import { WiredConditionLayoutView } from './views/conditions/WiredConditionLayoutView';
+import { WiredTriggerLayoutView } from './views/triggers/WiredTriggerLayoutView';
 
 export const WiredView: FC<{}> = props =>
 {
-    const [ trigger, setTrigger ] = useState<Triggerable>(null);
-    const [ intParams, setIntParams ] = useState<number[]>([]);
-    const [ stringParam, setStringParam ] = useState<string>('');
-    const [ furniIds, setFurniIds ] = useState<number[]>([]);
-    const [ actionDelay, setActionDelay ] = useState<number>(0);
+    const { trigger = null } = useWired();
 
-    const saveWired = () =>
-    {
-        const save = (trigger: Triggerable) =>
-        {
-            if(!trigger) return;
+    if(!trigger) return null;
 
-            if(trigger instanceof WiredActionDefinition)
-            {
-                SendMessageComposer(new UpdateActionMessageComposer(trigger.id, intParams, stringParam, furniIds, actionDelay, trigger.stuffTypeSelectionCode));
-            }
+    if(trigger instanceof WiredActionDefinition) return WiredActionLayoutView(trigger.code);
 
-            else if(trigger instanceof TriggerDefinition)
-            {
-                SendMessageComposer(new UpdateTriggerMessageComposer(trigger.id, intParams, stringParam, furniIds, trigger.stuffTypeSelectionCode));
-            }
-
-            else if(trigger instanceof ConditionDefinition)
-            {
-                SendMessageComposer(new UpdateConditionMessageComposer(trigger.id, intParams, stringParam, furniIds, trigger.stuffTypeSelectionCode));
-            }
-        }
-
-        if(!IsOwnerOfFloorFurniture(trigger.id))
-        {
-            NotificationUtilities.confirm(LocalizeText('wiredfurni.nonowner.change.confirm.body'), () =>
-            {
-                save(trigger)
-            }, null, null, null, LocalizeText('wiredfurni.nonowner.change.confirm.title'));
-        }
-        else
-        {
-            save(trigger);
-        }
-    }
-
-    return (
-        <WiredContextProvider value={ { trigger, setTrigger, intParams, setIntParams, stringParam, setStringParam, furniIds, setFurniIds, actionDelay, setActionDelay, saveWired } }>
-            <WiredMessageHandler />
-            { (trigger !== null) &&
-                GetWiredLayout(trigger) }
-        </WiredContextProvider>
-    );
+    if(trigger instanceof TriggerDefinition) return WiredTriggerLayoutView(trigger.code);
+    
+    if(trigger instanceof ConditionDefinition) return WiredConditionLayoutView(trigger.code);
+    
+    return null;
 };

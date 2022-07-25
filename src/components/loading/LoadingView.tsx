@@ -1,5 +1,4 @@
-import { FC, useEffect } from 'react';
-import { NotificationUtilities } from '../../api';
+import { FC } from 'react';
 import { Base, Column, LayoutProgressBar, Text } from '../../common';
 
 interface LoadingViewProps
@@ -12,13 +11,6 @@ interface LoadingViewProps
 export const LoadingView: FC<LoadingViewProps> = props =>
 {
     const { isError = false, message = '', percent = 0 } = props;
-
-    useEffect(() =>
-    {
-        if(!isError) return;
-
-        NotificationUtilities.simpleAlert(message, null, null, null, 'Connection Error');
-    }, [ isError, message ]);
     
     return (
         <Column fullHeight position="relative" className="nitro-loading">

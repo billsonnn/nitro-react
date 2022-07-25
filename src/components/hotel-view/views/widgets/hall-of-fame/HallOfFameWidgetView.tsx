@@ -1,7 +1,7 @@
 import { CommunityGoalHallOfFameData, CommunityGoalHallOfFameMessageEvent, GetCommunityGoalHallOfFameMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../../api';
-import { UseMessageEventHook } from '../../../../../hooks';
+import { useMessageEvent } from '../../../../../hooks';
 import { HallOfFameItemView } from '../hall-of-fame-item/HallOfFameItemView';
 import { HallOfFameWidgetViewProps } from './HallOfFameWidgetView.types';
 
@@ -17,7 +17,7 @@ export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props =>
         setData(parser.data);
     }, []);
 
-    UseMessageEventHook(CommunityGoalHallOfFameMessageEvent, onCommunityGoalHallOfFameMessageEvent);
+    useMessageEvent(CommunityGoalHallOfFameMessageEvent, onCommunityGoalHallOfFameMessageEvent);
 
     useEffect(() =>
     {

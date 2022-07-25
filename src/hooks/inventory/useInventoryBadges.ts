@@ -1,8 +1,8 @@
 import { BadgeReceivedEvent, BadgesEvent, RequestBadgesComposer, SetActivatedBadgesComposer } from '@nitrots/nitro-renderer';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { UseMessageEventHook } from '..';
 import { GetConfiguration, SendMessageComposer, UnseenItemCategory } from '../../api';
+import { useMessageEvent } from '../events';
 import { useSharedVisibility } from '../useSharedVisibility';
 import { useInventoryUnseenTracker } from './useInventoryUnseenTracker';
 
@@ -58,7 +58,7 @@ const useInventoryBadgesState = () =>
         return (badgeIds[index] || 0);
     }
 
-    const onBadgesEvent = useCallback((event: BadgesEvent) =>
+    useMessageEvent<BadgesEvent>(BadgesEvent, event =>
     {
         const parser = event.getParser();
         const newBadgeCodes = parser.getAllBadgeCodes();
@@ -69,11 +69,9 @@ const useInventoryBadgesState = () =>
         setBadgeCodes(newBadgeCodes);
         setBadgeIds(newBadgeIds);
         setActiveBadgeCodes(parser.getActiveBadgeCodes());
-    }, []);
+    });
 
-    UseMessageEventHook(BadgesEvent, onBadgesEvent);
-
-    const onBadgeReceivedEvent = useCallback((event: BadgeReceivedEvent) =>
+    useMessageEvent<BadgeReceivedEvent>(BadgeReceivedEvent, event =>
     {
         const parser = event.getParser();
         const unseen = isUnseen(UnseenItemCategory.BADGE, parser.badgeId);
@@ -97,9 +95,7 @@ const useInventoryBadgesState = () =>
 
             return newValue;
         });
-    }, [ isUnseen ]);
-
-    UseMessageEventHook(BadgeReceivedEvent, onBadgeReceivedEvent);
+    });
 
     useEffect(() =>
     {

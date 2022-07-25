@@ -1,9 +1,8 @@
 import { GetCfhStatusMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../api';
+import { DispatchUiEvent, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Text } from '../../../common';
 import { GuideToolEvent } from '../../../events';
-import { DispatchUiEvent } from '../../../hooks';
 import { useHelpContext } from '../HelpContext';
 
 export const HelpIndexView: FC<{}> = props =>

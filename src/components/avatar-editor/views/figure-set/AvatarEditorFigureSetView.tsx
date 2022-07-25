@@ -1,8 +1,6 @@
 import { Dispatch, FC, SetStateAction, useCallback } from 'react';
-import { AutoGrid } from '../../../../common/AutoGrid';
-import { AvatarEditorGridPartItem } from '../../common/AvatarEditorGridPartItem';
-import { CategoryData } from '../../common/CategoryData';
-import { IAvatarEditorCategoryModel } from '../../common/IAvatarEditorCategoryModel';
+import { AvatarEditorGridPartItem, CategoryData, IAvatarEditorCategoryModel } from '../../../../api';
+import { AutoGrid } from '../../../../common';
 import { AvatarEditorFigureSetItemView } from './AvatarEditorFigureSetItemView';
 
 export interface AvatarEditorFigureSetViewProps

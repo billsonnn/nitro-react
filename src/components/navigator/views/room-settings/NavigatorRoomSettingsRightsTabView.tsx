@@ -2,7 +2,7 @@ import { FlatControllerAddedEvent, FlatControllerRemovedEvent, FlatControllersEv
 import { FC, useCallback, useEffect, useState } from 'react';
 import { IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Grid, Text, UserProfileIconView } from '../../../../common';
-import { UseMessageEventHook } from '../../../../hooks';
+import { useMessageEvent } from '../../../../hooks';
 
 interface NavigatorRoomSettingsTabViewProps
 {
@@ -24,7 +24,7 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
         setUsersWithRights(parser.users);
     }, [ roomData ]);
 
-    UseMessageEventHook(FlatControllersEvent, onFlatControllersEvent);
+    useMessageEvent(FlatControllersEvent, onFlatControllersEvent);
 
     const onFlatControllerAddedEvent = useCallback((event: FlatControllerAddedEvent) =>
     {
@@ -42,7 +42,7 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
         });
     }, [ roomData ]);
 
-    UseMessageEventHook(FlatControllerAddedEvent, onFlatControllerAddedEvent);
+    useMessageEvent(FlatControllerAddedEvent, onFlatControllerAddedEvent);
 
     const onFlatControllerRemovedEvent = useCallback((event: FlatControllerRemovedEvent) =>
     {
@@ -60,7 +60,7 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
         });
     }, [ roomData ]);
 
-    UseMessageEventHook(FlatControllerRemovedEvent, onFlatControllerRemovedEvent);
+    useMessageEvent(FlatControllerRemovedEvent, onFlatControllerRemovedEvent);
 
     useEffect(() =>
     {

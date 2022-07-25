@@ -1,25 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, IAvatarFigureContainer, ILinkEventTracker, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AddEventLinkTracker, GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { Button } from '../../common/Button';
-import { ButtonGroup } from '../../common/ButtonGroup';
-import { Column } from '../../common/Column';
-import { Grid } from '../../common/Grid';
-import { UseMessageEventHook } from '../../hooks';
-import { AvatarEditorAction } from './common/AvatarEditorAction';
-import { AvatarEditorUtilities } from './common/AvatarEditorUtilities';
-import { BodyModel } from './common/BodyModel';
-import { FigureData } from './common/FigureData';
-import { generateRandomFigure } from './common/FigureGenerator';
-import { HeadModel } from './common/HeadModel';
-import { IAvatarEditorCategoryModel } from './common/IAvatarEditorCategoryModel';
-import { LegModel } from './common/LegModel';
-import { TorsoModel } from './common/TorsoModel';
-import { AvatarEditorFigurePreviewView } from './views/figure-preview/AvatarEditorFigurePreviewView';
-import { AvatarEditorModelView } from './views/model/AvatarEditorModelView';
-import { AvatarEditorWardrobeView } from './views/wardrobe/AvatarEditorWardrobeView';
+import { AddEventLinkTracker, AvatarEditorAction, AvatarEditorUtilities, BodyModel, FigureData, generateRandomFigure, GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, GetSessionDataManager, HeadModel, IAvatarEditorCategoryModel, LegModel, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TorsoModel } from '../../api';
+import { Button, ButtonGroup, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
+import { useMessageEvent } from '../../hooks';
+import { AvatarEditorFigurePreviewView } from './views/AvatarEditorFigurePreviewView';
+import { AvatarEditorModelView } from './views/AvatarEditorModelView';
+import { AvatarEditorWardrobeView } from './views/AvatarEditorWardrobeView';
 
 const DEFAULT_MALE_FIGURE: string = 'hr-100.hd-180-7.ch-215-66.lg-270-79.sh-305-62.ha-1002-70.wa-2007';
 const DEFAULT_FEMALE_FIGURE: string = 'hr-515-33.hd-600-1.ch-635-70.lg-716-66-62.sh-735-68';
@@ -42,17 +29,15 @@ export const AvatarEditorView: FC<{}> = props =>
 
     const maxWardrobeSlots = useMemo(() => GetConfiguration<number>('avatar.wardrobe.max.slots', 10), []);
 
-    const onFigureSetIdsMessageEvent = useCallback((event: FigureSetIdsMessageEvent) =>
+    useMessageEvent<FigureSetIdsMessageEvent>(FigureSetIdsMessageEvent, event =>
     {
         const parser = event.getParser();
 
         setFigureSetIds(parser.figureSetIds);
         setBoundFurnitureNames(parser.boundsFurnitureNames);
-    }, []);
+    });
 
-    UseMessageEventHook(FigureSetIdsMessageEvent, onFigureSetIdsMessageEvent);
-
-    const onUserWardrobePageEvent = useCallback((event: UserWardrobePageEvent) =>
+    useMessageEvent<UserWardrobePageEvent>(UserWardrobePageEvent, event =>
     {
         const parser = event.getParser();
         const savedFigures: [ IAvatarFigureContainer, string ][] = [];
@@ -73,10 +58,8 @@ export const AvatarEditorView: FC<{}> = props =>
             savedFigures[(index - 1)] = [ container, gender ];
         }
 
-        setSavedFigures(savedFigures)
-    }, [ maxWardrobeSlots ]);
-
-    UseMessageEventHook(UserWardrobePageEvent, onUserWardrobePageEvent);
+        setSavedFigures(savedFigures);
+    });
 
     const selectCategory = useCallback((name: string) =>
     {

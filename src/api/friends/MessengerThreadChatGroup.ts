@@ -1,4 +1,4 @@
-import { GroupType } from './GroupType';
+import { MessengerGroupType } from './MessengerGroupType';
 import { MessengerThreadChat } from './MessengerThreadChat';
 
 export class MessengerThreadChatGroup
@@ -7,7 +7,7 @@ export class MessengerThreadChatGroup
     private _chats: MessengerThreadChat[];
     private _type: number;
 
-    constructor(userId: number, type = GroupType.PRIVATE_CHAT)
+    constructor(userId: number, type = MessengerGroupType.PRIVATE_CHAT)
     {
         this._userId = userId;
         this._chats = [];

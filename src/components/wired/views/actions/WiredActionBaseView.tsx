@@ -3,7 +3,7 @@ import { FC, PropsWithChildren, useEffect } from 'react';
 import ReactSlider from 'react-slider';
 import { GetWiredTimeLocale, LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Text } from '../../../../common';
-import { useWiredContext } from '../../WiredContext';
+import { useWired } from '../../../../hooks';
 import { WiredBaseView } from '../WiredBaseView';
 
 export interface WiredActionBaseViewProps
@@ -16,7 +16,7 @@ export interface WiredActionBaseViewProps
 export const WiredActionBaseView: FC<PropsWithChildren<WiredActionBaseViewProps>> = props =>
 {
     const { requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, hasSpecialInput = false, children = null } = props;
-    const { trigger = null, actionDelay = 0, setActionDelay = null } = useWiredContext();
+    const { trigger = null, actionDelay = 0, setActionDelay = null } = useWired();
 
     useEffect(() =>
     {

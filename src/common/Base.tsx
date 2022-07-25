@@ -6,6 +6,7 @@ export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttrib
     innerRef?: MutableRefObject<T>;
     display?: DisplayType;
     fit?: boolean;
+    fitV?: boolean;
     grow?: boolean;
     shrink?: boolean;
     fullWidth?: boolean;
@@ -22,7 +23,7 @@ export interface BaseProps<T = HTMLElement> extends DetailedHTMLProps<HTMLAttrib
 
 export const Base: FC<BaseProps<HTMLDivElement>> = props =>
 {
-    const { ref = null, innerRef = null, display = null, fit = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, float = null, pointer = false, visible = null, textColor = null, classNames = [], className = '', style = {}, children = null, ...rest } = props;
+    const { ref = null, innerRef = null, display = null, fit = false, fitV = false, grow = false, shrink = false, fullWidth = false, fullHeight = false, overflow = null, position = null, float = null, pointer = false, visible = null, textColor = null, classNames = [], className = '', style = {}, children = null, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -33,6 +34,8 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
         if(fit || fullWidth) newClassNames.push('w-100');
 
         if(fit || fullHeight) newClassNames.push('h-100');
+
+        if(fitV) newClassNames.push('vw-100', 'vh-100');
 
         if(grow) newClassNames.push('flex-grow-1');
 
@@ -53,7 +56,7 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ display, fit, grow, shrink, fullWidth, fullHeight, overflow, position, float, pointer, visible, textColor, classNames ]);
+    }, [ display, fit, fitV, grow, shrink, fullWidth, fullHeight, overflow, position, float, pointer, visible, textColor, classNames ]);
 
     const getClassName = useMemo(() =>
     {

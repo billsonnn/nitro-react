@@ -1,9 +1,9 @@
 import { FriendlyTime, GetModeratorUserInfoMessageComposer, ModeratorUserInfoData, ModeratorUserInfoEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../api';
+import { DispatchUiEvent, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, DraggableWindowPosition, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { ModToolsOpenUserChatlogEvent } from '../../../../events';
-import { DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
+import { useMessageEvent } from '../../../../hooks';
 import { ModToolsUserModActionView } from './ModToolsUserModActionView';
 import { ModToolsUserRoomVisitsView } from './ModToolsUserRoomVisitsView';
 import { ModToolsUserSendMessageView } from './ModToolsUserSendMessageView';
@@ -31,7 +31,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
         setUserInfo(parser.data);
     }, [ userId ]);
 
-    UseMessageEventHook(ModeratorUserInfoEvent, onModtoolUserInfoEvent);
+    useMessageEvent(ModeratorUserInfoEvent, onModtoolUserInfoEvent);
 
     const userProperties = useMemo(() =>
     {

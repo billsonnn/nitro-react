@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText, NotificationAlertItem, NotificationUtilities } from '../../../../api';
+import { LocalizeText, NotificationAlertItem, OpenUrl } from '../../../../api';
 import { AutoGrid, Button, Column, Flex, LayoutNotificationAlertView, LayoutNotificationAlertViewProps } from '../../../../common';
 
 interface NotificationDefaultAlertViewProps extends LayoutNotificationAlertViewProps
@@ -16,7 +16,7 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
 
     const visitUrl = useCallback(() =>
     {
-        NotificationUtilities.openUrl(item.clickUrl);
+        OpenUrl(item.clickUrl);
         
         close();
     }, [ item, close ]);

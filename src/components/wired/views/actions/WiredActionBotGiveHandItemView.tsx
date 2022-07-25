@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Column, Text } from '../../../../common';
-import { useWiredContext } from '../../WiredContext';
+import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 const ALLOWED_HAND_ITEM_IDS: number[] = [ 2, 5, 7, 8, 9, 10, 27 ];
@@ -10,7 +10,7 @@ export const WiredActionBotGiveHandItemView: FC<{}> = props =>
 {
     const [ botName, setBotName ] = useState('');
     const [ handItemId, setHandItemId ] = useState(-1);
-    const { trigger = null, setStringParam = null, setIntParams = null } = useWiredContext();
+    const { trigger = null, setStringParam = null, setIntParams = null } = useWired();
 
     const save = () =>
     {

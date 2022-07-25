@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ApproveNameMessageComposer, ApproveNameMessageEvent, ColorConverter, GetSellablePetPalettesComposer, PurchaseFromCatalogComposer, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetPetAvailableColors, GetPetIndexFromLocalization, LocalizeText, SendMessageComposer } from '../../../../../../api';
+import { DispatchUiEvent, GetPetAvailableColors, GetPetIndexFromLocalization, LocalizeText, SendMessageComposer } from '../../../../../../api';
 import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, LayoutPetImageView, Text } from '../../../../../../common';
 import { CatalogPurchaseFailureEvent } from '../../../../../../events';
-import { DispatchUiEvent, useCatalog, UseMessageEventHook } from '../../../../../../hooks';
+import { useCatalog, useMessageEvent } from '../../../../../../hooks';
 import { CatalogAddOnBadgeWidgetView } from '../../widgets/CatalogAddOnBadgeWidgetView';
 import { CatalogPurchaseWidgetView } from '../../widgets/CatalogPurchaseWidgetView';
 import { CatalogTotalPriceWidget } from '../../widgets/CatalogTotalPriceWidget';
@@ -114,7 +114,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
         else DispatchUiEvent(new CatalogPurchaseFailureEvent(-1));
     }, [ purchasePet ]);
 
-    UseMessageEventHook(ApproveNameMessageEvent, onApproveNameMessageEvent);
+    useMessageEvent(ApproveNameMessageEvent, onApproveNameMessageEvent);
 
     useEffect(() =>
     {

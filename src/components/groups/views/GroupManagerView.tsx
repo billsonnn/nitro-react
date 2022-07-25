@@ -1,9 +1,8 @@
 import { GroupBadgePart, GroupInformationEvent, GroupSettingsEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText } from '../../../api';
+import { IGroupData, LocalizeText } from '../../../api';
 import { Base, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../common';
-import { UseMessageEventHook } from '../../../hooks';
-import { IGroupData } from '../common/IGroupData';
+import { useMessageEvent } from '../../../hooks';
 import { GroupTabBadgeView } from './tabs/GroupTabBadgeView';
 import { GroupTabColorsView } from './tabs/GroupTabColorsView';
 import { GroupTabIdentityView } from './tabs/GroupTabIdentityView';
@@ -55,7 +54,7 @@ export const GroupManagerView: FC<{}> = props =>
         });
     }, [ groupData ]);
 
-    UseMessageEventHook(GroupInformationEvent, onGroupInformationEvent);
+    useMessageEvent(GroupInformationEvent, onGroupInformationEvent);
 
     const onGroupSettingsEvent = useCallback((event: GroupSettingsEvent) =>
     {
@@ -85,7 +84,7 @@ export const GroupManagerView: FC<{}> = props =>
         });
     }, [ setGroupData ]);
 
-    UseMessageEventHook(GroupSettingsEvent, onGroupSettingsEvent);
+    useMessageEvent(GroupSettingsEvent, onGroupSettingsEvent);
 
     if(!groupData || (groupData.groupId <= 0)) return null;
     

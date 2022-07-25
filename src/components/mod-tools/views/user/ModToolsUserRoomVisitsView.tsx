@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { AutoSizer, List, ListRowProps } from 'react-virtualized';
 import { SendMessageComposer, TryVisitRoom } from '../../../../api';
 import { Base, Column, DraggableWindowPosition, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { UseMessageEventHook } from '../../../../hooks';
+import { useMessageEvent } from '../../../../hooks';
 
 interface ModToolsUserRoomVisitsViewProps
 {
@@ -25,7 +25,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
         setRoomVisitData(parser.data);
     }, [ userId ]);
 
-    UseMessageEventHook(RoomVisitsEvent, onModtoolReceivedRoomsUserEvent);
+    useMessageEvent(RoomVisitsEvent, onModtoolReceivedRoomsUserEvent);
 
     const RowRenderer = (props: ListRowProps) =>
     {

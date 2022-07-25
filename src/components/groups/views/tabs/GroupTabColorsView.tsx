@@ -1,10 +1,9 @@
 import { GroupSaveColorsComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../api';
+import { IGroupData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { AutoGrid, Base, Column, Flex, Grid, Text } from '../../../../common';
-import { IGroupData } from '../../common/IGroupData';
-import { useGroupsContext } from '../../GroupsContext';
+import { useGroup } from '../../../../hooks';
 
 interface GroupTabColorsViewProps
 {
@@ -17,7 +16,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
 {
     const { groupData = null, setGroupData = null, setCloseAction = null } = props;
     const [ colors, setColors ] = useState<number[]>(null);
-    const { groupCustomize = null } = useGroupsContext();
+    const { groupCustomize = null } = useGroup();
 
     const getGroupColor = (colorIndex: number) =>
     {

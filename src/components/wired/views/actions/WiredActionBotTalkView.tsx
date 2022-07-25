@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType, WIRED_STRING_DELIMETER } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
-import { useWiredContext } from '../../WiredContext';
+import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionBotTalkView: FC<{}> = props =>
@@ -9,7 +9,7 @@ export const WiredActionBotTalkView: FC<{}> = props =>
     const [ botName, setBotName ] = useState('');
     const [ message, setMessage ] = useState('');
     const [ talkMode, setTalkMode ] = useState(-1);
-    const { trigger = null, setStringParam = null, setIntParams = null } = useWiredContext();
+    const { trigger = null, setStringParam = null, setIntParams = null } = useWired();
 
     const save = () =>
     {
