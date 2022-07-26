@@ -84,6 +84,8 @@ const useMessengerState = () =>
 
             return newValue;
         });
+
+        if(activeThreadId === threadId) setActiveThreadId(-1);
     }
 
     const sendMessage = (thread: MessengerThread, text: string) =>
