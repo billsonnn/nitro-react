@@ -1,9 +1,9 @@
 import { GuideOnDutyStatusMessageEvent, GuideSessionAttachedMessageEvent, GuideSessionDetachedMessageEvent, GuideSessionEndedMessageEvent, GuideSessionInvitedToGuideRoomMessageEvent, GuideSessionMessageMessageEvent, GuideSessionOnDutyUpdateMessageComposer, GuideSessionPartnerIsTypingMessageEvent, GuideSessionStartedMessageEvent, ILinkEventTracker, PerkAllowancesMessageEvent, PerkEnum } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, DispatchUiEvent, GetConfiguration, GetSessionDataManager, GuideSessionState, GuideToolMessage, GuideToolMessageGroup, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { AddEventLinkTracker, GetConfiguration, GetSessionDataManager, GuideSessionState, GuideToolMessage, GuideToolMessageGroup, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
-import { GuideToolEvent, NotificationAlertEvent } from '../../events';
-import { useMessageEvent, useUiEvent } from '../../hooks';
+import { GuideToolEvent } from '../../events';
+import { useMessageEvent, useNotification, useUiEvent } from '../../hooks';
 import { GuideToolAcceptView } from './views/GuideToolAcceptView';
 import { GuideToolMenuView } from './views/GuideToolMenuView';
 import { GuideToolOngoingView } from './views/GuideToolOngoingView';
@@ -38,6 +38,8 @@ export const GuideToolView: FC<{}> = props =>
     const [ ongoingFigure, setOngoingFigure ] = useState<string>(null);
     const [ ongoingIsTyping, setOngoingIsTyping ] = useState<boolean>(false);
     const [ ongoingMessageGroups, setOngoingMessageGroups ] = useState<GuideToolMessageGroup[]>([]);
+
+    const { simpleAlert = null } = useNotification();
 
     const updateSessionState = useCallback((newState: string, replacement?: string) =>
     {
@@ -296,7 +298,7 @@ export const GuideToolView: FC<{}> = props =>
             case 'toggle_duty':
                 if(!isHandlingBullyReports && !isHandlingGuideRequests && !isHandlingHelpRequests)
                 {
-                    DispatchUiEvent(new NotificationAlertEvent([ LocalizeText('guide.help.guide.tool.noqueueselected.message') ], null, null, null, LocalizeText('guide.help.guide.tool.noqueueselected.caption'), null));
+                    simpleAlert(LocalizeText('guide.help.guide.tool.noqueueselected.message'), null, null, null, LocalizeText('guide.help.guide.tool.noqueueselected.caption'), null);
                     return;
                 }
 
@@ -312,7 +314,7 @@ export const GuideToolView: FC<{}> = props =>
                 window.open(url);
                 return;
         }
-    }, [ isHandlingBullyReports, isHandlingGuideRequests, isHandlingHelpRequests ]);
+    }, [ isHandlingBullyReports, isHandlingGuideRequests, isHandlingHelpRequests, simpleAlert ]);
 
     if(!isVisible) return null;
 

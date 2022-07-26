@@ -1,8 +1,8 @@
 import { ModMessageMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { DispatchUiEvent, SendMessageComposer } from '../../../../api';
+import { SendMessageComposer } from '../../../../api';
 import { Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { NotificationAlertEvent } from '../../../../events';
+import { useNotification } from '../../../../hooks';
 import { ISelectedUser } from '../../common/ISelectedUser';
 
 interface ModToolsUserSendMessageViewProps
@@ -15,12 +15,13 @@ export const ModToolsUserSendMessageView: FC<ModToolsUserSendMessageViewProps> =
 {
     const { user = null, onCloseClick = null } = props;
     const [ message, setMessage ] = useState('');
+    const { simpleAlert = null } = useNotification();
 
     const sendMessage = useCallback(() =>
     {
         if(message.trim().length === 0)
         {
-            DispatchUiEvent(new NotificationAlertEvent([ 'Please write a message to user.' ], null, null, null, 'Error', null));
+            simpleAlert('Please write a message to user.', null, null, null, 'Error', null);
             
             return;
         }
@@ -28,7 +29,7 @@ export const ModToolsUserSendMessageView: FC<ModToolsUserSendMessageViewProps> =
         SendMessageComposer(new ModMessageMessageComposer(user.userId, message, -999));
 
         onCloseClick();
-    }, [ message, user, onCloseClick ]);
+    }, [ message, user, onCloseClick, simpleAlert ]);
 
     if(!user) return null;
 

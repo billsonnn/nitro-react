@@ -1,25 +1,13 @@
-import { SanctionStatusEvent, SanctionStatusMessageParser } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { FC } from 'react';
 import { LocalizeText } from '../../../api';
 import { Base, Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
-import { useMessageEvent } from '../../../hooks';
+import { useHelp } from '../../../hooks';
 
 export const SanctionSatusView:FC<{}> = props =>
 {
-    const [ sanctionInfo, setSanctionInfo ] = useState<SanctionStatusMessageParser>(null);
-    
-    const onSanctionStatusEvent = useCallback((event: SanctionStatusEvent) =>
-    {
-        const parser = event.getParser();
+    const { sanctionInfo = null, setSanctionInfo = null } = useHelp();
 
-        if(!parser) return;
-
-        setSanctionInfo(parser);
-    }, []);
-    
-    useMessageEvent(SanctionStatusEvent, onSanctionStatusEvent);
-
-    const sanctionLocalization = useCallback((param: string, sanctionName: string, length?: number) =>
+    const sanctionLocalization = (param: string, sanctionName: string, length?: number) =>
     {
         let localizationName = `help.sanction.${ param }`;
 
@@ -44,10 +32,10 @@ export const SanctionSatusView:FC<{}> = props =>
         }
 
         return LocalizeText(localizationName, [ 'hours' ], [ length.toString() ]);
-    }, []);
-    
+    }
+
     if(!sanctionInfo) return null;
-    
+
     return (
         <NitroCardView className="nitro-help" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('help.sanction.info.title') } onCloseClick={ () => setSanctionInfo(null) } />
@@ -57,7 +45,7 @@ export const SanctionSatusView:FC<{}> = props =>
                         <Base className="index-image" />
                     </Column>
                     <Column justifyContent="between" size={ 7 } overflow="hidden">
-                        { (sanctionInfo.sanctionReason === 'cfh.reason.EMPTY') 
+                        { (sanctionInfo.sanctionReason === 'cfh.reason.EMPTY')
                             ? <div className="col-12 fw-bold">{ LocalizeText('help.sanction.current.none') }</div>
                             : <>
                                 { ((sanctionInfo.probationHoursLeft > 0) || (sanctionInfo.isSanctionActive)) &&

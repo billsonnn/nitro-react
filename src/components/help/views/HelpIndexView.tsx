@@ -1,30 +1,23 @@
 import { GetCfhStatusMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback } from 'react';
-import { DispatchUiEvent, LocalizeText, SendMessageComposer } from '../../../api';
+import { FC } from 'react';
+import { DispatchUiEvent, LocalizeText, ReportState, SendMessageComposer } from '../../../api';
 import { Button, Column, Text } from '../../../common';
 import { GuideToolEvent } from '../../../events';
-import { useHelpContext } from '../HelpContext';
+import { useHelp } from '../../../hooks';
 
 export const HelpIndexView: FC<{}> = props =>
 {
-    const { helpReportState = null, setHelpReportState = null } = useHelpContext();
-    
-    const onReportClick = useCallback(() =>
-    {
-        const reportState = Object.assign({}, helpReportState );
-        reportState.currentStep = 1;
-        setHelpReportState(reportState);
-    },[ helpReportState, setHelpReportState ]);
+    const { setActiveReport = null } = useHelp();
 
-    const onRequestMySanctionStatusClick = useCallback(() =>
+    const onReportClick = () =>
     {
-        SendMessageComposer(new GetCfhStatusMessageComposer(false));
-    }, []);
+        setActiveReport(prevValue =>
+        {
+            const currentStep = ReportState.SELECT_USER;
 
-    const onNewHelpRequestClick = useCallback(() =>
-    {
-        DispatchUiEvent(new GuideToolEvent(GuideToolEvent.CREATE_HELP_REQUEST));
-    }, []);
+            return { ...prevValue, currentStep };
+        });
+    }
 
     return (
         <>
@@ -34,9 +27,9 @@ export const HelpIndexView: FC<{}> = props =>
             </Column>
             <Column gap={ 1 }>
                 <Button onClick={ onReportClick }>{ LocalizeText('help.main.bully.subtitle') }</Button>
-                <Button onClick={ onNewHelpRequestClick }>{ LocalizeText('help.main.help.title') }</Button>
+                <Button onClick={ () => DispatchUiEvent(new GuideToolEvent(GuideToolEvent.CREATE_HELP_REQUEST)) }>{ LocalizeText('help.main.help.title') }</Button>
                 <Button disabled={ true }>{ LocalizeText('help.main.self.tips.title') }</Button>
-                <Button variant="link" className="text-black" onClick={ onRequestMySanctionStatusClick }>{ LocalizeText('help.main.my.sanction.status') }</Button>
+                <Button variant="link" className="text-black" onClick={ () => SendMessageComposer(new GetCfhStatusMessageComposer(false)) }>{ LocalizeText('help.main.my.sanction.status') }</Button>
             </Column>
         </>
     )

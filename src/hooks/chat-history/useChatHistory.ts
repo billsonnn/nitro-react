@@ -1,18 +1,21 @@
-import { GetGuestRoomResultEvent, RoomSessionChatEvent, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { GetGuestRoomResultEvent, NewConsoleMessageEvent, RoomInviteEvent, RoomSessionChatEvent, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
 import { useBetween } from 'use-between';
-import { ChatEntryType, ChatHistoryCurrentDate, GetRoomSession, IChatEntry, IRoomHistoryEntry } from '../../api';
+import { ChatEntryType, ChatHistoryCurrentDate, GetRoomSession, IChatEntry, IRoomHistoryEntry, MessengerHistoryCurrentDate } from '../../api';
 import { useMessageEvent, useRoomSessionManagerEvent } from '../events';
 
 const CHAT_HISTORY_MAX = 1000;
 const ROOM_HISTORY_MAX = 10;
+const MESSENGER_HISTORY_MAX = 1000;
 
 let CHAT_HISTORY_COUNTER: number = 0;
+let MESSENGER_HISTORY_COUNTER: number = 0;
 
 const useChatHistoryState = () =>
 {
     const [ chatHistory, setChatHistory ] = useState<IChatEntry[]>([]);
     const [ roomHistory, setRoomHistory ] = useState<IRoomHistoryEntry[]>([]);
+    const [ messengerHistory, setMessengerHistory ] = useState<IChatEntry[]>([]);
     const [ needsRoomInsert, setNeedsRoomInsert ] = useState(false);
 
     const addChatEntry = (entry: IChatEntry) =>
@@ -40,6 +43,22 @@ const useChatHistoryState = () =>
             newValue.push(entry);
 
             if(newValue.length > ROOM_HISTORY_MAX) newValue.shift();
+
+            return newValue;
+        });
+    }
+
+    const addMessengerEntry = (entry: IChatEntry) =>
+    {
+        entry.id = MESSENGER_HISTORY_COUNTER++;
+
+        setMessengerHistory(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            newValue.push(entry);
+
+            if(newValue.length > MESSENGER_HISTORY_MAX) newValue.shift();
 
             return newValue;
         });
@@ -78,7 +97,21 @@ const useChatHistoryState = () =>
         setNeedsRoomInsert(false);
     });
 
-    return { chatHistory, roomHistory };
+    useMessageEvent<NewConsoleMessageEvent>(NewConsoleMessageEvent, event =>
+    {
+        const parser = event.getParser();
+
+        addMessengerEntry({ id: -1, entityId: parser.senderId, name: '', message: parser.messageText, roomId: -1, timestamp: MessengerHistoryCurrentDate(parser.secondsSinceSent), type: ChatEntryType.TYPE_IM });
+    });
+
+    useMessageEvent<RoomInviteEvent>(RoomInviteEvent, event =>
+    {
+        const parser = event.getParser();
+
+        addMessengerEntry({ id: -1, entityId: parser.senderId, name: '', message: parser.messageText, roomId: -1, timestamp: MessengerHistoryCurrentDate(), type: ChatEntryType.TYPE_IM });
+    });
+    
+    return { chatHistory, roomHistory, messengerHistory };
 }
 
 export const useChatHistory = () => useBetween(useChatHistoryState);

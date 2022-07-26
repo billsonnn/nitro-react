@@ -7,6 +7,7 @@ export * from './events/core';
 export * from './events/nitro';
 export * from './friends';
 export * from './groups';
+export * from './help';
 export * from './inventory';
 export * from './navigator';
 export * from './notification';

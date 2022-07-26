@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomControllerLevel, RoomObjectCategory, RoomObjectVariable, RoomUnitGiveHandItemComposer, SetRelationshipStatusComposer, TradingOpenComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { AvatarInfoUser, CreateLinkEvent, DispatchUiEvent, GetOwnRoomObject, GetSessionDataManager, GetUserProfile, LocalizeText, MessengerFriend, RoomWidgetUpdateChatInputContentEvent, SendMessageComposer } from '../../../../../api';
+import { AvatarInfoUser, CreateLinkEvent, DispatchUiEvent, GetOwnRoomObject, GetSessionDataManager, GetUserProfile, LocalizeText, MessengerFriend, ReportType, RoomWidgetUpdateChatInputContentEvent, SendMessageComposer } from '../../../../../api';
 import { Base, Flex } from '../../../../../common';
-import { HelpReportUserEvent } from '../../../../../events';
-import { useFriends, useRoom } from '../../../../../hooks';
+import { useFriends, useHelp, useRoom } from '../../../../../hooks';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
@@ -29,6 +28,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
     const [ mode, setMode ] = useState(MODE_NORMAL);
     const [ respectsLeft, setRespectsLeft ] = useState(0);
     const { canRequestFriend = null } = useFriends();
+    const { report = null } = useHelp();
     const { roomSession = null } = useRoom();
 
     const isShowGiveRights = useMemo(() =>
@@ -159,7 +159,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                     SendMessageComposer(new TradingOpenComposer(avatarInfo.roomIndex));
                     break;
                 case 'report':
-                    DispatchUiEvent(new HelpReportUserEvent(avatarInfo.webID));
+                    report(ReportType.BULLY, { reportedUserId: avatarInfo.webID });
                     break;
                 case 'pass_hand_item':
                     SendMessageComposer(new RoomUnitGiveHandItemComposer(avatarInfo.webID));
