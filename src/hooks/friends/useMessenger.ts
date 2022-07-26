@@ -22,7 +22,24 @@ const useMessengerState = () =>
     {
         let thread = messageThreads.find(thread => (thread.participant && (thread.participant.id === userId)));
 
-        if(thread) return thread;
+        if(thread)
+        {
+            const hiddenIndex = hiddenThreadIds.indexOf(thread.threadId);
+
+            if(hiddenIndex >= 0)
+            {
+                setHiddenThreadIds(prevValue =>
+                {
+                    const newValue = [ ...prevValue ];
+
+                    newValue.splice(hiddenIndex, 1);
+
+                    return newValue;
+                });
+            }
+
+            return thread;
+        }
         
         const friend = getFriend(userId);
 
@@ -53,7 +70,7 @@ const useMessengerState = () =>
         });
 
         return thread;
-    }, [ messageThreads, getFriend ]);
+    }, [ messageThreads, hiddenThreadIds, getFriend ]);
 
     const closeThread = (threadId: number) =>
     {
