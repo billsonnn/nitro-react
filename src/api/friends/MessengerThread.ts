@@ -1,4 +1,3 @@
-import { LocalizeText } from '../utils';
 import { GetGroupChatData } from './GetGroupChatData';
 import { MessengerFriend } from './MessengerFriend';
 import { MessengerGroupType } from './MessengerGroupType';
@@ -16,20 +15,13 @@ export class MessengerThread
     private _lastUpdated: Date;
     private _unreadCount: number;
 
-    constructor(participant: MessengerFriend, isNew: boolean = true)
+    constructor(participant: MessengerFriend)
     {
         this._threadId = ++MessengerThread.THREAD_ID;
         this._participant = participant;
         this._groups = [];
         this._lastUpdated = new Date();
         this._unreadCount = 0;
-
-        if(isNew)
-        {
-            this.addMessage(null, LocalizeText('messenger.moderationinfo'), 0, null, MessengerThreadChat.SECURITY_NOTIFICATION);
-
-            this._unreadCount = 0;
-        }
     }
 
     public addMessage(senderId: number, message: string, secondsSinceSent: number = 0, extraData: string = null, type: number = 0): MessengerThreadChat
