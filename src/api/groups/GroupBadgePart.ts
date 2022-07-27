@@ -1,3 +1,4 @@
+
 export class GroupBadgePart
 {
     public static BASE: string = 'b';
@@ -18,7 +19,7 @@ export class GroupBadgePart
 
     public get code(): string
     {
-        if(this.key === 0) return null;
+        if((this.key === 0) && (this.type !== GroupBadgePart.BASE)) return null;
         
         return GroupBadgePart.getCode(this.type, this.key, this.color, this.position);
     }
