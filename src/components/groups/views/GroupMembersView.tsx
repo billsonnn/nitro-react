@@ -114,7 +114,7 @@ export const GroupMembersView: FC<{}> = props =>
                 
                 setGroupId(groupId);
                 setLevelId(levelId);
-                setPageId(-1);
+                setPageId(0);
             },
             eventUrlPrefix: 'group-members/'
         };

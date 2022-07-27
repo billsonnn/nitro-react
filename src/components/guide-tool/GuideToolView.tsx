@@ -260,31 +260,29 @@ export const GuideToolView: FC<{}> = props =>
 
     useMessageEvent(GuideSessionDetachedMessageEvent, onGuideSessionDetachedMessageEvent);
 
-    const linkReceived = useCallback((url: string) =>
-    {
-        const parts = url.split('/');
-
-        if(parts.length < 2) return;
-
-        switch(parts[1])
-        {
-            case 'tour':
-            //Create Tour Request
-                return;
-        }
-    }, []);
-
     useEffect(() =>
     {
         const linkTracker: ILinkEventTracker = {
-            linkReceived,
+            linkReceived: (url: string) =>
+            {
+                const parts = url.split('/');
+        
+                if(parts.length < 2) return;
+        
+                switch(parts[1])
+                {
+                    case 'tour':
+                    //Create Tour Request
+                        return;
+                }
+            },
             eventUrlPrefix: 'help/'
         };
 
         AddEventLinkTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
-    }, [ linkReceived ]);
+    }, []);
 
     const processAction = useCallback((action: string) =>
     {
