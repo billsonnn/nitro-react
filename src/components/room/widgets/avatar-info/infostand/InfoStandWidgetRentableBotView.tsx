@@ -7,12 +7,12 @@ import { Button, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, Text
 interface InfoStandWidgetRentableBotViewProps
 {
     avatarInfo: AvatarInfoRentableBot;
-    close: () => void;
+    onClose: () => void;
 }
 
 export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewProps> = props =>
 {
-    const { avatarInfo = null, close = null } = props;
+    const { avatarInfo = null, onClose = null } = props;
 
     const canPickup = useMemo(() =>
     {
@@ -34,7 +34,7 @@ export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewPr
                     <Column gap={ 1 }>
                         <Flex alignItems="center" justifyContent="between" gap={ 1 }>
                             <Text variant="white" small wrap>{ avatarInfo.name }</Text>
-                            <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ close } />
+                            <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ onClose } />
                         </Flex>
                         <hr className="m-0" />
                     </Column>

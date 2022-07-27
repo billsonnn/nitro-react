@@ -11,7 +11,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
     const [ isVisible, setIsVisible ] = useState(false);
     const { presets = [], dimmerState = 0, selectedPresetId = 0, color = 0xFFFFFF, brightness = 0xFF, effectId = 0, selectedColor = 0, setSelectedColor = null, selectedBrightness = 0, setSelectedBrightness = null, selectedEffectId = 0, setSelectedEffectId = null, selectPresetId = null, applyChanges } = useFurnitureDimmerWidget();
 
-    const close = () =>
+    const onClose = () =>
     {
         FurnitureDimmerUtilities.previewDimmer(color, brightness, (effectId === 2));
 
@@ -33,7 +33,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
 
     return (
         <NitroCardView className="nitro-room-widget-dimmer">
-            <NitroCardHeaderView headerText={ LocalizeText('widget.dimmer.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('widget.dimmer.title') } onCloseClick={ onClose } />
             { (dimmerState === 1) &&
                 <NitroCardTabsView>
                     { presets.map(preset => <NitroCardTabsItemView key={ preset.id } isActive={ (selectedPresetId === preset.id) } onClick={ event => selectPresetId(preset.id) }>{ LocalizeText(`widget.dimmer.tab.${ preset.id }`) }</NitroCardTabsItemView>) }

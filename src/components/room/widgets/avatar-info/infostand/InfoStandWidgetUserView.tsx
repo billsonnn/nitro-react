@@ -10,12 +10,12 @@ interface InfoStandWidgetUserViewProps
 {
     avatarInfo: AvatarInfoUser;
     setAvatarInfo: Dispatch<SetStateAction<AvatarInfoUser>>;
-    close: () => void;
+    onClose: () => void;
 }
 
 export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =>
 {
-    const { avatarInfo = null, setAvatarInfo = null, close = null } = props;
+    const { avatarInfo = null, setAvatarInfo = null, onClose = null } = props;
     const [ motto, setMotto ] = useState<string>(null);
     const [ isEditingMotto, setIsEditingMotto ] = useState(false);
     const [ relationships, setRelationships ] = useState<RelationshipStatusInfoMessageParser>(null);
@@ -128,7 +128,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                             <UserProfileIconView userId={ avatarInfo.webID } />
                             <Text variant="white" small wrap>{ avatarInfo.name }</Text>
                         </Flex>
-                        <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ close } />
+                        <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ onClose } />
                     </Flex>
                     <hr className="m-0" />
                 </Column>

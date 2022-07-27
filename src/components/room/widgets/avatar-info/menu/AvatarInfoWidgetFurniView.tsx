@@ -10,12 +10,12 @@ import { ContextMenuView } from '../../context-menu/ContextMenuView';
 interface AvatarInfoWidgetFurniViewProps
 {
     avatarInfo: AvatarInfoFurni;
-    close: () => void;
+    onClose: () => void;
 }
 
 export const AvatarInfoWidgetFurniView: FC<AvatarInfoWidgetFurniViewProps> = props =>
 {
-    const { avatarInfo = null, close = null } = props;
+    const { avatarInfo = null, onClose = null } = props;
 
     const processAction = (name: string) =>
     {
@@ -42,7 +42,7 @@ export const AvatarInfoWidgetFurniView: FC<AvatarInfoWidgetFurniViewProps> = pro
     }
 
     return (
-        <ContextMenuView objectId={ avatarInfo.id } category={ avatarInfo.category } close={ close } collapsable={ true }>
+        <ContextMenuView objectId={ avatarInfo.id } category={ avatarInfo.category } onClose={ onClose } collapsable={ true }>
             <ContextMenuHeaderView>
                 { avatarInfo.name }
             </ContextMenuHeaderView>

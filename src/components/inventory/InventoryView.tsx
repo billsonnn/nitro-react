@@ -25,7 +25,7 @@ export const InventoryView: FC<{}> = props =>
     const { isTrading = false, stopTrading = null } = useInventoryTrade();
     const { getCount = null, resetCategory = null } = useInventoryUnseenTracker();
 
-    const close = () =>
+    const onClose = () =>
     {
         if(isTrading) stopTrading();
 
@@ -123,7 +123,7 @@ export const InventoryView: FC<{}> = props =>
 
     return (
         <NitroCardView uniqueKey={ 'inventory' } className="nitro-inventory" theme={ isTrading ? 'primary-slim' : '' } >
-            <NitroCardHeaderView headerText={ LocalizeText('inventory.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('inventory.title') } onCloseClick={ onClose } />
             { !isTrading &&
                 <>
                     <NitroCardTabsView>
@@ -149,7 +149,7 @@ export const InventoryView: FC<{}> = props =>
                 </> }
             { isTrading &&
                 <NitroCardContentView>
-                    <InventoryTradeView cancelTrade={ close } />
+                    <InventoryTradeView cancelTrade={ onClose } />
                 </NitroCardContentView> }
         </NitroCardView>
     );

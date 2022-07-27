@@ -86,7 +86,7 @@ export const GroupManagerView: FC<{}> = props =>
     
     return (
         <NitroCardView className="nitro-group-manager">
-            <NitroCardHeaderView headerText={ LocalizeText('group.window.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('group.window.title') } onCloseClick={ onClose } />
             <NitroCardTabsView>
                 { TABS.map(tab =>
                 {

@@ -8,7 +8,7 @@ import { useMessageEvent, useRoom } from '../../../../../hooks';
 interface InfoStandWidgetFurniViewProps
 {
     avatarInfo: AvatarInfoFurni;
-    close: () => void;
+    onClose: () => void;
 }
 
 const PICKUP_MODE_NONE: number = 0;
@@ -17,7 +17,7 @@ const PICKUP_MODE_FULL: number = 2;
 
 export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props =>
 {
-    const { avatarInfo = null, close = null } = props;
+    const { avatarInfo = null, onClose = null } = props;
     const { roomSession = null } = useRoom();
     
     const [ pickupMode, setPickupMode ] = useState(0);
@@ -278,7 +278,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                     <Column gap={ 1 }>
                         <Flex alignItems="center" justifyContent="between" gap={ 1 }>
                             <Text variant="white" small wrap>{ avatarInfo.name }</Text>
-                            <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ close } />
+                            <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ onClose } />
                         </Flex>
                         <hr className="m-0" />
                     </Column>

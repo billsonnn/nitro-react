@@ -6,7 +6,7 @@ import { ChooserWidgetView } from './ChooserWidgetView';
 
 export const UserChooserWidgetView: FC<{}> = props =>
 {
-    const { items = null, close = null, selectItem = null, populateChooser = null } = useUserChooserWidget();
+    const { items = null, onClose = null, selectItem = null, populateChooser = null } = useUserChooserWidget();
 
     useEffect(() =>
     {
@@ -27,5 +27,5 @@ export const UserChooserWidgetView: FC<{}> = props =>
     
     if(!items) return null;
 
-    return <ChooserWidgetView title={ LocalizeText('widget.chooser.user.title') } items={ items } selectItem={ selectItem } close={ close } />;
+    return <ChooserWidgetView title={ LocalizeText('widget.chooser.user.title') } items={ items } selectItem={ selectItem } onClose={ onClose } />;
 }

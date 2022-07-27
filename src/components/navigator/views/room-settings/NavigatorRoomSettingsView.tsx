@@ -65,7 +65,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
 
     useMessageEvent(RoomSettingsDataEvent, onRoomSettingsEvent);
 
-    const close = () =>
+    const onClose = () =>
     {
         setRoomData(null);
         setCurrentTab(TABS[0]);
@@ -181,7 +181,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
 
     return (
         <NitroCardView uniqueKey="nitro-room-settings" className="nitro-room-settings">
-            <NitroCardHeaderView headerText={ LocalizeText('navigator.roomsettings') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('navigator.roomsettings') } onCloseClick={ onClose } />
             <NitroCardTabsView>
                 { TABS.map(tab =>
                 {
@@ -190,7 +190,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
             </NitroCardTabsView>
             <NitroCardContentView>
                 { (currentTab === TABS[0]) &&
-                    <NavigatorRoomSettingsBasicTabView roomData={ roomData } handleChange={ handleChange } close={ close } /> }
+                    <NavigatorRoomSettingsBasicTabView roomData={ roomData } handleChange={ handleChange } onClose={ onClose } /> }
                 { (currentTab === TABS[1]) &&
                     <NavigatorRoomSettingsAccessTabView roomData={ roomData } handleChange={ handleChange } /> }
                 { (currentTab === TABS[2]) &&

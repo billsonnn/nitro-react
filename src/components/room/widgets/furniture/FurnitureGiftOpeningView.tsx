@@ -5,13 +5,13 @@ import { useFurniturePresentWidget } from '../../../../hooks';
 
 export const FurnitureGiftOpeningView: FC<{}> = props =>
 {
-    const { objectId = -1, classId = -1, itemType = null, text = null, isOwnerOfFurniture = false, senderName = null, senderFigure = null, placedItemId = -1, placedItemType = null, placedInRoom = false, imageUrl = null, openPresent = null, close = null } = useFurniturePresentWidget();
+    const { objectId = -1, classId = -1, itemType = null, text = null, isOwnerOfFurniture = false, senderName = null, senderFigure = null, placedItemId = -1, placedItemType = null, placedInRoom = false, imageUrl = null, openPresent = null, onClose = null } = useFurniturePresentWidget();
 
     if(objectId === -1) return null;
 
     return (
         <NitroCardView className="nitro-gift-opening" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText(senderName ? 'widget.furni.present.window.title_from' : 'widget.furni.present.window.title', [ 'name' ], [ senderName ]) } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText(senderName ? 'widget.furni.present.window.title_from' : 'widget.furni.present.window.title', [ 'name' ], [ senderName ]) } onCloseClick={ onClose } />
             <NitroCardContentView>
                 { (placedItemId === -1) &&
                     <Column overflow="hidden">

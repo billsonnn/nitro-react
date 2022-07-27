@@ -12,7 +12,7 @@ const useFurnitureStickieWidgetState = () =>
     const [ text, setText ] = useState('');
     const [ canModify, setCanModify ] = useState(false);
 
-    const close = () =>
+    const onClose = () =>
     {
         setObjectId(-1);
         setCategory(-1);
@@ -73,10 +73,10 @@ const useFurnitureStickieWidgetState = () =>
     {
         if((event.id !== objectId) || (event.category !== category)) return;
 
-        close();
+        onClose();
     });
 
-    return { objectId, color, text, canModify, updateColor, updateText, trash, close };
+    return { objectId, color, text, canModify, updateColor, updateText, trash, onClose };
 }
 
 export const useFurnitureStickieWidget = useFurnitureStickieWidgetState;

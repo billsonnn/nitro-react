@@ -12,7 +12,7 @@ export const NavigatorDoorStateView: FC<{}> = props =>
     const [ password, setPassword ] = useState('');
     const { doorData = null, setDoorData = null } = useNavigatorContext();
 
-    const close = () =>
+    const onClose = () =>
     {
         if(doorData && (doorData.state === DoorStateType.STATE_WAITING)) GoToDesktop();
 
@@ -64,7 +64,7 @@ export const NavigatorDoorStateView: FC<{}> = props =>
 
     return (
         <NitroCardView className="nitro-navigator-doorbell" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText(isDoorbell ? 'navigator.doorbell.title' : 'navigator.password.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText(isDoorbell ? 'navigator.doorbell.title' : 'navigator.password.title') } onCloseClick={ onClose } />
             <NitroCardContentView>
                 <Column gap={ 1 }>
                     <Text bold>{ doorData && doorData.roomInfo && doorData.roomInfo.roomName }</Text>
@@ -85,7 +85,7 @@ export const NavigatorDoorStateView: FC<{}> = props =>
                             <Button variant="success" onClick={ ring }>
                                 { LocalizeText('navigator.doorbell.button.ring') }
                             </Button> }
-                        <Button variant="danger" onClick={ close }>
+                        <Button variant="danger" onClick={ onClose }>
                             { LocalizeText('generic.cancel') }
                         </Button>
                     </Column> }
@@ -99,7 +99,7 @@ export const NavigatorDoorStateView: FC<{}> = props =>
                             <Button variant="success" onClick={ tryEntering }>
                                 { LocalizeText('navigator.password.button.try') }
                             </Button>
-                            <Button variant="danger" onClick={ close }>
+                            <Button variant="danger" onClick={ onClose }>
                                 { LocalizeText('generic.cancel') }
                             </Button>
                         </Column>

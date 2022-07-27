@@ -26,7 +26,7 @@ export const CatalogGiftView: FC<{}> = props =>
     const { catalogOptions = null } = useCatalog();
     const { giftConfiguration = null } = catalogOptions;
 
-    const close = useCallback(() =>
+    const onClose = useCallback(() =>
     {
         setIsVisible(false);
         setPageId(0);
@@ -46,12 +46,12 @@ export const CatalogGiftView: FC<{}> = props =>
         switch(event.type)
         {
             case CatalogPurchasedEvent.PURCHASE_SUCCESS:
-                close();
+                onClose();
                 return;
             case CatalogEvent.INIT_GIFT:
                 const castedEvent = (event as CatalogInitGiftEvent);
 
-                close();
+                onClose();
                     
                 setPageId(castedEvent.pageId);
                 setOfferId(castedEvent.offerId);
@@ -59,7 +59,7 @@ export const CatalogGiftView: FC<{}> = props =>
                 setIsVisible(true);
                 return;
         }
-    }, [ close ]);
+    }, [ onClose ]);
 
     useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
     useUiEvent(CatalogEvent.INIT_GIFT, onCatalogEvent);
@@ -158,7 +158,7 @@ export const CatalogGiftView: FC<{}> = props =>
 
     return (
         <NitroCardView uniqueKey="catalog-gift" className="nitro-catalog-gift" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('catalog.gift_wrapping.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('catalog.gift_wrapping.title') } onCloseClick={ onClose } />
             <NitroCardContentView className="text-black">
                 <FormGroup column>
                     <Text>{ LocalizeText('catalog.gift_wrapping.receiver') }</Text>
@@ -216,7 +216,7 @@ export const CatalogGiftView: FC<{}> = props =>
                     </ButtonGroup>
                 </Column>
                 <Flex justifyContent="between" alignItems="center">
-                    <Button variant="link" onClick={ close } className="text-black">
+                    <Button variant="link" onClick={ onClose } className="text-black">
                         { LocalizeText('cancel') }
                     </Button>
                     <Button variant="success" onClick={ () => handleAction('buy') }>

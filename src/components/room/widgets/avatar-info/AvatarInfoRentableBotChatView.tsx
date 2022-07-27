@@ -7,12 +7,12 @@ import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 interface AvatarInfoRentableBotChatViewProps
 {
     chatEvent: RoomWidgetUpdateRentableBotChatEvent;
-    close(): void;
+    onClose(): void;
 }
 
 export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProps> = props =>
 {
-    const { chatEvent = null, close = null } = props;
+    const { chatEvent = null, onClose = null } = props;
     // eslint-disable-next-line no-template-curly-in-string
     const [ newText, setNewText ] = useState<string>(chatEvent.chat === '${bot.skill.chatter.configuration.text.placeholder}' ? '' : chatEvent.chat);
     const [ automaticChat, setAutomaticChat ] = useState<boolean>(chatEvent.automaticChat);
@@ -29,7 +29,7 @@ export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProp
 
         SendMessageComposer(new BotSkillSaveComposer(chatEvent.botId, BotSkillsEnum.SETUP_CHAT, chatConfiguration));
 
-        close();
+        onClose();
     }
     
     return (
@@ -58,7 +58,7 @@ export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProp
                         </Flex>
                     </Column>
                     <Flex alignItems="center" justifyContent="between" gap={ 1 }>
-                        <Button fullWidth variant="primary" onClick={ close }>{ LocalizeText('cancel') }</Button>
+                        <Button fullWidth variant="primary" onClick={ onClose }>{ LocalizeText('cancel') }</Button>
                         <Button fullWidth variant="success" onClick={ save }>{ LocalizeText('save') }</Button>
                     </Flex>
                 </Column>

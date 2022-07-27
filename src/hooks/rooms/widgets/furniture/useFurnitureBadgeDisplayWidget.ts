@@ -16,7 +16,7 @@ const useFurnitureBadgeDisplayWidgetState = () =>
     const [ senderName, setSenderName ] = useState('');
     const { simpleAlert = null } = useNotification();
 
-    const close = () =>
+    const onClose = () =>
     {
         setObjectId(-1);
         setCategory(-1);
@@ -66,10 +66,10 @@ const useFurnitureBadgeDisplayWidgetState = () =>
     {
         if((event.id !== objectId) || (event.category !== category)) return;
 
-        close();
+        onClose();
     });
 
-    return { objectId, category, color, badgeName, badgeDesc, date, senderName, close };
+    return { objectId, category, color, badgeName, badgeDesc, date, senderName, onClose };
 }
 
 export const useFurnitureBadgeDisplayWidget = useFurnitureBadgeDisplayWidgetState;

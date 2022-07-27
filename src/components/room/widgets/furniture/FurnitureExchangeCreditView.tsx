@@ -5,13 +5,13 @@ import { useFurnitureExchangeWidget } from '../../../../hooks';
 
 export const FurnitureExchangeCreditView: FC<{}> = props =>
 {
-    const { objectId = -1, value = 0, close = null, redeem = null } = useFurnitureExchangeWidget();
+    const { objectId = -1, value = 0, onClose = null, redeem = null } = useFurnitureExchangeWidget();
 
     if(objectId === -1) return null;
 
     return (
         <NitroCardView className="nitro-widget-exchange-credit" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('catalog.redeem.dialog.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('catalog.redeem.dialog.title') } onCloseClick={ onClose } />
             <NitroCardContentView center>
                 <Flex overflow="hidden" gap={ 2 }>
                     <Column center>

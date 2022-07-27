@@ -11,7 +11,7 @@ import { ContextMenuView } from '../../context-menu/ContextMenuView';
 interface AvatarInfoWidgetAvatarViewProps
 {
     avatarInfo: AvatarInfoUser;
-    close: () => void;
+    onClose: () => void;
 }
 
 const MODE_NORMAL = 0;
@@ -24,7 +24,7 @@ const MODE_RELATIONSHIP = 6;
 
 export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = props =>
 {
-    const { avatarInfo = null, close = null } = props;
+    const { avatarInfo = null, onClose = null } = props;
     const [ mode, setMode ] = useState(MODE_NORMAL);
     const [ respectsLeft, setRespectsLeft ] = useState(0);
     const { canRequestFriend = null } = useFriends();
@@ -197,7 +197,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
             }
         }
 
-        if(hideMenu) close();
+        if(hideMenu) onClose();
     }
 
     useEffect(() =>
@@ -207,7 +207,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
     }, [ avatarInfo ]);
 
     return (
-        <ContextMenuView objectId={ avatarInfo.roomIndex } category={ RoomObjectCategory.UNIT } userType={ avatarInfo.userType } close={ close } collapsable={ true }>
+        <ContextMenuView objectId={ avatarInfo.roomIndex } category={ RoomObjectCategory.UNIT } userType={ avatarInfo.userType } onClose={ onClose } collapsable={ true }>
             <ContextMenuHeaderView className="cursor-pointer" onClick={ event => GetUserProfile(avatarInfo.webID) }>
                 { avatarInfo.name }
             </ContextMenuHeaderView>

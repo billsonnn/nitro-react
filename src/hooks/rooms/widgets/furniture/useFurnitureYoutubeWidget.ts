@@ -21,7 +21,7 @@ const useFurnitureYoutubeWidgetState = () =>
     const [ playlists, setPlaylists ] = useState<YoutubeDisplayPlaylist[]>(null);
     const [ hasControl, setHasControl ] = useState(false);
 
-    const close = () =>
+    const onClose = () =>
     {
         setObjectId(-1);
         setCategory(-1);
@@ -118,10 +118,10 @@ const useFurnitureYoutubeWidgetState = () =>
     {
         if((event.id !== objectId) || (event.category !== category)) return;
 
-        close();
+        onClose();
     });
 
-    return { objectId, videoId, videoStart, videoEnd, currentVideoState, selectedVideo, playlists, close, previous, next, pause, play, selectVideo };
+    return { objectId, videoId, videoStart, videoEnd, currentVideoState, selectedVideo, playlists, onClose, previous, next, pause, play, selectVideo };
 }
 
 export const useFurnitureYoutubeWidget = useFurnitureYoutubeWidgetState;

@@ -7,7 +7,7 @@ import { useRoom } from '../../../../../hooks';
 interface MonsterPlantSeedConfirmViewProps
 {
     objectId: number;
-    close: () => void;
+    onClose: () => void;
 }
 
 const MODE_DEFAULT: number = -1;
@@ -15,7 +15,7 @@ const MODE_MONSTERPLANT_SEED: number = 0;
 
 export const MonsterPlantSeedConfirmView: FC<MonsterPlantSeedConfirmViewProps> = props =>
 {
-    const { objectId = -1, close = null } = props;
+    const { objectId = -1, onClose = null } = props;
     const [ furniData, setFurniData ] = useState<IFurnitureData>(null);
     const [ mode, setMode ] = useState(MODE_DEFAULT);
     const { roomSession = null } = useRoom();
@@ -24,7 +24,7 @@ export const MonsterPlantSeedConfirmView: FC<MonsterPlantSeedConfirmViewProps> =
     {
         roomSession.useMultistateItem(objectId);
 
-        close();
+        onClose();
     }
 
     useEffect(() =>
@@ -48,19 +48,19 @@ export const MonsterPlantSeedConfirmView: FC<MonsterPlantSeedConfirmViewProps> =
 
         if(mode === MODE_DEFAULT)
         {
-            close();
+            onClose();
 
             return;
         }
 
         setMode(mode);
-    }, [ roomSession, objectId, close ]);
+    }, [ roomSession, objectId, onClose ]);
 
     if(mode === MODE_DEFAULT) return null;
     
     return (
         <NitroCardView className="nitro-use-product-confirmation">
-            <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title.plant_seed', [ 'name' ], [ furniData.name ]) } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title.plant_seed', [ 'name' ], [ furniData.name ]) } onCloseClick={ onClose } />
             <NitroCardContentView center>
                 <Flex gap={ 2 } overflow="hidden">
                     <Column>
@@ -74,7 +74,7 @@ export const MonsterPlantSeedConfirmView: FC<MonsterPlantSeedConfirmViewProps> =
                             <Text>{ LocalizeText('useproduct.widget.info.plant_seed') }</Text>
                         </Column>
                         <Flex alignItems="center" justifyContent="between">
-                            <Button variant="danger" onClick={ close }>{ LocalizeText('useproduct.widget.cancel') }</Button>
+                            <Button variant="danger" onClick={ onClose }>{ LocalizeText('useproduct.widget.cancel') }</Button>
                             <Button variant="success" onClick={ useProduct }>{ LocalizeText('widget.monsterplant_seed.button.use') }</Button>
                         </Flex>
                     </Column>

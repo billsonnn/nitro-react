@@ -24,7 +24,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
     const [ availableRooms, setAvailableRooms ] = useState<{ id: number, name: string }[]>(null);
     const [ purchaseCost, setPurchaseCost ] = useState<number>(0);
 
-    const close = () =>
+    const onCloseClose = () =>
     {
         setCloseAction(null);
         setGroupData(null);
@@ -121,7 +121,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
 
     return (
         <NitroCardView className="nitro-group-creator" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('group.create.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('group.create.title') } onCloseClick={ onCloseClose } />
             <NitroCardContentView>
                 <Flex center className="creator-tabs">
                     { TABS.map((tab, index) =>

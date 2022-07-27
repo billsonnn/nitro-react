@@ -5,7 +5,7 @@ import { useFurnitureFriendFurniWidget } from '../../../../hooks';
 
 export const FurnitureFriendFurniView: FC<{}> = props =>
 {
-    const { objectId = -1, type = 0, stage = 0, usernames = [], figures = [], date = null, close = null, respond = null } = useFurnitureFriendFurniWidget();
+    const { objectId = -1, type = 0, stage = 0, usernames = [], figures = [], date = null, onClose = null, respond = null } = useFurnitureFriendFurniWidget();
 
     if(objectId === -1) return null;
 
@@ -13,7 +13,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
     {
         return (
             <NitroCardView className="nitro-engraving-lock" theme="primary-slim">
-                <NitroCardHeaderView headerText={ LocalizeText('friend.furniture.confirm.lock.caption') } onCloseClick={ close } />
+                <NitroCardHeaderView headerText={ LocalizeText('friend.furniture.confirm.lock.caption') } onCloseClick={ onClose } />
                 <NitroCardContentView>
                     <h5 className="text-black text-center fw-bold mt-2 mb-2">
                         { LocalizeText('friend.furniture.confirm.lock.subtitle') }
@@ -37,7 +37,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
         return (
             <DraggableWindow handleSelector=".nitro-engraving-lock-view">
                 <div className={ `nitro-engraving-lock-view engraving-lock-${ type }` }>
-                    <div className="engraving-lock-close" onClick={ close } />
+                    <div className="engraving-lock-close" onClick={ onClose } />
                     <Flex justifyContent="center">
                         <div className="engraving-lock-avatar">
                             <LayoutAvatarImageView figure={ figures[0] } direction={ 2 } />

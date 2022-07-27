@@ -13,7 +13,7 @@ const useFurnitureStackHeightWidgetState = () =>
     const [ height, setHeight ] = useState(0);
     const [ pendingHeight, setPendingHeight ] = useState(-1);
 
-    const close = () =>
+    const onClose = () =>
     {
         setObjectId(-1);
         setCategory(-1);
@@ -61,7 +61,7 @@ const useFurnitureStackHeightWidgetState = () =>
     {
         if((event.id !== objectId) || (event.category !== category)) return;
 
-        close();
+        onClose();
     });
 
     useEffect(() =>
@@ -73,7 +73,7 @@ const useFurnitureStackHeightWidgetState = () =>
         return () => clearTimeout(timeout);
     }, [ objectId, pendingHeight ]);
 
-    return { objectId, height, maxHeight: MAX_HEIGHT, close, updateHeight };
+    return { objectId, height, maxHeight: MAX_HEIGHT, onClose, updateHeight };
 }
 
 export const useFurnitureStackHeightWidget = useFurnitureStackHeightWidgetState;

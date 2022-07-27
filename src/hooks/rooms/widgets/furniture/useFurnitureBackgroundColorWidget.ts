@@ -17,7 +17,7 @@ const useFurnitureBackgroundColorWidgetState = () =>
     const applyToner = () => SendMessageComposer(new ApplyTonerComposer(objectId, hue, saturation, lightness));
     const toggleToner = () => roomSession.useMultistateItem(objectId);
 
-    const close = () =>
+    const onClose = () =>
     {
         DispatchUiEvent(new RoomWidgetUpdateBackgroundColorPreviewEvent(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW));
 
@@ -46,7 +46,7 @@ const useFurnitureBackgroundColorWidgetState = () =>
     {
         if((event.id !== objectId) || (event.category !== category)) return;
 
-        close();
+        onClose();
     });
 
     useEffect(() =>
@@ -56,7 +56,7 @@ const useFurnitureBackgroundColorWidgetState = () =>
         DispatchUiEvent(new RoomWidgetUpdateBackgroundColorPreviewEvent(RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW, hue, saturation, lightness));
     }, [ objectId, category, hue, saturation, lightness ]);
 
-    return { objectId, hue, setHue, saturation, setSaturation, lightness, setLightness, applyToner, toggleToner, close };
+    return { objectId, hue, setHue, saturation, setSaturation, lightness, setLightness, applyToner, toggleToner, onClose };
 }
 
 export const useFurnitureBackgroundColorWidget = useFurnitureBackgroundColorWidgetState;

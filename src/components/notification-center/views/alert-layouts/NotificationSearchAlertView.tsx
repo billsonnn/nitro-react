@@ -9,7 +9,7 @@ interface NotificationDefaultAlertViewProps extends LayoutNotificationAlertViewP
 
 export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> = props =>
 {
-    const { item = null, title = ((props.item && props.item.title) || ''), close = null, ...rest } = props;
+    const { item = null, title = ((props.item && props.item.title) || ''), onClose = null, ...rest } = props;
 
     const [ searchValue, setSearchValue ] = useState('');
     const [ results, setResults ] = useState<string[]>([]);
@@ -18,8 +18,8 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
     {
         OpenUrl(item.clickUrl);
         
-        close();
-    }, [ item, close ]);
+        onClose();
+    }, [ item, onClose ]);
     
     useEffect(() =>
     {
@@ -36,7 +36,7 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
     const isAction = (item.clickUrl && item.clickUrl.startsWith('event:'));
 
     return (
-        <LayoutNotificationAlertView title={ title } close={ close } { ...rest }>
+        <LayoutNotificationAlertView title={ title } onClose={ onClose } { ...rest }>
             <Flex fullWidth alignItems="center" position="relative">
                 <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => updateSearchValue(event.target.value) } />
             </Flex>
@@ -51,7 +51,7 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
             <hr className="my-2"/>
             <Column alignItems="center" center gap={ 1 }>
                 { !isAction && !item.clickUrl &&
-                    <Button onClick={ close }>{ LocalizeText('generic.close') }</Button> }
+                    <Button onClick={ onClose }>{ LocalizeText('generic.close') }</Button> }
                 { item.clickUrl && (item.clickUrl.length > 0) &&
                     <Button onClick={ visitUrl }>{ LocalizeText(item.clickUrlText) }</Button> }
             </Column>

@@ -13,7 +13,7 @@ const useFurnitureTrophyWidgetState = () =>
     const [ date, setDate ] = useState('');
     const [ message, setMessage ] = useState('');
 
-    const close = () =>
+    const onClose = () =>
     {
         setObjectId(-1);
         setCategory(-1);
@@ -54,10 +54,10 @@ const useFurnitureTrophyWidgetState = () =>
     {
         if((event.id !== objectId) || (event.category !== category)) return;
 
-        close();
+        onClose();
     });
 
-    return { objectId, color, senderName, date, message, close };
+    return { objectId, color, senderName, date, message, onClose };
 }
 
 export const useFurnitureTrophyWidget = useFurnitureTrophyWidgetState;

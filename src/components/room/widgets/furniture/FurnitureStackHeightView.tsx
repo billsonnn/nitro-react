@@ -7,13 +7,13 @@ import { useFurnitureStackHeightWidget } from '../../../../hooks';
 
 export const FurnitureStackHeightView: FC<{}> = props =>
 {
-    const { objectId = -1, height = 0, maxHeight = 40, close = null, updateHeight = null } = useFurnitureStackHeightWidget();
+    const { objectId = -1, height = 0, maxHeight = 40, onClose = null, updateHeight = null } = useFurnitureStackHeightWidget();
 
     if(objectId === -1) return null;
 
     return (
         <NitroCardView className="nitro-widget-custom-stack-height" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('widget.custom.stack.height.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('widget.custom.stack.height.title') } onCloseClick={ onClose } />
             <NitroCardContentView justifyContent="between">
                 <Text>{ LocalizeText('widget.custom.stack.height.text') }</Text>
                 <Flex gap={ 2 }>

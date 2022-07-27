@@ -6,12 +6,12 @@ import { Base, Column, Flex, LayoutPetImageView, Text, UserProfileIconView } fro
 interface InfoStandWidgetPetViewProps
 {
     avatarInfo: AvatarInfoPet;
-    close: () => void;
+    onClose: () => void;
 }
 
 export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
 {
-    const { avatarInfo = null, close = null } = props;
+    const { avatarInfo = null, onClose = null } = props;
 
     if(!avatarInfo) return null;
 
@@ -21,7 +21,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                 <Column gap={ 1 }>
                     <Flex alignItems="center" justifyContent="between" gap={ 1 }>
                         <Text variant="white" small wrap>{ avatarInfo.name }</Text>
-                        <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ close } />
+                        <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ onClose } />
                     </Flex>
                     <Text variant="white" small wrap>{ LocalizeText(`pet.breed.${ avatarInfo.petType }.${ avatarInfo.petBreed }`) }</Text>
                     <hr className="m-0" />

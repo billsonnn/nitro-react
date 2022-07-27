@@ -14,7 +14,7 @@ const useFurnitureFriendFurniWidgetState = () =>
     const [ date, setDate ] = useState<string>(null);
     const [ stage, setStage ] = useState(0);
 
-    const close = () =>
+    const onClose = () =>
     {
         setObjectId(-1);
         setCategory(-1);
@@ -28,7 +28,7 @@ const useFurnitureFriendFurniWidgetState = () =>
     {
         GetRoomSession().connection.send(new FriendFurniConfirmLockMessageComposer(objectId, flag));
 
-        close();
+        onClose();
     }
 
     useMessageEvent<LoveLockFurniStartEvent>(LoveLockFurniStartEvent, event =>
@@ -39,8 +39,8 @@ const useFurnitureFriendFurniWidgetState = () =>
         setStage(parser.start ? 1 : 2);
     });
 
-    useMessageEvent<LoveLockFurniFinishedEvent>(LoveLockFurniFinishedEvent, event => close());
-    useMessageEvent<LoveLockFurniFriendConfirmedEvent>(LoveLockFurniFriendConfirmedEvent, event => close());
+    useMessageEvent<LoveLockFurniFinishedEvent>(LoveLockFurniFinishedEvent, event => onClose());
+    useMessageEvent<LoveLockFurniFriendConfirmedEvent>(LoveLockFurniFriendConfirmedEvent, event => onClose());
 
     useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_FRIEND_FURNITURE_ENGRAVING, event =>
     {
@@ -66,10 +66,10 @@ const useFurnitureFriendFurniWidgetState = () =>
     {
         if((event.id !== objectId) || (event.category !== category)) return;
 
-        close();
+        onClose();
     });
 
-    return { objectId, type, usernames, figures, date, stage, close, respond };
+    return { objectId, type, usernames, figures, date, stage, onClose, respond };
 }
 
 export const useFurnitureFriendFurniWidget = useFurnitureFriendFurniWidgetState;

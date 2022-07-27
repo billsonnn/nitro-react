@@ -10,7 +10,7 @@ const useFurnitureExternalImageWidgetState = () =>
     const [ category, setCategory ] = useState(-1);
     const [ photoData, setPhotoData ] = useState<IPhotoData>(null);
 
-    const close = () =>
+    const onClose = () =>
     {
         setObjectId(-1);
         setCategory(-1);
@@ -35,10 +35,10 @@ const useFurnitureExternalImageWidgetState = () =>
     {
         if((event.id !== objectId) || (event.category !== category)) return;
 
-        close();
+        onClose();
     });
 
-    return { objectId, photoData, close };
+    return { objectId, photoData, onClose };
 }
 
 export const useFurnitureExternalImageWidget = useFurnitureExternalImageWidgetState;

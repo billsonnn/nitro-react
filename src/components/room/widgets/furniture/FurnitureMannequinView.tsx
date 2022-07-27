@@ -15,7 +15,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
 {
     const [ renderedFigure, setRenderedFigure ] = useState<string>(null);
     const [ mode, setMode ] = useState(MODE_NONE);
-    const { objectId = -1, figure = null, gender = null, clubLevel = HabboClubLevelEnum.NO_CLUB, name = null, setName = null, saveFigure = null, wearFigure = null, saveName = null, close = null } = useFurnitureMannequinWidget();
+    const { objectId = -1, figure = null, gender = null, clubLevel = HabboClubLevelEnum.NO_CLUB, name = null, setName = null, saveFigure = null, wearFigure = null, saveName = null, onClose = null } = useFurnitureMannequinWidget();
 
     useEffect(() =>
     {
@@ -82,7 +82,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
 
     return (
         <NitroCardView className="nitro-mannequin no-resize" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('mannequin.widget.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('mannequin.widget.title') } onCloseClick={ onClose } />
             <NitroCardContentView center>
                 <Flex fullWidth gap={ 2 } overflow="hidden">
                     <Column>

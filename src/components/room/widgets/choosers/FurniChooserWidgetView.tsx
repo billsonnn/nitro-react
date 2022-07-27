@@ -6,7 +6,7 @@ import { ChooserWidgetView } from './ChooserWidgetView';
 
 export const FurniChooserWidgetView: FC<{}> = props =>
 {
-    const { items = null, close = null, selectItem = null, populateChooser = null } = useFurniChooserWidget();
+    const { items = null, onClose = null, selectItem = null, populateChooser = null } = useFurniChooserWidget();
 
     useEffect(() =>
     {
@@ -27,5 +27,5 @@ export const FurniChooserWidgetView: FC<{}> = props =>
     
     if(!items) return null;
 
-    return <ChooserWidgetView title={ LocalizeText('widget.chooser.furni.title') } items={ items } selectItem={ selectItem } close={ close } />;
+    return <ChooserWidgetView title={ LocalizeText('widget.chooser.furni.title') } items={ items } selectItem={ selectItem } onClose={ onClose } />;
 }

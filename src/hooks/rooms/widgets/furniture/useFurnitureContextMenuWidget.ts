@@ -19,7 +19,7 @@ const useFurnitureContextMenuWidgetState = () =>
     const [ isGroupMember, setIsGroupMember ] = useState(false);
     const { roomSession = null } = useRoom();
 
-    const close = useCallback(() =>
+    const onClose = useCallback(() =>
     {
         setObjectId(-1);
         setGroupData(null);
@@ -63,7 +63,7 @@ const useFurnitureContextMenuWidgetState = () =>
             }
         }
 
-        close();
+        onClose();
     }
 
     useRoomEngineEvent<RoomEngineTriggerWidgetEvent>([
@@ -86,7 +86,7 @@ const useFurnitureContextMenuWidgetState = () =>
                 setConfirmingObjectId(object.id);
                 setConfirmMode(MONSTERPLANT_SEED_CONFIRMATION);
 
-                close();
+                onClose();
                 return;
             case RoomEngineTriggerWidgetEvent.REQUEST_EFFECTBOX_OPEN_DIALOG:
                 if(!IsOwnerOfFurniture(object)) return;
@@ -94,7 +94,7 @@ const useFurnitureContextMenuWidgetState = () =>
                 setConfirmingObjectId(object.id);
                 setConfirmMode(EFFECTBOX_OPEN);
 
-                close();
+                onClose();
                 return;
             case RoomEngineTriggerWidgetEvent.REQUEST_PURCHASABLE_CLOTHING_CONFIRMATION_DIALOG:
                 if(!IsOwnerOfFurniture(object)) return;
@@ -102,7 +102,7 @@ const useFurnitureContextMenuWidgetState = () =>
                 setConfirmingObjectId(object.id);
                 setConfirmMode(PURCHASABLE_CLOTHING_CONFIRMATION);
 
-                close();
+                onClose();
                 return;
             case RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU:
 
@@ -128,7 +128,7 @@ const useFurnitureContextMenuWidgetState = () =>
 
                 return;
             case RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU:
-                if(object.id === objectId) close();
+                if(object.id === objectId) onClose();
                 return;
         }
     });
@@ -143,7 +143,7 @@ const useFurnitureContextMenuWidgetState = () =>
         setMode(GROUP_FURNITURE);
     });
 
-    return { objectId, mode, confirmMode, confirmingObjectId, groupData, isGroupMember, closeConfirm, processAction };
+    return { objectId, mode, confirmMode, confirmingObjectId, groupData, isGroupMember, closeConfirm, processAction, onClose };
 }
 
 export const useFurnitureContextMenuWidget = useFurnitureContextMenuWidgetState;

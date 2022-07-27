@@ -21,7 +21,7 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
     const [ needsSave, setNeedsSave ] = useState<boolean>(false);
     const { trigger = null, setTrigger = null, setIntParams = null, setStringParam = null, setFurniIds = null, saveWired = null } = useWired();
 
-    const close = () => setTrigger(null);
+    const onClose = () => setTrigger(null);
     
     const onSave = () =>
     {
@@ -85,7 +85,7 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
 
     return (
         <NitroCardView uniqueKey="nitro-wired" className="nitro-wired" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('wiredfurni.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('wiredfurni.title') } onCloseClick={ onClose } />
             <NitroCardContentView>
                 <Column gap={ 1 }>
                     <Flex alignItems="center" gap={ 1 }>
@@ -103,7 +103,7 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
                     </> }
                 <Flex alignItems="center" gap={ 1 }>
                     <Button fullWidth variant="success" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</Button>
-                    <Button fullWidth variant="secondary" onClick={ close }>{ LocalizeText('cancel') }</Button>
+                    <Button fullWidth variant="secondary" onClick={ onClose }>{ LocalizeText('cancel') }</Button>
                 </Flex>
             </NitroCardContentView>
         </NitroCardView>

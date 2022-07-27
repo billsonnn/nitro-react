@@ -8,7 +8,7 @@ import { useFurnitureYoutubeWidget } from '../../../../hooks';
 export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 {
     const [ player, setPlayer ] = useState<any>(null);
-    const { objectId = -1, videoId = null, videoStart = 0, videoEnd = 0, currentVideoState = null, selectedVideo = null, playlists = [], close = null, previous = null, next = null, pause = null, play = null, selectVideo = null } = useFurnitureYoutubeWidget();
+    const { objectId = -1, videoId = null, videoStart = 0, videoEnd = 0, currentVideoState = null, selectedVideo = null, playlists = [], onClose = null, previous = null, next = null, pause = null, play = null, selectVideo = null } = useFurnitureYoutubeWidget();
 
     const onStateChange = useCallback((event: { target: YouTubePlayer; data: number }) =>
     {
@@ -69,7 +69,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
 
     return (
         <NitroCardView className="youtube-tv-widget">
-            <NitroCardHeaderView headerText={ '' } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ '' } onCloseClick={ onClose } />
             <NitroCardContentView>
                 <div className="row w-100 h-100">
                     <div className="youtube-video-container col-9">

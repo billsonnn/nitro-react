@@ -13,7 +13,7 @@ const useFurnitureMannequinWidgetState = () =>
     const [ clubLevel, setClubLevel ] = useState(HabboClubLevelEnum.NO_CLUB);
     const [ name, setName ] = useState(null);
 
-    const close = () =>
+    const onClose = () =>
     {
         setObjectId(-1);
         setCategory(-1);
@@ -28,7 +28,7 @@ const useFurnitureMannequinWidgetState = () =>
 
         SendMessageComposer(new FurnitureMannequinSaveLookComposer(objectId));
 
-        close();
+        onClose();
     }
 
     const wearFigure = () =>
@@ -37,7 +37,7 @@ const useFurnitureMannequinWidgetState = () =>
 
         SendMessageComposer(new FurnitureMultiStateComposer(objectId));
 
-        close();
+        onClose();
     }
 
     const saveName = () =>
@@ -71,10 +71,10 @@ const useFurnitureMannequinWidgetState = () =>
     {
         if((event.id !== objectId) || (event.category !== category)) return;
 
-        close();
+        onClose();
     });
 
-    return { objectId, figure, gender, clubLevel, name, setName, saveFigure, wearFigure, saveName, close };
+    return { objectId, figure, gender, clubLevel, name, setName, saveFigure, wearFigure, saveName, onClose };
 }
 
 export const useFurnitureMannequinWidget = useFurnitureMannequinWidgetState;

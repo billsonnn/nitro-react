@@ -17,7 +17,7 @@ const getStickieColorName = (color: string) =>
 
 export const FurnitureStickieView: FC<{}> = props =>
 {
-    const { objectId = -1, color = '0', text = '', canModify = false, updateColor = null, updateText = null, trash = null, close = null } = useFurnitureStickieWidget();
+    const { objectId = -1, color = '0', text = '', canModify = false, updateColor = null, updateText = null, trash = null, onClose = null } = useFurnitureStickieWidget();
     const [ isEditing, setIsEditing ] = useState(false);
 
     useEffect(() =>
@@ -41,7 +41,7 @@ export const FurnitureStickieView: FC<{}> = props =>
                             }) }
                         </> }
                     </div>
-                    <div className="d-flex align-items-center nitro-stickie-image stickie-close header-close" onClick={ close }></div>
+                    <div className="d-flex align-items-center nitro-stickie-image stickie-close header-close" onClick={ onClose }></div>
                 </div>
                 <div className="stickie-context">
                     { !isEditing ? <div className="context-text" onClick={ event => setIsEditing(true) }>{ text }</div> : <textarea className="context-text" defaultValue={ text } tabIndex={ 0 } onBlur={ event => updateText(event.target.value) } autoFocus></textarea> }

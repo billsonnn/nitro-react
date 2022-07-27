@@ -10,7 +10,7 @@ interface AvatarInfoUseProductViewProps
 {
     item: UseProductItem;
     updateConfirmingProduct: (product: UseProductItem) => void;
-    close: () => void;
+    onClose: () => void;
 }
 
 const PRODUCT_PAGE_UKNOWN: number = 0;
@@ -24,7 +24,7 @@ const PRODUCT_PAGE_FERTILIZE: number = 7;
 
 export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props =>
 {
-    const { item = null, updateConfirmingProduct = null, close = null } = props;
+    const { item = null, updateConfirmingProduct = null, onClose = null } = props;
     const [ mode, setMode ] = useState(0);
     const { roomSession = null } = useRoom();
 
@@ -87,7 +87,7 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
     }, [ item, updateConfirmingProduct ]);
     
     return (
-        <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close } collapsable={ true }>
+        <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } onClose={ onClose } collapsable={ true }>
             <ContextMenuHeaderView>
                 { item.name }
             </ContextMenuHeaderView>

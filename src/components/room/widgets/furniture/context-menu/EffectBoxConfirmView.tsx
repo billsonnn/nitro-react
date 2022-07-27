@@ -6,30 +6,30 @@ import { useRoom } from '../../../../../hooks';
 interface EffectBoxConfirmViewProps
 {
     objectId: number;
-    close: () => void;
+    onClose: () => void;
 }
 
 export const EffectBoxConfirmView: FC<EffectBoxConfirmViewProps> = props =>
 {
-    const { objectId = -1, close = null } = props;
+    const { objectId = -1, onClose = null } = props;
     const { roomSession = null } = useRoom();
 
     const useProduct = () =>
     {
         roomSession.useMultistateItem(objectId);
 
-        close();
+        onClose();
     }
     
     return (
         <NitroCardView className="nitro-use-product-confirmation">
-            <NitroCardHeaderView headerText={ LocalizeText('effectbox.header.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('effectbox.header.title') } onCloseClick={ onClose } />
             <NitroCardContentView center>
                 <Flex gap={ 2 }>
                     <Column justifyContent="between">
                         <Text>{ LocalizeText('effectbox.header.description') }</Text>
                         <Flex alignItems="center" justifyContent="between">
-                            <Button variant="danger" onClick={ close }>{ LocalizeText('generic.cancel') }</Button>
+                            <Button variant="danger" onClick={ onClose }>{ LocalizeText('generic.cancel') }</Button>
                             <Button variant="success" onClick={ useProduct }>{ LocalizeText('generic.ok') }</Button>
                         </Flex>
                     </Column>

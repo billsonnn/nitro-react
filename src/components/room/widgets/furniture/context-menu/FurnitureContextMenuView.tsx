@@ -16,18 +16,18 @@ const EFFECTBOX_OPEN: string = 'EFFECTBOX_OPEN';
 
 export const FurnitureContextMenuView: FC<{}> = props =>
 {
-    const { closeConfirm = null, processAction = null, objectId = -1, mode = null, confirmMode = null, confirmingObjectId = -1, groupData = null, isGroupMember = false } = useFurnitureContextMenuWidget();
+    const { closeConfirm = null, processAction = null, onClose = null, objectId = -1, mode = null, confirmMode = null, confirmingObjectId = -1, groupData = null, isGroupMember = false } = useFurnitureContextMenuWidget();
 
     return (
         <>
             { (confirmMode === MONSTERPLANT_SEED_CONFIRMATION) &&
-                <MonsterPlantSeedConfirmView objectId={ confirmingObjectId } close={ closeConfirm } /> }
+                <MonsterPlantSeedConfirmView objectId={ confirmingObjectId } onClose={ closeConfirm } /> }
             { (confirmMode === PURCHASABLE_CLOTHING_CONFIRMATION) &&
-                <PurchasableClothingConfirmView objectId={ confirmingObjectId } close={ closeConfirm } /> }
+                <PurchasableClothingConfirmView objectId={ confirmingObjectId } onClose={ closeConfirm } /> }
             { (confirmMode === EFFECTBOX_OPEN) &&
-                <EffectBoxConfirmView objectId={ confirmingObjectId } close={ closeConfirm } /> }
+                <EffectBoxConfirmView objectId={ confirmingObjectId } onClose={ closeConfirm } /> }
             { (objectId >= 0) && mode &&
-                <ContextMenuView objectId={ objectId } category={ RoomObjectCategory.FLOOR } close={ close } fades={ true }>
+                <ContextMenuView objectId={ objectId } category={ RoomObjectCategory.FLOOR } onClose={ onClose } fades={ true }>
                     { (mode === ContextMenuEnum.FRIEND_FURNITURE) &&
                         <>
                             <ContextMenuHeaderView>

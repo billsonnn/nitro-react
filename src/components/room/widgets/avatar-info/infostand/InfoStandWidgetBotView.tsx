@@ -6,12 +6,12 @@ import { Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, Text } from 
 interface InfoStandWidgetBotViewProps
 {
     avatarInfo: AvatarInfoUser;
-    close: () => void;
+    onClose: () => void;
 }
 
 export const InfoStandWidgetBotView: FC<InfoStandWidgetBotViewProps> = props =>
 {
-    const { avatarInfo = null, close = null } = props;
+    const { avatarInfo = null, onClose = null } = props;
 
     if(!avatarInfo) return null;
 
@@ -21,7 +21,7 @@ export const InfoStandWidgetBotView: FC<InfoStandWidgetBotViewProps> = props =>
                 <Column gap={ 1 }>
                     <Flex alignItems="center" justifyContent="between" gap={ 1 }>
                         <Text variant="white" small wrap>{ avatarInfo.name }</Text>
-                        <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ close } />
+                        <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ onClose } />
                     </Flex>
                     <hr className="m-0" />
                 </Column>

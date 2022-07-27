@@ -6,13 +6,13 @@ import { useFurnitureBackgroundColorWidget } from '../../../../hooks';
 
 export const FurnitureBackgroundColorView: FC<{}> = props =>
 {
-    const { objectId = -1, hue = 0, setHue = null, saturation = 0, setSaturation = null, lightness = 0, setLightness = null, applyToner = null, toggleToner = null, close = null } = useFurnitureBackgroundColorWidget();
+    const { objectId = -1, hue = 0, setHue = null, saturation = 0, setSaturation = null, lightness = 0, setLightness = null, applyToner = null, toggleToner = null, onClose = null } = useFurnitureBackgroundColorWidget();
 
     if(objectId === -1) return null;
 
     return (
         <NitroCardView theme="primary-slim" className="nitro-room-widget-toner">
-            <NitroCardHeaderView headerText={ LocalizeText('widget.backgroundcolor.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('widget.backgroundcolor.title') } onCloseClick={ onClose } />
             <NitroCardContentView overflow="hidden" justifyContent="between">
                 <Column overflow="auto" gap={ 1 }>
                     <Column>

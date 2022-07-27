@@ -9,7 +9,7 @@ import { ContextMenuView } from '../../context-menu/ContextMenuView';
 interface AvatarInfoWidgetOwnPetViewProps
 {
     avatarInfo: AvatarInfoPet;
-    close: () => void;
+    onClose: () => void;
 }
 
 const MODE_NORMAL: number = 0;
@@ -19,7 +19,7 @@ const MODE_MONSTER_PLANT: number = 3;
 
 export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = props =>
 {
-    const { avatarInfo = null, close = null } = props;
+    const { avatarInfo = null, onClose = null } = props;
     const [ mode, setMode ] = useState(MODE_NORMAL);
     const [ respectsLeft, setRespectsLeft ] = useState(0);
     const { roomSession = null } = useRoom();
@@ -118,7 +118,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
             }
         }
 
-        if(hideMenu) close();
+        if(hideMenu) onClose();
     }
 
     useEffect(() =>
@@ -136,7 +136,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
     }, [ avatarInfo ]);
 
     return (
-        <ContextMenuView objectId={ avatarInfo.roomIndex } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close } collapsable={ true }>
+        <ContextMenuView objectId={ avatarInfo.roomIndex } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } onClose={ onClose } collapsable={ true }>
             <ContextMenuHeaderView>
                 { avatarInfo.name }
             </ContextMenuHeaderView>

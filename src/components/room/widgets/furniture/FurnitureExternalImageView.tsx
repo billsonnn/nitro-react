@@ -5,13 +5,13 @@ import { useFurnitureExternalImageWidget } from '../../../../hooks';
 
 export const FurnitureExternalImageView: FC<{}> = props =>
 {
-    const { objectId = -1, photoData = null, close = null } = useFurnitureExternalImageWidget();
+    const { objectId = -1, photoData = null, onClose = null } = useFurnitureExternalImageWidget();
 
     if((objectId === -1) || !photoData) return null;
     
     return (
         <NitroCardView className="nitro-external-image-widget" theme="primary-slim">
-            <NitroCardHeaderView headerText="" onCloseClick={ close } />
+            <NitroCardHeaderView headerText="" onCloseClick={ onClose } />
             <NitroCardContentView>
                 <Flex center className="picture-preview border border-black" style={ photoData.w ? { backgroundImage: 'url(' + photoData.w + ')' } : {} }>
                     { !photoData.w &&

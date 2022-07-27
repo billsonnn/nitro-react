@@ -22,7 +22,7 @@ export const NitroCardAccordionSetView: FC<NitroCardAccordionSetViewProps> = pro
         setIsOpen(prevValue => !prevValue);
     }
 
-    const close = useCallback(() => setIsOpen(false), []);
+    const onClose = useCallback(() => setIsOpen(false), []);
 
     const getClassNames = useMemo(() =>
     {
@@ -42,7 +42,7 @@ export const NitroCardAccordionSetView: FC<NitroCardAccordionSetViewProps> = pro
 
     useEffect(() =>
     {
-        const closeFunction = close;
+        const closeFunction = onClose;
 
         setClosers(prevValue =>
         {
@@ -66,7 +66,7 @@ export const NitroCardAccordionSetView: FC<NitroCardAccordionSetViewProps> = pro
                 return newClosers;
             });
         }
-    }, [ close, setClosers ]);
+    }, [ onClose, setClosers ]);
 
     return (
         <Column classNames={ getClassNames } gap={ gap } { ...rest }>

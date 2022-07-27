@@ -3,11 +3,11 @@ import { NitroSystemAlertView } from './NitroSystemAlertView';
 import { NotificationDefaultAlertView } from './NotificationDefaultAlertView';
 import { NotificationSeachAlertView } from './NotificationSearchAlertView';
 
-export const GetAlertLayout = (item: NotificationAlertItem, close: () => void) =>
+export const GetAlertLayout = (item: NotificationAlertItem, onClose: () => void) =>
 {
     if(!item) return null;
 
-    const props = { key: item.id, item, close };
+    const props = { key: item.id, item, onClose };
 
     switch(item.alertType)
     {

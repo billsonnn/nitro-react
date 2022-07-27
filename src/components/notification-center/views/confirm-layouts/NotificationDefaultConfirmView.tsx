@@ -9,25 +9,25 @@ export interface NotificationDefaultConfirmViewProps extends LayoutNotificationA
 
 export const NotificationDefaultConfirmView: FC<NotificationDefaultConfirmViewProps> = props =>
 {
-    const { item = null, close = null, ...rest } = props;
+    const { item = null, onClose = null, ...rest } = props;
     const { message = null, onConfirm = null, onCancel = null, confirmText = null, cancelText = null, title = null } = item;
 
     const confirm = () =>
     {
         if(onConfirm) onConfirm();
 
-        close();
+        onClose();
     }
 
     const cancel = () =>
     {
         if(onCancel) onCancel();
         
-        close();
+        onClose();
     }
 
     return (
-        <LayoutNotificationAlertView title={ title } close={ close } { ...rest } type={ NotificationAlertType.ALERT }>
+        <LayoutNotificationAlertView title={ title } onClose={ onClose } { ...rest } type={ NotificationAlertType.ALERT }>
             <Flex grow center>
                 <Text>{ message }</Text>
             </Flex>

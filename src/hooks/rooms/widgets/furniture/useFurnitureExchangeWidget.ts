@@ -10,7 +10,7 @@ const useFurnitureExchangeWidgetState = () =>
     const [ category, setCategory ] = useState(-1);
     const [ value, setValue ] = useState(0);
 
-    const close = useCallback(() =>
+    const onClose = useCallback(() =>
     {
         setObjectId(-1);
         setCategory(-1);
@@ -21,7 +21,7 @@ const useFurnitureExchangeWidgetState = () =>
     {
         GetRoomSession().connection.send(new FurnitureExchangeComposer(objectId));
 
-        close();
+        onClose();
     }
 
     useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_CREDITFURNI, event =>
@@ -39,10 +39,10 @@ const useFurnitureExchangeWidgetState = () =>
     {
         if((event.id !== objectId) || (event.category !== category)) return;
 
-        close();
+        onClose();
     });
 
-    return { objectId, value, redeem, close };
+    return { objectId, value, redeem, onClose };
 }
 
 export const useFurnitureExchangeWidget = useFurnitureExchangeWidgetState;

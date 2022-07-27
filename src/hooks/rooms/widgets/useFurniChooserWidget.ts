@@ -9,7 +9,7 @@ const useFurniChooserWidgetState = () =>
     const [ items, setItems ] = useState<RoomObjectItem[]>(null);
     const { roomSession = null } = useRoom();
 
-    const close = () => setItems(null);
+    const onClose = () => setItems(null);
 
     const selectItem = (item: RoomObjectItem) => item && GetRoomEngine().selectRoomObject(GetRoomSession().roomId, item.id, item.category);
 
@@ -126,7 +126,7 @@ const useFurniChooserWidgetState = () =>
         });
     });
 
-    return { items, close, selectItem, populateChooser };
+    return { items, onClose, selectItem, populateChooser };
 }
 
 export const useFurniChooserWidget = useFurniChooserWidgetState;

@@ -7,7 +7,7 @@ import { useRoom } from '../../../../../hooks';
 interface PurchasableClothingConfirmViewProps
 {
     objectId: number;
-    close: () => void;
+    onClose: () => void;
 }
 
 const MODE_DEFAULT: number = -1;
@@ -15,7 +15,7 @@ const MODE_PURCHASABLE_CLOTHING: number = 0;
 
 export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewProps> = props =>
 {
-    const { objectId = -1, close = null } = props;
+    const { objectId = -1, onClose = null } = props;
     const [ mode, setMode ] = useState(MODE_DEFAULT);
     const [ gender, setGender ] = useState<string>(FigureData.MALE);
     const [ newFigure, setNewFigure ] = useState<string>(null);
@@ -26,7 +26,7 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
         GetConnection().send(new RedeemItemClothingComposer(objectId));
         GetConnection().send(new UserFigureComposer(gender, newFigure));
 
-        close();
+        onClose();
     }
 
     useEffect(() =>
@@ -62,7 +62,7 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
 
         if(mode === MODE_DEFAULT)
         {
-            close();
+            onClose();
 
             return;
         }
@@ -73,13 +73,13 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
         // if owns clothing, change to it
 
         setMode(mode);
-    }, [ roomSession, objectId, close ]);
+    }, [ roomSession, objectId, onClose ]);
 
     if(mode === MODE_DEFAULT) return null;
     
     return (
         <NitroCardView className="nitro-use-product-confirmation">
-            <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title.bind_clothing') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title.bind_clothing') } onCloseClick={ onClose } />
             <NitroCardContentView center>
                 <Flex gap={ 2 } overflow="hidden">
                     <Column>
@@ -93,7 +93,7 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
                             <Text>{ LocalizeText('useproduct.widget.info.bind_clothing') }</Text>
                         </Column>
                         <Flex alignItems="center" justifyContent="between">
-                            <Button variant="danger" onClick={ close }>{ LocalizeText('useproduct.widget.cancel') }</Button>
+                            <Button variant="danger" onClick={ onClose }>{ LocalizeText('useproduct.widget.cancel') }</Button>
                             <Button variant="success" onClick={ useProduct }>{ LocalizeText('useproduct.widget.bind_clothing') }</Button>
                         </Flex>
                     </Column>

@@ -25,7 +25,7 @@ const useFurniturePresentWidgetState = () =>
     const [ imageUrl, setImageUrl ] = useState<string>(null);
     const { roomSession = null } = useRoom();
 
-    const close = () =>
+    const onClose = () =>
     {
         setObjectId(-1);
         setClassId(-1);
@@ -199,7 +199,7 @@ const useFurniturePresentWidgetState = () =>
 
         if(!roomObject) return null;
 
-        close();
+        onClose();
 
         setObjectId(event.objectId);
         setClassId(-1);
@@ -211,7 +211,7 @@ const useFurniturePresentWidgetState = () =>
 
     useFurniRemovedEvent((objectId !== -1), event =>
     {
-        if(event.id === objectId) close();
+        if(event.id === objectId) onClose();
 
         if(event.id === placedItemId)
         {
@@ -219,7 +219,7 @@ const useFurniturePresentWidgetState = () =>
         }
     });
 
-    return { objectId, classId, itemType, text, isOwnerOfFurniture, senderName, senderFigure, placedItemId, placedItemType, placedInRoom, imageUrl, openPresent, close };
+    return { objectId, classId, itemType, text, isOwnerOfFurniture, senderName, senderFigure, placedItemId, placedItemType, placedInRoom, imageUrl, openPresent, onClose };
 }
 
 export const useFurniturePresentWidget = useFurniturePresentWidgetState;

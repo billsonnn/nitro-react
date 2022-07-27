@@ -5,7 +5,7 @@ import { CalendarItemView } from './CalendarItemView';
 
 interface CalendarViewProps
 {
-    close(): void;
+    onClose(): void;
     openPackage(id: number, asStaff: boolean): void;
     receivedProducts: Map<number, ICalendarItem>;
     campaignName: string;
@@ -19,7 +19,7 @@ const TOTAL_SHOWN_ITEMS = 5;
 
 export const CalendarView: FC<CalendarViewProps> = props =>
 {
-    const { close = null, campaignName = null, currentDay = null, numDays = null, missedDays = null, openedDays = null, openPackage = null, receivedProducts = null } = props;
+    const { onClose = null, campaignName = null, currentDay = null, numDays = null, missedDays = null, openedDays = null, openPackage = null, receivedProducts = null } = props;
     const [ selectedDay, setSelectedDay ] = useState(currentDay);
     const [ index, setIndex ] = useState(Math.max(0, (selectedDay - 1)));
 
@@ -97,7 +97,7 @@ export const CalendarView: FC<CalendarViewProps> = props =>
 
     return (
         <NitroCardView className="nitro-campaign-calendar" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText(`campaign.calendar.${ campaignName }.title`) } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText(`campaign.calendar.${ campaignName }.title`) } onCloseClick={ onClose } />
             <NitroCardContentView>
                 <Grid fullHeight={ false } justifyContent="between" alignItems="center">
                     <Column size={ 1 } />

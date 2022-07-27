@@ -17,7 +17,7 @@ export const HelpView: FC<{}> = props =>
     const [ isVisible, setIsVisible ] = useState(false);
     const { activeReport = null, setActiveReport = null, report = null } = useHelp();
 
-    const close = () =>
+    const onClose = () =>
     {
         setActiveReport(null);
         setIsVisible(false);
@@ -98,7 +98,7 @@ export const HelpView: FC<{}> = props =>
     return (
         <>
             <NitroCardView className="nitro-help" theme="primary-slim">
-                <NitroCardHeaderView headerText={ LocalizeText('help.button.cfh') } onCloseClick={ close } />
+                <NitroCardHeaderView headerText={ LocalizeText('help.button.cfh') } onCloseClick={ onClose } />
                 <NitroCardContentView className="text-black">
                     <Grid>
                         <Column center size={ 5 } overflow="hidden">

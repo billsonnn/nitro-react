@@ -10,7 +10,7 @@ import { ContextMenuView } from '../../context-menu/ContextMenuView';
 interface AvatarInfoWidgetRentableBotViewProps
 {
     avatarInfo: AvatarInfoRentableBot;
-    close: () => void;
+    onClose: () => void;
 }
 
 const MODE_NORMAL = 0;
@@ -19,7 +19,7 @@ const MODE_CHANGE_MOTTO = 2;
 
 export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotViewProps> = props =>
 {
-    const { avatarInfo = null, close = null } = props;
+    const { avatarInfo = null, onClose = null } = props;
     const [ mode, setMode ] = useState(MODE_NORMAL);
     const [ newName, setNewName ] = useState('');
     const [ newMotto, setNewMotto ] = useState('');
@@ -55,7 +55,7 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
                         parseInt(pieces[2]),
                         ((pieces[3]) ? ((pieces[3].toLowerCase() === 'true') || (pieces[3] === '1')) : false)));
 
-                    close();
+                    onClose();
                 }
 
                 return;
@@ -120,7 +120,7 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
             }
         }
 
-        if(hideMenu) close();
+        if(hideMenu) onClose();
     }
 
     useEffect(() =>
@@ -131,7 +131,7 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
     const canControl = (avatarInfo.amIOwner || avatarInfo.amIAnyRoomController);
 
     return (
-        <ContextMenuView objectId={ avatarInfo.roomIndex } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.RENTABLE_BOT } close={ close } collapsable={ true }>
+        <ContextMenuView objectId={ avatarInfo.roomIndex } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.RENTABLE_BOT } onClose={ onClose } collapsable={ true }>
             <ContextMenuHeaderView>
                 { avatarInfo.name }
             </ContextMenuHeaderView>

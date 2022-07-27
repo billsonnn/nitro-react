@@ -10,7 +10,7 @@ interface ContextMenuViewProps extends BaseProps<HTMLDivElement>
     category: number;
     userType?: number;
     fades?: boolean;
-    close: () => void;
+    onClose: () => void;
     collapsable?: boolean;
 }
 
@@ -27,7 +27,7 @@ let FADE_TIME = 1;
 
 export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 {
-    const { objectId = -1, category = -1, userType = -1, fades = false, close = null, position = 'absolute', classNames = [], style = {}, children = null, collapsable = false, ...rest } = props;
+    const { objectId = -1, category = -1, userType = -1, fades = false, onClose = null, position = 'absolute', classNames = [], style = {}, children = null, collapsable = false, ...rest } = props;
     const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: null, y: null });
     const [ opacity, setOpacity ] = useState(1);
     const [ isFading, setIsFading ] = useState(false);
@@ -44,13 +44,13 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
         if(newOpacity <= 0)
         {
-            close();
+            onClose();
 
             return false;
         }
 
         setOpacity(newOpacity);
-    }, [ isFading, close ]);
+    }, [ isFading, onClose ]);
 
     const updatePosition = useCallback((bounds: NitroRectangle, location: NitroPoint) =>
     {
