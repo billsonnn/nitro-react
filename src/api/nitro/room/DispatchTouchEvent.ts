@@ -4,38 +4,9 @@ import { GetRoomEngine } from './GetRoomEngine';
 let didMouseMove = false;
 let lastClick = 0;
 let clickCount = 0;
-let touchTimer: ReturnType<typeof setTimeout> = null;
 
 export const DispatchTouchEvent = (event: TouchEvent, canvasId: number = 1, longTouch: boolean = false, altKey: boolean = false, ctrlKey: boolean = false, shiftKey: boolean = false) =>
 {
-    let eventType = event.type;
-
-    if(longTouch) eventType = TouchEventType.TOUCH_LONG;
-
-    if(eventType === TouchEventType.TOUCH_END && !didMouseMove)
-    {
-        eventType = MouseEventType.MOUSE_CLICK;
-
-        if(lastClick)
-        {
-            clickCount = 1;
-
-            if(lastClick >= (Date.now() - 300)) clickCount++;
-        }
-
-        lastClick = Date.now();
-
-        if(clickCount === 2)
-        {
-            eventType = MouseEventType.DOUBLE_CLICK;
-
-            clickCount = 0;
-            lastClick = null;
-        }
-    }
-
-    if(touchTimer) clearTimeout(touchTimer);
-
     let x = 0;
     let y = 0;
 
@@ -50,6 +21,32 @@ export const DispatchTouchEvent = (event: TouchEvent, canvasId: number = 1, long
         x = event.changedTouches[0].clientX;
         y = event.changedTouches[0].clientY;
     }
+    
+    let eventType = event.type;
+
+    if(longTouch) eventType = TouchEventType.TOUCH_LONG;
+
+    if(eventType === MouseEventType.MOUSE_CLICK || eventType === TouchEventType.TOUCH_END)
+    {
+        eventType = MouseEventType.MOUSE_CLICK;
+
+        if(lastClick)
+        {
+            clickCount = 1;
+
+            if(lastClick >= (Date.now() - 300)) clickCount++;
+        }
+
+        lastClick = Date.now();
+
+        if(clickCount === 2)
+        {
+            if(!didMouseMove) eventType = MouseEventType.DOUBLE_CLICK;
+
+            clickCount = 0;
+            lastClick = null;
+        }
+    }
 
     switch(eventType)
     {
@@ -57,14 +54,7 @@ export const DispatchTouchEvent = (event: TouchEvent, canvasId: number = 1, long
             break;
         case MouseEventType.DOUBLE_CLICK:
             break;
-        case TouchEventType.TOUCH_START:
-            touchTimer = setTimeout(() =>
-            {
-                if(didMouseMove) return;
-
-                DispatchTouchEvent(event, canvasId, true);
-            }, 300);
-            
+        case TouchEventType.TOUCH_START:            
             eventType = MouseEventType.MOUSE_DOWN;
 
             didMouseMove = false;
@@ -81,6 +71,11 @@ export const DispatchTouchEvent = (event: TouchEvent, canvasId: number = 1, long
             eventType = MouseEventType.MOUSE_DOWN_LONG;
             break;
         default: return;
+    }
+
+    if (eventType === TouchEventType.TOUCH_START) 
+    {
+        GetRoomEngine().dispatchMouseEvent(canvasId, x, y, eventType, altKey, ctrlKey, shiftKey, false);
     }
 
     GetRoomEngine().dispatchMouseEvent(canvasId, x, y, eventType, altKey, ctrlKey, shiftKey, false);
