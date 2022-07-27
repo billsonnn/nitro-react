@@ -9,14 +9,14 @@ interface GroupTabIdentityViewProps
     groupData: IGroupData;
     setGroupData: Dispatch<SetStateAction<IGroupData>>;
     setCloseAction: Dispatch<SetStateAction<{ action: () => boolean }>>;
-    close: () => void;
+    onClose: () => void;
     isCreator?: boolean;
     availableRooms?: { id: number, name: string }[];
 }
 
 export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
 {
-    const { groupData = null, setGroupData = null, setCloseAction = null, close = null, isCreator = false, availableRooms = [] } = props;
+    const { groupData = null, setGroupData = null, setCloseAction = null, onClose = null, isCreator = false, availableRooms = [] } = props;
     const [ groupName, setGroupName ] = useState<string>('');
     const [ groupDescription, setGroupDescription ] = useState<string>('');
     const [ groupHomeroomId, setGroupHomeroomId ] = useState<number>(-1);
@@ -30,7 +30,7 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
         {
             SendMessageComposer(new GroupDeleteComposer(groupData.groupId));
                 
-            if(close) close();
+            if(onClose) onClose();
         }, null, null, null, LocalizeText('group.deleteconfirm.title'));
     }
 

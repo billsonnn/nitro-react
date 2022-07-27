@@ -1,7 +1,7 @@
 import { GroupPurchasedEvent, GroupSettingsComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { AddEventLinkTracker, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
-import { useMessageEvent } from '../../hooks';
+import { useGroup, useMessageEvent } from '../../hooks';
 import { GroupCreatorView } from './views/GroupCreatorView';
 import { GroupInformationStandaloneView } from './views/GroupInformationStandaloneView';
 import { GroupManagerView } from './views/GroupManagerView';
@@ -10,6 +10,7 @@ import { GroupMembersView } from './views/GroupMembersView';
 export const GroupsView: FC<{}> = props =>
 {
     const [ isCreatorVisible, setCreatorVisible ] = useState<boolean>(false);
+    const {} = useGroup();
 
     useMessageEvent<GroupPurchasedEvent>(GroupPurchasedEvent, event =>
     {

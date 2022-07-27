@@ -4,15 +4,6 @@ import { useBetween } from 'use-between';
 import { IGroupCustomize, SendMessageComposer } from '../../api';
 import { useMessageEvent } from '../events';
 
-const CompareId = (a, b) =>
-{
-    if(a.id < b.id) return -1;
-
-    if(a.id > b.id) return 1;
-
-    return 0;
-}
-
 const useGroupState = () =>
 {
     const [ groupCustomize, setGroupCustomize ] = useState<IGroupCustomize>(null);
@@ -34,6 +25,15 @@ const useGroupState = () =>
         parser.partColors.forEach((color, id) => customize.badgePartColors.push({ id, color }));
         parser.colorsA.forEach((color, id) => customize.groupColorsA.push({ id, color }));
         parser.colorsB.forEach((color, id) => customize.groupColorsB.push({ id, color }));
+
+        const CompareId = (a: { id: number }, b: { id: number }) =>
+        {
+            if(a.id < b.id) return -1;
+
+            if(a.id > b.id) return 1;
+
+            return 0;
+        }
 
         customize.badgeBases.sort(CompareId);
         customize.badgeSymbols.sort(CompareId);
