@@ -81,19 +81,6 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
                 return [];
             });
         }
-
-        return () =>
-        {
-            setNeedsSave(false);
-            setIntParams([]);
-            setStringParam(null);
-            setFurniIds(prevValue =>
-            {
-                if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
-
-                return [];
-            });
-        }
     }, [ trigger, hasSpecialInput, requiresFurni, setIntParams, setStringParam, setFurniIds ]);
 
     return (

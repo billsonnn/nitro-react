@@ -118,8 +118,13 @@ const useWiredState = () =>
         {
             setIntParams([]);
             setStringParam('');
-            setFurniIds([]);
             setActionDelay(0);
+            setFurniIds(prevValue =>
+            {
+                if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
+    
+                return [];
+            });
         }
     }, [ trigger ]);
 
