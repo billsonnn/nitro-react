@@ -291,7 +291,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                     <ContextMenuListItemView onClick={ event => processAction('ban_day') }>
                         { LocalizeText('infostand.button.ban_day') }
                     </ContextMenuListItemView>
-                    <ContextMenuListItemView onClick={ event => processAction('ban_perm') }>
+                    <ContextMenuListItemView onClick={ event => processAction('perm_ban') }>
                         { LocalizeText('infostand.button.perm_ban') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('back_moderate') }>
