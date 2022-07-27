@@ -49,15 +49,20 @@ export const FriendsMessengerView: FC<{}> = props =>
 
                         return;
                     }
-                    else
+
+                    if(parts[1] === 'toggle')
                     {
-                        const thread = getMessageThread(parseInt(parts[1]));
+                        setIsVisible(prevValue => !prevValue);
 
-                        if(!thread) return;
-
-                        setActiveThreadId(thread.threadId);
-                        setIsVisible(true);
+                        return;
                     }
+
+                    const thread = getMessageThread(parseInt(parts[1]));
+
+                    if(!thread) return;
+
+                    setActiveThreadId(thread.threadId);
+                    setIsVisible(true);
                 }
             },
             eventUrlPrefix: 'friends-messenger/'

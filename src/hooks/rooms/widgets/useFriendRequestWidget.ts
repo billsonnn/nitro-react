@@ -62,8 +62,6 @@ const useFriendRequestWidgetState = () =>
 
     useEffect(() =>
     {
-        if(!requests || !requests.length) return;
-
         const newDisplayedRequests: { roomIndex: number, request: MessengerRequest }[] = [];
 
         for(const request of requests)
