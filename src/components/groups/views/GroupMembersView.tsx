@@ -100,30 +100,29 @@ export const GroupMembersView: FC<{}> = props =>
 
     useMessageEvent(GroupConfirmMemberRemoveEvent, onGroupConfirmMemberRemoveEvent);
 
-    const linkReceived = useCallback((url: string) =>
-    {
-        const parts = url.split('/');
-
-        if(parts.length < 2) return;
-
-        const groupId = (parseInt(parts[1]) || -1);
-        const levelId = (parseInt(parts[2]) || 3);
-        
-        setGroupId(groupId);
-        setLevelId(levelId);
-    }, []);
-
     useEffect(() =>
     {
         const linkTracker: ILinkEventTracker = {
-            linkReceived,
+            linkReceived: (url: string) =>
+            {
+                const parts = url.split('/');
+        
+                if(parts.length < 2) return;
+        
+                const groupId = (parseInt(parts[1]) || -1);
+                const levelId = (parseInt(parts[2]) || 3);
+                
+                setGroupId(groupId);
+                setLevelId(levelId);
+                setPageId(-1);
+            },
             eventUrlPrefix: 'group-members/'
         };
 
         AddEventLinkTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
-    }, [ linkReceived ]);
+    }, []);
 
     useEffect(() =>
     {

@@ -1,5 +1,5 @@
-import { HabboWebTools, RoomSessionEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { HabboWebTools, ILinkEventTracker, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { FC, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetCommunication, RemoveLinkEventTracker } from '../../api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from '../../common';
 import { useRoomSessionManagerEvent } from '../../hooks';
@@ -32,47 +32,8 @@ export const MainView: FC<{}> = props =>
     const [ isReady, setIsReady ] = useState(false);
     const [ landingViewVisible, setLandingViewVisible ] = useState(true);
 
-    const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
-    {
-        switch(event.type)
-        {
-            case RoomSessionEvent.CREATED:
-                setLandingViewVisible(false);
-                return;
-            case RoomSessionEvent.ENDED:
-                setLandingViewVisible(event.openLandingView);
-                return;
-        }
-    }, []);
-
-    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
-
-    const onLinkReceived = useCallback((link: string) =>
-    {
-        const parts = link.split('/');
-
-        if(parts.length < 2) return;
-
-        switch(parts[1])
-        {
-            case 'open':
-                if(parts.length > 2)
-                {
-                    switch(parts[2])
-                    {
-                        case 'credits':
-                            //HabboWebTools.openWebPageAndMinimizeClient(this._windowManager.getProperty(ExternalVariables.WEB_SHOP_RELATIVE_URL));
-                            break;
-                        default: {
-                            const name = parts[2];
-                            HabboWebTools.openHabblet(name);
-                        }
-                    }
-                }
-                return;
-        }
-    }, []);
+    useRoomSessionManagerEvent<RoomSessionEvent>(RoomSessionEvent.CREATED, event => setLandingViewVisible(false));
+    useRoomSessionManagerEvent<RoomSessionEvent>(RoomSessionEvent.ENDED, event => setLandingViewVisible(event.openLandingView));
 
     useEffect(() =>
     {
@@ -83,14 +44,39 @@ export const MainView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        const linkTracker = { linkReceived: onLinkReceived, eventUrlPrefix: 'habblet/' };
+        const linkTracker: ILinkEventTracker = { 
+            linkReceived: (url: string) =>
+            {
+                const parts = url.split('/');
+        
+                if(parts.length < 2) return;
+        
+                switch(parts[1])
+                {
+                    case 'open':
+                        if(parts.length > 2)
+                        {
+                            switch(parts[2])
+                            {
+                                case 'credits':
+                                    //HabboWebTools.openWebPageAndMinimizeClient(this._windowManager.getProperty(ExternalVariables.WEB_SHOP_RELATIVE_URL));
+                                    break;
+                                default: {
+                                    const name = parts[2];
+                                    HabboWebTools.openHabblet(name);
+                                }
+                            }
+                        }
+                        return;
+                }
+            },
+            eventUrlPrefix: 'habblet/'
+        };
+
         AddEventLinkTracker(linkTracker);
 
-        return () =>
-        {
-            RemoveLinkEventTracker(linkTracker);
-        }
-    }, [ onLinkReceived ]);
+        return () => RemoveLinkEventTracker(linkTracker);
+    }, []);
 
     return (
         <Base fit>

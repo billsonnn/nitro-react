@@ -148,37 +148,35 @@ export const AvatarEditorView: FC<{}> = props =>
         setFigureData(figures.get(gender));
     }, [ figures ]);
 
-    const linkReceived = useCallback((url: string) =>
-    {
-        const parts = url.split('/');
-
-        if(parts.length < 2) return;
-
-        switch(parts[1])
-        {
-            case 'show':
-                setIsVisible(true);
-                return;
-            case 'hide':
-                setIsVisible(false);
-                return;
-            case 'toggle':
-                setIsVisible(prevValue => !prevValue);
-                return;
-        }
-    }, []);
-
     useEffect(() =>
     {
         const linkTracker: ILinkEventTracker = {
-            linkReceived,
+            linkReceived: (url: string) =>
+            {
+                const parts = url.split('/');
+        
+                if(parts.length < 2) return;
+        
+                switch(parts[1])
+                {
+                    case 'show':
+                        setIsVisible(true);
+                        return;
+                    case 'hide':
+                        setIsVisible(false);
+                        return;
+                    case 'toggle':
+                        setIsVisible(prevValue => !prevValue);
+                        return;
+                }
+            },
             eventUrlPrefix: 'avatar-editor/'
         };
 
         AddEventLinkTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
-    }, [ linkReceived ]);
+    }, []);
 
     useEffect(() =>
     {
