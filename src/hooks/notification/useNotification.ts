@@ -4,7 +4,7 @@ import { useBetween } from 'use-between';
 import { GetConfiguration, GetNitroInstance, GetRoomEngine, GetSessionDataManager, LocalizeBadgeName, LocalizeText, NotificationAlertItem, NotificationAlertType, NotificationBubbleItem, NotificationBubbleType, NotificationConfirmItem, PlaySound, ProductImageUtility, TradingNotificationType } from '../../api';
 import { useMessageEvent } from '../events';
 
-const cleanText = (text: string) => text.replace(/\\r/g, '\r');
+const cleanText = (text: string) => (text && text.length) ? text.replace(/\\r/g, '\r') : '';
 
 const getTimeZeroPadded = (time: number) =>
 {
