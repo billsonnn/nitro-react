@@ -19,7 +19,7 @@ export const FriendsRoomInviteView: FC<FriendsRoomInviteViewProps> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('friendlist.invite.title') } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black">
                 { LocalizeText('friendlist.invite.summary', [ 'count' ], [ selectedFriendsIds.length.toString() ]) }
-                <textarea className="form-control" value={ roomInviteMessage } onChange={ event => setRoomInviteMessage(event.target.value) }></textarea>
+                <textarea className="form-control" value={ roomInviteMessage } maxLength={ 255 } onChange={ event => setRoomInviteMessage(event.target.value) }></textarea>
                 <Text center className="bg-muted rounded p-1">{ LocalizeText('friendlist.invite.note') }</Text>
                 <Flex gap={ 1 }>
                     <Button fullWidth variant="success" disabled={ ((roomInviteMessage.length === 0) || (selectedFriendsIds.length === 0)) } onClick={ () => sendRoomInvite(roomInviteMessage) }>{ LocalizeText('friendlist.invite.send') }</Button>

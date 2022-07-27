@@ -85,7 +85,7 @@ const useMessengerState = () =>
 
         const ownMessage = (senderId === GetSessionDataManager().userId);
 
-        if(ownMessage) SendMessageComposer(new SendMessageComposerPacket(thread.participant.id, messageText));
+        if(ownMessage && (messageText.length <= 255)) SendMessageComposer(new SendMessageComposerPacket(thread.participant.id, messageText));
 
         setMessageThreads(prevValue =>
         {

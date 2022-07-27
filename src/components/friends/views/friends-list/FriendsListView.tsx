@@ -62,9 +62,10 @@ export const FriendsListView: FC<{}> = props =>
 
     const sendRoomInvite = (message: string) =>
     {
-        if(selectedFriendsIds.length === 0 || !message || message.length === 0) return;
+        if(!selectedFriendsIds.length || !message || !message.length || (message.length > 255)) return;
         
         SendMessageComposer(new SendRoomInviteComposer(message, selectedFriendsIds));
+
         setShowRoomInvite(false);
     }
 
