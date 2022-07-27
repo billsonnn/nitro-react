@@ -49,8 +49,6 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
             return false;
         }
 
-        console.log(newOpacity);
-
         setOpacity(newOpacity);
     }, [ isFading, close ]);
 
