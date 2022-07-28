@@ -1,24 +1,42 @@
-import { CanCreateRoomEventEvent, CantConnectMessageParser, DoorbellMessageEvent, FlatAccessDeniedMessageEvent, FlatCreatedEvent, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomMessageComposer, GetGuestRoomResultEvent, GetUserEventCatsMessageComposer, GetUserFlatCatsMessageComposer, HabboWebTools, LegacyExternalInterface, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, RoomDataParser, RoomDoorbellAcceptedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserEventCatsEvent, UserFlatCatsEvent, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback } from 'react';
-import { CreateLinkEvent, CreateRoomSession, DoorStateType, GetConfiguration, GetSessionDataManager, LocalizeText, NotificationAlertType, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
-import { useMessageEvent, useNotification } from '../../hooks';
-import { useNavigatorContext } from './NavigatorContext';
+import { CanCreateRoomEventEvent, CantConnectMessageParser, DoorbellMessageEvent, FlatAccessDeniedMessageEvent, FlatCreatedEvent, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomMessageComposer, GetGuestRoomResultEvent, GetUserEventCatsMessageComposer, GetUserFlatCatsMessageComposer, HabboWebTools, LegacyExternalInterface, NavigatorCategoryDataParser, NavigatorEventCategoryDataParser, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, NavigatorSearchResultSet, NavigatorTopLevelContext, RoomDataParser, RoomDoorbellAcceptedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserEventCatsEvent, UserFlatCatsEvent, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
+import { useState } from 'react';
+import { useBetween } from 'use-between';
+import { CreateLinkEvent, CreateRoomSession, DoorStateType, GetConfiguration, GetSessionDataManager, INavigatorData, LocalizeText, NotificationAlertType, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
+import { useMessageEvent } from '../events';
+import { useNotification } from '../notification';
 
-export const NavigatorMessageHandler: FC<{}> = props =>
+const useNavigatorState = () =>
 {
-    const { setCategories = null, setEventCategories = null, setTopLevelContext = null, topLevelContexts = null, setTopLevelContexts = null, setNavigatorData = null, setDoorData = null, setSearchResult = null } = useNavigatorContext();
+    const [ categories, setCategories ] = useState<NavigatorCategoryDataParser[]>(null);
+    const [ eventCategories, setEventCategories ] = useState<NavigatorEventCategoryDataParser[]>(null);
+    const [ topLevelContext, setTopLevelContext ] = useState<NavigatorTopLevelContext>(null);
+    const [ topLevelContexts, setTopLevelContexts ] = useState<NavigatorTopLevelContext[]>(null);
+    const [ doorData, setDoorData ] = useState<{ roomInfo: RoomDataParser, state: number }>({ roomInfo: null, state: DoorStateType.NONE });
+    const [ searchResult, setSearchResult ] = useState<NavigatorSearchResultSet>(null);
+    const [ navigatorData, setNavigatorData ] = useState<INavigatorData>({
+        settingsReceived: false,
+        homeRoomId: 0,
+        enteredGuestRoom: null,
+        currentRoomOwner: false,
+        currentRoomId: 0,
+        currentRoomIsStaffPick: false,
+        createdFlatId: 0,
+        avatarId: 0,
+        roomPicker: false,
+        eventMod: false,
+        currentRoomRating: 0,
+        canRate: true
+    });
     const { simpleAlert = null } = useNotification();
 
-    const onRoomSettingsUpdatedEvent = useCallback((event: RoomSettingsUpdatedEvent) =>
+    useMessageEvent<RoomSettingsUpdatedEvent>(RoomSettingsUpdatedEvent, event =>
     {
         const parser = event.getParser();
 
         SendMessageComposer(new GetGuestRoomMessageComposer(parser.roomId, false, false));
-    }, []);
+    });
 
-    useMessageEvent(RoomSettingsUpdatedEvent, onRoomSettingsUpdatedEvent);
-
-    const onCanCreateRoomEventEvent = useCallback((event: CanCreateRoomEventEvent) =>
+    useMessageEvent<CanCreateRoomEventEvent>(CanCreateRoomEventEvent, event =>
     {
         const parser = event.getParser();
 
@@ -30,17 +48,15 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         }
 
         simpleAlert(LocalizeText(`navigator.cannotcreateevent.error.${ parser.errorCode }`), null, null, null, LocalizeText('navigator.cannotcreateevent.title'));
-    }, [ simpleAlert ]);
+    });
 
-    useMessageEvent(CanCreateRoomEventEvent, onCanCreateRoomEventEvent);
-
-    const onUserInfoEvent = useCallback((event: UserInfoEvent) =>
+    useMessageEvent<UserInfoEvent>(UserInfoEvent, event =>
     {
         SendMessageComposer(new GetUserFlatCatsMessageComposer());
         SendMessageComposer(new GetUserEventCatsMessageComposer());
-    }, []);
+    });
 
-    const onUserPermissionsEvent = useCallback((event: UserPermissionsEvent) =>
+    useMessageEvent<UserPermissionsEvent>(UserPermissionsEvent, event =>
     {
         const parser = event.getParser();
 
@@ -53,16 +69,16 @@ export const NavigatorMessageHandler: FC<{}> = props =>
 
             return newValue;
         });
-    }, [ setNavigatorData ]);
+    });
 
-    const onRoomForwardEvent = useCallback((event: RoomForwardEvent) =>
+    useMessageEvent<RoomForwardEvent>(RoomForwardEvent, event =>
     {
         const parser = event.getParser();
 
         TryVisitRoom(parser.roomId);
-    }, []);
+    });
 
-    const onRoomEntryInfoMessageEvent = useCallback((event: RoomEntryInfoMessageEvent) =>
+    useMessageEvent<RoomEntryInfoMessageEvent>(RoomEntryInfoMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -84,9 +100,9 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         SendMessageComposer(new GetGuestRoomMessageComposer(parser.roomId, true, false));
 
         if(LegacyExternalInterface.available) LegacyExternalInterface.call('legacyTrack', 'navigator', 'private', [ parser.roomId ]);
-    }, [ setNavigatorData ]);
+    });
 
-    const onGetGuestRoomResultEvent = useCallback((event: GetGuestRoomResultEvent) =>
+    useMessageEvent<GetGuestRoomResultEvent>(GetGuestRoomResultEvent, event =>
     {
         const parser = event.getParser();
 
@@ -165,9 +181,9 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                 return newValue;
             });
         }
-    }, [ setNavigatorData, setDoorData ]);
+    });
 
-    const onRoomScoreEvent = useCallback((event: RoomScoreEvent) =>
+    useMessageEvent<RoomScoreEvent>(RoomScoreEvent, event =>
     {
         const parser = event.getParser();
 
@@ -180,9 +196,9 @@ export const NavigatorMessageHandler: FC<{}> = props =>
 
             return newValue;
         });
-    }, [ setNavigatorData ]);
+    });
 
-    const onRoomDoorbellEvent = useCallback((event: DoorbellMessageEvent) =>
+    useMessageEvent<DoorbellMessageEvent>(DoorbellMessageEvent, event => 
     {
         const parser = event.getParser();
 
@@ -197,9 +213,9 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                 return newValue;
             });
         }
-    }, [ setDoorData ]);
+    });
 
-    const onRoomDoorbellAcceptedEvent = useCallback((event: RoomDoorbellAcceptedEvent) =>
+    useMessageEvent<RoomDoorbellAcceptedEvent>(RoomDoorbellAcceptedEvent, event =>
     {
         const parser = event.getParser();
 
@@ -214,9 +230,9 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                 return newValue;
             });
         }
-    }, [ setDoorData ]);
+    });
 
-    const onRoomDoorbellRejectedEvent = useCallback((event: FlatAccessDeniedMessageEvent) =>
+    useMessageEvent<FlatAccessDeniedMessageEvent>(FlatAccessDeniedMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -231,9 +247,9 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                 return newValue;
             });
         }
-    }, [ setDoorData ]);
+    });
 
-    const onGenericErrorEvent = useCallback((event: GenericErrorEvent) =>
+    useMessageEvent<GenericErrorEvent>(GenericErrorEvent, event =>
     {
         const parser = event.getParser();
 
@@ -266,17 +282,17 @@ export const NavigatorMessageHandler: FC<{}> = props =>
 
                 return;
         }
-    }, [ setDoorData, simpleAlert ]);
+    });
 
-    const onNavigatorMetadataEvent = useCallback((event: NavigatorMetadataEvent) =>
+    useMessageEvent<NavigatorMetadataEvent>(NavigatorMetadataEvent, event =>
     {
         const parser = event.getParser();
 
         setTopLevelContexts(parser.topLevelContexts);
         setTopLevelContext(parser.topLevelContexts.length ? parser.topLevelContexts[0] : null);
-    }, [ setTopLevelContexts, setTopLevelContext ]);
+    });
 
-    const onNavigatorSearchEvent = useCallback((event: NavigatorSearchEvent) =>
+    useMessageEvent<NavigatorSearchEvent>(NavigatorSearchEvent, event =>
     {
         const parser = event.getParser();
 
@@ -309,30 +325,30 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         });
 
         setSearchResult(parser.result);
-    }, [ topLevelContexts, setTopLevelContext, setSearchResult ]);
+    });
 
-    const onNavigatorCategoriesEvent = useCallback((event: UserFlatCatsEvent) =>
+    useMessageEvent<UserFlatCatsEvent>(UserFlatCatsEvent, event =>
     {
         const parser = event.getParser();
 
         setCategories(parser.categories);
-    }, [ setCategories ]);
+    });
 
-    const onNavigatorEventCategoriesEvent = (event: UserEventCatsEvent) =>
+    useMessageEvent<UserEventCatsEvent>(UserEventCatsEvent, event =>
     {
         const parser = event.getParser();
 
         setEventCategories(parser.categories);
-    }
+    });
 
-    const onRoomCreatedEvent = useCallback((event: FlatCreatedEvent) =>
+    useMessageEvent<FlatCreatedEvent>(FlatCreatedEvent, event =>
     {
         const parser = event.getParser();
 
         CreateRoomSession(parser.roomId);
-    }, []);
+    });
 
-    const onNavigatorHomeRoomEvent = useCallback((event: NavigatorHomeRoomEvent) =>
+    useMessageEvent<NavigatorHomeRoomEvent>(NavigatorHomeRoomEvent, event =>
     {
         const parser = event.getParser();
 
@@ -389,9 +405,9 @@ export const NavigatorMessageHandler: FC<{}> = props =>
                 CreateRoomSession(parser.homeRoomId);
             }
         }
-    }, [ setNavigatorData ]);
+    });
 
-    const onRoomEnterErrorEvent = useCallback((event: RoomEnterErrorEvent) =>
+    useMessageEvent<RoomEnterErrorEvent>(RoomEnterErrorEvent, event =>
     {
         const parser = event.getParser();
 
@@ -416,31 +432,11 @@ export const NavigatorMessageHandler: FC<{}> = props =>
         }
 
         VisitDesktop();
-    }, [ simpleAlert ]);
+    });
 
-    const onRoomCreatorEvent = useCallback((event: NavigatorOpenRoomCreatorEvent) =>
-    {
-        CreateLinkEvent('navigator/show');
-    }, []);
+    useMessageEvent<NavigatorOpenRoomCreatorEvent>(NavigatorOpenRoomCreatorEvent, event => CreateLinkEvent('navigator/show'));
 
-    useMessageEvent(UserInfoEvent, onUserInfoEvent);
-    useMessageEvent(UserPermissionsEvent, onUserPermissionsEvent);
-    useMessageEvent(RoomForwardEvent, onRoomForwardEvent);
-    useMessageEvent(RoomEntryInfoMessageEvent, onRoomEntryInfoMessageEvent);
-    useMessageEvent(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
-    useMessageEvent(RoomScoreEvent, onRoomScoreEvent);
-    useMessageEvent(DoorbellMessageEvent, onRoomDoorbellEvent);
-    useMessageEvent(RoomDoorbellAcceptedEvent, onRoomDoorbellAcceptedEvent);
-    useMessageEvent(FlatAccessDeniedMessageEvent, onRoomDoorbellRejectedEvent);
-    useMessageEvent(GenericErrorEvent, onGenericErrorEvent);
-    useMessageEvent(NavigatorMetadataEvent, onNavigatorMetadataEvent);
-    useMessageEvent(NavigatorSearchEvent, onNavigatorSearchEvent);
-    useMessageEvent(UserFlatCatsEvent, onNavigatorCategoriesEvent);
-    useMessageEvent(UserEventCatsEvent, onNavigatorEventCategoriesEvent);
-    useMessageEvent(FlatCreatedEvent, onRoomCreatedEvent);
-    useMessageEvent(NavigatorHomeRoomEvent, onNavigatorHomeRoomEvent);
-    useMessageEvent(RoomEnterErrorEvent, onRoomEnterErrorEvent);
-    useMessageEvent(NavigatorOpenRoomCreatorEvent, onRoomCreatorEvent);
-
-    return null;
+    return { categories, doorData, setDoorData, topLevelContext, topLevelContexts, searchResult, navigatorData };
 }
+
+export const useNavigator = () => useBetween(useNavigatorState);

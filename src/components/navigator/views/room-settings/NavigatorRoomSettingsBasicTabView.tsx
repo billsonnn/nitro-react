@@ -3,8 +3,7 @@ import { RoomDeleteComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetMaxVisitorsList, IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text } from '../../../../common';
-import { useNotification } from '../../../../hooks';
-import { useNavigatorContext } from '../../NavigatorContext';
+import { useNavigator, useNotification } from '../../../../hooks';
 
 const ROOM_NAME_MIN_LENGTH = 3;
 const ROOM_NAME_MAX_LENGTH = 60;
@@ -24,7 +23,7 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
     const [ roomName, setRoomName ] = useState<string>('');
     const [ roomDescription, setRoomDescription ] = useState<string>('');
     const { showConfirm = null } = useNotification();
-    const { categories = null } = useNavigatorContext();
+    const { categories = null } = useNavigator();
 
     const deleteRoom = () =>
     {

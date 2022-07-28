@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
-import { useMessageEvent, useRoom, useSharedNavigatorData } from '../../../../hooks';
+import { useMessageEvent, useNavigator, useRoom } from '../../../../hooks';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
 {
@@ -12,7 +12,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     const [ roomOwner, setRoomOwner ] = useState<string>(null);
     const [ roomTags, setRoomTags ] = useState<string[]>(null);
     const [ isOpen, setIsOpen ] = useState<boolean>(false);
-    const [ navigatorData, setNavigatorData ] = useSharedNavigatorData();
+    const { navigatorData = null } = useNavigator();
     const { roomSession = null } = useRoom();
 
     const handleToolClick = (action: string) =>

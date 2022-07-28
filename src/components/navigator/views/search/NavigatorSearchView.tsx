@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC, KeyboardEvent, useEffect, useState } from 'react';
+import { FC, KeyboardEvent, useEffect, useState } from 'react';
 import { INavigatorSearchFilter, LocalizeText, SearchFilterOptions } from '../../../../api';
 import { Button, Flex } from '../../../../common';
-import { useNavigatorContext } from '../../NavigatorContext';
+import { useNavigator } from '../../../../hooks';
 
 export interface NavigatorSearchViewProps
 {
@@ -14,7 +14,7 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
     const { sendSearch = null } = props;
     const [ searchFilterIndex, setSearchFilterIndex ] = useState(0);
     const [ searchValue, setSearchValue ] = useState('');
-    const { topLevelContext = null, searchResult = null } = useNavigatorContext();
+    const { topLevelContext = null, searchResult = null } = useNavigator();
 
     const processSearch = () =>
     {

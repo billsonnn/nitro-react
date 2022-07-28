@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { CreateRoomSession, DoorStateType, GoToDesktop, LocalizeText } from '../../../api';
 import { Button, Column, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { useNavigatorContext } from '../NavigatorContext';
+import { useNavigator } from '../../../hooks';
 
 const VISIBLE_STATES = [ DoorStateType.START_DOORBELL, DoorStateType.STATE_WAITING, DoorStateType.STATE_NO_ANSWER, DoorStateType.START_PASSWORD, DoorStateType.STATE_WRONG_PASSWORD ];
 const DOORBELL_STATES = [ DoorStateType.START_DOORBELL, DoorStateType.STATE_WAITING, DoorStateType.STATE_NO_ANSWER ];
@@ -10,7 +10,7 @@ const PASSWORD_STATES = [ DoorStateType.START_PASSWORD, DoorStateType.STATE_WRON
 export const NavigatorDoorStateView: FC<{}> = props =>
 {
     const [ password, setPassword ] = useState('');
-    const { doorData = null, setDoorData = null } = useNavigatorContext();
+    const { doorData = null, setDoorData = null } = useNavigator();
 
     const onClose = () =>
     {

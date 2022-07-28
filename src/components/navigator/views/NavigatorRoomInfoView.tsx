@@ -5,7 +5,7 @@ import { FC, useEffect, useState } from 'react';
 import { CreateLinkEvent, DispatchUiEvent, GetGroupInformation, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, LayoutBadgeImageView, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, UserProfileIconView } from '../../../common';
 import { RoomWidgetThumbnailEvent } from '../../../events';
-import { useNavigatorContext } from '../NavigatorContext';
+import { useNavigator } from '../../../hooks';
 
 export class NavigatorRoomInfoViewProps
 {
@@ -17,8 +17,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
     const { onCloseClick = null } = props;
     const [ isRoomPicked, setIsRoomPicked ] = useState(false);
     const [ isRoomMuted, setIsRoomMuted ] = useState(false);
-    const { navigatorData = null } = useNavigatorContext();
-
+    const { navigatorData = null } = useNavigator();
 
     const hasPermission = (permission: string) =>
     {

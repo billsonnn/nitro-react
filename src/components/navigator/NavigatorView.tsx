@@ -1,11 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorCategoryDataParser, NavigatorEventCategoryDataParser, NavigatorInitComposer, NavigatorSearchComposer, NavigatorSearchResultSet, NavigatorTopLevelContext, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorInitComposer, NavigatorSearchComposer, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { AddEventLinkTracker, DoorStateType, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
+import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
 import { Base, Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { useRoomSessionManagerEvent, useSharedNavigatorData } from '../../hooks';
-import { NavigatorContextProvider } from './NavigatorContext';
-import { NavigatorMessageHandler } from './NavigatorMessageHandler';
+import { useNavigator, useRoomSessionManagerEvent } from '../../hooks';
 import { NavigatorDoorStateView } from './views/NavigatorDoorStateView';
 import { NavigatorRoomCreatorView } from './views/NavigatorRoomCreatorView';
 import { NavigatorRoomInfoView } from './views/NavigatorRoomInfoView';
@@ -24,27 +22,14 @@ export const NavigatorView: FC<{}> = props =>
     const [ isLoading, setIsLoading ] = useState(false);
     const [ needsInit, setNeedsInit ] = useState(true);
     const [ needsSearch, setNeedsSearch ] = useState(false);
-    const [ categories, setCategories ] = useState<NavigatorCategoryDataParser[]>(null);
-    const [ eventCategories, setEventCategories ] = useState<NavigatorEventCategoryDataParser[]>(null);
-    const [ topLevelContext, setTopLevelContext ] = useState<NavigatorTopLevelContext>(null);
-    const [ topLevelContexts, setTopLevelContexts ] = useState<NavigatorTopLevelContext[]>(null);
-    const [ navigatorData, setNavigatorData ] = useSharedNavigatorData();
-    const [ doorData, setDoorData ] = useState<{ roomInfo: RoomDataParser, state: number }>({ roomInfo: null, state: DoorStateType.NONE });
-    const [ searchResult, setSearchResult ] = useState<NavigatorSearchResultSet>(null);
+    const { searchResult = null, topLevelContext = null, topLevelContexts = null, navigatorData = null } = useNavigator();
     const pendingSearch = useRef<{ value: string, code: string }>(null);
 
-    const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
+    useRoomSessionManagerEvent<RoomSessionEvent>(RoomSessionEvent.CREATED, event =>
     {
-        switch(event.type)
-        {
-            case RoomSessionEvent.CREATED:
-                setIsVisible(false);
-                setCreatorOpen(false);
-                return;
-        }
-    }, []);
-
-    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
+        setIsVisible(false);
+        setCreatorOpen(false);
+    });
 
     const sendSearch = useCallback((searchValue: string, contextCode: string) =>
     {
@@ -206,8 +191,7 @@ export const NavigatorView: FC<{}> = props =>
     }, []);
 
     return (
-        <NavigatorContextProvider value={ { categories, setCategories, eventCategories, setEventCategories, topLevelContext, setTopLevelContext, topLevelContexts, setTopLevelContexts, navigatorData, setNavigatorData, doorData, setDoorData, searchResult, setSearchResult } }>
-            <NavigatorMessageHandler />
+        <>
             { isVisible &&
                 <NitroCardView uniqueKey="navigator" className="nitro-navigator">
                     <NitroCardHeaderView headerText={ LocalizeText(isCreatorOpen ? 'navigator.createroom.title' : 'navigator.title') } onCloseClick={ event => setIsVisible(false) } />
@@ -241,6 +225,6 @@ export const NavigatorView: FC<{}> = props =>
             { isRoomInfoOpen && <NavigatorRoomInfoView onCloseClick={ () => setRoomInfoOpen(false) } /> }
             { isRoomLinkOpen && <NavigatorRoomLinkView onCloseClick={ () => setRoomLinkOpen(false) } /> }
             <NavigatorRoomSettingsView />
-        </NavigatorContextProvider>
+        </>
     );
 }

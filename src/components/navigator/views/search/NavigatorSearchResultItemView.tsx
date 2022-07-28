@@ -3,7 +3,7 @@ import { RoomDataParser } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent } from 'react';
 import { CreateRoomSession, DoorStateType, GetSessionDataManager, TryVisitRoom } from '../../../../api';
 import { Column, Flex, LayoutBadgeImageView, LayoutGridItemProps, LayoutRoomThumbnailView, Text } from '../../../../common';
-import { useNavigatorContext } from '../../NavigatorContext';
+import { useNavigator } from '../../../../hooks';
 import { NavigatorSearchResultItemInfoView } from './NavigatorSearchResultItemInfoView';
 
 export interface NavigatorSearchResultItemViewProps extends LayoutGridItemProps
@@ -15,7 +15,7 @@ export interface NavigatorSearchResultItemViewProps extends LayoutGridItemProps
 export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProps> = props =>
 {
     const { roomData = null, children = null, thumbnail = false, ...rest } = props;
-    const { setDoorData = null } = useNavigatorContext();
+    const { setDoorData = null } = useNavigator();
 
     const getUserCounterColor = () =>
     {

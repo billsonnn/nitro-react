@@ -1,1 +1,1 @@
-export * from './useSharedNavigatorData';
+export * from './useNavigator';

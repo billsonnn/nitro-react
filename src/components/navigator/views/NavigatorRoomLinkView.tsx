@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { GetConfiguration, LocalizeText } from '../../../api';
 import { Column, Flex, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { useNavigatorContext } from '../NavigatorContext';
+import { useNavigator } from '../../../hooks';
 
 export class NavigatorRoomLinkViewProps
 {
@@ -11,7 +11,7 @@ export class NavigatorRoomLinkViewProps
 export const NavigatorRoomLinkView: FC<NavigatorRoomLinkViewProps> = props =>
 {
     const { onCloseClick = null } = props;
-    const { navigatorData = null } = useNavigatorContext();
+    const { navigatorData = null } = useNavigator();
 
     if(!navigatorData.enteredGuestRoom) return null;
     

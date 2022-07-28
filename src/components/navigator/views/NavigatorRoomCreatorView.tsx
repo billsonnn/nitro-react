@@ -3,7 +3,7 @@ import { CreateFlatMessageComposer, HabboClubLevelEnum } from '@nitrots/nitro-re
 import { FC, useEffect, useState } from 'react';
 import { GetClubMemberLevel, GetConfiguration, IRoomModel, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../common';
-import { useNavigatorContext } from '../NavigatorContext';
+import { useNavigator } from '../../../hooks';
 
 export const NavigatorRoomCreatorView: FC<{}> = props =>
 {
@@ -15,7 +15,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
     const [ tradesSetting, setTradesSetting ] = useState<number>(0);
     const [ roomModels, setRoomModels ] = useState<IRoomModel[]>([]);
     const [ selectedModelName, setSelectedModelName ] = useState<string>('');
-    const { categories = null } = useNavigatorContext();
+    const { categories = null } = useNavigator();
 
     const hcDisabled = GetConfiguration<boolean>('hc.disabled', false);
 
