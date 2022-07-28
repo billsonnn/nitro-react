@@ -1,6 +1,6 @@
 import { FC, useCallback, useMemo } from 'react';
-import { LocalizeText, ProductTypeEnum } from '../../../../../../api';
-import { Button, Column, LayoutFurniIconImageView, LayoutGridItem, Text } from '../../../../../../common';
+import { GetImageIconUrlForProduct, LocalizeText, ProductTypeEnum } from '../../../../../../api';
+import { Button, Column, LayoutGridItem, Text } from '../../../../../../common';
 import { MarketplaceOfferData } from './common/MarketplaceOfferData';
 import { MarketPlaceOfferState } from './common/MarketplaceOfferState';
 
@@ -49,7 +49,9 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
 
     return (
         <LayoutGridItem shrink center={ false } column={ false } alignItems="center" className="p-1">
-            <LayoutFurniIconImageView productType={ offerData.furniType === MarketplaceOfferData.TYPE_FLOOR ? ProductTypeEnum.FLOOR : ProductTypeEnum.WALL } productClassId={ offerData.furniId } extraData={ offerData.extraData } style={ { width: 50, height: 50 } } />
+            <Column style={ { width: 40, height: 40 } }>
+                <LayoutGridItem column={ false } itemImage={ GetImageIconUrlForProduct(((offerData.furniType === MarketplaceOfferData.TYPE_FLOOR) ? ProductTypeEnum.FLOOR : ProductTypeEnum.WALL), offerData.furniId, offerData.extraData) } itemUniqueNumber={ offerData.stuffData.uniqueNumber } />
+            </Column>
             <Column grow gap={ 0 }>
                 <Text fontWeight="bold">{ getMarketplaceOfferTitle }</Text>
                 { (type === OWN_OFFER) &&
@@ -59,7 +61,7 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
                     </> }
                 { (type === PUBLIC_OFFER) &&
                     <>
-                        <Text>{ LocalizeText('catalog.marketplace.offer.price_public_item', [ 'price', 'average' ], [ offerData.price.toString(), offerData.averagePrice.toString() ]) }</Text>
+                        <Text>{ LocalizeText('catalog.marketplace.offer.price_public_item', [ 'price', 'average' ], [ offerData.price.toString(), ((offerData.averagePrice > 0) ? offerData.averagePrice.toString() : '-') ]) }</Text>
                         <Text>{ LocalizeText('catalog.marketplace.offer_count', [ 'count' ], [ offerData.offerCount.toString() ]) }</Text>
                     </> }
             </Column>

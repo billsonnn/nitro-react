@@ -7,6 +7,7 @@ export * from './CatalogPurchaseState';
 export * from './CatalogType';
 export * from './CatalogUtilities';
 export * from './FurnitureOffer';
+export * from './GetImageIconUrlForProduct';
 export * from './GiftWrappingConfiguration';
 export * from './ICatalogNode';
 export * from './ICatalogOptions';
