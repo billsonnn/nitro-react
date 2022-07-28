@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { AvatarInfoFurni, AvatarInfoName, AvatarInfoPet, AvatarInfoRentableBot, AvatarInfoUser, AvatarInfoUtilities, CanManipulateFurniture, FurniCategory, GetRoomEngine, GetSessionDataManager, IAvatarInfo, IsOwnerOfFurniture, RoomWidgetUpdateRoomObjectEvent, UseProductItem } from '../../../api';
 import { useRoomEngineEvent, useRoomSessionManagerEvent, useUiEvent } from '../../events';
 import { useFriends } from '../../friends';
+import { useWired } from '../../wired';
 import { useObjectDeselectedEvent, useObjectRollOutEvent, useObjectRollOverEvent, useObjectSelectedEvent } from '../engine';
 import { useRoom } from '../useRoom';
 
@@ -16,6 +17,7 @@ const useAvatarInfoWidgetState = () =>
     const [ pendingPetId, setPendingPetId ] = useState<number>(-1);
     const [ isDecorating, setIsDecorating ] = useState(false);
     const { friends = [] } = useFriends();
+    const { selectObjectForWired = null } = useWired();
     const { roomSession = null } = useRoom();
 
     const removeNameBubble = (index: number) =>
@@ -68,7 +70,9 @@ const useAvatarInfoWidgetState = () =>
         {
             case RoomObjectCategory.FLOOR:
             case RoomObjectCategory.WALL:
-                info = AvatarInfoUtilities.getFurniInfo(objectId, category)
+                info = AvatarInfoUtilities.getFurniInfo(objectId, category);
+
+                if(info) selectObjectForWired(objectId, category);
                 break;
             case RoomObjectCategory.UNIT: {
                 const userData = roomSession.userDataManager.getUserDataByIndex(objectId);

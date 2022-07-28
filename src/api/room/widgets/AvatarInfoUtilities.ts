@@ -1,6 +1,4 @@
 import { IFurnitureData, ObjectDataFactory, PetFigureData, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomPetData, RoomTradingLevelEnum, RoomUserData, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
-import { WiredSelectObjectEvent } from '../../../events';
-import { DispatchUiEvent } from '../../events';
 import { GetNitroInstance, GetRoomEngine, GetRoomSession, GetSessionDataManager, IsOwnerOfFurniture } from '../../nitro';
 import { LocalizeText } from '../../utils';
 import { AvatarInfoFurni } from './AvatarInfoFurni';
@@ -133,8 +131,6 @@ export class AvatarInfoUtilities
                 furniInfo.availableForBuildersClub = furnitureData.availableForBuildersClub;
                 furniInfo.tileSizeX = furnitureData.tileSizeX;
                 furniInfo.tileSizeY = furnitureData.tileSizeY;
-
-                DispatchUiEvent(new WiredSelectObjectEvent(furniInfo.id, furniInfo.category));
             }
         }
 

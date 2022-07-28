@@ -2,8 +2,7 @@ import { ConditionDefinition, Triggerable, TriggerDefinition, UpdateActionMessag
 import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { IsOwnerOfFloorFurniture, LocalizeText, SendMessageComposer, WiredSelectionVisualizer } from '../../api';
-import { WiredSelectObjectEvent } from '../../events';
-import { useMessageEvent, useUiEvent } from '../events';
+import { useMessageEvent } from '../events';
 import { useNotification } from '../notification';
 
 const useWiredState = () =>
@@ -50,37 +49,35 @@ const useWiredState = () =>
         }
     }
 
-    useUiEvent<WiredSelectObjectEvent>(WiredSelectObjectEvent.SELECT_OBJECT, event =>
+    const selectObjectForWired = (objectId: number, category: number) =>
     {
         if(!trigger) return;
-        
-        const furniId = event.objectId;
 
-        if(furniId <= 0) return;
+        if(objectId <= 0) return;
 
         setFurniIds(prevValue =>
         {
             const newFurniIds = [ ...prevValue ];
 
-            const index = prevValue.indexOf(furniId);
+            const index = prevValue.indexOf(objectId);
 
             if(index >= 0)
             {
                 newFurniIds.splice(index, 1);
 
-                WiredSelectionVisualizer.hide(furniId);
+                WiredSelectionVisualizer.hide(objectId);
             }
 
             else if(newFurniIds.length < trigger.maximumItemSelectionCount)
             {
-                newFurniIds.push(furniId);
+                newFurniIds.push(objectId);
 
-                WiredSelectionVisualizer.show(furniId);
+                WiredSelectionVisualizer.show(objectId);
             }
 
             return newFurniIds;
         });
-    }, !!trigger);
+    }
 
     useMessageEvent<WiredSaveSuccessEvent>(WiredSaveSuccessEvent, event =>
     {
@@ -128,7 +125,7 @@ const useWiredState = () =>
         }
     }, [ trigger ]);
 
-    return { trigger, setTrigger, intParams, setIntParams, stringParam, setStringParam, furniIds, setFurniIds, actionDelay, setActionDelay, saveWired };
+    return { trigger, setTrigger, intParams, setIntParams, stringParam, setStringParam, furniIds, setFurniIds, actionDelay, setActionDelay, saveWired, selectObjectForWired };
 }
 
 export const useWired = () => useBetween(useWiredState);
