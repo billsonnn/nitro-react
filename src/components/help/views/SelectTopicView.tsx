@@ -1,16 +1,14 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import { LocalizeText, ReportState } from '../../../api';
 import { Button, Column, Flex, Text } from '../../../common';
-import { useHelp } from '../../../hooks';
-import { GetCfhCategories } from '../../mod-tools/common/GetCFHCategories';
+import { useHelp, useModTools } from '../../../hooks';
 
 export const SelectTopicView: FC<{}> = props =>
 {
     const [ selectedCategory, setSelectedCategory ] = useState(-1);
     const [ selectedTopic, setSelectedTopic ] = useState(-1);
     const { setActiveReport = null } = useHelp();
-
-    const cfhCategories = useMemo(() => GetCfhCategories(), []);
+    const { cfhCategories = [] } = useModTools();
 
     const submitTopic = () =>
     {

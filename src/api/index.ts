@@ -13,6 +13,7 @@ export * from './guide-tool';
 export * from './hc-center';
 export * from './help';
 export * from './inventory';
+export * from './mod-tools';
 export * from './navigator';
 export * from './nitro';
 export * from './nitro/avatar';

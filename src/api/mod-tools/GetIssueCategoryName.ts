@@ -1,4 +1,4 @@
-export const getSourceName = (categoryId: number): string =>
+export const GetIssueCategoryName = (categoryId: number) =>
 {
     switch(categoryId)
     {
@@ -29,7 +29,7 @@ export const getSourceName = (categoryId: number): string =>
             return 'Photo';
         case 15:
             return 'Ambassador';
-        default:
-            return 'Unknown';
     }
+
+    return 'Unknown';
 }

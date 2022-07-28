@@ -1,5 +1,5 @@
 import { ChatRecordData, GetUserChatlogMessageComposer, UserChatlogEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../api';
 import { DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { useMessageEvent } from '../../../../hooks';
@@ -16,8 +16,8 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
     const { userId = null, onCloseClick = null } = props;
     const [ userChatlog, setUserChatlog ] = useState<ChatRecordData[]>(null);
     const [ username, setUsername ] = useState<string>(null);
-    
-    const onModtoolUserChatlogEvent = useCallback((event: UserChatlogEvent) =>
+
+    useMessageEvent<UserChatlogEvent>(UserChatlogEvent, event =>
     {
         const parser = event.getParser();
 
@@ -25,9 +25,7 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
 
         setUsername(parser.data.username);
         setUserChatlog(parser.data.roomChatlogs);
-    }, [ userId ]);
-
-    useMessageEvent(UserChatlogEvent, onModtoolUserChatlogEvent);
+    });
 
     useEffect(() =>
     {

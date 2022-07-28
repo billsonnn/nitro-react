@@ -1,11 +1,8 @@
 import { CallForHelpTopicData, DefaultSanctionMessageComposer, ModAlertMessageComposer, ModBanMessageComposer, ModKickMessageComposer, ModMessageMessageComposer, ModMuteMessageComposer, ModTradingLockMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
-import { LocalizeText, NotificationAlertType, SendMessageComposer } from '../../../../api';
+import { ISelectedUser, LocalizeText, ModActionDefinition, NotificationAlertType, SendMessageComposer } from '../../../../api';
 import { Button, Column, DraggableWindowPosition, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { useNotification } from '../../../../hooks';
-import { ISelectedUser } from '../../common/ISelectedUser';
-import { ModActionDefinition } from '../../common/ModActionDefinition';
-import { useModToolsContext } from '../../ModToolsContext';
+import { useModTools, useNotification } from '../../../../hooks';
 
 interface ModToolsUserModActionViewProps
 {
@@ -34,8 +31,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
     const [ selectedTopic, setSelectedTopic ] = useState(-1);
     const [ selectedAction, setSelectedAction ] = useState(-1);
     const [ message, setMessage ] = useState<string>('');
-    const { modToolsState = null } = useModToolsContext();
-    const { cfhCategories = null, settings = null } = modToolsState;
+    const { cfhCategories = null, settings = null } = useModTools();
     const { simpleAlert = null } = useNotification();
 
     const topics = useMemo(() =>
@@ -53,19 +49,22 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
         return values;
     }, [ cfhCategories ]);
 
-    const sendAlert = (message: string) =>
-    {
-        simpleAlert(message, NotificationAlertType.DEFAULT, null, null, 'Error');
-    }
+    const sendAlert = (message: string) => simpleAlert(message, NotificationAlertType.DEFAULT, null, null, 'Error');
 
     const sendDefaultSanction = () =>
     {
         let errorMessage: string = null;
+
         const category = topics[selectedTopic];
+
         if(selectedTopic === -1) errorMessage = 'You must select a CFH topic';
+
         if(errorMessage) return sendAlert(errorMessage);
+
         const messageOrDefault = (message.trim().length === 0) ? LocalizeText(`help.cfh.topic.${ category.id }`) : message;
+
         SendMessageComposer(new DefaultSanctionMessageComposer(user.userId, selectedTopic, messageOrDefault));
+        
         onCloseClick();
     }
 

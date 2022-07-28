@@ -9,6 +9,7 @@ export * from './friends';
 export * from './groups';
 export * from './help';
 export * from './inventory';
+export * from './mod-tools';
 export * from './navigator';
 export * from './notification';
 export * from './purse';

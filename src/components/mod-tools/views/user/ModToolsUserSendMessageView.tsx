@@ -1,9 +1,8 @@
 import { ModMessageMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
-import { SendMessageComposer } from '../../../../api';
+import { FC, useState } from 'react';
+import { ISelectedUser, SendMessageComposer } from '../../../../api';
 import { Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useNotification } from '../../../../hooks';
-import { ISelectedUser } from '../../common/ISelectedUser';
 
 interface ModToolsUserSendMessageViewProps
 {
@@ -17,7 +16,9 @@ export const ModToolsUserSendMessageView: FC<ModToolsUserSendMessageViewProps> =
     const [ message, setMessage ] = useState('');
     const { simpleAlert = null } = useNotification();
 
-    const sendMessage = useCallback(() =>
+    if(!user) return null;
+
+    const sendMessage = () =>
     {
         if(message.trim().length === 0)
         {
@@ -29,9 +30,7 @@ export const ModToolsUserSendMessageView: FC<ModToolsUserSendMessageViewProps> =
         SendMessageComposer(new ModMessageMessageComposer(user.userId, message, -999));
 
         onCloseClick();
-    }, [ message, user, onCloseClick, simpleAlert ]);
-
-    if(!user) return null;
+    }
 
     return (
         <NitroCardView className="nitro-mod-tools-user-message" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>

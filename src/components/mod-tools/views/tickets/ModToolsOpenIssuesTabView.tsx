@@ -12,8 +12,6 @@ export const ModToolsOpenIssuesTabView: FC<ModToolsOpenIssuesTabViewProps> = pro
 {
     const { openIssues = null } = props;
 
-    const onPickIssue = (issueId: number) => SendMessageComposer(new PickIssuesMessageComposer([ issueId ], false, 0, 'pick issue button'));
-
     return (
         <Column gap={ 0 } overflow="hidden">
             <Column gap={ 2 }>
@@ -33,7 +31,7 @@ export const ModToolsOpenIssuesTabView: FC<ModToolsOpenIssuesTabViewProps> = pro
                             <Base className="g-col-3">{ issue.reportedUserName }</Base>
                             <Base className="g-col-4">{ new Date(Date.now() - issue.issueAgeInMilliseconds).toLocaleTimeString() }</Base>
                             <Base className="g-col-3">
-                                <Button variant="success" onClick={ event => onPickIssue(issue.issueId) }>Pick Issue</Button>
+                                <Button variant="success" onClick={ event => SendMessageComposer(new PickIssuesMessageComposer([ issue.issueId ], false, 0, 'pick issue button')) }>Pick Issue</Button>
                             </Base>
                         </Grid>
                     );

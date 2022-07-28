@@ -6,14 +6,12 @@ import { Base, Button, Column, Grid } from '../../../../common';
 interface ModToolsMyIssuesTabViewProps
 {
     myIssues: IssueMessageData[];
-    onIssueHandleClick(issueId: number): void;
+    handleIssue: (issueId: number) => void;
 }
 
 export const ModToolsMyIssuesTabView: FC<ModToolsMyIssuesTabViewProps> = props =>
 {
-    const { myIssues = null, onIssueHandleClick = null } = props;
-
-    const onReleaseIssue = (issueId: number) => SendMessageComposer(new ReleaseIssuesMessageComposer([ issueId ]));
+    const { myIssues = null, handleIssue = null } = props;
 
     return (
         <Column gap={ 0 } overflow="hidden">
@@ -35,10 +33,10 @@ export const ModToolsMyIssuesTabView: FC<ModToolsMyIssuesTabViewProps> = props =
                             <Base className="g-col-3">{ issue.reportedUserName }</Base>
                             <Base className="g-col-3">{ new Date(Date.now() - issue.issueAgeInMilliseconds).toLocaleTimeString() }</Base>
                             <Base className="g-col-2">
-                                <Button variant="primary" onClick={ event => onIssueHandleClick(issue.issueId) }>Handle</Button>
+                                <Button variant="primary" onClick={ event => handleIssue(issue.issueId) }>Handle</Button>
                             </Base>
                             <Base className="g-col-2">
-                                <Button variant="danger" onClick={ event => onReleaseIssue(issue.issueId) }>Release</Button>
+                                <Button variant="danger" onClick={ event => SendMessageComposer(new ReleaseIssuesMessageComposer([ issue.issueId ])) }>Release</Button>
                             </Base>
                         </Grid>
                     );
