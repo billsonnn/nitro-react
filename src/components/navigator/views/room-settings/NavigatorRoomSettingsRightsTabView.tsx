@@ -1,5 +1,5 @@
 import { FlatControllerAddedEvent, FlatControllerRemovedEvent, FlatControllersEvent, RemoveAllRightsMessageComposer, RoomTakeRightsComposer, RoomUsersWithRightsComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Grid, Text, UserProfileIconView } from '../../../../common';
 import { useMessageEvent } from '../../../../hooks';
@@ -15,18 +15,16 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
     const { roomData = null } = props;
     const [ usersWithRights, setUsersWithRights ] = useState<Map<number, string>>(new Map());
 
-    const onFlatControllersEvent = useCallback((event: FlatControllersEvent) =>
+    useMessageEvent<FlatControllersEvent>(FlatControllersEvent, event =>
     {
         const parser = event.getParser();
 
         if(!roomData || (roomData.roomId !== parser.roomId)) return;
 
         setUsersWithRights(parser.users);
-    }, [ roomData ]);
+    });
 
-    useMessageEvent(FlatControllersEvent, onFlatControllersEvent);
-
-    const onFlatControllerAddedEvent = useCallback((event: FlatControllerAddedEvent) =>
+    useMessageEvent<FlatControllerAddedEvent>(FlatControllerAddedEvent, event =>
     {
         const parser = event.getParser();
 
@@ -40,11 +38,9 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
 
             return newValue;
         });
-    }, [ roomData ]);
+    });
 
-    useMessageEvent(FlatControllerAddedEvent, onFlatControllerAddedEvent);
-
-    const onFlatControllerRemovedEvent = useCallback((event: FlatControllerRemovedEvent) =>
+    useMessageEvent<FlatControllerRemovedEvent>(FlatControllerRemovedEvent, event =>
     {
         const parser = event.getParser();
 
@@ -57,10 +53,8 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
             newValue.delete(parser.userId);
 
             return newValue;
-        });
-    }, [ roomData ]);
-
-    useMessageEvent(FlatControllerRemovedEvent, onFlatControllerRemovedEvent);
+        }); 
+    });
 
     useEffect(() =>
     {

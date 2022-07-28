@@ -1,5 +1,5 @@
 import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraStorageUrlMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, LayoutCurrencyIcon, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
@@ -24,15 +24,13 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
 
     const publishDisabled = useMemo(() => GetConfiguration<boolean>('camera.publish.disabled', false), []);
 
-    const onCameraPurchaseOKMessageEvent = useCallback((event: CameraPurchaseOKMessageEvent) =>
+    useMessageEvent<CameraPurchaseOKMessageEvent>(CameraPurchaseOKMessageEvent, event =>
     {
         setPicturesBought(value => (value + 1));
         setIsWaiting(false);
-    }, []);
+    });
 
-    useMessageEvent(CameraPurchaseOKMessageEvent, onCameraPurchaseOKMessageEvent);
-
-    const onCameraPublishStatusMessageEvent = useCallback((event: CameraPublishStatusMessageEvent) =>
+    useMessageEvent<CameraPublishStatusMessageEvent>(CameraPublishStatusMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -40,18 +38,14 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
         setPublishCooldown(parser.secondsToWait);
         setWasPicturePublished(parser.ok);
         setIsWaiting(false);
-    }, []);
+    });
 
-    useMessageEvent(CameraPublishStatusMessageEvent, onCameraPublishStatusMessageEvent);
-
-    const onCameraStorageUrlMessageEvent = useCallback((event: CameraStorageUrlMessageEvent) =>
+    useMessageEvent<CameraStorageUrlMessageEvent>(CameraStorageUrlMessageEvent, event =>
     {
         const parser = event.getParser();
 
         setPictureUrl(GetConfiguration<string>('camera.url') + '/' + parser.url);
-    }, []);
-
-    useMessageEvent(CameraStorageUrlMessageEvent, onCameraStorageUrlMessageEvent);
+    });
 
     const processAction = (type: string, value: string | number = null) =>
     {

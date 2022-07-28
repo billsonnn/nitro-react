@@ -1,5 +1,5 @@
 import { BadgePointLimitsEvent, ILinkEventTracker, IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetLocalization, GetRoomEngine, isObjectMoverRequested, LocalizeText, RemoveLinkEventTracker, setObjectMoverRequested, UnseenItemCategory } from '../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { useInventoryTrade, useInventoryUnseenTracker, useMessageEvent, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../hooks';
@@ -32,18 +32,19 @@ export const InventoryView: FC<{}> = props =>
         setIsVisible(false);
     }
 
-    const onRoomEngineObjectPlacedEvent = useCallback((event: RoomEngineObjectPlacedEvent) =>
+    useRoomEngineEvent<RoomEngineObjectPlacedEvent>(RoomEngineObjectEvent.PLACED, event =>
     {
         if(!isObjectMoverRequested()) return;
 
         setObjectMoverRequested(false);
 
         if(!event.placedInRoom) setIsVisible(true);
-    }, []);
+    });
 
-    useRoomEngineEvent(RoomEngineObjectEvent.PLACED, onRoomEngineObjectPlacedEvent);
-
-    const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
+    useRoomSessionManagerEvent<RoomSessionEvent>([
+        RoomSessionEvent.CREATED,
+        RoomSessionEvent.ENDED
+    ], event =>
     {
         switch(event.type)
         {
@@ -55,19 +56,14 @@ export const InventoryView: FC<{}> = props =>
                 setIsVisible(false);
                 return;
         }
-    }, []);
+    });
 
-    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
-
-    const onBadgePointLimitsEvent = useCallback((event: BadgePointLimitsEvent) =>
+    useMessageEvent<BadgePointLimitsEvent>(BadgePointLimitsEvent, event =>
     {
         const parser = event.getParser();
 
         for(const data of parser.data) GetLocalization().setBadgePointLimit(data.badgeId, data.limit);
-    }, []);
-
-    useMessageEvent(BadgePointLimitsEvent, onBadgePointLimitsEvent);
+    });
 
     useEffect(() =>
     {

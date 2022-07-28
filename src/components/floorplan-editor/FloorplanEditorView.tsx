@@ -1,5 +1,5 @@
 import { FloorHeightMapEvent, ILinkEventTracker, NitroPoint, RoomEngineEvent, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Button, ButtonGroup, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { useMessageEvent, useRoomEngineEvent } from '../../hooks';
@@ -54,14 +54,9 @@ export const FloorplanEditorView: FC<{}> = props =>
         FloorplanEditor.instance.renderTiles();
     }
 
-    const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
-    {
-        setIsVisible(false);
-    }, []);
+    useRoomEngineEvent<RoomEngineEvent>(RoomEngineEvent.DISPOSED, event => setIsVisible(false));
 
-    useRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
-
-    const onFloorHeightMapEvent = useCallback((event: FloorHeightMapEvent) =>
+    useMessageEvent<FloorHeightMapEvent>(FloorHeightMapEvent, event =>
     {
         const parser = event.getParser();
 
@@ -83,11 +78,9 @@ export const FloorplanEditorView: FC<{}> = props =>
 
             return newValue;
         });
-    }, []);
+    });
 
-    useMessageEvent(FloorHeightMapEvent, onFloorHeightMapEvent);
-
-    const onRoomVisualizationSettingsEvent = useCallback((event: RoomVisualizationSettingsEvent) =>
+    useMessageEvent<RoomVisualizationSettingsEvent>(RoomVisualizationSettingsEvent, event =>
     {
         const parser = event.getParser();
 
@@ -110,9 +103,7 @@ export const FloorplanEditorView: FC<{}> = props =>
 
             return newValue;
         });
-    }, []);
-
-    useMessageEvent(RoomVisualizationSettingsEvent, onRoomVisualizationSettingsEvent);
+    });
 
     useEffect(() =>
     {

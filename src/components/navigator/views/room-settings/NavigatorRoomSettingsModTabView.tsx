@@ -16,16 +16,14 @@ export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewPro
     const [ selectedUserId, setSelectedUserId ] = useState<number>(-1);
     const [ bannedUsers, setBannedUsers ] = useState<BannedUserData[]>([]);
 
-    const onBannedUsersFromRoomEvent = useCallback((event: BannedUsersFromRoomEvent) =>
+    useMessageEvent<BannedUsersFromRoomEvent>(BannedUsersFromRoomEvent, event =>
     {
         const parser = event.getParser();
 
         if(!roomData || (roomData.roomId !== parser.roomId)) return;
 
         setBannedUsers(parser.bannedUsers);
-    }, [ roomData ]);
-
-    useMessageEvent(BannedUsersFromRoomEvent, onBannedUsersFromRoomEvent);
+    });
 
     const unBanUser = useCallback((userId: number) =>
     {

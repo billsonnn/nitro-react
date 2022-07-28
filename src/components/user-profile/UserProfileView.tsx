@@ -27,30 +27,26 @@ export const UserProfileView: FC<{}> = props =>
         
         GetUserProfile(userProfile.id);
     }, [ userProfile ]);
-    
-    const onUserCurrentBadgesEvent = useCallback((event: UserCurrentBadgesEvent) =>
+
+    useMessageEvent<UserCurrentBadgesEvent>(UserCurrentBadgesEvent, event =>
     {
         const parser = event.getParser();
 
         if(!userProfile || (parser.userId !== userProfile.id)) return;
         
         setUserBadges(parser.badges);
-    }, [ userProfile ]);
+    });
 
-    useMessageEvent(UserCurrentBadgesEvent, onUserCurrentBadgesEvent);
-
-    const onUserRelationshipsEvent = useCallback((event: RelationshipStatusInfoEvent) =>
+    useMessageEvent<RelationshipStatusInfoEvent>(RelationshipStatusInfoEvent, event =>
     {
         const parser = event.getParser();
 
         if(!userProfile || (parser.userId !== userProfile.id)) return;
         
         setUserRelationships(parser);
-    }, [ userProfile ]);
+    });
 
-    useMessageEvent(RelationshipStatusInfoEvent, onUserRelationshipsEvent);
-
-    const onUserProfileEvent = useCallback((event: UserProfileEvent) =>
+    useMessageEvent<UserProfileEvent>(UserProfileEvent, event =>
     {
         const parser = event.getParser();
 
@@ -71,11 +67,9 @@ export const UserProfileView: FC<{}> = props =>
 
         SendMessageComposer(new UserCurrentBadgesComposer(parser.id));
         SendMessageComposer(new UserRelationshipsComposer(parser.id));
-    }, []);
+    });
 
-    useMessageEvent(UserProfileEvent, onUserProfileEvent);
-
-    const onRoomEngineObjectEvent = useCallback((event: RoomEngineObjectEvent) =>
+    useRoomEngineEvent<RoomEngineObjectEvent>(RoomEngineObjectEvent.SELECTED, event =>
     {
         if(!userProfile) return;
         
@@ -86,9 +80,7 @@ export const UserProfileView: FC<{}> = props =>
         if(userData.type !== RoomObjectType.USER) return;
 
         GetUserProfile(userData.webID);
-    }, [ userProfile ]);
-
-    useRoomEngineEvent(RoomEngineObjectEvent.SELECTED, onRoomEngineObjectEvent);
+    });
 
     if(!userProfile) return null;
 

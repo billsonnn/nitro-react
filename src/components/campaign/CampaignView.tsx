@@ -10,18 +10,16 @@ export const CampaignView: FC<{}> = props =>
     const [ lastOpenAttempt, setLastOpenAttempt ] = useState<number>(-1);
     const [ receivedProducts, setReceivedProducts ] = useState<Map<number, CalendarItem>>(new Map());
     const [ isCalendarOpen, setCalendarOpen ] = useState(false);
-    
-    const onCampaignCalendarDataMessageEvent = useCallback((event: CampaignCalendarDataMessageEvent) =>
+
+    useMessageEvent<CampaignCalendarDataMessageEvent>(CampaignCalendarDataMessageEvent, event =>
     {
         const parser = event.getParser();
 
         if(!parser) return;
         setCalendarData(parser.calendarData);
-    }, []);
+    });
 
-    useMessageEvent(CampaignCalendarDataMessageEvent, onCampaignCalendarDataMessageEvent);
-
-    const onCampaignCalendarDoorOpenedMessageEvent = useCallback((event: CampaignCalendarDoorOpenedMessageEvent) =>
+    useMessageEvent<CampaignCalendarDoorOpenedMessageEvent>(CampaignCalendarDoorOpenedMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -49,9 +47,7 @@ export const CampaignView: FC<{}> = props =>
         }
 
         setLastOpenAttempt(-1);
-    }, [ lastOpenAttempt ]);
-
-    useMessageEvent(CampaignCalendarDoorOpenedMessageEvent, onCampaignCalendarDoorOpenedMessageEvent);
+    });
 
     const openPackage = useCallback((id: number, asStaff = false) =>
     {

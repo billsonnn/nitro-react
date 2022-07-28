@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, NitroPoint, RoomEntryTileMessageEvent, RoomOccupiedTilesMessageEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { SendMessageComposer } from '../../../api';
 import { Base, Button, Column, ColumnProps, Flex, Grid } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
@@ -15,7 +15,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
     const { originalFloorplanSettings = null, setOriginalFloorplanSettings = null, setVisualizationSettings = null } = useFloorplanEditorContext();
     const elementRef = useRef<HTMLDivElement>(null);
 
-    const onRoomOccupiedTilesMessageEvent = useCallback((event: RoomOccupiedTilesMessageEvent) =>
+    useMessageEvent<RoomOccupiedTilesMessageEvent>(RoomOccupiedTilesMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -33,11 +33,9 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         setOccupiedTilesReceived(true);
         
         elementRef.current.scrollTo((FloorplanEditor.instance.view.width / 3), 0);
-    }, [ setOriginalFloorplanSettings ]);
+    });
 
-    useMessageEvent(RoomOccupiedTilesMessageEvent, onRoomOccupiedTilesMessageEvent);
-
-    const onRoomEntryTileMessageEvent = useCallback((event: RoomEntryTileMessageEvent) =>
+    useMessageEvent<RoomEntryTileMessageEvent>(RoomEntryTileMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -63,9 +61,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         FloorplanEditor.instance.doorLocation = new NitroPoint(parser.x, parser.y);
 
         setEntryTileReceived(true);
-    }, [ setOriginalFloorplanSettings, setVisualizationSettings ]);
-
-    useMessageEvent(RoomEntryTileMessageEvent, onRoomEntryTileMessageEvent);
+    });
 
     const onClickArrowButton = (scrollDirection: string) =>
     {

@@ -73,18 +73,16 @@ export const GroupMembersView: FC<{}> = props =>
         SendMessageComposer(new GroupConfirmRemoveMemberComposer(membersData.groupId, member.id));
     }
 
-    const onGroupMembersEvent = useCallback((event: GroupMembersEvent) =>
+    useMessageEvent<GroupMembersEvent>(GroupMembersEvent, event =>
     {
         const parser = event.getParser();
 
         setMembersData(parser);
         setLevelId(parser.level);
         setTotalPages(Math.ceil(parser.totalMembersCount / parser.pageSize));
-    }, []);
+    });
 
-    useMessageEvent(GroupMembersEvent, onGroupMembersEvent);
-
-    const onGroupConfirmMemberRemoveEvent = useCallback((event: GroupConfirmMemberRemoveEvent) =>
+    useMessageEvent<GroupConfirmMemberRemoveEvent>(GroupConfirmMemberRemoveEvent, event =>
     {
         const parser = event.getParser();
 
@@ -96,9 +94,7 @@ export const GroupMembersView: FC<{}> = props =>
         }, null);
             
         setRemovingMemberName(null);
-    }, [ membersData, removingMemberName, refreshMembers, showConfirm ]);
-
-    useMessageEvent(GroupConfirmMemberRemoveEvent, onGroupConfirmMemberRemoveEvent);
+    });
 
     useEffect(() =>
     {

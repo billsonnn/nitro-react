@@ -35,14 +35,12 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
         SendMessageComposer(new GuideSessionResolvedMessageComposer());
     }, []);
 
-    const onGuideSessionRequesterRoomMessageEvent = useCallback((event: GuideSessionRequesterRoomMessageEvent) =>
+    useMessageEvent<GuideSessionRequesterRoomMessageEvent>(GuideSessionRequesterRoomMessageEvent, event =>
     {
         const parser = event.getParser();
         
         TryVisitRoom(parser.requesterRoomId);
-    }, []);
-
-    useMessageEvent(GuideSessionRequesterRoomMessageEvent, onGuideSessionRequesterRoomMessageEvent);
+    });
 
     const sendMessage = useCallback(() =>
     {

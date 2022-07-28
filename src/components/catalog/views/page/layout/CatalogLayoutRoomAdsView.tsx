@@ -16,16 +16,14 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
     const [ categoryId, setCategoryId ] = useState<number>(1);
     const [ categories, setCategories ] = useState<INavigatorCategory[]>(null);
 
-    const onRoomAdPurchaseInfoEvent = (event: RoomAdPurchaseInfoEvent) =>
+    useMessageEvent<RoomAdPurchaseInfoEvent>(RoomAdPurchaseInfoEvent, event =>
     {
         const parser = event.getParser();
 
         if(!parser) return;
 
         setAvailableRooms(parser.rooms);
-    }
-
-    useMessageEvent(RoomAdPurchaseInfoEvent, onRoomAdPurchaseInfoEvent);
+    });
 
     const purchaseAd = useCallback(() =>
     {
@@ -39,15 +37,12 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
         SendMessageComposer(new PurchaseRoomAdMessageComposer(pageId, offerId, flatId, name, extended, desc, catId))
     }, [ categoryId, eventDesc, eventName, extended, page.offers, page.pageId, roomId ]);
 
-
-    const onUserEventCatsEvent = (event: UserEventCatsEvent) =>
+    useMessageEvent<UserEventCatsEvent>(UserEventCatsEvent, event =>
     {
         const parser = event.getParser();
 
         setCategories(parser.categories);
-    }
-
-    useMessageEvent(UserEventCatsEvent, onUserEventCatsEvent);
+    });
 
     useEffect(() =>
     {

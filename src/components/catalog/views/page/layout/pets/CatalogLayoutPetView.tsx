@@ -104,7 +104,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
         }
     }, [ page, currentOffer, petName, petPurchaseString, approvalResult ]);
 
-    const onApproveNameMessageEvent = useCallback((event: ApproveNameMessageEvent) =>
+    useMessageEvent<ApproveNameMessageEvent>(ApproveNameMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -112,9 +112,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
         if(parser.result === 0) purchasePet();
         else DispatchUiEvent(new CatalogPurchaseFailureEvent(-1));
-    }, [ purchasePet ]);
-
-    useMessageEvent(ApproveNameMessageEvent, onApproveNameMessageEvent);
+    });
 
     useEffect(() =>
     {

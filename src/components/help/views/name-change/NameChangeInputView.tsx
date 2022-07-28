@@ -20,8 +20,8 @@ export const NameChangeInputView:FC<NameChangeLayoutViewProps> = props =>
     const [ isChecking, setIsChecking ] = useState<boolean>(false);
     const [ errorCode, setErrorCode ] = useState<string>(null);
     const [ suggestions, setSuggestions ] = useState<string[]>([]);
-
-    const onCheckUserNameResultMessageEvent = useCallback((event: CheckUserNameResultMessageEvent) =>
+    
+    useMessageEvent<CheckUserNameResultMessageEvent>(CheckUserNameResultMessageEvent, event =>
     {
         setIsChecking(false);
 
@@ -50,9 +50,7 @@ export const NameChangeInputView:FC<NameChangeLayoutViewProps> = props =>
             case DISABLED:
                 setErrorCode('change_not_allowed');
         }
-    }, []);
-    
-    useMessageEvent(CheckUserNameResultMessageEvent, onCheckUserNameResultMessageEvent);
+    });
 
     const check = useCallback(() =>
     {

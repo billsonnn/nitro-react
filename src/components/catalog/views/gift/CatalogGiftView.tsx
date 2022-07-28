@@ -113,12 +113,7 @@ export const CatalogGiftView: FC<{}> = props =>
         }
     }, [ extraData, maxBoxIndex, maxRibbonIndex, message, offerId, pageId, receiverName, selectedBoxIndex, selectedColorId, selectedRibbonIndex, showMyFace ]);
 
-    const onGiftReceiverNotFoundEvent = useCallback(() =>
-    {
-        setReceiverNotFound(true);
-    }, []);
-
-    useMessageEvent(GiftReceiverNotFoundEvent, onGiftReceiverNotFoundEvent);
+    useMessageEvent<GiftReceiverNotFoundEvent>(GiftReceiverNotFoundEvent, event => setReceiverNotFound(true));
 
     useEffect(() =>
     {

@@ -1,5 +1,5 @@
 import { GroupBuyComposer, GroupBuyDataComposer, GroupBuyDataEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { HasHabboClub, IGroupData, LocalizeText, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
@@ -85,7 +85,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
         setCurrentTab(value => (value === 4 ? value : value + 1));
     }
 
-    const onGroupBuyDataEvent = useCallback((event: GroupBuyDataEvent) =>
+    useMessageEvent<GroupBuyDataEvent>(GroupBuyDataEvent, event =>
     {
         const parser = event.getParser();
 
@@ -95,9 +95,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
 
         setAvailableRooms(rooms);
         setPurchaseCost(parser.groupCost);
-    }, []);
-
-    useMessageEvent(GroupBuyDataEvent, onGroupBuyDataEvent);
+    });
 
     useEffect(() =>
     {

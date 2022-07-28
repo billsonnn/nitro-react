@@ -17,15 +17,13 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
     const { requests = [] } = useFriends();
     const { iconState = MessengerIconState.HIDDEN } = useMessenger();
     const isMod = GetSessionDataManager().isModerator;
-
-    const onPerkAllowancesMessageEvent = useCallback((event: PerkAllowancesMessageEvent) =>
+    
+    useMessageEvent<PerkAllowancesMessageEvent>(PerkAllowancesMessageEvent, event =>
     {
         const parser = event.getParser();
 
         setUseGuideTool(parser.isAllowed(PerkEnum.USE_GUIDE_TOOL));
-    }, [ setUseGuideTool ]);
-    
-    useMessageEvent(PerkAllowancesMessageEvent, onPerkAllowancesMessageEvent);
+    });
 
     const animationIconToToolbar = useCallback((iconName: string, image: HTMLImageElement, x: number, y: number) =>
     {
@@ -61,12 +59,10 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
         Motions.runMotion(motion);
     }, []);
 
-    const onNitroToolbarAnimateIconEvent = useCallback((event: NitroToolbarAnimateIconEvent) =>
+    useRoomEngineEvent<NitroToolbarAnimateIconEvent>(NitroToolbarAnimateIconEvent.ANIMATE_ICON, event =>
     {
         animationIconToToolbar('icon-inventory', event.image, event.x, event.y);
-    }, [ animationIconToToolbar ]);
-
-    useRoomEngineEvent(NitroToolbarAnimateIconEvent.ANIMATE_ICON, onNitroToolbarAnimateIconEvent);
+    });
 
     return (
         <>

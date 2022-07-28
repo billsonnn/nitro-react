@@ -14,7 +14,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
     const [ offers, setOffers ] = useState<MarketplaceOfferData[]>([]);
     const { simpleAlert = null } = useNotification();
 
-    const onMarketPlaceOwnOffersEvent = useCallback((event: MarketplaceOwnOffersEvent) =>
+    useMessageEvent<MarketplaceOwnOffersEvent>(MarketplaceOwnOffersEvent, event =>
     {
         const parser = event.getParser();
 
@@ -30,12 +30,10 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
         });
 
         setCreditsWaiting(parser.creditsWaiting);
-        setOffers(offers);
-    }, []);
+        setOffers(offers); 
+    });
 
-    useMessageEvent(MarketplaceOwnOffersEvent, onMarketPlaceOwnOffersEvent);
-
-    const onMarketplaceCancelOfferResultEvent = useCallback((event:MarketplaceCancelOfferResultEvent) =>
+    useMessageEvent<MarketplaceCancelOfferResultEvent>(MarketplaceCancelOfferResultEvent, event =>
     {
         const parser = event.getParser();
 
@@ -49,9 +47,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
         }
 
         setOffers(prevValue => prevValue.filter(value => (value.offerId !== parser.offerId)));
-    }, [ simpleAlert ]);
-
-    useMessageEvent(MarketplaceCancelOfferResultEvent, onMarketplaceCancelOfferResultEvent);
+    });
 
     const soldOffers = useMemo(() =>
     {

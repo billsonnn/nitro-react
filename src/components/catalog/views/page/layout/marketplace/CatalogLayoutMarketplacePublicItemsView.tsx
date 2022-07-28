@@ -64,7 +64,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
         null, null, null, LocalizeText('catalog.marketplace.confirm_title'));
     }, [ getCurrencyAmount, simpleAlert, showConfirm ]);
 
-    const onMarketPlaceOffersEvent = useCallback( (event: MarketPlaceOffersEvent) =>
+    useMessageEvent<MarketPlaceOffersEvent>(MarketPlaceOffersEvent, event =>
     {
         const parser = event.getParser();
 
@@ -80,9 +80,9 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
 
         setTotalItemsFound(parser.totalItemsFound);
         setOffers(latestOffers);
-    }, []);
+    });
 
-    const onMarketplaceBuyOfferResultEvent = useCallback( (event: MarketplaceBuyOfferResultEvent) =>
+    useMessageEvent<MarketplaceBuyOfferResultEvent>(MarketplaceBuyOfferResultEvent, event =>
     {
         const parser = event.getParser();
 
@@ -133,10 +133,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                 simpleAlert(LocalizeText('catalog.alert.notenough.credits.description'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.alert.notenough.title'));
                 break;
         }
-    }, [ lastSearch, requestOffers, simpleAlert, showConfirm ]);
-
-    useMessageEvent(MarketPlaceOffersEvent, onMarketPlaceOffersEvent);
-    useMessageEvent(MarketplaceBuyOfferResultEvent, onMarketplaceBuyOfferResultEvent);
+    });
     
     return (
         <>

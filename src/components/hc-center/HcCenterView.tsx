@@ -1,5 +1,5 @@
 import { ClubGiftInfoEvent, FriendlyTime, GetClubGiftInfo, ILinkEventTracker, ScrGetKickbackInfoMessageComposer, ScrKickbackData, ScrSendKickbackInfoMessageEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { AddEventLinkTracker, ClubStatus, CreateLinkEvent, GetClubBadge, GetConfiguration, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Base, Button, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
@@ -44,23 +44,19 @@ export const HcCenterView: FC<{}> = props =>
     const getHcPaydayTime = () => (kickbackData.timeUntilPayday < 60) ? LocalizeText('hccenter.special.time.soon') : FriendlyTime.shortFormat(kickbackData.timeUntilPayday * 60);
     const getHcPaydayAmount = () => LocalizeText('hccenter.special.sum', [ 'credits' ], [ (kickbackData.creditRewardForStreakBonus + kickbackData.creditRewardForMonthlySpent).toString() ]);
 
-    const onClubGiftInfoEvent = useCallback((event: ClubGiftInfoEvent) =>
+    useMessageEvent<ClubGiftInfoEvent>(ClubGiftInfoEvent, event =>
     {
         const parser = event.getParser();
 
         setUnclaimedGifts(parser.giftsAvailable);
-    }, []);
+    });
 
-    useMessageEvent(ClubGiftInfoEvent, onClubGiftInfoEvent);
-
-    const onScrSendKickbackInfo = useCallback((event: ScrSendKickbackInfoMessageEvent) =>
+    useMessageEvent<ScrSendKickbackInfoMessageEvent>(ScrSendKickbackInfoMessageEvent, event =>
     {
         const parser = event.getParser();
 
         setKickbackData(parser.data);
-    }, []);
-
-    useMessageEvent(ScrSendKickbackInfoMessageEvent, onScrSendKickbackInfo);
+    });
 
     useEffect(() =>
     {

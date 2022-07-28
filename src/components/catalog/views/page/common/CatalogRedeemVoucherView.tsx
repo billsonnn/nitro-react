@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RedeemVoucherMessageComposer, VoucherRedeemErrorMessageEvent, VoucherRedeemOkMessageEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Button, Flex } from '../../../../../common';
 import { useMessageEvent, useNotification } from '../../../../../hooks';
@@ -26,7 +26,7 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
         setIsWaiting(true);
     }
 
-    const onVoucherRedeemOkMessageEvent = useCallback((event: VoucherRedeemOkMessageEvent) =>
+    useMessageEvent<VoucherRedeemOkMessageEvent>(VoucherRedeemOkMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -38,20 +38,16 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
         
         setIsWaiting(false);
         setVoucher('');
-    }, [ simpleAlert ]);
+    });
 
-    useMessageEvent(VoucherRedeemOkMessageEvent, onVoucherRedeemOkMessageEvent);
-
-    const onVoucherRedeemErrorMessageEvent = useCallback((event: VoucherRedeemErrorMessageEvent) =>
+    useMessageEvent<VoucherRedeemErrorMessageEvent>(VoucherRedeemErrorMessageEvent, event =>
     {
         const parser = event.getParser();
 
         simpleAlert(LocalizeText(`catalog.alert.voucherredeem.error.description.${ parser.errorCode }`), null, null, null, LocalizeText('catalog.alert.voucherredeem.error.title'));
 
         setIsWaiting(false);
-    }, [ simpleAlert ]);
-
-    useMessageEvent(VoucherRedeemErrorMessageEvent, onVoucherRedeemErrorMessageEvent);
+    });
 
     return (
         <Flex gap={ 1 }>
