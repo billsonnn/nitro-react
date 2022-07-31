@@ -44,7 +44,7 @@ export const FurnitureStickieView: FC<{}> = props =>
                     <div className="d-flex align-items-center nitro-stickie-image stickie-close header-close" onClick={ onClose }></div>
                 </div>
                 <div className="stickie-context">
-                    { !isEditing ? <div className="context-text" onClick={ event => setIsEditing(true) }>{ text }</div> : <textarea className="context-text" defaultValue={ text } tabIndex={ 0 } onBlur={ event => updateText(event.target.value) } autoFocus></textarea> }
+                    { (!isEditing || !canModify) ? <div className="context-text" onClick={ event => (canModify && setIsEditing(true)) }>{ text }</div> : <textarea className="context-text" defaultValue={ text } tabIndex={ 0 } onBlur={ event => updateText(event.target.value) } autoFocus></textarea> }
                 </div>
             </div>
         </DraggableWindow>
