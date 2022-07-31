@@ -17,6 +17,34 @@ const useInventoryFurniState = () =>
     const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
     const { isUnseen = null, resetCategory = null } = useInventoryUnseenTracker();
 
+    const getWallItemById = (id: number) =>
+    {
+        if(!groupItems || !groupItems.length) return;
+
+        for(const groupItem of groupItems)
+        {
+            const item = groupItem.getItemById(id);
+
+            if(item && item.isWallItem) return groupItem;
+        }
+
+        return null;
+    }
+
+    const getFloorItemById = (id: number) =>
+    {
+        if(!groupItems || !groupItems.length) return;
+
+        for(const groupItem of groupItems)
+        {
+            const item = groupItem.getItemById(id);
+
+            if(item && !item.isWallItem) return groupItem;
+        }
+
+        return null;
+    }
+
     useMessageEvent<FurnitureListAddOrUpdateEvent>(FurnitureListAddOrUpdateEvent, event =>
     {
         const parser = event.getParser();
@@ -257,7 +285,7 @@ const useInventoryFurniState = () =>
         setNeedsUpdate(false);
     }, [ isVisible, needsUpdate ]);
 
-    return { isVisible, groupItems, setGroupItems, selectedItem, setSelectedItem, activate, deactivate };
+    return { isVisible, groupItems, setGroupItems, selectedItem, setSelectedItem, activate, deactivate, getWallItemById, getFloorItemById };
 }
 
 export const useInventoryFurni = () => useBetween(useInventoryFurniState);

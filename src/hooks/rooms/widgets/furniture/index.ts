@@ -10,6 +10,7 @@ export * from './useFurnitureInternalLinkWidget';
 export * from './useFurnitureMannequinWidget';
 export * from './useFurniturePresentWidget';
 export * from './useFurnitureRoomLinkWidget';
+export * from './useFurnitureSpamWallPostItWidget';
 export * from './useFurnitureStackHeightWidget';
 export * from './useFurnitureStickieWidget';
 export * from './useFurnitureTrophyWidget';
