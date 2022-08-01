@@ -9,6 +9,7 @@ const useFriendsState = () =>
     const [ friends, setFriends ] = useState<MessengerFriend[]>([]);
     const [ requests, setRequests ] = useState<MessengerRequest[]>([]);
     const [ sentRequests, setSentRequests ] = useState<number[]>([]);
+    const [ dismissedRequestIds, setDismissedRequestIds ] = useState<number[]>([]);
     const [ settings, setSettings ] = useState<MessengerSettings>(null);
 
     const onlineFriends = useMemo(() =>
@@ -257,7 +258,7 @@ const useFriendsState = () =>
         }
     }, []);
 
-    return { friends, requests, sentRequests, settings, onlineFriends, offlineFriends, getFriend, canRequestFriend, requestFriend, requestResponse, followFriend, updateRelationship };
+    return { friends, requests, sentRequests, dismissedRequestIds, setDismissedRequestIds, settings, onlineFriends, offlineFriends, getFriend, canRequestFriend, requestFriend, requestResponse, followFriend, updateRelationship };
 }
 
 export const useFriends = () => useBetween(useFriendsState);
