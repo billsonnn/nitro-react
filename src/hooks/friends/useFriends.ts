@@ -1,7 +1,7 @@
 import { AcceptFriendMessageComposer, DeclineFriendMessageComposer, FollowFriendMessageComposer, FriendListFragmentEvent, FriendListUpdateComposer, FriendListUpdateEvent, FriendParser, FriendRequestsEvent, GetFriendRequestsComposer, MessengerInitComposer, MessengerInitEvent, NewFriendRequestEvent, RequestFriendComposer, SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
 import { useEffect, useMemo, useState } from 'react';
 import { useBetween } from 'use-between';
-import { CloneObject, MessengerFriend, MessengerRequest, MessengerSettings, SendMessageComposer } from '../../api';
+import { CloneObject, GetSessionDataManager, MessengerFriend, MessengerRequest, MessengerSettings, SendMessageComposer } from '../../api';
 import { useMessageEvent } from '../events';
 
 const useFriendsState = () =>
@@ -60,6 +60,8 @@ const useFriendsState = () =>
 
     const canRequestFriend = (userId: number) =>
     {
+        if(userId === GetSessionDataManager().userId) return false;
+        
         if(getFriend(userId)) return false;
 
         if(requests.find(request => (request.requesterUserId === userId))) return false;
