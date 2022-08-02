@@ -280,20 +280,8 @@ const useRoomState = () =>
 
         return () =>
         {
-            setRoomBackground(prevValue =>
-            {
-                if(prevValue) prevValue.destroy();
-
-                return null;
-            });
-
-            setRoomFilter(prevValue =>
-            {
-                if(prevValue) prevValue.destroy();
-
-                return null;
-            });
-            
+            setRoomBackground(null);
+            setRoomFilter(null);
             setOriginalRoomBackgroundColor(0);
 
             window.removeEventListener('resize', resize);
