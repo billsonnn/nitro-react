@@ -1,4 +1,4 @@
-import { RoomChatSettings } from '@nitrots/nitro-renderer';
+import { RoomChatSettings, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { ChatBubbleMessage, GetRoomEngine } from '../../../../api';
 
@@ -69,7 +69,7 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
     useEffect(() => setIsVisible(chat.visible), [ chat.visible ]);
 
     return (
-        <div ref={ elementRef } className={ `bubble-container ${ isVisible ? 'visible' : 'invisible' }` } onClick={ event => GetRoomEngine().setSelectedAvatar(chat.roomId, chat.senderId) }>
+        <div ref={ elementRef } className={ `bubble-container ${ isVisible ? 'visible' : 'invisible' }` } onClick={ event => GetRoomEngine().selectRoomObject(chat.roomId, chat.senderId, RoomObjectCategory.UNIT) }>
             { (chat.styleId === 0) &&
                 <div className="user-container-bg" style={ { backgroundColor: chat.color } } /> }
             <div className={ `chat-bubble bubble-${ chat.styleId } type-${ chat.type }` } style={ { maxWidth: getBubbleWidth } }>
