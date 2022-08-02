@@ -2,13 +2,12 @@ import { FC, useEffect, useRef } from 'react';
 import { DispatchMouseEvent, DispatchTouchEvent, GetNitroInstance } from '../../api';
 import { Base } from '../../common';
 import { useRoom } from '../../hooks';
-import { RoomColorView } from './RoomColorView';
 import { RoomSpectatorView } from './spectator/RoomSpectatorView';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
 
 export const RoomView: FC<{}> = props =>
 {
-    const { roomSession = null, resize = null } = useRoom();
+    const { roomSession = null } = useRoom();
     const elementRef = useRef<HTMLDivElement>();
 
     useEffect(() =>
@@ -27,27 +26,17 @@ export const RoomView: FC<{}> = props =>
         canvas.ontouchend = event => DispatchTouchEvent(event);
         canvas.ontouchcancel = event => DispatchTouchEvent(event);
 
-        resize();
-
         const element = elementRef.current;
 
-        if(element) element.appendChild(canvas);
-
-        window.addEventListener('resize', resize);
-
-        return () =>
-        {
-            if(element) element.removeChild(canvas);
-            
-            window.removeEventListener('resize', resize);
-        }
-    }, [ resize ]);
+        if(!element) return;
+        
+        element.appendChild(canvas);
+    }, []);
 
     return (
         <Base fit innerRef={ elementRef } className={ (!roomSession && 'd-none') }>
             { roomSession &&
                 <>
-                    <RoomColorView />
                     <RoomWidgetsView />
                     { roomSession.isSpectator && <RoomSpectatorView /> }
                 </> }

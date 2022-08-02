@@ -1,4 +1,4 @@
-import { RoomControllerLevel, RoomEngineDimmerStateEvent, RoomEngineTriggerWidgetEvent, RoomSessionDimmerPresetsEvent } from '@nitrots/nitro-renderer';
+import { RoomControllerLevel, RoomEngineDimmerStateEvent, RoomEngineTriggerWidgetEvent, RoomId, RoomSessionDimmerPresetsEvent } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { DimmerFurnitureWidgetPresetItem, FurnitureDimmerUtilities, GetSessionDataManager } from '../../../../api';
 import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../events';
@@ -84,6 +84,8 @@ const useFurnitureDimmerWidgetState = () =>
 
     useRoomEngineEvent<RoomEngineDimmerStateEvent>(RoomEngineDimmerStateEvent.ROOM_COLOR, event =>
     {
+        if(RoomId.isRoomPreviewerId(event.roomId)) return;
+
         setLastDimmerState(dimmerState);
         setDimmerState(event.state);
         setSelectedPresetId(event.presetId);
