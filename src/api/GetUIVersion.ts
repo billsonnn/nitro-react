@@ -1,1 +1,1 @@
-export const GetUIVersion = () => '2.0.0';
+export const GetUIVersion = () => '2.1.0';

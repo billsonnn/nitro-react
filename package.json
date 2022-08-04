@@ -1,6 +1,6 @@
 {
   "name": "nitro-react",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "start": "cross-env SKIP_PREFLIGHT_CHECK=true BROWSER=none IMAGE_INLINE_SIZE_LIMIT=100000 craco --openssl-legacy-provider start",
