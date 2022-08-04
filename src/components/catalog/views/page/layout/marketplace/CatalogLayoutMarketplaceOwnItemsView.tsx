@@ -1,12 +1,10 @@
 import { CancelMarketplaceOfferMessageComposer, GetMarketplaceOwnOffersMessageComposer, MarketplaceCancelOfferResultEvent, MarketplaceOwnOffersEvent, RedeemMarketplaceOfferCreditsMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { LocalizeText, NotificationAlertType, SendMessageComposer } from '../../../../../../api';
+import { LocalizeText, MarketplaceOfferData, MarketPlaceOfferState, NotificationAlertType, SendMessageComposer } from '../../../../../../api';
 import { Button, Column, Text } from '../../../../../../common';
 import { useMessageEvent, useNotification } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, OWN_OFFER } from './CatalogLayoutMarketplaceItemView';
-import { MarketplaceOfferData } from './common/MarketplaceOfferData';
-import { MarketPlaceOfferState } from './common/MarketplaceOfferState';
 
 export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = props =>
 {

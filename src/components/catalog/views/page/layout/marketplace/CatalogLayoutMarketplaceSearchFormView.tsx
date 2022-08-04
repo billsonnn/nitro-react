@@ -1,11 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../../../api';
-import { Button } from '../../../../../../common/Button';
-import { Column } from '../../../../../../common/Column';
-import { Flex } from '../../../../../../common/Flex';
-import { Text } from '../../../../../../common/Text';
-import { IMarketplaceSearchOptions } from './common/IMarketplaceSearchOptions';
-import { MarketplaceSearchType } from './common/MarketplaceSearchType';
+import { IMarketplaceSearchOptions, LocalizeText, MarketplaceSearchType } from '../../../../../../api';
+import { Button, Column, Flex, Text } from '../../../../../../common';
 
 export interface SearchFormViewProps
 {

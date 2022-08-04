@@ -21,7 +21,7 @@ export const HelpIndexView: FC<{}> = props =>
 
     return (
         <>
-            <Column gap={ 1 }>
+            <Column grow center gap={ 1 }>
                 <Text fontSize={ 3 }>{ LocalizeText('help.main.frame.title') }</Text>
                 <Text>{ LocalizeText('help.main.self.description') }</Text>
             </Column>
@@ -29,8 +29,8 @@ export const HelpIndexView: FC<{}> = props =>
                 <Button onClick={ onReportClick }>{ LocalizeText('help.main.bully.subtitle') }</Button>
                 <Button onClick={ () => DispatchUiEvent(new GuideToolEvent(GuideToolEvent.CREATE_HELP_REQUEST)) }>{ LocalizeText('help.main.help.title') }</Button>
                 <Button disabled={ true }>{ LocalizeText('help.main.self.tips.title') }</Button>
-                <Button variant="link" className="text-black" onClick={ () => SendMessageComposer(new GetCfhStatusMessageComposer(false)) }>{ LocalizeText('help.main.my.sanction.status') }</Button>
             </Column>
+            <Button variant="link" textColor="black" onClick={ () => SendMessageComposer(new GetCfhStatusMessageComposer(false)) }>{ LocalizeText('help.main.my.sanction.status') }</Button>
         </>
     )
 }

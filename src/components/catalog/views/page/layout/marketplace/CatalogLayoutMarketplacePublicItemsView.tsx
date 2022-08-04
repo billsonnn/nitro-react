@@ -1,14 +1,11 @@
 import { BuyMarketplaceOfferMessageComposer, GetMarketplaceOffersMessageComposer, MarketplaceBuyOfferResultEvent, MarketPlaceOffersEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { LocalizeText, NotificationAlertType, SendMessageComposer } from '../../../../../../api';
+import { IMarketplaceSearchOptions, LocalizeText, MarketplaceOfferData, MarketplaceSearchType, NotificationAlertType, SendMessageComposer } from '../../../../../../api';
 import { Button, ButtonGroup, Column, Text } from '../../../../../../common';
 import { useMessageEvent, useNotification, usePurse } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, PUBLIC_OFFER } from './CatalogLayoutMarketplaceItemView';
 import { SearchFormView } from './CatalogLayoutMarketplaceSearchFormView';
-import { IMarketplaceSearchOptions } from './common/IMarketplaceSearchOptions';
-import { MarketplaceOfferData } from './common/MarketplaceOfferData';
-import { MarketplaceSearchType } from './common/MarketplaceSearchType';
 
 const SORT_TYPES_VALUE = [ 1, 2 ];
 const SORT_TYPES_ACTIVITY = [ 3, 4, 5, 6 ];

@@ -1,8 +1,6 @@
 import { FC, useCallback, useMemo } from 'react';
-import { GetImageIconUrlForProduct, LocalizeText, ProductTypeEnum } from '../../../../../../api';
+import { GetImageIconUrlForProduct, LocalizeText, MarketplaceOfferData, MarketPlaceOfferState, ProductTypeEnum } from '../../../../../../api';
 import { Button, Column, LayoutGridItem, Text } from '../../../../../../common';
-import { MarketplaceOfferData } from './common/MarketplaceOfferData';
-import { MarketPlaceOfferState } from './common/MarketplaceOfferState';
 
 export interface MarketplaceItemViewProps
 {
