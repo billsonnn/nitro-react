@@ -1,62 +1,53 @@
 import { RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../../api';
+import { ChatEntryType, GetSessionDataManager, IReportedUser, LocalizeText, ReportState } from '../../../api';
 import { AutoGrid, Button, Column, Flex, LayoutGridItem, Text } from '../../../common';
-import { ChatEntryType } from '../../chat-history/common/ChatEntryType';
-import { GetChatHistory } from '../../chat-history/common/GetChatHistory';
-import { IReportedUser } from '../common/IReportedUser';
-import { useHelpContext } from '../HelpContext';
+import { useChatHistory, useHelp } from '../../../hooks';
 
 export const SelectReportedUserView: FC<{}> = props =>
 {
     const [ selectedUserId, setSelectedUserId ] = useState(-1);
-    const { helpReportState = null, setHelpReportState = null } = useHelpContext();
+    const { chatHistory = [] } = useChatHistory();
+    const { activeReport = null, setActiveReport = null } = useHelp();
 
     const availableUsers = useMemo(() =>
     {
         const users: Map<number, IReportedUser> = new Map();
 
-        GetChatHistory().chats.forEach(chat =>
-            {
-                if((chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityType === RoomObjectType.USER) && (chat.entityId !== GetSessionDataManager().userId))
-                {
-                    if(!users.has(chat.entityId))
-                    {
-                        users.set(chat.entityId, { id: chat.entityId, username: chat.name })
-                    }
-                }
-            });
+        chatHistory.forEach(chat =>
+        {
+            if((chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityType === RoomObjectType.USER) && (chat.entityId !== GetSessionDataManager().userId) && !users.has(chat.entityId)) users.set(chat.entityId, { id: chat.entityId, username: chat.name });
+        });
 
         return Array.from(users.values());
-    }, []);
+    }, [ chatHistory ]);
 
     const submitUser = () =>
     {
         if(selectedUserId <= 0) return;
 
-        setHelpReportState(prevValue =>
-            {
-                const reportedUserId = selectedUserId;
-                const currentStep = 2;
-
-                return { ...prevValue, reportedUserId, currentStep };
-            });
+        setActiveReport(prevValue =>
+        {
+            return { ...prevValue, reportedUserId: selectedUserId, currentStep: ReportState.SELECT_CHATS };
+        });
     }
 
     const selectUser = (userId: number) =>
     {
-        if(selectedUserId === userId) setSelectedUserId(-1);
-        else setSelectedUserId(userId);
+        setSelectedUserId(prevValue =>
+        {
+            if(userId === prevValue) return -1;
+
+            return userId;
+        });
     }
 
     const back = () =>
     {
-        setHelpReportState(prevValue =>
-            {
-                const currentStep = (prevValue.currentStep - 1);
-
-                return { ...prevValue, currentStep };
-            });
+        setActiveReport(prevValue =>
+        {
+            return { ...prevValue, currentStep: (prevValue.currentStep - 1) };
+        });
     }
 
     return (
@@ -72,13 +63,13 @@ export const SelectReportedUserView: FC<{}> = props =>
                 { (availableUsers.length > 0) &&
                     <AutoGrid columnCount={ 1 } columnMinHeight={ 25 } gap={ 1 }>
                         { availableUsers.map((user, index) =>
-                            {
-                                return (
-                                    <LayoutGridItem key={ user.id } onClick={ event => selectUser(user.id) } itemActive={ (selectedUserId === user.id) }>
-                                        <span dangerouslySetInnerHTML={{ __html: (user.username) }} />
-                                    </LayoutGridItem>
-                                );
-                            }) }
+                        {
+                            return (
+                                <LayoutGridItem key={ user.id } onClick={ event => selectUser(user.id) } itemActive={ (selectedUserId === user.id) }>
+                                    <span dangerouslySetInnerHTML={ { __html: (user.username) } } />
+                                </LayoutGridItem>
+                            );
+                        }) }
                     </AutoGrid> }
             </Column>
             <Flex gap={ 2 } justifyContent="between">

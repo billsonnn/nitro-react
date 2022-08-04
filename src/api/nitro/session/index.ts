@@ -18,3 +18,4 @@ export * from './IsOwnerOfFloorFurniture';
 export * from './IsOwnerOfFurniture';
 export * from './IsRidingHorse';
 export * from './StartRoomSession';
+export * from './VisitDesktop';

@@ -1,8 +1,7 @@
 import { RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { GetFurnitureDataForRoomObject, LocalizeText, UseProductItem } from '../../../../api';
-import { FurniCategory } from '../../../inventory/common/FurniCategory';
-import { useRoomContext } from '../../RoomContext';
+import { FurniCategory, GetFurnitureDataForRoomObject, LocalizeText, UseProductItem } from '../../../../api';
+import { useRoom } from '../../../../hooks';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../context-menu/ContextMenuView';
@@ -11,7 +10,7 @@ interface AvatarInfoUseProductViewProps
 {
     item: UseProductItem;
     updateConfirmingProduct: (product: UseProductItem) => void;
-    close: () => void;
+    onClose: () => void;
 }
 
 const PRODUCT_PAGE_UKNOWN: number = 0;
@@ -25,9 +24,9 @@ const PRODUCT_PAGE_FERTILIZE: number = 7;
 
 export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props =>
 {
-    const { item = null, updateConfirmingProduct = null, close = null } = props;
+    const { item = null, updateConfirmingProduct = null, onClose = null } = props;
     const [ mode, setMode ] = useState(0);
-    const { roomSession = null } = useRoomContext();
+    const { roomSession = null } = useRoom();
 
     useEffect(() =>
     {
@@ -88,7 +87,7 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
     }, [ item, updateConfirmingProduct ]);
     
     return (
-        <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } close={ close }>
+        <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } onClose={ onClose } collapsable={ true }>
             <ContextMenuHeaderView>
                 { item.name }
             </ContextMenuHeaderView>

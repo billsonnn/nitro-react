@@ -1,11 +1,8 @@
 import { CloseIssuesMessageComposer, ReleaseIssuesMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useMemo, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../api';
+import { FC, useState } from 'react';
+import { GetIssueCategoryName, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { ModToolsOpenUserInfoEvent } from '../../../../events';
-import { DispatchUiEvent } from '../../../../hooks';
-import { getSourceName } from '../../common/IssueCategoryNames';
-import { useModToolsContext } from '../../ModToolsContext';
+import { useModTools } from '../../../../hooks';
 import { CfhChatlogView } from './CfhChatlogView';
 
 interface IssueInfoViewProps
@@ -17,16 +14,9 @@ interface IssueInfoViewProps
 export const ModToolsIssueInfoView: FC<IssueInfoViewProps> = props =>
 {
     const { issueId = null, onIssueInfoClosed = null } = props;
-    const { modToolsState = null } = useModToolsContext();
-    const { tickets = null } = modToolsState;
     const [ cfhChatlogOpen, setcfhChatlogOpen ] = useState(false);
-
-    const ticket = useMemo(() =>
-    {
-        if(!tickets || !tickets.length) return null;
-
-        return tickets.find(issue => issue.issueId === issueId);
-    }, [ issueId, tickets ]);
+    const { tickets = [], openUserInfo = null } = useModTools();
+    const ticket = tickets.find(issue => (issue.issueId === issueId));
 
     const releaseIssue = (issueId: number) =>
     {
@@ -41,13 +31,11 @@ export const ModToolsIssueInfoView: FC<IssueInfoViewProps> = props =>
 
         onIssueInfoClosed(issueId)
     }
-
-    const openUserInfo = (userId: number) => DispatchUiEvent(new ModToolsOpenUserInfoEvent(userId));
     
     return (
         <>
             <NitroCardView className="nitro-mod-tools-handle-issue" theme="primary-slim">
-                <NitroCardHeaderView headerText={'Resolving issue ' + issueId} onCloseClick={() => onIssueInfoClosed(issueId)} />
+                <NitroCardHeaderView headerText={ 'Resolving issue ' + issueId } onCloseClick={ () => onIssueInfoClosed(issueId) } />
                 <NitroCardContentView className="text-black">
                     <Text fontSize={ 4 }>Issue Information</Text>
                     <Grid overflow="auto">
@@ -56,7 +44,7 @@ export const ModToolsIssueInfoView: FC<IssueInfoViewProps> = props =>
                                 <tbody>
                                     <tr>
                                         <th>Source</th>
-                                        <td>{ getSourceName(ticket.categoryId) }</td>
+                                        <td>{ GetIssueCategoryName(ticket.categoryId) }</td>
                                     </tr>
                                     <tr>
                                         <th>Category</th>
@@ -86,7 +74,7 @@ export const ModToolsIssueInfoView: FC<IssueInfoViewProps> = props =>
                             <Button onClick={ event => closeIssue(CloseIssuesMessageComposer.RESOLUTION_USELESS) }>Close as useless</Button>
                             <Button variant="danger" onClick={ event => closeIssue(CloseIssuesMessageComposer.RESOLUTION_ABUSIVE) }>Close as abusive</Button>
                             <Button variant="success" onClick={ event => closeIssue(CloseIssuesMessageComposer.RESOLUTION_RESOLVED) }>Close as resolved</Button> 
-                            <Button variant="secondary" onClick={ event => releaseIssue(issueId)} >Release</Button>
+                            <Button variant="secondary" onClick={ event => releaseIssue(issueId) } >Release</Button>
                         </Column>
                     </Grid>
                 </NitroCardContentView>

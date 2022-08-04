@@ -1,9 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Button } from '../../../../common/Button';
-import { Flex } from '../../../../common/Flex';
-import { GroupItem } from '../../common/GroupItem';
+import { GroupItem, LocalizeText } from '../../../../api';
+import { Button, Flex } from '../../../../common';
 
 export interface InventoryFurnitureSearchViewProps
 {
@@ -25,14 +23,14 @@ export const InventoryFurnitureSearchView: FC<InventoryFurnitureSearchViewProps>
             const comparison = searchValue.toLocaleLowerCase();
 
             filteredGroupItems = groupItems.filter(item =>
+            {
+                if(comparison && comparison.length)
                 {
-                    if(comparison && comparison.length)
-                    {
-                        if(item.name.toLocaleLowerCase().includes(comparison)) return item;
-                    }
+                    if(item.name.toLocaleLowerCase().includes(comparison)) return item;
+                }
 
-                    return null;
-                });
+                return null;
+            });
         }
 
         setGroupItems(filteredGroupItems);
@@ -41,7 +39,7 @@ export const InventoryFurnitureSearchView: FC<InventoryFurnitureSearchViewProps>
     return (
         <Flex gap={ 1 }>
             <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
-            <Button variant="primary" size="sm">
+            <Button variant="primary">
                 <FontAwesomeIcon icon="search" />
             </Button>
         </Flex>

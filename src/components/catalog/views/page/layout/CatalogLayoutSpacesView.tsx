@@ -1,11 +1,7 @@
 import { NitroPoint } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { Base } from '../../../../../common/Base';
-import { Column } from '../../../../../common/Column';
-import { Flex } from '../../../../../common/Flex';
-import { Grid } from '../../../../../common/Grid';
-import { Text } from '../../../../../common/Text';
-import { useCatalogContext } from '../../../CatalogContext';
+import { Base, Column, Flex, Grid, Text } from '../../../../../common';
+import { useCatalog } from '../../../../../hooks';
 import { CatalogPurchaseWidgetView } from '../widgets/CatalogPurchaseWidgetView';
 import { CatalogSpacesWidgetView } from '../widgets/CatalogSpacesWidgetView';
 import { CatalogTotalPriceWidget } from '../widgets/CatalogTotalPriceWidget';
@@ -15,7 +11,7 @@ import { CatalogLayoutProps } from './CatalogLayout.types';
 export const CatalogLayoutSpacesView: FC<CatalogLayoutProps> = props =>
 {
     const { page = null } = props;
-    const { currentOffer = null, roomPreviewer = null } = useCatalogContext();
+    const { currentOffer = null, roomPreviewer = null } = useCatalog();
 
     useEffect(() =>
     {

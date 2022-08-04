@@ -1,56 +1,40 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, useEffect, useState } from 'react';
+import { FC, MouseEvent, PropsWithChildren, useState } from 'react';
+import { attemptBotPlacement, IBotItem, UnseenItemCategory } from '../../../../api';
 import { LayoutAvatarImageView, LayoutGridItem } from '../../../../common';
-import { BotItem } from '../../common/BotItem';
-import { attemptBotPlacement } from '../../common/BotUtilities';
-import { useInventoryContext } from '../../InventoryContext';
-import { InventoryBotActions } from '../../reducers/InventoryBotReducer';
+import { useInventoryBots, useInventoryUnseenTracker } from '../../../../hooks';
 
-export interface InventoryBotItemViewProps
+export const InventoryBotItemView: FC<PropsWithChildren<{ botItem: IBotItem }>> = props =>
 {
-    botItem: BotItem;
-}
-
-export const InventoryBotItemView: FC<InventoryBotItemViewProps> = props =>
-{
-    const { botItem } = props;
+    const { botItem = null, children = null, ...rest } = props;
     const [ isMouseDown, setMouseDown ] = useState(false);
-    const { botState = null, dispatchBotState = null } = useInventoryContext();
-    const isActive = (botState.botItem === botItem);
+    const { selectedBot = null, setSelectedBot = null } = useInventoryBots();
+    const { isUnseen = null } = useInventoryUnseenTracker();
+    const unseen = isUnseen(UnseenItemCategory.BOT, botItem.botData.id);
 
     const onMouseEvent = (event: MouseEvent) =>
     {
         switch(event.type)
         {
             case MouseEventType.MOUSE_DOWN:
-                dispatchBotState({
-                    type: InventoryBotActions.SET_BOT_ITEM,
-                    payload: { botItem }
-                });
-
+                setSelectedBot(botItem);
                 setMouseDown(true);
                 return;
             case MouseEventType.MOUSE_UP:
                 setMouseDown(false);
                 return;
             case MouseEventType.ROLL_OUT:
-                if(!isMouseDown || !isActive) return;
+                if(!isMouseDown || (selectedBot !== botItem)) return;
 
                 attemptBotPlacement(botItem);
                 return;
         }
     }
 
-    useEffect(() =>
-    {
-        if(!isActive) return;
-
-        botItem.isUnseen = false;
-    }, [ isActive, botItem ]);
-
     return (
-        <LayoutGridItem itemActive={ isActive } itemUnseen={ botItem.isUnseen } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent }>
+        <LayoutGridItem itemActive={ (selectedBot === botItem) } itemUnseen={ unseen } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent } { ...rest }>
             <LayoutAvatarImageView figure={ botItem.botData.figure } direction={ 3 } headOnly={ true } />
+            { children }
         </LayoutGridItem>
     );
 }

@@ -1,20 +1,19 @@
 import { FC } from 'react';
-import { GetRoomEngine, GetSessionDataManager } from '../../api';
+import { CalendarItemState, GetConfiguration, GetRoomEngine, GetSessionDataManager, ICalendarItem } from '../../api';
 import { Base, Column, Flex, LayoutImage } from '../../common';
-import { CalendarItemState } from './common/CalendarItemState';
 
 interface CalendarItemViewProps
 {
     itemId: number;
     state: number;
     active?: boolean;
-    productName?: string;
+    product?: ICalendarItem;
     onClick: (itemId: number) => void;
 }
 
 export const CalendarItemView: FC<CalendarItemViewProps> = props =>
 {
-    const { itemId = -1, state = null, productName = null, active = false, onClick = null } = props;
+    const { itemId = -1, state = null, product = null, active = false, onClick = null } = props;
     
     const getFurnitureIcon = (name: string) =>
     {
@@ -33,12 +32,12 @@ export const CalendarItemView: FC<CalendarItemViewProps> = props =>
     }
 
     return (
-        <Column fit center pointer className={`campaign-spritesheet campaign-day-generic-bg rounded calendar-item ${ active ? 'active' : '' }`} onClick={ () => onClick(itemId) }>
+        <Column fit center pointer className={ `campaign-spritesheet campaign-day-generic-bg rounded calendar-item ${ active ? 'active' : '' }` } onClick={ () => onClick(itemId) }>
             { (state === CalendarItemState.STATE_UNLOCKED) &&
                 <Flex center className="campaign-spritesheet unlocked-bg">
                     <Flex center className="campaign-spritesheet campaign-opened">
-                        { productName &&
-                            <LayoutImage imageUrl={ getFurnitureIcon(productName) } /> }
+                        { product &&
+                            <LayoutImage imageUrl={ product.customImage ? GetConfiguration<string>('image.library.url') + product.customImage : getFurnitureIcon(product.productName) } /> }
                     </Flex>
                 </Flex> }
             { (state !== CalendarItemState.STATE_UNLOCKED) &&

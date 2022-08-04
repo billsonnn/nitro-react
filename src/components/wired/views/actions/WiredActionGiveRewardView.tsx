@@ -1,14 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { LocalizeText } from '../../../../api';
-import { Button } from '../../../../common/Button';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
-import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Button, Column, Flex, Text } from '../../../../common';
+import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionGiveRewardView: FC<{}> = props =>
@@ -19,23 +14,23 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
     const [ rewardsLimit, setRewardsLimit ] = useState(1);
     const [ limitationInterval, setLimitationInterval ] = useState(1);
     const [ rewards, setRewards ] = useState<{ isBadge: boolean, itemCode: string, probability: number }[]>([]);
-    const { trigger = null, setIntParams = null, setStringParam = null } = useWiredContext();
+    const { trigger = null, setIntParams = null, setStringParam = null } = useWired();
 
     const addReward = useCallback(() =>
     {
-        setRewards(rewards => [...rewards, { isBadge: false, itemCode: '', probability: null }]);
+        setRewards(rewards => [ ...rewards, { isBadge: false, itemCode: '', probability: null } ]);
     }, [ setRewards ]);
 
     const removeReward = useCallback((index: number) =>
     {
         setRewards(prevValue =>
-            {
-                const newValues = Array.from(prevValue);
+        {
+            const newValues = Array.from(prevValue);
 
-                newValues.splice(index, 1);
+            newValues.splice(index, 1);
 
-                return newValues;
-            });
+            return newValues;
+        });
     }, [ setRewards ]);
 
     const updateReward = useCallback((index: number, isBadge: boolean, itemCode: string, probability: number) =>
@@ -60,17 +55,14 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
         {
             if(!reward.itemCode) continue;
 
-            const rewardsString = [reward.isBadge ? '0' : '1', reward.itemCode, reward.probability.toString()];
+            const rewardsString = [ reward.isBadge ? '0' : '1', reward.itemCode, reward.probability.toString() ];
             stringRewards.push(rewardsString.join(','));
         }
 
         if(stringRewards.length > 0)
         {
-            BatchUpdates(() =>
-            {
-                setStringParam(stringRewards.join(';'));
-                setIntParams([rewardTime, uniqueRewards ? 1 : 0, rewardsLimit, limitationInterval]);
-            });
+            setStringParam(stringRewards.join(';'));
+            setIntParams([ rewardTime, uniqueRewards ? 1 : 0, rewardsLimit, limitationInterval ]);
         }
     }, [ rewardTime, uniqueRewards, rewardsLimit, limitationInterval, rewards, setIntParams, setStringParam ]);
 
@@ -94,22 +86,19 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
 
         if(readRewards.length === 0) readRewards.push({ isBadge: false, itemCode: '', probability: null });
 
-        BatchUpdates(() =>
-        {
-            setRewardTime((trigger.intData.length > 0) ? trigger.intData[0] : 0);
-            setUniqueRewards((trigger.intData.length > 1) ? (trigger.intData[1] === 1) : false);
-            setRewardsLimit((trigger.intData.length > 2) ? trigger.intData[2] : 0);
-            setLimitationInterval((trigger.intData.length > 3) ? trigger.intData[3] : 0);
-            setLimitEnabled((trigger.intData.length > 3) ? trigger.intData[3] > 0 : false);
-            setRewards(readRewards);
-        });
+        setRewardTime((trigger.intData.length > 0) ? trigger.intData[0] : 0);
+        setUniqueRewards((trigger.intData.length > 1) ? (trigger.intData[1] === 1) : false);
+        setRewardsLimit((trigger.intData.length > 2) ? trigger.intData[2] : 0);
+        setLimitationInterval((trigger.intData.length > 3) ? trigger.intData[3] : 0);
+        setLimitEnabled((trigger.intData.length > 3) ? trigger.intData[3] > 0 : false);
+        setRewards(readRewards);
     }, [ trigger ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
             <Flex alignItems="center" gap={ 1 }>
-                <input className="form-check-input" type="checkbox" id="limitEnabled" onChange={ event => setLimitEnabled(event.target.checked)} />
-                <Text>{ LocalizeText('wiredfurni.params.prizelimit', ['amount'], [limitEnabled ? rewardsLimit.toString() : '']) }</Text>
+                <input className="form-check-input" type="checkbox" id="limitEnabled" onChange={ event => setLimitEnabled(event.target.checked) } />
+                <Text>{ LocalizeText('wiredfurni.params.prizelimit', [ 'amount' ], [ limitEnabled ? rewardsLimit.toString() : '' ]) }</Text>
             </Flex>
             { !limitEnabled &&
                 <Text center small className="bg-muted rounded p-1">
@@ -137,7 +126,7 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
             </Column>
             <hr className="m-0 bg-dark" />
             <Flex alignItems="center" gap={ 1 }>
-                <input className="form-check-input" type="checkbox" id="uniqueRewards" checked={ uniqueRewards } onChange={(e) => setUniqueRewards(e.target.checked)} />
+                <input className="form-check-input" type="checkbox" id="uniqueRewards" checked={ uniqueRewards } onChange={ (e) => setUniqueRewards(e.target.checked) } />
                 <Text>Unique rewards</Text>
             </Flex>
             <Text center small className="bg-muted rounded p-1">
@@ -152,22 +141,22 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
             </Flex>
             <Column gap={ 1 }>
                 { rewards && rewards.map((reward, index) =>
-                    {
-                        return (
-                            <Flex key={ index } gap={ 1 }>
-                                <Flex alignItems="center" gap={ 1 }>
-                                    <input className="form-check-input" type="checkbox" checked={ reward.isBadge } onChange={(e) => updateReward(index, e.target.checked, reward.itemCode, reward.probability)} />
-                                    <Text small>Badge?</Text>
-                                </Flex>
-                                <input type="text" className="form-control form-control-sm" value={ reward.itemCode } onChange={ e => updateReward(index, reward.isBadge, e.target.value, reward.probability) } placeholder="Item Code" />
-                                <input type="number" className="form-control form-control-sm" value={ reward.probability } onChange={ e => updateReward(index, reward.isBadge, reward.itemCode, Number(e.target.value)) } placeholder="Probability" />
-                                { (index > 0) &&
-                                    <Button variant="danger" onClick={ event => removeReward(index) }>
-                                        <FontAwesomeIcon icon="trash" />
-                                    </Button> }
+                {
+                    return (
+                        <Flex key={ index } gap={ 1 }>
+                            <Flex alignItems="center" gap={ 1 }>
+                                <input className="form-check-input" type="checkbox" checked={ reward.isBadge } onChange={ (e) => updateReward(index, e.target.checked, reward.itemCode, reward.probability) } />
+                                <Text small>Badge?</Text>
                             </Flex>
-                        )
-                    }) }
+                            <input type="text" className="form-control form-control-sm" value={ reward.itemCode } onChange={ e => updateReward(index, reward.isBadge, e.target.value, reward.probability) } placeholder="Item Code" />
+                            <input type="number" className="form-control form-control-sm" value={ reward.probability } onChange={ e => updateReward(index, reward.isBadge, reward.itemCode, Number(e.target.value)) } placeholder="Probability" />
+                            { (index > 0) &&
+                            <Button variant="danger" onClick={ event => removeReward(index) }>
+                                <FontAwesomeIcon icon="trash" />
+                            </Button> }
+                        </Flex>
+                    )
+                }) }
             </Column>
         </WiredActionBaseView>
     );

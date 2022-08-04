@@ -1,7 +1,7 @@
 import { StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useMemo } from 'react';
 import { BaseProps, LayoutBadgeImageView } from '../../../../../common';
-import { useCatalogContext } from '../../../CatalogContext';
+import { useCatalog } from '../../../../../hooks';
 
 interface CatalogGuildBadgeWidgetViewProps extends BaseProps<HTMLDivElement>
 {
@@ -11,7 +11,7 @@ interface CatalogGuildBadgeWidgetViewProps extends BaseProps<HTMLDivElement>
 export const CatalogGuildBadgeWidgetView: FC<CatalogGuildBadgeWidgetViewProps> = props =>
 {
     const { ...rest } = props;
-    const { currentOffer = null, purchaseOptions = null } = useCatalogContext();
+    const { currentOffer = null, purchaseOptions = null } = useCatalog();
     const { previewStuffData = null } = purchaseOptions;
 
     const badgeCode = useMemo(() =>

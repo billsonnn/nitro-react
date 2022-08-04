@@ -1,19 +1,18 @@
 import { BotSkillSaveComposer } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
-import { GetRoomObjectBounds, GetRoomSession, LocalizeText, RoomWidgetUpdateRentableBotChatEvent, SendMessageComposer } from '../../../../api';
+import { BotSkillsEnum, GetRoomObjectBounds, GetRoomSession, LocalizeText, RoomWidgetUpdateRentableBotChatEvent, SendMessageComposer } from '../../../../api';
 import { Base, Button, Column, DraggableWindow, DraggableWindowPosition, Flex, Text } from '../../../../common';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
-import { BotSkillsEnum } from './common/BotSkillsEnum';
 
 interface AvatarInfoRentableBotChatViewProps
 {
     chatEvent: RoomWidgetUpdateRentableBotChatEvent;
-    close(): void;
+    onClose(): void;
 }
 
 export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProps> = props =>
 {
-    const { chatEvent = null, close = null } = props;
+    const { chatEvent = null, onClose = null } = props;
     // eslint-disable-next-line no-template-curly-in-string
     const [ newText, setNewText ] = useState<string>(chatEvent.chat === '${bot.skill.chatter.configuration.text.placeholder}' ? '' : chatEvent.chat);
     const [ automaticChat, setAutomaticChat ] = useState<boolean>(chatEvent.automaticChat);
@@ -30,7 +29,7 @@ export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProp
 
         SendMessageComposer(new BotSkillSaveComposer(chatEvent.botId, BotSkillsEnum.SETUP_CHAT, chatConfiguration));
 
-        close();
+        onClose();
     }
     
     return (
@@ -42,7 +41,7 @@ export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProp
                 <Column className="p-1">
                     <Column gap={ 1 }>
                         <Text variant="white">{ LocalizeText('bot.skill.chatter.configuration.chat.text') }</Text>
-                        <textarea className="form-control form-control-sm" placeholder={LocalizeText('bot.skill.chatter.configuration.text.placeholder')} value={newText} rows={7} onChange={e => setNewText(e.target.value)} />
+                        <textarea className="form-control form-control-sm" placeholder={ LocalizeText('bot.skill.chatter.configuration.text.placeholder') } value={ newText } rows={ 7 } onChange={ e => setNewText(e.target.value) } />
                     </Column>
                     <Column gap={ 1 }>
                         <Flex gap={ 1 } alignItems="center" justifyContent="between">
@@ -59,7 +58,7 @@ export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProp
                         </Flex>
                     </Column>
                     <Flex alignItems="center" justifyContent="between" gap={ 1 }>
-                        <Button fullWidth variant="primary" onClick={ close }>{ LocalizeText('cancel') }</Button>
+                        <Button fullWidth variant="primary" onClick={ onClose }>{ LocalizeText('cancel') }</Button>
                         <Button fullWidth variant="success" onClick={ save }>{ LocalizeText('save') }</Button>
                     </Flex>
                 </Column>

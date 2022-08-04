@@ -1,10 +1,6 @@
 import { FC } from 'react';
-import { Base } from '../../../../../common/Base';
-import { Column } from '../../../../../common/Column';
-import { Flex } from '../../../../../common/Flex';
-import { Grid } from '../../../../../common/Grid';
-import { Text } from '../../../../../common/Text';
-import { useCatalogContext } from '../../../CatalogContext';
+import { Base, Column, Flex, Grid, Text } from '../../../../../common';
+import { useCatalog } from '../../../../../hooks';
 import { CatalogGuildBadgeWidgetView } from '../widgets/CatalogGuildBadgeWidgetView';
 import { CatalogGuildSelectorWidgetView } from '../widgets/CatalogGuildSelectorWidgetView';
 import { CatalogItemGridWidgetView } from '../widgets/CatalogItemGridWidgetView';
@@ -16,7 +12,7 @@ import { CatalogLayoutProps } from './CatalogLayout.types';
 export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutProps> = props =>
 {
     const { page = null } = props;
-    const { currentOffer = null } = useCatalogContext();
+    const { currentOffer = null } = useCatalog();
     
     return (
         <Grid>

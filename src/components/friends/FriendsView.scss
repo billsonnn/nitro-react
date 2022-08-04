@@ -82,6 +82,11 @@
     }
 }
 
+.messenger-notification-icon {
+    background: url('../../assets/images/friends/messenger_notification_icon.png') transparent no-repeat;
+    width: 25px; height: 25px;
+}
+
 .nitro-friends {
     width: $friends-list-width;
     height: $friends-list-height;

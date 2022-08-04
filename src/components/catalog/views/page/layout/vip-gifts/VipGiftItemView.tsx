@@ -21,7 +21,7 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
         const productData = offer.products[0];
 
         return ProductImageUtility.getProductImageUrl(productData.productType, productData.furniClassId, productData.extraParam);
-    }, [offer]);
+    }, [ offer ]);
     
     const getItemTitle = useCallback(() =>
     {
@@ -29,10 +29,10 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
 
         const productData = offer.products[0];
 
-        const localizationKey = ProductImageUtility.getProductCategory(productData.productType, productData.furniClassId) === 2  ? 'wallItem.name.' + productData.furniClassId : 'roomItem.name.' + productData.furniClassId;
+        const localizationKey = ProductImageUtility.getProductCategory(productData.productType, productData.furniClassId) === 2 ? 'wallItem.name.' + productData.furniClassId : 'roomItem.name.' + productData.furniClassId;
 
         return LocalizeText(localizationKey);
-    }, [offer]);
+    }, [ offer ]);
 
     const getItemDesc = useCallback( () =>
     {
@@ -43,13 +43,13 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
         const localizationKey = ProductImageUtility.getProductCategory(productData.productType, productData.furniClassId) === 2 ? 'wallItem.desc.' + productData.furniClassId : 'roomItem.desc.' + productData.furniClassId ;
 
         return LocalizeText(localizationKey);
-    }, [offer]);
+    }, [ offer ]);
 
     return (
         <LayoutGridItem center={ false } column={ false } alignItems="center" className="p-1">
-            <LayoutImage imageUrl={ getImageUrlForOffer() } fit={ false } style={ { width: 50, height: 50 } } />
+            <LayoutImage imageUrl={ getImageUrlForOffer() } />
             <Text grow fontWeight="bold">{ getItemTitle() }</Text>
-            <Button variant="secondary" size="sm" onClick={ () => onSelect(offer.localizationId) }>
+            <Button variant="secondary" onClick={ () => onSelect(offer.localizationId) } disabled={ !isAvailable }>
                 { LocalizeText('catalog.club_gift.select') }
             </Button>
         </LayoutGridItem>

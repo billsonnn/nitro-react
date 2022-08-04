@@ -1,6 +1,10 @@
 import { GetNitroInstance } from '..';
 
-export function LocalizeBadgeName(key: string): string
+export const LocalizeBadgeName = (key: string) =>
 {
-    return GetNitroInstance().localization.getBadgeName(key);
+    let badgeName = GetNitroInstance().localization.getBadgeName(key);
+
+    if(!badgeName || !badgeName.length) badgeName = `badge_name_${ key }`;
+
+    return badgeName;
 }

@@ -1,15 +1,12 @@
 import { Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { GetAvatarRenderManager, GetSessionDataManager } from '../../../../../api';
+import { FurniCategory, GetAvatarRenderManager, GetSessionDataManager, Offer, ProductTypeEnum } from '../../../../../api';
 import { AutoGrid, Column, LayoutGridItem, LayoutRoomPreviewerView } from '../../../../../common';
-import { useCatalogContext } from '../../../CatalogContext';
-import { FurniCategory } from '../../../common/FurniCategory';
-import { Offer } from '../../../common/Offer';
-import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
+import { useCatalog } from '../../../../../hooks';
 
 export const CatalogViewProductWidgetView: FC<{}> = props =>
 {
-    const { currentOffer = null, roomPreviewer = null, purchaseOptions = null } = useCatalogContext();
+    const { currentOffer = null, roomPreviewer = null, purchaseOptions = null } = useCatalog();
     const { previewStuffData = null } = purchaseOptions;
 
     useEffect(() =>
@@ -19,6 +16,8 @@ export const CatalogViewProductWidgetView: FC<{}> = props =>
         const product = currentOffer.product;
 
         if(!product) return;
+
+        roomPreviewer.reset(false);
 
         switch(product.productType)
         {
@@ -52,15 +51,12 @@ export const CatalogViewProductWidgetView: FC<{}> = props =>
                 switch(product.furnitureData.specialType)
                 {
                     case FurniCategory.FLOOR:
-                        roomPreviewer.reset(false);
                         roomPreviewer.updateObjectRoom(product.extraParam);
                         return;
                     case FurniCategory.WALL_PAPER:
-                        roomPreviewer.reset(false);
                         roomPreviewer.updateObjectRoom(null, product.extraParam);
                         return;
                     case FurniCategory.LANDSCAPE: {
-                        roomPreviewer.reset(false);
                         roomPreviewer.updateObjectRoom(null, null, product.extraParam);
 
                         const furniData = GetSessionDataManager().getWallItemDataByName('ads_twi_windw');

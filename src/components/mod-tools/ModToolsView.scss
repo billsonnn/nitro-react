@@ -37,16 +37,6 @@
 
 .nitro-mod-tools-user-visits {
     min-width: 300px;
-
-    .user-visits {
-        min-height: 200px;
-
-        .roomvisits-container {
-            div.room-visit {
-            }
-        }
-        
-    }
 }
 
 .nitro-mod-tools-chatlog {
@@ -71,6 +61,7 @@
 
     .log-container {
         min-height: 200px;
+        height: 100%;
 
         .log-entry-container {
 

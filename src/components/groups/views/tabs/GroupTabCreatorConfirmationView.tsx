@@ -1,8 +1,7 @@
 import { Dispatch, FC, SetStateAction } from 'react';
-import { LocalizeText } from '../../../../api';
+import { IGroupData, LocalizeText } from '../../../../api';
 import { Base, Column, Flex, Grid, LayoutBadgeImageView, Text } from '../../../../common';
-import { IGroupData } from '../../common/IGroupData';
-import { useGroupsContext } from '../../GroupsContext';
+import { useGroup } from '../../../../hooks';
 
 interface GroupTabCreatorConfirmationViewProps
 {
@@ -14,7 +13,7 @@ interface GroupTabCreatorConfirmationViewProps
 export const GroupTabCreatorConfirmationView: FC<GroupTabCreatorConfirmationViewProps> = props =>
 {
     const { groupData = null, setGroupData = null, purchaseCost = 0 } = props;
-    const { groupCustomize = null } = useGroupsContext();
+    const { groupCustomize = null } = useGroup();
 
     const getCompleteBadgeCode = () =>
     {
@@ -46,8 +45,8 @@ export const GroupTabCreatorConfirmationView: FC<GroupTabCreatorConfirmationView
                 <Column center className="bg-muted rounded p-1" gap={ 2 }>
                     <Text bold center>{ LocalizeText('group.edit.color.guild.color') }</Text>
                     <Flex overflow="hidden" className="rounded border">
-                        <Base className="group-color-swatch" style={{ backgroundColor: '#' + getGroupColor(0) }} />
-                        <Base className="group-color-swatch" style={{ backgroundColor: '#' + getGroupColor(1) }} />
+                        <Base className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(0) } } />
+                        <Base className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(1) } } />
                     </Flex>
                 </Column>
             </Column>

@@ -29,20 +29,20 @@ export const FloorplanOptionsView: FC<{}> = props =>
     const changeDoorDirection = () =>
     {
         setVisualizationSettings(prevValue =>
+        {
+            const newValue = { ...prevValue };
+
+            if(newValue.entryPointDir < 7)
             {
-                const newValue = { ...prevValue };
+                ++newValue.entryPointDir;
+            }
+            else
+            {
+                newValue.entryPointDir = 0;
+            }
 
-                if(newValue.entryPointDir < 7)
-                {
-                    ++newValue.entryPointDir;
-                }
-                else
-                {
-                    newValue.entryPointDir = 0;
-                }
-
-                return newValue;
-            });
+            return newValue;
+        });
     }
 
     const onFloorHeightChange = (value: number) =>
@@ -71,13 +71,13 @@ export const FloorplanOptionsView: FC<{}> = props =>
     const onWallThicknessChange = (value: number) =>
     {
         setVisualizationSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.thicknessWall = value;
+            newValue.thicknessWall = value;
     
-                return newValue;
-            });
+            return newValue;
+        });
     }
 
     const onWallHeightChange = (value: number) =>
@@ -87,13 +87,13 @@ export const FloorplanOptionsView: FC<{}> = props =>
         if(value > MAX_WALL_HEIGHT) value = MAX_WALL_HEIGHT;
 
         setVisualizationSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
+        {
+            const newValue = { ...prevValue };
 
-                newValue.wallHeight = value;
+            newValue.wallHeight = value;
 
-                return newValue;
-            });
+            return newValue;
+        });
     }
 
     const increaseWallHeight = () =>
@@ -149,7 +149,7 @@ export const FloorplanOptionsView: FC<{}> = props =>
                     <Text bold>{ LocalizeText('floor.editor.wall.height') }</Text>
                     <Flex alignItems="center" gap={ 1 }>
                         <FontAwesomeIcon icon="caret-left" className="cursor-pointer" onClick={ decreaseWallHeight } />
-                        <input type="number" className="form-control form-control-sm quantity-input" value={ visualizationSettings.wallHeight } onChange={ event => onWallHeightChange(event.target.valueAsNumber)} />
+                        <input type="number" className="form-control form-control-sm quantity-input" value={ visualizationSettings.wallHeight } onChange={ event => onWallHeightChange(event.target.valueAsNumber) } />
                         <FontAwesomeIcon icon="caret-right" className="cursor-pointer" onClick={ increaseWallHeight } />
                     </Flex>
                 </Column>
@@ -164,7 +164,7 @@ export const FloorplanOptionsView: FC<{}> = props =>
                         step={ 1 }
                         value={ floorHeight }
                         onChange={ event => onFloorHeightChange(event) }
-                        renderThumb={ ({ style, ...rest }, state) => <div style={ { backgroundColor: `#${COLORMAP[state.valueNow.toString(33)]}`, ...style } } { ...rest }>{ state.valueNow }</div> } />
+                        renderThumb={ ({ style, ...rest }, state) => <div style={ { backgroundColor: `#${ COLORMAP[state.valueNow.toString(33)] }`, ...style } } { ...rest }>{ state.valueNow }</div> } />
                 </Column>
                 <Column size={ 6 }>
                     <Text bold>{ LocalizeText('floor.plan.editor.room.options') }</Text>

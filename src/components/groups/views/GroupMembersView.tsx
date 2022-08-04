@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GroupAdminGiveComposer, GroupAdminTakeComposer, GroupConfirmMemberRemoveEvent, GroupConfirmRemoveMemberComposer, GroupMemberParser, GroupMembersComposer, GroupMembersEvent, GroupMembershipAcceptComposer, GroupMembershipDeclineComposer, GroupMembersParser, GroupRank, GroupRemoveMemberComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, NotificationUtilities, RemoveLinkEventTracker, SendMessageComposer } from '../../../api';
+import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../hooks';
+import { useMessageEvent, useNotification } from '../../../hooks';
 
 export const GroupMembersView: FC<{}> = props =>
 {
@@ -14,6 +14,7 @@ export const GroupMembersView: FC<{}> = props =>
     const [ totalPages, setTotalPages ] = useState<number>(0);
     const [ searchQuery, setSearchQuery ] = useState<string>('');
     const [ removingMemberName, setRemovingMemberName ] = useState<string>(null);
+    const { showConfirm = null } = useNotification();
 
     const getRankDescription = (member: GroupMemberParser) =>
     {
@@ -72,63 +73,52 @@ export const GroupMembersView: FC<{}> = props =>
         SendMessageComposer(new GroupConfirmRemoveMemberComposer(membersData.groupId, member.id));
     }
 
-    const onGroupMembersEvent = useCallback((event: GroupMembersEvent) =>
+    useMessageEvent<GroupMembersEvent>(GroupMembersEvent, event =>
     {
         const parser = event.getParser();
 
-        BatchUpdates(() =>
+        setMembersData(parser);
+        setLevelId(parser.level);
+        setTotalPages(Math.ceil(parser.totalMembersCount / parser.pageSize));
+    });
+
+    useMessageEvent<GroupConfirmMemberRemoveEvent>(GroupConfirmMemberRemoveEvent, event =>
+    {
+        const parser = event.getParser();
+
+        showConfirm(LocalizeText(((parser.furnitureCount > 0) ? 'group.kickconfirm.desc' : 'group.kickconfirm_nofurni.desc'), [ 'user', 'amount' ], [ removingMemberName, parser.furnitureCount.toString() ]), () =>
         {
-            setMembersData(parser);
-            setLevelId(parser.level);
-            setTotalPages(Math.ceil(parser.totalMembersCount / parser.pageSize));
-        });
-    }, []);
+            SendMessageComposer(new GroupRemoveMemberComposer(membersData.groupId, parser.userId));
 
-    UseMessageEventHook(GroupMembersEvent, onGroupMembersEvent);
-
-    const onGroupConfirmMemberRemoveEvent = useCallback((event: GroupConfirmMemberRemoveEvent) =>
-    {
-        const parser = event.getParser();
-
-        NotificationUtilities.confirm(LocalizeText(((parser.furnitureCount > 0) ? 'group.kickconfirm.desc' : 'group.kickconfirm_nofurni.desc'), [ 'user', 'amount' ], [ removingMemberName, parser.furnitureCount.toString() ]), () =>
-            {
-                SendMessageComposer(new GroupRemoveMemberComposer(membersData.groupId, parser.userId));
-
-                refreshMembers();
-            }, null);
+            refreshMembers();
+        }, null);
             
         setRemovingMemberName(null);
-    }, [ membersData, removingMemberName, refreshMembers ]);
-
-    UseMessageEventHook(GroupConfirmMemberRemoveEvent, onGroupConfirmMemberRemoveEvent);
-
-    const linkReceived = useCallback((url: string) =>
-    {
-        const parts = url.split('/');
-
-        if(parts.length < 2) return;
-
-        const groupId = (parseInt(parts[1]) || -1);
-        const levelId = (parseInt(parts[2]) || 3);
-        
-        BatchUpdates(() =>
-        {
-            setGroupId(groupId);
-            setLevelId(levelId);
-        });
-    }, []);
+    });
 
     useEffect(() =>
     {
         const linkTracker: ILinkEventTracker = {
-            linkReceived,
+            linkReceived: (url: string) =>
+            {
+                const parts = url.split('/');
+        
+                if(parts.length < 2) return;
+        
+                const groupId = (parseInt(parts[1]) || -1);
+                const levelId = (parseInt(parts[2]) || 3);
+                
+                setGroupId(groupId);
+                setLevelId(levelId);
+                setPageId(0);
+            },
             eventUrlPrefix: 'group-members/'
         };
 
         AddEventLinkTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
-    }, [ linkReceived ]);
+    }, []);
 
     useEffect(() =>
     {
@@ -146,21 +136,18 @@ export const GroupMembersView: FC<{}> = props =>
     {
         if(groupId === -1) return;
 
-        BatchUpdates(() =>
-        {
-            setLevelId(-1);
-            setMembersData(null);
-            setTotalPages(0);
-            setSearchQuery('');
-            setRemovingMemberName(null); 
-        })
+        setLevelId(-1);
+        setMembersData(null);
+        setTotalPages(0);
+        setSearchQuery('');
+        setRemovingMemberName(null); 
     }, [ groupId ]);
 
     if((groupId === -1) || !membersData) return null;
 
     return (
         <NitroCardView className="nitro-group-members" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('group.members.title', ['groupName'], [ membersData ? membersData.groupTitle : '' ]) } onCloseClick={ event => setGroupId(-1) } />
+            <NitroCardHeaderView headerText={ LocalizeText('group.members.title', [ 'groupName' ], [ membersData ? membersData.groupTitle : '' ]) } onCloseClick={ event => setGroupId(-1) } />
             <NitroCardContentView overflow="hidden">
                 <Flex gap={ 2 }>
                     <Flex center className="group-badge">
@@ -177,41 +164,41 @@ export const GroupMembersView: FC<{}> = props =>
                 </Flex>
                 <Grid columnCount={ 2 } overflow="auto" className="nitro-group-members-list-grid">
                     { membersData.result.map((member, index) =>
-                        {
-                            return (
-                                <Flex key={ index } gap={ 2 } alignItems="center" overflow="hidden" className="member-list-item bg-white rounded p-2">
-                                    <div className="avatar-head cursor-pointer" onClick={ () => GetUserProfile(member.id) }>
-                                        <LayoutAvatarImageView figure={ member.figure } headOnly={ true } direction={ 2 } />
-                                    </div>
-                                    <Column grow gap={ 1 }>
-                                        <Text bold small pointer onClick={ event => GetUserProfile(member.id) }>{ member.name }</Text>
-                                        { (member.rank !== GroupRank.REQUESTED) &&
-                                            <Text small italics variant="muted">{ LocalizeText('group.members.since', [ 'date' ], [ member.joinedAt ]) }</Text> }
-                                    </Column>
-                                    <Column gap={ 1 }>
-                                        { (member.rank !== GroupRank.REQUESTED) &&
-                                            <Flex center>
-                                                <Base pointer={ membersData.admin } className={ `icon icon-group-small-${ ((member.rank === GroupRank.OWNER) ? 'owner' : (member.rank === GroupRank.ADMIN) ? 'admin' : (membersData.admin && (member.rank === GroupRank.MEMBER)) ? 'not-admin' : '') }` } title={ LocalizeText(getRankDescription(member)) } onClick={ event => toggleAdmin(member) } />
-                                            </Flex> }
-                                        { membersData.admin && (member.rank === GroupRank.REQUESTED) &&
-                                            <Flex alignItems="center">
-                                                <Base pointer className="nitro-friends-spritesheet icon-accept" title={ LocalizeText('group.members.accept') } onClick={ event => acceptMembership(member) }></Base>
-                                            </Flex> }
-                                        { membersData.admin && (member.rank !== GroupRank.OWNER) && (member.id !== GetSessionDataManager().userId) &&
-                                            <Flex alignItems="center">
-                                                <Base pointer className="nitro-friends-spritesheet icon-deny" title={ LocalizeText(member.rank === GroupRank.REQUESTED ? 'group.members.reject' : 'group.members.kick') } onClick={ event => removeMemberOrDeclineMembership(member) }></Base>
-                                            </Flex> }
-                                    </Column>
-                                </Flex>
-                            );
-                        }) }
+                    {
+                        return (
+                            <Flex key={ index } gap={ 2 } alignItems="center" overflow="hidden" className="member-list-item bg-white rounded p-2">
+                                <div className="avatar-head cursor-pointer" onClick={ () => GetUserProfile(member.id) }>
+                                    <LayoutAvatarImageView figure={ member.figure } headOnly={ true } direction={ 2 } />
+                                </div>
+                                <Column grow gap={ 1 }>
+                                    <Text bold small pointer onClick={ event => GetUserProfile(member.id) }>{ member.name }</Text>
+                                    { (member.rank !== GroupRank.REQUESTED) &&
+                                    <Text small italics variant="muted">{ LocalizeText('group.members.since', [ 'date' ], [ member.joinedAt ]) }</Text> }
+                                </Column>
+                                <Column gap={ 1 }>
+                                    { (member.rank !== GroupRank.REQUESTED) &&
+                                    <Flex center>
+                                        <Base pointer={ membersData.admin } className={ `icon icon-group-small-${ ((member.rank === GroupRank.OWNER) ? 'owner' : (member.rank === GroupRank.ADMIN) ? 'admin' : (membersData.admin && (member.rank === GroupRank.MEMBER)) ? 'not-admin' : '') }` } title={ LocalizeText(getRankDescription(member)) } onClick={ event => toggleAdmin(member) } />
+                                    </Flex> }
+                                    { membersData.admin && (member.rank === GroupRank.REQUESTED) &&
+                                    <Flex alignItems="center">
+                                        <Base pointer className="nitro-friends-spritesheet icon-accept" title={ LocalizeText('group.members.accept') } onClick={ event => acceptMembership(member) }></Base>
+                                    </Flex> }
+                                    { membersData.admin && (member.rank !== GroupRank.OWNER) && (member.id !== GetSessionDataManager().userId) &&
+                                    <Flex alignItems="center">
+                                        <Base pointer className="nitro-friends-spritesheet icon-deny" title={ LocalizeText(member.rank === GroupRank.REQUESTED ? 'group.members.reject' : 'group.members.kick') } onClick={ event => removeMemberOrDeclineMembership(member) }></Base>
+                                    </Flex> }
+                                </Column>
+                            </Flex>
+                        );
+                    }) }
                 </Grid>
                 <Flex gap={ 1 } justifyContent="between" alignItems="center">
                     <Button disabled={ (membersData.pageIndex === 0) } onClick={ event => setPageId(prevValue => (prevValue - 1)) }>
                         <FontAwesomeIcon icon="chevron-left" />
                     </Button>
                     <Text small>
-                        { LocalizeText('group.members.pageinfo', ['amount', 'page', 'totalPages'], [membersData.totalMembersCount.toString(), (membersData.pageIndex + 1).toString(), totalPages.toString()]) }
+                        { LocalizeText('group.members.pageinfo', [ 'amount', 'page', 'totalPages' ], [ membersData.totalMembersCount.toString(), (membersData.pageIndex + 1).toString(), totalPages.toString() ]) }
                     </Text>
                     <Button disabled={ (membersData.pageIndex === (totalPages - 1)) } onClick={ event => setPageId(prevValue => (prevValue + 1)) }>
                         <FontAwesomeIcon icon="chevron-right" />

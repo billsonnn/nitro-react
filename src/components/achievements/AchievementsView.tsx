@@ -1,239 +1,78 @@
-import { AchievementData, AchievementEvent, AchievementsEvent, AchievementsScoreEvent, RequestAchievementsMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetConfiguration, LocalizeText, SendMessageComposer } from '../../api';
-import { Base, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView, Text } from '../../common';
-import { AchievementsUIEvent, AchievementsUIUnseenCountEvent } from '../../events';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook, UseUiEvent } from '../../hooks';
-import { AchievementCategory } from './common/AchievementCategory';
-import { AchievementUtilities } from './common/AchievementUtilities';
+import { ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { AchievementUtilities, AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { Base, Column, LayoutImage, LayoutProgressBar, NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView, Text } from '../../common';
+import { useAchievements } from '../../hooks';
+import { AchievementCategoryView } from './views/AchievementCategoryView';
 import { AchievementsCategoryListView } from './views/category-list/AchievementsCategoryListView';
-import { AchievementCategoryView } from './views/category/AchievementCategoryView';
 
 export const AchievementsView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
-    const [ isInitalized, setIsInitalized ] = useState(false);
-    const [ achievementCategories, setAchievementCategories ] = useState<AchievementCategory[]>([]);
-    const [ selectedCategoryCode, setSelectedCategoryCode ] = useState<string>(null);
-    const [ achievementScore, setAchievementScore ] = useState(0);
+    const { achievementCategories = [], selectedCategoryCode = null, setSelectedCategoryCode = null, selectedAchievementId = -1, setSelectedAchievementId = null, achievementScore = 0, getProgress = 0, getMaxProgress = 0, setAchievementSeen = null } = useAchievements();
 
-    const onAchievementsUIEvent = useCallback((event: AchievementsUIEvent) =>
+    const selectedCategory = useMemo(() =>
     {
-        switch(event.type)
-        {
-            case AchievementsUIEvent.SHOW_ACHIEVEMENTS:
-                setIsVisible(true);
-                return;
-            case AchievementsUIEvent.HIDE_ACHIEVEMENTS:
-                setIsVisible(false);
-                return;   
-            case AchievementsUIEvent.TOGGLE_ACHIEVEMENTS:
-                setIsVisible(value => !value);
-                return;
-        }
-    }, []);
+        if(selectedCategoryCode === null) return null;
 
-    UseUiEvent(AchievementsUIEvent.SHOW_ACHIEVEMENTS, onAchievementsUIEvent);
-    UseUiEvent(AchievementsUIEvent.HIDE_ACHIEVEMENTS, onAchievementsUIEvent);
-    UseUiEvent(AchievementsUIEvent.TOGGLE_ACHIEVEMENTS, onAchievementsUIEvent);
-
-    const onAchievementEvent = useCallback((event: AchievementEvent) =>
-    {
-        const parser = event.getParser();
-        const achievement = parser.achievement;
-        const newCategories = [ ...achievementCategories ];
-        const categoryName = achievement.category;
-        const categoryIndex = newCategories.findIndex(existing => (existing.code === categoryName));
-
-        if(categoryIndex === -1)
-        {
-            const category = new AchievementCategory(categoryName);
-
-            category.achievements.push(achievement);
-
-            newCategories.push(category);
-        }
-        else
-        {
-            const category = newCategories[categoryIndex];
-            const newAchievements = [ ...category.achievements ];
-            const achievementIndex = newAchievements.findIndex(existing => (existing.achievementId === achievement.achievementId));
-            let previousAchievement: AchievementData = null;
-
-            if(achievementIndex === -1)
-            {
-                newAchievements.push(achievement);
-            }
-            else
-            {
-                previousAchievement = newAchievements[achievementIndex];
-
-                newAchievements[achievementIndex] = achievement;
-            }
-
-            if(!AchievementUtilities.isIgnoredAchievement(achievement))
-            {
-                achievement.unseen++;
-
-                if(previousAchievement) achievement.unseen += previousAchievement.unseen;
-            }
-
-            category.achievements = newAchievements;
-        }
-
-        setAchievementCategories(newCategories);
-    }, [ achievementCategories ]);
-
-    UseMessageEventHook(AchievementEvent, onAchievementEvent);
-
-    const onAchievementsEvent = useCallback((event: AchievementsEvent) =>
-    {
-        const parser = event.getParser();
-
-        const categories: AchievementCategory[] = [];
-        
-        for(const achievement of parser.achievements)
-        {
-            const categoryName = achievement.category;
-            let existing = categories.find(category => (category.code === categoryName));
-
-            if(!existing)
-            {
-                existing = new AchievementCategory(categoryName);
-
-                categories.push(existing);
-            }
-
-            existing.achievements.push(achievement);
-        }
-
-        BatchUpdates(() =>
-        {
-            setAchievementCategories(categories);
-            setIsInitalized(true);
-        });
-    }, []);
-
-    UseMessageEventHook(AchievementsEvent, onAchievementsEvent);
-
-    const onAchievementsScoreEvent = useCallback((event: AchievementsScoreEvent) =>
-    {
-        const parser = event.getParser();
-
-        setAchievementScore(parser.score);
-    }, []);
-
-    UseMessageEventHook(AchievementsScoreEvent, onAchievementsScoreEvent);
-
-    const getTotalUnseen = useMemo(() =>
-    {
-        let unseen = 0;
-
-        for(const category of achievementCategories)
-        {
-            for(const achievement of category.achievements) unseen += achievement.unseen;
-        }
-
-        return unseen;
-    }, [ achievementCategories ]);
-
-    const getProgress = useMemo(() =>
-    {
-        let progress = 0;
-
-        for(const category of achievementCategories) progress += category.getProgress();
-
-        return progress;
-    }, [ achievementCategories ]);
-
-    const getMaxProgress = useMemo(() =>
-    {
-        let progress = 0;
-
-        for(const category of achievementCategories) progress += category.getMaxProgress();
-
-        return progress;
-    }, [ achievementCategories ]);
-
-    const scaledProgressPercent = useMemo(() =>
-    {
-        return ~~((((getProgress - 0) * (100 - 0)) / (getMaxProgress - 0)) + 0);
-    }, [ getProgress, getMaxProgress ]);
-
-    const getSelectedCategory = useMemo(() =>
-    {
-        if(!achievementCategories || !achievementCategories.length) return null;
-
-        return achievementCategories.find(existing => (existing.code === selectedCategoryCode));
+        return achievementCategories.find(category => (category.code === selectedCategoryCode));
     }, [ achievementCategories, selectedCategoryCode ]);
 
-    const getCategoryIcon = useMemo(() =>
+    useEffect(() =>
     {
-        if(!getSelectedCategory) return null;
-        
-        const imageUrl = GetConfiguration<string>('achievements.images.url');
-
-        return imageUrl.replace('%image%', `achicon_${ getSelectedCategory.code }`);
-    }, [ getSelectedCategory ]);
-
-    const setAchievementSeen = useCallback((code: string, achievementId: number) =>
-    {
-        const newCategories = [ ...achievementCategories ];
-
-        for(const category of newCategories)
-        {
-            if(category.code !== code) continue;
-
-            for(const achievement of category.achievements)
+        const linkTracker: ILinkEventTracker = {
+            linkReceived: (url: string) =>
             {
-                if(achievement.achievementId !== achievementId) continue;
+                const parts = url.split('/');
+        
+                if(parts.length < 2) return;
+        
+                switch(parts[1])
+                {
+                    case 'show':
+                        setIsVisible(true);
+                        return;
+                    case 'hide':
+                        setIsVisible(false);
+                        return;
+                    case 'toggle':
+                        setIsVisible(prevValue => !prevValue);
+                        return;
+                }
+            },
+            eventUrlPrefix: 'achievements/'
+        };
 
-                achievement.unseen = 0;
-            }
-        }
+        AddEventLinkTracker(linkTracker);
 
-        setAchievementCategories(newCategories);
-    }, [ achievementCategories ]);
+        return () => RemoveLinkEventTracker(linkTracker);
+    }, []);
 
-    useEffect(() =>
-    {
-        if(!isVisible || !isInitalized) return;
-
-        SendMessageComposer(new RequestAchievementsMessageComposer());
-    }, [ isVisible, isInitalized ]);
-
-    useEffect(() =>
-    {
-        DispatchUiEvent(new AchievementsUIUnseenCountEvent(getTotalUnseen));
-    }, [ getTotalUnseen ]);
-
-    if(!isVisible || !isInitalized) return null;
+    if(!isVisible) return null;
 
     return (
         <NitroCardView uniqueKey="achievements" className="nitro-achievements" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('inventory.achievements') } onCloseClick={ event => setIsVisible(false) } />
-            { getSelectedCategory &&
+            { selectedCategory &&
                 <NitroCardSubHeaderView position="relative" className="justify-content-center align-items-center cursor-pointer" gap={ 3 }>
                     <Base onClick={ event => setSelectedCategoryCode(null) } className="nitro-achievements-back-arrow" />
                     <Column grow gap={ 0 }>
-                        <Text fontSize={ 4 } fontWeight="bold" className="text-small">{ LocalizeText(`quests.${ getSelectedCategory.code }.name`) }</Text>
-                        <Text>{ LocalizeText('achievements.details.categoryprogress', [ 'progress', 'limit' ], [ getSelectedCategory.getProgress().toString(), getSelectedCategory.getMaxProgress().toString() ]) }</Text>
+                        <Text fontSize={ 4 } fontWeight="bold" className="text-small">{ LocalizeText(`quests.${ selectedCategory.code }.name`) }</Text>
+                        <Text>{ LocalizeText('achievements.details.categoryprogress', [ 'progress', 'limit' ], [ selectedCategory.getProgress().toString(), selectedCategory.getMaxProgress().toString() ]) }</Text>
                     </Column>
+                    <LayoutImage imageUrl={ AchievementUtilities.getAchievementCategoryImageUrl(selectedCategory, null,true) } />
                 </NitroCardSubHeaderView> }
-            <NitroCardContentView>
-                { !getSelectedCategory &&
+            <NitroCardContentView gap={ 1 }>
+                { !selectedCategory &&
                     <>
                         <AchievementsCategoryListView categories={ achievementCategories } selectedCategoryCode={ selectedCategoryCode } setSelectedCategoryCode={ setSelectedCategoryCode } />
-                        <Column grow justifyContent="end">
-                            <Base className="progress" position="relative">
-                                <Flex fit center position="absolute" className="text-black">{ LocalizeText('achievements.categories.totalprogress', [ 'progress', 'limit' ], [ getProgress.toString(), getMaxProgress.toString() ]) }</Flex>
-                                <Base className="progress-bar bg-success" style={ { width: (scaledProgressPercent + '%') }} />
-                            </Base>
-                            <Text className="bg-muted rounded p-1" center>{ LocalizeText('achievements.categories.score', [ 'score' ], [ achievementScore.toString() ]) }</Text>
+                        <Column grow justifyContent="end" gap={ 1 }>
+                            <Text small center>{ LocalizeText('achievements.categories.score', [ 'score' ], [ achievementScore.toString() ]) }</Text>
+                            <LayoutProgressBar text={ LocalizeText('achievements.categories.totalprogress', [ 'progress', 'limit' ], [ getProgress.toString(), getMaxProgress.toString() ]) } progress={ getProgress } maxProgress={ getMaxProgress } />
                         </Column>
                     </> }
-                { getSelectedCategory &&
-                    <AchievementCategoryView category={ getSelectedCategory } setAchievementSeen={ setAchievementSeen } /> }
+                { selectedCategory &&
+                    <AchievementCategoryView category={ selectedCategory } selectedAchievementId={ selectedAchievementId } setSelectedAchievementId={ setSelectedAchievementId } setAchievementSeen={ setAchievementSeen } /> }
             </NitroCardContentView>
         </NitroCardView>
     );

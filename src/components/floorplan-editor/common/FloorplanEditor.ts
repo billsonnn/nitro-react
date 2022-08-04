@@ -151,7 +151,7 @@ export class FloorplanEditor extends PixiApplicationProxy
             {
                 if(this._isHolding)
                 {
-                    const [realX, realY] = getTileFromScreenPosition(tileStartX, tileStartY);
+                    const [ realX, realY ] = getTileFromScreenPosition(tileStartX, tileStartY);
 
                     if(isClick)
                     {
@@ -192,9 +192,11 @@ export class FloorplanEditor extends PixiApplicationProxy
                 }
                 return;
             case FloorAction.UP:
+                if(tile.height === 'x') return;
                 futureHeightIndex = heightIndex + 1;
                 break;
             case FloorAction.DOWN:
+                if(tile.height === 'x' || (heightIndex <= 1)) return;
                 futureHeightIndex = heightIndex - 1;
                 break;
             case FloorAction.SET:
@@ -244,7 +246,7 @@ export class FloorplanEditor extends PixiApplicationProxy
                 if(tile.isBlocked) assetName = FloorplanEditor.TILE_BLOCKED;
 
                 //if((tile.height === 'x') || tile.height === 'X') continue;
-                const [positionX, positionY] = getScreenPositionForTile(x, y);
+                const [ positionX, positionY ] = getScreenPositionForTile(x, y);
                 
                 this._tilemapRenderer.tile(this._assetCollection.getTexture(`floor_editor_${ assetName }`), positionX, positionY);
             }

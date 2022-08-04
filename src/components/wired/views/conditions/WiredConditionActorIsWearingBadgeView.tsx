@@ -1,20 +1,15 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Text } from '../../../../common';
+import { useWired } from '../../../../hooks';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 export const WiredConditionActorIsWearingBadgeView: FC<{}> = props =>
 {
     const [ badge, setBadge ] = useState('');
-    const { trigger = null, setStringParam = null } = useWiredContext();
+    const { trigger = null, setStringParam = null } = useWired();
 
-    const save = useCallback(() =>
-    {
-        setStringParam(badge);
-    }, [ badge, setStringParam ]);
+    const save = () => setStringParam(badge);
 
     useEffect(() =>
     {
@@ -22,7 +17,7 @@ export const WiredConditionActorIsWearingBadgeView: FC<{}> = props =>
     }, [ trigger ]);
     
     return (
-        <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+        <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
             <Column gap={ 1 }>
                 <Text bold>{ LocalizeText('wiredfurni.params.badgecode') }</Text>
                 <input type="text" className="form-control form-control-sm" value={ badge } onChange={ event => setBadge(event.target.value) } />

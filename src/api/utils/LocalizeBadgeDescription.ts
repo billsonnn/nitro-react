@@ -1,6 +1,10 @@
 import { GetNitroInstance } from '..';
 
-export function LocalizeBadgeDescription(key: string): string
+export const LocalizeBadgeDescription = (key: string) =>
 {
-    return GetNitroInstance().localization.getBadgeDesc(key);
+    let badgeDesc = GetNitroInstance().localization.getBadgeDesc(key);
+
+    if(!badgeDesc || !badgeDesc.length) badgeDesc = `badge_desc_${ key }`;
+
+    return badgeDesc;
 }

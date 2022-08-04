@@ -1,14 +1,13 @@
 import { IFurnitureData, PetCustomPart, PetFigureData, RoomObjectCategory, RoomObjectVariable, RoomUserData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetFurnitureDataForRoomObject, GetRoomEngine, LocalizeText, RoomWidgetUseProductMessage, UseProductItem } from '../../../../api';
+import { FurniCategory, GetFurnitureDataForRoomObject, GetRoomEngine, LocalizeText, UseProductItem } from '../../../../api';
 import { Base, Button, Column, Flex, LayoutPetImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { FurniCategory } from '../../../inventory/common/FurniCategory';
-import { useRoomContext } from '../../RoomContext';
+import { useRoom } from '../../../../hooks';
 
 interface AvatarInfoUseProductConfirmViewProps
 {
     item: UseProductItem;
-    close: () => void;
+    onClose: () => void;
 }
 
 const _Str_5091: number = -1;
@@ -22,11 +21,11 @@ const _Str_9653: number = 6;
 
 export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmViewProps> = props =>
 {
-    const { item = null, close = null } = props;
+    const { item = null, onClose = null } = props;
     const [ mode, setMode ] = useState(_Str_5091);
     const [ petData, setPetData ] = useState<RoomUserData>(null);
     const [ furniData, setFurniData ] = useState<IFurnitureData>(null);
-    const { roomSession = null, widgetHandler = null } = useRoomContext();
+    const { roomSession = null } = useRoom();
 
     const selectRoomObject = useCallback(() =>
     {
@@ -37,10 +36,10 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
     const useProduct = useCallback(() =>
     {
-        widgetHandler.processWidgetMessage(new RoomWidgetUseProductMessage(RoomWidgetUseProductMessage.PET_PRODUCT, item.requestRoomObjectId, petData.webID));
+        roomSession.usePetProduct(item.requestRoomObjectId, petData.webID);
 
-        close();
-    }, [ widgetHandler, item, petData, close ]);
+        onClose();
+    }, [ roomSession, item, petData, onClose ]);
 
     const getPetImage = useMemo(() =>
     {
@@ -70,7 +69,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     }
                 }
 
-                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ paletteId } color={ petFigureData.color } customParts={ petFigureData.customParts } direction={ 2 } />
+                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ paletteId } petColor={ petFigureData.color } customParts={ petFigureData.customParts } direction={ 2 } />
             }
             case FurniCategory.PET_CUSTOM_PART: {
                 if(customParts.length < 4) return null;
@@ -97,7 +96,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     _local_10++;
                 }
 
-                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } color={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
+                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } petColor={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
             }
             case FurniCategory.PET_CUSTOM_PART_SHAMPOO: {
                 if(customParts.length < 3) return null;
@@ -123,7 +122,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     _local_10++;
                 }
 
-                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } color={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
+                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } petColor={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
             }
             case FurniCategory.PET_SADDLE: {
                 if(customParts.length < 4) return null;
@@ -151,7 +150,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     }
                 }
 
-                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } color={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
+                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } petColor={ petFigureData.color } customParts={ newCustomParts } direction={ 2 } />;
             }
             case FurniCategory.MONSTERPLANT_REBREED:
             case FurniCategory.MONSTERPLANT_REVIVAL:
@@ -173,7 +172,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     }
                 }
 
-                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } color={ petFigureData.color } customParts={ petFigureData.customParts } posture={ posture } direction={ 2 } />;
+                return <LayoutPetImageView typeId={ petFigureData.typeId } paletteId={ petFigureData.paletteId } petColor={ petFigureData.color } customParts={ petFigureData.customParts } posture={ posture } direction={ 2 } />;
             }
         }
     }, [ petData, furniData, roomSession ]);
@@ -224,7 +223,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
     return (
         <NitroCardView className="nitro-use-product-confirmation">
-            <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title', [ 'name' ], [ petData.name ]) } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title', [ 'name' ], [ petData.name ]) } onCloseClick={ onClose } />
             <NitroCardContentView center>
                 <Flex gap={ 2 } overflow="hidden">
                     <Column>
@@ -271,7 +270,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                                 </> }
                         </Column>
                         <Flex alignItems="center" justifyContent="between">
-                            <Button variant="danger" onClick={ close }>{ LocalizeText('useproduct.widget.cancel') }</Button>
+                            <Button variant="danger" onClick={ onClose }>{ LocalizeText('useproduct.widget.cancel') }</Button>
                             <Button variant="success" onClick={ useProduct }>{ LocalizeText('useproduct.widget.use') }</Button>
                         </Flex>
                     </Column>

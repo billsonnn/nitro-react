@@ -1,8 +1,6 @@
 import { FC, useCallback } from 'react';
-import { AutoGrid } from '../../../../common/AutoGrid';
-import { AvatarEditorGridColorItem } from '../../common/AvatarEditorGridColorItem';
-import { CategoryData } from '../../common/CategoryData';
-import { IAvatarEditorCategoryModel } from '../../common/IAvatarEditorCategoryModel';
+import { AvatarEditorGridColorItem, CategoryData, IAvatarEditorCategoryModel } from '../../../../api';
+import { AutoGrid } from '../../../../common';
 import { AvatarEditorPaletteSetItem } from './AvatarEditorPaletteSetItemView';
 
 export interface AvatarEditorPaletteSetViewProps

@@ -1,14 +1,12 @@
-import { GetBotInventoryComposer, IRoomSession, RoomObjectVariable, RoomPreviewer } from '@nitrots/nitro-renderer';
-import { FC, useEffect } from 'react';
-import { GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
+import { IRoomSession, RoomObjectVariable, RoomPreviewer } from '@nitrots/nitro-renderer';
+import { FC, useEffect, useState } from 'react';
+import { attemptBotPlacement, GetRoomEngine, LocalizeText, UnseenItemCategory } from '../../../../api';
 import { AutoGrid, Button, Column, Grid, LayoutRoomPreviewerView, Text } from '../../../../common';
-import { attemptBotPlacement } from '../../common/BotUtilities';
-import { useInventoryContext } from '../../InventoryContext';
-import { InventoryBotActions } from '../../reducers/InventoryBotReducer';
-import { InventoryCategoryEmptyView } from '../category-empty/InventoryCategoryEmptyView';
+import { useInventoryBots, useInventoryUnseenTracker } from '../../../../hooks';
+import { InventoryCategoryEmptyView } from '../InventoryCategoryEmptyView';
 import { InventoryBotItemView } from './InventoryBotItemView';
 
-export interface InventoryBotViewProps
+interface InventoryBotViewProps
 {
     roomSession: IRoomSession;
     roomPreviewer: RoomPreviewer;
@@ -17,39 +15,15 @@ export interface InventoryBotViewProps
 export const InventoryBotView: FC<InventoryBotViewProps> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
-    const { botState = null, dispatchBotState = null } = useInventoryContext();
-    const { needsBotUpdate = false, botItem = null, botItems = [] } = botState;
+    const [ isVisible, setIsVisible ] = useState(false);
+    const { botItems = [], selectedBot = null, activate = null, deactivate = null } = useInventoryBots();
+    const { isUnseen = null, removeUnseen = null } = useInventoryUnseenTracker();
 
     useEffect(() =>
     {
-        if(needsBotUpdate)
-        {
-            dispatchBotState({
-                type: InventoryBotActions.SET_NEEDS_UPDATE,
-                payload: {
-                    flag: false
-                }
-            });
-            
-            SendMessageComposer(new GetBotInventoryComposer());
-        }
-        else
-        {
-            dispatchBotState({
-                type: InventoryBotActions.SET_BOT_ITEM,
-                payload: {
-                    botItem: null
-                }
-            });
-        }
+        if(!selectedBot || !roomPreviewer) return;
 
-    }, [ needsBotUpdate, botItems, dispatchBotState ]);
-
-    useEffect(() =>
-    {
-        if(!botItem || !roomPreviewer) return;
-
-        const botData = botItem.botData;
+        const botData = selectedBot.botData;
 
         const roomEngine = GetRoomEngine();
 
@@ -65,7 +39,30 @@ export const InventoryBotView: FC<InventoryBotViewProps> = props =>
         roomPreviewer.updateRoomWallsAndFloorVisibility(true, true);
         roomPreviewer.updateObjectRoom(floorType, wallType, landscapeType);
         roomPreviewer.addAvatarIntoRoom(botData.figure, 0);
-    }, [ roomPreviewer, botItem ]);
+    }, [ roomPreviewer, selectedBot ]);
+
+    useEffect(() =>
+    {
+        if(!selectedBot || !isUnseen(UnseenItemCategory.BOT, selectedBot.botData.id)) return;
+
+        removeUnseen(UnseenItemCategory.BOT, selectedBot.botData.id);
+    }, [ selectedBot, isUnseen, removeUnseen ]);
+
+    useEffect(() =>
+    {
+        if(!isVisible) return;
+
+        const id = activate();
+
+        return () => deactivate(id);
+    }, [ isVisible, activate, deactivate ]);
+
+    useEffect(() =>
+    {
+        setIsVisible(true);
+
+        return () => setIsVisible(false);
+    }, []);
 
     if(!botItems || !botItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.bots.title') } desc={ LocalizeText('inventory.empty.bots.desc') } />;
 
@@ -73,18 +70,18 @@ export const InventoryBotView: FC<InventoryBotViewProps> = props =>
         <Grid>
             <Column size={ 7 } overflow="hidden">
                 <AutoGrid columnCount={ 5 }>
-                    { botItems && (botItems.length > 0) && botItems.map(item => <InventoryBotItemView key={ item.id } botItem={ item } />) }
+                    { botItems && (botItems.length > 0) && botItems.map(item => <InventoryBotItemView key={ item.botData.id } botItem={ item } />) }
                 </AutoGrid>
             </Column>
             <Column size={ 5 } overflow="auto">
                 <Column overflow="hidden" position="relative">
                     <LayoutRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                 </Column>
-                { botItem &&
+                { selectedBot &&
                     <Column grow justifyContent="between" gap={ 2 }>
-                        <Text grow truncate>{ botItem.botData.name }</Text>
+                        <Text grow truncate>{ selectedBot.botData.name }</Text>
                         { !!roomSession &&
-                            <Button variant="success" onClick={ event => attemptBotPlacement(botItem) }>
+                            <Button variant="success" onClick={ event => attemptBotPlacement(selectedBot) }>
                                 { LocalizeText('inventory.furni.placetoroom') }
                             </Button> }
                     </Column> }

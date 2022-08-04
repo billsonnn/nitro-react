@@ -1,22 +1,16 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
-import { GetWiredTimeLocale } from '../../common/GetWiredTimeLocale';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { GetWiredTimeLocale, LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Text } from '../../../../common';
+import { useWired } from '../../../../hooks';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 export const WiredConditionTimeElapsedLessView: FC<{}> = props =>
 {
     const [ time, setTime ] = useState(-1);
-    const { trigger = null, setIntParams = null } = useWiredContext();
+    const { trigger = null, setIntParams = null } = useWired();
 
-    const save = useCallback(() =>
-    {
-        setIntParams([ time ]);
-    }, [ time, setIntParams ]);
+    const save = () => setIntParams([ time ]);
 
     useEffect(() =>
     {
@@ -24,7 +18,7 @@ export const WiredConditionTimeElapsedLessView: FC<{}> = props =>
     }, [ trigger ]);
     
     return (
-        <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+        <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
             <Column gap={ 1 }>
                 <Text bold>{ LocalizeText('wiredfurni.params.allowbefore', [ 'seconds' ], [ GetWiredTimeLocale(time) ]) }</Text>
                 <ReactSlider

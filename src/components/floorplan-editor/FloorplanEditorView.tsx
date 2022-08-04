@@ -1,9 +1,8 @@
-import { FloorHeightMapEvent, NitroPoint, RoomEngineEvent, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../api';
+import { FloorHeightMapEvent, ILinkEventTracker, NitroPoint, RoomEngineEvent, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
+import { FC, useEffect, useState } from 'react';
+import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Button, ButtonGroup, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
-import { FloorplanEditorEvent } from '../../events';
-import { UseMessageEventHook, UseRoomEngineEvent, UseUiEvent } from '../../hooks';
+import { useMessageEvent, useRoomEngineEvent } from '../../hooks';
 import { FloorplanEditor } from './common/FloorplanEditor';
 import { IFloorplanSettings } from './common/IFloorplanSettings';
 import { IVisualizationSettings } from './common/IVisualizationSettings';
@@ -20,7 +19,7 @@ export const FloorplanEditorView: FC<{}> = props =>
     const [ originalFloorplanSettings, setOriginalFloorplanSettings ] = useState<IFloorplanSettings>({
         tilemap: '',
         reservedTiles: [],
-        entryPoint: [0, 0],
+        entryPoint: [ 0, 0 ],
         entryPointDir: 2,
         wallHeight: -1,
         thicknessWall: 1,
@@ -32,86 +31,6 @@ export const FloorplanEditorView: FC<{}> = props =>
         thicknessWall: 1,
         thicknessFloor: 1
     });
-
-    const onFloorplanEditorEvent = useCallback((event: FloorplanEditorEvent) =>
-    {
-        switch(event.type)
-        {
-            case FloorplanEditorEvent.HIDE_FLOORPLAN_EDITOR:
-                setIsVisible(false);
-                break;
-            case FloorplanEditorEvent.SHOW_FLOORPLAN_EDITOR:
-                setIsVisible(true);
-                break;
-            case FloorplanEditorEvent.TOGGLE_FLOORPLAN_EDITOR:
-                setIsVisible(prevValue => !prevValue);
-                break;
-        }
-    }, []);
-
-    UseUiEvent(FloorplanEditorEvent.HIDE_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
-    UseUiEvent(FloorplanEditorEvent.SHOW_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
-    UseUiEvent(FloorplanEditorEvent.TOGGLE_FLOORPLAN_EDITOR, onFloorplanEditorEvent);
-
-    const onRoomEngineEvent = useCallback((event: RoomEngineEvent) =>
-    {
-        setIsVisible(false);
-    }, []);
-
-    UseRoomEngineEvent(RoomEngineEvent.DISPOSED, onRoomEngineEvent);
-
-    const onFloorHeightMapEvent = useCallback((event: FloorHeightMapEvent) =>
-    {
-        const parser = event.getParser();
-
-        setOriginalFloorplanSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
-
-                newValue.tilemap = parser.model;
-                newValue.wallHeight = (parser.wallHeight + 1);
-
-                return newValue;
-            });
-
-        setVisualizationSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
-
-                newValue.wallHeight = (parser.wallHeight + 1);
-
-                return newValue;
-            });
-    }, []);
-
-    UseMessageEventHook(FloorHeightMapEvent, onFloorHeightMapEvent);
-
-    const onRoomVisualizationSettingsEvent = useCallback((event: RoomVisualizationSettingsEvent) =>
-    {
-        const parser = event.getParser();
-
-        setOriginalFloorplanSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
-
-                newValue.thicknessFloor = convertSettingToNumber(parser.thicknessFloor);
-                newValue.thicknessWall = convertSettingToNumber(parser.thicknessWall);
-
-                return newValue;
-            });
-
-        setVisualizationSettings(prevValue =>
-            {
-                const newValue = { ...prevValue };
-
-                newValue.thicknessFloor = convertSettingToNumber(parser.thicknessFloor);
-                newValue.thicknessWall = convertSettingToNumber(parser.thicknessWall);
-
-                return newValue;
-            });
-    }, []);
-
-    UseMessageEventHook(RoomVisualizationSettingsEvent, onRoomVisualizationSettingsEvent);
 
     const saveFloorChanges = () =>
     {
@@ -135,13 +54,94 @@ export const FloorplanEditorView: FC<{}> = props =>
         FloorplanEditor.instance.renderTiles();
     }
 
+    useRoomEngineEvent<RoomEngineEvent>(RoomEngineEvent.DISPOSED, event => setIsVisible(false));
+
+    useMessageEvent<FloorHeightMapEvent>(FloorHeightMapEvent, event =>
+    {
+        const parser = event.getParser();
+
+        setOriginalFloorplanSettings(prevValue =>
+        {
+            const newValue = { ...prevValue };
+
+            newValue.tilemap = parser.model;
+            newValue.wallHeight = (parser.wallHeight + 1);
+
+            return newValue;
+        });
+
+        setVisualizationSettings(prevValue =>
+        {
+            const newValue = { ...prevValue };
+
+            newValue.wallHeight = (parser.wallHeight + 1);
+
+            return newValue;
+        });
+    });
+
+    useMessageEvent<RoomVisualizationSettingsEvent>(RoomVisualizationSettingsEvent, event =>
+    {
+        const parser = event.getParser();
+
+        setOriginalFloorplanSettings(prevValue =>
+        {
+            const newValue = { ...prevValue };
+
+            newValue.thicknessFloor = convertSettingToNumber(parser.thicknessFloor);
+            newValue.thicknessWall = convertSettingToNumber(parser.thicknessWall);
+
+            return newValue;
+        });
+
+        setVisualizationSettings(prevValue =>
+        {
+            const newValue = { ...prevValue };
+
+            newValue.thicknessFloor = convertSettingToNumber(parser.thicknessFloor);
+            newValue.thicknessWall = convertSettingToNumber(parser.thicknessWall);
+
+            return newValue;
+        });
+    });
+
+    useEffect(() =>
+    {
+        const linkTracker: ILinkEventTracker = {
+            linkReceived: (url: string) =>
+            {
+                const parts = url.split('/');
+
+                if(parts.length < 2) return;
+        
+                switch(parts[1])
+                {
+                    case 'show':
+                        setIsVisible(true);
+                        return;
+                    case 'hide':
+                        setIsVisible(false);
+                        return;
+                    case 'toggle':
+                        setIsVisible(prevValue => !prevValue);
+                        return;
+                }
+            },
+            eventUrlPrefix: 'floor-editor/'
+        };
+
+        AddEventLinkTracker(linkTracker);
+
+        return () => RemoveLinkEventTracker(linkTracker);
+    }, []);
+
     useEffect(() =>
     {
         FloorplanEditor.instance.initialize();
     }, []);
 
     return (
-        <FloorplanEditorContextProvider value={{ originalFloorplanSettings: originalFloorplanSettings, setOriginalFloorplanSettings: setOriginalFloorplanSettings, visualizationSettings: visualizationSettings, setVisualizationSettings: setVisualizationSettings }}>
+        <FloorplanEditorContextProvider value={ { originalFloorplanSettings: originalFloorplanSettings, setOriginalFloorplanSettings: setOriginalFloorplanSettings, visualizationSettings: visualizationSettings, setVisualizationSettings: setVisualizationSettings } }>
             { isVisible &&
                 <NitroCardView uniqueKey="floorpan-editor" className="nitro-floorplan-editor" theme="primary-slim">
                     <NitroCardHeaderView headerText={ LocalizeText('floor.plan.editor.title') } onCloseClick={ () => setIsVisible(false) } />

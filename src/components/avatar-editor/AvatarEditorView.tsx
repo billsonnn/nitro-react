@@ -1,25 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, IAvatarFigureContainer, ILinkEventTracker, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AddEventLinkTracker, GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { Button } from '../../common/Button';
-import { ButtonGroup } from '../../common/ButtonGroup';
-import { Column } from '../../common/Column';
-import { Grid } from '../../common/Grid';
-import { UseMessageEventHook } from '../../hooks';
-import { AvatarEditorAction } from './common/AvatarEditorAction';
-import { AvatarEditorUtilities } from './common/AvatarEditorUtilities';
-import { BodyModel } from './common/BodyModel';
-import { FigureData } from './common/FigureData';
-import { generateRandomFigure } from './common/FigureGenerator';
-import { HeadModel } from './common/HeadModel';
-import { IAvatarEditorCategoryModel } from './common/IAvatarEditorCategoryModel';
-import { LegModel } from './common/LegModel';
-import { TorsoModel } from './common/TorsoModel';
-import { AvatarEditorFigurePreviewView } from './views/figure-preview/AvatarEditorFigurePreviewView';
-import { AvatarEditorModelView } from './views/model/AvatarEditorModelView';
-import { AvatarEditorWardrobeView } from './views/wardrobe/AvatarEditorWardrobeView';
+import { AddEventLinkTracker, AvatarEditorAction, AvatarEditorUtilities, BodyModel, FigureData, generateRandomFigure, GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, GetSessionDataManager, HeadModel, IAvatarEditorCategoryModel, LegModel, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TorsoModel } from '../../api';
+import { Button, ButtonGroup, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
+import { useMessageEvent } from '../../hooks';
+import { AvatarEditorFigurePreviewView } from './views/AvatarEditorFigurePreviewView';
+import { AvatarEditorModelView } from './views/AvatarEditorModelView';
+import { AvatarEditorWardrobeView } from './views/AvatarEditorWardrobeView';
 
 const DEFAULT_MALE_FIGURE: string = 'hr-100.hd-180-7.ch-215-66.lg-270-79.sh-305-62.ha-1002-70.wa-2007';
 const DEFAULT_FEMALE_FIGURE: string = 'hr-515-33.hd-600-1.ch-635-70.lg-716-66-62.sh-735-68';
@@ -37,22 +24,20 @@ export const AvatarEditorView: FC<{}> = props =>
     const [ isWardrobeVisible, setIsWardrobeVisible ] = useState(false);
     const [ lastFigure, setLastFigure ] = useState<string>(null);
     const [ lastGender, setLastGender ] = useState<string>(null);
-    const [ needsReset, setNeedsReset ] = useState(false);
+    const [ needsReset, setNeedsReset ] = useState(true);
     const [ isInitalized, setIsInitalized ] = useState(false);
 
     const maxWardrobeSlots = useMemo(() => GetConfiguration<number>('avatar.wardrobe.max.slots', 10), []);
 
-    const onFigureSetIdsMessageEvent = useCallback((event: FigureSetIdsMessageEvent) =>
+    useMessageEvent<FigureSetIdsMessageEvent>(FigureSetIdsMessageEvent, event =>
     {
         const parser = event.getParser();
 
         setFigureSetIds(parser.figureSetIds);
         setBoundFurnitureNames(parser.boundsFurnitureNames);
-    }, []);
+    });
 
-    UseMessageEventHook(FigureSetIdsMessageEvent, onFigureSetIdsMessageEvent);
-
-    const onUserWardrobePageEvent = useCallback((event: UserWardrobePageEvent) =>
+    useMessageEvent<UserWardrobePageEvent>(UserWardrobePageEvent, event =>
     {
         const parser = event.getParser();
         const savedFigures: [ IAvatarFigureContainer, string ][] = [];
@@ -73,10 +58,8 @@ export const AvatarEditorView: FC<{}> = props =>
             savedFigures[(index - 1)] = [ container, gender ];
         }
 
-        setSavedFigures(savedFigures)
-    }, [ maxWardrobeSlots ]);
-
-    UseMessageEventHook(UserWardrobePageEvent, onUserWardrobePageEvent);
+        setSavedFigures(savedFigures);
+    });
 
     const selectCategory = useCallback((name: string) =>
     {
@@ -165,44 +148,35 @@ export const AvatarEditorView: FC<{}> = props =>
         setFigureData(figures.get(gender));
     }, [ figures ]);
 
-    const linkReceived = useCallback((url: string) =>
-    {
-        const parts = url.split('/');
-
-        if(parts.length < 2) return;
-
-        switch(parts[1])
-        {
-            case 'show':
-                setIsVisible(true);
-                return;
-            case 'hide':
-                setIsVisible(false);
-                return;
-            case 'toggle':
-                setIsVisible(prevValue =>
-                    {
-                        const flag = !prevValue;
-
-                        if(flag) setNeedsReset(true);
-                        
-                        return flag;
-                    });
-                return;
-        }
-    }, []);
-
     useEffect(() =>
     {
         const linkTracker: ILinkEventTracker = {
-            linkReceived,
+            linkReceived: (url: string) =>
+            {
+                const parts = url.split('/');
+        
+                if(parts.length < 2) return;
+        
+                switch(parts[1])
+                {
+                    case 'show':
+                        setIsVisible(true);
+                        return;
+                    case 'hide':
+                        setIsVisible(false);
+                        return;
+                    case 'toggle':
+                        setIsVisible(prevValue => !prevValue);
+                        return;
+                }
+            },
             eventUrlPrefix: 'avatar-editor/'
         };
 
         AddEventLinkTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
-    }, [ linkReceived ]);
+    }, []);
 
     useEffect(() =>
     {
@@ -278,6 +252,16 @@ export const AvatarEditorView: FC<{}> = props =>
         setNeedsReset(false);
     }, [ isVisible, isInitalized, needsReset, loadAvatarInEditor ]);
 
+    useEffect(() =>
+    {
+        if(isVisible) return;
+
+        return () =>
+        {
+            setNeedsReset(true);
+        }
+    }, [ isVisible ]);
+
     if(!isVisible || !figureData) return null;
 
     return (
@@ -285,15 +269,15 @@ export const AvatarEditorView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('avatareditor.title') } onCloseClick={ event => setIsVisible(false) } />
             <NitroCardTabsView>
                 { categories && (categories.size > 0) && Array.from(categories.keys()).map(category =>
-                    {
-                        const isActive = (activeCategory && (activeCategory.name === category));
+                {
+                    const isActive = (activeCategory && (activeCategory.name === category));
 
-                        return (
-                            <NitroCardTabsItemView key={ category } isActive={ isActive } onClick={ event => selectCategory(category) }>
-                                { LocalizeText(`avatareditor.category.${ category }`) }
-                            </NitroCardTabsItemView>
-                        );
-                    })}
+                    return (
+                        <NitroCardTabsItemView key={ category } isActive={ isActive } onClick={ event => selectCategory(category) }>
+                            { LocalizeText(`avatareditor.category.${ category }`) }
+                        </NitroCardTabsItemView>
+                    );
+                }) }
                 <NitroCardTabsItemView isActive={ isWardrobeVisible } onClick={ event => setIsWardrobeVisible(true) }>
                     { LocalizeText('avatareditor.category.wardrobe') }
                 </NitroCardTabsItemView>
@@ -310,17 +294,17 @@ export const AvatarEditorView: FC<{}> = props =>
                         <AvatarEditorFigurePreviewView figureData={ figureData } />
                         <Column grow gap={ 1 }>
                             <ButtonGroup>
-                                <Button variant="secondary" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_RESET) }>
+                                <Button variant="secondary" onClick={ event => processAction(AvatarEditorAction.ACTION_RESET) }>
                                     <FontAwesomeIcon icon="undo" />
                                 </Button>
-                                <Button variant="secondary" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_CLEAR) }>
+                                <Button variant="secondary" onClick={ event => processAction(AvatarEditorAction.ACTION_CLEAR) }>
                                     <FontAwesomeIcon icon="trash" />
                                 </Button>
-                                <Button variant="secondary" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_RANDOMIZE) }>
+                                <Button variant="secondary" onClick={ event => processAction(AvatarEditorAction.ACTION_RANDOMIZE) }>
                                     <FontAwesomeIcon icon="dice" />
                                 </Button>
                             </ButtonGroup>
-                            <Button className="w-100" variant="success" size="sm" onClick={ event => processAction(AvatarEditorAction.ACTION_SAVE) }>
+                            <Button className="w-100" variant="success" onClick={ event => processAction(AvatarEditorAction.ACTION_SAVE) }>
                                 { LocalizeText('avatareditor.save') }
                             </Button>
                         </Column>

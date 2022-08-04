@@ -1,15 +1,17 @@
 import { SelectClubGiftComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { LocalizeText, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../../../../api';
 import { AutoGrid, Text } from '../../../../../../common';
-import { useCatalogContext } from '../../../../CatalogContext';
+import { useCatalog, useNotification, usePurse } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { VipGiftItem } from './VipGiftItemView';
 
 export const CatalogLayoutVipGiftsView: FC<CatalogLayoutProps> = props =>
 {
-    const { catalogOptions = null, setCatalogOptions = null } = useCatalogContext();
-    const { clubGifts = null, subscriptionInfo = null } = catalogOptions;
+    const { purse = null } = usePurse();
+    const { catalogOptions = null, setCatalogOptions = null } = useCatalog();
+    const { clubGifts = null } = catalogOptions;
+    const { showConfirm = null } = useNotification();
     
     const giftsAvailable = useCallback(() =>
     {
@@ -19,25 +21,25 @@ export const CatalogLayoutVipGiftsView: FC<CatalogLayoutProps> = props =>
 
         if(clubGifts.daysUntilNextGift > 0) return LocalizeText('catalog.club_gift.days_until_next', [ 'days' ], [ clubGifts.daysUntilNextGift.toString() ]);
 
-        if(subscriptionInfo.isVip) return LocalizeText('catalog.club_gift.not_available');
+        if(purse.isVip) return LocalizeText('catalog.club_gift.not_available');
 
         return LocalizeText('catalog.club_gift.no_club');
-    }, [ clubGifts, subscriptionInfo ]);
+    }, [ clubGifts, purse ]);
 
     const selectGift = useCallback((localizationId: string) =>
     {
-        NotificationUtilities.confirm(LocalizeText('catalog.club_gift.confirm'), () =>
+        showConfirm(LocalizeText('catalog.club_gift.confirm'), () =>
+        {
+            SendMessageComposer(new SelectClubGiftComposer(localizationId));
+
+            setCatalogOptions(prevValue =>
             {
-                SendMessageComposer(new SelectClubGiftComposer(localizationId));
+                prevValue.clubGifts.giftsAvailable--;
 
-                setCatalogOptions(prevValue =>
-                    {
-                        prevValue.clubGifts.giftsAvailable--;
-
-                        return { ...prevValue };
-                    });
-            }, null);
-    }, [ setCatalogOptions ]);
+                return { ...prevValue };
+            });
+        }, null);
+    }, [ setCatalogOptions, showConfirm ]);
     
     return (
         <>

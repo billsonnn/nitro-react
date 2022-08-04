@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
+import { AvatarEditorGridColorItem, GetConfiguration } from '../../../../api';
 import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../../common';
-import { AvatarEditorGridColorItem } from '../../common/AvatarEditorGridColorItem';
 
 export interface AvatarEditorPaletteSetItemProps extends LayoutGridItemProps
 {
@@ -11,6 +11,8 @@ export const AvatarEditorPaletteSetItem: FC<AvatarEditorPaletteSetItemProps> = p
 {
     const { colorItem = null, children = null, ...rest } = props;
     const [ updateId, setUpdateId ] = useState(-1);
+
+    const hcDisabled = GetConfiguration<boolean>('hc.disabled', false);
 
     const rerender = useCallback(() =>
     {
@@ -26,7 +28,7 @@ export const AvatarEditorPaletteSetItem: FC<AvatarEditorPaletteSetItemProps> = p
 
     return (
         <LayoutGridItem itemHighlight itemColor={ colorItem.color } itemActive={ colorItem.isSelected } className="clear-bg" { ...rest }>
-            { colorItem.isHC && <LayoutCurrencyIcon className="position-absolute end-1 bottom-1" type={ 'hc' } /> }
+            { !hcDisabled && colorItem.isHC && <LayoutCurrencyIcon className="position-absolute end-1 bottom-1" type="hc" /> }
             { children }
         </LayoutGridItem>
     );

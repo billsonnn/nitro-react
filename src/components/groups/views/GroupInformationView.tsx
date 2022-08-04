@@ -1,10 +1,8 @@
 import { GroupInformationParser, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
-import { CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, LocalizeText, NotificationUtilities, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
+import { CatalogPageName, CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, GroupMembershipType, GroupType, LocalizeText, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
 import { Button, Column, Flex, Grid, GridProps, LayoutBadgeImageView, Text } from '../../../common';
-import { CatalogPageName } from '../../catalog/common/CatalogPageName';
-import { GroupMembershipType } from '../common/GroupMembershipType';
-import { GroupType } from '../common/GroupType';
+import { useNotification } from '../../../hooks';
 
 const STATES: string[] = [ 'regular', 'exclusive', 'private' ];
 
@@ -17,20 +15,21 @@ interface GroupInformationViewProps extends GridProps
 
 export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 {
-    const { groupInformation = null, onClose = null, overflow = 'hidden', ...rest } = props;    
+    const { groupInformation = null, onClose = null, overflow = 'hidden', ...rest } = props;
+    const { showConfirm = null } = useNotification();
 
     const isRealOwner = (groupInformation && (groupInformation.ownerName === GetSessionDataManager().userName));
-    
+
     const joinGroup = () => (groupInformation && TryJoinGroup(groupInformation.id));
 
     const leaveGroup = () =>
     {
-        NotificationUtilities.confirm(LocalizeText('group.leaveconfirm.desc'), () =>
-            {
-                SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
+        showConfirm(LocalizeText('group.leaveconfirm.desc'), () =>
+        {
+            SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
 
-                if(onClose) onClose();
-            }, null);
+            if(onClose) onClose();
+        }, null);
     }
 
     const getRoleIcon = () =>
@@ -69,7 +68,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
 
             return;
         }
-        
+
         joinGroup();
     }
 
@@ -92,9 +91,12 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
             case 'furniture':
                 CreateLinkEvent('catalog/open/' + CatalogPageName.GUILD_CUSTOM_FURNI);
                 break;
+            case 'popular_groups':
+                CreateLinkEvent('navigator/search/groups');
+                break;
         }
     }, [ groupInformation ]);
-    
+
     if(!groupInformation) return null;
 
     return (
@@ -118,12 +120,12 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                         <Flex alignItems="center" gap={ 2 }>
                             <Text bold>{ groupInformation.title }</Text>
                             <Flex gap={ 1 }>
-                                <i className={ 'icon icon-group-type-' + groupInformation.type } title={ LocalizeText(`group.edit.settings.type.${ STATES[groupInformation.type] }.help`)} />
+                                <i className={ 'icon icon-group-type-' + groupInformation.type } title={ LocalizeText(`group.edit.settings.type.${ STATES[groupInformation.type] }.help`) } />
                                 { groupInformation.canMembersDecorate &&
                                     <i className="icon icon-group-decorate" title={ LocalizeText('group.memberscandecorate') } /> }
                             </Flex>
                         </Flex>
-                        <Text small>{ LocalizeText('group.created', ['date', 'owner'], [groupInformation.createdAt, groupInformation.ownerName]) }</Text>
+                        <Text small>{ LocalizeText('group.created', [ 'date', 'owner' ], [ groupInformation.createdAt, groupInformation.ownerName ]) }</Text>
                     </Column>
                     <Text small overflow="auto" className="group-description">{ groupInformation.description }</Text>
                 </Column>
@@ -131,9 +133,9 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                     <Column gap={ 1 }>
                         <Text small underline pointer onClick={ () => handleAction('homeroom') }>{ LocalizeText('group.linktobase') }</Text>
                         <Text small underline pointer onClick={ () => handleAction('furniture') }>{ LocalizeText('group.buyfurni') }</Text>
-                        <Text small underline pointer>{ LocalizeText('group.showgroups') }</Text>
+                        <Text small underline pointer onClick={ () => handleAction('popular_groups') }>{ LocalizeText('group.showgroups') }</Text>
                     </Column>
-                    { (groupInformation.type !== GroupType.PRIVATE) && 
+                    { (groupInformation.type !== GroupType.PRIVATE) &&
                         <Button disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) || isRealOwner } onClick={ handleButtonClick }>
                             { LocalizeText(getButtonText()) }
                         </Button> }

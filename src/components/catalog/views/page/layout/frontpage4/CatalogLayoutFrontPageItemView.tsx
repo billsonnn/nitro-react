@@ -1,10 +1,10 @@
 import { FrontPageItem } from '@nitrots/nitro-renderer';
 import { FC, useMemo } from 'react';
 import { GetConfiguration } from '../../../../../../api';
-import { LayoutImage, LayoutImageProps } from '../../../../../../common/layout/LayoutImage';
+import { LayoutBackgroundImage, LayoutBackgroundImageProps } from '../../../../../../common';
 import { Text } from '../../../../../../common/Text';
 
-export interface CatalogLayoutFrontPageItemViewProps extends LayoutImageProps
+export interface CatalogLayoutFrontPageItemViewProps extends LayoutBackgroundImageProps
 {
     item: FrontPageItem;
 }
@@ -27,11 +27,11 @@ export const CatalogLayoutFrontPageItemView: FC<CatalogLayoutFrontPageItemViewPr
     const imageUrl = (GetConfiguration<string>('image.library.url') + item.itemPromoImage);
 
     return (
-        <LayoutImage imageUrl={ imageUrl } classNames={ getClassNames } position={ position } fullHeight={ fullHeight } pointer={ pointer } overflow={ overflow } { ...rest }>
+        <LayoutBackgroundImage imageUrl={ imageUrl } classNames={ getClassNames } position={ position } fullHeight={ fullHeight } pointer={ pointer } overflow={ overflow } { ...rest }>
             <Text position="absolute" variant="white" className="bg-dark rounded p-2 m-2 bottom-0">
                 { item.itemName }
             </Text>
             { children }
-        </LayoutImage>
+        </LayoutBackgroundImage>
     );
 }

@@ -2,12 +2,12 @@ import { CatalogGroupsComposer, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Flex } from '../../../../../common';
-import { useCatalogContext } from '../../../CatalogContext';
+import { useCatalog } from '../../../../../hooks';
 
 export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
 {
     const [ selectedGroupIndex, setSelectedGroupIndex ] = useState<number>(0);
-    const { currentOffer = null, catalogOptions = null, setPurchaseOptions = null } = useCatalogContext();
+    const { currentOffer = null, catalogOptions = null, setPurchaseOptions = null } = useCatalog();
     const { groups = null } = catalogOptions;
 
     const previewStuffData = useMemo(() =>
@@ -30,12 +30,15 @@ export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
         if(!currentOffer) return;
 
         setPurchaseOptions(prevValue =>
-            {
-                const extraParamRequired = true;
-                const extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
+        {
+            const newValue = { ...prevValue };
 
-                return { ...prevValue, extraParamRequired, extraData, previewStuffData };
-            });
+            newValue.extraParamRequired = true;
+            newValue.extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
+            newValue.previewStuffData = previewStuffData;
+
+            return newValue;
+        });
     }, [ currentOffer, previewStuffData, setPurchaseOptions ]);
 
     useEffect(() =>

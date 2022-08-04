@@ -1,8 +1,8 @@
-import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
+import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectType, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
+import { CreateLinkEvent, GetRoomSession, GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
 import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../hooks';
+import { useMessageEvent, useRoomEngineEvent } from '../../hooks';
 import { BadgesContainerView } from './views/BadgesContainerView';
 import { FriendsContainerView } from './views/FriendsContainerView';
 import { GroupsContainerView } from './views/GroupsContainerView';
@@ -16,12 +16,9 @@ export const UserProfileView: FC<{}> = props =>
 
     const onClose = () =>
     {
-        BatchUpdates(() =>
-        {
-            setUserProfile(null);
-            setUserBadges([]);
-            setUserRelationships(null);
-        });
+        setUserProfile(null);
+        setUserBadges([]);
+        setUserRelationships(null);
     }
 
     const onLeaveGroup = useCallback(() =>
@@ -30,45 +27,60 @@ export const UserProfileView: FC<{}> = props =>
         
         GetUserProfile(userProfile.id);
     }, [ userProfile ]);
-    
-    const onUserCurrentBadgesEvent = useCallback((event: UserCurrentBadgesEvent) =>
+
+    useMessageEvent<UserCurrentBadgesEvent>(UserCurrentBadgesEvent, event =>
     {
         const parser = event.getParser();
 
         if(!userProfile || (parser.userId !== userProfile.id)) return;
         
         setUserBadges(parser.badges);
-    }, [ userProfile ]);
+    });
 
-    UseMessageEventHook(UserCurrentBadgesEvent, onUserCurrentBadgesEvent);
-
-    const onUserRelationshipsEvent = useCallback((event: RelationshipStatusInfoEvent) =>
+    useMessageEvent<RelationshipStatusInfoEvent>(RelationshipStatusInfoEvent, event =>
     {
         const parser = event.getParser();
 
         if(!userProfile || (parser.userId !== userProfile.id)) return;
         
         setUserRelationships(parser);
-    }, [ userProfile ]);
+    });
 
-    UseMessageEventHook(RelationshipStatusInfoEvent, onUserRelationshipsEvent);
-
-    const onUserProfileEvent = useCallback((event: UserProfileEvent) =>
+    useMessageEvent<UserProfileEvent>(UserProfileEvent, event =>
     {
         const parser = event.getParser();
+
+        let isSameProfile = false;
         
-        BatchUpdates(() =>
+        setUserProfile(prevValue =>
         {
-            setUserProfile(parser);
+            if(prevValue && prevValue.id) isSameProfile = (prevValue.id === parser.id);
+
+            return parser;
+        });
+
+        if(!isSameProfile)
+        {
             setUserBadges([]);
             setUserRelationships(null);
-        });
+        }
 
         SendMessageComposer(new UserCurrentBadgesComposer(parser.id));
         SendMessageComposer(new UserRelationshipsComposer(parser.id));
-    }, []);
+    });
 
-    UseMessageEventHook(UserProfileEvent, onUserProfileEvent);
+    useRoomEngineEvent<RoomEngineObjectEvent>(RoomEngineObjectEvent.SELECTED, event =>
+    {
+        if(!userProfile) return;
+        
+        if(event.category !== RoomObjectCategory.UNIT) return;
+
+        const userData = GetRoomSession().userDataManager.getUserDataByIndex(event.objectId);
+
+        if(userData.type !== RoomObjectType.USER) return;
+
+        GetUserProfile(userData.webID);
+    });
 
     if(!userProfile) return null;
 
@@ -89,7 +101,7 @@ export const UserProfileView: FC<{}> = props =>
                     </Column>
                 </Grid>
                 <Flex alignItems="center" className="rooms-button-container px-2 py-1">
-                    <Flex alignItems="center" gap={ 1 }>
+                    <Flex alignItems="center" gap={ 1 } onClick={ event => CreateLinkEvent(`navigator/search/hotel_view/owner:${ userProfile.username }`) }>
                         <i className="icon icon-rooms" />
                         <Text bold underline pointer>{ LocalizeText('extendedprofile.rooms') }</Text>
                     </Flex>

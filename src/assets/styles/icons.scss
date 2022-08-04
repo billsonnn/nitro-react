@@ -42,6 +42,10 @@
         width: 32px;
     }
 
+    &.gray {
+        opacity: .5;
+    }
+
     &.icon-inventory {
         background-image: url('../images/toolbar/icons/inventory.png');
         height: 41px;
@@ -578,6 +582,17 @@
         background-image: url('../images/floorplaneditor/door-direction-7.png');
         width: 80px;
         height: 45px;
+    }
+
+    &.icon-tickets {
+        background-image: url('../images/icons/tickets.png');
+        width: 17px;
+        height: 17px;
+    }
+    &.icon-user {
+        background-image: url('../images/icons/user.png');
+        width: 18px;
+        height: 19px;
     }
 
     &.spin {

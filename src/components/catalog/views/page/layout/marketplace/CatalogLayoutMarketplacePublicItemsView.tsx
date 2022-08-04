@@ -1,19 +1,15 @@
 import { BuyMarketplaceOfferMessageComposer, GetMarketplaceOffersMessageComposer, MarketplaceBuyOfferResultEvent, MarketPlaceOffersEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
+import { IMarketplaceSearchOptions, LocalizeText, MarketplaceOfferData, MarketplaceSearchType, NotificationAlertType, SendMessageComposer } from '../../../../../../api';
 import { Button, ButtonGroup, Column, Text } from '../../../../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../../../../hooks';
-import { GetCurrencyAmount } from '../../../../../purse/common/CurrencyHelper';
+import { useMessageEvent, useNotification, usePurse } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, PUBLIC_OFFER } from './CatalogLayoutMarketplaceItemView';
 import { SearchFormView } from './CatalogLayoutMarketplaceSearchFormView';
-import { IMarketplaceSearchOptions } from './common/IMarketplaceSearchOptions';
-import { MarketplaceOfferData } from './common/MarketplaceOfferData';
-import { MarketplaceSearchType } from './common/MarketplaceSearchType';
 
-const SORT_TYPES_VALUE = [1, 2];
-const SORT_TYPES_ACTIVITY = [3, 4, 5, 6];
-const SORT_TYPES_ADVANCED = [1, 2, 3, 4, 5, 6];
+const SORT_TYPES_VALUE = [ 1, 2 ];
+const SORT_TYPES_ACTIVITY = [ 3, 4, 5, 6 ];
+const SORT_TYPES_ADVANCED = [ 1, 2, 3, 4, 5, 6 ];
 export interface CatalogLayoutMarketplacePublicItemsViewProps extends CatalogLayoutProps
 {
 
@@ -25,6 +21,8 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
     const [ totalItemsFound, setTotalItemsFound ] = useState(0);
     const [ offers, setOffers ] = useState(new Map<number, MarketplaceOfferData>());
     const [ lastSearch, setLastSearch ] = useState<IMarketplaceSearchOptions>({ minPrice: -1, maxPrice: -1, query: '', type: 3 });
+    const { getCurrencyAmount = null } = usePurse();
+    const { simpleAlert = null, showConfirm = null } = useNotification();
 
     const requestOffers = useCallback((options: IMarketplaceSearchOptions) =>
     {
@@ -44,24 +42,26 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                 return SORT_TYPES_ADVANCED;
         }
         return [];
-    }, [searchType]);
+    }, [ searchType ]);
 
     const purchaseItem = useCallback((offerData: MarketplaceOfferData) =>
     {
-        if(offerData.price > GetCurrencyAmount(-1))
+        if(offerData.price > getCurrencyAmount(-1))
         {
-            NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.notenough.credits.description'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.alert.notenough.title'));
+            simpleAlert(LocalizeText('catalog.alert.notenough.credits.description'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.alert.notenough.title'));
             return;
         }
-        const offerId = offerData.offerId;
-        NotificationUtilities.confirm(LocalizeText('catalog.marketplace.confirm_header'), () =>
-            {
-                SendMessageComposer(new BuyMarketplaceOfferMessageComposer(offerId));
-            },
-            null, null, null, LocalizeText('catalog.marketplace.confirm_title'));
-    },[]);
 
-    const onMarketPlaceOffersEvent = useCallback( (event: MarketPlaceOffersEvent) =>
+        const offerId = offerData.offerId;
+
+        showConfirm(LocalizeText('catalog.marketplace.confirm_header'), () =>
+        {
+            SendMessageComposer(new BuyMarketplaceOfferMessageComposer(offerId));
+        },
+        null, null, null, LocalizeText('catalog.marketplace.confirm_title'));
+    }, [ getCurrencyAmount, simpleAlert, showConfirm ]);
+
+    useMessageEvent<MarketPlaceOffersEvent>(MarketPlaceOffersEvent, event =>
     {
         const parser = event.getParser();
 
@@ -75,15 +75,11 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
             latestOffers.set(entry.offerId, offerEntry);
         });
 
-        BatchUpdates(() =>
-        {
-            setTotalItemsFound(parser.totalItemsFound);
-            setOffers(latestOffers);
-        });
-        
-    }, []);
+        setTotalItemsFound(parser.totalItemsFound);
+        setOffers(latestOffers);
+    });
 
-    const onMarketplaceBuyOfferResultEvent = useCallback( (event: MarketplaceBuyOfferResultEvent) =>
+    useMessageEvent<MarketplaceBuyOfferResultEvent>(MarketplaceBuyOfferResultEvent, event =>
     {
         const parser = event.getParser();
 
@@ -101,11 +97,11 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                     newVal.delete(parser.requestedOfferId);
                     return newVal;
                 });
-                NotificationUtilities.simpleAlert(LocalizeText('catalog.marketplace.not_available_header'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.marketplace.not_available_title'));
+                simpleAlert(LocalizeText('catalog.marketplace.not_available_header'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.marketplace.not_available_title'));
                 break;
             case 3:
-                // our shit was updated
-                // todo: some dialogue modal 
+            // our shit was updated
+            // todo: some dialogue modal 
                 setOffers( prev =>
                 {
                     const newVal = new Map(prev);
@@ -123,32 +119,29 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                     return newVal;
                 });
 
-                NotificationUtilities.confirm(LocalizeText('catalog.marketplace.confirm_higher_header') + 
-                '\n' + LocalizeText('catalog.marketplace.confirm_price', ['price'], [parser.newPrice.toString()]), () =>
+                showConfirm(LocalizeText('catalog.marketplace.confirm_higher_header') + 
+                '\n' + LocalizeText('catalog.marketplace.confirm_price', [ 'price' ], [ parser.newPrice.toString() ]), () =>
                 {
                     SendMessageComposer(new BuyMarketplaceOfferMessageComposer(parser.offerId));
                 },
                 null, null, null, LocalizeText('catalog.marketplace.confirm_higher_title'));
                 break;
             case 4:
-                NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.notenough.credits.description'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.alert.notenough.title'));
+                simpleAlert(LocalizeText('catalog.alert.notenough.credits.description'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.alert.notenough.title'));
                 break;
         }
-    }, [lastSearch, requestOffers]);
-
-    UseMessageEventHook(MarketPlaceOffersEvent, onMarketPlaceOffersEvent);
-    UseMessageEventHook(MarketplaceBuyOfferResultEvent, onMarketplaceBuyOfferResultEvent);
+    });
     
     return (
         <>
             <ButtonGroup>
-                <Button size="sm" active={ (searchType === MarketplaceSearchType.BY_ACTIVITY) } onClick={ () => setSearchType(MarketplaceSearchType.BY_ACTIVITY) }>
+                <Button active={ (searchType === MarketplaceSearchType.BY_ACTIVITY) } onClick={ () => setSearchType(MarketplaceSearchType.BY_ACTIVITY) }>
                     { LocalizeText('catalog.marketplace.search_by_activity') }
                 </Button>
-                <Button size="sm" active={ (searchType === MarketplaceSearchType.BY_VALUE) } onClick={ () => setSearchType(MarketplaceSearchType.BY_VALUE) }>
+                <Button active={ (searchType === MarketplaceSearchType.BY_VALUE) } onClick={ () => setSearchType(MarketplaceSearchType.BY_VALUE) }>
                     { LocalizeText('catalog.marketplace.search_by_value') }
                 </Button>
-                <Button size="sm" active={ (searchType === MarketplaceSearchType.ADVANCED) } onClick={ () => setSearchType(MarketplaceSearchType.ADVANCED) }>
+                <Button active={ (searchType === MarketplaceSearchType.ADVANCED) } onClick={ () => setSearchType(MarketplaceSearchType.ADVANCED) }>
                     { LocalizeText('catalog.marketplace.search_advanced') }
                 </Button>
             </ButtonGroup>
@@ -159,7 +152,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                 </Text>
                 <Column className="nitro-catalog-layout-marketplace-grid" overflow="auto">
                     { 
-                        Array.from(offers.values()).map( (entry, index) => <CatalogLayoutMarketplaceItemView key={ index } offerData={ entry } type={ PUBLIC_OFFER } onClick={purchaseItem} />)
+                        Array.from(offers.values()).map( (entry, index) => <CatalogLayoutMarketplaceItemView key={ index } offerData={ entry } type={ PUBLIC_OFFER } onClick={ purchaseItem } />)
                     }
                 </Column>
             </Column>

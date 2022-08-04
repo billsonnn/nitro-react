@@ -1,14 +1,12 @@
-import { IRoomSession, RequestPetsComposer, RoomObjectVariable, RoomPreviewer } from '@nitrots/nitro-renderer';
-import { FC, useEffect } from 'react';
-import { GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
+import { IRoomSession, RoomObjectVariable, RoomPreviewer } from '@nitrots/nitro-renderer';
+import { FC, useEffect, useState } from 'react';
+import { attemptPetPlacement, GetRoomEngine, LocalizeText, UnseenItemCategory } from '../../../../api';
 import { AutoGrid, Button, Column, Grid, LayoutRoomPreviewerView, Text } from '../../../../common';
-import { attemptPetPlacement } from '../../common/PetUtilities';
-import { useInventoryContext } from '../../InventoryContext';
-import { InventoryPetActions } from '../../reducers/InventoryPetReducer';
-import { InventoryCategoryEmptyView } from '../category-empty/InventoryCategoryEmptyView';
+import { useInventoryPets, useInventoryUnseenTracker } from '../../../../hooks';
+import { InventoryCategoryEmptyView } from '../InventoryCategoryEmptyView';
 import { InventoryPetItemView } from './InventoryPetItemView';
 
-export interface InventoryPetViewProps
+interface InventoryPetViewProps
 {
     roomSession: IRoomSession;
     roomPreviewer: RoomPreviewer;
@@ -17,39 +15,15 @@ export interface InventoryPetViewProps
 export const InventoryPetView: FC<InventoryPetViewProps> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
-    const { petState = null, dispatchPetState = null } = useInventoryContext();
-    const { needsPetUpdate = false, petItem = null, petItems = [] } = petState;
+    const [ isVisible, setIsVisible ] = useState(false);
+    const { petItems = null, selectedPet = null, activate = null, deactivate = null } = useInventoryPets();
+    const { isUnseen = null, removeUnseen = null } = useInventoryUnseenTracker();
 
     useEffect(() =>
     {
-        if(needsPetUpdate)
-        {
-            dispatchPetState({
-                type: InventoryPetActions.SET_NEEDS_UPDATE,
-                payload: {
-                    flag: false
-                }
-            });
-            
-            SendMessageComposer(new RequestPetsComposer());
-        }
-        else
-        {
-            dispatchPetState({
-                type: InventoryPetActions.SET_PET_ITEM,
-                payload: {
-                    petItem: null
-                }
-            });
-        }
+        if(!selectedPet || !roomPreviewer) return;
 
-    }, [ needsPetUpdate, petItems, dispatchPetState ]);
-
-    useEffect(() =>
-    {
-        if(!petItem || !roomPreviewer) return;
-
-        const petData = petItem.petData;
+        const petData = selectedPet.petData;
         const roomEngine = GetRoomEngine();
 
         let wallType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_WALL_TYPE);
@@ -64,7 +38,30 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
         roomPreviewer.updateRoomWallsAndFloorVisibility(true, true);
         roomPreviewer.updateObjectRoom(floorType, wallType, landscapeType);
         roomPreviewer.addPetIntoRoom(petData.figureString);
-    }, [ roomPreviewer, petItem ]);
+    }, [ roomPreviewer, selectedPet ]);
+
+    useEffect(() =>
+    {
+        if(!selectedPet || !isUnseen(UnseenItemCategory.PET, selectedPet.petData.id)) return;
+
+        removeUnseen(UnseenItemCategory.PET, selectedPet.petData.id);
+    }, [ selectedPet, isUnseen, removeUnseen ]);
+
+    useEffect(() =>
+    {
+        if(!isVisible) return;
+
+        const id = activate();
+
+        return () => deactivate(id);
+    }, [ isVisible, activate, deactivate ]);
+
+    useEffect(() =>
+    {
+        setIsVisible(true);
+
+        return () => setIsVisible(false);
+    }, []);
 
     if(!petItems || !petItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.pets.title') } desc={ LocalizeText('inventory.empty.pets.desc') } />;
 
@@ -72,18 +69,18 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
         <Grid>
             <Column size={ 7 } overflow="hidden">
                 <AutoGrid columnCount={ 5 }>
-                    { petItems && (petItems.length > 0) && petItems.map(item => <InventoryPetItemView key={ item.id } petItem={ item } />) }
+                    { petItems && (petItems.length > 0) && petItems.map(item => <InventoryPetItemView key={ item.petData.id } petItem={ item } />) }
                 </AutoGrid>
             </Column>
             <Column size={ 5 } overflow="auto">
                 <Column overflow="hidden" position="relative">
                     <LayoutRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
                 </Column>
-                { petItem &&
+                { selectedPet && selectedPet.petData &&
                     <Column grow justifyContent="between" gap={ 2 }>
-                        <Text grow truncate>{ petItem.petData.name }</Text>
+                        <Text grow truncate>{ selectedPet.petData.name }</Text>
                         { !!roomSession &&
-                            <Button variant="success" onClick={ event => attemptPetPlacement(petItem) }>
+                            <Button variant="success" onClick={ event => attemptPetPlacement(selectedPet) }>
                                 { LocalizeText('inventory.furni.placetoroom') }
                             </Button> }
                     </Column> }

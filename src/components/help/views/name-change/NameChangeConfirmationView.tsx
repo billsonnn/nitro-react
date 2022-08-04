@@ -1,16 +1,15 @@
 import { ChangeUserNameMessageComposer, UserNameChangeMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
-import { UseMessageEventHook } from '../../../../hooks';
+import { useMessageEvent } from '../../../../hooks';
 import { NameChangeLayoutViewProps } from './NameChangeView.types';
 
 export const NameChangeConfirmationView:FC<NameChangeLayoutViewProps> = props =>
 {
     const { username = '', onAction = null } = props;
-
     const [ isConfirming, setIsConfirming ] = useState<boolean>(false);
-
-    const onUserNameChangeMessageEvent = useCallback((event: UserNameChangeMessageEvent) =>
+    
+    useMessageEvent<UserNameChangeMessageEvent>(UserNameChangeMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -19,9 +18,7 @@ export const NameChangeConfirmationView:FC<NameChangeLayoutViewProps> = props =>
         if(parser.webId !== GetSessionDataManager().userId) return;
 
         onAction('close');
-    }, [ onAction ]);
-    
-    UseMessageEventHook(UserNameChangeMessageEvent, onUserNameChangeMessageEvent);
+    });
 
     const confirm = useCallback(() =>
     {

@@ -12,7 +12,7 @@ export const BadgesContainerView: FC<BadgesContainerViewProps> = props =>
 
     return (
         <>
-        { badges && (badges.length > 0) && badges.map((badge, index) =>
+            { badges && (badges.length > 0) && badges.map((badge, index) =>
             {
                 return (
                     <Column key={ badge } center>

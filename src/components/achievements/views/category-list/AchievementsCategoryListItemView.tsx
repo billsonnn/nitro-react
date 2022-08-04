@@ -1,44 +1,32 @@
-import { FC, useCallback, useMemo } from 'react';
-import { GetConfiguration, LocalizeText } from '../../../../api';
-import { LayoutGridItem, LayoutGridItemProps } from '../../../../common/layout/LayoutGridItem';
-import { LayoutImage } from '../../../../common/layout/LayoutImage';
-import { Text } from '../../../../common/Text';
-import { AchievementCategory } from '../../common/AchievementCategory';
+import { Dispatch, FC, PropsWithChildren, SetStateAction } from 'react';
+import { AchievementUtilities, IAchievementCategory, LocalizeText } from '../../../../api';
+import { LayoutBackgroundImage, LayoutGridItem, Text } from '../../../../common';
 
-export interface AchievementCategoryListItemViewProps extends LayoutGridItemProps
+interface AchievementCategoryListItemViewProps
 {
-    category: AchievementCategory;
+    category: IAchievementCategory;
+    selectedCategoryCode: string;
+    setSelectedCategoryCode: Dispatch<SetStateAction<string>>;
 }
 
-export const AchievementsCategoryListItemView: FC<AchievementCategoryListItemViewProps> = props =>
+export const AchievementsCategoryListItemView: FC<PropsWithChildren<AchievementCategoryListItemViewProps>> = props =>
 {
-    const { category = null, ...rest } = props;
+    const { category = null, selectedCategoryCode = null, setSelectedCategoryCode = null, children = null, ...rest } = props;
 
-    const progress = category.getProgress();
-    const maxProgress = category.getMaxProgress();
+    if(!category) return null;
 
-    const getCategoryImage = useMemo(() =>
-    {
-        const imageUrl = GetConfiguration<string>('achievements.images.url');
-
-        return imageUrl.replace('%image%', `achcategory_${ category.code }_${ ((progress > 0) ? 'active' : 'inactive') }`);
-    }, [ category, progress ]);
-
-    const getTotalUnseen = useCallback(() =>
-    {
-        let unseen = 0;
-
-        for(const achievement of category.achievements) unseen += achievement.unseen;
-
-        return unseen;
-    }, [ category ]);
+    const progress = AchievementUtilities.getAchievementCategoryProgress(category);
+    const maxProgress = AchievementUtilities.getAchievementCategoryMaxProgress(category);
+    const getCategoryImage = AchievementUtilities.getAchievementCategoryImageUrl(category, progress);
+    const getTotalUnseen = AchievementUtilities.getAchievementCategoryTotalUnseen(category);
 
     return (
-        <LayoutGridItem itemCount={ getTotalUnseen() } itemCountMinimum={ 0 } gap={ 1 } { ...rest }>
-            <Text fullWidth center className="small pt-1">{ LocalizeText(`quests.${ category.code }.name`) }</Text>
-            <LayoutImage position="relative" imageUrl={ getCategoryImage }>
+        <LayoutGridItem itemActive={ (selectedCategoryCode === category.code) } itemCount={ getTotalUnseen } itemCountMinimum={ 0 } gap={ 1 } onClick={ event => setSelectedCategoryCode(category.code) } { ...rest }>
+            <Text fullWidth center small className="pt-1">{ LocalizeText(`quests.${ category.code }.name`) }</Text>
+            <LayoutBackgroundImage position="relative" imageUrl={ getCategoryImage }>
                 <Text fullWidth center position="absolute" variant="white" style={ { fontSize: 12, bottom: 9 } }>{ progress } / { maxProgress }</Text>
-            </LayoutImage>
+            </LayoutBackgroundImage>
+            { children }
         </LayoutGridItem>
     );
 }

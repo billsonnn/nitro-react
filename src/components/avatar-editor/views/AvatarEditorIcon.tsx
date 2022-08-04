@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { Base, BaseProps } from '../../../common/Base';
+import { Base, BaseProps } from '../../../common';
 
 type AvatarIconType = 'male' | 'female' | 'clear' | 'sellable' | string;
 

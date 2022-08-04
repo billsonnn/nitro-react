@@ -1,6 +1,6 @@
 import { FC } from 'react';
+import { VALUE_KEY_DISLIKE, VALUE_KEY_LIKE } from '../../../../api';
 import { Base, Column, Flex, Text } from '../../../../common';
-import { VALUE_KEY_DISLIKE, VALUE_KEY_LIKE } from './common/VoteValue';
 
 interface WordQuizQuestionViewProps
 {

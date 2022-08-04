@@ -1,6 +1,7 @@
 .nitro-loading {
     position: relative;
     background: $primary;
+    z-index: 100;
 
     .connecting-duck {
         position: absolute;
@@ -14,44 +15,6 @@
         height: 127px;
         animation: 1.5s connecting-duck infinite step-end;
         transform: scale(0.5);
-
-        &.01 {
-            background-position: 0 0;
-        }
-
-        &.02 {
-            background-position: 0 -132px;
-            width: 280px;
-            height: 151px;
-        }
-
-        &.03 {
-            background-position: 0 -288px;
-            width: 326px;
-            height: 174px;
-        }
-
-        &.04 {
-            background-position: 0 -467px;
-        }
-
-        &.05 {
-            background-position: 0 -599px;
-            width: 280px;
-            height: 151px;
-        }
-
-        &.06 {
-            background-position: 0 -755px;
-            width: 326px;
-            height: 174px;
-        }
-
-        &.07 {
-            background-position: 0 -934px;
-            width: 190px;
-            height: 104px;
-        }
     }
 
     .nitro-logo {
@@ -59,34 +22,6 @@
         height: 65px;
         background: transparent url('https://assets.nitrodev.co/logos/react-loader.png') no-repeat center;
         z-index: 1;
-    }
-
-    .nitro-loading-bar {
-        border:1px solid white;
-        padding:3px;
-        height:30px;
-        border-radius: 8px;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-
-        &::before {
-            content:'';
-            position: absolute;
-            inset: 0;
-            margin:3px;
-            border-radius: 4px;
-            background:darken($primary,15);
-            z-index: 0;
-        }
-
-        .nitro-loading-bar-inner {
-            height:100%;
-            z-index: 4;
-            border-radius: 4px;
-            transition: all 1s;
-            background: repeating-linear-gradient($tertiary, $tertiary 50%, $quaternary 50%, $quaternary 100%);
-        }
     }
 }
 

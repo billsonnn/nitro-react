@@ -1,10 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC, KeyboardEvent, useCallback, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Button } from '../../../../common/Button';
-import { Flex } from '../../../../common/Flex';
-import { SearchFilterOptions } from '../../common/SearchFilterOptions';
-import { useNavigatorContext } from '../../NavigatorContext';
+import { FC, KeyboardEvent, useEffect, useState } from 'react';
+import { INavigatorSearchFilter, LocalizeText, SearchFilterOptions } from '../../../../api';
+import { Button, Flex } from '../../../../common';
+import { useNavigator } from '../../../../hooks';
 
 export interface NavigatorSearchViewProps
 {
@@ -16,11 +14,9 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
     const { sendSearch = null } = props;
     const [ searchFilterIndex, setSearchFilterIndex ] = useState(0);
     const [ searchValue, setSearchValue ] = useState('');
-    const [ lastSearchQuery, setLastSearchQuery ] = useState('');
-    const { navigatorState = null } = useNavigatorContext();
-    const { topLevelContext = null } = navigatorState;
+    const { topLevelContext = null, searchResult = null } = useNavigator();
 
-    const processSearch = useCallback(() =>
+    const processSearch = () =>
     {
         if(!topLevelContext) return;
 
@@ -30,11 +26,8 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
         const searchQuery = ((searchFilter.query ? (searchFilter.query + ':') : '') + searchValue);
 
-        if(lastSearchQuery === searchQuery) return;
-
-        setLastSearchQuery(searchQuery);
         sendSearch((searchQuery || ''), topLevelContext.code);
-    }, [ lastSearchQuery, searchFilterIndex, searchValue, topLevelContext, sendSearch ]);
+    }
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) =>
     {
@@ -42,6 +35,33 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
 
         processSearch();
     };
+
+    useEffect(() =>
+    {
+        if(!searchResult) return;
+
+        const split = searchResult.data.split(':');
+
+        let filter: INavigatorSearchFilter = null;
+        let value: string = '';
+
+        if(split.length >= 2)
+        {
+            const [ query, ...rest ] = split;
+
+            filter = SearchFilterOptions.find(option => (option.query === query));
+            value = rest.join(':');
+        }
+        else
+        {
+            value = searchResult.data;
+        }
+
+        if(!filter) filter = SearchFilterOptions[0];
+
+        setSearchFilterIndex(SearchFilterOptions.findIndex(option => (option === filter)));
+        setSearchValue(value);
+    }, [ searchResult ]);
 
     return (
         <Flex fullWidth gap={ 1 }>
@@ -54,8 +74,8 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
                 </select>
             </Flex>
             <Flex fullWidth gap={ 1 }>
-                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('navigator.filter.input.placeholder') } value={ searchValue }  onChange={ event => setSearchValue(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
-                <Button variant="primary" size="sm" onClick={ processSearch }>
+                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('navigator.filter.input.placeholder') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
+                <Button variant="primary" onClick={ processSearch }>
                     <FontAwesomeIcon icon="search" />
                 </Button>
             </Flex>

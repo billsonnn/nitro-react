@@ -1,11 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../../../api';
-import { Button } from '../../../../../../common/Button';
-import { Column } from '../../../../../../common/Column';
-import { Flex } from '../../../../../../common/Flex';
-import { Text } from '../../../../../../common/Text';
-import { IMarketplaceSearchOptions } from './common/IMarketplaceSearchOptions';
-import { MarketplaceSearchType } from './common/MarketplaceSearchType';
+import { IMarketplaceSearchOptions, LocalizeText, MarketplaceSearchType } from '../../../../../../api';
+import { Button, Column, Flex, Text } from '../../../../../../common';
 
 export interface SearchFormViewProps
 {
@@ -46,7 +41,7 @@ export const SearchFormView: FC<SearchFormViewProps> = props =>
         setSortType(sortType);
 
         if(searchType === MarketplaceSearchType.BY_ACTIVITY || MarketplaceSearchType.BY_VALUE === searchType) onSearch({ minPrice: -1, maxPrice: -1, query: '', type: sortType });
-    }, [onSearch, searchType, sortTypes]);
+    }, [ onSearch, searchType, sortTypes ]);
 
     return (
         <Column gap={ 1 }>
@@ -69,7 +64,7 @@ export const SearchFormView: FC<SearchFormViewProps> = props =>
                             <input className="form-control form-control-sm" type="number" min={ 0 } value={ max } onChange={ event => setMax(event.target.valueAsNumber) } />
                         </Flex>
                     </Flex>
-                    <Button variant="secondary" size="sm" className="mx-auto" onClick={ onClickSearch }>{ LocalizeText('generic.search') }</Button>
+                    <Button variant="secondary" className="mx-auto" onClick={ onClickSearch }>{ LocalizeText('generic.search') }</Button>
                 </> }
         </Column>
     );

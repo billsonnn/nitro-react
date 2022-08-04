@@ -1,8 +1,8 @@
-import { RoomObjectCategory } from '@nitrots/nitro-renderer/src';
+import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
+import { VALUE_KEY_DISLIKE } from '../../../../api';
 import { Base, BaseProps, Flex } from '../../../../common';
 import { ObjectLocationView } from '../object-location/ObjectLocationView';
-import { VALUE_KEY_DISLIKE } from './common/VoteValue';
 
 interface WordQuizVoteViewProps extends BaseProps<HTMLDivElement>
 {

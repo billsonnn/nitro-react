@@ -21,7 +21,7 @@ export const FriendsContainerView: FC<FriendsContainerViewProps> = props =>
             </Text>
             <Text bold small>{ LocalizeText('extendedprofile.relstatus') }</Text>
             <Column>
-                <RelationshipsContainerView relationships={relationships} />
+                <RelationshipsContainerView relationships={ relationships } />
             </Column>
         </Column>
     )
