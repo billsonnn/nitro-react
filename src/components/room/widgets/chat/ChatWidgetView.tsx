@@ -22,16 +22,17 @@ export const ChatWidgetView: FC<{}> = props =>
         {
             const collides = chatMessages[i];
 
-            if(!collides || (chat === collides) || (tempChats.indexOf(collides) >= 0) || ((collides.top - moved) >= (chat.top + chat.height))) continue;
+            if(!collides || (chat === collides) || (tempChats.indexOf(collides) >= 0) || (((collides.top + collides.height) - moved) > (chat.top + chat.height))) continue;
 
-            if(DoChatsOverlap(chat, collides, -moved, 4))
+            chat.skipMovement = true;
+
+            if(DoChatsOverlap(chat, collides, -moved, 0))
             {
                 const amount = Math.abs((collides.top + collides.height) - chat.top);
 
                 tempChats.push(collides);
 
                 collides.top -= amount;
-
                 collides.skipMovement = true;
 
                 checkOverlappingChats(collides, amount, tempChats);

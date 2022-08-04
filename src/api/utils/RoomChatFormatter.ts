@@ -1,6 +1,7 @@
 import * as joypixels from 'emoji-toolkit';
 
 const allowedColours: Map<string, string> = new Map();
+
 allowedColours.set('r', 'red');
 allowedColours.set('b', 'blue');
 allowedColours.set('g', 'green');
@@ -23,14 +24,13 @@ allowedColours.set('brown', 'brown');
 allowedColours.set('purple', 'purple');
 allowedColours.set('pink', 'pink');
 
-function encodeHTML(str: string)
+const encodeHTML = (str: string) =>
 {
-    return str.replace(/([\u00A0-\u9999<>&])(.|$)/g, function(full, char, next) 
+    return str.replace(/([\u00A0-\u9999<>&])(.|$)/g, (full, char, next) =>
     {
         if(char !== '&' || next !== '#')
         {
-            if(/[\u00A0-\u9999<>&]/.test(next))
-                next = '&#' + next.charCodeAt(0) + ';';
+            if(/[\u00A0-\u9999<>&]/.test(next)) next = '&#' + next.charCodeAt(0) + ';';
 
             return '&#' + char.charCodeAt(0) + ';' + next;
         }
@@ -39,12 +39,11 @@ function encodeHTML(str: string)
     });
 }
 
-
-export function RoomChatFormatter(content: string): string
+export const RoomChatFormatter = (content: string) =>
 {
     let result = '';
 
-    content = encodeHTML(content)
+    content = encodeHTML(content);
     content = (joypixels.shortnameToUnicode(content) as string)
 
     if(content.startsWith('@') && content.indexOf('@', 1) > -1)
