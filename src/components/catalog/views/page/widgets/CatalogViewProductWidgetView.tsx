@@ -17,6 +17,8 @@ export const CatalogViewProductWidgetView: FC<{}> = props =>
 
         if(!product) return;
 
+        roomPreviewer.reset(false);
+
         switch(product.productType)
         {
             case ProductTypeEnum.FLOOR: {
@@ -49,15 +51,12 @@ export const CatalogViewProductWidgetView: FC<{}> = props =>
                 switch(product.furnitureData.specialType)
                 {
                     case FurniCategory.FLOOR:
-                        roomPreviewer.reset(false);
                         roomPreviewer.updateObjectRoom(product.extraParam);
                         return;
                     case FurniCategory.WALL_PAPER:
-                        roomPreviewer.reset(false);
                         roomPreviewer.updateObjectRoom(null, product.extraParam);
                         return;
                     case FurniCategory.LANDSCAPE: {
-                        roomPreviewer.reset(false);
                         roomPreviewer.updateObjectRoom(null, null, product.extraParam);
 
                         const furniData = GetSessionDataManager().getWallItemDataByName('ads_twi_windw');
