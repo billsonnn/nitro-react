@@ -1,7 +1,8 @@
 import { FC } from 'react';
-import { ProductTypeEnum } from '../../../../../api';
+import { GetConfiguration, ProductTypeEnum } from '../../../../../api';
 import { Column, Flex, Grid, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
+import { CatalogHeaderView } from '../../catalog-header/CatalogHeaderView';
 import { CatalogAddOnBadgeWidgetView } from '../widgets/CatalogAddOnBadgeWidgetView';
 import { CatalogItemGridWidgetView } from '../widgets/CatalogItemGridWidgetView';
 import { CatalogLimitedItemWidgetView } from '../widgets/CatalogLimitedItemWidgetView';
@@ -14,20 +15,22 @@ import { CatalogLayoutProps } from './CatalogLayout.types';
 export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
 {
     const { page = null } = props;
-    const { currentOffer = null } = useCatalog();
+    const { currentOffer = null,currentPage } = useCatalog();
 
     return (
-        <Grid>
-            <Column size={ 7 } overflow="hidden">
-                <CatalogItemGridWidgetView />
-            </Column>
-            <Column center={ !currentOffer } size={ 5 } overflow="hidden">
-                { !currentOffer &&
+        <>
+            <Grid>
+                <Column size={ 7 } overflow="hidden">
+                    { GetConfiguration('catalog.headers') && <CatalogHeaderView image={ currentPage.localization.getImage(0) }/> }
+                    <CatalogItemGridWidgetView />
+                </Column>
+                <Column center={ !currentOffer } size={ 5 } overflow="hidden">
+                    { !currentOffer &&
                     <>
                         { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
                         <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
                     </> }
-                { currentOffer &&
+                    { currentOffer &&
                     <>
                         <Flex center overflow="hidden" style={ { height: 140 } }>
                             { (currentOffer.product.productType !== ProductTypeEnum.BADGE) &&
@@ -49,7 +52,8 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
                             <CatalogPurchaseWidgetView />
                         </Column>
                     </> }
-            </Column>
-        </Grid>
+                </Column>
+            </Grid>
+        </>
     );
 }
