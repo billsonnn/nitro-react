@@ -1,10 +1,7 @@
 import { GroupSavePreferencesComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { SendMessageComposer } from '../../../../api';
-import { LocalizeText } from '../../../../api/utils/LocalizeText';
+import { IGroupData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Column, Flex, HorizontalRule, Text } from '../../../../common';
-import { BatchUpdates } from '../../../../hooks';
-import { IGroupData } from '../../common/IGroupData';
 
 const STATES: string[] = [ 'regular', 'exclusive', 'private' ];
 
@@ -30,14 +27,14 @@ export const GroupTabSettingsView: FC<GroupTabSettingsViewProps> = props =>
         if(groupData.groupId <= 0)
         {
             setGroupData(prevValue =>
-                {
-                    const newValue = { ...prevValue };
+            {
+                const newValue = { ...prevValue };
 
-                    newValue.groupState = groupState;
-                    newValue.groupCanMembersDecorate = groupDecorate;
+                newValue.groupState = groupState;
+                newValue.groupCanMembersDecorate = groupDecorate;
 
-                    return newValue;
-                });
+                return newValue;
+            });
 
             return true;
         }
@@ -49,11 +46,8 @@ export const GroupTabSettingsView: FC<GroupTabSettingsViewProps> = props =>
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setGroupState(groupData.groupState);
-            setGroupDecorate(groupData.groupCanMembersDecorate);
-        });
+        setGroupState(groupData.groupState);
+        setGroupDecorate(groupData.groupCanMembersDecorate);
     }, [ groupData ]);
 
     useEffect(() =>
@@ -67,20 +61,20 @@ export const GroupTabSettingsView: FC<GroupTabSettingsViewProps> = props =>
         <Column overflow="auto">
             <Column>
                 { STATES.map((state, index) =>
-                    {
-                        return (
-                            <Flex key={ index } alignItems="center" gap={ 1 }>
-                                <input className="form-check-input" type="radio" name="groupState" checked={ (groupState === index) } onChange={ event => setGroupState(index) } />
-                                <Column gap={ 0 }>
-                                    <Flex gap={ 1 }>
-                                        <i className={ `icon icon-group-type-${ index }` } />
-                                        <Text bold>{ LocalizeText(`group.edit.settings.type.${ state }.label`) }</Text>
-                                    </Flex>
-                                    <Text>{ LocalizeText(`group.edit.settings.type.${ state }.help`) }</Text>
-                                </Column>
-                            </Flex>
-                        );
-                    }) }
+                {
+                    return (
+                        <Flex key={ index } alignItems="center" gap={ 1 }>
+                            <input className="form-check-input" type="radio" name="groupState" checked={ (groupState === index) } onChange={ event => setGroupState(index) } />
+                            <Column gap={ 0 }>
+                                <Flex gap={ 1 }>
+                                    <i className={ `icon icon-group-type-${ index }` } />
+                                    <Text bold>{ LocalizeText(`group.edit.settings.type.${ state }.label`) }</Text>
+                                </Flex>
+                                <Text>{ LocalizeText(`group.edit.settings.type.${ state }.help`) }</Text>
+                            </Column>
+                        </Flex>
+                    );
+                }) }
             </Column>
             <HorizontalRule />
             <Flex alignItems="center" gap={ 1 }>

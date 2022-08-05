@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { WiredFurniType } from '../../common/WiredFurniType';
+import { WiredFurniType } from '../../../../api';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
 
 export const WiredTriggerCollisionView: FC<{}> = props =>
 {
-    return <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ null } />;
+    return <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ false } save={ null } />;
 }

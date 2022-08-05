@@ -1,24 +1,16 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
-import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { FC, useEffect, useState } from 'react';
+import { LocalizeText, WiredDateToString, WiredFurniType } from '../../../../api';
+import { Column, Text } from '../../../../common';
+import { useWired } from '../../../../hooks';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 export const WiredConditionDateRangeView: FC<{}> = props =>
 {
     const [ startDate, setStartDate ] = useState('');
     const [ endDate, setEndDate ] = useState('');
-    const { trigger = null, setIntParams = null } = useWiredContext();
+    const { trigger = null, setIntParams = null } = useWired();
 
-    const dateToString = useCallback((date: Date) =>
-    {
-        return `${date.getFullYear()}/${('0' + (date.getMonth() + 1)).slice(-2)}/${('0' + date.getDate()).slice(-2)}${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}`;
-    }, []);
-
-    const save = useCallback(() =>
+    const save = () =>
     {
         let startDateMili = 0;
         let endDateMili = 0;
@@ -32,8 +24,8 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
             endDateMili = endDateInstance.getTime() / 1000;
         }
 
-        setIntParams([startDateMili, endDateMili]);
-    }, [ startDate, endDate, setIntParams ]);
+        setIntParams([ startDateMili, endDateMili ]);
+    }
 
     useEffect(() =>
     {
@@ -46,16 +38,13 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
 
             if(trigger.intData[1] > 0) endDate = new Date((trigger.intData[1] * 1000));
 
-            BatchUpdates(() =>
-            {
-                setStartDate(dateToString(startDate));
-                setEndDate(dateToString(endDate));
-            });
+            setStartDate(WiredDateToString(startDate));
+            setEndDate(WiredDateToString(endDate));
         }
-    }, [ trigger, dateToString ]);
+    }, [ trigger ]);
     
     return (
-        <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+        <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
             <Column gap={ 1 }>
                 <Text bold>{ LocalizeText('wiredfurni.params.startdate') }</Text>
                 <input type="text" className="form-control form-control-sm" value={ startDate } onChange={ (e) => setStartDate(e.target.value) } />

@@ -1,11 +1,9 @@
 import { ChatRecordData } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, Key, useCallback } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps } from 'react-virtualized';
-import { TryVisitRoom } from '../../../../api';
+import { CreateLinkEvent, TryVisitRoom } from '../../../../api';
 import { Base, Button, Column, Flex, Grid, Text } from '../../../../common';
-import { ModToolsOpenUserInfoEvent } from '../../../../events';
-import { ModToolsOpenRoomInfoEvent } from '../../../../events/mod-tools/ModToolsOpenRoomInfoEvent';
-import { DispatchUiEvent } from '../../../../hooks';
+import { useModTools } from '../../../../hooks';
 
 interface ChatlogViewProps
 {
@@ -15,6 +13,7 @@ interface ChatlogViewProps
 export const ChatlogView: FC<ChatlogViewProps> = props =>
 {
     const { records = null } = props;
+    const { openRoomInfo = null } = useModTools();
 
     const rowRenderer = (props: ListRowProps) =>
     {
@@ -30,7 +29,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
             >
                 <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
                     <Text className="g-col-2">{ chatlogEntry.timestamp }</Text>
-                    <Text className="g-col-3" bold underline pointer onClick={ event => DispatchUiEvent(new ModToolsOpenUserInfoEvent(chatlogEntry.userId)) }>{ chatlogEntry.userName }</Text>
+                    <Text className="g-col-3" bold underline pointer onClick={ event => CreateLinkEvent(`mod-tools/open-user-info/${ chatlogEntry.userId }`) }>{ chatlogEntry.userName }</Text>
                     <Text textBreak wrap className="g-col-7">{ chatlogEntry.message }</Text>
                 </Grid>
             </CellMeasurer>
@@ -80,7 +79,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                 { !isRoomInfo &&
                     <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
                         <Text className="g-col-2">{ chatlogEntry.timestamp }</Text>
-                        <Text className="g-col-3" bold underline pointer onClick={ event => DispatchUiEvent(new ModToolsOpenUserInfoEvent(chatlogEntry.userId)) }>{ chatlogEntry.userName }</Text>
+                        <Text className="g-col-3" bold underline pointer onClick={ event => CreateLinkEvent(`mod-tools/open-user-info/${ chatlogEntry.userId }`) }>{ chatlogEntry.userName }</Text>
                         <Text textBreak wrap className="g-col-7">{ chatlogEntry.message }</Text>
                     </Grid> }
             </CellMeasurer>
@@ -98,7 +97,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
         }
 
         return count;
-    }, [records]);
+    }, [ records ]);
 
     const RoomInfo = (props: { roomId: number, roomName: string, uniqueKey: Key, style: CSSProperties }) =>
     {
@@ -110,7 +109,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                 </Flex>
                 <Flex gap={ 1 }>
                     <Button onClick={ event => TryVisitRoom(props.roomId) }>Visit Room</Button>
-                    <Button onClick={ event => DispatchUiEvent(new ModToolsOpenRoomInfoEvent(props.roomId)) }>Room Tools</Button>
+                    <Button onClick={ event => openRoomInfo(props.roomId) }>Room Tools</Button>
                 </Flex>
             </Flex>
         );
@@ -124,7 +123,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
     return (
         <>
             { (records && (records.length === 1)) &&
-                <RoomInfo roomId={records[0].roomId} roomName={records[0].roomName} uniqueKey={ null } style={ {} } /> }
+                <RoomInfo roomId={ records[0].roomId } roomName={ records[0].roomName } uniqueKey={ null } style={ {} } /> }
             <Column fit gap={ 0 } overflow="hidden">
                 <Column gap={ 2 }>
                     <Grid gap={ 1 } className="text-black fw-bold border-bottom pb-1">
@@ -137,20 +136,20 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                     <Column className="log-container striped-children" overflow="auto" gap={ 0 }>
                         <AutoSizer defaultWidth={ 400 } defaultHeight={ 200 }>
                             { ({ height, width }) => 
-                                {
-                                    cache.clearAll();
+                            {
+                                cache.clearAll();
 
-                                    return (
-                                        <List
-                                            width={ width }
-                                            height={ height }
-                                            rowCount={ (records.length > 1) ? getNumRowsForAdvanced() : records[0].chatlog.length }
-                                            rowHeight={ cache.rowHeight }
-                                            className={ 'log-entry-container' }
-                                            rowRenderer={ (records.length > 1) ? advancedRowRenderer : rowRenderer }
-                                            deferredMeasurementCache={ cache } />
-                                    );
-                                } }
+                                return (
+                                    <List
+                                        width={ width }
+                                        height={ height }
+                                        rowCount={ (records.length > 1) ? getNumRowsForAdvanced() : records[0].chatlog.length }
+                                        rowHeight={ cache.rowHeight }
+                                        className={ 'log-entry-container' }
+                                        rowRenderer={ (records.length > 1) ? advancedRowRenderer : rowRenderer }
+                                        deferredMeasurementCache={ cache } />
+                                );
+                            } }
                         </AutoSizer>
                     </Column> }
             </Column>

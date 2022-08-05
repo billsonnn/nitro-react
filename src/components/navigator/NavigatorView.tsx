@@ -1,302 +1,230 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorInitComposer, NavigatorSearchComposer, RoomDataParser, RoomSessionEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { AddEventLinkTracker, CreateLinkEvent, GoToDesktop, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
-import { Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { NavigatorEvent, UpdateDoorStateEvent } from '../../events';
-import { BatchUpdates, UseMountEffect, UseRoomSessionManagerEvent, UseUiEvent } from '../../hooks';
-import { NavigatorContextProvider } from './NavigatorContext';
-import { NavigatorMessageHandler } from './NavigatorMessageHandler';
-import { initialNavigator, NavigatorActions, NavigatorReducer } from './reducers/NavigatorReducer';
-import { NavigatorRoomCreatorView } from './views/creator/NavigatorRoomCreatorView';
-import { NavigatorRoomDoorbellView } from './views/room-doorbell/NavigatorRoomDoorbellView';
-import { NavigatorRoomInfoView } from './views/room-info/NavigatorRoomInfoView';
-import { NavigatorRoomLinkView } from './views/room-link/NavigatorRoomLinkView';
-import { NavigatorRoomPasswordView } from './views/room-password/NavigatorRoomPasswordView';
+import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorInitComposer, NavigatorSearchComposer, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
+import { Base, Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
+import { useNavigator, useRoomSessionManagerEvent } from '../../hooks';
+import { NavigatorDoorStateView } from './views/NavigatorDoorStateView';
+import { NavigatorRoomCreatorView } from './views/NavigatorRoomCreatorView';
+import { NavigatorRoomInfoView } from './views/NavigatorRoomInfoView';
+import { NavigatorRoomLinkView } from './views/NavigatorRoomLinkView';
 import { NavigatorRoomSettingsView } from './views/room-settings/NavigatorRoomSettingsView';
-import { NavigatorSearchResultView } from './views/search-result/NavigatorSearchResultView';
-import { LAST_SEARCH, NavigatorSearchView } from './views/search/NavigatorSearchView';
+import { NavigatorSearchResultView } from './views/search/NavigatorSearchResultView';
+import { NavigatorSearchView } from './views/search/NavigatorSearchView';
 
 export const NavigatorView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
+    const [ isReady, setIsReady ] = useState(false);
     const [ isCreatorOpen, setCreatorOpen ] = useState(false);
     const [ isRoomInfoOpen, setRoomInfoOpen ] = useState(false);
     const [ isRoomLinkOpen, setRoomLinkOpen ] = useState(false);
-    const [ pendingDoorState, setPendingDoorState ] = useState<{ roomData: RoomDataParser, state: string }>(null);
-    const [ navigatorState, dispatchNavigatorState ] = useReducer(NavigatorReducer, initialNavigator);
-    const { needsNavigatorUpdate = true, topLevelContext = null, topLevelContexts = null, homeRoomId } = navigatorState;
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ needsInit, setNeedsInit ] = useState(true);
+    const [ needsSearch, setNeedsSearch ] = useState(false);
+    const { searchResult = null, topLevelContext = null, topLevelContexts = null, navigatorData = null } = useNavigator();
+    const pendingSearch = useRef<{ value: string, code: string }>(null);
 
-    const onNavigatorEvent = useCallback((event: NavigatorEvent) =>
+    useRoomSessionManagerEvent<RoomSessionEvent>(RoomSessionEvent.CREATED, event =>
     {
-        switch(event.type)
-        {
-            case NavigatorEvent.SHOW_NAVIGATOR:
-                setIsVisible(true);
-                return;
-            case NavigatorEvent.HIDE_NAVIGATOR:
-                setIsVisible(false);
-                return;
-            case NavigatorEvent.TOGGLE_NAVIGATOR:
-                setIsVisible(value => !value);
-                return;
-            case NavigatorEvent.TOGGLE_ROOM_INFO:
-                setRoomInfoOpen(value => !value);
-                return;
-            case NavigatorEvent.TOGGLE_ROOM_LINK:
-                setRoomLinkOpen(value => !value);
-                return;
-            case NavigatorEvent.SHOW_ROOM_CREATOR:
-                setIsVisible(true);
-                setCreatorOpen(true);
-                return;
-        }
-    }, []);
-
-    UseUiEvent(NavigatorEvent.SHOW_NAVIGATOR, onNavigatorEvent);
-    UseUiEvent(NavigatorEvent.HIDE_NAVIGATOR, onNavigatorEvent);
-    UseUiEvent(NavigatorEvent.TOGGLE_NAVIGATOR, onNavigatorEvent);
-    UseUiEvent(NavigatorEvent.TOGGLE_ROOM_INFO, onNavigatorEvent);
-    UseUiEvent(NavigatorEvent.TOGGLE_ROOM_LINK, onNavigatorEvent);
-    UseUiEvent(NavigatorEvent.SHOW_ROOM_CREATOR, onNavigatorEvent);
-
-    const onUpdateDoorStateEvent = useCallback((event: UpdateDoorStateEvent) =>
-    {
-        switch(event.type)
-        {
-            case UpdateDoorStateEvent.START_DOORBELL:
-                setPendingDoorState({ roomData: event.roomData, state: event.type });
-                return;
-            case UpdateDoorStateEvent.START_PASSWORD:
-                setPendingDoorState({ roomData: event.roomData, state: event.type });
-                return;
-            case UpdateDoorStateEvent.STATE_WAITING:
-                setPendingDoorState(prevValue =>
-                    {
-                        return { roomData: prevValue.roomData, state: event.type }
-                    });
-                return;
-            case UpdateDoorStateEvent.STATE_NO_ANSWER:
-                setPendingDoorState(prevValue =>
-                    {
-                        if(prevValue.state === UpdateDoorStateEvent.STATE_WAITING) GoToDesktop();
-
-                        return { roomData: prevValue.roomData, state: event.type }
-                    });
-                return;
-            case UpdateDoorStateEvent.STATE_WRONG_PASSWORD:
-                setPendingDoorState(prevValue =>
-                    {
-                        return { roomData: prevValue.roomData, state: event.type }
-                    });
-                return;
-            case UpdateDoorStateEvent.STATE_ACCEPTED:
-                setPendingDoorState(null);
-                return;
-        }
-    }, []);
-
-    UseUiEvent(UpdateDoorStateEvent.START_DOORBELL, onUpdateDoorStateEvent);
-    UseUiEvent(UpdateDoorStateEvent.START_PASSWORD, onUpdateDoorStateEvent);
-    UseUiEvent(UpdateDoorStateEvent.STATE_WAITING, onUpdateDoorStateEvent);
-    UseUiEvent(UpdateDoorStateEvent.STATE_NO_ANSWER, onUpdateDoorStateEvent);
-    UseUiEvent(UpdateDoorStateEvent.STATE_WRONG_PASSWORD, onUpdateDoorStateEvent);
-    UseUiEvent(UpdateDoorStateEvent.STATE_ACCEPTED, onUpdateDoorStateEvent);
-
-    const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
-    {
-        switch(event.type)
-        {
-            case RoomSessionEvent.CREATED:
-                setIsVisible(false);
-                setCreatorOpen(false);
-                return;
-        }
-    }, []);
-
-    UseRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
+        setIsVisible(false);
+        setCreatorOpen(false);
+    });
 
     const sendSearch = useCallback((searchValue: string, contextCode: string) =>
     {
         setCreatorOpen(false);
+
         SendMessageComposer(new NavigatorSearchComposer(contextCode, searchValue));
+
+        setIsLoading(true);
     }, []);
 
-    const goToHomeRoom = useCallback(() =>
+    const reloadCurrentSearch = useCallback(() =>
     {
-        if(homeRoomId <= 0) return;
-
-        TryVisitRoom(homeRoomId);
-    }, [ homeRoomId ]);
-
-    const linkReceived = useCallback((url: string) =>
-    {
-        const parts = url.split('/');
-
-        if(parts.length < 2) return;
-
-        switch(parts[1])
+        if(!isReady)
         {
-            case 'goto':
-                if(parts.length > 2)
-                {
-                    switch(parts[2])
-                    {
-                        case 'home':
-                            goToHomeRoom();
-                            break;
-                        default: {
-                            const roomId = parseInt(parts[2]);
+            setNeedsSearch(true);
 
-                            TryVisitRoom(roomId);
-                        }
-                    }
-                }
-                return;
-            case 'create':
-                BatchUpdates(() =>
-                {
-                    setIsVisible(true);
-                    setCreatorOpen(true);
-                });
-                return;
-            case 'search':
-                if(parts.length > 2)
-                {
-                    const topLevelContextCode = parts[2];
-
-                    let searchValue = '';
-
-                    if(parts.length > 3) searchValue = parts[3];
-
-                    setIsVisible(true);
-                    sendSearch(searchValue, topLevelContextCode);
-                }
-                return;
-        } 
-    }, [ goToHomeRoom, sendSearch ]);
-
-    const closePendingDoorState = useCallback((state: string) =>
-    {
-        if(state !== null)
-        {
-            setPendingDoorState(prevValue =>
-                {
-                    return { roomData: prevValue.roomData, state };
-                });
+            return;
         }
-        else setPendingDoorState(null);
-    }, []);
+
+        if(pendingSearch.current)
+        {
+            sendSearch(pendingSearch.current.value, pendingSearch.current.code);
+
+            pendingSearch.current = null;
+
+            return;
+        }
+
+        if(searchResult)
+        {
+            sendSearch(searchResult.data, searchResult.code);
+
+            return;
+        }
+
+        if(!topLevelContext) return;
+
+        sendSearch('', topLevelContext.code);
+    }, [ isReady, searchResult, topLevelContext, sendSearch ]);
 
     useEffect(() =>
     {
         const linkTracker: ILinkEventTracker = {
-            linkReceived,
+            linkReceived: (url: string) =>
+            {
+                const parts = url.split('/');
+        
+                if(parts.length < 2) return;
+        
+                switch(parts[1])
+                {
+                    case 'show': {
+                        setIsVisible(true);
+                        setNeedsSearch(true);
+                        return;
+                    }
+                    case 'hide':
+                        setIsVisible(false);
+                        return;
+                    case 'toggle': {
+                        if(isVisible)
+                        {
+                            setIsVisible(false);
+        
+                            return;
+                        }
+        
+                        setIsVisible(true);
+                        setNeedsSearch(true);
+                        return;
+                    }
+                    case 'toggle-room-info':
+                        setRoomInfoOpen(value => !value);
+                        return;
+                    case 'toggle-room-link':
+                        setRoomLinkOpen(value => !value);
+                        return;
+                    case 'goto':
+                        if(parts.length <= 2) return;
+        
+                        switch(parts[2])
+                        {
+                            case 'home':
+                                if(navigatorData.homeRoomId <= 0) return;
+        
+                                TryVisitRoom(navigatorData.homeRoomId);
+                                break;
+                            default: {
+                                const roomId = parseInt(parts[2]);
+        
+                                TryVisitRoom(roomId);
+                            }
+                        }
+                        return;
+                    case 'create':
+                        setIsVisible(true);
+                        setCreatorOpen(true);
+                        return;
+                    case 'search':
+                        if(parts.length > 2)
+                        {
+                            const topLevelContextCode = parts[2];
+        
+                            let searchValue = '';
+        
+                            if(parts.length > 3) searchValue = parts[3];
+        
+                            pendingSearch.current = { value: searchValue, code: topLevelContextCode };
+        
+                            setIsVisible(true);
+                            setNeedsSearch(true);
+                        }
+                        return;
+                }
+            },
             eventUrlPrefix: 'navigator/'
         };
 
         AddEventLinkTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
-    }, [ linkReceived]);
-
-    const enterRoomWebRequest = useCallback((k: string, _arg_2:boolean=false, _arg_3:string=null) =>
-    {
-        SendMessageComposer(new ConvertGlobalRoomIdMessageComposer(k));
-    }, []);
-
-    UseMountEffect(() =>
-    {
-        LegacyExternalInterface.addCallback(HabboWebTools.OPENROOM, enterRoomWebRequest);
-    });
+    }, [ isVisible, navigatorData ]);
 
     useEffect(() =>
     {
-        if(!needsNavigatorUpdate) return;
-        
-        dispatchNavigatorState({
-            type: NavigatorActions.SET_NEEDS_UPDATE,
-            payload: {
-                flag: false
-            }
-        });
+        if(!searchResult) return;
+
+        setIsLoading(false);
+    }, [ searchResult ]);
+
+    useEffect(() =>
+    {
+        if(!isVisible || !isReady || !needsSearch) return;
+
+        reloadCurrentSearch();
+
+        setNeedsSearch(false);
+    }, [ isVisible, isReady, needsSearch, reloadCurrentSearch ]);
+
+    useEffect(() =>
+    {
+        if(isReady || !topLevelContext) return;
+
+        setIsReady(true);
+    }, [ isReady, topLevelContext ]);
+
+    useEffect(() =>
+    {
+        if(!isVisible || !needsInit) return;
 
         SendMessageComposer(new NavigatorInitComposer());
-    }, [ needsNavigatorUpdate ]);
+
+        setNeedsInit(false);
+    }, [ isVisible, needsInit ]);
 
     useEffect(() =>
     {
-        if(!isVisible || !topLevelContext) return;
-
-        sendSearch('', topLevelContext.code);
-    }, [isVisible, sendSearch, topLevelContext])
-
-    useEffect(() =>
-    {
-        if(!topLevelContexts || !topLevelContexts.length) return;
-
-        sendSearch('', topLevelContexts[0].code);
-    }, [ topLevelContexts, sendSearch ]);
-
-    useEffect(() =>
-    {
-        if(!isVisible || !LAST_SEARCH || !LAST_SEARCH.length) return;
-
-        CreateLinkEvent(`navigator/search/${ LAST_SEARCH }`);
-    }, [ isVisible ]);
-
-    const getRoomDoorState = useMemo(() =>
-    {
-        if(!pendingDoorState) return null;
-
-        switch(pendingDoorState.state)
-        {
-            case UpdateDoorStateEvent.START_DOORBELL:
-            case UpdateDoorStateEvent.STATE_WAITING:
-            case UpdateDoorStateEvent.STATE_NO_ANSWER:
-                return <NavigatorRoomDoorbellView roomData={ pendingDoorState.roomData } state={ pendingDoorState.state } onClose={ closePendingDoorState } />;
-            case UpdateDoorStateEvent.START_PASSWORD:
-            case UpdateDoorStateEvent.STATE_WRONG_PASSWORD:
-                return <NavigatorRoomPasswordView roomData={ pendingDoorState.roomData } state={ pendingDoorState.state } onClose={ closePendingDoorState } />;
-        }
-
-        return null;
-    }, [ pendingDoorState, closePendingDoorState ]);
+        LegacyExternalInterface.addCallback(HabboWebTools.OPENROOM, (k: string, _arg_2: boolean = false, _arg_3: string = null) => SendMessageComposer(new ConvertGlobalRoomIdMessageComposer(k)));
+    }, []);
 
     return (
-        <NavigatorContextProvider value={ { navigatorState, dispatchNavigatorState } }>
-            <NavigatorMessageHandler />
-            { getRoomDoorState }
+        <>
             { isVisible &&
                 <NitroCardView uniqueKey="navigator" className="nitro-navigator">
                     <NitroCardHeaderView headerText={ LocalizeText(isCreatorOpen ? 'navigator.createroom.title' : 'navigator.title') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardTabsView>
                         { topLevelContexts && (topLevelContexts.length > 0) && topLevelContexts.map((context, index) =>
-                            {
-                                return (
-                                    <NitroCardTabsItemView key={ index } isActive={ ((topLevelContext === context) && !isCreatorOpen) } onClick={ event => sendSearch('', context.code) }>
-                                        { LocalizeText(('navigator.toplevelview.' + context.code)) }
-                                    </NitroCardTabsItemView>
-                                );
-                            }) }
+                        {
+                            return (
+                                <NitroCardTabsItemView key={ index } isActive={ ((topLevelContext === context) && !isCreatorOpen) } onClick={ event => sendSearch('', context.code) }>
+                                    { LocalizeText(('navigator.toplevelview.' + context.code)) }
+                                </NitroCardTabsItemView>
+                            );
+                        }) }
                         <NitroCardTabsItemView isActive={ isCreatorOpen } onClick={ event => setCreatorOpen(true) }>
                             <FontAwesomeIcon icon="plus" />
                         </NitroCardTabsItemView>
                     </NitroCardTabsView>
-                    <NitroCardContentView>
+                    <NitroCardContentView position="relative">
+                        { isLoading &&
+                            <Base fit position="absolute" className="top-0 start-0 z-index-1 bg-muted opacity-0-5" /> }
                         { !isCreatorOpen &&
                             <>
                                 <NavigatorSearchView sendSearch={ sendSearch } />
                                 <Column overflow="auto">
-                                    { (navigatorState.searchResult && navigatorState.searchResult.results.map((result, index) => <NavigatorSearchResultView key={ index } searchResult={ result } />)) }
+                                    { (searchResult && searchResult.results.map((result, index) => <NavigatorSearchResultView key={ index } searchResult={ result } />)) }
                                 </Column>
                             </> }
                         { isCreatorOpen && <NavigatorRoomCreatorView /> }
                     </NitroCardContentView>
                 </NitroCardView> }
+            <NavigatorDoorStateView />
             { isRoomInfoOpen && <NavigatorRoomInfoView onCloseClick={ () => setRoomInfoOpen(false) } /> }
             { isRoomLinkOpen && <NavigatorRoomLinkView onCloseClick={ () => setRoomLinkOpen(false) } /> }
             <NavigatorRoomSettingsView />
-        </NavigatorContextProvider>
+        </>
     );
 }

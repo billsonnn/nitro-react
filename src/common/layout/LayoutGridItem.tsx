@@ -49,14 +49,14 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
     {
         let newStyle = { ...style };
 
-        if(itemImage) newStyle.backgroundImage = `url(${ itemImage })`;
+        if(itemImage && !(itemUniqueSoldout || (itemUniqueNumber > 0))) newStyle.backgroundImage = `url(${ itemImage })`;
 
         if(itemColor) newStyle.backgroundColor = itemColor;
 
         if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [ style, itemImage, itemColor ]);
+    }, [ style, itemImage, itemColor, itemUniqueSoldout, itemUniqueNumber ]);
 
     return (
         <Column center={ center } pointer position={ position } overflow={ overflow } column={ column } classNames={ getClassNames } style={ getStyle } { ...rest }>

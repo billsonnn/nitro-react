@@ -1,13 +1,11 @@
 import { FC, useState } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../api';
+import { CalendarItemState, GetSessionDataManager, ICalendarItem, LocalizeText } from '../../api';
 import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { CalendarItemView } from './CalendarItemView';
-import { CalendarItemState } from './common/CalendarItemState';
-import { ICalendarItem } from './common/ICalendarItem';
 
 interface CalendarViewProps
 {
-    close(): void;
+    onClose(): void;
     openPackage(id: number, asStaff: boolean): void;
     receivedProducts: Map<number, ICalendarItem>;
     campaignName: string;
@@ -21,7 +19,7 @@ const TOTAL_SHOWN_ITEMS = 5;
 
 export const CalendarView: FC<CalendarViewProps> = props =>
 {
-    const { close = null, campaignName = null, currentDay = null, numDays = null, missedDays = null, openedDays = null, openPackage = null, receivedProducts = null } = props;
+    const { onClose = null, campaignName = null, currentDay = null, numDays = null, missedDays = null, openedDays = null, openPackage = null, receivedProducts = null } = props;
     const [ selectedDay, setSelectedDay ] = useState(currentDay);
     const [ index, setIndex ] = useState(Math.max(0, (selectedDay - 1)));
 
@@ -99,14 +97,14 @@ export const CalendarView: FC<CalendarViewProps> = props =>
 
     return (
         <NitroCardView className="nitro-campaign-calendar" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText(`campaign.calendar.${ campaignName }.title`) } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText(`campaign.calendar.${ campaignName }.title`) } onCloseClick={ onClose } />
             <NitroCardContentView>
                 <Grid fullHeight={ false } justifyContent="between" alignItems="center">
                     <Column size={ 1 } />
                     <Column size={ 10 }>
                         <Flex justifyContent="between" alignItems="center" gap={ 1 }>
                             <Column gap={ 1 }>
-                                <Text fontSize={ 3 }>{ LocalizeText('campaign.calendar.heading.day', ['number'], [(selectedDay + 1).toString()]) }</Text>
+                                <Text fontSize={ 3 }>{ LocalizeText('campaign.calendar.heading.day', [ 'number' ], [ (selectedDay + 1).toString() ]) }</Text>
                                 <Text>{ dayMessage(selectedDay) }</Text>
                             </Column>
                             <div>
@@ -123,16 +121,16 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                     </Flex>
                     <Column center fullWidth>
                         <Grid fit columnCount={ TOTAL_SHOWN_ITEMS } gap={ 1 }>
-                            { [...Array(TOTAL_SHOWN_ITEMS)].map((e, i) =>
-                                {
-                                    const day = (index + i);
+                            { [ ...Array(TOTAL_SHOWN_ITEMS) ].map((e, i) =>
+                            {
+                                const day = (index + i);
                                     
-                                    return (
-                                        <Column key={ i } overflow="hidden">
-                                            <CalendarItemView itemId={ day } state={ getDayState(day) } active={ (selectedDay === day) } product={ receivedProducts.has(day) ? receivedProducts.get(day) : null } onClick={ onClickItem } />
-                                        </Column>
-                                    );
-                                }) }
+                                return (
+                                    <Column key={ i } overflow="hidden">
+                                        <CalendarItemView itemId={ day } state={ getDayState(day) } active={ (selectedDay === day) } product={ receivedProducts.has(day) ? receivedProducts.get(day) : null } onClick={ onClickItem } />
+                                    </Column>
+                                );
+                            }) }
                         </Grid>
                     </Column>
                     <Flex center>

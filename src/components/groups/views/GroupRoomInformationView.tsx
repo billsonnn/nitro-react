@@ -1,35 +1,30 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DesktopViewEvent, GetGuestRoomResultEvent, GroupInformationComposer, GroupInformationEvent, GroupInformationParser, GroupRemoveMemberComposer, HabboGroupDeactivatedMessageEvent, RoomEntryInfoMessageEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
-import { GetGroupInformation, GetGroupManager, GetSessionDataManager, LocalizeText, NotificationUtilities, SendMessageComposer, TryJoinGroup } from '../../../api';
+import { FC, useState } from 'react';
+import { GetGroupInformation, GetGroupManager, GetSessionDataManager, GroupMembershipType, GroupType, LocalizeText, SendMessageComposer, TryJoinGroup } from '../../../api';
 import { Base, Button, Column, Flex, LayoutBadgeImageView, Text } from '../../../common';
-import { UseMessageEventHook } from '../../../hooks';
-import { GroupMembershipType } from '../common/GroupMembershipType';
-import { GroupType } from '../common/GroupType';
+import { useMessageEvent, useNotification } from '../../../hooks';
 
 export const GroupRoomInformationView: FC<{}> = props =>
 {
     const [ expectedGroupId, setExpectedGroupId ] = useState<number>(0);
     const [ groupInformation, setGroupInformation ] = useState<GroupInformationParser>(null);
     const [ isOpen, setIsOpen ] = useState<boolean>(true);
+    const { showConfirm = null } = useNotification();
 
-    const onDesktopViewEvent = useCallback((event: DesktopViewEvent) =>
+    useMessageEvent<DesktopViewEvent>(DesktopViewEvent, event =>
     {
         setExpectedGroupId(0);
         setGroupInformation(null);
-    }, []);
+    });
 
-    UseMessageEventHook(DesktopViewEvent, onDesktopViewEvent);
-
-    const onRoomEntryInfoMessageEvent = useCallback((event: RoomEntryInfoMessageEvent) =>
+    useMessageEvent<RoomEntryInfoMessageEvent>(RoomEntryInfoMessageEvent, event =>
     {
         setExpectedGroupId(0);
         setGroupInformation(null);
-    }, []);
+    });
 
-    UseMessageEventHook(RoomEntryInfoMessageEvent, onRoomEntryInfoMessageEvent);
-
-    const onGetGuestRoomResultEvent = useCallback((event: GetGuestRoomResultEvent) =>
+    useMessageEvent<GetGuestRoomResultEvent>(GetGuestRoomResultEvent, event =>
     {
         const parser = event.getParser();
 
@@ -45,11 +40,9 @@ export const GroupRoomInformationView: FC<{}> = props =>
             setExpectedGroupId(0);
             setGroupInformation(null);
         }
-    }, []);
+    });
 
-    UseMessageEventHook(GetGuestRoomResultEvent, onGetGuestRoomResultEvent);
-
-    const onHabboGroupDeactivatedMessageEvent = useCallback((event: HabboGroupDeactivatedMessageEvent) =>
+    useMessageEvent<HabboGroupDeactivatedMessageEvent>(HabboGroupDeactivatedMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -57,27 +50,23 @@ export const GroupRoomInformationView: FC<{}> = props =>
 
         setExpectedGroupId(0);
         setGroupInformation(null);
-    }, [ expectedGroupId, groupInformation ]);
+    });
 
-    UseMessageEventHook(HabboGroupDeactivatedMessageEvent, onHabboGroupDeactivatedMessageEvent);
-
-    const onGroupInformationEvent = useCallback((event: GroupInformationEvent) =>
+    useMessageEvent<GroupInformationEvent>(GroupInformationEvent, event =>
     {
         const parser = event.getParser();
 
         if(parser.id !== expectedGroupId) return;
 
         setGroupInformation(parser);
-    }, [ expectedGroupId ]);
-
-    UseMessageEventHook(GroupInformationEvent, onGroupInformationEvent);
+    });
 
     const leaveGroup = () =>
     {
-        NotificationUtilities.confirm(LocalizeText('group.leaveconfirm.desc'), () =>
-            {
-                SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
-            }, null);
+        showConfirm(LocalizeText('group.leaveconfirm.desc'), () =>
+        {
+            SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
+        }, null);
     }
 
     const isRealOwner = (groupInformation && (groupInformation.ownerName === GetSessionDataManager().userName));
@@ -134,7 +123,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
                             <Button fullWidth variant="success" disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) } onClick={ handleButtonClick }>
                                 { LocalizeText(getButtonText()) }
                             </Button>
-                            }
+                        }
                     </> }
             </Column>
         </Base>

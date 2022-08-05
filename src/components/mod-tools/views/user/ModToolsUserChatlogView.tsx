@@ -1,8 +1,8 @@
 import { ChatRecordData, GetUserChatlogMessageComposer, UserChatlogEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../api';
 import { DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../../hooks';
+import { useMessageEvent } from '../../../../hooks';
 import { ChatlogView } from '../chatlog/ChatlogView';
 
 interface ModToolsUserChatlogViewProps
@@ -16,21 +16,16 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
     const { userId = null, onCloseClick = null } = props;
     const [ userChatlog, setUserChatlog ] = useState<ChatRecordData[]>(null);
     const [ username, setUsername ] = useState<string>(null);
-    
-    const onModtoolUserChatlogEvent = useCallback((event: UserChatlogEvent) =>
+
+    useMessageEvent<UserChatlogEvent>(UserChatlogEvent, event =>
     {
         const parser = event.getParser();
 
         if(!parser || parser.data.userId !== userId) return;
 
-        BatchUpdates(() =>
-        {
-            setUsername(parser.data.username);
-            setUserChatlog(parser.data.roomChatlogs);
-        });
-    }, [ userId ]);
-
-    UseMessageEventHook(UserChatlogEvent, onModtoolUserChatlogEvent);
+        setUsername(parser.data.username);
+        setUserChatlog(parser.data.roomChatlogs);
+    });
 
     useEffect(() =>
     {
@@ -38,11 +33,11 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
     }, [ userId ]);
 
     return (
-        <NitroCardView className="nitro-mod-tools-chatlog" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT}>
+        <NitroCardView className="nitro-mod-tools-chatlog" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
             <NitroCardHeaderView headerText={ `User Chatlog: ${ username || '' }` } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black h-100">
                 { userChatlog &&
-                    <ChatlogView records={userChatlog} /> }
+                    <ChatlogView records={ userChatlog } /> }
             </NitroCardContentView>
         </NitroCardView>
     );

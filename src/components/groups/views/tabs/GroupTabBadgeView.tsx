@@ -1,10 +1,8 @@
 import { GroupSaveBadgeComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { SendMessageComposer } from '../../../../api';
+import { GroupBadgePart, IGroupData, SendMessageComposer } from '../../../../api';
 import { Column, Flex, Grid, LayoutBadgeImageView } from '../../../../common';
-import { GroupBadgePart } from '../../common/GroupBadgePart';
-import { IGroupData } from '../../common/IGroupData';
-import { useGroupsContext } from '../../GroupsContext';
+import { useGroup } from '../../../../hooks';
 import { GroupBadgeCreatorView } from '../GroupBadgeCreatorView';
 
 interface GroupTabBadgeViewProps
@@ -19,7 +17,7 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
 {
     const { groupData = null, setGroupData = null, setCloseAction = null, skipDefault = null } = props;
     const [ badgeParts, setBadgeParts ] = useState<GroupBadgePart[]>(null);
-    const { groupCustomize = null } = useGroupsContext();
+    const { groupCustomize = null } = useGroup();
 
     const getModifiedBadgeCode = () =>
     {
@@ -41,13 +39,13 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
         if(groupData.groupId <= 0)
         {
             setGroupData(prevValue =>
-                {
-                    const newValue = { ...prevValue };
+            {
+                const newValue = { ...prevValue };
 
-                    newValue.groupBadgeParts = badgeParts;
+                newValue.groupBadgeParts = badgeParts;
 
-                    return newValue;
-                });
+                return newValue;
+            });
 
             return true;
         }
@@ -81,11 +79,11 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
         ];
 
         setGroupData(prevValue =>
-            {
-                const groupBadgeParts = badgeParts;
+        {
+            const groupBadgeParts = badgeParts;
 
-                return { ...prevValue, groupBadgeParts };
-            });
+            return { ...prevValue, groupBadgeParts };
+        });
     }, [ groupData.groupBadgeParts, groupCustomize, setGroupData ]);
 
     useEffect(() =>

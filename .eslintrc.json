@@ -1,0 +1,67 @@
+{
+    "root": true,
+    "settings": {
+        "react": {
+            "pragma": "React",
+            "version": "18.0.0"
+        }
+    },
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "plugin:react/jsx-runtime",
+        "plugin:react-hooks/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "linebreak-style": [ "off" ],
+        "quotes": [ "error", "single" ],
+        "@typescript-eslint/indent": [ "error", 4, { "SwitchCase": 1 } ],
+        "array-bracket-spacing": [ "error", "always" ],
+        "brace-style": [ "error", "allman" ],
+        "template-curly-spacing": [ "error", "always" ],
+        "no-multi-spaces": [ "error" ],
+        "jsx-quotes": [ "error" ],
+        "react/prop-types": [ "off" ],
+        "react/jsx-curly-spacing": [ "error", { "when": "always", "children": true } ],
+        "react/jsx-equals-spacing": [ "error" ],
+        "react/jsx-newline": [ "error", { "prevent": true } ],
+        "@typescript-eslint/object-curly-spacing": [ "error", "always",
+            {
+                "arraysInObjects": true,
+                "objectsInObjects": false
+            }
+        ],
+        "@typescript-eslint/ban-types": [
+            "error",
+            {
+                "types": {
+                    "String": true,
+                    "Boolean": true,
+                    "Number": true,
+                    "Symbol": true,
+                    "{}": false,
+                    "Object": false,
+                    "object": false,
+                    "Function": false
+                },
+                "extendDefaults": true
+            }
+        ],
+        "no-switch-case-fall-through": [ "off" ]
+    }
+}

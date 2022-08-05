@@ -1,5 +1,5 @@
 import { IObjectData, NitroEvent } from '@nitrots/nitro-renderer';
-import { IPurchasableOffer } from '../../components/catalog/common/IPurchasableOffer';
+import { IPurchasableOffer } from '../../api';
 
 export class SetRoomPreviewerStuffDataEvent extends NitroEvent
 {

@@ -1,39 +1,31 @@
-import { FC, useMemo, useState } from 'react';
-import { LocalizeText } from '../../../api';
+import { FC, useState } from 'react';
+import { LocalizeText, ReportState } from '../../../api';
 import { Button, Column, Flex, Text } from '../../../common';
-import { GetCfhCategories } from '../../mod-tools/common/GetCFHCategories';
-import { useHelpContext } from '../HelpContext';
+import { useHelp, useModTools } from '../../../hooks';
 
 export const SelectTopicView: FC<{}> = props =>
 {
-    const { setHelpReportState = null } = useHelpContext();
     const [ selectedCategory, setSelectedCategory ] = useState(-1);
     const [ selectedTopic, setSelectedTopic ] = useState(-1);
-
-    const cfhCategories = useMemo(() => GetCfhCategories(), []);
+    const { setActiveReport = null } = useHelp();
+    const { cfhCategories = [] } = useModTools();
 
     const submitTopic = () =>
     {
         if((selectedCategory < 0) || (selectedTopic < 0)) return;
 
-        setHelpReportState(prevValue =>
-            {
-                const cfhCategory = selectedCategory;
-                const cfhTopic = cfhCategories[selectedCategory].topics[selectedTopic].id;
-                const currentStep = 4;
-
-                return { ...prevValue, cfhCategory, cfhTopic, currentStep };
-            });
+        setActiveReport(prevValue =>
+        {
+            return { ...prevValue, cfhCategory: selectedCategory, cfhTopic: cfhCategories[selectedCategory].topics[selectedTopic].id, currentStep: ReportState.INPUT_REPORT_MESSAGE };
+        });
     }
 
     const back = () =>
     {
-        setHelpReportState(prevValue =>
-            {
-                const currentStep = (prevValue.currentStep - 1);
-
-                return { ...prevValue, currentStep };
-            });
+        setActiveReport(prevValue =>
+        {
+            return { ...prevValue, currentStep: (prevValue.currentStep - 1) };
+        });
     }
 
     return (

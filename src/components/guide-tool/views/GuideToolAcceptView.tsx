@@ -24,8 +24,8 @@ export const GuideToolAcceptView: FC<GuideToolAcceptViewProps> = props =>
             </Column>
             <Column gap={ 1 }>
                 <Button variant="success" onClick={ event => answerRequest(true) }>
-                        { LocalizeText('guide.help.request.guide.accept.accept.button') }
-                    </Button>
+                    { LocalizeText('guide.help.request.guide.accept.accept.button') }
+                </Button>
                 <Button variant="danger" onClick={ event => answerRequest(false) }>
                     { LocalizeText('guide.help.request.guide.accept.skip.link') }
                 </Button>

@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
+import { AvatarEditorGridPartItem, GetConfiguration } from '../../../../api';
 import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../../common';
-import { AvatarEditorGridPartItem } from '../../common/AvatarEditorGridPartItem';
 import { AvatarEditorIcon } from '../AvatarEditorIcon';
 
 export interface AvatarEditorFigureSetItemViewProps extends LayoutGridItemProps
@@ -12,6 +12,8 @@ export const AvatarEditorFigureSetItemView: FC<AvatarEditorFigureSetItemViewProp
 {
     const { partItem = null, children = null, ...rest } = props;
     const [ updateId, setUpdateId ] = useState(-1);
+
+    const hcDisabled = GetConfiguration<boolean>('hc.disabled', false);
 
     const rerender = useCallback(() =>
     {
@@ -30,7 +32,7 @@ export const AvatarEditorFigureSetItemView: FC<AvatarEditorFigureSetItemViewProp
 
     return (
         <LayoutGridItem itemImage={ (partItem.isClear ? undefined : partItem.imageUrl) } itemActive={ partItem.isSelected } { ...rest }>
-            { partItem.isHC && <LayoutCurrencyIcon className="position-absolute end-1 bottom-1" type={ 'hc' } /> }
+            { !hcDisabled && partItem.isHC && <LayoutCurrencyIcon className="position-absolute end-1 bottom-1" type="hc" /> }
             { partItem.isClear && <AvatarEditorIcon icon="clear" /> }
             { partItem.isSellable && <AvatarEditorIcon icon="sellable" position="absolute" className="end-1 bottom-1" /> }
             { children }

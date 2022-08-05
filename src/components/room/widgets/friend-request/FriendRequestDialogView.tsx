@@ -1,44 +1,28 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { LocalizeText, RoomWidgetFriendRequestMessage } from '../../../../api';
+import { LocalizeText, MessengerRequest } from '../../../../api';
 import { Base, Button, Column, Flex, Text } from '../../../../common';
-import { useRoomContext } from '../../RoomContext';
-import { UserLocationView } from '../user-location/UserLocationView';
+import { ObjectLocationView } from '../object-location/ObjectLocationView';
 
-interface FriendRequestDialogViewProps
+export const FriendRequestDialogView: FC<{ roomIndex: number, request: MessengerRequest, hideFriendRequest: (userId: number) => void, requestResponse: (requestId: number, flag: boolean) => void }> = props =>
 {
-    requestId: number;
-    userId: number;
-    userName: string;
-    close: () => void;
-}
-
-export const FriendRequestDialogView: FC<FriendRequestDialogViewProps> = props =>
-{
-    const { requestId = -1, userId = -1, userName = null, close = null } = props;
-    const { widgetHandler = null } = useRoomContext();
-
-    const respond = (flag: boolean) =>
-    {
-        widgetHandler.processWidgetMessage(new RoomWidgetFriendRequestMessage((flag ? RoomWidgetFriendRequestMessage.ACCEPT : RoomWidgetFriendRequestMessage.DECLINE), requestId));
-
-        close();
-    }
+    const { roomIndex = -1, request = null, hideFriendRequest = null, requestResponse = null } = props;
 
     return (
-        <UserLocationView userId={ userId }>
+        <ObjectLocationView objectId={ roomIndex } category={ RoomObjectCategory.UNIT }>
             <Base className="nitro-friend-request-dialog nitro-context-menu p-2">
                 <Column>
                     <Flex alignItems="center" justifyContent="between" gap={ 2 }>
-                        <Text variant="white" fontSize={ 6 }>{ LocalizeText('widget.friendrequest.from', [ 'username' ], [ userName ]) }</Text>
-                        <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ close } />
+                        <Text variant="white" fontSize={ 6 }>{ LocalizeText('widget.friendrequest.from', [ 'username' ], [ request.name ]) }</Text>
+                        <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ event => hideFriendRequest(request.requesterUserId) } />
                     </Flex>
                     <Flex justifyContent="end" gap={ 1 }>
-                        <Button variant="danger" onClick={ event => respond(false) }>{ LocalizeText('widget.friendrequest.decline') }</Button>
-                        <Button variant="success" onClick={ event => respond(true) }>{ LocalizeText('widget.friendrequest.accept') }</Button>
+                        <Button variant="danger" onClick={ event => requestResponse(request.requesterUserId, false) }>{ LocalizeText('widget.friendrequest.decline') }</Button>
+                        <Button variant="success" onClick={ event => requestResponse(request.requesterUserId, true) }>{ LocalizeText('widget.friendrequest.accept') }</Button>
                     </Flex>
                 </Column>
             </Base>
-        </UserLocationView>
+        </ObjectLocationView>
     );
 }

@@ -1,9 +1,8 @@
 import { GroupBuyComposer, GroupBuyDataComposer, GroupBuyDataEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
-import { HasHabboClub, LocalizeText, SendMessageComposer } from '../../../api';
+import { FC, useEffect, useState } from 'react';
+import { HasHabboClub, IGroupData, LocalizeText, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { BatchUpdates, UseMessageEventHook } from '../../../hooks';
-import { IGroupData } from '../common/IGroupData';
+import { useMessageEvent } from '../../../hooks';
 import { GroupTabBadgeView } from './tabs/GroupTabBadgeView';
 import { GroupTabColorsView } from './tabs/GroupTabColorsView';
 import { GroupTabCreatorConfirmationView } from './tabs/GroupTabCreatorConfirmationView';
@@ -25,7 +24,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
     const [ availableRooms, setAvailableRooms ] = useState<{ id: number, name: string }[]>(null);
     const [ purchaseCost, setPurchaseCost ] = useState<number>(0);
 
-    const close = () =>
+    const onCloseClose = () =>
     {
         setCloseAction(null);
         setGroupData(null);
@@ -86,7 +85,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
         setCurrentTab(value => (value === 4 ? value : value + 1));
     }
 
-    const onGroupBuyDataEvent = useCallback((event: GroupBuyDataEvent) =>
+    useMessageEvent<GroupBuyDataEvent>(GroupBuyDataEvent, event =>
     {
         const parser = event.getParser();
 
@@ -94,31 +93,23 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
 
         parser.availableRooms.forEach((name, id) => rooms.push({ id, name }));
 
-        BatchUpdates(() =>
-        {
-            setAvailableRooms(rooms);
-            setPurchaseCost(parser.groupCost);
-        });
-    }, []);
-
-    UseMessageEventHook(GroupBuyDataEvent, onGroupBuyDataEvent);
+        setAvailableRooms(rooms);
+        setPurchaseCost(parser.groupCost);
+    });
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setCurrentTab(1);
+        setCurrentTab(1);
 
-            setGroupData({
-                groupId: -1,
-                groupName: null,
-                groupDescription: null,
-                groupHomeroomId: -1,
-                groupState: 1,
-                groupCanMembersDecorate: true,
-                groupColors: null,
-                groupBadgeParts: null
-            });
+        setGroupData({
+            groupId: -1,
+            groupName: null,
+            groupDescription: null,
+            groupHomeroomId: -1,
+            groupState: 1,
+            groupCanMembersDecorate: true,
+            groupColors: null,
+            groupBadgeParts: null
         });
         
         SendMessageComposer(new GroupBuyDataComposer());
@@ -128,21 +119,21 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
 
     return (
         <NitroCardView className="nitro-group-creator" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('group.create.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('group.create.title') } onCloseClick={ onCloseClose } />
             <NitroCardContentView>
                 <Flex center className="creator-tabs">
                     { TABS.map((tab, index) =>
-                        {
-                            return (
-                                <Flex center key={ index } className={ `tab tab-${ ((tab === 1) ? 'blue-flat' : (tab === 4) ? 'yellow' : 'blue-arrow') } ${ (currentTab === tab) ? 'active' : '' }` }>
-                                    <Text variant="white">{ LocalizeText(`group.create.steplabel.${ tab }`) }</Text>
-                                </Flex>
-                            );
-                        }) }
+                    {
+                        return (
+                            <Flex center key={ index } className={ `tab tab-${ ((tab === 1) ? 'blue-flat' : (tab === 4) ? 'yellow' : 'blue-arrow') } ${ (currentTab === tab) ? 'active' : '' }` }>
+                                <Text variant="white">{ LocalizeText(`group.create.steplabel.${ tab }`) }</Text>
+                            </Flex>
+                        );
+                    }) }
                 </Flex>
                 <Column overflow="hidden">
                     <Flex alignItems="center" gap={ 2 }>
-                        <Base className={ `nitro-group-tab-image tab-${ currentTab }`} />
+                        <Base className={ `nitro-group-tab-image tab-${ currentTab }` } />
                         <Column grow gap={ 0 }>
                             <Text bold fontSize={ 4 }>{ LocalizeText(`group.create.stepcaption.${ currentTab }`) }</Text>
                             <Text>{ LocalizeText(`group.create.stepdesc.${ currentTab }`) }</Text>
@@ -150,7 +141,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
                     </Flex>
                     <Column overflow="hidden">
                         { (currentTab === 1) &&
-                            <GroupTabIdentityView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } isCreator={ true } availableRooms={ availableRooms } /> }
+                            <GroupTabIdentityView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } onClose={ null } isCreator={ true } availableRooms={ availableRooms } /> }
                         { (currentTab === 2) &&
                             <GroupTabBadgeView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } /> }
                         { (currentTab === 3) &&

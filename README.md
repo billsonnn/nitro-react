@@ -1,11 +1,11 @@
-# Nitro React
+# Nitro React v2.1
 
 ## Prerequisites
 
--   You must have [git](https://git-scm.com/) installed
--   You must have [NodeJS](https://nodejs.org/) >= 16.13 installed
--   We recommend you use [Yarn](https://yarnpkg.com/) over [npm](https://npmjs.com/)
-    -   `npm i yarn -g`
+-   [Git](https://git-scm.com/)
+-   [NodeJS](https://nodejs.org/) >= 18
+    - If using NodeJS < 18 remove `--openssl-legacy-provider` from the package.json scripts
+-   [Yarn](https://yarnpkg.com/) `npm i yarn -g`
 
 ## Installation
 

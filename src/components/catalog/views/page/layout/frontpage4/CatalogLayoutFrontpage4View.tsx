@@ -1,9 +1,8 @@
 import { FrontPageItem } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect } from 'react';
 import { CreateLinkEvent } from '../../../../../../api';
-import { Column } from '../../../../../../common/Column';
-import { Grid } from '../../../../../../common/Grid';
-import { useCatalogContext } from '../../../../CatalogContext';
+import { Column, Grid } from '../../../../../../common';
+import { useCatalog } from '../../../../../../hooks';
 import { CatalogRedeemVoucherView } from '../../common/CatalogRedeemVoucherView';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutFrontPageItemView } from './CatalogLayoutFrontPageItemView';
@@ -11,7 +10,7 @@ import { CatalogLayoutFrontPageItemView } from './CatalogLayoutFrontPageItemView
 export const CatalogLayoutFrontpage4View: FC<CatalogLayoutProps> = props =>
 {
     const { page = null, hideNavigation = null } = props;
-    const { frontPageItems = [] } = useCatalogContext();
+    const { frontPageItems = [] } = useCatalog();
 
     const selectItem = useCallback((item: FrontPageItem) =>
     {

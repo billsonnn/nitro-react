@@ -1,12 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ApproveNameMessageComposer, ColorConverter, GetSellablePetPalettesComposer, PurchaseFromCatalogComposer, SellablePetPaletteData } from '@nitrots/nitro-renderer';
+import { ApproveNameMessageComposer, ApproveNameMessageEvent, ColorConverter, GetSellablePetPalettesComposer, PurchaseFromCatalogComposer, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../../../api';
+import { DispatchUiEvent, GetPetAvailableColors, GetPetIndexFromLocalization, LocalizeText, SendMessageComposer } from '../../../../../../api';
 import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, LayoutPetImageView, Text } from '../../../../../../common';
-import { CatalogNameResultEvent, CatalogPurchaseFailureEvent, CatalogWidgetEvent } from '../../../../../../events';
-import { BatchUpdates, DispatchUiEvent, UseUiEvent } from '../../../../../../hooks';
-import { useCatalogContext } from '../../../../CatalogContext';
-import { GetPetAvailableColors, GetPetIndexFromLocalization } from '../../../../common/CatalogUtilities';
+import { CatalogPurchaseFailureEvent } from '../../../../../../events';
+import { useCatalog, useMessageEvent } from '../../../../../../hooks';
 import { CatalogAddOnBadgeWidgetView } from '../../widgets/CatalogAddOnBadgeWidgetView';
 import { CatalogPurchaseWidgetView } from '../../widgets/CatalogPurchaseWidgetView';
 import { CatalogTotalPriceWidget } from '../../widgets/CatalogTotalPriceWidget';
@@ -25,8 +23,8 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
     const [ petName, setPetName ] = useState('');
     const [ approvalPending, setApprovalPending ] = useState(true);
     const [ approvalResult, setApprovalResult ] = useState(-1);
-    const { currentOffer = null, setCurrentOffer = null, setPurchaseOptions = null, catalogOptions = null, roomPreviewer = null } = useCatalogContext();
-    const { petPalettes = [] } = catalogOptions;
+    const { currentOffer = null, setCurrentOffer = null, setPurchaseOptions = null, catalogOptions = null, roomPreviewer = null } = useCatalog();
+    const { petPalettes = null } = catalogOptions;
 
     const getColor = useMemo(() =>
     {
@@ -106,15 +104,15 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
         }
     }, [ page, currentOffer, petName, petPurchaseString, approvalResult ]);
 
-    const onCatalogNameResultEvent = useCallback((event: CatalogNameResultEvent) =>
+    useMessageEvent<ApproveNameMessageEvent>(ApproveNameMessageEvent, event =>
     {
-        setApprovalResult(event.result);
+        const parser = event.getParser();
 
-        if(event.result === 0) purchasePet();
+        setApprovalResult(parser.result);
+
+        if(parser.result === 0) purchasePet();
         else DispatchUiEvent(new CatalogPurchaseFailureEvent(-1));
-    }, [ purchasePet ]);
-
-    UseUiEvent(CatalogWidgetEvent.APPROVE_RESULT, onCatalogNameResultEvent);
+    });
 
     useEffect(() =>
     {
@@ -122,12 +120,9 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
         const offer = page.offers[0];
 
-        BatchUpdates(() =>
-        {
-            setCurrentOffer(offer);
-            setPetIndex(GetPetIndexFromLocalization(offer.localizationId));
-            setColorsShowing(false);
-        });
+        setCurrentOffer(offer);
+        setPetIndex(GetPetIndexFromLocalization(offer.localizationId));
+        setColorsShowing(false);
     }, [ page, setCurrentOffer ]);
 
     useEffect(() =>
@@ -138,33 +133,30 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
         if(!productData) return;
 
-        for(const paletteData of petPalettes)
+        if(petPalettes)
         {
-            if(paletteData.breed !== productData.type) continue;
-
-            const palettes: SellablePetPaletteData[] = [];
-
-            for(const palette of paletteData.palettes)
+            for(const paletteData of petPalettes)
             {
-                if(!palette.sellable) continue;
-
-                palettes.push(palette);
-            }
-
-            BatchUpdates(() =>
-            {
+                if(paletteData.breed !== productData.type) continue;
+    
+                const palettes: SellablePetPaletteData[] = [];
+    
+                for(const palette of paletteData.palettes)
+                {
+                    if(!palette.sellable) continue;
+    
+                    palettes.push(palette);
+                }
+    
                 setSelectedPaletteIndex((palettes.length ? 0 : -1));
                 setSellablePalettes(palettes);
-            });
-
-            return;
+    
+                return;
+            }
         }
 
-        BatchUpdates(() =>
-        {
-            setSelectedPaletteIndex(-1);
-            setSellablePalettes([]);
-        });
+        setSelectedPaletteIndex(-1);
+        setSellablePalettes([]);
 
         SendMessageComposer(new GetSellablePetPalettesComposer(productData.type));
     }, [ currentOffer, petPalettes ]);
@@ -175,11 +167,8 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
         const colors = GetPetAvailableColors(petIndex, sellablePalettes);
 
-        BatchUpdates(() =>
-        {
-            setSelectedColorIndex((colors.length ? 0 : -1));
-            setSellableColors(colors);
-        });
+        setSelectedColorIndex((colors.length ? 0 : -1));
+        setSellableColors(colors);
     }, [ petIndex, sellablePalettes ]);
 
     useEffect(() =>
@@ -209,13 +198,13 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
             <Column size={ 7 } overflow="hidden">
                 <AutoGrid columnCount={ 5 }>
                     { !colorsShowing && (sellablePalettes.length > 0) && sellablePalettes.map((palette, index) =>
-                        {
-                            return (
-                                <LayoutGridItem key={ index } itemActive={ (selectedPaletteIndex === index) } onClick={ event => setSelectedPaletteIndex(index) }>
-                                    <LayoutPetImageView typeId={ petIndex } paletteId={ palette.paletteId } direction={ 2 } headOnly={ true } />
-                                </LayoutGridItem>
-                            );
-                        })}
+                    {
+                        return (
+                            <LayoutGridItem key={ index } itemActive={ (selectedPaletteIndex === index) } onClick={ event => setSelectedPaletteIndex(index) }>
+                                <LayoutPetImageView typeId={ petIndex } paletteId={ palette.paletteId } direction={ 2 } headOnly={ true } />
+                            </LayoutGridItem>
+                        );
+                    }) }
                     { colorsShowing && (sellableColors.length > 0) && sellableColors.map((colorSet, index) => <LayoutGridItem itemHighlight key={ index } itemActive={ (selectedColorIndex === index) } itemColor={ ColorConverter.int2rgb(colorSet[0]) } className="clear-bg" onClick={ event => setSelectedColorIndex(index) } />) }
                 </AutoGrid>
             </Column>

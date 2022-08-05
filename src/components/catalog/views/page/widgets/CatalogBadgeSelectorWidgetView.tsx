@@ -1,9 +1,7 @@
 import { StringDataType } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { AutoGrid, AutoGridProps, LayoutBadgeImageView, LayoutGridItem } from '../../../../../common';
-import { InventoryBadgesRequestEvent, InventoryBadgesUpdatedEvent } from '../../../../../events';
-import { DispatchUiEvent, UseUiEvent } from '../../../../../hooks';
-import { useCatalogContext } from '../../../CatalogContext';
+import { useCatalog, useInventoryBadges } from '../../../../../hooks';
 
 const EXCLUDED_BADGE_CODES: string[] = [];
 
@@ -15,56 +13,64 @@ interface CatalogBadgeSelectorWidgetViewProps extends AutoGridProps
 export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewProps> = props =>
 {
     const { columnCount = 5, ...rest } = props;
-    const [ badges, setBadges ] = useState<string[]>([]);
-    const [ currentBadge, setCurrentBadge ] = useState<string>(null);
-    const { currentOffer = null, setPurchaseOptions = null } = useCatalogContext();
-
-    const onInventoryBadgesUpdatedEvent = useCallback((event: InventoryBadgesUpdatedEvent) =>
-    {
-        setBadges(event.badges);
-    }, []);
-
-    UseUiEvent(InventoryBadgesUpdatedEvent.BADGES_UPDATED, onInventoryBadgesUpdatedEvent);
+    const [ isVisible, setIsVisible ] = useState(false);
+    const [ currentBadgeCode, setCurrentBadgeCode ] = useState<string>(null);
+    const { currentOffer = null, setPurchaseOptions = null } = useCatalog();
+    const { badgeCodes = [], activate = null, deactivate = null } = useInventoryBadges();
 
     const previewStuffData = useMemo(() =>
     {
-        if(!currentBadge) return null;
+        if(!currentBadgeCode) return null;
 
         const stuffData = new StringDataType();
 
-        stuffData.setValue([ '0', currentBadge, '', '' ]);
+        stuffData.setValue([ '0', currentBadgeCode, '', '' ]);
 
         return stuffData;
-    }, [ currentBadge ]);
+    }, [ currentBadgeCode ]);
 
     useEffect(() =>
     {
         if(!currentOffer) return;
 
         setPurchaseOptions(prevValue =>
-            {
-                const extraParamRequired = true;
-                const extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
+        {
+            const newValue = { ...prevValue };
 
-                return { ...prevValue, extraParamRequired, extraData, previewStuffData };
-            });
+            newValue.extraParamRequired = true;
+            newValue.extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
+            newValue.previewStuffData = previewStuffData;
+
+            return newValue;
+        });
     }, [ currentOffer, previewStuffData, setPurchaseOptions ]);
 
     useEffect(() =>
     {
-        DispatchUiEvent(new InventoryBadgesRequestEvent(InventoryBadgesRequestEvent.REQUEST_BADGES));
+        if(!isVisible) return;
+
+        const id = activate();
+
+        return () => deactivate(id);
+    }, [ isVisible, activate, deactivate ]);
+
+    useEffect(() =>
+    {
+        setIsVisible(true);
+
+        return () => setIsVisible(false);
     }, []);
 
     return (
         <AutoGrid columnCount={ columnCount } { ...rest }>
-            { badges && (badges.length > 0) && badges.map(code =>
-                {
-                    return (
-                        <LayoutGridItem key={ code } itemActive={ (currentBadge === code) } onClick={ event => setCurrentBadge(code) }> 
-                            <LayoutBadgeImageView badgeCode={ code } />
-                        </LayoutGridItem>
-                    );
-                }) }
+            { badgeCodes && (badgeCodes.length > 0) && badgeCodes.map((badgeCode, index) =>
+            {
+                return (
+                    <LayoutGridItem key={ index } itemActive={ (currentBadgeCode === badgeCode) } onClick={ event => setCurrentBadgeCode(badgeCode) }> 
+                        <LayoutBadgeImageView badgeCode={ badgeCode } />
+                    </LayoutGridItem>
+                );
+            }) }
         </AutoGrid>
     );
 }

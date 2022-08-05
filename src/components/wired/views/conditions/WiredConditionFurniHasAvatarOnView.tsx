@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { WiredFurniType } from '../../common/WiredFurniType';
+import { WiredFurniType } from '../../../../api';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 export const WiredConditionFurniHasAvatarOnView: FC<{}> = props =>
 {
-    return <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } save={ null } />;
+    return <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } hasSpecialInput={ false } save={ null } />;
 }

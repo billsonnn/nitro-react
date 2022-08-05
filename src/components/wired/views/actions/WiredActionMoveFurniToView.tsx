@@ -1,12 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Flex } from '../../../../common/Flex';
-import { Text } from '../../../../common/Text';
-import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Flex, Text } from '../../../../common';
+import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 const directionOptions: { value: number, icon: string }[] = [
@@ -32,32 +28,26 @@ export const WiredActionMoveFurniToView: FC<{}> = props =>
 {
     const [ spacing, setSpacing ] = useState(-1);
     const [ movement, setMovement ] = useState(-1);
-    const { trigger = null, setIntParams = null } = useWiredContext();
+    const { trigger = null, setIntParams = null } = useWired();
 
-    const save = useCallback(() =>
-    {
-        setIntParams([ movement, spacing ]);
-    }, [ movement, spacing, setIntParams ]);
+    const save = () => setIntParams([ movement, spacing ]);
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
+        if(trigger.intData.length >= 2)
         {
-            if(trigger.intData.length >= 2)
-            {
-                setSpacing(trigger.intData[1]);
-                setMovement(trigger.intData[0]);
-            }
-            else
-            {
-                setSpacing(-1);
-                setMovement(-1);
-            }
-        });
+            setSpacing(trigger.intData[1]);
+            setMovement(trigger.intData[0]);
+        }
+        else
+        {
+            setSpacing(-1);
+            setMovement(-1);
+        }
     }, [ trigger ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_OR_BY_TYPE } save={ save }>
+        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_OR_BY_TYPE } hasSpecialInput={ true } save={ save }>
             <Column gap={ 1 }>
                 <Text bold>{ LocalizeText('wiredfurni.params.emptytiles', [ 'tiles' ], [ spacing.toString() ]) }</Text>
                 <ReactSlider
@@ -71,14 +61,14 @@ export const WiredActionMoveFurniToView: FC<{}> = props =>
                 <Text bold>{ LocalizeText('wiredfurni.params.startdir') }</Text>
                 <Flex gap={ 1 }>
                     { directionOptions.map(value =>
-                        {
-                            return (
-                                <Flex key={ value.value } alignItems="center" gap={ 1 }>
-                                    <input className="form-check-input" type="radio" name="movement" id={ `movement${ value.value }` } checked={ (movement === value.value) } onChange={ event => setMovement(value.value) } />
-                                    <Text><i className={ `icon icon-${ value.icon }` } /></Text>
-                                </Flex>
-                            )
-                        }) }
+                    {
+                        return (
+                            <Flex key={ value.value } alignItems="center" gap={ 1 }>
+                                <input className="form-check-input" type="radio" name="movement" id={ `movement${ value.value }` } checked={ (movement === value.value) } onChange={ event => setMovement(value.value) } />
+                                <Text><i className={ `icon icon-${ value.icon }` } /></Text>
+                            </Flex>
+                        )
+                    }) }
                 </Flex>
             </Column>
         </WiredActionBaseView>

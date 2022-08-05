@@ -1,41 +1,32 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { LocalizeText } from '../../../../api';
-import { Column } from '../../../../common/Column';
-import { Text } from '../../../../common/Text';
-import { BatchUpdates } from '../../../../hooks';
-import { WiredFurniType } from '../../common/WiredFurniType';
-import { useWiredContext } from '../../context/WiredContext';
+import { LocalizeText, WiredFurniType } from '../../../../api';
+import { Column, Text } from '../../../../common';
+import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
 export const WiredActionMuteUserView: FC<{}> = props =>
 {
     const [ time, setTime ] = useState(-1);
     const [ message, setMessage ] = useState('');
-    const { trigger = null, setIntParams = null, setStringParam = null } = useWiredContext();
+    const { trigger = null, setIntParams = null, setStringParam = null } = useWired();
 
-    const save = useCallback(() =>
+    const save = () =>
     {
-        BatchUpdates(() =>
-        {
-            setIntParams([ time ]);
-            setStringParam(message);
-        });
-    }, [ time, message, setIntParams, setStringParam ]);
+        setIntParams([ time ]);
+        setStringParam(message);
+    }
 
     useEffect(() =>
     {
-        BatchUpdates(() =>
-        {
-            setTime((trigger.intData.length > 0) ? trigger.intData[0] : 0);
-            setMessage(trigger.stringData);
-        });
+        setTime((trigger.intData.length > 0) ? trigger.intData[0] : 0);
+        setMessage(trigger.stringData);
     }, [ trigger ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
             <Column gap={ 1 }>
-                <Text bold>{ LocalizeText('wiredfurni.params.length.minutes', ['minutes'], [ time.toString() ]) }</Text>
+                <Text bold>{ LocalizeText('wiredfurni.params.length.minutes', [ 'minutes' ], [ time.toString() ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }
                     min={ 1 }

@@ -4,50 +4,50 @@
     left: 0;
 
     .nitro-room-tools {
-        background: rgba($dark,.95);
-        box-shadow: inset 0px 5px lighten(rgba($dark,.6),2.5), inset 0 -4px darken(rgba($dark,.6),4);
+        background: rgba($dark, .95);
+        box-shadow: inset 0px 5px lighten(rgba($dark, .6), 2.5), inset 0 -4px darken(rgba($dark, .6), 4);
         border-top-right-radius: $border-radius;
         border-bottom-right-radius: $border-radius;
         transition: all .2s ease;
         z-index: 2;
-    
+
         .list-group-item {
             background: transparent;
             padding: 3px 0px;
             color: $white;
             border-color: rgba($black, 0.3);
             cursor: pointer;
-    
+
             &:hover {
                 text-decoration: underline;
             }
-    
+
             &:first-child {
                 padding-top: 8px;
             }
-    
+
             &:last-child {
                 border-bottom: none;
                 padding-bottom: 8px;
             }
-        
+
             .tools-item {
                 .icon {
                     width: 22px;
                     background-repeat: no-repeat;
                     background-position: center;
                 }
-        
+
                 &:hover {
                     text-decoration: underline;
                 }
             }
         }
     }
-    
+
     .nitro-room-tools-info {
-        background: rgba($dark,.95);
-        box-shadow: inset 0px 5px lighten(rgba($dark,.6),2.5), inset 0 -4px darken(rgba($dark,.6),4);
+        background: rgba($dark, .95);
+        box-shadow: inset 0px 5px lighten(rgba($dark, .6), 2.5), inset 0 -4px darken(rgba($dark, .6), 4);
         transition: all .2s ease;
         pointer-events: none;
         max-width: 250px;
@@ -61,11 +61,11 @@
     transform: translateX(-50%);
     font-size: large;
     background: rgba($dark, 0.95);
-    box-shadow: inset 0px 5px lighten(rgba($dark,.6),2.5), inset 0 -4px darken(rgba($dark,.6),4);
+    box-shadow: inset 0px 5px lighten(rgba($dark, .6), 2.5), inset 0 -4px darken(rgba($dark, .6), 4);
     border-radius: $border-radius;
     transition: all 0.2s ease;
     z-index: $quiz-zindex;
-    
+
     .question {
         max-width: 300px;
     }
@@ -107,4 +107,3 @@
 @import './context-menu/ContextMenu';
 @import './friend-request/FriendRequestDialogView';
 @import './furniture/FurnitureWidgets';
-@import './infostand/InfoStandWidgetView';

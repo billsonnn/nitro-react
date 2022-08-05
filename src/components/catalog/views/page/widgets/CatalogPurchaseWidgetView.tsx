@@ -1,13 +1,9 @@
 import { PurchaseFromCatalogComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { CreateLinkEvent, GetClubMemberLevel, LocalizeText, SendMessageComposer } from '../../../../../api';
+import { CatalogPurchaseState, CreateLinkEvent, DispatchUiEvent, GetClubMemberLevel, LocalizeText, LocalStorageKeys, Offer, SendMessageComposer } from '../../../../../api';
 import { Button, LayoutLoadingSpinnerView } from '../../../../../common';
-import { CatalogEvent, CatalogInitGiftEvent, CatalogInitPurchaseEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, CatalogSetExtraPurchaseParameterEvent, CatalogWidgetEvent } from '../../../../../events';
-import { DispatchUiEvent, UseUiEvent } from '../../../../../hooks';
-import { GetCurrencyAmount } from '../../../../purse/common/CurrencyHelper';
-import { useCatalogContext } from '../../../CatalogContext';
-import { CatalogPurchaseState } from '../../../common/CatalogPurchaseState';
-import { Offer } from '../../../common/Offer';
+import { CatalogEvent, CatalogInitGiftEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent } from '../../../../../events';
+import { useCatalog, useLocalStorage, usePurse, useUiEvent } from '../../../../../hooks';
 
 interface CatalogPurchaseWidgetViewProps
 {
@@ -20,33 +16,9 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
     const { noGiftOption = false, purchaseCallback = null } = props;
     const [ purchaseWillBeGift, setPurchaseWillBeGift ] = useState(false);
     const [ purchaseState, setPurchaseState ] = useState(CatalogPurchaseState.NONE);
-    const { currentOffer = null, currentPage = null, purchaseOptions = null, setPurchaseOptions = null } = useCatalogContext();
-
-    const onCatalogInitPurchaseEvent = useCallback((event: CatalogInitPurchaseEvent) =>
-    {
-        if(!currentOffer) return;
-
-        // show purchase confirmation
-        // offer, page.pageId, extraData, quantity, previewStuffData, null, true, null
-    }, [ currentOffer ]);
-
-    UseUiEvent(CatalogWidgetEvent.INIT_PURCHASE, onCatalogInitPurchaseEvent);
-
-    const onCatalogSetExtraPurchaseParameterEvent = useCallback((event: CatalogSetExtraPurchaseParameterEvent) =>
-    {
-        if(!currentOffer) return;
-
-        setPurchaseOptions(prevValue =>
-            {
-                const newValue = { ...prevValue };
-
-                newValue.extraData = event.parameter;
-
-                return newValue;
-            });
-    }, [ currentOffer, setPurchaseOptions ]);
-
-    UseUiEvent(CatalogWidgetEvent.SET_EXTRA_PARM, onCatalogSetExtraPurchaseParameterEvent);
+    const [ catalogSkipPurchaseConfirmation, setCatalogSkipPurchaseConfirmation ] = useLocalStorage(LocalStorageKeys.CATALOG_SKIP_PURCHASE_CONFIRMATION, false);
+    const { currentOffer = null, currentPage = null, purchaseOptions = null, setPurchaseOptions = null } = useCatalog();
+    const { getCurrencyAmount = null } = usePurse();
 
     const onCatalogEvent = useCallback((event: CatalogEvent) =>
     {
@@ -67,10 +39,10 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         }
     }, []);
 
-    UseUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
-    UseUiEvent(CatalogPurchaseFailureEvent.PURCHASE_FAILED, onCatalogEvent);
-    UseUiEvent(CatalogPurchaseNotAllowedEvent.NOT_ALLOWED, onCatalogEvent);
-    UseUiEvent(CatalogPurchaseSoldOutEvent.SOLD_OUT, onCatalogEvent);
+    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
+    useUiEvent(CatalogPurchaseFailureEvent.PURCHASE_FAILED, onCatalogEvent);
+    useUiEvent(CatalogPurchaseNotAllowedEvent.NOT_ALLOWED, onCatalogEvent);
+    useUiEvent(CatalogPurchaseSoldOutEvent.SOLD_OUT, onCatalogEvent);
 
     const isLimitedSoldOut = useMemo(() =>
     {
@@ -134,7 +106,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         return () =>
         {
             setPurchaseState(CatalogPurchaseState.NONE);
-            setPurchaseOptions({ quantity: 1, extraData: '', extraParamRequired: false, previewStuffData: null });
+            setPurchaseOptions({ quantity: 1, extraData: null, extraParamRequired: false, previewStuffData: null });
         }
     }, [ currentOffer, setPurchaseOptions ]);
 
@@ -164,14 +136,14 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
 
         if(isLimitedSoldOut) return <Button variant="danger" disabled>{ LocalizeText('catalog.alert.limited_edition_sold_out.title') }</Button>;
 
-        if(priceCredits > GetCurrencyAmount(-1)) return <Button variant="danger" disabled>{ LocalizeText('catalog.alert.notenough.title') }</Button>;
+        if(priceCredits > getCurrencyAmount(-1)) return <Button variant="danger" disabled>{ LocalizeText('catalog.alert.notenough.title') }</Button>;
 
-        if(pricePoints > GetCurrencyAmount(currentOffer.activityPointType)) return <Button variant="danger" disabled>{ LocalizeText('catalog.alert.notenough.activitypoints.title.' + currentOffer.activityPointType) }</Button>;
+        if(pricePoints > getCurrencyAmount(currentOffer.activityPointType)) return <Button variant="danger" disabled>{ LocalizeText('catalog.alert.notenough.activitypoints.title.' + currentOffer.activityPointType) }</Button>;
 
         switch(purchaseState)
         {
             case CatalogPurchaseState.CONFIRM:
-                return <Button variant='warning' onClick={ event => purchase() }>{ LocalizeText('catalog.marketplace.confirm_title') }</Button>;
+                return <Button variant="warning" onClick={ event => purchase() }>{ LocalizeText('catalog.marketplace.confirm_title') }</Button>;
             case CatalogPurchaseState.PURCHASE:
                 return <Button disabled><LayoutLoadingSpinnerView /></Button>;
             case CatalogPurchaseState.FAILED:

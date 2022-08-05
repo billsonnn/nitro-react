@@ -1,6 +1,5 @@
-import { FC, useEffect } from 'react';
-import { NotificationUtilities } from '../../api';
-import { Base, Column, Text } from '../../common';
+import { FC } from 'react';
+import { Base, Column, LayoutProgressBar, Text } from '../../common';
 
 interface LoadingViewProps
 {
@@ -12,13 +11,6 @@ interface LoadingViewProps
 export const LoadingView: FC<LoadingViewProps> = props =>
 {
     const { isError = false, message = '', percent = 0 } = props;
-
-    useEffect(() =>
-    {
-        if(!isError) return;
-
-        NotificationUtilities.simpleAlert(message, null, null, null, 'Connection Error');
-    }, [ isError, message ]);
     
     return (
         <Column fullHeight position="relative" className="nitro-loading">
@@ -27,13 +19,11 @@ export const LoadingView: FC<LoadingViewProps> = props =>
                     <Base className="connecting-duck" />
                     <Column size={ 6 } className="text-center py-4">
                         { isError && (message && message.length) ?
-                            <Base className="fs-4 text-shadow">{message}</Base>
+                            <Base className="fs-4 text-shadow">{ message }</Base>
                             :
                             <>
                                 <Text fontSize={ 4 } variant="white" className="text-shadow">{ percent.toFixed() }%</Text>
-                                <div className="nitro-loading-bar mt-2">
-                                    <div className="nitro-loading-bar-inner" style={{ 'width': `${ percent }%` }}/>
-                                </div>   
+                                <LayoutProgressBar progress={ percent } className="mt-2 large" />
                             </>
                         }
                         

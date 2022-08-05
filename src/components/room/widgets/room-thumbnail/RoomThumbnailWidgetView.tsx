@@ -3,13 +3,12 @@ import { FC, useCallback, useState } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { LayoutMiniCameraView } from '../../../../common';
 import { RoomWidgetThumbnailEvent } from '../../../../events';
-import { UseUiEvent } from '../../../../hooks';
-import { useRoomContext } from '../../RoomContext';
+import { useRoom, useUiEvent } from '../../../../hooks';
 
 export const RoomThumbnailWidgetView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
-    const { roomSession = null } = useRoomContext();
+    const { roomSession = null } = useRoom();
 
     const onNitroEvent = useCallback((event: RoomWidgetThumbnailEvent) =>
     {
@@ -27,9 +26,9 @@ export const RoomThumbnailWidgetView: FC<{}> = props =>
         }
     }, []);
 
-    UseUiEvent(RoomWidgetThumbnailEvent.SHOW_THUMBNAIL, onNitroEvent);
-    UseUiEvent(RoomWidgetThumbnailEvent.HIDE_THUMBNAIL, onNitroEvent);
-    UseUiEvent(RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL, onNitroEvent);
+    useUiEvent(RoomWidgetThumbnailEvent.SHOW_THUMBNAIL, onNitroEvent);
+    useUiEvent(RoomWidgetThumbnailEvent.HIDE_THUMBNAIL, onNitroEvent);
+    useUiEvent(RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL, onNitroEvent);
 
     const receiveTexture = useCallback((texture: NitroRenderTexture) =>
     {

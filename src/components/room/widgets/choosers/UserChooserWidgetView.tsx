@@ -1,65 +1,31 @@
-import { FC, useCallback, useState } from 'react';
-import { LocalizeText, RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRequestWidgetMessage, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
-import { BatchUpdates, UseEventDispatcherHook } from '../../../../hooks';
-import { useRoomContext } from '../../RoomContext';
+import { ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { FC, useEffect } from 'react';
+import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
+import { useUserChooserWidget } from '../../../../hooks';
 import { ChooserWidgetView } from './ChooserWidgetView';
 
 export const UserChooserWidgetView: FC<{}> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
-    const [ items, setItems ] = useState<RoomObjectItem[]>(null);
-    const [ refreshTimeout, setRefreshTimeout ] = useState<ReturnType<typeof setTimeout>>(null);
-    const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
+    const { items = null, onClose = null, selectItem = null, populateChooser = null } = useUserChooserWidget();
 
-    const refreshChooser = useCallback(() =>
+    useEffect(() =>
     {
-        if(!isVisible) return;
-
-        setRefreshTimeout(prevValue =>
+        const linkTracker: ILinkEventTracker = {
+            linkReceived: (url: string) =>
             {
-                if(prevValue) clearTimeout(prevValue);
+                const parts = url.split('/');
 
-                return setTimeout(() => widgetHandler.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.FURNI_CHOOSER)), 100);
-            })
-    }, [ isVisible, widgetHandler ]);
+                populateChooser();
+            },
+            eventUrlPrefix: 'user-chooser/'
+        };
 
-    const onRoomWidgetChooserContentEvent = useCallback((event: RoomWidgetChooserContentEvent) =>
-    {
-        BatchUpdates(() =>
-        {
-            setItems(event.items);
-            setIsVisible(true);
-        });
-    }, []);
+        AddEventLinkTracker(linkTracker);
 
-    UseEventDispatcherHook(RoomWidgetChooserContentEvent.USER_CHOOSER_CONTENT, eventDispatcher, onRoomWidgetChooserContentEvent);
-
-    const onRoomWidgetRoomObjectUpdateEvent = useCallback((event: RoomWidgetUpdateRoomObjectEvent) =>
-    {
-        if(!isVisible) return;
-
-        switch(event.type)
-        {
-            case RoomWidgetUpdateRoomObjectEvent.USER_ADDED:
-            case RoomWidgetUpdateRoomObjectEvent.USER_REMOVED:
-                refreshChooser();
-                return;
-        }
-    }, [ isVisible, refreshChooser ]);
-
-    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.USER_ADDED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
-    UseEventDispatcherHook(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, eventDispatcher, onRoomWidgetRoomObjectUpdateEvent);
-
-    const close = useCallback(() =>
-    {
-        BatchUpdates(() =>
-        {
-            setIsVisible(false);
-            setItems(null);
-        });
-    }, []);
+        return () => RemoveLinkEventTracker(linkTracker);
+    }, [ populateChooser ]);
     
-    if(!isVisible) return null;
+    if(!items) return null;
 
-    return <ChooserWidgetView title={ LocalizeText('widget.chooser.user.title') } displayItemId={ false } items={ items } onCloseClick={ close } />;
+    return <ChooserWidgetView title={ LocalizeText('widget.chooser.user.title') } items={ items } selectItem={ selectItem } onClose={ onClose } />;
 }

@@ -42,6 +42,10 @@
         width: 32px;
     }
 
+    &.gray {
+        opacity: .5;
+    }
+
     &.icon-inventory {
         background-image: url('../images/toolbar/icons/inventory.png');
         height: 41px;
