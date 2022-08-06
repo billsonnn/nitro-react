@@ -161,6 +161,26 @@
         background-position: -2px -184px;
     }
 
+    &.stickie-christmas {
+        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-christmas.png");
+    }
+
+    &.stickie-shakesp {
+        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-shakesp.png");
+    }
+
+    &.stickie-dreams {
+        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-dreams.png");
+    }
+
+    &.stickie-heart {
+        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-heart.png");
+    }
+
+    &.stickie-juninas {
+        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-juninas.png");
+    }
+
     &.stickie-close {
         width: 10px;
         height: 10px;
@@ -202,7 +222,7 @@
     font-weight: bold;
     font-size: 16px;
     text-shadow: 0px 1px white;
-    
+
     &.engraving-lock-3 {
         background-position: 0px -210px;
         color: #614110;
@@ -262,7 +282,7 @@
 
     .youtube-video-container {
         //min-height: 366px;
-        
+
         .empty-video {
             background-color: black;
             color: white;
