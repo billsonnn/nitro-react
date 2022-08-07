@@ -89,6 +89,15 @@ export const ChatInputView: FC<{}> = props =>
 
         if(text.length <= maxChatLength)
         {
+            const re = /%CC%/g
+            const hasZalgo = txt => re.test(encodeURIComponent(txt));
+
+            if (hasZalgo(text))
+            {
+                setChatValue('');
+                return;
+            }
+
             setChatValue('');
             sendChat(text, chatType, recipientName, chatStyleId);
         }
@@ -141,7 +150,7 @@ export const ChatInputView: FC<{}> = props =>
                 }
                 return;
         }
-        
+
     }, [ floodBlocked, inputRef, chatModeIdWhisper, anotherInputHasFocus, setInputFocus, checkSpecialKeywordForInput, sendChatValue ]);
 
     useUiEvent<RoomWidgetUpdateChatInputContentEvent>(RoomWidgetUpdateChatInputContentEvent.CHAT_INPUT_CONTENT, event =>
