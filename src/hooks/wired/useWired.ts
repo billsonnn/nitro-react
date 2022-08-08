@@ -12,6 +12,7 @@ const useWiredState = () =>
     const [ stringParam, setStringParam ] = useState<string>('');
     const [ furniIds, setFurniIds ] = useState<number[]>([]);
     const [ actionDelay, setActionDelay ] = useState<number>(0);
+    const [ allowsFurni, setAllowsFurni ] = useState(false);
     const { showConfirm = null } = useNotification();
 
     const saveWired = () =>
@@ -51,7 +52,7 @@ const useWiredState = () =>
 
     const selectObjectForWired = (objectId: number, category: number) =>
     {
-        if(!trigger) return;
+        if(!trigger || !allowsFurni) return;
 
         if(objectId <= 0) return;
 
@@ -125,7 +126,7 @@ const useWiredState = () =>
         }
     }, [ trigger ]);
 
-    return { trigger, setTrigger, intParams, setIntParams, stringParam, setStringParam, furniIds, setFurniIds, actionDelay, setActionDelay, saveWired, selectObjectForWired };
+    return { trigger, setTrigger, intParams, setIntParams, stringParam, setStringParam, furniIds, setFurniIds, actionDelay, setActionDelay, setAllowsFurni, saveWired, selectObjectForWired };
 }
 
 export const useWired = () => useBetween(useWiredState);
