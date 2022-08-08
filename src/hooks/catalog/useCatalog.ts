@@ -874,6 +874,13 @@ const useCatalogState = () =>
     {
         if(!searchResult && currentPage && (currentPage.pageId === -1)) openPageById(previousPageId);
     }, [ searchResult, currentPage, previousPageId, openPageById ]);
+
+    useEffect(() =>
+    {
+        if(!currentOffer) return;
+
+        setPurchaseOptions({ quantity: 1, extraData: null, extraParamRequired: false, previewStuffData: null });
+    }, [ currentOffer ]);
     
     useEffect(() =>
     {
