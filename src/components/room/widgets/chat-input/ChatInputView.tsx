@@ -89,17 +89,15 @@ export const ChatInputView: FC<{}> = props =>
 
         if(text.length <= maxChatLength)
         {
-            const re = /%CC%/g
-            const hasZalgo = txt => re.test(encodeURIComponent(txt));
-
-            if (hasZalgo(text))
+            if(/%CC%/g.test(encodeURIComponent(text)))
             {
                 setChatValue('');
-                return;
             }
-
-            setChatValue('');
-            sendChat(text, chatType, recipientName, chatStyleId);
+            else
+            {
+                setChatValue('');
+                sendChat(text, chatType, recipientName, chatStyleId);
+            }
         }
 
         setChatValue(append);
