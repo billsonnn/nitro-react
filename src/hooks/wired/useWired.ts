@@ -1,7 +1,7 @@
 import { ConditionDefinition, Triggerable, TriggerDefinition, UpdateActionMessageComposer, UpdateConditionMessageComposer, UpdateTriggerMessageComposer, WiredActionDefinition, WiredFurniActionEvent, WiredFurniConditionEvent, WiredFurniTriggerEvent, WiredSaveSuccessEvent } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { IsOwnerOfFloorFurniture, LocalizeText, SendMessageComposer, WiredSelectionVisualizer } from '../../api';
+import { IsOwnerOfFloorFurniture, LocalizeText, SendMessageComposer, WiredFurniType, WiredSelectionVisualizer } from '../../api';
 import { useMessageEvent } from '../events';
 import { useNotification } from '../notification';
 
@@ -12,7 +12,7 @@ const useWiredState = () =>
     const [ stringParam, setStringParam ] = useState<string>('');
     const [ furniIds, setFurniIds ] = useState<number[]>([]);
     const [ actionDelay, setActionDelay ] = useState<number>(0);
-    const [ allowsFurni, setAllowsFurni ] = useState(false);
+    const [ allowsFurni, setAllowsFurni ] = useState<number>(WiredFurniType.STUFF_SELECTION_OPTION_NONE);
     const { showConfirm = null } = useNotification();
 
     const saveWired = () =>
@@ -123,6 +123,7 @@ const useWiredState = () =>
     
                 return [];
             });
+            setAllowsFurni(WiredFurniType.STUFF_SELECTION_OPTION_NONE);
         }
     }, [ trigger ]);
 
