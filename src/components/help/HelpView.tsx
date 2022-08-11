@@ -70,8 +70,6 @@ export const HelpView: FC<{}> = props =>
 
         setIsVisible(true);
     }, [ activeReport ]);
-
-    if(!isVisible && !activeReport) return null;
     
     const CurrentStepView = () =>
     {
@@ -97,19 +95,20 @@ export const HelpView: FC<{}> = props =>
 
     return (
         <>
-            <NitroCardView className="nitro-help" theme="primary-slim">
-                <NitroCardHeaderView headerText={ LocalizeText('help.button.cfh') } onCloseClick={ onClose } />
-                <NitroCardContentView className="text-black">
-                    <Grid>
-                        <Column center size={ 5 } overflow="hidden">
-                            <Base className="index-image" />
-                        </Column>
-                        <Column justifyContent="between" size={ 7 } overflow="hidden">
-                            <CurrentStepView />
-                        </Column>
-                    </Grid>
-                </NitroCardContentView>
-            </NitroCardView>
+            { isVisible &&
+                <NitroCardView className="nitro-help" theme="primary-slim">
+                    <NitroCardHeaderView headerText={ LocalizeText('help.button.cfh') } onCloseClick={ onClose } />
+                    <NitroCardContentView className="text-black">
+                        <Grid>
+                            <Column center size={ 5 } overflow="hidden">
+                                <Base className="index-image" />
+                            </Column>
+                            <Column justifyContent="between" size={ 7 } overflow="hidden">
+                                <CurrentStepView />
+                            </Column>
+                        </Grid>
+                    </NitroCardContentView>
+                </NitroCardView> }
             <SanctionSatusView />
             <NameChangeView />
         </>
