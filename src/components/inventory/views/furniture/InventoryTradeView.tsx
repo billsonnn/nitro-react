@@ -12,7 +12,6 @@ interface InventoryTradeViewProps
 }
 
 const MAX_ITEMS_TO_TRADE: number = 9;
-const MIN_VALUE: number = 1;
 
 export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 {
@@ -22,7 +21,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
     const [ otherGroupItem, setOtherGroupItem ] = useState<GroupItem>(null);
     const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(null);
     const [ countdownTick, setCountdownTick ] = useState(3);
-    const [ quantity, setQuantity ] = useState<number | string>(1);
+    const [ quantity, setQuantity ] = useState<number>(1);
     const { ownUser = null, otherUser = null, groupItems = [], tradeState = TradeState.TRADING_STATE_READY, progressTrade = null, removeItem = null, setTradeState = null } = useInventoryTrade();
     const { simpleAlert = null } = useNotification();
 
@@ -120,11 +119,11 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         return <FontAwesomeIcon icon={ iconName } className={ 'text-' + textColor } />
     }
 
-    const updateQuantity = (value: number | string, totalItemCount: number) =>
+    const updateQuantity = (value: number, totalItemCount: number) =>
     {
-        if(isNaN(Number(value)) || Number(value) < 0 || value == '') value = 1;
+        if(isNaN(Number(value)) || Number(value) < 0 || !value) value = 1;
 
-        value = Math.max(Number(value), MIN_VALUE);
+        value = Math.max(Number(value), 1);
         value = Math.min(Number(value), totalItemCount);
 
         if(value === quantity) return;
@@ -134,9 +133,14 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
     const changeCount = (totalItemCount: number) =>
     {
-        updateQuantity(Number(quantity), totalItemCount);
-        attemptItemOffer(Number(quantity));
+        updateQuantity(quantity, totalItemCount);
+        attemptItemOffer(quantity);
     }
+
+    useEffect(() =>
+    {
+        setQuantity(1);
+    }, [ groupItem ]);
 
     useEffect(() =>
     {
@@ -192,7 +196,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                     <Column gap={ 1 } alignItems="end">
                         <Grid overflow="hidden">
                             <Column size={ 6 } overflow="hidden">
-                                <input type="number" className="form-control form-control-sm quantity-input" placeholder={ LocalizeText('catalog.bundlewidget.spinner.select.amount') } disabled={ !groupItem } value={ quantity } onChange={ event => setQuantity(event.target.value == '' || isNaN(event.target.valueAsNumber) || event.target.valueAsNumber < 0 ? '' : event.target.valueAsNumber) } />
+                                <input type="number" className="form-control form-control-sm quantity-input" placeholder={ LocalizeText('catalog.bundlewidget.spinner.select.amount') } disabled={ !groupItem } value={ quantity } onChange={ event => setQuantity(event.target.valueAsNumber) } />
                             </Column>
                             <Column size={ 6 } overflow="hidden">
                                 <Button variant="secondary" disabled={ !groupItem } onClick={ event => changeCount(groupItem.getUnlockedCount()) }>{ LocalizeText('inventory.trading.areoffering') }</Button>
@@ -219,11 +223,11 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                                 if(!item) return <LayoutGridItem key={ i } />;
 
                                 return (
-                                    <LayoutGridItem key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) } onDoubleClick={ event => removeItem(item)>
+                                    <LayoutGridItem key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) } onDoubleClick={ event => removeItem(item) }>
                                         { (ownGroupItem === item) &&
-                                        <Button position="absolute" variant="danger" className="trade-button bottom-1 start-1" onClick={ event => removeItem(item) }>
-                                            <FontAwesomeIcon icon="chevron-left" />
-                                        </Button> }
+                                            <Button position="absolute" variant="danger" className="trade-button bottom-1 start-1" onClick={ event => removeItem(item) }>
+                                                <FontAwesomeIcon icon="chevron-left" />
+                                            </Button> }
                                     </LayoutGridItem>
                                 );
                             }) }
