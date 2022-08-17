@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PetRespectComposer, PetType } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
-import { AvatarInfoPet, CreateLinkEvent, GetConfiguration, LocalizeText, SendMessageComposer } from '../../../../../api';
-import { Base, Button, Column, Flex, LayoutPetImageView, Text, UserProfileIconView } from '../../../../../common';
+import { FC, useEffect, useState } from 'react';
+import { AvatarInfoPet, CreateLinkEvent, GetConfiguration, LocalizeText, SendMessageComposer, ConvertSeconds } from '../../../../../api';
+import { Base, Button, Column, Flex, LayoutPetImageView, LayoutRarityLevelView, Text, UserProfileIconView, LayoutCounterTimeView } from '../../../../../common';
 import { useRoom, useSessionInfo } from '../../../../../hooks';
 
 interface InfoStandWidgetPetViewProps
@@ -14,8 +14,29 @@ interface InfoStandWidgetPetViewProps
 export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
 {
     const { avatarInfo = null, onClose = null } = props;
+    const [ remainingGrowTime, setRemainingGrowTime ] = useState(0);
+    const [ remainingTimeToLive, setRemainingTimeToLive ] = useState(0);
     const { roomSession = null } = useRoom();
     const { petRespectRemaining = 0, respectPet = null } = useSessionInfo();
+
+    useEffect(() =>
+    {
+        setRemainingGrowTime(avatarInfo.remainingGrowTime);
+        setRemainingTimeToLive(avatarInfo.remainingTimeToLive);
+    }, [ avatarInfo ]);
+
+    useEffect(() =>
+    {
+        if((avatarInfo.petType !== PetType.MONSTERPLANT) || avatarInfo.dead) return;
+        
+        const interval = setInterval(() =>
+        {
+            setRemainingGrowTime(prevValue => (prevValue - 1));
+            setRemainingTimeToLive(prevValue => (prevValue - 1));
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [ avatarInfo ]);
 
     if(!avatarInfo) return null;
 
@@ -64,51 +85,95 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                         <Text variant="white" small wrap>{ LocalizeText(`pet.breed.${ avatarInfo.petType }.${ avatarInfo.petBreed }`) }</Text>
                         <hr className="m-0" />
                     </Column>
-                    <Column gap={ 1 }>
-                        <Flex gap={ 1 }>
-                            <Column fullWidth overflow="hidden" className="body-image pet p-1">
-                                <LayoutPetImageView figure={ avatarInfo.petFigure } posture={ avatarInfo.posture } direction={ 4 } />
+                    { (avatarInfo.petType === PetType.MONSTERPLANT) &&
+                        <>
+                            <Column gap={ 1 }>
+                                <Flex gap={ 1 }>
+                                    <Column fullWidth overflow="hidden" className="body-image-plant pet p-1">
+                                        <LayoutPetImageView figure={ avatarInfo.petFigure } posture={ avatarInfo.posture } direction={ 4 } />
+                                    </Column>
+                                    { !avatarInfo.dead &&
+                                        <Column grow gap={ 1 }>
+                                            <Text variant="white" center small wrap>{ LocalizeText('pet.level', [ 'level', 'maxlevel' ], [ avatarInfo.level.toString(), avatarInfo.maximumLevel.toString() ]) }</Text>
+                                        </Column> }
+                                </Flex>
+                                <hr className="m-0" />
                             </Column>
-                            <Column grow gap={ 1 }>
-                                <Text variant="white" center small wrap>{ LocalizeText('pet.level', [ 'level', 'maxlevel' ], [ avatarInfo.level.toString(), avatarInfo.maximumLevel.toString() ]) }</Text>
+                            <Column gap={ 1 }>
                                 <Column alignItems="center" gap={ 1 }>
-                                    <Text variant="white" small truncate>{ LocalizeText('infostand.pet.text.happiness') }</Text>
+                                    <Text variant="white" small truncate>{ LocalizeText('infostand.pet.text.wellbeing') }</Text>
                                     <Base fullWidth overflow="hidden" position="relative" className="bg-light-dark rounded">
                                         <Flex fit center position="absolute">
-                                            <Text variant="white" small>{ avatarInfo.happyness + '/' + avatarInfo.maximumHappyness }</Text>
+                                            <Text variant="white" small>{ avatarInfo.dead ? '00:00:00' : ConvertSeconds((remainingTimeToLive == 0 ? avatarInfo.remainingTimeToLive : remainingTimeToLive)).split(':')[1] + ':' + ConvertSeconds((remainingTimeToLive == null || remainingTimeToLive == undefined ? 0 : remainingTimeToLive)).split(':')[2] + ':' + ConvertSeconds((remainingTimeToLive == null || remainingTimeToLive == undefined ? 0 : remainingTimeToLive)).split(':')[3] }</Text>
                                         </Flex>
-                                        <Base className="bg-info rounded pet-stats" style={ { width: (avatarInfo.happyness / avatarInfo.maximumHappyness) * 100 + '%' } } />
+                                        <Base className="bg-success rounded pet-stats" style={ { width: avatarInfo.dead ? '0' : Math.round((avatarInfo.maximumTimeToLive * 100) / (remainingTimeToLive)).toString() } } />
                                     </Base>
                                 </Column>
+                                <br /><br />
+                                <br /><br />
+                                { remainingGrowTime != 0 && remainingGrowTime > 0 &&
+                                    <Column alignItems="center" gap={ 1 }>
+                                        <Text variant="white" small truncate>{ LocalizeText('infostand.pet.text.growth') }</Text> <br />
+                                        <LayoutCounterTimeView className="top-2 end-2" day={ ConvertSeconds(remainingGrowTime).split(':')[0] } hour={ ConvertSeconds(remainingGrowTime).split(':')[1] } minutes={ ConvertSeconds(remainingGrowTime).split(':')[2] } seconds={ ConvertSeconds(remainingGrowTime).split(':')[3] } />
+                                    </Column> }
+                                <br /><br />
+                                <br /><br />
                                 <Column alignItems="center" gap={ 1 }>
-                                    <Text variant="white" small truncate>{ LocalizeText('infostand.pet.text.experience') }</Text>
-                                    <Base fullWidth overflow="hidden" position="relative" className="bg-light-dark rounded">
-                                        <Flex fit center position="absolute">
-                                            <Text variant="white" small>{ avatarInfo.experience + '/' + avatarInfo.levelExperienceGoal }</Text>
-                                        </Flex>
-                                        <Base className="bg-purple rounded pet-stats" style={ { width: (avatarInfo.experience / avatarInfo.levelExperienceGoal) * 100 + '%' } } />
-                                    </Base>
+                                    <Text variant="white" small truncate>{ LocalizeText('Nivel de rareza:') }</Text>
+                                    <LayoutRarityLevelView className="top-2 end-2" level={ avatarInfo.rarityLevel } />
                                 </Column>
-                                <Column alignItems="center" gap={ 1 }>
-                                    <Text variant="white" small truncate>{ LocalizeText('infostand.pet.text.energy') }</Text>
-                                    <Base fullWidth overflow="hidden" position="relative" className="bg-light-dark rounded">
-                                        <Flex fit center position="absolute">
-                                            <Text variant="white" small>{ avatarInfo.energy + '/' + avatarInfo.maximumEnergy }</Text>
-                                        </Flex>
-                                        <Base className="bg-success rounded pet-stats" style={ { width: (avatarInfo.energy / avatarInfo.maximumEnergy) * 100 + '%' } } />
-                                    </Base>
-                                </Column>
+                                <br /><br />
+                                <Text variant="white" small wrap>{ LocalizeText('pet.age', [ 'age' ], [ avatarInfo.age.toString() ]) }</Text>
+                                <hr className="m-0" />
                             </Column>
-                        </Flex>
-                        <hr className="m-0" />
-                    </Column>
-                    <Column gap={ 1 }>
-                        { avatarInfo.petType !== PetType.MONSTERPLANT &&
-                            <Text variant="white" small wrap>{ LocalizeText('infostand.text.petrespect', [ 'count' ], [ avatarInfo.respect.toString() ]) }</Text>
-                        }
-                        <Text variant="white" small wrap>{ LocalizeText('pet.age', [ 'age' ], [ avatarInfo.age.toString() ]) }</Text>
-                        <hr className="m-0" />
-                    </Column>
+                        </> }
+                    { (avatarInfo.petType !== PetType.MONSTERPLANT) &&
+                        <>
+                            <Column gap={ 1 }>
+                                <Flex gap={ 1 }>
+                                    <Column fullWidth overflow="hidden" className="body-image pet p-1">
+                                        <LayoutPetImageView figure={ avatarInfo.petFigure } posture={ avatarInfo.posture } direction={ 4 } />
+                                    </Column>
+                                    <Column grow gap={ 1 }>
+                                        <Text variant="white" center small wrap>{ LocalizeText('pet.level', [ 'level', 'maxlevel' ], [ avatarInfo.level.toString(), avatarInfo.maximumLevel.toString() ]) }</Text>
+                                        <Column alignItems="center" gap={ 1 }>
+                                            <Text variant="white" small truncate>{ LocalizeText('infostand.pet.text.happiness') }</Text>
+                                            <Base fullWidth overflow="hidden" position="relative" className="bg-light-dark rounded">
+                                                <Flex fit center position="absolute">
+                                                    <Text variant="white" small>{ avatarInfo.happyness + '/' + avatarInfo.maximumHappyness }</Text>
+                                                </Flex>
+                                                <Base className="bg-info rounded pet-stats" style={ { width: (avatarInfo.happyness / avatarInfo.maximumHappyness) * 100 + '%' } } />
+                                            </Base>
+                                        </Column>
+                                        <Column alignItems="center" gap={ 1 }>
+                                            <Text variant="white" small truncate>{ LocalizeText('infostand.pet.text.experience') }</Text>
+                                            <Base fullWidth overflow="hidden" position="relative" className="bg-light-dark rounded">
+                                                <Flex fit center position="absolute">
+                                                    <Text variant="white" small>{ avatarInfo.experience + '/' + avatarInfo.levelExperienceGoal }</Text>
+                                                </Flex>
+                                                <Base className="bg-purple rounded pet-stats" style={ { width: (avatarInfo.experience / avatarInfo.levelExperienceGoal) * 100 + '%' } } />
+                                            </Base>
+                                        </Column>
+                                        <Column alignItems="center" gap={ 1 }>
+                                            <Text variant="white" small truncate>{ LocalizeText('infostand.pet.text.energy') }</Text>
+                                            <Base fullWidth overflow="hidden" position="relative" className="bg-light-dark rounded">
+                                                <Flex fit center position="absolute">
+                                                    <Text variant="white" small>{ avatarInfo.energy + '/' + avatarInfo.maximumEnergy }</Text>
+                                                </Flex>
+                                                <Base className="bg-success rounded pet-stats" style={ { width: (avatarInfo.energy / avatarInfo.maximumEnergy) * 100 + '%' } } />
+                                            </Base>
+                                        </Column>
+                                    </Column>
+                                </Flex>
+                                <hr className="m-0" />
+                            </Column>
+                            <Column gap={ 1 }>
+                                { (avatarInfo.petType !== PetType.MONSTERPLANT) &&
+                                    <Text variant="white" small wrap>{ LocalizeText('infostand.text.petrespect', [ 'count' ], [ avatarInfo.respect.toString() ]) }</Text> }
+                                <Text variant="white" small wrap>{ LocalizeText('pet.age', [ 'age' ], [ avatarInfo.age.toString() ]) }</Text>
+                                <hr className="m-0" />
+                            </Column>
+                        </> }
                     <Column gap={ 1 }>
                         <Flex alignItems="center" gap={ 1 }>
                             <UserProfileIconView userId={ avatarInfo.ownerId } />
@@ -128,11 +193,11 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                     <Button variant="dark" onClick={ event => processButtonAction('train') }>
                         { LocalizeText('infostand.button.train') }
                     </Button> }
-                { !avatarInfo.dead && ((avatarInfo.energy / avatarInfo.maximumEnergy) < 0.98) && avatarInfo.petType === PetType.MONSTERPLANT &&
+                { !avatarInfo.dead && ((avatarInfo.energy / avatarInfo.maximumEnergy) < 0.98) && (avatarInfo.petType === PetType.MONSTERPLANT) &&
                     <Button variant="dark" onClick={ event => processButtonAction('treat') }>
                         { LocalizeText('infostand.button.pettreat') }
                     </Button> }
-                { roomSession?.isRoomOwner && avatarInfo.petType === PetType.MONSTERPLANT &&
+                { roomSession?.isRoomOwner && (avatarInfo.petType === PetType.MONSTERPLANT) &&
                     <Button variant="dark" onClick={ event => processButtonAction('compost') }>
                         { LocalizeText('infostand.button.compost') }
                     </Button> }

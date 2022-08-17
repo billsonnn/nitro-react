@@ -1,5 +1,6 @@
 export * from './CloneObject';
 export * from './ColorUtils';
+export * from './ConvertSeconds';
 export * from './LocalizeBadgeDescription';
 export * from './LocalizeBageName';
 export * from './LocalizeFormattedNumber';

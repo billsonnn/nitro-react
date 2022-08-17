@@ -301,6 +301,19 @@
     }
 }
 
+.nitro-counter-time {
+    width: 36px;
+    height: 28px;
+    background: url("../assets/images/infostand/countown-timer.png");
+
+    div {
+        line-height: 28px;
+        text-align: center;
+        color: $white;
+        font-weight: bold;
+    }
+}
+
 .avatar-image {
     position: relative;
     width: 90px;
