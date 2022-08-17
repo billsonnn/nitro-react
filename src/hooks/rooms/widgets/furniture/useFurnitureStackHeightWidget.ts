@@ -10,7 +10,7 @@ const useFurnitureStackHeightWidgetState = () =>
 {
     const [ objectId, setObjectId ] = useState(-1);
     const [ category, setCategory ] = useState(-1);
-    const [ height, setHeight ] = useState(0);
+    const [ height, setHeight ] = useState<number | string>(0);
     const [ pendingHeight, setPendingHeight ] = useState(-1);
 
     const onClose = () =>
@@ -21,17 +21,29 @@ const useFurnitureStackHeightWidgetState = () =>
         setPendingHeight(-1);
     }
 
+    useEffect(() =>
+    {
+        if (isNaN(parseFloat(height.toString()))) return;
+
+        if (Number(height) || height == 0)
+        {
+            setHeight(parseFloat(height.toString()));
+            updateHeight(parseFloat(height.toString()));
+        }
+    });
+
     const updateHeight = (height: number, server: boolean = false) =>
     {
-        if(!height) height = 0;
-        
-        height = Math.abs(height);
+        if (height || height == 0)
+        {
+            height = Math.abs(parseFloat(height.toString()));
 
-        if(!server) ((height > MAX_HEIGHT) && (height = MAX_HEIGHT));
+            if(!server) ((height > MAX_HEIGHT) && (height = MAX_HEIGHT));
 
-        setHeight(parseFloat(height.toFixed(2)));
+            setHeight(parseFloat(height.toFixed(2)));
 
-        if(!server) setPendingHeight(height * 100);
+            if(!server) setPendingHeight(height * 100);
+        }
     }
 
     useMessageEvent<FurnitureStackHeightEvent>(FurnitureStackHeightEvent, event =>
@@ -73,7 +85,7 @@ const useFurnitureStackHeightWidgetState = () =>
         return () => clearTimeout(timeout);
     }, [ objectId, pendingHeight ]);
 
-    return { objectId, height, maxHeight: MAX_HEIGHT, onClose, updateHeight };
+    return { objectId, height, maxHeight: MAX_HEIGHT, onClose, setHeight };
 }
 
 export const useFurnitureStackHeightWidget = useFurnitureStackHeightWidgetState;
