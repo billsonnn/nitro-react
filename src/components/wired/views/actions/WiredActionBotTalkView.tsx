@@ -35,7 +35,7 @@ export const WiredActionBotTalkView: FC<{}> = props =>
             </Column>
             <Column gap={ 1 }>
                 <Text bold>{ LocalizeText('wiredfurni.params.message') }</Text>
-                <input type="text" className="form-control form-control-sm" maxLength={ GetConfiguration<number>('wired.message.max.length') } value={ message } onChange={ event => setMessage(event.target.value) } />
+                <input type="text" className="form-control form-control-sm" maxLength={ GetConfiguration<number>('wired.action.bot.talk.max.length', 64) } value={ message } onChange={ event => setMessage(event.target.value) } />
             </Column>
             <Column gap={ 1 }>
                 <Flex alignItems="center" gap={ 1 }>
