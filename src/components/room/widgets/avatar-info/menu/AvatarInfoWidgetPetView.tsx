@@ -1,7 +1,7 @@
 import { PetRespectComposer, PetType, RoomControllerLevel, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomUnitGiveHandItemPetComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { AvatarInfoPet, GetOwnRoomObject, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../../api';
-import { usePets, useRoom } from '../../../../../hooks';
+import { useRoom, useSessionInfo } from '../../../../../hooks';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
@@ -22,13 +22,7 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
     const { avatarInfo = null, onClose = null } = props;
     const [ mode, setMode ] = useState(MODE_NORMAL);
     const { roomSession = null } = useRoom();
-    const { petRespect, changePetRespect } = usePets();
-
-    useEffect(() =>
-    {
-        changePetRespect(avatarInfo.respectsPetLeft);
-
-    }, [ avatarInfo ]);
+    const { petRespectRemaining = 0, respectPet = null } = useSessionInfo();
 
     const canPickUp = useMemo(() =>
     {
@@ -60,18 +54,9 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
             switch(name)
             {
                 case 'respect':
-                    let newRespectsLeftChange = 0;
+                    respectPet(avatarInfo.id);
 
-                    changePetRespect(prevValue =>
-                    {
-                        newRespectsLeftChange = (prevValue - 1);
-
-                        return newRespectsLeftChange;
-                    });
-
-                    GetSessionDataManager().givePetRespect(avatarInfo.id);
-
-                    if(newRespectsLeftChange > 0) hideMenu = false;
+                    if((petRespectRemaining - 1) >= 1) hideMenu = false;
                     break;
                 case 'treat':
                     SendMessageComposer(new PetRespectComposer(avatarInfo.id));
@@ -104,9 +89,6 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
 
             return MODE_NORMAL;
         });
-
-        changePetRespect(avatarInfo.respectsPetLeft);
-
     }, [ avatarInfo ]);
 
     return (
@@ -114,9 +96,9 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
             <ContextMenuHeaderView>
                 { avatarInfo.name }
             </ContextMenuHeaderView>
-            { (mode === MODE_NORMAL) && (petRespect > 0) &&
+            { (mode === MODE_NORMAL) && (petRespectRemaining > 0) &&
                 <ContextMenuListItemView onClick={ event => processAction('respect') }>
-                    { LocalizeText('infostand.button.petrespect', [ 'count' ], [ petRespect.toString() ]) }
+                    { LocalizeText('infostand.button.petrespect', [ 'count' ], [ petRespectRemaining.toString() ]) }
                 </ContextMenuListItemView> }
             { (mode === MODE_SADDLED_UP) &&
                 <>
@@ -124,9 +106,9 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
                         <ContextMenuListItemView onClick={ event => processAction('mount') }>
                             { LocalizeText('infostand.button.mount') }
                         </ContextMenuListItemView> }
-                    { (petRespect > 0) &&
+                    { (petRespectRemaining > 0) &&
                         <ContextMenuListItemView onClick={ event => processAction('respect') }>
-                            { LocalizeText('infostand.button.petrespect', [ 'count' ], [ petRespect.toString() ]) }
+                            { LocalizeText('infostand.button.petrespect', [ 'count' ], [ petRespectRemaining.toString() ]) }
                         </ContextMenuListItemView> }
                 </> }
             { (mode === MODE_RIDING) &&
@@ -134,9 +116,9 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
                     <ContextMenuListItemView onClick={ event => processAction('dismount') }>
                         { LocalizeText('infostand.button.dismount') }
                     </ContextMenuListItemView>
-                    { (petRespect > 0) &&
+                    { (petRespectRemaining > 0) &&
                         <ContextMenuListItemView onClick={ event => processAction('respect') }>
-                            { LocalizeText('infostand.button.petrespect', [ 'count' ], [ petRespect.toString() ]) }
+                            { LocalizeText('infostand.button.petrespect', [ 'count' ], [ petRespectRemaining.toString() ]) }
                         </ContextMenuListItemView> }
                 </> }
             { (mode === MODE_MONSTER_PLANT) && !avatarInfo.dead && ((avatarInfo.energy / avatarInfo.maximumEnergy) < 0.98) &&

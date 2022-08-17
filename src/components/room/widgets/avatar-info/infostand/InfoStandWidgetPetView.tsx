@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PetRespectComposer, PetType } from '@nitrots/nitro-renderer';
-import { FC, useEffect } from 'react';
-import { AvatarInfoPet, CreateLinkEvent, GetConfiguration, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../../api';
+import { FC } from 'react';
+import { AvatarInfoPet, CreateLinkEvent, GetConfiguration, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Column, Flex, LayoutPetImageView, Text, UserProfileIconView } from '../../../../../common';
-import { usePets, useRoom } from '../../../../../hooks';
+import { useRoom, useSessionInfo } from '../../../../../hooks';
 
 interface InfoStandWidgetPetViewProps
 {
@@ -15,15 +15,9 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
 {
     const { avatarInfo = null, onClose = null } = props;
     const { roomSession = null } = useRoom();
-    const { petRespect, changePetRespect } = usePets();
+    const { petRespectRemaining = 0, respectPet = null } = useSessionInfo();
 
     if(!avatarInfo) return null;
-
-        useEffect(() =>
-    {
-        changePetRespect(avatarInfo.respectsPetLeft);
-
-    }, [ avatarInfo ]);
 
     const processButtonAction = (action: string) =>
     {
@@ -34,17 +28,9 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
         switch (action)
         {
             case 'respect':
-                let newRespectsLeftChange = 0;
+                respectPet(avatarInfo.id);
 
-                changePetRespect(prevValue =>
-                {
-                    newRespectsLeftChange = (prevValue - 1);
-
-                    return newRespectsLeftChange;
-                });
-
-                GetSessionDataManager().givePetRespect(avatarInfo.id);
-                if(newRespectsLeftChange > 0) hideMenu = false;
+                if((petRespectRemaining - 1) >= 1) hideMenu = false;
                 break;
             case 'buyfood':
                 CreateLinkEvent('catalog/open/' + GetConfiguration('catalog.links')['pets.buy_saddle']);
@@ -65,12 +51,6 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
 
         if(hideMenu) onClose();
     }
-
-    useEffect(() =>
-    {
-        changePetRespect(avatarInfo.respectsPetLeft);
-
-    }, [ avatarInfo ]);
 
     return (
         <Column gap={ 1 } alignItems="end">
@@ -140,36 +120,30 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                 </Column>
             </Column>
             <Flex gap={ 1 } justifyContent="end">
-                { avatarInfo.petType !== PetType.MONSTERPLANT &&
+                { (avatarInfo.petType !== PetType.MONSTERPLANT) &&
                     <Button variant="dark" onClick={ event => processButtonAction('buyfood') }>
                         { LocalizeText('infostand.button.buyfood') }
-                    </Button>
-                }
-                { avatarInfo.isOwner && avatarInfo.petType !== PetType.MONSTERPLANT &&
+                    </Button> }
+                { avatarInfo.isOwner && (avatarInfo.petType !== PetType.MONSTERPLANT) &&
                     <Button variant="dark" onClick={ event => processButtonAction('train') }>
                         { LocalizeText('infostand.button.train') }
-                    </Button>
-                }
+                    </Button> }
                 { !avatarInfo.dead && ((avatarInfo.energy / avatarInfo.maximumEnergy) < 0.98) && avatarInfo.petType === PetType.MONSTERPLANT &&
                     <Button variant="dark" onClick={ event => processButtonAction('treat') }>
                         { LocalizeText('infostand.button.pettreat') }
-                    </Button>
-                }
+                    </Button> }
                 { roomSession?.isRoomOwner && avatarInfo.petType === PetType.MONSTERPLANT &&
                     <Button variant="dark" onClick={ event => processButtonAction('compost') }>
                         { LocalizeText('infostand.button.compost') }
-                    </Button>
-                }
+                    </Button> }
                 { avatarInfo.isOwner &&
                     <Button variant="dark" onClick={ event => processButtonAction('pick_up') }>
                         { LocalizeText('inventory.pets.pickup') }
-                    </Button>
-                }
-                { (petRespect > 0) && avatarInfo.petType !== PetType.MONSTERPLANT &&
+                    </Button> }
+                { (petRespectRemaining > 0) && (avatarInfo.petType !== PetType.MONSTERPLANT) &&
                     <Button variant="dark" onClick={ event => processButtonAction('respect') }>
-                        { LocalizeText('infostand.button.petrespect', [ 'count' ], [ petRespect.toString() ]) }
-                    </Button>
-                }
+                        { LocalizeText('infostand.button.petrespect', [ 'count' ], [ petRespectRemaining.toString() ]) }
+                    </Button> }
             </Flex>
         </Column>
     );
