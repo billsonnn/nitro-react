@@ -12,6 +12,7 @@ export * from './inventory';
 export * from './mod-tools';
 export * from './navigator';
 export * from './notification';
+export * from './pets';
 export * from './purse';
 export * from './rooms';
 export * from './session';
