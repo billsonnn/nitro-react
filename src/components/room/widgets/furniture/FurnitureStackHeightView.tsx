@@ -7,7 +7,7 @@ import { useFurnitureStackHeightWidget } from '../../../../hooks';
 
 export const FurnitureStackHeightView: FC<{}> = props =>
 {
-    const { objectId = -1, height = 0, maxHeight = 40, onClose = null, updateHeight = null } = useFurnitureStackHeightWidget();
+    const { objectId = -1, height = 0, maxHeight = 40, onClose = null, setHeight = null } = useFurnitureStackHeightWidget();
 
     if(objectId === -1) return null;
 
@@ -22,10 +22,10 @@ export const FurnitureStackHeightView: FC<{}> = props =>
                         min={ 0 }
                         max={ maxHeight }
                         step={ 0.01 }
-                        value={ height }
-                        onChange={ event => updateHeight(event) }
+                        value={ isNaN(parseFloat(height.toString())) ? 0 : parseFloat(height.toString()) }
+                        onChange={ event => setHeight(parseFloat(event.toString())) }
                         renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
-                    <input className="show-number-arrows" type="number" min={ 0 } max={ maxHeight } value={ height } onChange={ event => updateHeight(parseFloat(event.target.value)) } />
+                    <input className="show-number-arrows" style={ { width: '50px' } } type="number" min={ 0 } max={ maxHeight } value={ isNaN(parseFloat(height.toString())) ? '' : height } onChange={ event => setHeight(parseFloat(event.target.value)) } />
                 </Flex>
                 <Column gap={ 1 }>
                     <Button onClick={ event => SendMessageComposer(new FurnitureStackHeightComposer(objectId, -100)) }>
