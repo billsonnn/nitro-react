@@ -1,5 +1,5 @@
 import { GuideSessionGetRequesterRoomMessageComposer, GuideSessionInviteRequesterMessageComposer, GuideSessionMessageMessageComposer, GuideSessionRequesterRoomMessageEvent, GuideSessionResolvedMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, KeyboardEvent, useCallback, useState } from 'react';
+import { FC, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { GetSessionDataManager, GuideToolMessageGroup, LocalizeText, SendMessageComposer, TryVisitRoom } from '../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
@@ -16,9 +16,17 @@ interface GuideToolOngoingViewProps
 
 export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
 {
+    const scrollDiv = useRef<HTMLDivElement>(null);
+
     const { isGuide = false, userId = 0, userName = null, userFigure = null, isTyping = false, messageGroups = [] } = props;
 
     const [ messageText, setMessageText ] = useState<string>('');
+
+    useEffect(() =>
+    {
+        scrollDiv.current?.scrollIntoView({ block: 'end', behavior: 'smooth' });
+
+    }, [ messageGroups ]);
 
     const visit = useCallback(() =>
     {
@@ -38,7 +46,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
     useMessageEvent<GuideSessionRequesterRoomMessageEvent>(GuideSessionRequesterRoomMessageEvent, event =>
     {
         const parser = event.getParser();
-        
+
         TryVisitRoom(parser.requesterRoomId);
     });
 
@@ -100,7 +108,8 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                                 </Base> }
                             </Flex>
                         );
-                    }) } 
+                    }) }
+                    <div ref={ scrollDiv } />
                 </Column>
             </Column>
             <Column gap={ 1 }>

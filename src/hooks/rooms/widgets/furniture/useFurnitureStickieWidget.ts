@@ -10,6 +10,7 @@ const useFurnitureStickieWidgetState = () =>
     const [ category, setCategory ] = useState(-1);
     const [ color, setColor ] = useState('0');
     const [ text, setText ] = useState('');
+    const [ type, setType ] = useState('');
     const [ canModify, setCanModify ] = useState(false);
 
     const onClose = () =>
@@ -18,6 +19,7 @@ const useFurnitureStickieWidgetState = () =>
         setCategory(-1);
         setColor('0');
         setText('');
+        setType('');
         setCanModify(false);
     }
 
@@ -44,7 +46,7 @@ const useFurnitureStickieWidgetState = () =>
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 
         if(!roomObject) return;
-        
+
         const data = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_ITEMDATA);
 
         if(data.length < 6) return;
@@ -66,6 +68,7 @@ const useFurnitureStickieWidgetState = () =>
         setCategory(event.category);
         setColor(color || '0');
         setText(text || '');
+        setType(roomObject.type || 'post_it');
         setCanModify(GetRoomSession().isRoomOwner || GetSessionDataManager().isModerator || IsOwnerOfFurniture(roomObject));
     });
 
@@ -76,7 +79,7 @@ const useFurnitureStickieWidgetState = () =>
         onClose();
     });
 
-    return { objectId, color, text, canModify, updateColor, updateText, trash, onClose };
+    return { objectId, color, text, type, canModify, updateColor, updateText, trash, onClose };
 }
 
 export const useFurnitureStickieWidget = useFurnitureStickieWidgetState;

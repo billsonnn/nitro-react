@@ -17,13 +17,11 @@ export const NameChangeView:FC<{}> = props =>
     const [ layout, setLayout ] = useState<string>(INIT);
     const [ newUsername, setNewUsername ] = useState<string>('');
 
-    const onHelpNameChangeEvent = useCallback((event: HelpNameChangeEvent) =>
+    useUiEvent<HelpNameChangeEvent>(HelpNameChangeEvent.INIT, event =>
     {
         setLayout(INIT);
         setIsVisible(true);
-    }, []);
-
-    useUiEvent(HelpNameChangeEvent.INIT, onHelpNameChangeEvent);
+    });
 
     const onAction = useCallback((action: string, value?: string) =>
     {

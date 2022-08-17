@@ -21,6 +21,7 @@ export const SelectReportedChatsView: FC<{}> = props =>
                 return messengerHistory.filter(chat => (chat.entityId === activeReport.reportedUserId) && (chat.type === ChatEntryType.TYPE_IM));
         }
 
+        return [];
     }, [ activeReport, chatHistory, messengerHistory ]);
 
     const selectChat = (chatEntry: IChatEntry) =>
@@ -62,7 +63,7 @@ export const SelectReportedChatsView: FC<{}> = props =>
                 <Text>{ LocalizeText('help.emergency.chat_report.description') }</Text>
             </Column>
             <Column gap={ 1 } overflow="hidden">
-                { !!!userChats.length &&
+                { !userChats || !userChats.length &&
                     <Text>{ LocalizeText('help.cfh.error.no_user_data') }</Text> }
                 { (userChats.length > 0) &&
                     <AutoGrid gap={ 1 } columnCount={ 1 } columnMinHeight={ 25 } overflow="auto">

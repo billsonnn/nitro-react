@@ -103,11 +103,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
     {
         if(!currentOffer) return;
 
-        return () =>
-        {
-            setPurchaseState(CatalogPurchaseState.NONE);
-            setPurchaseOptions({ quantity: 1, extraData: null, extraParamRequired: false, previewStuffData: null });
-        }
+        setPurchaseState(CatalogPurchaseState.NONE);
     }, [ currentOffer, setPurchaseOptions ]);
 
     useEffect(() =>
