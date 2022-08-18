@@ -6,15 +6,16 @@ import { useFurniturePresentWidget, useInventoryFurni } from '../../../../hooks'
 export const FurnitureGiftOpeningView: FC<{}> = props =>
 {
     const { objectId = -1, classId = -1, itemType = null, text = null, isOwnerOfFurniture = false, senderName = null, senderFigure = null, placedItemId = -1, placedItemType = null, placedInRoom = false, imageUrl = null, openPresent = null, onClose = null } = useFurniturePresentWidget();
-    const { groupItems = null } = useInventoryFurni();
+    const { groupItems = [] } = useInventoryFurni();
 
     if(objectId === -1) return null;
 
-    const putFurni = (itemId: number) =>
+    const place = (itemId: number) =>
     {
-        const furni = groupItems?.filter(group => group.items[0].ref == itemId);
+        const groupItem = groupItems.find(group => (group.getItemById(itemId)?.id === itemId));
 
-        attemptItemPlacement(furni[0]);
+        if(groupItem) attemptItemPlacement(groupItem);
+
         onClose();
     }
 
@@ -54,7 +55,7 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
                                         <Button fullWidth onClick={ null }>
                                             { LocalizeText('widget.furni.present.put_in_inventory') }
                                         </Button> }
-                                    <Button fullWidth variant="success" onClick={ event => putFurni(placedItemId) }>
+                                    <Button fullWidth variant="success" onClick={ event => place(placedItemId) }>
                                         { LocalizeText(placedInRoom ? 'widget.furni.present.keep_in_room' : 'widget.furni.present.place_in_room') }
                                     </Button>
                                 </Flex>
