@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { IPurchasableOffer, LocalizeText, Offer, ProductTypeEnum } from '../../../../../api';
 import { AutoGrid, AutoGridProps, Button, ButtonGroup } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
@@ -18,6 +18,7 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
     const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(-1);
     const [ selectedOfferForGroup, setSelectedOfferForGroup ] = useState<IPurchasableOffer[]>(null);
     const { currentPage = null, currentOffer = null, setCurrentOffer = null, setPurchaseOptions = null } = useCatalog();
+    const elementRef = useRef<HTMLDivElement>();
 
     const setSelectedOffer = (offer: IPurchasableOffer) =>
     {
@@ -91,6 +92,11 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
         });
     }, [ currentOffer, selectedGroupIndex, selectedOfferForGroup, setPurchaseOptions ]);
 
+    useEffect(() =>
+    {
+        if(elementRef && elementRef.current) elementRef.current.scrollTop = 0;
+    }, [ selectedGroupIndex ]);
+
     if(!groupedOffers || (selectedGroupIndex === -1)) return null;
 
     const offers = groupedOffers[selectedGroupIndex];
@@ -100,7 +106,7 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
             <ButtonGroup>
                 { SPACES_GROUP_NAMES.map((name, index) => <Button key={ index } active={ (selectedGroupIndex === index) } onClick={ event => setSelectedGroupIndex(index) }>{ LocalizeText(`catalog.spaces.tab.${ name }`) }</Button>) }
             </ButtonGroup>
-            <AutoGrid columnCount={ columnCount } { ...rest }>
+            <AutoGrid innerRef={ elementRef } columnCount={ columnCount } { ...rest }>
                 { offers && (offers.length > 0) && offers.map((offer, index) => <CatalogGridOfferView key={ index } itemActive={ (currentOffer && (currentOffer === offer)) } offer={ offer } selectOffer={ offer => setSelectedOffer(offer) } />) }
                 { children }
             </AutoGrid>

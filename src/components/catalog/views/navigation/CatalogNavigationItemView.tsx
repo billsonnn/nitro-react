@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 import { ICatalogNode } from '../../../../api';
 import { Base, LayoutGridItem, Text } from '../../../../common';
 import { useCatalog } from '../../../../hooks';
@@ -16,10 +16,18 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
 {
     const { node = null, child = false } = props;
     const { activateNode = null } = useCatalog();
+    const elementRef = useRef<HTMLDivElement>();
+
+    const selectNode = () =>
+    {
+        if(node.isBranch && !node.isActive) elementRef?.current?.scrollIntoView();
+
+        activateNode(node);
+    }
     
     return (
-        <Base className="nitro-catalog-navigation-section">
-            <LayoutGridItem gap={ 1 } column={ false } itemActive={ node.isActive } onClick={ event => activateNode(node) } className={ child ? 'inset' : '' }>
+        <Base innerRef={ elementRef } className="nitro-catalog-navigation-section">
+            <LayoutGridItem gap={ 1 } column={ false } itemActive={ node.isActive } onClick={ selectNode } className={ child ? 'inset' : '' }>
                 <CatalogIconView icon={ node.iconId } />
                 <Text grow truncate>{ node.localization }</Text>
                 { node.isBranch &&
