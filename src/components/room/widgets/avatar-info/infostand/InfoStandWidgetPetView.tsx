@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PetRespectComposer, PetType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { AvatarInfoPet, CreateLinkEvent, GetConfiguration, LocalizeText, SendMessageComposer, ConvertSeconds } from '../../../../../api';
-import { Base, Button, Column, Flex, LayoutPetImageView, LayoutRarityLevelView, Text, UserProfileIconView, LayoutCounterTimeView } from '../../../../../common';
+import { AvatarInfoPet, ConvertSeconds, CreateLinkEvent, GetConfiguration, LocalizeText, SendMessageComposer } from '../../../../../api';
+import { Base, Button, Column, Flex, LayoutCounterTimeView, LayoutPetImageView, LayoutRarityLevelView, Text, UserProfileIconView } from '../../../../../common';
 import { useRoom, useSessionInfo } from '../../../../../hooks';
 
 interface InfoStandWidgetPetViewProps
@@ -87,19 +87,15 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                     </Column>
                     { (avatarInfo.petType === PetType.MONSTERPLANT) &&
                         <>
-                            <Column gap={ 1 }>
-                                <Flex gap={ 1 }>
-                                    <Column fullWidth overflow="hidden" className="body-image-plant pet p-1">
-                                        <LayoutPetImageView figure={ avatarInfo.petFigure } posture={ avatarInfo.posture } direction={ 4 } />
-                                    </Column>
-                                    { !avatarInfo.dead &&
-                                        <Column grow gap={ 1 }>
-                                            <Text variant="white" center small wrap>{ LocalizeText('pet.level', [ 'level', 'maxlevel' ], [ avatarInfo.level.toString(), avatarInfo.maximumLevel.toString() ]) }</Text>
-                                        </Column> }
-                                </Flex>
+                            <Column center gap={ 1 }>
+                                <LayoutPetImageView figure={ avatarInfo.petFigure } posture={ avatarInfo.posture } direction={ 4 } />
                                 <hr className="m-0" />
                             </Column>
-                            <Column gap={ 1 }>
+                            <Column gap={ 2 }>
+                                { !avatarInfo.dead &&
+                                    <Column alignItems="center" gap={ 1 }>
+                                        <Text variant="white" center small wrap>{ LocalizeText('pet.level', [ 'level', 'maxlevel' ], [ avatarInfo.level.toString(), avatarInfo.maximumLevel.toString() ]) }</Text>
+                                    </Column> }
                                 <Column alignItems="center" gap={ 1 }>
                                     <Text variant="white" small truncate>{ LocalizeText('infostand.pet.text.wellbeing') }</Text>
                                     <Base fullWidth overflow="hidden" position="relative" className="bg-light-dark rounded">
@@ -109,20 +105,18 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                                         <Base className="bg-success rounded pet-stats" style={ { width: avatarInfo.dead ? '0' : Math.round((avatarInfo.maximumTimeToLive * 100) / (remainingTimeToLive)).toString() } } />
                                     </Base>
                                 </Column>
-                                <br /><br />
-                                <br /><br />
                                 { remainingGrowTime != 0 && remainingGrowTime > 0 &&
                                     <Column alignItems="center" gap={ 1 }>
-                                        <Text variant="white" small truncate>{ LocalizeText('infostand.pet.text.growth') }</Text> <br />
+                                        <Text variant="white" small truncate>{ LocalizeText('infostand.pet.text.growth') }</Text>
                                         <LayoutCounterTimeView className="top-2 end-2" day={ ConvertSeconds(remainingGrowTime).split(':')[0] } hour={ ConvertSeconds(remainingGrowTime).split(':')[1] } minutes={ ConvertSeconds(remainingGrowTime).split(':')[2] } seconds={ ConvertSeconds(remainingGrowTime).split(':')[3] } />
                                     </Column> }
-                                <br /><br />
-                                <br /><br />
                                 <Column alignItems="center" gap={ 1 }>
-                                    <Text variant="white" small truncate>{ LocalizeText('Nivel de rareza:') }</Text>
+                                    <Text variant="white" small truncate>{ LocalizeText('infostand.pet.text.raritylevel', [ 'level' ], [ LocalizeText(`infostand.pet.raritylevel.${ avatarInfo.rarityLevel }`) ]) }</Text>
                                     <LayoutRarityLevelView className="top-2 end-2" level={ avatarInfo.rarityLevel } />
                                 </Column>
-                                <br /><br />
+                                <hr className="m-0" />
+                            </Column>
+                            <Column gap={ 1 }>
                                 <Text variant="white" small wrap>{ LocalizeText('pet.age', [ 'age' ], [ avatarInfo.age.toString() ]) }</Text>
                                 <hr className="m-0" />
                             </Column>

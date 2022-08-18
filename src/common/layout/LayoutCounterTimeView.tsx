@@ -1,6 +1,7 @@
 import { FC, useMemo } from 'react';
-import { Base, BaseProps, Column, Flex, Text } from '..';
 import { LocalizeText } from '../../api';
+import { Base, BaseProps } from '../Base';
+import { Flex } from '../Flex';
 
 interface LayoutCounterTimeViewProps extends BaseProps<HTMLDivElement>
 {
@@ -24,42 +25,19 @@ export const LayoutCounterTimeView: FC<LayoutCounterTimeViewProps> = props =>
     }, [ classNames ]);
 
     return (
-        <>
-            <Column gap={ 1 }>
-                <Flex gap={ 1 }>
-                    <Column>
-                        <Base classNames={ getClassNames } { ...rest }>
-                            <div>{ day != '00' ? day : hour }</div>
-                            { children }
-                        </Base>
-                        <Text variant="white" small truncate center={ true }>{ day != '00' ? LocalizeText('countdown_clock_unit_days') : LocalizeText('countdown_clock_unit_hours') }</Text>
-                    </Column>
-                    <Column>
-                        <Base style={ { marginTop: '3px' } }>
-                            :
-                        </Base>
-                    </Column>
-                    <Column>
-                        <Base classNames={ getClassNames } { ...rest }>
-                            <div>{ minutes }</div>
-                            { children }
-                        </Base>
-                        <Text variant="white" small truncate center={ true }>{ LocalizeText('countdown_clock_unit_minutes') }</Text>
-                    </Column>
-                    <Column>
-                        <Base style={ { marginTop: '3px' } }>
-                            :
-                        </Base>
-                    </Column>
-                    <Column>
-                        <Base classNames={ getClassNames } { ...rest }>
-                            <div>{ seconds }</div>
-                            { children }
-                        </Base>
-                        <Text variant="white" small truncate center={ true }>{ LocalizeText('countdown_clock_unit_seconds') }</Text>
-                    </Column>
-                </Flex>
-            </Column>
-        </>
+        <Flex gap={ 1 }>
+            <Base classNames={ getClassNames } { ...rest }>
+                <div>{ day != '00' ? day : hour }{ day != '00' ? LocalizeText('countdown_clock_unit_days') : LocalizeText('countdown_clock_unit_hours') }</div>
+            </Base>
+            <Base style={ { marginTop: '3px' } }>:</Base>
+            <Base classNames={ getClassNames } { ...rest }>
+                <div>{ minutes }{ LocalizeText('countdown_clock_unit_minutes') }</div>
+            </Base>
+            <Base style={ { marginTop: '3px' } }>:</Base>
+            <Base classNames={ getClassNames } { ...rest }>
+                <div>{ seconds }{ LocalizeText('countdown_clock_unit_seconds') }</div>
+            </Base>
+            { children }
+        </Flex>
     );
 }
