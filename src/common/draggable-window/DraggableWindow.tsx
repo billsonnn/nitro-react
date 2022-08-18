@@ -2,10 +2,10 @@ import { MouseEventType, TouchEventType } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, Key, MouseEvent as ReactMouseEvent, ReactNode, TouchEvent as ReactTouchEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Base } from '..';
+import { GetLocalStorage, SetLocalStorage, WindowSaveOptions } from '../../api';
 import { DraggableWindowPosition } from './DraggableWindowPosition';
 
 const CURRENT_WINDOWS: HTMLElement[] = [];
-const POS_MEMORY: Map<Key, { x: number, y: number }> = new Map();
 const BOUNDS_THRESHOLD_TOP: number = 0;
 const BOUNDS_THRESHOLD_LEFT: number = 0;
 
@@ -138,7 +138,14 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
         setOffset({ x: offsetX, y: offsetY });
         setIsDragging(false);
 
-        if(uniqueKey !== null) POS_MEMORY.set(uniqueKey, { x: offsetX, y: offsetY });
+        if(uniqueKey !== null)
+        {
+            const newStorage = { ...GetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`) } as WindowSaveOptions;
+
+            newStorage.offset = { x: offsetX, y: offsetY };
+
+            SetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`, newStorage);
+        }
     }, [ dragHandler, delta, offset, uniqueKey ]);
 
     const onDragMouseUp = useCallback((event: MouseEvent) =>
@@ -185,17 +192,6 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
                 element.style.top = 50 + offsetTop + 'px';
                 element.style.left = 50 + offsetLeft + 'px';
                 break;
-        }
-
-        if(uniqueKey !== null)
-        {
-            const memory = POS_MEMORY.get(uniqueKey);
-
-            if(memory)
-            {
-                offsetX = memory.x;
-                offsetY = memory.y;
-            }
         }
 
         setDelta({ x: 0, y: 0 });
@@ -252,6 +248,18 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
             document.removeEventListener(TouchEventType.TOUCH_MOVE, onDragTouchMove);
         }
     }, [ isDragging, onDragMouseUp, onDragMouseMove, onDragTouchUp, onDragTouchMove ]);
+
+    useEffect(() =>
+    {
+        if(!uniqueKey) return;
+
+        const localStorage = GetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`);
+
+        if(!localStorage || !localStorage.offset) return;
+
+        setDelta({ x: 0, y: 0 });
+        if(localStorage.offset) setOffset(localStorage.offset);
+    }, [ uniqueKey ]);
 
     return (
         createPortal(
