@@ -835,7 +835,7 @@ const useCatalogState = () =>
     
     useEffect(() =>
     {
-        if(!isVisible || !rootNode || !requestedPage.current) return;
+        if(!isVisible || !rootNode || !offersToNodes || !requestedPage.current) return;
 
         switch(requestedPage.current.requestType)
         {
@@ -868,7 +868,7 @@ const useCatalogState = () =>
                 requestedPage.current.resetRequest();
                 return;
         }
-    }, [ isVisible, rootNode, currentPage, activateNode, openPageById, openPageByOfferId, openPageByName ]);
+    }, [ isVisible, rootNode, offersToNodes, currentPage, activateNode, openPageById, openPageByOfferId, openPageByName ]);
 
     useEffect(() =>
     {
