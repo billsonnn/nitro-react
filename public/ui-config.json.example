@@ -16,6 +16,11 @@
     "badge.descriptions.enabled": true,
     "motto.max.length": 38,
     "bot.name.max.length": 15,
+    "wired.action.bot.talk.to.avatar.max.length": 64,
+    "wired.action.bot.talk.max.length": 64,
+    "wired.action.chat.max.length": 100,
+    "wired.action.kick.from.room.max.length": 100,
+    "wired.action.mute.user.max.length": 100,
     "navigator.room.models": [
         { "clubLevel": 0, "tileSize": 104, "name": "a" },
         { "clubLevel": 0, "tileSize": 94, "name": "b" },
@@ -120,6 +125,8 @@
     "catalog.asset.url": "${image.library.url}catalogue",
     "catalog.asset.image.url": "${catalog.asset.url}/%name%.gif",
     "catalog.asset.icon.url": "${catalog.asset.url}/icon_%name%.png",
+    "catalog.tab.icons": false,
+    "catalog.headers": false,
     "chat.input.maxlength": 100,
     "chat.styles.disabled": [],
     "chat.styles": [

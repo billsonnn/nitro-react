@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { IPurchasableOffer, ProductTypeEnum } from '../../../../../api';
 import { AutoGrid, AutoGridProps } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
@@ -13,6 +13,12 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
 {
     const { columnCount = 5, children = null, ...rest } = props;
     const { currentOffer = null, setCurrentOffer = null, currentPage = null, setPurchaseOptions = null } = useCatalog();
+    const elementRef = useRef<HTMLDivElement>();
+
+    useEffect(() =>
+    {
+        if(elementRef && elementRef.current) elementRef.current.scrollTop = 0;
+    }, [ currentPage ]);
 
     if(!currentPage) return null;
 
@@ -38,7 +44,7 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
     }
 
     return (
-        <AutoGrid columnCount={ columnCount } { ...rest }>
+        <AutoGrid innerRef={ elementRef } columnCount={ columnCount } { ...rest }>
             { currentPage.offers && (currentPage.offers.length > 0) && currentPage.offers.map((offer, index) => <CatalogGridOfferView key={ index } itemActive={ (currentOffer && (currentOffer.offerId === offer.offerId)) } offer={ offer } selectOffer={ selectOffer } />) }
             { children }
         </AutoGrid>

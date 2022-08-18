@@ -19,7 +19,7 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
     const [ wiredName, setWiredName ] = useState<string>(null);
     const [ wiredDescription, setWiredDescription ] = useState<string>(null);
     const [ needsSave, setNeedsSave ] = useState<boolean>(false);
-    const { trigger = null, setTrigger = null, setIntParams = null, setStringParam = null, setFurniIds = null, saveWired = null } = useWired();
+    const { trigger = null, setTrigger = null, setIntParams = null, setStringParam = null, setFurniIds = null, setAllowsFurni = null, saveWired = null } = useWired();
 
     const onClose = () => setTrigger(null);
     
@@ -82,6 +82,11 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
             });
         }
     }, [ trigger, hasSpecialInput, requiresFurni, setIntParams, setStringParam, setFurniIds ]);
+
+    useEffect(() =>
+    {
+        setAllowsFurni(requiresFurni);
+    }, [ requiresFurni, setAllowsFurni ]);
 
     return (
         <NitroCardView uniqueKey="nitro-wired" className="nitro-wired" theme="primary-slim">

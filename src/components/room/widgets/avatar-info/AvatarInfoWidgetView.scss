@@ -70,6 +70,17 @@
             }
         }
 
+        .body-image-plant {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 68px;
+            height: 85px;
+            max-height: 90px;
+            border-radius: $border-radius;
+        }
+
         .badge-image {
             width: 45px;
             height: 45px;

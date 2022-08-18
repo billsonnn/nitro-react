@@ -5,11 +5,12 @@ import { CatalogNavigationItemView } from './CatalogNavigationItemView';
 export interface CatalogNavigationSetViewProps
 {
     node: ICatalogNode;
+    child?: boolean;
 }
 
 export const CatalogNavigationSetView: FC<CatalogNavigationSetViewProps> = props =>
 {
-    const { node = null } = props;
+    const { node = null, child = false } = props;
     
     return (
         <>
@@ -17,7 +18,7 @@ export const CatalogNavigationSetView: FC<CatalogNavigationSetViewProps> = props
             {
                 if(!n.isVisible) return null;
                     
-                return <CatalogNavigationItemView key={ index } node={ n } />
+                return <CatalogNavigationItemView key={ index } node={ n } child={ child } />
             }) }
         </>
     );

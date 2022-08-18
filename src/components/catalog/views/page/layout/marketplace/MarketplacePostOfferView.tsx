@@ -9,9 +9,21 @@ export const MarketplacePostOfferView : FC<{}> = props =>
 {
     const [ item, setItem ] = useState<FurnitureItem>(null);
     const [ askingPrice, setAskingPrice ] = useState(0);
+    const [ tempAskingPrice, setTempAskingPrice ] = useState('0');
     const { catalogOptions = null, setCatalogOptions = null } = useCatalog();
     const { marketplaceConfiguration = null } = catalogOptions;
     const { showConfirm = null } = useNotification();
+
+    const updateAskingPrice = (price: string) =>
+    {
+        setTempAskingPrice(price);
+
+        const newValue = parseInt(price);
+
+        if(isNaN(newValue) || (newValue === askingPrice)) return;
+
+        setAskingPrice(parseInt(price));
+    }
 
     useMessageEvent<MarketplaceConfigurationEvent>(MarketplaceConfigurationEvent, event =>
     {
@@ -64,7 +76,7 @@ export const MarketplacePostOfferView : FC<{}> = props =>
             setItem(null) 
         }, null, null, LocalizeText('inventory.marketplace.confirm_offer.title'));
     }
-
+    
     return (
         <NitroCardView className="nitro-catalog-layout-marketplace-post-offer" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('inventory.marketplace.make_offer.title') } onCloseClick={ event => setItem(null) } />
@@ -83,7 +95,7 @@ export const MarketplacePostOfferView : FC<{}> = props =>
                                 { LocalizeText('inventory.marketplace.make_offer.expiration_info', [ 'time' ], [ marketplaceConfiguration.offerTime.toString() ]) }
                             </Text>
                             <div className="input-group has-validation">
-                                <input className="form-control form-control-sm" type="number" min={ 0 } value={ askingPrice } onChange={ event => setAskingPrice(parseInt(event.target.value)) } placeholder={ LocalizeText('inventory.marketplace.make_offer.price_request') } />
+                                <input className="form-control form-control-sm" type="number" min={ 0 } value={ tempAskingPrice } onChange={ event => updateAskingPrice(event.target.value) } placeholder={ LocalizeText('inventory.marketplace.make_offer.price_request') } />
                                 { ((askingPrice < marketplaceConfiguration.minimumPrice) || isNaN(askingPrice)) &&
                                     <Base className="invalid-feedback d-block">
                                         { LocalizeText('inventory.marketplace.make_offer.min_price', [ 'minprice' ], [ marketplaceConfiguration.minimumPrice.toString() ]) }

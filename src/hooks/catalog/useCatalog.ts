@@ -835,7 +835,7 @@ const useCatalogState = () =>
     
     useEffect(() =>
     {
-        if(!isVisible || !rootNode || !requestedPage.current) return;
+        if(!isVisible || !rootNode || !offersToNodes || !requestedPage.current) return;
 
         switch(requestedPage.current.requestType)
         {
@@ -868,12 +868,19 @@ const useCatalogState = () =>
                 requestedPage.current.resetRequest();
                 return;
         }
-    }, [ isVisible, rootNode, currentPage, activateNode, openPageById, openPageByOfferId, openPageByName ]);
+    }, [ isVisible, rootNode, offersToNodes, currentPage, activateNode, openPageById, openPageByOfferId, openPageByName ]);
 
     useEffect(() =>
     {
         if(!searchResult && currentPage && (currentPage.pageId === -1)) openPageById(previousPageId);
     }, [ searchResult, currentPage, previousPageId, openPageById ]);
+
+    useEffect(() =>
+    {
+        if(!currentOffer) return;
+
+        setPurchaseOptions({ quantity: 1, extraData: null, extraParamRequired: false, previewStuffData: null });
+    }, [ currentOffer ]);
     
     useEffect(() =>
     {

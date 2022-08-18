@@ -3,7 +3,7 @@ import { RoomControllerLevel, RoomObjectCategory, RoomObjectVariable, RoomUnitGi
 import { FC, useEffect, useMemo, useState } from 'react';
 import { AvatarInfoUser, CreateLinkEvent, DispatchUiEvent, GetOwnRoomObject, GetSessionDataManager, GetUserProfile, LocalizeText, MessengerFriend, ReportType, RoomWidgetUpdateChatInputContentEvent, SendMessageComposer } from '../../../../../api';
 import { Base, Flex } from '../../../../../common';
-import { useFriends, useHelp, useRoom } from '../../../../../hooks';
+import { useFriends, useHelp, useRoom, useSessionInfo } from '../../../../../hooks';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
@@ -26,10 +26,10 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
 {
     const { avatarInfo = null, onClose = null } = props;
     const [ mode, setMode ] = useState(MODE_NORMAL);
-    const [ respectsLeft, setRespectsLeft ] = useState(0);
     const { canRequestFriend = null } = useFriends();
     const { report = null } = useHelp();
     const { roomSession = null } = useRoom();
+    const { userRespectRemaining = 0, respectUser = null } = useSessionInfo();
 
     const isShowGiveRights = useMemo(() =>
     {
@@ -113,13 +113,9 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                     setMode(MODE_RELATIONSHIP);
                     break;
                 case 'respect': {
-                    let newRespectsLeft = (respectsLeft - 1);
-                    
-                    setRespectsLeft(newRespectsLeft);
+                    respectUser(avatarInfo.webID);
 
-                    GetSessionDataManager().giveRespect(avatarInfo.webID);
-
-                    if(newRespectsLeft > 0) hideMenu = false;
+                    if((userRespectRemaining - 1) >= 1) hideMenu = false;
                     break;
                 }
                 case 'ignore':
@@ -203,7 +199,6 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
     useEffect(() =>
     {
         setMode(MODE_NORMAL);
-        setRespectsLeft(avatarInfo.respectLeft);
     }, [ avatarInfo ]);
 
     return (
@@ -223,9 +218,9 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                     <ContextMenuListItemView onClick={ event => processAction('whisper') }>
                         { LocalizeText('infostand.button.whisper') }
                     </ContextMenuListItemView>
-                    { (respectsLeft > 0) &&
+                    { (userRespectRemaining > 0) &&
                         <ContextMenuListItemView onClick={ event => processAction('respect') }>
-                            { LocalizeText('infostand.button.respect', [ 'count' ], [ respectsLeft.toString() ]) }
+                            { LocalizeText('infostand.button.respect', [ 'count' ], [ userRespectRemaining.toString() ]) }
                         </ContextMenuListItemView> }
                     { !canRequestFriend(avatarInfo.webID) &&
                         <ContextMenuListItemView onClick={ event => processAction('relationship') }>

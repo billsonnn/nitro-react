@@ -1,13 +1,23 @@
 import { FC } from 'react';
-import { CreateLinkEvent, LocalizeText } from '../../../../api';
+import { attemptItemPlacement, CreateLinkEvent, LocalizeText } from '../../../../api';
 import { Button, Column, Flex, LayoutGiftTagView, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { useFurniturePresentWidget } from '../../../../hooks';
+import { useFurniturePresentWidget, useInventoryFurni } from '../../../../hooks';
 
 export const FurnitureGiftOpeningView: FC<{}> = props =>
 {
     const { objectId = -1, classId = -1, itemType = null, text = null, isOwnerOfFurniture = false, senderName = null, senderFigure = null, placedItemId = -1, placedItemType = null, placedInRoom = false, imageUrl = null, openPresent = null, onClose = null } = useFurniturePresentWidget();
+    const { groupItems = [] } = useInventoryFurni();
 
     if(objectId === -1) return null;
+
+    const place = (itemId: number) =>
+    {
+        const groupItem = groupItems.find(group => (group.getItemById(itemId)?.id === itemId));
+
+        if(groupItem) attemptItemPlacement(groupItem);
+
+        onClose();
+    }
 
     return (
         <NitroCardView className="nitro-gift-opening" theme="primary-slim">
@@ -45,7 +55,7 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
                                         <Button fullWidth onClick={ null }>
                                             { LocalizeText('widget.furni.present.put_in_inventory') }
                                         </Button> }
-                                    <Button fullWidth variant="success" onClick={ null }>
+                                    <Button fullWidth variant="success" onClick={ event => place(placedItemId) }>
                                         { LocalizeText(placedInRoom ? 'widget.furni.present.keep_in_room' : 'widget.furni.present.place_in_room') }
                                     </Button>
                                 </Flex>

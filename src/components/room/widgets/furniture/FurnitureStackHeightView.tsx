@@ -1,5 +1,5 @@
 import { FurnitureStackHeightComposer } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
@@ -8,6 +8,23 @@ import { useFurnitureStackHeightWidget } from '../../../../hooks';
 export const FurnitureStackHeightView: FC<{}> = props =>
 {
     const { objectId = -1, height = 0, maxHeight = 40, onClose = null, updateHeight = null } = useFurnitureStackHeightWidget();
+    const [ tempHeight, setTempHeight ] = useState('');
+
+    const updateTempHeight = (value: string) =>
+    {
+        setTempHeight(value);
+
+        const newValue = parseFloat(value);
+
+        if(isNaN(newValue) || (newValue === height)) return;
+
+        updateHeight(newValue);
+    }
+
+    useEffect(() =>
+    {
+        setTempHeight(height.toString());
+    }, [ height ]);
 
     if(objectId === -1) return null;
 
@@ -25,7 +42,7 @@ export const FurnitureStackHeightView: FC<{}> = props =>
                         value={ height }
                         onChange={ event => updateHeight(event) }
                         renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
-                    <input className="show-number-arrows" type="number" min={ 0 } max={ maxHeight } value={ height } onChange={ event => updateHeight(parseFloat(event.target.value)) } />
+                    <input className="show-number-arrows" style={ { width: 50 } } type="number" min={ 0 } max={ maxHeight } value={ tempHeight } onChange={ event => updateTempHeight(event.target.value) } />
                 </Flex>
                 <Column gap={ 1 }>
                     <Button onClick={ event => SendMessageComposer(new FurnitureStackHeightComposer(objectId, -100)) }>

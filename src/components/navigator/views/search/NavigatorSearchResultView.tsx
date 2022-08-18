@@ -13,7 +13,6 @@ export interface NavigatorSearchResultViewProps extends AutoGridProps
 export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = props =>
 {
     const { searchResult = null, ...rest } = props;
-
     const [ isExtended, setIsExtended ] = useState(true);
     const [ displayMode, setDisplayMode ] = useState<number>(0);
 
@@ -44,7 +43,7 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
 
         //setIsExtended(searchResult.closed);
         setDisplayMode(searchResult.mode);
-    }, [ searchResult,props ]);
+    }, [ searchResult ]);
 
     const gridHasTwoColumns = (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS);
     

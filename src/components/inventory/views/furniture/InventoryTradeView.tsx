@@ -21,6 +21,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
     const [ otherGroupItem, setOtherGroupItem ] = useState<GroupItem>(null);
     const [ filteredGroupItems, setFilteredGroupItems ] = useState<GroupItem[]>(null);
     const [ countdownTick, setCountdownTick ] = useState(3);
+    const [ quantity, setQuantity ] = useState<number>(1);
     const { ownUser = null, otherUser = null, groupItems = [], tradeState = TradeState.TRADING_STATE_READY, progressTrade = null, removeItem = null, setTradeState = null } = useInventoryTrade();
     const { simpleAlert = null } = useNotification();
 
@@ -118,6 +119,29 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         return <FontAwesomeIcon icon={ iconName } className={ 'text-' + textColor } />
     }
 
+    const updateQuantity = (value: number, totalItemCount: number) =>
+    {
+        if(isNaN(Number(value)) || Number(value) < 0 || !value) value = 1;
+
+        value = Math.max(Number(value), 1);
+        value = Math.min(Number(value), totalItemCount);
+
+        if(value === quantity) return;
+
+        setQuantity(value);
+    }
+
+    const changeCount = (totalItemCount: number) =>
+    {
+        updateQuantity(quantity, totalItemCount);
+        attemptItemOffer(quantity);
+    }
+
+    useEffect(() =>
+    {
+        setQuantity(1);
+    }, [ groupItem ]);
+
     useEffect(() =>
     {
         if(tradeState !== TradeState.TRADING_STATE_COUNTDOWN) return;
@@ -159,18 +183,29 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                             const count = item.getUnlockedCount();
 
                             return (
-                                <LayoutGridItem key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) }>
+                                <LayoutGridItem key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) } onDoubleClick={ event => attemptItemOffer(1) }>
                                     { ((count > 0) && (groupItem === item)) &&
-                                    <Button position="absolute" variant="success" className="trade-button bottom-1 end-1" onClick={ event => attemptItemOffer(1) }>
-                                        <FontAwesomeIcon icon="chevron-right" />
-                                    </Button> }
+                                        <Button position="absolute" variant="success" className="trade-button bottom-1 end-1" onClick={ event => attemptItemOffer(1) }>
+                                            <FontAwesomeIcon icon="chevron-right" />
+                                        </Button>
+                                    }
                                 </LayoutGridItem>
                             );
                         }) }
                     </AutoGrid>
-                    <Base fullWidth className="badge bg-muted">
-                        { groupItem ? groupItem.name : LocalizeText('catalog_selectproduct') }
-                    </Base>
+                    <Column gap={ 1 } alignItems="end">
+                        <Grid overflow="hidden">
+                            <Column size={ 6 } overflow="hidden">
+                                <input type="number" className="form-control form-control-sm quantity-input" placeholder={ LocalizeText('catalog.bundlewidget.spinner.select.amount') } disabled={ !groupItem } value={ quantity } onChange={ event => setQuantity(event.target.valueAsNumber) } />
+                            </Column>
+                            <Column size={ 6 } overflow="hidden">
+                                <Button variant="secondary" disabled={ !groupItem } onClick={ event => changeCount(groupItem.getUnlockedCount()) }>{ LocalizeText('inventory.trading.areoffering') }</Button>
+                            </Column>
+                        </Grid>
+                        <Base fullWidth className="badge bg-muted">
+                            { groupItem ? groupItem.name : LocalizeText('catalog_selectproduct') }
+                        </Base>
+                    </Column>
                 </Flex>
             </Column>
             <Column size={ 8 } overflow="hidden">
@@ -188,11 +223,11 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                                 if(!item) return <LayoutGridItem key={ i } />;
 
                                 return (
-                                    <LayoutGridItem key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) }>
+                                    <LayoutGridItem key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) } onDoubleClick={ event => removeItem(item) }>
                                         { (ownGroupItem === item) &&
-                                        <Button position="absolute" variant="danger" className="trade-button bottom-1 start-1" onClick={ event => removeItem(item) }>
-                                            <FontAwesomeIcon icon="chevron-left" />
-                                        </Button> }
+                                            <Button position="absolute" variant="danger" className="trade-button bottom-1 start-1" onClick={ event => removeItem(item) }>
+                                                <FontAwesomeIcon icon="chevron-left" />
+                                            </Button> }
                                     </LayoutGridItem>
                                 );
                             }) }

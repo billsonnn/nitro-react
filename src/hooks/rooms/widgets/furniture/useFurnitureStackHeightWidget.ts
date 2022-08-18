@@ -24,7 +24,7 @@ const useFurnitureStackHeightWidgetState = () =>
     const updateHeight = (height: number, server: boolean = false) =>
     {
         if(!height) height = 0;
-        
+
         height = Math.abs(height);
 
         if(!server) ((height > MAX_HEIGHT) && (height = MAX_HEIGHT));

@@ -1,5 +1,6 @@
 import { NitroLogger } from '@nitrots/nitro-renderer';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { GetLocalStorage, SetLocalStorage } from '../api';
 
 const useLocalStorageState = <T>(key: string, initialValue: T): [ T, Dispatch<SetStateAction<T>>] =>
 {
@@ -9,9 +10,9 @@ const useLocalStorageState = <T>(key: string, initialValue: T): [ T, Dispatch<Se
 
         try
         {
-            const item = window.localStorage.getItem(key);
+            const item = GetLocalStorage<T>(key);
 
-            return item ? JSON.parse(item) : initialValue;
+            return item ?? initialValue;
         }
 
         catch(error)
@@ -28,7 +29,7 @@ const useLocalStorageState = <T>(key: string, initialValue: T): [ T, Dispatch<Se
 
             setStoredValue(valueToStore);
 
-            if(typeof window !== 'undefined') window.localStorage.setItem(key, JSON.stringify(valueToStore));
+            if(typeof window !== 'undefined') SetLocalStorage(key, valueToStore);
         }
 
         catch(error)
