@@ -89,8 +89,7 @@
         .icon-hc-banner {
             width: 68px;
             height: 40px;
-            background: url("../../assets/images/catalog/hc_big.png") center
-                no-repeat;
+            background: url("../../assets/images/catalog/hc_big.png") center no-repeat;
         }
     }
 }
@@ -122,10 +121,4 @@
 .nitro-catalog-header {
     width: 290px;
     height: 60px;
-    align-self: center;
-
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-    flex-shrink: 0;
 }
