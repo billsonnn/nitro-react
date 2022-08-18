@@ -125,6 +125,8 @@
     "catalog.asset.url": "${image.library.url}catalogue",
     "catalog.asset.image.url": "${catalog.asset.url}/%name%.gif",
     "catalog.asset.icon.url": "${catalog.asset.url}/icon_%name%.png",
+    "catalog.tab.icons": false,
+    "catalog.headers": false,
     "chat.input.maxlength": 100,
     "chat.styles.disabled": [],
     "chat.styles": [
