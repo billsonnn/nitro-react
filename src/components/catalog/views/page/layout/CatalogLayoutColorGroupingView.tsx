@@ -152,7 +152,6 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
                     <>
                         <Base position="relative" overflow="hidden">
                             <CatalogViewProductWidgetView />
-                            <CatalogLimitedItemWidgetView fullWidth position="absolute" className="top-1" />
                             <CatalogAddOnBadgeWidgetView position="absolute" className="bg-muted rounded bottom-1 end-1" />
                             { currentOffer.product.furnitureData.hasIndexedColor &&
                                 <Button position="absolute" className="bottom-1 start-1" onClick={ event =>setColorsShowing(prev => !prev) }>
@@ -160,6 +159,7 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
                                 </Button> }
                         </Base>
                         <Column grow gap={ 1 }>
+                            <CatalogLimitedItemWidgetView fullWidth />
                             <Text grow truncate>{ currentOffer.localizationName }</Text>
                             <Flex justifyContent="between">
                                 <Column gap={ 1 }>
