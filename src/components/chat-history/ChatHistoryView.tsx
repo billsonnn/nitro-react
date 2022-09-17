@@ -11,7 +11,7 @@ export const ChatHistoryView: FC<{}> = props =>
     const { chatHistory = [] } = useChatHistory();
     const elementRef = useRef<List>(null);
 
-    const [ searchText, setSearchText ] = useState<string>('z');
+    const [ searchText, setSearchText ] = useState<string>('');
 
     const cache = useMemo(() => new CellMeasurerCache({ defaultHeight: 25, fixedWidth: true }), []);
 
