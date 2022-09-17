@@ -22,6 +22,11 @@ export const ChatHistoryView: FC<{}> = props =>
         return chatHistory.filter((i) => (i.message && i.message.includes(searchText)) || i.name.includes(searchText));
     }, [ chatHistory, searchText ]);
 
+    useEffect(() => 
+    {
+        cache.clearAll();
+    }, [ filteredChatHistory ]);
+
     const RowRenderer: ListRowRenderer = (props: ListRowProps) =>
     {
         const item = filteredChatHistory[props.index];
