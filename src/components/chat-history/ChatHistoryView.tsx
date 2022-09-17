@@ -1,12 +1,9 @@
-import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps, ListRowRenderer, Size } from 'react-virtualized';
-import { AddEventLinkTracker, ChatEntryType, GetAvatarRenderManager, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { AddEventLinkTracker, ChatEntryType, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { useChatHistory } from '../../hooks';
-
-const avatarColorCache: Map<string, number> = new Map();
-const avatarImageCache: Map<string, string> = new Map();
 
 export const ChatHistoryView: FC<{}> = props =>
 {
@@ -15,41 +12,6 @@ export const ChatHistoryView: FC<{}> = props =>
     const elementRef = useRef<List>(null);
 
     const [ searchText, setSearchText ] = useState<string>('z');
-
-    const setFigureImage = (figure: string) =>
-    {
-        const avatarImage = GetAvatarRenderManager().createAvatarImage(figure, AvatarScaleType.LARGE, null, {
-            resetFigure: figure => 
-            {
-                setFigureImage(figure);
-            },
-            dispose: () => 
-            {},
-            disposed: false
-        });
-
-        if(!avatarImage) return;
-
-        const image = avatarImage.getCroppedImage(AvatarSetType.HEAD);
-        const color = avatarImage.getPartColor(AvatarFigurePartType.CHEST);
-
-        avatarColorCache.set(figure, ((color && color.rgb) || 16777215));
-
-        avatarImage.dispose();
-
-        avatarImageCache.set(figure, image.src);
-
-        return image.src;
-    }
-
-    const getUserImage = (figure: string) =>
-    {
-        let existing = avatarImageCache.get(figure);
-
-        if(!existing) existing = setFigureImage(figure);
-
-        return existing;
-    }
 
     const cache = useMemo(() => new CellMeasurerCache({ defaultHeight: 25, fixedWidth: true }), []);
 
