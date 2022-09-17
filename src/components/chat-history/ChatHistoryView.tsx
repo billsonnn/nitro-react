@@ -1,9 +1,12 @@
-import { ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps, ListRowRenderer, Size } from 'react-virtualized';
-import { AddEventLinkTracker, ChatEntryType, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { AddEventLinkTracker, ChatEntryType, GetAvatarRenderManager, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { useChatHistory } from '../../hooks';
+
+const avatarColorCache: Map<string, number> = new Map();
+const avatarImageCache: Map<string, string> = new Map();
 
 export const ChatHistoryView: FC<{}> = props =>
 {
@@ -11,23 +14,77 @@ export const ChatHistoryView: FC<{}> = props =>
     const { chatHistory = [] } = useChatHistory();
     const elementRef = useRef<List>(null);
 
+    const [ searchText, setSearchText ] = useState<string>('z');
+
+    const setFigureImage = (figure: string) =>
+    {
+        const avatarImage = GetAvatarRenderManager().createAvatarImage(figure, AvatarScaleType.LARGE, null, {
+            resetFigure: figure => 
+            {
+                setFigureImage(figure);
+            },
+            dispose: () => 
+            {},
+            disposed: false
+        });
+
+        if(!avatarImage) return;
+
+        const image = avatarImage.getCroppedImage(AvatarSetType.HEAD);
+        const color = avatarImage.getPartColor(AvatarFigurePartType.CHEST);
+
+        avatarColorCache.set(figure, ((color && color.rgb) || 16777215));
+
+        avatarImage.dispose();
+
+        avatarImageCache.set(figure, image.src);
+
+        return image.src;
+    }
+
+    const getUserImage = (figure: string) =>
+    {
+        let existing = avatarImageCache.get(figure);
+
+        if(!existing) existing = setFigureImage(figure);
+
+        return existing;
+    }
+
     const cache = useMemo(() => new CellMeasurerCache({ defaultHeight: 25, fixedWidth: true }), []);
+
+    const filteredChatHistory = useMemo(() => 
+    {
+        if (searchText.length === 0) return chatHistory;
+
+        return chatHistory.filter((i) => i.message && i.message.includes(searchText));
+    }, [ chatHistory, searchText ]);
 
     const RowRenderer: ListRowRenderer = (props: ListRowProps) =>
     {
-        const item = chatHistory[props.index];
+        const item = filteredChatHistory[props.index];
 
-        const isDark = (props.index % 2 === 0);
+        if (!item) return null;
 
         return (
             <CellMeasurer cache={ cache } columnIndex={ 0 } key={ props.key } parent={ props.parent } rowIndex={ props.index }>
-                <Flex key={ props.key } style={ props.style } className="p-1" gap={ 1 }>
+                <Flex key={ props.key } style={ props.style } className="p-1" gap={ 2 }>
                     <Text variant="muted">{ item.timestamp }</Text>
                     { (item.type === ChatEntryType.TYPE_CHAT) &&
-                        <>
-                            <Text pointer noWrap dangerouslySetInnerHTML={ { __html: (item.name + ':') } } />
-                            <Text textBreak wrap grow>{ item.message }</Text>
-                        </> }
+                        <div className="bubble-container" style={ { position: 'relative' } }>
+                            { (item.style === 0) &&
+                            <div className="user-container-bg" style={ { backgroundColor: item.color } } /> }
+                            <div className={ `chat-bubble bubble-${ item.style } type-${ item.chatType }` } style={ { maxWidth: '100%' } }>
+                                <div className="user-container">
+                                    { item.imageUrl && (item.imageUrl.length > 0) &&
+                        <div className="user-image" style={ { backgroundImage: `url(${ item.imageUrl })` } } /> }
+                                </div>
+                                <div className="chat-content">
+                                    <b className="username mr-1" dangerouslySetInnerHTML={ { __html: `${ item.name }: ` } } />
+                                    <span className="message" dangerouslySetInnerHTML={ { __html: `${ item.message }` } } />
+                                </div>
+                            </div>
+                        </div> }
                     { (item.type === ChatEntryType.TYPE_ROOM_INFO) &&
                         <>
                             <i className="icon icon-small-room" />
@@ -81,22 +138,27 @@ export const ChatHistoryView: FC<{}> = props =>
         <NitroCardView uniqueKey="chat-history" className="nitro-chat-history" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('room.chathistory.button.text') } onCloseClick={ event => setIsVisible(false) }/>
             <NitroCardContentView>
-                <AutoSizer defaultWidth={ 300 } defaultHeight={ 200 } onResize={ onResize }>
-                    { ({ height, width }) => 
-                    {
-                        return (
-                            <List
-                                ref={ elementRef }
-                                width={ width }
-                                height={ height }
-                                rowCount={ chatHistory.length }
-                                rowHeight={ cache.rowHeight }
-                                className={ 'chat-history-list' }
-                                rowRenderer={ RowRenderer }
-                                deferredMeasurementCache={ cache } />
-                        )
-                    } }
-                </AutoSizer>
+                <Flex column fullHeight gap={ 2 }>
+                    <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchText } onChange={ event => setSearchText(event.target.value) } />
+                    <div className="h-100">
+                        <AutoSizer defaultWidth={ 300 } defaultHeight={ 170 } onResize={ onResize }>
+                            { ({ height, width }) => 
+                            {
+                                return (
+                                    <List
+                                        ref={ elementRef }
+                                        width={ width }
+                                        height={ height }
+                                        rowCount={ chatHistory.length }
+                                        rowHeight={ cache.rowHeight }
+                                        className={ 'chat-history-list' }
+                                        rowRenderer={ RowRenderer }
+                                        deferredMeasurementCache={ cache } />
+                                )
+                            } }
+                        </AutoSizer>
+                    </div>
+                </Flex>
             </NitroCardContentView>
         </NitroCardView>
     );

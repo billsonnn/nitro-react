@@ -1,7 +1,7 @@
-import { GetGuestRoomResultEvent, NewConsoleMessageEvent, RoomInviteEvent, RoomSessionChatEvent, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { GetGuestRoomResultEvent, NewConsoleMessageEvent, RoomInviteEvent, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
 import { useBetween } from 'use-between';
-import { ChatEntryType, ChatHistoryCurrentDate, GetRoomSession, IChatEntry, IRoomHistoryEntry, MessengerHistoryCurrentDate } from '../../api';
+import { ChatEntryType, ChatHistoryCurrentDate, IChatEntry, IRoomHistoryEntry, MessengerHistoryCurrentDate } from '../../api';
 import { useMessageEvent, useRoomSessionManagerEvent } from '../events';
 
 const CHAT_HISTORY_MAX = 1000;
@@ -63,19 +63,6 @@ const useChatHistoryState = () =>
             return newValue;
         });
     }
-    
-    useRoomSessionManagerEvent<RoomSessionChatEvent>(RoomSessionChatEvent.CHAT_EVENT, event =>
-    {
-        const roomSession = GetRoomSession();
-
-        if(!roomSession) return;
-
-        const userData = roomSession.userDataManager.getUserDataByIndex(event.objectId);
-
-        if(!userData) return;
-
-        addChatEntry({ id: -1, entityId: userData.webID, name: userData.name, look: userData.figure, entityType: userData.type, message: event.message, timestamp: ChatHistoryCurrentDate(), type: ChatEntryType.TYPE_CHAT, roomId: roomSession.roomId });
-    });
 
     useRoomSessionManagerEvent<RoomSessionEvent>(RoomSessionEvent.STARTED, event => setNeedsRoomInsert(true));
 
@@ -111,7 +98,7 @@ const useChatHistoryState = () =>
         addMessengerEntry({ id: -1, entityId: parser.senderId, name: '', message: parser.messageText, roomId: -1, timestamp: MessengerHistoryCurrentDate(), type: ChatEntryType.TYPE_IM });
     });
     
-    return { chatHistory, roomHistory, messengerHistory };
+    return { addChatEntry, chatHistory, roomHistory, messengerHistory };
 }
 
 export const useChatHistory = () => useBetween(useChatHistoryState);

@@ -1,8 +1,9 @@
 import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, GetGuestRoomResultEvent, NitroPoint, PetFigureData, RoomChatSettings, RoomChatSettingsEvent, RoomDragEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomUserData, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ChatBubbleMessage, GetAvatarRenderManager, GetConfigurationManager, GetRoomEngine, GetRoomObjectScreenLocation, IRoomChatSettings, LocalizeText, PlaySound, RoomChatFormatter } from '../../../api';
+import { ChatBubbleMessage, ChatEntryType, ChatHistoryCurrentDate, GetAvatarRenderManager, GetConfigurationManager, GetRoomEngine, GetRoomObjectScreenLocation, IRoomChatSettings, LocalizeText, PlaySound, RoomChatFormatter } from '../../../api';
 import { useMessageEvent, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../events';
 import { useRoom } from '../useRoom';
+import { useChatHistory } from './../../chat-history/useChatHistory';
 
 const avatarColorCache: Map<string, number> = new Map();
 const avatarImageCache: Map<string, string> = new Map();
@@ -19,6 +20,7 @@ const useChatWidgetState = () =>
         protection: RoomChatSettings.FLOOD_FILTER_NORMAL
     });
     const { roomSession = null } = useRoom();
+    const { addChatEntry } = useChatHistory();
     const isDisposed = useRef(false);
 
     const getScrollSpeed = useMemo(() =>
@@ -229,20 +231,24 @@ const useChatWidgetState = () =>
             }
         }
 
+        const formattedText = RoomChatFormatter(text);
+        const color = (avatarColor && (('#' + (avatarColor.toString(16).padStart(6, '0'))) || null));
+
         const chatMessage = new ChatBubbleMessage(
             userData.roomIndex,
             RoomObjectCategory.UNIT,
             roomSession.roomId,
             text,
-            RoomChatFormatter(text),
+            formattedText,
             username,
             new NitroPoint(bubbleLocation.x, bubbleLocation.y),
             chatType,
             styleId,
             imageUrl,
-            (avatarColor && (('#' + (avatarColor.toString(16).padStart(6, '0'))) || null)));
+            color);
 
         setChatMessages(prevValue => [ ...prevValue, chatMessage ]);
+        addChatEntry({ id: -1, entityId: userData.roomIndex, name: username, imageUrl, style: styleId, chatType: chatType, entityType: userData.type, message: formattedText, timestamp: ChatHistoryCurrentDate(), type: ChatEntryType.TYPE_CHAT, roomId: roomSession.roomId, color });
     });
 
     useRoomEngineEvent<RoomDragEvent>(RoomDragEvent.ROOM_DRAG, event =>

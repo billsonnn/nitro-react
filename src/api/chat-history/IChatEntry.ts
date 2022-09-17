@@ -6,6 +6,10 @@ export interface IChatEntry
     look?: string;
     message?: string;
     entityType?: number;
+    style?: number;
+    chatType?: number;
+    imageUrl?: string;
+    color?: string;
     roomId: number;
     timestamp: string;
     type: number;
