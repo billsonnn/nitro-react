@@ -19,7 +19,7 @@ export const ChatHistoryView: FC<{}> = props =>
     {
         if (searchText.length === 0) return chatHistory;
 
-        return chatHistory.filter((i) => i.message && i.message.includes(searchText));
+        return chatHistory.filter((i) => (i.message && i.message.includes(searchText)) || i.name.includes(searchText));
     }, [ chatHistory, searchText ]);
 
     const RowRenderer: ListRowRenderer = (props: ListRowProps) =>
