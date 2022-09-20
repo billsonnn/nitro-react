@@ -17,6 +17,13 @@ const useInventoryFurniState = () =>
     const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
     const { isUnseen = null, resetCategory = null } = useInventoryUnseenTracker();
 
+    const getItemsByType = (type: number) =>
+    {
+        if(!groupItems || !groupItems.length) return;
+
+        return groupItems.filter((i) => i.type === type);
+    }
+
     const getWallItemById = (id: number) =>
     {
         if(!groupItems || !groupItems.length) return;
@@ -285,7 +292,7 @@ const useInventoryFurniState = () =>
         setNeedsUpdate(false);
     }, [ isVisible, needsUpdate ]);
 
-    return { isVisible, groupItems, setGroupItems, selectedItem, setSelectedItem, activate, deactivate, getWallItemById, getFloorItemById };
+    return { isVisible, groupItems, setGroupItems, selectedItem, setSelectedItem, activate, deactivate, getWallItemById, getFloorItemById, getItemsByType };
 }
 
 export const useInventoryFurni = () => useBetween(useInventoryFurniState);
