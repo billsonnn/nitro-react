@@ -1,4 +1,4 @@
-import { CraftableProductsEvent, CraftingRecipeEvent, CraftingRecipeIngredientParser, CraftingRecipesAvailableEvent, CraftingResultEvent, GetCraftableProductsComposer, GetCraftingRecipeComposer, RoomEngineTriggerWidgetEvent, RoomWidgetEnum } from '@nitrots/nitro-renderer';
+import { CraftableProductsEvent, CraftComposer, CraftingRecipeEvent, CraftingRecipeIngredientParser, CraftingRecipesAvailableEvent, CraftingResultEvent, GetCraftableProductsComposer, GetCraftingRecipeComposer, RoomEngineTriggerWidgetEvent, RoomWidgetEnum } from '@nitrots/nitro-renderer';
 import { useCallback, useState } from 'react';
 import { GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
 import { useMessageEvent, useRoomEngineEvent } from '../../../events';
@@ -16,6 +16,7 @@ const useFurnitureCraftingWidgetState = () =>
     const [ selectedRecipe, setSelectedRecipe ] = useState<{ name: string, localizedName: string, iconUrl: string }>(null);
     const [ selectedRecipeIngredients, setSelectedRecipeIngredients ] = useState<CraftingRecipeIngredientParser[]>([]);
     const [ cacheRecipeIngredients, setCacheRecipeIngredients ] = useState<Map<string, CraftingRecipeIngredientParser[]>>(new Map());
+    const [ isCrafting, setIsCrafting ] = useState(false);
 
     const resetData = () =>
     {
@@ -30,6 +31,12 @@ const useFurnitureCraftingWidgetState = () =>
     {
         setObjectId(-1);
         resetData();
+    };
+
+    const craft = () =>
+    {
+        setIsCrafting(true);
+        SendMessageComposer(new CraftComposer(objectId, selectedRecipe.name));
     };
 
     const selectRecipe = useCallback((recipe: { name: string, localizedName: string, iconUrl: string }) =>
@@ -124,13 +131,15 @@ const useFurnitureCraftingWidgetState = () =>
         {
             simpleAlert(LocalizeText('crafting.info.result.ok'));
         }
+
+        setIsCrafting(false);
     });
 
     useMessageEvent<CraftingRecipesAvailableEvent>(CraftingRecipesAvailableEvent, event =>
     {
     });
 
-    return { objectId, recipes, ingredients, selectedRecipe, selectedRecipeIngredients, selectRecipe, onClose };
+    return { objectId, recipes, ingredients, selectedRecipe, selectedRecipeIngredients, isCrafting, selectRecipe, craft, onClose };
 }
 
 export const useFurnitureCraftingWidget = useFurnitureCraftingWidgetState;

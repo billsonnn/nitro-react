@@ -1,18 +1,15 @@
-import { CraftComposer, CraftingRecipeIngredientParser, RoomObjectCategory } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetRoomEngine, IsOwnerOfFurniture, LocalizeText, SendMessageComposer } from '../../../../api';
-import { AutoGrid, Button, Column, Flex, LayoutGridItem, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
-import { useFurnitureCraftingWidget, useInventoryFurni, useRoom } from '../../../../hooks';
+import { CraftingRecipeIngredientParser, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { FC, useMemo, useState } from 'react';
+import { GetRoomEngine, IsOwnerOfFurniture, LocalizeText } from '../../../../api';
+import { AutoGrid, Button, Column, Flex, LayoutGridItem, LayoutLoadingSpinnerView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
+import { useFurnitureCraftingWidget, useRoom } from '../../../../hooks';
 
 export const FurnitureCraftingView: FC<{}> = props =>
 {
-    const { objectId = -1, recipes = [], ingredients = [], selectedRecipe = null, selectedRecipeIngredients = null, selectRecipe = null, onClose = null } = useFurnitureCraftingWidget();
-    const { activate, deactivate } = useInventoryFurni();
+    const { objectId = -1, recipes = [], ingredients = [], selectedRecipe = null, selectedRecipeIngredients = null, isCrafting = false, craft = null, selectRecipe = null, onClose = null } = useFurnitureCraftingWidget();
     const { roomSession = null } = useRoom();
 
-    const [ craftCounter, setCraftCounter ] = useState(0);
-    const [ tryingToCraft, setTryingToCraft ] = useState(false);
-    const [ craftInterval, setCraftInterval ] = useState(null);
+    const [ waitingToConfirm, setWaitingToConfirm ] = useState(false);
 
     const isOwner = useMemo(() =>
     {
@@ -32,43 +29,17 @@ export const FurnitureCraftingView: FC<{}> = props =>
         return true;
     }, [ ingredients, selectedRecipeIngredients ]);
 
-    const cancelCraft = () =>
-    {
-        setTryingToCraft(false);
-        setCraftCounter(0);
-        clearInterval(craftInterval);
-    };
-
     const tryCraft = () =>
     {
-        if (tryingToCraft) 
+        if (!waitingToConfirm) 
         {
-            cancelCraft();
+            setWaitingToConfirm(true);
             return;
         }
 
-        setCraftCounter(5);
-        setTryingToCraft(true);
-        setCraftInterval(setInterval(() => setCraftCounter(v => v - 1), 1000));
+        craft();
+        setWaitingToConfirm(false);
     };
-
-    useEffect(() =>
-    {
-        if (craftCounter <= 0 && tryingToCraft) 
-        {
-            clearInterval(craftInterval);
-            setCraftInterval(null);
-            setTryingToCraft(false);
-            craft();
-        }
-    }, [ craftCounter ]);
-
-    const craft = useCallback(() =>
-    {
-        if (!selectedRecipe) return;
-
-        SendMessageComposer(new CraftComposer(objectId, selectedRecipe.name));
-    }, [ objectId, selectedRecipe ]);
 
     const renderSelectedRecipeIngredient = (ingredient: CraftingRecipeIngredientParser) =>
     {
@@ -124,8 +95,9 @@ export const FurnitureCraftingView: FC<{}> = props =>
                                         <div className="text-black">{ selectedRecipe.localizedName }</div>
                                     </Flex>
                                 </Flex>
-                                <Button variant={ !isOwner || !canCraft ? 'danger' : tryingToCraft ? 'warning' : 'success' } disabled={ !isOwner || !canCraft } onClick={ tryCraft }>
-                                    { LocalizeText(!isOwner ? 'crafting.btn.notowner' : !canCraft ? 'crafting.status.recipe.incomplete' : tryingToCraft ? 'generic.cancel' : 'crafting.btn.craft') }
+                                <Button variant={ !isOwner || !canCraft ? 'danger' : waitingToConfirm ? 'warning' : isCrafting ? 'primary' : 'success' } disabled={ !isOwner || !canCraft || isCrafting } onClick={ tryCraft }>
+                                    { !isCrafting && LocalizeText(!isOwner ? 'crafting.btn.notowner' : !canCraft ? 'crafting.status.recipe.incomplete' : waitingToConfirm ? 'generic.confirm' : 'crafting.btn.craft') }
+                                    { isCrafting && <LayoutLoadingSpinnerView /> }
                                 </Button>
                             </Flex>
                         </> }
