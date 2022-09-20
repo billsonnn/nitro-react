@@ -5,83 +5,65 @@ import { Flex, Grid, Text } from '../../../common';
 
 export interface CameraWidgetShowPhotoViewProps
 {
-    photo: any;
-    photos: any;
-    isActive: boolean;
+    currentIndex: number;
+    currentPhotos: IPhotoData[];
 }
 
 export const CameraWidgetShowPhotoView: FC<CameraWidgetShowPhotoViewProps> = props =>
 {
-    const { photo = null, photos = null, isActive = false } = props;
-    const [ photoImg, setPhotoImg ] = useState<IPhotoData>(photo); // photo is default value when clicked the photo
-    const [ imgIndex, setImgIndex ] = useState(0);
+    const { currentIndex = -1, currentPhotos = null } = props;
+    const [ imageIndex, setImageIndex ] = useState(0);
 
-    if(!photo) return null;
+    const currentImage = (currentPhotos && currentPhotos.length) ? currentPhotos[imageIndex] : null;
 
     const next = () =>
     {
-        let newImgCount = 0;
-
-        if (imgIndex >= photos.length) setImgIndex(0);
-
-        setImgIndex(prevValue =>
+        setImageIndex(prevValue =>
         {
-            newImgCount = (prevValue + 1);
+            let newIndex = (prevValue + 1);
 
-            return newImgCount;
+            if(newIndex >= currentPhotos.length) newIndex = 0;
+
+            return newIndex;
         });
-
-        setPhotoImg(photos[imgIndex]);
     }
 
     const previous = () =>
     {
-        let newImgCount = 0;
-
-        if (imgIndex <= 0) setImgIndex(photos.length);
-
-        setImgIndex(prevValue =>
+        setImageIndex(prevValue =>
         {
-            newImgCount = (prevValue - 1);
+            let newIndex = (prevValue - 1);
 
-            return newImgCount;
+            if(newIndex < 0) newIndex = (currentPhotos.length - 1);
+
+            return newIndex;
         });
-
-        setPhotoImg(photos[imgIndex]);
-    }
-
-    const openProfile = (ownerId: number) =>
-    {
-        GetUserProfile(ownerId);
     }
 
     useEffect(() =>
     {
-        setPhotoImg(photoImg);
+        setImageIndex(currentIndex);
+    }, [ currentIndex ]);
 
-        if (imgIndex >= photos.length) setImgIndex(0);
-        if (imgIndex < 0) setImgIndex(photos.length);
-
-    }, [ photoImg ]);
+    if(!currentImage) return null;
 
     return (
-        (isActive) &&
         <Grid style={ { display: 'flex', flexDirection: 'column' } }>
-            <Flex center className="picture-preview border border-black" style={ photoImg.w ? { backgroundImage: 'url(' + photoImg.w + ')' } : {} }>
-                { !photoImg.w &&
+            <Flex center className="picture-preview border border-black" style={ currentImage.w ? { backgroundImage: 'url(' + currentImage.w + ')' } : {} }>
+                { !currentImage.w &&
                     <Text bold>{ LocalizeText('camera.loading') }</Text> }
             </Flex>
-            { photoImg.m && photoImg.m.length &&
-                <Text center>{ photoImg.m }</Text> }
+            { currentImage.m && currentImage.m.length &&
+                <Text center>{ currentImage.m }</Text> }
             <Flex alignItems="center" justifyContent="between">
-                <Text>{ (photoImg.n || '') }</Text>
-                <Text>{ new Date(photoImg.t * 1000).toLocaleDateString() }</Text>
+                <Text>{ (currentImage.n || '') }</Text>
+                <Text>{ new Date(currentImage.t * 1000).toLocaleDateString() }</Text>
             </Flex>
-            { (photos.length > 1) &&
+            { (currentPhotos.length > 1) &&
                 <Flex className="picture-preview-buttons">
-                    <FontAwesomeIcon icon="arrow-left" className="cursor-pointer picture-preview-buttons-previous" onClick={ event => previous() } />
-                    <Text underline className="cursor-pointer" onClick={ event => openProfile(photoImg.oi) }>{ photoImg.o }</Text>
-                    <FontAwesomeIcon icon="arrow-right" className="cursor-pointer picture-preview-buttons-next" onClick={ event => next() } />
+                    <FontAwesomeIcon icon="arrow-left" className="cursor-pointer picture-preview-buttons-previous" onClick={ previous } />
+                    <Text underline className="cursor-pointer" onClick={ event => GetUserProfile(currentImage.oi) }>{ currentImage.o }</Text>
+                    <FontAwesomeIcon icon="arrow-right" className="cursor-pointer picture-preview-buttons-next" onClick={ next } />
                 </Flex>
             }
         </Grid>

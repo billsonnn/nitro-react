@@ -1,5 +1,5 @@
 import { RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { GetRoomEngine, IPhotoData } from '../../../../api';
 import { useRoomEngineEvent } from '../../../events';
 import { useFurniRemovedEvent } from '../../engine';
@@ -9,25 +9,17 @@ const useFurnitureExternalImageWidgetState = () =>
 {
     const [ objectId, setObjectId ] = useState(-1);
     const [ category, setCategory ] = useState(-1);
-    const [ photoData, setPhotoData ] = useState([]);
-    const [ photoCliked, setPhotoCliked ] = useState<IPhotoData>(null);
+    const [ currentPhotoIndex, setCurrentPhotoIndex ] = useState(-1);
+    const [ currentPhotos, setCurrentPhotos ] = useState<IPhotoData[]>([]);
     const { roomSession = null } = useRoom();
-
-    if (!roomSession) return null;
 
     const onClose = () =>
     {
         setObjectId(-1);
         setCategory(-1);
-        setPhotoData([]);
-        setPhotoCliked(null);
+        setCurrentPhotoIndex(-1);
+        setCurrentPhotos([]);
     }
-
-    useEffect(() =>
-    {
-        setPhotoData(photoData);
-
-    }, [ photoData ]);
 
     useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_EXTERNAL_IMAGE, event =>
     {
@@ -36,31 +28,38 @@ const useFurnitureExternalImageWidgetState = () =>
 
         if(!roomObject) return;
 
-        let imgs = [ { s: null, t: null, u: '', w: '', oi: '', o: '' } ];
-        imgs.shift();
+        const datas: IPhotoData[] = [];
 
         roomTotalImages.forEach(object =>
         {
-            if(object.id < 0) return null;
+            if (object.type !== 'external_image_wallitem_poster_small') return null;
+            
+            const data = object.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
+            const ownerId = object.model.getValue<number>(RoomObjectVariable.FURNITURE_OWNER_ID);
+            const ownerName = object.model.getValue<string>(RoomObjectVariable.FURNITURE_OWNER_NAME);
 
-            if (object.type == 'external_image_wallitem_poster_small') // Photo image
-            {
-                const data = object.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
-                const ownerId = object.model.getValue<string>(RoomObjectVariable.FURNITURE_OWNER_ID);
-                const ownerName = object.model.getValue<string>(RoomObjectVariable.FURNITURE_OWNER_NAME);
-                imgs.push({ s: JSON.parse(data).s, t: JSON.parse(data).t, u: JSON.parse(data).u, w: JSON.parse(data).w, oi: ownerId, o: ownerName });
-            }
+            datas.push({ s: JSON.parse(data).s, t: JSON.parse(data).t, u: JSON.parse(data).u, w: JSON.parse(data).w, oi: ownerId, o: ownerName });
         });
-
-        const photoData = JSON.parse(JSON.stringify(imgs));
-        const dataCliked = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
-
-        const photoDataCliked = (JSON.parse(dataCliked) as IPhotoData);
 
         setObjectId(event.objectId);
         setCategory(event.category);
-        setPhotoData(photoData);
-        setPhotoCliked(photoDataCliked);
+        setCurrentPhotos(datas);
+
+        const roomObjectPhotoData = (JSON.parse(roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA)) as IPhotoData);
+
+        setCurrentPhotoIndex(prevValue =>
+        {
+            let index = 0;
+
+            if(roomObjectPhotoData)
+            {
+                index = datas.findIndex(data => (data.u === roomObjectPhotoData.u))
+            }
+
+            if(index < 0) index = 0;
+
+            return index;
+        });
     });
 
     useFurniRemovedEvent(((objectId !== -1) && (category !== -1)), event =>
@@ -70,7 +69,7 @@ const useFurnitureExternalImageWidgetState = () =>
         onClose();
     });
 
-    return { objectId, photoData, photoCliked, onClose };
+    return { objectId, currentPhotoIndex, currentPhotos, onClose };
 }
 
 export const useFurnitureExternalImageWidget = useFurnitureExternalImageWidgetState;
