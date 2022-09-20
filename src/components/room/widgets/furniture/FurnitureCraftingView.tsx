@@ -1,5 +1,5 @@
 import { CraftingRecipeIngredientParser, RoomObjectCategory } from '@nitrots/nitro-renderer';
-import { FC, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { GetRoomEngine, IsOwnerOfFurniture, LocalizeText } from '../../../../api';
 import { AutoGrid, Button, Column, Flex, LayoutGridItem, LayoutLoadingSpinnerView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { useFurnitureCraftingWidget, useRoom } from '../../../../hooks';
@@ -10,6 +10,11 @@ export const FurnitureCraftingView: FC<{}> = props =>
     const { roomSession = null } = useRoom();
 
     const [ waitingToConfirm, setWaitingToConfirm ] = useState(false);
+
+    useEffect(() =>
+    {
+        setWaitingToConfirm(false);
+    }, [ selectedRecipe ]);
 
     const isOwner = useMemo(() =>
     {
