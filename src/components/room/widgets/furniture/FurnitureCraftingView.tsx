@@ -1,20 +1,14 @@
-import { CraftingRecipeIngredientParser, RoomObjectCategory } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { FC, ReactElement, useEffect, useMemo, useState } from 'react';
 import { GetRoomEngine, IsOwnerOfFurniture, LocalizeText } from '../../../../api';
 import { AutoGrid, Button, Column, Flex, LayoutGridItem, LayoutLoadingSpinnerView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { useFurnitureCraftingWidget, useRoom } from '../../../../hooks';
 
 export const FurnitureCraftingView: FC<{}> = props =>
 {
-    const { objectId = -1, recipes = [], ingredients = [], selectedRecipe = null, selectedRecipeIngredients = null, isCrafting = false, craft = null, selectRecipe = null, onClose = null } = useFurnitureCraftingWidget();
+    const { objectId = -1, recipes = [], ingredients = [], selectedRecipe = null, requiredIngredients = null, isCrafting = false, craft = null, selectRecipe = null, onClose = null } = useFurnitureCraftingWidget();
     const { roomSession = null } = useRoom();
-
     const [ waitingToConfirm, setWaitingToConfirm ] = useState(false);
-
-    useEffect(() =>
-    {
-        setWaitingToConfirm(false);
-    }, [ selectedRecipe ]);
 
     const isOwner = useMemo(() =>
     {
@@ -24,21 +18,24 @@ export const FurnitureCraftingView: FC<{}> = props =>
 
     const canCraft = useMemo(() =>
     {
-        for (const ingredient of selectedRecipeIngredients) 
+        if(!requiredIngredients || !requiredIngredients.length) return false;
+
+        for (const ingredient of requiredIngredients) 
         {
-            const ingredientData = ingredients.find((i) => i.name === ingredient.itemName);
+            const ingredientData = ingredients.find(data => (data.name === ingredient.itemName));
 
             if (ingredientData.count < ingredient.count) return false;
         }
 
         return true;
-    }, [ ingredients, selectedRecipeIngredients ]);
+    }, [ ingredients, requiredIngredients ]);
 
     const tryCraft = () =>
     {
         if (!waitingToConfirm) 
         {
             setWaitingToConfirm(true);
+
             return;
         }
 
@@ -46,19 +43,10 @@ export const FurnitureCraftingView: FC<{}> = props =>
         setWaitingToConfirm(false);
     };
 
-    const renderSelectedRecipeIngredient = (ingredient: CraftingRecipeIngredientParser) =>
+    useEffect(() =>
     {
-        const ingredientData = ingredients.find((i) => i.name === ingredient.itemName);
-
-        const elements = [];
-
-        for (let i = 0; i < ingredient.count; i++)
-        {
-            elements.push(<LayoutGridItem key={ i } itemImage={ ingredientData.iconUrl } className={ (ingredientData.count - (i) <= 0 ? 'opacity-0-5 ' : '') + 'cursor-default' } />);
-        }
-
-        return elements;
-    };
+        setWaitingToConfirm(false);
+    }, [ selectedRecipe ]);
 
     if(objectId === -1) return null;
 
@@ -87,7 +75,19 @@ export const FurnitureCraftingView: FC<{}> = props =>
                             <Column overflow="hidden" fullHeight>
                                 <div className="bg-muted rounded py-1 text-center">{ LocalizeText('crafting.current_recipe') }</div>
                                 <AutoGrid columnCount={ 5 }>
-                                    { (selectedRecipeIngredients.length > 0) && selectedRecipeIngredients.map((item) => renderSelectedRecipeIngredient(item)) }
+                                    { !!requiredIngredients && (requiredIngredients.length > 0) && requiredIngredients.map(ingredient =>
+                                    {
+                                        const ingredientData = ingredients.find((i) => i.name === ingredient.itemName);
+
+                                        const elements: ReactElement[] = [];
+
+                                        for (let i = 0; i < ingredient.count; i++)
+                                        {
+                                            elements.push(<LayoutGridItem key={ i } itemImage={ ingredientData.iconUrl } className={ (ingredientData.count - (i) <= 0 ? 'opacity-0-5 ' : '') + 'cursor-default' } />);
+                                        }
+
+                                        return elements;
+                                    }) }
                                 </AutoGrid>
                             </Column>
                             <Flex gap={ 2 } column fullHeight>

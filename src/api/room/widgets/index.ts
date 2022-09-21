@@ -11,6 +11,8 @@ export * from './DimmerFurnitureWidgetPresetItem';
 export * from './DoChatsOverlap';
 export * from './FurnitureDimmerUtilities';
 export * from './IAvatarInfo';
+export * from './ICraftingIngredient';
+export * from './ICraftingRecipe';
 export * from './IPhotoData';
 export * from './MannequinUtilities';
 export * from './PetSupplementEnum';
