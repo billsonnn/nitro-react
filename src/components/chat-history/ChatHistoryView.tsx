@@ -20,7 +20,7 @@ export const ChatHistoryView: FC<{}> = props =>
 
         let text = searchText.toLowerCase();
 
-        return chatHistory.filter(entry => (entry.message.toLowerCase().includes(text)) || entry.name.includes(text));
+        return chatHistory.filter(entry => ((entry.message && entry.message.toLowerCase().includes(text))) || (entry.name && entry.name.toLowerCase().includes(text)));
     }, [ chatHistory, searchText ]);
 
     useEffect(() =>
