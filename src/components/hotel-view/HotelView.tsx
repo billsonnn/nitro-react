@@ -1,5 +1,5 @@
 import { RoomSessionEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { GetConfiguration, GetConfigurationManager } from '../../api';
 import { LayoutAvatarImageView } from '../../common';
 import { useRoomSessionManagerEvent, useSessionInfo } from '../../hooks';
@@ -12,7 +12,9 @@ export const HotelView: FC<{}> = props =>
     const [ isVisible, setIsVisible ] = useState(true);
     const { userFigure = null } = useSessionInfo();
 
-    const onRoomSessionEvent = useCallback((event: RoomSessionEvent) =>
+    useRoomSessionManagerEvent<RoomSessionEvent>([
+        RoomSessionEvent.CREATED,
+        RoomSessionEvent.ENDED ], event =>
     {
         switch(event.type)
         {
@@ -23,10 +25,7 @@ export const HotelView: FC<{}> = props =>
                 setIsVisible(event.openLandingView);
                 return;
         }
-    }, []);
-
-    useRoomSessionManagerEvent(RoomSessionEvent.CREATED, onRoomSessionEvent);
-    useRoomSessionManagerEvent(RoomSessionEvent.ENDED, onRoomSessionEvent);
+    });
 
     if(!isVisible) return null;
 

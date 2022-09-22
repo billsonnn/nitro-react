@@ -1,5 +1,5 @@
 import { FriendlyTime, HabboClubLevelEnum } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { CreateLinkEvent, GetConfiguration, LocalizeText } from '../../api';
 import { Column, Flex, Grid, LayoutCurrencyIcon, Text } from '../../common';
 import { usePurse } from '../../hooks';
@@ -9,10 +9,11 @@ import { SeasonalView } from './views/SeasonalView';
 export const PurseView: FC<{}> = props =>
 {
     const { purse = null, hcDisabled = false } = usePurse();
+
     const displayedCurrencies = useMemo(() => GetConfiguration<number[]>('system.currency.types', []), []);
     const currencyDisplayNumberShort = useMemo(() => GetConfiguration<boolean>('currency.display.number.short', false), []);
 
-    const getClubText = useMemo(() =>
+    const getClubText = (() =>
     {
         if(!purse) return null;
 
@@ -24,9 +25,9 @@ export const PurseView: FC<{}> = props =>
         else if((minutesUntilExpiration > -1) && (minutesUntilExpiration < (60 * 24))) return FriendlyTime.shortFormat(minutesUntilExpiration * 60);
         
         else return FriendlyTime.shortFormat(totalDays * 86400);
-    }, [ purse ]);
+    })();
 
-    const getCurrencyElements = useCallback((offset: number, limit: number = -1, seasonal: boolean = false) =>
+    const getCurrencyElements = (offset: number, limit: number = -1, seasonal: boolean = false) =>
     {
         if(!purse || !purse.activityPoints || !purse.activityPoints.size) return null;
 
@@ -56,7 +57,7 @@ export const PurseView: FC<{}> = props =>
         }
 
         return elements;
-    }, [ purse, displayedCurrencies, currencyDisplayNumberShort ]);
+    }
 
     if(!purse) return null;
 

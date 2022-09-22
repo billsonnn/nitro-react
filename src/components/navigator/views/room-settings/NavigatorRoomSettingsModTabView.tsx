@@ -1,5 +1,5 @@
 import { BannedUserData, BannedUsersFromRoomEvent, RoomBannedUsersComposer, RoomModerationSettings, RoomUnbanUserComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Grid, Text, UserProfileIconView } from '../../../../common';
 import { useMessageEvent } from '../../../../hooks';
@@ -16,16 +16,7 @@ export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewPro
     const [ selectedUserId, setSelectedUserId ] = useState<number>(-1);
     const [ bannedUsers, setBannedUsers ] = useState<BannedUserData[]>([]);
 
-    useMessageEvent<BannedUsersFromRoomEvent>(BannedUsersFromRoomEvent, event =>
-    {
-        const parser = event.getParser();
-
-        if(!roomData || (roomData.roomId !== parser.roomId)) return;
-
-        setBannedUsers(parser.bannedUsers);
-    });
-
-    const unBanUser = useCallback((userId: number) =>
+    const unBanUser = (userId: number) =>
     {
         setBannedUsers(prevValue =>
         {
@@ -41,7 +32,16 @@ export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewPro
         SendMessageComposer(new RoomUnbanUserComposer(userId, roomData.roomId));
 
         setSelectedUserId(-1);
-    }, [ roomData ]);
+    }
+
+    useMessageEvent<BannedUsersFromRoomEvent>(BannedUsersFromRoomEvent, event =>
+    {
+        const parser = event.getParser();
+
+        if(!roomData || (roomData.roomId !== parser.roomId)) return;
+
+        setBannedUsers(parser.bannedUsers);
+    });
 
     useEffect(() =>
     {

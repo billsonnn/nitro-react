@@ -1,5 +1,5 @@
 import { GroupInformationParser, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback } from 'react';
+import { FC } from 'react';
 import { CatalogPageName, CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, GroupMembershipType, GroupType, LocalizeText, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
 import { Button, Column, Flex, Grid, GridProps, LayoutBadgeImageView, Text } from '../../../common';
 import { useNotification } from '../../../hooks';
@@ -72,7 +72,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
         joinGroup();
     }
 
-    const handleAction = useCallback((action: string) =>
+    const handleAction = (action: string) =>
     {
         switch(action)
         {
@@ -95,7 +95,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                 CreateLinkEvent('navigator/search/groups');
                 break;
         }
-    }, [ groupInformation ]);
+    }
 
     if(!groupInformation) return null;
 

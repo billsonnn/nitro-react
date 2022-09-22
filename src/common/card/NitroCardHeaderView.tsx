@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC, MouseEvent, useCallback, useMemo } from 'react';
+import { FC, MouseEvent, useMemo } from 'react';
 import { Base, Column, ColumnProps, Flex } from '..';
 
 interface NitroCardHeaderViewProps extends ColumnProps
@@ -22,11 +22,11 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
         return newClassNames;
     }, [ classNames ]);
 
-    const onMouseDown = useCallback((event: MouseEvent<HTMLDivElement>) =>
+    const onMouseDown = (event: MouseEvent<HTMLDivElement>) =>
     {
         event.stopPropagation();
         event.nativeEvent.stopImmediatePropagation();
-    }, []);
+    }
 
     return (
         <Column center position="relative" classNames={ getClassNames } { ...rest }>

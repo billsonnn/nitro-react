@@ -1,5 +1,5 @@
 import { ContextMenuEnum, GroupFurniContextMenuInfoMessageEvent, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { GetRoomEngine, IsOwnerOfFurniture, TryJoinGroup, TryVisitRoom } from '../../../../api';
 import { useMessageEvent, useRoomEngineEvent } from '../../../events';
 import { useRoom } from '../../useRoom';
@@ -19,13 +19,13 @@ const useFurnitureContextMenuWidgetState = () =>
     const [ isGroupMember, setIsGroupMember ] = useState(false);
     const { roomSession = null } = useRoom();
 
-    const onClose = useCallback(() =>
+    const onClose = () =>
     {
         setObjectId(-1);
         setGroupData(null);
         setIsGroupMember(false);
         setMode(null);
-    }, []);
+    }
 
     const closeConfirm = () =>
     {

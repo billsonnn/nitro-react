@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NitroRectangle, TextureUtils } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useRef } from 'react';
+import { FC, useRef } from 'react';
 import { CameraPicture, GetRoomEngine, GetRoomSession, LocalizeText, PlaySound, SoundNames } from '../../../api';
 import { Column, DraggableWindow, Flex } from '../../../common';
 import { useCamera, useNotification } from '../../../hooks';
@@ -23,16 +23,16 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
 
     const selectedPicture = ((selectedPictureIndex > -1) ? cameraRoll[selectedPictureIndex] : null);
 
-    const getCameraBounds = useCallback(() =>
+    const getCameraBounds = () =>
     {
         if(!elementRef || !elementRef.current) return null;
 
         const frameBounds = elementRef.current.getBoundingClientRect();
         
         return new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height));
-    }, []);
+    }
 
-    const takePicture = useCallback(() =>
+    const takePicture = () =>
     {
         if(selectedPictureIndex > -1)
         {
@@ -55,7 +55,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
         clone.push(new CameraPicture(texture, TextureUtils.generateImageUrl(texture)));
 
         setCameraRoll(clone);
-    }, [ cameraRoll, selectedPictureIndex, getCameraBounds, setCameraRoll, setSelectedPictureIndex, simpleAlert ]);
+    }
 
     return (
         <DraggableWindow uniqueKey="nitro-camera-capture">

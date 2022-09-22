@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { LocalizeText, NotificationAlertItem, NotificationAlertType, OpenUrl } from '../../../../api';
 import { Base, Button, Column, Flex, LayoutNotificationAlertView, LayoutNotificationAlertViewProps } from '../../../../common';
 
@@ -10,17 +10,16 @@ interface NotificationDefaultAlertViewProps extends LayoutNotificationAlertViewP
 export const NotificationDefaultAlertView: FC<NotificationDefaultAlertViewProps> = props =>
 {
     const { item = null, title = ((props.item && props.item.title) || ''), onClose = null, ...rest } = props;
-
     const [ imageFailed, setImageFailed ] = useState<boolean>(false)
 
-    const visitUrl = useCallback(() =>
+    const visitUrl = () =>
     {
         OpenUrl(item.clickUrl);
         
         onClose();
-    }, [ item, onClose ]);
+    }
     
-    const hasFrank = item.alertType === NotificationAlertType.DEFAULT;
+    const hasFrank = (item.alertType === NotificationAlertType.DEFAULT);
 
     return (
         <LayoutNotificationAlertView title={ title } onClose={ onClose } { ...rest } type={ hasFrank ? NotificationAlertType.DEFAULT : item.alertType }>

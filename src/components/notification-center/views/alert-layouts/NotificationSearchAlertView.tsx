@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { LocalizeText, NotificationAlertItem, OpenUrl } from '../../../../api';
 import { AutoGrid, Button, Column, Flex, LayoutNotificationAlertView, LayoutNotificationAlertViewProps } from '../../../../common';
 
@@ -14,24 +14,25 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
     const [ searchValue, setSearchValue ] = useState('');
     const [ results, setResults ] = useState<string[]>([]);
 
-    const visitUrl = useCallback(() =>
+    const visitUrl = () =>
     {
         OpenUrl(item.clickUrl);
         
         onClose();
-    }, [ item, onClose ]);
+    }
+
+    const updateSearchValue = (value: string) =>
+    {
+        let res = JSON.parse(item.messages[0]);
+
+        setResults(res.filter((val: string) => val.includes(value)));
+        setSearchValue(value);
+    }
     
     useEffect(() =>
     {
         setResults(JSON.parse(item.messages[0]));
-    }, [ item ])
-    
-    const updateSearchValue = useCallback((value: string) =>
-    {
-        let res = JSON.parse(item.messages[0]);
-        setResults(res.filter((val: string) => val.includes(value)));
-        setSearchValue(value);
-    },[ item ])
+    }, [ item ]);
 
     const isAction = (item.clickUrl && item.clickUrl.startsWith('event:'));
 

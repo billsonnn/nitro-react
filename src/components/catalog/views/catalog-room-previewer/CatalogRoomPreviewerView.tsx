@@ -1,5 +1,5 @@
 import { NitroToolbarAnimateIconEvent, TextureUtils, ToolbarIconEnum } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useRef } from 'react';
+import { FC, useRef } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { LayoutRoomPreviewerView, LayoutRoomPreviewerViewProps } from '../../../../common';
 import { CatalogPurchasedEvent } from '../../../../events';
@@ -10,7 +10,7 @@ export const CatalogRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props 
     const { roomPreviewer = null } = props;
     const elementRef = useRef<HTMLDivElement>(null);
 
-    const animatePurchase = useCallback(() =>
+    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, event =>
     {
         if(!elementRef) return;
         
@@ -27,19 +27,12 @@ export const CatalogRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props 
         const x = (bounds.x + (bounds.width / 2));
         const y = (bounds.y + (bounds.height / 2));
 
-        const event = new NitroToolbarAnimateIconEvent(image, x, y);
+        const animateEvent = new NitroToolbarAnimateIconEvent(image, x, y);
 
-        event.iconName = ToolbarIconEnum.INVENTORY;
+        animateEvent.iconName = ToolbarIconEnum.INVENTORY;
 
-        GetRoomEngine().events.dispatchEvent(event);
-    }, [ roomPreviewer ]);
-
-    const onCatalogPurchasedEvent = useCallback((event: CatalogPurchasedEvent) =>
-    {
-        animatePurchase();
-    }, [ animatePurchase ]);
-
-    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogPurchasedEvent);
+        GetRoomEngine().events.dispatchEvent(animateEvent);
+    });
 
     return (
         <div ref={ elementRef }>

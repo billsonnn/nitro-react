@@ -1,5 +1,5 @@
 import { FriendlyTime } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { Base, BaseProps } from '..';
 
 interface FriendlyTimeViewProps extends BaseProps<HTMLDivElement>
@@ -15,15 +15,6 @@ export const FriendlyTimeView: FC<FriendlyTimeViewProps> = props =>
 
     const getStartSeconds = useMemo(() => (Math.round(new Date().getSeconds()) - seconds), [ seconds ]);
 
-    const getFriendlyTime = useCallback(() =>
-    {
-        const value = (Math.round(new Date().getSeconds()) - getStartSeconds);
-
-        if(isShort) return FriendlyTime.format(value);
-
-        return FriendlyTime.format(value);
-    }, [ getStartSeconds, isShort ]);
-
     useEffect(() =>
     {
         const interval = setInterval(() => setUpdateId(prevValue => (prevValue + 1)), 10000);
@@ -31,5 +22,7 @@ export const FriendlyTimeView: FC<FriendlyTimeViewProps> = props =>
         return () => clearInterval(interval);
     }, []);
 
-    return <Base { ...rest }>{ getFriendlyTime() }</Base>;
+    const value = (Math.round(new Date().getSeconds()) - getStartSeconds);
+
+    return <Base { ...rest }>{ isShort ? FriendlyTime.shortFormat(value) : FriendlyTime.format(value) }</Base>;
 }

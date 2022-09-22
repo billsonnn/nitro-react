@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ILinkEventTracker, NitroSettingsEvent, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer, UserSettingsSoundComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { AddEventLinkTracker, DispatchMainEvent, DispatchUiEvent, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { useCatalogPlaceMultipleItems, useCatalogSkipPurchaseConfirmation, useMessageEvent } from '../../hooks';
@@ -12,7 +12,7 @@ export const UserSettingsView: FC<{}> = props =>
     const [ catalogPlaceMultipleObjects, setCatalogPlaceMultipleObjects ] = useCatalogPlaceMultipleItems();
     const [ catalogSkipPurchaseConfirmation, setCatalogSkipPurchaseConfirmation ] = useCatalogSkipPurchaseConfirmation();
 
-    const processAction = useCallback((type: string, value?: boolean | number | string) =>
+    const processAction = (type: string, value?: boolean | number | string) =>
     {
         let doUpdate = true;
 
@@ -56,9 +56,9 @@ export const UserSettingsView: FC<{}> = props =>
         if(doUpdate) setUserSettings(clone);
         
         DispatchMainEvent(clone)
-    }, [ userSettings ]);
+    }
 
-    const saveRangeSlider = useCallback((type: string) =>
+    const saveRangeSlider = (type: string) =>
     {
         switch(type)
         {
@@ -66,7 +66,7 @@ export const UserSettingsView: FC<{}> = props =>
                 SendMessageComposer(new UserSettingsSoundComposer(Math.round(userSettings.volumeSystem), Math.round(userSettings.volumeFurni), Math.round(userSettings.volumeTrax)));
                 break;
         }
-    }, [ userSettings ]);
+    }
 
     useMessageEvent<UserSettingsEvent>(UserSettingsEvent, event =>
     {

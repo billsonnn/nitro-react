@@ -1,5 +1,5 @@
 import { IGetImageListener, ImageResult, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
-import { CSSProperties, FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
 import { BaseProps } from '..';
 import { GetRoomEngine, ProductTypeEnum } from '../../api';
 import { Base } from '../Base';
@@ -41,7 +41,7 @@ export const LayoutFurniImageView: FC<LayoutFurniImageViewProps> = props =>
         return newStyle;
     }, [ imageElement, scale, style ]);
 
-    const buildImage = useCallback(() =>
+    useEffect(() =>
     {
         let imageResult: ImageResult = null;
 
@@ -71,15 +71,10 @@ export const LayoutFurniImageView: FC<LayoutFurniImageViewProps> = props =>
         if(imageResult)
         {
             const image = imageResult.getImage();
-            
+        
             image.onload = () => setImageElement(image);
         }
     }, [ productType, productClassId, direction, extraData ]);
-
-    useEffect(() =>
-    {
-        buildImage();
-    }, [ buildImage ]);
 
     if(!imageElement) return null;
 

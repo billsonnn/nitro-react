@@ -1,5 +1,5 @@
 import { GetRoomAdPurchaseInfoComposer, GetUserEventCatsMessageComposer, PurchaseRoomAdMessageComposer, RoomAdPurchaseInfoEvent, RoomEntryData, UserEventCatsEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Column, Text } from '../../../../../common';
 import { useMessageEvent } from '../../../../../hooks';
@@ -16,16 +16,7 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
     const [ categoryId, setCategoryId ] = useState<number>(1);
     const [ categories, setCategories ] = useState<INavigatorCategory[]>(null);
 
-    useMessageEvent<RoomAdPurchaseInfoEvent>(RoomAdPurchaseInfoEvent, event =>
-    {
-        const parser = event.getParser();
-
-        if(!parser) return;
-
-        setAvailableRooms(parser.rooms);
-    });
-
-    const purchaseAd = useCallback(() =>
+    const purchaseAd = () =>
     {
         const pageId = page.pageId;
         const offerId = page.offers.length >= 1 ? page.offers[0].offerId : -1;
@@ -35,7 +26,16 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
         const catId = categoryId;
 
         SendMessageComposer(new PurchaseRoomAdMessageComposer(pageId, offerId, flatId, name, extended, desc, catId))
-    }, [ categoryId, eventDesc, eventName, extended, page.offers, page.pageId, roomId ]);
+    }
+
+    useMessageEvent<RoomAdPurchaseInfoEvent>(RoomAdPurchaseInfoEvent, event =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        setAvailableRooms(parser.rooms);
+    });
 
     useMessageEvent<UserEventCatsEvent>(UserEventCatsEvent, event =>
     {

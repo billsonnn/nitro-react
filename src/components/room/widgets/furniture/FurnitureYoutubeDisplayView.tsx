@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
 import { YouTubePlayer } from 'youtube-player/dist/types';
 import { LocalizeText, YoutubeVideoPlaybackStateEnum } from '../../../../api';
@@ -10,7 +10,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
     const [ player, setPlayer ] = useState<any>(null);
     const { objectId = -1, videoId = null, videoStart = 0, videoEnd = 0, currentVideoState = null, selectedVideo = null, playlists = [], onClose = null, previous = null, next = null, pause = null, play = null, selectVideo = null } = useFurnitureYoutubeWidget();
 
-    const onStateChange = useCallback((event: { target: YouTubePlayer; data: number }) =>
+    const onStateChange = (event: { target: YouTubePlayer; data: number }) =>
     {
         setPlayer(event.target);
 
@@ -30,7 +30,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
             case 2:
                 if(currentVideoState !== 2) pause();
         }
-    }, [ objectId, currentVideoState, play, pause ]);
+    }
 
     useEffect(() =>
     {

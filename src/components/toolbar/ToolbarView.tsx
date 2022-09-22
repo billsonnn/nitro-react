@@ -1,5 +1,5 @@
 import { Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconEvent, PerkAllowancesMessageEvent, PerkEnum, Queue, Wait } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { CreateLinkEvent, GetSessionDataManager, MessengerIconState, OpenMessengerChat, VisitDesktop } from '../../api';
 import { Base, Flex, LayoutAvatarImageView, LayoutItemCountView, TransitionAnimation, TransitionAnimationTypes } from '../../common';
 import { useAchievements, useFriends, useInventoryUnseenTracker, useMessageEvent, useMessenger, useRoomEngineEvent, useSessionInfo } from '../../hooks';
@@ -8,7 +8,6 @@ import { ToolbarMeView } from './ToolbarMeView';
 export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
 {
     const { isInRoom } = props;
-
     const [ isMeExpanded, setMeExpanded ] = useState(false);
     const [ useGuideTool, setUseGuideTool ] = useState(false);
     const { userFigure = null } = useSessionInfo();
@@ -25,42 +24,42 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
         setUseGuideTool(parser.isAllowed(PerkEnum.USE_GUIDE_TOOL));
     });
 
-    const animationIconToToolbar = useCallback((iconName: string, image: HTMLImageElement, x: number, y: number) =>
-    {
-        const target = (document.body.getElementsByClassName(iconName)[0] as HTMLElement);
-
-        if(!target) return;
-        
-        image.className = 'toolbar-icon-animation';
-        image.style.visibility = 'visible';
-        image.style.left = (x + 'px');
-        image.style.top = (y + 'px');
-
-        document.body.append(image);
-
-        const targetBounds = target.getBoundingClientRect();
-        const imageBounds = image.getBoundingClientRect();
-
-        const left = (imageBounds.x - targetBounds.x);
-        const top = (imageBounds.y - targetBounds.y);
-        const squared = Math.sqrt(((left * left) + (top * top)));
-        const wait = (500 - Math.abs(((((1 / squared) * 100) * 500) * 0.5)));
-        const height = 20;
-
-        const motionName = (`ToolbarBouncing[${ iconName }]`);
-
-        if(!Motions.getMotionByTag(motionName))
-        {
-            Motions.runMotion(new Queue(new Wait((wait + 8)), new DropBounce(target, 400, 12))).tag = motionName;
-        }
-
-        const motion = new Queue(new EaseOut(new JumpBy(image, wait, ((targetBounds.x - imageBounds.x) + height), (targetBounds.y - imageBounds.y), 100, 1), 1), new Dispose(image));
-
-        Motions.runMotion(motion);
-    }, []);
-
     useRoomEngineEvent<NitroToolbarAnimateIconEvent>(NitroToolbarAnimateIconEvent.ANIMATE_ICON, event =>
     {
+        const animationIconToToolbar = (iconName: string, image: HTMLImageElement, x: number, y: number) =>
+        {
+            const target = (document.body.getElementsByClassName(iconName)[0] as HTMLElement);
+
+            if(!target) return;
+            
+            image.className = 'toolbar-icon-animation';
+            image.style.visibility = 'visible';
+            image.style.left = (x + 'px');
+            image.style.top = (y + 'px');
+
+            document.body.append(image);
+
+            const targetBounds = target.getBoundingClientRect();
+            const imageBounds = image.getBoundingClientRect();
+
+            const left = (imageBounds.x - targetBounds.x);
+            const top = (imageBounds.y - targetBounds.y);
+            const squared = Math.sqrt(((left * left) + (top * top)));
+            const wait = (500 - Math.abs(((((1 / squared) * 100) * 500) * 0.5)));
+            const height = 20;
+
+            const motionName = (`ToolbarBouncing[${ iconName }]`);
+
+            if(!Motions.getMotionByTag(motionName))
+            {
+                Motions.runMotion(new Queue(new Wait((wait + 8)), new DropBounce(target, 400, 12))).tag = motionName;
+            }
+
+            const motion = new Queue(new EaseOut(new JumpBy(image, wait, ((targetBounds.x - imageBounds.x) + height), (targetBounds.y - imageBounds.y), 100, 1), 1), new Dispose(image));
+
+            Motions.runMotion(motion);
+        }
+
         animationIconToToolbar('icon-inventory', event.image, event.x, event.y);
     });
 

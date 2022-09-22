@@ -1,5 +1,5 @@
 import { FurnitureExchangeComposer, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { GetRoomEngine, GetRoomSession, IsOwnerOfFurniture } from '../../../../api';
 import { useRoomEngineEvent } from '../../../events';
 import { useFurniRemovedEvent } from '../../engine';
@@ -10,12 +10,12 @@ const useFurnitureExchangeWidgetState = () =>
     const [ category, setCategory ] = useState(-1);
     const [ value, setValue ] = useState(0);
 
-    const onClose = useCallback(() =>
+    const onClose = () =>
     {
         setObjectId(-1);
         setCategory(-1);
         setValue(0);
-    }, []);
+    }
 
     const redeem = () =>
     {

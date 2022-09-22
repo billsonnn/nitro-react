@@ -1,5 +1,5 @@
 import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectType, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { CreateLinkEvent, GetRoomSession, GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
 import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { useMessageEvent, useRoomEngineEvent } from '../../hooks';
@@ -21,12 +21,12 @@ export const UserProfileView: FC<{}> = props =>
         setUserRelationships(null);
     }
 
-    const onLeaveGroup = useCallback(() =>
+    const onLeaveGroup = () =>
     {
         if(!userProfile || (userProfile.id !== GetSessionDataManager().userId)) return;
         
         GetUserProfile(userProfile.id);
-    }, [ userProfile ]);
+    }
 
     useMessageEvent<UserCurrentBadgesEvent>(UserCurrentBadgesEvent, event =>
     {

@@ -1,5 +1,5 @@
 import { RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { FurniCategory, GetFurnitureDataForRoomObject, LocalizeText, UseProductItem } from '../../../../api';
 import { useRoom } from '../../../../hooks';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
@@ -27,6 +27,26 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
     const { item = null, updateConfirmingProduct = null, onClose = null } = props;
     const [ mode, setMode ] = useState(0);
     const { roomSession = null } = useRoom();
+
+    const processAction = (name: string) =>
+    {
+        if(!name) return;
+        
+        switch(name)
+        {
+            case 'use_product':
+            case 'use_product_shampoo':
+            case 'use_product_custom_part':
+            case 'use_product_custom_part_shampoo':
+            case 'use_product_saddle':
+            case 'replace_product_saddle':
+            case 'revive_monsterplant':
+            case 'rebreed_monsterplant':
+            case 'fertilize_monsterplant':
+                updateConfirmingProduct(item);
+                break;
+        }
+    }
 
     useEffect(() =>
     {
@@ -65,26 +85,6 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
 
         setMode(mode);
     }, [ roomSession, item ]);
-
-    const processAction = useCallback((name: string) =>
-    {
-        if(!name) return;
-        
-        switch(name)
-        {
-            case 'use_product':
-            case 'use_product_shampoo':
-            case 'use_product_custom_part':
-            case 'use_product_custom_part_shampoo':
-            case 'use_product_saddle':
-            case 'replace_product_saddle':
-            case 'revive_monsterplant':
-            case 'rebreed_monsterplant':
-            case 'fertilize_monsterplant':
-                updateConfirmingProduct(item);
-                break;
-        }
-    }, [ item, updateConfirmingProduct ]);
     
     return (
         <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } onClose={ onClose } collapsable={ true }>

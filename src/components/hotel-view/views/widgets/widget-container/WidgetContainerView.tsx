@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react';
+import { FC } from 'react';
 import { GetConfigurationManager, LocalizeText, OpenUrl } from '../../../../../api';
 
 export interface WidgetContainerViewProps
@@ -10,7 +10,7 @@ export const WidgetContainerView: FC<WidgetContainerViewProps> = props =>
 {
     const { conf = null } = props;
 
-    const getOption = useCallback((key: string) =>
+    const getOption = (key: string) =>
     {
         const option = conf[key];
 
@@ -23,7 +23,7 @@ export const WidgetContainerView: FC<WidgetContainerViewProps> = props =>
         }
 
         return option;
-    }, [ conf ]);
+    }
 
   	return (
         <div className="widgetcontainer widget d-flex flex-row overflow-hidden">
