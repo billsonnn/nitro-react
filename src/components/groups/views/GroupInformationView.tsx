@@ -47,7 +47,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
     {
         if(isRealOwner) return 'group.youareowner';
 
-        if(groupInformation.type === GroupType.PRIVATE) return '';
+        if(groupInformation.type === GroupType.PRIVATE && groupInformation.membershipType !== GroupMembershipType.MEMBER) return '';
 
         if(groupInformation.membershipType === GroupMembershipType.MEMBER) return 'group.leave';
 
@@ -135,7 +135,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                         <Text small underline pointer onClick={ () => handleAction('furniture') }>{ LocalizeText('group.buyfurni') }</Text>
                         <Text small underline pointer onClick={ () => handleAction('popular_groups') }>{ LocalizeText('group.showgroups') }</Text>
                     </Column>
-                    { (groupInformation.type !== GroupType.PRIVATE) &&
+                    { (groupInformation.type !== GroupType.PRIVATE || groupInformation.type === GroupType.PRIVATE && groupInformation.membershipType === GroupMembershipType.MEMBER) &&
                         <Button disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) || isRealOwner } onClick={ handleButtonClick }>
                             { LocalizeText(getButtonText()) }
                         </Button> }
