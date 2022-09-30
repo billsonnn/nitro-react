@@ -122,7 +122,7 @@ const useFurnitureCraftingWidgetState = () =>
 
     useEffect(() =>
     {
-        if(!groupItems || !groupItems.length || !ingredientNames || !ingredientNames.length) return;
+        if(!ingredientNames || !ingredientNames.length) return;
 
         setIngredients(prevValue =>
         {
@@ -138,7 +138,7 @@ const useFurnitureCraftingWidgetState = () =>
 
                 let amountAvailable = 0;
 
-                for (const inventoryItem of inventoryItems) amountAvailable += inventoryItem.items.length;
+                if (inventoryItems) for (const inventoryItem of inventoryItems) amountAvailable += inventoryItem.items.length;
 
                 newValue.push({
                     name: name,

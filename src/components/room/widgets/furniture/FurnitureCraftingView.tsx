@@ -24,7 +24,8 @@ export const FurnitureCraftingView: FC<{}> = props =>
         {
             const ingredientData = ingredients.find(data => (data.name === ingredient.itemName));
 
-            if (ingredientData.count < ingredient.count) return false;
+
+            if (!ingredientData || ingredientData.count < ingredient.count) return false;
         }
 
         return true;
