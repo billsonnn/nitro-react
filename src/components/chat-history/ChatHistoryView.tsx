@@ -1,8 +1,7 @@
 import { ILinkEventTracker } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps, ListRowRenderer } from 'react-virtualized';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { AddEventLinkTracker, ChatEntryType, LocalizeText, RemoveLinkEventTracker } from '../../api';
-import { Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
+import { Flex, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { useChatHistory } from '../../hooks';
 
 export const ChatHistoryView: FC<{}> = props =>
@@ -10,9 +9,6 @@ export const ChatHistoryView: FC<{}> = props =>
     const [ isVisible, setIsVisible ] = useState(false);
     const [ searchText, setSearchText ] = useState<string>('');
     const { chatHistory = [] } = useChatHistory();
-    const elementRef = useRef<List>(null);
-
-    const cache = useMemo(() => new CellMeasurerCache({ defaultHeight: 35, fixedWidth: true }), []);
 
     const filteredChatHistory = useMemo(() => 
     {
@@ -23,10 +19,10 @@ export const ChatHistoryView: FC<{}> = props =>
         return chatHistory.filter(entry => ((entry.message && entry.message.toLowerCase().includes(text))) || (entry.name && entry.name.toLowerCase().includes(text)));
     }, [ chatHistory, searchText ]);
 
-    useEffect(() =>
+    /* useEffect(() =>
     {
-        if(elementRef && elementRef.current && isVisible) elementRef.current.scrollToRow(-1);
-    }, [ isVisible ]);
+        if(elementRef && elementRef.current && isVisible) elementRef.current.scrollTop = elementRef.current.scrollHeight;
+    }, [ isVisible ]); */
 
     useEffect(() =>
     {
@@ -60,68 +56,39 @@ export const ChatHistoryView: FC<{}> = props =>
 
     if(!isVisible) return null;
 
-    const RowRenderer: ListRowRenderer = (props: ListRowProps) =>
-    {
-        const item = filteredChatHistory[props.index];
-
-        if (!item) return null;
-
-        return (
-            <CellMeasurer cache={ cache } columnIndex={ 0 } key={ props.key } parent={ props.parent } rowIndex={ props.index }>
-                <Flex alignItems="center" style={ props.style } className="p-1" gap={ 2 }>
-                    <Text variant="muted">{ item.timestamp }</Text>
-                    { (item.type === ChatEntryType.TYPE_CHAT) &&
-                        <div className="bubble-container" style={ { position: 'relative' } }>
-                            { (item.style === 0) &&
-                            <div className="user-container-bg" style={ { backgroundColor: item.color } } /> }
-                            <div className={ `chat-bubble bubble-${ item.style } type-${ item.chatType }` } style={ { maxWidth: '100%' } }>
-                                <div className="user-container">
-                                    { item.imageUrl && (item.imageUrl.length > 0) &&
-                        <div className="user-image" style={ { backgroundImage: `url(${ item.imageUrl })` } } /> }
-                                </div>
-                                <div className="chat-content">
-                                    <b className="username mr-1" dangerouslySetInnerHTML={ { __html: `${ item.name }: ` } } />
-                                    <span className="message" dangerouslySetInnerHTML={ { __html: `${ item.message }` } } />
-                                </div>
-                            </div>
-                        </div> }
-                    { (item.type === ChatEntryType.TYPE_ROOM_INFO) &&
-                        <>
-                            <i className="icon icon-small-room" />
-                            <Text textBreak wrap grow>{ item.name }</Text>
-                        </> }
-                </Flex>
-            </CellMeasurer>
-        );
-    };
-
     return (
         <NitroCardView uniqueKey="chat-history" className="nitro-chat-history" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('room.chathistory.button.text') } onCloseClick={ event => setIsVisible(false) }/>
-            <NitroCardContentView overflow="hidden">
-                <Flex column fullHeight gap={ 2 }>
-                    <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchText } onChange={ event => setSearchText(event.target.value) } />
-                    <div className="h-100">
-                        <AutoSizer defaultWidth={ 300 } defaultHeight={ 170 }>
-                            { ({ height, width }) => 
-                            {
-                                cache.clearAll();
-
-                                return (
-                                    <List
-                                        ref={ elementRef }
-                                        width={ width }
-                                        height={ height }
-                                        rowCount={ filteredChatHistory.length }
-                                        rowHeight={ 35 }
-                                        className={ 'chat-history-list' }
-                                        rowRenderer={ RowRenderer }
-                                        deferredMeasurementCache={ cache } />
-                                )
-                            } }
-                        </AutoSizer>
-                    </div>
-                </Flex>
+            <NitroCardContentView overflow="hidden" gap={ 2 }>
+                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchText } onChange={ event => setSearchText(event.target.value) } />
+                <InfiniteScroll rows={ filteredChatHistory } estimateSize={ 35 } rowRender={ row =>
+                {
+                    return (
+                        <Flex alignItems="center" className="p-1" gap={ 2 }>
+                            <Text variant="muted">{ row.timestamp }</Text>
+                            { (row.type === ChatEntryType.TYPE_CHAT) &&
+                                <div className="bubble-container" style={ { position: 'relative' } }>
+                                    { (row.style === 0) &&
+                                    <div className="user-container-bg" style={ { backgroundColor: row.color } } /> }
+                                    <div className={ `chat-bubble bubble-${ row.style } type-${ row.chatType }` } style={ { maxWidth: '100%' } }>
+                                        <div className="user-container">
+                                            { row.imageUrl && (row.imageUrl.length > 0) &&
+                                <div className="user-image" style={ { backgroundImage: `url(${ row.imageUrl })` } } /> }
+                                        </div>
+                                        <div className="chat-content">
+                                            <b className="username mr-1" dangerouslySetInnerHTML={ { __html: `${ row.name }: ` } } />
+                                            <span className="message" dangerouslySetInnerHTML={ { __html: `${ row.message }` } } />
+                                        </div>
+                                    </div>
+                                </div> }
+                            { (row.type === ChatEntryType.TYPE_ROOM_INFO) &&
+                                <>
+                                    <i className="icon icon-small-room" />
+                                    <Text textBreak wrap grow>{ row.name }</Text>
+                                </> }
+                        </Flex>
+                    )
+                } } />
             </NitroCardContentView>
         </NitroCardView>
     );

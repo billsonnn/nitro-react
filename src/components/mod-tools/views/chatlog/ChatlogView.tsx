@@ -1,9 +1,9 @@
 import { ChatRecordData } from '@nitrots/nitro-renderer';
-import { CSSProperties, FC, Key, useCallback } from 'react';
-import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps } from 'react-virtualized';
+import { FC, useMemo } from 'react';
 import { CreateLinkEvent, TryVisitRoom } from '../../../../api';
-import { Base, Button, Column, Flex, Grid, Text } from '../../../../common';
+import { Base, Button, Column, Flex, Grid, InfiniteScroll, Text } from '../../../../common';
 import { useModTools } from '../../../../hooks';
+import { ChatlogRecord } from './ChatlogRecord';
 
 interface ChatlogViewProps
 {
@@ -15,94 +15,38 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
     const { records = null } = props;
     const { openRoomInfo = null } = useModTools();
 
-    const rowRenderer = (props: ListRowProps) =>
+    const allRecords = useMemo(() =>
     {
-        let chatlogEntry = records[0].chatlog[props.index];
+        const results: ChatlogRecord[] = [];
 
-        return (
-            <CellMeasurer
-                cache={ cache }
-                columnIndex={ 0 }
-                key={ props.key }
-                parent={ props.parent }
-                rowIndex={ props.index }
-            >
-                <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
-                    <Text className="g-col-2">{ chatlogEntry.timestamp }</Text>
-                    <Text className="g-col-3" bold underline pointer onClick={ event => CreateLinkEvent(`mod-tools/open-user-info/${ chatlogEntry.userId }`) }>{ chatlogEntry.userName }</Text>
-                    <Text textBreak wrap className="g-col-7">{ chatlogEntry.message }</Text>
-                </Grid>
-            </CellMeasurer>
-        );
-    };
-
-    const advancedRowRenderer = (props: ListRowProps) =>
-    {
-        let chatlogEntry = null;
-        let currentRecord: ChatRecordData = null;
-        let isRoomInfo = false;
-        let totalIndex = 0;
-
-        for(let i = 0; i < records.length; i++)
+        records.forEach(record =>
         {
-            currentRecord = records[i];
+            results.push({
+                isRoomInfo: true,
+                roomId: record.roomId,
+                roomName: record.roomName
+            });
 
-            totalIndex++; // row for room info
-            totalIndex = (totalIndex + currentRecord.chatlog.length);
-
-            if(props.index > (totalIndex - 1)) continue;
-            
-            if((props.index + 1) === (totalIndex - currentRecord.chatlog.length))
+            record.chatlog.forEach(chatlog =>
             {
-                isRoomInfo = true;
-
-                break;
-            }
-
-            const index = (props.index - (totalIndex - currentRecord.chatlog.length));
-
-            chatlogEntry = currentRecord.chatlog[index];
-
-            break;
-        }
-
-        return (
-            <CellMeasurer
-                cache={ cache }
-                columnIndex={ 0 }
-                key={ props.key }
-                parent={ props.parent }
-                rowIndex={ props.index }
-            >
-                { (isRoomInfo && currentRecord) &&
-                    <RoomInfo roomId={ currentRecord.roomId } roomName={ currentRecord.roomName } uniqueKey={ props.key } style={ props.style } /> }
-                { !isRoomInfo &&
-                    <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
-                        <Text className="g-col-2">{ chatlogEntry.timestamp }</Text>
-                        <Text className="g-col-3" bold underline pointer onClick={ event => CreateLinkEvent(`mod-tools/open-user-info/${ chatlogEntry.userId }`) }>{ chatlogEntry.userName }</Text>
-                        <Text textBreak wrap className="g-col-7">{ chatlogEntry.message }</Text>
-                    </Grid> }
-            </CellMeasurer>
-        );
-    }
-
-    const getNumRowsForAdvanced = useCallback(() =>
-    {
-        let count = 0;
-
-        for(let i = 0; i < records.length; i++)
-        {
-            count++; // add room info row
-            count = count + records[i].chatlog.length;
-        }
-
-        return count;
+                results.push({
+                    timestamp: chatlog.timestamp,
+                    habboId: chatlog.userId,
+                    username: chatlog.userName,
+                    hasHighlighting: chatlog.hasHighlighting,
+                    message: chatlog.message,
+                    isRoomInfo: false
+                });
+            });
+        });
+        
+        return results;
     }, [ records ]);
 
-    const RoomInfo = (props: { roomId: number, roomName: string, uniqueKey: Key, style: CSSProperties }) =>
+    const RoomInfo = (props: { roomId: number, roomName: string }) =>
     {
         return (
-            <Flex key={ props.uniqueKey } gap={ 2 } alignItems="center" justifyContent="between" className="room-info bg-muted rounded p-1" style={ props.style }>
+            <Flex gap={ 2 } alignItems="center" justifyContent="between" className="bg-muted rounded p-1">
                 <Flex gap={ 1 }>
                     <Text bold>Room name:</Text>
                     <Text>{ props.roomName }</Text>
@@ -115,15 +59,8 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
         );
     }
 
-    const cache = new CellMeasurerCache({
-        defaultHeight: 25,
-        fixedWidth: true
-    });
-
     return (
         <>
-            { (records && (records.length === 1)) &&
-                <RoomInfo roomId={ records[0].roomId } roomName={ records[0].roomName } uniqueKey={ null } style={ {} } /> }
             <Column fit gap={ 0 } overflow="hidden">
                 <Column gap={ 2 }>
                     <Grid gap={ 1 } className="text-black fw-bold border-bottom pb-1">
@@ -133,25 +70,21 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                     </Grid>
                 </Column>
                 { (records && (records.length > 0)) &&
-                    <Column className="log-container striped-children" overflow="auto" gap={ 0 }>
-                        <AutoSizer defaultWidth={ 400 } defaultHeight={ 200 }>
-                            { ({ height, width }) => 
-                            {
-                                cache.clearAll();
-
-                                return (
-                                    <List
-                                        width={ width }
-                                        height={ height }
-                                        rowCount={ (records.length > 1) ? getNumRowsForAdvanced() : records[0].chatlog.length }
-                                        rowHeight={ cache.rowHeight }
-                                        className={ 'log-entry-container' }
-                                        rowRenderer={ (records.length > 1) ? advancedRowRenderer : rowRenderer }
-                                        deferredMeasurementCache={ cache } />
-                                );
-                            } }
-                        </AutoSizer>
-                    </Column> }
+                    <InfiniteScroll rows={ allRecords } estimateSize={ 25 } rowRender={ (row: ChatlogRecord) =>
+                    {
+                        return (
+                            <>
+                                { row.isRoomInfo &&
+                                    <RoomInfo roomId={ row.roomId } roomName={ row.roomName } /> }
+                                { !row.isRoomInfo &&
+                                    <Grid fullHeight={ false } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
+                                        <Text className="g-col-2">{ row.timestamp }</Text>
+                                        <Text className="g-col-3" bold underline pointer onClick={ event => CreateLinkEvent(`mod-tools/open-user-info/${ row.habboId }`) }>{ row.username }</Text>
+                                        <Text textBreak wrap className="g-col-7">{ row.message }</Text>
+                                    </Grid> }
+                            </>
+                        );
+                    } } /> }
             </Column>
         </>
     );

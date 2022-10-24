@@ -12,6 +12,7 @@ export * from './FormGroup';
 export * from './Grid';
 export * from './GridContext';
 export * from './HorizontalRule';
+export * from './InfiniteScroll';
 export * from './layout';
 export * from './Text';
 export * from './transitions';
