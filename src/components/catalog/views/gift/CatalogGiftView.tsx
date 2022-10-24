@@ -1,9 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GiftReceiverNotFoundEvent, PurchaseFromCatalogAsGiftComposer } from '@nitrots/nitro-renderer';
-import classNames from 'classnames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, ProductTypeEnum, SendMessageComposer } from '../../../../api';
-import { Base, Button, ButtonGroup, Column, Flex, FormGroup, LayoutCurrencyIcon, LayoutFurniImageView, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { Base, Button, ButtonGroup, classNames, Column, Flex, FormGroup, LayoutCurrencyIcon, LayoutFurniImageView, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { CatalogEvent, CatalogInitGiftEvent, CatalogPurchasedEvent } from '../../../../events';
 import { useCatalog, useMessageEvent, useUiEvent } from '../../../../hooks';
 
@@ -40,29 +39,6 @@ export const CatalogGiftView: FC<{}> = props =>
         
         if(colors.length) setSelectedColorId(colors[0].id);
     }, [ colors ]);
-
-    const onCatalogEvent = useCallback((event: CatalogEvent) =>
-    {
-        switch(event.type)
-        {
-            case CatalogPurchasedEvent.PURCHASE_SUCCESS:
-                onClose();
-                return;
-            case CatalogEvent.INIT_GIFT:
-                const castedEvent = (event as CatalogInitGiftEvent);
-
-                onClose();
-                    
-                setPageId(castedEvent.pageId);
-                setOfferId(castedEvent.offerId);
-                setExtraData(castedEvent.extraData);
-                setIsVisible(true);
-                return;
-        }
-    }, [ onClose ]);
-
-    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, onCatalogEvent);
-    useUiEvent(CatalogEvent.INIT_GIFT, onCatalogEvent);
 
     const isBoxDefault = useMemo(() =>
     {
@@ -115,6 +91,28 @@ export const CatalogGiftView: FC<{}> = props =>
 
     useMessageEvent<GiftReceiverNotFoundEvent>(GiftReceiverNotFoundEvent, event => setReceiverNotFound(true));
 
+    useUiEvent([
+        CatalogPurchasedEvent.PURCHASE_SUCCESS,
+        CatalogEvent.INIT_GIFT ], event =>
+    {
+        switch(event.type)
+        {
+            case CatalogPurchasedEvent.PURCHASE_SUCCESS:
+                onClose();
+                return;
+            case CatalogEvent.INIT_GIFT:
+                const castedEvent = (event as CatalogInitGiftEvent);
+
+                onClose();
+                    
+                setPageId(castedEvent.pageId);
+                setOfferId(castedEvent.offerId);
+                setExtraData(castedEvent.extraData);
+                setIsVisible(true);
+                return;
+        }
+    });
+
     useEffect(() =>
     {
         setReceiverNotFound(false);
@@ -157,7 +155,7 @@ export const CatalogGiftView: FC<{}> = props =>
             <NitroCardContentView className="text-black">
                 <FormGroup column>
                     <Text>{ LocalizeText('catalog.gift_wrapping.receiver') }</Text>
-                    <input type="text" className={ 'form-control form-control-sm' + classNames({ ' is-invalid': receiverNotFound }) } value={ receiverName } onChange={ (e) => setReceiverName(e.target.value) } />
+                    <input type="text" className={ classNames('form-control form-control-sm', receiverNotFound && 'is-invalid') } value={ receiverName } onChange={ (e) => setReceiverName(e.target.value) } />
                     { receiverNotFound &&
                         <Base className="invalid-feedback">{ LocalizeText('catalog.gift_wrapping.receiver_not_found.title') }</Base> }
                 </FormGroup>

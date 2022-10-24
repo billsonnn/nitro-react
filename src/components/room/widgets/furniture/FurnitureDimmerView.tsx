@@ -1,9 +1,8 @@
 import { RoomEngineTriggerWidgetEvent } from '@nitrots/nitro-renderer';
-import classNames from 'classnames';
 import { FC, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { ColorUtils, FurnitureDimmerUtilities, GetConfiguration, LocalizeText } from '../../../../api';
-import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../common';
+import { Base, Button, classNames, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../common';
 import { useFurnitureDimmerWidget, useRoomEngineEvent } from '../../../../hooks';
 
 export const FurnitureDimmerView: FC<{}> = props =>
@@ -56,7 +55,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
                                     { FurnitureDimmerUtilities.AVAILABLE_COLORS.map((color, index) =>
                                     {
                                         return (
-                                            <Column fullWidth pointer key={ index } className={ 'color-swatch rounded' + classNames({ ' active': color === selectedColor }) } onClick={ () => setSelectedColor(color) } style={ { backgroundColor: FurnitureDimmerUtilities.HTML_COLORS[index] } } />
+                                            <Column fullWidth pointer key={ index } className={ classNames('color-swatch rounded', ((color === selectedColor ) && 'active')) } onClick={ () => setSelectedColor(color) } style={ { backgroundColor: FurnitureDimmerUtilities.HTML_COLORS[index] } } />
                                         );
                                     }) }
                                 </Grid> }

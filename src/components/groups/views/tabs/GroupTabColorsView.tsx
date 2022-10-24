@@ -1,8 +1,7 @@
 import { GroupSaveColorsComposer } from '@nitrots/nitro-renderer';
-import classNames from 'classnames';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { IGroupData, LocalizeText, SendMessageComposer } from '../../../../api';
-import { AutoGrid, Base, Column, Flex, Grid, Text } from '../../../../common';
+import { AutoGrid, Base, classNames, Column, Flex, Grid, Text } from '../../../../common';
 import { useGroup } from '../../../../hooks';
 
 interface GroupTabColorsViewProps
@@ -110,7 +109,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
                 <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 }>
                     { groupData.groupColors && groupCustomize.groupColorsA && groupCustomize.groupColorsA.map((item, index) =>
                     {
-                        return <div key={ index } className={ 'group-badge-color-swatch cursor-pointer' + classNames({ ' active': (groupData.groupColors[0] === item.id) }) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(0, item.id) }></div>
+                        return <div key={ index } className={ classNames('group-badge-color-swatch cursor-pointer', ((groupData.groupColors[0] === item.id) && 'active')) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(0, item.id) }></div>
                     }) }
                 </AutoGrid>
             </Column>
@@ -119,7 +118,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
                 <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 }>
                     { groupData.groupColors && groupCustomize.groupColorsB && groupCustomize.groupColorsB.map((item, index) =>
                     {
-                        return <div key={ index } className={ 'group-badge-color-swatch cursor-pointer' + classNames({ ' active': (groupData.groupColors[1] === item.id) }) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(1, item.id) }></div>
+                        return <div key={ index } className={ classNames('group-badge-color-swatch cursor-pointer', ((groupData.groupColors[1] === item.id) && 'active')) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(1, item.id) }></div>
                     }) }
                 </AutoGrid>
             </Column>

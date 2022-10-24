@@ -1,7 +1,6 @@
-import classNames from 'classnames';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, RoomObjectItem } from '../../../../api';
-import { Flex, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { classNames, Flex, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 
 interface ChooserWidgetViewProps
 {
