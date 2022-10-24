@@ -1,25 +1,24 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
-import { Dispatch, FC, PropsWithChildren, SetStateAction } from 'react';
+import { FC } from 'react';
 import { LayoutGridItem } from '../../../../common';
+import { useAchievements } from '../../../../hooks';
 import { AchievementBadgeView } from '../AchievementBadgeView';
 
 interface AchievementListItemViewProps
 {
     achievement: AchievementData;
-    selectedAchievementId: number;
-    setSelectedAchievementId: Dispatch<SetStateAction<number>>;
 }
 
-export const AchievementListItemView: FC<PropsWithChildren<AchievementListItemViewProps>> = props =>
+export const AchievementListItemView: FC<AchievementListItemViewProps> = props =>
 {
-    const { achievement = null, selectedAchievementId = -1, setSelectedAchievementId = null, children = null, ...rest } = props;
+    const { achievement = null } = props;
+    const { selectedAchievement = null, setSelectedAchievementId = null } = useAchievements();
 
     if(!achievement) return null;
 
     return (
-        <LayoutGridItem itemActive={ (selectedAchievementId === achievement.achievementId) } itemUnseen={ (achievement.unseen > 0) } onClick={ event => setSelectedAchievementId(achievement.achievementId) } { ...rest }>
+        <LayoutGridItem itemActive={ (selectedAchievement === achievement) } itemUnseen={ (achievement.unseen > 0) } onClick={ event => setSelectedAchievementId(achievement.achievementId) }>
             <AchievementBadgeView achievement={ achievement } />
-            { children }
         </LayoutGridItem>
     );
 }

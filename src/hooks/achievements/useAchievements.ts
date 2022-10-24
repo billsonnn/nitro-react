@@ -1,5 +1,6 @@
 import { AchievementData, AchievementEvent, AchievementsEvent, AchievementsScoreEvent, RequestAchievementsMessageComposer } from '@nitrots/nitro-renderer';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useBetween } from 'use-between';
 import { AchievementCategory, AchievementUtilities, CloneObject, SendMessageComposer } from '../../api';
 import { useMessageEvent } from '../events';
 
@@ -43,7 +44,21 @@ const useAchievementsState = () =>
         return ~~((((getProgress - 0) * (100 - 0)) / (getMaxProgress - 0)) + 0);
     }, [ getProgress, getMaxProgress ]);
 
-    const setAchievementSeen = (categoryCode: string, achievementId: number) =>
+    const selectedCategory = useMemo(() =>
+    {
+        if(selectedCategoryCode === null) return null;
+
+        return achievementCategories.find(category => (category.code === selectedCategoryCode));
+    }, [ achievementCategories, selectedCategoryCode ]);
+
+    const selectedAchievement = useMemo(() =>
+    {
+        if((selectedAchievementId === -1) || !selectedCategory) return null;
+
+        return selectedCategory.achievements.find(achievement => (achievement.achievementId === selectedAchievementId));
+    }, [ selectedCategory, selectedAchievementId ]);
+
+    const setAchievementSeen = useCallback((categoryCode: string, achievementId: number) =>
     {
         setAchievementCategories(prevValue =>
         {
@@ -63,7 +78,7 @@ const useAchievementsState = () =>
 
             return newValue;
         });
-    }
+    }, []);
 
     useMessageEvent<AchievementEvent>(AchievementEvent, event =>
     {
@@ -157,7 +172,7 @@ const useAchievementsState = () =>
         setNeedsUpdate(false);
     }, [ needsUpdate ]);
 
-    return { achievementCategories, selectedCategoryCode, setSelectedCategoryCode, selectedAchievementId, setSelectedAchievementId, achievementScore, getTotalUnseen, getProgress, getMaxProgress, scaledProgressPercent, setAchievementSeen };
+    return { achievementCategories, selectedCategoryCode, setSelectedCategoryCode, selectedAchievementId, setSelectedAchievementId, achievementScore, getTotalUnseen, getProgress, getMaxProgress, scaledProgressPercent, selectedCategory, selectedAchievement, setAchievementSeen };
 }
 
-export const useAchievements = useAchievementsState;
+export const useAchievements = () => useBetween(useAchievementsState);
