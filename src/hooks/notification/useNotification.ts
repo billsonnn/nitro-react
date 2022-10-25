@@ -84,19 +84,21 @@ const useNotificationState = () =>
 
         if(configuration) for(const key in configuration) options.set(key, configuration[key]);
 
+        if (type === 'floorplan_editor.error') options.set('message', options.get('message').replace(/[^a-zA-Z._ ]/g, ''));
+
         const title = getNotificationPart(options, type, 'title', true);
         const message = getNotificationPart(options, type, 'message', true).replace(/\\r/g, '\r');
         const linkTitle = getNotificationPart(options, type, 'linkTitle', false);
         const linkUrl = getNotificationPart(options, type, 'linkUrl', false);
         const image = getNotificationImageUrl(options, type);
-        
+
         if(options.get('display') === 'BUBBLE')
         {
             showSingleBubble(LocalizeText(message), NotificationBubbleType.INFO, image, linkUrl);
         }
         else
         {
-            simpleAlert(message, type, linkUrl, linkTitle, title, image);
+            simpleAlert(LocalizeText(message), type, linkUrl, linkTitle, title, image);
         }
 
         if(options.get('sound')) PlaySound(options.get('sound'));
@@ -346,7 +348,7 @@ const useNotificationState = () =>
     useMessageEvent<HotelClosedAndOpensEvent>(HotelClosedAndOpensEvent, event =>
     {
         const parser = event.getParser();
-        
+
         simpleAlert(LocalizeText('opening.hours.disconnected', [ 'h', 'm' ], [ parser.openHour.toString(), parser.openMinute.toString() ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
     });
 
