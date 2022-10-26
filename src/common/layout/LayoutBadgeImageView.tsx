@@ -1,4 +1,4 @@
-import { BadgeImageReadyEvent, Nitro, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
+import { BadgeImageReadyEvent, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
 import { GetConfiguration, GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../api';
 import { Base, BaseProps } from '../Base';
@@ -37,7 +37,7 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
 
         if(imageElement)
         {
-            newStyle.backgroundImage = (isGroup || isGrayscale) ? imageElement.src : `url(${ Nitro.instance.getConfiguration<string>('badge.asset.url').replace('%badgename%', badgeCode.toString()) })`;
+            newStyle.backgroundImage = (isGroup || isGrayscale) ? imageElement.src : `url(${ GetConfiguration<string>('badge.asset.url').replace('%badgename%', badgeCode.toString()) })`;
             newStyle.width = imageElement.width;
             newStyle.height = imageElement.height;
 
