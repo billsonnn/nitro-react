@@ -80,7 +80,7 @@ const useFurnitureCraftingWidgetState = () =>
                 const iconUrl = GetRoomEngine().getFurnitureFloorIconUrl(itemId);
 
                 newValue.push({
-                    name: recipe.itemName,
+                    name: recipe.recipeName,
                     localizedName: LocalizeText('roomItem.name.' + itemId),
                     iconUrl
                 });
