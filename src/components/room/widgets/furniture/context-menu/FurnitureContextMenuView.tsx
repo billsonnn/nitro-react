@@ -17,7 +17,7 @@ const EFFECTBOX_OPEN: string = 'EFFECTBOX_OPEN';
 export const FurnitureContextMenuView: FC<{}> = props =>
 {
     const { closeConfirm = null, processAction = null, onClose = null, objectId = -1, mode = null, confirmMode = null, confirmingObjectId = -1, groupData = null, isGroupMember = false } = useFurnitureContextMenuWidget();
-    const { alerts = [], simpleAlert = null, closeAlert = null } = useNotification();
+    const { simpleAlert = null } = useNotification();
 
     useMessageEvent<CustomUserNotificationMessageEvent>(CustomUserNotificationMessageEvent, event =>
     {
@@ -27,7 +27,7 @@ export const FurnitureContextMenuView: FC<{}> = props =>
 
         // HOPPER_NO_COSTUME = 1; HOPPER_NO_HC = 2; GATE_NO_HC = 3; STARS_NOT_CANDIDATE = 4 (not coded in Emulator); STARS_NOT_ENOUGH_USERS = 5 (not coded in Emulator);
 
-        switch(parser['_code'])
+        switch(parser.count)
         {
             case 1:
                 simpleAlert(LocalizeText('costumehopper.costumerequired.bodytext'), null, 'catalog/open/temporary_effects' , LocalizeText('costumehopper.costumerequired.buy'), LocalizeText('costumehopper.costumerequired.header'), null);
@@ -39,10 +39,6 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                 simpleAlert(LocalizeText('gate.viprequired.bodytext'), null, 'catalog/open/habbo_club' , LocalizeText('viprequired.buy.vip'), LocalizeText('gate.viprequired.title'), null);
                 break;
         }
-
-        if(!alerts || !alerts.length) return null;
-
-        closeAlert(alerts.pop());
     });
 
     return (
