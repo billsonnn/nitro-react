@@ -1,7 +1,7 @@
-import { ContextMenuEnum, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { ContextMenuEnum, CustomUserNotificationMessageEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { GetGroupInformation, LocalizeText } from '../../../../../api';
-import { useFurnitureContextMenuWidget } from '../../../../../hooks';
+import { useFurnitureContextMenuWidget, useMessageEvent, useNotification } from '../../../../../hooks';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
@@ -17,6 +17,29 @@ const EFFECTBOX_OPEN: string = 'EFFECTBOX_OPEN';
 export const FurnitureContextMenuView: FC<{}> = props =>
 {
     const { closeConfirm = null, processAction = null, onClose = null, objectId = -1, mode = null, confirmMode = null, confirmingObjectId = -1, groupData = null, isGroupMember = false } = useFurnitureContextMenuWidget();
+    const { simpleAlert = null } = useNotification();
+
+    useMessageEvent<CustomUserNotificationMessageEvent>(CustomUserNotificationMessageEvent, event =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        // HOPPER_NO_COSTUME = 1; HOPPER_NO_HC = 2; GATE_NO_HC = 3; STARS_NOT_CANDIDATE = 4 (not coded in Emulator); STARS_NOT_ENOUGH_USERS = 5 (not coded in Emulator);
+
+        switch(parser.count)
+        {
+            case 1:
+                simpleAlert(LocalizeText('costumehopper.costumerequired.bodytext'), null, 'catalog/open/temporary_effects' , LocalizeText('costumehopper.costumerequired.buy'), LocalizeText('costumehopper.costumerequired.header'), null);
+                break;
+            case 2:
+                simpleAlert(LocalizeText('viphopper.viprequired.bodytext'), null, 'catalog/open/habbo_club' , LocalizeText('viprequired.buy.vip'), LocalizeText('viprequired.header'), null);
+                break;
+            case 3:
+                simpleAlert(LocalizeText('gate.viprequired.bodytext'), null, 'catalog/open/habbo_club' , LocalizeText('viprequired.buy.vip'), LocalizeText('gate.viprequired.title'), null);
+                break;
+        }
+    });
 
     return (
         <>
