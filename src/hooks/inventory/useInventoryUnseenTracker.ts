@@ -1,25 +1,28 @@
 import { UnseenItemsEvent, UnseenResetCategoryComposer, UnseenResetItemsComposer } from '@nitrots/nitro-renderer';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useBetween } from 'use-between';
 import { SendMessageComposer } from '../../api';
 import { useMessageEvent } from '../events';
+
+const sendResetCategoryMessage = (category: number) => SendMessageComposer(new UnseenResetCategoryComposer(category));
+const sendResetItemsMessage = (category: number, itemIds: number[]) => SendMessageComposer(new UnseenResetItemsComposer(category, ...itemIds));
 
 const useInventoryUnseenTrackerState = () =>
 {
     const [ unseenItems, setUnseenItems ] = useState<Map<number, number[]>>(new Map());
 
-    const getCount = (category: number) => (unseenItems.get(category)?.length || 0);
+    const getCount = useCallback((category: number) => (unseenItems.get(category)?.length || 0), [ unseenItems ]);
 
-    const getFullCount = (() =>
+    const getFullCount = useMemo(() =>
     {
         let count = 0;
 
         for(const key of unseenItems.keys()) count += getCount(key);
 
         return count;
-    })();
+    }, [ unseenItems, getCount ]);
 
-    const resetCategory = (category: number) =>
+    const resetCategory = useCallback((category: number) =>
     {
         let didReset = true;
 
@@ -36,15 +39,15 @@ const useInventoryUnseenTrackerState = () =>
 
             newValue.delete(category);
 
-            SendMessageComposer(new UnseenResetCategoryComposer(category));
+            sendResetCategoryMessage(category);
 
             return newValue;
         });
 
         return didReset;
-    }
+    }, []);
 
-    const resetItems = (category: number, itemIds: number[]) =>
+    const resetItems = useCallback((category: number, itemIds: number[]) =>
     {
         let didReset = true;
 
@@ -62,24 +65,24 @@ const useInventoryUnseenTrackerState = () =>
 
             if(existing) for(const itemId of itemIds) existing.splice(existing.indexOf(itemId), 1);
 
-            SendMessageComposer(new UnseenResetItemsComposer(category, ...itemIds))
+            sendResetItemsMessage(category, itemIds);
 
             return newValue;
         });
 
         return didReset;
-    }
+    }, []);
 
-    const isUnseen = (category: number, itemId: number) =>
+    const isUnseen = useCallback((category: number, itemId: number) =>
     {
         if(!unseenItems.has(category)) return false;
 
         const items = unseenItems.get(category);
 
         return (items.indexOf(itemId) >= 0);
-    }
+    }, [ unseenItems ]);
 
-    const removeUnseen = (category: number, itemId: number) =>
+    const removeUnseen = useCallback((category: number, itemId: number) =>
     {
         setUnseenItems(prevValue =>
         {
@@ -93,7 +96,7 @@ const useInventoryUnseenTrackerState = () =>
 
             return newValue;
         });
-    }
+    }, []);
 
     useMessageEvent<UnseenItemsEvent>(UnseenItemsEvent, event =>
     {
