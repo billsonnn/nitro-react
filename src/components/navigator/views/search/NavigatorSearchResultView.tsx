@@ -1,8 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavigatorSearchResultList } from '@nitrots/nitro-renderer';
+import { NavigatorSearchComposer, NavigatorSearchResultList } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { LocalizeText, NavigatorSearchResultViewDisplayMode } from '../../../../api';
+import { LocalizeText, NavigatorSearchResultViewDisplayMode, SendMessageComposer } from '../../../../api';
 import { AutoGrid, AutoGridProps, Column, Flex, Grid, Text } from '../../../../common';
+import { useNavigator } from '../../../../hooks';
 import { NavigatorSearchResultItemView } from './NavigatorSearchResultItemView';
 
 export interface NavigatorSearchResultViewProps extends AutoGridProps
@@ -16,11 +17,13 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
     const [ isExtended, setIsExtended ] = useState(true);
     const [ displayMode, setDisplayMode ] = useState<number>(0);
 
+    const { topLevelContext = null } = useNavigator();
+
     const getResultTitle = () =>
     {
         let name = searchResult.code;
 
-        if(!name || !name.length) return searchResult.data;
+        if(!name || !name.length || LocalizeText('navigator.searchcode.title.' + name) == ('navigator.searchcode.title.' + name)) return searchResult.data;
 
         if(name.startsWith('${')) return name.slice(2, (name.length - 1));
 
@@ -36,12 +39,19 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
             return NavigatorSearchResultViewDisplayMode.LIST;
         });
     }
+    
+    const showMore = () => 
+    {
+        if(searchResult.action == 1) SendMessageComposer(new NavigatorSearchComposer(searchResult.code, ''));
+        else if(searchResult.action == 2 && topLevelContext) SendMessageComposer(new NavigatorSearchComposer(topLevelContext.code,''));
+    }
 
     useEffect(() =>
     {
         if(!searchResult) return;
 
-        //setIsExtended(searchResult.closed);
+        setIsExtended(!searchResult.closed);
+        
         setDisplayMode(searchResult.mode);
     }, [ searchResult ]);
 
@@ -54,7 +64,11 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
                     <FontAwesomeIcon icon={ isExtended ? 'minus' : 'plus' } className="text-secondary" />
                     <Text>{ LocalizeText(getResultTitle()) }</Text>
                 </Flex>
-                <FontAwesomeIcon icon={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 'th' : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 'bars' : null) } className="text-secondary" onClick={ toggleDisplayMode } />
+                <Flex gap={ 2 }>
+                    <FontAwesomeIcon icon={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 'th' : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 'bars' : null) } className="text-secondary" onClick={ toggleDisplayMode } />
+                    { (searchResult.action > 0) && <FontAwesomeIcon icon={ searchResult.action == 1 ? 'window-maximize' : 'window-restore' } className="text-secondary" onClick={ showMore } /> }
+                </Flex>
+
             </Flex> { isExtended && 
                 <>
                     {
