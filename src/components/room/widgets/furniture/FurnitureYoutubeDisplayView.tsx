@@ -2,10 +2,15 @@ import { FC, useEffect, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
 import { YouTubePlayer } from 'youtube-player/dist/types';
 import { LocalizeText, YoutubeVideoPlaybackStateEnum } from '../../../../api';
-import { Grid, LayoutGridItem, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
+import { AutoGrid, AutoGridProps, LayoutGridItem, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { useFurnitureYoutubeWidget } from '../../../../hooks';
 
-export const FurnitureYoutubeDisplayView: FC<{}> = props =>
+interface FurnitureYoutubeDisplayViewProps extends AutoGridProps
+{
+
+}
+
+export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewProps =>
 {
     const [ player, setPlayer ] = useState<any>(null);
     const { objectId = -1, videoId = null, videoStart = 0, videoEnd = 0, currentVideoState = null, selectedVideo = null, playlists = [], onClose = null, previous = null, next = null, pause = null, play = null, selectVideo = null } = useFurnitureYoutubeWidget();
@@ -86,16 +91,16 @@ export const FurnitureYoutubeDisplayView: FC<{}> = props =>
                             <i className="icon icon-youtube-next cursor-pointer" onClick={ next } />
                         </span>
                         <div className="mb-1">{ LocalizeText('widget.furni.video_viewer.playlists') }</div>
-                        <Grid columnCount={ 1 } className="playlist-grid">
+                        <AutoGrid columnCount={ 1 } columnMinWidth={ 80 } columnMinHeight={ 150 }>
                             { playlists && playlists.map((entry, index) =>
                             {
                                 return (
                                     <LayoutGridItem key={ index } onClick={ event => selectVideo(entry.video) } itemActive={ (entry.video === selectedVideo) }>
-                                        <b>{ entry.title }</b> - { entry.description }
+                                        <b>{ entry.title }</b>
                                     </LayoutGridItem>
-                                )
+								)
                             }) }
-                        </Grid>
+                        </AutoGrid>
                     </div>
                 </div>
             </NitroCardContentView>
