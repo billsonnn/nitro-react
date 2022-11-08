@@ -1,4 +1,4 @@
-import { PollQuestion } from '@nitrots/nitro-renderer';
+import { IPollQuestion } from '@nitrots/nitro-renderer';
 import { RoomWidgetUpdateEvent } from './RoomWidgetUpdateEvent';
 
 export class RoomWidgetPollUpdateEvent extends RoomWidgetUpdateEvent
@@ -13,7 +13,7 @@ export class RoomWidgetPollUpdateEvent extends RoomWidgetUpdateEvent
     private _numQuestions = 0;
     private _startMessage = '';
     private _endMessage = '';
-    private _questionArray: PollQuestion[] = null;
+    private _questionArray: IPollQuestion[] = null;
     private _pollType = '';
     private _npsPoll = false;
 
@@ -78,12 +78,12 @@ export class RoomWidgetPollUpdateEvent extends RoomWidgetUpdateEvent
         this._endMessage = k;
     }
 
-    public get questionArray(): PollQuestion[]
+    public get questionArray(): IPollQuestion[]
     {
         return this._questionArray;
     }
 
-    public set questionArray(k: PollQuestion[])
+    public set questionArray(k: IPollQuestion[])
     {
         this._questionArray = k;
     }

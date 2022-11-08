@@ -1,5 +1,6 @@
+import { NitroConfiguration } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { GetConfigurationManager, LocalizeText, OpenUrl } from '../../../../../api';
+import { LocalizeText, OpenUrl } from '../../../../../api';
 
 export interface WidgetContainerViewProps
 {
@@ -19,7 +20,7 @@ export const WidgetContainerView: FC<WidgetContainerViewProps> = props =>
         switch(key)
         {
             case 'image':
-                return GetConfigurationManager().interpolate(option);
+                return NitroConfiguration.interpolate(option);
         }
 
         return option;

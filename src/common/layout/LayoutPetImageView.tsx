@@ -1,4 +1,4 @@
-import { PetCustomPart, PetFigureData, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
+import { IPetCustomPart, PetFigureData, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
 import { GetRoomEngine } from '../../api';
 import { Base, BaseProps } from '../Base';
@@ -9,7 +9,7 @@ interface LayoutPetImageViewProps extends BaseProps<HTMLDivElement>
     typeId?: number;
     paletteId?: number;
     petColor?: number;
-    customParts?: PetCustomPart[];
+    customParts?: IPetCustomPart[];
     posture?: string;
     headOnly?: boolean;
     direction?: number;

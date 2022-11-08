@@ -1,4 +1,4 @@
-import { IFurnitureData, PetCustomPart, PetFigureData, RoomObjectCategory, RoomObjectVariable, RoomUserData } from '@nitrots/nitro-renderer';
+import { IFurnitureData, IPetCustomPart, IRoomUserData, PetCustomPart, PetFigureData, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { FurniCategory, GetFurnitureDataForRoomObject, GetRoomEngine, LocalizeText, UseProductItem } from '../../../../api';
 import { Base, Button, Column, Flex, LayoutPetImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
@@ -23,7 +23,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 {
     const { item = null, onClose = null } = props;
     const [ mode, setMode ] = useState(_Str_5091);
-    const [ petData, setPetData ] = useState<RoomUserData>(null);
+    const [ petData, setPetData ] = useState<IRoomUserData>(null);
     const [ furniData, setFurniData ] = useState<IFurnitureData>(null);
     const { roomSession = null } = useRoom();
 
@@ -74,7 +74,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
             case FurniCategory.PET_CUSTOM_PART: {
                 if(customParts.length < 4) return null;
 
-                const newCustomParts: PetCustomPart[] = [];
+                const newCustomParts: IPetCustomPart[] = [];
 
                 const _local_6 = customParts[1].split(',').map(piece => parseInt(piece));
                 const _local_7 = customParts[2].split(',').map(piece => parseInt(piece));
@@ -101,7 +101,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
             case FurniCategory.PET_CUSTOM_PART_SHAMPOO: {
                 if(customParts.length < 3) return null;
 
-                const newCustomParts: PetCustomPart[] = [];
+                const newCustomParts: IPetCustomPart[] = [];
 
                 const _local_6 = customParts[1].split(',').map(piece => parseInt(piece));
                 const _local_8 = customParts[2].split(',').map(piece => parseInt(piece));
@@ -127,7 +127,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
             case FurniCategory.PET_SADDLE: {
                 if(customParts.length < 4) return null;
 
-                const newCustomParts: PetCustomPart[] = [];
+                const newCustomParts: IPetCustomPart[] = [];
 
                 const _local_6 = customParts[1].split(',').map(piece => parseInt(piece));
                 const _local_7 = customParts[2].split(',').map(piece => parseInt(piece));

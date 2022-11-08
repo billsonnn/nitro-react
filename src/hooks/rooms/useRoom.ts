@@ -199,7 +199,7 @@ const useRoomState = () =>
         const canvasId = 1;
         const width = Math.floor(window.innerWidth);
         const height = Math.floor(window.innerHeight);
-        const renderer = nitroInstance.renderer;
+        const renderer = nitroInstance.application.renderer;
 
         if(renderer)
         {
@@ -250,7 +250,7 @@ const useRoomState = () =>
             geometry.location = new Vector3d(x, y, z);
         }
 
-        const stage = nitroInstance.stage;
+        const stage = nitroInstance.application.stage;
 
         if(!stage) return;
 
@@ -273,7 +273,7 @@ const useRoomState = () =>
 
             InitializeRoomInstanceRenderingCanvas(width, height, 1);
 
-            nitroInstance.render();
+            nitroInstance.application.render();
         }
 
         window.addEventListener('resize', resize);
