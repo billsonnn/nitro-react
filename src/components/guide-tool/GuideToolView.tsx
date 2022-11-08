@@ -1,4 +1,4 @@
-import { GuideOnDutyStatusMessageEvent, GuideSessionAttachedMessageEvent, GuideSessionDetachedMessageEvent, GuideSessionEndedMessageEvent, GuideSessionInvitedToGuideRoomMessageEvent, GuideSessionMessageMessageEvent, GuideSessionOnDutyUpdateMessageComposer, GuideSessionPartnerIsTypingMessageEvent, GuideSessionStartedMessageEvent, ILinkEventTracker, PerkAllowancesMessageEvent, PerkEnum } from '@nitrots/nitro-renderer';
+import { GuideOnDutyStatusMessageEvent, GuideSessionAttachedMessageEvent, GuideSessionDetachedMessageEvent, GuideSessionEndedMessageEvent, GuideSessionErrorMessageEvent, GuideSessionInvitedToGuideRoomMessageEvent, GuideSessionMessageMessageEvent, GuideSessionOnDutyUpdateMessageComposer, GuideSessionPartnerIsTypingMessageEvent, GuideSessionStartedMessageEvent, ILinkEventTracker, PerkAllowancesMessageEvent, PerkEnum } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetConfiguration, GetSessionDataManager, GuideSessionState, GuideToolMessage, GuideToolMessageGroup, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
@@ -9,7 +9,9 @@ import { GuideToolMenuView } from './views/GuideToolMenuView';
 import { GuideToolOngoingView } from './views/GuideToolOngoingView';
 import { GuideToolUserCreateRequestView } from './views/GuideToolUserCreateRequestView';
 import { GuideToolUserFeedbackView } from './views/GuideToolUserFeedbackView';
+import { GuideToolUserNoHelpersView } from './views/GuideToolUserNoHelpersView';
 import { GuideToolUserPendingView } from './views/GuideToolUserPendingView';
+import { GuideToolUserSomethingWrogView } from './views/GuideToolUserSomethingWrogView';
 import { GuideToolUserThanksView } from './views/GuideToolUserThanksView';
 
 export const GuideToolView: FC<{}> = props =>
@@ -77,6 +79,14 @@ export const GuideToolView: FC<{}> = props =>
                 setHeaderText(LocalizeText('guide.help.request.user.thanks.title'));
                 setNoCloseButton(false);
                 break;
+            case GuideSessionState.USER_NO_HELPERS:
+                setHeaderText(LocalizeText('guide.help.request.no_tour_guides.heading'));
+                setNoCloseButton(false);
+                break;
+            case GuideSessionState.USER_SOMETHING_WRONG:
+                setHeaderText(LocalizeText('guide.help.request.user.guide.disconnected.error.heading'));
+                setNoCloseButton(false);
+                break;
         }
 
         setSessionState(newState);
@@ -92,7 +102,7 @@ export const GuideToolView: FC<{}> = props =>
                 return;
             case GuideToolEvent.HIDE_GUIDE_TOOL:
                 setIsVisible(false);
-                return;   
+                return;
             case GuideToolEvent.TOGGLE_GUIDE_TOOL:
                 setIsVisible(value => !value);
                 return;
@@ -136,7 +146,7 @@ export const GuideToolView: FC<{}> = props =>
         setHelpRequestAverageTime(parser.roleSpecificWaitTime);
 
         if(parser.asGuide && isOnDuty) updateSessionState(GuideSessionState.GUIDE_ACCEPT);
-        
+
         if(!parser.asGuide) updateSessionState(GuideSessionState.USER_PENDING);
     });
 
@@ -222,6 +232,24 @@ export const GuideToolView: FC<{}> = props =>
         }
     });
 
+    useMessageEvent<GuideSessionErrorMessageEvent>(GuideSessionErrorMessageEvent, event =>
+    {
+        const parser = event.getParser();
+
+        // SOMETHING_WRONG_REQUEST = 0, NO_HELPERS_AVAILABLE = 1, NO_GUARDIANS_AVAILABLE = 2
+
+        switch (parser['errorCode'])
+        {
+            case 0:
+                updateSessionState(GuideSessionState.USER_SOMETHING_WRONG);
+                break;
+            case 1:
+            case 2:
+                updateSessionState(GuideSessionState.USER_NO_HELPERS);
+                break;
+        }
+    });
+
     useMessageEvent<GuideSessionDetachedMessageEvent>(GuideSessionDetachedMessageEvent, event =>
     {
         setOngoingUserId(0);
@@ -232,7 +260,7 @@ export const GuideToolView: FC<{}> = props =>
 
         if(isOnDuty)
         {
-            
+
             updateSessionState(GuideSessionState.GUIDE_TOOL_MENU);
         }
         else
@@ -247,9 +275,9 @@ export const GuideToolView: FC<{}> = props =>
             linkReceived: (url: string) =>
             {
                 const parts = url.split('/');
-        
+
                 if(parts.length < 2) return;
-        
+
                 switch(parts[1])
                 {
                     case 'tour':
@@ -286,7 +314,7 @@ export const GuideToolView: FC<{}> = props =>
                     SendMessageComposer(new GuideSessionOnDutyUpdateMessageComposer(!v, v ? false : isHandlingGuideRequests, v ? false : isHandlingHelpRequests, v ? false : isHandlingBullyReports));
                     return !v;
                 });
-                
+
                 return;
             case 'forum_link':
                 const url: string = GetConfiguration<string>('group.homepage.url', '').replace('%groupid%', GetConfiguration<string>('guide.help.alpha.groupid', '0'));
@@ -302,7 +330,7 @@ export const GuideToolView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ headerText } onCloseClick={ event => processAction('close') } noCloseButton={ noCloseButton } />
             <NitroCardContentView className="text-black">
                 { (sessionState === GuideSessionState.GUIDE_TOOL_MENU) &&
-                    <GuideToolMenuView isOnDuty={ isOnDuty } isHandlingGuideRequests={ isHandlingGuideRequests } setIsHandlingGuideRequests={ setIsHandlingGuideRequests } isHandlingHelpRequests={ isHandlingHelpRequests } setIsHandlingHelpRequests={ setIsHandlingHelpRequests } isHandlingBullyReports={ isHandlingBullyReports } setIsHandlingBullyReports={ setIsHandlingBullyReports } guidesOnDuty={ guidesOnDuty } helpersOnDuty={ helpersOnDuty } guardiansOnDuty={ guardiansOnDuty } processAction={ processAction } /> } 
+                    <GuideToolMenuView isOnDuty={ isOnDuty } isHandlingGuideRequests={ isHandlingGuideRequests } setIsHandlingGuideRequests={ setIsHandlingGuideRequests } isHandlingHelpRequests={ isHandlingHelpRequests } setIsHandlingHelpRequests={ setIsHandlingHelpRequests } isHandlingBullyReports={ isHandlingBullyReports } setIsHandlingBullyReports={ setIsHandlingBullyReports } guidesOnDuty={ guidesOnDuty } helpersOnDuty={ helpersOnDuty } guardiansOnDuty={ guardiansOnDuty } processAction={ processAction } /> }
                 { (sessionState === GuideSessionState.GUIDE_ACCEPT) &&
                     <GuideToolAcceptView helpRequestDescription={ helpRequestDescription } helpRequestAverageTime={ helpRequestAverageTime } /> }
                 { [ GuideSessionState.GUIDE_ONGOING, GuideSessionState.USER_ONGOING ].includes(sessionState) &&
@@ -315,6 +343,10 @@ export const GuideToolView: FC<{}> = props =>
                     <GuideToolUserFeedbackView userName={ ongoingUsername } /> }
                 { (sessionState === GuideSessionState.USER_THANKS) &&
                     <GuideToolUserThanksView /> }
+                { (sessionState === GuideSessionState.USER_NO_HELPERS) &&
+                    <GuideToolUserNoHelpersView /> }
+                { (sessionState === GuideSessionState.USER_SOMETHING_WRONG) &&
+                    <GuideToolUserSomethingWrogView /> }
             </NitroCardContentView>
         </NitroCardView>
     );
