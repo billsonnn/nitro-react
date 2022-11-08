@@ -1484,10 +1484,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@nitrots/nitro-renderer@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@nitrots/nitro-renderer/-/nitro-renderer-1.4.0.tgz#55b8ead3c7537c986ece5eaf680f39380f91f62d"
-  integrity sha512-y0DkxJsZ6BvgZyiDrJsuJWq1bVq1QiEhr3eOkwCv+DVjrqLyRnHuAf4tqn8XmcE0hvvjWPzYbtG8gs/Ril5kSA==
+"@nitrots/nitro-renderer@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@nitrots/nitro-renderer/-/nitro-renderer-1.4.1.tgz#3f66a506705bf509aca2fc59445031295cacde5d"
+  integrity sha512-1RWy2AJLP3FmryTSChVQUDFdlTn+HOrwiu/uep3nVg8uBsPePN9i2Hrq5iKT4eS0D+xILyJsV/Lj0TDzfJEoqg==
   dependencies:
     "@pixi/app" "~6.4.2"
     "@pixi/basis" "~6.4.2"
