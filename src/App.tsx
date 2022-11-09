@@ -1,4 +1,4 @@
-import { ConfigurationEvent, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroConfiguration, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
+import { ConfigurationEvent, GetAssetManager, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroConfiguration, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { DispatchUiEvent, GetCommunication, GetConfiguration, GetNitroInstance, GetUIVersion } from './api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from './common';
@@ -88,7 +88,7 @@ export const App: FC<{}> = props =>
 
                 if(assetUrls && assetUrls.length) for(const url of assetUrls) urls.push(NitroConfiguration.interpolate(url));
 
-                GetNitroInstance().core.asset.downloadAssets(urls, (status: boolean) =>
+                GetAssetManager().downloadAssets(urls, (status: boolean) =>
                 {
                     if(status)
                     {
