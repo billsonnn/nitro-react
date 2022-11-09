@@ -1,5 +1,6 @@
+import { GetTicker } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
-import { GetNitroInstance, GetRoomObjectBounds, GetRoomSession } from '../../../../api';
+import { GetRoomObjectBounds, GetRoomSession } from '../../../../api';
 import { Base, BaseProps } from '../../../../common';
 
 interface ObjectLocationViewProps extends BaseProps<HTMLDivElement>
@@ -47,12 +48,12 @@ export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
         {
             remove = true;
 
-            GetNitroInstance().ticker.add(updatePosition);
+            GetTicker().add(updatePosition);
         }
 
         return () =>
         {
-            if(remove) GetNitroInstance().ticker.remove(updatePosition);
+            if(remove) GetTicker().remove(updatePosition);
         }
     }, [ objectId, category, noFollow ]);
 

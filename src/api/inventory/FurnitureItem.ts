@@ -1,5 +1,4 @@
-import { IFurnitureItemData, IObjectData } from '@nitrots/nitro-renderer';
-import { GetNitroInstance } from '../nitro';
+import { GetTickerTime, IFurnitureItemData, IObjectData } from '@nitrots/nitro-renderer';
 import { IFurnitureItem } from './IFurnitureItem';
 
 export class FurnitureItem implements IFurnitureItem
@@ -123,7 +122,7 @@ export class FurnitureItem implements IFurnitureItem
 
         if(this._hasRentPeriodStarted)
         {
-            time = (this._secondsToExpiration - ((GetNitroInstance().time - this._expirationTimeStamp) / 1000));
+            time = (this._secondsToExpiration - ((GetTickerTime() - this._expirationTimeStamp) / 1000));
 
             if(time < 0) time = 0;
         }

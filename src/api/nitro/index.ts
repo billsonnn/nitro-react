@@ -9,7 +9,6 @@ export * from './GetConfiguration';
 export * from './GetConnection';
 export * from './GetLocalization';
 export * from './GetNitroInstance';
-export * from './GetTicker';
 export * from './OpenUrl';
 export * from './RemoveLinkEventTracker';
 export * from './RemoveWorkerEventTracker';
