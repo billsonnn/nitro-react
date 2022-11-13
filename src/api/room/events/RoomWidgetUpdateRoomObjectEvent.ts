@@ -11,6 +11,7 @@ export class RoomWidgetUpdateRoomObjectEvent extends RoomWidgetUpdateEvent
     public static OBJECT_ROLL_OVER: string = 'RWUROE_OBJECT_ROLL_OVER';
     public static OBJECT_ROLL_OUT: string = 'RWUROE_OBJECT_ROLL_OUT';
     public static OBJECT_REQUEST_MANIPULATION: string = 'RWUROE_OBJECT_REQUEST_MANIPULATION';
+    public static OBJECT_DOUBLE_CLICKED: string = 'RWUROE_OBJECT_DOUBLE_CLICKED';
 
     private _id: number;
     private _category: number;

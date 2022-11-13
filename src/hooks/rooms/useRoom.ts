@@ -123,7 +123,8 @@ const useRoomState = () =>
         RoomEngineObjectEvent.REQUEST_MOVE,
         RoomEngineObjectEvent.REQUEST_ROTATE,
         RoomEngineObjectEvent.MOUSE_ENTER,
-        RoomEngineObjectEvent.MOUSE_LEAVE
+        RoomEngineObjectEvent.MOUSE_LEAVE,
+        RoomEngineObjectEvent.DOUBLE_CLICK
     ], event =>
     {
         if(RoomId.isRoomPreviewerId(event.roomId)) return;
@@ -183,6 +184,9 @@ const useRoomState = () =>
                 break;
             case RoomEngineObjectEvent.MOUSE_LEAVE:
                 updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OUT, event.objectId, event.category, event.roomId);
+                break;
+            case RoomEngineObjectEvent.DOUBLE_CLICK:
+                updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_DOUBLE_CLICKED, event.objectId, event.category, event.roomId);
                 break;
         }
 
