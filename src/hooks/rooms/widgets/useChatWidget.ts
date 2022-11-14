@@ -1,5 +1,5 @@
 import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, GetGuestRoomResultEvent, NitroPoint, PetFigureData, RoomChatSettings, RoomChatSettingsEvent, RoomDragEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomUserData, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ChatBubbleMessage, ChatEntryType, ChatHistoryCurrentDate, GetAvatarRenderManager, GetConfiguration, GetRoomEngine, GetRoomObjectScreenLocation, IRoomChatSettings, LocalizeText, PlaySound, RoomChatFormatter } from '../../../api';
 import { useMessageEvent, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../events';
 import { useRoom } from '../useRoom';
@@ -22,6 +22,7 @@ const useChatWidgetState = () =>
     const { roomSession = null } = useRoom();
     const { addChatEntry } = useChatHistory();
     const isDisposed = useRef(false);
+    const pendingChats = useRef<ChatBubbleMessage[]>([]);
 
     const getScrollSpeed = useMemo(() =>
     {
@@ -95,7 +96,7 @@ const useChatWidgetState = () =>
         return existing;
     }
 
-    const removeHiddenChats = () =>
+    const removeHiddenChats = useCallback(() =>
     {
         setChatMessages(prevValue =>
         {
@@ -108,7 +109,7 @@ const useChatWidgetState = () =>
 
             return prevValue;
         })
-    }
+    }, []);
 
     const moveAllChatsUp = (amount: number) =>
     {
@@ -248,6 +249,7 @@ const useChatWidgetState = () =>
             color);
 
         setChatMessages(prevValue => [ ...prevValue, chatMessage ]);
+        pendingChats?.current?.push(chatMessage);
         addChatEntry({ id: -1, entityId: userData.roomIndex, name: username, imageUrl, style: styleId, chatType: chatType, entityType: userData.type, message: formattedText, timestamp: ChatHistoryCurrentDate(), type: ChatEntryType.TYPE_CHAT, roomId: roomSession.roomId, color });
     });
 
@@ -286,7 +288,7 @@ const useChatWidgetState = () =>
         }
     }, []);
 
-    return { chatMessages, setChatMessages, chatSettings, getScrollSpeed, removeHiddenChats, moveAllChatsUp };
+    return { chatMessages, setChatMessages, chatSettings, getScrollSpeed, removeHiddenChats, moveAllChatsUp, pendingChats };
 }
 
 export const useChatWidget = useChatWidgetState;

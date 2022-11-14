@@ -1,5 +1,5 @@
 import { IWorkerEventTracker, RoomChatSettings } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AddWorkerEventTracker, ChatBubbleMessage, DoChatsOverlap, GetConfiguration, RemoveWorkerEventTracker, SendWorkerEvent } from '../../../../api';
 import { useChatWidget } from '../../../../hooks';
 import { ChatWidgetMessageView } from './ChatWidgetMessageView';
@@ -9,18 +9,35 @@ let TIMER_TRACKER: number = 0;
 export const ChatWidgetView: FC<{}> = props =>
 {
     const [ timerId, setTimerId ] = useState(TIMER_TRACKER++);
-    const { chatMessages = [], setChatMessages = null, chatSettings = null, getScrollSpeed = 6000, removeHiddenChats = null, moveAllChatsUp = null } = useChatWidget();
+    const { pendingChats = null, chatSettings = null, getScrollSpeed = 6000, moveAllChatsUp = null } = useChatWidget();
+    const [ renderedChats, setRenderedChats ] = useState<ChatBubbleMessage[]>([]);
     const elementRef = useRef<HTMLDivElement>();
+    const isProcessing = useRef<boolean>(false);
 
-    const checkOverlappingChats = (chat: ChatBubbleMessage, moved: number, tempChats: ChatBubbleMessage[]) => 
+    const removeHiddenChats = useCallback(() =>
     {
-        const totalChats = chatMessages.length;
+        setRenderedChats(prevValue =>
+        {
+            if(prevValue)
+            {
+                const newMessages = prevValue.filter(chat => ((chat.top > (-(chat.height) * 2))));
+
+                if(newMessages.length !== prevValue.length) return newMessages;
+            }
+
+            return prevValue;
+        })
+    }, []);
+
+    const checkOverlappingChats = useCallback((chat: ChatBubbleMessage, moved: number, tempChats: ChatBubbleMessage[]) => 
+    {
+        const totalChats = renderedChats.length;
 
         if(!totalChats) return;
 
         for(let i = (totalChats - 1); i >= 0; i--)
         {
-            const collides = chatMessages[i];
+            const collides = renderedChats[i];
 
             if(!collides || (chat === collides) || (tempChats.indexOf(collides) >= 0) || (((collides.top + collides.height) - moved) > (chat.top + chat.height))) continue;
 
@@ -38,9 +55,9 @@ export const ChatWidgetView: FC<{}> = props =>
                 checkOverlappingChats(collides, amount, tempChats);
             }
         }
-    }
+    }, [ renderedChats ]);
 
-    const makeRoom = (chat: ChatBubbleMessage) =>
+    const makeRoom = useCallback((chat: ChatBubbleMessage) =>
     {
         if(chatSettings.mode === RoomChatSettings.CHAT_MODE_FREE_FLOW)
         {
@@ -59,17 +76,50 @@ export const ChatWidgetView: FC<{}> = props =>
 
             if(spaceAvailable < requiredSpace)
             {
-                chatMessages.forEach(existingChat =>
+                setRenderedChats(prevValue =>
                 {
-                    if(existingChat === chat) return;
+                    prevValue.forEach(prevChat =>
+                    {
+                        if(prevChat === chat) return;
 
-                    existingChat.top -= amount;
+                        prevChat.top -= amount;
+                    });
+
+                    return prevValue;
                 });
 
                 removeHiddenChats();
             }
         }
-    }
+    }, [ chatSettings, checkOverlappingChats, removeHiddenChats ]);
+
+    const onBubbleReady = useCallback(() =>
+    {
+        isProcessing.current = false;
+    }, []);
+
+    useEffect(() =>
+    {
+        const processNextChat = () =>
+        {
+            if(isProcessing.current) return;
+
+            const chat = pendingChats?.current?.shift();
+
+            if(!chat) return;
+
+            isProcessing.current = true;
+
+            setRenderedChats(prevValue => [ ...prevValue, chat ]);
+        }
+
+        const interval = setInterval(() => processNextChat(), 50);
+
+        return () =>
+        {
+            clearInterval(interval);
+        }
+    }, [ pendingChats ]);
 
     useEffect(() =>
     {
@@ -82,7 +132,7 @@ export const ChatWidgetView: FC<{}> = props =>
 
             elementRef.current.style.height = `${ newHeight }px`;
 
-            setChatMessages(prevValue =>
+            setRenderedChats(prevValue =>
             {
                 if(prevValue)
                 {
@@ -101,7 +151,7 @@ export const ChatWidgetView: FC<{}> = props =>
         {
             window.removeEventListener('resize', resize);
         }
-    }, [ setChatMessages ]);
+    }, []);
 
     useEffect(() =>
     {
@@ -139,7 +189,7 @@ export const ChatWidgetView: FC<{}> = props =>
 
     return (
         <div ref={ elementRef } className="nitro-chat-widget">
-            { chatMessages.map(chat => <ChatWidgetMessageView key={ chat.id } chat={ chat } makeRoom={ makeRoom } bubbleWidth={ chatSettings.weight } />) }
+            { renderedChats.map(chat => <ChatWidgetMessageView key={ chat.id } chat={ chat } makeRoom={ makeRoom } onBubbleReady={ onBubbleReady } bubbleWidth={ chatSettings.weight } />) }
         </div>
     );
 }
