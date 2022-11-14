@@ -5,8 +5,6 @@ import { Base, TransitionAnimation, TransitionAnimationTypes } from './common';
 import { LoadingView } from './components/loading/LoadingView';
 import { MainView } from './components/main/MainView';
 import { useConfigurationEvent, useLocalizationEvent, useMainEvent, useRoomEngineEvent } from './hooks';
-import IntervalWebWorker from './workers/IntervalWebWorker';
-import { WorkerBuilder } from './workers/WorkerBuilder';
 
 NitroVersion.UI_VERSION = GetUIVersion();
 
@@ -24,10 +22,6 @@ export const App: FC<{}> = props =>
         if(!NitroConfig) throw new Error('NitroConfig is not defined!');
 
         Nitro.bootstrap();
-
-        const worker = new WorkerBuilder(IntervalWebWorker);
-
-        Nitro.instance.setWorker(worker);
     }
 
     const handler = useCallback((event: NitroEvent) =>

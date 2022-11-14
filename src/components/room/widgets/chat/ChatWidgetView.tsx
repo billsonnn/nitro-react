@@ -1,7 +1,9 @@
-import { IWorkerEventTracker, RoomChatSettings } from '@nitrots/nitro-renderer';
+import { RoomChatSettings } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { AddWorkerEventTracker, ChatBubbleMessage, DoChatsOverlap, GetConfiguration, RemoveWorkerEventTracker, SendWorkerEvent } from '../../../../api';
+import { ChatBubbleMessage, DoChatsOverlap, GetConfiguration } from '../../../../api';
 import { useChatWidget } from '../../../../hooks';
+import IntervalWebWorker from '../../../../workers/IntervalWebWorker';
+import { WorkerBuilder } from '../../../../workers/WorkerBuilder';
 import { ChatWidgetMessageView } from './ChatWidgetMessageView';
 
 let TIMER_TRACKER: number = 0;
@@ -9,7 +11,7 @@ let TIMER_TRACKER: number = 0;
 export const ChatWidgetView: FC<{}> = props =>
 {
     const [ timerId, setTimerId ] = useState(TIMER_TRACKER++);
-    const { pendingChats = null, chatSettings = null, getScrollSpeed = 6000, moveAllChatsUp = null } = useChatWidget();
+    const { pendingChats = null, chatSettings = null, getScrollSpeed = 6000 } = useChatWidget();
     const [ renderedChats, setRenderedChats ] = useState<ChatBubbleMessage[]>([]);
     const elementRef = useRef<HTMLDivElement>();
     const isProcessing = useRef<boolean>(false);
@@ -100,29 +102,6 @@ export const ChatWidgetView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        const processNextChat = () =>
-        {
-            if(isProcessing.current) return;
-
-            const chat = pendingChats?.current?.shift();
-
-            if(!chat) return;
-
-            isProcessing.current = true;
-
-            setRenderedChats(prevValue => [ ...prevValue, chat ]);
-        }
-
-        const interval = setInterval(() => processNextChat(), 50);
-
-        return () =>
-        {
-            clearInterval(interval);
-        }
-    }, [ pendingChats ]);
-
-    useEffect(() =>
-    {
         const resize = (event: UIEvent = null) =>
         {
             if(!elementRef || !elementRef.current) return;
@@ -155,37 +134,69 @@ export const ChatWidgetView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        const workerTracker: IWorkerEventTracker = {
-            workerMessageReceived: (message: { [index: string]: any }) =>
-            {
-                switch(message.type)
-                {
-                    case 'MOVE_CHATS':
-                        moveAllChatsUp(15);
-                        return;
-                }
-            }
-        };
+        const processNextChat = () =>
+        {
+            if(isProcessing.current) return;
 
-        AddWorkerEventTracker(workerTracker);
+            const chat = pendingChats?.current?.shift();
 
-        SendWorkerEvent({
-            type: 'CREATE_INTERVAL',
-            time: getScrollSpeed,
-            timerId: timerId,
-            response: { type: 'MOVE_CHATS' }
-        });
+            if(!chat) return;
+
+            isProcessing.current = true;
+
+            setRenderedChats(prevValue => [ ...prevValue, chat ]);
+        }
+
+        const worker = new WorkerBuilder(IntervalWebWorker);
+
+        worker.onmessage = () => processNextChat();
+
+        worker.postMessage({ action: 'START', content: 50 });
 
         return () =>
         {
-            SendWorkerEvent({
-                type: 'REMOVE_INTERVAL',
-                timerId
-            });
-            
-            RemoveWorkerEventTracker(workerTracker);
+            worker.postMessage({ action: 'STOP' });
         }
-    }, [ timerId, getScrollSpeed, moveAllChatsUp ]);
+    }, [ pendingChats ]);
+
+    useEffect(() =>
+    {
+        const moveAllChatsUp = (amount: number) =>
+        {
+            setRenderedChats(prevValue =>
+            {
+                prevValue.forEach(chat =>
+                {
+                    if(chat.skipMovement)
+                    {
+                        chat.skipMovement = false;
+            
+                        return;
+                    }
+            
+                    chat.top -= amount;
+                });
+
+                return prevValue;
+            });
+
+            removeHiddenChats();
+        }
+
+        const worker = new WorkerBuilder(IntervalWebWorker);
+
+        worker.onmessage = () =>
+        {
+            moveAllChatsUp(15);
+        }
+
+        worker.postMessage({ action: 'START', content: getScrollSpeed });
+
+        return () =>
+        {
+            worker.postMessage({ action: 'STOP' });
+        }
+    }, [ getScrollSpeed, removeHiddenChats ]);
 
     return (
         <div ref={ elementRef } className="nitro-chat-widget">

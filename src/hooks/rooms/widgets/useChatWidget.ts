@@ -1,9 +1,9 @@
 import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, GetGuestRoomResultEvent, NitroPoint, PetFigureData, RoomChatSettings, RoomChatSettingsEvent, RoomDragEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomUserData, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ChatBubbleMessage, ChatEntryType, ChatHistoryCurrentDate, GetAvatarRenderManager, GetConfiguration, GetRoomEngine, GetRoomObjectScreenLocation, IRoomChatSettings, LocalizeText, PlaySound, RoomChatFormatter } from '../../../api';
 import { useMessageEvent, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../events';
 import { useRoom } from '../useRoom';
-import { useChatHistory } from './../../chat-history/useChatHistory';
+import { useChatHistory } from './../../chat-history';
 
 const avatarColorCache: Map<string, number> = new Map();
 const avatarImageCache: Map<string, string> = new Map();
@@ -94,46 +94,6 @@ const useChatWidgetState = () =>
         }
 
         return existing;
-    }
-
-    const removeHiddenChats = useCallback(() =>
-    {
-        setChatMessages(prevValue =>
-        {
-            if(prevValue)
-            {
-                const newMessages = prevValue.filter(chat => ((chat.top > (-(chat.height) * 2))));
-
-                if(newMessages.length !== prevValue.length) return newMessages;
-            }
-
-            return prevValue;
-        })
-    }, []);
-
-    const moveAllChatsUp = (amount: number) =>
-    {
-        setChatMessages(prevValue =>
-        {
-            if(prevValue)
-            {
-                prevValue.forEach(chat =>
-                {
-                    if(chat.skipMovement)
-                    {
-                        chat.skipMovement = false;
-            
-                        return;
-                    }
-            
-                    chat.top -= amount;
-                });
-            }
-
-            return prevValue;
-        });
-
-        removeHiddenChats();
     }
 
     useRoomSessionManagerEvent<RoomSessionChatEvent>(RoomSessionChatEvent.CHAT_EVENT, event =>
@@ -288,7 +248,7 @@ const useChatWidgetState = () =>
         }
     }, []);
 
-    return { chatMessages, setChatMessages, chatSettings, getScrollSpeed, removeHiddenChats, moveAllChatsUp, pendingChats };
+    return { chatMessages, setChatMessages, chatSettings, getScrollSpeed, pendingChats };
 }
 
 export const useChatWidget = useChatWidgetState;
