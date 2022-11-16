@@ -1,6 +1,6 @@
 import { IAdvancedMap, MusicPriorities } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
-import { GetConfiguration, GetDiskColor, GetNitroInstance, LocalizeText } from '../../../../../api';
+import { CatalogPageName, CreateLinkEvent, GetConfiguration, GetDiskColor, GetNitroInstance, LocalizeText } from '../../../../../api';
 import { AutoGrid, Base, Button, Flex, LayoutGridItem, Text } from '../../../../../common';
 
 export interface DiskInventoryViewProps
@@ -28,6 +28,11 @@ export const DiskInventoryView: FC<DiskInventoryViewProps> = props =>
 
         addToPlaylist(diskId, GetNitroInstance().soundManager.musicController?.getRoomItemPlaylist()?.length)
     }, [ addToPlaylist ]);
+
+    const openCatalogPage = () =>
+    {
+        CreateLinkEvent('catalog/open/' + CatalogPageName.TRAX_SONGS);
+    }
 
     useEffect(() =>
     {
@@ -82,7 +87,7 @@ export const DiskInventoryView: FC<DiskInventoryViewProps> = props =>
             <h5>{ LocalizeText('playlist.editor.text.get.more.music') }</h5>
             <div>{ LocalizeText('playlist.editor.text.you.have.no.songdisks.available') }</div>
             <div>{ LocalizeText('playlist.editor.text.you.can.buy.some.from.the.catalogue') }</div>
-            <button className="btn btn-primary btn-sm">{ LocalizeText('playlist.editor.button.open.catalogue') }</button>
+            <button className="btn btn-primary btn-sm" onClick={ () => openCatalogPage() }>{ LocalizeText('playlist.editor.button.open.catalogue') }</button>
         </div>
         <img src={ GetConfiguration('image.library.url') + 'playlist/background_get_more_music.gif' } className="get-more" />
     </>);
