@@ -22,7 +22,6 @@ const useChatWidgetState = () =>
     const { roomSession = null } = useRoom();
     const { addChatEntry } = useChatHistory();
     const isDisposed = useRef(false);
-    const pendingChats = useRef<ChatBubbleMessage[]>([]);
 
     const getScrollSpeed = useMemo(() =>
     {
@@ -209,8 +208,7 @@ const useChatWidgetState = () =>
             color);
 
         setChatMessages(prevValue => [ ...prevValue, chatMessage ]);
-        pendingChats?.current?.push(chatMessage);
-        addChatEntry({ id: -1, entityId: userData.roomIndex, name: username, imageUrl, style: styleId, chatType: chatType, entityType: userData.type, message: formattedText, timestamp: ChatHistoryCurrentDate(), type: ChatEntryType.TYPE_CHAT, roomId: roomSession.roomId, color });
+        addChatEntry({ id: -1, webId: userData.webID, entityId: userData.roomIndex, name: username, imageUrl, style: styleId, chatType: chatType, entityType: userData.type, message: formattedText, timestamp: ChatHistoryCurrentDate(), type: ChatEntryType.TYPE_CHAT, roomId: roomSession.roomId, color });
     });
 
     useRoomEngineEvent<RoomDragEvent>(RoomDragEvent.ROOM_DRAG, event =>
@@ -248,7 +246,7 @@ const useChatWidgetState = () =>
         }
     }, []);
 
-    return { chatMessages, setChatMessages, chatSettings, getScrollSpeed, pendingChats };
+    return { chatMessages, setChatMessages, chatSettings, getScrollSpeed };
 }
 
 export const useChatWidget = useChatWidgetState;

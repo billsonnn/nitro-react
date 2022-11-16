@@ -6,13 +6,12 @@ interface ChatWidgetMessageViewProps
 {
     chat: ChatBubbleMessage;
     makeRoom: (chat: ChatBubbleMessage) => void;
-    onBubbleReady?: () => void;
     bubbleWidth?: number;
 }
 
 export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
 {
-    const { chat = null, makeRoom = null, onBubbleReady = null, bubbleWidth = RoomChatSettings.CHAT_BUBBLE_WIDTH_NORMAL } = props;
+    const { chat = null, makeRoom = null, bubbleWidth = RoomChatSettings.CHAT_BUBBLE_WIDTH_NORMAL } = props;
     const [ isVisible, setIsVisible ] = useState(false);
     const [ isReady, setIsReady ] = useState<boolean>(false);
     const elementRef = useRef<HTMLDivElement>();
@@ -73,10 +72,8 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
         
         if(makeRoom) makeRoom(chat);
 
-        if(onBubbleReady) onBubbleReady();
-
         setIsVisible(true);
-    }, [ chat, isReady, isVisible, makeRoom, onBubbleReady ]);
+    }, [ chat, isReady, isVisible, makeRoom ]);
 
     return (
         <div ref={ elementRef } className={ `bubble-container ${ isVisible ? 'visible' : 'invisible' }` } onClick={ event => GetRoomEngine().selectRoomObject(chat.roomId, chat.senderId, RoomObjectCategory.UNIT) }>

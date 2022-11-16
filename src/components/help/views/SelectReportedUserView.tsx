@@ -16,7 +16,7 @@ export const SelectReportedUserView: FC<{}> = props =>
 
         chatHistory.forEach(chat =>
         {
-            if((chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityType === RoomObjectType.USER) && (chat.entityId !== GetSessionDataManager().userId) && !users.has(chat.entityId)) users.set(chat.entityId, { id: chat.entityId, username: chat.name });
+            if((chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityType === RoomObjectType.USER) && (chat.webId !== GetSessionDataManager().userId) && !users.has(chat.webId)) users.set(chat.webId, { id: chat.webId, username: chat.name });
         });
 
         return Array.from(users.values());

@@ -19,13 +19,13 @@ export const ReportSummaryView: FC<{}> = props =>
             case ReportType.ROOM: {
                 const reportedRoomId = ((activeReport.roomId <= 0) ? activeReport.reportedChats[0].roomId : activeReport.roomId);
 
-                activeReport.reportedChats.forEach(entry => chats.push(entry.entityId, entry.message));
+                activeReport.reportedChats.forEach(entry => chats.push(entry.webId, entry.message));
 
                 SendMessageComposer(new CallForHelpMessageComposer(activeReport.message, activeReport.cfhTopic, activeReport.reportedUserId, reportedRoomId, chats));
                 break;
             }
             case ReportType.IM:
-                activeReport.reportedChats.forEach(entry => chats.push(entry.entityId, entry.message));
+                activeReport.reportedChats.forEach(entry => chats.push(entry.webId, entry.message));
 
                 SendMessageComposer(new CallForHelpFromIMMessageComposer(activeReport.message, activeReport.cfhTopic, activeReport.reportedUserId, chats));
                 break;

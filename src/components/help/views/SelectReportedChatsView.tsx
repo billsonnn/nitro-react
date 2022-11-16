@@ -16,9 +16,9 @@ export const SelectReportedChatsView: FC<{}> = props =>
         {
             case ReportType.BULLY:
             case ReportType.EMERGENCY:
-                return chatHistory.filter(chat => (chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityId === activeReport.reportedUserId) && (chat.entityType === RoomObjectType.USER));
+                return chatHistory.filter(chat => (chat.type === ChatEntryType.TYPE_CHAT) && (chat.webId === activeReport.reportedUserId) && (chat.entityType === RoomObjectType.USER));
             case ReportType.IM:
-                return messengerHistory.filter(chat => (chat.entityId === activeReport.reportedUserId) && (chat.type === ChatEntryType.TYPE_IM));
+                return messengerHistory.filter(chat => (chat.webId === activeReport.reportedUserId) && (chat.type === ChatEntryType.TYPE_IM));
         }
 
         return [];
