@@ -57,13 +57,13 @@ export const DiskInventoryView: FC<DiskInventoryViewProps> = props =>
                 {
                     const diskId = diskInventory.getKey(index);
                     const songId = diskInventory.getWithIndex(index);
-                    const songData = GetNitroInstance().soundManager.musicController?.getSongInfo(songId);
+                    const songInfo = GetNitroInstance().soundManager.musicController?.getSongInfo(songId);
 
                     return (
                         <LayoutGridItem key={ index } itemActive={ (selectedItem === index) } onClick={ () => setSelectedItem(prev => prev === index ? -1 : index) } classNames={ [ 'text-black' ] }>
-                            <div className="disk-image flex-shrink-0 mb-n2" style={ { backgroundColor: GetDiskColor(songData?.songData) } }>
+                            <div className="disk-image flex-shrink-0 mb-n2" style={ { backgroundColor: GetDiskColor(songInfo?.songData) } }>
                             </div>
-                            <Text truncate fullWidth className="text-center">{ songData?.name }</Text>
+                            <Text truncate fullWidth className="text-center">{ songInfo?.name }</Text>
                             { (selectedItem === index) &&
                                     <Flex position="absolute" className="bottom-0 mb-1 bg-secondary p-1 rounded" alignItems="center" justifyContent="center" gap={ 2 }>
                                         <Button onClick={ event => previewSong(event, songId) } variant="light">

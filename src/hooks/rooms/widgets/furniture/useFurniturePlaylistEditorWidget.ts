@@ -45,7 +45,7 @@ const useFurniturePlaylistEditorWidgetState = () =>
 
             return;
         }
-        
+
         if(roomSession.isRoomOwner || (roomSession.controllerLevel >= RoomControllerLevel.GUEST) || GetSessionDataManager().isModerator) SendMessageComposer(new FurnitureMultiStateComposer(event.objectId, -2));
     });
 
@@ -58,7 +58,6 @@ const useFurniturePlaylistEditorWidgetState = () =>
 
     useSoundEvent<NowPlayingEvent>(NowPlayingEvent.NPE_SONG_CHANGED, event =>
     {
-        console.log(event);
         setCurrentPlayingIndex(event.position);
     });
 

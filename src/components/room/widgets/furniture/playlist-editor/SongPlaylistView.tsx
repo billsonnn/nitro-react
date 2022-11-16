@@ -66,7 +66,7 @@ export const SongPlaylistView: FC<SongPlaylistViewProps> = props =>
                         <Flex column>
                             <Text bold display="block">{ LocalizeText('playlist.editor.text.now.playing.in.your.room') }</Text>
                             <Text>
-                                { playlist[currentPlayingIndex].name + ' - ' + playlist[currentPlayingIndex].creator }
+                                { playlist[currentPlayingIndex]?.name + ' - ' + playlist[currentPlayingIndex]?.creator }
                             </Text>
                         </Flex>
 
