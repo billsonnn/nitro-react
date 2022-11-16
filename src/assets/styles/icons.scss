@@ -200,6 +200,18 @@
         height: 18px;
     }
 
+    &.disk-icon {
+        background-image: url('../images/infostand/disk-icon.png');
+        width: 14px;
+        height: 14px;
+    }
+
+    &.disk-creator {
+        background-image: url('../images/infostand/disk-creator.png');
+        width: 14px;
+        height: 14px;
+    }
+
     &.trade-locked-icon {
         background-image: url("../images/inventory/trading/locked-icon.png");
         width: 29px;
@@ -595,6 +607,7 @@
         width: 17px;
         height: 17px;
     }
+
     &.icon-user {
         background-image: url("../images/icons/user.png");
         width: 18px;

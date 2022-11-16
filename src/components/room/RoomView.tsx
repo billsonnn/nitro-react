@@ -29,7 +29,7 @@ export const RoomView: FC<{}> = props =>
         const element = elementRef.current;
 
         if(!element) return;
-        
+
         element.appendChild(canvas);
     }, []);
 

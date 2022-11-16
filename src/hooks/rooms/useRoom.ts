@@ -14,7 +14,7 @@ const useRoomState = () =>
     const updateRoomBackgroundColor = (hue: number, saturation: number, lightness: number, original: boolean = false) =>
     {
         if(!roomBackground) return;
-        
+
         const newColor = ColorConverter.hslToRGB(((((hue & 0xFF) << 16) + ((saturation & 0xFF) << 8)) + (lightness & 0xFF)));
 
         if(original) setOriginalRoomBackgroundColor(newColor);
@@ -47,7 +47,7 @@ const useRoomState = () =>
     useUiEvent<RoomWidgetUpdateBackgroundColorPreviewEvent>(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW, event =>
     {
         if(!roomBackground) return;
-    
+
         roomBackground.tint = originalRoomBackgroundColor;
     });
 
@@ -71,7 +71,7 @@ const useRoomState = () =>
             color = event.color;
             brightness = event.brightness;
         }
-        
+
         updateRoomFilter(ColorConverter.hslToRGB(((ColorConverter.rgbToHSL(color) & 0xFFFF00) + brightness)));
     });
 
@@ -212,7 +212,7 @@ const useRoomState = () =>
             renderer.resolution = window.devicePixelRatio;
             renderer.resize(width, height);
         }
-        
+
         const displayObject = roomEngine.getRoomInstanceDisplay(roomId, canvasId, width, height, RoomGeometry.SCALE_ZOOMED_IN);
         const canvas = GetRoomEngine().getRoomInstanceRenderingCanvas(roomId, canvasId);
 
