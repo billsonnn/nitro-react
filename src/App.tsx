@@ -24,7 +24,7 @@ export const App: FC<{}> = props =>
         Nitro.bootstrap();
     }
 
-    const handler = useCallback((event: NitroEvent) =>
+    const handler = useCallback(async (event: NitroEvent) =>
     {
         switch(event.type)
         {
@@ -82,20 +82,19 @@ export const App: FC<{}> = props =>
 
                 if(assetUrls && assetUrls.length) for(const url of assetUrls) urls.push(NitroConfiguration.interpolate(url));
 
-                GetAssetManager().downloadAssets(urls, (status: boolean) =>
+                const status = await GetAssetManager().downloadAssets(urls);
+                
+                if(status)
                 {
-                    if(status)
-                    {
-                        GetCommunication().init();
+                    GetCommunication().init();
 
-                        setPercent(prevValue => (prevValue + 20))
-                    }
-                    else
-                    {
-                        setIsError(true);
-                        setMessage('Assets Failed');
-                    }
-                });
+                    setPercent(prevValue => (prevValue + 20))
+                }
+                else
+                {
+                    setIsError(true);
+                    setMessage('Assets Failed');
+                }
                 return;
             }
         }
