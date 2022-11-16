@@ -22,13 +22,13 @@ export const SelectReportedUserView: FC<{}> = props =>
         return Array.from(users.values());
     }, [ chatHistory ]);
 
-    const submitUser = () =>
+    const submitUser = (userId: number) =>
     {
-        if(selectedUserId <= 0) return;
+        if(userId <= 0) return;
 
         setActiveReport(prevValue =>
         {
-            return { ...prevValue, reportedUserId: selectedUserId, currentStep: ReportState.SELECT_CHATS };
+            return { ...prevValue, reportedUserId: userId, currentStep: ReportState.SELECT_CHATS };
         });
     }
 
@@ -76,7 +76,7 @@ export const SelectReportedUserView: FC<{}> = props =>
                 <Button variant="secondary" onClick={ back }>
                     { LocalizeText('generic.back') }
                 </Button>
-                <Button disabled={ (selectedUserId <= 0) } onClick={ submitUser }>
+                <Button disabled={ (selectedUserId <= 0) } onClick={ () => submitUser(selectedUserId) }>
                     { LocalizeText('help.emergency.main.submit.button') }
                 </Button>
             </Flex>

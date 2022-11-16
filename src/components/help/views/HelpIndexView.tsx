@@ -1,6 +1,6 @@
 import { GetCfhStatusMessageComposer } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { DispatchUiEvent, LocalizeText, ReportState, SendMessageComposer } from '../../../api';
+import { DispatchUiEvent, LocalizeText, ReportState, ReportType, SendMessageComposer } from '../../../api';
 import { Button, Column, Text } from '../../../common';
 import { GuideToolEvent } from '../../../events';
 import { useHelp } from '../../../hooks';
@@ -14,8 +14,9 @@ export const HelpIndexView: FC<{}> = props =>
         setActiveReport(prevValue =>
         {
             const currentStep = ReportState.SELECT_USER;
+            const reportType = ReportType.BULLY;
 
-            return { ...prevValue, currentStep };
+            return { ...prevValue, currentStep, reportType };
         });
     }
 
