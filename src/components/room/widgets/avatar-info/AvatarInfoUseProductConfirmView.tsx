@@ -44,7 +44,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
     const getPetImage = useMemo(() =>
     {
         if(!petData || !furniData) return null;
-        
+
         const petFigureData = new PetFigureData(petData.figure);
         const customParts = furniData.customParams.split(' ');
         const petIndex = parseInt(customParts[0]);
@@ -86,7 +86,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                 {
                     const _local_13 = _local_6[_local_10];
                     const _local_15 = petFigureData.getCustomPart(_local_13);
-                    
+
                     let _local_12 = _local_8[_local_10];
 
                     if(_local_15 != null) _local_12 = _local_15.paletteId;
@@ -233,37 +233,37 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     </Column>
                     <Column justifyContent="between" overflow="auto">
                         <Column gap={ 2 }>
-                            { (mode === _Str_11906) && 
+                            { (mode === _Str_11906) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.shampoo', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.shampoo') }</Text>
                                 </> }
-                            { (mode === _Str_11214) && 
+                            { (mode === _Str_11214) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.custompart', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.custompart') }</Text>
                                 </> }
-                            { (mode === _Str_11733) && 
+                            { (mode === _Str_11733) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.custompartshampoo', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.custompartshampoo') }</Text>
                                 </> }
-                            { (mode === _Str_11369) && 
+                            { (mode === _Str_11369) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.saddle', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.saddle') }</Text>
                                 </> }
-                            { (mode === _Str_8759) && 
+                            { (mode === _Str_8759) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.revive_monsterplant', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.revive_monsterplant') }</Text>
                                 </> }
-                            { (mode === _Str_8432) && 
+                            { (mode === _Str_8432) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.rebreed_monsterplant', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.rebreed_monsterplant') }</Text>
                                 </> }
-                            { (mode === _Str_9653) && 
+                            { (mode === _Str_9653) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.fertilize_monsterplant', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.fertilize_monsterplant') }</Text>

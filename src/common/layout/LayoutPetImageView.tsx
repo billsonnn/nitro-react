@@ -52,7 +52,7 @@ export const LayoutPetImageView: FC<LayoutPetImageViewProps> = props =>
         let petTypeId = typeId;
         let petPaletteId = paletteId;
         let petColor1 = petColor;
-        let petCustomParts = customParts;
+        let petCustomParts: IPetCustomPart[] = customParts;
         let petHeadOnly = headOnly;
 
         if(figure && figure.length)

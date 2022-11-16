@@ -9,6 +9,7 @@ export * from './useFurnitureFriendFurniWidget';
 export * from './useFurnitureHighScoreWidget';
 export * from './useFurnitureInternalLinkWidget';
 export * from './useFurnitureMannequinWidget';
+export * from './useFurniturePlaylistEditorWidget';
 export * from './useFurniturePresentWidget';
 export * from './useFurnitureRoomLinkWidget';
 export * from './useFurnitureSpamWallPostItWidget';
