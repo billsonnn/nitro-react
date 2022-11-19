@@ -1484,10 +1484,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@nitrots/nitro-renderer@^1.4.9":
-  version "1.4.9"
-  resolved "https://registry.yarnpkg.com/@nitrots/nitro-renderer/-/nitro-renderer-1.4.9.tgz#b2eee5949b25bfb471eee562ac533a2fab1a2c2d"
-  integrity sha512-ftWy+oa0BoWuVpaNfl16c2WIDAn6IBSLGx/+4Am30Z9dnCkyta/xSapebhwmtYKtq3pW5dAjdj8VsPRZpd5UFQ==
+"@nitrots/nitro-renderer@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@nitrots/nitro-renderer/-/nitro-renderer-1.5.0.tgz#05a2f5837fb16bf2b44d5953a27d407f4cebbca1"
+  integrity sha512-6Fq5X9tR+Vlk/JaxNxYNpMW25K8ILxgzN832qXyA4DLtOoEEm5/9qVQgZAZHitM+5W+CjYcVjovGv272lxMFiw==
   dependencies:
     "@pixi/app" "~6.4.2"
     "@pixi/basis" "~6.4.2"
@@ -1505,6 +1505,7 @@
     "@pixi/graphics" "~6.4.2"
     "@pixi/graphics-extras" "~6.4.2"
     "@pixi/interaction" "~6.4.2"
+    "@pixi/loaders" "~6.4.2"
     "@pixi/math" "~6.4.2"
     "@pixi/math-extras" "~6.4.2"
     "@pixi/mixin-cache-as-bitmap" "~6.4.2"
@@ -1642,6 +1643,11 @@
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/@pixi/interaction/-/interaction-6.4.2.tgz#5745498057c174fb5c7538619644c7b104a58cf5"
   integrity sha512-CJ4BAZUM+9ykRE9NIOyTiv7oR+PoiDqn+GcI8boE9mRyJ0WZosznCYdcAwEk5k/F5+Az0z8hK3PjzTuNvrPAcw==
+
+"@pixi/loaders@~6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@pixi/loaders/-/loaders-6.4.2.tgz#74558719d9febfc34de863a2df791502cefdc600"
+  integrity sha512-2y4JbGhhYYYdKIZfy9Evc7rcctqcXiP6xuAuIfqVgRD9SjQkxImelgCpyYT/BpjXP5jetyim8Usv07Ynx+4B0w==
 
 "@pixi/math-extras@~6.4.2":
   version "6.4.2"
