@@ -61,13 +61,26 @@ const useInventoryBadgesState = () =>
     useMessageEvent<BadgesEvent>(BadgesEvent, event =>
     {
         const parser = event.getParser();
-        const newBadgeCodes = parser.getAllBadgeCodes();
-        const newBadgeIds: number[] = [];
+        const badgesToAdd: string[] = [];
 
-        for(const newBadgeCode of newBadgeCodes) newBadgeIds.push(parser.getBadgeId(newBadgeCode));
+        setBadgeIds(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
 
-        setBadgeCodes(prevValue => [ ...prevValue, ...newBadgeCodes ]);
-        setBadgeIds(prevValue => [ ...prevValue, ...newBadgeIds ]);
+            parser.getAllBadgeCodes().forEach(code =>
+            {
+                const badgeId = parser.getBadgeId(code);
+
+                if(newValue.indexOf(badgeId) >= 0) return;
+                
+                newValue.push(badgeId);
+                badgesToAdd.push(code);
+            });
+
+            return newValue;
+        });
+
+        setBadgeCodes(prevValue => [ ...prevValue, ...badgesToAdd ]);
         setActiveBadgeCodes(parser.getActiveBadgeCodes());
     });
 
