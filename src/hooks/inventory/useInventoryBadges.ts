@@ -66,8 +66,8 @@ const useInventoryBadgesState = () =>
 
         for(const newBadgeCode of newBadgeCodes) newBadgeIds.push(parser.getBadgeId(newBadgeCode));
 
-        setBadgeCodes(newBadgeCodes);
-        setBadgeIds(newBadgeIds);
+        setBadgeCodes(prevValue => [ ...prevValue, ...newBadgeCodes ]);
+        setBadgeIds(prevValue => [ ...prevValue, ...newBadgeIds ]);
         setActiveBadgeCodes(parser.getActiveBadgeCodes());
     });
 
