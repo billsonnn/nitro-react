@@ -74,7 +74,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewPr
 
     return (
         <NitroCardView className="youtube-tv-widget">
-            <NitroCardHeaderView headerText={ '' } onCloseClick={ onClose } />
+		<NitroCardHeaderView headerText={ LocalizeText('catalog.page.youtube_tvs') } onCloseClick={ onClose } />
             <NitroCardContentView>
                 <div className="row w-100 h-100">
                     <div className="youtube-video-container col-9">
@@ -91,7 +91,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewPr
                             <i className="icon icon-youtube-next cursor-pointer" onClick={ next } />
                         </span>
                         <div className="mb-1">{ LocalizeText('widget.furni.video_viewer.playlists') }</div>
-                        <AutoGrid columnCount={ 1 } columnMinWidth={ 80 } columnMinHeight={ 150 }>
+                        <AutoGrid columnCount={ 1 } columnMinWidth={ 80 } columnMinHeight={ 100 } className="mb-1">
                             { playlists && playlists.map((entry, index) =>
                             {
                                 return (
