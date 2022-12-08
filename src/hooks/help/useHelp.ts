@@ -39,6 +39,7 @@ const useHelpState = () =>
                 newReport.currentStep = ReportState.SELECT_CHATS;
                 break;
             case ReportType.ROOM:
+            case ReportType.PHOTO:
                 newReport.roomId = options.roomId;
                 newReport.roomName = options.roomName;
                 newReport.currentStep = ReportState.SELECT_TOPICS;
@@ -53,8 +54,6 @@ const useHelpState = () =>
                 newReport.threadId = options.threadId;
                 newReport.messageId = options.messageId;
                 newReport.currentStep = ReportState.SELECT_TOPICS;
-                break;
-            case ReportType.PHOTO:
                 break;
             case ReportType.GUIDE:
                 break;
