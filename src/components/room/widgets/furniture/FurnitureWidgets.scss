@@ -298,7 +298,7 @@
 
 .youtube-tv-widget {
     width: 600px;
-    height: 480px;
+    height: 380px;
 
     .youtube-video-container {
         .empty-video {
@@ -327,14 +327,13 @@
     }
 
     .playlist-container {
-        overflow-y:scroll
+        overflow-y: auto;
         margin-right: -10px;
         color: black;
         height: 100%;
 
         .playlist-controls {
             width: 100%;
-
             .icon {
                 margin-right: 10px;
                 margin-bottom: 10px;
