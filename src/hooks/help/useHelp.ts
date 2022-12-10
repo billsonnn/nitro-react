@@ -35,6 +35,7 @@ const useHelpState = () =>
             case ReportType.BULLY:
             case ReportType.EMERGENCY:
             case ReportType.IM:
+            case ReportType.GUIDE:
                 newReport.reportedUserId = options.reportedUserId;
                 newReport.currentStep = ReportState.SELECT_CHATS;
                 break;
@@ -55,8 +56,6 @@ const useHelpState = () =>
                 newReport.currentStep = ReportState.SELECT_TOPICS;
                 break;
             case ReportType.PHOTO:
-                break;
-            case ReportType.GUIDE:
                 break;
         }
 

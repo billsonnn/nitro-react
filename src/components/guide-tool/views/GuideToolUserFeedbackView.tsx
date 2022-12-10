@@ -16,13 +16,15 @@ export const GuideToolUserFeedbackView: FC<GuideToolUserFeedbackViewProps> = pro
 
     return (
         <Column>
-            <Flex justifyContent="between" gap={ 1 } className="bg-muted p-2 rounded">
-                <Column gap={ 0 }>
-                    <Text bold>{ userName }</Text>
-                    <Text>{ LocalizeText('guide.help.request.user.feedback.guide.desc') }</Text>
-                </Column>
-                <Button variant="danger" disabled>{ LocalizeText('guide.help.common.report.link') }</Button>
-            </Flex>
+            { userName && (userName.length > 0) &&
+                <Flex justifyContent="between" gap={ 1 } className="bg-muted p-2 rounded">
+                    <Column gap={ 0 }>
+                        <Text bold>{ userName }</Text>
+                        <Text>{ LocalizeText('guide.help.request.user.feedback.guide.desc') }</Text>
+                    </Column>
+                    <Button variant="danger" disabled>{ LocalizeText('guide.help.common.report.link') }</Button>
+                </Flex>
+            }
             <Column gap={ 1 }>
                 <Text bold>{ LocalizeText('guide.help.request.user.feedback.closed.title') }</Text>
                 <Text>{ LocalizeText('guide.help.request.user.feedback.closed.desc') }</Text>

@@ -93,7 +93,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                         <Text bold>{ userName }</Text>
                         <Text>{ LocalizeText('guide.help.request.user.ongoing.guide.desc') }</Text>
                     </Column> }
-                <Button variant="danger" disabled={ messageGroups.length === 0 } onClick={ () => report(ReportType.IM, { reportedUserId: userId }) }>{ LocalizeText('guide.help.common.report.link') }</Button>
+                <Button variant="danger" disabled={ messageGroups.length === 0 } onClick={ () => report(ReportType.GUIDE, { reportedUserId: userId }) }>{ LocalizeText('guide.help.common.report.link') }</Button>
             </Flex>
             <Column overflow="hidden" gap={ 1 } className="bg-muted rounded chat-messages p-2">
                 <Column overflow="auto">
