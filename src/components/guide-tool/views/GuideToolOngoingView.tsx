@@ -76,7 +76,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                 { isGuide &&
                     <ButtonGroup>
                         <Button onClick={ visit }>{ LocalizeText('guide.help.request.guide.ongoing.visit.button') }</Button>
-                        <Button disabled onClick={ invite }>{ LocalizeText('guide.help.request.guide.ongoing.invite.button') }</Button>
+                        <Button onClick={ invite }>{ LocalizeText('guide.help.request.guide.ongoing.invite.button') }</Button>
                     </ButtonGroup> }
                 { !isGuide &&
                     <Column gap={ 0 }>
@@ -100,7 +100,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                                         { (isOwnChat(group.userId)) && GetSessionDataManager().userName }
                                         { (!isOwnChat(group.userId)) && userName }
                                     </Text>
-                                    { group.messages.map((chat, index) => <Base key={ index } className="text-break">{ chat.message }</Base>) }
+                                    { group.messages.map((chat, index) => <Base key={ index } pointer={ chat.roomId ? true : false } className={ chat.roomId ? 'text-break text-underline' : 'text-break' } onClick={ () => chat.roomId ? TryVisitRoom(chat.roomId) : null }>{ chat.message }</Base>) }
                                 </Base>
                                 { (isOwnChat(group.userId)) &&
                                 <Base className="message-avatar flex-shrink-0">
