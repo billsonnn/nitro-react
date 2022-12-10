@@ -4,7 +4,7 @@ import { attemptItemPlacement, DispatchUiEvent, FurniCategory, GetRoomEngine, Ge
 import { AutoGrid, Button, Column, Grid, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, LayoutRoomPreviewerView, Text } from '../../../../common';
 import { CatalogPostMarketplaceOfferEvent } from '../../../../events';
 import { useInventoryFurni, useInventoryUnseenTracker } from '../../../../hooks';
-import { InventoryCategoryEmptyView } from '../InventoryCategoryEmptyView';
+import { InventoryCategoryEmptyViewFurni } from '../InventoryCategoryEmptyViewFurni';
 import { InventoryFurnitureItemView } from './InventoryFurnitureItemView';
 import { InventoryFurnitureSearchView } from './InventoryFurnitureSearchView';
 
@@ -108,7 +108,7 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
         return () => setIsVisible(false);
     }, []);
 
-    if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.title') } desc={ LocalizeText('inventory.empty.desc') } />;
+    if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyViewFurni title={ LocalizeText('inventory.empty.title') } desc={ LocalizeText('inventory.empty.desc') } />;
 
     return (
         <Grid>

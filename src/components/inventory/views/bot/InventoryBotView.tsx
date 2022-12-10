@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { attemptBotPlacement, GetRoomEngine, LocalizeText, UnseenItemCategory } from '../../../../api';
 import { AutoGrid, Button, Column, Grid, LayoutRoomPreviewerView, Text } from '../../../../common';
 import { useInventoryBots, useInventoryUnseenTracker } from '../../../../hooks';
-import { InventoryCategoryEmptyView } from '../InventoryCategoryEmptyView';
+import { InventoryCategoryEmptyViewBots } from '../InventoryCategoryEmptyViewBots';
 import { InventoryBotItemView } from './InventoryBotItemView';
 
 interface InventoryBotViewProps
@@ -64,7 +64,7 @@ export const InventoryBotView: FC<InventoryBotViewProps> = props =>
         return () => setIsVisible(false);
     }, []);
 
-    if(!botItems || !botItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.bots.title') } desc={ LocalizeText('inventory.empty.bots.desc') } />;
+    if(!botItems || !botItems.length) return <InventoryCategoryEmptyViewBots title={ LocalizeText('inventory.empty.bots.title') } desc={ LocalizeText('inventory.empty.bots.desc') } />;
 
     return (
         <Grid>

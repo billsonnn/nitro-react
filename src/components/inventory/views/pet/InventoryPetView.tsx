@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { attemptPetPlacement, GetRoomEngine, LocalizeText, UnseenItemCategory } from '../../../../api';
 import { AutoGrid, Button, Column, Grid, LayoutRoomPreviewerView, Text } from '../../../../common';
 import { useInventoryPets, useInventoryUnseenTracker } from '../../../../hooks';
-import { InventoryCategoryEmptyView } from '../InventoryCategoryEmptyView';
+import { InventoryCategoryEmptyViewPets } from '../InventoryCategoryEmptyViewPets';
 import { InventoryPetItemView } from './InventoryPetItemView';
 
 interface InventoryPetViewProps
@@ -63,7 +63,8 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
         return () => setIsVisible(false);
     }, []);
 
-    if(!petItems || !petItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.pets.title') } desc={ LocalizeText('inventory.empty.pets.desc') } />;
+    if(!petItems || !petItems.length) return <InventoryCategoryEmptyViewPets title={ LocalizeText('inventory.empty.pets.title') } desc={ LocalizeText('inventory.empty.pets.desc') } 
+	/>;
 
     return (
         <Grid>
