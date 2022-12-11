@@ -1,0 +1,62 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { MysteryBoxKeysUpdateEvent } from '@nitrots/nitro-renderer';
+import { FC, useState } from 'react';
+import { ColorUtils, LocalizeText } from '../../../../api';
+import { AutoGrid, Base, Column, Flex, LayoutGridItem, Text } from '../../../../common';
+import { useSessionDataManagerEvent } from '../../../../hooks';
+
+const colorMap = {
+    'purple': 9452386,
+    'blue': 3891856,
+    'green': 6459451,
+    'yellow': 10658089,
+    'lilac': 6897548,
+    'orange': 10841125,
+    'turquoise': 2661026,
+    'red': 10104881
+}
+
+export const MysteryBoxExtensionView: FC<{}> = props =>
+{
+    const [ isOpen, setIsOpen ] = useState<boolean>(true);
+    const [ keyColor, setKeyColor ] = useState<string>('');
+    const [ boxColor, setBoxColor ] = useState<string>('');
+
+    useSessionDataManagerEvent<MysteryBoxKeysUpdateEvent>(MysteryBoxKeysUpdateEvent.MYSTERY_BOX_KEYS_UPDATE, event =>
+    {
+        setKeyColor(event.keyColor);
+        setBoxColor(event.boxColor);
+    });
+
+    const getRgbColor = (color: string) =>
+    {
+        const colorInt = colorMap[color];
+
+        return ColorUtils.int2rgb(colorInt);
+    }
+
+    if(keyColor === '' && boxColor === '') return null;
+
+    return (
+        <Base className="nitro-notification-bubble rounded mysterybox-extension">
+            <Column>
+                <Flex alignItems="center" justifyContent="between" pointer onClick={ event => setIsOpen(value => !value) }>
+                    <Text variant="white">{ LocalizeText('mysterybox.tracker.title') }</Text>
+                    <FontAwesomeIcon icon={ isOpen ? 'chevron-up' : 'chevron-down' } />
+                </Flex>
+                { isOpen &&
+                    <>
+                        <Text variant="white">{ LocalizeText('mysterybox.tracker.description') }</Text>
+                        <AutoGrid columnCount={ 2 } alignItems="center">
+                            <LayoutGridItem>
+                                <div className="box-image flex-shrink-0 mb-n2" style={ { backgroundColor: getRgbColor(boxColor) } }/>
+                            </LayoutGridItem>
+                            <LayoutGridItem>
+                                <div className="key-image flex-shrink-0 mb-n2" style={ { backgroundColor: getRgbColor(keyColor ) } }/>
+                            </LayoutGridItem>
+                        </AutoGrid>
+                    </> }
+            </Column>
+        </Base>
+    );
+}

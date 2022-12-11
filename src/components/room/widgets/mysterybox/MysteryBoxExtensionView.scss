@@ -1,0 +1,25 @@
+.mysterybox-extension {
+
+    .box-image {
+        width: 31px;
+        height: 36px;
+        background-image: url('../../../../assets/images/mysterybox/mystery_box.png');
+        -webkit-mask-image: url('../../../../assets/images/mysterybox/mystery_box.png');
+        mask-image: url('../../../../assets/images/mysterybox/mystery_box.png');
+    }
+
+    .key-image {
+        width: 39px;
+        height: 39px;
+        background-image: url('../../../../assets/images/mysterybox/mystery_box_key.png');
+        -webkit-mask-image: url('../../../../assets/images/mysterybox/mystery_box_key.png');
+        mask-image: url('../../../../assets/images/mysterybox/mystery_box_key.png');
+    }
+
+    .box-image,
+    .key-image {
+        background-blend-mode: multiply;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+}

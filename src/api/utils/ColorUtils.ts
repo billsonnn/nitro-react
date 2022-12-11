@@ -24,10 +24,21 @@ export class ColorUtils
         return parseInt(color.replace('#', ''), 16);
     }
 
-    public static uintHexColor(color: number): string 
+    public static uintHexColor(color: number): string
     {
         const realColor = color >>>0;
 
         return ColorUtils.makeColorHex(realColor.toString(16).substring(2));
+    }
+
+    public static int2rgb(color: number): string
+    {
+        color >>>= 0;
+        const b = color & 0xFF;
+        const g = (color & 0xFF00) >>> 8;
+        const r = (color & 0xFF0000) >>> 16;
+        const a = ((color & 0xFF000000) >>> 24) / 255;
+
+        return 'rgba(' + [ r, g, b, 1 ].join(',') + ')';
     }
 }
