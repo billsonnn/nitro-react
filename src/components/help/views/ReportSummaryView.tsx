@@ -1,4 +1,4 @@
-import { CallForHelpFromForumMessageMessageComposer, CallForHelpFromForumThreadMessageComposer, CallForHelpFromIMMessageComposer, CallForHelpMessageComposer } from '@nitrots/nitro-renderer';
+import { CallForHelpFromForumMessageMessageComposer, CallForHelpFromForumThreadMessageComposer, CallForHelpFromIMMessageComposer, CallForHelpFromPhotoMessageComposer, CallForHelpMessageComposer } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { LocalizeText, ReportType, SendMessageComposer } from '../../../api';
 import { Button, Column, Text } from '../../../common';
@@ -16,8 +16,7 @@ export const ReportSummaryView: FC<{}> = props =>
         {
             case ReportType.BULLY:
             case ReportType.EMERGENCY:
-            case ReportType.ROOM:
-            case ReportType.PHOTO: {
+            case ReportType.ROOM: {
                 const reportedRoomId = ((activeReport.roomId <= 0) ? activeReport.reportedChats[0].roomId : activeReport.roomId);
 
                 activeReport.reportedChats.forEach(entry => chats.push(entry.webId, entry.message));
@@ -35,6 +34,9 @@ export const ReportSummaryView: FC<{}> = props =>
                 break;
             case ReportType.MESSAGE:
                 SendMessageComposer(new CallForHelpFromForumMessageMessageComposer(activeReport.groupId, activeReport.threadId, activeReport.messageId, activeReport.cfhTopic, activeReport.message));
+                break;
+            case ReportType.PHOTO:
+                SendMessageComposer(new CallForHelpFromPhotoMessageComposer(activeReport.extraData, activeReport.roomId, activeReport.reportedUserId, activeReport.cfhTopic, activeReport.roomObjectId));
                 break;
         }
 
