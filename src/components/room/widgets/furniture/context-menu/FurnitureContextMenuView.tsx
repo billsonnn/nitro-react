@@ -1,7 +1,7 @@
 import { ContextMenuEnum, CustomUserNotificationMessageEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { GetGroupInformation, GetSessionDataManager, LocalizeText } from '../../../../../api';
-import { EFFECTBOX_OPEN, GROUP_FURNITURE, MONSTERPLANT_SEED_CONFIRMATION, MYSTERY_BOX_OPEN, PURCHASABLE_CLOTHING_CONFIRMATION, useFurnitureContextMenuWidget, useMessageEvent, useNotification } from '../../../../../hooks';
+import { EFFECTBOX_OPEN, GROUP_FURNITURE, MONSTERPLANT_SEED_CONFIRMATION, PURCHASABLE_CLOTHING_CONFIRMATION, useFurnitureContextMenuWidget, useMessageEvent, useNotification } from '../../../../../hooks';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
@@ -47,8 +47,7 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                 <PurchasableClothingConfirmView objectId={ confirmingObjectId } onClose={ closeConfirm } /> }
             { (confirmMode === EFFECTBOX_OPEN) &&
                 <EffectBoxConfirmView objectId={ confirmingObjectId } onClose={ closeConfirm } /> }
-            { (confirmMode === MYSTERY_BOX_OPEN) &&
-                <FurnitureMysteryBoxOpenDialogView objectId={ confirmingObjectId } ownerId={ objectOwnerId } onClose={ closeConfirm } /> }
+            <FurnitureMysteryBoxOpenDialogView ownerId={ objectOwnerId } />
             { (objectId >= 0) && mode &&
                 <ContextMenuView objectId={ objectId } category={ RoomObjectCategory.FLOOR } onClose={ onClose } fades={ true }>
                     { (mode === ContextMenuEnum.FRIEND_FURNITURE) &&

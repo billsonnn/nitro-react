@@ -12,8 +12,8 @@ export const RightSideView: FC<{}> = props =>
             <Column position="relative" gap={ 1 }>
                 <PurseView />
                 <GroupRoomInformationView />
-                <NotificationCenterView />
                 <MysteryBoxExtensionView />
+                <NotificationCenterView />
             </Column>
         </div>
     );

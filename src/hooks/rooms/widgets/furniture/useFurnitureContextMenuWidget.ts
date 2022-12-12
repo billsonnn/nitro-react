@@ -1,15 +1,13 @@
-import { CancelMysteryBoxWaitMessageEvent, ContextMenuEnum, GotMysteryBoxPrizeMessageEvent, GroupFurniContextMenuInfoMessageEvent, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable, ShowMysteryBoxWaitMessageEvent } from '@nitrots/nitro-renderer';
+import { ContextMenuEnum, GroupFurniContextMenuInfoMessageEvent, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
-import { GetRoomEngine, IsOwnerOfFurniture, LocalizeText, ProductTypeEnum, TryJoinGroup, TryVisitRoom } from '../../../../api';
+import { GetRoomEngine, IsOwnerOfFurniture, TryJoinGroup, TryVisitRoom } from '../../../../api';
 import { useMessageEvent, useRoomEngineEvent } from '../../../events';
-import { useNotification } from '../../../notification';
 import { useRoom } from '../../useRoom';
 
 export const MONSTERPLANT_SEED_CONFIRMATION: string = 'MONSTERPLANT_SEED_CONFIRMATION';
 export const PURCHASABLE_CLOTHING_CONFIRMATION: string = 'PURCHASABLE_CLOTHING_CONFIRMATION';
 export const GROUP_FURNITURE: string = 'GROUP_FURNITURE';
 export const EFFECTBOX_OPEN: string = 'EFFECTBOX_OPEN';
-export const MYSTERY_BOX_OPEN: string = 'MYSTERY_BOX_OPEN'
 
 const useFurnitureContextMenuWidgetState = () =>
 {
@@ -21,14 +19,12 @@ const useFurnitureContextMenuWidgetState = () =>
     const [ isGroupMember, setIsGroupMember ] = useState(false);
     const [ objectOwnerId, setObjectOwnerId ] = useState(-1);
     const { roomSession = null } = useRoom();
-    const { simpleAlert = null } = useNotification();
 
     const onClose = () =>
     {
         setObjectId(-1);
         setGroupData(null);
         setIsGroupMember(false);
-        setObjectOwnerId(-1);
         setMode(null);
     }
 
@@ -59,7 +55,6 @@ const useFurnitureContextMenuWidgetState = () =>
                     setConfirmingObjectId(objectId);
                     break;
                 case 'use_mystery_box':
-                    setConfirmingObjectId(objectId);
                     roomSession.useMultistateItem(objectId);
                     break;
                 case 'join_group':
@@ -117,7 +112,6 @@ const useFurnitureContextMenuWidgetState = () =>
                 onClose();
                 return;
             case RoomEngineTriggerWidgetEvent.REQUEST_MYSTERYBOX_OPEN_DIALOG:
-                setConfirmingObjectId(object.id);
                 roomSession.useMultistateItem(object.id);
 
                 onClose();
@@ -160,30 +154,6 @@ const useFurnitureContextMenuWidgetState = () =>
         setGroupData(parser);
         setIsGroupMember(parser.userIsMember);
         setMode(GROUP_FURNITURE);
-    });
-
-    useMessageEvent<ShowMysteryBoxWaitMessageEvent>(ShowMysteryBoxWaitMessageEvent, event =>
-    {
-        setConfirmMode(MYSTERY_BOX_OPEN);
-    });
-
-    useMessageEvent<CancelMysteryBoxWaitMessageEvent>(CancelMysteryBoxWaitMessageEvent, event =>
-    {
-        if(confirmMode === MYSTERY_BOX_OPEN) closeConfirm();
-    });
-
-    useMessageEvent<GotMysteryBoxPrizeMessageEvent>(GotMysteryBoxPrizeMessageEvent, event =>
-    {
-        const parser = event.getParser();
-
-        if(confirmMode === MYSTERY_BOX_OPEN) closeConfirm();
-
-        switch(parser.contentType.toLocaleLowerCase())
-        {
-            case ProductTypeEnum.FLOOR: // TODO: add the image
-
-        }
-        simpleAlert(LocalizeText('mysterybox.reward.text'), null, null, null, LocalizeText('mysterybox.reward.title'))
     });
 
     return { objectId, mode, confirmMode, confirmingObjectId, groupData, isGroupMember, objectOwnerId, closeConfirm, processAction, onClose };
