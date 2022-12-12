@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { MysteryBoxKeysUpdateEvent } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { ColorUtils, LocalizeText } from '../../../../api';
-import { AutoGrid, Base, Column, Flex, LayoutGridItem, Text } from '../../../../common';
+import { Base, Column, Flex, LayoutGridItem, Text } from '../../../../common';
 import { useSessionDataManagerEvent } from '../../../../hooks';
 
 const colorMap = {
@@ -47,14 +47,18 @@ export const MysteryBoxExtensionView: FC<{}> = props =>
                 { isOpen &&
                     <>
                         <Text variant="white">{ LocalizeText('mysterybox.tracker.description') }</Text>
-                        <AutoGrid columnCount={ 2 } alignItems="center">
-                            <LayoutGridItem>
-                                <div className="box-image flex-shrink-0 mb-n2" style={ { backgroundColor: getRgbColor(boxColor) } }/>
+                        <Flex justifyContent="center" alignItems="center" gap={ 2 }>
+                            <LayoutGridItem className="mysterybox-container">
+                                <div className="box-image flex-shrink-0" style={ { backgroundColor: getRgbColor(boxColor) } }>
+                                    <div className="chain-overlay-image" />
+                                </div>
                             </LayoutGridItem>
-                            <LayoutGridItem>
-                                <div className="key-image flex-shrink-0 mb-n2" style={ { backgroundColor: getRgbColor(keyColor ) } }/>
+                            <LayoutGridItem className="mysterybox-container">
+                                <div className="key-image flex-shrink-0" style={ { backgroundColor: getRgbColor(keyColor ) } }>
+                                    <div className="key-overlay-image" />
+                                </div>
                             </LayoutGridItem>
-                        </AutoGrid>
+                        </Flex>
                     </> }
             </Column>
         </Base>
