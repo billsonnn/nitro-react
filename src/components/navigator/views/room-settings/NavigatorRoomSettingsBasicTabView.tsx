@@ -1,29 +1,51 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { RoomDeleteComposer } from '@nitrots/nitro-renderer';
+import { RoomDeleteComposer, RoomSettingsSaveErrorEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { CreateLinkEvent, GetMaxVisitorsList, IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
+import { CreateLinkEvent, GetMaxVisitorsList, IRoomData, LocalizeText, RoomSettingsErrorType, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text } from '../../../../common';
-import { useNavigator, useNotification } from '../../../../hooks';
+import { useMessageEvent, useNavigator, useNotification } from '../../../../hooks';
 
 const ROOM_NAME_MIN_LENGTH = 3;
 const ROOM_NAME_MAX_LENGTH = 60;
 const DESC_MAX_LENGTH = 255;
+const TAGS_MAX_LENGTH = 15;
 
 interface NavigatorRoomSettingsTabViewProps
 {
     roomData: IRoomData;
-    handleChange: (field: string, value: string | number | boolean) => void;
+    handleChange: (field: string, value: string | number | boolean | string[]) => void;
     onClose: () => void;
 }
-
 
 export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewProps> = props =>
 {
     const { roomData = null, handleChange = null, onClose = null } = props;
     const [ roomName, setRoomName ] = useState<string>('');
     const [ roomDescription, setRoomDescription ] = useState<string>('');
+    const [ roomTag1, setRoomTag1 ] = useState<string>('');
+    const [ roomTag2, setRoomTag2 ] = useState<string>('');
+    const [ tagIndex, setTagIndex ] = useState(0);
+    const [ typeError, setTypeError ] = useState<string>('');
     const { showConfirm = null } = useNotification();
     const { categories = null } = useNavigator();
+
+    useMessageEvent<RoomSettingsSaveErrorEvent>(RoomSettingsSaveErrorEvent, event =>
+    {
+        const parser = event.getParser();
+
+        if (!parser) return;
+
+        switch (parser.code)
+        {
+            case RoomSettingsErrorType.ROOM_TAGS_BADWWORDS:
+            case RoomSettingsErrorType.RESTRICTED_TAGS:
+                setTypeError('trading.mode.not.allowed');
+                break;
+            default:
+                setTypeError('');
+                break;
+        }
+    });
 
     const deleteRoom = () =>
     {
@@ -50,12 +72,27 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
         if((roomDescription === roomData.roomDescription) || (roomDescription.length > DESC_MAX_LENGTH)) return;
 
         handleChange('description', roomDescription);
-    } 
+    }
+
+    const saveTags = (index: number) =>
+    {
+        if(index === 0 && (roomTag1 === roomData.tags[0]) || (roomTag1.length > TAGS_MAX_LENGTH)) return;
+
+        if(index === 1 && (roomTag2 === roomData.tags[1]) || (roomTag2.length > TAGS_MAX_LENGTH)) return;
+
+        if(roomTag1 === '' && roomTag2 !== '') setRoomTag2('');
+
+        setTypeError('');
+        setTagIndex(index);
+        handleChange('tags', (roomTag1 === '' && roomTag2 !== '') ? [ roomTag2 ] : [ roomTag1, roomTag2 ]);
+    }
 
     useEffect(() =>
     {
         setRoomName(roomData.roomName);
         setRoomDescription(roomData.roomDescription);
+        setRoomTag1((roomData.tags.length > 0 && roomData.tags[0]) ? roomData.tags[0] : '');
+        setRoomTag2((roomData.tags.length > 0 && roomData.tags[1]) ? roomData.tags[1] : '');
     }, [ roomData ]);
 
     return (
@@ -93,6 +130,31 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
                     <option value="1">{ LocalizeText('navigator.roomsettings.trade_not_with_Controller') }</option>
                     <option value="2">{ LocalizeText('navigator.roomsettings.trade_allowed') }</option>
                 </select>
+            </Flex>
+            <Flex alignItems="center" gap={ 1 }>
+                <Text className="col-3">{ LocalizeText('navigator.tags') }</Text>
+                <Column fullWidth gap={ 0 }>
+                    <input className="form-control form-control-sm" value={ roomTag1 } onChange={ event => setRoomTag1(event.target.value) } onBlur={ () => saveTags(0) } />
+                    { (roomTag1.length > TAGS_MAX_LENGTH) &&
+                        <Text bold small variant="danger">
+                            { LocalizeText('navigator.roomsettings.toomanycharacters') }
+                        </Text> }
+                    { (tagIndex === 0 && typeError != '') &&
+                        <Text bold small variant="danger">
+                            { LocalizeText(typeError) }
+                        </Text> }
+                </Column>
+                <Column fullWidth gap={ 0 }>
+                    <input className="form-control form-control-sm" value={ roomTag2 } onChange={ event => setRoomTag2(event.target.value) } onBlur={ () => saveTags(1) } />
+                    { (roomTag2.length > TAGS_MAX_LENGTH) &&
+                        <Text bold small variant="danger">
+                            { LocalizeText('navigator.roomsettings.toomanycharacters') }
+                        </Text> }
+                    { (tagIndex === 1 && typeError != '') &&
+                    <Text bold small variant="danger">
+                        { LocalizeText(typeError) }
+                    </Text> }
+                </Column>
             </Flex>
             <Flex alignItems="center" gap={ 1 }>
                 <Base className="col-3" />
