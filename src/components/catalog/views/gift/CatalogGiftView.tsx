@@ -172,7 +172,7 @@ export const CatalogGiftView: FC<{}> = props =>
                 <Flex alignItems="center" gap={ 2 }>
                     { selectedColorId &&
                         <Base className="gift-preview">
-                            <LayoutFurniImageView productType={ ProductTypeEnum.FLOOR } productClassId={ selectedColorId } extraData={ boxExtraData } />
+                            <LayoutFurniImageView productType={ ProductTypeEnum.FLOOR } productClassId={ isBoxDefault ? giftConfiguration.boxTypes[selectedBoxIndex] : selectedColorId } extraData={ boxExtraData } />
                         </Base> }
                     <Column gap={ 1 }>
                         <Flex gap={ 2 }>
