@@ -18,7 +18,6 @@ export const SelectReportedChatsView: FC<{}> = props =>
             case ReportType.EMERGENCY:
                 return chatHistory.filter(chat => (chat.type === ChatEntryType.TYPE_CHAT) && (chat.webId === activeReport.reportedUserId) && (chat.entityType === RoomObjectType.USER));
             case ReportType.IM:
-            case ReportType.GUIDE:
                 return messengerHistory.filter(chat => (chat.webId === activeReport.reportedUserId) && (chat.type === ChatEntryType.TYPE_IM));
         }
 

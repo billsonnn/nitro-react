@@ -1,8 +1,8 @@
-import { GuideSessionGetRequesterRoomMessageComposer, GuideSessionInviteRequesterMessageComposer, GuideSessionMessageMessageComposer, GuideSessionMessageMessageEvent, GuideSessionRequesterRoomMessageEvent, GuideSessionResolvedMessageComposer } from '@nitrots/nitro-renderer';
+import { GuideSessionGetRequesterRoomMessageComposer, GuideSessionInviteRequesterMessageComposer, GuideSessionMessageMessageComposer, GuideSessionRequesterRoomMessageEvent, GuideSessionResolvedMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { ChatEntryType, ChatHistoryCurrentDate, GetSessionDataManager, GuideToolMessageGroup, LocalizeText, ReportType, SendMessageComposer, TryVisitRoom } from '../../../api';
+import { GetSessionDataManager, GuideToolMessageGroup, LocalizeText, ReportType, SendMessageComposer, TryVisitRoom } from '../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
-import { useChatHistory, useHelp, useMessageEvent, useRoom } from '../../../hooks';
+import { useHelp, useMessageEvent } from '../../../hooks';
 
 interface GuideToolOngoingViewProps
 {
@@ -21,8 +21,6 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
     const { isGuide = false, userId = 0, userName = null, userFigure = null, isTyping = false, messageGroups = [] } = props;
 
     const [ messageText, setMessageText ] = useState<string>('');
-    const { addMessengerEntry } = useChatHistory();
-    const { roomSession = null } = useRoom();
     const { report = null } = useHelp();
 
     useEffect(() =>
@@ -51,13 +49,6 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
         const parser = event.getParser();
 
         TryVisitRoom(parser.requesterRoomId);
-    });
-
-    useMessageEvent<GuideSessionMessageMessageEvent>(GuideSessionMessageMessageEvent, event =>
-    {
-        const parser = event.getParser();
-
-        addMessengerEntry({ id: -1, webId: parser.senderId, entityId: -1, name: userName, timestamp: ChatHistoryCurrentDate(), type: ChatEntryType.TYPE_IM, roomId: !roomSession ? 0 : roomSession.roomId, message: parser.chatMessage });
     });
 
     const sendMessage = useCallback(() =>

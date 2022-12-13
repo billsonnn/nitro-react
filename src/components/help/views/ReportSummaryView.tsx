@@ -14,7 +14,6 @@ export const ReportSummaryView: FC<{}> = props =>
 
         switch(activeReport.reportType)
         {
-
             case ReportType.BULLY:
             case ReportType.EMERGENCY:
             case ReportType.ROOM: {
@@ -40,9 +39,7 @@ export const ReportSummaryView: FC<{}> = props =>
                 SendMessageComposer(new CallForHelpFromPhotoMessageComposer(activeReport.extraData, activeReport.cfhTopic, activeReport.roomId, GetSessionDataManager().userId, activeReport.roomObjectId));
                 break;
             case ReportType.GUIDE:
-                activeReport.reportedChats.forEach(entry => chats.push(entry.webId, entry.message));
-
-                SendMessageComposer(new GuideSessionReportMessageComposer(activeReport.message));
+                SendMessageComposer(new GuideSessionReportMessageComposer(''));
                 break;
         }
 
