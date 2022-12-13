@@ -36,30 +36,33 @@ export const CatalogGiftView: FC<{}> = props =>
         setMessage('');
         setSelectedBoxIndex(0);
         setSelectedRibbonIndex(0);
-        
+
         if(colors.length) setSelectedColorId(colors[0].id);
     }, [ colors ]);
 
     const isBoxDefault = useMemo(() =>
     {
-        return giftConfiguration ? (giftConfiguration.defaultStuffTypes.findIndex(s => (s === giftConfiguration.boxTypes[selectedBoxIndex])) > -1) : true;
+        return giftConfiguration ? (giftConfiguration.defaultStuffTypes.findIndex(s => (s === giftConfiguration.boxTypes[selectedBoxIndex])) > -1) : false;
     }, [ giftConfiguration, selectedBoxIndex ]);
 
     const boxExtraData = useMemo(() =>
     {
-        if(!giftConfiguration) return '';
+        if (!giftConfiguration) return '';
 
         return ((giftConfiguration.boxTypes[selectedBoxIndex] * 1000) + giftConfiguration.ribbonTypes[selectedRibbonIndex]).toString();
     }, [ giftConfiguration, selectedBoxIndex, selectedRibbonIndex ]);
 
     const isColorable = useMemo(() =>
     {
-        if(!giftConfiguration) return false;
+        if (!giftConfiguration) return false;
         
+        if (isBoxDefault) return false;
+
         const boxType = giftConfiguration.boxTypes[selectedBoxIndex];
 
         return (boxType === 8 || (boxType >= 3 && boxType <= 6)) ? false : true;
-    }, [ giftConfiguration, selectedBoxIndex ]);
+    }, [ giftConfiguration, selectedBoxIndex, isBoxDefault ]);
+
 
     const handleAction = useCallback((action: string) =>
     {
@@ -83,7 +86,7 @@ export const CatalogGiftView: FC<{}> = props =>
                     setReceiverNotFound(true);
                     return;
                 }
-                
+
                 SendMessageComposer(new PurchaseFromCatalogAsGiftComposer(pageId, offerId, extraData, receiverName, message, selectedColorId, selectedBoxIndex, selectedRibbonIndex, showMyFace));
                 return;
         }
@@ -133,6 +136,8 @@ export const CatalogGiftView: FC<{}> = props =>
             if(giftData.colors && giftData.colors.length > 0) newColors.push({ id: colorId, color: `#${ giftData.colors[0].toString(16) }` });
         }
 
+        giftConfiguration.boxTypes.push(giftConfiguration.defaultStuffTypes[Math.floor((Math.random() * giftConfiguration.defaultStuffTypes.length) - 1)]);
+
         setMaxBoxIndex(giftConfiguration.boxTypes.length - 1);
         setMaxRibbonIndex(giftConfiguration.ribbonTypes.length - 1);
 
@@ -145,7 +150,7 @@ export const CatalogGiftView: FC<{}> = props =>
 
     if(!giftConfiguration || !giftConfiguration.isEnabled || !isVisible) return null;
 
-    const boxName = 'catalog.gift_wrapping_new.box.' + (isBoxDefault ? 'default' : selectedBoxIndex);
+    const boxName = 'catalog.gift_wrapping_new.box.' + (isBoxDefault ? 'default' : giftConfiguration.boxTypes[selectedBoxIndex]);
     const ribbonName = `catalog.gift_wrapping_new.ribbon.${ selectedRibbonIndex }`;
     const priceText = 'catalog.gift_wrapping_new.' + (isBoxDefault ? 'freeprice' : 'price');
 
@@ -187,7 +192,7 @@ export const CatalogGiftView: FC<{}> = props =>
                                 </Flex>
                             </Column>
                         </Flex>
-                        <Flex alignItems="center" gap={ 2 }>
+                        <Flex alignItems="center" gap={ 2 } className={ isColorable ? '' : 'opacity-50 pointer-events-none' }>
                             <ButtonGroup>
                                 <Button variant="primary" onClick={ () => handleAction('prev_ribbon') }>
                                     <FontAwesomeIcon icon="chevron-left" />
@@ -200,7 +205,7 @@ export const CatalogGiftView: FC<{}> = props =>
                         </Flex>
                     </Column>
                 </Flex>
-                <Column gap={ 1 }>
+                <Column gap={ 1 } className={ isColorable ? '' : 'opacity-50 pointer-events-none' }>
                     <Text fontWeight="bold">
                         { LocalizeText('catalog.gift_wrapping.pick_color') }
                     </Text>
