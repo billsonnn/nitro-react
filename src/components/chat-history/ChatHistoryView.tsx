@@ -9,7 +9,7 @@ export const ChatHistoryView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ searchText, setSearchText ] = useState<string>('');
-    const { chatHistory = [], setMessengerHistory, addMessengerEntry } = useChatHistory();
+    const { chatHistory = [], setMessengerHistory = null } = useChatHistory();
     const { report = null } = useHelp();
 
     const filteredChatHistory = useMemo(() =>
@@ -23,9 +23,16 @@ export const ChatHistoryView: FC<{}> = props =>
 
     const reportMessage = (message: any) =>
     {
-        setMessengerHistory([]); // We do this because we are interested in displaying only the reported message.
+        setMessengerHistory(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            newValue.push({ id: message.id, webId: message.webId, entityId: message.entityId, name: '', message: message.message, roomId: message.roomId, timestamp: message.timestamp, type: ChatEntryType.TYPE_IM });
+
+            return newValue;
+        });
+
         report(ReportType.IM, { reportedUserId: message.webId });
-        addMessengerEntry({ id: message.id, webId: message.webId, entityId: message.entityId, name: message.name, timestamp: message.timestamp, type: ChatEntryType.TYPE_IM, roomId: message.roomId, message: message.message });
     }
 
     /* useEffect(() =>
