@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GiftReceiverNotFoundEvent, PurchaseFromCatalogAsGiftComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GetSessionDataManager, LocalizeText, ProductTypeEnum, SendMessageComposer } from '../../../../api';
+import { ColorUtils, GetSessionDataManager, LocalizeText, ProductTypeEnum, SendMessageComposer } from '../../../../api';
 import { Base, Button, ButtonGroup, classNames, Column, Flex, FormGroup, LayoutCurrencyIcon, LayoutFurniImageView, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { CatalogEvent, CatalogInitGiftEvent, CatalogPurchasedEvent } from '../../../../events';
 import { useCatalog, useMessageEvent, useUiEvent } from '../../../../hooks';
@@ -62,6 +62,11 @@ export const CatalogGiftView: FC<{}> = props =>
 
         return (boxType === 8 || (boxType >= 3 && boxType <= 6)) ? false : true;
     }, [ giftConfiguration, selectedBoxIndex, isBoxDefault ]);
+    
+    const colourId = useMemo(() =>
+    {
+        return isBoxDefault ? giftConfiguration.boxTypes[selectedBoxIndex] : selectedColorId;
+    },[ isBoxDefault, giftConfiguration, selectedBoxIndex,selectedColorId ])
 
 
     const handleAction = useCallback((action: string) =>
@@ -87,10 +92,10 @@ export const CatalogGiftView: FC<{}> = props =>
                     return;
                 }
 
-                SendMessageComposer(new PurchaseFromCatalogAsGiftComposer(pageId, offerId, extraData, receiverName, message, selectedColorId, selectedBoxIndex, selectedRibbonIndex, showMyFace));
+                SendMessageComposer(new PurchaseFromCatalogAsGiftComposer(pageId, offerId, extraData, receiverName, message, colourId , selectedBoxIndex, selectedRibbonIndex, showMyFace));
                 return;
         }
-    }, [ extraData, maxBoxIndex, maxRibbonIndex, message, offerId, pageId, receiverName, selectedBoxIndex, selectedColorId, selectedRibbonIndex, showMyFace ]);
+    }, [ colourId, extraData, maxBoxIndex, maxRibbonIndex, message, offerId, pageId, receiverName, selectedBoxIndex, selectedRibbonIndex, showMyFace ]);
 
     useMessageEvent<GiftReceiverNotFoundEvent>(GiftReceiverNotFoundEvent, event => setReceiverNotFound(true));
 
@@ -133,7 +138,7 @@ export const CatalogGiftView: FC<{}> = props =>
 
             if(!giftData) continue;
 
-            if(giftData.colors && giftData.colors.length > 0) newColors.push({ id: colorId, color: `#${ giftData.colors[0].toString(16) }` });
+            if(giftData.colors && giftData.colors.length > 0) newColors.push({ id: colorId, color: ColorUtils.makeColorNumberHex(giftData.colors[0]) });
         }
 
         giftConfiguration.boxTypes.push(giftConfiguration.defaultStuffTypes[Math.floor((Math.random() * giftConfiguration.defaultStuffTypes.length) - 1)]);
@@ -152,7 +157,7 @@ export const CatalogGiftView: FC<{}> = props =>
 
     const boxName = 'catalog.gift_wrapping_new.box.' + (isBoxDefault ? 'default' : giftConfiguration.boxTypes[selectedBoxIndex]);
     const ribbonName = `catalog.gift_wrapping_new.ribbon.${ selectedRibbonIndex }`;
-    const priceText = 'catalog.gift_wrapping_new.' + (isBoxDefault ? 'freeprice' : 'price');
+    const priceText = 'catalog.gift_wrapping_new.' + (isBoxDefault ? 'freeprice' : 'price');;
 
     return (
         <NitroCardView uniqueKey="catalog-gift" className="nitro-catalog-gift" theme="primary-slim">
@@ -172,7 +177,7 @@ export const CatalogGiftView: FC<{}> = props =>
                 <Flex alignItems="center" gap={ 2 }>
                     { selectedColorId &&
                         <Base className="gift-preview">
-                            <LayoutFurniImageView productType={ ProductTypeEnum.FLOOR } productClassId={ isBoxDefault ? giftConfiguration.boxTypes[selectedBoxIndex] : selectedColorId } extraData={ boxExtraData } />
+                            <LayoutFurniImageView productType={ ProductTypeEnum.FLOOR } productClassId={ colourId } extraData={ boxExtraData } />
                         </Base> }
                     <Column gap={ 1 }>
                         <Flex gap={ 2 }>
