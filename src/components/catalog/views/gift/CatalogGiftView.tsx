@@ -24,6 +24,7 @@ export const CatalogGiftView: FC<{}> = props =>
     const [ receiverNotFound, setReceiverNotFound ] = useState<boolean>(false);
     const { catalogOptions = null } = useCatalog();
     const { giftConfiguration = null } = catalogOptions;
+    const [ boxTypes, setBoxTypes ] = useState<number[]>([]);
 
     const onClose = useCallback(() =>
     {
@@ -42,15 +43,15 @@ export const CatalogGiftView: FC<{}> = props =>
 
     const isBoxDefault = useMemo(() =>
     {
-        return giftConfiguration ? (giftConfiguration.defaultStuffTypes.findIndex(s => (s === giftConfiguration.boxTypes[selectedBoxIndex])) > -1) : false;
-    }, [ giftConfiguration, selectedBoxIndex ]);
+        return giftConfiguration ? (giftConfiguration.defaultStuffTypes.findIndex(s => (s === boxTypes[selectedBoxIndex])) > -1) : false;
+    }, [ boxTypes, giftConfiguration, selectedBoxIndex ]);
 
     const boxExtraData = useMemo(() =>
     {
         if (!giftConfiguration) return '';
 
-        return ((giftConfiguration.boxTypes[selectedBoxIndex] * 1000) + giftConfiguration.ribbonTypes[selectedRibbonIndex]).toString();
-    }, [ giftConfiguration, selectedBoxIndex, selectedRibbonIndex ]);
+        return ((boxTypes[selectedBoxIndex] * 1000) + giftConfiguration.ribbonTypes[selectedRibbonIndex]).toString();
+    }, [ giftConfiguration, selectedBoxIndex, selectedRibbonIndex, boxTypes ]);
 
     const isColorable = useMemo(() =>
     {
@@ -58,15 +59,15 @@ export const CatalogGiftView: FC<{}> = props =>
         
         if (isBoxDefault) return false;
 
-        const boxType = giftConfiguration.boxTypes[selectedBoxIndex];
+        const boxType = boxTypes[selectedBoxIndex];
 
         return (boxType === 8 || (boxType >= 3 && boxType <= 6)) ? false : true;
-    }, [ giftConfiguration, selectedBoxIndex, isBoxDefault ]);
+    }, [ giftConfiguration, selectedBoxIndex, isBoxDefault, boxTypes ]);
     
     const colourId = useMemo(() =>
     {
-        return isBoxDefault ? giftConfiguration.boxTypes[selectedBoxIndex] : selectedColorId;
-    },[ isBoxDefault, giftConfiguration, selectedBoxIndex,selectedColorId ])
+        return isBoxDefault ? boxTypes[selectedBoxIndex] : selectedColorId;
+    },[ isBoxDefault, boxTypes, selectedBoxIndex, selectedColorId ])
 
 
     const handleAction = useCallback((action: string) =>
@@ -125,6 +126,23 @@ export const CatalogGiftView: FC<{}> = props =>
     {
         setReceiverNotFound(false);
     }, [ receiverName ]);
+    
+    const createBoxTypes = useCallback(() =>
+    {
+        if (!giftConfiguration) return;
+        
+        setBoxTypes(prev =>
+        {
+            let newPrev = [ ...giftConfiguration.boxTypes ];
+    
+            newPrev.push(giftConfiguration.defaultStuffTypes[ Math.floor((Math.random() * (giftConfiguration.defaultStuffTypes.length - 1))) ]);
+
+            setMaxBoxIndex(newPrev.length- 1);
+            setMaxRibbonIndex(newPrev.length - 1);
+    
+            return newPrev;
+        })
+    },[ giftConfiguration ])
 
     useEffect(() =>
     {
@@ -141,23 +159,27 @@ export const CatalogGiftView: FC<{}> = props =>
             if(giftData.colors && giftData.colors.length > 0) newColors.push({ id: colorId, color: ColorUtils.makeColorNumberHex(giftData.colors[0]) });
         }
 
-        giftConfiguration.boxTypes.push(giftConfiguration.defaultStuffTypes[Math.floor((Math.random() * giftConfiguration.defaultStuffTypes.length) - 1)]);
-
-        setMaxBoxIndex(giftConfiguration.boxTypes.length - 1);
-        setMaxRibbonIndex(giftConfiguration.ribbonTypes.length - 1);
+        createBoxTypes();
 
         if(newColors.length)
         {
             setSelectedColorId(newColors[0].id);
             setColors(newColors);
         }
-    }, [ giftConfiguration ]);
+    }, [ giftConfiguration, createBoxTypes ]);
+    
+    useEffect(() =>
+    { 
+        if (!isVisible) return;
+
+        createBoxTypes();
+    },[ createBoxTypes, isVisible ])
 
     if(!giftConfiguration || !giftConfiguration.isEnabled || !isVisible) return null;
 
-    const boxName = 'catalog.gift_wrapping_new.box.' + (isBoxDefault ? 'default' : giftConfiguration.boxTypes[selectedBoxIndex]);
+    const boxName = 'catalog.gift_wrapping_new.box.' + (isBoxDefault ? 'default' : boxTypes[selectedBoxIndex]);
     const ribbonName = `catalog.gift_wrapping_new.ribbon.${ selectedRibbonIndex }`;
-    const priceText = 'catalog.gift_wrapping_new.' + (isBoxDefault ? 'freeprice' : 'price');;
+    const priceText = 'catalog.gift_wrapping_new.' + (isBoxDefault ? 'freeprice' : 'price');
 
     return (
         <NitroCardView uniqueKey="catalog-gift" className="nitro-catalog-gift" theme="primary-slim">
