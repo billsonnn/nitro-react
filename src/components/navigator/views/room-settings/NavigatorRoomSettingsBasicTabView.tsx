@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { RoomDeleteComposer, RoomSettingsSaveErrorEvent } from '@nitrots/nitro-renderer';
+import { RoomDeleteComposer, RoomSettingsSaveErrorEvent, RoomSettingsSaveErrorParser } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { CreateLinkEvent, GetMaxVisitorsList, IRoomData, LocalizeText, RoomSettingsErrorType, SendMessageComposer } from '../../../../api';
+import { CreateLinkEvent, GetMaxVisitorsList, IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text } from '../../../../common';
 import { useMessageEvent, useNavigator, useNotification } from '../../../../hooks';
 
@@ -37,9 +37,10 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
 
         switch (parser.code)
         {
-            case RoomSettingsErrorType.ROOM_TAGS_BADWWORDS:
-            case RoomSettingsErrorType.RESTRICTED_TAGS:
-                setTypeError('trading.mode.not.allowed');
+            case RoomSettingsSaveErrorParser.ERROR_INVALID_TAG:
+                setTypeError('navigator.roomsettings.unacceptablewords');
+            case RoomSettingsSaveErrorParser.ERROR_NON_USER_CHOOSABLE_TAG:
+                setTypeError('navigator.roomsettings.nonuserchoosabletag');
                 break;
             default:
                 setTypeError('');
