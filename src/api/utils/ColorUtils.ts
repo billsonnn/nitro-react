@@ -23,4 +23,11 @@ export class ColorUtils
     {
         return parseInt(color.replace('#', ''), 16);
     }
+
+    public static uintHexColor(color: number): string 
+    {
+        const realColor = color >>>0;
+
+        return ColorUtils.makeColorHex(realColor.toString(16).substring(2));
+    }
 }

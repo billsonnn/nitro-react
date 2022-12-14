@@ -1,6 +1,5 @@
-import { ColorConverter, IRoomRenderingCanvas, RoomPreviewer, TextureUtils } from '@nitrots/nitro-renderer';
+import { ColorConverter, GetTicker, IRoomRenderingCanvas, RoomPreviewer, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, ReactNode, useEffect, useRef, useState } from 'react';
-import { GetNitroInstance } from '../../api';
 
 export interface LayoutRoomPreviewerViewProps
 {
@@ -65,7 +64,7 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
             }
         }
 
-        GetNitroInstance().ticker.add(update);
+        GetTicker().add(update);
 
         const resizeObserver = new ResizeObserver(() =>
         {
@@ -84,7 +83,7 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
         {
             resizeObserver.disconnect();
 
-            GetNitroInstance().ticker.remove(update);
+            GetTicker().remove(update);
         }
 
     }, [ renderingCanvas, roomPreviewer, elementRef, height ]);

@@ -77,7 +77,7 @@ const useChatHistoryState = () =>
             if(roomHistory[(roomHistory.length - 1)].id === parser.data.roomId) return;
         }
 
-        addChatEntry({ id: -1, entityId: parser.data.roomId, name: parser.data.roomName, timestamp: ChatHistoryCurrentDate(), type: ChatEntryType.TYPE_ROOM_INFO, roomId: parser.data.roomId });
+        addChatEntry({ id: -1, webId: -1, entityId: -1, name: parser.data.roomName, timestamp: ChatHistoryCurrentDate(), type: ChatEntryType.TYPE_ROOM_INFO, roomId: parser.data.roomId });
 
         addRoomHistoryEntry({ id: parser.data.roomId, name: parser.data.roomName });
 
@@ -88,14 +88,14 @@ const useChatHistoryState = () =>
     {
         const parser = event.getParser();
 
-        addMessengerEntry({ id: -1, entityId: parser.senderId, name: '', message: parser.messageText, roomId: -1, timestamp: MessengerHistoryCurrentDate(parser.secondsSinceSent), type: ChatEntryType.TYPE_IM });
+        addMessengerEntry({ id: -1, webId: parser.senderId, entityId: -1, name: '', message: parser.messageText, roomId: -1, timestamp: MessengerHistoryCurrentDate(parser.secondsSinceSent), type: ChatEntryType.TYPE_IM });
     });
 
     useMessageEvent<RoomInviteEvent>(RoomInviteEvent, event =>
     {
         const parser = event.getParser();
 
-        addMessengerEntry({ id: -1, entityId: parser.senderId, name: '', message: parser.messageText, roomId: -1, timestamp: MessengerHistoryCurrentDate(), type: ChatEntryType.TYPE_IM });
+        addMessengerEntry({ id: -1, webId: parser.senderId, entityId: -1, name: '', message: parser.messageText, roomId: -1, timestamp: MessengerHistoryCurrentDate(), type: ChatEntryType.TYPE_IM });
     });
     
     return { addChatEntry, chatHistory, roomHistory, messengerHistory };

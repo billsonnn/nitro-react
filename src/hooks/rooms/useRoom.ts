@@ -14,7 +14,7 @@ const useRoomState = () =>
     const updateRoomBackgroundColor = (hue: number, saturation: number, lightness: number, original: boolean = false) =>
     {
         if(!roomBackground) return;
-        
+
         const newColor = ColorConverter.hslToRGB(((((hue & 0xFF) << 16) + ((saturation & 0xFF) << 8)) + (lightness & 0xFF)));
 
         if(original) setOriginalRoomBackgroundColor(newColor);
@@ -47,7 +47,7 @@ const useRoomState = () =>
     useUiEvent<RoomWidgetUpdateBackgroundColorPreviewEvent>(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW, event =>
     {
         if(!roomBackground) return;
-    
+
         roomBackground.tint = originalRoomBackgroundColor;
     });
 
@@ -71,7 +71,7 @@ const useRoomState = () =>
             color = event.color;
             brightness = event.brightness;
         }
-        
+
         updateRoomFilter(ColorConverter.hslToRGB(((ColorConverter.rgbToHSL(color) & 0xFFFF00) + brightness)));
     });
 
@@ -123,7 +123,8 @@ const useRoomState = () =>
         RoomEngineObjectEvent.REQUEST_MOVE,
         RoomEngineObjectEvent.REQUEST_ROTATE,
         RoomEngineObjectEvent.MOUSE_ENTER,
-        RoomEngineObjectEvent.MOUSE_LEAVE
+        RoomEngineObjectEvent.MOUSE_LEAVE,
+        RoomEngineObjectEvent.DOUBLE_CLICK
     ], event =>
     {
         if(RoomId.isRoomPreviewerId(event.roomId)) return;
@@ -184,6 +185,9 @@ const useRoomState = () =>
             case RoomEngineObjectEvent.MOUSE_LEAVE:
                 updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OUT, event.objectId, event.category, event.roomId);
                 break;
+            case RoomEngineObjectEvent.DOUBLE_CLICK:
+                updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_DOUBLE_CLICKED, event.objectId, event.category, event.roomId);
+                break;
         }
 
         if(updateEvent) DispatchUiEvent(updateEvent);
@@ -208,7 +212,7 @@ const useRoomState = () =>
             renderer.resolution = window.devicePixelRatio;
             renderer.resize(width, height);
         }
-        
+
         const displayObject = roomEngine.getRoomInstanceDisplay(roomId, canvasId, width, height, RoomGeometry.SCALE_ZOOMED_IN);
         const canvas = GetRoomEngine().getRoomInstanceRenderingCanvas(roomId, canvasId);
 

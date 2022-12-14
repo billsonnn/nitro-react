@@ -81,12 +81,9 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
                 return [];
             });
         }
-    }, [ trigger, hasSpecialInput, requiresFurni, setIntParams, setStringParam, setFurniIds ]);
 
-    useEffect(() =>
-    {
         setAllowsFurni(requiresFurni);
-    }, [ requiresFurni, setAllowsFurni ]);
+    }, [ trigger, hasSpecialInput, requiresFurni, setIntParams, setStringParam, setFurniIds, setAllowsFurni ]);
 
     return (
         <NitroCardView uniqueKey="nitro-wired" className="nitro-wired" theme="primary-slim">

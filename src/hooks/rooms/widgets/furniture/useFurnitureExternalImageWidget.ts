@@ -33,12 +33,11 @@ const useFurnitureExternalImageWidgetState = () =>
         roomTotalImages.forEach(object =>
         {
             if (object.type !== 'external_image_wallitem_poster_small') return null;
-            
-            const data = object.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
-            const ownerId = object.model.getValue<number>(RoomObjectVariable.FURNITURE_OWNER_ID);
-            const ownerName = object.model.getValue<string>(RoomObjectVariable.FURNITURE_OWNER_NAME);
 
-            datas.push({ s: JSON.parse(data).s, t: JSON.parse(data).t, u: JSON.parse(data).u, w: JSON.parse(data).w, oi: ownerId, o: ownerName });
+            const data = object.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
+            const jsonData: IPhotoData = JSON.parse(data);
+
+            datas.push(jsonData);
         });
 
         setObjectId(event.objectId);

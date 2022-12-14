@@ -1,5 +1,4 @@
-import { HabboClubLevelEnum } from '@nitrots/nitro-renderer';
-import { GetNitroInstance } from '..';
+import { GetTickerTime, HabboClubLevelEnum } from '@nitrots/nitro-renderer';
 import { IPurse } from './IPurse';
 
 export class Purse implements IPurse
@@ -42,7 +41,7 @@ export class Purse implements IPurse
 
     public set credits(credits: number)
     {
-        this._lastUpdated = GetNitroInstance().time;
+        this._lastUpdated = GetTickerTime();
         this._credits = credits;
     }
 
@@ -53,7 +52,7 @@ export class Purse implements IPurse
 
     public set activityPoints(k: Map<number, number>)
     {
-        this._lastUpdated = GetNitroInstance().time;
+        this._lastUpdated = GetTickerTime();
         this._activityPoints = k;
     }
 
@@ -64,7 +63,7 @@ export class Purse implements IPurse
 
     public set clubDays(k: number)
     {
-        this._lastUpdated = GetNitroInstance().time;
+        this._lastUpdated = GetTickerTime();
         this._clubDays = k;
     }
 
@@ -75,7 +74,7 @@ export class Purse implements IPurse
 
     public set clubPeriods(k: number)
     {
-        this._lastUpdated = GetNitroInstance().time;
+        this._lastUpdated = GetTickerTime();
         this._clubPeriods = k;
     }
 
@@ -101,7 +100,7 @@ export class Purse implements IPurse
 
     public set pastClubDays(k: number)
     {
-        this._lastUpdated = GetNitroInstance().time;
+        this._lastUpdated = GetTickerTime();
         this._pastClubDays = k;
     }
 
@@ -112,7 +111,7 @@ export class Purse implements IPurse
 
     public set pastVipDays(k: number)
     {
-        this._lastUpdated = GetNitroInstance().time;
+        this._lastUpdated = GetTickerTime();
         this._pastVipDays = k;
     }
 
@@ -128,14 +127,14 @@ export class Purse implements IPurse
 
     public get minutesUntilExpiration(): number
     {
-        var k: number = ((GetNitroInstance().time - this._lastUpdated) / (1000 * 60));
+        var k: number = ((GetTickerTime() - this._lastUpdated) / (1000 * 60));
         var _local_2: number = (this._minutesUntilExpiration - k);
         return (_local_2 > 0) ? _local_2 : 0;
     }
 
     public set minutesUntilExpiration(k: number)
     {
-        this._lastUpdated = GetNitroInstance().time;
+        this._lastUpdated = GetTickerTime();
         this._minutesUntilExpiration = k;
     }
 
@@ -146,7 +145,7 @@ export class Purse implements IPurse
 
     public set minutesSinceLastModified(k: number)
     {
-        this._lastUpdated = GetNitroInstance().time;
+        this._lastUpdated = GetTickerTime();
         this._minutesSinceLastModified = k;
     }
 

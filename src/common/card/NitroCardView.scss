@@ -36,11 +36,34 @@ $nitro-card-tabs-height: 33px;
                     rgba(194, 48, 39, 1) 50%,
                     rgba(194, 48, 39, 1) 100%
                 );
-        
+
                 &:hover {
                     filter: brightness(1.2);
                 }
-        
+
+                &:active {
+                    filter: brightness(0.8);
+                }
+            }
+
+            .nitro-card-header-report-camera {
+                cursor: pointer;
+                padding: 1px 3px;
+                line-height: 1;
+                border-radius: $border-radius;
+                box-shadow: 0 0 0 1.6px $white;
+                border: 2px solid #921911;
+                background: repeating-linear-gradient(
+                    rgba(245, 80, 65, 1),
+                    rgba(245, 80, 65, 1) 50%,
+                    rgba(194, 48, 39, 1) 50%,
+                    rgba(194, 48, 39, 1) 100%
+                );
+
+                &:hover {
+                    filter: brightness(1.2);
+                }
+
                 &:active {
                     filter: brightness(0.8);
                 }
@@ -101,7 +124,7 @@ $nitro-card-tabs-height: 33px;
             width: 100%;
             margin: 0;
             padding-top:2px;
-            
+
             &:before {
                 position: absolute;
                 content: " ";
@@ -137,7 +160,32 @@ $nitro-card-tabs-height: 33px;
                 &:hover {
                     filter: brightness(1.2);
                 }
-        
+
+                &:active {
+                    filter: brightness(0.8);
+                }
+            }
+
+            .nitro-card-header-report-camera {
+                cursor: pointer;
+                padding: 0px 2px;
+                margin-right: 4px;
+                line-height: 1;
+                @include font-size($h7-font-size);
+                border-radius: $border-radius;
+                box-shadow: 0 0 0 1.6px $white;
+                border: 2px solid #921911;
+                background: repeating-linear-gradient(
+                    rgba(245, 80, 65, 1),
+                    rgba(245, 80, 65, 1) 50%,
+                    rgba(194, 48, 39, 1) 50%,
+                    rgba(194, 48, 39, 1) 100%
+                );
+
+                &:hover {
+                    filter: brightness(1.2);
+                }
+
                 &:active {
                     filter: brightness(0.8);
                 }

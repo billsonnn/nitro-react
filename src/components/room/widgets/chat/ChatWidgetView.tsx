@@ -1,30 +1,38 @@
-import { IWorkerEventTracker, RoomChatSettings } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useRef, useState } from 'react';
-import { AddWorkerEventTracker, ChatBubbleMessage, DoChatsOverlap, GetConfiguration, RemoveWorkerEventTracker, SendWorkerEvent } from '../../../../api';
+import { RoomChatSettings } from '@nitrots/nitro-renderer';
+import { FC, useCallback, useEffect, useRef } from 'react';
+import { ChatBubbleMessage, DoChatsOverlap, GetConfiguration } from '../../../../api';
 import { useChatWidget } from '../../../../hooks';
+import IntervalWebWorker from '../../../../workers/IntervalWebWorker';
+import { WorkerBuilder } from '../../../../workers/WorkerBuilder';
 import { ChatWidgetMessageView } from './ChatWidgetMessageView';
-
-let TIMER_TRACKER: number = 0;
 
 export const ChatWidgetView: FC<{}> = props =>
 {
-    const [ timerId, setTimerId ] = useState(TIMER_TRACKER++);
-    const { chatMessages = [], setChatMessages = null, chatSettings = null, getScrollSpeed = 6000, removeHiddenChats = null, moveAllChatsUp = null } = useChatWidget();
+    const { chatMessages = [], setChatMessages = null, chatSettings = null, getScrollSpeed = 6000 } = useChatWidget();
     const elementRef = useRef<HTMLDivElement>();
 
-    const checkOverlappingChats = (chat: ChatBubbleMessage, moved: number, tempChats: ChatBubbleMessage[]) => 
+    const removeHiddenChats = useCallback(() =>
     {
-        const totalChats = chatMessages.length;
+        setChatMessages(prevValue =>
+        {
+            if(prevValue)
+            {
+                const newMessages = prevValue.filter(chat => ((chat.top > (-(chat.height) * 2))));
 
-        if(!totalChats) return;
+                if(newMessages.length !== prevValue.length) return newMessages;
+            }
 
-        for(let i = (totalChats - 1); i >= 0; i--)
+            return prevValue;
+        })
+    }, [ setChatMessages ]);
+
+    const checkOverlappingChats = useCallback((chat: ChatBubbleMessage, moved: number, tempChats: ChatBubbleMessage[]) => 
+    {
+        for(let i = (chatMessages.indexOf(chat) - 1); i >= 0; i--)
         {
             const collides = chatMessages[i];
 
             if(!collides || (chat === collides) || (tempChats.indexOf(collides) >= 0) || (((collides.top + collides.height) - moved) > (chat.top + chat.height))) continue;
-
-            chat.skipMovement = true;
 
             if(DoChatsOverlap(chat, collides, -moved, 0))
             {
@@ -38,9 +46,9 @@ export const ChatWidgetView: FC<{}> = props =>
                 checkOverlappingChats(collides, amount, tempChats);
             }
         }
-    }
+    }, [ chatMessages ]);
 
-    const makeRoom = (chat: ChatBubbleMessage) =>
+    const makeRoom = useCallback((chat: ChatBubbleMessage) =>
     {
         if(chatSettings.mode === RoomChatSettings.CHAT_MODE_FREE_FLOW)
         {
@@ -59,17 +67,22 @@ export const ChatWidgetView: FC<{}> = props =>
 
             if(spaceAvailable < requiredSpace)
             {
-                chatMessages.forEach(existingChat =>
+                setChatMessages(prevValue =>
                 {
-                    if(existingChat === chat) return;
+                    prevValue.forEach(prevChat =>
+                    {
+                        if(prevChat === chat) return;
 
-                    existingChat.top -= amount;
+                        prevChat.top -= amount;
+                    });
+
+                    return prevValue;
                 });
 
                 removeHiddenChats();
             }
         }
-    }
+    }, [ chatSettings, checkOverlappingChats, removeHiddenChats, setChatMessages ]);
 
     useEffect(() =>
     {
@@ -105,37 +118,39 @@ export const ChatWidgetView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        const workerTracker: IWorkerEventTracker = {
-            workerMessageReceived: (message: { [index: string]: any }) =>
+        const moveAllChatsUp = (amount: number) =>
+        {
+            setChatMessages(prevValue =>
             {
-                switch(message.type)
+                prevValue.forEach(chat =>
                 {
-                    case 'MOVE_CHATS':
-                        moveAllChatsUp(15);
+                    if(chat.skipMovement)
+                    {
+                        chat.skipMovement = false;
+            
                         return;
-                }
-            }
-        };
+                    }
+            
+                    chat.top -= amount;
+                });
 
-        AddWorkerEventTracker(workerTracker);
+                return prevValue;
+            });
 
-        SendWorkerEvent({
-            type: 'CREATE_INTERVAL',
-            time: getScrollSpeed,
-            timerId: timerId,
-            response: { type: 'MOVE_CHATS' }
-        });
+            removeHiddenChats();
+        }
+
+        const worker = new WorkerBuilder(IntervalWebWorker);
+
+        worker.onmessage = () => moveAllChatsUp(15);
+
+        worker.postMessage({ action: 'START', content: getScrollSpeed });
 
         return () =>
         {
-            SendWorkerEvent({
-                type: 'REMOVE_INTERVAL',
-                timerId
-            });
-            
-            RemoveWorkerEventTracker(workerTracker);
+            worker.postMessage({ action: 'STOP' });
         }
-    }, [ timerId, getScrollSpeed, moveAllChatsUp ]);
+    }, [ getScrollSpeed, removeHiddenChats, setChatMessages ]);
 
     return (
         <div ref={ elementRef } className="nitro-chat-widget">

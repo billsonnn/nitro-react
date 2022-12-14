@@ -1,12 +1,10 @@
-import { ConfigurationEvent, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroConfiguration, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
+import { ConfigurationEvent, GetAssetManager, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroConfiguration, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { DispatchUiEvent, GetCommunication, GetConfiguration, GetNitroInstance, GetUIVersion } from './api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from './common';
 import { LoadingView } from './components/loading/LoadingView';
 import { MainView } from './components/main/MainView';
 import { useConfigurationEvent, useLocalizationEvent, useMainEvent, useRoomEngineEvent } from './hooks';
-import IntervalWebWorker from './workers/IntervalWebWorker';
-import { WorkerBuilder } from './workers/WorkerBuilder';
 
 NitroVersion.UI_VERSION = GetUIVersion();
 
@@ -24,13 +22,9 @@ export const App: FC<{}> = props =>
         if(!NitroConfig) throw new Error('NitroConfig is not defined!');
 
         Nitro.bootstrap();
-
-        const worker = new WorkerBuilder(IntervalWebWorker);
-
-        Nitro.instance.setWorker(worker);
     }
 
-    const handler = useCallback((event: NitroEvent) =>
+    const handler = useCallback(async (event: NitroEvent) =>
     {
         switch(event.type)
         {
@@ -88,20 +82,19 @@ export const App: FC<{}> = props =>
 
                 if(assetUrls && assetUrls.length) for(const url of assetUrls) urls.push(NitroConfiguration.interpolate(url));
 
-                GetNitroInstance().core.asset.downloadAssets(urls, (status: boolean) =>
+                const status = await GetAssetManager().downloadAssets(urls);
+                
+                if(status)
                 {
-                    if(status)
-                    {
-                        GetCommunication().init();
+                    GetCommunication().init();
 
-                        setPercent(prevValue => (prevValue + 20))
-                    }
-                    else
-                    {
-                        setIsError(true);
-                        setMessage('Assets Failed');
-                    }
-                });
+                    setPercent(prevValue => (prevValue + 20))
+                }
+                else
+                {
+                    setIsError(true);
+                    setMessage('Assets Failed');
+                }
                 return;
             }
         }

@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { CrackableDataType, GroupInformationComposer, GroupInformationEvent, RoomControllerLevel, RoomObjectCategory, RoomObjectOperationType, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, StringDataType } from '@nitrots/nitro-renderer';
+import { CrackableDataType, GroupInformationComposer, GroupInformationEvent, NowPlayingEvent, RoomControllerLevel, RoomObjectCategory, RoomObjectOperationType, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, SongInfoReceivedEvent, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AvatarInfoFurni, CreateLinkEvent, GetGroupInformation, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../../api';
-import { Button, Column, Flex, LayoutBadgeImageView, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, Text, UserProfileIconView } from '../../../../../common';
-import { useMessageEvent, useRoom } from '../../../../../hooks';
+import { AvatarInfoFurni, CreateLinkEvent, GetGroupInformation, GetNitroInstance, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../../api';
+import { Base, Button, Column, Flex, LayoutBadgeImageView, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, Text, UserProfileIconView } from '../../../../../common';
+import { useMessageEvent, useRoom, useSoundEvent } from '../../../../../hooks';
 
 interface InfoStandWidgetFurniViewProps
 {
@@ -34,6 +34,28 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
     const [ godMode, setGodMode ] = useState(false);
     const [ canSeeFurniId, setCanSeeFurniId ] = useState(false);
     const [ groupName, setGroupName ] = useState<string>(null);
+    const [ isJukeBox, setIsJukeBox ] = useState<boolean>(false);
+    const [ isSongDisk, setIsSongDisk ] = useState<boolean>(false);
+    const [ songId, setSongId ] = useState<number>(-1);
+    const [ songName, setSongName ] = useState<string>('');
+    const [ songCreator, setSongCreator ] = useState<string>('');
+
+    useSoundEvent<NowPlayingEvent>(NowPlayingEvent.NPE_SONG_CHANGED, event =>
+    {
+        setSongId(event.id);
+    }, (isJukeBox || isSongDisk));
+
+    useSoundEvent<NowPlayingEvent>(SongInfoReceivedEvent.SIR_TRAX_SONG_INFO_RECEIVED, event =>
+    {
+        if(event.id !== songId) return;
+        
+        const songInfo = GetNitroInstance().soundManager.musicController.getSongInfo(event.id);
+
+        if(!songInfo) return;
+
+        setSongName(songInfo.name);
+        setSongCreator(songInfo.creator);
+    }, (isJukeBox || isSongDisk));
 
     useEffect(() =>
     {
@@ -50,6 +72,9 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         let crackableTarget = 0;
         let godMode = false;
         let canSeeFurniId = false;
+        let furniIsJukebox = false;
+        let furniIsSongDisk = false;
+        let furniSongId = -1;
         
         const isValidController = (avatarInfo.roomControllerLevel >= RoomControllerLevel.GUEST);
 
@@ -78,6 +103,25 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                 isCrackable = true;
                 crackableHits = stuffData.hits;
                 crackableTarget = stuffData.target;
+            }
+
+            else if(avatarInfo.extraParam === RoomWidgetEnumItemExtradataParameter.JUKEBOX)
+            {
+                const playlist = GetNitroInstance().soundManager.musicController.getRoomItemPlaylist();
+
+                if(playlist)
+                {
+                    furniSongId = playlist.nowPlayingSongId;
+                }
+
+                furniIsJukebox = true;
+            }
+
+            else if(avatarInfo.extraParam.indexOf(RoomWidgetEnumItemExtradataParameter.SONGDISK) === 0)
+            {
+                furniSongId = parseInt(avatarInfo.extraParam.substr(RoomWidgetEnumItemExtradataParameter.SONGDISK.length));
+                
+                furniIsSongDisk = true;
             }
 
             if(godMode)
@@ -142,6 +186,9 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         setGodMode(godMode);
         setCanSeeFurniId(canSeeFurniId);
         setGroupName(null);
+        setIsJukeBox(furniIsJukebox);
+        setIsSongDisk(furniIsSongDisk);
+        setSongId(furniSongId);
         
         if(avatarInfo.groupId) SendMessageComposer(new GroupInformationComposer(avatarInfo.groupId, false));
     }, [ roomSession, avatarInfo ]);
@@ -156,6 +203,14 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
         setGroupName(parser.title);
     });
+
+    useEffect(() =>
+    {
+        const songInfo = GetNitroInstance().soundManager.musicController.getSongInfo(songId);
+
+        setSongName(songInfo?.name ?? '');
+        setSongCreator(songInfo?.creator ?? '');
+    }, [ songId ]);
 
     const onFurniSettingChange = useCallback((index: number, value: string) =>
     {
@@ -315,6 +370,28 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                                 </Text>
                             </Flex> }
                     </Column>
+                    { (isJukeBox || isSongDisk) &&
+                        <Column gap={ 1 }>
+                            <hr className="m-0" />
+                            { (songId === -1) &&
+                                <Text variant="white" small wrap>
+                                    { LocalizeText('infostand.jukebox.text.not.playing') }
+                                </Text> }
+                            { !!songName.length &&
+                                <Flex alignItems="center" gap={ 1 }>
+                                    <Base className="icon disk-icon" />
+                                    <Text variant="white" small wrap>
+                                        { songName }
+                                    </Text>
+                                </Flex> }
+                            { !!songCreator.length &&
+                                <Flex alignItems="center" gap={ 1 }>
+                                    <Base className="icon disk-creator" />
+                                    <Text variant="white" small wrap>
+                                        { songCreator }
+                                    </Text>
+                                </Flex> }
+                        </Column> }
                     <Column gap={ 1 }>
                         { isCrackable &&
                             <>

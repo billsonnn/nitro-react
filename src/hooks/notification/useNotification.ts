@@ -382,7 +382,7 @@ const useNotificationState = () =>
 
     useMessageEvent<RoomEnterEvent>(RoomEnterEvent, onRoomEnterEvent);
 
-    return { alerts, bubbleAlerts, confirms, simpleAlert, showNitroAlert, showTradeAlert, showConfirm, closeAlert, closeBubbleAlert, closeConfirm };
+    return { alerts, bubbleAlerts, confirms, simpleAlert, showNitroAlert, showTradeAlert, showConfirm, showSingleBubble, closeAlert, closeBubbleAlert, closeConfirm };
 }
 
 export const useNotification = () => useBetween(useNotificationState);

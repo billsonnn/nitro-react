@@ -16,19 +16,19 @@ export const SelectReportedUserView: FC<{}> = props =>
 
         chatHistory.forEach(chat =>
         {
-            if((chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityType === RoomObjectType.USER) && (chat.entityId !== GetSessionDataManager().userId) && !users.has(chat.entityId)) users.set(chat.entityId, { id: chat.entityId, username: chat.name });
+            if((chat.type === ChatEntryType.TYPE_CHAT) && (chat.entityType === RoomObjectType.USER) && (chat.webId !== GetSessionDataManager().userId) && !users.has(chat.webId)) users.set(chat.webId, { id: chat.webId, username: chat.name });
         });
 
         return Array.from(users.values());
     }, [ chatHistory ]);
 
-    const submitUser = () =>
+    const submitUser = (userId: number) =>
     {
-        if(selectedUserId <= 0) return;
+        if(userId <= 0) return;
 
         setActiveReport(prevValue =>
         {
-            return { ...prevValue, reportedUserId: selectedUserId, currentStep: ReportState.SELECT_CHATS };
+            return { ...prevValue, reportedUserId: userId, currentStep: ReportState.SELECT_CHATS };
         });
     }
 
@@ -76,7 +76,7 @@ export const SelectReportedUserView: FC<{}> = props =>
                 <Button variant="secondary" onClick={ back }>
                     { LocalizeText('generic.back') }
                 </Button>
-                <Button disabled={ (selectedUserId <= 0) } onClick={ submitUser }>
+                <Button disabled={ (selectedUserId <= 0) } onClick={ () => submitUser(selectedUserId) }>
                     { LocalizeText('help.emergency.main.submit.button') }
                 </Button>
             </Flex>

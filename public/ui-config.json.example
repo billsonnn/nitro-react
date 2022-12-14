@@ -21,6 +21,7 @@
     "wired.action.chat.max.length": 100,
     "wired.action.kick.from.room.max.length": 100,
     "wired.action.mute.user.max.length": 100,
+    "game.center.enabled": false,
     "navigator.room.models": [
         { "clubLevel": 0, "tileSize": 104, "name": "a" },
         { "clubLevel": 0, "tileSize": 94, "name": "b" },

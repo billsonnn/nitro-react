@@ -13,6 +13,7 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
 {
     const { chat = null, makeRoom = null, bubbleWidth = RoomChatSettings.CHAT_BUBBLE_WIDTH_NORMAL } = props;
     const [ isVisible, setIsVisible ] = useState(false);
+    const [ isReady, setIsReady ] = useState<boolean>(false);
     const elementRef = useRef<HTMLDivElement>();
 
     const getBubbleWidth = useMemo(() =>
@@ -30,6 +31,8 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
 
     useEffect(() =>
     {
+        setIsVisible(false);
+        
         const element = elementRef.current;
 
         if(!element) return;
@@ -53,20 +56,24 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = props =>
             chat.top = top;
         }
 
-        if(!chat.visible)
-        {
-            makeRoom(chat);
-
-            chat.visible = true;
-        }
+        setIsReady(true);
 
         return () =>
         {
             chat.elementRef = null;
-        }
-    }, [ elementRef, chat, makeRoom ]);
 
-    useEffect(() => setIsVisible(chat.visible), [ chat.visible ]);
+            setIsReady(false);
+        }
+    }, [ chat ]);
+
+    useEffect(() =>
+    {
+        if(!isReady || !chat || isVisible) return;
+        
+        if(makeRoom) makeRoom(chat);
+
+        setIsVisible(true);
+    }, [ chat, isReady, isVisible, makeRoom ]);
 
     return (
         <div ref={ elementRef } className={ `bubble-container ${ isVisible ? 'visible' : 'invisible' }` } onClick={ event => GetRoomEngine().selectRoomObject(chat.roomId, chat.senderId, RoomObjectCategory.UNIT) }>
