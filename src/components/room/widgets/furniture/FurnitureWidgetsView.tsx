@@ -18,6 +18,7 @@ import { FurnitureStackHeightView } from './FurnitureStackHeightView';
 import { FurnitureStickieView } from './FurnitureStickieView';
 import { FurnitureTrophyView } from './FurnitureTrophyView';
 import { FurnitureYoutubeDisplayView } from './FurnitureYoutubeDisplayView';
+import { FurniturePlaylistEditorWidgetView } from './playlist-editor/FurniturePlaylistEditorWidgetView';
 
 export const FurnitureWidgetsView: FC<{}> = props =>
 {
@@ -34,6 +35,7 @@ export const FurnitureWidgetsView: FC<{}> = props =>
             <FurnitureHighScoreView />
             <FurnitureInternalLinkView />
             <FurnitureMannequinView />
+            <FurniturePlaylistEditorWidgetView />
             <FurnitureRoomLinkView />
             <FurnitureSpamWallPostItView />
             <FurnitureStackHeightView />

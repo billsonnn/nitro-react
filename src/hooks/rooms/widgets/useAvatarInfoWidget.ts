@@ -56,7 +56,7 @@ const useAvatarInfoWidgetState = () =>
         const name = AvatarInfoUtilities.getObjectName(objectId, category);
 
         if(!name) return;
-        
+
         setActiveNameBubble(name);
 
         if(category !== RoomObjectCategory.UNIT) setProductBubbles([]);
@@ -100,7 +100,7 @@ const useAvatarInfoWidgetState = () =>
         }
 
         if(!info) return;
-        
+
         setAvatarInfo(info);
     }
 
@@ -140,7 +140,7 @@ const useAvatarInfoWidgetState = () =>
                 const oldIndex = newValue.findIndex(oldBubble => (oldBubble.id === bubble.id));
 
                 if(oldIndex > -1) newValue.splice(oldIndex, 1);
-                
+
                 newValue.push(bubble);
             });
 
@@ -278,7 +278,7 @@ const useAvatarInfoWidgetState = () =>
     useObjectRollOverEvent(event =>
     {
         if(avatarInfo || (event.category !== RoomObjectCategory.UNIT)) return;
-        
+
         getObjectName(event.id, event.category);
     });
 
@@ -331,7 +331,7 @@ const useAvatarInfoWidgetState = () =>
     useEffect(() =>
     {
         if(!avatarInfo) return;
-        
+
         setActiveNameBubble(null);
         setNameBubbles([]);
         setProductBubbles([]);

@@ -199,20 +199,23 @@ export const GuideToolView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        const messageGroups = [ ...ongoingMessageGroups ];
-
-        let lastGroup = messageGroups[messageGroups.length - 1];
-
-        const guideId = (isOnDuty ? GetSessionDataManager().userId : ongoingUserId);
-
-        if(!lastGroup || lastGroup.userId !== guideId)
+        if (parser.roomId !== 0)
         {
-            lastGroup = new GuideToolMessageGroup(guideId);
-            messageGroups.push(lastGroup);
-        }
+            const messageGroups = [ ...ongoingMessageGroups ];
 
-        lastGroup.addChat(new GuideToolMessage(parser.roomName, parser.roomId));
-        setOngoingMessageGroups(messageGroups);
+            let lastGroup = messageGroups[messageGroups.length - 1];
+
+            const guideId = (isOnDuty ? GetSessionDataManager().userId : ongoingUserId);
+
+            if(!lastGroup || lastGroup.userId !== guideId)
+            {
+                lastGroup = new GuideToolMessageGroup(guideId);
+                messageGroups.push(lastGroup);
+            }
+
+            lastGroup.addChat(new GuideToolMessage(parser.roomName, parser.roomId));
+            setOngoingMessageGroups(messageGroups);
+        }
     });
 
     useMessageEvent<GuideSessionEndedMessageEvent>(GuideSessionEndedMessageEvent, event =>

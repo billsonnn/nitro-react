@@ -4,6 +4,7 @@ import { OfferView } from '../catalog/views/targeted-offer/OfferView';
 import { GroupRoomInformationView } from '../groups/views/GroupRoomInformationView';
 import { NotificationCenterView } from '../notification-center/NotificationCenterView';
 import { PurseView } from '../purse/PurseView';
+import { RoomPromotesWidgetView } from '../room/widgets/room-promotes/RoomPromotesWidgetView';
 
 export const RightSideView: FC<{}> = props =>
 {
@@ -13,6 +14,7 @@ export const RightSideView: FC<{}> = props =>
                 <PurseView />
                 <GroupRoomInformationView />
                 <OfferView/>
+                <RoomPromotesWidgetView />
                 <NotificationCenterView />
             </Column>
         </div>

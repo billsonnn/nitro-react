@@ -172,6 +172,13 @@ const useAchievementsState = () =>
         setNeedsUpdate(false);
     }, [ needsUpdate ]);
 
+    useEffect(() =>
+    {
+        if(!selectedCategoryCode || (selectedAchievementId === -1)) return;
+
+        setAchievementSeen(selectedCategoryCode, selectedAchievementId);
+    }, [ selectedCategoryCode, selectedAchievementId, setAchievementSeen ]);
+
     return { achievementCategories, selectedCategoryCode, setSelectedCategoryCode, selectedAchievementId, setSelectedAchievementId, achievementScore, getTotalUnseen, getProgress, getMaxProgress, scaledProgressPercent, selectedCategory, selectedAchievement, setAchievementSeen };
 }
 

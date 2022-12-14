@@ -1,6 +1,7 @@
 export interface IChatEntry
 {
     id: number;
+    webId: number;
     entityId: number;
     name: string;
     look?: string;

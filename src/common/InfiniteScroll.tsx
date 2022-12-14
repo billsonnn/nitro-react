@@ -39,7 +39,7 @@ export const InfiniteScroll: FC<InfiniteScrollProps> = props =>
 
         return () =>
         {
-            if(timeout) clearTimeout();
+            if(timeout) clearTimeout(timeout);
 
             timeout = null;
             

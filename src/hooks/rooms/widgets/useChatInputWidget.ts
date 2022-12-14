@@ -1,6 +1,6 @@
-import { AvatarExpressionEnum, HabboClubLevelEnum, RoomControllerLevel, RoomEngineObjectEvent, RoomObjectCategory, RoomRotatingEffect, RoomSessionChatEvent, RoomSettingsComposer, RoomShakingEffect, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
+import { AvatarExpressionEnum, GetTicker, HabboClubLevelEnum, RoomControllerLevel, RoomEngineObjectEvent, RoomObjectCategory, RoomRotatingEffect, RoomSessionChatEvent, RoomSettingsComposer, RoomShakingEffect, RoomZoomEvent, TextureUtils } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
-import { ChatMessageTypeEnum, CreateLinkEvent, GetClubMemberLevel, GetConfiguration, GetNitroInstance, GetRoomEngine, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../api';
+import { ChatMessageTypeEnum, CreateLinkEvent, GetClubMemberLevel, GetConfiguration, GetRoomEngine, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../api';
 import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../events';
 import { useNotification } from '../../notification';
 import { useObjectSelectedEvent } from '../engine';
@@ -144,8 +144,8 @@ const useChatInputWidgetState = () =>
                     
                     return null;
                 case ':togglefps': {
-                    if(GetNitroInstance().ticker.maxFPS > 0) GetNitroInstance().ticker.maxFPS = 0;
-                    else GetNitroInstance().ticker.maxFPS = GetConfiguration('system.animation.fps');
+                    if(GetTicker().maxFPS > 0) GetTicker().maxFPS = 0;
+                    else GetTicker().maxFPS = GetConfiguration('system.animation.fps');
 
                     return null;
                 }
