@@ -79,38 +79,4 @@ export const OfferWindowView = (props: { offer: TargetedOfferData, setOpen: Disp
             </Flex>
         </NitroCardContentView>
     </NitroCardView>;
-    
-    // return <Frame onCloseClick={ () => setOpen(false) } title={ LocalizeText(offer.title) } className="ton-targeted-offer">
-    //     <Border fullHeight className="p-1" gap={ 1 } justifyContent="center">
-    //         <Border skin={ 4 } colour={ VolterColours.primary_red } className="p-1 text-center volter-bold">{ LocalizeText('targeted.offer.timeleft',[ 'timeleft' ],[ expirationTime() ]) }</Border>
-    //         <Flex gap={ 1 } fullHeight>
-    //             <Flex gap={ 1 } column className="w-75 text-black">
-    //                 <Border skin={ 0 } fullHeight fullWidth colour={ VolterColours.lighter_yellow }>
-    //                     <h4 className="ubuntu-bold">
-    //                         { LocalizeText(offer.title) }
-    //                     </h4>
-    //                     <h5 className="ubuntu" dangerouslySetInnerHTML={ { __html: offer.description } }/>
-    //                 </Border>
-    //                 <Flex alignSelf="center" alignItems="center" justifyContent="center" gap={ 2 }>
-    //                     { offer.purchaseLimit > 1 && <Flex gap={ 1 }>
-    //                         <Text variant="muted">{ LocalizeText('catalog.bundlewidget.quantity') }</Text>
-    //                         <input type="number" value={ amount } onChange={ evt => setAmount(parseInt(evt.target.value)) } min={ 1 } max={ offer.purchaseLimit } />
-    //                     </Flex> }
-    //                     <Button skin={ canPurchase ? 6 : 5 } colour={ canPurchase ? VolterColours.primary_green : VolterColours.white } disabled={ !canPurchase } onClick={ () => buyOffer() }>{ LocalizeText('targeted.offer.button.buy') }</Button>
-    //                 </Flex>
-    //             </Flex>
-    //             <Base className="w-50" fullHeight style={ { background: `url(${ GetConfiguration('image.library.url') + offer.imageUrl }) no-repeat center` } } />
-    //         </Flex>
-    //         <Flex className="price-ray position-absolute" alignItems="center" justifyContent="center" column>
-    //             <Text className="ubuntu">{ LocalizeText('targeted.offer.price.label') }</Text>
-    //             { offer.priceInCredits > 0 && <Flex gap={ 1 }>
-    //                 <Text className="ubuntu-bold" variant="light">{ offer.priceInCredits }</Text>
-    //                 <LayoutCurrencyIcon type={ -1 } />
-    //             </Flex> }
-    //             { offer.priceInActivityPoints > 0 && <Flex gap={ 1 }>
-    //                 <Text className="ubuntu-bold" variant="light">+{ offer.priceInActivityPoints }</Text> <LayoutCurrencyIcon type={ offer.activityPointType }/>
-    //             </Flex> }
-    //         </Flex>
-    //     </Border>
-    // </Frame>;
 }
