@@ -20,23 +20,23 @@
 
     .chat-messages {
         height: 200px;
-    
+
         .message-avatar {
             position: relative;
             overflow: hidden;
             width: 50px;
             height: 50px;
-    
+
             .avatar-image {
                 position: absolute;
                 margin-left: -22px;
                 margin-top: -25px;
             }
         }
-    
+
         .messages-group-left {
             position: relative;
-            
+
             &:before {
                 position: absolute;
                 content: ' ';
@@ -49,10 +49,10 @@
                 left: -8px;
             }
         }
-    
+
         .messages-group-right {
             position: relative;
-            
+
             &:before {
                 position: absolute;
                 content: ' ';
@@ -78,5 +78,10 @@
         resize: none;
         outline: none;
         line-height: 17px;
-    }    
+    }
+
+    .text-underline
+    {
+        text-decoration: underline;
+    }
 }
