@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NitroRectangle, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, useRef } from 'react';
-import { CameraPicture, GetRoomEngine, GetRoomSession, LocalizeText, PlaySound, SoundNames } from '../../../api';
+import { CameraPicture, CreateLinkEvent, GetRoomEngine, GetRoomSession, LocalizeText, PlaySound, SoundNames } from '../../../api';
 import { Column, DraggableWindow, Flex } from '../../../common';
 import { useCamera, useNotification } from '../../../hooks';
 
@@ -28,7 +28,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
         if(!elementRef || !elementRef.current) return null;
 
         const frameBounds = elementRef.current.getBoundingClientRect();
-        
+
         return new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height));
     }
 
@@ -62,11 +62,14 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
             <Column center className="nitro-camera-capture" gap={ 0 }>
                 { selectedPicture && <img alt="" className="camera-area" src={ selectedPicture.imageUrl } /> }
                 <div className="camera-canvas drag-handler">
+                    <div className="position-absolute info-camera" onClick={ () => CreateLinkEvent('habbopages/camera') }>
+                        <FontAwesomeIcon icon="question" />
+                    </div>
                     <div className="position-absolute header-close" onClick={ onClose }>
                         <FontAwesomeIcon icon="times" />
                     </div>
                     { !selectedPicture && <div ref={ elementRef } className="camera-area camera-view-finder" /> }
-                    { selectedPicture && 
+                    { selectedPicture &&
                         <div className="camera-area camera-frame">
                             <div className="camera-frame-preview-actions w-100 position-absolute bottom-0 py-2 text-center">
                                 <button className="btn btn-success me-3" title={ LocalizeText('camera.editor.button.tooltip') } onClick={ onEdit }>{ LocalizeText('camera.editor.button.text') }</button>

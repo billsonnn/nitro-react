@@ -37,7 +37,7 @@
         vertical-align: top;
         height: 100%;
         padding: 0 10px;
-        
+
         &::after,
         input,
         textarea {
@@ -51,7 +51,7 @@
             border: none;
             outline: none;
         }
-        
+
         &::after {
             content: attr(data-value) '  ';
             visibility: hidden;
@@ -80,5 +80,28 @@
             position: relative;
             width: 50px;
         }
+    }
+}
+
+.info-habbopages {
+    cursor: pointer;
+    line-height: 1;
+    border-radius: $border-radius;
+    box-shadow: 0 0 0 1.6px $white;
+    border: 2px solid #1E7295;
+    background: repeating-linear-gradient(
+        rgba(30, 114, 149),
+        rgba(30, 114, 149) 50%,
+        rgb(9, 102, 133) 50%,
+        rgb(25, 96, 126) 100%
+    );
+    margin-left: 6px;
+
+    &:hover {
+        filter: brightness(1.2);
+    }
+
+    &:active {
+        filter: brightness(0.8);
     }
 }

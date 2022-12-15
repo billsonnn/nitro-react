@@ -26,6 +26,31 @@
         }
     }
 
+    .info-camera {
+        top: 8px;
+        right: 36px;
+        border-radius: $border-radius;
+        box-shadow: 0 0 0 1.5px $white;
+        border: 2px solid #1E7295;
+        background: repeating-linear-gradient(
+            rgba(30, 114, 149),
+            rgba(30, 114, 149) 50%,
+            rgb(9, 102, 133) 50%,
+            rgb(25, 96, 126) 100%
+        );
+        cursor: pointer;
+        line-height: 1;
+        padding: 1px 3px;
+
+        &:hover {
+            filter: brightness(1.2);
+        }
+
+        &:active {
+            filter: brightness(0.8);
+        }
+    }
+
     .camera-area {
         position: absolute;
         top: 37px;

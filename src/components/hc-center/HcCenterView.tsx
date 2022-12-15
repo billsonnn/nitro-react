@@ -19,12 +19,12 @@ export const HcCenterView: FC<{}> = props =>
     const getClubText = () =>
     {
         if(purse.clubDays <= 0) return LocalizeText('purse.clubdays.zero.amount.text');
-        
+
         if((purse.minutesUntilExpiration > -1) && (purse.minutesUntilExpiration < (60 * 24)))
         {
             return FriendlyTime.shortFormat(purse.minutesUntilExpiration * 60);
         }
-        
+
         return FriendlyTime.shortFormat(((purse.clubPeriods * 31) + purse.clubDays) * 86400);
     }
 
@@ -64,9 +64,9 @@ export const HcCenterView: FC<{}> = props =>
             linkReceived: (url: string) =>
             {
                 const parts = url.split('/');
-        
+
                 if(parts.length < 2) return;
-        
+
                 switch(parts[1])
                 {
                     case 'open':
@@ -80,7 +80,7 @@ export const HcCenterView: FC<{}> = props =>
                             }
                         }
                         return;
-                } 
+                }
             },
             eventUrlPrefix: 'habboUI/'
         };
@@ -130,7 +130,7 @@ export const HcCenterView: FC<{}> = props =>
 
     return (
         <NitroCardView theme="primary-slim" className="nitro-hc-center">
-            <NitroCardHeaderView headerText={ LocalizeText('generic.hccenter') } onCloseClick={ () => setIsVisible(false) } />
+            <NitroCardHeaderView headerText={ LocalizeText('generic.hccenter') } isInfoToHabboPages={ true } onClickInfoHabboPages={ () => CreateLinkEvent('habbopages/' + GetConfiguration('hc.center')['benefits.habbopage']) } onCloseClick={ () => setIsVisible(false) } />
             <Flex position="relative" className="bg-muted p-2">
                 <Column gap={ 1 }>
                     <div className="hc-logo" />
@@ -154,7 +154,7 @@ export const HcCenterView: FC<{}> = props =>
                 </Flex>
                 { GetConfiguration('hc.center')['payday.info'] &&
                     <Flex alignItems="center">
-                        
+
                         <Column className="rounded-start bg-primary p-2 payday-special mb-1">
                             <h4 className="mb-1">{ LocalizeText('hccenter.special.title') }</h4>
                             <div>{ LocalizeText('hccenter.special.info') }</div>

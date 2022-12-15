@@ -1,14 +1,16 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { HabboClubLevelEnum, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { ChatMessageTypeEnum, GetClubMemberLevel, GetConfiguration, GetRoomSession, GetSessionDataManager, LocalizeText, RoomWidgetUpdateChatInputContentEvent } from '../../../../api';
-import { Text } from '../../../../common';
+import { ChatMessageTypeEnum, CreateLinkEvent, GetClubMemberLevel, GetConfiguration, GetRoomSession, GetSessionDataManager, LocalizeText, RoomWidgetUpdateChatInputContentEvent } from '../../../../api';
+import { Base, Text } from '../../../../common';
 import { useChatInputWidget, useSessionInfo, useUiEvent } from '../../../../hooks';
 import { ChatInputStyleSelectorView } from './ChatInputStyleSelectorView';
 
 export const ChatInputView: FC<{}> = props =>
 {
     const [ chatValue, setChatValue ] = useState<string>('');
+    const [ showInfoHabboPages, setShowInfohabboPages ] = useState<boolean>(false);
     const { chatStyleId = 0, updateChatStyleId = null } = useSessionInfo();
     const { selectedUsername = '', floodBlocked = false, floodBlockedSeconds = 0, setIsTyping = null, setIsIdle = null, sendChat = null } = useChatInputWidget();
     const inputRef = useRef<HTMLInputElement>();
@@ -234,7 +236,7 @@ export const ChatInputView: FC<{}> = props =>
 
     return (
         createPortal(
-            <div className="nitro-chat-input-container">
+            <div className="nitro-chat-input-container" onMouseEnter={ () => setShowInfohabboPages(true) } onMouseLeave={ () => setTimeout(() => setShowInfohabboPages(false), 100) }>
                 <div className="input-sizer align-items-center">
                     { !floodBlocked &&
                     <input ref={ inputRef } type="text" className="chat-input" placeholder={ LocalizeText('widgets.chatinput.default') } value={ chatValue } maxLength={ maxChatLength } onChange={ event => updateChatInput(event.target.value) } onMouseDown={ event => setInputFocus() } /> }
@@ -242,6 +244,12 @@ export const ChatInputView: FC<{}> = props =>
                     <Text variant="danger">{ LocalizeText('chat.input.alert.flood', [ 'time' ], [ floodBlockedSeconds.toString() ]) } </Text> }
                 </div>
                 <ChatInputStyleSelectorView chatStyleId={ chatStyleId } chatStyleIds={ chatStyleIds } selectChatStyleId={ updateChatStyleId } />
-            </div>, document.getElementById('toolbar-chat-input-container'))
+                { (showInfoHabboPages) &&
+                    <Base className="info-habbopages" onClick={ () => CreateLinkEvent('habbopages/chat/chatting') }>
+                        <FontAwesomeIcon icon="question" />
+                    </Base>
+                }
+            </div>
+            , document.getElementById('toolbar-chat-input-container'))
     );
 }
