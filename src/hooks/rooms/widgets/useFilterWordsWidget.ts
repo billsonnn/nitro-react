@@ -1,4 +1,4 @@
-import { RoomGetFilterWordsMessageEvent } from '@nitrots/nitro-renderer';
+import { RoomFilterSettingsMessageEvent } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
 import { useMessageEvent } from '../../events';
 
@@ -9,7 +9,7 @@ const useFilterWordsWidgetState = () =>
 
     const onClose = () => setIsVisible(false);
 
-    useMessageEvent<RoomGetFilterWordsMessageEvent>(RoomGetFilterWordsMessageEvent, event =>
+    useMessageEvent<RoomFilterSettingsMessageEvent>(RoomFilterSettingsMessageEvent, event =>
     {
         const parser = event.getParser();
 

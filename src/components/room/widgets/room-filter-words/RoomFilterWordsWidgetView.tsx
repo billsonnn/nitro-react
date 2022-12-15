@@ -1,4 +1,4 @@
-import { RoomFilterWordsModifyMessageComposer } from '@nitrots/nitro-renderer';
+import { UpdateRoomFilterMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, classNames, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
@@ -16,7 +16,7 @@ export const RoomFilterWordsWidgetView: FC<{}> = props =>
     {
         if ((isSelectingWord) ? (!selectedWord) : (!word)) return;
 
-        SendMessageComposer(new RoomFilterWordsModifyMessageComposer(navigatorData.enteredGuestRoom.roomId, isAddingWord, (isSelectingWord ? selectedWord : word)));
+        SendMessageComposer(new UpdateRoomFilterMessageComposer(navigatorData.enteredGuestRoom.roomId, isAddingWord, (isSelectingWord ? selectedWord : word)));
         setSelectedWord('');
         setWord('bobba');
         setIsSelectingWord(false);
@@ -48,7 +48,7 @@ export const RoomFilterWordsWidgetView: FC<{}> = props =>
     if (!isVisible) return null;
 
     return (
-        <NitroCardView className="nitro-guide-tool" theme="primary-slim">
+        <NitroCardView className="nitro-guide-tool no-resize" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('navigator.roomsettings.roomfilter') } onCloseClick={ () => onClose() } />
             <NitroCardContentView className="text-black">
                 <Grid className="d-flex align-items-center justify-content-end gap-2">
