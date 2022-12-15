@@ -1,10 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+<<<<<<< HEAD
 import { GetCustomRoomFilterMessageComposer, RoomMuteComposer, RoomSettingsComposer, SecurityLevel, ToggleStaffPickMessageComposer, UpdateHomeRoomMessageComposer } from '@nitrots/nitro-renderer';
+=======
+import { NavigatorSearchComposer, RoomFilterWordsMessageComposer, RoomMuteComposer, RoomSettingsComposer, SecurityLevel, ToggleStaffPickMessageComposer, UpdateHomeRoomMessageComposer } from '@nitrots/nitro-renderer';
+>>>>>>> 90c2e0e29f3de9a7aefdf6c52c24f32e3dee217d
 import { FC, useEffect, useState } from 'react';
-import { CreateLinkEvent, DispatchUiEvent, GetGroupInformation, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../api';
+import { CreateLinkEvent, DispatchUiEvent, GetGroupInformation, GetSessionDataManager, LocalizeText, ReportType, SendMessageComposer } from '../../../api';
 import { Button, classNames, Column, Flex, LayoutBadgeImageView, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, UserProfileIconView } from '../../../common';
 import { RoomWidgetThumbnailEvent } from '../../../events';
-import { useNavigator } from '../../../hooks';
+import { useHelp, useNavigator } from '../../../hooks';
 
 export class NavigatorRoomInfoViewProps
 {
@@ -16,6 +20,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
     const { onCloseClick = null } = props;
     const [ isRoomPicked, setIsRoomPicked ] = useState(false);
     const [ isRoomMuted, setIsRoomMuted ] = useState(false);
+    const { report = null } = useHelp();
     const { navigatorData = null } = useNavigator();
 
     const hasPermission = (permission: string) =>
@@ -47,6 +52,8 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                 if(newRoomId > 0) SendMessageComposer(new UpdateHomeRoomMessageComposer(newRoomId));
                 return;
             case 'navigator_search_tag':
+                CreateLinkEvent(`navigator/search/${ value }`);
+                SendMessageComposer(new NavigatorSearchComposer('hotel_view', `tag:${ value }`));
                 return;
             case 'open_room_thumbnail_camera':
                 DispatchUiEvent(new RoomWidgetThumbnailEvent(RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL));
@@ -73,6 +80,9 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                 return;
             case 'open_floorplan_editor':
                 CreateLinkEvent('floor-editor/toggle');
+                return;
+            case 'report_room':
+                report(ReportType.ROOM, { roomId: navigatorData.enteredGuestRoom.roomId, roomName: navigatorData.enteredGuestRoom.roomName });
                 return;
             case 'close':
                 onCloseClick();
@@ -150,7 +160,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                             <Button onClick={ () => processAction('toggle_pick') }>
                                 { LocalizeText(isRoomPicked ? 'navigator.staffpicks.unpick' : 'navigator.staffpicks.pick') }
                             </Button> }
-                            <Button variant="danger" disabled>
+                            <Button variant="danger" onClick={ () => processAction('report_room') }>
                                 { LocalizeText('help.emergency.main.report.room') }
                             </Button>
                             { hasPermission('settings') &&
