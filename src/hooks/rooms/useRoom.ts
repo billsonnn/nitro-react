@@ -1,4 +1,4 @@
-import { ColorConverter, IRoomSession, NitroAdjustmentFilter, NitroContainer, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomGeometry, RoomId, RoomObjectCategory, RoomObjectHSLColorEnabledEvent, RoomObjectOperationType, RoomSessionEvent, RoomVariableEnum, Vector3d } from '@nitrots/nitro-renderer';
+import { AdjustmentFilter, ColorConverter, IRoomSession, NitroContainer, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomGeometry, RoomId, RoomObjectCategory, RoomObjectHSLColorEnabledEvent, RoomObjectOperationType, RoomSessionEvent, RoomVariableEnum, Vector3d } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { CanManipulateFurniture, DispatchUiEvent, GetNitroInstance, GetRoomEngine, GetRoomSession, InitializeRoomInstanceRenderingCanvas, IsFurnitureSelectionDisabled, ProcessRoomObjectOperation, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomObjectEvent, SetActiveRoomId, StartRoomSession } from '../../api';
@@ -8,7 +8,7 @@ const useRoomState = () =>
 {
     const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
     const [ roomBackground, setRoomBackground ] = useState<NitroSprite>(null);
-    const [ roomFilter, setRoomFilter ] = useState<NitroAdjustmentFilter>(null);
+    const [ roomFilter, setRoomFilter ] = useState<AdjustmentFilter>(null);
     const [ originalRoomBackgroundColor, setOriginalRoomBackgroundColor ] = useState(0);
 
     const updateRoomBackgroundColor = (hue: number, saturation: number, lightness: number, original: boolean = false) =>
@@ -219,7 +219,7 @@ const useRoomState = () =>
         if(!displayObject || !canvas) return;
 
         const background = new NitroSprite(NitroTexture.WHITE);
-        const filter = new NitroAdjustmentFilter();
+        const filter = new AdjustmentFilter();
         const master = (canvas.master as NitroContainer);
 
         background.tint = 0;

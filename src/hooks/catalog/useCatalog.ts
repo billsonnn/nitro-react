@@ -674,11 +674,11 @@ const useCatalogState = () =>
     {
         const parser = event.getParser();
 
-        setFurniLimit(parser._Str_15864);
-        setMaxFurniLimit(parser._Str_24094);
-        setSecondsLeft(parser._Str_3709);
+        setFurniLimit(parser.furniLimit);
+        setMaxFurniLimit(parser.maxFurniLimit);
+        setSecondsLeft(parser.secondsLeft);
         setUpdateTime(GetTickerTime());
-        setSecondsLeftWithGrace(parser._Str_24379);
+        setSecondsLeftWithGrace(parser.secondsLeftWithGrace);
 
         refreshBuilderStatus();
     });
