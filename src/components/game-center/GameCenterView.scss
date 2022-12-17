@@ -31,8 +31,8 @@
             &.selected {
                 position: relative;
                 &::after {
-                    content: "";
-                    background-image: url("../../assets/images/gamecenter/selectedIcon.png");
+                    content: '';
+                    background-image: url('@/assets/images/gamecenter/selectedIcon.png');
                     width: 83px;
                     height: 83px;
                     position: absolute;

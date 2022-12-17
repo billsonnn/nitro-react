@@ -7,7 +7,7 @@
         align-items: center;
         width: 122px;
         height: 130px;
-        background: url('../../../../assets/images/room-widgets/avatar-info/preview-background.png') no-repeat center;
+        background: url('@/assets/images/room-widgets/avatar-info/preview-background.png') no-repeat center;
 
         .pet-image {
             width: 122px;
@@ -17,7 +17,7 @@
         .monsterplant-image {
             width: 122px;
             height: 130px;
-            background: url('../../../../assets/images/room-widgets/furni-context-menu/monsterplant-preview.png') no-repeat center;
+            background: url('@/assets/images/room-widgets/furni-context-menu/monsterplant-preview.png') no-repeat center;
         }
     }
 }
@@ -59,7 +59,7 @@
             }
 
             &.bot {
-                background-image: url('../../../../assets/images/infostand/bot_background.png');
+                background-image: url('@/assets/images/infostand/bot_background.png');
                 background-repeat: no-repeat;
                 background-position: center;
             }
