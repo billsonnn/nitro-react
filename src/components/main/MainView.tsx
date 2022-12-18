@@ -9,6 +9,7 @@ import { CameraWidgetView } from '../camera/CameraWidgetView';
 import { CampaignView } from '../campaign/CampaignView';
 import { CatalogView } from '../catalog/CatalogView';
 import { ChatHistoryView } from '../chat-history/ChatHistoryView';
+import { FloorplanEditorView } from '../floorplan-editor/FloorplanEditorView';
 import { FriendsView } from '../friends/FriendsView';
 import { GameCenterView } from '../game-center/GameCenterView';
 import { GroupsView } from '../groups/GroupsView';
@@ -105,6 +106,7 @@ export const MainView: FC<{}> = props =>
             <HcCenterView />
             <CampaignView />
             <GameCenterView />
+            <FloorplanEditorView />
         </Base>
     );
 }
