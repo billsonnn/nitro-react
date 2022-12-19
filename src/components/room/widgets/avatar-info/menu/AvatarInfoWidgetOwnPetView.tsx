@@ -60,7 +60,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                     SendMessageComposer(new RoomUnitGiveHandItemPetComposer(avatarInfo.id));
                     break;
                 case 'train':
-                //this.widget._Str_23877();
+                    roomSession.requestPetCommands(avatarInfo.id);
                     break;
                 case 'pick_up':
                     roomSession.pickupPet(avatarInfo.id);
