@@ -2,11 +2,13 @@ import { DesktopViewEvent, PetTrainingPanelMessageEvent } from '@nitrots/nitro-r
 import { FC } from 'react';
 import { AvatarInfoPet, LocalizeText } from '../../../../api';
 import { Button, Column, Flex, Grid, LayoutPetImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { useAvatarInfoWidget, useMessageEvent } from '../../../../hooks';
+import { useAvatarInfoWidget, useMessageEvent, useRoom, useSessionInfo } from '../../../../hooks';
 
 export const PetTrainingPanelWidgetView: FC<{}> = props =>
 {
     const { avatarInfo = null, petTrainInformation = null, setPetTrainInformation = null } = useAvatarInfoWidget();
+    const { chatStyleId = 0 } = useSessionInfo();
+    const { roomSession = null } = useRoom();
 
     useMessageEvent<DesktopViewEvent>(DesktopViewEvent, event =>
     {
@@ -22,11 +24,11 @@ export const PetTrainingPanelWidgetView: FC<{}> = props =>
         setPetTrainInformation(parser);
     });
 
-    const processPetAction = (petId: number, type: string) =>
+    const processPetAction = (petName: string, commandName: string) =>
     {
-        if (!petId || !type) return;
+        if (!petName || !commandName) return;
 
-        // packet for pet actions
+        roomSession?.sendChatMessage(`${ petName } ${ commandName }`, chatStyleId);
     }
 
     if(!petTrainInformation) return null;
@@ -46,7 +48,7 @@ export const PetTrainingPanelWidgetView: FC<{}> = props =>
                 <Grid columnCount={ 2 }>
                     {
                         (petTrainInformation.commands && petTrainInformation.commands.length > 0) && petTrainInformation.commands.map((command, index) =>
-                            <Button key={ index } disabled={ !petTrainInformation.enabledCommands.includes(command) } onClick={ () => processPetAction(petTrainInformation.petId, LocalizeText(`pet.command.${ command }`)) }>{ LocalizeText(`pet.command.${ command }`) }</Button>
+                            <Button key={ index } disabled={ !petTrainInformation.enabledCommands.includes(command) } onClick={ () => processPetAction((avatarInfo as AvatarInfoPet)?.name, LocalizeText(`pet.command.${ command }`)) }>{ LocalizeText(`pet.command.${ command }`) }</Button>
                         )
                     }
                 </Grid>
