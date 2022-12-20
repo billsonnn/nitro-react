@@ -6,11 +6,11 @@ import { useAvatarInfoWidget, useMessageEvent } from '../../../../hooks';
 
 export const PetTrainingPanelWidgetView: FC<{}> = props =>
 {
-    const { avatarInfo = null, petTrainInformation = null, setTrainPetInformation = null } = useAvatarInfoWidget();
+    const { avatarInfo = null, petTrainInformation = null, setPetTrainInformation = null } = useAvatarInfoWidget();
 
     useMessageEvent<DesktopViewEvent>(DesktopViewEvent, event =>
     {
-        setTrainPetInformation(null);
+        setPetTrainInformation(null);
     });
 
     useMessageEvent<PetTrainingPanelMessageEvent>(PetTrainingPanelMessageEvent, event =>
@@ -19,7 +19,7 @@ export const PetTrainingPanelWidgetView: FC<{}> = props =>
 
         if (!parser) return;
 
-        setTrainPetInformation(parser);
+        setPetTrainInformation(parser);
     });
 
     const processPetAction = (petId: number, type: string) =>
@@ -33,20 +33,20 @@ export const PetTrainingPanelWidgetView: FC<{}> = props =>
 
     return (
         <NitroCardView uniqueKey="user-settings" className="user-settings-window no-resize" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('widgets.pet.commands.title') } onCloseClick={ () => setTrainPetInformation(null) } />
+            <NitroCardHeaderView headerText={ LocalizeText('widgets.pet.commands.title') } onCloseClick={ () => setPetTrainInformation(null) } />
             <NitroCardContentView className="text-black">
                 <Flex alignItems="center" justifyContent="center" gap={ 2 }>
                     <Grid columnCount={ 2 }>
                         <Column fullWidth overflow="hidden" className="body-image pet p-1">
                             <LayoutPetImageView figure={ (avatarInfo as AvatarInfoPet)?.petFigure } posture={ (avatarInfo as AvatarInfoPet)?.posture } direction={ 2 } />
                         </Column>
-                        <Text variant="white" small wrap>{ (avatarInfo as AvatarInfoPet)?.name }</Text>
+                        <Text variant="black" small wrap>{ (avatarInfo as AvatarInfoPet)?.name }</Text>
                     </Grid>
                 </Flex>
                 <Grid columnCount={ 2 }>
                     {
                         (petTrainInformation.commands && petTrainInformation.commands.length > 0) && petTrainInformation.commands.map((command, index) =>
-                            <Button key={ index } disabled={ !petTrainInformation.enabledCommands.includes(command) } onClick={ () => processPetAction(petTrainInformation.petId, LocalizeText('pet.command.' + command)) }>{ LocalizeText('pet.command.' + command) }</Button>
+                            <Button key={ index } disabled={ !petTrainInformation.enabledCommands.includes(command) } onClick={ () => processPetAction(petTrainInformation.petId, LocalizeText(`pet.command.${ command }`)) }>{ LocalizeText(`pet.command.${ command }`) }</Button>
                         )
                     }
                 </Grid>

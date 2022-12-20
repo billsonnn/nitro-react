@@ -14,7 +14,7 @@ const useAvatarInfoWidgetState = () =>
     const [ nameBubbles, setNameBubbles ] = useState<AvatarInfoName[]>([]);
     const [ productBubbles, setProductBubbles ] = useState<UseProductItem[]>([]);
     const [ confirmingProduct, setConfirmingProduct ] = useState<UseProductItem>(null);
-    const [ petTrainInformation, setTrainPetInformation ] = useState<PetTrainingMessageParser>(null);
+    const [ petTrainInformation, setPetTrainInformation ] = useState<PetTrainingMessageParser>(null);
     const [ pendingPetId, setPendingPetId ] = useState<number>(-1);
     const [ isDecorating, setIsDecorating ] = useState(false);
     const { friends = [] } = useFriends();
@@ -66,7 +66,7 @@ const useAvatarInfoWidgetState = () =>
     const getObjectInfo = (objectId: number, category: number) =>
     {
         let info: IAvatarInfo = null;
-        setTrainPetInformation(null);
+        setPetTrainInformation(null);
 
         switch(category)
         {
@@ -274,7 +274,7 @@ const useAvatarInfoWidgetState = () =>
     useObjectDeselectedEvent(event =>
     {
         setAvatarInfo(null);
-        setTrainPetInformation(null);
+        setPetTrainInformation(null);
         setProductBubbles([]);
     });
 
@@ -352,7 +352,7 @@ const useAvatarInfoWidgetState = () =>
         roomSession.isDecorating = isDecorating;
     }, [ roomSession, isDecorating ]);
 
-    return { avatarInfo, setAvatarInfo, activeNameBubble, setActiveNameBubble, nameBubbles, productBubbles, confirmingProduct, petTrainInformation, setTrainPetInformation, isDecorating, setIsDecorating, removeNameBubble, removeProductBubble, updateConfirmingProduct, getObjectName };
+    return { avatarInfo, setAvatarInfo, activeNameBubble, setActiveNameBubble, nameBubbles, productBubbles, confirmingProduct, petTrainInformation, setPetTrainInformation, isDecorating, setIsDecorating, removeNameBubble, removeProductBubble, updateConfirmingProduct, getObjectName };
 }
 
 export const useAvatarInfoWidget = useAvatarInfoWidgetState;
