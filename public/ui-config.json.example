@@ -11,6 +11,7 @@
     "widget.dimmer.colorwheel": false,
     "avatar.wardrobe.max.slots": 10,
     "user.badges.max.slots": 5,
+    "user.tags.enabled": false,
     "camera.publish.disabled": false,
     "hc.disabled": false,
     "badge.descriptions.enabled": true,
