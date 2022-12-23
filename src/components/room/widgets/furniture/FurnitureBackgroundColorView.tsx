@@ -1,12 +1,11 @@
 import { FC } from 'react';
-import ReactSlider from 'react-slider';
-import { LocalizeText } from '../../../../api';
-import { Button, Column, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { ColorUtils, LocalizeText } from '../../../../api';
+import { Button, Column, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { useFurnitureBackgroundColorWidget } from '../../../../hooks';
 
 export const FurnitureBackgroundColorView: FC<{}> = props =>
 {
-    const { objectId = -1, hue = 0, setHue = null, saturation = 0, setSaturation = null, lightness = 0, setLightness = null, applyToner = null, toggleToner = null, onClose = null } = useFurnitureBackgroundColorWidget();
+    const { objectId = -1, color = 0, setColor = null, applyToner = null, toggleToner = null, onClose = null } = useFurnitureBackgroundColorWidget();
 
     if(objectId === -1) return null;
 
@@ -15,39 +14,7 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('widget.backgroundcolor.title') } onCloseClick={ onClose } />
             <NitroCardContentView overflow="hidden" justifyContent="between">
                 <Column overflow="auto" gap={ 1 }>
-                    <Column>
-                        <Text bold>{ LocalizeText('widget.backgroundcolor.hue') }</Text>
-                        <ReactSlider
-                            className={ 'nitro-slider' }
-                            min={ 0 }
-                            max={ 255 }
-                            value={ hue }
-                            onChange={ event => setHue(event) }
-                            thumbClassName={ 'thumb degree' }
-                            renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
-                    </Column>
-                    <Column>
-                        <Text bold>{ LocalizeText('widget.backgroundcolor.saturation') }</Text>
-                        <ReactSlider
-                            className={ 'nitro-slider' }
-                            min={ 0 }
-                            max={ 255 }
-                            value={ saturation }
-                            onChange={ event => setSaturation(event) }
-                            thumbClassName={ 'thumb degree' }
-                            renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
-                    </Column>
-                    <Column>
-                        <Text bold>{ LocalizeText('widget.backgroundcolor.lightness') }</Text>
-                        <ReactSlider
-                            className={ 'nitro-slider' }
-                            min={ 0 }
-                            max={ 255 }
-                            value={ lightness }
-                            onChange={ event => setLightness(event) }
-                            thumbClassName={ 'thumb degree' }
-                            renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
-                    </Column>
+                    <input type="color" className="form-control" value={ ColorUtils.makeColorNumberHex(color) } onChange={ event => setColor(ColorUtils.convertFromHex(event.target.value)) } />
                 </Column>
                 <Column gap={ 1 }>
                     <Button fullWidth variant="primary" onClick={ toggleToner }>
