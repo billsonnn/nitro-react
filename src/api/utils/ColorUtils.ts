@@ -8,15 +8,7 @@ export class ColorUtils
     public static makeColorNumberHex(color: number): string
     {
         let val = color.toString(16);
-        if(val.length < 6)
-        {
-            const diff = 6 - val.length;
-            for(let i = 0; i < diff; i++)
-            {
-                val = '0' + val;
-            }
-        }
-        return ( '#' + val);
+        return ( '#' + val.padStart(6, '0'));
     }
 
     public static convertFromHex(color: string): number
