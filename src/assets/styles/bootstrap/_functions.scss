@@ -203,7 +203,7 @@ $_luminance-list: .0008 .001 .0011 .0013 .0015 .0017 .002 .0022 .0025 .0027 .003
 
 // Shade a color: mix a color with black
 @function shade-color($color, $weight) {
-  @return mix(black, $color, $weight * 1%);
+  @return mix(black, $color, calc($weight / 1% / 1% * 1%));
 }
 
 // Shade the color if the weight is positive, else tint it

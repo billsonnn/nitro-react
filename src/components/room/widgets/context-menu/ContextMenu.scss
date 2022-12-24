@@ -107,24 +107,6 @@
             &:not(.disabled):hover {
                 background: $bg-cello-split-background;
             }
-
-            .fas,
-            .svg-inline--fa,
-            .nitro-currency-icon {
-                position: absolute;
-                right: 8px;
-
-                &.left {
-                    left: 8px;
-                    right: unset;
-                }
-
-                &.center {
-                    position: unset;
-                    right: unset;
-                    left: unset;
-                }
-            }
         }
     }
 }
