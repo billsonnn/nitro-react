@@ -19,12 +19,12 @@ export const HcCenterView: FC<{}> = props =>
     const getClubText = () =>
     {
         if(purse.clubDays <= 0) return LocalizeText('purse.clubdays.zero.amount.text');
-        
+
         if((purse.minutesUntilExpiration > -1) && (purse.minutesUntilExpiration < (60 * 24)))
         {
             return FriendlyTime.shortFormat(purse.minutesUntilExpiration * 60);
         }
-        
+
         return FriendlyTime.shortFormat(((purse.clubPeriods * 31) + purse.clubDays) * 86400);
     }
 
@@ -33,16 +33,16 @@ export const HcCenterView: FC<{}> = props =>
         switch(clubStatus)
         {
             case ClubStatus.ACTIVE:
-                return LocalizeText(`hccenter.status.${ clubStatus }.info`, [ 'timeleft', 'joindate', 'streakduration' ], [ getClubText(), kickbackData.firstSubscriptionDate, FriendlyTime.shortFormat(kickbackData.currentHcStreak * 86400) ]);
+                return LocalizeText(`hccenter.status.${ clubStatus }.info`, [ 'timeleft', 'joindate', 'streakduration' ], [ getClubText(), kickbackData?.firstSubscriptionDate, FriendlyTime.shortFormat(kickbackData?.currentHcStreak * 86400) ]);
             case ClubStatus.EXPIRED:
-                return LocalizeText(`hccenter.status.${ clubStatus }.info`, [ 'joindate' ], [ kickbackData.firstSubscriptionDate ]);
+                return LocalizeText(`hccenter.status.${ clubStatus }.info`, [ 'joindate' ], [ kickbackData?.firstSubscriptionDate ]);
             default:
                 return LocalizeText(`hccenter.status.${ clubStatus }.info`);
         }
     }
 
-    const getHcPaydayTime = () => (kickbackData.timeUntilPayday < 60) ? LocalizeText('hccenter.special.time.soon') : FriendlyTime.shortFormat(kickbackData.timeUntilPayday * 60);
-    const getHcPaydayAmount = () => LocalizeText('hccenter.special.sum', [ 'credits' ], [ (kickbackData.creditRewardForStreakBonus + kickbackData.creditRewardForMonthlySpent).toString() ]);
+    const getHcPaydayTime = () => (!kickbackData || kickbackData.timeUntilPayday < 60) ? LocalizeText('hccenter.special.time.soon') : FriendlyTime.shortFormat(kickbackData.timeUntilPayday * 60);
+    const getHcPaydayAmount = () => LocalizeText('hccenter.special.sum', [ 'credits' ], [ (kickbackData?.creditRewardForStreakBonus + kickbackData?.creditRewardForMonthlySpent).toString() ]);
 
     useMessageEvent<ClubGiftInfoEvent>(ClubGiftInfoEvent, event =>
     {
@@ -64,9 +64,9 @@ export const HcCenterView: FC<{}> = props =>
             linkReceived: (url: string) =>
             {
                 const parts = url.split('/');
-        
+
                 if(parts.length < 2) return;
-        
+
                 switch(parts[1])
                 {
                     case 'open':
@@ -80,7 +80,7 @@ export const HcCenterView: FC<{}> = props =>
                             }
                         }
                         return;
-                } 
+                }
             },
             eventUrlPrefix: 'habboUI/'
         };
@@ -116,11 +116,11 @@ export const HcCenterView: FC<{}> = props =>
         <Popover id="popover-basic">
             <Popover.Body className="text-black py-2 px-3">
                 <h5>{ LocalizeText('hccenter.breakdown.title') }</h5>
-                <div>{ LocalizeText('hccenter.breakdown.creditsspent', [ 'credits' ], [ kickbackData.totalCreditsSpent.toString() ]) }</div>
-                <div>{ LocalizeText('hccenter.breakdown.paydayfactor.percent', [ 'percent' ], [ (kickbackData.kickbackPercentage * 100).toString() ]) }</div>
-                <div>{ LocalizeText('hccenter.breakdown.streakbonus', [ 'credits' ], [ kickbackData.creditRewardForStreakBonus.toString() ]) }</div>
+                <div>{ LocalizeText('hccenter.breakdown.creditsspent', [ 'credits' ], [ kickbackData?.totalCreditsSpent.toString() ]) }</div>
+                <div>{ LocalizeText('hccenter.breakdown.paydayfactor.percent', [ 'percent' ], [ (kickbackData?.kickbackPercentage * 100).toString() ]) }</div>
+                <div>{ LocalizeText('hccenter.breakdown.streakbonus', [ 'credits' ], [ kickbackData?.creditRewardForStreakBonus.toString() ]) }</div>
                 <hr className="w-100 text-black my-1" />
-                <div>{ LocalizeText('hccenter.breakdown.total', [ 'credits', 'actual' ], [ getHcPaydayAmount(), ((((kickbackData.kickbackPercentage * kickbackData.totalCreditsSpent) + kickbackData.creditRewardForStreakBonus) * 100) / 100).toString() ]) }</div>
+                <div>{ LocalizeText('hccenter.breakdown.total', [ 'credits', 'actual' ], [ getHcPaydayAmount(), ((((kickbackData?.kickbackPercentage * kickbackData?.totalCreditsSpent) + kickbackData?.creditRewardForStreakBonus) * 100) / 100).toString() ]) }</div>
                 <div className="btn btn-link text-primary p-0" onClick={ () => CreateLinkEvent('habbopages/' + GetConfiguration('hc.center')['payday.habbopage']) }>
                     { LocalizeText('hccenter.special.infolink') }
                 </div>
@@ -154,7 +154,7 @@ export const HcCenterView: FC<{}> = props =>
                 </Flex>
                 { GetConfiguration('hc.center')['payday.info'] &&
                     <Flex alignItems="center">
-                        
+
                         <Column className="rounded-start bg-primary p-2 payday-special mb-1">
                             <h4 className="mb-1">{ LocalizeText('hccenter.special.title') }</h4>
                             <div>{ LocalizeText('hccenter.special.info') }</div>

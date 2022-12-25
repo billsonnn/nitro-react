@@ -28,7 +28,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
     useEffect(() =>
     {
         if((avatarInfo.petType !== PetType.MONSTERPLANT) || avatarInfo.dead) return;
-        
+
         const interval = setInterval(() =>
         {
             setRemainingGrowTime(prevValue => (prevValue - 1));
@@ -54,7 +54,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                 if((petRespectRemaining - 1) >= 1) hideMenu = false;
                 break;
             case 'buyfood':
-                CreateLinkEvent('catalog/open/' + GetConfiguration('catalog.links')['pets.buy_saddle']);
+                CreateLinkEvent('catalog/open/' + GetConfiguration('catalog.links')['pets.buy_food']);
                 break;
             case 'train':
                 // not coded
