@@ -6,14 +6,16 @@ interface NitroCardHeaderViewProps extends ColumnProps
 {
     headerText: string;
     isGalleryPhoto?: boolean;
+    isInfoToHabboPages?: boolean;
     noCloseButton?: boolean;
     onReportPhoto?: (event: MouseEvent) => void;
+    onClickInfoHabboPages?: (event: MouseEvent) => void;
     onCloseClick: (event: MouseEvent) => void;
 }
 
 export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
 {
-    const { headerText = null, isGalleryPhoto = false, noCloseButton = false, onReportPhoto = null, onCloseClick = null, justifyContent = 'center', alignItems = 'center', classNames = [], children = null, ...rest } = props;
+    const { headerText = null, isGalleryPhoto = false, isInfoToHabboPages = false, noCloseButton = false, onReportPhoto = null, onClickInfoHabboPages = null, onCloseClick = null, justifyContent = 'center', alignItems = 'center', classNames = [], children = null, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {
@@ -37,6 +39,11 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
                 { isGalleryPhoto &&
                     <Base position="absolute" className="end-4 nitro-card-header-report-camera" onClick={ onReportPhoto }>
                         <FontAwesomeIcon icon="flag" />
+                    </Base>
+                }
+                { isInfoToHabboPages &&
+                    <Base position="absolute" className="end-4 nitro-card-header-info-habbopages" onClick={ onClickInfoHabboPages }>
+                        <FontAwesomeIcon icon="question" />
                     </Base>
                 }
                 <Base position="absolute" className="end-2 nitro-card-header-close" onMouseDownCapture={ onMouseDown } onClick={ onCloseClick }>
