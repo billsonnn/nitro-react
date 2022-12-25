@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, NitroPoint, RoomEntryTileMessageEvent, RoomOccupiedTilesMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
+import { FaArrowDown, FaArrowLeft, FaArrowRight, FaArrowUp } from 'react-icons/fa';
 import { SendMessageComposer } from '../../../api';
 import { Base, Button, Column, ColumnProps, Flex, Grid } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
@@ -128,25 +128,25 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
             <Grid overflow="hidden" gap={ 1 }>
                 <Column center size={ 1 }>
                     <Button className="d-md-none" onClick={ event => onClickArrowButton('left') }>
-                        <FontAwesomeIcon icon="arrow-left" />
+                        <FaArrowLeft className="fa-icon" />
                     </Button>
                 </Column>
                 <Column overflow="hidden" size={ 10 } gap={ 1 }>
                     <Flex justifyContent="center" className="d-md-none">
                         <Button shrink onClick={ event => onClickArrowButton('up') }>
-                            <FontAwesomeIcon icon="arrow-up" />
+                            <FaArrowUp className="fa-icon" />
                         </Button>
                     </Flex>
                     <Base overflow="auto" innerRef={ elementRef } />
                     <Flex justifyContent="center" className="d-md-none">
                         <Button shrink onClick={ event => onClickArrowButton('down') }>
-                            <FontAwesomeIcon icon="arrow-down" />
+                            <FaArrowDown className="fa-icon" />
                         </Button>
                     </Flex>
                 </Column>
                 <Column center size={ 1 }>
                     <Button className="d-md-none" onClick={ event => onClickArrowButton('right') }>
-                        <FontAwesomeIcon icon="arrow-right" />
+                        <FaArrowRight className="fa-icon" />
                     </Button>
                 </Column>
             </Grid>

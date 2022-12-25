@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GiftReceiverNotFoundEvent, PurchaseFromCatalogAsGiftComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { ColorUtils, GetSessionDataManager, LocalizeText, ProductTypeEnum, SendMessageComposer } from '../../../../api';
 import { Base, Button, ButtonGroup, classNames, Column, Flex, FormGroup, LayoutCurrencyIcon, LayoutFurniImageView, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { CatalogEvent, CatalogInitGiftEvent, CatalogPurchasedEvent } from '../../../../events';
@@ -205,10 +205,10 @@ export const CatalogGiftView: FC<{}> = props =>
                         <Flex gap={ 2 }>
                             <ButtonGroup>
                                 <Button variant="primary" onClick={ () => handleAction('prev_box') }>
-                                    <FontAwesomeIcon icon="chevron-left" />
+                                    <FaChevronLeft className="fa-icon" />
                                 </Button>
                                 <Button variant="primary" onClick={ () => handleAction('next_box') }>
-                                    <FontAwesomeIcon icon="chevron-right" />
+                                    <FaChevronRight className="fa-icon" />
                                 </Button>
                             </ButtonGroup>
                             <Column gap={ 1 }>
@@ -222,10 +222,10 @@ export const CatalogGiftView: FC<{}> = props =>
                         <Flex alignItems="center" gap={ 2 } className={ isColorable ? '' : 'opacity-50 pointer-events-none' }>
                             <ButtonGroup>
                                 <Button variant="primary" onClick={ () => handleAction('prev_ribbon') }>
-                                    <FontAwesomeIcon icon="chevron-left" />
+                                    <FaChevronLeft className="fa-icon" />
                                 </Button>
                                 <Button variant="primary" onClick={ () => handleAction('next_ribbon') }>
-                                    <FontAwesomeIcon icon="chevron-right" />
+                                    <FaChevronRight className="fa-icon" />
                                 </Button>
                             </ButtonGroup>
                             <Text fontWeight="bold">{ LocalizeText(ribbonName) }</Text>

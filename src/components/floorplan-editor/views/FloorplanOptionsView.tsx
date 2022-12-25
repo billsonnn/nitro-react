@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useState } from 'react';
+import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../api';
 import { Column, Flex, LayoutGridItem, Text } from '../../../common';
@@ -148,9 +148,9 @@ export const FloorplanOptionsView: FC<{}> = props =>
                 <Column size={ 3 }>
                     <Text bold>{ LocalizeText('floor.editor.wall.height') }</Text>
                     <Flex alignItems="center" gap={ 1 }>
-                        <FontAwesomeIcon icon="caret-left" className="cursor-pointer" onClick={ decreaseWallHeight } />
+                        <FaCaretLeft className="cursor-pointer fa-icon" onClick={ decreaseWallHeight } />
                         <input type="number" className="form-control form-control-sm quantity-input" value={ visualizationSettings.wallHeight } onChange={ event => onWallHeightChange(event.target.valueAsNumber) } />
-                        <FontAwesomeIcon icon="caret-right" className="cursor-pointer" onClick={ increaseWallHeight } />
+                        <FaCaretRight className="cursor-pointer fa-icon" onClick={ increaseWallHeight } />
                     </Flex>
                 </Column>
             </Flex>

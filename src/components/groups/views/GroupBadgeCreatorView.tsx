@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { FaPlus, FaTimes } from 'react-icons/fa';
 import { GroupBadgePart } from '../../../api';
 import { Base, Column, Flex, Grid, LayoutBadgeImageView } from '../../../common';
 import { useGroup } from '../../../hooks';
@@ -42,7 +42,7 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
                                 <LayoutBadgeImageView badgeCode={ badgeParts[index].code } isGroup={ true } /> }
                             { (!badgeParts[index].code || !badgeParts[index].code.length) &&
                             <Flex center className="badge-image group-badge">
-                                <FontAwesomeIcon icon="plus" />
+                                <FaPlus className="fa-icon" />
                             </Flex> }
                         </Flex>
                         { (part.type !== GroupBadgePart.BASE) &&
@@ -66,7 +66,7 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
                     { (badgeParts[selectedIndex].type === GroupBadgePart.SYMBOL) &&
                         <Column pointer center className="bg-muted rounded p-1" onClick={ event => setPartProperty(selectedIndex, 'key', 0) }>
                             <Flex center className="badge-image group-badge">
-                                <FontAwesomeIcon icon="times" />
+                                <FaTimes className="fa-icon" />
                             </Flex>
                         </Column> }
                     { ((badgeParts[selectedIndex].type === GroupBadgePart.BASE) ? groupCustomize.badgeBases : groupCustomize.badgeSymbols).map((item, index) =>

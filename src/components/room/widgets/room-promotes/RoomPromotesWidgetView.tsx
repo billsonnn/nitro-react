@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DesktopViewEvent } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { GetSessionDataManager } from '../../../../api';
 import { Base, Column, Flex, Text } from '../../../../common';
 import { useMessageEvent, useRoomPromote } from '../../../../hooks';
@@ -26,7 +26,8 @@ export const RoomPromotesWidgetView: FC<{}> = props =>
                     <Column>
                         <Flex alignItems="center" justifyContent="between" pointer onClick={ event => setIsOpen(value => !value) }>
                             <Text variant="white" overflow="hidden">{ promoteInformation.data.eventName }</Text>
-                            <FontAwesomeIcon icon={ isOpen ? 'chevron-up' : 'chevron-down' } />
+                            { isOpen && <FaChevronUp className="fa-icon" /> }
+                            { !isOpen && <FaChevronDown className="fa-icon" /> }
                         </Flex>
                         { (isOpen && GetSessionDataManager().userId !== promoteInformation.data.ownerAvatarId) &&
                             <RoomPromoteOtherEventWidgetView

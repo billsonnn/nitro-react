@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, MouseEvent, useMemo } from 'react';
+import { FaFlag, FaTimes } from 'react-icons/fa';
 import { Base, Column, ColumnProps, Flex } from '..';
 
 interface NitroCardHeaderViewProps extends ColumnProps
@@ -36,12 +36,12 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
                 <span className="nitro-card-header-text">{ headerText }</span>
                 { isGalleryPhoto &&
                     <Base position="absolute" className="end-4 nitro-card-header-report-camera" onClick={ onReportPhoto }>
-                        <FontAwesomeIcon icon="flag" />
+                        <FaFlag className="fa-icon" />
                     </Base>
                 }
-                <Base position="absolute" className="end-2 nitro-card-header-close" onMouseDownCapture={ onMouseDown } onClick={ onCloseClick }>
-                    <FontAwesomeIcon icon="times" />
-                </Base>
+                <Flex center position="absolute" className="end-2 nitro-card-header-close" onMouseDownCapture={ onMouseDown } onClick={ onCloseClick }>
+                    <FaTimes className="fa-icon w-12 h-12" />
+                </Flex>
             </Flex>
         </Column>
     );

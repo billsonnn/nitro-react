@@ -11,10 +11,6 @@ export default defineConfig({
             '~': resolve(__dirname, 'node_modules')
         }
     },
-    server: {
-        host: '127.0.0.1',
-        port: 3005
-    },
     build: {
         assetsInlineLimit: 102400,
         rollupOptions: {

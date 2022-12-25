@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomControllerLevel, RoomObjectOperationType } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
+import { FaArrowsAlt, FaSyncAlt, FaTrashRestore } from 'react-icons/fa';
 import { AvatarInfoFurni, ProcessRoomObjectOperation } from '../../../../../api';
 import { Flex } from '../../../../../common';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
@@ -48,18 +48,18 @@ export const AvatarInfoWidgetFurniView: FC<AvatarInfoWidgetFurniViewProps> = pro
             </ContextMenuHeaderView>
             <Flex className="menu-list-split-3">
                 <ContextMenuListItemView onClick={ event => processAction('move') }>
-                    <FontAwesomeIcon icon="arrows-up-down-left-right" className="center" />
+                    <FaArrowsAlt className="center fa-icon" />
                 </ContextMenuListItemView>
                 <ContextMenuListItemView onClick={ event => processAction('rotate') } disabled={ avatarInfo.isWallItem }>
-                    <FontAwesomeIcon icon="rotate" className="center" />
+                    <FaSyncAlt className="center fa-icon" />
                 </ContextMenuListItemView>
                 { (avatarInfo.isOwner || avatarInfo.isAnyRoomController) &&
                     <ContextMenuListItemView onClick={ event => processAction('pickup') }>
-                        <FontAwesomeIcon icon="trash-arrow-up" className="center" />
+                        <FaTrashRestore className="center fa-icon" />
                     </ContextMenuListItemView> }
                 { (!avatarInfo.isOwner && !avatarInfo.isAnyRoomController) && (avatarInfo.isRoomOwner || (avatarInfo.roomControllerLevel >= RoomControllerLevel.GUILD_ADMIN)) &&
                     <ContextMenuListItemView onClick={ event => processAction('eject') }>
-                        <FontAwesomeIcon icon="trash-arrow-up" className="center" />
+                        <FaTrashRestore className="center fa-icon" />
                     </ContextMenuListItemView> }
             </Flex>
         </ContextMenuView>

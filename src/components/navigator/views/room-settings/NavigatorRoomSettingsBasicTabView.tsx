@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomDeleteComposer, RoomSettingsSaveErrorEvent, RoomSettingsSaveErrorParser } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
+import { FaTimes } from 'react-icons/fa';
 import { CreateLinkEvent, GetMaxVisitorsList, IRoomData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Column, Flex, Text } from '../../../../common';
 import { useMessageEvent, useNavigator, useNotification } from '../../../../hooks';
@@ -163,7 +163,7 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
                 <Text>{ LocalizeText('navigator.roomsettings.allow_walk_through') }</Text>
             </Flex>
             <Text variant="danger" underline bold pointer className="d-flex justify-content-center align-items-center gap-1" onClick={ deleteRoom }>
-                <FontAwesomeIcon icon="times" />
+                <FaTimes className="fa-icon" />
                 { LocalizeText('navigator.roomsettings.delete') }
             </Text>
         </>

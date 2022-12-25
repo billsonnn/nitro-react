@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IFurnitureData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
+import { FaSearch, FaTimes } from 'react-icons/fa';
 import { CatalogPage, CatalogType, FilterCatalogNode, FurnitureOffer, GetOfferNodes, GetSessionDataManager, ICatalogNode, ICatalogPage, IPurchasableOffer, LocalizeText, PageLocalization, SearchResult } from '../../../../../api';
 import { Button, Flex } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
@@ -85,11 +85,11 @@ export const CatalogSearchView: FC<{}> = props =>
             </Flex>
             { (!searchValue || !searchValue.length) &&
                 <Button variant="primary" className="catalog-search-button">
-                    <FontAwesomeIcon icon="search" />
+                    <FaSearch className="fa-icon" />
                 </Button> }
             { searchValue && !!searchValue.length &&
                 <Button variant="primary" className="catalog-search-button" onClick={ event => setSearchValue('') }>
-                    <FontAwesomeIcon icon="times" />
+                    <FaTimes className="fa-icon" />
                 </Button> }
         </Flex>
     );

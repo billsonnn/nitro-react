@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
+import { FaTimes } from 'react-icons/fa';
 import { LocalizeText, MessengerRequest } from '../../../../api';
 import { Base, Button, Column, Flex, Text } from '../../../../common';
 import { ObjectLocationView } from '../object-location/ObjectLocationView';
@@ -15,7 +15,7 @@ export const FriendRequestDialogView: FC<{ roomIndex: number, request: Messenger
                 <Column>
                     <Flex alignItems="center" justifyContent="between" gap={ 2 }>
                         <Text variant="white" fontSize={ 6 }>{ LocalizeText('widget.friendrequest.from', [ 'username' ], [ request.name ]) }</Text>
-                        <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ event => hideFriendRequest(request.requesterUserId) } />
+                        <FaTimes className="cursor-pointer fa-icon" onClick={ event => hideFriendRequest(request.requesterUserId) } />
                     </Flex>
                     <Flex justifyContent="end" gap={ 1 }>
                         <Button variant="danger" onClick={ event => requestResponse(request.requesterUserId, false) }>{ LocalizeText('widget.friendrequest.decline') }</Button>
