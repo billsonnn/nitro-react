@@ -1,4 +1,4 @@
-import { AchievementNotificationMessageEvent, ActivityPointNotificationMessageEvent, ClubGiftNotificationEvent, ClubGiftSelectedEvent, HabboBroadcastMessageEvent, HotelClosedAndOpensEvent, HotelClosesAndWillOpenAtEvent, HotelWillCloseInMinutesEvent, InfoFeedEnableMessageEvent, MaintenanceStatusMessageEvent, ModeratorCautionEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent, PetLevelNotificationEvent, PetReceivedMessageEvent, RespectReceivedEvent, RoomEnterEffect, RoomEnterEvent, UserBannedMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
+import { AchievementNotificationMessageEvent, ActivityPointNotificationMessageEvent, ClubGiftNotificationEvent, ClubGiftSelectedEvent, HabboBroadcastMessageEvent, HotelClosedAndOpensEvent, HotelClosesAndWillOpenAtEvent, HotelWillCloseInMinutesEvent, InfoFeedEnableMessageEvent, MaintenanceStatusMessageEvent, ModeratorCautionEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent, PetLevelNotificationEvent, PetReceivedMessageEvent, RespectReceivedEvent, RoomEnterEffect, RoomEnterEvent, SimpleAlertMessageEvent, UserBannedMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
 import { useCallback, useState } from 'react';
 import { useBetween } from 'use-between';
 import { GetConfiguration, GetNitroInstance, GetRoomEngine, GetSessionDataManager, LocalizeBadgeName, LocalizeText, NotificationAlertItem, NotificationAlertType, NotificationBubbleItem, NotificationBubbleType, NotificationConfirmItem, PlaySound, ProductImageUtility, TradingNotificationType } from '../../api';
@@ -350,6 +350,13 @@ const useNotificationState = () =>
         const parser = event.getParser();
 
         simpleAlert(LocalizeText('opening.hours.disconnected', [ 'h', 'm' ], [ parser.openHour.toString(), parser.openMinute.toString() ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
+    });
+
+    useMessageEvent<SimpleAlertMessageEvent>(SimpleAlertMessageEvent, event =>
+    {
+        const parser = event.getParser();
+    
+        simpleAlert(LocalizeText(parser.alertMessage), NotificationAlertType.DEFAULT, null, null, LocalizeText(parser.titleMessage ? parser.titleMessage : 'notifications.broadcast.title'));
     });
 
     const onRoomEnterEvent = useCallback(() =>
