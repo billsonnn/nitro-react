@@ -62,7 +62,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
                     <Flex gap={ 1 } className="button-container">
                         <Button variant="link" fullWidth onClick={ event => saveFigureAtWardrobeIndex(index) }>{ LocalizeText('avatareditor.wardrobe.save') }</Button>
                         { figureContainer &&
-                        <Button variant="link" fullWidth onClick={ event => wearFigureAtIndex(index) } disabled={ (clubLevel > GetClubMemberLevel()) }>{ LocalizeText('generic_usable.button.use') }</Button> }
+                        <Button variant="link" fullWidth onClick={ event => wearFigureAtIndex(index) } disabled={ (clubLevel > GetClubMemberLevel()) }>{ LocalizeText('widget.generic_usable.button.use') }</Button> }
                     </Flex>
                 </LayoutGridItem>
             );
@@ -72,7 +72,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
     }, [ savedFigures, hcDisabled, saveFigureAtWardrobeIndex, wearFigureAtIndex ]);
 
     return (
-        <AutoGrid columnCount={ 5 } columnMinWidth={ 80 } columnMinHeight={ 140 }>
+        <AutoGrid columnCount={ 4 } columnMinWidth={ 96 } columnMinHeight={ 140 }>
             { figures }
         </AutoGrid>
     );
