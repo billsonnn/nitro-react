@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavigatorSearchComposer, NavigatorSearchResultList } from '@nitrots/nitro-renderer';
+import { NavigatorSearchComposer, NavigatorSearchResultList, NavigatorSearchSaveComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, NavigatorSearchResultViewDisplayMode, SendMessageComposer } from '../../../../api';
-import { AutoGrid, AutoGridProps, Column, Flex, Grid, Text } from '../../../../common';
+import { AutoGrid, AutoGridProps, Column, Flex, Grid, LayoutSearchSavesView, Text } from '../../../../common';
 import { useNavigator } from '../../../../hooks';
 import { NavigatorSearchResultItemView } from './NavigatorSearchResultItemView';
 
@@ -16,8 +16,7 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
     const { searchResult = null, ...rest } = props;
     const [ isExtended, setIsExtended ] = useState(true);
     const [ displayMode, setDisplayMode ] = useState<number>(0);
-
-    const { topLevelContext = null } = useNavigator();
+    const { topLevelContext = null, searchResultQuery = null } = useNavigator();
 
     const getResultTitle = () =>
     {
@@ -39,8 +38,8 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
             return NavigatorSearchResultViewDisplayMode.LIST;
         });
     }
-    
-    const showMore = () => 
+
+    const showMore = () =>
     {
         if(searchResult.action == 1) SendMessageComposer(new NavigatorSearchComposer(searchResult.code, ''));
         else if(searchResult.action == 2 && topLevelContext) SendMessageComposer(new NavigatorSearchComposer(topLevelContext.code,''));
@@ -51,12 +50,12 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
         if(!searchResult) return;
 
         setIsExtended(!searchResult.closed);
-        
+
         setDisplayMode(searchResult.mode);
     }, [ searchResult ]);
 
     const gridHasTwoColumns = (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS);
-    
+
     return (
         <Column className="bg-white rounded border border-muted" gap={ 0 }>
             <Flex fullWidth alignItems="center" justifyContent="between" className="px-2 py-1">
@@ -67,9 +66,11 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
                 <Flex gap={ 2 }>
                     <FontAwesomeIcon icon={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 'th' : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 'bars' : null) } className="text-secondary" onClick={ toggleDisplayMode } />
                     { (searchResult.action > 0) && <FontAwesomeIcon icon={ searchResult.action == 1 ? 'window-maximize' : 'window-restore' } className="text-secondary" onClick={ showMore } /> }
+                    { (topLevelContext.code !== 'official_view') &&
+                        <LayoutSearchSavesView title={ LocalizeText('navigator.tooltip.add.saved.search') } onSaveSearch={ () => SendMessageComposer(new NavigatorSearchSaveComposer(getResultTitle(), searchResultQuery)) } /> }
                 </Flex>
 
-            </Flex> { isExtended && 
+            </Flex> { isExtended &&
                 <>
                     {
                         gridHasTwoColumns ? <AutoGrid columnCount={ 3 } { ...rest } columnMinWidth={ 110 } columnMinHeight={ 130 } className="mx-2">

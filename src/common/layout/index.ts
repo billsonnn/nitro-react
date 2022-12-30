@@ -18,6 +18,7 @@ export * from './LayoutProgressBar';
 export * from './LayoutRarityLevelView';
 export * from './LayoutRoomPreviewerView';
 export * from './LayoutRoomThumbnailView';
+export * from './LayoutSearchSavesView';
 export * from './LayoutTrophyView';
 export * from './limited-edition';
 export * from './UserProfileIconView';

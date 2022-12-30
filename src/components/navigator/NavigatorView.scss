@@ -15,17 +15,17 @@
         &:not(.two-columns) {
 
             .navigator-item {
-    
+
                 &:nth-child(odd) {
                     background-color: $grid-active-bg-color;
                 }
             }
         }
-    
+
         &.two-columns {
-    
+
             .navigator-item {
-        
+
                 &:nth-child(4n-2),
                 &:nth-child(4n-3) {
                     background: $grid-active-bg-color;
@@ -60,6 +60,26 @@
     }
 }
 
+.nitro-navigator-search-saves-result {
+    background-color: #fff;
+    width: 100px;
+    height: 350px;
+    border-radius: 10px;
+
+    .bg-orange {
+        background-color: #FAA700;
+    }
+}
+
 .room-info {
     width: 275px;
+}
+
+.button-search-saves {
+    padding: 4px;
+    height: 17px;
+    margin-top: -1px;
+    font-size: 10px;
+    border-radius: 4px;
+    background-color: #FAA700;
 }
