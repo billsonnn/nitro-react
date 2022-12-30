@@ -332,7 +332,8 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                 <Column overflow="visible" className="container-fluid content-area" gap={ 1 }>
                     <Column gap={ 1 }>
                         <Flex alignItems="center" justifyContent="between" gap={ 1 }>
-                            <Text variant="white" small wrap>{ avatarInfo.name }</Text>
+                            { !(isSongDisk) && <Text variant="white" small wrap>{ avatarInfo.name }</Text> }
+                            { (songName.length > 0) && <Text variant="white" small wrap>{ songName }</Text> }
                             <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ onClose } />
                         </Flex>
                         <hr className="m-0" />
