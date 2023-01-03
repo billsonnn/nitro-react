@@ -4,7 +4,7 @@
   "homepage": ".",
   "private": true,
   "scripts": {
-    "start": "vite --host",
+    "start": "vite",
     "build": "vite build",
     "build:prod": "npx browserslist@latest --update-db && yarn build",
     "eslint": "eslint src --ext .ts,.tsx"
