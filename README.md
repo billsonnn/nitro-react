@@ -46,5 +46,5 @@ To build a production version of Nitro just run the following command
 yarn build:prod
 ```
 
--   A `build` folder will be generated, these are the files that must be uploaded to your webserver
+-   A `dist` folder will be generated, these are the files that must be uploaded to your webserver
 -   Consult your CMS documentation for compatibility with Nitro and how to add the production files
