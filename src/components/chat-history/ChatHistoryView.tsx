@@ -1,16 +1,18 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { AddEventLinkTracker, ChatEntryType, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { AddEventLinkTracker, ChatEntryType, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker, ReportType } from '../../api';
 import { Flex, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { useChatHistory } from '../../hooks';
+import { useChatHistory, useHelp } from '../../hooks';
 
 export const ChatHistoryView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ searchText, setSearchText ] = useState<string>('');
-    const { chatHistory = [] } = useChatHistory();
+    const { chatHistory = [], setMessengerHistory = null } = useChatHistory();
+    const { report = null } = useHelp();
 
-    const filteredChatHistory = useMemo(() => 
+    const filteredChatHistory = useMemo(() =>
     {
         if (searchText.length === 0) return chatHistory;
 
@@ -18,6 +20,20 @@ export const ChatHistoryView: FC<{}> = props =>
 
         return chatHistory.filter(entry => ((entry.message && entry.message.toLowerCase().includes(text))) || (entry.name && entry.name.toLowerCase().includes(text)));
     }, [ chatHistory, searchText ]);
+
+    const reportMessage = (message: any) =>
+    {
+        setMessengerHistory(prevValue =>
+        {
+            const newValue = [ ...prevValue ];
+
+            newValue.push({ id: message.id, webId: message.webId, entityId: message.entityId, name: '', message: message.message, roomId: message.roomId, timestamp: message.timestamp, type: ChatEntryType.TYPE_IM });
+
+            return newValue;
+        });
+
+        report(ReportType.IM, { reportedUserId: message.webId });
+    }
 
     /* useEffect(() =>
     {
@@ -30,9 +46,9 @@ export const ChatHistoryView: FC<{}> = props =>
             linkReceived: (url: string) =>
             {
                 const parts = url.split('/');
-        
+
                 if(parts.length < 2) return;
-        
+
                 switch(parts[1])
                 {
                     case 'show':
@@ -66,12 +82,15 @@ export const ChatHistoryView: FC<{}> = props =>
                     return (
                         <Flex alignItems="center" className="p-1" gap={ 2 }>
                             <Text variant="muted">{ row.timestamp }</Text>
+                            { (row.type === ChatEntryType.TYPE_CHAT && GetSessionDataManager().userId !== row.webId ) &&
+                                <FontAwesomeIcon cursor="pointer" color="red" icon="flag" onClick={ () => reportMessage(row) } />
+                            }
                             { (row.type === ChatEntryType.TYPE_CHAT) &&
                                 <div className="bubble-container" style={ { position: 'relative' } }>
                                     { (row.style === 0) &&
                                     <div className="user-container-bg" style={ { backgroundColor: row.color } } /> }
                                     <div className={ `chat-bubble bubble-${ row.style } type-${ row.chatType }` } style={ { maxWidth: '100%' } }>
-                                        <div className="user-container">
+                                        <div className="user-container cursor-pointer" onClick={ event => GetUserProfile(row.webId) }>
                                             { row.imageUrl && (row.imageUrl.length > 0) &&
                                 <div className="user-image" style={ { backgroundImage: `url(${ row.imageUrl })` } } /> }
                                         </div>

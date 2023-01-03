@@ -97,8 +97,8 @@ const useChatHistoryState = () =>
 
         addMessengerEntry({ id: -1, webId: parser.senderId, entityId: -1, name: '', message: parser.messageText, roomId: -1, timestamp: MessengerHistoryCurrentDate(), type: ChatEntryType.TYPE_IM });
     });
-    
-    return { addChatEntry, chatHistory, roomHistory, messengerHistory };
+
+    return { addChatEntry, chatHistory, roomHistory, messengerHistory, setMessengerHistory };
 }
 
 export const useChatHistory = () => useBetween(useChatHistoryState);
