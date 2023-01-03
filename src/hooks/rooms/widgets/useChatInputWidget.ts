@@ -132,6 +132,16 @@ const useChatInputWidgetState = () =>
                     }
 
                     return null;
+                case ':ejectall':
+                    if (roomSession.isRoomOwner || GetSessionDataManager().isModerator || roomSession.controllerLevel >= RoomControllerLevel.GUEST)
+                    {
+                        showConfirm(LocalizeText('room.confirm.eject_all'), () => 
+                        {
+                            GetSessionDataManager().sendSpecialCommandMessage(':ejectall');
+                        },
+                        null, null, null, LocalizeText('generic.alert.title'));
+                    }
+                    return null;
                 case ':furni':
                     CreateLinkEvent('furni-chooser/');
                     return null;

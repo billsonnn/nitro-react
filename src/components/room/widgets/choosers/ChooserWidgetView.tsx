@@ -21,7 +21,7 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
     {
         const value = searchValue.toLocaleLowerCase();
 
-        return items.filter(item => item.name.toLocaleLowerCase().includes(value));
+        return items.filter(item => item.name?.toLocaleLowerCase().includes(value));
     }, [ items, searchValue ]);
 
     useEffect(() =>
