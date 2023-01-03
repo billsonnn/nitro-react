@@ -1,4 +1,4 @@
-import { AchievementNotificationMessageEvent, ActivityPointNotificationMessageEvent, ClubGiftNotificationEvent, ClubGiftSelectedEvent, ConnectionErrorEvent, HabboBroadcastMessageEvent, HotelClosedAndOpensEvent, HotelClosesAndWillOpenAtEvent, HotelWillCloseInMinutesEvent, InfoFeedEnableMessageEvent, MaintenanceStatusMessageEvent, ModeratorCautionEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent, PetLevelNotificationEvent, PetReceivedMessageEvent, RespectReceivedEvent, RoomEnterEffect, RoomEnterEvent, UserBannedMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
+import { AchievementNotificationMessageEvent, ActivityPointNotificationMessageEvent, ClubGiftNotificationEvent, ClubGiftSelectedEvent, ConnectionErrorEvent, HabboBroadcastMessageEvent, HotelClosedAndOpensEvent, HotelClosesAndWillOpenAtEvent, HotelWillCloseInMinutesEvent, InfoFeedEnableMessageEvent, MaintenanceStatusMessageEvent, ModeratorCautionEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent, PetLevelNotificationEvent, PetReceivedMessageEvent, RespectReceivedEvent, RoomEnterEffect, RoomEnterEvent, SimpleAlertMessageEvent, UserBannedMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
 import { useCallback, useState } from 'react';
 import { useBetween } from 'use-between';
 import { GetConfiguration, GetNitroInstance, GetRoomEngine, GetSessionDataManager, LocalizeBadgeName, LocalizeText, NotificationAlertItem, NotificationAlertType, NotificationBubbleItem, NotificationBubbleType, NotificationConfirmItem, PlaySound, ProductImageUtility, TradingNotificationType } from '../../api';
@@ -355,13 +355,13 @@ const useNotificationState = () =>
     useMessageEvent<ConnectionErrorEvent>(ConnectionErrorEvent, event =>
     {
         const parser = event.getParser();
-    
-        switch(parser.errorCode) 
+
+        switch(parser.errorCode)
         {
             default:
             case 0:
                 simpleAlert(LocalizeText('connection.server.error.desc', [ 'errorCode' ], [ parser.errorCode.toString() ]), NotificationAlertType.ALERT, null, null, LocalizeText('connection.server.error.title'));
-                break; 
+                break;
             case 1001:
             case 1002:
             case 1003:
@@ -387,6 +387,13 @@ const useNotificationState = () =>
                 simpleAlert(LocalizeText('connection.room.maintenance.desc'), NotificationAlertType.ALERT, null, null, LocalizeText('connection.room.maintenance.title'));
                 break;
         }
+    });
+
+    useMessageEvent<SimpleAlertMessageEvent>(SimpleAlertMessageEvent, event =>
+    {
+        const parser = event.getParser();
+
+        simpleAlert(LocalizeText(parser.alertMessage), NotificationAlertType.DEFAULT, null, null, LocalizeText(parser.titleMessage ? parser.titleMessage : 'notifications.broadcast.title'));
     });
 
     const onRoomEnterEvent = useCallback(() =>
