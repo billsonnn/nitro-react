@@ -1,4 +1,4 @@
-import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectType, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
+import { ExtendedProfileChangedMessageEvent, RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomEngineObjectEvent, RoomObjectCategory, RoomObjectType, UserCurrentBadgesComposer, UserCurrentBadgesEvent, UserProfileEvent, UserProfileParser, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { CreateLinkEvent, GetRoomSession, GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
 import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
@@ -24,7 +24,7 @@ export const UserProfileView: FC<{}> = props =>
     const onLeaveGroup = () =>
     {
         if(!userProfile || (userProfile.id !== GetSessionDataManager().userId)) return;
-        
+
         GetUserProfile(userProfile.id);
     }
 
@@ -33,7 +33,7 @@ export const UserProfileView: FC<{}> = props =>
         const parser = event.getParser();
 
         if(!userProfile || (parser.userId !== userProfile.id)) return;
-        
+
         setUserBadges(parser.badges);
     });
 
@@ -42,7 +42,7 @@ export const UserProfileView: FC<{}> = props =>
         const parser = event.getParser();
 
         if(!userProfile || (parser.userId !== userProfile.id)) return;
-        
+
         setUserRelationships(parser);
     });
 
@@ -51,7 +51,7 @@ export const UserProfileView: FC<{}> = props =>
         const parser = event.getParser();
 
         let isSameProfile = false;
-        
+
         setUserProfile(prevValue =>
         {
             if(prevValue && prevValue.id) isSameProfile = (prevValue.id === parser.id);
@@ -69,10 +69,19 @@ export const UserProfileView: FC<{}> = props =>
         SendMessageComposer(new UserRelationshipsComposer(parser.id));
     });
 
+    useMessageEvent<ExtendedProfileChangedMessageEvent>(ExtendedProfileChangedMessageEvent, event =>
+    {
+        const parser = event.getParser();
+
+        if(parser.userId != userProfile?.id) return;
+
+        GetUserProfile(parser.userId);
+    });
+
     useRoomEngineEvent<RoomEngineObjectEvent>(RoomEngineObjectEvent.SELECTED, event =>
     {
         if(!userProfile) return;
-        
+
         if(event.category !== RoomObjectCategory.UNIT) return;
 
         const userData = GetRoomSession().userDataManager.getUserDataByIndex(event.objectId);
