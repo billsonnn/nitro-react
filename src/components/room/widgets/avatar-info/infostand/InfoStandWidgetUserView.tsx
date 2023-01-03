@@ -5,6 +5,7 @@ import { AvatarInfoUser, CloneObject, GetConfiguration, GetGroupInformation, Get
 import { Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../../common';
 import { useMessageEvent, useRoom, useRoomSessionManagerEvent } from '../../../../../hooks';
 import { InfoStandWidgetUserRelationshipsView } from './InfoStandWidgetUserRelationshipsView';
+import { InfoStandWidgetUserTagsView } from './InfoStandWidgetUserTagsView';
 
 interface InfoStandWidgetUserViewProps
 {
@@ -35,7 +36,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
     const onMottoKeyDown = (event: KeyboardEvent<HTMLInputElement>) =>
     {
         event.stopPropagation();
-        
+
         switch(event.key)
         {
             case 'Enter':
@@ -49,7 +50,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
         if(!avatarInfo || (avatarInfo.webID !== event.userId)) return;
 
         const oldBadges = avatarInfo.badges.join('');
-        
+
         if(oldBadges === event.badges.join('')) return;
 
         setAvatarInfo(prevValue =>
@@ -108,10 +109,10 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
     {
         setIsEditingMotto(false);
         setMotto(avatarInfo.motto);
-        
+
         SendMessageComposer(new UserRelationshipsComposer(avatarInfo.webID));
 
-        return () => 
+        return () =>
         {
             setIsEditingMotto(false);
             setMotto(null);
@@ -203,6 +204,11 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                 <Column gap={ 1 }>
                     <InfoStandWidgetUserRelationshipsView relationships={ relationships } />
                 </Column>
+                { GetConfiguration('user.tags.enabled') &&
+                    <Column gap={ 1 } className="mt-1">
+                        <InfoStandWidgetUserTagsView tags={ GetSessionDataManager().tags } />
+                    </Column>
+                }
             </Column>
         </Column>
     );
