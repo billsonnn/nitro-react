@@ -162,7 +162,7 @@ export class AvatarInfoUtilities
         if(guildId !== 0)
         {
             furniInfo.groupId = guildId;
-            //this.container.connection.send(new _Str_2863(guildId, false));
+            //this.container.connection.send(new GroupInformationComposer(guildId, false));
         }
 
         if(IsOwnerOfFurniture(roomObject)) furniInfo.isOwner = true;
@@ -250,7 +250,7 @@ export class AvatarInfoUtilities
             if(tradeMode !== RoomTradingLevelEnum.FREE_TRADING) userInfo.canTradeReason = AvatarInfoUser.TRADE_REASON_NO_TRADING;
 
             // const _local_12 = GetSessionDataManager().userId;
-            // _local_13 = GetSessionDataManager()._Str_18437(_local_12);
+            // _local_13 = GetSessionDataManager().getUserTags(_local_12);
             // this._Str_16287(_local_12, _local_13);
         }
 
@@ -259,10 +259,10 @@ export class AvatarInfoUtilities
         userInfo.groupName = userData.groupName;
         userInfo.badges = roomSession.userDataManager.getUserBadges(userData.webID);
         userInfo.figure = userData.figure;
-        //var _local_8:Array = GetSessionDataManager()._Str_18437(userData.webID);
-        //this._Str_16287(userData._Str_2394, _local_8);
-        //this._container._Str_8097._Str_14387(userData.webID);
-        //this._container.connection.send(new _Str_8049(userData._Str_2394));
+        //var _local_8:Array = GetSessionDataManager().getUserTags(userData.webID);
+        //this._Str_16287(userData.webId, _local_8);
+        //this._container.habboGroupsManager.updateVisibleExtendedProfile(userData.webID);
+        //this._container.connection.send(new GetRelationshipStatusInfoMessageComposer(userData.webId));
 
         return userInfo;
     }

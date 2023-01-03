@@ -51,4 +51,15 @@ export class ColorUtils
     {
         return (((val1) << 24) + ((val2) << 16) + ((val3) << 8) + (val4| 0));
     }
+
+    public static int2rgb(color: number): string
+    {
+        color >>>= 0;
+        const b = color & 0xFF;
+        const g = (color & 0xFF00) >>> 8;
+        const r = (color & 0xFF0000) >>> 16;
+        const a = ((color & 0xFF000000) >>> 24) / 255;
+
+        return 'rgba(' + [ r, g, b, 1 ].join(',') + ')';
+    }
 }

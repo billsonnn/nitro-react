@@ -1,6 +1,6 @@
 import { RoomEngineEvent, RoomEnterEffect, RoomSessionDanceEvent } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { AvatarInfoFurni, AvatarInfoPet, AvatarInfoRentableBot, AvatarInfoUser, GetSessionDataManager, RoomWidgetUpdateRentableBotChatEvent } from '../../../../api';
+import { AvatarInfoFurni, AvatarInfoPet, AvatarInfoRentableBot, AvatarInfoUser, GetConfiguration, GetSessionDataManager, RoomWidgetUpdateRentableBotChatEvent } from '../../../../api';
 import { Column } from '../../../../common';
 import { useAvatarInfoWidget, useRoom, useRoomEngineEvent, useRoomSessionManagerEvent, useUiEvent } from '../../../../hooks';
 import { AvatarInfoRentableBotChatView } from './AvatarInfoRentableBotChatView';
@@ -67,6 +67,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
                 case AvatarInfoUser.OWN_USER:
                 case AvatarInfoUser.PEER: {
                     const info = (avatarInfo as AvatarInfoUser);
+                    if (GetConfiguration('user.tags.enabled')) GetSessionDataManager().getUserTags(info.roomIndex);
 
                     if(info.isSpectatorMode) return null;
 
@@ -111,7 +112,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
             case AvatarInfoRentableBot.RENTABLE_BOT:
                 return <InfoStandWidgetRentableBotView avatarInfo={ (avatarInfo as AvatarInfoRentableBot) } onClose={ () => setAvatarInfo(null) } />;
             case AvatarInfoPet.PET_INFO:
-                return <InfoStandWidgetPetView avatarInfo={ (avatarInfo as AvatarInfoPet) } onClose={ () => setAvatarInfo(null) } /> 
+                return <InfoStandWidgetPetView avatarInfo={ (avatarInfo as AvatarInfoPet) } onClose={ () => setAvatarInfo(null) } />
         }
     }
 

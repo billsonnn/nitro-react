@@ -106,6 +106,22 @@
                 font-style: italic;
             }
         }
+
+        .flex-tags
+        {
+            flex-wrap: wrap;
+            margin-bottom: -10px;
+
+            .text-tags
+            {
+                padding: 2px;
+                border-radius: 3px;
+                background: #333;
+                margin-right: 5px;
+                margin-bottom: 10px;
+                cursor: pointer;
+            }
+        }
     }
 
     .button-container {
