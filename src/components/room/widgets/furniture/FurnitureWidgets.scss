@@ -406,6 +406,7 @@
 
         &:not(.playing-song):not(.selected-song) {
             -webkit-mask-image: url("../../../../assets/images/room-widgets/playlist-editor/disk_2.png");
+            mask-image: url("../../../../assets/images/room-widgets/playlist-editor/disk_2.png");
         }
     }
 
@@ -442,8 +443,22 @@
         .disk-image {
             background: url("../../../../assets/images/room-widgets/playlist-editor/disk_image.png");
             -webkit-mask-image: url("../../../../assets/images/room-widgets/playlist-editor/disk_image.png");
+            mask-image: url("../../../../assets/images/room-widgets/playlist-editor/disk_image.png");
             height: 76px;
             width: 76px;
         }
+    }
+}
+
+.nitro-mysterybox-dialog {
+    width: 375px;
+    height: 210px;
+
+    .prize-container {
+        height: 80px;
+        width: 81px;
+        background-image: url('../../../../assets/images/prize/prize_background.png');
+        background-repeat: no-repeat;
+        background-position: center;
     }
 }

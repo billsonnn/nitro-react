@@ -1,22 +1,18 @@
 import { ContextMenuEnum, CustomUserNotificationMessageEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { GetGroupInformation, LocalizeText } from '../../../../../api';
-import { useFurnitureContextMenuWidget, useMessageEvent, useNotification } from '../../../../../hooks';
+import { GetGroupInformation, GetSessionDataManager, LocalizeText } from '../../../../../api';
+import { EFFECTBOX_OPEN, GROUP_FURNITURE, MONSTERPLANT_SEED_CONFIRMATION, PURCHASABLE_CLOTHING_CONFIRMATION, useFurnitureContextMenuWidget, useMessageEvent, useNotification } from '../../../../../hooks';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
+import { FurnitureMysteryBoxOpenDialogView } from '../FurnitureMysteryBoxOpenDialogView';
 import { EffectBoxConfirmView } from './EffectBoxConfirmView';
 import { MonsterPlantSeedConfirmView } from './MonsterPlantSeedConfirmView';
 import { PurchasableClothingConfirmView } from './PurchasableClothingConfirmView';
 
-const MONSTERPLANT_SEED_CONFIRMATION: string = 'MONSTERPLANT_SEED_CONFIRMATION';
-const PURCHASABLE_CLOTHING_CONFIRMATION: string = 'PURCHASABLE_CLOTHING_CONFIRMATION';
-const GROUP_FURNITURE: string = 'GROUP_FURNITURE';
-const EFFECTBOX_OPEN: string = 'EFFECTBOX_OPEN';
-
 export const FurnitureContextMenuView: FC<{}> = props =>
 {
-    const { closeConfirm = null, processAction = null, onClose = null, objectId = -1, mode = null, confirmMode = null, confirmingObjectId = -1, groupData = null, isGroupMember = false } = useFurnitureContextMenuWidget();
+    const { closeConfirm = null, processAction = null, onClose = null, objectId = -1, mode = null, confirmMode = null, confirmingObjectId = -1, groupData = null, isGroupMember = false, objectOwnerId = -1 } = useFurnitureContextMenuWidget();
     const { simpleAlert = null } = useNotification();
 
     useMessageEvent<CustomUserNotificationMessageEvent>(CustomUserNotificationMessageEvent, event =>
@@ -41,6 +37,8 @@ export const FurnitureContextMenuView: FC<{}> = props =>
         }
     });
 
+    const isOwner = GetSessionDataManager().userId === objectOwnerId;
+
     return (
         <>
             { (confirmMode === MONSTERPLANT_SEED_CONFIRMATION) &&
@@ -49,6 +47,7 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                 <PurchasableClothingConfirmView objectId={ confirmingObjectId } onClose={ closeConfirm } /> }
             { (confirmMode === EFFECTBOX_OPEN) &&
                 <EffectBoxConfirmView objectId={ confirmingObjectId } onClose={ closeConfirm } /> }
+            <FurnitureMysteryBoxOpenDialogView ownerId={ objectOwnerId } />
             { (objectId >= 0) && mode &&
                 <ContextMenuView objectId={ objectId } category={ RoomObjectCategory.FLOOR } onClose={ onClose } fades={ true }>
                     { (mode === ContextMenuEnum.FRIEND_FURNITURE) &&
@@ -85,6 +84,15 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                             </ContextMenuHeaderView>
                             <ContextMenuListItemView onClick={ event => processAction('use_purchaseable_clothing') }>
                                 { LocalizeText('widget.generic_usable.button.use') }
+                            </ContextMenuListItemView>
+                        </> }
+                    { (mode === ContextMenuEnum.MYSTERY_BOX) &&
+                        <>
+                            <ContextMenuHeaderView>
+                                { LocalizeText('mysterybox.context.title') }
+                            </ContextMenuHeaderView>
+                            <ContextMenuListItemView onClick={ event => processAction('use_mystery_box') }>
+                                { LocalizeText('mysterybox.context.' + ((isOwner) ? 'owner' : 'other') + '.use') }
                             </ContextMenuListItemView>
                         </> }
                     { (mode === GROUP_FURNITURE) && groupData &&
