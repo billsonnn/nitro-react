@@ -15,15 +15,15 @@
         width: 31px;
         height: 36px;
         position: relative;
-        background-image: url('../../../../assets/images/mysterybox/mystery_box.png');
-        -webkit-mask-image: url('../../../../assets/images/mysterybox/mystery_box.png');
-        mask-image: url('../../../../assets/images/mysterybox/mystery_box.png');
+        background-image: url('@/assets/images/mysterybox/mystery_box.png');
+        -webkit-mask-image: url('@/assets/images/mysterybox/mystery_box.png');
+        mask-image: url('@/assets/images/mysterybox/mystery_box.png');
 
         .chain-overlay-image {
             width: 31px;
             height: 36px;
             position: absolute;
-            background-image: url('../../../../assets/images/mysterybox/chain_mysterybox_box_overlay.png');
+            background-image: url('@/assets/images/mysterybox/chain_mysterybox_box_overlay.png');
         }
     }
 
@@ -31,15 +31,15 @@
         width: 39px;
         height: 39px;
         position: relative;
-        background-image: url('../../../../assets/images/mysterybox/mystery_box_key.png');
-        -webkit-mask-image: url('../../../../assets/images/mysterybox/mystery_box_key.png');
-        mask-image: url('../../../../assets/images/mysterybox/mystery_box_key.png');
+        background-image: url('@/assets/images/mysterybox/mystery_box_key.png');
+        -webkit-mask-image: url('@/assets/images/mysterybox/mystery_box_key.png');
+        mask-image: url('@/assets/images/mysterybox/mystery_box_key.png');
 
         .key-overlay-image {
             width: 39px;
             height: 39px;
             position: absolute;
-            background-image: url('../../../../assets/images/mysterybox/key_overlay.png');
+            background-image: url('@/assets/images/mysterybox/key_overlay.png');
         }
     }
 

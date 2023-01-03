@@ -2,7 +2,7 @@
     width: $catalog-width;
     height: $catalog-height;
 
-    font[size="16"] {
+    font[size='16'] {
         font-size: 20px;
     }
 
@@ -73,14 +73,14 @@
     .info-loyalty-content {
         background-repeat: no-repeat;
         background-position: top right;
-        background-image: url("../../assets/images/catalog/diamond_info_illustration.gif");
+        background-image: url('@/assets/images/catalog/diamond_info_illustration.gif');
         padding-right: 123px;
     }
 
     .info-image {
         width: 123px;
         height: 350px;
-        background-image: url("../../assets/images/catalog/diamond_info_illustration.gif");
+        background-image: url('@/assets/images/catalog/diamond_info_illustration.gif');
     }
 }
 
@@ -92,7 +92,7 @@
         .icon-hc-banner {
             width: 68px;
             height: 40px;
-            background: url("../../assets/images/catalog/hc_big.png") center
+            background: url('@/assets/images/catalog/hc_big.png') center
                 no-repeat;
         }
     }
@@ -127,4 +127,4 @@
     height: 60px;
 }
 
-@import "./views/targeted-offer/Offer.scss";
+@import './views/targeted-offer/Offer.scss';

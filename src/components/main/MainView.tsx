@@ -101,12 +101,12 @@ export const MainView: FC<{}> = props =>
             <GroupsView />
             <CameraWidgetView />
             <HelpView />
-            <FloorplanEditorView />
             <NitropediaView />
             <GuideToolView />
             <HcCenterView />
             <CampaignView />
             <GameCenterView />
+            <FloorplanEditorView />
         </Base>
     );
 }

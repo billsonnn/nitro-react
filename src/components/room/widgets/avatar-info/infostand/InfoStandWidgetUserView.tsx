@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomSessionFavoriteGroupUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, FocusEvent, KeyboardEvent, SetStateAction, useEffect, useState } from 'react';
+import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 import { AvatarInfoUser, CloneObject, GetConfiguration, GetGroupInformation, GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../../common';
 import { useMessageEvent, useRoom, useRoomSessionManagerEvent } from '../../../../../hooks';
@@ -131,7 +131,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                             <UserProfileIconView userId={ avatarInfo.webID } />
                             <Text variant="white" small wrap>{ avatarInfo.name }</Text>
                         </Flex>
-                        <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ onClose } />
+                        <FaTimes className="cursor-pointer fa-icon" onClick={ onClose } />
                     </Flex>
                     <hr className="m-0" />
                 </Column>
@@ -178,7 +178,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                             </Flex> }
                         { avatarInfo.type === AvatarInfoUser.OWN_USER &&
                             <Flex grow alignItems="center" gap={ 2 }>
-                                <FontAwesomeIcon icon="pencil-alt" className="small" />
+                                <FaPencilAlt className="small fa-icon" />
                                 <Flex grow alignItems="center" className="motto-content">
                                     { !isEditingMotto &&
                                         <Text fullWidth pointer wrap textBreak small variant="white" onClick={ event => setIsEditingMotto(true) }>{ motto }&nbsp;</Text> }

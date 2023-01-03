@@ -1,6 +1,6 @@
-import { ConfigurationEvent, GetAssetManager, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroConfiguration, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent, WebGL } from '@nitrots/nitro-renderer';
+import { ConfigurationEvent, GetAssetManager, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroConfiguration, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { DispatchUiEvent, GetCommunication, GetConfiguration, GetNitroInstance, GetUIVersion } from './api';
+import { GetCommunication, GetConfiguration, GetNitroInstance, GetUIVersion } from './api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from './common';
 import { LoadingView } from './components/loading/LoadingView';
 import { MainView } from './components/main/MainView';
@@ -114,14 +114,7 @@ export const App: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if(!WebGL.isWebGLAvailable())
-        {
-            DispatchUiEvent(new NitroEvent(Nitro.WEBGL_UNAVAILABLE));
-        }
-        else
-        {
-            GetNitroInstance().core.configuration.init();
-        }
+        GetNitroInstance().core.configuration.init();
     
         const resize = (event: UIEvent) => setImageRendering(!(window.devicePixelRatio % 1));
 

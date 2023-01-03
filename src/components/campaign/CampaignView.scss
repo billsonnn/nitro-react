@@ -13,7 +13,7 @@
 
 .campaign-spritesheet {
     display: block;
-    background: transparent url('../../assets/images/campaign/campaign_spritesheet.png') no-repeat;
+    background: transparent url('@/assets/images/campaign/campaign_spritesheet.png') no-repeat;
 
     &.available {
         width: 69px;

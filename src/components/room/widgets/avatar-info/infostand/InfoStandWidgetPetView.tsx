@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PetRespectComposer, PetType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
+import { FaTimes } from 'react-icons/fa';
 import { AvatarInfoPet, ConvertSeconds, CreateLinkEvent, GetConfiguration, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Column, Flex, LayoutCounterTimeView, LayoutPetImageView, LayoutRarityLevelView, Text, UserProfileIconView } from '../../../../../common';
 import { useRoom, useSessionInfo } from '../../../../../hooks';
@@ -80,7 +80,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                     <Column gap={ 1 }>
                         <Flex alignItems="center" justifyContent="between" gap={ 1 }>
                             <Text variant="white" small wrap>{ avatarInfo.name }</Text>
-                            <FontAwesomeIcon icon="times" className="cursor-pointer" onClick={ onClose } />
+                            <FaTimes className="cursor-pointer fa-icon" onClick={ onClose } />
                         </Flex>
                         <Text variant="white" small wrap>{ LocalizeText(`pet.breed.${ avatarInfo.petType }.${ avatarInfo.petBreed }`) }</Text>
                         <hr className="m-0" />

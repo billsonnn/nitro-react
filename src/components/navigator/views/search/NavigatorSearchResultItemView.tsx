@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoomDataParser } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent } from 'react';
+import { FaUser } from 'react-icons/fa';
 import { CreateRoomSession, DoorStateType, GetSessionDataManager, TryVisitRoom } from '../../../../api';
 import { Column, Flex, LayoutBadgeImageView, LayoutGridItemProps, LayoutRoomThumbnailView, Text } from '../../../../common';
 import { useNavigator } from '../../../../hooks';
@@ -85,7 +85,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
             <LayoutRoomThumbnailView roomId={ roomData.roomId } customUrl={ roomData.officialRoomPicRef } className="d-flex flex-column align-items-center justify-content-end mb-1">
                 { roomData.habboGroupId > 0 && <LayoutBadgeImageView badgeCode={ roomData.groupBadgeCode } isGroup={ true } className={ 'position-absolute top-0 start-0 m-1' } /> }
                 <Flex center className={ 'badge p-1 position-absolute m-1 ' + getUserCounterColor() } gap={ 1 }>
-                    <FontAwesomeIcon icon="user" />
+                    <FaUser className="fa-icon" />
                     { roomData.userCount }
                 </Flex>
                 { (roomData.doorMode !== RoomDataParser.OPEN_STATE) && 
@@ -105,7 +105,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
     return (
         <Flex pointer overflow="hidden" alignItems="center" onClick={ visitRoom } gap={ 2 } className="navigator-item px-2 py-1 small" { ...rest }>
             <Flex center className={ 'badge p-1 ' + getUserCounterColor() } gap={ 1 }>
-                <FontAwesomeIcon icon="user" />
+                <FaUser className="fa-icon" />
                 { roomData.userCount }
             </Flex>
             <Text truncate grow>{ roomData.roomName }</Text>

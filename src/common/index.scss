@@ -31,7 +31,7 @@
 
     &.has-highlight {
         &:after {
-            content: "";
+            content: '';
             z-index: 2;
             position: absolute;
             top: 0;
@@ -47,7 +47,7 @@
 .nitro-room-thumbnail-camera {
     width: 132px;
     height: 192px;
-    background-image: url("../assets/images/room-widgets/thumbnail-widget/thumbnail-camera-spritesheet.png");
+    background-image: url('@/assets/images/room-widgets/thumbnail-widget/thumbnail-camera-spritesheet.png');
 
     .camera-frame {
         position: absolute;
@@ -66,7 +66,7 @@
     pointer-events: all;
 
     background-position: 0px 0px;
-    background-image: url("../assets/images/room-widgets/trophy-widget/trophy-spritesheet.png");
+    background-image: url('@/assets/images/room-widgets/trophy-widget/trophy-spritesheet.png');
 
     &.trophy-2 {
         background-position: 0px 173px;
@@ -102,7 +102,7 @@
 .nitro-gift-card {
     width: 306px;
     height: 159px;
-    background: url("../assets/images/gift/gift_tag.png") center no-repeat;
+    background: url('@/assets/images/gift/gift_tag.png') center no-repeat;
 
     .gift-face {
         width: 65px;
@@ -110,7 +110,7 @@
         .gift-incognito {
             width: 37px;
             height: 48px;
-            background: url("../assets/images/gift/incognito.png") center no-repeat;
+            background: url('@/assets/images/gift/incognito.png') center no-repeat;
         }
 
         .gift-avatar {
@@ -198,7 +198,7 @@
     position: relative;
     width: 110px;
     height: 110px;
-    background: url("../assets/images/navigator/thumbnail_placeholder.png") no-repeat center;
+    background: url('@/assets/images/navigator/thumbnail_placeholder.png') no-repeat center;
     background-color: rgba($black, 0.125);
 }
 
@@ -268,7 +268,7 @@
 
         &:before {
             position: absolute;
-            content: " ";
+            content: ' ';
             width: 0;
             height: 0;
             border-left: 10px solid $white;
@@ -291,7 +291,7 @@
 .nitro-rarity-level {
     width: 36px;
     height: 28px;
-    background: url("../assets/images/infostand/rarity-level.png");
+    background: url('@/assets/images/infostand/rarity-level.png');
 
     div {
         line-height: 28px;
@@ -304,7 +304,7 @@
 .nitro-counter-time {
     width: 36px;
     height: 28px;
-    background: url("../assets/images/infostand/countown-timer.png");
+    background: url('@/assets/images/infostand/countown-timer.png');
 
     div {
         line-height: 28px;
@@ -355,7 +355,7 @@
 
         &::after {
             position: absolute;
-            content: "";
+            content: '';
             top: 0;
             bottom: 0;
             left: 0;
@@ -378,26 +378,26 @@
 
     &:before {
         position: absolute;
-        content: "";
+        content: '';
         width: 100%;
         height: 100%;
-        background: url("../assets/images/unique/grid-bg.png") center no-repeat;
+        background: url('@/assets/images/unique/grid-bg.png') center no-repeat;
         z-index: 1;
     }
 
     &:after {
         position: absolute;
-        content: "";
+        content: '';
         width: 100%;
         height: 100%;
-        background: url("../assets/images/unique/grid-bg-glass.png") center no-repeat;
+        background: url('@/assets/images/unique/grid-bg-glass.png') center no-repeat;
         bottom: 0;
         z-index: 4;
     }
 
     &.sold-out:after {
-        background: url("../assets/images/unique/grid-bg-sold-out.png") center no-repeat,
-            url("../assets/images/unique/grid-bg-glass.png") center no-repeat;
+        background: url('@/assets/images/unique/grid-bg-sold-out.png') center no-repeat,
+            url('@/assets/images/unique/grid-bg-glass.png') center no-repeat;
     }
 
     .unique-item-counter {
@@ -408,7 +408,7 @@
         bottom: 1px;
         width: 100%;
         height: 9px;
-        background: url("../assets/images/unique/grid-count-bg.png") center no-repeat;
+        background: url('@/assets/images/unique/grid-count-bg.png') center no-repeat;
         z-index: 3;
     }
 }
@@ -416,7 +416,7 @@
 .unique-sold-out-blocker {
     width: 364px;
     height: 30px;
-    background: url("../assets/images/unique/catalog-info-sold-out.png");
+    background: url('@/assets/images/unique/catalog-info-sold-out.png');
 
     div {
         float: right;
@@ -437,7 +437,7 @@
     right: 16px;
     width: 34px;
     height: 37px;
-    background: url("../assets/images/unique/inventory-info-amount-bg.png");
+    background: url('@/assets/images/unique/inventory-info-amount-bg.png');
 
     div {
         display: flex;
@@ -450,7 +450,7 @@
 .unique-complete-plate {
     width: 170px;
     height: 29px;
-    background: url("../assets/images/unique/catalog-info-amount-bg.png") no-repeat center;
+    background: url('@/assets/images/unique/catalog-info-amount-bg.png') no-repeat center;
     z-index: 1;
     padding-top: 3px;
 
@@ -471,7 +471,7 @@
     outline: 0;
     height: 5px;
     margin-right: 1px;
-    background-image: url("../assets/images/unique/numbers.png");
+    background-image: url('@/assets/images/unique/numbers.png');
     background-repeat: no-repeat;
 
     &:last-child {
@@ -558,4 +558,4 @@
     }
 }
 
-@import "./card/NitroCardView";
+@import './card/NitroCardView';

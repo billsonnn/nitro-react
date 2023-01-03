@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorConverter } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
+import { FaFillDrip } from 'react-icons/fa';
 import { IPurchasableOffer } from '../../../../../api';
 import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
@@ -155,7 +155,7 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
                             <CatalogAddOnBadgeWidgetView position="absolute" className="bg-muted rounded bottom-1 end-1" />
                             { currentOffer.product.furnitureData.hasIndexedColor &&
                                 <Button position="absolute" className="bottom-1 start-1" onClick={ event =>setColorsShowing(prev => !prev) }>
-                                    <FontAwesomeIcon icon="fill-drip" />
+                                    <FaFillDrip className="fa-icon" />
                                 </Button> }
                         </Base>
                         <Column grow gap={ 1 }>

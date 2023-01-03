@@ -25,7 +25,7 @@ const useFurnitureRoomLinkWidgetState = () =>
 
         roomId = parseInt(roomId, 10);
 
-        if(roomId === NaN) return;
+        if(isNaN(roomId)) return;
 
         setRoomIdToEnter(roomId);
 

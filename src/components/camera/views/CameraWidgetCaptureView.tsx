@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NitroRectangle, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, useRef } from 'react';
+import { FaTimes } from 'react-icons/fa';
 import { CameraPicture, GetRoomEngine, GetRoomSession, LocalizeText, PlaySound, SoundNames } from '../../../api';
 import { Column, DraggableWindow, Flex } from '../../../common';
 import { useCamera, useNotification } from '../../../hooks';
@@ -63,7 +63,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
                 { selectedPicture && <img alt="" className="camera-area" src={ selectedPicture.imageUrl } /> }
                 <div className="camera-canvas drag-handler">
                     <div className="position-absolute header-close" onClick={ onClose }>
-                        <FontAwesomeIcon icon="times" />
+                        <FaTimes className="fa-icon" />
                     </div>
                     { !selectedPicture && <div ref={ elementRef } className="camera-area camera-view-finder" /> }
                     { selectedPicture && 

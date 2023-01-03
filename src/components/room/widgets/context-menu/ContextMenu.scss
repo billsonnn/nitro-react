@@ -30,7 +30,7 @@
 
     &:not(.name-only) {
         &:after {
-            content: "";
+            content: '';
             position: absolute;
             bottom: -7px;
             left: 0;
@@ -108,8 +108,7 @@
                 background: $bg-cello-split-background;
             }
 
-            .fas,
-            .svg-inline--fa,
+            .fa-icon,
             .nitro-currency-icon {
                 position: absolute;
                 right: 8px;

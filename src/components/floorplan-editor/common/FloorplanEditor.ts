@@ -8,8 +8,8 @@ export class FloorplanEditor extends PixiApplicationProxy
 {
     private static _INSTANCE: FloorplanEditor = null;
 
-    private static readonly TILE_BLOCKED = 'r_blocked';
-    private static readonly TILE_DOOR = 'r_door';
+    public static readonly TILE_BLOCKED = 'r_blocked';
+    public static readonly TILE_DOOR = 'r_door';
 
     private _tilemap: Tile[][];
     private _width: number;

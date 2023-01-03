@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ApproveNameMessageComposer, ApproveNameMessageEvent, ColorConverter, GetSellablePetPalettesComposer, PurchaseFromCatalogComposer, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FaFillDrip } from 'react-icons/fa';
 import { DispatchUiEvent, GetPetAvailableColors, GetPetIndexFromLocalization, LocalizeText, SendMessageComposer } from '../../../../../../api';
 import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, LayoutPetImageView, Text } from '../../../../../../common';
 import { CatalogPurchaseFailureEvent } from '../../../../../../events';
@@ -221,7 +221,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
                             <CatalogAddOnBadgeWidgetView position="absolute" className="bg-muted rounded bottom-1 end-1" />
                             { ((petIndex > -1) && (petIndex <= 7)) &&
                                 <Button position="absolute" className="bottom-1 start-1" onClick={ event => setColorsShowing(!colorsShowing) }>
-                                    <FontAwesomeIcon icon="fill-drip" />
+                                    <FaFillDrip className="fa-icon" />
                                 </Button> }
                         </Base>
                         <Column grow gap={ 1 }>

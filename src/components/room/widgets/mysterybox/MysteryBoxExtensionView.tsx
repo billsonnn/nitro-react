@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { MysteryBoxKeysUpdateEvent } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { ColorUtils, LocalizeText } from '../../../../api';
 import { Base, Column, Flex, LayoutGridItem, Text } from '../../../../common';
 import { useSessionDataManagerEvent } from '../../../../hooks';
@@ -42,7 +42,8 @@ export const MysteryBoxExtensionView: FC<{}> = props =>
             <Column>
                 <Flex alignItems="center" justifyContent="between" pointer onClick={ event => setIsOpen(value => !value) }>
                     <Text variant="white">{ LocalizeText('mysterybox.tracker.title') }</Text>
-                    <FontAwesomeIcon icon={ isOpen ? 'chevron-up' : 'chevron-down' } />
+                    { isOpen && <FaChevronUp className="fa-icon" /> }
+                    { !isOpen && <FaChevronDown className="fa-icon" /> }
                 </Flex>
                 { isOpen &&
                     <>

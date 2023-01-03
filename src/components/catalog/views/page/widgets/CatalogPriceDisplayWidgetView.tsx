@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
+import { FaPlus } from 'react-icons/fa';
 import { IPurchasableOffer } from '../../../../../api';
 import { Flex, LayoutCurrencyIcon, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
@@ -26,7 +26,7 @@ export const CatalogPriceDisplayWidgetView: FC<CatalogPriceDisplayWidgetViewProp
                     <LayoutCurrencyIcon type={ -1 } />
                 </Flex> }
             { separator && (offer.priceInCredits > 0) && (offer.priceInActivityPoints > 0) &&
-                <FontAwesomeIcon size="xs" color="black" icon="plus" /> }
+                <FaPlus size="xs" color="black" className="fa-icon" /> }
             { (offer.priceInActivityPoints > 0) &&
                 <Flex alignItems="center" gap={ 1 }>
                     <Text bold>{ (offer.priceInActivityPoints * quantity) }</Text>

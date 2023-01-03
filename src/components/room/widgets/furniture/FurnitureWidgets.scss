@@ -17,7 +17,7 @@
     .dimmer-banner {
         width: 56px;
         height: 79px;
-        background: url("../../../../assets/images/room-widgets/dimmer-widget/dimmer_banner.png")
+        background: url('@/assets/images/room-widgets/dimmer-widget/dimmer_banner.png')
             center no-repeat;
     }
 
@@ -42,7 +42,7 @@
     height: $nitro-widget-exchange-credit-height;
 
     .exchange-image {
-        background-image: url("../../../../assets/images/room-widgets/exchange-credit/exchange-credit-image.png");
+        background-image: url('@/assets/images/room-widgets/exchange-credit/exchange-credit-image.png');
         width: 103px;
         height: 103px;
     }
@@ -84,7 +84,7 @@
         align-items: center;
         width: 83px;
         height: 130px;
-        background-image: url("../../../../assets/images/room-widgets/mannequin-widget/mannequin-spritesheet.png");
+        background-image: url('@/assets/images/room-widgets/mannequin-widget/mannequin-spritesheet.png');
         overflow: hidden;
 
         .avatar-image {
@@ -154,7 +154,7 @@
 }
 
 .nitro-stickie-image {
-    background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-spritesheet.png");
+    background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-spritesheet.png');
 
     &.stickie-blue,
     &.stickie-yellow,
@@ -169,7 +169,7 @@
     }
 
     &.stickie-yellow {
-        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-yellow.png");
+        background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-yellow.png');
         //background-position: -191px -184px;
     }
 
@@ -182,23 +182,23 @@
     }
 
     &.stickie-christmas {
-        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-christmas.png");
+        background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-christmas.png');
     }
 
     &.stickie-shakesp {
-        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-shakesp.png");
+        background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-shakesp.png');
     }
 
     &.stickie-dreams {
-        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-dreams.png");
+        background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-dreams.png');
     }
 
     &.stickie-heart {
-        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-heart.png");
+        background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-heart.png');
     }
 
     &.stickie-juninas {
-        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-juninas.png");
+        background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-juninas.png');
     }
 
     &.stickie-close {
@@ -221,14 +221,14 @@
         width: 31px;
         height: 39px;
         background-position: -380px -43px;
-        background-image: url("../../../../assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png");
+        background-image: url('@/assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png');
     }
 
     .engraving-lock-stage-2 {
         width: 36px;
         height: 43px;
         background-position: -375px 0px;
-        background-image: url("../../../../assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png");
+        background-image: url('@/assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png');
     }
 }
 
@@ -236,7 +236,7 @@
     width: 375px;
     height: 210px;
     background-position: 0px 0px;
-    background-image: url("../../../../assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png");
+    background-image: url('@/assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png');
 
     color: #622e54;
     font-weight: bold;
@@ -380,7 +380,7 @@
     .move-disk {
         width: 22px;
         height: 18px;
-        background-image: url("../../../../assets/images/room-widgets/playlist-editor/move.png");
+        background-image: url('@/assets/images/room-widgets/playlist-editor/move.png');
     }
 
     .disk-2,
@@ -391,48 +391,48 @@
     .disk-2 {
         width: 38px;
         height: 38px;
-        background-image: url("../../../../assets/images/room-widgets/playlist-editor/disk_2.png");
+        background-image: url('@/assets/images/room-widgets/playlist-editor/disk_2.png');
         background-position: center;
         background-repeat: no-repeat;
 
         &.playing-song {
-            background-image: url("../../../../assets/images/room-widgets/playlist-editor/playing.png");
+            background-image: url('@/assets/images/room-widgets/playlist-editor/playing.png');
         }
 
         &.selected-song {
-            background-image: url("../../../../assets/images/room-widgets/playlist-editor/move.png");
+            background-image: url('@/assets/images/room-widgets/playlist-editor/move.png');
             transform: scaleX(-1);
         }
 
         &:not(.playing-song):not(.selected-song) {
-            -webkit-mask-image: url("../../../../assets/images/room-widgets/playlist-editor/disk_2.png");
-            mask-image: url("../../../../assets/images/room-widgets/playlist-editor/disk_2.png");
+            -webkit-mask-image: url('@/assets/images/room-widgets/playlist-editor/disk_2.png');
+            mask-image: url('@/assets/images/room-widgets/playlist-editor/disk_2.png');
         }
     }
 
     .pause-song {
         width: 18px;
         height: 20px;
-        background-image: url("../../../../assets/images/room-widgets/playlist-editor/pause.png");
+        background-image: url('@/assets/images/room-widgets/playlist-editor/pause.png');
     }
 
     .pause-btn {
         width: 16px;
         height: 16px;
 
-        background-image: url("../../../../assets/images/room-widgets/playlist-editor/pause-btn.png");
+        background-image: url('@/assets/images/room-widgets/playlist-editor/pause-btn.png');
     }
 
     .music-note {
         width: 38px;
         height: 38px;
-        background-image: url("../../../../assets/images/room-widgets/playlist-editor/playing.png");
+        background-image: url('@/assets/images/room-widgets/playlist-editor/playing.png');
     }
 
     .preview-song {
         width: 16px;
         height: 16px;
-        background-image: url("../../../../assets/images/room-widgets/playlist-editor/preview.png");
+        background-image: url('@/assets/images/room-widgets/playlist-editor/preview.png');
     }
 
     .layout-grid-item {
@@ -441,9 +441,9 @@
         position: relative;
 
         .disk-image {
-            background: url("../../../../assets/images/room-widgets/playlist-editor/disk_image.png");
-            -webkit-mask-image: url("../../../../assets/images/room-widgets/playlist-editor/disk_image.png");
-            mask-image: url("../../../../assets/images/room-widgets/playlist-editor/disk_image.png");
+            background: url('@/assets/images/room-widgets/playlist-editor/disk_image.png');
+            -webkit-mask-image: url('@/assets/images/room-widgets/playlist-editor/disk_image.png');
+            mask-image: url('@/assets/images/room-widgets/playlist-editor/disk_image.png');
             height: 76px;
             width: 76px;
         }
@@ -457,7 +457,7 @@
     .prize-container {
         height: 80px;
         width: 81px;
-        background-image: url('../../../../assets/images/prize/prize_background.png');
+        background-image: url('@/assets/images/prize/prize_background.png');
         background-repeat: no-repeat;
         background-position: center;
     }
