@@ -1,4 +1,4 @@
-import { RoomEngineObjectEvent, RoomEngineUseProductEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionPetStatusUpdateEvent, RoomSessionUserDataUpdateEvent } from '@nitrots/nitro-renderer';
+import { PetTrainingMessageParser, RoomEngineObjectEvent, RoomEngineUseProductEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionPetInfoUpdateEvent, RoomSessionPetStatusUpdateEvent, RoomSessionUserDataUpdateEvent } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { AvatarInfoFurni, AvatarInfoName, AvatarInfoPet, AvatarInfoRentableBot, AvatarInfoUser, AvatarInfoUtilities, CanManipulateFurniture, FurniCategory, GetRoomEngine, GetSessionDataManager, IAvatarInfo, IsOwnerOfFurniture, RoomWidgetUpdateRoomObjectEvent, UseProductItem } from '../../../api';
 import { useRoomEngineEvent, useRoomSessionManagerEvent, useUiEvent } from '../../events';
@@ -14,6 +14,7 @@ const useAvatarInfoWidgetState = () =>
     const [ nameBubbles, setNameBubbles ] = useState<AvatarInfoName[]>([]);
     const [ productBubbles, setProductBubbles ] = useState<UseProductItem[]>([]);
     const [ confirmingProduct, setConfirmingProduct ] = useState<UseProductItem>(null);
+    const [ petTrainInformation, setPetTrainInformation ] = useState<PetTrainingMessageParser>(null);
     const [ pendingPetId, setPendingPetId ] = useState<number>(-1);
     const [ isDecorating, setIsDecorating ] = useState(false);
     const { friends = [] } = useFriends();
@@ -65,6 +66,7 @@ const useAvatarInfoWidgetState = () =>
     const getObjectInfo = (objectId: number, category: number) =>
     {
         let info: IAvatarInfo = null;
+        setPetTrainInformation(null);
 
         switch(category)
         {
@@ -272,6 +274,7 @@ const useAvatarInfoWidgetState = () =>
     useObjectDeselectedEvent(event =>
     {
         setAvatarInfo(null);
+        setPetTrainInformation(null);
         setProductBubbles([]);
     });
 
@@ -349,7 +352,7 @@ const useAvatarInfoWidgetState = () =>
         roomSession.isDecorating = isDecorating;
     }, [ roomSession, isDecorating ]);
 
-    return { avatarInfo, setAvatarInfo, activeNameBubble, setActiveNameBubble, nameBubbles, productBubbles, confirmingProduct, isDecorating, setIsDecorating, removeNameBubble, removeProductBubble, updateConfirmingProduct, getObjectName };
+    return { avatarInfo, setAvatarInfo, activeNameBubble, setActiveNameBubble, nameBubbles, productBubbles, confirmingProduct, petTrainInformation, setPetTrainInformation, isDecorating, setIsDecorating, removeNameBubble, removeProductBubble, updateConfirmingProduct, getObjectName };
 }
 
 export const useAvatarInfoWidget = useAvatarInfoWidgetState;

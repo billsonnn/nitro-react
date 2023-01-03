@@ -57,7 +57,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                 CreateLinkEvent('catalog/open/' + GetConfiguration('catalog.links')['pets.buy_food']);
                 break;
             case 'train':
-                // not coded
+                roomSession?.requestPetCommands(avatarInfo.id);
                 break;
             case 'treat':
                 SendMessageComposer(new PetRespectComposer(avatarInfo.id));
