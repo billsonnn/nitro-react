@@ -10,6 +10,7 @@ import { UserChooserWidgetView } from './choosers/UserChooserWidgetView';
 import { DoorbellWidgetView } from './doorbell/DoorbellWidgetView';
 import { FriendRequestWidgetView } from './friend-request/FriendRequestWidgetView';
 import { FurnitureWidgetsView } from './furniture/FurnitureWidgetsView';
+import { PetTrainingPanelWidgetView } from './pet-training/PetTrainingPanelWidgetView';
 import { RoomFilterWordsWidgetView } from './room-filter-words/RoomFilterWordsWidgetView';
 import { RoomThumbnailWidgetView } from './room-thumbnail/RoomThumbnailWidgetView';
 import { RoomToolsWidgetView } from './room-tools/RoomToolsWidgetView';
@@ -165,6 +166,7 @@ export const RoomWidgetsView: FC<{}> = props =>
             <UserChooserWidgetView />
             <WordQuizWidgetView />
             <FriendRequestWidgetView />
+            <PetTrainingPanelWidgetView />
         </>
     );
 }
