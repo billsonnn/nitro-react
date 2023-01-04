@@ -1,29 +1,36 @@
 import { useVirtual } from '@tanstack/react-virtual';
-import { FC, Fragment, ReactElement, useRef } from 'react';
+import { FC, Fragment, ReactElement, useEffect, useRef, useState } from 'react';
 import { Base } from './Base';
 
 interface InfiniteScrollProps<T = any>
 {
     rows: T[];
-    estimateSize: number;
     overscan?: number;
+    scrollToBottom?: boolean;
     rowRender: (row: T) => ReactElement;
 }
 
 export const InfiniteScroll: FC<InfiniteScrollProps> = props =>
 {
-    const { rows = [], estimateSize = 0, overscan = 5, rowRender = null } = props;
+    const { rows = [], overscan = 5, scrollToBottom = false, rowRender = null } = props;
+    const [ scrollIndex, setScrollIndex ] = useState<number>(rows.length - 1);
     const elementRef = useRef<HTMLDivElement>(null);
 
-    const rowVirtualizer = useVirtual({
+    const { virtualItems = [], totalSize = 0, scrollToIndex = null } = useVirtual({
         parentRef: elementRef,
         size: rows.length,
-        overscan: 5
+        overscan
     });
 
-    const { virtualItems, totalSize, } = rowVirtualizer;
     const paddingTop = (virtualItems.length > 0) ? (virtualItems?.[0]?.start || 0) : 0
     const paddingBottom = (virtualItems.length > 0) ? (totalSize - (virtualItems?.[virtualItems.length - 1]?.end || 0)) : 0;
+
+    useEffect(() =>
+    {
+        if(!scrollToBottom) return;
+
+        scrollToIndex(scrollIndex);
+    }, [ scrollToBottom, scrollIndex, scrollToIndex ]);
 
     return (
         <Base fit innerRef={ elementRef } position="relative" overflow="auto">

@@ -70,7 +70,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                     </Grid>
                 </Column>
                 { (records && (records.length > 0)) &&
-                    <InfiniteScroll rows={ allRecords } estimateSize={ 25 } rowRender={ (row: ChatlogRecord) =>
+                    <InfiniteScroll rows={ allRecords } rowRender={ (row: ChatlogRecord) =>
                     {
                         return (
                             <>

@@ -36,7 +36,7 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
             <NitroCardHeaderView headerText={ title } onCloseClick={ onClose } />
             <NitroCardContentView overflow="hidden" gap={ 2 }>
                 <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
-                <InfiniteScroll rows={ filteredItems } estimateSize={ 25 } rowRender={ row =>
+                <InfiniteScroll rows={ filteredItems } rowRender={ row =>
                 {
                     return (
                         <Flex alignItems="center" className={ classNames('rounded p-1', (selectedItem === row) && 'bg-muted') } pointer onClick={ event => setSelectedItem(row) }>
