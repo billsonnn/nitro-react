@@ -7,12 +7,13 @@ export interface VipGiftItemViewProps
 {
     offer: CatalogPageMessageOfferData;
     isAvailable: boolean;
+    daysRequired: number;
     onSelect(localizationId: string): void;
 }
 
 export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
 {
-    const { offer = null, isAvailable = false, onSelect = null } = props;
+    const { offer = null, isAvailable = false, daysRequired = 0, onSelect = null } = props;
     
     const getImageUrlForOffer = useCallback( () =>
     {
@@ -44,6 +45,11 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
 
         return LocalizeText(localizationKey);
     }, [ offer ]);
+
+    const getMonthsRequired = useCallback(() => 
+    {
+        return Math.floor(daysRequired / 31);
+    },[ daysRequired ]);
 
     return (
         <LayoutGridItem center={ false } column={ false } alignItems="center" className="p-1">
