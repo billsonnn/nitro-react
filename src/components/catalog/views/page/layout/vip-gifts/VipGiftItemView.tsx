@@ -12,7 +12,8 @@ export interface VipGiftItemViewProps
 
 export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
 {
-    const { offer = null, isAvailable = false, onSelect = null } = props;
+    
+    const { offer = null, isAvailable = false, daysRequired = 0, onSelect = null } = props;
     
     const getImageUrlForOffer = useCallback( () =>
     {
@@ -44,11 +45,19 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
 
         return LocalizeText(localizationKey);
     }, [ offer ]);
+    
+        const getMonthsRequired = useCallback(() => 
+    {
+        return Math.floor(daysRequired / 31);
+    },[ daysRequired ]);
 
     return (
         <LayoutGridItem center={ false } column={ false } alignItems="center" className="p-1">
             <LayoutImage imageUrl={ getImageUrlForOffer() } />
             <Text grow fontWeight="bold">{ getItemTitle() }</Text>
+            <Text grow>{ getItemDesc() }</Text>
+                { getMonthsRequired() > 0 && <Text grow>{ LocalizeText('catalog.club_gift.months_required',[ 'months' ],[ getMonthsRequired().toString() ]) }</Text> }
+            </Flex>
             <Button variant="secondary" onClick={ () => onSelect(offer.localizationId) } disabled={ !isAvailable }>
                 { LocalizeText('catalog.club_gift.select') }
             </Button>
