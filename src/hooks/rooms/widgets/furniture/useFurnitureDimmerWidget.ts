@@ -9,7 +9,6 @@ const useFurnitureDimmerWidgetState = () =>
     const [ presets, setPresets ] = useState<DimmerFurnitureWidgetPresetItem[]>([]);
     const [ selectedPresetId, setSelectedPresetId ] = useState(0);
     const [ dimmerState, setDimmerState ] = useState(0);
-    const [ lastDimmerState, setLastDimmerState ] = useState(0);
     const [ effectId, setEffectId ] = useState(0);
     const [ color, setColor ] = useState(0xFFFFFF);
     const [ brightness, setBrightness ] = useState(0xFF);
@@ -34,8 +33,6 @@ const useFurnitureDimmerWidgetState = () =>
 
     const applyChanges = () =>
     {
-        if(dimmerState === 0) return;
-
         const selectedPresetIndex = (selectedPresetId - 1);
 
         if((selectedPresetId < 1) || (selectedPresetId > presets.length)) return;
@@ -53,7 +50,7 @@ const useFurnitureDimmerWidgetState = () =>
             return newValue;
         });
 
-        FurnitureDimmerUtilities.savePreset(preset.id, selectedEffectId, selectedColor, selectedBrightness, true);
+        FurnitureDimmerUtilities.savePreset(preset.id, selectedEffectId, selectedColor, selectedBrightness, dimmerState !== 0);
     }
 
     useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_DIMMER, event =>
@@ -79,14 +76,21 @@ const useFurnitureDimmerWidgetState = () =>
         }
 
         setPresets(presets);
-        setSelectedPresetId(event.selectedPresetId);
+        
+        const preset = presets[(event.selectedPresetId - 1)];
+
+        if(!preset) return;
+        
+        setSelectedPresetId(preset.id);
+        setSelectedEffectId(preset.type);
+        setSelectedColor(preset.color);
+        setSelectedBrightness(preset.light);
     });
 
     useRoomEngineEvent<RoomEngineDimmerStateEvent>(RoomEngineDimmerStateEvent.ROOM_COLOR, event =>
     {
         if(RoomId.isRoomPreviewerId(event.roomId)) return;
 
-        setLastDimmerState(dimmerState);
         setDimmerState(event.state);
         setSelectedPresetId(event.presetId);
         setEffectId(event.effectId);
@@ -95,16 +99,18 @@ const useFurnitureDimmerWidgetState = () =>
         setSelectedColor(event.color);
         setBrightness(event.brightness);
         setSelectedBrightness(event.brightness);
+
+        console.log(event);
     });
 
     useEffect(() =>
     {
-        if((dimmerState === 0) && (lastDimmerState === 0)) return;
-
+        if(dimmerState === 0 && selectedColor != 0xFFFFFF && selectedBrightness != 0xFF) return;
+        
         FurnitureDimmerUtilities.previewDimmer(selectedColor, selectedBrightness, (selectedEffectId === 2));
-    }, [ dimmerState, lastDimmerState, selectedColor, selectedBrightness, selectedEffectId ]);
+    }, [ dimmerState, selectedColor, selectedBrightness, selectedEffectId ]);
 
-    return { presets, selectedPresetId, dimmerState, lastDimmerState, effectId, color, brightness, selectedEffectId, setSelectedEffectId, selectedColor, setSelectedColor, selectedBrightness, setSelectedBrightness, selectPresetId, applyChanges };
+    return { presets, selectedPresetId, dimmerState, effectId, color, brightness, selectedEffectId, setSelectedEffectId, selectedColor, setSelectedColor, selectedBrightness, setSelectedBrightness, selectPresetId, setDimmerState, applyChanges };
 }
 
 export const useFurnitureDimmerWidget = useFurnitureDimmerWidgetState;
