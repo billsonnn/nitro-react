@@ -31,20 +31,21 @@ const usePetPackageWidgetState = () =>
         if (errorResult.length > 0) setErrorResult('');
     }
 
-    const getErrorResult = (errorCode: number) =>
+    const getErrorResultForCode = (errorCode: number) =>
     {
         if (!errorCode || errorCode === 0) return;
         
         switch(errorCode)
         {
             case 1:
-                return setErrorResult(LocalizeText('catalog.alert.petname.long'));
+                return LocalizeText('catalog.alert.petname.long');
             case 2:
-                return setErrorResult(LocalizeText('catalog.alert.petname.short'));
+                return LocalizeText('catalog.alert.petname.short');
             case 3:
-                return setErrorResult(LocalizeText('catalog.alert.petname.chars'));
+                return LocalizeText('catalog.alert.petname.chars');
             case 4:
-                return setErrorResult(LocalizeText('catalog.alert.petname.bobba'));
+            default:
+                return LocalizeText('catalog.alert.petname.bobba');
         }
     }
 
@@ -65,7 +66,7 @@ const usePetPackageWidgetState = () =>
 
         if (event.nameValidationStatus === 0) onClose();
         
-        if (event.nameValidationStatus !== 0) getErrorResult(event.nameValidationStatus);
+        if (event.nameValidationStatus !== 0) setErrorResult(getErrorResultForCode(event.nameValidationStatus));
     });
 
     return { isVisible, errorResult, petName, objectType, onChangePetName, onConfirm, onClose };
