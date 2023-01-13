@@ -10,7 +10,7 @@ const useInventoryBadgesState = () =>
 {
     const [ needsUpdate, setNeedsUpdate ] = useState(true);
     const [ badgeCodes, setBadgeCodes ] = useState<string[]>([]);
-    const [ badgeIds, setBadgeIds ] = useState<number[]>([]);
+    const [ badgeIds, setBadgeIds ] = useState<Map<string, number>>(new Map<string, number>());
     const [ activeBadgeCodes, setActiveBadgeCodes ] = useState<string[]>([]);
     const [ selectedBadgeCode, setSelectedBadgeCode ] = useState<string>(null);
     const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
@@ -41,7 +41,7 @@ const useInventoryBadgesState = () =>
 
             const composer = new SetActivatedBadgesComposer();
 
-            for(let i = 0; i < maxBadgeCount; i++) composer.addActivatedBadge(newValue[i] || null);
+            for(let i = 0; i < maxBadgeCount; i++) composer.addActivatedBadge(newValue[i] ?? '');
 
             SendMessageComposer(composer);
 
@@ -55,7 +55,7 @@ const useInventoryBadgesState = () =>
 
         if(index === -1) return 0;
 
-        return (badgeIds[index] || 0);
+        return (badgeIds.get(badgeCode) ?? 0);
     }
 
     useMessageEvent<BadgesEvent>(BadgesEvent, event =>
@@ -65,23 +65,25 @@ const useInventoryBadgesState = () =>
 
         setBadgeIds(prevValue =>
         {
-            const newValue = [ ...prevValue ];
+            const newValue = new Map(prevValue);
 
             parser.getAllBadgeCodes().forEach(code =>
             {
+                const exists = badgeCodes.indexOf(code) >= 0;
                 const badgeId = parser.getBadgeId(code);
 
-                if(newValue.indexOf(badgeId) >= 0) return;
-                
-                newValue.push(badgeId);
+                newValue.set(code, badgeId);
+
+                if(exists) return;
+
                 badgesToAdd.push(code);
             });
-
+            
             return newValue;
         });
 
-        setBadgeCodes(prevValue => [ ...prevValue, ...badgesToAdd ]);
         setActiveBadgeCodes(parser.getActiveBadgeCodes());
+        setBadgeCodes(prev => [ ...prev, ...badgesToAdd ]);
     });
 
     useMessageEvent<BadgeReceivedEvent>(BadgeReceivedEvent, event =>
@@ -101,10 +103,9 @@ const useInventoryBadgesState = () =>
 
         setBadgeIds(prevValue =>
         {
-            const newValue = [ ...prevValue ];
+            const newValue = new Map(prevValue);
 
-            if(unseen) newValue.unshift(parser.badgeId)
-            else newValue.push(parser.badgeId);
+            newValue.set(parser.badgeCode, parser.badgeId);
 
             return newValue;
         });
