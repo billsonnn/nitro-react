@@ -1,10 +1,10 @@
 import { GiftReceiverNotFoundEvent, PurchaseFromCatalogAsGiftComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { ColorUtils, GetSessionDataManager, LocalizeText, ProductTypeEnum, SendMessageComposer } from '../../../../api';
+import { ColorUtils, GetSessionDataManager, LocalizeText, MessengerFriend, ProductTypeEnum, SendMessageComposer } from '../../../../api';
 import { Base, Button, ButtonGroup, classNames, Column, Flex, FormGroup, LayoutCurrencyIcon, LayoutFurniImageView, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { CatalogEvent, CatalogInitGiftEvent, CatalogPurchasedEvent } from '../../../../events';
-import { useCatalog, useMessageEvent, useUiEvent } from '../../../../hooks';
+import { useCatalog, useFriends, useMessageEvent, useUiEvent } from '../../../../hooks';
 
 export const CatalogGiftView: FC<{}> = props =>
 {
@@ -23,8 +23,11 @@ export const CatalogGiftView: FC<{}> = props =>
     const [ maxRibbonIndex, setMaxRibbonIndex ] = useState<number>(0);
     const [ receiverNotFound, setReceiverNotFound ] = useState<boolean>(false);
     const { catalogOptions = null } = useCatalog();
+    const { friends } = useFriends();
     const { giftConfiguration = null } = catalogOptions;
     const [ boxTypes, setBoxTypes ] = useState<number[]>([]);
+    const [ suggestions, setSuggestions ] = useState([]);
+    const [ isAutocompleteVisible, setIsAutocompleteVisible ] = useState(true);
 
     const onClose = useCallback(() =>
     {
@@ -37,6 +40,8 @@ export const CatalogGiftView: FC<{}> = props =>
         setMessage('');
         setSelectedBoxIndex(0);
         setSelectedRibbonIndex(0);
+        setIsAutocompleteVisible(false);
+        setSuggestions([]);
 
         if(colors.length) setSelectedColorId(colors[0].id);
     }, [ colors ]);
@@ -56,19 +61,42 @@ export const CatalogGiftView: FC<{}> = props =>
     const isColorable = useMemo(() =>
     {
         if (!giftConfiguration) return false;
-        
+
         if (isBoxDefault) return false;
 
         const boxType = boxTypes[selectedBoxIndex];
 
         return (boxType === 8 || (boxType >= 3 && boxType <= 6)) ? false : true;
     }, [ giftConfiguration, selectedBoxIndex, isBoxDefault, boxTypes ]);
-    
+
     const colourId = useMemo(() =>
     {
         return isBoxDefault ? boxTypes[selectedBoxIndex] : selectedColorId;
     },[ isBoxDefault, boxTypes, selectedBoxIndex, selectedColorId ])
 
+    const allFriends = friends.filter( (friend: MessengerFriend) => friend.id !== -1 );
+
+    const onTextChanged = (e: ChangeEvent<HTMLInputElement>) =>
+    {
+        const value = e.target.value;
+
+        let suggestions = [];
+
+        if (value.length > 0)
+        {
+            suggestions = allFriends.sort().filter((friend: MessengerFriend) => friend.name.includes(value));
+        }
+
+        setReceiverName(value);
+        setIsAutocompleteVisible(true);
+        setSuggestions(suggestions);
+    };
+
+    const selectedReceiverName = (friendName: string) =>
+    {
+        setReceiverName(friendName);
+        setIsAutocompleteVisible(false);
+    }
 
     const handleAction = useCallback((action: string) =>
     {
@@ -113,7 +141,7 @@ export const CatalogGiftView: FC<{}> = props =>
                 const castedEvent = (event as CatalogInitGiftEvent);
 
                 onClose();
-                    
+
                 setPageId(castedEvent.pageId);
                 setOfferId(castedEvent.offerId);
                 setExtraData(castedEvent.extraData);
@@ -126,20 +154,20 @@ export const CatalogGiftView: FC<{}> = props =>
     {
         setReceiverNotFound(false);
     }, [ receiverName ]);
-    
+
     const createBoxTypes = useCallback(() =>
     {
         if (!giftConfiguration) return;
-        
+
         setBoxTypes(prev =>
         {
             let newPrev = [ ...giftConfiguration.boxTypes ];
-    
+
             newPrev.push(giftConfiguration.defaultStuffTypes[ Math.floor((Math.random() * (giftConfiguration.defaultStuffTypes.length - 1))) ]);
 
             setMaxBoxIndex(newPrev.length- 1);
             setMaxRibbonIndex(newPrev.length - 1);
-    
+
             return newPrev;
         })
     },[ giftConfiguration ])
@@ -167,9 +195,9 @@ export const CatalogGiftView: FC<{}> = props =>
             setColors(newColors);
         }
     }, [ giftConfiguration, createBoxTypes ]);
-    
+
     useEffect(() =>
-    { 
+    {
         if (!isVisible) return;
 
         createBoxTypes();
@@ -187,7 +215,14 @@ export const CatalogGiftView: FC<{}> = props =>
             <NitroCardContentView className="text-black">
                 <FormGroup column>
                     <Text>{ LocalizeText('catalog.gift_wrapping.receiver') }</Text>
-                    <input type="text" className={ classNames('form-control form-control-sm', receiverNotFound && 'is-invalid') } value={ receiverName } onChange={ (e) => setReceiverName(e.target.value) } />
+                    <input type="text" className={ classNames('form-control form-control-sm', receiverNotFound && 'is-invalid') } value={ receiverName } onChange={ (e) => onTextChanged(e) } />
+                    { (suggestions.length > 0 && isAutocompleteVisible) &&
+                        <Column className="autocomplete-gift-container">
+                            { suggestions.map((friend: MessengerFriend) => (
+                                <Base key={ friend.id } className="autocomplete-gift-item" onClick={ (e) => selectedReceiverName(friend.name) }>{ friend.name }</Base>
+                            )) }
+                        </Column>
+                    }
                     { receiverNotFound &&
                         <Base className="invalid-feedback">{ LocalizeText('catalog.gift_wrapping.receiver_not_found.title') }</Base> }
                 </FormGroup>
