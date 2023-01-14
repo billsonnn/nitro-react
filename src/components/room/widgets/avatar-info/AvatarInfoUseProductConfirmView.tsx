@@ -10,19 +10,19 @@ interface AvatarInfoUseProductConfirmViewProps
     onClose: () => void;
 }
 
-const _Str_5091: number = -1;
-const _Str_11906: number = 0;
-const _Str_11214: number = 1;
-const _Str_11733: number = 2;
-const _Str_11369: number = 3;
-const _Str_8759: number = 4;
-const _Str_8432: number = 5;
-const _Str_9653: number = 6;
+const PRODUCT_PAGE_UKNOWN: number = -1;
+const PRODUCT_PAGE_SHAMPOO: number = 0;
+const PRODUCT_PAGE_CUSTOM_PART: number = 1;
+const PRODUCT_PAGE_CUSTOM_PART_SHAMPOO: number = 2;
+const PRODUCT_PAGE_SADDLE: number = 3;
+const PRODUCT_PAGE_REVIVE: number = 4;
+const PRODUCT_PAGE_REBREED: number = 5;
+const PRODUCT_PAGE_FERTILIZE: number = 6;
 
 export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmViewProps> = props =>
 {
     const { item = null, onClose = null } = props;
-    const [ mode, setMode ] = useState(_Str_5091);
+    const [ mode, setMode ] = useState(PRODUCT_PAGE_UKNOWN);
     const [ petData, setPetData ] = useState<IRoomUserData>(null);
     const [ furniData, setFurniData ] = useState<IFurnitureData>(null);
     const { roomSession = null } = useRoom();
@@ -189,30 +189,30 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
         setFurniData(furniData);
 
-        let mode = _Str_5091;
+        let mode = PRODUCT_PAGE_UKNOWN;
 
         switch(furniData.specialType)
         {
             case FurniCategory.PET_SHAMPOO:
-                mode = _Str_11906;
+                mode = PRODUCT_PAGE_SHAMPOO;
                 break;
             case FurniCategory.PET_CUSTOM_PART:
-                mode = _Str_11214;
+                mode = PRODUCT_PAGE_CUSTOM_PART;
                 break;
             case FurniCategory.PET_CUSTOM_PART_SHAMPOO:
-                mode = _Str_11733;
+                mode = PRODUCT_PAGE_CUSTOM_PART_SHAMPOO;
                 break;
             case FurniCategory.PET_SADDLE:
-                mode = _Str_11369;
+                mode = PRODUCT_PAGE_SADDLE;
                 break;
             case FurniCategory.MONSTERPLANT_REVIVAL:
-                mode = _Str_8759;
+                mode = PRODUCT_PAGE_REVIVE;
                 break;
             case FurniCategory.MONSTERPLANT_REBREED:
-                mode = _Str_8432;
+                mode = PRODUCT_PAGE_REBREED;
                 break;
             case FurniCategory.MONSTERPLANT_FERTILIZE:
-                mode = _Str_9653;
+                mode = PRODUCT_PAGE_FERTILIZE;
                 break;
         }
 
@@ -233,37 +233,37 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     </Column>
                     <Column justifyContent="between" overflow="auto">
                         <Column gap={ 2 }>
-                            { (mode === _Str_11906) &&
+                            { (mode === PRODUCT_PAGE_SHAMPOO) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.shampoo', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.shampoo') }</Text>
                                 </> }
-                            { (mode === _Str_11214) &&
+                            { (mode === PRODUCT_PAGE_CUSTOM_PART) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.custompart', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.custompart') }</Text>
                                 </> }
-                            { (mode === _Str_11733) &&
+                            { (mode === PRODUCT_PAGE_CUSTOM_PART_SHAMPOO) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.custompartshampoo', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.custompartshampoo') }</Text>
                                 </> }
-                            { (mode === _Str_11369) &&
+                            { (mode === PRODUCT_PAGE_SADDLE) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.saddle', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.saddle') }</Text>
                                 </> }
-                            { (mode === _Str_8759) &&
+                            { (mode === PRODUCT_PAGE_REVIVE) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.revive_monsterplant', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.revive_monsterplant') }</Text>
                                 </> }
-                            { (mode === _Str_8432) &&
+                            { (mode === PRODUCT_PAGE_REBREED) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.rebreed_monsterplant', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.rebreed_monsterplant') }</Text>
                                 </> }
-                            { (mode === _Str_9653) &&
+                            { (mode === PRODUCT_PAGE_FERTILIZE) &&
                                 <>
                                     <Text>{ LocalizeText('useproduct.widget.text.fertilize_monsterplant', [ 'productName' ], [ furniData.name ] ) }</Text>
                                     <Text>{ LocalizeText('useproduct.widget.info.fertilize_monsterplant') }</Text>

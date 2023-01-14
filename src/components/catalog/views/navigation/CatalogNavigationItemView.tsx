@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
+import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
 import { ICatalogNode } from '../../../../api';
 import { Base, LayoutGridItem, Text } from '../../../../common';
 import { useCatalog } from '../../../../hooks';
@@ -23,7 +23,10 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
                 <CatalogIconView icon={ node.iconId } />
                 <Text grow truncate>{ node.localization }</Text>
                 { node.isBranch &&
-                    <FontAwesomeIcon icon={ node.isOpen ? 'caret-up' : 'caret-down' } /> }
+                    <>
+                        { node.isOpen && <FaCaretUp className="fa-icon" /> }
+                        { !node.isOpen && <FaCaretDown className="fa-icon" /> }
+                    </> }
             </LayoutGridItem>
             { node.isOpen && node.isBranch &&
                 <CatalogNavigationSetView node={ node } child={ true } /> }

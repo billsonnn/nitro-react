@@ -1,64 +1,63 @@
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { FC, ReactElement, useEffect, useRef } from 'react';
+import { useVirtual } from '@tanstack/react-virtual';
+import { FC, Fragment, ReactElement, useEffect, useRef, useState } from 'react';
 import { Base } from './Base';
 
 interface InfiniteScrollProps<T = any>
 {
     rows: T[];
-    estimateSize: number;
     overscan?: number;
+    scrollToBottom?: boolean;
     rowRender: (row: T) => ReactElement;
 }
 
 export const InfiniteScroll: FC<InfiniteScrollProps> = props =>
 {
-    const { rows = [], estimateSize = 0, overscan = 5, rowRender = null } = props;
+    const { rows = [], overscan = 5, scrollToBottom = false, rowRender = null } = props;
+    const [ scrollIndex, setScrollIndex ] = useState<number>(rows.length - 1);
     const elementRef = useRef<HTMLDivElement>(null);
 
-    const rowVirtualizer = useVirtualizer({
-        count: rows.length,
-        getScrollElement: () => elementRef?.current,
-        estimateSize: () => estimateSize,
-        overscan: overscan
+    const { virtualItems = [], totalSize = 0, scrollToIndex = null } = useVirtual({
+        parentRef: elementRef,
+        size: rows.length,
+        overscan
     });
+
+    const paddingTop = (virtualItems.length > 0) ? (virtualItems?.[0]?.start || 0) : 0
+    const paddingBottom = (virtualItems.length > 0) ? (totalSize - (virtualItems?.[virtualItems.length - 1]?.end || 0)) : 0;
 
     useEffect(() =>
     {
-        let timeout: ReturnType<typeof setTimeout> = null;
+        if(!scrollToBottom) return;
 
-        const resizeObserver = new ResizeObserver(() =>
-        {
-            if(timeout) clearTimeout(timeout);
-
-            if(!elementRef.current) return;
-
-            timeout = setTimeout(() => rowVirtualizer.getVirtualItems().forEach((virtualItem, index) => virtualItem.measureElement(elementRef?.current?.children?.[0]?.children[index])), 10);
-        });
-
-        if(elementRef.current) resizeObserver.observe(elementRef.current);
-
-        return () =>
-        {
-            if(timeout) clearTimeout(timeout);
-
-            timeout = null;
-            
-            resizeObserver.disconnect();
-        }
-    }, [ rowVirtualizer ]);
+        scrollToIndex(scrollIndex);
+    }, [ scrollToBottom, scrollIndex, scrollToIndex ]);
 
     return (
         <Base fit innerRef={ elementRef } position="relative" overflow="auto">
-            <Base style={ { height: rowVirtualizer.getTotalSize() } }>
-                { rowVirtualizer.getVirtualItems().map(virtualRow =>
-                {
-                    return (
-                        <div key={ virtualRow.index } ref={ virtualRow.measureElement } style={ { transform: `translateY(${ virtualRow.start }px)`, position: 'absolute', width: '100%' } }>
-                            { rowRender(rows[virtualRow.index]) }
-                        </div>
-                    );
-                }) }
-            </Base>
+            { (paddingTop > 0) &&
+                <div
+                    style={ { minHeight: `${ paddingTop }px` } } /> }
+            { virtualItems.map(item => 
+            {
+                const row = rows[item.index];
+
+                if (!row) return (
+                    <Fragment
+                        key={ item.key } />
+                );
+
+                return (
+                    <div
+                        key={ item.key }
+                        data-index={ item.index }
+                        ref={ item.measureRef }>
+                        { rowRender(row) }
+                    </div>
+                )
+            }) }
+            { (paddingBottom > 0) &&
+                <div
+                    style={ { minHeight: `${ paddingBottom }px` } } /> }
         </Base>
     );
 }

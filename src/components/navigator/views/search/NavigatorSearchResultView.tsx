@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavigatorSearchComposer, NavigatorSearchResultList } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
+import { FaBars, FaMinus, FaPlus, FaTh, FaWindowMaximize, FaWindowRestore } from 'react-icons/fa';
 import { LocalizeText, NavigatorSearchResultViewDisplayMode, SendMessageComposer } from '../../../../api';
 import { AutoGrid, AutoGridProps, Column, Flex, Grid, Text } from '../../../../common';
 import { useNavigator } from '../../../../hooks';
@@ -61,12 +61,15 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
         <Column className="bg-white rounded border border-muted" gap={ 0 }>
             <Flex fullWidth alignItems="center" justifyContent="between" className="px-2 py-1">
                 <Flex grow pointer alignItems="center" gap={ 1 } onClick={ event => setIsExtended(prevValue => !prevValue) }>
-                    <FontAwesomeIcon icon={ isExtended ? 'minus' : 'plus' } className="text-secondary" />
+                    { isExtended && <FaPlus className="text-secondary fa-icon" /> }
+                    { !isExtended && <FaMinus className="text-secondary fa-icon" /> }
                     <Text>{ LocalizeText(getResultTitle()) }</Text>
                 </Flex>
                 <Flex gap={ 2 }>
-                    <FontAwesomeIcon icon={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 'th' : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 'bars' : null) } className="text-secondary" onClick={ toggleDisplayMode } />
-                    { (searchResult.action > 0) && <FontAwesomeIcon icon={ searchResult.action == 1 ? 'window-maximize' : 'window-restore' } className="text-secondary" onClick={ showMore } /> }
+                    { (displayMode === NavigatorSearchResultViewDisplayMode.LIST) && <FaTh className="text-secondary fa-icon" onClick={ toggleDisplayMode } /> }
+                    { (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) && <FaBars className="text-secondary fa-icon" onClick={ toggleDisplayMode } /> }
+                    { (searchResult.action > 0) && (searchResult.action === 1) && <FaWindowMaximize className="text-secondary fa-icon" onClick={ showMore } /> }
+                    { (searchResult.action > 0) && (searchResult.action !== 1) && <FaWindowRestore className="text-secondary fa-icon" onClick={ showMore } /> }
                 </Flex>
 
             </Flex> { isExtended && 

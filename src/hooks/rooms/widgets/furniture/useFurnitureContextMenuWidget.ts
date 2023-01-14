@@ -1,13 +1,13 @@
-import { ContextMenuEnum, GroupFurniContextMenuInfoMessageEvent, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { ContextMenuEnum, GroupFurniContextMenuInfoMessageEvent, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
 import { GetRoomEngine, IsOwnerOfFurniture, TryJoinGroup, TryVisitRoom } from '../../../../api';
 import { useMessageEvent, useRoomEngineEvent } from '../../../events';
 import { useRoom } from '../../useRoom';
 
-const MONSTERPLANT_SEED_CONFIRMATION: string = 'MONSTERPLANT_SEED_CONFIRMATION';
-const PURCHASABLE_CLOTHING_CONFIRMATION: string = 'PURCHASABLE_CLOTHING_CONFIRMATION';
-const GROUP_FURNITURE: string = 'GROUP_FURNITURE';
-const EFFECTBOX_OPEN: string = 'EFFECTBOX_OPEN';
+export const MONSTERPLANT_SEED_CONFIRMATION: string = 'MONSTERPLANT_SEED_CONFIRMATION';
+export const PURCHASABLE_CLOTHING_CONFIRMATION: string = 'PURCHASABLE_CLOTHING_CONFIRMATION';
+export const GROUP_FURNITURE: string = 'GROUP_FURNITURE';
+export const EFFECTBOX_OPEN: string = 'EFFECTBOX_OPEN';
 
 const useFurnitureContextMenuWidgetState = () =>
 {
@@ -17,6 +17,7 @@ const useFurnitureContextMenuWidgetState = () =>
     const [ confirmingObjectId, setConfirmingObjectId ] = useState(-1);
     const [ groupData, setGroupData ] = useState<GroupFurniContextMenuInfoMessageParser>(null);
     const [ isGroupMember, setIsGroupMember ] = useState(false);
+    const [ objectOwnerId, setObjectOwnerId ] = useState(-1);
     const { roomSession = null } = useRoom();
 
     const onClose = () =>
@@ -53,6 +54,9 @@ const useFurnitureContextMenuWidgetState = () =>
                     setConfirmMode(PURCHASABLE_CLOTHING_CONFIRMATION);
                     setConfirmingObjectId(objectId);
                     break;
+                case 'use_mystery_box':
+                    roomSession.useMultistateItem(objectId);
+                    break;
                 case 'join_group':
                     TryJoinGroup(groupData.guildId);
                     setIsGroupMember(true);
@@ -71,12 +75,15 @@ const useFurnitureContextMenuWidgetState = () =>
         RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU,
         RoomEngineTriggerWidgetEvent.REQUEST_MONSTERPLANT_SEED_PLANT_CONFIRMATION_DIALOG,
         RoomEngineTriggerWidgetEvent.REQUEST_PURCHASABLE_CLOTHING_CONFIRMATION_DIALOG,
-        RoomEngineTriggerWidgetEvent.REQUEST_EFFECTBOX_OPEN_DIALOG
+        RoomEngineTriggerWidgetEvent.REQUEST_EFFECTBOX_OPEN_DIALOG,
+        RoomEngineTriggerWidgetEvent.REQUEST_MYSTERYBOX_OPEN_DIALOG
     ], event =>
     {
         const object = GetRoomEngine().getRoomObject(roomSession.roomId, event.objectId, event.category);
 
         if(!object) return;
+
+        setObjectOwnerId(object.model.getValue<number>(RoomObjectVariable.FURNITURE_OWNER_ID));
 
         switch(event.type)
         {
@@ -104,6 +111,11 @@ const useFurnitureContextMenuWidgetState = () =>
 
                 onClose();
                 return;
+            case RoomEngineTriggerWidgetEvent.REQUEST_MYSTERYBOX_OPEN_DIALOG:
+                roomSession.useMultistateItem(object.id);
+
+                onClose();
+                return;
             case RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU:
 
                 setObjectId(object.id);
@@ -117,6 +129,7 @@ const useFurnitureContextMenuWidgetState = () =>
                         if(IsOwnerOfFurniture(object)) setMode(ContextMenuEnum.MONSTERPLANT_SEED);
                         return;
                     case ContextMenuEnum.MYSTERY_BOX:
+                        setMode(ContextMenuEnum.MYSTERY_BOX);
                         return;
                     case ContextMenuEnum.RANDOM_TELEPORT:
                         setMode(ContextMenuEnum.RANDOM_TELEPORT);
@@ -143,7 +156,7 @@ const useFurnitureContextMenuWidgetState = () =>
         setMode(GROUP_FURNITURE);
     });
 
-    return { objectId, mode, confirmMode, confirmingObjectId, groupData, isGroupMember, closeConfirm, processAction, onClose };
+    return { objectId, mode, confirmMode, confirmingObjectId, groupData, isGroupMember, objectOwnerId, closeConfirm, processAction, onClose };
 }
 
 export const useFurnitureContextMenuWidget = useFurnitureContextMenuWidgetState;

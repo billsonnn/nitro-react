@@ -1,0 +1,106 @@
+.nitro-pet-package
+{
+    .pet-package-container-top
+    {
+        width: 400px;
+        height: 120px;
+        border-radius: 2px;
+        background-color: #0E3F52;
+
+        .package-image-gnome_box
+        {
+            width: 80px;
+            height: 84px;
+            position: relative;
+            background-image: url('@/assets/images/pets/pet-package/gnome.png');
+            background-repeat: no-repeat;
+        }
+
+        .package-image-leprechaun_box
+        {
+            width: 80px;
+            height: 84px;
+            position: relative;
+            background-image: url('@/assets/images/pets/pet-package/leprechaun_box.png');
+            background-repeat: no-repeat;
+        }
+
+        .package-image-val11_present
+        {
+            width: 80px;
+            height: 84px;
+            position: relative;
+            background-image: url('@/assets/images/pets/pet-package/val11_present.png');
+            background-repeat: no-repeat;
+        }
+
+        .package-image-velociraptor_egg
+        {
+            width: 80px;
+            height: 84px;
+            position: relative;
+            background-image: url('@/assets/images/pets/pet-package/velociraptor_egg.png');
+            background-repeat: no-repeat;
+        }
+
+        .package-image-pterosaur_egg
+        {
+            width: 80px;
+            height: 84px;
+            position: relative;
+            background-image: url('@/assets/images/pets/pet-package/pterosaur_egg.png');
+            background-repeat: no-repeat;
+        }
+
+        .package-image-petbox_epic
+        {
+            width: 80px;
+            height: 84px;
+            position: relative;
+            background-image: url('@/assets/images/pets/pet-package/petbox_epic.png');
+            background-repeat: no-repeat;
+        }
+
+        .package-text-big
+        {
+            font-size: 16px;
+        }
+    }
+
+    .pet-package-container-bottom
+    {
+        display: flex;
+        justify-content: center;
+        width: 400px;
+        height: 120px;
+        border-radius: 2px;
+        background-color: #E9E9E1;
+
+        .input-pet-package-container
+        {
+            width: 380px;
+            border: 1px solid black;
+
+            .input-pet-package
+            {
+                width: 350px;
+                border: 0;
+                outline: 0;
+            }
+
+            .package-pencil-image
+            {
+                width: 16px;
+                height: 16px;
+                position: relative;
+                background-image: url('@/assets/images/infostand/pencil-icon.png');
+                background-repeat: no-repeat;
+            }
+        }
+
+        .text-decoration
+        {
+            text-decoration: underline;
+        }
+    }
+}

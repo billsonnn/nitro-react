@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FollowFriendMessageComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { FaTimes } from 'react-icons/fa';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker, ReportType, SendMessageComposer } from '../../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, LayoutGridItem, LayoutItemCountView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useHelp, useMessenger } from '../../../../hooks';
@@ -154,7 +154,7 @@ export const FriendsMessengerView: FC<{}> = props =>
                                         </Button>
                                     </Flex>
                                     <Button onClick={ event => closeThread(activeThread.threadId) }>
-                                        <FontAwesomeIcon icon="times" />
+                                        <FaTimes className="fa-icon" />
                                     </Button>
                                 </Flex>
                                 <Column fit className="bg-muted p-2 rounded chat-messages">

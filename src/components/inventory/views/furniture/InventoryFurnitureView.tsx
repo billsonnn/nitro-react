@@ -65,7 +65,7 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
 
             if(furnitureItem.category === FurniCategory.LANDSCAPE)
             {
-                const data = GetSessionDataManager().getWallItemDataByName('noob_window_double');
+                const data = GetSessionDataManager().getWallItemDataByName('window_double_default');
 
                 if(data) roomPreviewer.addWallItemIntoRoom(data.id, new Vector3d(90, 0, 0), data.customParams);
             }

@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useEffect, useState } from 'react';
+import { FaPlus, FaTrash } from 'react-icons/fa';
 import ReactSlider from 'react-slider';
 import { LocalizeText, WiredFurniType } from '../../../../api';
 import { Button, Column, Flex, Text } from '../../../../common';
@@ -133,7 +133,7 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
             <Flex justifyContent="between" alignItems="center">
                 <Text bold>Rewards</Text>
                 <Button variant="success" onClick={ addReward }>
-                    <FontAwesomeIcon icon="plus" />
+                    <FaPlus className="fa-icon" />
                 </Button>
             </Flex>
             <Column gap={ 1 }>
@@ -149,7 +149,7 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
                             <input type="number" className="form-control form-control-sm" value={ reward.probability } onChange={ e => updateReward(index, reward.isBadge, reward.itemCode, Number(e.target.value)) } placeholder="Probability" />
                             { (index > 0) &&
                             <Button variant="danger" onClick={ event => removeReward(index) }>
-                                <FontAwesomeIcon icon="trash" />
+                                <FaTrash className="fa-icon" />
                             </Button> }
                         </Flex>
                     )

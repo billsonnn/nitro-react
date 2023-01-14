@@ -4,7 +4,7 @@ export interface IPurse
     activityPoints: Map<number, number>;
     clubDays: number;
     clubPeriods: number;
-    _Str_13571: boolean;
+    hasClubLeft: boolean;
     isVip: boolean;
     pastClubDays: number;
     pastVipDays: number;

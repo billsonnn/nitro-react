@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DesktopViewEvent, GetGuestRoomResultEvent, GroupInformationComposer, GroupInformationEvent, GroupInformationParser, GroupRemoveMemberComposer, HabboGroupDeactivatedMessageEvent, RoomEntryInfoMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { GetGroupInformation, GetGroupManager, GetSessionDataManager, GroupMembershipType, GroupType, LocalizeText, SendMessageComposer, TryJoinGroup } from '../../../api';
 import { Base, Button, Column, Flex, LayoutBadgeImageView, Text } from '../../../common';
 import { useMessageEvent, useNotification } from '../../../hooks';
@@ -109,7 +109,8 @@ export const GroupRoomInformationView: FC<{}> = props =>
             <Column>
                 <Flex alignItems="center" justifyContent="between" pointer onClick={ event => setIsOpen(value => !value) }>
                     <Text variant="white">{ LocalizeText('group.homeroominfo.title') }</Text>
-                    <FontAwesomeIcon icon={ isOpen ? 'chevron-up' : 'chevron-down' } />
+                    { isOpen && <FaChevronUp className="fa-icon" /> }
+                    { !isOpen && <FaChevronDown className="fa-icon" /> }
                 </Flex>
                 { isOpen &&
                     <>

@@ -25,7 +25,7 @@ $nitro-card-tabs-height: 33px;
 
             .nitro-card-header-close {
                 cursor: pointer;
-                padding: 1px 3px;
+                padding: 2px 2px;
                 line-height: 1;
                 border-radius: $border-radius;
                 box-shadow: 0 0 0 1.6px $white;
@@ -91,7 +91,7 @@ $nitro-card-tabs-height: 33px;
                 }
 
                 &:before {
-                    content: "";
+                    content: '';
                     position: absolute;
                     width: 93%;
                     height: 3px;
@@ -127,7 +127,7 @@ $nitro-card-tabs-height: 33px;
 
             &:before {
                 position: absolute;
-                content: " ";
+                content: ' ';
                 top: 0;
                 left: 0;
                 width: 100%;

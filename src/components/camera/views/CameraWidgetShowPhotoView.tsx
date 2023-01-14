@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useEffect, useState } from 'react';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { GetUserProfile, IPhotoData, LocalizeText } from '../../../api';
 import { Flex, Grid, Text } from '../../../common';
 
@@ -61,9 +61,9 @@ export const CameraWidgetShowPhotoView: FC<CameraWidgetShowPhotoViewProps> = pro
             </Flex>
             { (currentPhotos.length > 1) &&
                 <Flex className="picture-preview-buttons">
-                    <FontAwesomeIcon icon="arrow-left" className="cursor-pointer picture-preview-buttons-previous" onClick={ previous } />
+                    <FaArrowLeft className="cursor-pointer picture-preview-buttons-previous fa-icon" onClick={ previous } />
                     <Text underline className="cursor-pointer" onClick={ event => GetUserProfile(currentImage.oi) }>{ currentImage.o }</Text>
-                    <FontAwesomeIcon icon="arrow-right" className="cursor-pointer picture-preview-buttons-next" onClick={ next } />
+                    <FaArrowRight className="cursor-pointer picture-preview-buttons-next fa-icon" onClick={ next } />
                 </Flex>
             }
         </Grid>

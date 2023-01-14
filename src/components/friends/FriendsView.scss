@@ -1,5 +1,5 @@
 .nitro-friends-spritesheet {
-    background: url('../../assets/images/friends/friends-spritesheet.png') transparent no-repeat;
+    background: url('@/assets/images/friends/friends-spritesheet.png') transparent no-repeat;
 
     &.icon-friendbar-visit {
         width: 21px; height: 21px;
@@ -83,7 +83,7 @@
 }
 
 .messenger-notification-icon {
-    background: url('../../assets/images/friends/messenger_notification_icon.png') transparent no-repeat;
+    background: url('@/assets/images/friends/messenger_notification_icon.png') transparent no-repeat;
     width: 25px; height: 25px;
 }
 
@@ -142,7 +142,7 @@
                 left: 5px;
                 width: 31px;
                 height: 34px;
-                background-image: url('../../assets/images/toolbar/friend-search.png');
+                background-image: url('@/assets/images/toolbar/friend-search.png');
             }
         }
     }

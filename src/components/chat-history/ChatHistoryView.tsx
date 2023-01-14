@@ -1,5 +1,5 @@
 import { ILinkEventTracker } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { AddEventLinkTracker, ChatEntryType, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { Flex, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { useChatHistory } from '../../hooks';
@@ -9,6 +9,7 @@ export const ChatHistoryView: FC<{}> = props =>
     const [ isVisible, setIsVisible ] = useState(false);
     const [ searchText, setSearchText ] = useState<string>('');
     const { chatHistory = [] } = useChatHistory();
+    const elementRef = useRef<HTMLDivElement>(null);
 
     const filteredChatHistory = useMemo(() => 
     {
@@ -19,10 +20,10 @@ export const ChatHistoryView: FC<{}> = props =>
         return chatHistory.filter(entry => ((entry.message && entry.message.toLowerCase().includes(text))) || (entry.name && entry.name.toLowerCase().includes(text)));
     }, [ chatHistory, searchText ]);
 
-    /* useEffect(() =>
+    useEffect(() =>
     {
         if(elementRef && elementRef.current && isVisible) elementRef.current.scrollTop = elementRef.current.scrollHeight;
-    }, [ isVisible ]); */
+    }, [ isVisible ]);
 
     useEffect(() =>
     {
@@ -59,9 +60,9 @@ export const ChatHistoryView: FC<{}> = props =>
     return (
         <NitroCardView uniqueKey="chat-history" className="nitro-chat-history" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('room.chathistory.button.text') } onCloseClick={ event => setIsVisible(false) }/>
-            <NitroCardContentView overflow="hidden" gap={ 2 }>
+            <NitroCardContentView innerRef={ elementRef } overflow="hidden" gap={ 2 }>
                 <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchText } onChange={ event => setSearchText(event.target.value) } />
-                <InfiniteScroll rows={ filteredChatHistory } estimateSize={ 35 } rowRender={ row =>
+                <InfiniteScroll rows={ filteredChatHistory } scrollToBottom={ true } rowRender={ row =>
                 {
                     return (
                         <Flex alignItems="center" className="p-1" gap={ 2 }>

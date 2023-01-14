@@ -78,7 +78,7 @@ export class Purse implements IPurse
         this._clubPeriods = k;
     }
 
-    public get _Str_13571(): boolean
+    public get hasClubLeft(): boolean
     {
         return (this._clubDays > 0) || (this._clubPeriods > 0);
     }

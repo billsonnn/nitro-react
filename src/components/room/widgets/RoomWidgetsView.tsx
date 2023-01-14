@@ -10,6 +10,8 @@ import { UserChooserWidgetView } from './choosers/UserChooserWidgetView';
 import { DoorbellWidgetView } from './doorbell/DoorbellWidgetView';
 import { FriendRequestWidgetView } from './friend-request/FriendRequestWidgetView';
 import { FurnitureWidgetsView } from './furniture/FurnitureWidgetsView';
+import { PetPackageWidgetView } from './pet-package/PetPackageWidgetView';
+import { RoomFilterWordsWidgetView } from './room-filter-words/RoomFilterWordsWidgetView';
 import { RoomThumbnailWidgetView } from './room-thumbnail/RoomThumbnailWidgetView';
 import { RoomToolsWidgetView } from './room-tools/RoomToolsWidgetView';
 import { WordQuizWidgetView } from './word-quiz/WordQuizWidgetView';
@@ -75,7 +77,7 @@ export const RoomWidgetsView: FC<{}> = props =>
             }
 
             if(!updateEvent) return;
-            
+
             let dispatchEvent = true;
 
             if(RoomId.isRoomPreviewerId(updateEvent.roomId)) return;
@@ -158,8 +160,10 @@ export const RoomWidgetsView: FC<{}> = props =>
             <DoorbellWidgetView />
             <FurnitureWidgetsView />
             <RoomToolsWidgetView />
+            <RoomFilterWordsWidgetView />
             <RoomThumbnailWidgetView />
             <FurniChooserWidgetView />
+            <PetPackageWidgetView />
             <UserChooserWidgetView />
             <WordQuizWidgetView />
             <FriendRequestWidgetView />

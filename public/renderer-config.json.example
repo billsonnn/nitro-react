@@ -29,11 +29,12 @@
     "system.log.error": false,
     "system.log.events": false,
     "system.log.packets": false,
-    "system.animation.fps": 24,
-    "system.limits.fps": false,
+    "system.fps.animation": 24,
+    "system.fps.max": 60,
     "system.pong.manually": true,
     "system.pong.interval.ms": 20000,
     "room.color.skip.transition": true,
+    "room.landscapes.enabled": true,
     "avatar.mandatory.libraries": [
         "bd:1",
         "li:0"

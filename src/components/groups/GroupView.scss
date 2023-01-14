@@ -1,7 +1,7 @@
 .nitro-group-tab-image {
     width: 122px;
     height: 68px;
-    background: url('../../assets/images/groups/creator_images.png') no-repeat;
+    background: url('@/assets/images/groups/creator_images.png') no-repeat;
 
     &.tab-1 {
         background-position: 0px 0px;
@@ -146,7 +146,7 @@
         .tab {
             position: relative;
             margin-left: -6px;
-            background-image: url('../../assets/images/groups/creator_tabs.png');
+            background-image: url('@/assets/images/groups/creator_tabs.png');
             background-repeat: no-repeat;
 
             &:first-child {
