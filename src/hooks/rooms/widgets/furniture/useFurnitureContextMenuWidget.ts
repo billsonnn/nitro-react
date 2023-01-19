@@ -8,6 +8,7 @@ export const MONSTERPLANT_SEED_CONFIRMATION: string = 'MONSTERPLANT_SEED_CONFIRM
 export const PURCHASABLE_CLOTHING_CONFIRMATION: string = 'PURCHASABLE_CLOTHING_CONFIRMATION';
 export const GROUP_FURNITURE: string = 'GROUP_FURNITURE';
 export const EFFECTBOX_OPEN: string = 'EFFECTBOX_OPEN';
+export const MYSTERYTROPHY_OPEN_DIALOG: string = 'MYSTERYTROPHY_OPEN_DIALOG';
 
 const useFurnitureContextMenuWidgetState = () =>
 {
@@ -57,6 +58,10 @@ const useFurnitureContextMenuWidgetState = () =>
                 case 'use_mystery_box':
                     roomSession.useMultistateItem(objectId);
                     break;
+                case 'use_mystery_trophy':
+                    setConfirmMode(MYSTERYTROPHY_OPEN_DIALOG);
+                    setConfirmingObjectId(objectId);
+                    break;
                 case 'join_group':
                     TryJoinGroup(groupData.guildId);
                     setIsGroupMember(true);
@@ -76,7 +81,8 @@ const useFurnitureContextMenuWidgetState = () =>
         RoomEngineTriggerWidgetEvent.REQUEST_MONSTERPLANT_SEED_PLANT_CONFIRMATION_DIALOG,
         RoomEngineTriggerWidgetEvent.REQUEST_PURCHASABLE_CLOTHING_CONFIRMATION_DIALOG,
         RoomEngineTriggerWidgetEvent.REQUEST_EFFECTBOX_OPEN_DIALOG,
-        RoomEngineTriggerWidgetEvent.REQUEST_MYSTERYBOX_OPEN_DIALOG
+        RoomEngineTriggerWidgetEvent.REQUEST_MYSTERYBOX_OPEN_DIALOG,
+        RoomEngineTriggerWidgetEvent.REQUEST_MYSTERYTROPHY_OPEN_DIALOG
     ], event =>
     {
         const object = GetRoomEngine().getRoomObject(roomSession.roomId, event.objectId, event.category);
@@ -116,6 +122,14 @@ const useFurnitureContextMenuWidgetState = () =>
 
                 onClose();
                 return;
+            case RoomEngineTriggerWidgetEvent.REQUEST_MYSTERYTROPHY_OPEN_DIALOG:
+                if(!IsOwnerOfFurniture(object)) return;
+
+                setConfirmingObjectId(object.id);
+                setConfirmMode(MYSTERYTROPHY_OPEN_DIALOG);
+
+                onClose();
+                return;
             case RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU:
 
                 setObjectId(object.id);
@@ -130,6 +144,9 @@ const useFurnitureContextMenuWidgetState = () =>
                         return;
                     case ContextMenuEnum.MYSTERY_BOX:
                         setMode(ContextMenuEnum.MYSTERY_BOX);
+                        return;
+                    case ContextMenuEnum.MYSTERY_TROPHY:
+                        if(IsOwnerOfFurniture(object)) setMode(ContextMenuEnum.MYSTERY_TROPHY);
                         return;
                     case ContextMenuEnum.RANDOM_TELEPORT:
                         setMode(ContextMenuEnum.RANDOM_TELEPORT);

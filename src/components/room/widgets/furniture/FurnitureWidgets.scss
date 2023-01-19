@@ -462,3 +462,65 @@
         background-position: center;
     }
 }
+
+.nitro-mysterytrophy-dialog
+{
+    .mysterytrophy-dialog-top
+    {
+        width: 400px;
+        height: 120px;
+        border-radius: 2px;
+        background-color: #0E3F52;
+
+        .mysterytrophy-image
+        {
+            width: 80px;
+            height: 84px;
+            position: relative;
+            background-image: url('@/assets/images/mysterytrophy/frank_mystery_trophy.png');
+            background-repeat: no-repeat;
+        }
+
+        .mysterytrophy-text-big
+        {
+            font-size: 16px;
+        }
+    }
+
+    .mysterytrophy-dialog-bottom
+    {
+        display: flex;
+        justify-content: center;
+        width: 400px;
+        height: 120px;
+        border-radius: 2px;
+        background-color: #E9E9E1;
+
+        .input-mysterytrophy-dialog
+        {
+            width: 380px;
+            border: 1px solid black;
+
+            .input-mysterytrophy
+            {
+                width: 350px;
+                border: 0;
+                outline: 0;
+            }
+
+            .mysterytrophy-pencil-image
+            {
+                width: 16px;
+                height: 16px;
+                position: relative;
+                background-image: url('@/assets/images/infostand/pencil-icon.png');
+                background-repeat: no-repeat;
+            }
+        }
+
+        .text-decoration
+        {
+            text-decoration: underline;
+        }
+    }
+}
