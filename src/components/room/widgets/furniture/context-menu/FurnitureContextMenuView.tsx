@@ -1,11 +1,12 @@
 import { ContextMenuEnum, CustomUserNotificationMessageEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { GetGroupInformation, GetSessionDataManager, LocalizeText } from '../../../../../api';
-import { EFFECTBOX_OPEN, GROUP_FURNITURE, MONSTERPLANT_SEED_CONFIRMATION, PURCHASABLE_CLOTHING_CONFIRMATION, useFurnitureContextMenuWidget, useMessageEvent, useNotification } from '../../../../../hooks';
+import { EFFECTBOX_OPEN, GROUP_FURNITURE, MONSTERPLANT_SEED_CONFIRMATION, MYSTERYTROPHY_OPEN_DIALOG, PURCHASABLE_CLOTHING_CONFIRMATION, useFurnitureContextMenuWidget, useMessageEvent, useNotification } from '../../../../../hooks';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
 import { FurnitureMysteryBoxOpenDialogView } from '../FurnitureMysteryBoxOpenDialogView';
+import { FurnitureMysteryTrophyOpenDialogView } from '../FurnitureMysteryTrophyOpenDialogView';
 import { EffectBoxConfirmView } from './EffectBoxConfirmView';
 import { MonsterPlantSeedConfirmView } from './MonsterPlantSeedConfirmView';
 import { PurchasableClothingConfirmView } from './PurchasableClothingConfirmView';
@@ -47,6 +48,8 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                 <PurchasableClothingConfirmView objectId={ confirmingObjectId } onClose={ closeConfirm } /> }
             { (confirmMode === EFFECTBOX_OPEN) &&
                 <EffectBoxConfirmView objectId={ confirmingObjectId } onClose={ closeConfirm } /> }
+            { (confirmMode === MYSTERYTROPHY_OPEN_DIALOG) &&
+                <FurnitureMysteryTrophyOpenDialogView objectId={ confirmingObjectId } onClose={ closeConfirm } /> }
             <FurnitureMysteryBoxOpenDialogView ownerId={ objectOwnerId } />
             { (objectId >= 0) && mode &&
                 <ContextMenuView objectId={ objectId } category={ RoomObjectCategory.FLOOR } onClose={ onClose } fades={ true }>
@@ -95,6 +98,15 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                                 { LocalizeText('mysterybox.context.' + ((isOwner) ? 'owner' : 'other') + '.use') }
                             </ContextMenuListItemView>
                         </> }
+                    { (mode === ContextMenuEnum.MYSTERY_TROPHY) &&
+                    <>
+                        <ContextMenuHeaderView>
+                            { LocalizeText('mysterytrophy.header.title') }
+                        </ContextMenuHeaderView>
+                        <ContextMenuListItemView onClick={ event => processAction('use_mystery_trophy') }>
+                            { LocalizeText('friendfurni.context.use') }
+                        </ContextMenuListItemView>
+                    </> }
                     { (mode === GROUP_FURNITURE) && groupData &&
                         <>
                             <ContextMenuHeaderView className="cursor-pointer text-truncate" onClick={ () => GetGroupInformation(groupData.guildId) }>
