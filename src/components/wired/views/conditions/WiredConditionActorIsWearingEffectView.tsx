@@ -13,7 +13,7 @@ export const WiredConditionActorIsWearingEffectView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        setEffect((trigger?.stringData !== '') ? parseInt(trigger?.stringData!) : 0);
+        setEffect(trigger?.intData[0] ?? 0);
     }, [ trigger ]);
     
     return (
