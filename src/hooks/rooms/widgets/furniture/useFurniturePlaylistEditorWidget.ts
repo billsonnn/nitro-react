@@ -81,8 +81,10 @@ const useFurniturePlaylistEditorWidgetState = () =>
         simpleAlert(LocalizeText('playlist.editor.alert.playlist.full'), NotificationAlertType.ALERT, '', '', LocalizeText('playlist.editor.alert.playlist.full.title'));
     });
 
-    const onFurniListUpdated = useCallback((event : IMessageEvent) =>
+    const onFurniListUpdated = (event : IMessageEvent) =>
     {
+        if(objectId === -1) return;
+
         if(event instanceof FurnitureListEvent)
         {
             if(event.getParser().fragmentNumber === 0)
@@ -94,7 +96,7 @@ const useFurniturePlaylistEditorWidgetState = () =>
         {
             GetNitroInstance().soundManager.musicController?.requestUserSongDisks();
         }
-    }, []);
+    }
 
     useMessageEvent(FurnitureListEvent, onFurniListUpdated);
     useMessageEvent(FurnitureListRemovedEvent, onFurniListUpdated);
