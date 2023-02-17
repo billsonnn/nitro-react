@@ -32,7 +32,7 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
         const localStorage = GetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`);
         const element = elementRef.current;
 
-        if(localStorage && localStorage.size)
+        if(localStorage && localStorage.size && localStorage.size.width > 0 && localStorage.size.height > 0)
         {
             element.style.width = `${ localStorage.size.width }px`;
             element.style.height = `${ localStorage.size.height }px`;
