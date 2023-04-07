@@ -69,19 +69,13 @@ export const AvatarEditorModelView: FC<AvatarEditorModelViewProps> = props =>
                 { !model.canSetGender && model.categories && (model.categories.size > 0) && Array.from(model.categories.keys()).map(name =>
                 {
                     const category = model.categories.get(name);
-                    
+
                     return (
-                        <div key={ name }>
-                            <Flex center pointer className="category-item" onClick={ event => selectCategory(name) }>
-                                { (isFromFootballGate && CATEGORY_FOOTBALL_GATE.includes(category.name)) &&
-                                    <AvatarEditorIcon icon={ category.name } selected={ (activeCategory === category) } />
-                                }
-                                { (!isFromFootballGate) &&
-                                    <AvatarEditorIcon icon={ category.name } selected={ (activeCategory === category) } />
-                                }
-                            </Flex>
-                        </div>
-                    );
+                        (!isFromFootballGate || (isFromFootballGate && CATEGORY_FOOTBALL_GATE.includes(category.name))) &&
+                        <Flex key={ category.name } center pointer className="category-item" onClick={ event => selectCategory(name) }>
+                            <AvatarEditorIcon icon={ category.name } selected={ (activeCategory === category) } />
+                        </Flex>
+                    )
                 }) }
             </Column>
             <Column size={ 5 } overflow="hidden">
