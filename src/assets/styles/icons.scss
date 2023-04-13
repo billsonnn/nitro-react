@@ -613,6 +613,42 @@
         height: 19px;
     }
 
+    &.icon-room-history-back-enabled {
+        background-image: url('@/assets/images/icons/room-history-back-enabled.png');
+        width: 34px;
+        height: 36px;
+    }
+
+    &.icon-room-history-back-disabled {
+        background-image: url('@/assets/images/icons/room-history-back-disabled.png');
+        width: 34px;
+        height: 36px;
+    }
+
+    &.icon-room-history-enabled {
+        background-image: url('@/assets/images/icons/room-history-enabled.png');
+        width: 33px;
+        height: 35px;
+    }
+
+    &.icon-room-history-disabled {
+        background-image: url('@/assets/images/icons/room-history-disabled.png');
+        width: 33px;
+        height: 35px;
+    }
+
+    &.icon-room-history-next-enabled {
+        background-image: url('@/assets/images/icons/room-history-next-enabled.png');
+        width: 34px;
+        height: 38px;
+    }
+
+    &.icon-room-history-next-disabled {
+        background-image: url('@/assets/images/icons/room-history-next-disabled.png');
+        width: 34px;
+        height: 38px;
+    }
+
     &.spin {
         animation: rotating 1s linear infinite;
     }

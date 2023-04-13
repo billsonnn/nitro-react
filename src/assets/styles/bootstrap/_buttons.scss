@@ -107,6 +107,27 @@
 // Button Sizes
 //
 
+.btn-toggle {
+  border-image-source: url("@/assets/images/icons/toggle_bg.png");
+  border-image-slice: 6 6 6 6 fill;
+  border-image-width: 6px 6px 6px 6px;
+  cursor: pointer;
+
+  .toggle-icon {
+    background-repeat: no-repeat;
+    width: 6px;
+    height: 8px;
+
+    &.left {
+      background-image: url("@/assets/images/icons/toggle_left.png");
+    }
+
+    &.right {
+      background-image: url("@/assets/images/icons/toggle_right.png");
+    }
+  }
+}
+
 .btn-lg {
   @include button-size($btn-padding-y-lg, $btn-padding-x-lg, $btn-font-size-lg, $btn-border-radius-lg);
 }
