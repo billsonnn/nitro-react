@@ -146,6 +146,49 @@
             }
         }
     }
+
+    .friend-bar-item-search {
+        width: 130px;
+        margin: 0 3px;
+        z-index: 0;
+        position: relative;
+        text-align: left;
+
+        .left-text {
+            margin-left: 30px;
+        }
+
+        .search-content {
+            margin-bottom: 105px;
+        }
+
+        &.friend-bar-item-active {
+            margin-bottom:21px;
+        }
+
+        .friend-bar-item-head {
+            &.avatar {
+                top: -30px;
+                left: -30px;
+            }
+            &.group {
+                top: -5px;
+                left: -5px;
+            }
+
+            pointer-events: none;
+        }
+
+        &.friend-bar-search {
+            .friend-bar-item-head {
+                top: -3px;
+                left: 5px;
+                width: 31px;
+                height: 34px;
+                background-image: url('@/assets/images/toolbar/friend-search.png');
+            }
+        }
+    }
 }
 
 .nitro-friends-messenger {
