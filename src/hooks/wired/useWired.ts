@@ -1,4 +1,4 @@
-import { ConditionDefinition, Triggerable, TriggerDefinition, UpdateActionMessageComposer, UpdateConditionMessageComposer, UpdateTriggerMessageComposer, WiredActionDefinition, WiredFurniActionEvent, WiredFurniConditionEvent, WiredFurniTriggerEvent, WiredSaveSuccessEvent } from '@nitrots/nitro-renderer';
+import { ConditionDefinition, OpenMessageComposer, Triggerable, TriggerDefinition, UpdateActionMessageComposer, UpdateConditionMessageComposer, UpdateTriggerMessageComposer, WiredActionDefinition, WiredFurniActionEvent, WiredFurniConditionEvent, WiredFurniTriggerEvent, WiredOpenEvent, WiredSaveSuccessEvent } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { IsOwnerOfFloorFurniture, LocalizeText, SendMessageComposer, WiredFurniType, WiredSelectionVisualizer } from '../../api';
@@ -79,6 +79,13 @@ const useWiredState = () =>
             return newFurniIds;
         });
     }
+
+    useMessageEvent<WiredOpenEvent>(WiredOpenEvent, event =>
+    {
+        const parser = event.getParser();
+
+        SendMessageComposer(new OpenMessageComposer(parser.stuffId));
+    });
 
     useMessageEvent<WiredSaveSuccessEvent>(WiredSaveSuccessEvent, event =>
     {
