@@ -14,7 +14,7 @@ const useFurnitureRentableSpaceWidgetState = () =>
     const { navigatorData = null } = useNavigator();
     const { simpleAlert } = useNotification();
 
-    const isRoomOwner = GetSessionDataManager().userName === navigatorData.enteredGuestRoom.ownerName;    
+    const isRoomOwner = GetSessionDataManager().userName === navigatorData.enteredGuestRoom?.ownerName;    
 
     const onClose = () =>
     {
