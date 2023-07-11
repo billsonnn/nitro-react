@@ -12,15 +12,9 @@
     "eslint": "eslint src --ext .ts,.tsx"
   },
   "dependencies": {
-    "@craco/craco": "^6.4.5",
-    "@fortawesome/fontawesome-svg-core": "^6.1.1",
-    "@fortawesome/free-solid-svg-icons": "^6.1.1",
-    "@fortawesome/react-fontawesome": "^0.2.0",
-    "@nitrots/nitro-renderer": "^1.5.0",
-    "@tanstack/react-virtual": "^3.0.0-beta.18",
-    "animate.css": "^4.1.1",
-    "cross-env": "^7.0.3",
-    "emoji-toolkit": "^7.0.0",
+    "@nitrots/nitro-renderer": "^1.6.6",
+    "@pixi/compressed-textures": "6.5.8",
+    "@tanstack/react-virtual": "^3.0.0-alpha.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.2.2",
     "react-dom": "^18.2.0",

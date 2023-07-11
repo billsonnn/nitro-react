@@ -1577,10 +1577,22 @@
   resolved "https://registry.yarnpkg.com/@pixi/canvas-display/-/canvas-display-6.4.2.tgz#3641eb07db542c0e3fc80fb9110b245dbe712887"
   integrity sha512-RoHJLcLkl4w3a3HrWhkvB8Tu9V0GWIxOcdM81o58rBFhi+BWC4MEuiqkQ/6AUXaaCSYV4dIbyiEbrxb7fJM57g==
 
+<<<<<<< HEAD
 "@pixi/canvas-extract@~6.4.2":
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/@pixi/canvas-extract/-/canvas-extract-6.4.2.tgz#224ca7399fb0f7e0f551b5c437357b4078a68cdd"
   integrity sha512-BNddDRWD0Eejn7pozqTJkmfQNVcwx9r++aAFZ4DOqXJji84G57M4eXkdM22+N4j5hgxxxiCTZCkYUmCIk9Y/RQ==
+=======
+"@pixi/compressed-textures@6.5.8":
+  version "6.5.8"
+  resolved "https://registry.yarnpkg.com/@pixi/compressed-textures/-/compressed-textures-6.5.8.tgz#5c814bc49f426485016c3eae1d50cb3a659fc4d8"
+  integrity sha512-nW74kcvdEoe4a2U7Ekx4egqdH1tYKC2kCOZxKWYcUARqz26tS0ddwSRyIs05In6EChmXHXGy/MtShdueMH38TA==
+
+"@pixi/constants@~6.5.0":
+  version "6.5.8"
+  resolved "https://registry.yarnpkg.com/@pixi/constants/-/constants-6.5.8.tgz#034bf0f318546bf3c9346f4f3a7528f8cadcdb55"
+  integrity sha512-yYRCebBPqajm1kn5f8QQTTvl7oDRDk1nppfO+JpqbrFXg0W7oqIMurec3KeG9RdZW5foOiXDoz1Gw+VtolYIEw==
+>>>>>>> 31687566 (a)
 
 "@pixi/canvas-renderer@~6.4.2":
   version "6.4.2"
@@ -3536,6 +3548,7 @@ callsites@^3.0.0:
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
+<<<<<<< HEAD
 camel-case@^4.1.1:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/camel-case/-/camel-case-4.1.2.tgz#9728072a954f805228225a6deea6b38461e1bd5a"
@@ -3543,6 +3556,12 @@ camel-case@^4.1.1:
   dependencies:
     pascal-case "^3.1.2"
     tslib "^2.0.3"
+=======
+caniuse-lite@^1.0.30001400:
+  version "1.0.30001514"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001514.tgz"
+  integrity sha512-ENcIpYBmwAAOm/V2cXgM7rZUrKKaqisZl4ZAI520FIkqGXUxJjmaIssbRW5HVVR5tyV6ygTLIm15aU8LUmQSaQ==
+>>>>>>> 31687566 (a)
 
 camelcase@5.3.1, camelcase@^5.0.0, camelcase@^5.3.1:
   version "5.3.1"
