@@ -1,4 +1,4 @@
-import { IObjectData, IRoomEngine } from '@nitrots/nitro-renderer';
+import { IObjectData, IRoomEngine, LegacyDataType } from '@nitrots/nitro-renderer';
 import { LocalizeText } from '../utils';
 import { FurniCategory } from './FurniCategory';
 import { FurnitureItem } from './FurnitureItem';
@@ -322,7 +322,15 @@ export class GroupItem
                 key = (('poster_' + k.stuffData.getLegacyString()) + '_name');
                 break;
             case FurniCategory.TRAX_SONG:
-                this._name = 'SONG_NAME';
+                if(k.stuffData instanceof LegacyDataType) 
+                {
+                    let stuffName = k.stuffData.getLegacyStringWithOffset(5);
+                    // Just checking if not undefined
+                    if(stuffName)
+                        this._name = stuffName;
+                }
+                else 
+                    this._name = 'SONG_NAME'
                 return;
             default:
                 if(this.isWallItem)
