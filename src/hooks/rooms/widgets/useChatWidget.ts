@@ -1,13 +1,9 @@
-import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, GetGuestRoomResultEvent, NitroPoint, PetFigureData, RoomChatSettings, RoomChatSettingsEvent, RoomDragEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomUserData, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
+import { GetGuestRoomResultEvent, NitroPoint, PetFigureData, RoomChatSettings, RoomChatSettingsEvent, RoomDragEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomUserData, SystemChatStyleEnum } from '@nitrots/nitro-renderer';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ChatBubbleMessage, ChatEntryType, ChatHistoryCurrentDate, GetAvatarRenderManager, GetConfiguration, GetRoomEngine, GetRoomObjectScreenLocation, IRoomChatSettings, LocalizeText, PlaySound, RoomChatFormatter } from '../../../api';
+import { ChatBubbleMessage, ChatBubbleUtilities, ChatEntryType, ChatHistoryCurrentDate, GetConfiguration, GetRoomEngine, GetRoomObjectScreenLocation, IRoomChatSettings, LocalizeText, PlaySound, RoomChatFormatter } from '../../../api';
 import { useMessageEvent, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../events';
 import { useRoom } from '../useRoom';
 import { useChatHistory } from './../../chat-history';
-
-const avatarColorCache: Map<string, number> = new Map();
-const avatarImageCache: Map<string, string> = new Map();
-const petImageCache: Map<string, string> = new Map();
 
 const useChatWidgetState = () =>
 {
@@ -38,64 +34,7 @@ const useChatWidgetState = () =>
         }
     }, [ chatSettings ]);
 
-    const setFigureImage = (figure: string) =>
-    {
-        const avatarImage = GetAvatarRenderManager().createAvatarImage(figure, AvatarScaleType.LARGE, null, {
-            resetFigure: figure => 
-            {
-                if(isDisposed.current) return;
-
-                setFigureImage(figure);
-            },
-            dispose: () => 
-            {},
-            disposed: false
-        });
-
-        if(!avatarImage) return;
-
-        const image = avatarImage.getCroppedImage(AvatarSetType.HEAD);
-        const color = avatarImage.getPartColor(AvatarFigurePartType.CHEST);
-
-        avatarColorCache.set(figure, ((color && color.rgb) || 16777215));
-
-        avatarImage.dispose();
-
-        avatarImageCache.set(figure, image.src);
-
-        return image.src;
-    }
-
-    const getUserImage = (figure: string) =>
-    {
-        let existing = avatarImageCache.get(figure);
-
-        if(!existing) existing = setFigureImage(figure);
-
-        return existing;
-    }
-
-    const getPetImage = (figure: string, direction: number, _arg_3: boolean, scale: number = 64, posture: string = null) =>
-    {
-        let existing = petImageCache.get((figure + posture));
-
-        if(existing) return existing;
-
-        const figureData = new PetFigureData(figure);
-        const typeId = figureData.typeId;
-        const image = GetRoomEngine().getRoomObjectPetImage(typeId, figureData.paletteId, figureData.color, new Vector3d((direction * 45)), scale, null, false, 0, figureData.customParts, posture);
-
-        if(image)
-        {
-            existing = TextureUtils.generateImageUrl(image.data);
-
-            petImageCache.set((figure + posture), existing);
-        }
-
-        return existing;
-    }
-
-    useRoomSessionManagerEvent<RoomSessionChatEvent>(RoomSessionChatEvent.CHAT_EVENT, event =>
+    useRoomSessionManagerEvent<RoomSessionChatEvent>(RoomSessionChatEvent.CHAT_EVENT, async event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(roomSession.roomId, event.objectId, RoomObjectCategory.UNIT);
         const bubbleLocation = roomObject ? GetRoomObjectScreenLocation(roomSession.roomId, roomObject?.id, RoomObjectCategory.UNIT) : new NitroPoint();
@@ -119,11 +58,11 @@ const useChatWidgetState = () =>
             switch(userType)
             {
                 case RoomObjectType.PET:
-                    imageUrl = getPetImage(figure, 2, true, 64, roomObject.model.getValue<string>(RoomObjectVariable.FIGURE_POSTURE));
+                    imageUrl = await ChatBubbleUtilities.getPetImage(figure, 2, true, 64, roomObject.model.getValue<string>(RoomObjectVariable.FIGURE_POSTURE));
                     petType = new PetFigureData(figure).typeId;
                     break;
                 case RoomObjectType.USER:
-                    imageUrl = getUserImage(figure);
+                    imageUrl = await ChatBubbleUtilities.getUserImage(figure);
                     break;
                 case RoomObjectType.RENTABLE_BOT:
                 case RoomObjectType.BOT:
@@ -131,7 +70,7 @@ const useChatWidgetState = () =>
                     break;
             }
 
-            avatarColor = avatarColorCache.get(figure);
+            avatarColor = ChatBubbleUtilities.AVATAR_COLOR_CACHE.get(figure);
             username = userData.name;
         }
 

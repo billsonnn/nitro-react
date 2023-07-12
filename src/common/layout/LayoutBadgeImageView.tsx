@@ -37,7 +37,7 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
 
         if(imageElement)
         {
-            newStyle.backgroundImage = `url(${ (isGroup) ? imageElement.src : GetConfiguration<string>('badge.asset.url').replace('%badgename%', badgeCode.toString())})`;
+            newStyle.backgroundImage = `url(${ (isGroup) ? imageElement.src : GetConfiguration<string>('badge.asset.url').replace('%badgename%', badgeCode.toString()) })`;
             newStyle.width = imageElement.width;
             newStyle.height = imageElement.height;
 
@@ -55,7 +55,7 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
         if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [ imageElement, scale, style ]);
+    }, [ badgeCode, isGroup, imageElement, scale, style ]);
 
     useEffect(() =>
     {
@@ -63,11 +63,11 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
 
         let didSetBadge = false;
 
-        const onBadgeImageReadyEvent = (event: BadgeImageReadyEvent) =>
+        const onBadgeImageReadyEvent = async (event: BadgeImageReadyEvent) =>
         {
             if(event.badgeId !== badgeCode) return;
 
-            const element = TextureUtils.generateImage(new NitroSprite(event.image));
+            const element = await TextureUtils.generateImage(new NitroSprite(event.image));
 
             element.onload = () => setImageElement(element);
 
@@ -82,9 +82,12 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
 
         if(texture && !didSetBadge)
         {
-            const element = TextureUtils.generateImage(new NitroSprite(texture));
+            (async () =>
+            {
+                const element = await TextureUtils.generateImage(new NitroSprite(texture));
 
-            element.onload = () => setImageElement(element);
+                element.onload = () => setImageElement(element);
+            })();
         }
 
         return () => GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
