@@ -1,4 +1,4 @@
-import { GetAssetManager, IGraphicAssetCollection, NitroPoint, NitroTilemap, PixiApplicationProxy, PixiInteractionEventProxy, POINT_STRUCT_SIZE } from '@nitrots/nitro-renderer';
+import { GetAssetManager, IGraphicAssetCollection, NitroPoint, NitroTilemap, PixiApplicationProxy, POINT_STRUCT_SIZE } from '@nitrots/nitro-renderer';
 import { ActionSettings } from './ActionSettings';
 import { FloorAction, HEIGHT_SCHEME, MAX_NUM_TILE_PER_AXIS, TILE_SIZE } from './Constants';
 import { Tile } from './Tile';
@@ -35,7 +35,6 @@ export class FloorplanEditor extends PixiApplicationProxy
             antialias: true,
             autoDensity: true,
             resolution: 1,
-            sharedLoader: true,
             sharedTicker: true
         });
 
@@ -78,7 +77,7 @@ export class FloorplanEditor extends PixiApplicationProxy
             return this.tileHitDetection(tempPoint, false);
         };
 
-        this._tilemapRenderer.on('pointerup', () =>
+        /* this._tilemapRenderer.on('pointerup', () =>
         {
             this._isHolding = false;
         });
@@ -109,7 +108,7 @@ export class FloorplanEditor extends PixiApplicationProxy
 
             const location = event.data.global;
             this.tileHitDetection(location, true, true);
-        });
+        }); */
     }
 
     private tileHitDetection(tempPoint: NitroPoint, setHolding: boolean, isClick: boolean = false): boolean
@@ -372,7 +371,7 @@ export class FloorplanEditor extends PixiApplicationProxy
 
     public clear(): void
     {
-        this._tilemapRenderer.interactive = false;
+        //this._tilemapRenderer.interactive = false;
         this._tilemap = [];
         this._doorLocation.set(-1, -1);
         this._width = 0;

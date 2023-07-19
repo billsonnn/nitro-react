@@ -2,7 +2,7 @@ import { HabboWebTools, ILinkEventTracker, RoomSessionEvent } from '@nitrots/nit
 import { FC, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetCommunication, RemoveLinkEventTracker } from '../../api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from '../../common';
-import { useRoomSessionManagerEvent } from '../../hooks';
+import { useNitroEvent } from '../../hooks';
 import { AchievementsView } from '../achievements/AchievementsView';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CameraWidgetView } from '../camera/CameraWidgetView';
@@ -33,14 +33,14 @@ export const MainView: FC<{}> = props =>
     const [ isReady, setIsReady ] = useState(false);
     const [ landingViewVisible, setLandingViewVisible ] = useState(true);
 
-    useRoomSessionManagerEvent<RoomSessionEvent>(RoomSessionEvent.CREATED, event => setLandingViewVisible(false));
-    useRoomSessionManagerEvent<RoomSessionEvent>(RoomSessionEvent.ENDED, event => setLandingViewVisible(event.openLandingView));
+    useNitroEvent<RoomSessionEvent>(RoomSessionEvent.CREATED, event => setLandingViewVisible(false));
+    useNitroEvent<RoomSessionEvent>(RoomSessionEvent.ENDED, event => setLandingViewVisible(event.openLandingView));
 
     useEffect(() =>
     {
         setIsReady(true);
 
-        GetCommunication().connection.onReady();
+        GetCommunication().connection.ready();
     }, []);
 
     useEffect(() =>

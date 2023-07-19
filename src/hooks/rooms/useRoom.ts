@@ -2,7 +2,7 @@ import { AdjustmentFilter, ColorConverter, IRoomSession, NitroContainer, NitroSp
 import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { CanManipulateFurniture, DispatchUiEvent, GetNitroInstance, GetRoomEngine, GetRoomSession, InitializeRoomInstanceRenderingCanvas, IsFurnitureSelectionDisabled, ProcessRoomObjectOperation, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomObjectEvent, SetActiveRoomId, StartRoomSession } from '../../api';
-import { useRoomEngineEvent, useRoomSessionManagerEvent, useUiEvent } from '../events';
+import { useNitroEvent, useUiEvent } from '../events';
 
 const useRoomState = () =>
 {
@@ -51,7 +51,7 @@ const useRoomState = () =>
         roomBackground.tint = originalRoomBackgroundColor;
     });
 
-    useRoomEngineEvent<RoomObjectHSLColorEnabledEvent>(RoomObjectHSLColorEnabledEvent.ROOM_BACKGROUND_COLOR, event =>
+    useNitroEvent<RoomObjectHSLColorEnabledEvent>(RoomObjectHSLColorEnabledEvent.ROOM_BACKGROUND_COLOR, event =>
     {
         if(RoomId.isRoomPreviewerId(event.roomId)) return;
 
@@ -59,7 +59,7 @@ const useRoomState = () =>
         else updateRoomBackgroundColor(0, 0, 0, true);
     });
 
-    useRoomEngineEvent<RoomBackgroundColorEvent>(RoomBackgroundColorEvent.ROOM_COLOR, event =>
+    useNitroEvent<RoomBackgroundColorEvent>(RoomBackgroundColorEvent.ROOM_COLOR, event =>
     {
         if(RoomId.isRoomPreviewerId(event.roomId)) return;
 
@@ -75,7 +75,7 @@ const useRoomState = () =>
         updateRoomFilter(ColorConverter.hslToRGB(((ColorConverter.rgbToHSL(color) & 0xFFFF00) + brightness)));
     });
 
-    useRoomEngineEvent<RoomEngineEvent>([
+    useNitroEvent<RoomEngineEvent>([
         RoomEngineEvent.INITIALIZED,
         RoomEngineEvent.DISPOSED
     ], event =>
@@ -98,7 +98,7 @@ const useRoomState = () =>
         }
     });
 
-    useRoomSessionManagerEvent<RoomSessionEvent>([
+    useNitroEvent<RoomSessionEvent>([
         RoomSessionEvent.CREATED,
         RoomSessionEvent.ENDED
     ], event =>
@@ -114,7 +114,7 @@ const useRoomState = () =>
         }
     });
 
-    useRoomEngineEvent<RoomEngineObjectEvent>([
+    useNitroEvent<RoomEngineObjectEvent>([
         RoomEngineObjectEvent.SELECTED,
         RoomEngineObjectEvent.DESELECTED,
         RoomEngineObjectEvent.ADDED,

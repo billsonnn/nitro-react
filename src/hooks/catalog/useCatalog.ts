@@ -2,8 +2,8 @@ import { BuildersClubFurniCountMessageEvent, BuildersClubPlaceRoomItemMessageCom
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useBetween } from 'use-between';
 import { BuilderFurniPlaceableStatus, CatalogNode, CatalogPage, CatalogPetPalette, CatalogType, CreateLinkEvent, DispatchUiEvent, FurniCategory, GetFurnitureData, GetProductDataForLocalization, GetRoomEngine, GetRoomSession, GiftWrappingConfiguration, ICatalogNode, ICatalogOptions, ICatalogPage, IPageLocalization, IProduct, IPurchasableOffer, IPurchaseOptions, LocalizeText, NotificationAlertType, Offer, PageLocalization, PlacedObjectPurchaseData, PlaySound, Product, ProductTypeEnum, RequestedPage, SearchResult, SendMessageComposer, SoundNames } from '../../api';
-import { CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, InventoryFurniAddedEvent } from '../../events';
-import { useMessageEvent, useRoomEngineEvent, useUiEvent } from '../events';
+import { CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, CatalogPurchasedEvent, InventoryFurniAddedEvent } from '../../events';
+import { useMessageEvent, useNitroEvent, useUiEvent } from '../events';
 import { useNotification } from '../notification';
 import { useCatalogPlaceMultipleItems } from './useCatalogPlaceMultipleItems';
 import { useCatalogSkipPurchaseConfirmation } from './useCatalogSkipPurchaseConfirmation';
@@ -685,7 +685,7 @@ const useCatalogState = () =>
 
     useUiEvent<CatalogPurchasedEvent>(CatalogPurchasedEvent.PURCHASE_SUCCESS, event => PlaySound(SoundNames.CREDITS));
 
-    useRoomEngineEvent<RoomEngineObjectPlacedEvent>(RoomEngineObjectPlacedEvent.PLACED, event =>
+    useNitroEvent<RoomEngineObjectPlacedEvent>(RoomEngineObjectPlacedEvent.PLACED, event =>
     {
         if(!objectMoverRequested || (event.type !== RoomEngineObjectPlacedEvent.PLACED)) return;
 

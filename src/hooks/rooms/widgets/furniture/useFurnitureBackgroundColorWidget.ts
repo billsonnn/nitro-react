@@ -1,7 +1,7 @@
 import { ApplyTonerComposer, ColorConverter, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { CanManipulateFurniture, ColorUtils, DispatchUiEvent, GetRoomEngine, RoomWidgetUpdateBackgroundColorPreviewEvent, SendMessageComposer } from '../../../../api';
-import { useRoomEngineEvent } from '../../../events';
+import { useNitroEvent } from '../../../events';
 import { useFurniRemovedEvent } from '../../engine';
 import { useRoom } from '../../useRoom';
 
@@ -30,7 +30,7 @@ const useFurnitureBackgroundColorWidgetState = () =>
         setColor(0);
     }
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, event =>
+    useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, event =>
     {
         if(!CanManipulateFurniture(roomSession, event.objectId, event.category)) return;
 

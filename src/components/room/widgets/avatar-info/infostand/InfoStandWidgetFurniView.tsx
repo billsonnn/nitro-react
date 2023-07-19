@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { AvatarInfoFurni, CreateLinkEvent, GetGroupInformation, GetNitroInstance, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Column, Flex, LayoutBadgeImageView, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, LayoutRoomObjectImageView, Text, UserProfileIconView } from '../../../../../common';
-import { useMessageEvent, useRoom, useSoundEvent } from '../../../../../hooks';
+import { useMessageEvent, useNitroEvent, useRoom } from '../../../../../hooks';
 
 interface InfoStandWidgetFurniViewProps
 {
@@ -40,12 +40,12 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
     const [ songName, setSongName ] = useState<string>('');
     const [ songCreator, setSongCreator ] = useState<string>('');
 
-    useSoundEvent<NowPlayingEvent>(NowPlayingEvent.NPE_SONG_CHANGED, event =>
+    useNitroEvent<NowPlayingEvent>(NowPlayingEvent.NPE_SONG_CHANGED, event =>
     {
         setSongId(event.id);
     }, (isJukeBox || isSongDisk));
 
-    useSoundEvent<NowPlayingEvent>(SongInfoReceivedEvent.SIR_TRAX_SONG_INFO_RECEIVED, event =>
+    useNitroEvent<NowPlayingEvent>(SongInfoReceivedEvent.SIR_TRAX_SONG_INFO_RECEIVED, event =>
     {
         if(event.id !== songId) return;
         

@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
 import { Base, Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { useNavigator, useRoomSessionManagerEvent } from '../../hooks';
+import { useNavigator, useNitroEvent } from '../../hooks';
 import { NavigatorDoorStateView } from './views/NavigatorDoorStateView';
 import { NavigatorRoomCreatorView } from './views/NavigatorRoomCreatorView';
 import { NavigatorRoomInfoView } from './views/NavigatorRoomInfoView';
@@ -26,7 +26,7 @@ export const NavigatorView: FC<{}> = props =>
     const pendingSearch = useRef<{ value: string, code: string }>(null);
     const elementRef = useRef<HTMLDivElement>();
 
-    useRoomSessionManagerEvent<RoomSessionEvent>(RoomSessionEvent.CREATED, event =>
+    useNitroEvent<RoomSessionEvent>(RoomSessionEvent.CREATED, event =>
     {
         setIsVisible(false);
         setCreatorOpen(false);

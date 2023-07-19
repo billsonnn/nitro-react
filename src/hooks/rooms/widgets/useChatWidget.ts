@@ -1,7 +1,7 @@
 import { GetGuestRoomResultEvent, NitroPoint, PetFigureData, RoomChatSettings, RoomChatSettingsEvent, RoomDragEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomUserData, SystemChatStyleEnum } from '@nitrots/nitro-renderer';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ChatBubbleMessage, ChatBubbleUtilities, ChatEntryType, ChatHistoryCurrentDate, GetConfiguration, GetRoomEngine, GetRoomObjectScreenLocation, IRoomChatSettings, LocalizeText, PlaySound, RoomChatFormatter } from '../../../api';
-import { useMessageEvent, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../events';
+import { useMessageEvent, useNitroEvent } from '../../events';
 import { useRoom } from '../useRoom';
 import { useChatHistory } from './../../chat-history';
 
@@ -34,7 +34,7 @@ const useChatWidgetState = () =>
         }
     }, [ chatSettings ]);
 
-    useRoomSessionManagerEvent<RoomSessionChatEvent>(RoomSessionChatEvent.CHAT_EVENT, async event =>
+    useNitroEvent<RoomSessionChatEvent>(RoomSessionChatEvent.CHAT_EVENT, async event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(roomSession.roomId, event.objectId, RoomObjectCategory.UNIT);
         const bubbleLocation = roomObject ? GetRoomObjectScreenLocation(roomSession.roomId, roomObject?.id, RoomObjectCategory.UNIT) : new NitroPoint();
@@ -150,7 +150,7 @@ const useChatWidgetState = () =>
         addChatEntry({ id: -1, webId: userData.webID, entityId: userData.roomIndex, name: username, imageUrl, style: styleId, chatType: chatType, entityType: userData.type, message: formattedText, timestamp: ChatHistoryCurrentDate(), type: ChatEntryType.TYPE_CHAT, roomId: roomSession.roomId, color });
     });
 
-    useRoomEngineEvent<RoomDragEvent>(RoomDragEvent.ROOM_DRAG, event =>
+    useNitroEvent<RoomDragEvent>(RoomDragEvent.ROOM_DRAG, event =>
     {
         if(!chatMessages.length || (event.roomId !== roomSession.roomId)) return;
 

@@ -1,7 +1,7 @@
 import { RoomEngineTriggerWidgetEvent, RoomObjectVariable, StringDataType } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
 import { GetRoomEngine, GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../../api';
-import { useRoomEngineEvent } from '../../../events';
+import { useNitroEvent } from '../../../events';
 import { useNotification } from '../../../notification';
 import { useFurniRemovedEvent } from '../../engine';
 
@@ -27,7 +27,7 @@ const useFurnitureBadgeDisplayWidgetState = () =>
         setSenderName('');
     }
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>([
+    useNitroEvent<RoomEngineTriggerWidgetEvent>([
         RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING,
         RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_ENGRAVING
     ], event =>
@@ -49,7 +49,7 @@ const useFurnitureBadgeDisplayWidgetState = () =>
         setSenderName(stringStuff.getValue(3));
     });
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED, event =>
+    useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_ACHIEVEMENT_RESOLUTION_FAILED, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 

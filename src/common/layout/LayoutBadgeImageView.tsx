@@ -1,4 +1,4 @@
-import { BadgeImageReadyEvent, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
+import { BadgeImageReadyEvent, NitroEventDispatcher, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
 import { GetConfiguration, GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../api';
 import { Base, BaseProps } from '../Base';
@@ -73,10 +73,10 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
 
             didSetBadge = true;
 
-            GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
+            NitroEventDispatcher.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
         }
 
-        GetSessionDataManager().events.addEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
+        NitroEventDispatcher.addEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
 
         const texture = isGroup ? GetSessionDataManager().getGroupBadgeImage(badgeCode) : GetSessionDataManager().getBadgeImage(badgeCode);
 
@@ -90,7 +90,7 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
             })();
         }
 
-        return () => GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
+        return () => NitroEventDispatcher.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
     }, [ badgeCode, isGroup ]);
 
     return (
