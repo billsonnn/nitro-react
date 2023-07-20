@@ -209,7 +209,7 @@ const useRoomState = () =>
         {
             renderer.view.style.width = `${ width }px`;
             renderer.view.style.height = `${ height }px`;
-            renderer.resolution = window.devicePixelRatio;
+            //renderer.resolution = window.devicePixelRatio;
             renderer.resize(width, height);
         }
 
@@ -269,7 +269,7 @@ const useRoomState = () =>
 
             renderer.view.style.width = `${ width }px`;
             renderer.view.style.height = `${ height }px`;
-            renderer.resolution = window.devicePixelRatio;
+            //renderer.resolution = window.devicePixelRatio;
             renderer.resize(width, height);
 
             background.width = width;
