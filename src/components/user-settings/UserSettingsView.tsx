@@ -1,8 +1,8 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ILinkEventTracker, NitroSettingsEvent, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer, UserSettingsSoundComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { FaVolumeDown, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 import { AddEventLinkTracker, DispatchMainEvent, DispatchUiEvent, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
-import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
+import { classNames, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { useCatalogPlaceMultipleItems, useCatalogSkipPurchaseConfirmation, useMessageEvent } from '../../hooks';
 
 export const UserSettingsView: FC<{}> = props =>
@@ -12,7 +12,7 @@ export const UserSettingsView: FC<{}> = props =>
     const [ catalogPlaceMultipleObjects, setCatalogPlaceMultipleObjects ] = useCatalogPlaceMultipleItems();
     const [ catalogSkipPurchaseConfirmation, setCatalogSkipPurchaseConfirmation ] = useCatalogSkipPurchaseConfirmation();
 
-    const processAction = useCallback((type: string, value?: boolean | number | string) =>
+    const processAction = (type: string, value?: boolean | number | string) =>
     {
         let doUpdate = true;
 
@@ -56,9 +56,9 @@ export const UserSettingsView: FC<{}> = props =>
         if(doUpdate) setUserSettings(clone);
         
         DispatchMainEvent(clone)
-    }, [ userSettings ]);
+    }
 
-    const saveRangeSlider = useCallback((type: string) =>
+    const saveRangeSlider = (type: string) =>
     {
         switch(type)
         {
@@ -66,7 +66,7 @@ export const UserSettingsView: FC<{}> = props =>
                 SendMessageComposer(new UserSettingsSoundComposer(Math.round(userSettings.volumeSystem), Math.round(userSettings.volumeFurni), Math.round(userSettings.volumeTrax)));
                 break;
         }
-    }, [ userSettings ]);
+    }
 
     useMessageEvent<UserSettingsEvent>(UserSettingsEvent, event =>
     {
@@ -156,25 +156,28 @@ export const UserSettingsView: FC<{}> = props =>
                     <Column gap={ 1 }>
                         <Text>{ LocalizeText('widget.memenu.settings.volume.ui') }</Text>
                         <Flex alignItems="center" gap={ 1 }>
-                            <FontAwesomeIcon icon={ ((userSettings.volumeSystem === 0) ? 'volume-mute' : (userSettings.volumeSystem > 0) ? 'volume-down' : null) } className={ (userSettings.volumeSystem >= 50) ? 'text-muted' : '' } />
+                            { (userSettings.volumeSystem === 0) && <FaVolumeMute className={ classNames((userSettings.volumeSystem >= 50) && 'text-muted', 'fa-icon') } /> }
+                            { (userSettings.volumeSystem > 0) && <FaVolumeDown className={ classNames((userSettings.volumeSystem >= 50) && 'text-muted', 'fa-icon') } /> }
                             <input type="range" className="custom-range w-100" min="0" max="100" step="1" id="volumeSystem" value={ userSettings.volumeSystem } onChange={ event => processAction('system_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') }/>
-                            <FontAwesomeIcon icon="volume-up" className={ (userSettings.volumeSystem < 50) ? 'text-muted' : '' } />
+                            <FaVolumeUp className={ classNames((userSettings.volumeSystem < 50) && 'text-muted', 'fa-icon') } />
                         </Flex>
                     </Column>
                     <Column gap={ 1 }>
                         <Text>{ LocalizeText('widget.memenu.settings.volume.furni') }</Text>
                         <Flex alignItems="center" gap={ 1 }>
-                            <FontAwesomeIcon icon={ ((userSettings.volumeFurni === 0) ? 'volume-mute' : (userSettings.volumeFurni > 0) ? 'volume-down' : null) } className={ (userSettings.volumeFurni >= 50) ? 'text-muted' : '' } />
+                            { (userSettings.volumeFurni === 0) && <FaVolumeMute className={ classNames((userSettings.volumeFurni >= 50) && 'text-muted', 'fa-icon') } /> }
+                            { (userSettings.volumeFurni > 0) && <FaVolumeDown className={ classNames((userSettings.volumeFurni >= 50) && 'text-muted', 'fa-icon') } /> }
                             <input type="range" className="custom-range w-100" min="0" max="100" step="1" id="volumeFurni" value={ userSettings.volumeFurni } onChange={ event => processAction('furni_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') }/>
-                            <FontAwesomeIcon icon="volume-up" className={ (userSettings.volumeFurni < 50) ? 'text-muted' : '' } />
+                            <FaVolumeUp className={ classNames((userSettings.volumeFurni < 50) && 'text-muted', 'fa-icon') } />
                         </Flex>
                     </Column>
                     <Column gap={ 1 }>
                         <Text>{ LocalizeText('widget.memenu.settings.volume.trax') }</Text>
                         <Flex alignItems="center" gap={ 1 }>
-                            <FontAwesomeIcon icon={ ((userSettings.volumeTrax === 0) ? 'volume-mute' : (userSettings.volumeTrax > 0) ? 'volume-down' : null) } className={ (userSettings.volumeTrax >= 50) ? 'text-muted' : '' } />
+                            { (userSettings.volumeTrax === 0) && <FaVolumeMute className={ classNames((userSettings.volumeTrax >= 50) && 'text-muted', 'fa-icon') } /> }
+                            { (userSettings.volumeTrax > 0) && <FaVolumeDown className={ classNames((userSettings.volumeTrax >= 50) && 'text-muted', 'fa-icon') } /> }
                             <input type="range" className="custom-range w-100" min="0" max="100" step="1" id="volumeTrax" value={ userSettings.volumeTrax } onChange={ event => processAction('trax_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') }/>
-                            <FontAwesomeIcon icon="volume-up" className={ (userSettings.volumeTrax < 50) ? 'text-muted' : '' } />
+                            <FaVolumeUp className={ classNames((userSettings.volumeTrax < 50) && 'text-muted', 'fa-icon') } />
                         </Flex>
                     </Column>
                 </Column>

@@ -23,12 +23,12 @@
     .table {
         color: $black;
 
-        > :not(caption) > * > * {
+        > :not(caption)>*>* {
             box-shadow: none;
             border-bottom: 1px solid rgba(0, 0, 0, .2);
         }
 
-        &.table-striped > tbody > tr:nth-of-type(odd) {
+        &.table-striped>tbody>tr:nth-of-type(odd) {
             color: $black;
             background: rgba(0, 0, 0, .05);
         }
@@ -41,10 +41,12 @@
 
 .nitro-mod-tools-chatlog {
     width: 400px;
+    height: 250px;
 }
 
 .nitro-mod-tools-user-visits {
     width: 250px;
+    height: 250px;
 }
 
 .nitro-mod-tools-tickets {
@@ -59,26 +61,10 @@
 .nitro-mod-tools-chatlog,
 .nitro-mod-tools-user-visits {
 
-    .log-container {
-        min-height: 200px;
-        height: 100%;
+    .log-entry {
 
-        .log-entry-container {
-
-            .log-entry {
-
-                &.highlighted {
-                    border: 1px solid $red;
-                }
-            }
-
-            &.highlighted {
-                border: 1px solid $red;
-            }
-        }
-
-        &:first-child {
-            padding-top: 0;
+        &.highlighted {
+            border: 1px solid $red;
         }
     }
 }

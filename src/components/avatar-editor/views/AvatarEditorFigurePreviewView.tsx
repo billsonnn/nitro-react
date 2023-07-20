@@ -1,5 +1,5 @@
 import { AvatarDirectionAngle } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { FigureData } from '../../../api';
 import { Base, Column, LayoutAvatarImageView } from '../../../common';
 import { AvatarEditorIcon } from './AvatarEditorIcon';
@@ -14,12 +14,7 @@ export const AvatarEditorFigurePreviewView: FC<AvatarEditorFigurePreviewViewProp
     const { figureData = null } = props;
     const [ updateId, setUpdateId ] = useState(-1);
 
-    const rerender = useCallback(() =>
-    {
-        setUpdateId(prevValue => (prevValue + 1));
-    }, []);
-
-    const rotateFigure = useCallback((direction: number) =>
+    const rotateFigure = (direction: number) =>
     {
         if(direction < AvatarDirectionAngle.MIN_DIRECTION)
         {
@@ -32,19 +27,19 @@ export const AvatarEditorFigurePreviewView: FC<AvatarEditorFigurePreviewViewProp
         }
 
         figureData.direction = direction;
-    }, [ figureData ]);
+    }
 
     useEffect(() =>
     {
         if(!figureData) return;
 
-        figureData.notify = rerender;
+        figureData.notify = () => setUpdateId(prevValue => (prevValue + 1));
 
         return () =>
         {
             figureData.notify = null;
         }
-    }, [ figureData, rerender ] );
+    }, [ figureData ] );
 
     return (
         <Column className="figure-preview-container" overflow="hidden" position="relative">

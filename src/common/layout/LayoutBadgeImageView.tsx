@@ -37,7 +37,7 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
 
         if(imageElement)
         {
-            newStyle.backgroundImage = `url('${ imageElement.src }')`;
+            newStyle.backgroundImage = `url(${ (isGroup) ? imageElement.src : GetConfiguration<string>('badge.asset.url').replace('%badgename%', badgeCode.toString())})`;
             newStyle.width = imageElement.width;
             newStyle.height = imageElement.height;
 
@@ -46,7 +46,7 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
                 newStyle.transform = `scale(${ scale })`;
 
                 if(!(scale % 1)) newStyle.imageRendering = 'pixelated';
-            
+
                 newStyle.width = (imageElement.width * scale);
                 newStyle.height = (imageElement.height * scale);
             }
@@ -72,7 +72,7 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
             element.onload = () => setImageElement(element);
 
             didSetBadge = true;
-            
+
             GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
         }
 

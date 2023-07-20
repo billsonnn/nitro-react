@@ -17,7 +17,7 @@
     .dimmer-banner {
         width: 56px;
         height: 79px;
-        background: url("../../../../assets/images/room-widgets/dimmer-widget/dimmer_banner.png")
+        background: url('@/assets/images/room-widgets/dimmer-widget/dimmer_banner.png')
             center no-repeat;
     }
 
@@ -32,12 +32,17 @@
     }
 }
 
+.nitro-widget-crafting {
+    width: $nitro-widget-crafting-width;
+    height: $nitro-widget-crafting-height;
+}
+
 .nitro-widget-exchange-credit {
     width: $nitro-widget-exchange-credit-width;
     height: $nitro-widget-exchange-credit-height;
 
     .exchange-image {
-        background-image: url("../../../../assets/images/room-widgets/exchange-credit/exchange-credit-image.png");
+        background-image: url('@/assets/images/room-widgets/exchange-credit/exchange-credit-image.png');
         width: 103px;
         height: 103px;
     }
@@ -47,6 +52,21 @@
     .picture-preview {
         width: 320px;
         height: 320px;
+    }
+
+    .picture-preview-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: black;
+    }
+
+    .picture-preview-buttons-previous,
+    .picture-preview-buttons-next {
+        color: #222;
+        background-color: white;
+        padding: 10px;
+        border-radius: 50%;
     }
 }
 
@@ -64,7 +84,7 @@
         align-items: center;
         width: 83px;
         height: 130px;
-        background-image: url("../../../../assets/images/room-widgets/mannequin-widget/mannequin-spritesheet.png");
+        background-image: url('@/assets/images/room-widgets/mannequin-widget/mannequin-spritesheet.png');
         overflow: hidden;
 
         .avatar-image {
@@ -134,7 +154,7 @@
 }
 
 .nitro-stickie-image {
-    background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-spritesheet.png");
+    background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-spritesheet.png');
 
     &.stickie-blue,
     &.stickie-yellow,
@@ -149,7 +169,7 @@
     }
 
     &.stickie-yellow {
-        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-yellow.png");
+        background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-yellow.png');
         //background-position: -191px -184px;
     }
 
@@ -162,23 +182,23 @@
     }
 
     &.stickie-christmas {
-        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-christmas.png");
+        background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-christmas.png');
     }
 
     &.stickie-shakesp {
-        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-shakesp.png");
+        background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-shakesp.png');
     }
 
     &.stickie-dreams {
-        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-dreams.png");
+        background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-dreams.png');
     }
 
     &.stickie-heart {
-        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-heart.png");
+        background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-heart.png');
     }
 
     &.stickie-juninas {
-        background-image: url("../../../../assets/images/room-widgets/stickie-widget/stickie-juninas.png");
+        background-image: url('@/assets/images/room-widgets/stickie-widget/stickie-juninas.png');
     }
 
     &.stickie-close {
@@ -201,14 +221,14 @@
         width: 31px;
         height: 39px;
         background-position: -380px -43px;
-        background-image: url('../../../../assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png');
+        background-image: url('@/assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png');
     }
 
     .engraving-lock-stage-2 {
         width: 36px;
         height: 43px;
         background-position: -375px 0px;
-        background-image: url('../../../../assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png');
+        background-image: url('@/assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png');
     }
 }
 
@@ -216,7 +236,7 @@
     width: 375px;
     height: 210px;
     background-position: 0px 0px;
-    background-image: url('../../../../assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png');
+    background-image: url('@/assets/images/room-widgets/engraving-lock-widget/engraving-lock-spritesheet.png');
 
     color: #622e54;
     font-weight: bold;
@@ -231,7 +251,7 @@
     &.engraving-lock-4 {
         background-position: 0px -420px;
         color: #f1dcc8;
-        text-shadow: 0px 2px rgba(0, 0, 0, .4);
+        text-shadow: 0px 2px rgba(0, 0, 0, 0.4);
 
         .engraving-lock-avatar {
             margin-bottom: 10px;
@@ -281,8 +301,6 @@
     height: 380px;
 
     .youtube-video-container {
-        //min-height: 366px;
-
         .empty-video {
             background-color: black;
             color: white;
@@ -295,8 +313,6 @@
             position: relative;
             width: 100%;
             height: 100%;
-            //height: 0;
-            //padding-bottom: 56.25%;
             overflow: hidden;
             margin-bottom: 50px;
         }
@@ -311,7 +327,7 @@
     }
 
     .playlist-container {
-        overflow-y: hidden;
+        overflow-y: auto;
         margin-right: -10px;
         color: black;
         height: 100%;
@@ -327,6 +343,184 @@
         .playlist-grid {
             height: 100%;
             width: 100%;
+        }
+    }
+}
+
+.nitro-playlist-editor-widget {
+    width: 625px;
+    height: 440px;
+
+    img.my-music {
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        z-index: 0;
+    }
+
+    img.playlist-img {
+        position: absolute;
+        top: -4px;
+        left: 0;
+        z-index: 0;
+    }
+
+    img.get-more,
+    img.add-songs {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 0;
+    }
+
+    .playlist-bottom {
+        z-index: 3;
+    }
+
+    .move-disk {
+        width: 22px;
+        height: 18px;
+        background-image: url('@/assets/images/room-widgets/playlist-editor/move.png');
+    }
+
+    .disk-2,
+    .disk-image {
+        background-blend-mode: multiply;
+    }
+
+    .disk-2 {
+        width: 38px;
+        height: 38px;
+        background-image: url('@/assets/images/room-widgets/playlist-editor/disk_2.png');
+        background-position: center;
+        background-repeat: no-repeat;
+
+        &.playing-song {
+            background-image: url('@/assets/images/room-widgets/playlist-editor/playing.png');
+        }
+
+        &.selected-song {
+            background-image: url('@/assets/images/room-widgets/playlist-editor/move.png');
+            transform: scaleX(-1);
+        }
+
+        &:not(.playing-song):not(.selected-song) {
+            -webkit-mask-image: url('@/assets/images/room-widgets/playlist-editor/disk_2.png');
+            mask-image: url('@/assets/images/room-widgets/playlist-editor/disk_2.png');
+        }
+    }
+
+    .pause-song {
+        width: 18px;
+        height: 20px;
+        background-image: url('@/assets/images/room-widgets/playlist-editor/pause.png');
+    }
+
+    .pause-btn {
+        width: 16px;
+        height: 16px;
+
+        background-image: url('@/assets/images/room-widgets/playlist-editor/pause-btn.png');
+    }
+
+    .music-note {
+        width: 38px;
+        height: 38px;
+        background-image: url('@/assets/images/room-widgets/playlist-editor/playing.png');
+    }
+
+    .preview-song {
+        width: 16px;
+        height: 16px;
+        background-image: url('@/assets/images/room-widgets/playlist-editor/preview.png');
+    }
+
+    .layout-grid-item {
+        min-height: 95px;
+        min-width: 95px;
+        position: relative;
+
+        .disk-image {
+            background: url('@/assets/images/room-widgets/playlist-editor/disk_image.png');
+            -webkit-mask-image: url('@/assets/images/room-widgets/playlist-editor/disk_image.png');
+            mask-image: url('@/assets/images/room-widgets/playlist-editor/disk_image.png');
+            height: 76px;
+            width: 76px;
+        }
+    }
+}
+
+.nitro-mysterybox-dialog {
+    width: 375px;
+    height: 210px;
+
+    .prize-container {
+        height: 80px;
+        width: 81px;
+        background-image: url('@/assets/images/prize/prize_background.png');
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+}
+
+.nitro-mysterytrophy-dialog
+{
+    .mysterytrophy-dialog-top
+    {
+        width: 400px;
+        height: 120px;
+        border-radius: 2px;
+        background-color: #0E3F52;
+
+        .mysterytrophy-image
+        {
+            width: 80px;
+            height: 84px;
+            position: relative;
+            background-image: url('@/assets/images/mysterytrophy/frank_mystery_trophy.png');
+            background-repeat: no-repeat;
+        }
+
+        .mysterytrophy-text-big
+        {
+            font-size: 16px;
+        }
+    }
+
+    .mysterytrophy-dialog-bottom
+    {
+        display: flex;
+        justify-content: center;
+        width: 400px;
+        height: 120px;
+        border-radius: 2px;
+        background-color: #E9E9E1;
+
+        .input-mysterytrophy-dialog
+        {
+            width: 380px;
+            border: 1px solid black;
+
+            .input-mysterytrophy
+            {
+                width: 350px;
+                border: 0;
+                outline: 0;
+            }
+
+            .mysterytrophy-pencil-image
+            {
+                width: 16px;
+                height: 16px;
+                position: relative;
+                background-image: url('@/assets/images/infostand/pencil-icon.png');
+                background-repeat: no-repeat;
+            }
+        }
+
+        .text-decoration
+        {
+            text-decoration: underline;
         }
     }
 }

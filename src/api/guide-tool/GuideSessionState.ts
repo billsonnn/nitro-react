@@ -7,6 +7,8 @@ export class GuideSessionState
     public static readonly USER_PENDING: string = 'USER_PENDING';
     public static readonly USER_ONGOING: string = 'USER_ONGOING';
     public static readonly USER_FEEDBACK: string = 'USER_FEEDBACK';
+    public static readonly USER_NO_HELPERS: string = 'USER_NO_HELPERS';
+    public static readonly USER_SOMETHING_WRONG: string = 'USER_SOMETHING_WRONG';
     public static readonly USER_THANKS: string = 'USER_THANKS';
     public static readonly USER_GUIDE_DISCONNECTED: string = 'USER_GUIDE_DISCONNECTED';
     public static readonly GUIDE_TOOL_MENU: string = 'GUIDE_TOOL_MENU';

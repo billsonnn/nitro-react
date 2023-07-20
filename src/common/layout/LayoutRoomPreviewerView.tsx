@@ -1,6 +1,5 @@
-import { ColorConverter, IRoomRenderingCanvas, RoomPreviewer, TextureUtils } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
-import { GetNitroInstance } from '../../api';
+import { ColorConverter, GetTicker, IRoomRenderingCanvas, RoomPreviewer, TextureUtils } from '@nitrots/nitro-renderer';
+import { FC, MouseEvent, ReactNode, useEffect, useRef, useState } from 'react';
 
 export interface LayoutRoomPreviewerViewProps
 {
@@ -19,60 +18,53 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
     {
         if(!roomPreviewer) return;
 
-        if(event.shiftKey)
-        {
-            roomPreviewer.changeRoomObjectDirection();
-        }
-        else
-        {
-            roomPreviewer.changeRoomObjectState();
-        }
+        if(event.shiftKey) roomPreviewer.changeRoomObjectDirection();
+        else roomPreviewer.changeRoomObjectState();
     }
-
-    const update = useCallback((time: number) =>
-    {
-        if(!roomPreviewer || !renderingCanvas || !elementRef.current) return;
-        
-        roomPreviewer.updatePreviewRoomView();
-
-        if(!renderingCanvas.canvasUpdated) return;
-
-        elementRef.current.style.backgroundImage = `url(${ TextureUtils.generateImageUrl(renderingCanvas.master) })`;
-    }, [ roomPreviewer, renderingCanvas, elementRef ]);
-
-    const setupPreviewer = useCallback(() =>
-    {
-        if(!elementRef.current || !roomPreviewer) return;
-
-        const computed = document.defaultView.getComputedStyle(elementRef.current, null);
-
-        let backgroundColor = computed.backgroundColor;
-
-        backgroundColor = ColorConverter.rgbStringToHex(backgroundColor);
-        backgroundColor = backgroundColor.replace('#', '0x');
-
-        roomPreviewer.backgroundColor = parseInt(backgroundColor, 16);
-
-        const width = elementRef.current.parentElement.clientWidth;
-        
-        roomPreviewer.getRoomCanvas(width, height);
-
-        const canvas = roomPreviewer.getRenderingCanvas();
-
-        setRenderingCanvas(canvas);
-
-        canvas.canvasUpdated = true;
-
-        update(-1);
-    }, [ elementRef, height, roomPreviewer, update ]);
 
     useEffect(() =>
     {
         if(!roomPreviewer) return;
 
-        if(!renderingCanvas) setupPreviewer();
+        const update = (time: number) =>
+        {
+            if(!roomPreviewer || !renderingCanvas || !elementRef.current) return;
+        
+            roomPreviewer.updatePreviewRoomView();
 
-        GetNitroInstance().ticker.add(update);
+            if(!renderingCanvas.canvasUpdated) return;
+
+            elementRef.current.style.backgroundImage = `url(${ TextureUtils.generateImageUrl(renderingCanvas.master) })`;
+        }
+
+        if(!renderingCanvas)
+        {
+            if(elementRef.current && roomPreviewer)
+            {
+                const computed = document.defaultView.getComputedStyle(elementRef.current, null);
+
+                let backgroundColor = computed.backgroundColor;
+
+                backgroundColor = ColorConverter.rgbStringToHex(backgroundColor);
+                backgroundColor = backgroundColor.replace('#', '0x');
+
+                roomPreviewer.backgroundColor = parseInt(backgroundColor, 16);
+
+                const width = elementRef.current.parentElement.clientWidth;
+                
+                roomPreviewer.getRoomCanvas(width, height);
+
+                const canvas = roomPreviewer.getRenderingCanvas();
+
+                setRenderingCanvas(canvas);
+
+                canvas.canvasUpdated = true;
+
+                update(-1);
+            }
+        }
+
+        GetTicker().add(update);
 
         const resizeObserver = new ResizeObserver(() =>
         {
@@ -91,10 +83,10 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
         {
             resizeObserver.disconnect();
 
-            GetNitroInstance().ticker.remove(update);
+            GetTicker().remove(update);
         }
 
-    }, [ renderingCanvas, roomPreviewer, elementRef, height, setupPreviewer, update ]);
+    }, [ renderingCanvas, roomPreviewer, elementRef, height ]);
 
     return (
         <div className="room-preview-container">

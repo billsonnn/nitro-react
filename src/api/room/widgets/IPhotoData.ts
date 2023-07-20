@@ -29,4 +29,14 @@ export interface IPhotoData
      * photo image url
      */
     w?: string;
+
+    /**
+     * owner id
+     */
+    oi?: number;
+
+    /**
+     * owner name
+     */
+    o?: string;
 }

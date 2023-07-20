@@ -1,8 +1,9 @@
 import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, GetGuestRoomResultEvent, NitroPoint, PetFigureData, RoomChatSettings, RoomChatSettingsEvent, RoomDragEvent, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomUserData, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ChatBubbleMessage, GetAvatarRenderManager, GetConfigurationManager, GetRoomEngine, GetRoomObjectScreenLocation, IRoomChatSettings, LocalizeText, PlaySound, RoomChatFormatter } from '../../../api';
+import { ChatBubbleMessage, ChatEntryType, ChatHistoryCurrentDate, GetAvatarRenderManager, GetConfiguration, GetRoomEngine, GetRoomObjectScreenLocation, IRoomChatSettings, LocalizeText, PlaySound, RoomChatFormatter } from '../../../api';
 import { useMessageEvent, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../events';
 import { useRoom } from '../useRoom';
+import { useChatHistory } from './../../chat-history';
 
 const avatarColorCache: Map<string, number> = new Map();
 const avatarImageCache: Map<string, string> = new Map();
@@ -19,6 +20,7 @@ const useChatWidgetState = () =>
         protection: RoomChatSettings.FLOOD_FILTER_NORMAL
     });
     const { roomSession = null } = useRoom();
+    const { addChatEntry } = useChatHistory();
     const isDisposed = useRef(false);
 
     const getScrollSpeed = useMemo(() =>
@@ -93,46 +95,6 @@ const useChatWidgetState = () =>
         return existing;
     }
 
-    const removeHiddenChats = () =>
-    {
-        setChatMessages(prevValue =>
-        {
-            if(prevValue)
-            {
-                const newMessages = prevValue.filter(chat => ((chat.top > (-(chat.height) * 2))));
-
-                if(newMessages.length !== prevValue.length) return newMessages;
-            }
-
-            return prevValue;
-        })
-    }
-
-    const moveAllChatsUp = (amount: number) =>
-    {
-        setChatMessages(prevValue =>
-        {
-            if(prevValue)
-            {
-                prevValue.forEach(chat =>
-                {
-                    if(chat.skipMovement)
-                    {
-                        chat.skipMovement = false;
-            
-                        return;
-                    }
-            
-                    chat.top -= amount;
-                });
-            }
-
-            return prevValue;
-        });
-
-        removeHiddenChats();
-    }
-
     useRoomSessionManagerEvent<RoomSessionChatEvent>(RoomSessionChatEvent.CHAT_EVENT, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(roomSession.roomId, event.objectId, RoomObjectCategory.UNIT);
@@ -178,7 +140,7 @@ const useChatWidgetState = () =>
             case RoomSessionChatEvent.CHAT_TYPE_RESPECT:
                 text = LocalizeText('widgets.chatbubble.respect', [ 'username' ], [ username ]);
 
-                if(GetConfigurationManager().getValue('respect.options')['enabled']) PlaySound(GetConfigurationManager().getValue('respect.options')['sound']);
+                if(GetConfiguration('respect.options')['enabled']) PlaySound(GetConfiguration('respect.options')['sound']);
 
                 break;
             case RoomSessionChatEvent.CHAT_TYPE_PETREVIVE:
@@ -229,20 +191,24 @@ const useChatWidgetState = () =>
             }
         }
 
+        const formattedText = RoomChatFormatter(text);
+        const color = (avatarColor && (('#' + (avatarColor.toString(16).padStart(6, '0'))) || null));
+
         const chatMessage = new ChatBubbleMessage(
             userData.roomIndex,
             RoomObjectCategory.UNIT,
             roomSession.roomId,
             text,
-            RoomChatFormatter(text),
+            formattedText,
             username,
             new NitroPoint(bubbleLocation.x, bubbleLocation.y),
             chatType,
             styleId,
             imageUrl,
-            (avatarColor && (('#' + (avatarColor.toString(16).padStart(6, '0'))) || null)));
+            color);
 
         setChatMessages(prevValue => [ ...prevValue, chatMessage ]);
+        addChatEntry({ id: -1, webId: userData.webID, entityId: userData.roomIndex, name: username, imageUrl, style: styleId, chatType: chatType, entityType: userData.type, message: formattedText, timestamp: ChatHistoryCurrentDate(), type: ChatEntryType.TYPE_CHAT, roomId: roomSession.roomId, color });
     });
 
     useRoomEngineEvent<RoomDragEvent>(RoomDragEvent.ROOM_DRAG, event =>
@@ -280,7 +246,7 @@ const useChatWidgetState = () =>
         }
     }, []);
 
-    return { chatMessages, setChatMessages, chatSettings, getScrollSpeed, removeHiddenChats, moveAllChatsUp };
+    return { chatMessages, setChatMessages, chatSettings, getScrollSpeed };
 }
 
 export const useChatWidget = useChatWidgetState;

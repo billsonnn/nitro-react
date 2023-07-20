@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
 import { GroupItem, LocalizeText } from '../../../../api';
 import { Button, Flex } from '../../../../common';
 
@@ -40,7 +40,7 @@ export const InventoryFurnitureSearchView: FC<InventoryFurnitureSearchViewProps>
         <Flex gap={ 1 }>
             <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
             <Button variant="primary">
-                <FontAwesomeIcon icon="search" />
+                <FaSearch className="fa-icon" />
             </Button>
         </Flex>
     );

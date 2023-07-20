@@ -1,5 +1,5 @@
 import { CampaignCalendarData, CampaignCalendarDataMessageEvent, CampaignCalendarDoorOpenedMessageEvent, ILinkEventTracker, OpenCampaignCalendarDoorAsStaffComposer, OpenCampaignCalendarDoorComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { AddEventLinkTracker, CalendarItem, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { useMessageEvent } from '../../hooks';
 import { CalendarView } from './CalendarView';
@@ -11,11 +11,29 @@ export const CampaignView: FC<{}> = props =>
     const [ receivedProducts, setReceivedProducts ] = useState<Map<number, CalendarItem>>(new Map());
     const [ isCalendarOpen, setCalendarOpen ] = useState(false);
 
+    const openPackage = (id: number, asStaff = false) =>
+    {
+        if(!calendarData) return;
+
+        setLastOpenAttempt(id);
+
+        if(asStaff)
+        {
+            SendMessageComposer(new OpenCampaignCalendarDoorAsStaffComposer(calendarData.campaignName, id));
+        }
+
+        else
+        {
+            SendMessageComposer(new OpenCampaignCalendarDoorComposer(calendarData.campaignName, id));
+        }
+    }
+
     useMessageEvent<CampaignCalendarDataMessageEvent>(CampaignCalendarDataMessageEvent, event =>
     {
         const parser = event.getParser();
 
         if(!parser) return;
+        
         setCalendarData(parser.calendarData);
     });
 
@@ -49,28 +67,6 @@ export const CampaignView: FC<{}> = props =>
         setLastOpenAttempt(-1);
     });
 
-    const openPackage = useCallback((id: number, asStaff = false) =>
-    {
-        if(!calendarData) return;
-
-        setLastOpenAttempt(id);
-
-        if(asStaff)
-        {
-            SendMessageComposer(new OpenCampaignCalendarDoorAsStaffComposer(calendarData.campaignName, id));
-        }
-
-        else
-        {
-            SendMessageComposer(new OpenCampaignCalendarDoorComposer(calendarData.campaignName, id));
-        }
-    }, [ calendarData ]);
-
-    const onCalendarClose = useCallback(() =>
-    {
-        setCalendarOpen(false);
-    }, []);
-
     useEffect(() =>
     {
         const linkTracker: ILinkEventTracker = {
@@ -98,7 +94,7 @@ export const CampaignView: FC<{}> = props =>
     return (
         <>
             { (calendarData && isCalendarOpen) && 
-                <CalendarView onClose={ onCalendarClose } campaignName={ calendarData.campaignName } currentDay={ calendarData.currentDay } numDays={ calendarData.campaignDays } openedDays={ calendarData.openedDays } missedDays={ calendarData.missedDays } openPackage={ openPackage } receivedProducts={ receivedProducts } />
+                <CalendarView onClose={ () => setCalendarOpen(false) } campaignName={ calendarData.campaignName } currentDay={ calendarData.currentDay } numDays={ calendarData.campaignDays } openedDays={ calendarData.openedDays } missedDays={ calendarData.missedDays } openPackage={ openPackage } receivedProducts={ receivedProducts } />
             }
         </>
     )

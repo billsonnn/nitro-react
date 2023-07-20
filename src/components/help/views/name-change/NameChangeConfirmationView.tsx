@@ -1,5 +1,5 @@
 import { ChangeUserNameMessageComposer, UserNameChangeMessageEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
 import { useMessageEvent } from '../../../../hooks';
 import { NameChangeLayoutViewProps } from './NameChangeView.types';
@@ -8,6 +8,14 @@ export const NameChangeConfirmationView:FC<NameChangeLayoutViewProps> = props =>
 {
     const { username = '', onAction = null } = props;
     const [ isConfirming, setIsConfirming ] = useState<boolean>(false);
+
+    const confirm = () =>
+    {
+        if(isConfirming) return;
+
+        setIsConfirming(true);
+        SendMessageComposer(new ChangeUserNameMessageComposer(username));
+    }
     
     useMessageEvent<UserNameChangeMessageEvent>(UserNameChangeMessageEvent, event =>
     {
@@ -19,14 +27,6 @@ export const NameChangeConfirmationView:FC<NameChangeLayoutViewProps> = props =>
 
         onAction('close');
     });
-
-    const confirm = useCallback(() =>
-    {
-        if(isConfirming) return;
-
-        setIsConfirming(true);
-        SendMessageComposer(new ChangeUserNameMessageComposer(username));
-    }, [ isConfirming, username ]);
 
     return (
         <div className="d-flex flex-column gap-4 h-100">

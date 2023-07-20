@@ -1,5 +1,5 @@
 import { NitroRenderTexture } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { LayoutMiniCameraView } from '../../../../common';
 import { RoomWidgetThumbnailEvent } from '../../../../events';
@@ -10,7 +10,10 @@ export const RoomThumbnailWidgetView: FC<{}> = props =>
     const [ isVisible, setIsVisible ] = useState(false);
     const { roomSession = null } = useRoom();
 
-    const onNitroEvent = useCallback((event: RoomWidgetThumbnailEvent) =>
+    useUiEvent([
+        RoomWidgetThumbnailEvent.SHOW_THUMBNAIL,
+        RoomWidgetThumbnailEvent.HIDE_THUMBNAIL,
+        RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL ], event =>
     {
         switch(event.type)
         {
@@ -24,18 +27,14 @@ export const RoomThumbnailWidgetView: FC<{}> = props =>
                 setIsVisible(value => !value);
                 return;
         }
-    }, []);
+    });
 
-    useUiEvent(RoomWidgetThumbnailEvent.SHOW_THUMBNAIL, onNitroEvent);
-    useUiEvent(RoomWidgetThumbnailEvent.HIDE_THUMBNAIL, onNitroEvent);
-    useUiEvent(RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL, onNitroEvent);
-
-    const receiveTexture = useCallback((texture: NitroRenderTexture) =>
+    const receiveTexture = (texture: NitroRenderTexture) =>
     {
         GetRoomEngine().saveTextureAsScreenshot(texture, true);
 
         setIsVisible(false);
-    }, []);
+    }
 
     if(!isVisible) return null;
 

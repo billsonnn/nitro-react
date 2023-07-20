@@ -4,7 +4,7 @@
 @import './campaign/CampaignView';
 @import './catalog/CatalogView';
 @import './chat-history/ChatHistoryView';
-@import './floorplan-editor/FloorplanEditorView';
+@import './floorplan-editor/FloorplanEditorView.scss';
 @import './friends/FriendsView';
 @import './groups/GroupView';
 @import './guide-tool/GuideToolView';
@@ -22,5 +22,5 @@
 @import './room/RoomView';
 @import './toolbar/ToolbarView';
 @import './user-profile/UserProfileVew';
-@import './user-settings/UserSettingsView';
 @import './wired/WiredView';
+@import './game-center/GameCenterView.scss';

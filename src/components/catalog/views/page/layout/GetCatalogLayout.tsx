@@ -12,6 +12,7 @@ import { CatalogLayoutPets3View } from './CatalogLayoutPets3View';
 import { CatalogLayoutRoomAdsView } from './CatalogLayoutRoomAdsView';
 import { CatalogLayoutRoomBundleView } from './CatalogLayoutRoomBundleView';
 import { CatalogLayoutSingleBundleView } from './CatalogLayoutSingleBundleView';
+import { CatalogLayoutSoundMachineView } from './CatalogLayoutSoundMachineView';
 import { CatalogLayoutSpacesView } from './CatalogLayoutSpacesView';
 import { CatalogLayoutTrophiesView } from './CatalogLayoutTrophiesView';
 import { CatalogLayoutVipBuyView } from './CatalogLayoutVipBuyView';
@@ -69,6 +70,8 @@ export const GetCatalogLayout = (page: ICatalogPage, hideNavigation: () => void)
             return <CatalogLayoutRoomAdsView { ...layoutProps } />;
         case 'default_3x3_color_grouping':
             return <CatalogLayoutColorGroupingView { ...layoutProps } />;
+        case 'soundmachine':
+            return <CatalogLayoutSoundMachineView { ...layoutProps } />;
         case 'bots':
         case 'default_3x3':
         default:

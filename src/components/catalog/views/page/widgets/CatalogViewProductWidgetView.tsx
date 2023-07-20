@@ -59,7 +59,7 @@ export const CatalogViewProductWidgetView: FC<{}> = props =>
                     case FurniCategory.LANDSCAPE: {
                         roomPreviewer.updateObjectRoom(null, null, product.extraParam);
 
-                        const furniData = GetSessionDataManager().getWallItemDataByName('ads_twi_windw');
+                        const furniData = GetSessionDataManager().getWallItemDataByName('window_double_default');
 
                         if(furniData) roomPreviewer.addWallItemIntoRoom(furniData.id, new Vector3d(90), furniData.customParams);
                         return;

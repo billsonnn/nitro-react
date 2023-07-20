@@ -55,6 +55,11 @@ const useHelpState = () =>
                 newReport.currentStep = ReportState.SELECT_TOPICS;
                 break;
             case ReportType.PHOTO:
+                newReport.extraData = options.extraData;
+                newReport.roomId = options.roomId;
+                newReport.reportedUserId = options.reportedUserId;
+                newReport.roomObjectId = options.roomObjectId;
+                newReport.currentStep = ReportState.SELECT_TOPICS;
                 break;
             case ReportType.GUIDE:
                 break;

@@ -1,6 +1,7 @@
 export * from './useFurniAddedEvent';
 export * from './useFurniRemovedEvent';
 export * from './useObjectDeselectedEvent';
+export * from './useObjectDoubleClickedEvent';
 export * from './useObjectRollOutEvent';
 export * from './useObjectRollOverEvent';
 export * from './useObjectSelectedEvent';

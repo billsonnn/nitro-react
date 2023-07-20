@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AvatarAction, AvatarExpressionEnum, RoomControllerLevel, RoomObjectCategory, RoomUnitDropHandItemComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { AvatarInfoUser, CreateLinkEvent, DispatchUiEvent, GetCanStandUp, GetCanUseExpression, GetOwnPosture, GetUserProfile, HasHabboClub, HasHabboVip, IsRidingHorse, LocalizeText, PostureTypeEnum, SendMessageComposer } from '../../../../../api';
 import { Flex, LayoutCurrencyIcon } from '../../../../../common';
 import { HelpNameChangeEvent } from '../../../../../events';
@@ -135,7 +135,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                     </ContextMenuListItemView>
                     { (HasHabboClub() && !isRidingHorse) &&
                         <ContextMenuListItemView onClick={ event => processAction('dance_menu') }>
-                            <FontAwesomeIcon icon="chevron-right" className="right" />
+                            <FaChevronRight className="right fa-icon" />
                             { LocalizeText('widget.memenu.dance') }
                         </ContextMenuListItemView> }
                     { (!isDancing && !HasHabboClub() && !isRidingHorse) &&
@@ -147,11 +147,11 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                             { LocalizeText('widget.memenu.dance.stop') }
                         </ContextMenuListItemView> }
                     <ContextMenuListItemView onClick={ event => processAction('expressions') }>
-                        <FontAwesomeIcon icon="chevron-right" className="right" />
+                        <FaChevronRight className="right fa-icon" />
                         { LocalizeText('infostand.link.expressions') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('signs') }>
-                        <FontAwesomeIcon icon="chevron-right" className="right" />
+                        <FaChevronRight className="right fa-icon" />
                         { LocalizeText('infostand.show.signs') }
                     </ContextMenuListItemView>
                     { (avatarInfo.carryItem > 0) &&
@@ -178,7 +178,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         { LocalizeText('widget.memenu.dance4') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('back') }>
-                        <FontAwesomeIcon icon="chevron-left" className="left" />
+                        <FaChevronLeft className="left fa-icon" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
                 </> }
@@ -210,7 +210,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         { LocalizeText('widget.memenu.idle') }
                     </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('back') }>
-                        <FontAwesomeIcon icon="chevron-left" className="left" />
+                        <FaChevronLeft className="left fa-icon" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
                 </> }
@@ -283,7 +283,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         </ContextMenuListItemView>
                     </Flex>
                     <ContextMenuListItemView onClick={ event => processAction('back') }>
-                        <FontAwesomeIcon icon="chevron-left" className="left" />
+                        <FaChevronLeft className="left fa-icon" />
                         { LocalizeText('generic.back') }
                     </ContextMenuListItemView>
                 </> }

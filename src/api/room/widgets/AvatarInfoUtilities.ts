@@ -1,5 +1,5 @@
-import { IFurnitureData, ObjectDataFactory, PetFigureData, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomPetData, RoomTradingLevelEnum, RoomUserData, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
-import { GetNitroInstance, GetRoomEngine, GetRoomSession, GetSessionDataManager, IsOwnerOfFurniture } from '../../nitro';
+import { GetTickerTime, IFurnitureData, IRoomModerationSettings, IRoomPetData, IRoomUserData, ObjectDataFactory, PetFigureData, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomTradingLevelEnum, RoomWidgetEnumItemExtradataParameter, Vector3d } from '@nitrots/nitro-renderer';
+import { GetRoomEngine, GetRoomSession, GetSessionDataManager, IsOwnerOfFurniture } from '../../nitro';
 import { LocalizeText } from '../../utils';
 import { AvatarInfoFurni } from './AvatarInfoFurni';
 import { AvatarInfoName } from './AvatarInfoName';
@@ -139,7 +139,7 @@ export class AvatarInfoUtilities
         const expiryTime = model.getValue<number>(RoomObjectVariable.FURNITURE_EXPIRY_TIME);
         const expiryTimestamp = model.getValue<number>(RoomObjectVariable.FURNITURE_EXPIRTY_TIMESTAMP);
 
-        furniInfo.expiration = ((expiryTime < 0) ? expiryTime : Math.max(0, (expiryTime - ((GetNitroInstance().time - expiryTimestamp) / 1000))));
+        furniInfo.expiration = ((expiryTime < 0) ? expiryTime : Math.max(0, (expiryTime - ((GetTickerTime() - expiryTimestamp) / 1000))));
 
         let roomObjectImage = GetRoomEngine().getRoomObjectImage(roomSession.roomId, objectId, category, new Vector3d(180), 64, null);
 
@@ -162,7 +162,7 @@ export class AvatarInfoUtilities
         if(guildId !== 0)
         {
             furniInfo.groupId = guildId;
-            //this.container.connection.send(new _Str_2863(guildId, false));
+            //this.container.connection.send(new GroupInformationComposer(guildId, false));
         }
 
         if(IsOwnerOfFurniture(roomObject)) furniInfo.isOwner = true;
@@ -170,7 +170,7 @@ export class AvatarInfoUtilities
         return furniInfo;
     }
 
-    public static getUserInfo(category: number, userData: RoomUserData): AvatarInfoUser
+    public static getUserInfo(category: number, userData: IRoomUserData): AvatarInfoUser
     {
         const roomSession = GetRoomSession();
 
@@ -250,7 +250,7 @@ export class AvatarInfoUtilities
             if(tradeMode !== RoomTradingLevelEnum.FREE_TRADING) userInfo.canTradeReason = AvatarInfoUser.TRADE_REASON_NO_TRADING;
 
             // const _local_12 = GetSessionDataManager().userId;
-            // _local_13 = GetSessionDataManager()._Str_18437(_local_12);
+            // _local_13 = GetSessionDataManager().getUserTags(_local_12);
             // this._Str_16287(_local_12, _local_13);
         }
 
@@ -259,15 +259,15 @@ export class AvatarInfoUtilities
         userInfo.groupName = userData.groupName;
         userInfo.badges = roomSession.userDataManager.getUserBadges(userData.webID);
         userInfo.figure = userData.figure;
-        //var _local_8:Array = GetSessionDataManager()._Str_18437(userData.webID);
-        //this._Str_16287(userData._Str_2394, _local_8);
-        //this._container._Str_8097._Str_14387(userData.webID);
-        //this._container.connection.send(new _Str_8049(userData._Str_2394));
+        //var _local_8:Array = GetSessionDataManager().getUserTags(userData.webID);
+        //this._Str_16287(userData.webId, _local_8);
+        //this._container.habboGroupsManager.updateVisibleExtendedProfile(userData.webID);
+        //this._container.connection.send(new GetRelationshipStatusInfoMessageComposer(userData.webId));
 
         return userInfo;
     }
 
-    public static getBotInfo(category: number, userData: RoomUserData): AvatarInfoUser
+    public static getBotInfo(category: number, userData: IRoomUserData): AvatarInfoUser
     {
         const roomSession = GetRoomSession();
         const userInfo = new AvatarInfoUser(AvatarInfoUser.BOT);
@@ -293,7 +293,7 @@ export class AvatarInfoUtilities
         return userInfo;
     }
 
-    public static getRentableBotInfo(category: number, userData: RoomUserData): AvatarInfoRentableBot
+    public static getRentableBotInfo(category: number, userData: IRoomUserData): AvatarInfoRentableBot
     {
         const roomSession = GetRoomSession();
         const botInfo = new AvatarInfoRentableBot(AvatarInfoRentableBot.RENTABLE_BOT);
@@ -319,7 +319,7 @@ export class AvatarInfoUtilities
         return botInfo;
     }
 
-    public static getPetInfo(petData: RoomPetData): AvatarInfoPet
+    public static getPetInfo(petData: IRoomPetData): AvatarInfoPet
     {
         const roomSession = GetRoomSession();
         const userData = roomSession.userDataManager.getPetData(petData.id);
@@ -387,7 +387,7 @@ export class AvatarInfoUtilities
         return (userInfo.roomControllerLevel >= RoomControllerLevel.GUEST);
     }
 
-    private static isValidSetting(userInfo: AvatarInfoUser, checkSetting: (userInfo: AvatarInfoUser, moderation: RoomModerationSettings) => boolean): boolean
+    private static isValidSetting(userInfo: AvatarInfoUser, checkSetting: (userInfo: AvatarInfoUser, moderation: IRoomModerationSettings) => boolean): boolean
     {
         const roomSession = GetRoomSession();
 
@@ -404,7 +404,7 @@ export class AvatarInfoUtilities
 
     private static canBeMuted(userInfo: AvatarInfoUser): boolean
     {
-        const checkSetting = (userInfo: AvatarInfoUser, moderation: RoomModerationSettings) =>
+        const checkSetting = (userInfo: AvatarInfoUser, moderation: IRoomModerationSettings) =>
         {
             switch(moderation.allowMute)
             {
@@ -420,7 +420,7 @@ export class AvatarInfoUtilities
 
     private static canBeKicked(userInfo: AvatarInfoUser): boolean
     {
-        const checkSetting = (userInfo: AvatarInfoUser, moderation: RoomModerationSettings) =>
+        const checkSetting = (userInfo: AvatarInfoUser, moderation: IRoomModerationSettings) =>
         {
             switch(moderation.allowKick)
             {
@@ -438,7 +438,7 @@ export class AvatarInfoUtilities
 
     private static canBeBanned(userInfo: AvatarInfoUser): boolean
     {
-        const checkSetting = (userInfo: AvatarInfoUser, moderation: RoomModerationSettings) =>
+        const checkSetting = (userInfo: AvatarInfoUser, moderation: IRoomModerationSettings) =>
         {
             switch(moderation.allowBan)
             {

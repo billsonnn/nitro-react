@@ -1,5 +1,5 @@
 import { AvatarAction, IQuestion, RoomSessionWordQuizEvent } from '@nitrots/nitro-renderer';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GetRoomEngine, VoteValue } from '../../../api';
 import { useRoomSessionManagerEvent } from '../../events';
 import { useRoom } from '../useRoom';
@@ -34,29 +34,6 @@ const useWordQuizWidgetState = () =>
         setAnswerSent(true);
     }
 
-    const checkSignFade = useCallback(() =>
-    {
-        setUserAnswers(prevValue =>
-        {
-            const keysToRemove: number[] = [];
-
-            prevValue.forEach((value, key) =>
-            {
-                value.secondsLeft--;
-
-                if(value.secondsLeft <= 0) keysToRemove.push(key);
-            });
-
-            if(keysToRemove.length === 0) return prevValue;
-
-            const copy = new Map(prevValue);
-
-            keysToRemove.forEach(key => copy.delete(key));
-
-            return copy;
-        });
-    }, []);
-
     useRoomSessionManagerEvent<RoomSessionWordQuizEvent>(RoomSessionWordQuizEvent.ANSWERED, event =>
     {
         const userData = roomSession.userDataManager.getUserData(event.userId);
@@ -79,14 +56,7 @@ const useWordQuizWidgetState = () =>
             return prevValue;
         });
 
-        if(event.value === '0')
-        {
-            GetRoomEngine().updateRoomObjectUserGesture(roomSession.roomId, userData.roomIndex, AvatarAction.getGestureId(AvatarAction.GESTURE_SAD));
-        }
-        else
-        {
-            GetRoomEngine().updateRoomObjectUserGesture(roomSession.roomId, userData.roomIndex, AvatarAction.getGestureId(AvatarAction.GESTURE_SMILE));
-        }
+        GetRoomEngine().updateRoomObjectUserGesture(roomSession.roomId, userData.roomIndex, AvatarAction.getGestureId((event.value === '0') ? AvatarAction.GESTURE_SAD : AvatarAction.GESTURE_SMILE));
     });
 
     useRoomSessionManagerEvent<RoomSessionWordQuizEvent>(RoomSessionWordQuizEvent.FINISHED, event =>
@@ -132,10 +102,33 @@ const useWordQuizWidgetState = () =>
 
     useEffect(() =>
     {
+        const checkSignFade = () =>
+        {
+            setUserAnswers(prevValue =>
+            {
+                const keysToRemove: number[] = [];
+
+                prevValue.forEach((value, key) =>
+                {
+                    value.secondsLeft--;
+
+                    if(value.secondsLeft <= 0) keysToRemove.push(key);
+                });
+
+                if(keysToRemove.length === 0) return prevValue;
+
+                const copy = new Map(prevValue);
+
+                keysToRemove.forEach(key => copy.delete(key));
+
+                return copy;
+            });
+        }
+
         const interval = setInterval(() => checkSignFade(), 1000);
 
         return () => clearInterval(interval);
-    }, [ checkSignFade ]);
+    }, []);
 
     useEffect(() =>
     {

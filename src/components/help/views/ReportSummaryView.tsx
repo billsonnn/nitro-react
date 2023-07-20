@@ -1,6 +1,6 @@
 import { CallForHelpFromForumMessageMessageComposer, CallForHelpFromForumThreadMessageComposer, CallForHelpFromIMMessageComposer, CallForHelpFromPhotoMessageComposer, CallForHelpMessageComposer } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { GetSessionDataManager, LocalizeText, ReportType, SendMessageComposer } from '../../../api';
+import { LocalizeText, ReportType, SendMessageComposer } from '../../../api';
 import { Button, Column, Text } from '../../../common';
 import { useHelp } from '../../../hooks';
 
@@ -19,13 +19,13 @@ export const ReportSummaryView: FC<{}> = props =>
             case ReportType.ROOM: {
                 const reportedRoomId = ((activeReport.roomId <= 0) ? activeReport.reportedChats[0].roomId : activeReport.roomId);
 
-                activeReport.reportedChats.forEach(entry => chats.push(entry.entityId, entry.message));
+                activeReport.reportedChats.forEach(entry => chats.push(entry.webId, entry.message));
 
                 SendMessageComposer(new CallForHelpMessageComposer(activeReport.message, activeReport.cfhTopic, activeReport.reportedUserId, reportedRoomId, chats));
                 break;
             }
             case ReportType.IM:
-                activeReport.reportedChats.forEach(entry => chats.push(entry.entityId, entry.message));
+                activeReport.reportedChats.forEach(entry => chats.push(entry.webId, entry.message));
 
                 SendMessageComposer(new CallForHelpFromIMMessageComposer(activeReport.message, activeReport.cfhTopic, activeReport.reportedUserId, chats));
                 break;
@@ -36,7 +36,7 @@ export const ReportSummaryView: FC<{}> = props =>
                 SendMessageComposer(new CallForHelpFromForumMessageMessageComposer(activeReport.groupId, activeReport.threadId, activeReport.messageId, activeReport.cfhTopic, activeReport.message));
                 break;
             case ReportType.PHOTO:
-                SendMessageComposer(new CallForHelpFromPhotoMessageComposer(activeReport.extraData, activeReport.cfhTopic, activeReport.roomId, GetSessionDataManager().userId, activeReport.roomObjectId));
+                SendMessageComposer(new CallForHelpFromPhotoMessageComposer(activeReport.extraData, activeReport.roomId, activeReport.reportedUserId, activeReport.cfhTopic, activeReport.roomObjectId));
                 break;
         }
 

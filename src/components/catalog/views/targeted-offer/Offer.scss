@@ -1,0 +1,27 @@
+.nitro-targeted-offer {
+    width: 500px;
+    height: 350px;
+
+    a {
+        color: orangered;
+    }
+
+    .price-ray {
+        bottom: 20px;
+        left: 40px;
+        right: 0;
+        margin: auto;
+        width: 136px;
+        height: 136px;
+        padding: 10px;
+        background-image: url('@/assets/images/catalog/target-price.png');
+        font-size: 18px;
+    }
+}
+
+.nitro-targeted-offer-icon {
+    height: 40px;
+    width: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+}

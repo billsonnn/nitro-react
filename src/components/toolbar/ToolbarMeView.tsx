@@ -1,6 +1,6 @@
 import { MouseEventType, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, PropsWithChildren, SetStateAction, useEffect, useRef } from 'react';
-import { CreateLinkEvent, DispatchUiEvent, GetRoomEngine, GetRoomSession, GetSessionDataManager, GetUserProfile } from '../../api';
+import { CreateLinkEvent, DispatchUiEvent, GetConfiguration, GetRoomEngine, GetRoomSession, GetSessionDataManager, GetUserProfile } from '../../api';
 import { Base, Flex, LayoutItemCountView } from '../../common';
 import { GuideToolEvent } from '../../events';
 
@@ -36,7 +36,7 @@ export const ToolbarMeView: FC<PropsWithChildren<ToolbarMeViewProps>> = props =>
 
     return (
         <Flex innerRef={ elementRef } alignItems="center" className="nitro-toolbar-me p-2" gap={ 2 }>
-            { useGuideTool &&
+            { (GetConfiguration('guides.enabled') && useGuideTool) &&
                 <Base pointer className="navigation-item icon icon-me-helper-tool" onClick={ event => DispatchUiEvent(new GuideToolEvent(GuideToolEvent.TOGGLE_GUIDE_TOOL)) } /> }
             <Base pointer className="navigation-item icon icon-me-achievements" onClick={ event => CreateLinkEvent('achievements/toggle') }>
                 { (unseenAchievementCount > 0) &&

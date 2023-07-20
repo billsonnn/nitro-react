@@ -8,7 +8,6 @@ export class ChatBubbleMessage
     public width: number = 0;
     public height: number = 0;
     public elementRef: HTMLDivElement = null;
-    public visible: boolean = false;
     public skipMovement: boolean = false;
 
     private _top: number = 0;

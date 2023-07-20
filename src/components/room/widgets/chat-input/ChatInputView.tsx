@@ -1,9 +1,9 @@
 import { HabboClubLevelEnum, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { ChatMessageTypeEnum, GetClubMemberLevel, GetConfiguration, GetRoomSession, GetSessionDataManager, LocalizeText, RoomWidgetUpdateChatInputContentEvent } from '../../../../api';
+import { ChatMessageTypeEnum, GetClubMemberLevel, GetConfiguration, GetSessionDataManager, LocalizeText, RoomWidgetUpdateChatInputContentEvent } from '../../../../api';
 import { Text } from '../../../../common';
-import { useChatInputWidget, useSessionInfo, useUiEvent } from '../../../../hooks';
+import { useChatInputWidget, useRoom, useSessionInfo, useUiEvent } from '../../../../hooks';
 import { ChatInputStyleSelectorView } from './ChatInputStyleSelectorView';
 
 export const ChatInputView: FC<{}> = props =>
@@ -11,6 +11,7 @@ export const ChatInputView: FC<{}> = props =>
     const [ chatValue, setChatValue ] = useState<string>('');
     const { chatStyleId = 0, updateChatStyleId = null } = useSessionInfo();
     const { selectedUsername = '', floodBlocked = false, floodBlockedSeconds = 0, setIsTyping = null, setIsIdle = null, sendChat = null } = useChatInputWidget();
+    const { roomSession = null } = useRoom();
     const inputRef = useRef<HTMLInputElement>();
 
     const chatModeIdWhisper = useMemo(() => LocalizeText('widgets.chatinput.mode.whisper'), []);
@@ -230,7 +231,7 @@ export const ChatInputView: FC<{}> = props =>
         inputRef.current.parentElement.dataset.value = chatValue;
     }, [ chatValue ]);
 
-    if(GetRoomSession().isSpectator) return null;
+    if(!roomSession || roomSession.isSpectator) return null;
 
     return (
         createPortal(

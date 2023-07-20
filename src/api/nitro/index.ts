@@ -1,5 +1,4 @@
 export * from './AddLinkEventTracker';
-export * from './AddWorkerEventTracker';
 export * from './avatar';
 export * from './camera';
 export * from './core';
@@ -9,11 +8,8 @@ export * from './GetConfiguration';
 export * from './GetConnection';
 export * from './GetLocalization';
 export * from './GetNitroInstance';
-export * from './GetTicker';
 export * from './OpenUrl';
 export * from './RemoveLinkEventTracker';
-export * from './RemoveWorkerEventTracker';
 export * from './room';
 export * from './SendMessageComposer';
-export * from './SendWorkerEvent';
 export * from './session';

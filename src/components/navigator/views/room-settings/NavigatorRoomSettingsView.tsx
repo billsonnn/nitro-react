@@ -69,7 +69,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
         setCurrentTab(TABS[0]);
     }
 
-    const handleChange = (field: string, value: string | number | boolean) =>
+    const handleChange = (field: string, value: string | number | boolean | string[]) =>
     {
         setRoomData(prevValue =>
         {
@@ -91,6 +91,9 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
                     break;
                 case 'trade_state':
                     newValue.tradeState = Number(value);
+                    break;
+                case 'tags':
+                    newValue.tags = value as Array<string>;
                     break;
                 case 'allow_walkthrough':
                     newValue.allowWalkthrough = Boolean(value);

@@ -1,5 +1,5 @@
 import { NitroRectangle, NitroRenderTexture } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useRef } from 'react';
+import { FC, useRef } from 'react';
 import { GetRoomEngine, LocalizeText, PlaySound, SoundNames } from '../../api';
 import { DraggableWindow } from '../draggable-window';
 
@@ -15,20 +15,20 @@ export const LayoutMiniCameraView: FC<LayoutMiniCameraViewProps> = props =>
     const { roomId = -1, textureReceiver = null, onClose = null } = props;
     const elementRef = useRef<HTMLDivElement>();
 
-    const getCameraBounds = useCallback(() =>
+    const getCameraBounds = () =>
     {
         if(!elementRef || !elementRef.current) return null;
 
         const frameBounds = elementRef.current.getBoundingClientRect();
         
         return new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height));
-    }, []);
+    }
 
-    const takePicture = useCallback(() =>
+    const takePicture = () =>
     {
         PlaySound(SoundNames.CAMERA_SHUTTER);
         textureReceiver(GetRoomEngine().createTextureFromRoom(roomId, 1, getCameraBounds()));
-    }, [ roomId, getCameraBounds, textureReceiver ]);
+    }
     
     return (
         <DraggableWindow handleSelector=".nitro-room-thumbnail-camera">

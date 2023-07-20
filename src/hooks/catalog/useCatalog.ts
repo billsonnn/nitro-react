@@ -1,7 +1,7 @@
-import { BuildersClubFurniCountMessageEvent, BuildersClubPlaceRoomItemMessageComposer, BuildersClubPlaceWallItemMessageComposer, BuildersClubQueryFurniCountMessageComposer, BuildersClubSubscriptionStatusMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, FrontPageItem, FurniturePlaceComposer, FurniturePlacePaintComposer, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, GiftWrappingConfigurationEvent, GuildMembershipsMessageEvent, HabboClubOffersMessageEvent, LegacyDataType, LimitedEditionSoldOutEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseFromCatalogComposer, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, RoomControllerLevel, RoomEngineObjectPlacedEvent, RoomObjectCategory, RoomObjectPlacementSource, RoomObjectType, RoomObjectVariable, RoomPreviewer, SellablePetPalettesMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
+import { BuildersClubFurniCountMessageEvent, BuildersClubPlaceRoomItemMessageComposer, BuildersClubPlaceWallItemMessageComposer, BuildersClubQueryFurniCountMessageComposer, BuildersClubSubscriptionStatusMessageEvent, CatalogPageMessageEvent, CatalogPagesListEvent, CatalogPublishedMessageEvent, ClubGiftInfoEvent, FrontPageItem, FurniturePlaceComposer, FurniturePlacePaintComposer, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, GetTickerTime, GiftWrappingConfigurationEvent, GuildMembershipsMessageEvent, HabboClubOffersMessageEvent, LegacyDataType, LimitedEditionSoldOutEvent, MarketplaceMakeOfferResult, NodeData, ProductOfferEvent, PurchaseErrorMessageEvent, PurchaseFromCatalogComposer, PurchaseNotAllowedMessageEvent, PurchaseOKMessageEvent, RoomControllerLevel, RoomEngineObjectPlacedEvent, RoomObjectCategory, RoomObjectPlacementSource, RoomObjectType, RoomObjectVariable, RoomPreviewer, SellablePetPalettesMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useBetween } from 'use-between';
-import { BuilderFurniPlaceableStatus, CatalogNode, CatalogPage, CatalogPetPalette, CatalogType, CreateLinkEvent, DispatchUiEvent, FurniCategory, GetFurnitureData, GetNitroInstance, GetProductDataForLocalization, GetRoomEngine, GetRoomSession, GiftWrappingConfiguration, ICatalogNode, ICatalogOptions, ICatalogPage, IPageLocalization, IProduct, IPurchasableOffer, IPurchaseOptions, LocalizeText, NotificationAlertType, Offer, PageLocalization, PlacedObjectPurchaseData, PlaySound, Product, ProductTypeEnum, RequestedPage, SearchResult, SendMessageComposer, SoundNames } from '../../api';
+import { BuilderFurniPlaceableStatus, CatalogNode, CatalogPage, CatalogPetPalette, CatalogType, CreateLinkEvent, DispatchUiEvent, FurniCategory, GetFurnitureData, GetProductDataForLocalization, GetRoomEngine, GetRoomSession, GiftWrappingConfiguration, ICatalogNode, ICatalogOptions, ICatalogPage, IPageLocalization, IProduct, IPurchasableOffer, IPurchaseOptions, LocalizeText, NotificationAlertType, Offer, PageLocalization, PlacedObjectPurchaseData, PlaySound, Product, ProductTypeEnum, RequestedPage, SearchResult, SendMessageComposer, SoundNames } from '../../api';
 import { CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, InventoryFurniAddedEvent } from '../../events';
 import { useMessageEvent, useRoomEngineEvent, useUiEvent } from '../events';
 import { useNotification } from '../notification';
@@ -265,7 +265,7 @@ const useCatalogState = () =>
     const loadCatalogPage = useCallback((pageId: number, offerId: number) =>
     {
         if(pageId < 0) return;
-        
+
         setIsBusy(true);
         setPageId(pageId);
 
@@ -285,9 +285,9 @@ const useCatalogState = () =>
             for(const offer of catalogPage.offers)
             {
                 if(offer.offerId !== offerId) continue;
-                
+
                 setCurrentOffer(offer)
-    
+
                 break;
             }
         }
@@ -351,13 +351,13 @@ const useCatalogState = () =>
 
             return nodes;
         });
-            
+
         if(targetNode.pageId > -1) loadCatalogPage(targetNode.pageId, offerId);
     }, [ setActiveNodes, loadCatalogPage, cancelObjectMover ]);
 
     const openPageById = useCallback((id: number) =>
     {
-        setSearchResult(null);
+        if(id !== -1) setSearchResult(null);
 
         if(!isVisible)
         {
@@ -544,9 +544,9 @@ const useCatalogState = () =>
             setPurchaseOptions(prevValue =>
             {
                 const newValue = { ...prevValue };
-    
+
                 newValue.extraData =( offer.product.extraParam || null);
-    
+
                 return newValue;
             });
         }
@@ -576,7 +576,7 @@ const useCatalogState = () =>
                     break;
                 }
             }
-                
+
             petPalettes.push(petPalette);
 
             return { ...prevValue, petPalettes };
@@ -636,7 +636,7 @@ const useCatalogState = () =>
         }
 
         const message = LocalizeText(`inventory.marketplace.result.${ parser.result }`);
-        
+
         simpleAlert(message, NotificationAlertType.DEFAULT, null, null, title);
     });
 
@@ -674,11 +674,11 @@ const useCatalogState = () =>
     {
         const parser = event.getParser();
 
-        setFurniLimit(parser._Str_15864);
-        setMaxFurniLimit(parser._Str_24094);
-        setSecondsLeft(parser._Str_3709);
-        setUpdateTime(GetNitroInstance().time);
-        setSecondsLeftWithGrace(parser._Str_24379);
+        setFurniLimit(parser.furniLimit);
+        setMaxFurniLimit(parser.maxFurniLimit);
+        setSecondsLeft(parser.secondsLeft);
+        setUpdateTime(GetTickerTime());
+        setSecondsLeftWithGrace(parser.secondsLeftWithGrace);
 
         refreshBuilderStatus();
     });
@@ -757,7 +757,7 @@ const useCatalogState = () =>
 
                 if(roomObject) roomObject.model.setValue(RoomObjectVariable.FURNITURE_ALPHA_MULTIPLIER, 0.5);
 
-                if(catalogSkipPurchaseConfirmation) 
+                if(catalogSkipPurchaseConfirmation)
                 {
                     SendMessageComposer(new PurchaseFromCatalogComposer(pageId, purchasableOffer.offerId, product.extraParam, 1));
 
@@ -832,7 +832,7 @@ const useCatalogState = () =>
     {
         return () => setCurrentOffer(null);
     }, [ currentPage ]);
-    
+
     useEffect(() =>
     {
         if(!isVisible || !rootNode || !offersToNodes || !requestedPage.current) return;
@@ -881,7 +881,7 @@ const useCatalogState = () =>
 
         setPurchaseOptions({ quantity: 1, extraData: null, extraParamRequired: false, previewStuffData: null });
     }, [ currentOffer ]);
-    
+
     useEffect(() =>
     {
         if(!isVisible || rootNode) return;

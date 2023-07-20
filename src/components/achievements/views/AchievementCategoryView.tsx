@@ -1,48 +1,35 @@
-import { Dispatch, FC, SetStateAction, useEffect, useMemo } from 'react';
+import { FC, useEffect } from 'react';
 import { AchievementCategory } from '../../../api';
 import { Column } from '../../../common';
-import { AchievementListView } from './achievement-list/AchievementListView';
+import { useAchievements } from '../../../hooks';
+import { AchievementListView } from './achievement-list';
 import { AchievementDetailsView } from './AchievementDetailsView';
 
 interface AchievementCategoryViewProps
 {
     category: AchievementCategory;
-    selectedAchievementId: number;
-    setSelectedAchievementId: Dispatch<SetStateAction<number>>;
-    setAchievementSeen: (code: string, achievementId: number) => void;
 }
 
 export const AchievementCategoryView: FC<AchievementCategoryViewProps> = props =>
 {
-    const { category = null, selectedAchievementId = -1, setSelectedAchievementId = null, setAchievementSeen = null } = props;
-
-    const selectedAchievement = useMemo(() =>
-    {
-        if(selectedAchievementId === -1) return null;
-
-        return category.achievements.find(achievement => (achievement.achievementId === selectedAchievementId));
-    }, [ category, selectedAchievementId ]);
+    const { category = null } = props;
+    const { selectedAchievement = null, setSelectedAchievementId = null } = useAchievements();
 
     useEffect(() =>
     {
+        if(!category) return;
+
         if(!selectedAchievement)
         {
-            if(category.achievements.length) setSelectedAchievementId(category.achievements[0].achievementId);
+            setSelectedAchievementId(category?.achievements?.[0]?.achievementId);
         }
-    }, [ selectedAchievement, category, setSelectedAchievementId ]);
-
-    useEffect(() =>
-    {
-        if(!selectedAchievement) return;
-
-        setAchievementSeen(category.code, selectedAchievement.achievementId);
-    }, [ selectedAchievement, category, setAchievementSeen ]);
+    }, [ category, selectedAchievement, setSelectedAchievementId ]);
 
     if(!category) return null;
 
     return (
         <Column fullHeight justifyContent="between">
-            <AchievementListView achievements={ category.achievements } selectedAchievementId={ selectedAchievementId } setSelectedAchievementId={ setSelectedAchievementId } />
+            <AchievementListView achievements={ category.achievements } />
             { !!selectedAchievement &&
                 <AchievementDetailsView achievement={ selectedAchievement } /> }
         </Column>

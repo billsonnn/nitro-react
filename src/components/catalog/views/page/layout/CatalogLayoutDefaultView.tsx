@@ -38,12 +38,12 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
                                 { (currentOffer.product.productType !== ProductTypeEnum.BADGE) &&
                                     <>
                                         <CatalogViewProductWidgetView />
-                                        <CatalogLimitedItemWidgetView fullWidth position="absolute" className="top-1" />
                                         <CatalogAddOnBadgeWidgetView className="bg-muted rounded bottom-1 end-1" />
                                     </> }
                                 { (currentOffer.product.productType === ProductTypeEnum.BADGE) && <CatalogAddOnBadgeWidgetView className="scale-2" /> }
                             </Flex>
                             <Column grow gap={ 1 }>
+                                <CatalogLimitedItemWidgetView fullWidth />
                                 <Text grow truncate>{ currentOffer.localizationName }</Text>
                                 <Flex justifyContent="between">
                                     <Column gap={ 1 }>

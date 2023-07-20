@@ -1,5 +1,4 @@
-import { IGraphicAssetCollection, NitroPoint, NitroTilemap, PixiApplicationProxy, PixiInteractionEventProxy, POINT_STRUCT_SIZE } from '@nitrots/nitro-renderer';
-import { GetNitroCore } from '../../../api';
+import { GetAssetManager, IGraphicAssetCollection, NitroPoint, NitroTilemap, PixiApplicationProxy, PixiInteractionEventProxy, POINT_STRUCT_SIZE } from '@nitrots/nitro-renderer';
 import { ActionSettings } from './ActionSettings';
 import { FloorAction, HEIGHT_SCHEME, MAX_NUM_TILE_PER_AXIS, TILE_SIZE } from './Constants';
 import { Tile } from './Tile';
@@ -9,8 +8,8 @@ export class FloorplanEditor extends PixiApplicationProxy
 {
     private static _INSTANCE: FloorplanEditor = null;
 
-    private static readonly TILE_BLOCKED = 'r_blocked';
-    private static readonly TILE_DOOR = 'r_door';
+    public static readonly TILE_BLOCKED = 'r_blocked';
+    public static readonly TILE_DOOR = 'r_door';
 
     private _tilemap: Tile[][];
     private _width: number;
@@ -53,7 +52,7 @@ export class FloorplanEditor extends PixiApplicationProxy
     {
         if(this._isInitialized) return;
 
-        const collection = GetNitroCore().asset.getCollection('floor_editor');
+        const collection = GetAssetManager().getCollection('floor_editor');
 
         if(!collection) return;
 

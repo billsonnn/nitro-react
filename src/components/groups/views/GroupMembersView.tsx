@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GroupAdminGiveComposer, GroupAdminTakeComposer, GroupConfirmMemberRemoveEvent, GroupConfirmRemoveMemberComposer, GroupMemberParser, GroupMembersComposer, GroupMembersEvent, GroupMembershipAcceptComposer, GroupMembershipDeclineComposer, GroupMembersParser, GroupRank, GroupRemoveMemberComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../../api';
 import { Base, Button, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { useMessageEvent, useNotification } from '../../../hooks';
@@ -195,13 +195,13 @@ export const GroupMembersView: FC<{}> = props =>
                 </Grid>
                 <Flex gap={ 1 } justifyContent="between" alignItems="center">
                     <Button disabled={ (membersData.pageIndex === 0) } onClick={ event => setPageId(prevValue => (prevValue - 1)) }>
-                        <FontAwesomeIcon icon="chevron-left" />
+                        <FaChevronLeft className="fa-icon" />
                     </Button>
                     <Text small>
                         { LocalizeText('group.members.pageinfo', [ 'amount', 'page', 'totalPages' ], [ membersData.totalMembersCount.toString(), (membersData.pageIndex + 1).toString(), totalPages.toString() ]) }
                     </Text>
                     <Button disabled={ (membersData.pageIndex === (totalPages - 1)) } onClick={ event => setPageId(prevValue => (prevValue + 1)) }>
-                        <FontAwesomeIcon icon="chevron-right" />
+                        <FaChevronRight className="fa-icon" />
                     </Button>
                 </Flex>
             </NitroCardContentView>

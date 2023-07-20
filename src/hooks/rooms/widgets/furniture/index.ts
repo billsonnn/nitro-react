@@ -1,6 +1,7 @@
 export * from './useFurnitureBackgroundColorWidget';
 export * from './useFurnitureBadgeDisplayWidget';
 export * from './useFurnitureContextMenuWidget';
+export * from './useFurnitureCraftingWidget';
 export * from './useFurnitureDimmerWidget';
 export * from './useFurnitureExchangeWidget';
 export * from './useFurnitureExternalImageWidget';
@@ -8,6 +9,7 @@ export * from './useFurnitureFriendFurniWidget';
 export * from './useFurnitureHighScoreWidget';
 export * from './useFurnitureInternalLinkWidget';
 export * from './useFurnitureMannequinWidget';
+export * from './useFurniturePlaylistEditorWidget';
 export * from './useFurniturePresentWidget';
 export * from './useFurnitureRoomLinkWidget';
 export * from './useFurnitureSpamWallPostItWidget';

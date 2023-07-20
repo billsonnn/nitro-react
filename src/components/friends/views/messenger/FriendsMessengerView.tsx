@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FollowFriendMessageComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { FaTimes } from 'react-icons/fa';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker, ReportType, SendMessageComposer } from '../../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, LayoutGridItem, LayoutItemCountView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useHelp, useMessenger } from '../../../../hooks';
@@ -110,27 +110,29 @@ export const FriendsMessengerView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('messenger.window.title', [ 'OPEN_CHAT_COUNT' ], [ visibleThreads.length.toString() ]) } onCloseClick={ event => setIsVisible(false) } />
             <NitroCardContentView>
                 <Grid overflow="hidden">
-                    <Column size={ 4 }>
+                    <Column size={ 4 } overflow="hidden">
                         <Text bold>{ LocalizeText('toolbar.icon.label.messenger') }</Text>
-                        <Column fullHeight overflow="auto">
-                            { visibleThreads && (visibleThreads.length > 0) && visibleThreads.map(thread =>
-                            {
-                                return (
-                                    <LayoutGridItem key={ thread.threadId } itemActive={ (activeThread === thread) } onClick={ event => setActiveThreadId(thread.threadId) }>
-                                        { thread.unread &&
+                        <Column fit overflow="auto">
+                            <Column>
+                                { visibleThreads && (visibleThreads.length > 0) && visibleThreads.map(thread =>
+                                {
+                                    return (
+                                        <LayoutGridItem key={ thread.threadId } itemActive={ (activeThread === thread) } onClick={ event => setActiveThreadId(thread.threadId) }>
+                                            { thread.unread &&
                                             <LayoutItemCountView count={ thread.unreadCount } /> }
-                                        <Flex fullWidth alignItems="center" gap={ 1 }>
-                                            <Flex alignItems="center" className="friend-head px-1">
-                                                { (thread.participant.id > 0) &&
+                                            <Flex fullWidth alignItems="center" gap={ 1 }>
+                                                <Flex alignItems="center" className="friend-head px-1">
+                                                    { (thread.participant.id > 0) &&
                                                     <LayoutAvatarImageView figure={ thread.participant.figure } headOnly={ true } direction={ 3 } /> }
-                                                { (thread.participant.id <= 0) &&
+                                                    { (thread.participant.id <= 0) &&
                                                     <LayoutBadgeImageView isGroup={ true } badgeCode={ thread.participant.figure } /> }
+                                                </Flex>
+                                                <Text truncate grow>{ thread.participant.name }</Text>
                                             </Flex>
-                                            <Text truncate grow>{ thread.participant.name }</Text>
-                                        </Flex>
-                                    </LayoutGridItem>
-                                );
-                            }) }
+                                        </LayoutGridItem>
+                                    );
+                                }) }
+                            </Column>
                         </Column>
                     </Column>
                     <Column size={ 8 } overflow="hidden">
@@ -152,7 +154,7 @@ export const FriendsMessengerView: FC<{}> = props =>
                                         </Button>
                                     </Flex>
                                     <Button onClick={ event => closeThread(activeThread.threadId) }>
-                                        <FontAwesomeIcon icon="times" />
+                                        <FaTimes className="fa-icon" />
                                     </Button>
                                 </Flex>
                                 <Column fit className="bg-muted p-2 rounded chat-messages">

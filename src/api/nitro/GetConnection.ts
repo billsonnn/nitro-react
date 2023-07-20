@@ -3,5 +3,5 @@ import { GetCommunication } from './GetCommunication';
 
 export function GetConnection(): IConnection
 {
-    return GetCommunication().connection;
+    return GetCommunication()?.connection;
 }

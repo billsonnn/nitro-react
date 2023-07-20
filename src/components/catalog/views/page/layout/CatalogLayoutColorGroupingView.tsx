@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorConverter } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
+import { FaFillDrip } from 'react-icons/fa';
 import { IPurchasableOffer } from '../../../../../api';
 import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
@@ -79,15 +79,13 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
 
         page.offers.sort(sortByColorIndex);
 
-        let selectedColor = 0;
-
         page.offers.forEach(offer =>
         {
             if(!offer.product) return;
 
             const furniData = offer.product.furnitureData;
 
-            if(((!(furniData)) || (!furniData.hasIndexedColor)))
+            if(!furniData || !furniData.hasIndexedColor)
             {
                 offers.push(offer);
             }
@@ -101,11 +99,13 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
                     updatedColorableItems.set(name, []);
                 }
 
+                let selectedColor = 0xFFFFFF;
+                
                 if(furniData.colors)
                 {
                     for(let color of furniData.colors)
                     {
-                        if(color !== 0xFFFFFF) // for some reason we hate the color white
+                        if(color !== 0xFFFFFF) // skip the white colors
                         {
                             selectedColor = color;
                         }
@@ -152,14 +152,14 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
                     <>
                         <Base position="relative" overflow="hidden">
                             <CatalogViewProductWidgetView />
-                            <CatalogLimitedItemWidgetView fullWidth position="absolute" className="top-1" />
                             <CatalogAddOnBadgeWidgetView position="absolute" className="bg-muted rounded bottom-1 end-1" />
                             { currentOffer.product.furnitureData.hasIndexedColor &&
                                 <Button position="absolute" className="bottom-1 start-1" onClick={ event =>setColorsShowing(prev => !prev) }>
-                                    <FontAwesomeIcon icon="fill-drip" />
+                                    <FaFillDrip className="fa-icon" />
                                 </Button> }
                         </Base>
                         <Column grow gap={ 1 }>
+                            <CatalogLimitedItemWidgetView fullWidth />
                             <Text grow truncate>{ currentOffer.localizationName }</Text>
                             <Flex justifyContent="between">
                                 <Column gap={ 1 }>

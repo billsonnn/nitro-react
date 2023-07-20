@@ -1,5 +1,3 @@
-import * as joypixels from 'emoji-toolkit';
-
 const allowedColours: Map<string, string> = new Map();
 
 allowedColours.set('r', 'red');
@@ -44,7 +42,7 @@ export const RoomChatFormatter = (content: string) =>
     let result = '';
 
     content = encodeHTML(content);
-    content = (joypixels.shortnameToUnicode(content) as string)
+    //content = (joypixels.shortnameToUnicode(content) as string)
 
     if(content.startsWith('@') && content.indexOf('@', 1) > -1)
     {

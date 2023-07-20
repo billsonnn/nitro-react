@@ -1,6 +1,5 @@
-import { FC, useEffect, useMemo, useRef } from 'react';
+import { FC, useMemo, useRef } from 'react';
 import { Column, ColumnProps } from '..';
-import { GetLocalStorage, SetLocalStorage, WindowSaveOptions } from '../../api';
 import { DraggableWindow, DraggableWindowPosition, DraggableWindowProps } from '../draggable-window';
 import { NitroCardContextProvider } from './NitroCardContext';
 
@@ -25,7 +24,7 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
         return newClassNames;
     }, [ theme, classNames ]);
 
-    useEffect(() =>
+    /* useEffect(() =>
     {
         if(!uniqueKey || !elementRef || !elementRef.current) return;
 
@@ -34,8 +33,8 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
 
         if(localStorage && localStorage.size)
         {
-            element.style.width = `${ localStorage.size.width }px`;
-            element.style.height = `${ localStorage.size.height }px`;
+            //element.style.width = `${ localStorage.size.width }px`;
+            //element.style.height = `${ localStorage.size.height }px`;
         }
 
         const observer = new ResizeObserver(event =>
@@ -53,7 +52,7 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
         {
             observer.disconnect();
         }
-    }, [ uniqueKey ]);
+    }, [ uniqueKey ]); */
 
     return (
         <NitroCardContextProvider value={ { theme } }>

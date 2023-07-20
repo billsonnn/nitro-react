@@ -1,4 +1,4 @@
-import { AchievementNotificationMessageEvent, ActivityPointNotificationMessageEvent, ClubGiftNotificationEvent, ClubGiftSelectedEvent, HabboBroadcastMessageEvent, HotelClosedAndOpensEvent, HotelClosesAndWillOpenAtEvent, HotelWillCloseInMinutesEvent, InfoFeedEnableMessageEvent, MaintenanceStatusMessageEvent, ModeratorCautionEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent, PetLevelNotificationEvent, PetReceivedMessageEvent, RespectReceivedEvent, RoomEnterEffect, RoomEnterEvent, UserBannedMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
+import { AchievementNotificationMessageEvent, ActivityPointNotificationMessageEvent, ClubGiftNotificationEvent, ClubGiftSelectedEvent, ConnectionErrorEvent, HabboBroadcastMessageEvent, HotelClosedAndOpensEvent, HotelClosesAndWillOpenAtEvent, HotelWillCloseInMinutesEvent, InfoFeedEnableMessageEvent, MaintenanceStatusMessageEvent, ModeratorCautionEvent, ModeratorMessageEvent, MOTDNotificationEvent, NotificationDialogMessageEvent, PetLevelNotificationEvent, PetReceivedMessageEvent, RespectReceivedEvent, RoomEnterEffect, RoomEnterEvent, SimpleAlertMessageEvent, UserBannedMessageEvent, Vector3d } from '@nitrots/nitro-renderer';
 import { useCallback, useState } from 'react';
 import { useBetween } from 'use-between';
 import { GetConfiguration, GetNitroInstance, GetRoomEngine, GetSessionDataManager, LocalizeBadgeName, LocalizeText, NotificationAlertItem, NotificationAlertType, NotificationBubbleItem, NotificationBubbleType, NotificationConfirmItem, PlaySound, ProductImageUtility, TradingNotificationType } from '../../api';
@@ -84,19 +84,21 @@ const useNotificationState = () =>
 
         if(configuration) for(const key in configuration) options.set(key, configuration[key]);
 
+        if (type === 'floorplan_editor.error') options.set('message', options.get('message').replace(/[^a-zA-Z._ ]/g, ''));
+
         const title = getNotificationPart(options, type, 'title', true);
         const message = getNotificationPart(options, type, 'message', true).replace(/\\r/g, '\r');
         const linkTitle = getNotificationPart(options, type, 'linkTitle', false);
         const linkUrl = getNotificationPart(options, type, 'linkUrl', false);
         const image = getNotificationImageUrl(options, type);
-        
+
         if(options.get('display') === 'BUBBLE')
         {
             showSingleBubble(LocalizeText(message), NotificationBubbleType.INFO, image, linkUrl);
         }
         else
         {
-            simpleAlert(message, type, linkUrl, linkTitle, title, image);
+            simpleAlert(LocalizeText(message), type, linkUrl, linkTitle, title, image);
         }
 
         if(options.get('sound')) PlaySound(options.get('sound'));
@@ -346,8 +348,52 @@ const useNotificationState = () =>
     useMessageEvent<HotelClosedAndOpensEvent>(HotelClosedAndOpensEvent, event =>
     {
         const parser = event.getParser();
-        
+
         simpleAlert(LocalizeText('opening.hours.disconnected', [ 'h', 'm' ], [ parser.openHour.toString(), parser.openMinute.toString() ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
+    });
+
+    useMessageEvent<ConnectionErrorEvent>(ConnectionErrorEvent, event =>
+    {
+        const parser = event.getParser();
+
+        switch(parser.errorCode)
+        {
+            default:
+            case 0:
+                simpleAlert(LocalizeText('connection.server.error.desc', [ 'errorCode' ], [ parser.errorCode.toString() ]), NotificationAlertType.ALERT, null, null, LocalizeText('connection.server.error.title'));
+                break;
+            case 1001:
+            case 1002:
+            case 1003:
+            case 1004:
+            case 1005:
+            case 1006:
+            case 1007:
+            case 1008:
+            case 1009:
+            case 1010:
+            case 1011:
+            case 1012:
+            case 1013:
+            case 1014:
+            case 1015:
+            case 1016:
+            case 1017:
+            case 1018:
+            case 1019:
+                event.connection.dispose();
+                break;
+            case 4013:
+                simpleAlert(LocalizeText('connection.room.maintenance.desc'), NotificationAlertType.ALERT, null, null, LocalizeText('connection.room.maintenance.title'));
+                break;
+        }
+    });
+
+    useMessageEvent<SimpleAlertMessageEvent>(SimpleAlertMessageEvent, event =>
+    {
+        const parser = event.getParser();
+
+        simpleAlert(LocalizeText(parser.alertMessage), NotificationAlertType.DEFAULT, null, null, LocalizeText(parser.titleMessage ? parser.titleMessage : 'notifications.broadcast.title'));
     });
 
     const onRoomEnterEvent = useCallback(() =>
@@ -380,7 +426,7 @@ const useNotificationState = () =>
 
     useMessageEvent<RoomEnterEvent>(RoomEnterEvent, onRoomEnterEvent);
 
-    return { alerts, bubbleAlerts, confirms, simpleAlert, showNitroAlert, showTradeAlert, showConfirm, closeAlert, closeBubbleAlert, closeConfirm };
+    return { alerts, bubbleAlerts, confirms, simpleAlert, showNitroAlert, showTradeAlert, showConfirm, showSingleBubble, closeAlert, closeBubbleAlert, closeConfirm };
 }
 
 export const useNotification = () => useBetween(useNotificationState);

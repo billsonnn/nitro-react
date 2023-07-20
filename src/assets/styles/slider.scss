@@ -40,14 +40,14 @@
         &.degree {
 
             &:after {
-                content: "\00b0"
+                content: '\00b0'
             }
         }
 
         &.percent {
 
             &:after {
-                content: "\0025"
+                content: '\0025'
             }
         }
     }

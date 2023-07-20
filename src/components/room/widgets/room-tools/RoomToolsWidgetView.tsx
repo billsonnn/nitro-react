@@ -1,8 +1,7 @@
-import { GetGuestRoomResultEvent, RateFlatMessageComposer } from '@nitrots/nitro-renderer';
-import classNames from 'classnames';
+import { GetGuestRoomResultEvent, NavigatorSearchComposer, RateFlatMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { CreateLinkEvent, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
-import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
+import { Base, classNames, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
 import { useMessageEvent, useNavigator, useRoom } from '../../../../hooks';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
@@ -15,7 +14,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     const { navigatorData = null } = useNavigator();
     const { roomSession = null } = useRoom();
 
-    const handleToolClick = (action: string) =>
+    const handleToolClick = (action: string, value?: string) =>
     {
         switch(action)
         {
@@ -26,10 +25,10 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 setIsZoomedIn(prevValue =>
                 {
                     let scale = GetRoomEngine().getRoomInstanceRenderingCanvasScale(roomSession.roomId, 1);
-                    
+
                     if(!prevValue) scale /= 2;
                     else scale *= 2;
-                    
+
                     GetRoomEngine().setRoomInstanceRenderingCanvasScale(roomSession.roomId, 1, scale);
 
                     return !prevValue;
@@ -43,6 +42,10 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 return;
             case 'toggle_room_link':
                 CreateLinkEvent('navigator/toggle-room-link');
+                return;
+            case 'navigator_search_tag':
+                CreateLinkEvent(`navigator/search/${ value }`);
+                SendMessageComposer(new NavigatorSearchComposer('hotel_view', `tag:${ value }`));
                 return;
         }
     }
@@ -66,12 +69,12 @@ export const RoomToolsWidgetView: FC<{}> = props =>
 
         return () => clearTimeout(timeout);
     }, [ roomName, roomOwner, roomTags ]);
-    
+
     return (
         <Flex className="nitro-room-tools-container" gap={ 2 }>
             <Column center className="nitro-room-tools p-2">
                 <Base pointer title={ LocalizeText('room.settings.button.text') } className="icon icon-cog" onClick={ () => handleToolClick('settings') } />
-                <Base pointer title={ LocalizeText('room.zoom.button.text') } onClick={ () => handleToolClick('zoom') } className={ 'icon ' + classNames({ 'icon-zoom-less': !isZoomedIn, 'icon-zoom-more': isZoomedIn }) } />
+                <Base pointer title={ LocalizeText('room.zoom.button.text') } onClick={ () => handleToolClick('zoom') } className={ classNames('icon', (!isZoomedIn && 'icon-zoom-less'), (isZoomedIn && 'icon-zoom-more')) } />
                 <Base pointer title={ LocalizeText('room.chathistory.button.text') } onClick={ () => handleToolClick('chat_history') } className="icon icon-chat-history" />
                 { navigatorData.canRate &&
                     <Base pointer title={ LocalizeText('room.like.button.text') } onClick={ () => handleToolClick('like_room') } className="icon icon-like-room" /> }
@@ -86,7 +89,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                             </Column>
                             { roomTags && roomTags.length > 0 &&
                                 <Flex gap={ 2 }>
-                                    { roomTags.map((tag, index) => <Text key={ index } small variant="white" className="rounded bg-primary p-1">#{ tag }</Text>) }
+                                    { roomTags.map((tag, index) => <Text key={ index } small pointer variant="white" className="rounded bg-primary p-1" onClick={ () => handleToolClick('navigator_search_tag', tag) }>#{ tag }</Text>) }
                                 </Flex> }
                         </Column>
                     </Column>
