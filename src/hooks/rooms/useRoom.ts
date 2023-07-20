@@ -205,13 +205,7 @@ const useRoomState = () =>
         const height = Math.floor(window.innerHeight);
         const renderer = nitroInstance.application.renderer;
 
-        if(renderer)
-        {
-            renderer.view.style.width = `${ width }px`;
-            renderer.view.style.height = `${ height }px`;
-            //renderer.resolution = window.devicePixelRatio;
-            renderer.resize(width, height);
-        }
+        if(renderer) renderer.resize(width, height);
 
         const displayObject = roomEngine.getRoomInstanceDisplay(roomId, canvasId, width, height, RoomGeometry.SCALE_ZOOMED_IN);
         const canvas = GetRoomEngine().getRoomInstanceRenderingCanvas(roomId, canvasId);
@@ -267,9 +261,6 @@ const useRoomState = () =>
             const width = Math.floor(window.innerWidth);
             const height = Math.floor(window.innerHeight);
 
-            renderer.view.style.width = `${ width }px`;
-            renderer.view.style.height = `${ height }px`;
-            //renderer.resolution = window.devicePixelRatio;
             renderer.resize(width, height);
 
             background.width = width;

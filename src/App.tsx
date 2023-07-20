@@ -10,9 +10,7 @@ NitroVersion.UI_VERSION = GetUIVersion();
 export const App: FC<{}> = props =>
 {
     const [ isReady, setIsReady ] = useState(false);
-    const [ isError, setIsError ] = useState(false);
     const [ message, setMessage ] = useState('Getting Ready');
-    const [ percent, setPercent ] = useState(0);
     const [ imageRendering, setImageRendering ] = useState<boolean>(true);
 
     useEffect(() =>
@@ -53,7 +51,7 @@ export const App: FC<{}> = props =>
     
     return (
         <Base fit overflow="hidden" className={ imageRendering && 'image-rendering-pixelated' }>
-            { (!isReady || isError) &&
+            { !isReady &&
                 <LoadingView isError={ false } message={ message } percent={ 0 } showPercent={ false } /> }
             { isReady && <MainView /> }
             <Base id="draggable-windows-container" />
