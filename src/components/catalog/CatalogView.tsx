@@ -72,12 +72,13 @@ export const CatalogView: FC<{}> = props =>
                 <NitroCardView uniqueKey="catalog" className="nitro-catalog" style={ GetConfiguration('catalog.headers') ? { width: 710 } : {} }>
                     <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardTabsView>
-                        { rootNode && (rootNode.children.length > 0) && rootNode.children.map(child =>
-                        {
+                        { rootNode && rootNode.children.length > 0 && rootNode.children.map((child, index) => {
                             if(!child.isVisible) return null;
+                            // Generate a unique key using the index of the map function
+                            const uniqueKey = `${child.pageId}-${index}`;
 
                             return (
-                                <NitroCardTabsItemView key={ child.pageId } isActive={ child.isActive } onClick={ event =>
+                                <NitroCardTabsItemView key={uniqueKey} isActive={child.isActive} onClick={(event) => {
                                 {
                                     if(searchResult) setSearchResult(null);
 
