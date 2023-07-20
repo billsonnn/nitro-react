@@ -88,6 +88,8 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
 
     const onPointerEvent = (event: PointerEvent) =>
     {
+        event.preventDefault();
+        
         switch(event.type)
         {
             case 'pointerout':
@@ -138,7 +140,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         if(!currentElement) return;
 
         // @ts-ignore
-        currentElement.appendChild(FloorplanEditor.instance.renderer.view);
+        currentElement.appendChild(FloorplanEditor.instance.view);
 
         currentElement.addEventListener('pointerup', onPointerEvent);
 
