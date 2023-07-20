@@ -1,10 +1,11 @@
-import { GetAssetManager, IGraphicAssetCollection, NitroPoint, NitroTilemap, PixiApplicationProxy, POINT_STRUCT_SIZE } from '@nitrots/nitro-renderer';
+import { NitroPoint } from '@nitrots/nitro-renderer';
 import { ActionSettings } from './ActionSettings';
 import { FloorAction, HEIGHT_SCHEME, MAX_NUM_TILE_PER_AXIS, TILE_SIZE } from './Constants';
+import { imageBase64, spritesheet } from './FloorplanResource';
 import { Tile } from './Tile';
-import { getScreenPositionForTile, getTileFromScreenPosition } from './Utils';
+import { getScreenPositionForTile } from './Utils';
 
-export class FloorplanEditor extends PixiApplicationProxy
+export class FloorplanEditor
 {
     private static _INSTANCE: FloorplanEditor = null;
 
@@ -17,26 +18,26 @@ export class FloorplanEditor extends PixiApplicationProxy
     private _isPointerDown: boolean;
     private _doorLocation: NitroPoint;
     private _lastUsedTile: NitroPoint;
-    private _tilemapRenderer: NitroTilemap;
+    private _renderer: CanvasRenderingContext2D;
     private _actionSettings: ActionSettings;
-    private _isInitialized: boolean;
 
-    private _assetCollection: IGraphicAssetCollection;
+    private _image: HTMLImageElement;
 
     constructor()
     {
         const width = TILE_SIZE * MAX_NUM_TILE_PER_AXIS + 20;
         const height = (TILE_SIZE * MAX_NUM_TILE_PER_AXIS) / 2 + 100;
 
-        super({
-            width: width,
-            height: height,
-            backgroundColor: 0x000000,
-            antialias: true,
-            autoDensity: true,
-            resolution: 1,
-            sharedTicker: true
-        });
+        const canvas = document.createElement('canvas');
+
+        canvas.height = height;
+        canvas.width = width;
+
+        this._renderer = canvas.getContext('2d');
+
+        this._image = new Image();
+
+        this._image.src = imageBase64;
 
         this._tilemap = [];
         this._doorLocation = new NitroPoint(0, 0);
@@ -45,22 +46,6 @@ export class FloorplanEditor extends PixiApplicationProxy
         this._isPointerDown = false;
         this._lastUsedTile = new NitroPoint(-1, -1);
         this._actionSettings = new ActionSettings();
-    }
-
-    public initialize(): void
-    {
-        if(this._isInitialized) return;
-
-        const collection = GetAssetManager().getCollection('floor_editor');
-
-        if(!collection) return;
-
-        this._assetCollection = collection;
-        this._tilemapRenderer = new NitroTilemap(collection.baseTexture);
-
-        this.stage.addChild(this._tilemapRenderer);
-        
-        this._isInitialized = true;
     }
 
     public onPointerRelease(): void 
@@ -89,55 +74,46 @@ export class FloorplanEditor extends PixiApplicationProxy
 
     private tileHitDetection(tempPoint: NitroPoint, isClick: boolean = false): boolean
     {
-        // @ts-ignore
-        const buffer = this._tilemapRenderer.pointsBuf;
-        const bufSize = POINT_STRUCT_SIZE;
+        const mousePositionX = Math.floor(tempPoint.x);
+        const mousePositionY = Math.floor(tempPoint.y);
 
-        const len = buffer.length;
+        const width = TILE_SIZE;
+        const height = TILE_SIZE / 2;
 
-        for(let j = 0; j < len; j += bufSize)
+        for(let y = 0; y < this._tilemap.length; y++)
         {
-            const bufIndex = j + bufSize;
-            const data = buffer.slice(j, bufIndex);
-
-            const width = TILE_SIZE;
-            const height = TILE_SIZE / 2;
-
-            const mousePositionX = Math.floor(tempPoint.x);
-            const mousePositionY = Math.floor(tempPoint.y);
-
-            const tileStartX = data[2];
-            const tileStartY = data[3];
-
-            const centreX = tileStartX + (width / 2);
-            const centreY = tileStartY + (height / 2);
-
-            const dx = Math.abs(mousePositionX - centreX);
-            const dy = Math.abs(mousePositionY - centreY);
-
-            const solution = (dx / (width * 0.5) + dy / (height * 0.5) <= 1);//todo: improve this
-            if(solution)
+            for(let x = 0; x < this.tilemap[y].length; x++)
             {
-                if(this._isPointerDown)
+                const [ tileStartX, tileStartY ] = getScreenPositionForTile(x, y);
+
+                const centreX = tileStartX + (width / 2);
+                const centreY = tileStartY + (height / 2);
+
+                const dx = Math.abs(mousePositionX - centreX);
+                const dy = Math.abs(mousePositionY - centreY);
+
+                const solution = (dx / (width * 0.5) + dy / (height * 0.5) <= 1);//todo: improve this
+                
+                if(solution)
                 {
-                    const [ realX, realY ] = getTileFromScreenPosition(tileStartX, tileStartY);
-
-                    if(isClick)
+                    if(this._isPointerDown)
                     {
-                        this.onClick(realX, realY);
-                    }
+                        if(isClick)
+                        {
+                            this.onClick(x, y);
+                        }
                     
-                    else if(this._lastUsedTile.x !== realX || this._lastUsedTile.y !== realY)
-                    {
-                        this._lastUsedTile.x = realX;
-                        this._lastUsedTile.y = realY;
-                        this.onClick(realX, realY);
-                    }
+                        else if(this._lastUsedTile.x !== x || this._lastUsedTile.y !== y)
+                        {
+                            this._lastUsedTile.x = x;
+                            this._lastUsedTile.y = y;
+                            this.onClick(x, y);
+                        }
                     
+                    }
+                    return true;
                 }
-                return true;
             }
-
         }
         return false;
     }
@@ -200,7 +176,7 @@ export class FloorplanEditor extends PixiApplicationProxy
 
     public renderTiles(): void
     {
-        this.tilemapRenderer.clear();
+        this.clearCanvas();
 
         for(let y = 0; y < this._tilemap.length; y++)
         {
@@ -216,8 +192,10 @@ export class FloorplanEditor extends PixiApplicationProxy
 
                 //if((tile.height === 'x') || tile.height === 'X') continue;
                 const [ positionX, positionY ] = getScreenPositionForTile(x, y);
-                
-                this._tilemapRenderer.tile(this._assetCollection.getTexture(`floor_editor_${ assetName }`), positionX, positionY);
+
+                const asset = spritesheet.frames[assetName];
+
+                this.renderer.drawImage(this._image, asset.frame.x, asset.frame.y, asset.frame.w, asset.frame.h, positionX, positionY, asset.frame.w, asset.frame.h);
             }
         }
     }
@@ -342,7 +320,6 @@ export class FloorplanEditor extends PixiApplicationProxy
 
     public clear(): void
     {
-        //this._tilemapRenderer.interactive = false;
         this._tilemap = [];
         this._doorLocation.set(-1, -1);
         this._width = 0;
@@ -350,12 +327,17 @@ export class FloorplanEditor extends PixiApplicationProxy
         this._isPointerDown = false;
         this._lastUsedTile.set(-1, -1);
         this._actionSettings.clear();
-        this._tilemapRenderer.clear();
+        this.clearCanvas();
     }
 
-    public get tilemapRenderer(): NitroTilemap
+    public clearCanvas(): void
     {
-        return this._tilemapRenderer;
+        this.renderer.clearRect(0, 0, this._renderer.canvas.width, this._renderer.canvas.height);
+    }
+
+    public get renderer(): CanvasRenderingContext2D
+    {
+        return this._renderer;
     }
 
     public get tilemap(): Tile[][]
