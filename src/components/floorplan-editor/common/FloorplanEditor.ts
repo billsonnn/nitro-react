@@ -14,7 +14,7 @@ export class FloorplanEditor extends PixiApplicationProxy
     private _tilemap: Tile[][];
     private _width: number;
     private _height: number;
-    private _isHolding: boolean;
+    private _isPointerDown: boolean;
     private _doorLocation: NitroPoint;
     private _lastUsedTile: NitroPoint;
     private _tilemapRenderer: NitroTilemap;
@@ -42,7 +42,7 @@ export class FloorplanEditor extends PixiApplicationProxy
         this._doorLocation = new NitroPoint(0, 0);
         this._width = 0;
         this._height = 0;
-        this._isHolding = false;
+        this._isPointerDown = false;
         this._lastUsedTile = new NitroPoint(-1, -1);
         this._actionSettings = new ActionSettings();
     }
@@ -58,71 +58,42 @@ export class FloorplanEditor extends PixiApplicationProxy
         this._assetCollection = collection;
         this._tilemapRenderer = new NitroTilemap(collection.baseTexture);
 
-        this.registerEventListeners();
-
         this.stage.addChild(this._tilemapRenderer);
         
         this._isInitialized = true;
     }
 
-    private registerEventListeners(): void
+    public onPointerRelease(): void 
     {
-        //this._tilemapRenderer.interactive = true;
-
-        const tempPoint = new NitroPoint();
-        // @ts-ignore
-        this._tilemapRenderer.containsPoint = (position) =>
-        {
-            this._tilemapRenderer.worldTransform.applyInverse(position, tempPoint);
-            return this.tileHitDetection(tempPoint, false);
-        };
-
-        /* this._tilemapRenderer.on('pointerup', () =>
-        {
-            this._isHolding = false;
-        });
-
-        this._tilemapRenderer.on('pointerout', () =>
-        {
-            this._isHolding = false;
-        });
-
-        this._tilemapRenderer.on('pointerdown', (event: PixiInteractionEventProxy) =>
-        {
-            if(!(event.data.originalEvent instanceof PointerEvent) && !(event.data.originalEvent instanceof TouchEvent)) return;
-
-            const pointerEvent = event.data.originalEvent;
-            if((pointerEvent instanceof MouseEvent) && pointerEvent.button === 2) return;
-
-
-            const location = event.data.global;
-            this.tileHitDetection(location, true);
-        });
-
-        this._tilemapRenderer.on('click', (event: PixiInteractionEventProxy) =>
-        {
-            if(!(event.data.originalEvent instanceof PointerEvent)) return;
-
-            const pointerEvent = event.data.originalEvent;
-            if(pointerEvent.button === 2) return;
-
-            const location = event.data.global;
-            this.tileHitDetection(location, true, true);
-        }); */
+        this._isPointerDown = false;
     }
 
-    private tileHitDetection(tempPoint: NitroPoint, setHolding: boolean, isClick: boolean = false): boolean
+    public onPointerDown(event: PointerEvent): void
+    {
+        if(event.button === 2) return;
+
+        const location = new NitroPoint(event.offsetX, event.offsetY);
+
+        this._isPointerDown = true;
+        
+        this.tileHitDetection(location, true);
+    }
+
+    public onPointerMove(event: PointerEvent): void
+    {
+        if(!this._isPointerDown) return;
+        
+        const location = new NitroPoint(event.offsetX, event.offsetY);
+        this.tileHitDetection(location, false);
+    }
+
+    private tileHitDetection(tempPoint: NitroPoint, isClick: boolean = false): boolean
     {
         // @ts-ignore
         const buffer = this._tilemapRenderer.pointsBuf;
         const bufSize = POINT_STRUCT_SIZE;
 
         const len = buffer.length;
-
-        if(setHolding)
-        {
-            this._isHolding = true;
-        }
 
         for(let j = 0; j < len; j += bufSize)
         {
@@ -147,7 +118,7 @@ export class FloorplanEditor extends PixiApplicationProxy
             const solution = (dx / (width * 0.5) + dy / (height * 0.5) <= 1);//todo: improve this
             if(solution)
             {
-                if(this._isHolding)
+                if(this._isPointerDown)
                 {
                     const [ realX, realY ] = getTileFromScreenPosition(tileStartX, tileStartY);
 
@@ -376,7 +347,7 @@ export class FloorplanEditor extends PixiApplicationProxy
         this._doorLocation.set(-1, -1);
         this._width = 0;
         this._height = 0;
-        this._isHolding = false;
+        this._isPointerDown = false;
         this._lastUsedTile.set(-1, -1);
         this._actionSettings.clear();
         this._tilemapRenderer.clear();

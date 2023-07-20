@@ -4,8 +4,8 @@ import { FaArrowDown, FaArrowLeft, FaArrowRight, FaArrowUp } from 'react-icons/f
 import { SendMessageComposer } from '../../../api';
 import { Base, Button, Column, ColumnProps, Flex, Grid } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
-import { FloorplanEditor } from '../common/FloorplanEditor';
 import { useFloorplanEditorContext } from '../FloorplanEditorContext';
+import { FloorplanEditor } from '../common/FloorplanEditor';
 
 export const FloorplanCanvasView: FC<ColumnProps> = props =>
 {
@@ -86,6 +86,23 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         }
     }
 
+    const onPointerEvent = (event: PointerEvent) =>
+    {
+        switch(event.type)
+        {
+            case 'pointerout':
+            case 'pointerup':
+                FloorplanEditor.instance.onPointerRelease();
+                break;
+            case 'pointerdown':
+                FloorplanEditor.instance.onPointerDown(event);
+                break;
+            case 'pointermove':
+                FloorplanEditor.instance.onPointerMove(event);
+                break;
+        }
+    }
+
     useEffect(() =>
     {
         return () =>
@@ -116,11 +133,34 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         SendMessageComposer(new GetRoomEntryTileMessageComposer());
         SendMessageComposer(new GetOccupiedTilesMessageComposer());
 
-        FloorplanEditor.instance.tilemapRenderer.interactive = true;
+        const currentElement = elementRef.current;
 
-        if(!elementRef.current) return;
+        if(!currentElement) return;
 
-        elementRef.current.appendChild(FloorplanEditor.instance.renderer.view);
+        // @ts-ignore
+        currentElement.appendChild(FloorplanEditor.instance.renderer.view);
+
+        currentElement.addEventListener('pointerup', onPointerEvent);
+
+        currentElement.addEventListener('pointerout', onPointerEvent);
+
+        currentElement.addEventListener('pointerdown', onPointerEvent);
+
+        currentElement.addEventListener('pointermove', onPointerEvent);
+
+        return () => 
+        {
+            if(currentElement)
+            {
+                currentElement.removeEventListener('pointerup', onPointerEvent);
+
+                currentElement.removeEventListener('pointerout', onPointerEvent);
+
+                currentElement.removeEventListener('pointerdown', onPointerEvent);
+
+                currentElement.removeEventListener('pointermove', onPointerEvent);
+            }
+        }
     }, []);
 
     return (
