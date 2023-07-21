@@ -24,36 +24,6 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
         return newClassNames;
     }, [ theme, classNames ]);
 
-    /* useEffect(() =>
-    {
-        if(!uniqueKey || !elementRef || !elementRef.current) return;
-
-        const localStorage = GetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`);
-        const element = elementRef.current;
-
-        if(localStorage && localStorage.size)
-        {
-            //element.style.width = `${ localStorage.size.width }px`;
-            //element.style.height = `${ localStorage.size.height }px`;
-        }
-
-        const observer = new ResizeObserver(event =>
-        {
-            const newStorage = { ...GetLocalStorage<Partial<WindowSaveOptions>>(`nitro.windows.${ uniqueKey }`) } as WindowSaveOptions;
-
-            newStorage.size = { width: element.offsetWidth, height: element.offsetHeight };
-
-            SetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`, newStorage);
-        });
-
-        observer.observe(element);
-
-        return () =>
-        {
-            observer.disconnect();
-        }
-    }, [ uniqueKey ]); */
-
     return (
         <NitroCardContextProvider value={ { theme } }>
             <DraggableWindow uniqueKey={ uniqueKey } handleSelector={ handleSelector } windowPosition={ windowPosition } disableDrag={ disableDrag }>

@@ -29,9 +29,9 @@ export const RoomThumbnailWidgetView: FC<{}> = props =>
         }
     });
 
-    const receiveTexture = (texture: NitroRenderTexture) =>
+    const receiveTexture = async (texture: NitroRenderTexture) =>
     {
-        GetRoomEngine().saveTextureAsScreenshot(texture, true);
+        await GetRoomEngine().saveTextureAsScreenshot(texture, true);
 
         setIsVisible(false);
     }

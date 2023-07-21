@@ -1,21 +1,21 @@
-import { IGetImageListener, ImageResult, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
+import { TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
 import { BaseProps } from '..';
-import { GetRoomEngine, ProductTypeEnum } from '../../api';
+import { GetRoomEngine } from '../../api';
 import { Base } from '../Base';
 
-interface LayoutFurniImageViewProps extends BaseProps<HTMLDivElement>
+interface LayoutRoomObjectImageViewProps extends BaseProps<HTMLDivElement>
 {
-    productType: string;
-    productClassId: number;
+    roomId: number;
+    objectId: number;
+    category: number;
     direction?: number;
-    extraData?: string;
     scale?: number;
 }
 
-export const LayoutFurniImageView: FC<LayoutFurniImageViewProps> = props =>
+export const LayoutRoomObjectImageView: FC<LayoutRoomObjectImageViewProps> = props =>
 {
-    const { productType = 's', productClassId = -1, direction = 2, extraData = '', scale = 1, style = {}, ...rest } = props;
+    const { roomId = -1, objectId = 1, category = -1, direction = 2, scale = 1, style = {}, ...rest } = props;
     const [ imageElement, setImageElement ] = useState<HTMLImageElement>(null);
 
     const getStyle = useMemo(() =>
@@ -43,27 +43,17 @@ export const LayoutFurniImageView: FC<LayoutFurniImageViewProps> = props =>
 
     useEffect(() =>
     {
-        let imageResult: ImageResult = null;
-
-        const listener: IGetImageListener = {
+        const imageResult = GetRoomEngine().getRoomObjectImage(roomId, objectId, category, new Vector3d(direction * 45), 64, {
             imageReady: async (id, texture, image) => setImageElement(await TextureUtils.generateImage(texture)),
             imageFailed: null
-        };
+        });
 
-        switch(productType.toLocaleLowerCase())
-        {
-            case ProductTypeEnum.FLOOR:
-                imageResult = GetRoomEngine().getFurnitureFloorImage(productClassId, new Vector3d(direction), 64, listener, 0, extraData);
-                break;
-            case ProductTypeEnum.WALL:
-                imageResult = GetRoomEngine().getFurnitureWallImage(productClassId, new Vector3d(direction), 64, listener, 0, extraData);
-                break;
-        }
+        // needs (roomObjectImage.data.width > 140) || (roomObjectImage.data.height > 200) scale 1
 
         if(!imageResult) return;
 
         (async () => setImageElement(await TextureUtils.generateImage(imageResult.data)))();
-    }, [ productType, productClassId, direction, extraData ]);
+    }, [ roomId, objectId, category, direction, scale ]);
 
     if(!imageElement) return null;
 

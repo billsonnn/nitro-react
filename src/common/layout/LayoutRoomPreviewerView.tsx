@@ -26,7 +26,7 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
     {
         if(!roomPreviewer) return;
 
-        const update = (time: number) =>
+        const update = async (time: number) =>
         {
             if(!roomPreviewer || !renderingCanvas || !elementRef.current) return;
         
@@ -34,7 +34,7 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
 
             if(!renderingCanvas.canvasUpdated) return;
 
-            elementRef.current.style.backgroundImage = `url(${ TextureUtils.generateImageUrl(renderingCanvas.master) })`;
+            elementRef.current.style.backgroundImage = `url(${ await TextureUtils.generateImageUrl(renderingCanvas.master) })`;
         }
 
         if(!renderingCanvas)

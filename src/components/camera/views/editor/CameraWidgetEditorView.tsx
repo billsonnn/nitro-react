@@ -26,6 +26,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
     const [ selectedEffects, setSelectedEffects ] = useState<IRoomCameraWidgetSelectedEffect[]>([]);
     const [ effectsThumbnails, setEffectsThumbnails ] = useState<CameraPictureThumbnail[]>([]);
     const [ isZoomed, setIsZoomed ] = useState(false);
+    const [ currentPictureUrl, setCurrentPictureUrl ] = useState<string>('');
 
     const getColorMatrixEffects = useMemo(() =>
     {
@@ -83,11 +84,6 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
         });
     }, [ getCurrentEffectIndex, setSelectedEffects ]);
 
-    const getCurrentPictureUrl = useMemo(() =>
-    {
-        return GetRoomCameraWidgetManager().applyEffects(picture.texture, selectedEffects, isZoomed).src;
-    }, [ picture, selectedEffects, isZoomed ]);
-
     const processAction = useCallback((type: string, effectName: string = null) =>
     {
         switch(type)
@@ -99,7 +95,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 onCancel();
                 return;
             case 'checkout':
-                onCheckout(getCurrentPictureUrl);
+                onCheckout(currentPictureUrl);
                 return;
             case 'change_tab':
                 setCurrentTab(String(effectName));
@@ -143,31 +139,49 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 setSelectedEffects([]);
                 return;
             case 'download': {
-                const image = new Image();
+                (async () =>
+                {
+                    const image = new Image();
                             
-                image.src = getCurrentPictureUrl
-                            
-                const newWindow = window.open('');
-                newWindow.document.write(image.outerHTML);
+                    image.src = currentPictureUrl
+                                
+                    const newWindow = window.open('');
+                    newWindow.document.write(image.outerHTML);
+                })();
                 return;
             }
             case 'zoom':
                 setIsZoomed(!isZoomed);
                 return;
         }
-    }, [ isZoomed, availableEffects, selectedEffectName, getCurrentPictureUrl, getSelectedEffectIndex, onCancel, onCheckout, onClose, setIsZoomed, setSelectedEffects ]);
+    }, [ isZoomed, availableEffects, selectedEffectName, currentPictureUrl, getSelectedEffectIndex, onCancel, onCheckout, onClose, setIsZoomed, setSelectedEffects ]);
 
     useEffect(() =>
     {
-        const thumbnails: CameraPictureThumbnail[] = [];
-
-        for(const effect of availableEffects)
+        (async () =>
         {
-            thumbnails.push(new CameraPictureThumbnail(effect.name, GetRoomCameraWidgetManager().applyEffects(picture.texture, [ new RoomCameraWidgetSelectedEffect(effect, 1) ], false).src));
-        }
+            const thumbnails: CameraPictureThumbnail[] = [];
+            
+            for await (const effect of availableEffects)
+            {
+                const image = await GetRoomCameraWidgetManager().applyEffects(picture.texture, [ new RoomCameraWidgetSelectedEffect(effect, 1) ], false);
 
-        setEffectsThumbnails(thumbnails);
+                thumbnails.push(new CameraPictureThumbnail(effect.name, image.src));
+            }
+
+            setEffectsThumbnails(thumbnails);
+        })();
     }, [ picture, availableEffects ]);
+
+    useEffect(() =>
+    {
+        (async () =>
+        {
+            const imageUrl = await GetRoomCameraWidgetManager().applyEffects(picture.texture, selectedEffects, isZoomed);
+
+            setCurrentPictureUrl(imageUrl.src);
+        })();
+    }, [ picture, selectedEffects, isZoomed ]);
 
     return (
         <NitroCardView className="nitro-camera-editor">
@@ -185,7 +199,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                     </Column>
                     <Column size={ 7 } justifyContent="between" overflow="hidden">
                         <Column center>
-                            <LayoutImage imageUrl={ getCurrentPictureUrl } className="picture-preview" />
+                            <LayoutImage imageUrl={ currentPictureUrl } className="picture-preview" />
                             { selectedEffectName &&
                                 <Column center fullWidth gap={ 1 }>
                                     <Text>{ LocalizeText('camera.effect.name.' + selectedEffectName) }</Text>

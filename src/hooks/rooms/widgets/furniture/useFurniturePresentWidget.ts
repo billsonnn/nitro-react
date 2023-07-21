@@ -2,7 +2,7 @@ import { IFurnitureData, IGetImageListener, PetFigureData, RoomEngineTriggerWidg
 import { useMemo, useState } from 'react';
 import { useRoom } from '../../..';
 import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture, LocalizeText, ProductTypeEnum } from '../../../../api';
-import { useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../events';
+import { useNitroEvent } from '../../../events';
 import { useFurniRemovedEvent } from '../../engine';
 
 const FLOOR: string = 'floor';
@@ -51,21 +51,25 @@ const useFurniturePresentWidgetState = () =>
 
     const imageListener: IGetImageListener = useMemo(() =>
     {
+        // async fix image
         return {
             imageReady: (id, texture, image) =>
             {
-                if(!image && texture)
+                (async () =>
                 {
-                    image = TextureUtils.generateImage(texture);
-                }
+                    if(!image && texture)
+                    {
+                        image = await TextureUtils.generateImage(texture);
+                    }
 
-                setImageUrl(image.src);
+                    setImageUrl(image.src);
+                })();
             },
             imageFailed: null
         }
     }, []);
 
-    useRoomSessionManagerEvent<RoomSessionPresentEvent>(RoomSessionPresentEvent.RSPE_PRESENT_OPENED, event =>
+    useNitroEvent<RoomSessionPresentEvent>(RoomSessionPresentEvent.RSPE_PRESENT_OPENED, event =>
     {
         let furniData: IFurnitureData = null;
 
@@ -165,16 +169,22 @@ const useFurniturePresentWidgetState = () =>
                     {
                         const petFigureData = new PetFigureData(petfigureString);
 
-                        const petImage = GetRoomEngine().getRoomObjectPetImage(petFigureData.typeId, petFigureData.paletteId, petFigureData.color, new Vector3d(90), 64, imageListener, true, 0, petFigureData.customParts);
+                        (async () =>
+                        {
+                            const petImage = GetRoomEngine().getRoomObjectPetImage(petFigureData.typeId, petFigureData.paletteId, petFigureData.color, new Vector3d(90), 64, imageListener, true, 0, petFigureData.customParts);
 
-                        if(petImage) setImageUrl(petImage.getImage().src);
+                            if(petImage) setImageUrl((await petImage.getImage()).src);
+                        })();
                     }
                 }
                 else
                 {
-                    const furniImage = GetRoomEngine().getFurnitureFloorImage(event.classId, new Vector3d(90), 64, imageListener);
+                    (async () =>
+                    {
+                        const furniImage = GetRoomEngine().getFurnitureFloorImage(event.classId, new Vector3d(90), 64, imageListener);
 
-                    if(furniImage) setImageUrl(furniImage.getImage().src);
+                        if(furniImage) setImageUrl((await furniImage.getImage()).src);
+                    })();
                 }
 
                 const productData = GetSessionDataManager().getProductData(event.productCode);
@@ -193,7 +203,7 @@ const useFurniturePresentWidgetState = () =>
         setPlacedInRoom(event.placedInRoom);
     });
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_PRESENT, event =>
+    useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_PRESENT, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 

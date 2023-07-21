@@ -1,7 +1,7 @@
 import { RoomSessionDoorbellEvent } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
 import { GetRoomSession } from '../../../api';
-import { useRoomSessionManagerEvent } from '../../events';
+import { useNitroEvent } from '../../events';
 
 const useDoorbellWidgetState = () =>
 {
@@ -34,9 +34,9 @@ const useDoorbellWidgetState = () =>
         removeUser(userName);
     }
 
-    useRoomSessionManagerEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.DOORBELL, event => addUser(event.userName));
-    useRoomSessionManagerEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.RSDE_REJECTED, event => removeUser(event.userName));
-    useRoomSessionManagerEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.RSDE_ACCEPTED, event => removeUser(event.userName));
+    useNitroEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.DOORBELL, event => addUser(event.userName));
+    useNitroEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.RSDE_REJECTED, event => removeUser(event.userName));
+    useNitroEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.RSDE_ACCEPTED, event => removeUser(event.userName));
 
     return { users, addUser, removeUser, answer };
 }
