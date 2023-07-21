@@ -334,7 +334,8 @@ export class FloorplanEditor
 
     public clearCanvas(): void
     {
-        this.renderer.clearRect(0, 0, this._renderer.canvas.width, this._renderer.canvas.height);
+        this.renderer.fillStyle = '0x000000';
+        this.renderer.fillRect(0, 0, this._renderer.canvas.width, this._renderer.canvas.height);
     }
 
     public get renderer(): CanvasRenderingContext2D
