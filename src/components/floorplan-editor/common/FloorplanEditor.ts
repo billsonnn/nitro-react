@@ -33,6 +33,8 @@ export class FloorplanEditor
         canvas.height = height;
         canvas.width = width;
 
+        canvas.style.touchAction = 'none';
+
         this._renderer = canvas.getContext('2d');
 
         this._image = new Image();

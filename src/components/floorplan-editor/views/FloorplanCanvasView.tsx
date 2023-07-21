@@ -138,8 +138,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         const currentElement = elementRef.current;
 
         if(!currentElement) return;
-
-        
+                
         currentElement.appendChild(FloorplanEditor.instance.renderer.canvas);
 
         currentElement.addEventListener('pointerup', onPointerEvent);
