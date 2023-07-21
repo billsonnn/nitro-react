@@ -1,6 +1,6 @@
 import { RoomSessionPollEvent } from '@nitrots/nitro-renderer';
 import { DispatchUiEvent, RoomWidgetPollUpdateEvent } from '../../../api';
-import { useRoomSessionManagerEvent } from '../../events';
+import { useNitroEvent } from '../../events';
 import { useRoom } from '../useRoom';
 
 const usePollWidgetState = () =>
@@ -13,7 +13,7 @@ const usePollWidgetState = () =>
 
     const answerPoll = (pollId: number, questionId: number, answers: string[]) => roomSession.sendPollAnswerMessage(pollId, questionId, answers);
 
-    useRoomSessionManagerEvent<RoomSessionPollEvent>(RoomSessionPollEvent.OFFER, event =>
+    useNitroEvent<RoomSessionPollEvent>(RoomSessionPollEvent.OFFER, event =>
     {
         const pollEvent = new RoomWidgetPollUpdateEvent(RoomWidgetPollUpdateEvent.OFFER, event.id);
 
@@ -23,7 +23,7 @@ const usePollWidgetState = () =>
         DispatchUiEvent(pollEvent);
     });
 
-    useRoomSessionManagerEvent<RoomSessionPollEvent>(RoomSessionPollEvent.ERROR, event =>
+    useNitroEvent<RoomSessionPollEvent>(RoomSessionPollEvent.ERROR, event =>
     {
         const pollEvent = new RoomWidgetPollUpdateEvent(RoomWidgetPollUpdateEvent.ERROR, event.id);
 
@@ -33,7 +33,7 @@ const usePollWidgetState = () =>
         DispatchUiEvent(pollEvent);
     });
 
-    useRoomSessionManagerEvent<RoomSessionPollEvent>(RoomSessionPollEvent.CONTENT, event =>
+    useNitroEvent<RoomSessionPollEvent>(RoomSessionPollEvent.CONTENT, event =>
     {
         const pollEvent = new RoomWidgetPollUpdateEvent(RoomWidgetPollUpdateEvent.CONTENT, event.id);
 

@@ -2,8 +2,8 @@ import { RoomEngineTriggerWidgetEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { ColorUtils, FurnitureDimmerUtilities, GetConfiguration, LocalizeText } from '../../../../api';
-import { Base, Button, classNames, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../common';
-import { useFurnitureDimmerWidget, useRoomEngineEvent } from '../../../../hooks';
+import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text, classNames } from '../../../../common';
+import { useFurnitureDimmerWidget, useNitroEvent } from '../../../../hooks';
 
 export const FurnitureDimmerView: FC<{}> = props =>
 {
@@ -17,7 +17,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
         setIsVisible(false);
     }
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REMOVE_DIMMER, event => setIsVisible(false));
+    useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REMOVE_DIMMER, event => setIsVisible(false));
 
     useEffect(() =>
     {

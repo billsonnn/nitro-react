@@ -1,7 +1,7 @@
 import { IRoomSessionManager } from '@nitrots/nitro-renderer';
-import { GetNitroInstance } from '../GetNitroInstance';
+import { GetRoomEngine } from '../room';
 
 export function GetRoomSessionManager(): IRoomSessionManager
 {
-    return GetNitroInstance().roomSessionManager;
+    return GetRoomEngine().roomSessionManager;
 }

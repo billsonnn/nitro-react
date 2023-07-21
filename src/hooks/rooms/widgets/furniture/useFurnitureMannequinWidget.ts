@@ -1,7 +1,7 @@
 import { FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, HabboClubLevelEnum, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
 import { GetAvatarRenderManager, GetRoomEngine, MannequinUtilities, SendMessageComposer } from '../../../../api';
-import { useRoomEngineEvent } from '../../../events';
+import { useNitroEvent } from '../../../events';
 import { useFurniRemovedEvent } from '../../engine';
 
 const useFurnitureMannequinWidgetState = () =>
@@ -47,7 +47,7 @@ const useFurnitureMannequinWidgetState = () =>
         SendMessageComposer(new FurnitureMannequinSaveNameComposer(objectId, name));
     }
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN, event =>
+    useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 

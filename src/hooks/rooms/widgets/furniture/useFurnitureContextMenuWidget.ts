@@ -1,7 +1,7 @@
 import { ContextMenuEnum, GroupFurniContextMenuInfoMessageEvent, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
 import { GetRoomEngine, IsOwnerOfFurniture, TryJoinGroup, TryVisitRoom } from '../../../../api';
-import { useMessageEvent, useRoomEngineEvent } from '../../../events';
+import { useMessageEvent, useNitroEvent } from '../../../events';
 import { useRoom } from '../../useRoom';
 
 export const MONSTERPLANT_SEED_CONFIRMATION: string = 'MONSTERPLANT_SEED_CONFIRMATION';
@@ -75,7 +75,7 @@ const useFurnitureContextMenuWidgetState = () =>
         onClose();
     }
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>([
+    useNitroEvent<RoomEngineTriggerWidgetEvent>([
         RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU,
         RoomEngineTriggerWidgetEvent.CLOSE_FURNI_CONTEXT_MENU,
         RoomEngineTriggerWidgetEvent.REQUEST_MONSTERPLANT_SEED_PLANT_CONFIRMATION_DIALOG,

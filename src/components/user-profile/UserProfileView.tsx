@@ -2,7 +2,7 @@ import { ExtendedProfileChangedMessageEvent, RelationshipStatusInfoEvent, Relati
 import { FC, useState } from 'react';
 import { CreateLinkEvent, GetRoomSession, GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../api';
 import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { useMessageEvent, useRoomEngineEvent } from '../../hooks';
+import { useMessageEvent, useNitroEvent } from '../../hooks';
 import { BadgesContainerView } from './views/BadgesContainerView';
 import { FriendsContainerView } from './views/FriendsContainerView';
 import { GroupsContainerView } from './views/GroupsContainerView';
@@ -78,7 +78,7 @@ export const UserProfileView: FC<{}> = props =>
         GetUserProfile(parser.userId);
     });
 
-    useRoomEngineEvent<RoomEngineObjectEvent>(RoomEngineObjectEvent.SELECTED, event =>
+    useNitroEvent<RoomEngineObjectEvent>(RoomEngineObjectEvent.SELECTED, event =>
     {
         if(!userProfile) return;
 

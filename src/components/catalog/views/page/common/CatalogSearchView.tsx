@@ -23,9 +23,7 @@ export const CatalogSearchView: FC<{}> = props =>
 
         const timeout = setTimeout(() =>
         {
-            const furnitureDatas = GetSessionDataManager().getAllFurnitureData({
-                loadFurnitureData: null
-            });
+            const furnitureDatas = GetSessionDataManager().getAllFurnitureData();
 
             if(!furnitureDatas || !furnitureDatas.length) return;
 

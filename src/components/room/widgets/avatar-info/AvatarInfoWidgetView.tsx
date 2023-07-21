@@ -2,7 +2,7 @@ import { RoomEngineEvent, RoomEnterEffect, RoomSessionDanceEvent } from '@nitrot
 import { FC, useState } from 'react';
 import { AvatarInfoFurni, AvatarInfoPet, AvatarInfoRentableBot, AvatarInfoUser, GetConfiguration, GetSessionDataManager, RoomWidgetUpdateRentableBotChatEvent } from '../../../../api';
 import { Column } from '../../../../common';
-import { useAvatarInfoWidget, useRoom, useRoomEngineEvent, useRoomSessionManagerEvent, useUiEvent } from '../../../../hooks';
+import { useAvatarInfoWidget, useNitroEvent, useRoom, useUiEvent } from '../../../../hooks';
 import { AvatarInfoPetTrainingPanelView } from './AvatarInfoPetTrainingPanelView';
 import { AvatarInfoRentableBotChatView } from './AvatarInfoRentableBotChatView';
 import { AvatarInfoUseProductConfirmView } from './AvatarInfoUseProductConfirmView';
@@ -29,17 +29,17 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
     const { avatarInfo = null, setAvatarInfo = null, activeNameBubble = null, setActiveNameBubble = null, nameBubbles = [], removeNameBubble = null, productBubbles = [], confirmingProduct = null, updateConfirmingProduct = null, removeProductBubble = null, isDecorating = false, setIsDecorating = null } = useAvatarInfoWidget();
     const { roomSession = null } = useRoom();
 
-    useRoomEngineEvent<RoomEngineEvent>(RoomEngineEvent.NORMAL_MODE, event =>
+    useNitroEvent<RoomEngineEvent>(RoomEngineEvent.NORMAL_MODE, event =>
     {
         if(isGameMode) setGameMode(false);
     });
 
-    useRoomEngineEvent<RoomEngineEvent>(RoomEngineEvent.GAME_MODE, event =>
+    useNitroEvent<RoomEngineEvent>(RoomEngineEvent.GAME_MODE, event =>
     {
         if(!isGameMode) setGameMode(true);
     });
 
-    useRoomSessionManagerEvent<RoomSessionDanceEvent>(RoomSessionDanceEvent.RSDE_DANCE, event =>
+    useNitroEvent<RoomSessionDanceEvent>(RoomSessionDanceEvent.RSDE_DANCE, event =>
     {
         if(event.roomIndex !== roomSession.ownRoomIndex) return;
 

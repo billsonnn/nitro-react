@@ -1,7 +1,7 @@
 import { RoomEngineObjectEvent, RoomEngineRoomAdEvent, RoomEngineTriggerWidgetEvent, RoomEngineUseProductEvent, RoomId, RoomSessionErrorMessageEvent, RoomZoomEvent } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { DispatchUiEvent, GetRoomEngine, LocalizeText, NotificationAlertType, RoomWidgetUpdateRoomObjectEvent } from '../../../api';
-import { useNotification, useRoom, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../../hooks';
+import { useNitroEvent, useNotification, useRoom } from '../../../hooks';
 import { AvatarInfoWidgetView } from './avatar-info/AvatarInfoWidgetView';
 import { ChatInputView } from './chat-input/ChatInputView';
 import { ChatWidgetView } from './chat/ChatWidgetView';
@@ -21,9 +21,9 @@ export const RoomWidgetsView: FC<{}> = props =>
     const { roomSession = null } = useRoom();
     const { simpleAlert = null } = useNotification();
 
-    useRoomEngineEvent<RoomZoomEvent>(RoomZoomEvent.ROOM_ZOOM, event => GetRoomEngine().setRoomInstanceRenderingCanvasScale(event.roomId, 1, event.level, null, null, false, event.asDelta));
+    useNitroEvent<RoomZoomEvent>(RoomZoomEvent.ROOM_ZOOM, event => GetRoomEngine().setRoomInstanceRenderingCanvasScale(event.roomId, 1, event.level, null, null, false, event.asDelta));
 
-    useRoomEngineEvent<RoomEngineObjectEvent>(
+    useNitroEvent<RoomEngineObjectEvent>(
         [
             RoomEngineTriggerWidgetEvent.REQUEST_TEASER,
             RoomEngineTriggerWidgetEvent.REQUEST_ECOTRONBOX,
@@ -87,7 +87,7 @@ export const RoomWidgetsView: FC<{}> = props =>
             if(dispatchEvent) DispatchUiEvent(updateEvent);
         });
 
-    useRoomSessionManagerEvent<RoomSessionErrorMessageEvent>(
+    useNitroEvent<RoomSessionErrorMessageEvent>(
         [
             RoomSessionErrorMessageEvent.RSEME_KICKED,
             RoomSessionErrorMessageEvent.RSEME_PETS_FORBIDDEN_IN_HOTEL,
