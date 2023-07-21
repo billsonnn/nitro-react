@@ -164,15 +164,17 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         }
     }, []);
 
+    const isSmallScreen = () => window.innerWidth < 768;
+
     return (
         <Column gap={ gap } { ...rest }>
             <Grid overflow="hidden" gap={ 1 }>
-                <Column center size={ 1 }>
+                <Column center size={ 1 } className="d-md-none">
                     <Button className="d-md-none" onClick={ event => onClickArrowButton('left') }>
                         <FaArrowLeft className="fa-icon" />
                     </Button>
                 </Column>
-                <Column overflow="hidden" size={ 10 } gap={ 1 }>
+                <Column overflow="hidden" size={ isSmallScreen() ? 10: 12 } gap={ 1 }>
                     <Flex justifyContent="center" className="d-md-none">
                         <Button shrink onClick={ event => onClickArrowButton('up') }>
                             <FaArrowUp className="fa-icon" />
@@ -185,7 +187,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
                         </Button>
                     </Flex>
                 </Column>
-                <Column center size={ 1 }>
+                <Column center size={ 1 } className="d-md-none">
                     <Button className="d-md-none" onClick={ event => onClickArrowButton('right') }>
                         <FaArrowRight className="fa-icon" />
                     </Button>
