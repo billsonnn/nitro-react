@@ -1,4 +1,4 @@
-import { CallForHelpFromForumMessageMessageComposer, CallForHelpFromForumThreadMessageComposer, CallForHelpFromIMMessageComposer, CallForHelpFromPhotoMessageComposer, CallForHelpMessageComposer } from '@nitrots/nitro-renderer';
+import { CallForHelpFromForumMessageMessageComposer, CallForHelpFromForumThreadMessageComposer, CallForHelpFromIMMessageComposer, CallForHelpFromPhotoMessageComposer, CallForHelpMessageComposer, GuideSessionReportMessageComposer } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { LocalizeText, ReportType, SendMessageComposer } from '../../../api';
 import { Button, Column, Text } from '../../../common';
@@ -37,6 +37,9 @@ export const ReportSummaryView: FC<{}> = props =>
                 break;
             case ReportType.PHOTO:
                 SendMessageComposer(new CallForHelpFromPhotoMessageComposer(activeReport.extraData, activeReport.roomId, activeReport.reportedUserId, activeReport.cfhTopic, activeReport.roomObjectId));
+                break;
+            case ReportType.GUIDE:
+                SendMessageComposer(new GuideSessionReportMessageComposer(''));
                 break;
         }
 

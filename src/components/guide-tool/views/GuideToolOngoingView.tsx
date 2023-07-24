@@ -1,8 +1,8 @@
 import { GuideSessionGetRequesterRoomMessageComposer, GuideSessionInviteRequesterMessageComposer, GuideSessionMessageMessageComposer, GuideSessionRequesterRoomMessageEvent, GuideSessionResolvedMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { GetSessionDataManager, GuideToolMessageGroup, LocalizeText, SendMessageComposer, TryVisitRoom } from '../../../api';
+import { GetSessionDataManager, GuideToolMessageGroup, LocalizeText, ReportType, SendMessageComposer, TryVisitRoom } from '../../../api';
 import { Base, Button, ButtonGroup, Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
-import { useMessageEvent } from '../../../hooks';
+import { useHelp, useMessageEvent } from '../../../hooks';
 
 interface GuideToolOngoingViewProps
 {
@@ -21,6 +21,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
     const { isGuide = false, userId = 0, userName = null, userFigure = null, isTyping = false, messageGroups = [] } = props;
 
     const [ messageText, setMessageText ] = useState<string>('');
+    const { report = null } = useHelp();
 
     useEffect(() =>
     {
@@ -83,7 +84,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                         <Text bold>{ userName }</Text>
                         <Text>{ LocalizeText('guide.help.request.user.ongoing.guide.desc') }</Text>
                     </Column> }
-                <Button variant="danger" disabled>{ LocalizeText('guide.help.common.report.link') }</Button>
+                <Button variant="danger" disabled={ messageGroups.length === 0 } onClick={ () => report(ReportType.GUIDE, { reportedUserId: userId }) }>{ LocalizeText('guide.help.common.report.link') }</Button>
             </Flex>
             <Column overflow="hidden" gap={ 1 } className="bg-muted rounded chat-messages p-2">
                 <Column overflow="auto">

@@ -62,6 +62,8 @@ const useHelpState = () =>
                 newReport.currentStep = ReportState.SELECT_TOPICS;
                 break;
             case ReportType.GUIDE:
+                newReport.reportedUserId = options.reportedUserId;
+                newReport.currentStep = ReportState.REPORT_SUMMARY;
                 break;
         }
 
