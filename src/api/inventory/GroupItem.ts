@@ -1,4 +1,5 @@
-import { IObjectData, IRoomEngine } from '@nitrots/nitro-renderer';
+import { IObjectData, IRoomEngine, SongDataEntry, TraxSongInfoMessageEvent } from '@nitrots/nitro-renderer';
+import { GetNitroInstance } from '../nitro';
 import { LocalizeText } from '../utils';
 import { FurniCategory } from './FurniCategory';
 import { FurnitureItem } from './FurnitureItem';
@@ -19,6 +20,7 @@ export class GroupItem
     private _selected: boolean;
     private _hasUnseenItems: boolean;
     private _items: FurnitureItem[];
+    private _traxSongInfoEvent: TraxSongInfoMessageEvent;
 
     constructor(type: number = -1, category: number = -1, roomEngine: IRoomEngine = null, stuffData: IObjectData = null, extra: number = -1)
     {
@@ -35,6 +37,12 @@ export class GroupItem
         this._selected = false;
         this._hasUnseenItems = false;
         this._items = [];
+        
+        if (this._category === FurniCategory.TRAX_SONG)
+        {
+            this._traxSongInfoEvent = new TraxSongInfoMessageEvent(this.onTraxSongInfoMessageEvent.bind(this));
+            GetNitroInstance().communication.connection.addMessageEvent(this._traxSongInfoEvent);
+        }
     }
 
     public clone(): GroupItem
@@ -67,7 +75,7 @@ export class GroupItem
 
     public dispose(): void
     {
-
+        this.clearTraxSongInfoEvent();
     }
 
     public getItemByIndex(index: number): FurnitureItem
@@ -322,7 +330,11 @@ export class GroupItem
                 key = (('poster_' + k.stuffData.getLegacyString()) + '_name');
                 break;
             case FurniCategory.TRAX_SONG:
-                this._name = 'SONG_NAME';
+                const songInfo = (GetNitroInstance().soundManager.musicController.getSongInfo(k.extra) as SongDataEntry);
+                if(songInfo == null) break;
+                // remove the event if we already know the song
+                this.clearTraxSongInfoEvent();
+                this._name = songInfo.creator;
                 return;
             default:
                 if(this.isWallItem)
@@ -340,6 +352,28 @@ export class GroupItem
 
     private setDescription(): void
     {
+        const k = this.getLastItem();
+
+        if(!k)
+        {
+            this._description = '';
+
+            return;
+        }
+
+        switch(this._category)
+        {
+            case FurniCategory.TRAX_SONG:
+                const songInfo = (GetNitroInstance().soundManager.musicController.getSongInfo(k.extra) as SongDataEntry);
+                if(songInfo == null) break;
+                // remove the event if we already know the song
+                this.clearTraxSongInfoEvent();
+                this._description = songInfo.name;
+                return;
+            default:
+                break;
+        }
+
         this._description = '';
     }
 
@@ -457,5 +491,27 @@ export class GroupItem
     public set items(items: FurnitureItem[])
     {
         this._items = items;
+    }
+
+    private clearTraxSongInfoEvent(): void
+    {
+        GetNitroInstance().communication.connection.removeMessageEvent(this._traxSongInfoEvent);
+    }
+
+    private onTraxSongInfoMessageEvent(event: TraxSongInfoMessageEvent): void
+    {
+        const k = this.getLastItem();
+        if(!k)return;
+
+        const parser = event.getParser();
+
+        for(const song of parser.songs)
+        {
+            if (k.extra !== song.id) continue;
+            this._name = song.creator;
+            this._description = song.name;
+        }
+
+        if(this._name) this.clearTraxSongInfoEvent();
     }
 }
