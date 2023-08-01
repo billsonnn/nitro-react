@@ -2,7 +2,7 @@ export const GetLocalStorage = <T>(key: string) =>
 {
     try
     {
-        JSON.parse(window.localStorage.getItem(key)) as T ?? null
+        return JSON.parse(window.localStorage.getItem(key)) as T ?? null
     }
     catch(e)
     {
