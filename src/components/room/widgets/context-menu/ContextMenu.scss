@@ -18,9 +18,32 @@
         width: unset;
         text-align: center;
         font-size: 18px;
+        display: flex;
+        align-items: center;
 
         &.is-friend {
             background-color: rgba($green, 0.5);
+        }
+
+        &.is-heart {
+            .relation-icon {
+                display: block;
+                background-position: -5px -67px;
+            }
+        }
+
+        &.is-smile {
+            .relation-icon {
+                display: block;
+                background-position: -57px -67px;
+            }
+        }
+
+        &.is-bobba {
+            .relation-icon {
+                display: block;
+                background-position: -96px -5px;
+            }
         }
     }
 
@@ -125,5 +148,12 @@
                 }
             }
         }
+    }
+
+    .relation-icon {
+        display: none;
+        background: url('@/assets/images/friends/friends-spritesheet.png') transparent no-repeat;
+        width: 16px; height: 14px;
+        margin-right: 3px;
     }
 }
