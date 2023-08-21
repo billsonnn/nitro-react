@@ -5,6 +5,7 @@ export * from './useFurnitureCraftingWidget';
 export * from './useFurnitureDimmerWidget';
 export * from './useFurnitureExchangeWidget';
 export * from './useFurnitureExternalImageWidget';
+export * from './useFurnitureFootballGateWidget';
 export * from './useFurnitureFriendFurniWidget';
 export * from './useFurnitureHighScoreWidget';
 export * from './useFurnitureInternalLinkWidget';
