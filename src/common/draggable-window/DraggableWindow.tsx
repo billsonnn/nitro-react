@@ -23,7 +23,7 @@ export interface DraggableWindowProps
 
 export const DraggableWindow: FC<DraggableWindowProps> = props =>
 {
-    const { uniqueKey = null, handleSelector = '.drag-handler', windowPosition = DraggableWindowPosition.CENTER, disableDrag = false, dragStyle = {}, children = null, offsetLeft = 0, offsetTop = 0 } = props;
+    const { uniqueKey = null, handleSelector = '.drag-handler', windowPosition = DraggableWindowPosition.TOP_LEFT, disableDrag = false, dragStyle = {}, children = null, offsetLeft = 0, offsetTop = 0 } = props;
     const [ delta, setDelta ] = useState<{ x: number, y: number }>(null);
     const [ offset, setOffset ] = useState<{ x: number, y: number }>(null);
     const [ start, setStart ] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
