@@ -23,8 +23,6 @@ export const App: FC<{}> = props =>
                 //@ts-ignore
                 if(!NitroConfig) throw new Error('NitroConfig is not defined!');
 
-                NitroVersion.sayHello();
-
                 await GetPixi().init({
                     autoStart: false,
                     autoDensity: false,
