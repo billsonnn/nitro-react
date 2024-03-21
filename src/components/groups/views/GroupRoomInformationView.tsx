@@ -1,7 +1,7 @@
-import { DesktopViewEvent, GetGuestRoomResultEvent, GroupInformationComposer, GroupInformationEvent, GroupInformationParser, GroupRemoveMemberComposer, HabboGroupDeactivatedMessageEvent, RoomEntryInfoMessageEvent } from '@nitrots/nitro-renderer';
+import { DesktopViewEvent, GetGuestRoomResultEvent, GetSessionDataManager, GroupInformationComposer, GroupInformationEvent, GroupInformationParser, GroupRemoveMemberComposer, HabboGroupDeactivatedMessageEvent, RoomEntryInfoMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-import { GetGroupInformation, GetGroupManager, GetSessionDataManager, GroupMembershipType, GroupType, LocalizeText, SendMessageComposer, TryJoinGroup } from '../../../api';
+import { GetGroupInformation, GetGroupManager, GroupMembershipType, GroupType, LocalizeText, SendMessageComposer, TryJoinGroup } from '../../../api';
 import { Base, Button, Column, Flex, LayoutBadgeImageView, Text } from '../../../common';
 import { useMessageEvent, useNotification } from '../../../hooks';
 

@@ -1,5 +1,4 @@
-import { IRoomObject, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { GetSessionDataManager } from '../../../api';
+import { GetSessionDataManager, IRoomObject, RoomObjectVariable } from '@nitrots/nitro-renderer';
 
 export function IsOwnerOfFurniture(roomObject: IRoomObject): boolean
 {

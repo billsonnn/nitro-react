@@ -1,6 +1,6 @@
-import { FurnitureStackHeightComposer, FurnitureStackHeightEvent, RoomEngineTriggerWidgetEvent } from '@nitrots/nitro-renderer';
+import { FurnitureStackHeightComposer, FurnitureStackHeightEvent, GetRoomEngine, RoomEngineTriggerWidgetEvent } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
-import { CanManipulateFurniture, GetRoomEngine, GetRoomSession, SendMessageComposer } from '../../../../api';
+import { CanManipulateFurniture, GetRoomSession, SendMessageComposer } from '../../../../api';
 import { useMessageEvent, useNitroEvent } from '../../../events';
 import { useFurniRemovedEvent } from '../../engine';
 

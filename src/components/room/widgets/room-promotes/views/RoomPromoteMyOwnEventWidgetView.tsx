@@ -1,5 +1,6 @@
+import { CreateLinkEvent } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { CreateLinkEvent, LocalizeText } from '../../../../../api';
+import { LocalizeText } from '../../../../../api';
 import { Button, Flex, Grid, Text } from '../../../../../common';
 import { useRoomPromote } from '../../../../../hooks';
 

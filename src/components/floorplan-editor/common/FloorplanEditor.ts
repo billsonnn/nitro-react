@@ -1,4 +1,3 @@
-import { NitroPoint } from '@nitrots/nitro-renderer';
 import { ActionSettings } from './ActionSettings';
 import { FloorAction, HEIGHT_SCHEME, MAX_NUM_TILE_PER_AXIS, TILE_SIZE } from './Constants';
 import { imageBase64, spritesheet } from './FloorplanResource';
@@ -16,8 +15,8 @@ export class FloorplanEditor
     private _width: number;
     private _height: number;
     private _isPointerDown: boolean;
-    private _doorLocation: NitroPoint;
-    private _lastUsedTile: NitroPoint;
+    private _doorLocation: { x: number, y: number };
+    private _lastUsedTile: { x: number, y: number };
     private _renderer: CanvasRenderingContext2D;
     private _actionSettings: ActionSettings;
 
@@ -42,11 +41,11 @@ export class FloorplanEditor
         this._image.src = imageBase64;
 
         this._tilemap = [];
-        this._doorLocation = new NitroPoint(0, 0);
+        this._doorLocation = { x: 0, y: 0 };
         this._width = 0;
         this._height = 0;
         this._isPointerDown = false;
-        this._lastUsedTile = new NitroPoint(-1, -1);
+        this._lastUsedTile = { x: -1, y: -1 };
         this._actionSettings = new ActionSettings();
     }
 
@@ -59,7 +58,7 @@ export class FloorplanEditor
     {
         if(event.button === 2) return;
 
-        const location = new NitroPoint(event.offsetX, event.offsetY);
+        const location = { x: event.offsetX, y: event.offsetY };
 
         this._isPointerDown = true;
         
@@ -70,11 +69,12 @@ export class FloorplanEditor
     {
         if(!this._isPointerDown) return;
         
-        const location = new NitroPoint(event.offsetX, event.offsetY);
+        const location = { x: event.offsetX, y: event.offsetY };
+
         this.tileHitDetection(location, false);
     }
 
-    private tileHitDetection(tempPoint: NitroPoint, isClick: boolean = false): boolean
+    private tileHitDetection(tempPoint: { x: number, y: number }, isClick: boolean = false): boolean
     {
         const mousePositionX = Math.floor(tempPoint.x);
         const mousePositionY = Math.floor(tempPoint.y);
@@ -323,11 +323,11 @@ export class FloorplanEditor
     public clear(): void
     {
         this._tilemap = [];
-        this._doorLocation.set(-1, -1);
+        this._doorLocation = { x: -1, y: -1 };
         this._width = 0;
         this._height = 0;
         this._isPointerDown = false;
-        this._lastUsedTile.set(-1, -1);
+        this._lastUsedTile = { x: -1, y: -1 };
         this._actionSettings.clear();
         this.clearCanvas();
     }
@@ -348,12 +348,12 @@ export class FloorplanEditor
         return this._tilemap;
     }
 
-    public get doorLocation(): NitroPoint
+    public get doorLocation(): { x: number, y: number }
     {
         return this._doorLocation;
     }
 
-    public set doorLocation(value: NitroPoint)
+    public set doorLocation(value: { x: number, y: number })
     {
         this._doorLocation = value;
     }

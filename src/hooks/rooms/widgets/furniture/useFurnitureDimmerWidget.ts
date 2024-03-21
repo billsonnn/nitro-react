@@ -1,6 +1,6 @@
-import { RoomControllerLevel, RoomEngineDimmerStateEvent, RoomEngineTriggerWidgetEvent, RoomId, RoomSessionDimmerPresetsEvent } from '@nitrots/nitro-renderer';
+import { GetSessionDataManager, RoomControllerLevel, RoomEngineDimmerStateEvent, RoomEngineTriggerWidgetEvent, RoomId, RoomSessionDimmerPresetsEvent } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
-import { DimmerFurnitureWidgetPresetItem, FurnitureDimmerUtilities, GetSessionDataManager } from '../../../../api';
+import { DimmerFurnitureWidgetPresetItem, FurnitureDimmerUtilities } from '../../../../api';
 import { useNitroEvent } from '../../../events';
 import { useRoom } from '../../useRoom';
 

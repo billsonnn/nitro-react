@@ -1,6 +1,5 @@
-import { ILinkEventTracker, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, ILinkEventTracker, RemoveLinkEventTracker, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { AddEventLinkTracker, RemoveLinkEventTracker } from '../../api';
 import { useCamera, useNitroEvent } from '../../hooks';
 import { CameraWidgetCaptureView } from './views/CameraWidgetCaptureView';
 import { CameraWidgetCheckoutView } from './views/CameraWidgetCheckoutView';
@@ -80,7 +79,7 @@ export const CameraWidgetView: FC<{}> = props =>
             eventUrlPrefix: 'camera/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { GetConfiguration, ProductTypeEnum } from '../../../../../api';
+import { GetConfigurationValue, ProductTypeEnum } from '../../../../../api';
 import { Column, Flex, Grid, LayoutImage, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
 import { CatalogHeaderView } from '../../catalog-header/CatalogHeaderView';
@@ -21,7 +21,7 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
         <>
             <Grid>
                 <Column size={ 7 } overflow="hidden">
-                    { GetConfiguration('catalog.headers') &&
+                    { GetConfigurationValue('catalog.headers') &&
                         <CatalogHeaderView imageUrl={ currentPage.localization.getImage(0) }/> }
                     <CatalogItemGridWidgetView />
                 </Column>

@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { GetConfiguration } from '../../api';
+import { GetConfigurationValue } from '../../api';
 import { Base, BaseProps } from '../Base';
 
 export interface LayoutRoomThumbnailViewProps extends BaseProps<HTMLDivElement>
@@ -23,9 +23,9 @@ export const LayoutRoomThumbnailView: FC<LayoutRoomThumbnailViewProps> = props =
 
     const getImageUrl = useMemo(() =>
     {
-        if(customUrl && customUrl.length) return (GetConfiguration<string>('image.library.url') + customUrl);
+        if(customUrl && customUrl.length) return (GetConfigurationValue<string>('image.library.url') + customUrl);
 
-        return (GetConfiguration<string>('thumbnails.url').replace('%thumbnail%', roomId.toString()));
+        return (GetConfigurationValue<string>('thumbnails.url').replace('%thumbnail%', roomId.toString()));
     }, [ customUrl, roomId ]);
 
     return (

@@ -1,8 +1,8 @@
-import { ILinkEventTracker, NitroSettingsEvent, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer, UserSettingsSoundComposer } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, ILinkEventTracker, NitroSettingsEvent, RemoveLinkEventTracker, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer, UserSettingsSoundComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { FaVolumeDown, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
-import { AddEventLinkTracker, DispatchMainEvent, DispatchUiEvent, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
-import { classNames, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
+import { DispatchMainEvent, DispatchUiEvent, LocalizeText, SendMessageComposer } from '../../api';
+import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, classNames } from '../../common';
 import { useCatalogPlaceMultipleItems, useCatalogSkipPurchaseConfirmation, useMessageEvent } from '../../hooks';
 
 export const UserSettingsView: FC<{}> = props =>
@@ -111,7 +111,7 @@ export const UserSettingsView: FC<{}> = props =>
             eventUrlPrefix: 'user-settings/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);

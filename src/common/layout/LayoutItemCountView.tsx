@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { Base, BaseProps } from '..';
+import { Base, BaseProps } from '../Base';
 
 interface LayoutItemCountViewProps extends BaseProps<HTMLDivElement>
 {

@@ -1,7 +1,3 @@
-import { IRoomSession } from '@nitrots/nitro-renderer';
-import { GetRoomSessionManager } from './GetRoomSessionManager';
+import { GetRoomSessionManager } from '@nitrots/nitro-renderer';
 
-export function GetRoomSession(): IRoomSession
-{
-    return GetRoomSessionManager().getSession(-1);
-}
+export const GetRoomSession = () => GetRoomSessionManager().getSession(-1);

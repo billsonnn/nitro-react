@@ -1,7 +1,7 @@
-import { CrackableDataType, GroupInformationComposer, GroupInformationEvent, NowPlayingEvent, RoomControllerLevel, RoomObjectCategory, RoomObjectOperationType, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, SongInfoReceivedEvent, StringDataType } from '@nitrots/nitro-renderer';
+import { CrackableDataType, CreateLinkEvent, GetRoomEngine, GetSoundManager, GroupInformationComposer, GroupInformationEvent, NowPlayingEvent, RoomControllerLevel, RoomObjectCategory, RoomObjectOperationType, RoomObjectVariable, RoomWidgetEnumItemExtradataParameter, RoomWidgetFurniInfoUsagePolicyEnum, SetObjectDataMessageComposer, SongInfoReceivedEvent, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { AvatarInfoFurni, CreateLinkEvent, GetGroupInformation, GetNitroInstance, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../../api';
+import { AvatarInfoFurni, GetGroupInformation, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Column, Flex, LayoutBadgeImageView, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, LayoutRoomObjectImageView, Text, UserProfileIconView } from '../../../../../common';
 import { useMessageEvent, useNitroEvent, useRoom } from '../../../../../hooks';
 
@@ -49,7 +49,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
     {
         if(event.id !== songId) return;
         
-        const songInfo = GetNitroInstance().soundManager.musicController.getSongInfo(event.id);
+        const songInfo = GetSoundManager().musicController.getSongInfo(event.id);
 
         if(!songInfo) return;
 
@@ -107,11 +107,11 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
             else if(avatarInfo.extraParam === RoomWidgetEnumItemExtradataParameter.JUKEBOX)
             {
-                const playlist = GetNitroInstance().soundManager.musicController.getRoomItemPlaylist();
+                const playlist = GetSoundManager().musicController.getRoomItemPlaylist();
 
                 if(playlist)
                 {
-                    furniSongId = playlist.nowPlayingSongId;
+                    furniSongId = playlist.currentSongId;
                 }
 
                 furniIsJukebox = true;
@@ -206,7 +206,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
 
     useEffect(() =>
     {
-        const songInfo = GetNitroInstance().soundManager.musicController.getSongInfo(songId);
+        const songInfo = GetSoundManager().musicController.getSongInfo(songId);
 
         setSongName(songInfo?.name ?? '');
         setSongCreator(songInfo?.creator ?? '');

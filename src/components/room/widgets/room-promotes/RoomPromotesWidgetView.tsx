@@ -1,7 +1,6 @@
-import { DesktopViewEvent } from '@nitrots/nitro-renderer';
+import { DesktopViewEvent, GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-import { GetSessionDataManager } from '../../../../api';
 import { Base, Column, Flex, Text } from '../../../../common';
 import { useMessageEvent, useRoomPromote } from '../../../../hooks';
 import { RoomPromoteEditWidgetView, RoomPromoteMyOwnEventWidgetView, RoomPromoteOtherEventWidgetView } from './views';

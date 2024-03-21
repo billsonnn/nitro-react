@@ -1,5 +1,4 @@
-import { SellablePetPaletteData } from '@nitrots/nitro-renderer';
-import { GetRoomEngine } from '../nitro';
+import { GetRoomEngine, SellablePetPaletteData } from '@nitrots/nitro-renderer';
 import { ICatalogNode } from './ICatalogNode';
 
 export const GetPixelEffectIcon = (id: number) =>

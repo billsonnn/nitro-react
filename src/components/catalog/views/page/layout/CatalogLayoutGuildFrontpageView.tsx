@@ -1,5 +1,6 @@
+import { CreateLinkEvent } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { CreateLinkEvent, LocalizeText } from '../../../../../api';
+import { LocalizeText } from '../../../../../api';
 import { Base } from '../../../../../common/Base';
 import { Button } from '../../../../../common/Button';
 import { Column } from '../../../../../common/Column';

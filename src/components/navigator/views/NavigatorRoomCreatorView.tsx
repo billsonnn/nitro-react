@@ -1,7 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
 import { CreateFlatMessageComposer, HabboClubLevelEnum } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetClubMemberLevel, GetConfiguration, IRoomModel, LocalizeText, SendMessageComposer } from '../../../api';
+import { GetClubMemberLevel, GetConfigurationValue, IRoomModel, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../common';
 import { useNavigator } from '../../../hooks';
 
@@ -17,9 +17,9 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
     const [ selectedModelName, setSelectedModelName ] = useState<string>('');
     const { categories = null } = useNavigator();
 
-    const hcDisabled = GetConfiguration<boolean>('hc.disabled', false);
+    const hcDisabled = GetConfigurationValue<boolean>('hc.disabled', false);
 
-    const getRoomModelImage = (name: string) => GetConfiguration<string>('images.url') + `/navigator/models/model_${ name }.png`;
+    const getRoomModelImage = (name: string) => GetConfigurationValue<string>('images.url') + `/navigator/models/model_${ name }.png`;
 
     const selectModel = (model: IRoomModel, index: number) =>
     {
@@ -53,7 +53,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        const models = GetConfiguration<IRoomModel[]>('navigator.room.models');
+        const models = GetConfigurationValue<IRoomModel[]>('navigator.room.models');
 
         if(models && models.length)
         {

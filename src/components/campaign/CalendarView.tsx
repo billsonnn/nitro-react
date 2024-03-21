@@ -1,5 +1,6 @@
+import { GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { CalendarItemState, GetSessionDataManager, ICalendarItem, LocalizeText } from '../../api';
+import { CalendarItemState, ICalendarItem, LocalizeText } from '../../api';
 import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { CalendarItemView } from './CalendarItemView';
 

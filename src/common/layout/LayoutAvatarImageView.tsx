@@ -1,6 +1,5 @@
-import { AvatarScaleType, AvatarSetType } from '@nitrots/nitro-renderer';
+import { AvatarScaleType, AvatarSetType, GetAvatarRenderManager } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
-import { GetAvatarRenderManager } from '../../api';
 import { Base, BaseProps } from '../Base';
 
 export interface LayoutAvatarImageViewProps extends BaseProps<HTMLDivElement>

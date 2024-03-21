@@ -1,6 +1,6 @@
-import { FriendlyTime, GetTargetedOfferComposer, PurchaseTargetedOfferComposer, TargetedOfferData } from '@nitrots/nitro-renderer';
+import { GetTargetedOfferComposer, PurchaseTargetedOfferComposer, TargetedOfferData } from '@nitrots/nitro-renderer';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
-import { GetConfiguration, LocalizeText, SendMessageComposer } from '../../../../api';
+import { FriendlyTime, GetConfigurationValue, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Button, Column, Flex, LayoutCurrencyIcon, NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView, Text } from '../../../../common';
 import { usePurse } from '../../../../hooks';
 
@@ -65,7 +65,7 @@ export const OfferWindowView = (props: { offer: TargetedOfferData, setOpen: Disp
                         <Button variant="primary" disabled={ !canPurchase } onClick={ () => buyOffer() }>{ LocalizeText('targeted.offer.button.buy') }</Button>
                     </Flex>
                 </Flex>
-                <Base className="w-50" fullHeight style={ { background: `url(${ GetConfiguration('image.library.url') + offer.imageUrl }) no-repeat center` } } />
+                <Base className="w-50" fullHeight style={ { background: `url(${ GetConfigurationValue('image.library.url') + offer.imageUrl }) no-repeat center` } } />
             </Flex>
             <Flex className="price-ray position-absolute" alignItems="center" justifyContent="center" column>
                 <Text>{ LocalizeText('targeted.offer.price.label') }</Text>

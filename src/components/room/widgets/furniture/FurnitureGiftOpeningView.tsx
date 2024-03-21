@@ -1,5 +1,6 @@
+import { CreateLinkEvent } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { attemptItemPlacement, CreateLinkEvent, LocalizeText } from '../../../../api';
+import { attemptItemPlacement, LocalizeText } from '../../../../api';
 import { Button, Column, Flex, LayoutGiftTagView, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useFurniturePresentWidget, useInventoryFurni } from '../../../../hooks';
 

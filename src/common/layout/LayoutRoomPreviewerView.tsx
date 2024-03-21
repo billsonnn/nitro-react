@@ -1,4 +1,4 @@
-import { ColorConverter, GetTicker, IRoomRenderingCanvas, RoomPreviewer, TextureUtils } from '@nitrots/nitro-renderer';
+import { ColorConverter, GetTicker, IRoomRenderingCanvas, NitroTicker, RoomPreviewer, TextureUtils } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, ReactNode, useEffect, useRef, useState } from 'react';
 
 export interface LayoutRoomPreviewerViewProps
@@ -26,7 +26,7 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
     {
         if(!roomPreviewer) return;
 
-        const update = async (time: number) =>
+        const update = async (ticker: NitroTicker) =>
         {
             if(!roomPreviewer || !renderingCanvas || !elementRef.current) return;
         
@@ -60,7 +60,7 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
 
                 canvas.canvasUpdated = true;
 
-                update(-1);
+                update(GetTicker());
             }
         }
 
@@ -74,7 +74,7 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
 
             roomPreviewer.modifyRoomCanvas(width, height);
 
-            update(-1);
+            update(GetTicker());
         });
         
         resizeObserver.observe(elementRef.current);

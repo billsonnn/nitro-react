@@ -1,6 +1,6 @@
-import { ChangeUserNameMessageComposer, UserNameChangeMessageEvent } from '@nitrots/nitro-renderer';
+import { ChangeUserNameMessageComposer, GetSessionDataManager, UserNameChangeMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { useMessageEvent } from '../../../../hooks';
 import { NameChangeLayoutViewProps } from './NameChangeView.types';
 

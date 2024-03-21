@@ -1,7 +1,7 @@
-import { PetRespectComposer, PetType } from '@nitrots/nitro-renderer';
+import { CreateLinkEvent, PetRespectComposer, PetType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { AvatarInfoPet, ConvertSeconds, CreateLinkEvent, GetConfiguration, LocalizeText, SendMessageComposer } from '../../../../../api';
+import { AvatarInfoPet, ConvertSeconds, GetConfigurationValue, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Column, Flex, LayoutCounterTimeView, LayoutPetImageView, LayoutRarityLevelView, Text, UserProfileIconView } from '../../../../../common';
 import { useRoom, useSessionInfo } from '../../../../../hooks';
 
@@ -54,7 +54,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                 if((petRespectRemaining - 1) >= 1) hideMenu = false;
                 break;
             case 'buyfood':
-                CreateLinkEvent('catalog/open/' + GetConfiguration('catalog.links')['pets.buy_food']);
+                CreateLinkEvent('catalog/open/' + GetConfigurationValue('catalog.links')['pets.buy_food']);
                 break;
             case 'train':
                 roomSession?.requestPetCommands(avatarInfo.id);

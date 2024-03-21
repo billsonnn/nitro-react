@@ -1,4 +1,4 @@
-import { GetRoomEngine } from './GetRoomEngine';
+import { GetRoomEngine } from '@nitrots/nitro-renderer';
 
 export const InitializeRoomInstanceRenderingCanvas = (width: number, height: number, canvasId: number = 1) =>
 {

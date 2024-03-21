@@ -1,5 +1,5 @@
-import { GetTickerTime, IFurnitureData, IRoomModerationSettings, IRoomPetData, IRoomUserData, ObjectDataFactory, PetFigureData, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomTradingLevelEnum, RoomWidgetEnumItemExtradataParameter } from '@nitrots/nitro-renderer';
-import { GetRoomEngine, GetRoomSession, GetSessionDataManager, IsOwnerOfFurniture } from '../../nitro';
+import { GetRoomEngine, GetSessionDataManager, GetTickerTime, IFurnitureData, IRoomModerationSettings, IRoomPetData, IRoomUserData, ObjectDataFactory, PetFigureData, PetType, RoomControllerLevel, RoomModerationSettings, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomTradingLevelEnum, RoomWidgetEnumItemExtradataParameter } from '@nitrots/nitro-renderer';
+import { GetRoomSession, IsOwnerOfFurniture } from '../../nitro';
 import { LocalizeText } from '../../utils';
 import { AvatarInfoFurni } from './AvatarInfoFurni';
 import { AvatarInfoName } from './AvatarInfoName';

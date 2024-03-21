@@ -1,10 +1,9 @@
-import { AvatarFigurePartType, IAvatarImageListener, IAvatarRenderManager, IFigurePart, IFigurePartSet, IGraphicAsset, IPartColor, NitroAlphaFilter, NitroContainer, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
-import { GetAvatarRenderManager } from '../nitro';
+import { AvatarFigurePartType, GetAvatarRenderManager, IAvatarImageListener, IAvatarRenderManager, IFigurePart, IFigurePartSet, IGraphicAsset, IPartColor, NitroAlphaFilter, NitroContainer, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
 import { FigureData } from './FigureData';
 
 export class AvatarEditorGridPartItem implements IAvatarImageListener
 {
-    private static ALPHA_FILTER: NitroAlphaFilter = new NitroAlphaFilter(0.2);
+    private static ALPHA_FILTER: NitroAlphaFilter = new NitroAlphaFilter({ alpha: 0.2 });
     private static THUMB_DIRECTIONS: number[] = [ 2, 6, 0, 4, 3, 1 ];
     private static DRAW_ORDER: string[] = [
         AvatarFigurePartType.LEFT_HAND_ITEM,

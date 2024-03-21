@@ -1,5 +1,6 @@
+import { GetRoomEngine, GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { CalendarItemState, GetConfiguration, GetRoomEngine, GetSessionDataManager, ICalendarItem } from '../../api';
+import { CalendarItemState, GetConfigurationValue, ICalendarItem } from '../../api';
 import { Base, Column, Flex, LayoutImage } from '../../common';
 
 interface CalendarItemViewProps
@@ -37,7 +38,7 @@ export const CalendarItemView: FC<CalendarItemViewProps> = props =>
                 <Flex center className="campaign-spritesheet unlocked-bg">
                     <Flex center className="campaign-spritesheet campaign-opened">
                         { product &&
-                            <LayoutImage imageUrl={ product.customImage ? GetConfiguration<string>('image.library.url') + product.customImage : getFurnitureIcon(product.productName) } /> }
+                            <LayoutImage imageUrl={ product.customImage ? GetConfigurationValue<string>('image.library.url') + product.customImage : getFurnitureIcon(product.productName) } /> }
                     </Flex>
                 </Flex> }
             { (state !== CalendarItemState.STATE_UNLOCKED) &&

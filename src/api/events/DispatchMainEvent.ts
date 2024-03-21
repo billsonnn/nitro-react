@@ -1,5 +1,4 @@
-import { NitroEvent } from '@nitrots/nitro-renderer';
-import { GetNitroInstance } from '../nitro';
+import { GetEventDispatcher, NitroEvent } from '@nitrots/nitro-renderer';
 import { DispatchEvent } from './DispatchEvent';
 
-export const DispatchMainEvent = (event: NitroEvent) => DispatchEvent(GetNitroInstance().events, event);
+export const DispatchMainEvent = (event: NitroEvent) => DispatchEvent(GetEventDispatcher(), event);

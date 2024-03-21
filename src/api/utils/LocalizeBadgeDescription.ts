@@ -1,8 +1,8 @@
-import { GetNitroInstance } from '..';
+import { GetLocalizationManager } from '@nitrots/nitro-renderer';
 
 export const LocalizeBadgeDescription = (key: string) =>
 {
-    let badgeDesc = GetNitroInstance().localization.getBadgeDesc(key);
+    let badgeDesc = GetLocalizationManager().getBadgeDesc(key);
 
     if(!badgeDesc || !badgeDesc.length) badgeDesc = `badge_desc_${ key }`;
 

@@ -1,6 +1,6 @@
-import { ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, ILinkEventTracker, RemoveLinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { AddEventLinkTracker, GetConfiguration, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { GetConfigurationValue, LocalizeText } from '../../api';
 import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { useCatalog } from '../../hooks';
 import { CatalogIconView } from './views/catalog-icon/CatalogIconView';
@@ -61,7 +61,7 @@ export const CatalogView: FC<{}> = props =>
             eventUrlPrefix: 'catalog/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, [ setIsVisible, openPageByOfferId, openPageByName ]);
@@ -69,7 +69,7 @@ export const CatalogView: FC<{}> = props =>
     return (
         <>
             { isVisible &&
-                <NitroCardView uniqueKey="catalog" className="nitro-catalog" style={ GetConfiguration('catalog.headers') ? { width: 710 } : {} }>
+                <NitroCardView uniqueKey="catalog" className="nitro-catalog" style={ GetConfigurationValue('catalog.headers') ? { width: 710 } : {} }>
                     <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardTabsView>
                         { rootNode && (rootNode.children.length > 0) && rootNode.children.map(child =>
@@ -83,8 +83,8 @@ export const CatalogView: FC<{}> = props =>
 
                                     activateNode(child);
                                 } } >
-                                    <Flex gap={ GetConfiguration('catalog.tab.icons') ? 1 : 0 } alignItems="center">
-                                        { GetConfiguration('catalog.tab.icons') && <CatalogIconView icon={ child.iconId } /> }
+                                    <Flex gap={ GetConfigurationValue('catalog.tab.icons') ? 1 : 0 } alignItems="center">
+                                        { GetConfigurationValue('catalog.tab.icons') && <CatalogIconView icon={ child.iconId } /> }
                                         { child.localization }
                                     </Flex>
                                 </NitroCardTabsItemView>

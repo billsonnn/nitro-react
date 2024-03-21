@@ -4,6 +4,8 @@
 
 // Ascending
 // Used to evaluate Sass maps like our grid breakpoints.
+@use 'sass:math';
+
 @mixin _assert-ascending($map, $map-name) {
   $prev-key: null;
   $prev-num: null;
@@ -255,8 +257,8 @@ $_luminance-list: .0008 .001 .0011 .0013 .0015 .0017 .002 .0022 .0025 .0027 .003
 
 @function divide($dividend, $divisor, $precision: 10) {
   $sign: if($dividend > 0 and $divisor > 0 or $dividend < 0 and $divisor < 0, 1, -1);
-  $dividend: abs($dividend);
-  $divisor: abs($divisor);
+  $dividend: math.abs($dividend);
+  $divisor: math.abs($divisor);
   @if $dividend == 0 {
     @return 0;
   }

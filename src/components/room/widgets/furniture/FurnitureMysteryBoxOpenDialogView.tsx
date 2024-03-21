@@ -1,6 +1,6 @@
-import { CancelMysteryBoxWaitMessageEvent, GotMysteryBoxPrizeMessageEvent, MysteryBoxWaitingCanceledMessageComposer, ShowMysteryBoxWaitMessageEvent } from '@nitrots/nitro-renderer';
+import { CancelMysteryBoxWaitMessageEvent, GetSessionDataManager, GotMysteryBoxPrizeMessageEvent, MysteryBoxWaitingCanceledMessageComposer, ShowMysteryBoxWaitMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../../api';
+import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { LayoutPrizeProductImageView } from '../../../../common/layout/LayoutPrizeProductImageView';
 import { useMessageEvent } from '../../../../hooks';

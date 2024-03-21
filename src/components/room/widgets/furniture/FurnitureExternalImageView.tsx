@@ -1,5 +1,6 @@
+import { GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { GetSessionDataManager, ReportType } from '../../../../api';
+import { ReportType } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { useFurnitureExternalImageWidget, useHelp } from '../../../../hooks';
 import { CameraWidgetShowPhotoView } from '../../../camera/views/CameraWidgetShowPhotoView';

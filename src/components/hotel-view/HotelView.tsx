@@ -1,6 +1,6 @@
-import { NitroConfiguration, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { GetConfiguration, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { GetConfiguration } from '../../api';
+import { GetConfigurationValue } from '../../api';
 import { LayoutAvatarImageView } from '../../common';
 import { useNitroEvent, useSessionInfo } from '../../hooks';
 import { WidgetSlotView } from './views/widgets/WidgetSlotView';
@@ -29,13 +29,13 @@ export const HotelView: FC<{}> = props =>
 
     if(!isVisible) return null;
 
-    const backgroundColor = GetConfiguration('hotelview')['images']['background.colour'];
-    const background = NitroConfiguration.interpolate(GetConfiguration('hotelview')['images']['background']);
-    const sun = NitroConfiguration.interpolate(GetConfiguration('hotelview')['images']['sun']);
-    const drape = NitroConfiguration.interpolate(GetConfiguration('hotelview')['images']['drape']);
-    const left = NitroConfiguration.interpolate(GetConfiguration('hotelview')['images']['left']);
-    const rightRepeat = NitroConfiguration.interpolate(GetConfiguration('hotelview')['images']['right.repeat']);
-    const right = NitroConfiguration.interpolate(GetConfiguration('hotelview')['images']['right']);
+    const backgroundColor = GetConfigurationValue('hotelview')['images']['background.colour'];
+    const background = GetConfiguration().interpolate(GetConfigurationValue('hotelview')['images']['background']);
+    const sun = GetConfiguration().interpolate(GetConfigurationValue('hotelview')['images']['sun']);
+    const drape = GetConfiguration().interpolate(GetConfigurationValue('hotelview')['images']['drape']);
+    const left = GetConfiguration().interpolate(GetConfigurationValue('hotelview')['images']['left']);
+    const rightRepeat = GetConfiguration().interpolate(GetConfigurationValue('hotelview')['images']['right.repeat']);
+    const right = GetConfiguration().interpolate(GetConfigurationValue('hotelview')['images']['right']);
 
     return (
         <div className="nitro-hotel-view" style={ (backgroundColor && backgroundColor) ? { background: backgroundColor } : {} }>
@@ -44,48 +44,48 @@ export const HotelView: FC<{}> = props =>
                     <div className="col-9 h-100 d-flex flex-column">
                         <WidgetSlotView
                             widgetSlot={ 1 }
-                            widgetType={ GetConfiguration('hotelview')['widgets']['slot.' + 1 + '.widget'] }
-                            widgetConf={ GetConfiguration('hotelview')['widgets']['slot.' + 1 + '.conf'] }
+                            widgetType={ GetConfigurationValue('hotelview')['widgets']['slot.' + 1 + '.widget'] }
+                            widgetConf={ GetConfigurationValue('hotelview')['widgets']['slot.' + 1 + '.conf'] }
                             className="col-6"
                         />
                         <div className="col-12 row mx-0">
                             <WidgetSlotView
                                 widgetSlot={ 2 }
-                                widgetType={ GetConfiguration('hotelview')['widgets']['slot.' + 2 + '.widget'] }
-                                widgetConf={ GetConfiguration('hotelview')['widgets']['slot.' + 2 + '.conf'] }
+                                widgetType={ GetConfigurationValue('hotelview')['widgets']['slot.' + 2 + '.widget'] }
+                                widgetConf={ GetConfigurationValue('hotelview')['widgets']['slot.' + 2 + '.conf'] }
                                 className="col-7"
                             />
                             <WidgetSlotView
                                 widgetSlot={ 3 }
-                                widgetType={ GetConfiguration('hotelview')['widgets']['slot.' + 3 + '.widget'] }
-                                widgetConf={ GetConfiguration('hotelview')['widgets']['slot.' + 3 + '.conf'] }
+                                widgetType={ GetConfigurationValue('hotelview')['widgets']['slot.' + 3 + '.widget'] }
+                                widgetConf={ GetConfigurationValue('hotelview')['widgets']['slot.' + 3 + '.conf'] }
                                 className="col-5"
                             />
                             <WidgetSlotView
                                 widgetSlot={ 4 }
-                                widgetType={ GetConfiguration('hotelview')['widgets']['slot.' + 4 + '.widget'] }
-                                widgetConf={ GetConfiguration('hotelview')['widgets']['slot.' + 4 + '.conf'] }
+                                widgetType={ GetConfigurationValue('hotelview')['widgets']['slot.' + 4 + '.widget'] }
+                                widgetConf={ GetConfigurationValue('hotelview')['widgets']['slot.' + 4 + '.conf'] }
                                 className="col-7"
                             />
                             <WidgetSlotView
                                 widgetSlot={ 5 }
-                                widgetType={ GetConfiguration('hotelview')['widgets']['slot.' + 5 + '.widget'] }
-                                widgetConf={ GetConfiguration('hotelview')['widgets']['slot.' + 5 + '.conf'] }
+                                widgetType={ GetConfigurationValue('hotelview')['widgets']['slot.' + 5 + '.widget'] }
+                                widgetConf={ GetConfigurationValue('hotelview')['widgets']['slot.' + 5 + '.conf'] }
                                 className="col-5"
                             />
                         </div>
                         <WidgetSlotView
                             widgetSlot={ 6 }
-                            widgetType={ GetConfiguration('hotelview')['widgets']['slot.' + 6 + '.widget'] }
-                            widgetConf={ GetConfiguration('hotelview')['widgets']['slot.' + 6 + '.conf'] }
+                            widgetType={ GetConfigurationValue('hotelview')['widgets']['slot.' + 6 + '.widget'] }
+                            widgetConf={ GetConfigurationValue('hotelview')['widgets']['slot.' + 6 + '.conf'] }
                             className="mt-auto"
                         />
                     </div>
                     <div className="col-3 h-100">
                         <WidgetSlotView
                             widgetSlot={ 7 }
-                            widgetType={ GetConfiguration('hotelview')['widgets']['slot.' + 7 + '.widget'] }
-                            widgetConf={ GetConfiguration('hotelview')['widgets']['slot.' + 7 +'.conf'] }
+                            widgetType={ GetConfigurationValue('hotelview')['widgets']['slot.' + 7 + '.widget'] }
+                            widgetConf={ GetConfigurationValue('hotelview')['widgets']['slot.' + 7 +'.conf'] }
                         />
                     </div>
                 </div>
@@ -96,7 +96,7 @@ export const HotelView: FC<{}> = props =>
             <div className="left position-absolute" style={ (left && left.length) ? { backgroundImage: `url(${ left })` } : {} } />
             <div className="right-repeat position-absolute" style={ (rightRepeat && rightRepeat.length) ? { backgroundImage: `url(${ rightRepeat })` } : {} } />
             <div className="right position-absolute" style={ (right && right.length) ? { backgroundImage: `url(${ right })` } : {} } />
-            { GetConfiguration('hotelview')['show.avatar'] && (
+            { GetConfigurationValue('hotelview')['show.avatar'] && (
                 <div className="avatar-image">
                     <LayoutAvatarImageView figure={ userFigure } direction={ 2 } />
                 </div>

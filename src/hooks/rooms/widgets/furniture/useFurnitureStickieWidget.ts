@@ -1,6 +1,6 @@
-import { RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
+import { GetRoomEngine, GetSessionDataManager, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
-import { GetRoomEngine, GetRoomSession, GetSessionDataManager, IsOwnerOfFurniture } from '../../../../api';
+import { GetRoomSession, IsOwnerOfFurniture } from '../../../../api';
 import { useNitroEvent } from '../../../events';
 import { useFurniRemovedEvent } from '../../engine';
 

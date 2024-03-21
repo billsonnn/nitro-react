@@ -1,6 +1,6 @@
-import { HabboClubLevelEnum, RoomControllerLevel } from '@nitrots/nitro-renderer';
+import { GetAvatarRenderManager, GetSessionDataManager, HabboClubLevelEnum, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetAvatarRenderManager, GetClubMemberLevel, GetRoomSession, GetSessionDataManager, LocalizeText, MannequinUtilities } from '../../../../api';
+import { GetClubMemberLevel, GetRoomSession, LocalizeText, MannequinUtilities } from '../../../../api';
 import { Base, Button, Column, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useFurnitureMannequinWidget } from '../../../../hooks';
 

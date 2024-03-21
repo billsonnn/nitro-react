@@ -1,7 +1,7 @@
-import { FigureUpdateEvent, RoomUnitChatStyleComposer, UserInfoDataParser, UserInfoEvent, UserSettingsEvent } from '@nitrots/nitro-renderer';
+import { FigureUpdateEvent, GetSessionDataManager, RoomUnitChatStyleComposer, UserInfoDataParser, UserInfoEvent, UserSettingsEvent } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
 import { useBetween } from 'use-between';
-import { GetSessionDataManager, SendMessageComposer } from '../../api';
+import { SendMessageComposer } from '../../api';
 import { useMessageEvent } from '../events';
 
 const useSessionInfoState = () =>

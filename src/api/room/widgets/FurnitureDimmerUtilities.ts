@@ -1,4 +1,5 @@
-import { GetRoomEngine, GetRoomSession } from '../../nitro';
+import { GetRoomEngine } from '@nitrots/nitro-renderer';
+import { GetRoomSession } from '../../nitro';
 
 export class FurnitureDimmerUtilities
 {

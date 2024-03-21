@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { GetConfiguration } from '../../../../api';
+import { GetConfigurationValue } from '../../../../api';
 import { Flex } from '../../../../common';
 
 export interface CatalogHeaderViewProps
@@ -14,13 +14,13 @@ export const CatalogHeaderView: FC<CatalogHeaderViewProps> = props =>
 
     useEffect(() =>
     {
-        setDisplayImageUrl(imageUrl ?? GetConfiguration<string>('catalog.asset.image.url').replace('%name%', 'catalog_header_roombuilder'));
+        setDisplayImageUrl(imageUrl ?? GetConfigurationValue<string>('catalog.asset.image.url').replace('%name%', 'catalog_header_roombuilder'));
     }, [ imageUrl ]);
 
     return <Flex center fullWidth className="nitro-catalog-header">
         <img src={ displayImageUrl } onError={ ({ currentTarget }) => 
         {
-            currentTarget.src = GetConfiguration<string>('catalog.asset.image.url').replace('%name%', 'catalog_header_roombuilder');
+            currentTarget.src = GetConfigurationValue<string>('catalog.asset.image.url').replace('%name%', 'catalog_header_roombuilder');
         } } />
     </Flex>;
 }

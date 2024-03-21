@@ -1,7 +1,7 @@
-import { CanCreateRoomEventEvent, CantConnectMessageParser, DoorbellMessageEvent, FlatAccessDeniedMessageEvent, FlatCreatedEvent, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomMessageComposer, GetGuestRoomResultEvent, GetUserEventCatsMessageComposer, GetUserFlatCatsMessageComposer, HabboWebTools, LegacyExternalInterface, NavigatorCategoryDataParser, NavigatorEventCategoryDataParser, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, NavigatorSearchResultSet, NavigatorTopLevelContext, RoomDataParser, RoomDoorbellAcceptedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserEventCatsEvent, UserFlatCatsEvent, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
+import { CanCreateRoomEventEvent, CantConnectMessageParser, CreateLinkEvent, DoorbellMessageEvent, FlatAccessDeniedMessageEvent, FlatCreatedEvent, FollowFriendMessageComposer, GenericErrorEvent, GetGuestRoomMessageComposer, GetGuestRoomResultEvent, GetSessionDataManager, GetUserEventCatsMessageComposer, GetUserFlatCatsMessageComposer, HabboWebTools, LegacyExternalInterface, NavigatorCategoryDataParser, NavigatorEventCategoryDataParser, NavigatorHomeRoomEvent, NavigatorMetadataEvent, NavigatorOpenRoomCreatorEvent, NavigatorSearchEvent, NavigatorSearchResultSet, NavigatorTopLevelContext, RoomDataParser, RoomDoorbellAcceptedEvent, RoomEnterErrorEvent, RoomEntryInfoMessageEvent, RoomForwardEvent, RoomScoreEvent, RoomSettingsUpdatedEvent, SecurityLevel, UserEventCatsEvent, UserFlatCatsEvent, UserInfoEvent, UserPermissionsEvent } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
 import { useBetween } from 'use-between';
-import { CreateLinkEvent, CreateRoomSession, DoorStateType, GetConfiguration, GetSessionDataManager, INavigatorData, LocalizeText, NotificationAlertType, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
+import { CreateRoomSession, DoorStateType, GetConfigurationValue, INavigatorData, LocalizeText, NotificationAlertType, SendMessageComposer, TryVisitRoom, VisitDesktop } from '../../api';
 import { useMessageEvent } from '../events';
 import { useNotification } from '../notification';
 
@@ -121,7 +121,7 @@ const useNavigatorState = () =>
 
                 if(!isCreated && parser.data.displayRoomEntryAd)
                 {
-                    if(GetConfiguration<boolean>('roomenterad.habblet.enabled', false)) HabboWebTools.openRoomEnterAd();
+                    if(GetConfigurationValue<boolean>('roomenterad.habblet.enabled', false)) HabboWebTools.openRoomEnterAd();
                 }
 
                 newValue.createdFlatId = 0;
@@ -375,16 +375,16 @@ const useNavigatorState = () =>
         let forwardType = -1;
         let forwardId = -1;
 
-        if((GetConfiguration<string>('friend.id') !== undefined) && (parseInt(GetConfiguration<string>('friend.id')) > 0))
+        if((GetConfigurationValue<string>('friend.id') !== undefined) && (parseInt(GetConfigurationValue<string>('friend.id')) > 0))
         {
             forwardType = 0;
-            SendMessageComposer(new FollowFriendMessageComposer(parseInt(GetConfiguration<string>('friend.id'))));
+            SendMessageComposer(new FollowFriendMessageComposer(parseInt(GetConfigurationValue<string>('friend.id'))));
         }
 
-        if((GetConfiguration<number>('forward.type') !== undefined) && (GetConfiguration<number>('forward.id') !== undefined))
+        if((GetConfigurationValue<number>('forward.type') !== undefined) && (GetConfigurationValue<number>('forward.id') !== undefined))
         {
-            forwardType = parseInt(GetConfiguration<string>('forward.type'));
-            forwardId = parseInt(GetConfiguration<string>('forward.id'))
+            forwardType = parseInt(GetConfigurationValue<string>('forward.type'));
+            forwardId = parseInt(GetConfigurationValue<string>('forward.id'))
         }
 
         if(forwardType === 2)

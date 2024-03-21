@@ -1,5 +1,6 @@
+import { GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC, useMemo } from 'react';
-import { AvatarInfoName, GetSessionDataManager } from '../../../../../api';
+import { AvatarInfoName } from '../../../../../api';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
 
 interface AvatarInfoWidgetNameViewProps

@@ -1,7 +1,7 @@
-import { RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomSessionFavoriteGroupUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
+import { GetSessionDataManager, RelationshipStatusInfoEvent, RelationshipStatusInfoMessageParser, RoomSessionFavoriteGroupUpdateEvent, RoomSessionUserBadgesEvent, RoomSessionUserFigureUpdateEvent, UserRelationshipsComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, FocusEvent, KeyboardEvent, SetStateAction, useEffect, useState } from 'react';
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
-import { AvatarInfoUser, CloneObject, GetConfiguration, GetGroupInformation, GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../../../../api';
+import { AvatarInfoUser, CloneObject, GetConfigurationValue, GetGroupInformation, GetUserProfile, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../../common';
 import { useMessageEvent, useNitroEvent, useRoom } from '../../../../../hooks';
 import { InfoStandWidgetUserRelationshipsView } from './InfoStandWidgetUserRelationshipsView';
@@ -24,7 +24,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     const saveMotto = (motto: string) =>
     {
-        if(!isEditingMotto || (motto.length > GetConfiguration<number>('motto.max.length', 38))) return;
+        if(!isEditingMotto || (motto.length > GetConfigurationValue<number>('motto.max.length', 38))) return;
 
         roomSession.sendMottoMessage(motto);
 
@@ -183,7 +183,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                                     { !isEditingMotto &&
                                         <Text fullWidth pointer wrap textBreak small variant="white" onClick={ event => setIsEditingMotto(true) }>{ motto }&nbsp;</Text> }
                                     { isEditingMotto &&
-                                        <input type="text" className="motto-input" maxLength={ GetConfiguration<number>('motto.max.length', 38) } value={ motto } onChange={ event => setMotto(event.target.value) } onBlur={ onMottoBlur } onKeyDown={ onMottoKeyDown } autoFocus={ true } /> }
+                                        <input type="text" className="motto-input" maxLength={ GetConfigurationValue<number>('motto.max.length', 38) } value={ motto } onChange={ event => setMotto(event.target.value) } onBlur={ onMottoBlur } onKeyDown={ onMottoKeyDown } autoFocus={ true } /> }
                                 </Flex>
                             </Flex> }
                     </Flex>
@@ -204,7 +204,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                 <Column gap={ 1 }>
                     <InfoStandWidgetUserRelationshipsView relationships={ relationships } />
                 </Column>
-                { GetConfiguration('user.tags.enabled') &&
+                { GetConfigurationValue('user.tags.enabled') &&
                     <Column gap={ 1 } className="mt-1">
                         <InfoStandWidgetUserTagsView tags={ GetSessionDataManager().tags } />
                     </Column>

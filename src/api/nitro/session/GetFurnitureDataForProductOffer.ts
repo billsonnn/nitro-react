@@ -1,5 +1,4 @@
-import { CatalogPageMessageProductData, FurnitureType, IFurnitureData } from '@nitrots/nitro-renderer';
-import { GetSessionDataManager } from './GetSessionDataManager';
+import { CatalogPageMessageProductData, FurnitureType, GetSessionDataManager, IFurnitureData } from '@nitrots/nitro-renderer';
 
 export function GetFurnitureDataForProductOffer(offer: CatalogPageMessageProductData): IFurnitureData
 {

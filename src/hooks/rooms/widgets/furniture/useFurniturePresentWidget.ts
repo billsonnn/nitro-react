@@ -1,9 +1,9 @@
-import { IFurnitureData, IGetImageListener, PetFigureData, RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable, RoomSessionPresentEvent, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
+import { GetRoomEngine, GetSessionDataManager, IFurnitureData, IGetImageListener, PetFigureData, RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable, RoomSessionPresentEvent, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { useMemo, useState } from 'react';
-import { useRoom } from '../../..';
-import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture, LocalizeText, ProductTypeEnum } from '../../../../api';
+import { IsOwnerOfFurniture, LocalizeText, ProductTypeEnum } from '../../../../api';
 import { useNitroEvent } from '../../../events';
 import { useFurniRemovedEvent } from '../../engine';
+import { useRoom } from '../../useRoom';
 
 const FLOOR: string = 'floor';
 const WALLPAPER: string = 'wallpaper';

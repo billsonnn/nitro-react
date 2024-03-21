@@ -1,5 +1,6 @@
+import { GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { GetSessionDataManager, LocalizeText } from '../../../../api';
+import { LocalizeText } from '../../../../api';
 import { NameChangeLayoutViewProps } from './NameChangeView.types';
 
 export const NameChangeInitView:FC<NameChangeLayoutViewProps> = props =>

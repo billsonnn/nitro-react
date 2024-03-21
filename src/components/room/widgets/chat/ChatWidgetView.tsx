@@ -1,6 +1,6 @@
 import { RoomChatSettings } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef } from 'react';
-import { ChatBubbleMessage, DoChatsOverlap, GetConfiguration } from '../../../../api';
+import { ChatBubbleMessage, DoChatsOverlap, GetConfigurationValue } from '../../../../api';
 import { useChatWidget } from '../../../../hooks';
 import IntervalWebWorker from '../../../../workers/IntervalWebWorker';
 import { WorkerBuilder } from '../../../../workers/WorkerBuilder';
@@ -91,7 +91,7 @@ export const ChatWidgetView: FC<{}> = props =>
             if(!elementRef || !elementRef.current) return;
 
             const currentHeight = elementRef.current.offsetHeight;
-            const newHeight = Math.round(document.body.offsetHeight * GetConfiguration<number>('chat.viewer.height.percentage'));
+            const newHeight = Math.round(document.body.offsetHeight * GetConfigurationValue<number>('chat.viewer.height.percentage'));
 
             elementRef.current.style.height = `${ newHeight }px`;
 

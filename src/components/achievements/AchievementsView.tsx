@@ -1,6 +1,6 @@
-import { ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, ILinkEventTracker, RemoveLinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { AchievementUtilities, AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { AchievementUtilities, LocalizeText } from '../../api';
 import { Base, Column, LayoutImage, LayoutProgressBar, NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView, Text } from '../../common';
 import { useAchievements } from '../../hooks';
 import { AchievementCategoryView } from './views/AchievementCategoryView';
@@ -36,7 +36,7 @@ export const AchievementsView: FC<{}> = props =>
             eventUrlPrefix: 'achievements/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);

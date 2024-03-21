@@ -1,7 +1,5 @@
 import { FC } from 'react';
-import { Base } from '../../../../../common/Base';
-import { Column } from '../../../../../common/Column';
-import { Flex } from '../../../../../common/Flex';
+import { Base, Column, Flex } from '../../../../../common';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutPets3View: FC<CatalogLayoutProps> = props =>

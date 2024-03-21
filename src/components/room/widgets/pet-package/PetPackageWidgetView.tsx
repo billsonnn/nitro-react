@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Button } from 'react-bootstrap';
-import { GetConfiguration, LocalizeText } from '../../../../api';
+import { GetConfigurationValue, LocalizeText } from '../../../../api';
 import { Base, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { usePetPackageWidget } from '../../../../hooks';
 
@@ -23,7 +23,7 @@ export const PetPackageWidgetView: FC<{}> = props =>
                         <Flex className="pet-package-container-bottom p-2">
                             <Column gap={ 1 }>
                                 <Flex alignItems="center" className="bg-white rounded py-1 px-2 input-pet-package-container">
-                                    <input type="text" className="form-control form-control-sm input-pet-package" maxLength={ GetConfiguration('pet.package.name.max.length') } placeholder={ objectType === 'gnome_box' ? LocalizeText('widgets.gnomepackage.name.select') : LocalizeText('widgets.petpackage.name.title') } value={ petName } onChange={ event => onChangePetName(event.target.value) } />
+                                    <input type="text" className="form-control form-control-sm input-pet-package" maxLength={ GetConfigurationValue('pet.package.name.max.length') } placeholder={ objectType === 'gnome_box' ? LocalizeText('widgets.gnomepackage.name.select') : LocalizeText('widgets.petpackage.name.title') } value={ petName } onChange={ event => onChangePetName(event.target.value) } />
                                     <div className="package-pencil-image flex-shrink-0 small fa-icon"></div>
                                 </Flex>
                                 { (errorResult.length > 0) &&

@@ -1,6 +1,6 @@
-import { CampaignCalendarData, CampaignCalendarDataMessageEvent, CampaignCalendarDoorOpenedMessageEvent, ILinkEventTracker, OpenCampaignCalendarDoorAsStaffComposer, OpenCampaignCalendarDoorComposer } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, CampaignCalendarData, CampaignCalendarDataMessageEvent, CampaignCalendarDoorOpenedMessageEvent, ILinkEventTracker, OpenCampaignCalendarDoorAsStaffComposer, OpenCampaignCalendarDoorComposer, RemoveLinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { AddEventLinkTracker, CalendarItem, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { CalendarItem, SendMessageComposer } from '../../api';
 import { useMessageEvent } from '../../hooks';
 import { CalendarView } from './CalendarView';
 
@@ -86,7 +86,7 @@ export const CampaignView: FC<{}> = props =>
             eventUrlPrefix: 'openView/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);

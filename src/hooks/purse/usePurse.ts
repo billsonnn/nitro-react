@@ -1,13 +1,13 @@
 import { ActivityPointNotificationMessageEvent, UserCreditsEvent, UserCurrencyComposer, UserCurrencyEvent, UserSubscriptionComposer, UserSubscriptionEvent, UserSubscriptionParser } from '@nitrots/nitro-renderer';
 import { useEffect, useMemo, useState } from 'react';
 import { useBetween } from 'use-between';
-import { CloneObject, ClubStatus, GetConfiguration, IPurse, PlaySound, Purse, SendMessageComposer, SoundNames } from '../../api';
+import { CloneObject, ClubStatus, GetConfigurationValue, IPurse, PlaySound, Purse, SendMessageComposer, SoundNames } from '../../api';
 import { useMessageEvent } from '../events';
 
 const usePurseState = () =>
 {
     const [ purse, setPurse ] = useState<IPurse>(new Purse());
-    const hcDisabled = useMemo(() => GetConfiguration<boolean>('hc.disabled', false), []);
+    const hcDisabled = useMemo(() => GetConfigurationValue<boolean>('hc.disabled', false), []);
 
     const clubStatus = useMemo(() =>
     {

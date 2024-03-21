@@ -1,6 +1,6 @@
-import { ILinkEventTracker, RoomEngineEvent, RoomId, RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, CreateLinkEvent, ILinkEventTracker, RemoveLinkEventTracker, RoomEngineEvent, RoomId, RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
-import { AddEventLinkTracker, CreateLinkEvent, GetRoomSession, ISelectedUser, RemoveLinkEventTracker } from '../../api';
+import { GetRoomSession, ISelectedUser } from '../../api';
 import { Base, Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { useModTools, useNitroEvent, useObjectSelectedEvent } from '../../hooks';
 import { ModToolsChatlogView } from './views/room/ModToolsChatlogView';
@@ -112,7 +112,7 @@ export const ModToolsView: FC<{}> = props =>
             eventUrlPrefix: 'mod-tools/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, [ openRoomInfo, closeRoomInfo, toggleRoomInfo, openRoomChatlog, closeRoomChatlog, toggleRoomChatlog, openUserInfo, closeUserInfo, toggleUserInfo, openUserChatlog, closeUserChatlog, toggleUserChatlog ]);

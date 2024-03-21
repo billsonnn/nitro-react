@@ -1,4 +1,4 @@
-import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, NitroPoint, RoomEntryTileMessageEvent, RoomOccupiedTilesMessageEvent } from '@nitrots/nitro-renderer';
+import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, RoomEntryTileMessageEvent, RoomOccupiedTilesMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
 import { FaArrowDown, FaArrowLeft, FaArrowRight, FaArrowUp } from 'react-icons/fa';
 import { SendMessageComposer } from '../../../api';
@@ -58,7 +58,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
             return newValue;
         });
         
-        FloorplanEditor.instance.doorLocation = new NitroPoint(parser.x, parser.y);
+        FloorplanEditor.instance.doorLocation = { x: parser.x, y: parser.y };
 
         setEntryTileReceived(true);
     });

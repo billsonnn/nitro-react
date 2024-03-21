@@ -1,6 +1,6 @@
-import { ContextMenuEnum, GroupFurniContextMenuInfoMessageEvent, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
+import { ContextMenuEnum, GetRoomEngine, GroupFurniContextMenuInfoMessageEvent, GroupFurniContextMenuInfoMessageParser, RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
-import { GetRoomEngine, IsOwnerOfFurniture, TryJoinGroup, TryVisitRoom } from '../../../../api';
+import { IsOwnerOfFurniture, TryJoinGroup, TryVisitRoom } from '../../../../api';
 import { useMessageEvent, useNitroEvent } from '../../../events';
 import { useRoom } from '../../useRoom';
 

@@ -1,6 +1,6 @@
-import { ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, ILinkEventTracker, RemoveLinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
+import { LocalizeText } from '../../../../api';
 import { useUserChooserWidget } from '../../../../hooks';
 import { ChooserWidgetView } from './ChooserWidgetView';
 
@@ -20,7 +20,7 @@ export const UserChooserWidgetView: FC<{}> = props =>
             eventUrlPrefix: 'user-chooser/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, [ populateChooser ]);

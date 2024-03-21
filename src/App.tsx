@@ -1,9 +1,10 @@
-import { Nitro, NitroLogger, NitroVersion } from '@nitrots/nitro-renderer';
+import { GetAvatarRenderManager, GetCommunication, GetConfiguration, GetLocalizationManager, GetPixi, GetRoomEngine, GetRoomSessionManager, GetSessionDataManager, GetSoundManager, GetTicker, HabboWebTools, LegacyExternalInterface, LoadGameUrlEvent, NitroLogger, NitroVersion } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetNitroInstance, GetUIVersion } from './api';
+import { GetUIVersion } from './api';
 import { Base } from './common';
 import { LoadingView } from './components/loading/LoadingView';
 import { MainView } from './components/main/MainView';
+import { useMessageEvent } from './hooks';
 
 NitroVersion.UI_VERSION = GetUIVersion();
 
@@ -15,15 +16,48 @@ export const App: FC<{}> = props =>
 
     useEffect(() =>
     {
-        (async () =>
+        const prepare = async (width: number, height: number) =>
         {
             try
             {
                 //@ts-ignore
                 if(!NitroConfig) throw new Error('NitroConfig is not defined!');
 
-                Nitro.bootstrap();
-                await GetNitroInstance().init();
+                NitroVersion.sayHello();
+
+                await GetPixi().init({
+                    autoStart: false,
+                    autoDensity: false,
+                    width,
+                    height,
+                    sharedTicker: true,
+                    backgroundAlpha: 0
+                });
+
+                await GetConfiguration().init();
+
+                GetTicker().maxFPS = GetConfiguration().getValue<number>('system.fps.max', 24);
+                NitroLogger.LOG_DEBUG = GetConfiguration().getValue<boolean>('system.log.debug', true);
+                NitroLogger.LOG_WARN = GetConfiguration().getValue<boolean>('system.log.warn', false);
+                NitroLogger.LOG_ERROR = GetConfiguration().getValue<boolean>('system.log.error', false);
+                NitroLogger.LOG_EVENTS = GetConfiguration().getValue<boolean>('system.log.events', false);
+                NitroLogger.LOG_PACKETS = GetConfiguration().getValue<boolean>('system.log.packets', false);
+                
+                await GetLocalizationManager().init();
+                await GetAvatarRenderManager().init();
+                await GetSoundManager().init();
+                await GetSessionDataManager().init();
+                await GetRoomSessionManager().init();
+                await GetRoomEngine().init();
+                await GetCommunication().init();
+
+                // new GameMessageHandler();
+
+                if(LegacyExternalInterface.available) LegacyExternalInterface.call('legacyTrack', 'authentication', 'authok', []);
+
+                HabboWebTools.sendHeartBeat();
+
+                setInterval(() => HabboWebTools.sendHeartBeat(), 10000);
 
                 setIsReady(true);
 
@@ -35,7 +69,7 @@ export const App: FC<{}> = props =>
             {
                 NitroLogger.error(err);
             }
-        })();
+        }
     
         const resize = (event: UIEvent) => setImageRendering(!(window.devicePixelRatio % 1));
 
@@ -43,11 +77,22 @@ export const App: FC<{}> = props =>
 
         resize(null);
 
+        prepare(window.innerWidth, window.innerHeight);
+
         return () =>
         {
             window.removeEventListener('resize', resize);
         }
     }, []);
+
+    useMessageEvent<LoadGameUrlEvent>(LoadGameUrlEvent, event =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        LegacyExternalInterface.callGame('showGame', parser.url);
+    });
     
     return (
         <Base fit overflow="hidden" className={ imageRendering && 'image-rendering-pixelated' }>

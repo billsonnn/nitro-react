@@ -1,4 +1,4 @@
-import { NitroConfiguration } from '@nitrots/nitro-renderer';
+import { GetConfiguration } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { LocalizeText, OpenUrl } from '../../../../../api';
 
@@ -20,7 +20,7 @@ export const WidgetContainerView: FC<WidgetContainerViewProps> = props =>
         switch(key)
         {
             case 'image':
-                return NitroConfiguration.interpolate(option);
+                return GetConfiguration().interpolate(option);
         }
 
         return option;

@@ -1,5 +1,5 @@
-import { IPartColor } from '@nitrots/nitro-renderer';
-import { GetAvatarPalette, GetAvatarRenderManager, GetAvatarSetType, GetClubMemberLevel, GetConfiguration } from '../nitro';
+import { GetAvatarRenderManager, IPartColor } from '@nitrots/nitro-renderer';
+import { GetClubMemberLevel, GetConfigurationValue } from '../nitro';
 import { AvatarEditorGridColorItem } from './AvatarEditorGridColorItem';
 import { AvatarEditorGridPartItem } from './AvatarEditorGridPartItem';
 import { CategoryBaseModel } from './CategoryBaseModel';
@@ -56,11 +56,11 @@ export class AvatarEditorUtilities
             i++;
         }
 
-        const setType = GetAvatarSetType(name);
+        const setType = GetAvatarRenderManager().structureData.getSetType(name);
 
         if(!setType) return null;
 
-        const palette = GetAvatarPalette(setType.paletteID);
+        const palette = GetAvatarRenderManager().structureData.getPalette(setType.paletteID);
 
         if(!palette) return null;
 
@@ -247,11 +247,11 @@ export class AvatarEditorUtilities
 
     public static avatarSetFirstSelectableColor(name: string): number
     {
-        const setType = GetAvatarSetType(name);
+        const setType = GetAvatarRenderManager().structureData.getSetType(name);
 
         if(!setType) return -1;
 
-        const palette = GetAvatarPalette(setType.paletteID);
+        const palette = GetAvatarRenderManager().structureData.getPalette(setType.paletteID);
 
         if(!palette) return -1;
 
@@ -267,11 +267,11 @@ export class AvatarEditorUtilities
 
     public static get clubItemsFirst(): boolean
     {
-        return GetConfiguration<boolean>('avatareditor.show.clubitems.first', true);
+        return GetConfigurationValue<boolean>('avatareditor.show.clubitems.first', true);
     }
 
     public static get clubItemsDimmed(): boolean
     {
-        return GetConfiguration<boolean>('avatareditor.show.clubitems.dimmed', true);
+        return GetConfigurationValue<boolean>('avatareditor.show.clubitems.dimmed', true);
     }
 }

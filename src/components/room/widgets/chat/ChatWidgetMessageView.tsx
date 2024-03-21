@@ -1,6 +1,6 @@
-import { RoomChatSettings, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { GetRoomEngine, RoomChatSettings, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { ChatBubbleMessage, GetRoomEngine } from '../../../../api';
+import { ChatBubbleMessage } from '../../../../api';
 
 interface ChatWidgetMessageViewProps
 {

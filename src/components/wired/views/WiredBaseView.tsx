@@ -1,5 +1,6 @@
+import { GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC, PropsWithChildren, useEffect, useState } from 'react';
-import { GetSessionDataManager, LocalizeText, WiredFurniType, WiredSelectionVisualizer } from '../../../api';
+import { LocalizeText, WiredFurniType, WiredSelectionVisualizer } from '../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { useWired } from '../../../hooks';
 import { WiredFurniSelectorView } from './WiredFurniSelectorView';

@@ -1,6 +1,6 @@
-import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraStorageUrlMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
+import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraStorageUrlMessageEvent, CreateLinkEvent, GetRoomEngine, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { CreateLinkEvent, GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../api';
+import { GetConfigurationValue, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, LayoutCurrencyIcon, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
 
@@ -22,7 +22,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
     const [ isWaiting, setIsWaiting ] = useState(false);
     const [ publishCooldown, setPublishCooldown ] = useState(0);
 
-    const publishDisabled = useMemo(() => GetConfiguration<boolean>('camera.publish.disabled', false), []);
+    const publishDisabled = useMemo(() => GetConfigurationValue<boolean>('camera.publish.disabled', false), []);
 
     useMessageEvent<CameraPurchaseOKMessageEvent>(CameraPurchaseOKMessageEvent, event =>
     {
@@ -44,7 +44,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
     {
         const parser = event.getParser();
 
-        setPictureUrl(GetConfiguration<string>('camera.url') + '/' + parser.url);
+        setPictureUrl(GetConfigurationValue<string>('camera.url') + '/' + parser.url);
     });
 
     const processAction = (type: string, value: string | number = null) =>
