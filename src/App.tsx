@@ -28,13 +28,10 @@ export const App: FC<{}> = props =>
                     height,
                     autoDensity: true,
                     backgroundAlpha: 0,
-                    //@ts-ignore
-                    preference: 'webgl2'
+                    preference: 'webgl'
                 });
 
-                const stage = GetStage();
-
-                GetTicker().add(ticker => renderer.render(stage));
+                GetTicker().add(ticker => renderer.render(GetStage()));
 
                 await GetConfiguration().init();
 
