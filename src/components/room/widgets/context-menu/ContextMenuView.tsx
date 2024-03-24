@@ -1,4 +1,4 @@
-import { GetPixi, GetTicker, NitroRectangle, NitroTicker, RoomObjectType } from '@nitrots/nitro-renderer';
+import { GetStage, GetTicker, NitroRectangle, NitroTicker, RoomObjectType } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FixedSizeStack, GetRoomObjectBounds, GetRoomObjectScreenLocation, GetRoomSession } from '../../../../api';
 import { Base, BaseProps } from '../../../../common';
@@ -80,8 +80,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         let x = ~~(location.x - (elementRef.current.offsetWidth / 2));
         let y = ~~(deltaY + offset);
 
-        const maxLeft = ((GetPixi().stage.width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
-        const maxTop = ((GetPixi().stage.height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
+        const maxLeft = ((GetStage().width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
+        const maxTop = ((GetStage().height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
 
         if(x < SPACE_AROUND_EDGES) x = SPACE_AROUND_EDGES;
         else if(x > maxLeft) x = maxLeft;

@@ -1,4 +1,4 @@
-import { ColorConverter, GetPixi, GetRoomEngine, IRoomSession, NitroAdjustmentFilter, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomGeometry, RoomId, RoomObjectCategory, RoomObjectHSLColorEnabledEvent, RoomObjectOperationType, RoomSessionEvent, RoomVariableEnum, Vector3d } from '@nitrots/nitro-renderer';
+import { ColorConverter, GetRenderer, GetRoomEngine, GetStage, IRoomSession, NitroAdjustmentFilter, NitroSprite, NitroTexture, RoomBackgroundColorEvent, RoomEngineEvent, RoomEngineObjectEvent, RoomGeometry, RoomId, RoomObjectCategory, RoomObjectHSLColorEnabledEvent, RoomObjectOperationType, RoomSessionEvent, RoomVariableEnum, Vector3d } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { CanManipulateFurniture, DispatchUiEvent, GetRoomSession, InitializeRoomInstanceRenderingCanvas, IsFurnitureSelectionDisabled, ProcessRoomObjectOperation, RoomWidgetUpdateBackgroundColorPreviewEvent, RoomWidgetUpdateRoomObjectEvent, SetActiveRoomId, StartRoomSession } from '../../api';
@@ -202,7 +202,7 @@ const useRoomState = () =>
         const canvasId = 1;
         const width = Math.floor(window.innerWidth);
         const height = Math.floor(window.innerHeight);
-        const renderer = GetPixi().renderer;
+        const renderer = GetRenderer();
 
         if(renderer) renderer.resize(width, height);
 
@@ -247,11 +247,7 @@ const useRoomState = () =>
             geometry.location = new Vector3d(x, y, z);
         }
 
-        const stage = GetPixi().stage;
-
-        if(!stage) return;
-
-        stage.addChild(displayObject);
+        GetStage().addChild(displayObject);
 
         SetActiveRoomId(roomSession.roomId);
 
@@ -267,7 +263,7 @@ const useRoomState = () =>
 
             InitializeRoomInstanceRenderingCanvas(width, height, 1);
 
-            GetPixi().render();
+            renderer.render(GetStage());
         }
 
         window.addEventListener('resize', resize);

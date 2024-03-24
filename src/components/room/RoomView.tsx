@@ -1,4 +1,4 @@
-import { GetPixi } from '@nitrots/nitro-renderer';
+import { GetRenderer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef } from 'react';
 import { DispatchMouseEvent, DispatchTouchEvent } from '../../api';
 import { Base } from '../../common';
@@ -13,7 +13,7 @@ export const RoomView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        const canvas = GetPixi().canvas;
+        const canvas = GetRenderer().canvas;
 
         if(!canvas) return;
 

@@ -1,4 +1,4 @@
-import { GetAvatarRenderManager, GetCommunication, GetConfiguration, GetLocalizationManager, GetPixi, GetRoomEngine, GetRoomSessionManager, GetSessionDataManager, GetSoundManager, GetTicker, HabboWebTools, LegacyExternalInterface, LoadGameUrlEvent, NitroLogger, NitroVersion } from '@nitrots/nitro-renderer';
+import { GetAvatarRenderManager, GetCommunication, GetConfiguration, GetLocalizationManager, GetRoomEngine, GetRoomSessionManager, GetSessionDataManager, GetSoundManager, GetStage, GetTicker, HabboWebTools, LegacyExternalInterface, LoadGameUrlEvent, NitroLogger, NitroVersion, PrepareRenderer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetUIVersion } from './api';
 import { Base } from './common';
@@ -23,14 +23,18 @@ export const App: FC<{}> = props =>
                 //@ts-ignore
                 if(!NitroConfig) throw new Error('NitroConfig is not defined!');
 
-                await GetPixi().init({
-                    autoStart: false,
-                    autoDensity: false,
+                const renderer = await PrepareRenderer({
                     width,
                     height,
-                    sharedTicker: true,
-                    backgroundAlpha: 0
+                    autoDensity: true,
+                    backgroundAlpha: 0,
+                    //@ts-ignore
+                    preference: 'webgl2'
                 });
+
+                const stage = GetStage();
+
+                GetTicker().add(ticker => renderer.render(stage));
 
                 await GetConfiguration().init();
 
