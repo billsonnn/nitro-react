@@ -20,6 +20,7 @@ export default defineConfig({
                 {
                     if(id.includes('node_modules'))
                     {
+                        if(id.includes('pixi.js')) return 'pixi.js';
                         if(id.includes('@nitrots/nitro-renderer')) return 'nitro-renderer';
 
                         return 'vendor';
