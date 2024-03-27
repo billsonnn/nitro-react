@@ -13,6 +13,7 @@ export default defineConfig({
     },
     build: {
         assetsInlineLimit: 102400,
+        chunkSizeWarningLimit: 200000,
         rollupOptions: {
             output: {
                 assetFileNames: 'src/assets/[name].[ext]',
@@ -20,7 +21,6 @@ export default defineConfig({
                 {
                     if(id.includes('node_modules'))
                     {
-                        if(id.includes('pixi.js')) return 'pixi.js';
                         if(id.includes('@nitrots/nitro-renderer')) return 'nitro-renderer';
 
                         return 'vendor';

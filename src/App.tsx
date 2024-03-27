@@ -20,15 +20,15 @@ export const App: FC<{}> = props =>
         {
             try
             {
-                //@ts-ignore
-                if(!NitroConfig) throw new Error('NitroConfig is not defined!');
+                if(!window.NitroConfig) throw new Error('NitroConfig is not defined!');
 
                 const renderer = await PrepareRenderer({
                     width,
                     height,
                     autoDensity: true,
                     backgroundAlpha: 0,
-                    preference: 'webgl'
+                    preference: 'webgl',
+                    resolution: window.devicePixelRatio
                 });
 
                 GetTicker().add(ticker => renderer.render(GetStage()));
