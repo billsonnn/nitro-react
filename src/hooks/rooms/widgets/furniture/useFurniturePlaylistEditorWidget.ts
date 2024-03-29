@@ -1,6 +1,6 @@
-import { AddJukeboxDiskComposer, AdvancedMap, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListRemovedEvent, FurnitureMultiStateComposer, IAdvancedMap, IMessageEvent, ISongInfo, NotifyPlayedSongEvent, NowPlayingEvent, PlayListStatusEvent, RemoveJukeboxDiskComposer, RoomControllerLevel, RoomEngineTriggerWidgetEvent, SongDiskInventoryReceivedEvent } from '@nitrots/nitro-renderer';
+import { AddJukeboxDiskComposer, AdvancedMap, FurnitureListAddOrUpdateEvent, FurnitureListEvent, FurnitureListRemovedEvent, FurnitureMultiStateComposer, GetRoomEngine, GetSessionDataManager, GetSoundManager, IAdvancedMap, IMessageEvent, ISongInfo, NotifyPlayedSongEvent, NowPlayingEvent, PlayListStatusEvent, RemoveJukeboxDiskComposer, RoomControllerLevel, RoomEngineTriggerWidgetEvent, SongDiskInventoryReceivedEvent } from '@nitrots/nitro-renderer';
 import { useCallback, useState } from 'react';
-import { GetNitroInstance, GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture, LocalizeText, NotificationAlertType, NotificationBubbleType, SendMessageComposer } from '../../../../api';
+import { IsOwnerOfFurniture, LocalizeText, NotificationAlertType, NotificationBubbleType, SendMessageComposer } from '../../../../api';
 import { useMessageEvent, useNitroEvent } from '../../../events';
 import { useNotification } from '../../../notification';
 import { useFurniRemovedEvent } from '../../engine';
@@ -40,8 +40,8 @@ const useFurniturePlaylistEditorWidgetState = () =>
             setObjectId(event.objectId);
             setCategory(event.category);
 
-            GetNitroInstance().soundManager.musicController?.requestUserSongDisks();
-            GetNitroInstance().soundManager.musicController?.getRoomItemPlaylist()?.requestPlayList();
+            GetSoundManager().musicController?.requestUserSongDisks();
+            GetSoundManager().musicController?.getRoomItemPlaylist()?.requestPlayList();
 
             return;
         }
@@ -68,12 +68,12 @@ const useFurniturePlaylistEditorWidgetState = () =>
 
     useNitroEvent<SongDiskInventoryReceivedEvent>(SongDiskInventoryReceivedEvent.SDIR_SONG_DISK_INVENTORY_RECEIVENT_EVENT, event =>
     {
-        setDiskInventory(GetNitroInstance().soundManager.musicController?.songDiskInventory.clone());
+        setDiskInventory(GetSoundManager().musicController?.songDiskInventory.clone());
     });
 
     useNitroEvent<PlayListStatusEvent>(PlayListStatusEvent.PLUE_PLAY_LIST_UPDATED, event =>
     {
-        setPlaylist(GetNitroInstance().soundManager.musicController?.getRoomItemPlaylist()?.entries.concat())
+        setPlaylist(GetSoundManager().musicController?.getRoomItemPlaylist()?.entries.concat())
     });
 
     useNitroEvent<PlayListStatusEvent>(PlayListStatusEvent.PLUE_PLAY_LIST_FULL, event =>
@@ -89,12 +89,12 @@ const useFurniturePlaylistEditorWidgetState = () =>
         {
             if(event.getParser().fragmentNumber === 0)
             {
-                GetNitroInstance().soundManager.musicController?.requestUserSongDisks();
+                GetSoundManager().musicController?.requestUserSongDisks();
             }
         }
         else
         {
-            GetNitroInstance().soundManager.musicController?.requestUserSongDisks();
+            GetSoundManager().musicController?.requestUserSongDisks();
         }
     }
 

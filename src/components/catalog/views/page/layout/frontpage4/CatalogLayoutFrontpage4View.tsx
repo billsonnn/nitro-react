@@ -1,6 +1,5 @@
-import { FrontPageItem } from '@nitrots/nitro-renderer';
+import { CreateLinkEvent, FrontPageItem } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect } from 'react';
-import { CreateLinkEvent } from '../../../../../../api';
 import { Column, Grid } from '../../../../../../common';
 import { useCatalog } from '../../../../../../hooks';
 import { CatalogRedeemVoucherView } from '../../common/CatalogRedeemVoucherView';

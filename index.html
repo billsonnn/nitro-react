@@ -22,8 +22,9 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root" class="w-100 h-100"></div>
     <script>
-      const NitroConfig = {
+      window.NitroConfig = {
         "config.urls": [ '/renderer-config.json', '/ui-config.json' ],
+        "socket.url":  (new URLSearchParams(window.location.search).get('socket.url') || null),
         "sso.ticket": (new URLSearchParams(window.location.search).get('sso') || null),
         "forward.type": (new URLSearchParams(window.location.search).get('room') ? 2 : -1),
         "forward.id": (new URLSearchParams(window.location.search).get('room') || 0),

@@ -1,10 +1,9 @@
-import { IRoomObject, IRoomObjectSpriteVisualization, NitroFilter, RoomObjectCategory } from '@nitrots/nitro-renderer';
-import { WiredSelectionFilter } from '.';
-import { GetRoomEngine } from '..';
+import { GetRoomEngine, IRoomObject, IRoomObjectSpriteVisualization, NitroFilter, RoomObjectCategory } from '@nitrots/nitro-renderer';
 
 export class WiredSelectionVisualizer
 {
-    private static _selectionShader: NitroFilter = new WiredSelectionFilter([ 1, 1, 1 ], [ 0.6, 0.6, 0.6 ]);
+    // private static _selectionShader: NitroFilter = new WiredSelectionFilter([ 1, 1, 1 ], [ 0.6, 0.6, 0.6 ]);
+    private static _selectionShader: NitroFilter = null;
 
     public static show(furniId: number): void
     {
@@ -49,7 +48,7 @@ export class WiredSelectionVisualizer
 
         for(const sprite of visualization.sprites)
         {
-            if(sprite.blendMode === 1) continue; // BLEND_MODE: ADD
+            if(sprite.blendMode === 'add') continue;
 
             sprite.filters = [ WiredSelectionVisualizer._selectionShader ];
         }

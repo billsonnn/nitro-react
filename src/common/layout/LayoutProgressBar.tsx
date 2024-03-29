@@ -1,5 +1,7 @@
 import { FC, useMemo } from 'react';
-import { Base, Column, ColumnProps, Flex } from '..';
+import { Base } from '../Base';
+import { Column, ColumnProps } from '../Column';
+import { Flex } from '../Flex';
 
 interface LayoutProgressBarProps extends ColumnProps
 {

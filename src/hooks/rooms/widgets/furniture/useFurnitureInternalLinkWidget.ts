@@ -1,5 +1,4 @@
-import { RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { CreateLinkEvent, GetRoomEngine } from '../../../../api';
+import { CreateLinkEvent, GetRoomEngine, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useNitroEvent } from '../../../events';
 
 const INTERNALLINK = 'internalLink';

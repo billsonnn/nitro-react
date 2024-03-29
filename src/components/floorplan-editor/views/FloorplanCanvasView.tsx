@@ -1,4 +1,4 @@
-import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, NitroPoint, RoomEntryTileMessageEvent, RoomOccupiedTilesMessageEvent } from '@nitrots/nitro-renderer';
+import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, RoomEntryTileMessageEvent, RoomOccupiedTilesMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
 import { FaArrowDown, FaArrowLeft, FaArrowRight, FaArrowUp } from 'react-icons/fa';
 import { SendMessageComposer } from '../../../api';
@@ -58,7 +58,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
             return newValue;
         });
         
-        FloorplanEditor.instance.doorLocation = new NitroPoint(parser.x, parser.y);
+        FloorplanEditor.instance.doorLocation = { x: parser.x, y: parser.y };
 
         setEntryTileReceived(true);
     });
@@ -138,8 +138,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         const currentElement = elementRef.current;
 
         if(!currentElement) return;
-
-        
+                
         currentElement.appendChild(FloorplanEditor.instance.renderer.canvas);
 
         currentElement.addEventListener('pointerup', onPointerEvent);
@@ -165,15 +164,17 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         }
     }, []);
 
+    const isSmallScreen = () => window.innerWidth < 768;
+
     return (
         <Column gap={ gap } { ...rest }>
             <Grid overflow="hidden" gap={ 1 }>
-                <Column center size={ 1 }>
+                <Column center size={ 1 } className="d-md-none">
                     <Button className="d-md-none" onClick={ event => onClickArrowButton('left') }>
                         <FaArrowLeft className="fa-icon" />
                     </Button>
                 </Column>
-                <Column overflow="hidden" size={ 10 } gap={ 1 }>
+                <Column overflow="hidden" size={ isSmallScreen() ? 10: 12 } gap={ 1 }>
                     <Flex justifyContent="center" className="d-md-none">
                         <Button shrink onClick={ event => onClickArrowButton('up') }>
                             <FaArrowUp className="fa-icon" />
@@ -186,7 +187,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
                         </Button>
                     </Flex>
                 </Column>
-                <Column center size={ 1 }>
+                <Column center size={ 1 } className="d-md-none">
                     <Button className="d-md-none" onClick={ event => onClickArrowButton('right') }>
                         <FaArrowRight className="fa-icon" />
                     </Button>

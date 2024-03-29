@@ -1,7 +1,7 @@
 import { BadgeReceivedEvent, BadgesEvent, RequestBadgesComposer, SetActivatedBadgesComposer } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
-import { GetConfiguration, SendMessageComposer, UnseenItemCategory } from '../../api';
+import { GetConfigurationValue, SendMessageComposer, UnseenItemCategory } from '../../api';
 import { useMessageEvent } from '../events';
 import { useSharedVisibility } from '../useSharedVisibility';
 import { useInventoryUnseenTracker } from './useInventoryUnseenTracker';
@@ -16,7 +16,7 @@ const useInventoryBadgesState = () =>
     const { isVisible = false, activate = null, deactivate = null } = useSharedVisibility();
     const { isUnseen = null, resetCategory = null } = useInventoryUnseenTracker();
 
-    const maxBadgeCount = GetConfiguration<number>('user.badges.max.slots', 5);
+    const maxBadgeCount = GetConfigurationValue<number>('user.badges.max.slots', 5);
     const isWearingBadge = (badgeCode: string) => (activeBadgeCodes.indexOf(badgeCode) >= 0);
     const canWearBadges = () => (activeBadgeCodes.length < maxBadgeCount);
 

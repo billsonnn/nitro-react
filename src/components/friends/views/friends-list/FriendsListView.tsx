@@ -1,13 +1,13 @@
-import { ILinkEventTracker, RemoveFriendComposer, SendRoomInviteComposer } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, ILinkEventTracker, RemoveFriendComposer, RemoveLinkEventTracker, SendRoomInviteComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AddEventLinkTracker, LocalizeText, MessengerFriend, RemoveLinkEventTracker, SendMessageComposer } from '../../../../api';
+import { LocalizeText, MessengerFriend, SendMessageComposer } from '../../../../api';
 import { Button, Flex, NitroCardAccordionSetView, NitroCardAccordionView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
 import { useFriends } from '../../../../hooks';
-import { FriendsListGroupView } from './friends-list-group/FriendsListGroupView';
-import { FriendsListRequestView } from './friends-list-request/FriendsListRequestView';
 import { FriendsRemoveConfirmationView } from './FriendsListRemoveConfirmationView';
 import { FriendsRoomInviteView } from './FriendsListRoomInviteView';
 import { FriendsSearchView } from './FriendsListSearchView';
+import { FriendsListGroupView } from './friends-list-group/FriendsListGroupView';
+import { FriendsListRequestView } from './friends-list-request/FriendsListRequestView';
 
 export const FriendsListView: FC<{}> = props =>
 {
@@ -112,7 +112,7 @@ export const FriendsListView: FC<{}> = props =>
             eventUrlPrefix: 'friends/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, [ requestFriend ]);

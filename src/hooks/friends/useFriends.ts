@@ -1,7 +1,7 @@
-import { AcceptFriendMessageComposer, DeclineFriendMessageComposer, FollowFriendMessageComposer, FriendListFragmentEvent, FriendListUpdateComposer, FriendListUpdateEvent, FriendParser, FriendRequestsEvent, GetFriendRequestsComposer, MessengerInitComposer, MessengerInitEvent, NewFriendRequestEvent, RequestFriendComposer, SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
+import { AcceptFriendMessageComposer, DeclineFriendMessageComposer, FollowFriendMessageComposer, FriendListFragmentEvent, FriendListUpdateComposer, FriendListUpdateEvent, FriendParser, FriendRequestsEvent, GetFriendRequestsComposer, GetSessionDataManager, MessengerInitComposer, MessengerInitEvent, NewFriendRequestEvent, RequestFriendComposer, SetRelationshipStatusComposer } from '@nitrots/nitro-renderer';
 import { useEffect, useMemo, useState } from 'react';
 import { useBetween } from 'use-between';
-import { CloneObject, GetSessionDataManager, MessengerFriend, MessengerRequest, MessengerSettings, SendMessageComposer } from '../../api';
+import { CloneObject, MessengerFriend, MessengerRequest, MessengerSettings, SendMessageComposer } from '../../api';
 import { useMessageEvent } from '../events';
 
 const useFriendsState = () =>
@@ -16,14 +16,7 @@ const useFriendsState = () =>
     {
         const onlineFriends = friends.filter(friend => friend.online);
 
-        onlineFriends.sort((a, b) =>
-        {
-            if( a.name < b.name ) return -1;
-
-            if( a.name > b.name ) return 1;
-
-            return 0;
-        });
+        onlineFriends.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
         return onlineFriends;
     }, [ friends ]);
@@ -32,14 +25,7 @@ const useFriendsState = () =>
     {
         const offlineFriends = friends.filter(friend => !friend.online);
 
-        offlineFriends.sort((a, b) =>
-        {
-            if( a.name < b.name ) return -1;
-
-            if( a.name > b.name ) return 1;
-
-            return 0;
-        });
+        offlineFriends.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
         return offlineFriends;
     }, [ friends ]);

@@ -1,6 +1,6 @@
-import { AvatarAction, IQuestion, RoomSessionWordQuizEvent } from '@nitrots/nitro-renderer';
+import { AvatarAction, GetRoomEngine, IQuestion, RoomSessionWordQuizEvent } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
-import { GetRoomEngine, VoteValue } from '../../../api';
+import { VoteValue } from '../../../api';
 import { useNitroEvent } from '../../events';
 import { useRoom } from '../useRoom';
 import { usePollWidget } from './usePollWidget';

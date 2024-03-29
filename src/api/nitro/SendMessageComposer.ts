@@ -1,4 +1,3 @@
-import { IMessageComposer } from '@nitrots/nitro-renderer';
-import { GetConnection } from './GetConnection';
+import { GetCommunication, IMessageComposer } from '@nitrots/nitro-renderer';
 
-export const SendMessageComposer = (event: IMessageComposer<unknown[]>) => GetConnection().send(event);
+export const SendMessageComposer = (event: IMessageComposer<unknown[]>) => GetCommunication().connection.send(event);

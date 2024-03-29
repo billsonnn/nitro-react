@@ -1,6 +1,6 @@
-import { FriendFurniConfirmLockMessageComposer, LoveLockFurniFinishedEvent, LoveLockFurniFriendConfirmedEvent, LoveLockFurniStartEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
+import { FriendFurniConfirmLockMessageComposer, GetRoomEngine, LoveLockFurniFinishedEvent, LoveLockFurniFriendConfirmedEvent, LoveLockFurniStartEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
-import { GetRoomEngine, GetRoomSession } from '../../../../api';
+import { SendMessageComposer } from '../../../../api';
 import { useMessageEvent, useNitroEvent } from '../../../events';
 import { useFurniRemovedEvent } from '../../engine';
 
@@ -26,7 +26,7 @@ const useFurnitureFriendFurniWidgetState = () =>
 
     const respond = (flag: boolean) =>
     {
-        GetRoomSession().connection.send(new FriendFurniConfirmLockMessageComposer(objectId, flag));
+        SendMessageComposer(new FriendFurniConfirmLockMessageComposer(objectId, flag));
 
         onClose();
     }

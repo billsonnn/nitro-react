@@ -1,7 +1,7 @@
-import { AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetWardrobeMessageComposer, IAvatarFigureContainer, ILinkEventTracker, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetAvatarRenderManager, GetSessionDataManager, GetWardrobeMessageComposer, IAvatarFigureContainer, ILinkEventTracker, RemoveLinkEventTracker, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { FaDice, FaTrash, FaUndo } from 'react-icons/fa';
-import { AddEventLinkTracker, AvatarEditorAction, AvatarEditorUtilities, BodyModel, FigureData, generateRandomFigure, GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, GetSessionDataManager, HeadModel, IAvatarEditorCategoryModel, LegModel, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TorsoModel } from '../../api';
+import { AvatarEditorAction, AvatarEditorUtilities, BodyModel, FigureData, GetClubMemberLevel, GetConfigurationValue, HeadModel, IAvatarEditorCategoryModel, LegModel, LocalizeText, SendMessageComposer, TorsoModel, generateRandomFigure } from '../../api';
 import { Button, ButtonGroup, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { useMessageEvent } from '../../hooks';
 import { AvatarEditorFigurePreviewView } from './views/AvatarEditorFigurePreviewView';
@@ -27,7 +27,7 @@ export const AvatarEditorView: FC<{}> = props =>
     const [ needsReset, setNeedsReset ] = useState(true);
     const [ isInitalized, setIsInitalized ] = useState(false);
 
-    const maxWardrobeSlots = useMemo(() => GetConfiguration<number>('avatar.wardrobe.max.slots', 10), []);
+    const maxWardrobeSlots = useMemo(() => GetConfigurationValue<number>('avatar.wardrobe.max.slots', 10), []);
 
     useMessageEvent<FigureSetIdsMessageEvent>(FigureSetIdsMessageEvent, event =>
     {
@@ -173,7 +173,7 @@ export const AvatarEditorView: FC<{}> = props =>
             eventUrlPrefix: 'avatar-editor/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);

@@ -1,8 +1,7 @@
-import { IGetImageListener, ImageResult, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
+import { GetRoomEngine, IGetImageListener, ImageResult, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
-import { BaseProps } from '..';
-import { GetRoomEngine, ProductTypeEnum } from '../../api';
-import { Base } from '../Base';
+import { ProductTypeEnum } from '../../api';
+import { Base, BaseProps } from '../Base';
 
 interface LayoutFurniImageViewProps extends BaseProps<HTMLDivElement>
 {

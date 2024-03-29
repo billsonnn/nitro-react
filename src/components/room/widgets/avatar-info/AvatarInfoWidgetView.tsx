@@ -1,6 +1,6 @@
-import { RoomEngineEvent, RoomEnterEffect, RoomSessionDanceEvent } from '@nitrots/nitro-renderer';
+import { GetSessionDataManager, RoomEngineEvent, RoomEnterEffect, RoomSessionDanceEvent } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { AvatarInfoFurni, AvatarInfoPet, AvatarInfoRentableBot, AvatarInfoUser, GetConfiguration, GetSessionDataManager, RoomWidgetUpdateRentableBotChatEvent } from '../../../../api';
+import { AvatarInfoFurni, AvatarInfoPet, AvatarInfoRentableBot, AvatarInfoUser, GetConfigurationValue, RoomWidgetUpdateRentableBotChatEvent } from '../../../../api';
 import { Column } from '../../../../common';
 import { useAvatarInfoWidget, useNitroEvent, useRoom, useUiEvent } from '../../../../hooks';
 import { AvatarInfoPetTrainingPanelView } from './AvatarInfoPetTrainingPanelView';
@@ -68,7 +68,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
                 case AvatarInfoUser.OWN_USER:
                 case AvatarInfoUser.PEER: {
                     const info = (avatarInfo as AvatarInfoUser);
-                    if (GetConfiguration('user.tags.enabled')) GetSessionDataManager().getUserTags(info.roomIndex);
+                    if (GetConfigurationValue('user.tags.enabled')) GetSessionDataManager().getUserTags(info.roomIndex);
 
                     if(info.isSpectatorMode) return null;
 

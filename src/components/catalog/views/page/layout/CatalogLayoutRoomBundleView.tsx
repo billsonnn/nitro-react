@@ -1,7 +1,5 @@
 import { FC } from 'react';
-import { Column } from '../../../../../common/Column';
-import { Grid } from '../../../../../common/Grid';
-import { Text } from '../../../../../common/Text';
+import { Column, Grid, Text } from '../../../../../common';
 import { CatalogAddOnBadgeWidgetView } from '../widgets/CatalogAddOnBadgeWidgetView';
 import { CatalogBundleGridWidgetView } from '../widgets/CatalogBundleGridWidgetView';
 import { CatalogFirstProductSelectorWidgetView } from '../widgets/CatalogFirstProductSelectorWidgetView';

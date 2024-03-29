@@ -1,6 +1,6 @@
-import { AddSpamWallPostItMessageComposer, RequestSpamWallPostItMessageEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { AddSpamWallPostItMessageComposer, GetRoomEngine, RequestSpamWallPostItMessageEvent, RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
-import { GetRoomEngine, SendMessageComposer } from '../../../../api';
+import { SendMessageComposer } from '../../../../api';
 import { useMessageEvent } from '../../../events';
 import { useInventoryFurni } from '../../../inventory';
 

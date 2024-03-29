@@ -1,7 +1,7 @@
-import { RoomDataParser } from '@nitrots/nitro-renderer';
+import { GetSessionDataManager, RoomDataParser } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent } from 'react';
 import { FaUser } from 'react-icons/fa';
-import { CreateRoomSession, DoorStateType, GetSessionDataManager, TryVisitRoom } from '../../../../api';
+import { CreateRoomSession, DoorStateType, TryVisitRoom } from '../../../../api';
 import { Column, Flex, LayoutBadgeImageView, LayoutGridItemProps, LayoutRoomThumbnailView, Text } from '../../../../common';
 import { useNavigator } from '../../../../hooks';
 import { NavigatorSearchResultItemInfoView } from './NavigatorSearchResultItemInfoView';

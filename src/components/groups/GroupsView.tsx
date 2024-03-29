@@ -1,6 +1,6 @@
-import { GroupPurchasedEvent, GroupSettingsComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, GroupPurchasedEvent, GroupSettingsComposer, ILinkEventTracker, RemoveLinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { AddEventLinkTracker, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
+import { SendMessageComposer, TryVisitRoom } from '../../api';
 import { useGroup, useMessageEvent } from '../../hooks';
 import { GroupCreatorView } from './views/GroupCreatorView';
 import { GroupInformationStandaloneView } from './views/GroupInformationStandaloneView';
@@ -45,7 +45,7 @@ export const GroupsView: FC<{}> = props =>
             eventUrlPrefix: 'groups/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);

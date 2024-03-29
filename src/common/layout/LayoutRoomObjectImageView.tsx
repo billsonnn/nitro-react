@@ -1,8 +1,6 @@
-import { TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
+import { GetRoomEngine, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
-import { BaseProps } from '..';
-import { GetRoomEngine } from '../../api';
-import { Base } from '../Base';
+import { Base, BaseProps } from '../Base';
 
 interface LayoutRoomObjectImageViewProps extends BaseProps<HTMLDivElement>
 {

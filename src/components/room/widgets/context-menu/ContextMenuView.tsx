@@ -1,6 +1,6 @@
-import { FixedSizeStack, GetTicker, NitroPoint, NitroRectangle, RoomObjectType } from '@nitrots/nitro-renderer';
+import { GetStage, GetTicker, NitroRectangle, NitroTicker, RoomObjectType } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { GetNitroInstance, GetRoomObjectBounds, GetRoomObjectScreenLocation, GetRoomSession } from '../../../../api';
+import { FixedSizeStack, GetRoomObjectBounds, GetRoomObjectScreenLocation, GetRoomSession } from '../../../../api';
 import { Base, BaseProps } from '../../../../common';
 import { ContextMenuCaretView } from './ContextMenuCaretView';
 
@@ -52,7 +52,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         setOpacity(newOpacity);
     }, [ isFading, onClose ]);
 
-    const updatePosition = useCallback((bounds: NitroRectangle, location: NitroPoint) =>
+    const updatePosition = useCallback((bounds: NitroRectangle, location: { x: number, y: number }) =>
     {
         if(!bounds || !location || !FIXED_STACK) return;
 
@@ -80,8 +80,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         let x = ~~(location.x - (elementRef.current.offsetWidth / 2));
         let y = ~~(deltaY + offset);
 
-        const maxLeft = ((GetNitroInstance().width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
-        const maxTop = ((GetNitroInstance().height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
+        const maxLeft = ((GetStage().width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
+        const maxTop = ((GetStage().height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
 
         if(x < SPACE_AROUND_EDGES) x = SPACE_AROUND_EDGES;
         else if(x > maxLeft) x = maxLeft;
@@ -122,11 +122,11 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
     {
         if(!elementRef.current) return;
         
-        const update = (time: number) =>
+        const update = (ticker: NitroTicker) =>
         {
             if(!elementRef.current) return;
 
-            updateFade(time);
+            updateFade(ticker.lastTime);
 
             const bounds = GetRoomObjectBounds(GetRoomSession().roomId, objectId, category);
             const location = GetRoomObjectScreenLocation(GetRoomSession().roomId, objectId, category);

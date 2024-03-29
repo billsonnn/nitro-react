@@ -1,5 +1,5 @@
-import { AchievementData } from '@nitrots/nitro-renderer';
-import { GetConfiguration, GetLocalization } from '../nitro';
+import { AchievementData, GetLocalizationManager } from '@nitrots/nitro-renderer';
+import { GetConfigurationValue } from '../nitro';
 import { IAchievementCategory } from './IAchievementCategory';
 
 export class AchievementUtilities
@@ -10,14 +10,14 @@ export class AchievementUtilities
     
         let badgeId = achievement.badgeId;
     
-        if(!achievement.finalLevel) badgeId = GetLocalization().getPreviousLevelBadgeId(badgeId);
+        if(!achievement.finalLevel) badgeId = GetLocalizationManager().getPreviousLevelBadgeId(badgeId);
     
         return badgeId;
     }
 
     public static getAchievementCategoryImageUrl(category: IAchievementCategory, progress: number = null, icon: boolean = false): string
     {
-        const imageUrl = GetConfiguration<string>('achievements.images.url');
+        const imageUrl = GetConfigurationValue<string>('achievements.images.url');
     
         let imageName = icon ? 'achicon_' : 'achcategory_';
         
@@ -77,7 +77,7 @@ export class AchievementUtilities
     {
         if(!achievement) return false;
     
-        const ignored = GetConfiguration<string[]>('achievements.unseen.ignored');
+        const ignored = GetConfigurationValue<string[]>('achievements.unseen.ignored');
         const value = achievement.badgeId.replace(/[0-9]/g, '');
         const index = ignored.indexOf(value);
     

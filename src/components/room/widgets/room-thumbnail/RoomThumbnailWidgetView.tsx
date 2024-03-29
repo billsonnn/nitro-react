@@ -1,6 +1,5 @@
-import { NitroRenderTexture } from '@nitrots/nitro-renderer';
+import { GetRoomEngine, NitroRenderTexture } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { GetRoomEngine } from '../../../../api';
 import { LayoutMiniCameraView } from '../../../../common';
 import { RoomWidgetThumbnailEvent } from '../../../../events';
 import { useRoom, useUiEvent } from '../../../../hooks';

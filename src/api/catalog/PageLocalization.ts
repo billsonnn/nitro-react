@@ -1,4 +1,4 @@
-import { GetConfiguration } from '../nitro';
+import { GetConfigurationValue } from '../nitro';
 import { IPageLocalization } from './IPageLocalization';
 
 export class PageLocalization implements IPageLocalization
@@ -27,7 +27,7 @@ export class PageLocalization implements IPageLocalization
 
         if(!imageName || !imageName.length) return null;
 
-        let assetUrl = GetConfiguration<string>('catalog.asset.image.url');
+        let assetUrl = GetConfigurationValue<string>('catalog.asset.image.url');
 
         assetUrl = assetUrl.replace('%name%', imageName);
 

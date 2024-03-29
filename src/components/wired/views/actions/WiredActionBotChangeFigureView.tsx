@@ -1,5 +1,6 @@
+import { GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetSessionDataManager, LocalizeText, WiredFurniType, WIRED_STRING_DELIMETER } from '../../../../api';
+import { LocalizeText, WIRED_STRING_DELIMETER, WiredFurniType } from '../../../../api';
 import { Button, Column, Flex, LayoutAvatarImageView, Text } from '../../../../common';
 import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';

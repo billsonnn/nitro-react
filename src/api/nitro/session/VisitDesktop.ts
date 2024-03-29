@@ -1,4 +1,6 @@
-import { GetRoomSession, GetRoomSessionManager, GoToDesktop } from '.';
+import { GetRoomSessionManager } from '@nitrots/nitro-renderer';
+import { GetRoomSession } from './GetRoomSession';
+import { GoToDesktop } from './GoToDesktop';
 
 export const VisitDesktop = () =>
 {

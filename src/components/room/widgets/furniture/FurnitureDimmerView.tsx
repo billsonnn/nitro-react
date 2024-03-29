@@ -1,7 +1,7 @@
 import { RoomEngineTriggerWidgetEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
-import { ColorUtils, FurnitureDimmerUtilities, GetConfiguration, LocalizeText } from '../../../../api';
+import { ColorUtils, FurnitureDimmerUtilities, GetConfigurationValue, LocalizeText } from '../../../../api';
 import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text, classNames } from '../../../../common';
 import { useFurnitureDimmerWidget, useNitroEvent } from '../../../../hooks';
 
@@ -26,7 +26,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
         setIsVisible(true);
     }, [ presets ]);
 
-    const isFreeColorMode = useMemo(() => GetConfiguration<boolean>('widget.dimmer.colorwheel', false), []);
+    const isFreeColorMode = useMemo(() => GetConfigurationValue<boolean>('widget.dimmer.colorwheel', false), []);
 
     if(!isVisible) return null;
 

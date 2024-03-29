@@ -1,6 +1,6 @@
-import { GetOfficialSongIdMessageComposer, MusicPriorities, OfficialSongIdMessageEvent } from '@nitrots/nitro-renderer';
+import { GetOfficialSongIdMessageComposer, GetSoundManager, MusicPriorities, OfficialSongIdMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetConfiguration, GetNitroInstance, LocalizeText, ProductTypeEnum, SendMessageComposer } from '../../../../../api';
+import { GetConfigurationValue, LocalizeText, ProductTypeEnum, SendMessageComposer } from '../../../../../api';
 import { Button, Column, Flex, Grid, LayoutImage, Text } from '../../../../../common';
 import { useCatalog, useMessageEvent } from '../../../../../hooks';
 import { CatalogHeaderView } from '../../catalog-header/CatalogHeaderView';
@@ -20,7 +20,7 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props =>
     const [ officialSongId, setOfficialSongId ] = useState('');
     const { currentOffer = null, currentPage = null } = useCatalog();
 
-    const previewSong = (previewSongId: number) => GetNitroInstance().soundManager.musicController?.playSong(previewSongId, MusicPriorities.PRIORITY_PURCHASE_PREVIEW, 15, 0, 0, 0);
+    const previewSong = (previewSongId: number) => GetSoundManager().musicController?.playSong(previewSongId, MusicPriorities.PRIORITY_PURCHASE_PREVIEW, 15, 0, 0, 0);
 
     useMessageEvent<OfficialSongIdMessageEvent>(OfficialSongIdMessageEvent, event =>
     {
@@ -59,19 +59,19 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props =>
             setSongId(-1);
         }
 
-        return () => GetNitroInstance().soundManager.musicController?.stop(MusicPriorities.PRIORITY_PURCHASE_PREVIEW);
+        return () => GetSoundManager().musicController?.stop(MusicPriorities.PRIORITY_PURCHASE_PREVIEW);
     }, [ currentOffer ]);
 
     useEffect(() =>
     {
-        return () => GetNitroInstance().soundManager.musicController?.stop(MusicPriorities.PRIORITY_PURCHASE_PREVIEW);
+        return () => GetSoundManager().musicController?.stop(MusicPriorities.PRIORITY_PURCHASE_PREVIEW);
     }, []);
 
     return (
         <>
             <Grid>
                 <Column size={ 7 } overflow="hidden">
-                    { GetConfiguration('catalog.headers') &&
+                    { GetConfigurationValue('catalog.headers') &&
                         <CatalogHeaderView imageUrl={ currentPage.localization.getImage(0) }/> }
                     <CatalogItemGridWidgetView />
                 </Column>

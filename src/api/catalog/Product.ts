@@ -1,5 +1,5 @@
-import { IFurnitureData, IObjectData, IProductData } from '@nitrots/nitro-renderer';
-import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../nitro';
+import { GetRoomEngine, GetSessionDataManager, IFurnitureData, IObjectData, IProductData } from '@nitrots/nitro-renderer';
+import { GetConfigurationValue } from '../nitro';
 import { GetPixelEffectIcon, GetSubscriptionProductIcon } from './CatalogUtilities';
 import { IProduct } from './IProduct';
 import { IPurchasableOffer } from './IPurchasableOffer';
@@ -65,7 +65,7 @@ export class Product implements IProduct
 
                     if(iconName !== '')
                     {
-                        const assetUrl = GetConfiguration<string>('catalog.asset.url');
+                        const assetUrl = GetConfigurationValue<string>('catalog.asset.url');
 
                         return `${ assetUrl }/${ iconName }.png`;
                     }

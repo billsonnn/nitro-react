@@ -1,6 +1,4 @@
-import { RoomEngineObjectEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
-import { GetSessionDataManager } from '../..';
-import { GetRoomEngine } from './GetRoomEngine';
+import { GetRoomEngine, GetSessionDataManager, RoomEngineObjectEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 
 export function IsFurnitureSelectionDisabled(event: RoomEngineObjectEvent): boolean
 {

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { GetConfiguration, LocalizeText } from '../../../api';
+import { GetConfigurationValue, LocalizeText } from '../../../api';
 import { Column, Flex, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { useNavigator } from '../../../hooks';
 
@@ -24,7 +24,7 @@ export const NavigatorRoomLinkView: FC<NavigatorRoomLinkViewProps> = props =>
                     <Column>
                         <Text bold fontSize={ 5 }>{ LocalizeText('navigator.embed.headline') }</Text>
                         <Text>{ LocalizeText('navigator.embed.info') }</Text>
-                        <input type="text" readOnly className="form-control form-control-sm" value={ LocalizeText('navigator.embed.src', [ 'roomId' ], [ navigatorData.enteredGuestRoom.roomId.toString() ]).replace('${url.prefix}', GetConfiguration<string>('url.prefix', '')) } />
+                        <input type="text" readOnly className="form-control form-control-sm" value={ LocalizeText('navigator.embed.src', [ 'roomId' ], [ navigatorData.enteredGuestRoom.roomId.toString() ]).replace('${url.prefix}', GetConfigurationValue<string>('url.prefix', '')) } />
                     </Column>
                 </Flex>
             </NitroCardContentView>

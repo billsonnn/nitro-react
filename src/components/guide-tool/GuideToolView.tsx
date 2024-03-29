@@ -1,6 +1,6 @@
-import { GuideOnDutyStatusMessageEvent, GuideSessionAttachedMessageEvent, GuideSessionDetachedMessageEvent, GuideSessionEndedMessageEvent, GuideSessionErrorMessageEvent, GuideSessionInvitedToGuideRoomMessageEvent, GuideSessionMessageMessageEvent, GuideSessionOnDutyUpdateMessageComposer, GuideSessionPartnerIsTypingMessageEvent, GuideSessionStartedMessageEvent, ILinkEventTracker, PerkAllowancesMessageEvent, PerkEnum } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, GetSessionDataManager, GuideOnDutyStatusMessageEvent, GuideSessionAttachedMessageEvent, GuideSessionDetachedMessageEvent, GuideSessionEndedMessageEvent, GuideSessionErrorMessageEvent, GuideSessionInvitedToGuideRoomMessageEvent, GuideSessionMessageMessageEvent, GuideSessionOnDutyUpdateMessageComposer, GuideSessionPartnerIsTypingMessageEvent, GuideSessionStartedMessageEvent, ILinkEventTracker, PerkAllowancesMessageEvent, PerkEnum, RemoveLinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, GetConfiguration, GetSessionDataManager, GuideSessionState, GuideToolMessage, GuideToolMessageGroup, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { GetConfigurationValue, GuideSessionState, GuideToolMessage, GuideToolMessageGroup, LocalizeText, SendMessageComposer } from '../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { GuideToolEvent } from '../../events';
 import { useMessageEvent, useNotification, useUiEvent } from '../../hooks';
@@ -291,7 +291,7 @@ export const GuideToolView: FC<{}> = props =>
             eventUrlPrefix: 'help/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);
@@ -320,7 +320,7 @@ export const GuideToolView: FC<{}> = props =>
 
                 return;
             case 'forum_link':
-                const url: string = GetConfiguration<string>('group.homepage.url', '').replace('%groupid%', GetConfiguration<string>('guide.help.alpha.groupid', '0'));
+                const url: string = GetConfigurationValue<string>('group.homepage.url', '').replace('%groupid%', GetConfigurationValue<string>('guide.help.alpha.groupid', '0'));
                 window.open(url);
                 return;
         }

@@ -1,4 +1,4 @@
-import { GetRoomEngine } from './GetRoomEngine';
+import { GetRoomEngine } from '@nitrots/nitro-renderer';
 
 export const GetRoomObjectScreenLocation = (roomId: number, objectId: number, category: number, canvasId = 1) =>
 {

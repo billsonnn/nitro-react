@@ -1,6 +1,5 @@
-import { AvatarScaleType, AvatarSetType } from '@nitrots/nitro-renderer';
+import { AvatarScaleType, AvatarSetType, GetAvatarRenderManager } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
-import { GetAvatarRenderManager } from '../../api';
 import { Base, BaseProps } from '../Base';
 
 export interface LayoutAvatarImageViewProps extends BaseProps<HTMLDivElement>
@@ -16,7 +15,7 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
 {
     const { figure = '', gender = 'M', headOnly = false, direction = 0, scale = 1, classNames = [], style = {}, ...rest } = props;
     const [ avatarUrl, setAvatarUrl ] = useState<string>(null);
-    const [ randomValue, setRandomValue ] = useState(-1);
+    const [ isReady, setIsReady ] = useState<boolean>(false);
     const isDisposed = useRef(false);
 
     const getClassNames = useMemo(() =>
@@ -48,39 +47,40 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
 
     useEffect(() =>
     {
-        const avatarImage = GetAvatarRenderManager().createAvatarImage(figure, AvatarScaleType.LARGE, gender, {
-            resetFigure: figure => 
-            {
-                if(isDisposed.current) return;
+        if(!isReady) return;
 
-                setRandomValue(Math.random());
-            },
-            dispose: () => 
-            {},
-            disposed: false
-        }, null);
-
-        if(!avatarImage) return;
-        
-        let setType = AvatarSetType.FULL;
-
-        if(headOnly) setType = AvatarSetType.HEAD;
-
-        avatarImage.setDirection(setType, direction);
-
-        (async () =>
+        const resetFigure = (_figure: string) =>
         {
-            const image = await avatarImage.getCroppedImage(setType);
+            if(isDisposed.current) return;
+            
+            const avatarImage = GetAvatarRenderManager().createAvatarImage(_figure, AvatarScaleType.LARGE, gender, { resetFigure: (figure: string) => resetFigure(figure), dispose: null, disposed: false });
 
-            if(image) setAvatarUrl(image.src);
+            let setType = AvatarSetType.FULL;
 
-            avatarImage.dispose();
-        })();
-    }, [ figure, gender, direction, headOnly, randomValue ]);
+            if(headOnly) setType = AvatarSetType.HEAD;
+
+            avatarImage.setDirection(setType, direction);
+
+            const loadImage = async () =>
+            {
+                const imageUrl = await avatarImage.getCroppedImageUrl(setType);
+
+                if(imageUrl && !isDisposed.current) setAvatarUrl(imageUrl);
+
+                avatarImage.dispose();
+            }
+
+            loadImage();
+        }
+
+        resetFigure(figure);
+    }, [ figure, gender, direction, headOnly, isReady ]);
 
     useEffect(() =>
     {
         isDisposed.current = false;
+        
+        setIsReady(true);
 
         return () =>
         {

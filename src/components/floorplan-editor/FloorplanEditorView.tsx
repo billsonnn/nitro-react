@@ -1,6 +1,6 @@
-import { FloorHeightMapEvent, ILinkEventTracker, NitroPoint, RoomEngineEvent, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, FloorHeightMapEvent, ILinkEventTracker, RemoveLinkEventTracker, RoomEngineEvent, RoomVisualizationSettingsEvent, UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { LocalizeText, SendMessageComposer } from '../../api';
 import { Button, ButtonGroup, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 import { useMessageEvent, useNitroEvent } from '../../hooks';
 import { FloorplanEditorContextProvider } from './FloorplanEditorContext';
@@ -49,7 +49,7 @@ export const FloorplanEditorView: FC<{}> = props =>
     {
         setVisualizationSettings({ wallHeight: originalFloorplanSettings.wallHeight, thicknessWall: originalFloorplanSettings.thicknessWall, thicknessFloor: originalFloorplanSettings.thicknessFloor, entryPointDir: originalFloorplanSettings.entryPointDir });
         
-        FloorplanEditor.instance.doorLocation = new NitroPoint(originalFloorplanSettings.entryPoint[0], originalFloorplanSettings.entryPoint[1]);
+        FloorplanEditor.instance.doorLocation = { x: originalFloorplanSettings.entryPoint[0], y: originalFloorplanSettings.entryPoint[1] };
         FloorplanEditor.instance.setTilemap(originalFloorplanSettings.tilemap, originalFloorplanSettings.reservedTiles);
         FloorplanEditor.instance.renderTiles();
     }
@@ -130,7 +130,7 @@ export const FloorplanEditorView: FC<{}> = props =>
             eventUrlPrefix: 'floor-editor/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);

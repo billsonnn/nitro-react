@@ -1,6 +1,6 @@
-import { ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, ILinkEventTracker, RemoveLinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { AddEventLinkTracker, ChatEntryType, LocalizeText, RemoveLinkEventTracker } from '../../api';
+import { ChatEntryType, LocalizeText } from '../../api';
 import { Flex, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { useChatHistory } from '../../hooks';
 
@@ -50,7 +50,7 @@ export const ChatHistoryView: FC<{}> = props =>
             eventUrlPrefix: 'chat-history/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);

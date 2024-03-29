@@ -74,7 +74,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewPr
 
     return (
         <NitroCardView className="youtube-tv-widget">
-		<NitroCardHeaderView headerText={ LocalizeText('catalog.page.youtube_tvs') } onCloseClick={ onClose } />
+            <NitroCardHeaderView headerText={ LocalizeText('catalog.page.youtube_tvs') } onCloseClick={ onClose } />
             <NitroCardContentView>
                 <div className="row w-100 h-100">
                     <div className="youtube-video-container col-9 overflow-hidden">
@@ -98,7 +98,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewPr
                                     <LayoutGridItem key={ index } onClick={ event => selectVideo(entry.video) } itemActive={ (entry.video === selectedVideo) }>
                                         <b>{ entry.title }</b>
                                     </LayoutGridItem>
-								)
+                                )
                             }) }
                         </AutoGrid>
                     </div>

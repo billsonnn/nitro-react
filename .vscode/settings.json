@@ -6,9 +6,9 @@
     "typescript.format.placeOpenBraceOnNewLineForFunctions": true,
     "editor.wordWrap": "on",
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true,
-        "source.fixAll.sortJSON": false,
-        "source.organizeImports": true
+        "source.fixAll.eslint": "explicit",
+        "source.fixAll.sortJSON": "never",
+        "source.organizeImports": "explicit"
     },
     "editor.formatOnSave": false,
     "git.ignoreLimitWarning": true,

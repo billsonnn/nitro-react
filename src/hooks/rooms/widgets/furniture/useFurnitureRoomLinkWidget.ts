@@ -1,6 +1,6 @@
-import { GetGuestRoomMessageComposer, GetGuestRoomResultEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
+import { GetGuestRoomMessageComposer, GetGuestRoomResultEvent, GetRoomEngine, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
-import { GetRoomEngine, SendMessageComposer } from '../../../../api';
+import { SendMessageComposer } from '../../../../api';
 import { useMessageEvent, useNitroEvent } from '../../../events';
 
 const INTERNALLINK = 'internalLink';

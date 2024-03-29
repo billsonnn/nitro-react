@@ -1,6 +1,5 @@
-import { CatalogPageMessageProductData } from '@nitrots/nitro-renderer';
+import { CatalogPageMessageProductData, GetRoomEngine } from '@nitrots/nitro-renderer';
 import { FurniCategory } from '../inventory';
-import { GetRoomEngine } from '../nitro';
 
 export class ProductImageUtility
 {

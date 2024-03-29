@@ -1,6 +1,6 @@
-import { IAdvancedMap, MusicPriorities } from '@nitrots/nitro-renderer';
+import { CreateLinkEvent, GetSoundManager, IAdvancedMap, MusicPriorities } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
-import { CatalogPageName, CreateLinkEvent, GetConfiguration, GetDiskColor, GetNitroInstance, LocalizeText } from '../../../../../api';
+import { CatalogPageName, GetConfigurationValue, GetDiskColor, LocalizeText } from '../../../../../api';
 import { AutoGrid, Base, Button, Flex, LayoutGridItem, Text } from '../../../../../common';
 
 export interface DiskInventoryViewProps
@@ -26,7 +26,7 @@ export const DiskInventoryView: FC<DiskInventoryViewProps> = props =>
     {
         event.stopPropagation();
 
-        addToPlaylist(diskId, GetNitroInstance().soundManager.musicController?.getRoomItemPlaylist()?.length)
+        addToPlaylist(diskId, GetSoundManager().musicController?.getRoomItemPlaylist()?.length)
     }, [ addToPlaylist ]);
 
     const openCatalogPage = () =>
@@ -38,11 +38,11 @@ export const DiskInventoryView: FC<DiskInventoryViewProps> = props =>
     {
         if(previewSongId === -1) return;
 
-        GetNitroInstance().soundManager.musicController?.playSong(previewSongId, MusicPriorities.PRIORITY_SONG_PLAY, 0, 0, 0, 0);
+        GetSoundManager().musicController?.playSong(previewSongId, MusicPriorities.PRIORITY_SONG_PLAY, 0, 0, 0, 0);
 
         return () =>
         {
-            GetNitroInstance().soundManager.musicController?.stop(MusicPriorities.PRIORITY_SONG_PLAY);
+            GetSoundManager().musicController?.stop(MusicPriorities.PRIORITY_SONG_PLAY);
         }
     }, [ previewSongId ]);
 
@@ -53,7 +53,7 @@ export const DiskInventoryView: FC<DiskInventoryViewProps> = props =>
 
     return (<>
         <div className="bg-success py-3 container-fluid justify-content-center d-flex rounded">
-            <img src={ GetConfiguration('image.library.url') + 'playlist/title_mymusic.gif' } className="my-music" />
+            <img src={ GetConfigurationValue('image.library.url') + 'playlist/title_mymusic.gif' } className="my-music" />
             <h2 className="ms-4">{ LocalizeText('playlist.editor.my.music') }</h2>
         </div>
         <div className="h-100 overflow-y-scroll mt-4 py-2">
@@ -62,7 +62,7 @@ export const DiskInventoryView: FC<DiskInventoryViewProps> = props =>
                 {
                     const diskId = diskInventory.getKey(index);
                     const songId = diskInventory.getWithIndex(index);
-                    const songInfo = GetNitroInstance().soundManager.musicController?.getSongInfo(songId);
+                    const songInfo = GetSoundManager().musicController?.getSongInfo(songId);
 
                     return (
                         <LayoutGridItem key={ index } itemActive={ (selectedItem === index) } onClick={ () => setSelectedItem(prev => prev === index ? -1 : index) } classNames={ [ 'text-black' ] }>
@@ -89,6 +89,6 @@ export const DiskInventoryView: FC<DiskInventoryViewProps> = props =>
             <div>{ LocalizeText('playlist.editor.text.you.can.buy.some.from.the.catalogue') }</div>
             <button className="btn btn-primary btn-sm" onClick={ () => openCatalogPage() }>{ LocalizeText('playlist.editor.button.open.catalogue') }</button>
         </div>
-        <img src={ GetConfiguration('image.library.url') + 'playlist/background_get_more_music.gif' } className="get-more" />
+        <img src={ GetConfigurationValue('image.library.url') + 'playlist/background_get_more_music.gif' } className="get-more" />
     </>);
 }

@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { Flex, FlexProps } from '..';
+import { Flex, FlexProps } from '../Flex';
 import { TransitionAnimation, TransitionAnimationTypes } from '../transitions';
 
 export interface LayoutNotificationBubbleViewProps extends FlexProps

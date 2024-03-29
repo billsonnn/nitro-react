@@ -13,6 +13,7 @@ export default defineConfig({
     },
     build: {
         assetsInlineLimit: 102400,
+        chunkSizeWarningLimit: 200000,
         rollupOptions: {
             output: {
                 assetFileNames: 'src/assets/[name].[ext]',

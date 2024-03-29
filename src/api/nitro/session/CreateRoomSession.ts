@@ -1,4 +1,4 @@
-import { GetRoomSessionManager } from './GetRoomSessionManager';
+import { GetRoomSessionManager } from '@nitrots/nitro-renderer';
 
 export function CreateRoomSession(roomId: number, password: string = null): void
 {

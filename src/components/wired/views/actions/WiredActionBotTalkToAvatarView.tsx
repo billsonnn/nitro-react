@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { GetConfiguration, LocalizeText, WiredFurniType, WIRED_STRING_DELIMETER } from '../../../../api';
+import { GetConfigurationValue, LocalizeText, WIRED_STRING_DELIMETER, WiredFurniType } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';
 import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
@@ -35,7 +35,7 @@ export const WiredActionBotTalkToAvatarView: FC<{}> = props =>
             </Column>
             <Column gap={ 1 }>
                 <Text bold>{ LocalizeText('wiredfurni.params.message') }</Text>
-                <input type="text" className="form-control form-control-sm" maxLength={ GetConfiguration<number>('wired.action.bot.talk.to.avatar.max.length', 64) } value={ message } onChange={ event => setMessage(event.target.value) } />
+                <input type="text" className="form-control form-control-sm" maxLength={ GetConfigurationValue<number>('wired.action.bot.talk.to.avatar.max.length', 64) } value={ message } onChange={ event => setMessage(event.target.value) } />
             </Column>
             <Column gap={ 1 }>
                 <Flex alignItems="center" gap={ 1 }>

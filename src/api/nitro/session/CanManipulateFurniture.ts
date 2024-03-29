@@ -1,6 +1,4 @@
-import { IRoomSession, RoomControllerLevel } from '@nitrots/nitro-renderer';
-import { GetSessionDataManager } from '../..';
-import { GetRoomEngine } from '../room/GetRoomEngine';
+import { GetRoomEngine, GetSessionDataManager, IRoomSession, RoomControllerLevel } from '@nitrots/nitro-renderer';
 import { IsOwnerOfFurniture } from './IsOwnerOfFurniture';
 
 export function CanManipulateFurniture(roomSession: IRoomSession, objectId: number, category: number): boolean

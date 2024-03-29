@@ -1,6 +1,6 @@
 import { FrontPageItem } from '@nitrots/nitro-renderer';
 import { FC, useMemo } from 'react';
-import { GetConfiguration } from '../../../../../../api';
+import { GetConfigurationValue } from '../../../../../../api';
 import { LayoutBackgroundImage, LayoutBackgroundImageProps } from '../../../../../../common';
 import { Text } from '../../../../../../common/Text';
 
@@ -24,7 +24,7 @@ export const CatalogLayoutFrontPageItemView: FC<CatalogLayoutFrontPageItemViewPr
 
     if(!item) return null;
 
-    const imageUrl = (GetConfiguration<string>('image.library.url') + item.itemPromoImage);
+    const imageUrl = (GetConfigurationValue<string>('image.library.url') + item.itemPromoImage);
 
     return (
         <LayoutBackgroundImage imageUrl={ imageUrl } classNames={ getClassNames } position={ position } fullHeight={ fullHeight } pointer={ pointer } overflow={ overflow } { ...rest }>

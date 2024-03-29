@@ -1,4 +1,3 @@
-import { NitroPoint } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { Base, Column, Flex, Grid, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
@@ -15,7 +14,7 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutProps> = props =>
 
     useEffect(() =>
     {
-        roomPreviewer.updatePreviewObjectBoundingRectangle(new NitroPoint());
+        roomPreviewer.updatePreviewObjectBoundingRectangle();
     }, [ roomPreviewer ]);
 
     return (

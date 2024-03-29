@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { AvatarEditorGridColorItem, GetConfiguration } from '../../../../api';
+import { AvatarEditorGridColorItem, GetConfigurationValue } from '../../../../api';
 import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../../common';
 
 export interface AvatarEditorPaletteSetItemProps extends LayoutGridItemProps
@@ -12,7 +12,7 @@ export const AvatarEditorPaletteSetItem: FC<AvatarEditorPaletteSetItemProps> = p
     const { colorItem = null, children = null, ...rest } = props;
     const [ updateId, setUpdateId ] = useState(-1);
 
-    const hcDisabled = GetConfiguration<boolean>('hc.disabled', false);
+    const hcDisabled = GetConfigurationValue<boolean>('hc.disabled', false);
 
     useEffect(() =>
     {

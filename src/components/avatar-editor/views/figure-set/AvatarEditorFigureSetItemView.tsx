@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { AvatarEditorGridPartItem, GetConfiguration } from '../../../../api';
+import { AvatarEditorGridPartItem, GetConfigurationValue } from '../../../../api';
 import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../../common';
 import { AvatarEditorIcon } from '../AvatarEditorIcon';
 
@@ -13,7 +13,7 @@ export const AvatarEditorFigureSetItemView: FC<AvatarEditorFigureSetItemViewProp
     const { partItem = null, children = null, ...rest } = props;
     const [ updateId, setUpdateId ] = useState(-1);
 
-    const hcDisabled = GetConfiguration<boolean>('hc.disabled', false);
+    const hcDisabled = GetConfigurationValue<boolean>('hc.disabled', false);
 
     useEffect(() =>
     {

@@ -1,5 +1,4 @@
-import { AvatarFigureContainer, IFigurePartSet, IPalette, IPartColor, SetType } from '@nitrots/nitro-renderer';
-import { GetAvatarRenderManager } from '../nitro';
+import { AvatarFigureContainer, GetAvatarRenderManager, IFigurePartSet, IPalette, IPartColor, SetType } from '@nitrots/nitro-renderer';
 import { Randomizer } from '../utils';
 import { FigureData } from './FigureData';
 

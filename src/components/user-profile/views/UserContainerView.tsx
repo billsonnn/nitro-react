@@ -1,6 +1,6 @@
-import { FriendlyTime, RequestFriendComposer, UserProfileParser } from '@nitrots/nitro-renderer';
+import { GetSessionDataManager, RequestFriendComposer, UserProfileParser } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../api';
+import { FriendlyTime, LocalizeText, SendMessageComposer } from '../../../api';
 import { Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
 
 interface UserContainerViewProps

@@ -1,6 +1,6 @@
-import { ILinkEventTracker, NitroLogger } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, ILinkEventTracker, NitroLogger, RemoveLinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
-import { AddEventLinkTracker, GetConfiguration, OpenUrl, RemoveLinkEventTracker } from '../../api';
+import { GetConfigurationValue, OpenUrl } from '../../api';
 import { Base, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 
 const NEW_LINE_REGEX = /\n\r|\n|\r/mg;
@@ -59,12 +59,12 @@ export const NitropediaView: FC<{}> = props =>
 
                 value.shift();
 
-                openPage(GetConfiguration<string>('habbopages.url') + value.join('/'));
+                openPage(GetConfigurationValue<string>('habbopages.url') + value.join('/'));
             },
             eventUrlPrefix: 'habbopages/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);

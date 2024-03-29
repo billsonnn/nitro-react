@@ -1,6 +1,7 @@
 //
 // Base styles
 //
+@use 'sass:math';
 
 .alert {
   position: relative;
@@ -48,7 +49,7 @@
   $alert-border: shift-color($value, $alert-border-scale);
   $alert-color: shift-color($value, $alert-color-scale);
   @if (contrast-ratio($alert-background, $alert-color) < $min-contrast-ratio) {
-    $alert-color: mix($value, color-contrast($alert-background), abs($alert-color-scale));
+    $alert-color: mix($value, color-contrast($alert-background), math.abs($alert-color-scale));
   }
   .alert-#{$state} {
     @include alert-variant($alert-background, $alert-border, $alert-color);

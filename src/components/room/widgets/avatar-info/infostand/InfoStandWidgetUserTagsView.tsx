@@ -1,6 +1,6 @@
-import { NavigatorSearchComposer } from '@nitrots/nitro-renderer';
+import { CreateLinkEvent, NavigatorSearchComposer } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { CreateLinkEvent, SendMessageComposer } from '../../../../../api';
+import { SendMessageComposer } from '../../../../../api';
 import { Flex, Text } from '../../../../../common';
 
 interface InfoStandWidgetUserTagsViewProps

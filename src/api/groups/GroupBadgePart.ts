@@ -1,4 +1,3 @@
-
 export class GroupBadgePart
 {
     public static BASE: string = 'b';

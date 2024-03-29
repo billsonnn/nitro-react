@@ -1,6 +1,6 @@
-import { FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, HabboClubLevelEnum, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
+import { FurnitureMannequinSaveLookComposer, FurnitureMannequinSaveNameComposer, FurnitureMultiStateComposer, GetAvatarRenderManager, GetRoomEngine, HabboClubLevelEnum, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
 import { useState } from 'react';
-import { GetAvatarRenderManager, GetRoomEngine, MannequinUtilities, SendMessageComposer } from '../../../../api';
+import { MannequinUtilities, SendMessageComposer } from '../../../../api';
 import { useNitroEvent } from '../../../events';
 import { useFurniRemovedEvent } from '../../engine';
 

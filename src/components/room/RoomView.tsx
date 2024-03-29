@@ -1,5 +1,6 @@
+import { GetRenderer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef } from 'react';
-import { DispatchMouseEvent, DispatchTouchEvent, GetNitroInstance } from '../../api';
+import { DispatchMouseEvent, DispatchTouchEvent } from '../../api';
 import { Base } from '../../common';
 import { useRoom } from '../../hooks';
 import { RoomSpectatorView } from './spectator/RoomSpectatorView';
@@ -12,7 +13,7 @@ export const RoomView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        const canvas = GetNitroInstance().application.renderer.view;
+        const canvas = GetRenderer().canvas;
 
         if(!canvas) return;
 

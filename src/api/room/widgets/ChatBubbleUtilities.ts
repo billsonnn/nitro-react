@@ -1,5 +1,4 @@
-import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, PetFigureData, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
-import { GetAvatarRenderManager, GetRoomEngine } from '../../nitro';
+import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, GetAvatarRenderManager, GetRoomEngine, PetFigureData, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
 
 export class ChatBubbleUtilities
 {
@@ -26,17 +25,17 @@ export class ChatBubbleUtilities
 
         figure = avatarImage.getFigure().getFigureString();
 
-        const image = await avatarImage.getCroppedImage(AvatarSetType.HEAD);
+        const imageUrl = await avatarImage.getCroppedImageUrl(AvatarSetType.HEAD);
         const color = avatarImage.getPartColor(AvatarFigurePartType.CHEST);
 
-        if(isPlaceholder) this.placeHolderImageUrl = image.src;
+        if(isPlaceholder) this.placeHolderImageUrl = imageUrl;
 
         this.AVATAR_COLOR_CACHE.set(figure, ((color && color.rgb) || 16777215));
-        this.AVATAR_IMAGE_CACHE.set(figure, image.src);
+        this.AVATAR_IMAGE_CACHE.set(figure, imageUrl);
 
         avatarImage.dispose();
 
-        return image.src;
+        return imageUrl;
     }
 
     public static async getUserImage(figure: string): Promise<string>

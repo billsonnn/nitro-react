@@ -1,6 +1,6 @@
-import { PetRespectComposer, PetType, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomUnitGiveHandItemPetComposer } from '@nitrots/nitro-renderer';
+import { CreateLinkEvent, PetRespectComposer, PetType, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomUnitGiveHandItemPetComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { AvatarInfoPet, CreateLinkEvent, GetConfiguration, GetOwnRoomObject, LocalizeText, SendMessageComposer } from '../../../../../api';
+import { AvatarInfoPet, GetConfigurationValue, GetOwnRoomObject, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { useRoom, useSessionInfo } from '../../../../../hooks';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/ContextMenuListItemView';
@@ -104,7 +104,7 @@ export const AvatarInfoWidgetOwnPetView: FC<AvatarInfoWidgetOwnPetViewProps> = p
                     roomSession.compostPlant(avatarInfo.id);
                     break;
                 case 'buy_saddle':
-                    CreateLinkEvent('catalog/open/' + GetConfiguration('catalog.links')['pets.buy_saddle']);
+                    CreateLinkEvent('catalog/open/' + GetConfigurationValue('catalog.links')['pets.buy_saddle']);
                     break;
             }
         }

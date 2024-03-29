@@ -1,6 +1,6 @@
-import { ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { AddLinkEventTracker, ILinkEventTracker, RemoveLinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
-import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
+import { LocalizeText } from '../../../../api';
 import { useFurniChooserWidget } from '../../../../hooks';
 import { ChooserWidgetView } from './ChooserWidgetView';
 
@@ -20,7 +20,7 @@ export const FurniChooserWidgetView: FC<{}> = props =>
             eventUrlPrefix: 'furni-chooser/'
         };
 
-        AddEventLinkTracker(linkTracker);
+        AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, [ populateChooser ]);

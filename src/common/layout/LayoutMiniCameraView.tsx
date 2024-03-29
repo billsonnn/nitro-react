@@ -1,12 +1,12 @@
-import { NitroRectangle, NitroRenderTexture } from '@nitrots/nitro-renderer';
+import { GetRoomEngine, NitroRectangle, NitroTexture } from '@nitrots/nitro-renderer';
 import { FC, useRef } from 'react';
-import { GetRoomEngine, LocalizeText, PlaySound, SoundNames } from '../../api';
+import { LocalizeText, PlaySound, SoundNames } from '../../api';
 import { DraggableWindow } from '../draggable-window';
 
 interface LayoutMiniCameraViewProps
 {
     roomId: number;
-    textureReceiver: (texture: NitroRenderTexture) => Promise<void>;
+    textureReceiver: (texture: NitroTexture) => Promise<void>;
     onClose: () => void;
 }
 

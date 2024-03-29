@@ -1,4 +1,4 @@
-import { CreateLinkEvent } from '..';
+import { CreateLinkEvent } from '@nitrots/nitro-renderer';
 
 export function GetGroupMembers(groupId: number, levelId?: number): void
 {

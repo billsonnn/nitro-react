@@ -1,6 +1,6 @@
-import { FriendlyTime, HabboClubLevelEnum } from '@nitrots/nitro-renderer';
+import { CreateLinkEvent, HabboClubLevelEnum } from '@nitrots/nitro-renderer';
 import { FC, useMemo } from 'react';
-import { CreateLinkEvent, GetConfiguration, LocalizeText } from '../../api';
+import { FriendlyTime, GetConfigurationValue, LocalizeText } from '../../api';
 import { Column, Flex, Grid, LayoutCurrencyIcon, Text } from '../../common';
 import { usePurse } from '../../hooks';
 import { CurrencyView } from './views/CurrencyView';
@@ -10,8 +10,8 @@ export const PurseView: FC<{}> = props =>
 {
     const { purse = null, hcDisabled = false } = usePurse();
 
-    const displayedCurrencies = useMemo(() => GetConfiguration<number[]>('system.currency.types', []), []);
-    const currencyDisplayNumberShort = useMemo(() => GetConfiguration<boolean>('currency.display.number.short', false), []);
+    const displayedCurrencies = useMemo(() => GetConfigurationValue<number[]>('system.currency.types', []), []);
+    const currencyDisplayNumberShort = useMemo(() => GetConfigurationValue<boolean>('currency.display.number.short', false), []);
 
     const getClubText = (() =>
     {

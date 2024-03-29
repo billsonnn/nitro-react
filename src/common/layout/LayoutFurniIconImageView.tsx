@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { LayoutImage, LayoutImageProps } from '.';
 import { GetImageIconUrlForProduct } from '../../api';
+import { LayoutImage, LayoutImageProps } from './LayoutImage';
 
 interface LayoutFurniIconImageViewProps extends LayoutImageProps
 {
