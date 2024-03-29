@@ -1,4 +1,4 @@
-import { ConditionDefinition, OpenMessageComposer, Triggerable, TriggerDefinition, UpdateActionMessageComposer, UpdateConditionMessageComposer, UpdateTriggerMessageComposer, WiredActionDefinition, WiredFurniActionEvent, WiredFurniConditionEvent, WiredFurniTriggerEvent, WiredOpenEvent, WiredSaveSuccessEvent } from '@nitrots/nitro-renderer';
+import { ConditionDefinition, OpenMessageComposer, Triggerable, TriggerDefinition, UpdateActionMessageComposer, UpdateConditionMessageComposer, UpdateTriggerMessageComposer, WiredActionDefinition, WiredFurniActionEvent, WiredFurniConditionEvent, WiredFurniTriggerEvent, WiredOpenEvent, WiredSaveSuccessEvent, WiredValidationErrorEvent } from '@nitrots/nitro-renderer';
 import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { IsOwnerOfFloorFurniture, LocalizeText, SendMessageComposer, WiredFurniType, WiredSelectionVisualizer } from '../../api';
@@ -13,7 +13,7 @@ const useWiredState = () =>
     const [ furniIds, setFurniIds ] = useState<number[]>([]);
     const [ actionDelay, setActionDelay ] = useState<number>(0);
     const [ allowsFurni, setAllowsFurni ] = useState<number>(WiredFurniType.STUFF_SELECTION_OPTION_NONE);
-    const { showConfirm = null } = useNotification();
+    const { simpleAlert = null, showConfirm = null } = useNotification();
 
     const saveWired = () =>
     {
@@ -113,6 +113,13 @@ const useWiredState = () =>
         const parser = event.getParser();
 
         setTrigger(parser.definition);
+    });
+
+    useMessageEvent<WiredValidationErrorEvent>(WiredValidationErrorEvent, event =>
+    {
+        const parser = event.getParser();
+
+        simpleAlert(parser.info, null, null, null, 'Update failed');
     });
 
     useEffect(() =>
