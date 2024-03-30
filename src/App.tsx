@@ -1,4 +1,4 @@
-import { GetAvatarRenderManager, GetCommunication, GetConfiguration, GetLocalizationManager, GetRoomEngine, GetRoomSessionManager, GetSessionDataManager, GetSoundManager, GetStage, GetTicker, HabboWebTools, LegacyExternalInterface, LoadGameUrlEvent, NitroLogger, NitroVersion, PrepareRenderer } from '@nitrots/nitro-renderer';
+import { GetAssetManager, GetAvatarRenderManager, GetCommunication, GetConfiguration, GetLocalizationManager, GetRoomEngine, GetRoomSessionManager, GetSessionDataManager, GetSoundManager, GetStage, GetTicker, HabboWebTools, LegacyExternalInterface, LoadGameUrlEvent, NitroLogger, NitroVersion, PrepareRenderer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetUIVersion } from './api';
 import { Base } from './common';
@@ -11,8 +11,15 @@ NitroVersion.UI_VERSION = GetUIVersion();
 export const App: FC<{}> = props =>
 {
     const [ isReady, setIsReady ] = useState(false);
-    const [ message, setMessage ] = useState('Getting Ready');
-    const [ imageRendering, setImageRendering ] = useState<boolean>(true);
+
+    useMessageEvent<LoadGameUrlEvent>(LoadGameUrlEvent, event =>
+    {
+        const parser = event.getParser();
+
+        if(!parser) return;
+
+        LegacyExternalInterface.callGame('showGame', parser.url);
+    });
 
     useEffect(() =>
     {
@@ -41,12 +48,20 @@ export const App: FC<{}> = props =>
                 NitroLogger.LOG_ERROR = GetConfiguration().getValue<boolean>('system.log.error', false);
                 NitroLogger.LOG_EVENTS = GetConfiguration().getValue<boolean>('system.log.events', false);
                 NitroLogger.LOG_PACKETS = GetConfiguration().getValue<boolean>('system.log.packets', false);
-                
-                await GetLocalizationManager().init();
-                await GetAvatarRenderManager().init();
-                await GetSoundManager().init();
-                await GetSessionDataManager().init();
-                await GetRoomSessionManager().init();
+
+                const assetUrls = GetConfiguration().getValue<string[]>('preload.assets.urls').map(url => GetConfiguration().interpolate(url)) ?? [];
+
+                await Promise.all(
+                    [
+                        GetAssetManager().downloadAssets(assetUrls),
+                        GetLocalizationManager().init(),
+                        GetAvatarRenderManager().init(),
+                        GetSoundManager().init(),
+                        GetSessionDataManager().init(),
+                        GetRoomSessionManager().init()
+                    ]
+                );
+
                 await GetRoomEngine().init();
                 await GetCommunication().init();
 
@@ -69,34 +84,14 @@ export const App: FC<{}> = props =>
                 NitroLogger.error(err);
             }
         }
-    
-        const resize = (event: UIEvent) => setImageRendering(!(window.devicePixelRatio % 1));
-
-        window.addEventListener('resize', resize);
-
-        resize(null);
 
         prepare(window.innerWidth, window.innerHeight);
-
-        return () =>
-        {
-            window.removeEventListener('resize', resize);
-        }
     }, []);
-
-    useMessageEvent<LoadGameUrlEvent>(LoadGameUrlEvent, event =>
-    {
-        const parser = event.getParser();
-
-        if(!parser) return;
-
-        LegacyExternalInterface.callGame('showGame', parser.url);
-    });
     
     return (
-        <Base fit overflow="hidden" className={ imageRendering && 'image-rendering-pixelated' }>
+        <Base fit overflow="hidden" className={ !(window.devicePixelRatio % 1) && 'image-rendering-pixelated' }>
             { !isReady &&
-                <LoadingView isError={ false } message={ message } percent={ 0 } showPercent={ false } /> }
+                <LoadingView /> }
             { isReady && <MainView /> }
             <Base id="draggable-windows-container" />
         </Base>
