@@ -149,6 +149,8 @@ export const ChatWidgetView: FC<{}> = props =>
         return () =>
         {
             worker.postMessage({ action: 'STOP' });
+
+            worker.terminate();
         }
     }, [ getScrollSpeed, removeHiddenChats, setChatMessages ]);
 
