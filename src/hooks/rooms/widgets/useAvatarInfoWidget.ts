@@ -121,7 +121,7 @@ const useAvatarInfoWidgetState = () =>
 
         event.addedUsers.forEach(user =>
         {
-            if(user.webID === GetSessionDataManager().userId) return;
+            if(user.webID === GetSessionDataManager().userId || user.type !== RoomObjectType.USER) return;
 
             if(friends.find(friend => (friend.id === user.webID)))
             {
