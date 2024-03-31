@@ -133,6 +133,10 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                     <ContextMenuListItemView onClick={ event => processAction('change_looks') }>
                         { LocalizeText('widget.memenu.myclothes') }
                     </ContextMenuListItemView>
+                    <ContextMenuListItemView onClick={ event => processAction('expressions') }>
+                        <FaChevronRight className="right fa-icon" />
+                        { LocalizeText('infostand.link.expressions') }
+                    </ContextMenuListItemView>
                     { (HasHabboClub() && !isRidingHorse) &&
                         <ContextMenuListItemView onClick={ event => processAction('dance_menu') }>
                             <FaChevronRight className="right fa-icon" />
@@ -146,10 +150,6 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         <ContextMenuListItemView onClick={ event => processAction('dance_stop') }>
                             { LocalizeText('widget.memenu.dance.stop') }
                         </ContextMenuListItemView> }
-                    <ContextMenuListItemView onClick={ event => processAction('expressions') }>
-                        <FaChevronRight className="right fa-icon" />
-                        { LocalizeText('infostand.link.expressions') }
-                    </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('signs') }>
                         <FaChevronRight className="right fa-icon" />
                         { LocalizeText('infostand.show.signs') }
