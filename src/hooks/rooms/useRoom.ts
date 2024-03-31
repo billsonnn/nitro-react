@@ -256,14 +256,13 @@ const useRoomState = () =>
             const width = Math.floor(window.innerWidth);
             const height = Math.floor(window.innerHeight);
 
+            renderer.resolution = window.devicePixelRatio;
             renderer.resize(width, height);
 
             background.width = width;
             background.height = height;
 
             InitializeRoomInstanceRenderingCanvas(width, height, 1);
-
-            renderer.render(GetStage());
         }
 
         window.addEventListener('resize', resize);

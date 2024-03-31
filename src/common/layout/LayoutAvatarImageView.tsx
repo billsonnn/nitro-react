@@ -2,6 +2,8 @@ import { AvatarScaleType, AvatarSetType, GetAvatarRenderManager } from '@nitrots
 import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Base, BaseProps } from '../Base';
 
+const AVATAR_IMAGE_CACHE: Map<string, string> = new Map();
+
 export interface LayoutAvatarImageViewProps extends BaseProps<HTMLDivElement>
 {
     figure: string;
@@ -49,31 +51,40 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
     {
         if(!isReady) return;
 
-        const resetFigure = (_figure: string) =>
+        const figureKey = [ figure, gender, direction, headOnly ].join('-');
+
+        if(AVATAR_IMAGE_CACHE.has(figureKey))
         {
-            if(isDisposed.current) return;
-            
-            const avatarImage = GetAvatarRenderManager().createAvatarImage(_figure, AvatarScaleType.LARGE, gender, { resetFigure: (figure: string) => resetFigure(figure), dispose: null, disposed: false });
-
-            let setType = AvatarSetType.FULL;
-
-            if(headOnly) setType = AvatarSetType.HEAD;
-
-            avatarImage.setDirection(setType, direction);
-
-            const loadImage = async () =>
+            setAvatarUrl(AVATAR_IMAGE_CACHE.get(figureKey));
+        }
+        else
+        {
+            const resetFigure = (_figure: string) =>
             {
-                const imageUrl = await avatarImage.getCroppedImageUrl(setType);
+                if(isDisposed.current) return;
+                
+                const avatarImage = GetAvatarRenderManager().createAvatarImage(_figure, AvatarScaleType.LARGE, gender, { resetFigure: (figure: string) => resetFigure(figure), dispose: null, disposed: false });
 
-                if(imageUrl && !isDisposed.current) setAvatarUrl(imageUrl);
+                let setType = AvatarSetType.FULL;
 
-                avatarImage.dispose();
+                if(headOnly) setType = AvatarSetType.HEAD;
+
+                avatarImage.setDirection(setType, direction);
+
+                const imageUrl = avatarImage.processAsImageUrl(setType);
+
+                if(imageUrl && !isDisposed.current)
+                {
+                    if(!avatarImage.isPlaceholder()) AVATAR_IMAGE_CACHE.set(figureKey, imageUrl);
+
+                    setAvatarUrl(imageUrl);
+                }
+
+                avatarImage.dispose(true);
             }
 
-            loadImage();
+            resetFigure(figure);
         }
-
-        resetFigure(figure);
     }, [ figure, gender, direction, headOnly, isReady ]);
 
     useEffect(() =>

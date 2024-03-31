@@ -47,7 +47,7 @@ export class BodyModel extends CategoryBaseModel
                 const figureString = AvatarEditorUtilities.CURRENT_FIGURE.getFigureStringWithFace(part.id);
                 const avatarImage = GetAvatarRenderManager().createAvatarImage(figureString, AvatarScaleType.LARGE, null, { resetFigure, dispose: null, disposed: false });
     
-                const sprite = avatarImage.getImageAsSprite(AvatarSetType.HEAD);
+                const sprite = avatarImage.processAsContainer(AvatarSetType.HEAD);
     
                 if(sprite)
                 {

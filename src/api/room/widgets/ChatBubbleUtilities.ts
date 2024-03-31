@@ -25,7 +25,7 @@ export class ChatBubbleUtilities
 
         figure = avatarImage.getFigure().getFigureString();
 
-        const imageUrl = await avatarImage.getCroppedImageUrl(AvatarSetType.HEAD);
+        const imageUrl = avatarImage.processAsImageUrl(AvatarSetType.HEAD);
         const color = avatarImage.getPartColor(AvatarFigurePartType.CHEST);
 
         if(isPlaceholder) this.placeHolderImageUrl = imageUrl;
