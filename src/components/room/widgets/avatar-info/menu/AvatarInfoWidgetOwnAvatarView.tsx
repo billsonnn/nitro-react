@@ -197,15 +197,15 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                             { LocalizeText('widget.memenu.wave') }
                         </ContextMenuListItemView> }
                     { GetCanUseExpression() &&
-                        <ContextMenuListItemView disabled={ !HasHabboVip() } onClick={ event => processAction('laugh') }>
-                            { !HasHabboVip() && <LayoutCurrencyIcon type="hc" /> }
-                            { LocalizeText('widget.memenu.laugh') }
-                        </ContextMenuListItemView> }
-                    { GetCanUseExpression() &&
                         <ContextMenuListItemView disabled={ !HasHabboVip() } onClick={ event => processAction('blow') }>
                             { !HasHabboVip() && <LayoutCurrencyIcon type="hc" /> }
                             { LocalizeText('widget.memenu.blow') }
                         </ContextMenuListItemView> }
+                    { GetCanUseExpression() &&
+                    <ContextMenuListItemView disabled={ !HasHabboVip() } onClick={ event => processAction('laugh') }>
+                        { !HasHabboVip() && <LayoutCurrencyIcon type="hc" /> }
+                        { LocalizeText('widget.memenu.laugh') }
+                    </ContextMenuListItemView> }
                     <ContextMenuListItemView onClick={ event => processAction('idle') }>
                         { LocalizeText('widget.memenu.idle') }
                     </ContextMenuListItemView>
