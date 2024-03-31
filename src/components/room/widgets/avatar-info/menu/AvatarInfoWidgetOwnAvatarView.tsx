@@ -133,6 +133,10 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                     <ContextMenuListItemView onClick={ event => processAction('change_looks') }>
                         { LocalizeText('widget.memenu.myclothes') }
                     </ContextMenuListItemView>
+                    <ContextMenuListItemView onClick={ event => processAction('expressions') }>
+                        <FaChevronRight className="right fa-icon" />
+                        { LocalizeText('infostand.link.expressions') }
+                    </ContextMenuListItemView>
                     { (HasHabboClub() && !isRidingHorse) &&
                         <ContextMenuListItemView onClick={ event => processAction('dance_menu') }>
                             <FaChevronRight className="right fa-icon" />
@@ -146,10 +150,6 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                         <ContextMenuListItemView onClick={ event => processAction('dance_stop') }>
                             { LocalizeText('widget.memenu.dance.stop') }
                         </ContextMenuListItemView> }
-                    <ContextMenuListItemView onClick={ event => processAction('expressions') }>
-                        <FaChevronRight className="right fa-icon" />
-                        { LocalizeText('infostand.link.expressions') }
-                    </ContextMenuListItemView>
                     <ContextMenuListItemView onClick={ event => processAction('signs') }>
                         <FaChevronRight className="right fa-icon" />
                         { LocalizeText('infostand.show.signs') }
@@ -197,15 +197,15 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                             { LocalizeText('widget.memenu.wave') }
                         </ContextMenuListItemView> }
                     { GetCanUseExpression() &&
-                        <ContextMenuListItemView disabled={ !HasHabboVip() } onClick={ event => processAction('laugh') }>
-                            { !HasHabboVip() && <LayoutCurrencyIcon type="hc" /> }
-                            { LocalizeText('widget.memenu.laugh') }
-                        </ContextMenuListItemView> }
-                    { GetCanUseExpression() &&
                         <ContextMenuListItemView disabled={ !HasHabboVip() } onClick={ event => processAction('blow') }>
                             { !HasHabboVip() && <LayoutCurrencyIcon type="hc" /> }
                             { LocalizeText('widget.memenu.blow') }
                         </ContextMenuListItemView> }
+                    { GetCanUseExpression() &&
+                    <ContextMenuListItemView disabled={ !HasHabboVip() } onClick={ event => processAction('laugh') }>
+                        { !HasHabboVip() && <LayoutCurrencyIcon type="hc" /> }
+                        { LocalizeText('widget.memenu.laugh') }
+                    </ContextMenuListItemView> }
                     <ContextMenuListItemView onClick={ event => processAction('idle') }>
                         { LocalizeText('widget.memenu.idle') }
                     </ContextMenuListItemView>
