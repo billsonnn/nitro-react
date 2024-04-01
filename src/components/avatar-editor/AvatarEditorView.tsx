@@ -1,4 +1,4 @@
-import { AddLinkEventTracker, AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetAvatarRenderManager, GetSessionDataManager, GetWardrobeMessageComposer, IAvatarFigureContainer, ILinkEventTracker, RemoveLinkEventTracker, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
+import { AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetAvatarRenderManager, GetSessionDataManager, GetWardrobeMessageComposer, IAvatarFigureContainer, UserFigureComposer, UserWardrobePageEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { FaDice, FaTrash, FaUndo } from 'react-icons/fa';
 import { AvatarEditorAction, AvatarEditorUtilities, BodyModel, FigureData, GetClubMemberLevel, GetConfigurationValue, HeadModel, IAvatarEditorCategoryModel, LegModel, LocalizeText, SendMessageComposer, TorsoModel, generateRandomFigure } from '../../api';
@@ -148,7 +148,7 @@ export const AvatarEditorView: FC<{}> = props =>
         setFigureData(figures.get(gender));
     }, [ figures ]);
 
-    useEffect(() =>
+    /* useEffect(() =>
     {
         const linkTracker: ILinkEventTracker = {
             linkReceived: (url: string) =>
@@ -176,7 +176,7 @@ export const AvatarEditorView: FC<{}> = props =>
         AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
-    }, []);
+    }, []); */
 
     useEffect(() =>
     {

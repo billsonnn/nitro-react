@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from '../../common';
 import { useNitroEvent } from '../../hooks';
 import { AchievementsView } from '../achievements/AchievementsView';
+import { AvatarEditorNewView } from '../avatar-editor-new/AvatarEditorView';
 import { AvatarEditorView } from '../avatar-editor/AvatarEditorView';
 import { CameraWidgetView } from '../camera/CameraWidgetView';
 import { CampaignView } from '../campaign/CampaignView';
@@ -89,6 +90,7 @@ export const MainView: FC<{}> = props =>
             <ChatHistoryView />
             <WiredView />
             <AvatarEditorView />
+            <AvatarEditorNewView />
             <AchievementsView />
             <NavigatorView />
             <InventoryView />

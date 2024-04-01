@@ -1,5 +1,5 @@
-import { useVirtual } from '@tanstack/react-virtual';
-import { FC, Fragment, ReactElement, useEffect, useRef, useState } from 'react';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { FC, ReactElement, useRef, useState } from 'react';
 import { Base } from './Base';
 
 interface InfiniteScrollProps<T = any>
@@ -14,50 +14,43 @@ export const InfiniteScroll: FC<InfiniteScrollProps> = props =>
 {
     const { rows = [], overscan = 5, scrollToBottom = false, rowRender = null } = props;
     const [ scrollIndex, setScrollIndex ] = useState<number>(rows.length - 1);
-    const elementRef = useRef<HTMLDivElement>(null);
+    const parentRef = useRef<HTMLDivElement>(null);
 
-    const { virtualItems = [], totalSize = 0, scrollToIndex = null } = useVirtual({
-        parentRef: elementRef,
-        size: rows.length,
-        overscan
+
+    const virtualizer = useVirtualizer({
+        count: rows.length,
+        overscan,
+        getScrollElement: () => parentRef.current,
+        estimateSize: () => 45,
     });
-
-    const paddingTop = (virtualItems.length > 0) ? (virtualItems?.[0]?.start || 0) : 0
-    const paddingBottom = (virtualItems.length > 0) ? (totalSize - (virtualItems?.[virtualItems.length - 1]?.end || 0)) : 0;
-
-    useEffect(() =>
-    {
-        if(!scrollToBottom) return;
-
-        scrollToIndex(scrollIndex);
-    }, [ scrollToBottom, scrollIndex, scrollToIndex ]);
+    const items = virtualizer.getVirtualItems();
 
     return (
-        <Base fit innerRef={ elementRef } position="relative" overflow="auto">
-            { (paddingTop > 0) &&
+        <Base fit innerRef={ parentRef } position="relative" overflow="auto">
+            <div
+                style={ {
+                    height: virtualizer.getTotalSize(),
+                    width: '100%',
+                    position: 'relative'
+                } }>
                 <div
-                    style={ { minHeight: `${ paddingTop }px` } } /> }
-            { virtualItems.map(item => 
-            {
-                const row = rows[item.index];
-
-                if (!row) return (
-                    <Fragment
-                        key={ item.key } />
-                );
-
-                return (
-                    <div
-                        key={ item.key }
-                        data-index={ item.index }
-                        ref={ item.measureRef }>
-                        { rowRender(row) }
-                    </div>
-                )
-            }) }
-            { (paddingBottom > 0) &&
-                <div
-                    style={ { minHeight: `${ paddingBottom }px` } } /> }
+                    style={ {
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        transform: `translateY(${ items[0]?.start ?? 0 }px)`
+                    } }>
+                    { items.map((virtualRow) => (
+                        <div
+                            key={ virtualRow.key }
+                            data-index={ virtualRow.index }
+                            ref={ virtualizer.measureElement }>
+                            { rowRender(rows[virtualRow.index]) }
+                        </div>
+                    )) }
+                </div>
+            </div>
         </Base>
     );
 }

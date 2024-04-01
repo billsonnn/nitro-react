@@ -1,5 +1,6 @@
 export * from './UseMountEffect';
 export * from './achievements';
+export * from './avatar-editor';
 export * from './camera';
 export * from './catalog';
 export * from './chat-history';
@@ -14,6 +15,10 @@ export * from './navigator';
 export * from './notification';
 export * from './purse';
 export * from './rooms';
+export * from './rooms/engine';
+export * from './rooms/promotes';
+export * from './rooms/widgets';
+export * from './rooms/widgets/furniture';
 export * from './session';
 export * from './useLocalStorage';
 export * from './useSharedVisibility';
