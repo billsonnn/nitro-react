@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { FC, Fragment, ReactElement, useRef } from 'react';
+import { FC, Fragment, ReactElement, useEffect, useRef } from 'react';
 import { Base } from './Base';
 import { Flex } from './Flex';
 
@@ -22,6 +22,14 @@ export const InfiniteGrid: FC<InfiniteGridProps> = props =>
         getScrollElement: () => parentRef.current,
         estimateSize: () => 45,
     });
+
+    useEffect(() =>
+    {
+        if(!rows || !rows.length) return;
+
+        virtualizer.scrollToIndex(0);
+    }, [ rows, virtualizer ]);
+
     const items = virtualizer.getVirtualItems();
 
     return (
@@ -43,13 +51,15 @@ export const InfiniteGrid: FC<InfiniteGridProps> = props =>
                         transform: `translateY(${ items[0]?.start ?? 0 }px)`
                     } }>
                     { items.map(virtualRow => (
-                        <Flex
-                            gap={ 1 }
+                        <div
                             key={ virtualRow.key + 'a' }
                             data-index={ virtualRow.index }
                             ref={ virtualizer.measureElement }
                             style={ {
-                                minHeight: virtualRow.index === 0 ? 45 : virtualRow.size
+                                display: 'grid',
+                                gap: '0.25rem',
+                                minHeight: virtualRow.index === 0 ? 45 : virtualRow.size,
+                                gridTemplateColumns: `repeat(${ columnCount }, 1fr)`
                             } }>
                             { Array.from(Array(columnCount)).map((e,i) => 
                             {
@@ -60,7 +70,7 @@ export const InfiniteGrid: FC<InfiniteGridProps> = props =>
                                     
                                 return itemRender(item);
                             }) }
-                        </Flex>
+                        </div>
                     )) }
                 </Flex>
             </div>

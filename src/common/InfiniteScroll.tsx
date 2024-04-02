@@ -16,7 +16,6 @@ export const InfiniteScroll: FC<InfiniteScrollProps> = props =>
     const [ scrollIndex, setScrollIndex ] = useState<number>(rows.length - 1);
     const parentRef = useRef<HTMLDivElement>(null);
 
-
     const virtualizer = useVirtualizer({
         count: rows.length,
         overscan,
