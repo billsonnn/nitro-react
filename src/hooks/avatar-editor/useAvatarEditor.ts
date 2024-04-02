@@ -177,8 +177,6 @@ const useAvatarEditorState = () =>
         newAvatarModels[AvatarEditorFigureCategory.LEGS] = [ FigureData.TROUSERS, FigureData.SHOES, FigureData.TROUSER_ACCESSORIES ].map(setType => buildCategory(setType));
         newAvatarModels[AvatarEditorFigureCategory.WARDROBE] = [];
 
-        console.log(newAvatarModels);
-
         setAvatarModels(newAvatarModels);
         setActiveModelKey(AvatarEditorFigureCategory.GENERIC);
     }, [ isVisible, gender, figureSetIds ]);
