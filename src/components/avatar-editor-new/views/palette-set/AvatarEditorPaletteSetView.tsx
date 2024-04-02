@@ -12,7 +12,7 @@ export const AvatarEditorPaletteSetView: FC<{
 {
     const { category = null, paletteIndex = -1 } = props;
     const paletteSet = category?.colorItems[paletteIndex] ?? null;
-    const { selectedColors = null, selectColor } = useAvatarEditor();
+    const { selectedColors = null, selectEditorColor } = useAvatarEditor();
     const elementRef = useRef<HTMLDivElement>(null);
 
     const isPartColorSelected = (partColor: IPartColor) =>
@@ -27,7 +27,7 @@ export const AvatarEditorPaletteSetView: FC<{
     return (
         <AutoGrid innerRef={ elementRef } gap={ 1 } columnCount={ 5 } columnMinWidth={ 30 }>
             { (paletteSet.length > 0) && paletteSet.map(item =>
-                <AvatarEditorPaletteSetItem key={ item.id } setType={ category.setType } partColor={ item } isSelected={ isPartColorSelected(item) } onClick={ event => selectColor(category.setType, paletteIndex, item.id) } />) }
+                <AvatarEditorPaletteSetItem key={ item.id } setType={ category.setType } partColor={ item } isSelected={ isPartColorSelected(item) } onClick={ event => selectEditorColor(category.setType, paletteIndex, item.id) } />) }
         </AutoGrid>
     );
 }

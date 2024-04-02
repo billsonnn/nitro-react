@@ -9,7 +9,7 @@ export const AvatarEditorFigureSetView: FC<{
 }> = props =>
 {
     const { category = null } = props;
-    const { selectedParts = null, selectPart } = useAvatarEditor();
+    const { selectedParts = null, selectEditorPart } = useAvatarEditor();
     const elementRef = useRef<HTMLDivElement>(null);
 
     const isPartItemSelected = (partItem: IAvatarEditorCategoryPartItem) =>
@@ -29,7 +29,7 @@ export const AvatarEditorFigureSetView: FC<{
             if(!item) return null;
 
             return (
-                <AvatarEditorFigureSetItemView key={ item.id } setType={ category.setType } partItem={ item } isSelected={ isPartItemSelected(item) } onClick={ event => selectPart(category.setType, item.partSet?.id ?? -1) } style={ { width: ~~(100 / columnCount) + '%' } } />
+                <AvatarEditorFigureSetItemView key={ item.id } setType={ category.setType } partItem={ item } isSelected={ isPartItemSelected(item) } onClick={ event => selectEditorPart(category.setType, item.partSet?.id ?? -1) } />
             )
         } } />
     );

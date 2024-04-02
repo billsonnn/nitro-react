@@ -1,4 +1,4 @@
-import { AvatarFigurePartType, GetAssetManager, GetAvatarRenderManager, IFigurePart, IGraphicAsset, IPartColor, NitroAlphaFilter, NitroContainer, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
+import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, GetAssetManager, GetAvatarRenderManager, IFigurePart, IGraphicAsset, IPartColor, NitroAlphaFilter, NitroContainer, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
 import { FigureData } from './FigureData';
 import { IAvatarEditorCategoryPartItem } from './IAvatarEditorCategoryPartItem';
 
@@ -40,7 +40,12 @@ export class AvatarEditorThumbnailsHelper
         return `${ setType }-${ part.partSet.id }`;
     }
 
-    public static async build(setType: string, part: IAvatarEditorCategoryPartItem, useColors: boolean, isDisabled: boolean = false): Promise<string>
+    public static clearCache(): void
+    {
+        this.THUMBNAIL_CACHE.clear();
+    }
+
+    public static async build(setType: string, part: IAvatarEditorCategoryPartItem, useColors: boolean, partColors: IPartColor[], isDisabled: boolean = false): Promise<string>
     {
         if(!setType || !setType.length || !part || !part.partSet || !part.partSet.parts || !part.partSet.parts.length) return null;
 
@@ -49,7 +54,7 @@ export class AvatarEditorThumbnailsHelper
 
         if(cached) return cached;
 
-        const buildContainer = (part: IAvatarEditorCategoryPartItem, useColors: boolean, isDisabled: boolean = false) =>
+        const buildContainer = (part: IAvatarEditorCategoryPartItem, useColors: boolean, partColors: IPartColor[], isDisabled: boolean = false) =>
         {
             const container = new NitroContainer();
             const parts = part.partSet.parts.concat().sort(this.sortByDrawOrder);
@@ -82,20 +87,17 @@ export class AvatarEditorThumbnailsHelper
 
                 const x = asset.offsetX;
                 const y = asset.offsetY;
-                let partColor: IPartColor = null;
-
-                if(useColors && (part.colorLayerIndex > 0))
-                {
-                    //const color = this._partColors[(part.colorLayerIndex - 1)];
-
-                    //if(color) partColor = color;
-                }
 
                 const sprite = new NitroSprite(asset.texture);
 
                 sprite.position.set(x, y);
 
-                if(partColor) sprite.tint = partColor.rgb;
+                if(useColors && (part.colorLayerIndex > 0) && partColors && partColors.length)
+                {
+                    const color = partColors[(part.colorLayerIndex - 1)];
+
+                    if(color) sprite.tint = color.rgb;
+                }
 
                 if(isDisabled) container.filters = [ AvatarEditorThumbnailsHelper.ALPHA_FILTER ];
 
@@ -109,12 +111,12 @@ export class AvatarEditorThumbnailsHelper
         {
             const resetFigure = async (figure: string) =>
             {
-                const container = buildContainer(part, useColors, isDisabled);
-                const url = await TextureUtils.generateImageUrl(container);
+                const container = buildContainer(part, useColors, partColors, isDisabled);
+                const imageUrl = await TextureUtils.generateImageUrl(container);
 
-                AvatarEditorThumbnailsHelper.THUMBNAIL_CACHE.set(thumbnailKey, url);
+                AvatarEditorThumbnailsHelper.THUMBNAIL_CACHE.set(thumbnailKey, imageUrl);
 
-                resolve(url);
+                resolve(imageUrl);
             }
 
             const figureContainer = GetAvatarRenderManager().createFigureContainer(`${ setType }-${ part.partSet.id }`);
@@ -131,6 +133,41 @@ export class AvatarEditorThumbnailsHelper
             {
                 resetFigure(null);
             }
+        });
+    }
+
+    public static async buildForFace(figureString: string, isDisabled: boolean = false): Promise<string>
+    {
+        if(!figureString || !figureString.length) return null;
+
+        const thumbnailKey = figureString;
+        const cached = this.THUMBNAIL_CACHE.get(thumbnailKey);
+
+        if(cached) return cached;
+
+        return new Promise(async (resolve, reject) =>
+        {
+            const resetFigure = async (figure: string) =>
+            {
+                const avatarImage = GetAvatarRenderManager().createAvatarImage(figure, AvatarScaleType.LARGE, null, { resetFigure, dispose: null, disposed: false });
+                const texture = avatarImage.processAsTexture(AvatarSetType.HEAD, false);
+                const sprite = new NitroSprite(texture);
+
+                if(isDisabled) sprite.filters = [ AvatarEditorThumbnailsHelper.ALPHA_FILTER ];
+
+                const imageUrl = await TextureUtils.generateImageUrl({
+                    target: sprite
+                });
+
+                sprite.destroy();
+                avatarImage.dispose();
+    
+                if(!avatarImage.isPlaceholder()) AvatarEditorThumbnailsHelper.THUMBNAIL_CACHE.set(thumbnailKey, imageUrl);
+
+                resolve(imageUrl);
+            }
+
+            resetFigure(figureString);
         });
     }
 

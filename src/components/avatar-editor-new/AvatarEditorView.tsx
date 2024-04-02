@@ -12,7 +12,7 @@ const DEFAULT_FEMALE_FIGURE: string = 'hr-515-33.hd-600-1.ch-635-70.lg-716-66-62
 export const AvatarEditorNewView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
-    const { avatarModels, activeModelKey, setActiveModelKey } = useAvatarEditor();
+    const { setIsVisible: setEditorVisibility, avatarModels, activeModelKey, setActiveModelKey } = useAvatarEditor();
 
     const processAction = (action: string) =>
     {
@@ -58,6 +58,11 @@ export const AvatarEditorNewView: FC<{}> = props =>
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);
+
+    useEffect(() =>
+    {
+        setEditorVisibility(isVisible)
+    }, [ isVisible, setEditorVisibility ]);
 
     if(!isVisible) return null;
 

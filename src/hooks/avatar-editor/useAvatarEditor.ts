@@ -1,23 +1,49 @@
-import { AvatarEditorFigureCategory, GetAvatarRenderManager, IFigurePartSet, IPartColor } from '@nitrots/nitro-renderer';
+import { AvatarEditorFigureCategory, FigureSetIdsMessageEvent, GetAvatarRenderManager, GetSessionDataManager, IFigurePartSet, IPartColor } from '@nitrots/nitro-renderer';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useBetween } from 'use-between';
-import { FigureData, GetClubMemberLevel, GetConfigurationValue, IAvatarEditorCategory, IAvatarEditorCategoryPartItem } from '../../api';
+import { AvatarEditorThumbnailsHelper, FigureData, GetClubMemberLevel, IAvatarEditorCategory, IAvatarEditorCategoryPartItem } from '../../api';
+import { useMessageEvent } from '../events';
+import { useFigureData } from './useFigureData';
 
 const MAX_PALETTES: number = 2;
 
 const useAvatarEditorState = () =>
 {
+    const [ isVisible, setIsVisible ] = useState<boolean>(false);
     const [ avatarModels, setAvatarModels ] = useState<{ [index: string]: IAvatarEditorCategory[] }>({});
     const [ activeModelKey, setActiveModelKey ] = useState<string>('');
-    const [ selectedParts, setSelectedParts ] = useState<{ [index: string]: number }>({});
-    const [ selectedColors, setSelectedColors ] = useState<{ [index: string]: { [index: number]: number }}>({});
     const [ maxPaletteCount, setMaxPaletteCount ] = useState<number>(1);
+    const [ figureSetIds, setFigureSetIds ] = useState<number[]>([]);
+    const [ boundFurnitureNames, setBoundFurnitureNames ] = useState<string[]>([]);
+    const { gender, selectedParts, selectedColors, loadAvatarData, selectPart, selectColor, getFigureStringWithFace } = useFigureData();
 
-    const clubItemsFirst = useMemo(() => GetConfigurationValue<boolean>('avatareditor.show.clubitems.first', true), []);
-    const clubItemsDimmed = useMemo(() => GetConfigurationValue<boolean>('avatareditor.show.clubitems.dimmed', true), []);
     const activeModel = useMemo(() => (avatarModels[activeModelKey] ?? null), [ activeModelKey, avatarModels ]);
 
-    const selectPart = useCallback((setType: string, partId: number) =>
+    const selectedColorParts = useMemo(() =>
+    {
+        const colorSets: { [index: string]: IPartColor[] } = {};
+
+        for(const setType of Object.keys(selectedColors))
+        {
+            if(!selectedColors[setType]) continue;
+
+            const parts: IPartColor[] = [];
+
+            for(const paletteId of Object.keys(selectedColors[setType]))
+            {
+                const partColor = activeModel.find(category => (category.setType === setType))?.colorItems[paletteId]?.find(partColor => (partColor.id === selectedColors[setType][paletteId]));
+
+                if(partColor) parts.push(partColor);
+            }
+
+            colorSets[setType] = parts;
+        }
+
+        return colorSets;
+
+    }, [ activeModel, selectedColors ]);
+
+    const selectEditorPart = useCallback((setType: string, partId: number) =>
     {
         if(!setType || !setType.length) return;
 
@@ -39,17 +65,10 @@ const useAvatarEditorState = () =>
 
         setMaxPaletteCount(partItem.maxPaletteCount || 1);
 
-        setSelectedParts(prevValue =>
-        {
-            const newValue = { ...prevValue };
+        selectPart(setType, partId);
+    }, [ activeModel, selectPart ]);
 
-            newValue[setType] = partItem.id;
-
-            return newValue;
-        });
-    }, [ activeModel ]);
-
-    const selectColor = useCallback((setType: string, paletteId: number, colorId: number) =>
+    const selectEditorColor = useCallback((setType: string, paletteId: number, colorId: number) =>
     {
         if(!setType || !setType.length) return;
 
@@ -67,22 +86,26 @@ const useAvatarEditorState = () =>
 
         if(GetClubMemberLevel() < partColor.clubLevel) return;
 
-        setSelectedColors(prevValue =>
-        {
-            const newValue = { ...prevValue };
+        selectColor(setType, paletteId, colorId);
+    }, [ activeModel, selectColor ]);
 
-            if(!newValue[setType]) newValue[setType] = {};
+    useMessageEvent<FigureSetIdsMessageEvent>(FigureSetIdsMessageEvent, event =>
+    {
+        const parser = event.getParser();
 
-            if(!newValue[setType][paletteId]) newValue[setType][paletteId] = -1;
-
-            newValue[setType][paletteId] = partColor.id;
-
-            return newValue;
-        })
-    }, [ activeModel ]);
+        setFigureSetIds(parser.figureSetIds);
+        setBoundFurnitureNames(parser.boundsFurnitureNames);
+    });
 
     useEffect(() =>
     {
+        AvatarEditorThumbnailsHelper.clearCache();
+    }, [ selectedColorParts ]);
+
+    useEffect(() =>
+    {
+        if(!isVisible) return;
+
         const newAvatarModels: { [index: string]: IAvatarEditorCategory[] } = {};
 
         const buildCategory = (setType: string) =>
@@ -117,16 +140,7 @@ const useAvatarEditorState = () =>
                 } */
             }
 
-            let mandatorySetIds: string[] = [];
-
-            if(clubItemsDimmed)
-            {
-                //mandatorySetIds = GetAvatarRenderManager().getMandatoryAvatarPartSetIds(this.CURRENT_FIGURE.gender, 2);
-            }
-            else
-            {
-                //mandatorySetIds = GetAvatarRenderManager().getMandatoryAvatarPartSetIds(this.CURRENT_FIGURE.gender, clubMemberLevel);
-            }
+            let mandatorySetIds: string[] = GetAvatarRenderManager().getMandatoryAvatarPartSetIds(gender, GetClubMemberLevel());
 
             const isntMandatorySet = (mandatorySetIds.indexOf(setType) === -1);
 
@@ -139,7 +153,9 @@ const useAvatarEditorState = () =>
             {
                 const partSet = partSets.getWithIndex(i);
 
-                if(!partSet || !partSet.isSelectable) continue;
+                if(!partSet || !partSet.isSelectable || ((partSet.gender !== gender) && (partSet.gender !== FigureData.UNISEX))) continue;
+
+                if(partSet.isSellable && figureSetIds.indexOf(partSet.id) === -1) continue;
 
                 let maxPaletteCount = 0;
 
@@ -148,7 +164,7 @@ const useAvatarEditorState = () =>
                 partItems.push({ id: partSet.id, partSet, usesColor, maxPaletteCount });
             }
 
-            partItems.sort(clubItemsFirst ? clubSorter : noobSorter);
+            partItems.sort(partSorter(false));
 
             for(let i = 0; i < MAX_PALETTES; i++) colorItems[i].sort(colorSorter);
 
@@ -165,33 +181,52 @@ const useAvatarEditorState = () =>
 
         setAvatarModels(newAvatarModels);
         setActiveModelKey(AvatarEditorFigureCategory.GENERIC);
-    }, [ clubItemsDimmed, clubItemsFirst ]);
+    }, [ isVisible, gender, figureSetIds ]);
 
-    return { avatarModels, activeModelKey, setActiveModelKey, selectedParts, selectedColors, maxPaletteCount, selectPart, selectColor };
+    useEffect(() =>
+    {
+        if(!isVisible) return;
+
+        loadAvatarData(GetSessionDataManager().figure, GetSessionDataManager().gender);
+    }, [ isVisible, loadAvatarData ]);
+
+    return { isVisible, setIsVisible, avatarModels, activeModelKey, setActiveModelKey, selectedParts, selectedColors, maxPaletteCount, selectedColorParts, selectEditorPart, selectEditorColor, getFigureStringWithFace };
 }
 
 export const useAvatarEditor = () => useBetween(useAvatarEditorState);
 
-const clubSorter = (a: { partSet: IFigurePartSet, usesColor: boolean, isClear?: boolean }, b: { partSet: IFigurePartSet, usesColor: boolean, isClear?: boolean }) =>
+const partSorter = (hcFirst: boolean) =>
 {
-    const clubLevelA = (!a.partSet ? 9999999999 : a.partSet.clubLevel);
-    const clubLevelB = (!b.partSet ? 9999999999 : b.partSet.clubLevel);
-    const isSellableA = (!a.partSet ? false : a.partSet.isSellable);
-    const isSellableB = (!b.partSet ? false : b.partSet.isSellable);
+    return (a: { partSet: IFigurePartSet, usesColor: boolean, isClear?: boolean }, b: { partSet: IFigurePartSet, usesColor: boolean, isClear?: boolean }) =>
+    {
+        const clubLevelA = (!a.partSet ? -1 : a.partSet.clubLevel);
+        const clubLevelB = (!b.partSet ? -1 : b.partSet.clubLevel);
+        const isSellableA = (!a.partSet ? false : a.partSet.isSellable);
+        const isSellableB = (!b.partSet ? false : b.partSet.isSellable);
 
-    if(isSellableA && !isSellableB) return 1;
+        if(isSellableA && !isSellableB) return 1;
 
-    if(isSellableB && !isSellableA) return -1;
+        if(isSellableB && !isSellableA) return -1;
 
-    if(clubLevelA > clubLevelB) return -1;
+        if(hcFirst)
+        {
+            if(clubLevelA > clubLevelB) return -1;
 
-    if(clubLevelA < clubLevelB) return 1;
+            if(clubLevelA < clubLevelB) return 1;
+        }
+        else
+        {
+            if(clubLevelA < clubLevelB) return -1;
 
-    if(a.partSet.id > b.partSet.id) return -1;
+            if(clubLevelA > clubLevelB) return 1;
+        }
 
-    if(a.partSet.id < b.partSet.id) return 1;
+        if(a.partSet.id < b.partSet.id) return -1;
 
-    return 0;
+        if(a.partSet.id > b.partSet.id) return 1;
+
+        return 0;
+    }
 }
 
 const colorSorter = (a: IPartColor, b: IPartColor) =>
@@ -206,28 +241,6 @@ const colorSorter = (a: IPartColor, b: IPartColor) =>
     if(a.index < b.index) return -1;
 
     if(a.index > b.index) return 1;
-
-    return 0;
-}
-
-const noobSorter = (a: { partSet: IFigurePartSet, usesColor: boolean, isClear?: boolean }, b: { partSet: IFigurePartSet, usesColor: boolean, isClear?: boolean }) =>
-{
-    const clubLevelA = (!a.partSet ? -1 : a.partSet.clubLevel);
-    const clubLevelB = (!b.partSet ? -1 : b.partSet.clubLevel);
-    const isSellableA = (!a.partSet ? false : a.partSet.isSellable);
-    const isSellableB = (!b.partSet ? false : b.partSet.isSellable);
-
-    if(isSellableA && !isSellableB) return 1;
-
-    if(isSellableB && !isSellableA) return -1;
-
-    if(clubLevelA < clubLevelB) return -1;
-
-    if(clubLevelA > clubLevelB) return 1;
-
-    if(a.partSet.id < b.partSet.id) return -1;
-
-    if(a.partSet.id > b.partSet.id) return 1;
 
     return 0;
 }
