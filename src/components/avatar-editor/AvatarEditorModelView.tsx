@@ -1,8 +1,8 @@
-import { AvatarEditorFigureCategory } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useMemo, useState } from 'react';
-import { FigureData, IAvatarEditorCategory } from '../../../api';
-import { Column, Flex, Grid } from '../../../common';
-import { useAvatarEditor } from '../../../hooks';
+import { AvatarEditorFigureCategory, AvatarFigurePartType, FigureDataContainer } from '@nitrots/nitro-renderer';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { IAvatarEditorCategory } from '../../api';
+import { Column, Flex, Grid } from '../../common';
+import { useAvatarEditor } from '../../hooks';
 import { AvatarEditorIcon } from './AvatarEditorIcon';
 import { AvatarEditorFigureSetView } from './figure-set';
 import { AvatarEditorPaletteSetView } from './palette-set';
@@ -13,39 +13,35 @@ export const AvatarEditorModelView: FC<{
 }> = props =>
 {
     const { name = '', categories = [] } = props;
+    const [ didChange, setDidChange ] = useState<boolean>(false);
     const [ activeSetType, setActiveSetType ] = useState<string>('');
-    const { maxPaletteCount = 1 } = useAvatarEditor();
+    const { maxPaletteCount = 1, gender = null, setGender = null, selectedColorParts = null, getFirstSelectableColor = null, selectEditorColor = null } = useAvatarEditor();
 
     const activeCategory = useMemo(() =>
     {
         return categories.find(category => category.setType === activeSetType) ?? null;
     }, [ categories, activeSetType ]);
 
-    const setGender = (gender: string) =>
+    const selectSet = useCallback((setType: string) =>
     {
-        //
-    }
+        const selectedPalettes = selectedColorParts[setType];
+
+        if(!selectedPalettes || !selectedPalettes.length) selectEditorColor(setType, 0, getFirstSelectableColor(setType));
+
+        setActiveSetType(setType);
+    }, [ getFirstSelectableColor, selectEditorColor, selectedColorParts ]);
 
     useEffect(() =>
     {
-        if(!activeCategory) return;
+        if(!categories || !categories.length || !didChange) return;
 
-        // we need to run this when we change which parts r selected
-        /*  for(const partItem of activeCategory.partItems)
-        {
-            if(!partItem || !part.isSelected) continue;
-
-            setMaxPaletteCount(part.maxColorIndex || 1);
-
-            break;
-        } */
-    }, [ activeCategory ])
+        selectSet(categories[0]?.setType);
+        setDidChange(false);
+    }, [ categories, didChange, selectSet ]);
 
     useEffect(() =>
     {
-        if(!categories || !categories.length) return;
-
-        setActiveSetType(categories[0]?.setType)
+        setDidChange(true);
     }, [ categories ]);
 
     if(!activeCategory) return null;
@@ -55,17 +51,17 @@ export const AvatarEditorModelView: FC<{
             <Column size={ 2 }>
                 { (name === AvatarEditorFigureCategory.GENERIC) &&
                     <>
-                        <Flex center pointer className="category-item" onClick={ event => setGender(FigureData.MALE) }>
-                            <AvatarEditorIcon icon="male" selected={ false } />
+                        <Flex center pointer className="category-item" onClick={ event => setGender(AvatarFigurePartType.MALE) }>
+                            <AvatarEditorIcon icon="male" selected={ gender === FigureDataContainer.MALE } />
                         </Flex>
-                        <Flex center pointer className="category-item" onClick={ event => setGender(FigureData.FEMALE) }>
-                            <AvatarEditorIcon icon="female" selected={ false } />
+                        <Flex center pointer className="category-item" onClick={ event => setGender(AvatarFigurePartType.FEMALE) }>
+                            <AvatarEditorIcon icon="female" selected={ gender === FigureDataContainer.FEMALE } />
                         </Flex>
                     </> }
                 { (name !== AvatarEditorFigureCategory.GENERIC) && (categories.length > 0) && categories.map(category =>
                 {
                     return (
-                        <Flex center pointer key={ category.setType } className="category-item" onClick={ event => setActiveSetType(category.setType) }>
+                        <Flex center pointer key={ category.setType } className="category-item" onClick={ event => selectSet(category.setType) }>
                             <AvatarEditorIcon icon={ category.setType } selected={ (activeSetType === category.setType) } />
                         </Flex>
                     );

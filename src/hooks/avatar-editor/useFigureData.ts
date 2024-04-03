@@ -1,11 +1,11 @@
-import { useCallback, useState } from 'react';
-import { FigureData } from '../../api';
+import { AvatarFigurePartType } from '@nitrots/nitro-renderer';
+import { useCallback, useMemo, useState } from 'react';
 
 const useFigureDataState = () =>
 {
     const [ selectedParts, setSelectedParts ] = useState<{ [index: string]: number }>({});
     const [ selectedColors, setSelectedColors ] = useState<{ [index: string]: number[] }>({});
-    const [ gender, setGender ] = useState<string>(FigureData.MALE);
+    const [ gender, setGender ] = useState<string>(AvatarFigurePartType.MALE);
 
     const loadAvatarData = useCallback((figureString: string, gender: string) =>
     {
@@ -62,7 +62,8 @@ const useFigureDataState = () =>
         {
             const newValue = { ...prevValue };
 
-            newValue[setType] = partId;
+            if(partId === -1) delete newValue[setType];
+            else newValue[setType] = partId;
 
             return newValue;
         });
@@ -86,29 +87,64 @@ const useFigureDataState = () =>
         })
     }, []);
 
+    const getFigureString = useMemo(() =>
+    {
+        let figureString = '';
+
+        const partSets: string[] = [];
+        const setTypes = Object.keys(selectedParts);
+
+        for(const setType of setTypes)
+        {
+            const partId = selectedParts[setType];
+
+            if(!partId) continue;
+
+            let setPart = `${ setType }-${ partId }`;
+
+            if(selectedColors[setType] && selectedColors[setType].length)
+            {
+                let i = 0;
+
+                while(i < selectedColors[setType].length)
+                {
+                    setPart += `-${ selectedColors[setType][i] }`;
+
+                    i++;
+                }
+            }
+
+            partSets.push(setPart);
+        }
+
+        for(const partSet of partSets)
+        {
+            figureString += partSet;
+
+            if(partSets.indexOf(partSet) < (partSets.length - 1)) figureString += '.';
+        }
+
+        return figureString;
+    }, [ selectedParts, selectedColors ]);
+
     const getFigureStringWithFace = useCallback((overridePartId: number, override: boolean = true) => 
     {
-        const figureSets = [ FigureData.FACE ].map(setType => 
+        const figureSets = [ AvatarFigurePartType.HEAD ].map(setType => 
         {
-            // Determine the part ID, with an option to override if the set type matches.
-            let partId = (setType === FigureData.FACE && override) ? overridePartId : selectedParts[setType];
+            let partId = (setType === AvatarFigurePartType.HEAD && override) ? overridePartId : selectedParts[setType];
             const colors = selectedColors[setType] || [];
     
-            // Construct the figure set string, including the type, part ID, and any colors.
             let figureSet = `${ setType }-${ partId }`;
-            if (partId >= 0) 
-            {
-                figureSet += colors.map(color => `-${ color }`).join('');
-            }
+
+            if (partId >= 0) figureSet += colors.map(color => `-${ color }`).join('');
     
             return figureSet;
         });
-    
-        // Join all figure sets with '.', ensuring to only add '.' between items, not at the end.
+
         return figureSets.join('.');
     }, [ selectedParts, selectedColors ]);
 
-    return { selectedParts, selectedColors, gender, loadAvatarData, selectPart, selectColor, getFigureStringWithFace };
+    return { selectedParts, selectedColors, gender, setGender, loadAvatarData, selectPart, selectColor, getFigureString, getFigureStringWithFace };
 }
 
 export const useFigureData = useFigureDataState;

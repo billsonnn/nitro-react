@@ -1,6 +1,6 @@
-import { GetAvatarRenderManager, GetSessionDataManager, RedeemItemClothingComposer, RoomObjectCategory, UserFigureComposer } from '@nitrots/nitro-renderer';
+import { AvatarFigurePartType, GetAvatarRenderManager, GetSessionDataManager, RedeemItemClothingComposer, RoomObjectCategory, UserFigureComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { FigureData, FurniCategory, GetFurnitureDataForRoomObject, LocalizeText, SendMessageComposer } from '../../../../../api';
+import { FurniCategory, GetFurnitureDataForRoomObject, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Column, Flex, LayoutAvatarImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
 import { useRoom } from '../../../../../hooks';
 
@@ -17,7 +17,7 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
 {
     const { objectId = -1, onClose = null } = props;
     const [ mode, setMode ] = useState(MODE_DEFAULT);
-    const [ gender, setGender ] = useState<string>(FigureData.MALE);
+    const [ gender, setGender ] = useState<string>(AvatarFigurePartType.MALE);
     const [ newFigure, setNewFigure ] = useState<string>(null);
     const { roomSession = null } = useRoom();
 

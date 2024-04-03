@@ -1,7 +1,8 @@
+import { AvatarFigurePartType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { AvatarEditorThumbnailsHelper, FigureData, GetConfigurationValue, IAvatarEditorCategoryPartItem } from '../../../../api';
-import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../../common';
-import { useAvatarEditor } from '../../../../hooks';
+import { AvatarEditorThumbnailsHelper, GetConfigurationValue, IAvatarEditorCategoryPartItem } from '../../../api';
+import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../common';
+import { useAvatarEditor } from '../../../hooks';
 import { AvatarEditorIcon } from '../AvatarEditorIcon';
 
 export const AvatarEditorFigureSetItemView: FC<{
@@ -26,7 +27,7 @@ export const AvatarEditorFigureSetItemView: FC<{
 
             let url: string = null;
 
-            if(setType === FigureData.FACE)
+            if(setType === AvatarFigurePartType.HEAD)
             {
                 url = await AvatarEditorThumbnailsHelper.buildForFace(getFigureStringWithFace(partItem.id), isHC);
             }
@@ -44,7 +45,7 @@ export const AvatarEditorFigureSetItemView: FC<{
     if(!partItem) return null;
 
     return (
-        <LayoutGridItem itemImage={ (partItem.isClear ? undefined : assetUrl) } itemActive={ isSelected } style={ { width: '100%', 'flex': '1' } } { ...rest }>
+        <LayoutGridItem itemImage={ (partItem.isClear ? undefined : assetUrl) } itemActive={ isSelected } style={ { width: '100%', flex: '1', backgroundPosition: (setType === AvatarFigurePartType.HEAD) ? 'center -35px' : 'center' } } { ...rest }>
             { !partItem.isClear && isHC && <LayoutCurrencyIcon className="position-absolute end-1 bottom-1" type="hc" /> }
             { partItem.isClear && <AvatarEditorIcon icon="clear" /> }
             { !partItem.isClear && partItem.partSet.isSellable && <AvatarEditorIcon icon="sellable" position="absolute" className="end-1 bottom-1" /> }

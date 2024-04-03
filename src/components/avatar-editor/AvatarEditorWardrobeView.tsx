@@ -1,19 +1,12 @@
 import { GetAvatarRenderManager, IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
-import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
-import { FigureData, GetClubMemberLevel, GetConfigurationValue, LocalizeText, SendMessageComposer } from '../../../api';
-import { AutoGrid, Base, Button, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, LayoutGridItem } from '../../../common';
+import { FC, useCallback } from 'react';
+import { GetClubMemberLevel, GetConfigurationValue, LocalizeText, SendMessageComposer } from '../../api';
+import { Base, Button, Flex, InfiniteGrid, LayoutAvatarImageView, LayoutCurrencyIcon, LayoutGridItem } from '../../common';
+import { useAvatarEditor } from '../../hooks';
 
-export interface AvatarEditorWardrobeViewProps
+export const AvatarEditorWardrobeView: FC<{}> = props =>
 {
-    figureData: FigureData;
-    savedFigures: [ IAvatarFigureContainer, string ][];
-    setSavedFigures: Dispatch<SetStateAction<[ IAvatarFigureContainer, string][]>>;
-    loadAvatarInEditor: (figure: string, gender: string, reset?: boolean) => void;
-}
-
-export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props =>
-{
-    const { figureData = null, savedFigures = [], setSavedFigures = null, loadAvatarInEditor = null } = props;
+    const { savedFigures = [], setSavedFigures = null, loadAvatarData = null, getFigureString = null, gender = null } = useAvatarEditor();
 
     const hcDisabled = GetConfigurationValue<boolean>('hc.disabled', false);
 
@@ -23,38 +16,34 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
 
         const [ figure, gender ] = savedFigures[index];
 
-        loadAvatarInEditor(figure.getFigureString(), gender);
-    }, [ savedFigures, loadAvatarInEditor ]);
+        loadAvatarData(figure.getFigureString(), gender);
+    }, [ savedFigures, loadAvatarData ]);
 
     const saveFigureAtWardrobeIndex = useCallback((index: number) =>
     {
-        if(!figureData || (index >= savedFigures.length) || (index < 0)) return;
+        if((index >= savedFigures.length) || (index < 0)) return;
 
         const newFigures = [ ...savedFigures ];
 
-        const figure = figureData.getFigureString();
-        const gender = figureData.gender;
+        const figure = getFigureString;
 
         newFigures[index] = [ GetAvatarRenderManager().createFigureContainer(figure), gender ];
 
         setSavedFigures(newFigures);
         SendMessageComposer(new SaveWardrobeOutfitMessageComposer((index + 1), figure, gender));
-    }, [ figureData, savedFigures, setSavedFigures ]);
+    }, [ getFigureString, gender, savedFigures, setSavedFigures ]);
 
-    const figures = useMemo(() =>
-    {
-        if(!savedFigures || !savedFigures.length) return [];
-
-        const items: JSX.Element[] = [];
-
-        savedFigures.forEach(([ figureContainer, gender ], index) =>
+    return (
+        <InfiniteGrid rows={ savedFigures } columnCount={ 5 } overscan={ 5 } estimateSize={ 140 } itemRender={ (item: [ IAvatarFigureContainer, string ], index: number) =>
         {
+            const [ figureContainer, gender ] = item;
+            
             let clubLevel = 0;
 
             if(figureContainer) clubLevel = GetAvatarRenderManager().getFigureClubLevel(figureContainer, gender);
 
-            items.push(
-                <LayoutGridItem key={ index } position="relative" overflow="hidden" className="nitro-avatar-editor-wardrobe-figure-preview">
+            return (
+                <LayoutGridItem position="relative" overflow="hidden" className="nitro-avatar-editor-wardrobe-figure-preview">
                     { figureContainer &&
                     <LayoutAvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } /> }
                     <Base className="avatar-shadow" />
@@ -65,15 +54,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
                         <Button variant="link" fullWidth onClick={ event => wearFigureAtIndex(index) } disabled={ (clubLevel > GetClubMemberLevel()) }>{ LocalizeText('widget.generic_usable.button.use') }</Button> }
                     </Flex>
                 </LayoutGridItem>
-            );
-        });
-
-        return items;
-    }, [ savedFigures, hcDisabled, saveFigureAtWardrobeIndex, wearFigureAtIndex ]);
-
-    return (
-        <AutoGrid columnCount={ 5 } columnMinWidth={ 80 } columnMinHeight={ 140 }>
-            { figures }
-        </AutoGrid>
+            )
+        } } />
     );
 }

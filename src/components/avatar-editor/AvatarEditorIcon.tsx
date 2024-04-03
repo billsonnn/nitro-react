@@ -1,15 +1,12 @@
 import { FC, useMemo } from 'react';
-import { Base, BaseProps } from '../../../common';
+import { Base, BaseProps } from '../../common';
 
 type AvatarIconType = 'male' | 'female' | 'clear' | 'sellable' | string;
 
-export interface AvatarEditorIconProps extends BaseProps<HTMLDivElement>
-{
+export const AvatarEditorIcon: FC<{
     icon: AvatarIconType;
     selected?: boolean;
-}
-
-export const AvatarEditorIcon: FC<AvatarEditorIconProps> = props =>
+} & BaseProps<HTMLDivElement>> = props =>
 {
     const { icon = null, selected = false, classNames = [], children = null, ...rest } = props;
 

@@ -8,19 +8,20 @@ interface InfiniteGridProps<T = any>
     rows: T[];
     columnCount: number;
     overscan?: number;
-    itemRender?: (item: T) => ReactElement;
+    estimateSize?: number;
+    itemRender?: (item: T, index?: number) => ReactElement;
 }
 
 export const InfiniteGrid: FC<InfiniteGridProps> = props =>
 {
-    const { rows = [], columnCount = 4, overscan = 5, itemRender = null } = props;
+    const { rows = [], columnCount = 4, overscan = 5, estimateSize = 45, itemRender = null } = props;
     const parentRef = useRef<HTMLDivElement>(null);
 
     const virtualizer = useVirtualizer({
         count: Math.ceil(rows.length / columnCount),
         overscan,
         getScrollElement: () => parentRef.current,
-        estimateSize: () => 45,
+        estimateSize: () => estimateSize
     });
 
     useEffect(() =>
@@ -58,7 +59,7 @@ export const InfiniteGrid: FC<InfiniteGridProps> = props =>
                             style={ {
                                 display: 'grid',
                                 gap: '0.25rem',
-                                minHeight: virtualRow.index === 0 ? 45 : virtualRow.size,
+                                minHeight: virtualRow.index === 0 ? estimateSize : virtualRow.size,
                                 gridTemplateColumns: `repeat(${ columnCount }, 1fr)`
                             } }>
                             { Array.from(Array(columnCount)).map((e,i) => 
@@ -67,8 +68,12 @@ export const InfiniteGrid: FC<InfiniteGridProps> = props =>
 
                                 if(!item) return <Fragment
                                     key={ virtualRow.index + i + 'b' } />;
-                                    
-                                return itemRender(item);
+
+                                return (
+                                    <Fragment key={ i }>
+                                        { itemRender(item, i) }
+                                    </Fragment>
+                                );
                             }) }
                         </div>
                     )) }

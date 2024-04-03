@@ -1,17 +1,13 @@
 import { ColorConverter, IPartColor } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { GetConfigurationValue } from '../../../../api';
-import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../../common';
+import { GetConfigurationValue } from '../../../api';
+import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../common';
 
-export interface AvatarEditorPaletteSetItemProps extends LayoutGridItemProps
-{
+export const AvatarEditorPaletteSetItem: FC<{
     setType: string;
     partColor: IPartColor;
     isSelected: boolean;
-}
-
-// its disabled if its hc and you dont have it
-export const AvatarEditorPaletteSetItem: FC<AvatarEditorPaletteSetItemProps> = props =>
+} & LayoutGridItemProps> = props =>
 {
     const { setType = null, partColor = null, isSelected = false, ...rest } = props;
 

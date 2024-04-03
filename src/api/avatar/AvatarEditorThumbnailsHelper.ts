@@ -1,5 +1,4 @@
-import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, GetAssetManager, GetAvatarRenderManager, IFigurePart, IGraphicAsset, IPartColor, NitroAlphaFilter, NitroContainer, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
-import { FigureData } from './FigureData';
+import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, GetAssetManager, GetAvatarRenderManager, IFigurePart, IGraphicAsset, IPartColor, NitroAlphaFilter, NitroContainer, NitroRectangle, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
 import { IAvatarEditorCategoryPartItem } from './IAvatarEditorCategoryPartItem';
 
 export class AvatarEditorThumbnailsHelper
@@ -69,7 +68,7 @@ export class AvatarEditorThumbnailsHelper
 
                 while(!hasAsset && (direction < AvatarEditorThumbnailsHelper.THUMB_DIRECTIONS.length))
                 {
-                    const assetName = `${ FigureData.SCALE }_${ FigureData.STD }_${ part.type }_${ part.id }_${ AvatarEditorThumbnailsHelper.THUMB_DIRECTIONS[direction] }_${ FigureData.DEFAULT_FRAME }`;
+                    const assetName = `${ AvatarFigurePartType.SCALE }_${ AvatarFigurePartType.STD }_${ part.type }_${ part.id }_${ AvatarEditorThumbnailsHelper.THUMB_DIRECTIONS[direction] }_${ AvatarFigurePartType.DEFAULT_FRAME }`;
 
                     asset = GetAssetManager().getAsset(assetName);
 
@@ -150,19 +149,23 @@ export class AvatarEditorThumbnailsHelper
             const resetFigure = async (figure: string) =>
             {
                 const avatarImage = GetAvatarRenderManager().createAvatarImage(figure, AvatarScaleType.LARGE, null, { resetFigure, dispose: null, disposed: false });
+
+                if(avatarImage.isPlaceholder()) return;
+
                 const texture = avatarImage.processAsTexture(AvatarSetType.HEAD, false);
                 const sprite = new NitroSprite(texture);
 
                 if(isDisabled) sprite.filters = [ AvatarEditorThumbnailsHelper.ALPHA_FILTER ];
 
                 const imageUrl = await TextureUtils.generateImageUrl({
-                    target: sprite
+                    target: sprite,
+                    frame: new NitroRectangle(0, 0, texture.width, texture.height)
                 });
 
                 sprite.destroy();
                 avatarImage.dispose();
     
-                if(!avatarImage.isPlaceholder()) AvatarEditorThumbnailsHelper.THUMBNAIL_CACHE.set(thumbnailKey, imageUrl);
+                AvatarEditorThumbnailsHelper.THUMBNAIL_CACHE.set(thumbnailKey, imageUrl);
 
                 resolve(imageUrl);
             }
