@@ -51,7 +51,7 @@ body {
     line-height: var(--#{$variable-prefix}body-line-height);
     color: var(--#{$variable-prefix}body-color);
     text-align: var(--#{$variable-prefix}body-text-align);
-    background-color: var(--#{$variable-prefix}body-bg); // 2
+    background-color: #001d2a; // 2
     -webkit-text-size-adjust: 100%; // 3
     -webkit-tap-highlight-color: rgba($black, 0); // 4
 }

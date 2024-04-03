@@ -1,7 +1,7 @@
 import { HabboSearchComposer, HabboSearchResultData, HabboSearchResultEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, OpenMessengerChat, SendMessageComposer } from '../../../../api';
-import { Base, Column, Flex, NitroCardAccordionItemView, NitroCardAccordionSetView, NitroCardAccordionSetViewProps, Text, UserProfileIconView } from '../../../../common';
+import { Base, Column, Flex, NitroCardAccordionItemView, NitroCardAccordionSetViewProps, Text, UserProfileIconView } from '../../../../common';
 import { useFriends, useMessageEvent } from '../../../../hooks';
 
 interface FriendsSearchViewProps extends NitroCardAccordionSetViewProps
@@ -39,19 +39,18 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
         return () => clearTimeout(timeout);
     }, [ searchValue ]);
 
-    return (
-        <NitroCardAccordionSetView { ...rest }>
-            <input type="text" className="search-input form-control form-control-sm w-100 rounded-0" placeholder={ LocalizeText('generic.search') } value={ searchValue } maxLength={ 50 } onChange={ event => setSearchValue(event.target.value) } />
-            <Column>
-                { friendResults &&
+    return <>
+        <Text bold variant="white">{ LocalizeText('friendlist.tip.tab.3') }</Text>
+        <input type="text" className="fi fi-white" placeholder={ LocalizeText('generic.search') } value={ searchValue } maxLength={ 50 } onChange={ event => setSearchValue(event.target.value) } />
+        <Column gap={ 1 } fullHeight overflow="hidden">
+            { friendResults &&
                     <>
                         { (friendResults.length === 0) &&
-                            <Text bold small className="px-2 py-1">{ LocalizeText('friendlist.search.nofriendsfound') }</Text> }
+                            <Text bold small variant="white">{ LocalizeText('friendlist.search.nofriendsfound') }</Text> }
                         { (friendResults.length > 0) &&
-                            <Column gap={ 0 }>
-                                <Text bold small className="px-2 py-1">{ LocalizeText('friendlist.search.friendscaption', [ 'cnt' ], [ friendResults.length.toString() ]) }</Text>
-                                <hr className="mx-2 mt-0 mb-1 text-black" />
-                                <Column gap={ 0 }>
+                            <Column gap={ 0 } fullHeight overflow="hidden">
+                                <Text bold small variant="white">{ LocalizeText('friendlist.search.friendscaption', [ 'cnt' ], [ friendResults.length.toString() ]) }</Text>
+                                <Column gap={ 0 } fullHeight className="overflow-y-scroll">
                                     { friendResults.map(result =>
                                     {
                                         return (
@@ -70,15 +69,14 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
                                 </Column>
                             </Column> }
                     </> }
-                { otherResults &&
+            { otherResults &&
                     <>
                         { (otherResults.length === 0) &&
-                            <Text bold small className="px-2 py-1">{ LocalizeText('friendlist.search.noothersfound') }</Text> }
+                            <Text bold small variant="white">{ LocalizeText('friendlist.search.noothersfound') }</Text> }
                         { (otherResults.length > 0) &&
-                            <Column gap={ 0 }>
-                                <Text bold small className="px-2 py-1">{ LocalizeText('friendlist.search.otherscaption', [ 'cnt' ], [ otherResults.length.toString() ]) }</Text>
-                                <hr className="mx-2 mt-0 mb-1 text-black" />
-                                <Column gap={ 0 }>
+                            <Column gap={ 0 } fullHeight overflow="hidden">
+                                <Text bold small variant="white">{ LocalizeText('friendlist.search.otherscaption', [ 'cnt' ], [ otherResults.length.toString() ]) }</Text>
+                                <Column gap={ 0 } fullHeight className="overflow-y-scroll">
                                     { otherResults.map(result =>
                                     {
                                         return (
@@ -97,7 +95,6 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
                                 </Column>
                             </Column> }
                     </> }
-            </Column>
-        </NitroCardAccordionSetView>
-    );
+        </Column>
+    </>
 }

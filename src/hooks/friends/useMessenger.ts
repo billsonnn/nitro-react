@@ -17,6 +17,17 @@ const useMessengerState = () =>
 
     const visibleThreads = useMemo(() => messageThreads.filter(thread => (hiddenThreadIds.indexOf(thread.threadId) === -1)), [ messageThreads, hiddenThreadIds ]);
     const activeThread = useMemo(() => ((activeThreadId > 0) && visibleThreads.find(thread => (thread.threadId === activeThreadId) || null)), [ activeThreadId, visibleThreads ]);
+    const unreadThreads = useMemo(() =>
+    { 
+        let count = 0;
+
+        messageThreads.forEach(t =>
+        { 
+            count += t.unreadCount
+        })
+
+        return count
+    }, [ messageThreads ] )
 
     const getMessageThread = (userId: number) =>
     {
@@ -181,7 +192,7 @@ const useMessengerState = () =>
         });
     }, [ visibleThreads ]);
 
-    return { messageThreads, activeThread, iconState, visibleThreads, getMessageThread, setActiveThreadId, closeThread, sendMessage };
+    return { messageThreads, activeThread, iconState, visibleThreads, getMessageThread, setActiveThreadId, closeThread, sendMessage, unreadThreads };
 }
 
 export const useMessenger = () => useBetween(useMessengerState);

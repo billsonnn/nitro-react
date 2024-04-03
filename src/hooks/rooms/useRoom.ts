@@ -27,6 +27,8 @@ const useRoomState = () =>
         {
             roomBackground.tint = newColor;
         }
+
+        console.log(hue, saturation, lightness);
     }
 
     const updateRoomFilter = (color: number) =>
@@ -56,7 +58,7 @@ const useRoomState = () =>
         if(RoomId.isRoomPreviewerId(event.roomId)) return;
 
         if(event.enable) updateRoomBackgroundColor(event.hue, event.saturation, event.lightness, true);
-        else updateRoomBackgroundColor(0, 0, 0, true);
+        else updateRoomBackgroundColor(146, 206, 21, true);
     });
 
     useRoomEngineEvent<RoomBackgroundColorEvent>(RoomBackgroundColorEvent.ROOM_COLOR, event =>
@@ -91,6 +93,26 @@ const useRoomState = () =>
             case RoomEngineEvent.INITIALIZED:
                 SetActiveRoomId(event.roomId);
                 setRoomSession(session);
+
+                // const room = GetRoomEngine().createTextureFromRoom(roomSession.roomId, 1);
+                // const canvas = GetRoomEngine().getRoomInstanceRenderingCanvas(roomSession.roomId, 1);
+
+                // const texture = new NitroSprite(room);
+
+                // console.log(TextureUtils.generateImageUrl(texture))
+
+                // if (!canvas) return;
+                
+                // const master = (canvas.master as NitroContainer);
+
+                // texture.width = room.width;
+                // texture.height = room.height
+
+                // texture.x = 30;
+                // texture.y = 30;
+
+                // master.addChildAt(texture, 1);
+
                 return;
             case RoomEngineEvent.DISPOSED:
                 setRoomSession(null);
@@ -222,10 +244,26 @@ const useRoomState = () =>
         const filter = new AdjustmentFilter();
         const master = (canvas.master as NitroContainer);
 
-        background.tint = 0;
+        background.tint = ColorConverter.hslToRGB(((((146 & 0xFF) << 16) + ((206 & 0xFF) << 8)) + (21 & 0xFF)));
         background.width = width;
         background.height = height;
+        
+        // const room = GetRoomEngine().createTextureFromRoom(roomSession.roomId, 1);
 
+        // const texture = new NitroSprite(room);
+
+        // texture.width = room.width;
+        // texture.height = room.height
+
+        // texture.x = room.frame.x
+        // texture.y = room.frame.y
+
+        // texture.tint = 0
+        // texture.alpha = 0.5
+
+        // console.log(TextureUtils.generateImageUrl(texture))
+
+        //master.addChildAt(texture,0)
         master.addChildAt(background, 0);
         master.filters = [ filter ];
 

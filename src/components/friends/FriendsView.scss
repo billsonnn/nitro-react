@@ -1,3 +1,5 @@
+@import './views/friends-list/myinfo/MyInfo.scss';
+
 .nitro-friends-spritesheet {
     background: url('@/assets/images/friends/friends-spritesheet.png') transparent no-repeat;
 
@@ -118,18 +120,35 @@
         position: relative;
         padding-left:38px;
         text-align: left;
+        position: relative;
+        pointer-events: all;
+
+        &:not(:last-of-type)::before {
+            content:'';
+            width:1px;
+            background-color: black;
+            box-shadow: 0px 1px 0 lighten($f-grey, 10%), 0px -1px 0 darken($f-grey-sec, 10);
+            height: 33px;
+            position: absolute;
+            left:100%;
+        }
 
         &.friend-bar-item-active {
-            margin-bottom:21px;
+            .friend-bar-item-head {
+                &.avatar {
+                    top: -50px;
+                    left: -30px;
+                }
+            }
         }
 
         .friend-bar-item-head {
             &.avatar {
-                top: -30px;
+                top: -40px;
                 left: -30px;
             }
             &.group {
-                top: -5px;
+                top: -15px;
                 left: -5px;
             }
 

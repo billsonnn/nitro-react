@@ -168,7 +168,7 @@ $_luminance-list: .0008 .001 .0011 .0013 .0015 .0017 .002 .0022 .0025 .0027 .003
   $l1: luminance($background);
   $l2: luminance(opaque($background, $foreground));
 
-  @return if($l1 > $l2, divide($l1 + .05, $l2 + .05), divide($l2 + .05, $l1 + .05));
+  @return if($l1 > $l2, divide($l1 + .01, $l2 + .01), divide($l2 + .01, $l1 + .01));
 }
 
 // Return WCAG2.0 relative luminance

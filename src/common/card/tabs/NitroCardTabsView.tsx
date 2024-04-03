@@ -3,7 +3,7 @@ import { Flex, FlexProps } from '../..';
 
 export const NitroCardTabsView: FC<FlexProps> = props =>
 {
-    const { justifyContent = 'center', gap = 1, classNames = [], children = null, ...rest } = props;
+    const { justifyContent = 'start', gap = 0, classNames = [], children = null, ...rest } = props;
 
     const getClassNames = useMemo(() =>
     {

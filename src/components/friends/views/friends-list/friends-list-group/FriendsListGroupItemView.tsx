@@ -52,7 +52,34 @@ export const FriendsListGroupItemView: FC<{ friend: MessengerFriend, selected: b
         }
     }
 
-    if(!friend) return null;
+    if (!friend) return null;
+    
+    return <Flex fullWidth justifyContent="between" onClick={ event => selectFriend(friend.id) } className={ selected ? 'bg-primary text-white' : '' }>
+        <Flex alignItems="center" gap={ 1 }>
+            <Base onClick={ event => event.stopPropagation() }>
+                <UserProfileIconView userId={ friend.id } />
+            </Base>
+            <div>{ friend.name }</div>
+        </Flex>
+        <Flex alignItems="center" gap={ 1 }>
+            { !isRelationshipOpen &&
+                    <>
+                        { friend.followingAllowed &&
+                            <Base pointer onClick={ clickFollowFriend } className="nitro-friends-spritesheet icon-follow" title={ LocalizeText('friendlist.tip.follow') } /> }
+                        { friend.online &&
+                            <Base pointer className="nitro-friends-spritesheet icon-chat" onClick={ openMessengerChat } title={ LocalizeText('friendlist.tip.im') } /> }
+                        { (friend.id > 0) &&
+                            <Base className={ `nitro-friends-spritesheet icon-${ getCurrentRelationshipName() } cursor-pointer` } onClick={ openRelationship } title={ LocalizeText('infostand.link.relationship') } /> }
+                    </> }
+            { isRelationshipOpen &&
+                    <>
+                        <Base pointer className="nitro-friends-spritesheet icon-heart" onClick={ event => clickUpdateRelationship(event, MessengerFriend.RELATIONSHIP_HEART) } />
+                        <Base pointer className="nitro-friends-spritesheet icon-smile" onClick={ event => clickUpdateRelationship(event, MessengerFriend.RELATIONSHIP_SMILE) } />
+                        <Base pointer className="nitro-friends-spritesheet icon-bobba" onClick={ event => clickUpdateRelationship(event, MessengerFriend.RELATIONSHIP_BOBBA) } />
+                        <Base pointer className="nitro-friends-spritesheet icon-none" onClick={ event => clickUpdateRelationship(event, MessengerFriend.RELATIONSHIP_NONE) } />
+                    </> }
+        </Flex>
+    </Flex>
 
     return (
         <NitroCardAccordionItemView justifyContent="between" className={ `px-2 py-1 ${ selected && 'bg-primary text-white' }` } onClick={ event => selectFriend(friend.id) }>

@@ -1,0 +1,16 @@
+.friends-myinfo {
+    > :first-child {
+        border-bottom: 1px dashed white;
+    }
+    
+    .myinfo-avatar {
+        height: 60px;
+        width: 60px;
+        display: flex;
+        justify-content: center;
+
+        .avatar-image {
+            margin-top: -17px;
+        }
+    }
+}

@@ -25,8 +25,8 @@
 
     &.icon-catalog {
         background-image: url('@/assets/images/toolbar/icons/catalog.png');
-        width: 37px;
-        height: 36px;
+        width: 33px;
+        height: 33px;
     }
 
     &.icon-game {
@@ -53,8 +53,8 @@
 
     &.icon-inventory {
         background-image: url('@/assets/images/toolbar/icons/inventory.png');
-        height: 41px;
-        width: 44px;
+        height: 29px;
+        width: 28px;
     }
 
     &.icon-modtools {
@@ -365,6 +365,25 @@
         background: url('@/assets/images/icons/like-room.png');
         width: 20px;
         height: 22px;
+    }
+
+    &.icon-search {
+        background: url('@/assets/images/fusion/friends/search.png');
+        width: 18px;
+        height: 18px;
+    }
+
+    &.icon-online-friends {
+        background: url('@/assets/images/fusion/friends/online.png');
+        width: 18px;
+        height: 18px;
+    }
+
+    &.icon-offline-friends {
+        background: url('@/assets/images/fusion/friends/online.png');
+        width: 18px;
+        height: 18px;
+        filter: saturate(0);
     }
 
     &.icon-arrows {

@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { MessengerFriend } from '../../../../../api';
+import { Column } from '../../../../../common';
 import { FriendsListGroupItemView } from './FriendsListGroupItemView';
 
 interface FriendsListGroupViewProps
@@ -16,8 +17,8 @@ export const FriendsListGroupView: FC<FriendsListGroupViewProps> = props =>
     if(!list || !list.length) return null;
 
     return (
-        <>
+        <Column fullHeight className="overflow-y-scroll">
             { list.map((item, index) => <FriendsListGroupItemView key={ index } friend={ item } selected={ selectedFriendsIds && (selectedFriendsIds.indexOf(item.id) >= 0) } selectFriend={ selectFriend } />) }
-        </>  
+        </Column>  
     );
 }

@@ -34,7 +34,7 @@ export const RoomView: FC<{}> = props =>
     }, []);
 
     return (
-        <Base fit innerRef={ elementRef } className={ (!roomSession && 'd-none') }>
+        <Base fit innerRef={ elementRef } className={ (!roomSession && 'd-none') + ' nitro-room' }>
             { roomSession &&
                 <>
                     <RoomWidgetsView />

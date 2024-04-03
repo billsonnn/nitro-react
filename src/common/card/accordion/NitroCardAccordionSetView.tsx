@@ -71,7 +71,7 @@ export const NitroCardAccordionSetView: FC<NitroCardAccordionSetViewProps> = pro
     return (
         <Column classNames={ getClassNames } gap={ gap } { ...rest }>
             <Flex pointer justifyContent="between" className="nitro-card-accordion-set-header px-2 py-1" onClick={ onClick }>
-                <Text>{ headerText }</Text>
+                <Text variant="white">{ headerText }</Text>
                 { isOpen && <FaCaretUp className="fa-icon" /> }
                 { !isOpen && <FaCaretDown className="fa-icon" /> }
             </Flex>

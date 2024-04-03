@@ -1,5 +1,8 @@
-$nitro-card-header-height: 33px;
-$nitro-card-tabs-height: 33px;
+$nitro-card-header-height: 29px;
+$nitro-card-tabs-height: 29px;
+
+$lp: lighten($primary, 15);
+$ls: lighten($secondary, 15);
 
 .nitro-card {
     resize: both;
@@ -9,40 +12,41 @@ $nitro-card-tabs-height: 33px;
         max-height: 100vh !important;
     }
 
-    &.theme-primary {
+    &.theme-primary,
+    &.theme-yellow {
         border: $border-width solid $border-color;
+        border-bottom-width: 3px;
+        box-shadow: 0 0 10px 0px black;
 
         .nitro-card-header {
-            min-height: 33px;
-            max-height: 33px;
+            min-height:$nitro-card-header-height;
+            max-height: $nitro-card-header-height;
             background: $primary;
+            border-bottom: 1px solid $secondary;
+            border-radius:  $border-radius $border-radius 0 0;
+            box-shadow: 0 1px $primary, inset 0 1px $lp, inset 1px 0 $lp, inset -1px 0 $lp;
+
+            .nitro-header-stuff {
+                justify-content: center !important;
+            }
 
             .nitro-card-header-text {
                 color: $white;
-                text-shadow: 0px 4px 4px rgba($black, 0.25);
+                text-shadow: 0px -1px rgba(black, 0.5);
                 @include font-size($h4-font-size);
             }
 
             .nitro-card-header-close {
-                cursor: pointer;
-                padding: 2px 2px;
-                line-height: 1;
-                border-radius: $border-radius;
-                box-shadow: 0 0 0 1.6px $white;
-                border: 2px solid #921911;
-                background: repeating-linear-gradient(
-                    rgba(245, 80, 65, 1),
-                    rgba(245, 80, 65, 1) 50%,
-                    rgba(194, 48, 39, 1) 50%,
-                    rgba(194, 48, 39, 1) 100%
-                );
+                width:19px;
+                height:20px;
+                background-image: url(@/assets/images/fusion/cards/card-close.png);
 
                 &:hover {
-                    filter: brightness(1.2);
+                    background-position: -38px 0px;
                 }
 
                 &:active {
-                    filter: brightness(0.8);
+                    background-position: -19px 0px;
                 }
             }
 
@@ -72,97 +76,91 @@ $nitro-card-tabs-height: 33px;
 
         .nitro-card-tabs {
             background-color: $secondary;
+            box-shadow: inset 1px 0 $ls, inset -1px 0 $ls, inset 0 -1px $ls;
 
             .nav-item {
                 padding: $nav-link-padding-y $nav-link-padding-x;
-                background-color: $muted;
+                background-color: rgba($light, 0.7);
                 color: $black;
                 z-index: 1;
                 margin-bottom: -1px;
+                border-color: rgba(black, 0.7) !important;
+                border-bottom: 0px solid black;
+                margin-left:-1px;
 
                 &.active {
                     background-color: $light;
                     border-color: $border-color $border-color $light !important;
-                    border-bottom: 1px solid black;
+                    border-width: 2px !important;
 
                     &:before {
                         background: $white;
                     }
-                }
 
-                &:before {
-                    content: '';
-                    position: absolute;
-                    width: 93%;
-                    height: 3px;
-                    border-radius: 0.25rem;
-                    top: 1.5px;
-                    left: 0;
-                    right: 0;
-                    margin: auto;
-                    background: #c2c9d1;
-                    z-index: 1;
+                    box-shadow: 0 2px $light, inset 0 -2px $light, inset 0 0 0 2px white;
                 }
             }
         }
 
         .content-area {
             background-color: $light;
+            box-shadow: inset 0 0 0 2px white;
         }
     }
 
-    &.theme-primary-slim {
+    &.theme-primary-slim,
+    &.theme-yellow-slim {
         border: $border-width solid $border-color;
+        background-color: $f-grey-sec;
+        box-shadow: inset 0 0 0 2px white;
+        border-radius: $border-radius-lg !important;
+        border-bottom-width: 3px;
+        box-shadow: inset 0 0 0 1px rgba(white, 0.3), $box-shadow !important;
+        padding:1px;
+        padding-bottom: 3px;
 
         .nitro-card-header {
             position: relative;
-            min-height: 28px;
-            max-height: 28px;
-            background: repeating-linear-gradient($tertiary, $tertiary 50%, $quaternary 50%, $quaternary 100%);
-            border-bottom: 2px solid darken($quaternary, 5);
-            box-shadow: 0 2px white;
-            width: 100%;
-            margin: 0;
-            padding-top:2px;
+            min-height: 29px;
+            max-height: 29px;
+            background: repeating-linear-gradient($f-grey, $f-grey 50%, $f-grey-sec 50%, $f-grey-sec 100%);
+            border-radius: $border-radius-sm $border-radius-sm 0 0;
 
-            &:before {
+            &::before {
+                content:'';
                 position: absolute;
-                content: ' ';
-                top: 0;
+                height:1px;
+                top:0;
+                bottom:0;
                 left: 0;
-                width: 100%;
-                height: 2px;
-                background-color: rgba($white, 0.3);
+                right:0;
+                margin:auto;
+                background: $f-grey-sec;
+                box-shadow: 0 1px $f-grey;
+                z-index: 1;
+            }
+
+            > * {
+                z-index: 3;
             }
 
             .nitro-card-header-text {
-                color: $white;
-                text-shadow: 0px 4px 4px rgba($black, 0.25);
+                color: white;
+                text-shadow: 0px -1px rgba(black, 0.5);
                 @include font-size($h5-font-size);
-                min-height: 21px;
             }
 
             .nitro-card-header-close {
-                cursor: pointer;
-                padding: 0px 2px;
-                line-height: 1;
-                @include font-size($h7-font-size);
-                border-radius: $border-radius;
-                box-shadow: 0 0 0 1.6px $white;
-                border: 2px solid #921911;
-                background: repeating-linear-gradient(
-                    rgba(245, 80, 65, 1),
-                    rgba(245, 80, 65, 1) 50%,
-                    rgba(194, 48, 39, 1) 50%,
-                    rgba(194, 48, 39, 1) 100%
-                );
+                width:19px;
+                height:20px;
+                background-image: url(@/assets/images/fusion/cards/card-close.png);
 
                 &:hover {
-                    filter: brightness(1.2);
+                    background-position: -38px 0px;
                 }
 
                 &:active {
-                    filter: brightness(0.8);
+                    background-position: -19px 0px;
                 }
             }
 
@@ -197,7 +195,102 @@ $nitro-card-tabs-height: 33px;
         }
 
         .content-area {
+            z-index: 4;
+            border:1px solid black;
+            border-radius: 0 0 $border-radius-sm $border-radius-sm;
             background-color: $light;
+            margin:0 2px;
+            width: auto !important;
+            box-shadow: 0 -1px rgba(white,.3);
+
+        }
+    }
+
+    &.theme-yellow {
+        background: darken($warning, 10);
+        box-shadow: inset 1px 0 $warning, inset -1px 0 $warning, inset 0 -1px $warning;
+
+        .nitro-card-header {
+            background: $warning;
+            box-shadow: 0 1px $warning, inset 0 1px lighten($warning,15), inset 1px 0 lighten($warning,15), inset -1px 0 lighten($warning,15);
+            border-bottom: 1px solid darken($warning, 15);
+        }
+
+        .nitro-card-tabs {
+            border-bottom:0;
+            background-color: darken($warning, 10);
+            box-shadow: inset 1px 0 $warning, inset -1px 0 $warning;
+            gap:3px;
+            padding-left:5px;
+            padding-right:5px;
+
+            .nav-item {
+                background-color: $warning;
+                margin-left: 0px;
+                border-radius: $border-radius-lg;
+                box-shadow: 0 1px $warning, 0 -1px darken($warning, 20), inset 0 -2px darken($warning, 10);
+                width: 100%;
+
+                &.active {
+                    background-color: #b67f04;
+                    border-color: $border-color !important;
+                    border-width: 1px !important;
+                    box-shadow: inset 0 3px darken($warning, 25), 0 1px $warning, 0 -1px darken($warning, 20);
+
+                    &:before {
+                        background: $white;
+                    }
+                }
+            }
+        }
+
+        .content-area {
+            background-image: url(@/assets/images/fusion/cards/yellow-bg.png);
+            color:white;
+            box-shadow: inset 0 0 0 2px rgba(0,0,0,.3);
+            border:1px solid black;
+            margin:5px;
+            width: auto !important;
+        }
+    }
+
+    &.theme-yellow-slim {
+        background-color: darken($warning,8);
+        padding:1px 3px 3px 3px;
+        box-shadow: inset 0 0 0 1px lighten($warning,20), $box-shadow !important;
+
+        .nitro-card-header {
+            background: repeating-linear-gradient($warning, $warning 50%, darken($warning,8) 50%, darken($warning,8) 100%);
+            margin: 0 -2px;
+            width: calc(100% + 4px);
+
+            .nitro-header-stuff {
+                justify-content: space-between !important;
+            }
+            
+            .nitro-card-header-text {
+                color: darken($warning, 50);
+                text-shadow: 0px -1px rgba(black, 0.5), 0 1px lighten($warning,15);
+            }
+
+            &::before {
+                background: darken($warning,8);
+                box-shadow: 0 1px $warning;
+            }
+        }
+
+
+        >:not(:first-child) {
+            margin:0 4px;
+        }
+
+        .content-area {
+            background-image: url(@/assets/images/fusion/cards/yellow-bg.png);
+            color:white;
+            border-radius: $border-radius-lg;
+            width: auto !important;
+            box-shadow: 0 -1px lighten($warning,10), inset 0 0 0 4px rgba(0,0,0,.3), 0 1px darken($warning, 23);
+            padding:8px;
         }
     }
 }
@@ -210,6 +303,10 @@ $nitro-card-tabs-height: 33px;
 
     &.theme-dark {
         background-color: #1C323F !important;
+    }
+
+    .btn {
+        filter: drop-shadow(0px 1px 0 white) drop-shadow(0px -1px 0 rgba(black,.2));
     }
 }
 
@@ -238,7 +335,6 @@ $nitro-card-tabs-height: 33px;
     &.active {
         height: 100%;
         overflow: hidden;
-        background: rgba($white, 0.5);
         border-bottom: 1px solid rgba($black, 0.2);
     }
 
