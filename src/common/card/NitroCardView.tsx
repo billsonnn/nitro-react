@@ -15,7 +15,7 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'nitro-card', 'rounded', ];
+        const newClassNames: string[] = [ 'nitro-card', 'rounded', 'shadow', ];
 
         newClassNames.push(`theme-${ theme || 'primary' }`);
 
@@ -24,35 +24,35 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
         return newClassNames;
     }, [ theme, classNames ]);
 
-    // useEffect(() =>
-    // {
-    //     if(!uniqueKey || !elementRef || !elementRef.current) return;
+    /* useEffect(() =>
+    {
+        if(!uniqueKey || !elementRef || !elementRef.current) return;
 
-    //     const localStorage = GetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`);
-    //     const element = elementRef.current;
+        const localStorage = GetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`);
+        const element = elementRef.current;
 
-    //     if(localStorage && localStorage.size)
-    //     {
-    //         //element.style.width = `${ localStorage.size.width }px`;
-    //         //element.style.height = `${ localStorage.size.height }px`;
-    //     }
+        if(localStorage && localStorage.size)
+        {
+            //element.style.width = `${ localStorage.size.width }px`;
+            //element.style.height = `${ localStorage.size.height }px`;
+        }
 
-    //     const observer = new ResizeObserver(event =>
-    //     {
-    //         const newStorage = { ...GetLocalStorage<Partial<WindowSaveOptions>>(`nitro.windows.${ uniqueKey }`) } as WindowSaveOptions;
+        const observer = new ResizeObserver(event =>
+        {
+            const newStorage = { ...GetLocalStorage<Partial<WindowSaveOptions>>(`nitro.windows.${ uniqueKey }`) } as WindowSaveOptions;
 
-    //         newStorage.size = { width: element.offsetWidth, height: element.offsetHeight };
+            newStorage.size = { width: element.offsetWidth, height: element.offsetHeight };
 
-    //         SetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`, newStorage);
-    //     });
+            SetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`, newStorage);
+        });
 
-    //     observer.observe(element);
+        observer.observe(element);
 
-    //     return () =>
-    //     {
-    //         observer.disconnect();
-    //     }
-    // }, [ uniqueKey ]);
+        return () =>
+        {
+            observer.disconnect();
+        }
+    }, [ uniqueKey ]); */
 
     return (
         <NitroCardContextProvider value={ { theme } }>

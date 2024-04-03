@@ -3,7 +3,7 @@ import { Dispatch, FC, FocusEvent, KeyboardEvent, SetStateAction, useEffect, use
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 import { AvatarInfoUser, CloneObject, GetConfiguration, GetGroupInformation, GetSessionDataManager, GetUserProfile, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../../common';
-import { useMessageEvent, useRoom, useRoomSessionManagerEvent, useSessionInfo } from '../../../../../hooks';
+import { useMessageEvent, useRoom, useRoomSessionManagerEvent } from '../../../../../hooks';
 import { InfoStandWidgetUserRelationshipsView } from './InfoStandWidgetUserRelationshipsView';
 import { InfoStandWidgetUserTagsView } from './InfoStandWidgetUserTagsView';
 
@@ -21,7 +21,15 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
     const [ isEditingMotto, setIsEditingMotto ] = useState(false);
     const [ relationships, setRelationships ] = useState<RelationshipStatusInfoMessageParser>(null);
     const { roomSession = null } = useRoom();
-    const { saveMotto } = useSessionInfo();
+
+    const saveMotto = (motto: string) =>
+    {
+        if(!isEditingMotto || (motto.length > GetConfiguration<number>('motto.max.length', 38))) return;
+
+        roomSession.sendMottoMessage(motto);
+
+        setIsEditingMotto(false);
+    }
 
     const onMottoBlur = (event: FocusEvent<HTMLInputElement>) => saveMotto(event.target.value);
 

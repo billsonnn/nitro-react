@@ -14,27 +14,4 @@
         padding: 1px 2px;
         z-index: 5;
     }
-
-    .tab-icon {
-        width:18px;
-        height:18px;
-        background-position: center;
-        background-repeat: no-repeat;
-
-        &.tab-inventory-furni {
-            background-image: url(@/assets/images/fusion/inventory/furni.png);
-        }
-
-        &.tab-inventory-bots {
-            background-image: url(@/assets/images/fusion/inventory/bots.png);
-        }
-
-        &.tab-inventory-furni-tab-pets {
-            background-image: url(@/assets/images/fusion/inventory/pets.png);
-        }
-
-        &.tab-inventory-badges {
-            background-image: url(@/assets/images/fusion/inventory/ach.png);
-        }
-    }
 }

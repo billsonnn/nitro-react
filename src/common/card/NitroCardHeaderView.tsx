@@ -1,5 +1,5 @@
 import { FC, MouseEvent, useMemo } from 'react';
-import { FaFlag } from 'react-icons/fa';
+import { FaFlag, FaTimes } from 'react-icons/fa';
 import { Base, Column, ColumnProps, Flex } from '..';
 
 interface NitroCardHeaderViewProps extends ColumnProps
@@ -32,14 +32,16 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
 
     return (
         <Column center position="relative" classNames={ getClassNames } { ...rest }>
-            <Flex fullWidth alignItems="center" justifyContent="between" className="nitro-header-stuff">
+            <Flex fullWidth center>
                 <span className="nitro-card-header-text">{ headerText }</span>
                 { isGalleryPhoto &&
                     <Base position="absolute" className="end-4 nitro-card-header-report-camera" onClick={ onReportPhoto }>
                         <FaFlag className="fa-icon" />
                     </Base>
                 }
-                <Flex center position="absolute" className="end-2 nitro-card-header-close" onMouseDownCapture={ onMouseDown } onClick={ onCloseClick } />
+                <Flex center position="absolute" className="end-2 nitro-card-header-close" onMouseDownCapture={ onMouseDown } onClick={ onCloseClick }>
+                    <FaTimes className="fa-icon w-12 h-12" />
+                </Flex>
             </Flex>
         </Column>
     );

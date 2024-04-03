@@ -1,13 +1,6 @@
 .nitro-purse-container {
-    pointer-events: none;
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 0;
+    font-size: $font-size-sm;
+    pointer-events: all;
 
     .nitro-purse {
         background-color: rgba($dark, 0.95);

@@ -1,7 +1,7 @@
 import { BadgePointLimitsEvent, ILinkEventTracker, IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { AddEventLinkTracker, GetLocalization, GetRoomEngine, LocalizeText, RemoveLinkEventTracker, UnseenItemCategory, isObjectMoverRequested, setObjectMoverRequested } from '../../api';
-import { Base, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
+import { AddEventLinkTracker, GetLocalization, GetRoomEngine, isObjectMoverRequested, LocalizeText, RemoveLinkEventTracker, setObjectMoverRequested, UnseenItemCategory } from '../../api';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { useInventoryTrade, useInventoryUnseenTracker, useMessageEvent, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../hooks';
 import { InventoryBadgeView } from './views/badge/InventoryBadgeView';
 import { InventoryBotView } from './views/bot/InventoryBotView';
@@ -127,7 +127,7 @@ export const InventoryView: FC<{}> = props =>
                         {
                             return (
                                 <NitroCardTabsItemView key={ index } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) } count={ getCount(UNSEEN_CATEGORIES[index]) }>
-                                    <Base className={ `tab-icon tab-${ name.replaceAll('.','-') }` }/>
+                                    { LocalizeText(name) }
                                 </NitroCardTabsItemView>
                             );
                         }) }

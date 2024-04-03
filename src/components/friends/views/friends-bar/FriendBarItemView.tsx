@@ -33,7 +33,7 @@ export const FriendBarItemView: FC<{ friend: MessengerFriend }> = props =>
     if(!friend)
     {
         return (
-            <div ref={ elementRef } className="btn btn-f-grey friend-bar-search">
+            <div ref={ elementRef } className="btn btn-primary friend-bar-item friend-bar-search">
                 <div className="friend-bar-item-head position-absolute"/>
                 <div className="text-truncate">{ LocalizeText('friend.bar.find.title') }</div>
             </div>
@@ -41,18 +41,19 @@ export const FriendBarItemView: FC<{ friend: MessengerFriend }> = props =>
     }
 
     return (
-        <div ref={ elementRef } className={ 'friend-bar-item  d-flex align-items-center ' + (isVisible ? 'friend-bar-item-active' : '') } onMouseOver={ () => setVisible(true) } onMouseOut={ () => setVisible(false) }>
+        <div ref={ elementRef } className={ 'btn btn-success friend-bar-item ' + (isVisible ? 'friend-bar-item-active' : '') } onClick={ event => setVisible(prevValue => !prevValue) }>
             <div className={ `friend-bar-item-head position-absolute ${ friend.id > 0 ? 'avatar': 'group' }` }>
-                { (friend.id > 0) && <LayoutAvatarImageView figure={ friend.figure } direction={ isVisible ? 2 : 3 } /> }
+                { (friend.id > 0) && <LayoutAvatarImageView headOnly={ true } figure={ friend.figure } direction={ 2 } /> }
                 { (friend.id <= 0) && <LayoutBadgeImageView isGroup={ true } badgeCode={ friend.figure } /> } 
             </div>
-            { isVisible ?
-                <div className="d-flex justify-content-between w-100 gap-2 pe-1">
-                    <Base className="nitro-friends-spritesheet icon-friendbar-chat cursor-pointer" onClick={ event => OpenMessengerChat(friend.id) } />
-                    { friend.followingAllowed &&
+            <div className="text-truncate">{ friend.name }</div>
+            { isVisible &&
+            <div className="d-flex justify-content-between">
+                <Base className="nitro-friends-spritesheet icon-friendbar-chat cursor-pointer" onClick={ event => OpenMessengerChat(friend.id) } />
+                { friend.followingAllowed &&
                 <Base className="nitro-friends-spritesheet icon-friendbar-visit cursor-pointer" onClick={ event => followFriend(friend) } /> }
-                    <Base className="nitro-friends-spritesheet icon-profile cursor-pointer" onClick={ event => GetUserProfile(friend.id) } />
-                </div> : <div className="text-truncate w-100 pe-1">{ friend.name }</div> }
+                <Base className="nitro-friends-spritesheet icon-profile cursor-pointer" onClick={ event => GetUserProfile(friend.id) } />
+            </div> }
         </div>
     );
 }

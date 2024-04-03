@@ -20,31 +20,13 @@
 ) {
   color: $color;
   @include gradient-bg($background);
-  border: 1px solid darken($background, 20%);
-  box-shadow: inset 0 -2px darken($background, 5%);
-  filter: drop-shadow(0px 1px 0 rgba(white,.3)) drop-shadow(0px -1px 0 rgba(black,.2));
-  position: relative;
+  border-color: $border;
+  @include box-shadow($btn-box-shadow);
 
-  &::before {
-    content:'';
-    height:2px;
-    position: absolute;
-    top:0;
-    left:0;
-    right:0;
-    margin:1px;
-    border-radius: 1px;
-    background: lighten($background, 10%);
-  }
-
-  &:hover,
-  &.inset {
-    background: darken($background, 10%);
-    box-shadow: inset 0 2px darken($background, 15%);
-
-    &::before {
-      height: 0;
-    }
+  &:hover {
+    color: $hover-color;
+    @include gradient-bg($hover-background);
+    border-color: $hover-border;
   }
 
   .btn-check:focus + &,
@@ -101,27 +83,12 @@
   $active-color: color-contrast($active-background)
 ) {
   color: $color;
-  border: 1px solid $color;
-  border-radius: 0 !important;
-  box-shadow: none;
-  filter:unset !important;
-  position: relative;
+  border-color: $color;
 
   &:hover {
     color: $color-hover;
+    background-color: $active-background;
     border-color: $active-border;
-
-    &::before {
-      content:'';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin:1px;
-      background-color: $active-background;
-      z-index: -2;
-    }
   }
 
   .btn-check:focus + &,

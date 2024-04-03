@@ -1,1 +1,1 @@
-export type ColorVariantType = 'primary' | 'success' | 'danger' | 'secondary' | 'link' | 'black' | 'white' | 'dark' | 'warning' | 'muted' | 'light' | 'f-grey';
+export type ColorVariantType = 'primary' | 'success' | 'danger' | 'secondary' | 'link' | 'black' | 'white' | 'dark' | 'warning' | 'muted' | 'light';

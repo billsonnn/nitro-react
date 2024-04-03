@@ -22,7 +22,6 @@ export const App: FC<{}> = props =>
         if(!NitroConfig) throw new Error('NitroConfig is not defined!');
 
         Nitro.bootstrap();
-        Nitro.instance.application.renderer.backgroundColor = 0xFFFFFF;
     }
 
     const handler = useCallback(async (event: NitroEvent) =>
