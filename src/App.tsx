@@ -34,8 +34,7 @@ export const App: FC<{}> = props =>
                     height,
                     autoDensity: true,
                     backgroundAlpha: 0,
-                    preference: 'webgl',
-                    resolution: window.devicePixelRatio
+                    preference: 'webgl'
                 });
 
                 await GetConfiguration().init();
