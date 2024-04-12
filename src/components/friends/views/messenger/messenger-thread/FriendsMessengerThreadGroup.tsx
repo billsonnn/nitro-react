@@ -32,12 +32,12 @@ export const FriendsMessengerThreadGroup: FC<{ thread: MessengerThread, group: M
                         <Flex key={ index } fullWidth gap={ 2 } justifyContent="start">
                             <Base className="w-100 text-break">
                                 { (chat.type === MessengerThreadChat.SECURITY_NOTIFICATION) &&
-                                    <Flex gap={ 2 } alignItems="center" className="bg-light rounded mb-2 px-2 py-1 small text-muted">
+                                    <Flex alignItems="center" className="bg-light rounded mb-2 px-2 py-1 small text-muted" gap={ 2 }>
                                         <Base className="nitro-friends-spritesheet icon-warning flex-shrink-0" />
                                         <Base>{ chat.message }</Base>
                                     </Flex> }
                                 { (chat.type === MessengerThreadChat.ROOM_INVITE) &&
-                                    <Flex gap={ 2 } alignItems="center" className="bg-light rounded mb-2 px-2 py-1 small text-black">
+                                    <Flex alignItems="center" className="bg-light rounded mb-2 px-2 py-1 small text-black" gap={ 2 }>
                                         <Base className="messenger-notification-icon flex-shrink-0" />
                                         <Base>{ (LocalizeText('messenger.invitation') + ' ') }{ chat.message }</Base>
                                     </Flex> }
@@ -50,12 +50,12 @@ export const FriendsMessengerThreadGroup: FC<{ thread: MessengerThread, group: M
     }
     
     return (
-        <Flex fullWidth justifyContent={ isOwnChat ? 'end' : 'start' } gap={ 2 }>
+        <Flex fullWidth gap={ 2 } justifyContent={ isOwnChat ? 'end' : 'start' }>
             <Base shrink className="message-avatar">
                 { ((group.type === MessengerGroupType.PRIVATE_CHAT) && !isOwnChat) &&
-                    <LayoutAvatarImageView figure={ thread.participant.figure } direction={ 2 } /> }
+                    <LayoutAvatarImageView direction={ 2 } figure={ thread.participant.figure } /> }
                 { (groupChatData && !isOwnChat) &&
-                    <LayoutAvatarImageView figure={ groupChatData.figure } direction={ 2 } /> }
+                    <LayoutAvatarImageView direction={ 2 } figure={ groupChatData.figure } /> }
             </Base>
             <Base className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat ? 'right' : 'left') }>
                 <Base className="fw-bold">
@@ -66,7 +66,7 @@ export const FriendsMessengerThreadGroup: FC<{ thread: MessengerThread, group: M
             </Base>
             { isOwnChat &&
                 <Base shrink className="message-avatar">
-                    <LayoutAvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
+                    <LayoutAvatarImageView direction={ 4 } figure={ GetSessionDataManager().figure } />
                 </Base> }
         </Flex>
     );

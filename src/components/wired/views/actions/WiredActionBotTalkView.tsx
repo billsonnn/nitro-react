@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { GetConfigurationValue, LocalizeText, WIRED_STRING_DELIMETER, WiredFurniType } from '../../../../api';
-import { Column, Flex, Text } from '../../../../common';
+import { Text } from '../../../../common';
 import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -28,25 +28,25 @@ export const WiredActionBotTalkView: FC<{}> = props =>
     }, [ trigger ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
-            <Column gap={ 1 }>
+        <WiredActionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.bot.name') }</Text>
-                <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
-            </Column>
-            <Column gap={ 1 }>
+                <input className="form-control form-control-sm" maxLength={ 32 } type="text" value={ botName } onChange={ event => setBotName(event.target.value) } />
+            </div>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.message') }</Text>
-                <input type="text" className="form-control form-control-sm" maxLength={ GetConfigurationValue<number>('wired.action.bot.talk.max.length', 64) } value={ message } onChange={ event => setMessage(event.target.value) } />
-            </Column>
-            <Column gap={ 1 }>
-                <Flex alignItems="center" gap={ 1 }>
-                    <input className="form-check-input" type="radio" name="talkMode" id="talkMode1" checked={ (talkMode === 0) } onChange={ event => setTalkMode(0) } />
+                <input className="form-control form-control-sm" maxLength={ GetConfigurationValue<number>('wired.action.bot.talk.max.length', 64) } type="text" value={ message } onChange={ event => setMessage(event.target.value) } />
+            </div>
+            <div className="flex flex-column gap-1">
+                <div className="flex items-center gap-1">
+                    <input checked={ (talkMode === 0) } className="form-check-input" id="talkMode1" name="talkMode" type="radio" onChange={ event => setTalkMode(0) } />
                     <Text>{ LocalizeText('wiredfurni.params.talk') }</Text>
-                </Flex>
-                <Flex alignItems="center" gap={ 1 }>
-                    <input className="form-check-input" type="radio" name="talkMode" id="talkMode2" checked={ (talkMode === 1) } onChange={ event => setTalkMode(1) } />
+                </div>
+                <div className="flex items-center gap-1">
+                    <input checked={ (talkMode === 1) } className="form-check-input" id="talkMode2" name="talkMode" type="radio" onChange={ event => setTalkMode(1) } />
                     <Text>{ LocalizeText('wiredfurni.params.shout') }</Text>
-                </Flex>
-            </Column>
+                </div>
+            </div>
         </WiredActionBaseView>
     );
 }

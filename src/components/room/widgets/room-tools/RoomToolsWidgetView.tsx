@@ -1,7 +1,7 @@
 import { CreateLinkEvent, GetGuestRoomResultEvent, GetRoomEngine, NavigatorSearchComposer, RateFlatMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../api';
-import { Base, Column, Flex, Text, TransitionAnimation, TransitionAnimationTypes, classNames } from '../../../../common';
+import { Text, TransitionAnimation, TransitionAnimationTypes, classNames } from '../../../../common';
 import { useMessageEvent, useNavigator, useRoom } from '../../../../hooks';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
@@ -71,30 +71,30 @@ export const RoomToolsWidgetView: FC<{}> = props =>
     }, [ roomName, roomOwner, roomTags ]);
 
     return (
-        <Flex className="nitro-room-tools-container" gap={ 2 }>
-            <Column center className="nitro-room-tools p-2">
-                <Base pointer title={ LocalizeText('room.settings.button.text') } className="icon icon-cog" onClick={ () => handleToolClick('settings') } />
-                <Base pointer title={ LocalizeText('room.zoom.button.text') } onClick={ () => handleToolClick('zoom') } className={ classNames('icon', (!isZoomedIn && 'icon-zoom-less'), (isZoomedIn && 'icon-zoom-more')) } />
-                <Base pointer title={ LocalizeText('room.chathistory.button.text') } onClick={ () => handleToolClick('chat_history') } className="icon icon-chat-history" />
+        <div className="flex gap-2 nitro-room-tools-container">
+            <div className="flex flex-column justify-center items-center nitro-room-tools p-2">
+                <div className="icon icon-cog cursor-pointer" title={ LocalizeText('room.settings.button.text') } onClick={ () => handleToolClick('settings') } />
+                <div className={ classNames('cursor-pointer', 'icon', (!isZoomedIn && 'icon-zoom-less'), (isZoomedIn && 'icon-zoom-more')) } title={ LocalizeText('room.zoom.button.text') } onClick={ () => handleToolClick('zoom') } />
+                <div className="icon icon-chat-history cursor-pointer" title={ LocalizeText('room.chathistory.button.text') } onClick={ () => handleToolClick('chat_history') } />
                 { navigatorData.canRate &&
-                    <Base pointer title={ LocalizeText('room.like.button.text') } onClick={ () => handleToolClick('like_room') } className="icon icon-like-room" /> }
-            </Column>
-            <Column justifyContent="center">
-                <TransitionAnimation type={ TransitionAnimationTypes.SLIDE_LEFT } inProp={ isOpen } timeout={ 300 }>
-                    <Column center>
-                        <Column className="nitro-room-tools-info rounded py-2 px-3">
-                            <Column gap={ 1 }>
-                                <Text wrap variant="white" fontSize={ 4 }>{ roomName }</Text>
-                                <Text variant="muted" fontSize={ 5 }>{ roomOwner }</Text>
-                            </Column>
+                    <div className="icon icon-like-room cursor-pointer" title={ LocalizeText('room.like.button.text') } onClick={ () => handleToolClick('like_room') } /> }
+            </div>
+            <div className="flex flex-column justify-center">
+                <TransitionAnimation inProp={ isOpen } timeout={ 300 } type={ TransitionAnimationTypes.SLIDE_LEFT }>
+                    <div className="flex flex-column justify-center items-center">
+                        <div className="flex flex-column nitro-room-tools-info rounded py-2 px-3">
+                            <div className="flex flex-column gap-1">
+                                <Text wrap fontSize={ 4 } variant="white">{ roomName }</Text>
+                                <Text fontSize={ 5 } variant="muted">{ roomOwner }</Text>
+                            </div>
                             { roomTags && roomTags.length > 0 &&
-                                <Flex gap={ 2 }>
-                                    { roomTags.map((tag, index) => <Text key={ index } small pointer variant="white" className="rounded bg-primary p-1" onClick={ () => handleToolClick('navigator_search_tag', tag) }>#{ tag }</Text>) }
-                                </Flex> }
-                        </Column>
-                    </Column>
+                                <div className="flex gap-2">
+                                    { roomTags.map((tag, index) => <Text key={ index } pointer small className="rounded bg-primary p-1" variant="white" onClick={ () => handleToolClick('navigator_search_tag', tag) }>#{ tag }</Text>) }
+                                </div> }
+                        </div>
+                    </div>
                 </TransitionAnimation>
-            </Column>
-        </Flex>
+            </div>
+        </div>
     );
 }

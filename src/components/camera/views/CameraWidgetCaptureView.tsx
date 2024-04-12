@@ -2,7 +2,7 @@ import { GetRoomEngine, NitroRectangle, TextureUtils } from '@nitrots/nitro-rend
 import { FC, useRef } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { CameraPicture, GetRoomSession, LocalizeText, PlaySound, SoundNames } from '../../../api';
-import { Column, DraggableWindow, Flex } from '../../../common';
+import { Column, DraggableWindow } from '../../../common';
 import { useCamera, useNotification } from '../../../hooks';
 
 export interface CameraWidgetCaptureViewProps
@@ -73,17 +73,17 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
                                 <button className="btn btn-danger" onClick={ onDelete }>{ LocalizeText('camera.delete.button.text') }</button>
                             </div>
                         </div> }
-                    <div className="d-flex justify-content-center">
+                    <div className="flex justify-center">
                         <div className="camera-button" title={ LocalizeText('camera.take.photo.button.tooltip') } onClick={ takePicture } />
                     </div>
                 </div>
                 { (cameraRoll.length > 0) &&
-                    <Flex gap={ 2 } justifyContent="center" className="camera-roll d-flex justify-content-center py-2">
+                    <div className="camera-roll flex justify-center py-2">
                         { cameraRoll.map((picture, index) =>
                         {
-                            return <img alt="" key={ index } src={ picture.imageUrl } onClick={ event => setSelectedPictureIndex(index) } />;
+                            return <img key={ index } alt="" src={ picture.imageUrl } onClick={ event => setSelectedPictureIndex(index) } />;
                         }) }
-                    </Flex> }
+                    </div> }
             </Column>
         </DraggableWindow>
     );

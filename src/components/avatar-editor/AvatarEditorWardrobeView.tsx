@@ -1,7 +1,7 @@
 import { GetAvatarRenderManager, IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetClubMemberLevel, GetConfigurationValue, LocalizeText, SendMessageComposer } from '../../api';
-import { Base, Button, Flex, InfiniteGrid, LayoutAvatarImageView, LayoutCurrencyIcon, LayoutGridItem } from '../../common';
+import { Button, InfiniteGrid, LayoutAvatarImageView, LayoutCurrencyIcon, LayoutGridItem } from '../../common';
 import { useAvatarEditor } from '../../hooks';
 
 export const AvatarEditorWardrobeView: FC<{}> = props =>
@@ -34,7 +34,7 @@ export const AvatarEditorWardrobeView: FC<{}> = props =>
     }, [ getFigureString, gender, savedFigures, setSavedFigures ]);
 
     return (
-        <InfiniteGrid rows={ savedFigures } columnCount={ 5 } overscan={ 5 } estimateSize={ 140 } itemRender={ (item: [ IAvatarFigureContainer, string ], index: number) =>
+        <InfiniteGrid columnCount={ 5 } estimateSize={ 140 } itemRender={ (item: [ IAvatarFigureContainer, string ], index: number) =>
         {
             const [ figureContainer, gender ] = item;
             
@@ -43,18 +43,18 @@ export const AvatarEditorWardrobeView: FC<{}> = props =>
             if(figureContainer) clubLevel = GetAvatarRenderManager().getFigureClubLevel(figureContainer, gender);
 
             return (
-                <LayoutGridItem position="relative" overflow="hidden" className="nitro-avatar-editor-wardrobe-figure-preview">
+                <LayoutGridItem className="nitro-avatar-editor-wardrobe-figure-preview" overflow="hidden" position="relative">
                     { figureContainer &&
-                    <LayoutAvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } /> }
-                    <Base className="avatar-shadow" />
+                    <LayoutAvatarImageView direction={ 2 } figure={ figureContainer.getFigureString() } gender={ gender } /> }
+                    <div className="avatar-shadow" />
                     { !hcDisabled && (clubLevel > 0) && <LayoutCurrencyIcon className="position-absolute top-1 start-1" type="hc" /> }
-                    <Flex gap={ 1 } className="button-container">
-                        <Button variant="link" fullWidth onClick={ event => saveFigureAtWardrobeIndex(index) }>{ LocalizeText('avatareditor.wardrobe.save') }</Button>
+                    <div className="flex gap-1 button-container">
+                        <Button fullWidth variant="link" onClick={ event => saveFigureAtWardrobeIndex(index) }>{ LocalizeText('avatareditor.wardrobe.save') }</Button>
                         { figureContainer &&
-                        <Button variant="link" fullWidth onClick={ event => wearFigureAtIndex(index) } disabled={ (clubLevel > GetClubMemberLevel()) }>{ LocalizeText('widget.generic_usable.button.use') }</Button> }
-                    </Flex>
+                        <Button fullWidth disabled={ (clubLevel > GetClubMemberLevel()) } variant="link" onClick={ event => wearFigureAtIndex(index) }>{ LocalizeText('widget.generic_usable.button.use') }</Button> }
+                    </div>
                 </LayoutGridItem>
             )
-        } } />
+        } } overscan={ 5 } rows={ savedFigures } />
     );
 }

@@ -1,7 +1,7 @@
 import { HabboSearchComposer, HabboSearchResultData, HabboSearchResultEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, OpenMessengerChat, SendMessageComposer } from '../../../../api';
-import { Base, Column, Flex, NitroCardAccordionItemView, NitroCardAccordionSetView, NitroCardAccordionSetViewProps, Text, UserProfileIconView } from '../../../../common';
+import { Column, NitroCardAccordionItemView, NitroCardAccordionSetView, NitroCardAccordionSetViewProps, Text, UserProfileIconView } from '../../../../common';
 import { useFriends, useMessageEvent } from '../../../../hooks';
 
 interface FriendsSearchViewProps extends NitroCardAccordionSetViewProps
@@ -41,8 +41,8 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
 
     return (
         <NitroCardAccordionSetView { ...rest }>
-            <input type="text" className="search-input form-control form-control-sm w-100 rounded-0" placeholder={ LocalizeText('generic.search') } value={ searchValue } maxLength={ 50 } onChange={ event => setSearchValue(event.target.value) } />
-            <Column>
+            <input className="search-input form-control form-control-sm w-100 rounded-0" maxLength={ 50 } placeholder={ LocalizeText('generic.search') } type="text" value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
+            <div className="flex flex-column">
                 { friendResults &&
                     <>
                         { (friendResults.length === 0) &&
@@ -55,15 +55,15 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
                                     { friendResults.map(result =>
                                     {
                                         return (
-                                            <NitroCardAccordionItemView key={ result.avatarId } justifyContent="between" className="px-2 py-1">
-                                                <Flex alignItems="center" gap={ 1 }>
+                                            <NitroCardAccordionItemView key={ result.avatarId } className="px-2 py-1" justifyContent="between">
+                                                <div className="flex items-center gap-1">
                                                     <UserProfileIconView userId={ result.avatarId } />
                                                     <div>{ result.avatarName }</div>
-                                                </Flex>
-                                                <Flex alignItems="center" gap={ 1 }>
+                                                </div>
+                                                <div className="flex items-center gap-1">
                                                     { result.isAvatarOnline &&
-                                                    <Base className="nitro-friends-spritesheet icon-chat cursor-pointer" onClick={ event => OpenMessengerChat(result.avatarId) } title={ LocalizeText('friendlist.tip.im') } /> }
-                                                </Flex>
+                                                    <div className="nitro-friends-spritesheet icon-chat cursor-pointer" title={ LocalizeText('friendlist.tip.im') } onClick={ event => OpenMessengerChat(result.avatarId) } /> }
+                                                </div>
                                             </NitroCardAccordionItemView>
                                         )
                                     }) }
@@ -82,22 +82,22 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
                                     { otherResults.map(result =>
                                     {
                                         return (
-                                            <NitroCardAccordionItemView key={ result.avatarId } justifyContent="between" className="px-2 py-1">
-                                                <Flex alignItems="center" gap={ 1 }>
+                                            <NitroCardAccordionItemView key={ result.avatarId } className="px-2 py-1" justifyContent="between">
+                                                <div className="flex items-center gap-1">
                                                     <UserProfileIconView userId={ result.avatarId } />
                                                     <div>{ result.avatarName }</div>
-                                                </Flex>
-                                                <Flex alignItems="center" gap={ 1 }>
+                                                </div>
+                                                <div className="flex items-center gap-1">
                                                     { canRequestFriend(result.avatarId) &&
-                                                    <Base className="nitro-friends-spritesheet icon-add cursor-pointer" onClick={ event => requestFriend(result.avatarId, result.avatarName) } title={ LocalizeText('friendlist.tip.addfriend') } /> }
-                                                </Flex>
+                                                    <div className="nitro-friends-spritesheet icon-add cursor-pointer" title={ LocalizeText('friendlist.tip.addfriend') } onClick={ event => requestFriend(result.avatarId, result.avatarName) } /> }
+                                                </div>
                                             </NitroCardAccordionItemView>
                                         )
                                     }) }
                                 </Column>
                             </Column> }
                     </> }
-            </Column>
+            </div>
         </NitroCardAccordionSetView>
     );
 }

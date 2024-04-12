@@ -1,7 +1,7 @@
 import { GroupSavePreferencesComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { IGroupData, LocalizeText, SendMessageComposer } from '../../../../api';
-import { Column, Flex, HorizontalRule, Text } from '../../../../common';
+import { Flex, HorizontalRule, Text } from '../../../../common';
 
 const STATES: string[] = [ 'regular', 'exclusive', 'private' ];
 
@@ -58,32 +58,32 @@ export const GroupTabSettingsView: FC<GroupTabSettingsViewProps> = props =>
     }, [ setCloseAction, saveSettings ]);
     
     return (
-        <Column overflow="auto">
-            <Column>
+        <div className="flex flex-column overflow-auto">
+            <div className="flex flex-column">
                 { STATES.map((state, index) =>
                 {
                     return (
                         <Flex key={ index } alignItems="center" gap={ 1 }>
-                            <input className="form-check-input" type="radio" name="groupState" checked={ (groupState === index) } onChange={ event => setGroupState(index) } />
-                            <Column gap={ 0 }>
-                                <Flex gap={ 1 }>
+                            <input checked={ (groupState === index) } className="form-check-input" name="groupState" type="radio" onChange={ event => setGroupState(index) } />
+                            <div className="flex flex-column gap-0">
+                                <div className="flex gap-1">
                                     <i className={ `icon icon-group-type-${ index }` } />
                                     <Text bold>{ LocalizeText(`group.edit.settings.type.${ state }.label`) }</Text>
-                                </Flex>
+                                </div>
                                 <Text>{ LocalizeText(`group.edit.settings.type.${ state }.help`) }</Text>
-                            </Column>
+                            </div>
                         </Flex>
                     );
                 }) }
-            </Column>
+            </div>
             <HorizontalRule />
-            <Flex alignItems="center" gap={ 1 }>
-                <input className="form-check-input" type="checkbox" checked={ groupDecorate } onChange={ event => setGroupDecorate(prevValue => !prevValue) } />
-                <Column gap={ 1 }>
+            <div className="flex items-center gap-1">
+                <input checked={ groupDecorate } className="form-check-input" type="checkbox" onChange={ event => setGroupDecorate(prevValue => !prevValue) } />
+                <div className="flex flex-column gap-1">
                     <Text bold>{ LocalizeText('group.edit.settings.rights.caption') }</Text>
                     <Text>{ LocalizeText('group.edit.settings.rights.members.help') }</Text>
-                </Column>
-            </Flex>
-        </Column>
+                </div>
+            </div>
+        </div>
     );
 };

@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
-import { Column, Flex, Text } from '../../../../common';
+import { Text } from '../../../../common';
 import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -23,21 +23,21 @@ export const WiredActionBotFollowAvatarView: FC<{}> = props =>
     }, [ trigger ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
-            <Column gap={ 1 }>
+        <WiredActionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.bot.name') }</Text>
-                <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
-            </Column>
-            <Column gap={ 1 }>
-                <Flex alignItems="center" gap={ 1 }>
-                    <input className="form-check-input" type="radio" name="followMode" id="followMode1" checked={ (followMode === 1) } onChange={ event => setFollowMode(1) } />
+                <input className="form-control form-control-sm" maxLength={ 32 } type="text" value={ botName } onChange={ event => setBotName(event.target.value) } />
+            </div>
+            <div className="flex flex-column gap-1">
+                <div className="flex items-center gap-1">
+                    <input checked={ (followMode === 1) } className="form-check-input" id="followMode1" name="followMode" type="radio" onChange={ event => setFollowMode(1) } />
                     <Text>{ LocalizeText('wiredfurni.params.start.following') }</Text>
-                </Flex>
-                <Flex alignItems="center" gap={ 1 }>
-                    <input className="form-check-input" type="radio" name="followMode" id="followMode2" checked={ (followMode === 0) } onChange={ event => setFollowMode(0) } />
+                </div>
+                <div className="flex items-center gap-1">
+                    <input checked={ (followMode === 0) } className="form-check-input" id="followMode2" name="followMode" type="radio" onChange={ event => setFollowMode(0) } />
                     <Text>{ LocalizeText('wiredfurni.params.stop.following') }</Text>
-                </Flex>
-            </Column>
+                </div>
+            </div>
         </WiredActionBaseView>
     );
 }

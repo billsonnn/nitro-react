@@ -18,24 +18,24 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
     return (
         <Flex shrink className="bg-muted rounded p-2 text-black" gap={ 2 } overflow="hidden">
             <Column center gap={ 1 }>
-                <AchievementBadgeView className="nitro-achievements-badge-image" achievement={ achievement } scale={ 2 } />
+                <AchievementBadgeView achievement={ achievement } className="nitro-achievements-badge-image" scale={ 2 } />
                 <Text fontWeight="bold">
                     { LocalizeText('achievements.details.level', [ 'level', 'limit' ], [ AchievementUtilities.getAchievementLevel(achievement).toString(), achievement.levelCount.toString() ]) }
                 </Text>
             </Column>
             <Column fullWidth justifyContent="center" overflow="hidden">
-                <Column gap={ 1 }>
-                    <Text fontWeight="bold" truncate>
+                <div className="flex flex-column gap-1">
+                    <Text truncate fontWeight="bold">
                         { LocalizeBadgeName(AchievementUtilities.getAchievementBadgeCode(achievement)) }
                     </Text>
                     <Text textBreak>
                         { LocalizeBadgeDescription(AchievementUtilities.getAchievementBadgeCode(achievement)) }
                     </Text>
-                </Column>
+                </div>
                 { ((achievement.levelRewardPoints > 0) || (achievement.scoreLimit > 0)) &&
-                    <Column gap={ 1 }>
+                    <div className="flex flex-column gap-1">
                         { (achievement.levelRewardPoints > 0) &&
-                            <Flex alignItems="center" gap={ 1 }>
+                            <div className="flex items-center gap-1">
                                 <Text truncate className="small">
                                     { LocalizeText('achievements.details.reward') }
                                 </Text>
@@ -43,10 +43,10 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
                                     { achievement.levelRewardPoints }
                                     <LayoutCurrencyIcon type={ achievement.levelRewardPointType } />
                                 </Flex>
-                            </Flex> }
+                            </div> }
                         { (achievement.scoreLimit > 0) &&
-                            <LayoutProgressBar text={ LocalizeText('achievements.details.progress', [ 'progress', 'limit' ], [ (achievement.currentPoints + achievement.scoreAtStartOfLevel).toString(), (achievement.scoreLimit + achievement.scoreAtStartOfLevel).toString() ]) } progress={ (achievement.currentPoints + achievement.scoreAtStartOfLevel) } maxProgress={ (achievement.scoreLimit + achievement.scoreAtStartOfLevel) } /> }
-                    </Column> }
+                            <LayoutProgressBar maxProgress={ (achievement.scoreLimit + achievement.scoreAtStartOfLevel) } progress={ (achievement.currentPoints + achievement.scoreAtStartOfLevel) } text={ LocalizeText('achievements.details.progress', [ 'progress', 'limit' ], [ (achievement.currentPoints + achievement.scoreAtStartOfLevel).toString(), (achievement.scoreLimit + achievement.scoreAtStartOfLevel).toString() ]) } /> }
+                    </div> }
             </Column>
         </Flex>
     )

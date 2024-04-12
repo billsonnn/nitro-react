@@ -52,7 +52,7 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                 <FurnitureMysteryTrophyOpenDialogView objectId={ confirmingObjectId } onClose={ closeConfirm } /> }
             <FurnitureMysteryBoxOpenDialogView ownerId={ objectOwnerId } />
             { (objectId >= 0) && mode &&
-                <ContextMenuView objectId={ objectId } category={ RoomObjectCategory.FLOOR } onClose={ onClose } fades={ true }>
+                <ContextMenuView category={ RoomObjectCategory.FLOOR } fades={ true } objectId={ objectId } onClose={ onClose }>
                     { (mode === ContextMenuEnum.FRIEND_FURNITURE) &&
                         <>
                             <ContextMenuHeaderView>

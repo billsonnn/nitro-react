@@ -11,7 +11,7 @@ export const FriendRequestWidgetView: FC<{}> = props =>
 
     return (
         <>
-            { displayedRequests.map((request, index) => <FriendRequestDialogView key={ index } roomIndex={ request.roomIndex } request={ request.request } hideFriendRequest={ hideFriendRequest } requestResponse={ requestResponse } />) }
+            { displayedRequests.map((request, index) => <FriendRequestDialogView key={ index } hideFriendRequest={ hideFriendRequest } request={ request.request } requestResponse={ requestResponse } roomIndex={ request.roomIndex } />) }
         </>
     );
 }

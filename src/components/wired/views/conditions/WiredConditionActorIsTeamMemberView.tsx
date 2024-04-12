@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
-import { Column, Flex, Text } from '../../../../common';
+import { Text } from '../../../../common';
 import { useWired } from '../../../../hooks';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
@@ -19,19 +19,19 @@ export const WiredConditionActorIsTeamMemberView: FC<{}> = props =>
     }, [ trigger ]);
     
     return (
-        <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
-            <Column gap={ 1 }>
+        <WiredConditionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.team') }</Text>
                 { teamIds.map(value =>
                 {
                     return (
-                        <Flex key={ value } gap={ 1 } alignItems="center">
-                            <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ value }` } checked={ (selectedTeam === value) } onChange={ event => setSelectedTeam(value) } />
+                        <div key={ value } className="items-center gap-1">
+                            <input checked={ (selectedTeam === value) } className="form-check-input" id={ `selectedTeam${ value }` } name="selectedTeam" type="radio" onChange={ event => setSelectedTeam(value) } />
                             <Text>{ LocalizeText(`wiredfurni.params.team.${ value }`) }</Text>
-                        </Flex>
+                        </div>
                     ) 
                 }) }
-            </Column>
+            </div>
         </WiredConditionBaseView>
     );
 }

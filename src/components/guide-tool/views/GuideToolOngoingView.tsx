@@ -1,7 +1,7 @@
 import { GetSessionDataManager, GuideSessionGetRequesterRoomMessageComposer, GuideSessionInviteRequesterMessageComposer, GuideSessionMessageMessageComposer, GuideSessionRequesterRoomMessageEvent, GuideSessionResolvedMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { GuideToolMessageGroup, LocalizeText, SendMessageComposer, TryVisitRoom } from '../../../api';
-import { Base, Button, ButtonGroup, Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
+import { Button, Column, Flex, LayoutAvatarImageView, Text, classNames } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
 
 interface GuideToolOngoingViewProps
@@ -72,56 +72,56 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
 
     return (
         <Column fullHeight>
-            <Flex alignItems="center" justifyContent="between" gap={ 1 } className="bg-muted p-2 rounded">
+            <Flex alignItems="center" className="bg-muted p-2 rounded" gap={ 1 } justifyContent="between">
                 { isGuide &&
-                    <ButtonGroup>
+                    <div className="btn-group">
                         <Button onClick={ visit }>{ LocalizeText('guide.help.request.guide.ongoing.visit.button') }</Button>
                         <Button onClick={ invite }>{ LocalizeText('guide.help.request.guide.ongoing.invite.button') }</Button>
-                    </ButtonGroup> }
+                    </div> }
                 { !isGuide &&
                     <Column gap={ 0 }>
                         <Text bold>{ userName }</Text>
                         <Text>{ LocalizeText('guide.help.request.user.ongoing.guide.desc') }</Text>
                     </Column> }
-                <Button variant="danger" disabled>{ LocalizeText('guide.help.common.report.link') }</Button>
+                <Button disabled variant="danger">{ LocalizeText('guide.help.common.report.link') }</Button>
             </Flex>
-            <Column overflow="hidden" gap={ 1 } className="bg-muted rounded chat-messages p-2">
+            <Column className="bg-muted rounded chat-messages p-2" gap={ 1 } overflow="hidden">
                 <Column overflow="auto">
                     { messageGroups.map((group, index) =>
                     {
                         return (
-                            <Flex key={ index } fullWidth justifyContent={ isOwnChat(group.userId) ? 'end' : 'start' } gap={ 2 }>
-                                <Base shrink className="message-avatar">
+                            <Flex key={ index } fullWidth gap={ 2 } justifyContent={ isOwnChat(group.userId) ? 'end' : 'start' }>
+                                <div className="message-avatar flex-shrink-0">
                                     { (!isOwnChat(group.userId)) &&
-                                    <LayoutAvatarImageView figure={ userFigure } direction={ 2 } /> }
-                                </Base>
-                                <Base className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat(group.userId) ? 'right' : 'left') }>
+                                    <LayoutAvatarImageView direction={ 2 } figure={ userFigure } /> }
+                                </div>
+                                <div className={ 'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat(group.userId) ? 'right' : 'left') }>
                                     <Text bold>
                                         { (isOwnChat(group.userId)) && GetSessionDataManager().userName }
                                         { (!isOwnChat(group.userId)) && userName }
                                     </Text>
-                                    { group.messages.map((chat, index) => <Base key={ index } pointer={ chat.roomId ? true : false } className={ chat.roomId ? 'text-break text-underline' : 'text-break' } onClick={ () => chat.roomId ? TryVisitRoom(chat.roomId) : null }>{ chat.message }</Base>) }
-                                </Base>
+                                    { group.messages.map((chat, index) => <div key={ index } className={ classNames(chat.roomId ? 'text-break text-underline' : 'text-break', 'chat.roomId' && 'cursor-pointer') } onClick={ () => chat.roomId ? TryVisitRoom(chat.roomId) : null }>{ chat.message }</div>) }
+                                </div>
                                 { (isOwnChat(group.userId)) &&
-                                <Base className="message-avatar flex-shrink-0">
-                                    <LayoutAvatarImageView figure={ GetSessionDataManager().figure } direction={ 4 } />
-                                </Base> }
+                                <div className="message-avatar flex-shrink-0">
+                                    <LayoutAvatarImageView direction={ 4 } figure={ GetSessionDataManager().figure } />
+                                </div> }
                             </Flex>
                         );
                     }) }
                     <div ref={ scrollDiv } />
                 </Column>
             </Column>
-            <Column gap={ 1 }>
-                <Flex gap={ 1 }>
-                    <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('guide.help.request.guide.ongoing.input.empty', [ 'name' ], [ userName ]) } value={ messageText } onChange={ event => setMessageText(event.target.value) } onKeyDown={ onKeyDown } />
+            <div className="flex flex-column gap-1">
+                <div className="flex gap-1">
+                    <input className="form-control form-control-sm" placeholder={ LocalizeText('guide.help.request.guide.ongoing.input.empty', [ 'name' ], [ userName ]) } type="text" value={ messageText } onChange={ event => setMessageText(event.target.value) } onKeyDown={ onKeyDown } />
                     <Button variant="success" onClick={ sendMessage }>
                         { LocalizeText('widgets.chatinput.say') }
                     </Button>
-                </Flex>
+                </div>
                 { isTyping &&
                     <Text variant="muted">{ LocalizeText('guide.help.common.typing') }</Text> }
-            </Column>
+            </div>
             <Button fullWidth variant="success" onClick={ resolve }>
                 { LocalizeText('guide.help.request.' + (isGuide ? 'guide' : 'user') + '.ongoing.close.link') }
             </Button>

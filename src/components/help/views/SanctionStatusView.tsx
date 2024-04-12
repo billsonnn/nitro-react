@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../api';
-import { Base, Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
+import { Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
 import { useHelp } from '../../../hooks';
 
 export const SanctionSatusView:FC<{}> = props =>
@@ -41,10 +41,10 @@ export const SanctionSatusView:FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('help.sanction.info.title') } onCloseClick={ () => setSanctionInfo(null) } />
             <NitroCardContentView className="text-black">
                 <Grid>
-                    <Column center size={ 5 } overflow="hidden">
-                        <Base className="index-image" />
+                    <Column center overflow="hidden" size={ 5 }>
+                        <div className="index-image" />
                     </Column>
-                    <Column justifyContent="between" size={ 7 } overflow="hidden">
+                    <Column justifyContent="between" overflow="hidden" size={ 7 }>
                         { (sanctionInfo.sanctionReason === 'cfh.reason.EMPTY')
                             ? <div className="col-12 fw-bold">{ LocalizeText('help.sanction.current.none') }</div>
                             : <>

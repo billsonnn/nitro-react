@@ -14,5 +14,5 @@ export const ContextMenuHeaderView: FC<FlexProps> = props =>
         return newClassNames;
     }, [ classNames ]);
 
-    return <Flex justifyContent={ justifyContent } alignItems={ alignItems } classNames={ getClassNames } { ...rest } />;
+    return <Flex alignItems={ alignItems } classNames={ getClassNames } justifyContent={ justifyContent } { ...rest } />;
 }

@@ -1,7 +1,7 @@
 import { CreateLinkEvent, GetSoundManager, IAdvancedMap, MusicPriorities } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useCallback, useEffect, useState } from 'react';
 import { CatalogPageName, GetConfigurationValue, GetDiskColor, LocalizeText } from '../../../../../api';
-import { AutoGrid, Base, Button, Flex, LayoutGridItem, Text } from '../../../../../common';
+import { AutoGrid, Button, Flex, LayoutGridItem, Text } from '../../../../../common';
 
 export interface DiskInventoryViewProps
 {
@@ -52,8 +52,8 @@ export const DiskInventoryView: FC<DiskInventoryViewProps> = props =>
     }, []);
 
     return (<>
-        <div className="bg-success py-3 container-fluid justify-content-center d-flex rounded">
-            <img src={ GetConfigurationValue('image.library.url') + 'playlist/title_mymusic.gif' } className="my-music" />
+        <div className="bg-success py-3 container-fluid justify-center flex rounded">
+            <img className="my-music" src={ GetConfigurationValue('image.library.url') + 'playlist/title_mymusic.gif' } />
             <h2 className="ms-4">{ LocalizeText('playlist.editor.my.music') }</h2>
         </div>
         <div className="h-100 overflow-y-scroll mt-4 py-2">
@@ -65,17 +65,17 @@ export const DiskInventoryView: FC<DiskInventoryViewProps> = props =>
                     const songInfo = GetSoundManager().musicController?.getSongInfo(songId);
 
                     return (
-                        <LayoutGridItem key={ index } itemActive={ (selectedItem === index) } onClick={ () => setSelectedItem(prev => prev === index ? -1 : index) } classNames={ [ 'text-black' ] }>
+                        <LayoutGridItem key={ index } classNames={ [ 'text-black' ] } itemActive={ (selectedItem === index) } onClick={ () => setSelectedItem(prev => prev === index ? -1 : index) }>
                             <div className="disk-image flex-shrink-0 mb-n2" style={ { backgroundColor: GetDiskColor(songInfo?.songData) } }>
                             </div>
-                            <Text truncate fullWidth className="text-center">{ songInfo?.name }</Text>
+                            <Text fullWidth truncate className="text-center">{ songInfo?.name }</Text>
                             { (selectedItem === index) &&
-                                    <Flex position="absolute" className="bottom-0 mb-1 bg-secondary p-1 rounded" alignItems="center" justifyContent="center" gap={ 2 }>
-                                        <Button onClick={ event => previewSong(event, songId) } variant="light">
-                                            <Base className={ (previewSongId === songId) ? 'pause-btn' : 'preview-song' }/>
+                                    <Flex alignItems="center" className="bottom-0 mb-1 bg-secondary p-1 rounded" gap={ 2 } justifyContent="center" position="absolute">
+                                        <Button variant="light" onClick={ event => previewSong(event, songId) }>
+                                            <div className={ (previewSongId === songId) ? 'pause-btn' : 'preview-song' }/>
                                         </Button>
-                                        <Button onClick={ event => addSong(event, diskId) } variant="light">
-                                            <Base className="move-disk"/>
+                                        <Button variant="light" onClick={ event => addSong(event, diskId) }>
+                                            <div className="move-disk"/>
                                         </Button>
                                     </Flex>
                             }
@@ -89,6 +89,6 @@ export const DiskInventoryView: FC<DiskInventoryViewProps> = props =>
             <div>{ LocalizeText('playlist.editor.text.you.can.buy.some.from.the.catalogue') }</div>
             <button className="btn btn-primary btn-sm" onClick={ () => openCatalogPage() }>{ LocalizeText('playlist.editor.button.open.catalogue') }</button>
         </div>
-        <img src={ GetConfigurationValue('image.library.url') + 'playlist/background_get_more_music.gif' } className="get-more" />
+        <img className="get-more" src={ GetConfigurationValue('image.library.url') + 'playlist/background_get_more_music.gif' } />
     </>);
 }

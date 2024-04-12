@@ -52,11 +52,11 @@ export const SelectReportedUserView: FC<{}> = props =>
 
     return (
         <>
-            <Column gap={ 1 }>
+            <div className="flex flex-column gap-1">
                 <Text fontSize={ 4 }>{ LocalizeText('help.emergency.main.step.two.title') }</Text>
                 { (availableUsers.length > 0) &&
                     <Text>{ LocalizeText('report.user.pick.user') }</Text> }
-            </Column>
+            </div>
             <Column gap={ 1 } overflow="hidden">
                 { !!!availableUsers.length &&
                     <Text>{ LocalizeText('report.user.error.nolist') }</Text> }
@@ -65,7 +65,7 @@ export const SelectReportedUserView: FC<{}> = props =>
                         { availableUsers.map((user, index) =>
                         {
                             return (
-                                <LayoutGridItem key={ user.id } onClick={ event => selectUser(user.id) } itemActive={ (selectedUserId === user.id) }>
+                                <LayoutGridItem key={ user.id } itemActive={ (selectedUserId === user.id) } onClick={ event => selectUser(user.id) }>
                                     <span dangerouslySetInnerHTML={ { __html: (user.username) } } />
                                 </LayoutGridItem>
                             );

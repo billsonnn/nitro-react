@@ -35,15 +35,15 @@ export const AvatarInfoPetTrainingPanelView: FC<{}> = props =>
     if(!petData || !petTrainInformation) return null;
 
     return (
-        <NitroCardView uniqueKey="user-settings" className="user-settings-window no-resize" theme="primary-slim">
+        <NitroCardView className="user-settings-window no-resize" theme="primary-slim" uniqueKey="user-settings">
             <NitroCardHeaderView headerText={ LocalizeText('widgets.pet.commands.title') } onCloseClick={ () => setPetTrainInformation(null) } />
             <NitroCardContentView className="text-black">
-                <Flex alignItems="center" justifyContent="center" gap={ 2 }>
+                <Flex alignItems="center" gap={ 2 } justifyContent="center">
                     <Grid columnCount={ 2 }>
-                        <Column fullWidth overflow="hidden" className="body-image pet p-1">
-                            <LayoutPetImageView figure={ petData.figure } posture={ 'std' } direction={ 2 } />
+                        <Column fullWidth className="body-image pet p-1" overflow="hidden">
+                            <LayoutPetImageView direction={ 2 } figure={ petData.figure } posture={ 'std' } />
                         </Column>
-                        <Text variant="black" small wrap>{ petData.name }</Text>
+                        <Text small wrap variant="black">{ petData.name }</Text>
                     </Grid>
                 </Flex>
                 <Grid columnCount={ 2 }>

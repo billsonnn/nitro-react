@@ -20,7 +20,7 @@ export const LayoutItemCountView: FC<LayoutItemCountViewProps> = props =>
     }, [ classNames ]);
 
     return (
-        <Base position="absolute" classNames={ getClassNames } { ...rest }>
+        <Base classNames={ getClassNames } position="absolute" { ...rest }>
             { count }
             { children }
         </Base>

@@ -26,8 +26,8 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
 
     return (
         <NitroCardContextProvider value={ { theme } }>
-            <DraggableWindow uniqueKey={ uniqueKey } handleSelector={ handleSelector } windowPosition={ windowPosition } disableDrag={ disableDrag }>
-                <Column innerRef={ elementRef } overflow={ overflow } position={ position } gap={ gap } classNames={ getClassNames } { ...rest } />
+            <DraggableWindow disableDrag={ disableDrag } handleSelector={ handleSelector } uniqueKey={ uniqueKey } windowPosition={ windowPosition }>
+                <Column classNames={ getClassNames } gap={ gap } innerRef={ elementRef } overflow={ overflow } position={ position } { ...rest } />
             </DraggableWindow>
         </NitroCardContextProvider>
     );

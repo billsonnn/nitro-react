@@ -16,7 +16,7 @@ export const WiredConditionBaseView: FC<PropsWithChildren<WiredConditionBaseView
     const onSave = () => (save && save());
 
     return (
-        <WiredBaseView wiredType="condition" requiresFurni={ requiresFurni } hasSpecialInput={ hasSpecialInput } save={ onSave }>
+        <WiredBaseView hasSpecialInput={ hasSpecialInput } requiresFurni={ requiresFurni } save={ onSave } wiredType="condition">
             { children }
         </WiredBaseView>
     );

@@ -9,9 +9,10 @@ export const AvatarEditorFigureSetItemView: FC<{
     setType: string;
     partItem: IAvatarEditorCategoryPartItem;
     isSelected: boolean;
+    width?: string;
 } & LayoutGridItemProps> = props =>
 {
-    const { setType = null, partItem = null, isSelected = false, ...rest } = props;
+    const { setType = null, partItem = null, isSelected = false, width = '100%', ...rest } = props;
     const [ assetUrl, setAssetUrl ] = useState<string>('');
     const { selectedColorParts = null, getFigureStringWithFace = null } = useAvatarEditor();
 
@@ -45,10 +46,10 @@ export const AvatarEditorFigureSetItemView: FC<{
     if(!partItem) return null;
 
     return (
-        <LayoutGridItem itemImage={ (partItem.isClear ? undefined : assetUrl) } itemActive={ isSelected } style={ { width: '100%', flex: '1', backgroundPosition: (setType === AvatarFigurePartType.HEAD) ? 'center -35px' : 'center' } } { ...rest }>
+        <LayoutGridItem itemActive={ isSelected } itemImage={ (partItem.isClear ? undefined : assetUrl) } style={ { flex: '1', backgroundPosition: (setType === AvatarFigurePartType.HEAD) ? 'center -35px' : 'center' } } { ...rest }>
             { !partItem.isClear && isHC && <LayoutCurrencyIcon className="position-absolute end-1 bottom-1" type="hc" /> }
             { partItem.isClear && <AvatarEditorIcon icon="clear" /> }
-            { !partItem.isClear && partItem.partSet.isSellable && <AvatarEditorIcon icon="sellable" position="absolute" className="end-1 bottom-1" /> }
+            { !partItem.isClear && partItem.partSet.isSellable && <AvatarEditorIcon className="end-1 bottom-1 position-absolute" icon="sellable" /> }
         </LayoutGridItem>
     );
 }

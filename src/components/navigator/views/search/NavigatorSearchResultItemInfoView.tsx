@@ -3,7 +3,7 @@ import { FC, useRef, useState } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
 import { FaUser } from 'react-icons/fa';
 import { LocalizeText } from '../../../../api';
-import { Base, Column, Flex, LayoutBadgeImageView, LayoutRoomThumbnailView, NitroCardContentView, Text, UserProfileIconView } from '../../../../common';
+import { Flex, LayoutBadgeImageView, LayoutRoomThumbnailView, NitroCardContentView, Text, UserProfileIconView } from '../../../../common';
 
 interface NavigatorSearchResultItemInfoViewProps
 {
@@ -40,30 +40,30 @@ export const NavigatorSearchResultItemInfoView: FC<NavigatorSearchResultItemInfo
 
     return (
         <>
-            <Base pointer innerRef={ elementRef } className="icon icon-navigator-info" onMouseOver={ event => setIsVisible(true) } onMouseLeave={ event => setIsVisible(false) } />
-            <Overlay show={ isVisible } target={ elementRef.current } placement="right">
+            <div ref={ elementRef } className="icon icon-navigator-info cursor-pointer" onMouseLeave={ event => setIsVisible(false) } onMouseOver={ event => setIsVisible(true) } />
+            <Overlay placement="right" show={ isVisible } target={ elementRef.current }>
                 <Popover>
-                    <NitroCardContentView overflow="hidden" className="room-info image-rendering-pixelated bg-transparent">
+                    <NitroCardContentView className="room-info image-rendering-pixelated bg-transparent" overflow="hidden">
                         <Flex gap={ 2 } overflow="hidden">
-                            <LayoutRoomThumbnailView roomId={ roomData.roomId } customUrl={ roomData.officialRoomPicRef } className="d-flex flex-column align-items-center justify-content-end mb-1">
+                            <LayoutRoomThumbnailView className="flex flex-column items-center justify-content-end mb-1" customUrl={ roomData.officialRoomPicRef } roomId={ roomData.roomId }>
                                 { roomData.habboGroupId > 0 && (
-                                    <LayoutBadgeImageView badgeCode={ roomData.groupBadgeCode } isGroup={ true } className={ 'position-absolute top-0 start-0 m-1 ' }/>) }
+                                    <LayoutBadgeImageView badgeCode={ roomData.groupBadgeCode } className={ 'position-absolute top-0 start-0 m-1 ' } isGroup={ true }/>) }
                                 { roomData.doorMode !== RoomDataParser.OPEN_STATE && (
                                     <i className={ 'position-absolute end-0 mb-1 me-1 icon icon-navigator-room-' + (roomData.doorMode === RoomDataParser.DOORBELL_STATE ? 'locked' : roomData.doorMode === RoomDataParser.PASSWORD_STATE ? 'password' : roomData.doorMode === RoomDataParser.INVISIBLE_STATE ? 'invisible' : '') }/> ) }
                             </LayoutRoomThumbnailView>
-                            <Column gap={ 1 }>
+                            <div className="flex flex-column gap-1">
                                 <Text bold truncate className="flex-grow-1" style={ { maxHeight: 13 } }>
                                     { roomData.roomName }
                                 </Text>
-                                <Flex gap={ 2 }>
+                                <div className="flex gap-2">
                                     <Text italics variant="muted">
                                         { LocalizeText('navigator.roomownercaption') }
                                     </Text>
-                                    <Flex alignItems="center" gap={ 1 }>
+                                    <div className="flex items-center gap-1">
                                         <UserProfileIconView userId={ roomData.ownerId } />
                                         <Text italics>{ roomData.ownerName }</Text>
-                                    </Flex>
-                                </Flex>
+                                    </div>
+                                </div>
                                 <Text className="flex-grow-1">
                                     { roomData.description }
                                 </Text>
@@ -71,7 +71,7 @@ export const NavigatorSearchResultItemInfoView: FC<NavigatorSearchResultItemInfo
                                     <FaUser className="fa-icon" />
                                     { roomData.userCount }
                                 </Flex>
-                            </Column>
+                            </div>
                         </Flex>
                     </NitroCardContentView>
                 </Popover>

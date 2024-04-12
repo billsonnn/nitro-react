@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, WiredFurniType } from '../../../../api';
-import { Column, Flex, Text } from '../../../../common';
+import { Text } from '../../../../common';
 import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -31,37 +31,37 @@ export const WiredActionGiveScoreToPredefinedTeamView: FC<{}> = props =>
     }, [ trigger ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
-            <Column gap={ 1 }>
+        <WiredActionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.setpoints', [ 'points' ], [ points.toString() ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }
-                    min={ 1 }
                     max={ 100 }
+                    min={ 1 }
                     value={ points }
                     onChange={ event => setPoints(event) } />
-            </Column>
-            <Column gap={ 1 }>
+            </div>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.settimesingame', [ 'times' ], [ time.toString() ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }
-                    min={ 1 }
                     max={ 10 }
+                    min={ 1 }
                     value={ time }
                     onChange={ event => setTime(event) } />
-            </Column>
-            <Column gap={ 1 }>
+            </div>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.team') }</Text>
                 { [ 1, 2, 3, 4 ].map(value =>
                 {
                     return (
-                        <Flex key={ value } gap={ 1 }>
-                            <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ value }` } checked={ (selectedTeam === value) } onChange={ event => setSelectedTeam(value) } />
+                        <div key={ value } className="flex gap-1">
+                            <input checked={ (selectedTeam === value) } className="form-check-input" id={ `selectedTeam${ value }` } name="selectedTeam" type="radio" onChange={ event => setSelectedTeam(value) } />
                             <Text>{ LocalizeText('wiredfurni.params.team.' + value) }</Text>
-                        </Flex>
+                        </div>
                     );
                 }) }
-            </Column>
+            </div>
         </WiredActionBaseView>
     );
 }

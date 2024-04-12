@@ -1,7 +1,7 @@
 import { AddLinkEventTracker, ILinkEventTracker, RemoveLinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect } from 'react';
 import { GetConfigurationValue, LocalizeText } from '../../api';
-import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
+import { Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { useCatalog } from '../../hooks';
 import { CatalogIconView } from './views/catalog-icon/CatalogIconView';
 import { CatalogGiftView } from './views/gift/CatalogGiftView';
@@ -69,7 +69,7 @@ export const CatalogView: FC<{}> = props =>
     return (
         <>
             { isVisible &&
-                <NitroCardView uniqueKey="catalog" className="nitro-catalog" style={ GetConfigurationValue('catalog.headers') ? { width: 710 } : {} }>
+                <NitroCardView className="nitro-catalog" style={ GetConfigurationValue('catalog.headers') ? { width: 710 } : {} } uniqueKey="catalog">
                     <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => setIsVisible(false) } />
                     <NitroCardTabsView>
                         { rootNode && (rootNode.children.length > 0) && rootNode.children.map(child =>
@@ -83,10 +83,10 @@ export const CatalogView: FC<{}> = props =>
 
                                     activateNode(child);
                                 } } >
-                                    <Flex gap={ GetConfigurationValue('catalog.tab.icons') ? 1 : 0 } alignItems="center">
+                                    <div className={ `flex items-center gap-${ GetConfigurationValue('catalog.tab.icons') ? 1 : 0 }` }>
                                         { GetConfigurationValue('catalog.tab.icons') && <CatalogIconView icon={ child.iconId } /> }
                                         { child.localization }
-                                    </Flex>
+                                    </div>
                                 </NitroCardTabsItemView>
                             );
                         }) }
@@ -94,11 +94,11 @@ export const CatalogView: FC<{}> = props =>
                     <NitroCardContentView>
                         <Grid>
                             { !navigationHidden &&
-                                <Column size={ 3 } overflow="hidden">
+                                <Column overflow="hidden" size={ 3 }>
                                     { activeNodes && (activeNodes.length > 0) &&
                                         <CatalogNavigationView node={ activeNodes[0] } /> }
                                 </Column> }
-                            <Column size={ !navigationHidden ? 9 : 12 } overflow="hidden">
+                            <Column overflow="hidden" size={ !navigationHidden ? 9 : 12 }>
                                 { GetCatalogLayout(currentPage, () => setNavigationHidden(true)) }
                             </Column>
                         </Grid>

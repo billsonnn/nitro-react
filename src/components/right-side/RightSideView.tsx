@@ -11,7 +11,7 @@ export const RightSideView: FC<{}> = props =>
 {
     return (
         <div className="nitro-right-side">
-            <Column position="relative" gap={ 1 }>
+            <Column gap={ 1 } position="relative">
                 <PurseView />
                 <GroupRoomInformationView />
                 <MysteryBoxExtensionView />

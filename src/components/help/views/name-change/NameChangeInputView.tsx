@@ -72,10 +72,10 @@ export const NameChangeInputView:FC<NameChangeLayoutViewProps> = props =>
     });
 
     return (
-        <div className="d-flex flex-column gap-3 h-100">
+        <div className="flex flex-column gap-3 h-100">
             <div>{ LocalizeText('tutorial.name_change.info.select') }</div>
-            <div className="d-flex gap-2">
-                <input type="text" className="form-control form-control-sm" value={ newUsername } onChange={ event => handleUsernameChange(event.target.value) } />
+            <div className="flex gap-2">
+                <input className="form-control form-control-sm" type="text" value={ newUsername } onChange={ event => handleUsernameChange(event.target.value) } />
                 <button className="btn btn-primary" disabled={ newUsername === '' || isChecking } onClick={ check }>{ LocalizeText('tutorial.name_change.check') }</button>
             </div>
             { !errorCode && !canProceed &&
@@ -85,10 +85,10 @@ export const NameChangeInputView:FC<NameChangeLayoutViewProps> = props =>
             { canProceed &&
                 <div className="bg-success rounded p-2 text-center text-white">{ LocalizeText('help.tutorial.name.available', [ 'name' ], [ newUsername ]) }</div> }
             { suggestions &&
-                <div className="d-flex flex-column gap-2">
+                <div className="flex flex-column gap-2">
                     { suggestions.map((suggestion, index) => <div key={ index } className="col bg-muted rounded p-1 cursor-pointer" onClick={ () => handleUsernameChange(suggestion) }>{ suggestion }</div>) }
                 </div> }
-            <div className="d-flex gap-2">
+            <div className="flex gap-2">
                 <button className="btn btn-success w-100" disabled={ !canProceed } onClick={ () => onAction('confirmation', newUsername) }>{ LocalizeText('tutorial.name_change.pick') }</button>
                 <button className="btn btn-primary w-100" onClick={ () => onAction('close') }>{ LocalizeText('cancel') }</button>
             </div>

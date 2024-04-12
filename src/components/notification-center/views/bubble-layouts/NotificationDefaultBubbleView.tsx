@@ -14,12 +14,12 @@ export const NotificationDefaultBubbleView: FC<NotificationDefaultBubbleViewProp
     const htmlText = item.message.replace(/\r\n|\r|\n/g, '<br />');
 
     return (
-        <LayoutNotificationBubbleView onClose={ onClose } gap={ 2 } alignItems="center" onClick={ event => (item.linkUrl && item.linkUrl.length && OpenUrl(item.linkUrl)) } { ...rest }>
+        <LayoutNotificationBubbleView alignItems="center" gap={ 2 } onClick={ event => (item.linkUrl && item.linkUrl.length && OpenUrl(item.linkUrl)) } onClose={ onClose } { ...rest }>
             <Flex center className="bubble-image-container">
                 { (item.iconUrl && item.iconUrl.length) &&
-                    <img className="no-select" src={ item.iconUrl } alt="" /> }
+                    <img alt="" className="no-select" src={ item.iconUrl } /> }
             </Flex>
-            <Text wrap variant="white" dangerouslySetInnerHTML={ { __html: htmlText } } />
+            <Text wrap dangerouslySetInnerHTML={ { __html: htmlText } } variant="white" />
         </LayoutNotificationBubbleView>
     );
 }

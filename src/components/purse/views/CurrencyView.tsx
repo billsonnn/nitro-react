@@ -17,8 +17,8 @@ export const CurrencyView: FC<CurrencyViewProps> = props =>
     const element = useMemo(() =>
     {
         return (
-            <Flex justifyContent="end" pointer gap={ 1 } className="nitro-purse-button rounded">
-                <Text truncate textEnd variant="white" grow>{ short ? LocalizeShortNumber(amount) : LocalizeFormattedNumber(amount) }</Text>
+            <Flex pointer className="nitro-purse-button rounded" gap={ 1 } justifyContent="end">
+                <Text grow textEnd truncate variant="white">{ short ? LocalizeShortNumber(amount) : LocalizeFormattedNumber(amount) }</Text>
                 <LayoutCurrencyIcon type={ type } />
             </Flex>);
     }, [ amount, short, type ]);
@@ -27,12 +27,12 @@ export const CurrencyView: FC<CurrencyViewProps> = props =>
     
     return (
         <OverlayTrigger
-            placement="left"
             overlay={
                 <Tooltip id={ `tooltip-${ type }` }>
                     { LocalizeFormattedNumber(amount) }
                 </Tooltip>
-            }>
+            }
+            placement="left">
             { element }
         </OverlayTrigger>
     );

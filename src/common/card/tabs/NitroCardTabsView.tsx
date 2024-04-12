@@ -15,7 +15,7 @@ export const NitroCardTabsView: FC<FlexProps> = props =>
     }, [ classNames ]);
 
     return (
-        <Flex justifyContent={ justifyContent } gap={ gap } classNames={ getClassNames } { ...rest }>
+        <Flex classNames={ getClassNames } gap={ gap } justifyContent={ justifyContent } { ...rest }>
             { children }
         </Flex>
     );

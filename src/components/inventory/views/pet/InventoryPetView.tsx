@@ -63,21 +63,21 @@ export const InventoryPetView: FC<InventoryPetViewProps> = props =>
         return () => setIsVisible(false);
     }, []);
 
-    if(!petItems || !petItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.pets.title') } desc={ LocalizeText('inventory.empty.pets.desc') } />;
+    if(!petItems || !petItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.pets.desc') } title={ LocalizeText('inventory.empty.pets.title') } />;
 
     return (
         <Grid>
-            <Column size={ 7 } overflow="hidden">
+            <Column overflow="hidden" size={ 7 }>
                 <AutoGrid columnCount={ 5 }>
                     { petItems && (petItems.length > 0) && petItems.map(item => <InventoryPetItemView key={ item.petData.id } petItem={ item } />) }
                 </AutoGrid>
             </Column>
-            <Column size={ 5 } overflow="auto">
+            <Column overflow="auto" size={ 5 }>
                 <Column overflow="hidden" position="relative">
-                    <LayoutRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                    <LayoutRoomPreviewerView height={ 140 } roomPreviewer={ roomPreviewer } />
                 </Column>
                 { selectedPet && selectedPet.petData &&
-                    <Column grow justifyContent="between" gap={ 2 }>
+                    <Column grow gap={ 2 } justifyContent="between">
                         <Text grow truncate>{ selectedPet.petData.name }</Text>
                         { !!roomSession &&
                             <Button variant="success" onClick={ event => attemptPetPlacement(selectedPet) }>

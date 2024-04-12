@@ -81,7 +81,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
                     { LocalizeText('catalog.marketplace.redeem.no_sold_items') }
                 </Text> }
             { (creditsWaiting > 0) &&
-                <Column center gap={ 1 } className="bg-muted rounded p-2">
+                <Column center className="bg-muted rounded p-2" gap={ 1 }>
                     <Text>
                         { LocalizeText('catalog.marketplace.redeem.get_credits', [ 'count', 'credits' ], [ soldOffers.length.toString(), creditsWaiting.toString() ]) }
                     </Text>
@@ -90,10 +90,10 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
                     </Button>
                 </Column> }
             <Column gap={ 1 } overflow="hidden">
-                <Text truncate shrink fontWeight="bold">
+                <Text shrink truncate fontWeight="bold">
                     { LocalizeText('catalog.marketplace.items_found', [ 'count' ], [ offers.length.toString() ]) }
                 </Text>
-                <Column overflow="auto" className="nitro-catalog-layout-marketplace-grid">
+                <Column className="nitro-catalog-layout-marketplace-grid" overflow="auto">
                     { (offers.length > 0) && offers.map(offer => <CatalogLayoutMarketplaceItemView key={ offer.offerId } offerData={ offer } type={ OWN_OFFER } onClick={ takeItemBack } />) }
                 </Column>
             </Column>

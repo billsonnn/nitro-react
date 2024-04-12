@@ -61,7 +61,7 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
         switch(currentTab)
         {
             case 0: return <ModToolsOpenIssuesTabView openIssues={ openIssues }/>;
-            case 1: return <ModToolsMyIssuesTabView myIssues={ myIssues } handleIssue={ handleIssue }/>;
+            case 1: return <ModToolsMyIssuesTabView handleIssue={ handleIssue } myIssues={ myIssues }/>;
             case 2: return <ModToolsPickedIssuesTabView pickedIssues={ pickedIssues }/>;
         }
 

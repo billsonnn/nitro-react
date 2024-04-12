@@ -124,91 +124,90 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     return (
         <Column className="nitro-infostand rounded">
-            <Column overflow="visible" className="container-fluid content-area" gap={ 1 }>
-                <Column gap={ 1 }>
-                    <Flex alignItems="center" justifyContent="between">
-                        <Flex alignItems="center" gap={ 1 }>
+            <Column className="container-fluid content-area" gap={ 1 } overflow="visible">
+                <div className="flex flex-column gap-1">
+                    <div className="flex items-center justify-content-between">
+                        <div className="flex items-center gap-1">
                             <UserProfileIconView userId={ avatarInfo.webID } />
-                            <Text variant="white" small wrap>{ avatarInfo.name }</Text>
-                        </Flex>
+                            <Text small wrap variant="white">{ avatarInfo.name }</Text>
+                        </div>
                         <FaTimes className="cursor-pointer fa-icon" onClick={ onClose } />
-                    </Flex>
+                    </div>
                     <hr className="m-0" />
-                </Column>
-                <Column gap={ 1 }>
-                    <Flex gap={ 1 }>
+                </div>
+                <div className="flex flex-column gap-1">
+                    <div className="flex gap-1">
                         <Column fullWidth className="body-image" onClick={ event => GetUserProfile(avatarInfo.webID) }>
-                            <LayoutAvatarImageView figure={ avatarInfo.figure } direction={ 4 } />
+                            <LayoutAvatarImageView direction={ 4 } figure={ avatarInfo.figure } />
                         </Column>
                         <Column grow alignItems="center" gap={ 0 }>
-                            <Flex gap={ 1 }>
-                                <Flex center className="badge-image">
+                            <div className="flex gap-1">
+                                <div className="flex items-center justify-center badge-image">
                                     { avatarInfo.badges[0] && <LayoutBadgeImageView badgeCode={ avatarInfo.badges[0] } showInfo={ true } /> }
-                                </Flex>
-                                <Flex center pointer={ ( avatarInfo.groupId > 0) } className="badge-image" onClick={ event => GetGroupInformation(avatarInfo.groupId) }>
+                                </div>
+                                <Flex center className="badge-image" pointer={ ( avatarInfo.groupId > 0) } onClick={ event => GetGroupInformation(avatarInfo.groupId) }>
                                     { avatarInfo.groupId > 0 &&
-                                        <LayoutBadgeImageView badgeCode={ avatarInfo.groupBadgeId } isGroup={ true } showInfo={ true } customTitle={ avatarInfo.groupName } /> }
+                                        <LayoutBadgeImageView badgeCode={ avatarInfo.groupBadgeId } customTitle={ avatarInfo.groupName } isGroup={ true } showInfo={ true } /> }
                                 </Flex>
-                            </Flex>
+                            </div>
                             <Flex center gap={ 1 }>
-                                <Flex center className="badge-image">
+                                <div className="flex items-center justify-center badge-image">
                                     { avatarInfo.badges[1] && <LayoutBadgeImageView badgeCode={ avatarInfo.badges[1] } showInfo={ true } /> }
-                                </Flex>
-                                <Flex center className="badge-image">
+                                </div>
+                                <div className="flex items-center justify-center badge-image">
                                     { avatarInfo.badges[2] && <LayoutBadgeImageView badgeCode={ avatarInfo.badges[2] } showInfo={ true } /> }
-                                </Flex>
+                                </div>
                             </Flex>
                             <Flex center gap={ 1 }>
-                                <Flex center className="badge-image">
+                                <div className="flex items-center justify-center badge-image">
                                     { avatarInfo.badges[3] && <LayoutBadgeImageView badgeCode={ avatarInfo.badges[3] } showInfo={ true } /> }
-                                </Flex>
-                                <Flex center className="badge-image">
+                                </div>
+                                <div className="flex items-center justify-center badge-image">
                                     { avatarInfo.badges[4] && <LayoutBadgeImageView badgeCode={ avatarInfo.badges[4] } showInfo={ true } /> }
-                                </Flex>
+                                </div>
                             </Flex>
                         </Column>
-                    </Flex>
+                    </div>
                     <hr className="m-0" />
-                </Column>
-                <Column gap={ 1 }>
+                </div>
+                <div className="flex flex-column gap-1">
                     <Flex alignItems="center" className="bg-light-dark rounded py-1 px-2">
                         { (avatarInfo.type !== AvatarInfoUser.OWN_USER) &&
                             <Flex grow alignItems="center" className="motto-content">
-                                <Text fullWidth pointer wrap textBreak small variant="white">{ motto }</Text>
+                                <Text fullWidth pointer small textBreak wrap variant="white">{ motto }</Text>
                             </Flex> }
                         { avatarInfo.type === AvatarInfoUser.OWN_USER &&
                             <Flex grow alignItems="center" gap={ 2 }>
                                 <FaPencilAlt className="small fa-icon" />
                                 <Flex grow alignItems="center" className="motto-content">
                                     { !isEditingMotto &&
-                                        <Text fullWidth pointer wrap textBreak small variant="white" onClick={ event => setIsEditingMotto(true) }>{ motto }&nbsp;</Text> }
+                                        <Text fullWidth pointer small textBreak wrap variant="white" onClick={ event => setIsEditingMotto(true) }>{ motto }&nbsp;</Text> }
                                     { isEditingMotto &&
-                                        <input type="text" className="motto-input" maxLength={ GetConfigurationValue<number>('motto.max.length', 38) } value={ motto } onChange={ event => setMotto(event.target.value) } onBlur={ onMottoBlur } onKeyDown={ onMottoKeyDown } autoFocus={ true } /> }
+                                        <input autoFocus={ true } className="motto-input" maxLength={ GetConfigurationValue<number>('motto.max.length', 38) } type="text" value={ motto } onBlur={ onMottoBlur } onChange={ event => setMotto(event.target.value) } onKeyDown={ onMottoKeyDown } /> }
                                 </Flex>
                             </Flex> }
                     </Flex>
                     <hr className="m-0" />
-                </Column>
-                <Column gap={ 1 }>
-                    <Text variant="white" small wrap>
+                </div>
+                <div className="flex flex-column gap-1">
+                    <Text small wrap variant="white">
                         { LocalizeText('infostand.text.achievement_score') + ' ' + avatarInfo.achievementScore }
                     </Text>
                     { (avatarInfo.carryItem > 0) &&
                         <>
                             <hr className="m-0" />
-                            <Text variant="white" small wrap>
+                            <Text small wrap variant="white">
                                 { LocalizeText('infostand.text.handitem', [ 'item' ], [ LocalizeText('handitem' + avatarInfo.carryItem) ]) }
                             </Text>
                         </> }
-                </Column>
-                <Column gap={ 1 }>
+                </div>
+                <div className="flex flex-column gap-1">
                     <InfoStandWidgetUserRelationshipsView relationships={ relationships } />
-                </Column>
+                </div>
                 { GetConfigurationValue('user.tags.enabled') &&
-                    <Column gap={ 1 } className="mt-1">
+                    <Column className="mt-1" gap={ 1 }>
                         <InfoStandWidgetUserTagsView tags={ GetSessionDataManager().tags } />
-                    </Column>
-                }
+                    </Column> }
             </Column>
         </Column>
     );

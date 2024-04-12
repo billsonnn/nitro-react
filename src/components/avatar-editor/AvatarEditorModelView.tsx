@@ -1,7 +1,6 @@
 import { AvatarEditorFigureCategory, AvatarFigurePartType, FigureDataContainer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { IAvatarEditorCategory } from '../../api';
-import { Column, Flex, Grid } from '../../common';
 import { useAvatarEditor } from '../../hooks';
 import { AvatarEditorIcon } from './AvatarEditorIcon';
 import { AvatarEditorFigureSetView } from './figure-set';
@@ -47,35 +46,35 @@ export const AvatarEditorModelView: FC<{
     if(!activeCategory) return null;
 
     return (
-        <Grid>
-            <Column size={ 2 }>
+        <div className="flex gap-2 overflow-hidden">
+            <div className="flex flex-column col-2">
                 { (name === AvatarEditorFigureCategory.GENERIC) &&
                     <>
-                        <Flex center pointer className="category-item" onClick={ event => setGender(AvatarFigurePartType.MALE) }>
+                        <div className="category-item items-center justify-center cursor-pointer flex" onClick={ event => setGender(AvatarFigurePartType.MALE) }>
                             <AvatarEditorIcon icon="male" selected={ gender === FigureDataContainer.MALE } />
-                        </Flex>
-                        <Flex center pointer className="category-item" onClick={ event => setGender(AvatarFigurePartType.FEMALE) }>
+                        </div>
+                        <div className="category-item items-center justify-center cursor-pointer flex" onClick={ event => setGender(AvatarFigurePartType.FEMALE) }>
                             <AvatarEditorIcon icon="female" selected={ gender === FigureDataContainer.FEMALE } />
-                        </Flex>
+                        </div>
                     </> }
                 { (name !== AvatarEditorFigureCategory.GENERIC) && (categories.length > 0) && categories.map(category =>
                 {
                     return (
-                        <Flex center pointer key={ category.setType } className="category-item" onClick={ event => selectSet(category.setType) }>
+                        <div key={ category.setType } className="category-item items-center justify-center cursor-pointer flex" onClick={ event => selectSet(category.setType) }>
                             <AvatarEditorIcon icon={ category.setType } selected={ (activeSetType === category.setType) } />
-                        </Flex>
+                        </div>
                     );
                 }) }
-            </Column>
-            <Column size={ 5 } overflow="hidden">
-                <AvatarEditorFigureSetView category={ activeCategory } />
-            </Column>
-            <Column size={ 5 } overflow="hidden">
+            </div>
+            <div className="flex flex-column overflow-hidden col-5">
+                <AvatarEditorFigureSetView category={ activeCategory } columnCount={ 3 } />
+            </div>
+            <div className="flex flex-column overflow-hidden col-5">
                 { (maxPaletteCount >= 1) &&
-                    <AvatarEditorPaletteSetView category={ activeCategory } paletteIndex={ 0 } /> }
+                    <AvatarEditorPaletteSetView category={ activeCategory } columnCount={ 3 } paletteIndex={ 0 } /> }
                 { (maxPaletteCount === 2) &&
-                    <AvatarEditorPaletteSetView category={ activeCategory } paletteIndex={ 1 } /> }
-            </Column>
-        </Grid>
+                    <AvatarEditorPaletteSetView category={ activeCategory } columnCount={ 3 } paletteIndex={ 1 } /> }
+            </div>
+        </div>
     );
 }

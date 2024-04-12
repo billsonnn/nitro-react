@@ -27,8 +27,8 @@ export const CatalogLayoutFrontPageItemView: FC<CatalogLayoutFrontPageItemViewPr
     const imageUrl = (GetConfigurationValue<string>('image.library.url') + item.itemPromoImage);
 
     return (
-        <LayoutBackgroundImage imageUrl={ imageUrl } classNames={ getClassNames } position={ position } fullHeight={ fullHeight } pointer={ pointer } overflow={ overflow } { ...rest }>
-            <Text position="absolute" variant="white" className="bg-dark rounded p-2 m-2 bottom-0">
+        <LayoutBackgroundImage classNames={ getClassNames } fullHeight={ fullHeight } imageUrl={ imageUrl } overflow={ overflow } pointer={ pointer } position={ position } { ...rest }>
+            <Text className="bg-dark rounded p-2 m-2 bottom-0" position="absolute" variant="white">
                 { item.itemName }
             </Text>
             { children }

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Base, Column, Flex } from '../../../../../common';
+import { Column } from '../../../../../common';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutPets3View: FC<CatalogLayoutProps> = props =>
@@ -10,16 +10,16 @@ export const CatalogLayoutPets3View: FC<CatalogLayoutProps> = props =>
     
     return (
         <Column grow className="bg-muted rounded text-black p-2" overflow="hidden">
-            <Flex alignItems="center" gap={ 2 }>
+            <div className="items-center gap-2">
                 { imageUrl && <img alt="" src={ imageUrl } /> }
-                <Base className="fs-5" dangerouslySetInnerHTML={ { __html: page.localization.getText(1) } } />
-            </Flex>
+                <div className="fs-5" dangerouslySetInnerHTML={ { __html: page.localization.getText(1) } } />
+            </div>
             <Column grow alignItems="center" overflow="auto">
-                <Base dangerouslySetInnerHTML={ { __html: page.localization.getText(2) } } />
+                <div dangerouslySetInnerHTML={ { __html: page.localization.getText(2) } } />
             </Column>
-            <Flex alignItems="center">
-                <Base className="fw-bold" dangerouslySetInnerHTML={ { __html: page.localization.getText(3) } } />
-            </Flex>
+            <div className="flex items-center">
+                <div className="fw-bold" dangerouslySetInnerHTML={ { __html: page.localization.getText(3) } } />
+            </div>
         </Column>
     );
 }

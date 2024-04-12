@@ -81,9 +81,9 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
     }
 
     if(thumbnail) return (
-        <Column pointer overflow="hidden" alignItems="center" onClick={ visitRoom } gap={ 0 } className="navigator-item p-1 bg-light rounded-3 small mb-1 flex-column border border-muted" { ...rest }>
-            <LayoutRoomThumbnailView roomId={ roomData.roomId } customUrl={ roomData.officialRoomPicRef } className="d-flex flex-column align-items-center justify-content-end mb-1">
-                { roomData.habboGroupId > 0 && <LayoutBadgeImageView badgeCode={ roomData.groupBadgeCode } isGroup={ true } className={ 'position-absolute top-0 start-0 m-1' } /> }
+        <Column pointer alignItems="center" className="navigator-item p-1 bg-light rounded-3 small mb-1 flex-column border border-muted" gap={ 0 } overflow="hidden" onClick={ visitRoom } { ...rest }>
+            <LayoutRoomThumbnailView className="flex flex-column items-center justify-content-end mb-1" customUrl={ roomData.officialRoomPicRef } roomId={ roomData.roomId }>
+                { roomData.habboGroupId > 0 && <LayoutBadgeImageView badgeCode={ roomData.groupBadgeCode } className={ 'position-absolute top-0 start-0 m-1' } isGroup={ true } /> }
                 <Flex center className={ 'badge p-1 position-absolute m-1 ' + getUserCounterColor() } gap={ 1 }>
                     <FaUser className="fa-icon" />
                     { roomData.userCount }
@@ -103,12 +103,12 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
     );
 
     return (
-        <Flex pointer overflow="hidden" alignItems="center" onClick={ visitRoom } gap={ 2 } className="navigator-item px-2 py-1 small" { ...rest }>
+        <Flex pointer alignItems="center" className="navigator-item px-2 py-1 small" gap={ 2 } overflow="hidden" onClick={ visitRoom } { ...rest }>
             <Flex center className={ 'badge p-1 ' + getUserCounterColor() } gap={ 1 }>
                 <FaUser className="fa-icon" />
                 { roomData.userCount }
             </Flex>
-            <Text truncate grow>{ roomData.roomName }</Text>
+            <Text grow truncate>{ roomData.roomName }</Text>
             <Flex reverse alignItems="center" gap={ 1 }>
                 <NavigatorSearchResultItemInfoView roomData={ roomData } />
                 { roomData.habboGroupId > 0 && <i className="icon icon-navigator-room-group" /> }

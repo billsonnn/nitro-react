@@ -2,7 +2,6 @@ import { RoomControllerLevel, RoomObjectOperationType } from '@nitrots/nitro-ren
 import { FC } from 'react';
 import { FaArrowsAlt, FaSyncAlt, FaTrashRestore } from 'react-icons/fa';
 import { AvatarInfoFurni, ProcessRoomObjectOperation } from '../../../../../api';
-import { Flex } from '../../../../../common';
 import { ContextMenuHeaderView } from '../../context-menu/ContextMenuHeaderView';
 import { ContextMenuListItemView } from '../../context-menu/ContextMenuListItemView';
 import { ContextMenuView } from '../../context-menu/ContextMenuView';
@@ -42,15 +41,15 @@ export const AvatarInfoWidgetFurniView: FC<AvatarInfoWidgetFurniViewProps> = pro
     }
 
     return (
-        <ContextMenuView objectId={ avatarInfo.id } category={ avatarInfo.category } onClose={ onClose } collapsable={ true }>
+        <ContextMenuView category={ avatarInfo.category } collapsable={ true } objectId={ avatarInfo.id } onClose={ onClose }>
             <ContextMenuHeaderView>
                 { avatarInfo.name }
             </ContextMenuHeaderView>
-            <Flex className="menu-list-split-3">
+            <div className="flex menu-list-split-3">
                 <ContextMenuListItemView onClick={ event => processAction('move') }>
                     <FaArrowsAlt className="center fa-icon" />
                 </ContextMenuListItemView>
-                <ContextMenuListItemView onClick={ event => processAction('rotate') } disabled={ avatarInfo.isWallItem }>
+                <ContextMenuListItemView disabled={ avatarInfo.isWallItem } onClick={ event => processAction('rotate') }>
                     <FaSyncAlt className="center fa-icon" />
                 </ContextMenuListItemView>
                 { (avatarInfo.isOwner || avatarInfo.isAnyRoomController) &&
@@ -61,7 +60,7 @@ export const AvatarInfoWidgetFurniView: FC<AvatarInfoWidgetFurniViewProps> = pro
                     <ContextMenuListItemView onClick={ event => processAction('eject') }>
                         <FaTrashRestore className="center fa-icon" />
                     </ContextMenuListItemView> }
-            </Flex>
+            </div>
         </ContextMenuView>
     );
 }

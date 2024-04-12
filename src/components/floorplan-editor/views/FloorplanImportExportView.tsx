@@ -1,11 +1,11 @@
 import { UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../api';
-import { Button, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
+import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
 import { UseMountEffect } from '../../../hooks';
+import { useFloorplanEditorContext } from '../FloorplanEditorContext';
 import { ConvertTileMapToString } from '../common/ConvertMapToString';
 import { convertNumbersForSaving } from '../common/Utils';
-import { useFloorplanEditorContext } from '../FloorplanEditorContext';
 
 interface FloorplanImportExportViewProps
 {
@@ -37,18 +37,18 @@ export const FloorplanImportExportView: FC<FloorplanImportExportViewProps> = pro
     });
 
     return (
-        <NitroCardView theme="primary-slim" className="floorplan-import-export">
+        <NitroCardView className="floorplan-import-export" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('floor.plan.editor.import.export') } onCloseClick={ onCloseClick } />
             <NitroCardContentView>
                 <textarea className="h-100" value={ map } onChange={ event => setMap(event.target.value) } />
-                <Flex justifyContent="between">
+                <div className="flex justify-content-between">
                     <Button onClick={ event => setMap(ConvertTileMapToString(originalFloorplanSettings.tilemap)) }>
                         { LocalizeText('floor.plan.editor.revert.to.last.received.map') }
                     </Button>
                     <Button onClick={ saveFloorChanges }>
                         { LocalizeText('floor.plan.editor.save') }
                     </Button>
-                </Flex>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
     );

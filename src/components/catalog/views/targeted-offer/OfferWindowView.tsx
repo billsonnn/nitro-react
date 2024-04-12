@@ -1,7 +1,7 @@
 import { GetTargetedOfferComposer, PurchaseTargetedOfferComposer, TargetedOfferData } from '@nitrots/nitro-renderer';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { FriendlyTime, GetConfigurationValue, LocalizeText, SendMessageComposer } from '../../../../api';
-import { Base, Button, Column, Flex, LayoutCurrencyIcon, NitroCardContentView, NitroCardHeaderView, NitroCardSubHeaderView, NitroCardView, Text } from '../../../../common';
+import { Button, Column, Flex, LayoutCurrencyIcon, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { usePurse } from '../../../../hooks';
 
 export const OfferWindowView = (props: { offer: TargetedOfferData, setOpen: Dispatch<SetStateAction<boolean>> }) =>
@@ -43,39 +43,42 @@ export const OfferWindowView = (props: { offer: TargetedOfferData, setOpen: Disp
 
     if (!offer) return;
 
-    return <NitroCardView theme="primary-slim" uniqueKey="targeted-offer" className="nitro-targeted-offer">
+    return <NitroCardView className="nitro-targeted-offer" theme="primary-slim" uniqueKey="targeted-offer">
         <NitroCardHeaderView headerText={ LocalizeText(offer.title) } onCloseClick={ event => setOpen(false) } />
-        <NitroCardSubHeaderView position="relative" className="justify-content-center align-items-center cursor-pointer" variant="danger" gap={ 3 }>
+        <div className="container-fluid p-1 position-relative justify-center items-center cursor-pointer gap-3 bg-danger">
             { LocalizeText('targeted.offer.timeleft',[ 'timeleft' ],[ expirationTime() ]) }
-        </NitroCardSubHeaderView>
+        </div>
         <NitroCardContentView gap={ 1 }>
-            <Flex gap={ 1 } fullHeight>
-                <Flex gap={ 1 } column className="w-75 text-black">
-                    <Column className="bg-warning p-2" fullHeight>
+            <Flex fullHeight gap={ 1 }>
+                <Flex column className="w-75 text-black" gap={ 1 }>
+                    <Column fullHeight className="bg-warning p-2">
                         <h4>
                             { LocalizeText(offer.title) }
                         </h4>
-                        <Base dangerouslySetInnerHTML={ { __html: offer.description } }/>
+                        <div dangerouslySetInnerHTML={ { __html: offer.description } }/>
                     </Column>
-                    <Flex alignSelf="center" alignItems="center" justifyContent="center" gap={ 2 }>
-                        { offer.purchaseLimit > 1 && <Flex gap={ 1 }>
-                            <Text variant="muted">{ LocalizeText('catalog.bundlewidget.quantity') }</Text>
-                            <input type="number" value={ amount } onChange={ evt => setAmount(parseInt(evt.target.value)) } min={ 1 } max={ offer.purchaseLimit } />
-                        </Flex> }
-                        <Button variant="primary" disabled={ !canPurchase } onClick={ () => buyOffer() }>{ LocalizeText('targeted.offer.button.buy') }</Button>
+                    <Flex alignItems="center" alignSelf="center" gap={ 2 } justifyContent="center">
+                        { offer.purchaseLimit > 1 &&
+                            <div className="flex gap-1">
+                                <Text variant="muted">{ LocalizeText('catalog.bundlewidget.quantity') }</Text>
+                                <input max={ offer.purchaseLimit } min={ 1 } type="number" value={ amount } onChange={ evt => setAmount(parseInt(evt.target.value)) } />
+                            </div> }
+                        <Button disabled={ !canPurchase } variant="primary" onClick={ () => buyOffer() }>{ LocalizeText('targeted.offer.button.buy') }</Button>
                     </Flex>
                 </Flex>
-                <Base className="w-50" fullHeight style={ { background: `url(${ GetConfigurationValue('image.library.url') + offer.imageUrl }) no-repeat center` } } />
+                <div className="w-50 h-100" style={ { background: `url(${ GetConfigurationValue('image.library.url') + offer.imageUrl }) no-repeat center` } } />
             </Flex>
-            <Flex className="price-ray position-absolute" alignItems="center" justifyContent="center" column>
+            <Flex column alignItems="center" className="price-ray position-absolute" justifyContent="center">
                 <Text>{ LocalizeText('targeted.offer.price.label') }</Text>
-                { offer.priceInCredits > 0 && <Flex gap={ 1 }>
-                    <Text variant="light">{ offer.priceInCredits }</Text>
-                    <LayoutCurrencyIcon type={ -1 } />
-                </Flex> }
-                { offer.priceInActivityPoints > 0 && <Flex gap={ 1 }>
-                    <Text className="ubuntu-bold" variant="light">+{ offer.priceInActivityPoints }</Text> <LayoutCurrencyIcon type={ offer.activityPointType }/>
-                </Flex> }
+                { offer.priceInCredits > 0 &&
+                    <div className="flex gap-1">
+                        <Text variant="light">{ offer.priceInCredits }</Text>
+                        <LayoutCurrencyIcon type={ -1 } />
+                    </div> }
+                { offer.priceInActivityPoints > 0 &&
+                    <div className="flex gap-1">
+                        <Text className="ubuntu-bold" variant="light">+{ offer.priceInActivityPoints }</Text> <LayoutCurrencyIcon type={ offer.activityPointType }/>
+                    </div> }
             </Flex>
         </NitroCardContentView>
     </NitroCardView>;

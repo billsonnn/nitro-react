@@ -1,7 +1,7 @@
 import { GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType, WiredSelectionVisualizer } from '../../../api';
-import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
+import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { useWired } from '../../../hooks';
 import { WiredFurniSelectorView } from './WiredFurniSelectorView';
 
@@ -87,16 +87,16 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
     }, [ trigger, hasSpecialInput, requiresFurni, setIntParams, setStringParam, setFurniIds, setAllowsFurni ]);
 
     return (
-        <NitroCardView uniqueKey="nitro-wired" className="nitro-wired" theme="primary-slim">
+        <NitroCardView className="nitro-wired" theme="primary-slim" uniqueKey="nitro-wired">
             <NitroCardHeaderView headerText={ LocalizeText('wiredfurni.title') } onCloseClick={ onClose } />
             <NitroCardContentView>
-                <Column gap={ 1 }>
-                    <Flex alignItems="center" gap={ 1 }>
+                <div className="flex flex-column gap-1">
+                    <div className="flex items-center gap-1">
                         <i className={ `icon icon-wired-${ wiredType }` } />
                         <Text bold>{ wiredName }</Text>
-                    </Flex>
+                    </div>
                     <Text small>{ wiredDescription }</Text>
-                </Column>
+                </div>
                 { !!children && <hr className="m-0 bg-dark" /> }
                 { children }
                 { (requiresFurni > WiredFurniType.STUFF_SELECTION_OPTION_NONE) &&
@@ -104,10 +104,10 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
                         <hr className="m-0 bg-dark" />
                         <WiredFurniSelectorView />
                     </> }
-                <Flex alignItems="center" gap={ 1 }>
+                <div className="flex items-center gap-1">
                     <Button fullWidth variant="success" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</Button>
                     <Button fullWidth variant="secondary" onClick={ onClose }>{ LocalizeText('cancel') }</Button>
-                </Flex>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
     );

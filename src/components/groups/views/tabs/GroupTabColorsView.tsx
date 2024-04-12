@@ -1,7 +1,7 @@
 import { GroupSaveColorsComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { IGroupData, LocalizeText, SendMessageComposer } from '../../../../api';
-import { AutoGrid, Base, classNames, Column, Flex, Grid, Text } from '../../../../common';
+import { AutoGrid, Column, Grid, Text, classNames } from '../../../../common';
 import { useGroup } from '../../../../hooks';
 
 interface GroupTabColorsViewProps
@@ -96,26 +96,26 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
     
     return (
         <Grid overflow="hidden">
-            <Column size={ 2 } gap={ 1 }>
+            <Column gap={ 1 } size={ 2 }>
                 <Text bold>{ LocalizeText('group.edit.color.guild.color') }</Text>
                 { groupData.groupColors && (groupData.groupColors.length > 0) &&
-                    <Flex overflow="hidden" className="rounded border">
-                        <Base className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(0) } } />
-                        <Base className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(1) } } />
-                    </Flex> }
+                    <div className="flex overflow-hidden rounded border">
+                        <div className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(0) } } />
+                        <div className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(1) } } />
+                    </div> }
             </Column>
-            <Column size={ 5 } gap={ 1 } overflow="hidden">
+            <Column gap={ 1 } overflow="hidden" size={ 5 }>
                 <Text bold>{ LocalizeText('group.edit.color.primary.color') }</Text>
-                <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 }>
+                <AutoGrid columnCount={ 7 } columnMinHeight={ 16 } columnMinWidth={ 16 } gap={ 1 }>
                     { groupData.groupColors && groupCustomize.groupColorsA && groupCustomize.groupColorsA.map((item, index) =>
                     {
                         return <div key={ index } className={ classNames('group-badge-color-swatch cursor-pointer', ((groupData.groupColors[0] === item.id) && 'active')) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(0, item.id) }></div>
                     }) }
                 </AutoGrid>
             </Column>
-            <Column size={ 5 } gap={ 1 } overflow="hidden">
+            <Column gap={ 1 } overflow="hidden" size={ 5 }>
                 <Text bold>{ LocalizeText('group.edit.color.secondary.color') }</Text>
-                <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 }>
+                <AutoGrid columnCount={ 7 } columnMinHeight={ 16 } columnMinWidth={ 16 } gap={ 1 }>
                     { groupData.groupColors && groupCustomize.groupColorsB && groupCustomize.groupColorsB.map((item, index) =>
                     {
                         return <div key={ index } className={ classNames('group-badge-color-swatch cursor-pointer', ((groupData.groupColors[1] === item.id) && 'active')) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(1, item.id) }></div>

@@ -58,19 +58,19 @@ export const SelectReportedChatsView: FC<{}> = props =>
 
     return (
         <>
-            <Column gap={ 1 }>
+            <div className="flex flex-column gap-1">
                 <Text fontSize={ 4 }>{ LocalizeText('help.emergency.chat_report.subtitle') }</Text>
                 <Text>{ LocalizeText('help.emergency.chat_report.description') }</Text>
-            </Column>
+            </div>
             <Column gap={ 1 } overflow="hidden">
                 { !userChats || !userChats.length &&
                     <Text>{ LocalizeText('help.cfh.error.no_user_data') }</Text> }
                 { (userChats.length > 0) &&
-                    <AutoGrid gap={ 1 } columnCount={ 1 } columnMinHeight={ 25 } overflow="auto">
+                    <AutoGrid columnCount={ 1 } columnMinHeight={ 25 } gap={ 1 } overflow="auto">
                         { userChats.map((chat, index) =>
                         {
                             return (
-                                <LayoutGridItem key={ chat.id } onClick={ event => selectChat(chat) } itemActive={ (selectedChats.indexOf(chat) >= 0) }>
+                                <LayoutGridItem key={ chat.id } itemActive={ (selectedChats.indexOf(chat) >= 0) } onClick={ event => selectChat(chat) }>
                                     <Text>{ chat.message }</Text>
                                 </LayoutGridItem>
                             );
@@ -78,7 +78,7 @@ export const SelectReportedChatsView: FC<{}> = props =>
                     </AutoGrid> }
             </Column>
             <Flex gap={ 2 } justifyContent="between">
-                <Button variant="secondary" onClick={ back } disabled={ (activeReport.reportType === ReportType.IM) }>
+                <Button disabled={ (activeReport.reportType === ReportType.IM) } variant="secondary" onClick={ back }>
                     { LocalizeText('generic.back') }
                 </Button>
                 <Button disabled={ (selectedChats.length <= 0) } onClick={ submitChats }>

@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo } from 'react';
-import { GetImageIconUrlForProduct, LocalizeText, MarketplaceOfferData, MarketPlaceOfferState, ProductTypeEnum } from '../../../../../../api';
+import { GetImageIconUrlForProduct, LocalizeText, MarketPlaceOfferState, MarketplaceOfferData, ProductTypeEnum } from '../../../../../../api';
 import { Button, Column, LayoutGridItem, Text } from '../../../../../../common';
 
 export interface MarketplaceItemViewProps
@@ -46,7 +46,7 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
     }, [ offerData ]);
 
     return (
-        <LayoutGridItem shrink center={ false } column={ false } alignItems="center" className="p-1">
+        <LayoutGridItem shrink alignItems="center" center={ false } className="p-1" column={ false }>
             <Column style={ { width: 40, height: 40 } }>
                 <LayoutGridItem column={ false } itemImage={ GetImageIconUrlForProduct(((offerData.furniType === MarketplaceOfferData.TYPE_FLOOR) ? ProductTypeEnum.FLOOR : ProductTypeEnum.WALL), offerData.furniId, offerData.extraData) } itemUniqueNumber={ offerData.isUniqueLimitedItem ? offerData.stuffData.uniqueNumber : 0 } />
             </Column>
@@ -63,7 +63,7 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
                         <Text>{ LocalizeText('catalog.marketplace.offer_count', [ 'count' ], [ offerData.offerCount.toString() ]) }</Text>
                     </> }
             </Column>
-            <Column gap={ 1 }>
+            <div className="flex flex-column gap-1">
                 { ((type === OWN_OFFER) && (offerData.status !== MarketPlaceOfferState.SOLD)) &&
                     <Button variant="secondary" onClick={ () => onClick(offerData) }>
                         { LocalizeText('catalog.marketplace.offer.pick') }
@@ -73,11 +73,11 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
                         <Button variant="secondary" onClick={ () => onClick(offerData) }>
                             { LocalizeText('buy') }
                         </Button>
-                        <Button variant="secondary" disabled>
+                        <Button disabled variant="secondary">
                             { LocalizeText('catalog.marketplace.view_more') }
                         </Button>
                     </> }
-            </Column>
+            </div>
         </LayoutGridItem>
     );
 }

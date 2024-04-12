@@ -1,7 +1,6 @@
 import { Game2ExitGameMessageComposer } from '@nitrots/nitro-renderer';
 import { useEffect, useRef, useState } from 'react';
 import { SendMessageComposer } from '../../../api';
-import { Base } from '../../../common';
 import { useGameCenter } from '../../../hooks';
 
 export const GameStageView = () => 
@@ -43,5 +42,5 @@ export const GameStageView = () =>
 
     if(!gameURL) return null;
 
-    return <Base innerRef={ ref }className="game-center-stage"/>
+    return <div ref={ ref } className="game-center-stage"/>
 }

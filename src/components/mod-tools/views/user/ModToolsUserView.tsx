@@ -108,7 +108,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
                 <NitroCardHeaderView headerText={ LocalizeText('modtools.userinfo.title', [ 'username' ], [ userInfo.userName ]) } onCloseClick={ () => onCloseClick() } />
                 <NitroCardContentView className="text-black">
                     <Grid overflow="hidden">
-                        <Column size={ 8 } overflow="auto">
+                        <Column overflow="auto" size={ 8 }>
                             <table className="table table-striped table-sm table-text-small text-black m-0">
                                 <tbody>
                                     { userProperties.map( (property, index) =>
@@ -128,7 +128,7 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
                                 </tbody>
                             </table>
                         </Column>
-                        <Column size={ 4 } gap={ 1 }>
+                        <Column gap={ 1 } size={ 4 }>
                             <Button onClick={ event => CreateLinkEvent(`mod-tools/open-user-chatlog/${ userId }`) }>
                                 Room Chat
                             </Button>

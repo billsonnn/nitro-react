@@ -1,7 +1,5 @@
 import { FC, useMemo } from 'react';
-import { Base } from '../Base';
 import { Column, ColumnProps } from '../Column';
-import { Flex } from '../Flex';
 
 interface LayoutProgressBarProps extends ColumnProps
 {
@@ -24,10 +22,10 @@ export const LayoutProgressBar: FC<LayoutProgressBarProps> = props =>
     }, [ classNames ]);
 
     return (
-        <Column position={ position } justifyContent={ justifyContent } classNames={ getClassNames } { ...rest }>
+        <Column classNames={ getClassNames } justifyContent={ justifyContent } position={ position } { ...rest }>
             { text && (text.length > 0) &&
-                <Flex fit center position="absolute" className="nitro-progress-bar-text small">{ text }</Flex> }
-            <Base className="nitro-progress-bar-inner" style={ { width: (~~((((progress - 0) * (100 - 0)) / (maxProgress - 0)) + 0) + '%') } } />
+                <div className="flex items-center justify-center size-full p-absolute nitro-progress-bar-text small">{ text }</div> }
+            <div className="nitro-progress-bar-inner" style={ { width: (~~((((progress - 0) * (100 - 0)) / (maxProgress - 0)) + 0) + '%') } } />
             { children }
         </Column>
     );

@@ -1,8 +1,8 @@
 import { IObjectData, TradingListAddItemComposer, TradingListAddItemsComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { FaChevronLeft, FaChevronRight, FaLock, FaUnlock } from 'react-icons/fa';
-import { FurniCategory, getGuildFurniType, GroupItem, IFurnitureItem, LocalizeText, NotificationAlertType, SendMessageComposer, TradeState } from '../../../../api';
-import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../common';
+import { FurniCategory, GroupItem, IFurnitureItem, LocalizeText, NotificationAlertType, SendMessageComposer, TradeState, getGuildFurniType } from '../../../../api';
+import { AutoGrid, Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../common';
 import { useInventoryTrade, useNotification } from '../../../../hooks';
 import { InventoryFurnitureSearchView } from './InventoryFurnitureSearchView';
 
@@ -178,18 +178,18 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
     return (
         <Grid>
-            <Column size={ 4 } overflow="hidden">
+            <Column overflow="hidden" size={ 4 }>
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
-                <Flex column fullHeight justifyContent="between" overflow="hidden" gap={ 2 }>
+                <Flex column fullHeight gap={ 2 } justifyContent="between" overflow="hidden">
                     <AutoGrid columnCount={ 3 }>
                         { filteredGroupItems && (filteredGroupItems.length > 0) && filteredGroupItems.map((item, index) =>
                         {
                             const count = item.getUnlockedCount();
 
                             return (
-                                <LayoutGridItem key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) } onDoubleClick={ event => attemptItemOffer(1) }>
+                                <LayoutGridItem key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemActive={ (groupItem === item) } itemCount={ count } itemImage={ item.iconUrl } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) } onDoubleClick={ event => attemptItemOffer(1) }>
                                     { ((count > 0) && (groupItem === item)) &&
-                                        <Button position="absolute" variant="success" className="trade-button bottom-1 end-1" onClick={ event => attemptItemOffer(1) }>
+                                        <Button className="trade-button bottom-1 end-1" position="absolute" variant="success" onClick={ event => attemptItemOffer(1) }>
                                             <FaChevronRight className="fa-icon" />
                                         </Button>
                                     }
@@ -197,28 +197,28 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                             );
                         }) }
                     </AutoGrid>
-                    <Column gap={ 1 } alignItems="end">
+                    <Column alignItems="end" gap={ 1 }>
                         <Grid overflow="hidden">
-                            <Column size={ 6 } overflow="hidden">
-                                <input type="number" className="form-control form-control-sm quantity-input" placeholder={ LocalizeText('catalog.bundlewidget.spinner.select.amount') } disabled={ !groupItem } value={ quantity } onChange={ event => setQuantity(event.target.valueAsNumber) } />
+                            <Column overflow="hidden" size={ 6 }>
+                                <input className="form-control form-control-sm quantity-input" disabled={ !groupItem } placeholder={ LocalizeText('catalog.bundlewidget.spinner.select.amount') } type="number" value={ quantity } onChange={ event => setQuantity(event.target.valueAsNumber) } />
                             </Column>
-                            <Column size={ 6 } overflow="hidden">
-                                <Button variant="secondary" disabled={ !groupItem } onClick={ event => changeCount(groupItem.getUnlockedCount()) }>{ LocalizeText('inventory.trading.areoffering') }</Button>
+                            <Column overflow="hidden" size={ 6 }>
+                                <Button disabled={ !groupItem } variant="secondary" onClick={ event => changeCount(groupItem.getUnlockedCount()) }>{ LocalizeText('inventory.trading.areoffering') }</Button>
                             </Column>
                         </Grid>
-                        <Base fullWidth className="badge bg-muted">
+                        <div className="badge bg-muted w-100">
                             { groupItem ? groupItem.name : LocalizeText('catalog_selectproduct') }
-                        </Base>
+                        </div>
                     </Column>
                 </Flex>
             </Column>
-            <Column size={ 8 } overflow="hidden">
+            <Column overflow="hidden" size={ 8 }>
                 <Grid overflow="hidden">
-                    <Column size={ 6 } overflow="hidden">
-                        <Flex justifyContent="between" alignItems="center">
+                    <Column overflow="hidden" size={ 6 }>
+                        <div className="flex justify-content-between items-center">
                             <Text>{ LocalizeText('inventory.trading.you') } { LocalizeText('inventory.trading.areoffering') }:</Text>
                             { getLockIcon(ownUser.accepts) }
-                        </Flex>
+                        </div>
                         <AutoGrid columnCount={ 3 }>
                             { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
                             {
@@ -227,24 +227,24 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                                 if(!item) return <LayoutGridItem key={ i } />;
 
                                 return (
-                                    <LayoutGridItem key={ i } itemActive={ (ownGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) } onDoubleClick={ event => removeItem(item) }>
+                                    <LayoutGridItem key={ i } itemActive={ (ownGroupItem === item) } itemCount={ item.getTotalCount() } itemImage={ item.iconUrl } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) } onDoubleClick={ event => removeItem(item) }>
                                         { (ownGroupItem === item) &&
-                                            <Button position="absolute" variant="danger" className="trade-button bottom-1 start-1" onClick={ event => removeItem(item) }>
+                                            <Button className="trade-button bottom-1 start-1" position="absolute" variant="danger" onClick={ event => removeItem(item) }>
                                                 <FaChevronLeft className="fa-icon" />
                                             </Button> }
                                     </LayoutGridItem>
                                 );
                             }) }
                         </AutoGrid>
-                        <Base fullWidth className="badge bg-muted">
+                        <div className="badge bg-muted w-100">
                             { ownGroupItem ? ownGroupItem.name : LocalizeText('catalog_selectproduct') }
-                        </Base>
+                        </div>
                     </Column>
-                    <Column size={ 6 } overflow="hidden">
-                        <Flex justifyContent="between" alignItems="center">
+                    <Column overflow="hidden" size={ 6 }>
+                        <div className="flex justify-content-between items-center">
                             <Text>{ otherUser.userName } { LocalizeText('inventory.trading.isoffering') }:</Text>
                             { getLockIcon(otherUser.accepts) }
-                        </Flex>
+                        </div>
                         <AutoGrid columnCount={ 3 }>
                             { Array.from(Array(MAX_ITEMS_TO_TRADE), (e, i) =>
                             {
@@ -252,27 +252,27 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
                                 if(!item) return <LayoutGridItem key={ i } />;
 
-                                return <LayoutGridItem key={ i } itemActive={ (otherGroupItem === item) } itemImage={ item.iconUrl } itemCount={ item.getTotalCount() } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
+                                return <LayoutGridItem key={ i } itemActive={ (otherGroupItem === item) } itemCount={ item.getTotalCount() } itemImage={ item.iconUrl } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
                             }) }
                         </AutoGrid>
-                        <Base fullWidth className="badge bg-muted w-100">
+                        <div className="badge bg-muted w-100">
                             { otherGroupItem ? otherGroupItem.name : LocalizeText('catalog_selectproduct') }
-                        </Base>
+                        </div>
                     </Column>
                 </Grid>
-                <Flex grow justifyContent="between">
+                <div className="flex flex-grow-1 justify-content-between">
                     <Button variant="danger" onClick={ cancelTrade }>{ LocalizeText('generic.cancel') }</Button>
                     { (tradeState === TradeState.TRADING_STATE_READY) &&
-                        <Button variant="secondary" disabled={ (!ownUser.itemCount && !otherUser.itemCount) } onClick={ progressTrade }>{ LocalizeText('inventory.trading.accept') }</Button> }
+                        <Button disabled={ (!ownUser.itemCount && !otherUser.itemCount) } variant="secondary" onClick={ progressTrade }>{ LocalizeText('inventory.trading.accept') }</Button> }
                     { (tradeState === TradeState.TRADING_STATE_RUNNING) &&
-                        <Button variant="secondary" disabled={ (!ownUser.itemCount && !otherUser.itemCount) } onClick={ progressTrade }>{ LocalizeText(ownUser.accepts ? 'inventory.trading.modify' : 'inventory.trading.accept') }</Button> }
+                        <Button disabled={ (!ownUser.itemCount && !otherUser.itemCount) } variant="secondary" onClick={ progressTrade }>{ LocalizeText(ownUser.accepts ? 'inventory.trading.modify' : 'inventory.trading.accept') }</Button> }
                     { (tradeState === TradeState.TRADING_STATE_COUNTDOWN) &&
-                        <Button variant="secondary" disabled>{ LocalizeText('inventory.trading.countdown', [ 'counter' ], [ countdownTick.toString() ]) }</Button> }
+                        <Button disabled variant="secondary">{ LocalizeText('inventory.trading.countdown', [ 'counter' ], [ countdownTick.toString() ]) }</Button> }
                     { (tradeState === TradeState.TRADING_STATE_CONFIRMING) &&
                         <Button variant="secondary" onClick={ progressTrade }>{ LocalizeText('inventory.trading.button.restore') }</Button> }
                     { (tradeState === TradeState.TRADING_STATE_CONFIRMED) &&
                         <Button variant="secondary">{ LocalizeText('inventory.trading.info.waiting') }</Button> }
-                </Flex>
+                </div>
             </Column>
         </Grid>
     );

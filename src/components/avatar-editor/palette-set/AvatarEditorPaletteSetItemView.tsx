@@ -7,16 +7,17 @@ export const AvatarEditorPaletteSetItem: FC<{
     setType: string;
     partColor: IPartColor;
     isSelected: boolean;
+    width?: string;
 } & LayoutGridItemProps> = props =>
 {
-    const { setType = null, partColor = null, isSelected = false, ...rest } = props;
+    const { setType = null, partColor = null, isSelected = false, width = '100%', ...rest } = props;
 
     if(!partColor) return null;
     
     const isHC = !GetConfigurationValue<boolean>('hc.disabled', false) && (partColor.clubLevel > 0);
 
     return (
-        <LayoutGridItem itemHighlight itemColor={ ColorConverter.int2rgb(partColor.rgb) } itemActive={ isSelected } className="clear-bg" { ...rest }>
+        <LayoutGridItem itemHighlight className="clear-bg" itemActive={ isSelected } itemColor={ ColorConverter.int2rgb(partColor.rgb) } { ...rest }>
             { isHC && <LayoutCurrencyIcon className="position-absolute end-1 bottom-1" type="hc" /> }
         </LayoutGridItem>
     );

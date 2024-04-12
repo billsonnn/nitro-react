@@ -2,7 +2,7 @@ import { ColorConverter } from '@nitrots/nitro-renderer';
 import { FC, useMemo, useState } from 'react';
 import { FaFillDrip } from 'react-icons/fa';
 import { IPurchasableOffer } from '../../../../../api';
-import { AutoGrid, Base, Button, Column, Flex, Grid, LayoutGridItem, Text } from '../../../../../common';
+import { AutoGrid, Button, Column, Grid, LayoutGridItem, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
 import { CatalogGridOfferView } from '../common/CatalogGridOfferView';
 import { CatalogAddOnBadgeWidgetView } from '../widgets/CatalogAddOnBadgeWidgetView';
@@ -132,17 +132,17 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
 
     return (
         <Grid>
-            <Column size={ 7 } overflow="hidden">
+            <Column overflow="hidden" size={ 7 }>
                 <AutoGrid columnCount={ 5 }>
                     { (!colorsShowing || !currentOffer || !colorableItems.has(currentOffer.product.furnitureData.className)) &&
                         offers.map((offer, index) => <CatalogGridOfferView key={ index } itemActive={ (currentOffer && (currentOffer.product.furnitureData.hasIndexedColor ? currentOffer.product.furnitureData.className === offer.product.furnitureData.className : currentOffer.offerId === offer.offerId)) } offer={ offer } selectOffer={ selectOffer }/>)
                     }
                     { (colorsShowing && currentOffer && colorableItems.has(currentOffer.product.furnitureData.className)) &&
-                        colorableItems.get(currentOffer.product.furnitureData.className).map((color, index) => <LayoutGridItem itemHighlight key={ index } itemActive={ (currentOffer.product.furnitureData.colorIndex === index) } itemColor={ ColorConverter.int2rgb(color) } className="clear-bg" onClick={ event => selectColor(index, currentOffer.product.furnitureData.className) } />)
+                        colorableItems.get(currentOffer.product.furnitureData.className).map((color, index) => <LayoutGridItem key={ index } itemHighlight className="clear-bg" itemActive={ (currentOffer.product.furnitureData.colorIndex === index) } itemColor={ ColorConverter.int2rgb(color) } onClick={ event => selectColor(index, currentOffer.product.furnitureData.className) } />)
                     }
                 </AutoGrid>
             </Column>
-            <Column center={ !currentOffer } size={ 5 } overflow="hidden">
+            <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
                 { !currentOffer &&
                     <>
                         { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
@@ -150,23 +150,23 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
                     </> }
                 { currentOffer &&
                     <>
-                        <Base position="relative" overflow="hidden">
+                        <div className="position-relative overflow-hidden">
                             <CatalogViewProductWidgetView />
-                            <CatalogAddOnBadgeWidgetView position="absolute" className="bg-muted rounded bottom-1 end-1" />
+                            <CatalogAddOnBadgeWidgetView className="bg-muted rounded bottom-1 end-1" position="absolute" />
                             { currentOffer.product.furnitureData.hasIndexedColor &&
-                                <Button position="absolute" className="bottom-1 start-1" onClick={ event =>setColorsShowing(prev => !prev) }>
+                                <Button className="bottom-1 start-1" position="absolute" onClick={ event =>setColorsShowing(prev => !prev) }>
                                     <FaFillDrip className="fa-icon" />
                                 </Button> }
-                        </Base>
-                        <Column grow gap={ 1 }>
-                            <CatalogLimitedItemWidgetView fullWidth />
-                            <Text grow truncate>{ currentOffer.localizationName }</Text>
-                            <Flex justifyContent="between">
-                                <Column gap={ 1 }>
+                        </div>
+                        <Column className="flex-grow-1" gap={ 1 }>
+                            <CatalogLimitedItemWidgetView />
+                            <Text truncate className="flex-grow-1">{ currentOffer.localizationName }</Text>
+                            <div className="flex justify-content-between">
+                                <div className="flex flex-column gap-1">
                                     <CatalogSpinnerWidgetView />
-                                </Column>
-                                <CatalogTotalPriceWidget justifyContent="end" alignItems="end" />
-                            </Flex>
+                                </div>
+                                <CatalogTotalPriceWidget alignItems="end" justifyContent="end" />
+                            </div>
                             <CatalogPurchaseWidgetView />
                         </Column>
                     </> }

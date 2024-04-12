@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeBadgeName, LocalizeText, UnseenItemCategory } from '../../../../api';
-import { AutoGrid, Button, Column, Flex, Grid, LayoutBadgeImageView, Text } from '../../../../common';
+import { AutoGrid, Button, Column, Grid, LayoutBadgeImageView, Text } from '../../../../common';
 import { useInventoryBadges, useInventoryUnseenTracker } from '../../../../hooks';
 import { InventoryBadgeItemView } from './InventoryBadgeItemView';
 
@@ -35,7 +35,7 @@ export const InventoryBadgeView: FC<{}> = props =>
 
     return (
         <Grid>
-            <Column size={ 7 } overflow="hidden">
+            <Column overflow="hidden" size={ 7 }>
                 <AutoGrid columnCount={ 4 }>
                     { badgeCodes && (badgeCodes.length > 0) && badgeCodes.map((badgeCode, index) =>
                     {
@@ -45,20 +45,20 @@ export const InventoryBadgeView: FC<{}> = props =>
                     }) }
                 </AutoGrid>
             </Column>
-            <Column className="justify-content-between" size={ 5 } overflow="auto">
-                <Column overflow="hidden" gap={ 2 }>
+            <Column className="justify-content-between" overflow="auto" size={ 5 }>
+                <Column gap={ 2 } overflow="hidden">
                     <Text>{ LocalizeText('inventory.badges.activebadges') }</Text>
                     <AutoGrid columnCount={ 3 }>
                         { activeBadgeCodes && (activeBadgeCodes.length > 0) && activeBadgeCodes.map((badgeCode, index) => <InventoryBadgeItemView key={ index } badgeCode={ badgeCode } />) }
                     </AutoGrid>
                 </Column>
                 { !!selectedBadgeCode &&
-                    <Column grow justifyContent="end" gap={ 2 }>
-                        <Flex alignItems="center" gap={ 2 }>
+                    <Column grow gap={ 2 } justifyContent="end">
+                        <div className="items-center gap-2">
                             <LayoutBadgeImageView shrink badgeCode={ selectedBadgeCode } />
                             <Text>{ LocalizeBadgeName(selectedBadgeCode) }</Text>
-                        </Flex>
-                        <Button variant={ (isWearingBadge(selectedBadgeCode) ? 'danger' : 'success') } disabled={ !isWearingBadge(selectedBadgeCode) && !canWearBadges() } onClick={ event => toggleBadge(selectedBadgeCode) }>{ LocalizeText(isWearingBadge(selectedBadgeCode) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>
+                        </div>
+                        <Button disabled={ !isWearingBadge(selectedBadgeCode) && !canWearBadges() } variant={ (isWearingBadge(selectedBadgeCode) ? 'danger' : 'success') } onClick={ event => toggleBadge(selectedBadgeCode) }>{ LocalizeText(isWearingBadge(selectedBadgeCode) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>
                     </Column> }
             </Column>
         </Grid>

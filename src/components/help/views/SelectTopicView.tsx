@@ -30,15 +30,15 @@ export const SelectTopicView: FC<{}> = props =>
 
     return (
         <>
-            <Column gap={ 1 }>
+            <div className="flex flex-column gap-1">
                 <Text fontSize={ 4 }>{ LocalizeText('help.emergency.chat_report.subtitle') }</Text>
                 <Text>{ LocalizeText('help.cfh.pick.topic') }</Text>
-            </Column>
+            </div>
             <Column gap={ 1 } overflow="auto">
                 { (selectedCategory < 0) &&
                     cfhCategories.map((category, index) => <Button key={ index } variant="danger" onClick={ event => setSelectedCategory(index) }>{ LocalizeText(`help.cfh.reason.${ category.name }`) }</Button>) }
                 { (selectedCategory >= 0) &&
-                    cfhCategories[selectedCategory].topics.map((topic, index) => <Button key={ index } variant="danger" onClick={ event => setSelectedTopic(index) } active={ (selectedTopic === index) }>{ LocalizeText(`help.cfh.topic.${ topic.id }`) }</Button>) }
+                    cfhCategories[selectedCategory].topics.map((topic, index) => <Button key={ index } active={ (selectedTopic === index) } variant="danger" onClick={ event => setSelectedTopic(index) }>{ LocalizeText(`help.cfh.topic.${ topic.id }`) }</Button>) }
             </Column>
             <Flex gap={ 2 } justifyContent="between">
                 <Button variant="secondary" onClick={ back }>

@@ -39,10 +39,10 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
     return (
         <LayoutNotificationAlertView title={ title } onClose={ onClose } { ...rest }>
             <Flex fullWidth alignItems="center" position="relative">
-                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => updateSearchValue(event.target.value) } />
+                <input className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } type="text" value={ searchValue } onChange={ event => updateSearchValue(event.target.value) } />
             </Flex>
             <Column fullHeight className="py-1" overflow="hidden">
-                <AutoGrid gap={ 1 } columnCount={ 1 }>
+                <AutoGrid columnCount={ 1 } gap={ 1 }>
                     { results && results.map((n, index) =>
                     { 
                         return <span key={ index }>{ n }</span>
@@ -50,7 +50,7 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
                 </AutoGrid>
             </Column>
             <hr className="my-2"/>
-            <Column alignItems="center" center gap={ 1 }>
+            <Column center alignItems="center" gap={ 1 }>
                 { !isAction && !item.clickUrl &&
                     <Button onClick={ onClose }>{ LocalizeText('generic.close') }</Button> }
                 { item.clickUrl && (item.clickUrl.length > 0) &&

@@ -1,7 +1,7 @@
 import { CatalogGroupsComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../../api';
-import { Base, Column, Flex, Grid, Text } from '../../../../../common';
+import { Column, Grid, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
 import { CatalogFirstProductSelectorWidgetView } from '../widgets/CatalogFirstProductSelectorWidgetView';
 import { CatalogGuildSelectorWidgetView } from '../widgets/CatalogGuildSelectorWidgetView';
@@ -25,20 +25,20 @@ export const CatalogLayouGuildForumView: FC<CatalogLayoutProps> = props =>
         <>
             <CatalogFirstProductSelectorWidgetView />
             <Grid>
-                <Column className="bg-muted rounded p-2 text-black" size={ 7 } overflow="hidden">
-                    <Base className="overflow-auto" dangerouslySetInnerHTML={ { __html: page.localization.getText(1) } } />
+                <Column className="bg-muted rounded p-2 text-black" overflow="hidden" size={ 7 }>
+                    <div className="overflow-auto" dangerouslySetInnerHTML={ { __html: page.localization.getText(1) } } />
                 </Column>
-                <Column size={ 5 } overflow="hidden" gap={ 1 }>
+                <Column gap={ 1 } overflow="hidden" size={ 5 }>
                     { !!currentOffer &&
                         <>
                             <Column grow gap={ 1 }>
                                 <Text truncate>{ currentOffer.localizationName }</Text>
-                                <Base grow>
+                                <div className="flex-grow-1">
                                     <CatalogGuildSelectorWidgetView />
-                                </Base>
-                                <Flex justifyContent="end">
+                                </div>
+                                <div className="flex justify-content-end">
                                     <CatalogTotalPriceWidget alignItems="end" />
-                                </Flex>
+                                </div>
                                 <CatalogPurchaseWidgetView noGiftOption={ true } />
                             </Column>
                         </> }

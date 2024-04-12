@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { Base, Column, Flex, Grid, Text } from '../../../../../common';
+import { Column, Grid, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
 import { CatalogPurchaseWidgetView } from '../widgets/CatalogPurchaseWidgetView';
 import { CatalogSpacesWidgetView } from '../widgets/CatalogSpacesWidgetView';
@@ -19,10 +19,10 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutProps> = props =>
 
     return (
         <Grid>
-            <Column size={ 7 } overflow="hidden">
+            <Column overflow="hidden" size={ 7 }>
                 <CatalogSpacesWidgetView />
             </Column>
-            <Column center={ !currentOffer } size={ 5 } overflow="hidden">
+            <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
                 { !currentOffer &&
                     <>
                         { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
@@ -30,14 +30,14 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutProps> = props =>
                     </> }
                 { currentOffer &&
                     <>
-                        <Base position="relative" overflow="hidden">
+                        <div className="position-relative overflow-hidden">
                             <CatalogViewProductWidgetView />
-                        </Base>
+                        </div>
                         <Column grow gap={ 1 }>
                             <Text grow truncate>{ currentOffer.localizationName }</Text>
-                            <Flex justifyContent="end">
+                            <div className="flex justify-content-end">
                                 <CatalogTotalPriceWidget alignItems="end" />
-                            </Flex>
+                            </div>
                             <CatalogPurchaseWidgetView />
                         </Column>
                     </> }

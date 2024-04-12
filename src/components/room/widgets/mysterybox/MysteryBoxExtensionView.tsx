@@ -2,7 +2,7 @@ import { MysteryBoxKeysUpdateEvent } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { ColorUtils, LocalizeText } from '../../../../api';
-import { Base, Column, Flex, LayoutGridItem, Text } from '../../../../common';
+import { Flex, LayoutGridItem, Text } from '../../../../common';
 import { useNitroEvent } from '../../../../hooks';
 
 const colorMap = {
@@ -38,9 +38,9 @@ export const MysteryBoxExtensionView: FC<{}> = props =>
     if(keyColor === '' && boxColor === '') return null;
 
     return (
-        <Base className="nitro-notification-bubble rounded mysterybox-extension">
-            <Column>
-                <Flex alignItems="center" justifyContent="between" pointer onClick={ event => setIsOpen(value => !value) }>
+        <div className="nitro-notification-bubble rounded mysterybox-extension">
+            <div className="flex flex-column">
+                <Flex pointer alignItems="center" justifyContent="between" onClick={ event => setIsOpen(value => !value) }>
                     <Text variant="white">{ LocalizeText('mysterybox.tracker.title') }</Text>
                     { isOpen && <FaChevronUp className="fa-icon" /> }
                     { !isOpen && <FaChevronDown className="fa-icon" /> }
@@ -48,7 +48,7 @@ export const MysteryBoxExtensionView: FC<{}> = props =>
                 { isOpen &&
                     <>
                         <Text variant="white">{ LocalizeText('mysterybox.tracker.description') }</Text>
-                        <Flex justifyContent="center" alignItems="center" gap={ 2 }>
+                        <div className="flex items-center gap-2 justify-center">
                             <LayoutGridItem className="mysterybox-container">
                                 <div className="box-image flex-shrink-0" style={ { backgroundColor: getRgbColor(boxColor) } }>
                                     <div className="chain-overlay-image" />
@@ -59,9 +59,9 @@ export const MysteryBoxExtensionView: FC<{}> = props =>
                                     <div className="key-overlay-image" />
                                 </div>
                             </LayoutGridItem>
-                        </Flex>
+                        </div>
                     </> }
-            </Column>
-        </Base>
+            </div>
+        </div>
     );
 }

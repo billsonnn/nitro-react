@@ -1,7 +1,7 @@
 import { GetOfficialSongIdMessageComposer, GetSoundManager, MusicPriorities, OfficialSongIdMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetConfigurationValue, LocalizeText, ProductTypeEnum, SendMessageComposer } from '../../../../../api';
-import { Button, Column, Flex, Grid, LayoutImage, Text } from '../../../../../common';
+import { Button, Column, Grid, LayoutImage, Text } from '../../../../../common';
 import { useCatalog, useMessageEvent } from '../../../../../hooks';
 import { CatalogHeaderView } from '../../catalog-header/CatalogHeaderView';
 import { CatalogAddOnBadgeWidgetView } from '../widgets/CatalogAddOnBadgeWidgetView';
@@ -70,12 +70,12 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props =>
     return (
         <>
             <Grid>
-                <Column size={ 7 } overflow="hidden">
+                <Column overflow="hidden" size={ 7 }>
                     { GetConfigurationValue('catalog.headers') &&
                         <CatalogHeaderView imageUrl={ currentPage.localization.getImage(0) }/> }
                     <CatalogItemGridWidgetView />
                 </Column>
-                <Column center={ !currentOffer } size={ 5 } overflow="hidden">
+                <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
                     { !currentOffer &&
                         <>
                             { !!page.localization.getImage(1) &&
@@ -84,25 +84,25 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props =>
                         </> }
                     { currentOffer &&
                         <>
-                            <Flex center overflow="hidden" style={ { height: 140 } }>
+                            <div className="flex items-center justify-center overflow-hidden" style={ { height: 140 } }>
                                 { (currentOffer.product.productType !== ProductTypeEnum.BADGE) &&
                                     <>
                                         <CatalogViewProductWidgetView />
                                         <CatalogAddOnBadgeWidgetView className="bg-muted rounded bottom-1 end-1" />
                                     </> }
                                 { (currentOffer.product.productType === ProductTypeEnum.BADGE) && <CatalogAddOnBadgeWidgetView className="scale-2" /> }
-                            </Flex>
+                            </div>
                             <Column grow gap={ 1 }>
-                                <CatalogLimitedItemWidgetView fullWidth />
+                                <CatalogLimitedItemWidgetView />
                                 <Text grow truncate>{ currentOffer.localizationName }</Text>
                                 { songId > -1 && <Button onClick={ () => previewSong(songId) }>{ LocalizeText('play_preview_button') }</Button>
                                 }
-                                <Flex justifyContent="between">
-                                    <Column gap={ 1 }>
+                                <div className="flex justify-content-between">
+                                    <div className="flex flex-column gap-1">
                                         <CatalogSpinnerWidgetView />
-                                    </Column>
-                                    <CatalogTotalPriceWidget justifyContent="end" alignItems="end" />
-                                </Flex>
+                                    </div>
+                                    <CatalogTotalPriceWidget alignItems="end" justifyContent="end" />
+                                </div>
                                 <CatalogPurchaseWidgetView />
                             </Column>
                         </> }

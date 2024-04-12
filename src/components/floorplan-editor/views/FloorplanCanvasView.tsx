@@ -2,7 +2,7 @@ import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, RoomE
 import { FC, useEffect, useRef, useState } from 'react';
 import { FaArrowDown, FaArrowLeft, FaArrowRight, FaArrowUp } from 'react-icons/fa';
 import { SendMessageComposer } from '../../../api';
-import { Base, Button, Column, ColumnProps, Flex, Grid } from '../../../common';
+import { Button, Column, ColumnProps, Grid } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
 import { useFloorplanEditorContext } from '../FloorplanEditorContext';
 import { FloorplanEditor } from '../common/FloorplanEditor';
@@ -168,26 +168,26 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
 
     return (
         <Column gap={ gap } { ...rest }>
-            <Grid overflow="hidden" gap={ 1 }>
-                <Column center size={ 1 } className="d-md-none">
+            <Grid gap={ 1 } overflow="hidden">
+                <Column center className="d-md-none" size={ 1 }>
                     <Button className="d-md-none" onClick={ event => onClickArrowButton('left') }>
                         <FaArrowLeft className="fa-icon" />
                     </Button>
                 </Column>
-                <Column overflow="hidden" size={ isSmallScreen() ? 10: 12 } gap={ 1 }>
-                    <Flex justifyContent="center" className="d-md-none">
+                <Column gap={ 1 } overflow="hidden" size={ isSmallScreen() ? 10: 12 }>
+                    <div className="flex d-md-none justify-content-enter" >
                         <Button shrink onClick={ event => onClickArrowButton('up') }>
                             <FaArrowUp className="fa-icon" />
                         </Button>
-                    </Flex>
-                    <Base overflow="auto" innerRef={ elementRef } />
-                    <Flex justifyContent="center" className="d-md-none">
+                    </div>
+                    <div ref={ elementRef } className="overflow-auto" />
+                    <div className="flex d-md-none justify-center">
                         <Button shrink onClick={ event => onClickArrowButton('down') }>
                             <FaArrowDown className="fa-icon" />
                         </Button>
-                    </Flex>
+                    </div>
                 </Column>
-                <Column center size={ 1 } className="d-md-none">
+                <Column center className="d-md-none" size={ 1 }>
                     <Button className="d-md-none" onClick={ event => onClickArrowButton('right') }>
                         <FaArrowRight className="fa-icon" />
                     </Button>

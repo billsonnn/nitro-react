@@ -28,13 +28,13 @@ export const NotificationDefaultConfirmView: FC<NotificationDefaultConfirmViewPr
 
     return (
         <LayoutNotificationAlertView title={ title } onClose={ onClose } { ...rest } type={ NotificationAlertType.ALERT }>
-            <Flex grow center>
+            <Flex center grow>
                 <Text>{ message }</Text>
             </Flex>
-            <Flex gap={ 1 }>
+            <div className="flex gap-1">
                 <Button fullWidth variant="danger" onClick={ cancel }>{ cancelText }</Button>
                 <Button fullWidth onClick={ confirm }>{ confirmText }</Button>
-            </Flex>
+            </div>
         </LayoutNotificationAlertView>
     );
 }

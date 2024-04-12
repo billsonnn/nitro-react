@@ -1,27 +1,27 @@
-import { FC, useMemo } from 'react';
-import { Base, BaseProps } from '../../common';
+import { DetailedHTMLProps, HTMLAttributes, PropsWithChildren, forwardRef } from 'react';
+import { classNames } from '../../common';
 
 type AvatarIconType = 'male' | 'female' | 'clear' | 'sellable' | string;
 
-export const AvatarEditorIcon: FC<{
+export const AvatarEditorIcon = forwardRef<HTMLDivElement, PropsWithChildren<{
     icon: AvatarIconType;
     selected?: boolean;
-} & BaseProps<HTMLDivElement>> = props =>
+}> & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>>((props, ref) =>
 {
-    const { icon = null, selected = false, classNames = [], children = null, ...rest } = props;
+    const { icon = null, selected = false, className = null, ...rest } = props;
 
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames: string[] = [ 'nitro-avatar-editor-spritesheet' ];
+    return (
+        <div
+            ref={ ref }
+            className={ classNames(
+                'nitro-avatar-editor-spritesheet',
+                'cursor-pointer',
+                `${ icon }-icon`,
+                selected && 'selected',
+                className
+            ) }
+            { ...rest } />
+    );
+});
 
-        if(icon && icon.length) newClassNames.push(icon + '-icon');
-
-        if(selected) newClassNames.push('selected');
-
-        if(classNames.length) newClassNames.push(...classNames);
-
-        return newClassNames;
-    }, [ icon, selected, classNames ]);
-
-    return <Base classNames={ getClassNames } { ...rest } />
-}
+AvatarEditorIcon.displayName = 'AvatarEditorIcon';

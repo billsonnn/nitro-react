@@ -1,7 +1,7 @@
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { FaPlus, FaTimes } from 'react-icons/fa';
 import { GroupBadgePart } from '../../../api';
-import { Base, Column, Flex, Grid, LayoutBadgeImageView } from '../../../common';
+import { Column, Flex, Grid, LayoutBadgeImageView } from '../../../common';
 import { useGroup } from '../../../hooks';
 
 interface GroupBadgeCreatorViewProps
@@ -36,8 +36,8 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
             { ((selectedIndex < 0) && badgeParts && (badgeParts.length > 0)) && badgeParts.map((part, index) =>
             {
                 return (
-                    <Flex key={ index } alignItems="center" justifyContent="between" gap={ 2 } className="bg-muted rounded px-2 py-1">
-                        <Flex pointer center className="bg-muted rounded p-1" onClick={ event => setSelectedIndex(index) }>
+                    <Flex key={ index } alignItems="center" className="bg-muted rounded px-2 py-1" gap={ 2 } justifyContent="between">
+                        <Flex center pointer className="bg-muted rounded p-1" onClick={ event => setSelectedIndex(index) }>
                             { (badgeParts[index].code && (badgeParts[index].code.length > 0)) &&
                                 <LayoutBadgeImageView badgeCode={ badgeParts[index].code } isGroup={ true } /> }
                             { (!badgeParts[index].code || !badgeParts[index].code.length) &&
@@ -46,25 +46,25 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
                             </Flex> }
                         </Flex>
                         { (part.type !== GroupBadgePart.BASE) &&
-                        <Grid gap={ 1 } columnCount={ 3 }>
+                        <Grid columnCount={ 3 } gap={ 1 }>
                             { POSITIONS.map((position, posIndex) =>
                             {
-                                return <Base key={ posIndex } pointer className={ `group-badge-position-swatch ${ (badgeParts[index].position === position) ? 'active' : '' }` } onClick={ event => setPartProperty(index, 'position', position) }></Base>
+                                return <div key={ posIndex } className={ `group-badge-position-swatch cursor-pointer ${ (badgeParts[index].position === position) ? 'active' : '' }` } onClick={ event => setPartProperty(index, 'position', position) } />
                             }) }
                         </Grid> }
-                        <Grid gap={ 1 } columnCount={ 8 }>
+                        <Grid columnCount={ 8 } gap={ 1 }>
                             { (groupCustomize.badgePartColors.length > 0) && groupCustomize.badgePartColors.map((item, colorIndex) =>
                             {
-                                return <Base key={ colorIndex } pointer className={ `group-badge-color-swatch ${ (badgeParts[index].color === (colorIndex + 1)) ? 'active' : '' }` } style={ { backgroundColor: '#' + item.color } } onClick={ event => setPartProperty(index, 'color', (colorIndex + 1)) }></Base>
+                                return <div key={ colorIndex } className={ `group-badge-color-swatch cursor-pointer ${ (badgeParts[index].color === (colorIndex + 1)) ? 'active' : '' }` } style={ { backgroundColor: '#' + item.color } } onClick={ event => setPartProperty(index, 'color', (colorIndex + 1)) } />
                             }) }
                         </Grid>
                     </Flex>
                 );
             }) }
             { (selectedIndex >= 0) &&
-                <Grid gap={ 1 } columnCount={ 5 }>
+                <Grid columnCount={ 5 } gap={ 1 }>
                     { (badgeParts[selectedIndex].type === GroupBadgePart.SYMBOL) &&
-                        <Column pointer center className="bg-muted rounded p-1" onClick={ event => setPartProperty(selectedIndex, 'key', 0) }>
+                        <Column center pointer className="bg-muted rounded p-1" onClick={ event => setPartProperty(selectedIndex, 'key', 0) }>
                             <Flex center className="badge-image group-badge">
                                 <FaTimes className="fa-icon" />
                             </Flex>
@@ -72,7 +72,7 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
                     { ((badgeParts[selectedIndex].type === GroupBadgePart.BASE) ? groupCustomize.badgeBases : groupCustomize.badgeSymbols).map((item, index) =>
                     {
                         return (
-                            <Column key={ index } pointer center className="bg-muted rounded p-1" onClick={ event => setPartProperty(selectedIndex, 'key', item.id) }>
+                            <Column key={ index } center pointer className="bg-muted rounded p-1" onClick={ event => setPartProperty(selectedIndex, 'key', item.id) }>
                                 <LayoutBadgeImageView badgeCode={ GroupBadgePart.getCode(badgeParts[selectedIndex].type, item.id, badgeParts[selectedIndex].color, 4) } isGroup={ true } />
                             </Column>
                         );

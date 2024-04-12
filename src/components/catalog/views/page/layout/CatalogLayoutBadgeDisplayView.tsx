@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
-import { Base, Column, Flex, Grid, Text } from '../../../../../common';
+import { Column, Grid, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
 import { CatalogBadgeSelectorWidgetView } from '../widgets/CatalogBadgeSelectorWidgetView';
 import { CatalogFirstProductSelectorWidgetView } from '../widgets/CatalogFirstProductSelectorWidgetView';
@@ -20,14 +20,14 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutProps> = props =>
         <>
             <CatalogFirstProductSelectorWidgetView />
             <Grid>
-                <Column size={ 7 } overflow="hidden">
+                <Column overflow="hidden" size={ 7 }>
                     <CatalogItemGridWidgetView shrink />
                     <Column gap={ 1 } overflow="hidden">
-                        <Text truncate shrink fontWeight="bold">{ LocalizeText('catalog_selectbadge') }</Text>
+                        <Text shrink truncate fontWeight="bold">{ LocalizeText('catalog_selectbadge') }</Text>
                         <CatalogBadgeSelectorWidgetView />
                     </Column>
                 </Column>
-                <Column center={ !currentOffer } size={ 5 } overflow="hidden">
+                <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
                     { !currentOffer &&
                         <>
                             { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
@@ -35,15 +35,15 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutProps> = props =>
                         </> }
                     { currentOffer &&
                         <>
-                            <Base position="relative" overflow="hidden">
+                            <div className="position-relative overflow-hidden">
                                 <CatalogViewProductWidgetView />
-                            </Base>
-                            <Column grow gap={ 1 }>
-                                <CatalogLimitedItemWidgetView fullWidth />
-                                <Text grow truncate>{ currentOffer.localizationName }</Text>
-                                <Flex justifyContent="end">
+                            </div>
+                            <Column className="flex-grow-1" gap={ 1 }>
+                                <CatalogLimitedItemWidgetView />
+                                <Text truncate className="flex-grow-1">{ currentOffer.localizationName }</Text>
+                                <div className="flex justify-content-end">
                                     <CatalogTotalPriceWidget alignItems="end" />
-                                </Flex>
+                                </div>
                                 <CatalogPurchaseWidgetView />
                             </Column>
                         </> }

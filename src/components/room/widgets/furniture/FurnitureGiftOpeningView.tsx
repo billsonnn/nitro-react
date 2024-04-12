@@ -1,7 +1,7 @@
 import { CreateLinkEvent } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { attemptItemPlacement, LocalizeText } from '../../../../api';
-import { Button, Column, Flex, LayoutGiftTagView, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { Button, Column, LayoutGiftTagView, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useFurniturePresentWidget, useInventoryFurni } from '../../../../hooks';
 
 export const FurnitureGiftOpeningView: FC<{}> = props =>
@@ -26,11 +26,11 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
             <NitroCardContentView>
                 { (placedItemId === -1) &&
                     <Column overflow="hidden">
-                        <Flex center overflow="auto">
-                            <LayoutGiftTagView userName={ senderName } figure={ senderFigure } message={ text } />
-                        </Flex>
+                        <div className="flex justify-center items-center overflow-auto">
+                            <LayoutGiftTagView figure={ senderFigure } message={ text } userName={ senderName } />
+                        </div>
                         { isOwnerOfFurniture &&
-                            <Flex gap={ 1 }>
+                            <div className="flex gap-1">
                                 { senderName &&
                                     <Button fullWidth onClick={ event => CreateLinkEvent('catalog/open') }>
                                         { LocalizeText('widget.furni.present.give_gift', [ 'name' ], [ senderName ]) }
@@ -38,20 +38,20 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
                                 <Button fullWidth variant="success" onClick={ openPresent }>
                                     { LocalizeText('widget.furni.present.open_gift') }
                                 </Button>
-                            </Flex> }
+                            </div> }
                     </Column> }
                 { (placedItemId > -1) &&
-                    <Flex gap={ 2 } overflow="hidden">
+                    <div className="flex gap-2 overflow-hidden">
                         <Column center className="p-2">
                             <LayoutImage imageUrl={ imageUrl } />
                         </Column>
                         <Column grow>
                             <Column center gap={ 1 }>
-                                <Text wrap small>{ LocalizeText('widget.furni.present.message_opened') }</Text>
+                                <Text small wrap>{ LocalizeText('widget.furni.present.message_opened') }</Text>
                                 <Text bold fontSize={ 5 }>{ text }</Text>
                             </Column>
                             <Column grow gap={ 1 }>
-                                <Flex gap={ 1 }>
+                                <div className="flex gap-1">
                                     { placedInRoom &&
                                         <Button fullWidth onClick={ null }>
                                             { LocalizeText('widget.furni.present.put_in_inventory') }
@@ -59,14 +59,14 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
                                     <Button fullWidth variant="success" onClick={ event => place(placedItemId) }>
                                         { LocalizeText(placedInRoom ? 'widget.furni.present.keep_in_room' : 'widget.furni.present.place_in_room') }
                                     </Button>
-                                </Flex>
+                                </div>
                                 { (senderName && senderName.length) &&
                                     <Button fullWidth onClick={ event => CreateLinkEvent('catalog/open') }>
                                         { LocalizeText('widget.furni.present.give_gift', [ 'name' ], [ senderName ]) }
                                     </Button> }
                             </Column>
                         </Column>
-                    </Flex> }
+                    </div> }
             </NitroCardContentView>
         </NitroCardView>
     );

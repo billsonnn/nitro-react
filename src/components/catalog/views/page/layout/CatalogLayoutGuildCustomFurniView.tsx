@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Base, Column, Flex, Grid, Text } from '../../../../../common';
+import { Column, Grid, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
 import { CatalogGuildBadgeWidgetView } from '../widgets/CatalogGuildBadgeWidgetView';
 import { CatalogGuildSelectorWidgetView } from '../widgets/CatalogGuildSelectorWidgetView';
@@ -16,10 +16,10 @@ export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutProps> = props =>
     
     return (
         <Grid>
-            <Column size={ 7 } overflow="hidden">
+            <Column overflow="hidden" size={ 7 }>
                 <CatalogItemGridWidgetView />
             </Column>
-            <Column center={ !currentOffer } size={ 5 } overflow="hidden">
+            <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
                 { !currentOffer &&
                     <>
                         { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
@@ -27,18 +27,18 @@ export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutProps> = props =>
                     </> }
                 { currentOffer &&
                     <>
-                        <Base position="relative" overflow="hidden">
+                        <div className="position-relative overflow-hidden">
                             <CatalogViewProductWidgetView />
-                            <CatalogGuildBadgeWidgetView position="absolute" className="bottom-1 end-1" />
-                        </Base>
+                            <CatalogGuildBadgeWidgetView className="bottom-1 end-1" position="absolute" />
+                        </div>
                         <Column grow gap={ 1 }>
                             <Text truncate>{ currentOffer.localizationName }</Text>
-                            <Base grow>
+                            <div className="flex-grow-1">
                                 <CatalogGuildSelectorWidgetView />
-                            </Base>
-                            <Flex justifyContent="end">
+                            </div>
+                            <div className="flex justify-content-end">
                                 <CatalogTotalPriceWidget alignItems="end" />
-                            </Flex>
+                            </div>
                             <CatalogPurchaseWidgetView />
                         </Column>
                     </> }

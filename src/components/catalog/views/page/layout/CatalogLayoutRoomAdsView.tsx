@@ -1,7 +1,7 @@
 import { GetRoomAdPurchaseInfoComposer, GetUserEventCatsMessageComposer, PurchaseRoomAdMessageComposer, RoomAdPurchaseInfoEvent, RoomEntryData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
-import { Base, Button, Column, Text } from '../../../../../common';
+import { Button, Column, Text } from '../../../../../common';
 import { useCatalog, useMessageEvent, useNavigator, useRoomPromote } from '../../../../../hooks';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
@@ -73,34 +73,34 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
 
     return (<>
         <Text bold center>{ LocalizeText('roomad.catalog_header') }</Text>
-        <Column size={ 12 } overflow="hidden" className="text-black">
-            <Base>{ LocalizeText('roomad.catalog_text', [ 'duration' ], [ '120' ]) }</Base>
-            <Base className="bg-muted rounded p-1">
+        <Column className="text-black" overflow="hidden" size={ 12 }>
+            <div>{ LocalizeText('roomad.catalog_text', [ 'duration' ], [ '120' ]) }</div>
+            <div className="bg-muted rounded p-1">
                 <Column gap={ 2 }>
                     <Text bold>{ LocalizeText('navigator.category') }</Text>
-                    <select className="form-select form-select-sm" value={ categoryId } onChange={ event => setCategoryId(parseInt(event.target.value)) } disabled={ extended }>
+                    <select className="form-select form-select-sm" disabled={ extended } value={ categoryId } onChange={ event => setCategoryId(parseInt(event.target.value)) }>
                         { categories && categories.map((cat, index) => <option key={ index } value={ cat.id }>{ LocalizeText(cat.name) }</option>) }
                     </select>
                 </Column>
-                <Column gap={ 1 }>
+                <div className="flex flex-column gap-1">
                     <Text bold>{ LocalizeText('roomad.catalog_name') }</Text>
-                    <input type="text" className="form-control form-control-sm" maxLength={ 64 } value={ eventName } onChange={ event => setEventName(event.target.value) } readOnly={ extended } />
-                </Column>
-                <Column gap={ 1 }>
+                    <input className="form-control form-control-sm" maxLength={ 64 } readOnly={ extended } type="text" value={ eventName } onChange={ event => setEventName(event.target.value) } />
+                </div>
+                <div className="flex flex-column gap-1">
                     <Text bold>{ LocalizeText('roomad.catalog_description') }</Text>
-                    <textarea className="form-control form-control-sm" maxLength={ 64 } value={ eventDesc } onChange={ event => setEventDesc(event.target.value) } readOnly={ extended } />
-                </Column>
-                <Column gap={ 1 }>
+                    <textarea className="form-control form-control-sm" maxLength={ 64 } readOnly={ extended } value={ eventDesc } onChange={ event => setEventDesc(event.target.value) } />
+                </div>
+                <div className="flex flex-column gap-1">
                     <Text bold>{ LocalizeText('roomad.catalog_roomname') }</Text>
-                    <select className="form-select form-select-sm" value={ roomId } onChange={ event => setRoomId(parseInt(event.target.value)) } disabled={ extended }>
-                        <option value={ -1 } disabled>{ LocalizeText('roomad.catalog_roomname') }</option>
+                    <select className="form-select form-select-sm" disabled={ extended } value={ roomId } onChange={ event => setRoomId(parseInt(event.target.value)) }>
+                        <option disabled value={ -1 }>{ LocalizeText('roomad.catalog_roomname') }</option>
                         { availableRooms && availableRooms.map((room, index) => <option key={ index } value={ room.roomId }>{ room.roomName }</option>) }
                     </select>
-                </Column>
-                <Column gap={ 1 }>
-                    <Button variant={ (!eventName || !eventDesc || roomId === -1) ? 'danger' : 'success' } onClick={ purchaseAd } disabled={ (!eventName || !eventDesc || roomId === -1) }>{ extended ? LocalizeText('roomad.extend.event') : LocalizeText('buy') }</Button>
-                </Column>
-            </Base>
+                </div>
+                <div className="flex flex-column gap-1">
+                    <Button disabled={ (!eventName || !eventDesc || roomId === -1) } variant={ (!eventName || !eventDesc || roomId === -1) ? 'danger' : 'success' } onClick={ purchaseAd }>{ extended ? LocalizeText('roomad.extend.event') : LocalizeText('buy') }</Button>
+                </div>
+            </div>
         </Column>
     </>
     );

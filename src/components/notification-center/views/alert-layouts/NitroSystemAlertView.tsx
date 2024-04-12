@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { GetRendererVersion, GetUIVersion, NotificationAlertItem } from '../../../../api';
-import { Button, Column, Flex, Grid, LayoutNotificationAlertView, LayoutNotificationAlertViewProps, Text } from '../../../../common';
+import { Button, Column, Grid, LayoutNotificationAlertView, LayoutNotificationAlertViewProps, Text } from '../../../../common';
 
 interface NotificationDefaultAlertViewProps extends LayoutNotificationAlertViewProps
 {
@@ -15,7 +15,7 @@ export const NitroSystemAlertView: FC<NotificationDefaultAlertViewProps> = props
         <LayoutNotificationAlertView title={ title } onClose={ onClose } { ...rest }>
             <Grid>
                 <Column center size={ 5 }>
-                    <object data="https://assets.nitrodev.co/logos/nitro-n-dark.svg" width="100" height="100">&nbsp;</object>
+                    <object data="https://assets.nitrodev.co/logos/nitro-n-dark.svg" height="100" width="100">&nbsp;</object>
                 </Column>
                 <Column size={ 7 }>
                     <Column alignItems="center" gap={ 0 }>
@@ -26,10 +26,10 @@ export const NitroSystemAlertView: FC<NotificationDefaultAlertViewProps> = props
                         <Text><b>Renderer:</b> v{ GetRendererVersion() }</Text>
                         <Column fullWidth gap={ 1 }>
                             <Button fullWidth variant="success" onClick={ event => window.open('https://discord.nitrodev.co') }>Discord</Button>
-                            <Flex gap={ 1 }>
+                            <div className="flex gap-1">
                                 <Button fullWidth onClick={ event => window.open('https://git.krews.org/nitro/nitro-react') }>Git</Button>
                                 <Button fullWidth onClick={ event => window.open('https://git.krews.org/nitro/nitro-react/-/issues') }>Bug Report</Button>
-                            </Flex>
+                            </div>
                         </Column>
                     </Column>
                 </Column>

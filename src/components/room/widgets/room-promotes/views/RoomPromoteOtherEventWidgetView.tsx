@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../../api';
-import { Base, Column, Flex, Text } from '../../../../../common';
+import { Column, Flex, Text } from '../../../../../common';
 
 interface RoomPromoteOtherEventWidgetViewProps
 {
@@ -18,12 +18,12 @@ export const RoomPromoteOtherEventWidgetView: FC<RoomPromoteOtherEventWidgetView
             </Flex>
             <br /><br />
             <Column alignItems="center" gap={ 1 }>
-                <Base fullWidth overflow="hidden" position="relative" className="bg-light-dark rounded">
-                    <Flex fit center position="absolute">
-                        <Text variant="white" center>{ LocalizeText('navigator.eventinprogress') }</Text>
-                    </Flex>
+                <div className="bg-light-dark rounded position-relative overflow-hidden w-100">
+                    <div className="flex justify-center items-center size-full position-absolute">
+                        <Text center variant="white">{ LocalizeText('navigator.eventinprogress') }</Text>
+                    </div>
                     <Text>&nbsp;</Text>
-                </Base>
+                </div>
             </Column>
         </>
     );

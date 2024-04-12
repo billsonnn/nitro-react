@@ -1,7 +1,7 @@
 import { RoomObjectCategory } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { LocalizeText } from '../../../../api';
-import { Column, Flex, Text } from '../../../../common';
+import { Column, Text } from '../../../../common';
 import { useFurnitureHighScoreWidget } from '../../../../hooks';
 import { ContextMenuHeaderView } from '../context-menu/ContextMenuHeaderView';
 import { ContextMenuListView } from '../context-menu/ContextMenuListView';
@@ -18,35 +18,35 @@ export const FurnitureHighScoreView: FC<{}> = props =>
             { Array.from(stuffDatas.entries()).map(([ objectId, stuffData ], index) =>
             {
                 return (
-                    <ObjectLocationView key={ index } objectId={ objectId } category={ RoomObjectCategory.FLOOR }>
+                    <ObjectLocationView key={ index } category={ RoomObjectCategory.FLOOR } objectId={ objectId }>
                         <Column className="nitro-widget-high-score nitro-context-menu" gap={ 0 }>
                             <ContextMenuHeaderView>
                                 { LocalizeText('high.score.display.caption', [ 'scoretype', 'cleartype' ], [ LocalizeText(`high.score.display.scoretype.${ getScoreType(stuffData.scoreType) }`), LocalizeText(`high.score.display.cleartype.${ getClearType(stuffData.clearType) }`) ]) }
                             </ContextMenuHeaderView>
-                            <ContextMenuListView overflow="hidden" gap={ 1 } className="h-100">
-                                <Column gap={ 1 }>
-                                    <Flex alignItems="center">
-                                        <Text center bold variant="white" className="col-8">
+                            <ContextMenuListView className="h-100" gap={ 1 } overflow="hidden">
+                                <div className="flex flex-column gap-1">
+                                    <div className="flex items-center">
+                                        <Text bold center className="col-8" variant="white">
                                             { LocalizeText('high.score.display.users.header') }
                                         </Text>
-                                        <Text center bold variant="white" className="col-4">
+                                        <Text bold center className="col-4" variant="white">
                                             { LocalizeText('high.score.display.score.header') }
                                         </Text>
-                                    </Flex>
+                                    </div>
                                     <hr className="m-0" />
-                                </Column>
-                                <Column overflow="auto" gap={ 1 } className="overflow-y-scroll">
+                                </div>
+                                <Column className="overflow-y-scroll" gap={ 1 } overflow="auto">
                                     { stuffData.entries.map((entry, index) =>
                                     {
                                         return (
-                                            <Flex key={ index } alignItems="center">
-                                                <Text center variant="white" className="col-8">
+                                            <div key={ index } className="flex items-center">
+                                                <Text center className="col-8" variant="white">
                                                     { entry.users.join(', ') }
                                                 </Text>
-                                                <Text center variant="white" className="col-4">
+                                                <Text center className="col-4" variant="white">
                                                     { entry.score }
                                                 </Text>
-                                            </Flex>
+                                            </div>
                                         );
                                     }) }
                                 </Column>

@@ -1,7 +1,7 @@
 import { BuyMarketplaceOfferMessageComposer, GetMarketplaceOffersMessageComposer, MarketplaceBuyOfferResultEvent, MarketPlaceOffersEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { IMarketplaceSearchOptions, LocalizeText, MarketplaceOfferData, MarketplaceSearchType, NotificationAlertType, SendMessageComposer } from '../../../../../../api';
-import { Button, ButtonGroup, Column, Text } from '../../../../../../common';
+import { Button, Column, Text } from '../../../../../../common';
 import { useMessageEvent, useNotification, usePurse } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, PUBLIC_OFFER } from './CatalogLayoutMarketplaceItemView';
@@ -134,7 +134,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
     
     return (
         <>
-            <ButtonGroup>
+            <div className="btn-group">
                 <Button active={ (searchType === MarketplaceSearchType.BY_ACTIVITY) } onClick={ () => setSearchType(MarketplaceSearchType.BY_ACTIVITY) }>
                     { LocalizeText('catalog.marketplace.search_by_activity') }
                 </Button>
@@ -144,10 +144,10 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                 <Button active={ (searchType === MarketplaceSearchType.ADVANCED) } onClick={ () => setSearchType(MarketplaceSearchType.ADVANCED) }>
                     { LocalizeText('catalog.marketplace.search_advanced') }
                 </Button>
-            </ButtonGroup>
-            <SearchFormView sortTypes={ getSortTypes } searchType={ searchType } onSearch={ requestOffers } />
+            </div>
+            <SearchFormView searchType={ searchType } sortTypes={ getSortTypes } onSearch={ requestOffers } />
             <Column gap={ 1 } overflow="hidden">
-                <Text truncate shrink fontWeight="bold">
+                <Text shrink truncate fontWeight="bold">
                     { LocalizeText('catalog.marketplace.items_found', [ 'count' ], [ offers.size.toString() ]) }
                 </Text>
                 <Column className="nitro-catalog-layout-marketplace-grid" overflow="auto">

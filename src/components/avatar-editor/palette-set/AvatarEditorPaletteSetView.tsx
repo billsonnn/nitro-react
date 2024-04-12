@@ -6,11 +6,12 @@ import { useAvatarEditor } from '../../../hooks';
 import { AvatarEditorPaletteSetItem } from './AvatarEditorPaletteSetItemView';
 
 export const AvatarEditorPaletteSetView: FC<{
-    category: IAvatarEditorCategory,
+    category: IAvatarEditorCategory;
     paletteIndex: number;
+    columnCount: number;
 }> = props =>
 {
-    const { category = null, paletteIndex = -1 } = props;
+    const { category = null, paletteIndex = -1, columnCount = 3 } = props;
     const { selectedColorParts = null, selectEditorColor = null } = useAvatarEditor();
 
     const isPartColorSelected = (partColor: IPartColor) =>
@@ -23,13 +24,13 @@ export const AvatarEditorPaletteSetView: FC<{
     }
 
     return (
-        <InfiniteGrid rows={ category.colorItems[paletteIndex] } columnCount={ 5 } overscan={ 5 } itemRender={ (item: IPartColor) =>
+        <InfiniteGrid columnCount={ columnCount } itemRender={ (item: IPartColor) =>
         {
             if(!item) return null;
 
             return (
-                <AvatarEditorPaletteSetItem setType={ category.setType } partColor={ item } isSelected={ isPartColorSelected(item) } onClick={ event => selectEditorColor(category.setType, paletteIndex, item.id) } />
+                <AvatarEditorPaletteSetItem isSelected={ isPartColorSelected(item) } partColor={ item } setType={ category.setType } width={ `calc(100% / ${ columnCount }` } onClick={ event => selectEditorColor(category.setType, paletteIndex, item.id) } />
             )
-        } } />
+        } } overscan={ columnCount } rows={ category.colorItems[paletteIndex] } />
     );
 }

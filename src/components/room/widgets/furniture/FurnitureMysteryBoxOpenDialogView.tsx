@@ -64,15 +64,15 @@ export const FurnitureMysteryBoxOpenDialogView: FC<FurnitureMysteryBoxOpenDialog
                     <Text variant="primary"> { LocalizeText(`mysterybox.dialog.${ isOwner ? 'owner' : 'other' }.subtitle`) } </Text>
                     <Text> { LocalizeText(`mysterybox.dialog.${ isOwner ? 'owner' : 'other' }.description`) } </Text>
                     <Text> { LocalizeText(`mysterybox.dialog.${ isOwner ? 'owner' : 'other' }.waiting`) }</Text>
-                    <Button variant="danger" onClick={ close } className="mt-auto"> { LocalizeText(`mysterybox.dialog.${ isOwner ? 'owner' : 'other' }.cancel`) } </Button>
+                    <Button className="mt-auto" variant="danger" onClick={ close }> { LocalizeText(`mysterybox.dialog.${ isOwner ? 'owner' : 'other' }.cancel`) } </Button>
                 </>
                 }
                 { mode === ViewMode.PRIZE && prizeData && <>
                     <Text variant="black"> { LocalizeText('mysterybox.reward.text') } </Text>
-                    <Flex className="prize-container justify-content-center mx-auto">
+                    <Flex className="prize-container justify-center mx-auto">
                         <LayoutPrizeProductImageView classId={ prizeData.classId } productType={ prizeData.contentType }/>
                     </Flex>
-                    <Button variant="success" onClick={ close } className="mt-auto"> { LocalizeText('mysterybox.reward.close') } </Button>
+                    <Button className="mt-auto" variant="success" onClick={ close }> { LocalizeText('mysterybox.reward.close') } </Button>
                 </>
                 }
             </NitroCardContentView>

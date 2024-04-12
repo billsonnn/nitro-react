@@ -1,7 +1,7 @@
 import { Game2GetAccountGameStatusMessageComposer, GetGameStatusMessageComposer, JoinQueueMessageComposer } from '@nitrots/nitro-renderer';
 import { useEffect } from 'react';
 import { ColorUtils, LocalizeText, SendMessageComposer } from '../../../api';
-import { Base, Button, Flex, LayoutItemCountView, Text } from '../../../common';
+import { Button, Flex, LayoutItemCountView, Text } from '../../../common';
 import { useGameCenter } from '../../../hooks';
 
 export const GameView = () => 
@@ -37,22 +37,19 @@ export const GameView = () =>
         SendMessageComposer(new JoinQueueMessageComposer(selectedGame.gameId));
     }
 
-    return <Flex className="game-view py-4" fullHeight style={ { backgroundColor: getBgColour(), backgroundImage: getBgImage(), color: getColor() } }>
-        <Flex className="w-75" column alignItems="center" gap={ 2 }>
+    return <Flex fullHeight className="game-view py-4" style={ { backgroundColor: getBgColour(), backgroundImage: getBgImage(), color: getColor() } }>
+        <Flex column alignItems="center" className="w-75" gap={ 2 }>
             <Text bold>{ LocalizeText(`gamecenter.${ selectedGame.gameNameId }.description_title`) }</Text>
             <img src={ selectedGame.assetUrl + selectedGame.gameNameId + '_logo.png' }/>
             { (accountStatus.hasUnlimitedGames || accountStatus.freeGamesLeft > 0) && <>
-                <Button variant="light" position="relative" className="px-4" onClick={ onPlay }>
+                <Button className="px-4" position="relative" variant="light" onClick={ onPlay }>
                     { LocalizeText('gamecenter.play_now') }
                     { !accountStatus.hasUnlimitedGames && 
                     <LayoutItemCountView className="me-n1 mt-n1" count={ accountStatus.freeGamesLeft }/> }
                 </Button>
             </> }
-            <Text bold className="w-50" center>{ LocalizeText(`gamecenter.${ selectedGame.gameNameId }.description_content`) }</Text>
+            <Text bold center className="w-50">{ LocalizeText(`gamecenter.${ selectedGame.gameNameId }.description_content`) }</Text>
         </Flex>
-        <Base className="w-25">
-
-        </Base>
-        
+        <div className="w-25" />
     </Flex>
 }

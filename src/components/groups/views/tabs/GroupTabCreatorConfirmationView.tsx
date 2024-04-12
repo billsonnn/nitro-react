@@ -1,6 +1,6 @@
 import { Dispatch, FC, SetStateAction } from 'react';
 import { IGroupData, LocalizeText } from '../../../../api';
-import { Base, Column, Flex, Grid, LayoutBadgeImageView, Text } from '../../../../common';
+import { Column, Flex, Grid, LayoutBadgeImageView, Text } from '../../../../common';
 import { useGroup } from '../../../../hooks';
 
 interface GroupTabCreatorConfirmationViewProps
@@ -36,7 +36,7 @@ export const GroupTabCreatorConfirmationView: FC<GroupTabCreatorConfirmationView
     if(!groupData) return null;
 
     return (
-        <Grid overflow="hidden" gap={ 1 }>
+        <Grid gap={ 1 } overflow="hidden">
             <Column size={ 3 }>
                 <Column center className="bg-muted rounded p-1" gap={ 2 }>
                     <Text bold center>{ LocalizeText('group.create.confirm.guildbadge') }</Text>
@@ -44,21 +44,21 @@ export const GroupTabCreatorConfirmationView: FC<GroupTabCreatorConfirmationView
                 </Column>
                 <Column center className="bg-muted rounded p-1" gap={ 2 }>
                     <Text bold center>{ LocalizeText('group.edit.color.guild.color') }</Text>
-                    <Flex overflow="hidden" className="rounded border">
-                        <Base className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(0) } } />
-                        <Base className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(1) } } />
+                    <Flex className="rounded border" overflow="hidden">
+                        <div className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(0) } } />
+                        <div className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(1) } } />
                     </Flex>
                 </Column>
             </Column>
-            <Column size={ 9 } justifyContent="between">
-                <Column>
-                    <Column gap={ 1 }>
+            <Column justifyContent="between" size={ 9 }>
+                <div className="flex flex-column">
+                    <div className="flex flex-column gap-1">
                         <Text bold>{ groupData.groupName }</Text>
                         <Text>{ groupData.groupDescription }</Text>
-                    </Column>
+                    </div>
                     <Text overflow="auto">{ LocalizeText('group.create.confirm.info') }</Text>
-                </Column>
-                <Text center variant="white" className="bg-primary rounded p-1">
+                </div>
+                <Text center className="bg-primary rounded p-1" variant="white">
                     { LocalizeText('group.create.confirm.buyinfo', [ 'amount' ], [ purchaseCost.toString() ]) }
                 </Text>
             </Column>

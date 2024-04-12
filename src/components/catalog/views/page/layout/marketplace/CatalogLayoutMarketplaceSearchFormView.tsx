@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { IMarketplaceSearchOptions, LocalizeText, MarketplaceSearchType } from '../../../../../../api';
-import { Button, Column, Flex, Text } from '../../../../../../common';
+import { Button, Text } from '../../../../../../common';
 
 export interface SearchFormViewProps
 {
@@ -44,28 +44,28 @@ export const SearchFormView: FC<SearchFormViewProps> = props =>
     }, [ onSearch, searchType, sortTypes ]);
 
     return (
-        <Column gap={ 1 }>
-            <Flex alignItems="center" gap={ 1 }>
+        <div className="flex flex-column gap-1">
+            <div className="flex items-center gap-1">
                 <Text className="col-3">{ LocalizeText('catalog.marketplace.sort_order') }</Text>
                 <select className="form-select form-select-sm" value={ sortType } onChange={ event => onSortTypeChange(parseInt(event.target.value)) }>
                     { sortTypes.map(type => <option key={ type } value={ type }>{ LocalizeText(`catalog.marketplace.sort.${ type }`) }</option>) }
                 </select>
-            </Flex>
+            </div>
             { searchType === MarketplaceSearchType.ADVANCED &&
                 <>
-                    <Flex alignItems="center" gap={ 1 }>
+                    <div className="flex items-center gap-1">
                         <Text className="col-3">{ LocalizeText('catalog.marketplace.search_name') }</Text>
                         <input className="form-control form-control-sm" type="text" value={ searchQuery } onChange={ event => setSearchQuery(event.target.value) }/>
-                    </Flex>
-                    <Flex alignItems="center" gap={ 1 }>
+                    </div>
+                    <div className="flex items-center gap-1">
                         <Text className="col-3">{ LocalizeText('catalog.marketplace.search_price') }</Text>
-                        <Flex fullWidth gap={ 1 }>
-                            <input className="form-control form-control-sm" type="number" min={ 0 } value={ min } onChange={ event => setMin(event.target.valueAsNumber) } />
-                            <input className="form-control form-control-sm" type="number" min={ 0 } value={ max } onChange={ event => setMax(event.target.valueAsNumber) } />
-                        </Flex>
-                    </Flex>
-                    <Button variant="secondary" className="mx-auto" onClick={ onClickSearch }>{ LocalizeText('generic.search') }</Button>
+                        <div className="flex w-100 gap-1">
+                            <input className="form-control form-control-sm" min={ 0 } type="number" value={ min } onChange={ event => setMin(event.target.valueAsNumber) } />
+                            <input className="form-control form-control-sm" min={ 0 } type="number" value={ max } onChange={ event => setMax(event.target.valueAsNumber) } />
+                        </div>
+                    </div>
+                    <Button className="mx-auto" variant="secondary" onClick={ onClickSearch }>{ LocalizeText('generic.search') }</Button>
                 </> }
-        </Column>
+        </div>
     );
 }

@@ -13,7 +13,7 @@ export const AchievementListView: FC<AchievementListViewProps> = props =>
     const { achievements = null } = props;
 
     return (
-        <AutoGrid columnCount={ 6 } columnMinWidth={ 50 } columnMinHeight={ 50 }>
+        <AutoGrid columnCount={ 6 } columnMinHeight={ 50 } columnMinWidth={ 50 }>
             { achievements && (achievements.length > 0) && achievements.map((achievement, index) => <AchievementListItemView key={ index } achievement={ achievement } />) }
         </AutoGrid>
     );

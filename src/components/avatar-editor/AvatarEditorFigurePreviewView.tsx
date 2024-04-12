@@ -1,6 +1,6 @@
 import { AvatarDirectionAngle } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
-import { Base, Column, LayoutAvatarImageView } from '../../common';
+import { LayoutAvatarImageView } from '../../common';
 import { useAvatarEditor } from '../../hooks';
 import { AvatarEditorIcon } from './AvatarEditorIcon';
 
@@ -27,14 +27,14 @@ export const AvatarEditorFigurePreviewView: FC<{}> = props =>
     }
 
     return (
-        <Column className="figure-preview-container" overflow="hidden" position="relative">
-            <LayoutAvatarImageView figure={ getFigureString } direction={ direction } scale={ 2 } />
+        <div className="flex flex-column figure-preview-container overflow-hidden position-relative">
+            <LayoutAvatarImageView direction={ direction } figure={ getFigureString } scale={ 2 } />
             <AvatarEditorIcon className="avatar-spotlight" icon="spotlight" />
-            <Base className="avatar-shadow" />
-            <Base className="arrow-container">
-                <AvatarEditorIcon pointer icon="arrow-left" onClick={ event => rotateFigure(direction + 1) } />
-                <AvatarEditorIcon pointer icon="arrow-right" onClick={ event => rotateFigure(direction - 1) } />
-            </Base>
-        </Column>
+            <div className="avatar-shadow" />
+            <div className="arrow-container">
+                <AvatarEditorIcon icon="arrow-left" onClick={ event => rotateFigure(direction + 1) } />
+                <AvatarEditorIcon icon="arrow-right" onClick={ event => rotateFigure(direction - 1) } />
+            </div>
+        </div>
     );
 }

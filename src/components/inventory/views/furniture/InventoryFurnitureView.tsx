@@ -108,28 +108,28 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
         return () => setIsVisible(false);
     }, []);
 
-    if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.title') } desc={ LocalizeText('inventory.empty.desc') } />;
+    if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.desc') } title={ LocalizeText('inventory.empty.title') } />;
 
     return (
         <Grid>
-            <Column size={ 7 } overflow="hidden">
+            <Column overflow="hidden" size={ 7 }>
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                 <AutoGrid columnCount={ 5 }>
                     { filteredGroupItems && (filteredGroupItems.length > 0) && filteredGroupItems.map((item, index) => <InventoryFurnitureItemView key={ index } groupItem={ item } />) }
                 </AutoGrid>
             </Column>
-            <Column size={ 5 } overflow="auto">
+            <Column overflow="auto" size={ 5 }>
                 <Column overflow="hidden" position="relative">
-                    <LayoutRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                    <LayoutRoomPreviewerView height={ 140 } roomPreviewer={ roomPreviewer } />
                     { selectedItem && selectedItem.stuffData.isUnique &&
                         <LayoutLimitedEditionCompactPlateView className="top-2 end-2" position="absolute" uniqueNumber={ selectedItem.stuffData.uniqueNumber } uniqueSeries={ selectedItem.stuffData.uniqueSeries } /> }
                     { (selectedItem && selectedItem.stuffData.rarityLevel > -1) &&
-                        <LayoutRarityLevelView className="top-2 end-2" position="absolute" level={ selectedItem.stuffData.rarityLevel } /> }
+                        <LayoutRarityLevelView className="top-2 end-2" level={ selectedItem.stuffData.rarityLevel } position="absolute" /> }
                 </Column>
                 { selectedItem &&
-                    <Column grow justifyContent="between" gap={ 2 }>
+                    <Column grow gap={ 2 } justifyContent="between">
                         <Text grow truncate>{ selectedItem.name }</Text>
-                        <Column gap={ 1 }>
+                        <div className="flex flex-column gap-1">
                             { !!roomSession &&
                                 <Button variant="success" onClick={ event => attemptItemPlacement(selectedItem) }>
                                     { LocalizeText('inventory.furni.placetoroom') }
@@ -138,7 +138,7 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                                 <Button onClick={ event => attemptPlaceMarketplaceOffer(selectedItem) }>
                                     { LocalizeText('inventory.marketplace.sell') }
                                 </Button> }
-                        </Column>
+                        </div>
                     </Column> }
             </Column>
         </Grid>

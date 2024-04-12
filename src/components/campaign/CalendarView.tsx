@@ -1,7 +1,7 @@
 import { GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { CalendarItemState, ICalendarItem, LocalizeText } from '../../api';
-import { Base, Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
+import { Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { CalendarItemView } from './CalendarItemView';
 
 interface CalendarViewProps
@@ -100,26 +100,26 @@ export const CalendarView: FC<CalendarViewProps> = props =>
         <NitroCardView className="nitro-campaign-calendar" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText(`campaign.calendar.${ campaignName }.title`) } onCloseClick={ onClose } />
             <NitroCardContentView>
-                <Grid fullHeight={ false } justifyContent="between" alignItems="center">
+                <Grid alignItems="center" fullHeight={ false } justifyContent="between">
                     <Column size={ 1 } />
                     <Column size={ 10 }>
-                        <Flex justifyContent="between" alignItems="center" gap={ 1 }>
-                            <Column gap={ 1 }>
+                        <div className="flex items-center gap-1 justify-content-between">
+                            <div className="flex flex-column gap-1">
                                 <Text fontSize={ 3 }>{ LocalizeText('campaign.calendar.heading.day', [ 'number' ], [ (selectedDay + 1).toString() ]) }</Text>
                                 <Text>{ dayMessage(selectedDay) }</Text>
-                            </Column>
+                            </div>
                             <div>
                                 { GetSessionDataManager().isModerator &&
                                     <Button variant="danger" onClick={ forceOpen }>Force open</Button> }
                             </div>
-                        </Flex>
+                        </div>
                     </Column>
                     <Column size={ 1 } />
                 </Grid>
-                <Flex fullHeight gap={ 2 }>
-                    <Flex center>
-                        <Base pointer className="campaign-spritesheet prev" onClick={ onClickPrev } />
-                    </Flex>
+                <div className="flex h-100 gap-2">
+                    <div className="flex items-center justify-center">
+                        <div className="campaign-spritesheet prev cursor-pointer" onClick={ onClickPrev } />
+                    </div>
                     <Column center fullWidth>
                         <Grid fit columnCount={ TOTAL_SHOWN_ITEMS } gap={ 1 }>
                             { [ ...Array(TOTAL_SHOWN_ITEMS) ].map((e, i) =>
@@ -128,16 +128,16 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                                     
                                 return (
                                     <Column key={ i } overflow="hidden">
-                                        <CalendarItemView itemId={ day } state={ getDayState(day) } active={ (selectedDay === day) } product={ receivedProducts.has(day) ? receivedProducts.get(day) : null } onClick={ onClickItem } />
+                                        <CalendarItemView active={ (selectedDay === day) } itemId={ day } product={ receivedProducts.has(day) ? receivedProducts.get(day) : null } state={ getDayState(day) } onClick={ onClickItem } />
                                     </Column>
                                 );
                             }) }
                         </Grid>
                     </Column>
-                    <Flex center>
-                        <Base pointer className="campaign-spritesheet next" onClick={ onClickNext } />
-                    </Flex>
-                </Flex>
+                    <div className="flex items-center justify-center">
+                        <div className="campaign-spritesheet next cursor-pointer" onClick={ onClickNext } />
+                    </div>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
     )

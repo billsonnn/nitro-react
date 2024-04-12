@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
-import { Column, Flex, Text } from '../../../../common';
+import { Text } from '../../../../common';
 import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -17,19 +17,19 @@ export const WiredActionJoinTeamView: FC<{}> = props =>
     }, [ trigger ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
-            <Column gap={ 1 }>
+        <WiredActionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.team') }</Text>
                 { [ 1, 2, 3, 4 ].map(team =>
                 {
                     return (
-                        <Flex key={ team } gap={ 1 }>
-                            <input className="form-check-input" type="radio" name="selectedTeam" id={ `selectedTeam${ team }` } checked={ (selectedTeam === team) } onChange={ event => setSelectedTeam(team) } />
+                        <div key={ team } className="flex gap-1">
+                            <input checked={ (selectedTeam === team) } className="form-check-input" id={ `selectedTeam${ team }` } name="selectedTeam" type="radio" onChange={ event => setSelectedTeam(team) } />
                             <Text>{ LocalizeText(`wiredfurni.params.team.${ team }`) }</Text>
-                        </Flex>
+                        </div>
                     )
                 }) }
-            </Column>
+            </div>
         </WiredActionBaseView>
     );
 }

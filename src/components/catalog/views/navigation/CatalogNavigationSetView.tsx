@@ -18,7 +18,7 @@ export const CatalogNavigationSetView: FC<CatalogNavigationSetViewProps> = props
             {
                 if(!n.isVisible) return null;
                     
-                return <CatalogNavigationItemView key={ index } node={ n } child={ child } />
+                return <CatalogNavigationItemView key={ index } child={ child } node={ n } />
             }) }
         </>
     );

@@ -37,7 +37,7 @@ export const Grid: FC<GridProps> = props =>
 
         if(justifyContent) newClassNames.push('justify-content-' + justifyContent);
 
-        if(!alignItems && !justifyContent && center) newClassNames.push('align-items-center', 'justify-content-center');
+        if(!alignItems && !justifyContent && center) newClassNames.push('items-center', 'justify-center');
 
         if(classNames.length) newClassNames.push(...classNames);
 
@@ -57,7 +57,7 @@ export const Grid: FC<GridProps> = props =>
 
     return (
         <GridContextProvider value={ { isCssGrid: true } }>
-            <Base fullHeight={ fullHeight } classNames={ getClassNames } style={ getStyle } { ...rest } />
+            <Base classNames={ getClassNames } fullHeight={ fullHeight } style={ getStyle } { ...rest } />
         </GridContextProvider>
     );
 }

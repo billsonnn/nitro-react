@@ -105,53 +105,53 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                 { navigatorData.enteredGuestRoom &&
                     <>
                         <Flex gap={ 2 } overflow="hidden">
-                            <LayoutRoomThumbnailView roomId={ navigatorData.enteredGuestRoom.roomId } customUrl={ navigatorData.enteredGuestRoom.officialRoomPicRef }>
+                            <LayoutRoomThumbnailView customUrl={ navigatorData.enteredGuestRoom.officialRoomPicRef } roomId={ navigatorData.enteredGuestRoom.roomId }>
                                 { hasPermission('settings') && <i className="icon icon-camera-small position-absolute b-0 r-0 m-1 cursor-pointer top-0" onClick={ () => processAction('open_room_thumbnail_camera') } /> }
                             </LayoutRoomThumbnailView>
                             <Column grow gap={ 1 } overflow="hidden">
-                                <Flex gap={ 1 }>
+                                <div className="flex gap-1">
                                     <Column grow gap={ 1 }>
-                                        <Flex gap={ 1 }>
-                                            <i onClick={ () => processAction('set_home_room') } className={ classNames('flex-shrink-0 icon icon-house-small cursor-pointer', ((navigatorData.homeRoomId !== navigatorData.enteredGuestRoom.roomId) && 'gray')) } />
+                                        <div className="flex gap-1">
+                                            <i className={ classNames('flex-shrink-0 icon icon-house-small cursor-pointer', ((navigatorData.homeRoomId !== navigatorData.enteredGuestRoom.roomId) && 'gray')) } onClick={ () => processAction('set_home_room') } />
                                             <Text bold>{ navigatorData.enteredGuestRoom.roomName }</Text>
-                                        </Flex>
+                                        </div>
                                         { navigatorData.enteredGuestRoom.showOwner &&
-                                            <Flex alignItems="center" gap={ 1 }>
+                                            <div className="flex items-center gap-1">
                                                 <Text variant="muted">{ LocalizeText('navigator.roomownercaption') }</Text>
-                                                <Flex alignItems="center" gap={ 1 }>
+                                                <div className="flex items-center gap-1">
                                                     <UserProfileIconView userId={ navigatorData.enteredGuestRoom.ownerId } />
                                                     <Text>{ navigatorData.enteredGuestRoom.ownerName }</Text>
-                                                </Flex>
-                                            </Flex> }
-                                        <Flex alignItems="center" gap={ 1 }>
+                                                </div>
+                                            </div> }
+                                        <div className="flex items-center gap-1">
                                             <Text variant="muted">{ LocalizeText('navigator.roomrating') }</Text>
                                             <Text>{ navigatorData.currentRoomRating }</Text>
-                                        </Flex>
+                                        </div>
                                         { (navigatorData.enteredGuestRoom.tags.length > 0) &&
-                                            <Flex alignItems="center" gap={ 1 }>
+                                            <div className="flex items-center gap-1">
                                                 { navigatorData.enteredGuestRoom.tags.map(tag =>
                                                 {
                                                     return <Text key={ tag } pointer className="bg-muted rounded p-1" onClick={ event => processAction('navigator_search_tag', tag) }>#{ tag }</Text>
                                                 }) }
-                                            </Flex> }
+                                            </div> }
                                     </Column>
                                     <Column alignItems="center" gap={ 1 }>
                                         { hasPermission('settings') &&
                                             <i className="icon icon-cog cursor-pointer" title={ LocalizeText('navigator.room.popup.info.room.settings') } onClick={ event => processAction('open_room_settings') } /> }
-                                        <FaLink title={ LocalizeText('navigator.embed.caption') } className="cursor-pointer fa-icon" onClick={ event => CreateLinkEvent('navigator/toggle-room-link') } />
+                                        <FaLink className="cursor-pointer fa-icon" title={ LocalizeText('navigator.embed.caption') } onClick={ event => CreateLinkEvent('navigator/toggle-room-link') } />
                                     </Column>
-                                </Flex>
+                                </div>
                                 <Text overflow="auto" style={ { maxHeight: 50 } }>{ navigatorData.enteredGuestRoom.description }</Text>
                                 { (navigatorData.enteredGuestRoom.habboGroupId > 0) &&
                                     <Flex pointer alignItems="center" gap={ 1 } onClick={ () => processAction('open_group_info') }>
-                                        <LayoutBadgeImageView className="flex-none" badgeCode={ navigatorData.enteredGuestRoom.groupBadgeCode } isGroup={ true } />
+                                        <LayoutBadgeImageView badgeCode={ navigatorData.enteredGuestRoom.groupBadgeCode } className="flex-none" isGroup={ true } />
                                         <Text underline>
                                             { LocalizeText('navigator.guildbase', [ 'groupName' ], [ navigatorData.enteredGuestRoom.groupName ]) }
                                         </Text>
                                     </Flex> }
                             </Column>
                         </Flex>
-                        <Column gap={ 1 }>
+                        <div className="flex flex-column gap-1">
                             { hasPermission('staff_pick') &&
                             <Button onClick={ () => processAction('toggle_pick') }>
                                 { LocalizeText(isRoomPicked ? 'navigator.staffpicks.unpick' : 'navigator.staffpicks.pick') }
@@ -171,7 +171,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                     { LocalizeText('open.floor.plan.editor') }
                                 </Button>
                             </> }
-                        </Column>
+                        </div>
                     </> }
 
             </NitroCardContentView>

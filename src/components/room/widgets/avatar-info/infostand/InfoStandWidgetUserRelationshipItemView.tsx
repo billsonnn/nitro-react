@@ -18,7 +18,7 @@ export const InfoStandWidgetUserRelationshipsRelationshipItemView: FC<InfoStandW
     const relationshipName = RelationshipStatusEnum.RELATIONSHIP_NAMES[type].toLocaleLowerCase();
 
     return (
-        <Flex alignItems="center" gap={ 1 }>
+        <div className="flex items-center gap-1">
             <i className={ `nitro-friends-spritesheet icon-${ relationshipName }` } />
             <Flex alignItems="center" gap={ 0 }>
                 <Text small variant="white" onClick={ event => GetUserProfile(relationship.randomFriendId) }>
@@ -26,6 +26,6 @@ export const InfoStandWidgetUserRelationshipsRelationshipItemView: FC<InfoStandW
                     { (relationship.friendCount > 1) && (' ' + LocalizeText(`extendedprofile.relstatus.others.${ relationshipName }`, [ 'count' ], [ (relationship.friendCount - 1).toString() ])) }
                 </Text>
             </Flex>
-        </Flex>
+        </div>
     );
 }

@@ -2,7 +2,7 @@ import { AddLinkEventTracker, ClubGiftInfoEvent, CreateLinkEvent, GetClubGiftInf
 import { FC, useEffect, useState } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { ClubStatus, FriendlyTime, GetClubBadge, GetConfigurationValue, LocalizeText, SendMessageComposer } from '../../api';
-import { Base, Button, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
+import { Button, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { useInventoryBadges, useMessageEvent, usePurse, useSessionInfo } from '../../hooks';
 
 
@@ -129,29 +129,29 @@ export const HcCenterView: FC<{}> = props =>
     );
 
     return (
-        <NitroCardView theme="primary-slim" className="nitro-hc-center">
+        <NitroCardView className="nitro-hc-center" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('generic.hccenter') } onCloseClick={ () => setIsVisible(false) } />
-            <Flex position="relative" className="bg-muted p-2">
-                <Column gap={ 1 }>
+            <Flex className="bg-muted p-2" position="relative">
+                <div className="flex flex-column gap-1">
                     <div className="hc-logo" />
                     <Flex>
                         <Button variant="success" onClick={ event => CreateLinkEvent('catalog/open/' + GetConfigurationValue('catalog.links')['hc.buy_hc']) }>
                             { LocalizeText((clubStatus === ClubStatus.ACTIVE) ? 'hccenter.btn.extend' : 'hccenter.btn.buy') }
                         </Button>
                     </Flex>
-                </Column>
-                <Base position="absolute" className="end-0 p-4 top-0 habbo-avatar">
-                    <LayoutAvatarImageView figure={ userFigure } direction={ 4 } scale={ 2 } />
-                </Base>
+                </div>
+                <div className="end-0 p-4 top-0 habbo-avatar position-absolute">
+                    <LayoutAvatarImageView direction={ 4 } figure={ userFigure } scale={ 2 } />
+                </div>
             </Flex>
             <NitroCardContentView>
-                <Flex gap={ 2 }>
+                <div className="flex gap-2">
                     <LayoutBadgeImageView badgeCode={ badgeCode } className="align-self-center flex-shrink-0 me-1" />
-                    <Column size={ 5 } className="streak-info" gap={ 0 }>
+                    <Column className="streak-info" gap={ 0 } size={ 5 }>
                         <Text>{ LocalizeText('hccenter.status.' + clubStatus) }</Text>
                         <Text dangerouslySetInnerHTML={ { __html: getInfoText() } } />
                     </Column>
-                </Flex>
+                </div>
                 { GetConfigurationValue('hc.center')['payday.info'] &&
                     <Flex alignItems="center">
 
@@ -162,16 +162,16 @@ export const HcCenterView: FC<{}> = props =>
                         </Column>
                         <div className="payday flex-shrink-0 p-2">
                             <h5 className="mb-2 ms-2">{ LocalizeText('hccenter.special.time.title') }</h5>
-                            <div className="d-flex flex-row mb-2">
+                            <div className="flex flex-row mb-2">
                                 <div className="clock me-2" />
                                 <h6 className="mb-0 align-self-center">{ getHcPaydayTime() }</h6>
                             </div>
                             { clubStatus === ClubStatus.ACTIVE &&
                                 <div className="pe-3">
                                     <h5 className="ms-2 mb-1 bolder">{ LocalizeText('hccenter.special.amount.title') }</h5>
-                                    <div className="d-flex flex-column">
+                                    <div className="flex flex-column">
                                         <div className="w-100 text-center ms-4n">{ getHcPaydayAmount() }</div>
-                                        <OverlayTrigger trigger={ [ 'hover', 'focus' ] } placement="left" overlay={ popover }>
+                                        <OverlayTrigger overlay={ popover } placement="left" trigger={ [ 'hover', 'focus' ] }>
                                             <div className="btn btn-link align-self-end text-primary">
                                                 { LocalizeText('hccenter.breakdown.infolink') }
                                             </div>
@@ -181,7 +181,7 @@ export const HcCenterView: FC<{}> = props =>
                         </div>
                     </Flex> }
                 { GetConfigurationValue('hc.center')['gift.info'] &&
-                    <div className="rounded bg-success p-2 d-flex flex-row mb-0">
+                    <div className="rounded bg-success p-2 flex flex-row mb-0">
                         <div>
                             <h4 className="mb-1">{ LocalizeText('hccenter.gift.title') }</h4>
                             <div dangerouslySetInnerHTML={ { __html: unclaimedGifts > 0 ? LocalizeText('hccenter.unclaimedgifts', [ 'unclaimedgifts' ], [ unclaimedGifts.toString() ]) : LocalizeText('hccenter.gift.info') } }></div>

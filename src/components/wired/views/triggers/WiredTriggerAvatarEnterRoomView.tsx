@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
-import { Column, Flex, Text } from '../../../../common';
+import { Text } from '../../../../common';
 import { useWired } from '../../../../hooks';
 import { WiredTriggerBaseView } from './WiredTriggerBaseView';
 
@@ -19,20 +19,20 @@ export const WiredTriggerAvatarEnterRoomView: FC<{}> = props =>
     }, [ trigger ]);
 
     return (
-        <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
-            <Column gap={ 1 }>
+        <WiredTriggerBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.picktriggerer') }</Text>
-                <Flex alignItems="center" gap={ 1 }>
-                    <input className="form-check-input" type="radio" name="avatarMode" id="avatarMode0" checked={ (avatarMode === 0) } onChange={ event => setAvatarMode(0) } />
+                <div className="flex items-center gap-1">
+                    <input checked={ (avatarMode === 0) } className="form-check-input" id="avatarMode0" name="avatarMode" type="radio" onChange={ event => setAvatarMode(0) } />
                     <Text>{ LocalizeText('wiredfurni.params.anyavatar') }</Text>
-                </Flex>
-                <Flex alignItems="center" gap={ 1 }>
-                    <input className="form-check-input" type="radio" name="avatarMode" id="avatarMode1" checked={ (avatarMode === 1) } onChange={ event => setAvatarMode(1) } />
+                </div>
+                <div className="flex items-center gap-1">
+                    <input checked={ (avatarMode === 1) } className="form-check-input" id="avatarMode1" name="avatarMode" type="radio" onChange={ event => setAvatarMode(1) } />
                     <Text>{ LocalizeText('wiredfurni.params.certainavatar') }</Text>
-                </Flex>
+                </div>
                 { (avatarMode === 1) &&
-                    <input type="text" className="form-control form-control-sm" value={ username } onChange={ event => setUsername(event.target.value) } /> }
-            </Column>
+                    <input className="form-control form-control-sm" type="text" value={ username } onChange={ event => setUsername(event.target.value) } /> }
+            </div>
         </WiredTriggerBaseView>
     );
 }

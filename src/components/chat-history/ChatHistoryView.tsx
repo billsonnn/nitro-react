@@ -58,11 +58,11 @@ export const ChatHistoryView: FC<{}> = props =>
     if(!isVisible) return null;
 
     return (
-        <NitroCardView uniqueKey="chat-history" className="nitro-chat-history" theme="primary-slim">
+        <NitroCardView className="nitro-chat-history" theme="primary-slim" uniqueKey="chat-history">
             <NitroCardHeaderView headerText={ LocalizeText('room.chathistory.button.text') } onCloseClick={ event => setIsVisible(false) }/>
-            <NitroCardContentView innerRef={ elementRef } overflow="hidden" gap={ 2 }>
-                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchText } onChange={ event => setSearchText(event.target.value) } />
-                <InfiniteScroll rows={ filteredChatHistory } scrollToBottom={ true } rowRender={ row =>
+            <NitroCardContentView gap={ 2 } innerRef={ elementRef } overflow="hidden">
+                <input className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } type="text" value={ searchText } onChange={ event => setSearchText(event.target.value) } />
+                <InfiniteScroll rowRender={ row =>
                 {
                     return (
                         <Flex alignItems="center" className="p-1" gap={ 2 }>
@@ -85,11 +85,11 @@ export const ChatHistoryView: FC<{}> = props =>
                             { (row.type === ChatEntryType.TYPE_ROOM_INFO) &&
                                 <>
                                     <i className="icon icon-small-room" />
-                                    <Text textBreak wrap grow>{ row.name }</Text>
+                                    <Text grow textBreak wrap>{ row.name }</Text>
                                 </> }
                         </Flex>
                     )
-                } } />
+                } } rows={ filteredChatHistory } scrollToBottom={ true } />
             </NitroCardContentView>
         </NitroCardView>
     );

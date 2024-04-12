@@ -23,7 +23,7 @@ export const AvatarInfoWidgetNameView: FC<AvatarInfoWidgetNameViewProps> = props
     }, [ nameInfo ]);
 
     return (
-        <ContextMenuView objectId={ nameInfo.roomIndex } category={ nameInfo.category } userType={ nameInfo.userType } fades={ (nameInfo.id !== GetSessionDataManager().userId) } classNames={ getClassNames } onClose={ onClose }>
+        <ContextMenuView category={ nameInfo.category } classNames={ getClassNames } fades={ (nameInfo.id !== GetSessionDataManager().userId) } objectId={ nameInfo.roomIndex } userType={ nameInfo.userType } onClose={ onClose }>
             <div className="text-shadow">
                 { nameInfo.name }
             </div>

@@ -25,7 +25,7 @@ export const InfiniteScroll: FC<InfiniteScrollProps> = props =>
     const items = virtualizer.getVirtualItems();
 
     return (
-        <Base fit innerRef={ parentRef } position="relative" overflow="auto">
+        <Base fit innerRef={ parentRef } overflow="auto" position="relative">
             <div
                 style={ {
                     height: virtualizer.getTotalSize(),
@@ -43,8 +43,8 @@ export const InfiniteScroll: FC<InfiniteScrollProps> = props =>
                     { items.map((virtualRow) => (
                         <div
                             key={ virtualRow.key }
-                            data-index={ virtualRow.index }
-                            ref={ virtualizer.measureElement }>
+                            ref={ virtualizer.measureElement }
+                            data-index={ virtualRow.index }>
                             { rowRender(rows[virtualRow.index]) }
                         </div>
                     )) }

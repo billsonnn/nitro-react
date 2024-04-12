@@ -28,5 +28,5 @@ export const ContextMenuListItemView: FC<ContextMenuListItemViewProps> = props =
         return newClassNames;
     }, [ disabled, classNames ]);
 
-    return <Flex fullWidth={ fullWidth } justifyContent={ justifyContent } alignItems={ alignItems } classNames={ getClassNames } onClick={ handleClick } { ...rest } />;
+    return <Flex alignItems={ alignItems } classNames={ getClassNames } fullWidth={ fullWidth } justifyContent={ justifyContent } onClick={ handleClick } { ...rest } />;
 }

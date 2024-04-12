@@ -55,10 +55,10 @@ export const CameraWidgetShowPhotoView: FC<CameraWidgetShowPhotoViewProps> = pro
             </Flex>
             { currentImage.m && currentImage.m.length &&
                 <Text center>{ currentImage.m }</Text> }
-            <Flex alignItems="center" justifyContent="between">
+            <div className="flex items-center justify-content-between">
                 <Text>{ (currentImage.n || '') }</Text>
                 <Text>{ new Date(currentImage.t * 1000).toLocaleDateString() }</Text>
-            </Flex>
+            </div>
             { (currentPhotos.length > 1) &&
                 <Flex className="picture-preview-buttons">
                     <FaArrowLeft className="cursor-pointer picture-preview-buttons-previous fa-icon" onClick={ previous } />

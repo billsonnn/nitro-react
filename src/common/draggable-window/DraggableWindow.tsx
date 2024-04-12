@@ -263,7 +263,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
 
     return (
         createPortal(
-            <Base position="absolute" innerRef={ elementRef } className="draggable-window" onMouseDownCapture={ onMouseDown } onTouchStartCapture={ onTouchStart } style={ dragStyle }>
+            <Base className="draggable-window" innerRef={ elementRef } position="absolute" style={ dragStyle } onMouseDownCapture={ onMouseDown } onTouchStartCapture={ onTouchStart }>
                 { children }
             </Base>, document.getElementById('draggable-windows-container'))
     );

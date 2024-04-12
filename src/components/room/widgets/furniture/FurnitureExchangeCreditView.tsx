@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LocalizeText } from '../../../../api';
-import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { Button, Column, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useFurnitureExchangeWidget } from '../../../../hooks';
 
 export const FurnitureExchangeCreditView: FC<{}> = props =>
@@ -13,11 +13,11 @@ export const FurnitureExchangeCreditView: FC<{}> = props =>
         <NitroCardView className="nitro-widget-exchange-credit" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('catalog.redeem.dialog.title') } onCloseClick={ onClose } />
             <NitroCardContentView center>
-                <Flex overflow="hidden" gap={ 2 }>
-                    <Column center>
-                        <Base className="exchange-image" />
-                    </Column>
-                    <Column grow justifyContent="between" overflow="hidden">
+                <div className="flex gap-2 overflow-hidden">
+                    <div className="flex flex-column items-center justify-conent-center">
+                        <div className="exchange-image" />
+                    </div>
+                    <div className="flex flex-column justify-content-between overflow-hidden flex-grow-1">
                         <Column gap={ 1 } overflow="auto">
                             <Text fontWeight="bold">{ LocalizeText('creditfurni.description', [ 'credits' ], [ value.toString() ]) }</Text>
                             <Text>{ LocalizeText('creditfurni.prompt') }</Text>
@@ -25,8 +25,8 @@ export const FurnitureExchangeCreditView: FC<{}> = props =>
                         <Button variant="success" onClick={ redeem }>
                             { LocalizeText('catalog.redeem.dialog.button.exchange') }
                         </Button>
-                    </Column>
-                </Flex>
+                    </div>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
     );

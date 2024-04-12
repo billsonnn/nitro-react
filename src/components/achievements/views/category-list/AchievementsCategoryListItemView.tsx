@@ -21,10 +21,10 @@ export const AchievementsCategoryListItemView: FC<AchievementCategoryListItemVie
     const getTotalUnseen = AchievementUtilities.getAchievementCategoryTotalUnseen(category);
 
     return (
-        <LayoutGridItem itemActive={ (selectedCategoryCode === category.code) } itemCount={ getTotalUnseen } itemCountMinimum={ 0 } gap={ 1 } onClick={ event => setSelectedCategoryCode(category.code) }>
-            <Text fullWidth center small className="pt-1">{ LocalizeText(`quests.${ category.code }.name`) }</Text>
-            <LayoutBackgroundImage position="relative" imageUrl={ getCategoryImage }>
-                <Text fullWidth center position="absolute" variant="white" style={ { fontSize: 12, bottom: 9 } }>{ progress } / { maxProgress }</Text>
+        <LayoutGridItem gap={ 1 } itemActive={ (selectedCategoryCode === category.code) } itemCount={ getTotalUnseen } itemCountMinimum={ 0 } onClick={ event => setSelectedCategoryCode(category.code) }>
+            <Text center fullWidth small className="pt-1">{ LocalizeText(`quests.${ category.code }.name`) }</Text>
+            <LayoutBackgroundImage imageUrl={ getCategoryImage } position="relative">
+                <Text center fullWidth position="absolute" style={ { fontSize: 12, bottom: 9 } } variant="white">{ progress } / { maxProgress }</Text>
             </LayoutBackgroundImage>
         </LayoutGridItem>
     );

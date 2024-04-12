@@ -1,7 +1,7 @@
 import { GetRoomEngine, GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { CalendarItemState, GetConfigurationValue, ICalendarItem } from '../../api';
-import { Base, Column, Flex, LayoutImage } from '../../common';
+import { Column, Flex, LayoutImage } from '../../common';
 
 interface CalendarItemViewProps
 {
@@ -33,7 +33,7 @@ export const CalendarItemView: FC<CalendarItemViewProps> = props =>
     }
 
     return (
-        <Column fit center pointer className={ `campaign-spritesheet campaign-day-generic-bg rounded calendar-item ${ active ? 'active' : '' }` } onClick={ () => onClick(itemId) }>
+        <Column center fit pointer className={ `campaign-spritesheet campaign-day-generic-bg rounded calendar-item ${ active ? 'active' : '' }` } onClick={ () => onClick(itemId) }>
             { (state === CalendarItemState.STATE_UNLOCKED) &&
                 <Flex center className="campaign-spritesheet unlocked-bg">
                     <Flex center className="campaign-spritesheet campaign-opened">
@@ -44,9 +44,9 @@ export const CalendarItemView: FC<CalendarItemViewProps> = props =>
             { (state !== CalendarItemState.STATE_UNLOCKED) &&
                 <Flex center className="campaign-spritesheet locked-bg">
                     { (state === CalendarItemState.STATE_LOCKED_AVAILABLE) &&
-                        <Base className="campaign-spritesheet available" /> }
+                        <div className="campaign-spritesheet available" /> }
                     { ((state === CalendarItemState.STATE_LOCKED_EXPIRED) || (state === CalendarItemState.STATE_LOCKED_FUTURE)) &&
-                        <Base className="campaign-spritesheet unavailable" /> }
+                        <div className="campaign-spritesheet unavailable" /> }
                 </Flex> }
         </Column>
     );

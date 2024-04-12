@@ -118,7 +118,7 @@ export const InventoryView: FC<{}> = props =>
     if(!isVisible) return null;
 
     return (
-        <NitroCardView uniqueKey={ 'inventory' } className="nitro-inventory" theme={ isTrading ? 'primary-slim' : '' } >
+        <NitroCardView className="nitro-inventory" theme={ isTrading ? 'primary-slim' : '' } uniqueKey={ 'inventory' } >
             <NitroCardHeaderView headerText={ LocalizeText('inventory.title') } onCloseClick={ onClose } />
             { !isTrading &&
                 <>
@@ -126,7 +126,7 @@ export const InventoryView: FC<{}> = props =>
                         { TABS.map((name, index) =>
                         {
                             return (
-                                <NitroCardTabsItemView key={ index } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) } count={ getCount(UNSEEN_CATEGORIES[index]) }>
+                                <NitroCardTabsItemView key={ index } count={ getCount(UNSEEN_CATEGORIES[index]) } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) }>
                                     { LocalizeText(name) }
                                 </NitroCardTabsItemView>
                             );
@@ -134,11 +134,11 @@ export const InventoryView: FC<{}> = props =>
                     </NitroCardTabsView>
                     <NitroCardContentView>
                         { (currentTab === TAB_FURNITURE ) &&
-                            <InventoryFurnitureView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
+                            <InventoryFurnitureView roomPreviewer={ roomPreviewer } roomSession={ roomSession } /> }
                         { (currentTab === TAB_BOTS ) &&
-                            <InventoryBotView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
+                            <InventoryBotView roomPreviewer={ roomPreviewer } roomSession={ roomSession } /> }
                         { (currentTab === TAB_PETS ) && 
-                            <InventoryPetView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
+                            <InventoryPetView roomPreviewer={ roomPreviewer } roomSession={ roomSession } /> }
                         { (currentTab === TAB_BADGES ) && 
                             <InventoryBadgeView /> }
                     </NitroCardContentView>

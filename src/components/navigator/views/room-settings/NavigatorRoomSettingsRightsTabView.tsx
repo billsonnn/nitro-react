@@ -67,22 +67,22 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
                 <Text bold>
                     { LocalizeText('navigator.flatctrls.userswithrights', [ 'displayed', 'total' ], [ usersWithRights.size.toString(), usersWithRights.size.toString() ]) }
                 </Text>
-                <Flex overflow="hidden" className="bg-white rounded list-container p-2">
-                    <Column fullWidth overflow="auto" gap={ 1 }>
+                <Flex className="bg-white rounded list-container p-2" overflow="hidden">
+                    <Column fullWidth gap={ 1 } overflow="auto">
                         { Array.from(usersWithRights.entries()).map(([ id, name ], index) =>
                         {
                             return (
                                 <Flex key={ index } shrink alignItems="center" gap={ 1 } overflow="hidden">
                                     <UserProfileIconView userName={ name } />
-                                    <Text pointer grow onClick={ event => SendMessageComposer(new RoomTakeRightsComposer(id)) }> { name }</Text>
+                                    <Text grow pointer onClick={ event => SendMessageComposer(new RoomTakeRightsComposer(id)) }> { name }</Text>
                                 </Flex>
                             );
                         }) }
                     </Column>
                 </Flex>
             </Column>
-            <Column size={ 6 } justifyContent="end">
-                <Button variant="danger" disabled={ !usersWithRights.size } onClick={ event => SendMessageComposer(new RemoveAllRightsMessageComposer(roomData.roomId)) } >
+            <Column justifyContent="end" size={ 6 }>
+                <Button disabled={ !usersWithRights.size } variant="danger" onClick={ event => SendMessageComposer(new RemoveAllRightsMessageComposer(roomData.roomId)) } >
                     { LocalizeText('navigator.flatctrls.clear') }
                 </Button>
             </Column>

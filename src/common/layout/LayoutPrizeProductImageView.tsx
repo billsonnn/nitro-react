@@ -19,7 +19,7 @@ export const LayoutPrizeProductImageView: FC<LayoutPrizeProductImageViewProps> =
     {
         case ProductTypeEnum.WALL:
         case ProductTypeEnum.FLOOR:
-            return <LayoutFurniImageView productType={ productType } productClassId={ classId } />
+            return <LayoutFurniImageView productClassId={ classId } productType={ productType } />
         case ProductTypeEnum.BADGE:
             return <LayoutBadgeImageView badgeCode={ extraParam }/>
         case ProductTypeEnum.HABBO_CLUB:

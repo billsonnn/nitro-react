@@ -35,8 +35,8 @@ export const InventoryPetItemView: FC<PropsWithChildren<{ petItem: IPetItem }>> 
     }
 
     return (
-        <LayoutGridItem itemActive={ (petItem === selectedPet) } itemUnseen={ unseen } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent } onDoubleClick={ onMouseEvent } { ...rest }>
-            <LayoutPetImageView figure={ petItem.petData.figureData.figuredata } direction={ 3 } headOnly={ true } />
+        <LayoutGridItem itemActive={ (petItem === selectedPet) } itemUnseen={ unseen } onDoubleClick={ onMouseEvent } onMouseDown={ onMouseEvent } onMouseOut={ onMouseEvent } onMouseUp={ onMouseEvent } { ...rest }>
+            <LayoutPetImageView direction={ 3 } figure={ petItem.petData.figureData.figuredata } headOnly={ true } />
             { children }
         </LayoutGridItem>
     );

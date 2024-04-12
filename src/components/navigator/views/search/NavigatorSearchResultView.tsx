@@ -59,25 +59,25 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
     
     return (
         <Column className="bg-white rounded border border-muted" gap={ 0 }>
-            <Flex fullWidth alignItems="center" justifyContent="between" className="px-2 py-1">
+            <Flex fullWidth alignItems="center" className="px-2 py-1" justifyContent="between">
                 <Flex grow pointer alignItems="center" gap={ 1 } onClick={ event => setIsExtended(prevValue => !prevValue) }>
                     { isExtended && <FaMinus className="text-secondary fa-icon" /> }
                     { !isExtended && <FaPlus className="text-secondary fa-icon" /> }
                     <Text>{ LocalizeText(getResultTitle()) }</Text>
                 </Flex>
-                <Flex gap={ 2 }>
+                <div className="flex gap-2">
                     { (displayMode === NavigatorSearchResultViewDisplayMode.LIST) && <FaTh className="text-secondary fa-icon" onClick={ toggleDisplayMode } /> }
                     { (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) && <FaBars className="text-secondary fa-icon" onClick={ toggleDisplayMode } /> }
                     { (searchResult.action > 0) && (searchResult.action === 1) && <FaWindowMaximize className="text-secondary fa-icon" onClick={ showMore } /> }
                     { (searchResult.action > 0) && (searchResult.action !== 1) && <FaWindowRestore className="text-secondary fa-icon" onClick={ showMore } /> }
-                </Flex>
+                </div>
 
             </Flex> { isExtended && 
                 <>
                     {
-                        gridHasTwoColumns ? <AutoGrid columnCount={ 3 } { ...rest } columnMinWidth={ 110 } columnMinHeight={ 130 } className="mx-2">
+                        gridHasTwoColumns ? <AutoGrid columnCount={ 3 } { ...rest } className="mx-2" columnMinHeight={ 130 } columnMinWidth={ 110 }>
                             { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={ index } roomData={ room } thumbnail={ true } />) }
-                        </AutoGrid> : <Grid columnCount={ 1 } className="navigator-grid" gap={ 0 }>
+                        </AutoGrid> : <Grid className="navigator-grid" columnCount={ 1 } gap={ 0 }>
                             { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={ index } roomData={ room } />) }
                         </Grid>
                     }
@@ -85,8 +85,8 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
             }
         </Column>
         // <div className="nitro-navigator-search-result bg-white rounded mb-2 overflow-hidden">
-        //     <div className="d-flex flex-column">
-        //         <div className="d-flex align-items-center px-2 py-1 text-black">
+        //     <div className="flex flex-column">
+        //         <div className="flex items-center px-2 py-1 text-black">
         //             <i className={ 'text-secondary fas ' + (isExtended ? 'fa-minus' : 'fa-plus') } onClick={ toggleExtended }></i>
         //             <div className="ms-2 flex-grow-1">{ LocalizeText(getResultTitle()) }</div>
         //             <i className={ 'text-secondary fas ' + classNames({ 'fa-bars': (displayMode === NavigatorSearchResultViewDisplayMode.LIST), 'fa-th': displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS })}></i>
@@ -101,7 +101,7 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
         //     </div>
         // </div>
         // <div className="nitro-navigator-result-list p-2">
-        //     <div className="d-flex mb-2 small cursor-pointer" onClick={ toggleList }>
+        //     <div className="flex mb-2 small cursor-pointer" onClick={ toggleList }>
         //         <i className={ "fas " + classNames({ 'fa-plus': !isExtended, 'fa-minus': isExtended })}></i>
         //         <div className="align-self-center w-100 ml-2">{ LocalizeText(getListCode()) }</div>
         //         <i className={ "fas " + classNames({ 'fa-bars': displayMode === NavigatorResultListViewDisplayMode.LIST, 'fa-th': displayMode >= NavigatorResultListViewDisplayMode.THUMBNAILS })} onClick={ toggleDisplayMode }></i>

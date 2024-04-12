@@ -87,7 +87,7 @@ export const AvatarInfoUseProductView: FC<AvatarInfoUseProductViewProps> = props
     }, [ roomSession, item ]);
     
     return (
-        <ContextMenuView objectId={ item.id } category={ RoomObjectCategory.UNIT } userType={ RoomObjectType.PET } onClose={ onClose } collapsable={ true }>
+        <ContextMenuView category={ RoomObjectCategory.UNIT } collapsable={ true } objectId={ item.id } userType={ RoomObjectType.PET } onClose={ onClose }>
             <ContextMenuHeaderView>
                 { item.name }
             </ContextMenuHeaderView>

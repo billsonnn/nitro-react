@@ -88,9 +88,9 @@ export const CameraWidgetView: FC<{}> = props =>
 
     return (
         <>
-            { (mode === MODE_CAPTURE) && <CameraWidgetCaptureView onClose={ () => processAction('close') } onEdit={ () => processAction('edit') } onDelete={ () => processAction('delete') } /> }
-            { (mode === MODE_EDITOR) && <CameraWidgetEditorView picture={ cameraRoll[selectedPictureIndex] } myLevel={ myLevel } onClose={ () => processAction('close') } onCancel={ () => processAction('editor_cancel') } onCheckout={ checkoutPictureUrl } availableEffects={ availableEffects } /> }
-            { (mode === MODE_CHECKOUT) && <CameraWidgetCheckoutView base64Url={ base64Url } onCloseClick={ () => processAction('close') } onCancelClick={ () => processAction('editor_cancel') } price={ price }></CameraWidgetCheckoutView> }
+            { (mode === MODE_CAPTURE) && <CameraWidgetCaptureView onClose={ () => processAction('close') } onDelete={ () => processAction('delete') } onEdit={ () => processAction('edit') } /> }
+            { (mode === MODE_EDITOR) && <CameraWidgetEditorView availableEffects={ availableEffects } myLevel={ myLevel } picture={ cameraRoll[selectedPictureIndex] } onCancel={ () => processAction('editor_cancel') } onCheckout={ checkoutPictureUrl } onClose={ () => processAction('close') } /> }
+            { (mode === MODE_CHECKOUT) && <CameraWidgetCheckoutView base64Url={ base64Url } price={ price } onCancelClick={ () => processAction('editor_cancel') } onCloseClick={ () => processAction('close') }></CameraWidgetCheckoutView> }
         </>
     );
 }

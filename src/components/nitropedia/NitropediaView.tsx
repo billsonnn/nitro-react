@@ -1,7 +1,7 @@
 import { AddLinkEventTracker, ILinkEventTracker, NitroLogger, RemoveLinkEventTracker } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
 import { GetConfigurationValue, OpenUrl } from '../../api';
-import { Base, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
 
 const NEW_LINE_REGEX = /\n\r|\n|\r/mg;
 
@@ -95,10 +95,10 @@ export const NitropediaView: FC<{}> = props =>
     if(!content) return null;
 
     return (
-        <NitroCardView className="nitropedia" theme="primary-slim" style={ dimensions ? { width: dimensions.width, height: dimensions.height } : {} }>
+        <NitroCardView className="nitropedia" style={ dimensions ? { width: dimensions.width, height: dimensions.height } : {} } theme="primary-slim">
             <NitroCardHeaderView headerText={ header } onCloseClick={ () => setContent(null) }/>
             <NitroCardContentView>
-                <Base fit innerRef={ elementRef } className="text-black" dangerouslySetInnerHTML={ { __html: content } } />
+                <div ref={ elementRef } className="text-black size-full" dangerouslySetInnerHTML={ { __html: content } } />
             </NitroCardContentView>
         </NitroCardView>
     );

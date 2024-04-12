@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { LocalizeText, NotificationAlertItem, NotificationAlertType, OpenUrl } from '../../../../api';
-import { Base, Button, Column, Flex, LayoutNotificationAlertView, LayoutNotificationAlertViewProps } from '../../../../common';
+import { Button, Column, Flex, LayoutNotificationAlertView, LayoutNotificationAlertViewProps } from '../../../../common';
 
 interface NotificationDefaultAlertViewProps extends LayoutNotificationAlertViewProps
 {
@@ -23,27 +23,27 @@ export const NotificationDefaultAlertView: FC<NotificationDefaultAlertViewProps>
 
     return (
         <LayoutNotificationAlertView title={ title } onClose={ onClose } { ...rest } type={ hasFrank ? NotificationAlertType.DEFAULT : item.alertType }>
-            <Flex fullHeight overflow="auto" gap={ hasFrank || (item.imageUrl && !imageFailed) ? 2 : 0 }>
-                { hasFrank && !item.imageUrl && <Base className="notification-frank flex-shrink-0" /> }
-                { item.imageUrl && !imageFailed && <img src={ item.imageUrl } alt={ item.title } onError={ () => 
+            <Flex fullHeight gap={ hasFrank || (item.imageUrl && !imageFailed) ? 2 : 0 } overflow="auto">
+                { hasFrank && !item.imageUrl && <div className="notification-frank flex-shrink-0" /> }
+                { item.imageUrl && !imageFailed && <img alt={ item.title } className="align-self-baseline" src={ item.imageUrl } onError={ () => 
                 {
                     setImageFailed(true) 
-                } } className="align-self-baseline" /> }
-                <Base classNames={ [ 'notification-text overflow-y-auto d-flex flex-column w-100', (item.clickUrl && !hasFrank) ? 'justify-content-center' : '' ] }>
+                } } /> }
+                <div className={ [ 'notification-text overflow-y-auto flex flex-column w-100', (item.clickUrl && !hasFrank) ? 'justify-center' : '' ].join(' ') }>
                     { (item.messages.length > 0) && item.messages.map((message, index) =>
                     {
                         const htmlText = message.replace(/\r\n|\r|\n/g, '<br />');
 
-                        return <Base key={ index } dangerouslySetInnerHTML={ { __html: htmlText } } />;
+                        return <div key={ index } dangerouslySetInnerHTML={ { __html: htmlText } } />;
                     }) }
                     { item.clickUrl && (item.clickUrl.length > 0) && (item.imageUrl && !imageFailed) && <>
                         <hr className="my-2 w-100" />
-                        <Button onClick={ visitUrl } className="align-self-center px-3">{ LocalizeText(item.clickUrlText) }</Button>
+                        <Button className="align-self-center px-3" onClick={ visitUrl }>{ LocalizeText(item.clickUrlText) }</Button>
                     </> }
-                </Base>
+                </div>
             </Flex>
             { (!item.imageUrl || (item.imageUrl && imageFailed)) && <>
-                <Column alignItems="center" center gap={ 0 }>
+                <Column center alignItems="center" gap={ 0 }>
                     <hr className="my-2 w-100" />
                     { !item.clickUrl &&
                         <Button onClick={ onClose }>{ LocalizeText('generic.close') }</Button> }

@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { FaSave, FaSearchMinus, FaSearchPlus, FaTrash } from 'react-icons/fa';
 import ReactSlider from 'react-slider';
 import { CameraEditorTabs, CameraPicture, CameraPictureThumbnail, LocalizeText } from '../../../../api';
-import { Button, ButtonGroup, Column, Flex, Grid, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../common';
+import { Button, Column, Grid, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../common';
 import { CameraWidgetEffectListView } from './effect-list';
 
 export interface CameraWidgetEditorViewProps
@@ -194,27 +194,27 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
             </NitroCardTabsView>
             <NitroCardContentView>
                 <Grid>
-                    <Column size={ 5 } overflow="hidden">
-                        <CameraWidgetEffectListView myLevel={ myLevel } selectedEffects={ selectedEffects } effects={ getEffectList() } thumbnails={ effectsThumbnails } processAction={ processAction } />
+                    <Column overflow="hidden" size={ 5 }>
+                        <CameraWidgetEffectListView effects={ getEffectList() } myLevel={ myLevel } processAction={ processAction } selectedEffects={ selectedEffects } thumbnails={ effectsThumbnails } />
                     </Column>
-                    <Column size={ 7 } justifyContent="between" overflow="hidden">
+                    <Column justifyContent="between" overflow="hidden" size={ 7 }>
                         <Column center>
-                            <LayoutImage imageUrl={ currentPictureUrl } className="picture-preview" />
+                            <LayoutImage className="picture-preview" imageUrl={ currentPictureUrl } />
                             { selectedEffectName &&
                                 <Column center fullWidth gap={ 1 }>
                                     <Text>{ LocalizeText('camera.effect.name.' + selectedEffectName) }</Text>
                                     <ReactSlider
                                         className={ 'nitro-slider' }
-                                        min={ 0 }
                                         max={ 1 }
+                                        min={ 0 }
+                                        renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> }
                                         step={ 0.01 }
                                         value={ getCurrentEffect.alpha }
-                                        onChange={ event => setSelectedEffectAlpha(event) }
-                                        renderThumb={ (props, state) => <div { ...props }>{ state.valueNow }</div> } />
+                                        onChange={ event => setSelectedEffectAlpha(event) } />
                                 </Column> }
                         </Column>
-                        <Flex justifyContent="between">
-                            <ButtonGroup>
+                        <div className="flex justify-content-between">
+                            <div className="btn-group">
                                 <Button onClick={ event => processAction('clear_effects') }>
                                     <FaTrash className="fa-icon" />
                                 </Button>
@@ -225,16 +225,16 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                                     { isZoomed && <FaSearchMinus className="fa-icon" /> }
                                     { !isZoomed && <FaSearchPlus className="fa-icon" /> }
                                 </Button>
-                            </ButtonGroup>
-                            <Flex gap={ 1 }>
+                            </div>
+                            <div className="flex gap-1">
                                 <Button onClick={ event => processAction('cancel') }>
                                     { LocalizeText('generic.cancel') }
                                 </Button>
                                 <Button onClick={ event => processAction('checkout') }>
                                     { LocalizeText('camera.preview.button.text') }
                                 </Button>
-                            </Flex>
-                        </Flex>
+                            </div>
+                        </div>
                     </Column>
                 </Grid>
             </NitroCardContentView>

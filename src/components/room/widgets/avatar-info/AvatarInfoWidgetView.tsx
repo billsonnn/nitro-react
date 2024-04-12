@@ -120,7 +120,7 @@ export const AvatarInfoWidgetView: FC<{}> = props =>
     return (
         <>
             { isDecorating &&
-                <AvatarInfoWidgetDecorateView userId={ GetSessionDataManager().userId } userName={ GetSessionDataManager().userName } roomIndex={ roomSession.ownRoomIndex } setIsDecorating={ setIsDecorating } /> }
+                <AvatarInfoWidgetDecorateView roomIndex={ roomSession.ownRoomIndex } setIsDecorating={ setIsDecorating } userId={ GetSessionDataManager().userId } userName={ GetSessionDataManager().userName } /> }
             { getMenuView() }
             { avatarInfo &&
                 <Column alignItems="end" className="nitro-infostand-container">

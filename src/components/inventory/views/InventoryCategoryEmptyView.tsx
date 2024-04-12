@@ -13,11 +13,11 @@ export const InventoryCategoryEmptyView: FC<InventoryCategoryEmptyViewProps> = p
     
     return (
         <Grid { ...rest }>
-            <Column center size={ 5 } overflow="hidden">
+            <Column center overflow="hidden" size={ 5 }>
                 <div className="empty-image" />
             </Column>
-            <Column justifyContent="center" size={ 7 } overflow="hidden">
-                <Text fontWeight="bold" fontSize={ 5 } overflow="unset" truncate>{ title }</Text>
+            <Column justifyContent="center" overflow="hidden" size={ 7 }>
+                <Text truncate fontSize={ 5 } fontWeight="bold" overflow="unset">{ title }</Text>
                 <Text overflow="auto">{ desc }</Text>
             </Column>
             { children }

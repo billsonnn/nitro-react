@@ -1,7 +1,7 @@
 import { TargetedOfferData } from '@nitrots/nitro-renderer';
 import { Dispatch, SetStateAction } from 'react';
 import { GetConfigurationValue } from '../../../../api';
-import { Base, LayoutNotificationBubbleView, Text } from '../../../../common';
+import { LayoutNotificationBubbleView, Text } from '../../../../common';
 
 export const OfferBubbleView = (props: { offer: TargetedOfferData, setOpen: Dispatch<SetStateAction<boolean>> }) =>
 {
@@ -9,8 +9,8 @@ export const OfferBubbleView = (props: { offer: TargetedOfferData, setOpen: Disp
 
     if (!offer) return;
 
-    return <LayoutNotificationBubbleView fadesOut={ false } onClose={ null } onClick={ evt => setOpen(true) } gap={ 2 }>
-        <Base className="nitro-targeted-offer-icon" style={ { backgroundImage: `url(${ GetConfigurationValue('image.library.url') + offer.iconImageUrl })` } }/>
-        <Text variant="light" className="ubuntu-bold">{ offer.title }</Text>
+    return <LayoutNotificationBubbleView fadesOut={ false } gap={ 2 } onClick={ evt => setOpen(true) } onClose={ null }>
+        <div className="nitro-targeted-offer-icon" style={ { backgroundImage: `url(${ GetConfigurationValue('image.library.url') + offer.iconImageUrl })` } }/>
+        <Text className="ubuntu-bold" variant="light">{ offer.title }</Text>
     </LayoutNotificationBubbleView>;
 }

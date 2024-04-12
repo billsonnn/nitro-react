@@ -1,6 +1,5 @@
 import { FC, ReactNode, useMemo } from 'react';
 import { NotificationBubbleType } from '../../api';
-import { Column } from '../../common';
 import { useNotification } from '../../hooks';
 import { GetAlertLayout } from './views/alert-layouts/GetAlertLayout';
 import { GetBubbleLayout } from './views/bubble-layouts/GetBubbleLayout';
@@ -67,9 +66,9 @@ export const NotificationCenterView: FC<{}> = props =>
 
     return (
         <>
-            <Column gap={ 1 }>
+            <div className="flex flex-column gap-1">
                 { getBubbleAlerts }
-            </Column>
+            </div>
             { getConfirms }
             { getAlerts }
         </>

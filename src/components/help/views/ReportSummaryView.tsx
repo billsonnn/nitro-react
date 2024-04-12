@@ -1,7 +1,7 @@
 import { CallForHelpFromForumMessageMessageComposer, CallForHelpFromForumThreadMessageComposer, CallForHelpFromIMMessageComposer, CallForHelpFromPhotoMessageComposer, CallForHelpMessageComposer } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { LocalizeText, ReportType, SendMessageComposer } from '../../../api';
-import { Button, Column, Text } from '../../../common';
+import { Button, Text } from '../../../common';
 import { useHelp } from '../../../hooks';
 
 export const ReportSummaryView: FC<{}> = props =>
@@ -45,10 +45,10 @@ export const ReportSummaryView: FC<{}> = props =>
 
     return (
         <>
-            <Column gap={ 1 }>
+            <div className="flex flex-column gap-1">
                 <Text fontSize={ 4 }>{ LocalizeText('help.cfh.button.send') }</Text>
                 <Text>{ LocalizeText('help.main.summary') }</Text>
-            </Column>
+            </div>
             <Button variant="success" onClick={ submitReport }>
                 { LocalizeText('guide.help.request.emergency.submit.button') }
             </Button>

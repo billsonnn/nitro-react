@@ -1,7 +1,7 @@
 import { GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WIRED_STRING_DELIMETER, WiredFurniType } from '../../../../api';
-import { Button, Column, Flex, LayoutAvatarImageView, Text } from '../../../../common';
+import { Button, LayoutAvatarImageView, Text } from '../../../../common';
 import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -24,15 +24,15 @@ export const WiredActionBotChangeFigureView: FC<{}> = props =>
     }, [ trigger ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
-            <Column gap={ 1 }>
+        <WiredActionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.bot.name') }</Text>
-                <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
-            </Column>
-            <Flex center>
-                <LayoutAvatarImageView figure={ figure } direction={ 4 } />
+                <input className="form-control form-control-sm" maxLength={ 32 } type="text" value={ botName } onChange={ event => setBotName(event.target.value) } />
+            </div>
+            <div className="flex items-center justify-center">
+                <LayoutAvatarImageView direction={ 4 } figure={ figure } />
                 <Button onClick={ event => setFigure(GetSessionDataManager().figure) }>{ LocalizeText('wiredfurni.params.capture.figure') }</Button>
-            </Flex>
+            </div>
         </WiredActionBaseView>
     );
 }

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { GetConfigurationValue, LocalizeText } from '../../../api';
-import { Column, Flex, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
+import { LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { useNavigator } from '../../../hooks';
 
 export class NavigatorRoomLinkViewProps
@@ -18,15 +18,15 @@ export const NavigatorRoomLinkView: FC<NavigatorRoomLinkViewProps> = props =>
     return (
         <NitroCardView className="nitro-room-link" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('navigator.embed.title') } onCloseClick={ onCloseClick } />
-            <NitroCardContentView className="text-black d-flex align-items-center">
-                <Flex gap={ 2 }>
-                    <LayoutRoomThumbnailView roomId={ navigatorData.enteredGuestRoom.roomId } customUrl={ navigatorData.enteredGuestRoom.officialRoomPicRef } />
-                    <Column>
+            <NitroCardContentView className="text-black flex items-center">
+                <div className="flex gap-2">
+                    <LayoutRoomThumbnailView customUrl={ navigatorData.enteredGuestRoom.officialRoomPicRef } roomId={ navigatorData.enteredGuestRoom.roomId } />
+                    <div className="flex flex-column">
                         <Text bold fontSize={ 5 }>{ LocalizeText('navigator.embed.headline') }</Text>
                         <Text>{ LocalizeText('navigator.embed.info') }</Text>
-                        <input type="text" readOnly className="form-control form-control-sm" value={ LocalizeText('navigator.embed.src', [ 'roomId' ], [ navigatorData.enteredGuestRoom.roomId.toString() ]).replace('${url.prefix}', GetConfigurationValue<string>('url.prefix', '')) } />
-                    </Column>
-                </Flex>
+                        <input readOnly className="form-control form-control-sm" type="text" value={ LocalizeText('navigator.embed.src', [ 'roomId' ], [ navigatorData.enteredGuestRoom.roomId.toString() ]).replace('${url.prefix}', GetConfigurationValue<string>('url.prefix', '')) } />
+                    </div>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
     );

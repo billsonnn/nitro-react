@@ -13,12 +13,12 @@ export const SeasonalView: FC<SeasonalViewProps> = props =>
     const { type = -1, amount = -1 } = props;
 
     return (
-        <Flex fullWidth justifyContent="between" className="nitro-purse-seasonal-currency p-2 rounded">
+        <Flex fullWidth className="nitro-purse-seasonal-currency p-2 rounded" justifyContent="between">
             <Text variant="white">{ LocalizeText(`purse.seasonal.currency.${ type }`) }</Text>
-            <Flex gap={ 1 }>
+            <div className="flex gap-1">
                 <Text variant="white">{ LocalizeFormattedNumber(amount) }</Text>
                 <LayoutCurrencyIcon type={ type } />
-            </Flex>
+            </div>
         </Flex>
     );
 }

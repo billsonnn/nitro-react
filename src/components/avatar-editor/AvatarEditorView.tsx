@@ -2,7 +2,7 @@ import { AddLinkEventTracker, AvatarEditorFigureCategory, GetSessionDataManager,
 import { FC, useEffect, useState } from 'react';
 import { FaDice, FaRedo, FaTrash } from 'react-icons/fa';
 import { AvatarEditorAction, LocalizeText, SendMessageComposer } from '../../api';
-import { Button, ButtonGroup, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
+import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { useAvatarEditor } from '../../hooks';
 import { AvatarEditorFigurePreviewView } from './AvatarEditorFigurePreviewView';
 import { AvatarEditorModelView } from './AvatarEditorModelView';
@@ -74,7 +74,7 @@ export const AvatarEditorView: FC<{}> = props =>
     if(!isVisible) return null;
 
     return (
-        <NitroCardView uniqueKey="avatar-editor" className="nitro-avatar-editor">
+        <NitroCardView className="nitro-avatar-editor" uniqueKey="avatar-editor">
             <NitroCardHeaderView headerText={ LocalizeText('avatareditor.title') } onCloseClick={ event => setIsVisible(false) } />
             <NitroCardTabsView>
                 { Object.keys(avatarModels).map(modelKey =>
@@ -89,17 +89,17 @@ export const AvatarEditorView: FC<{}> = props =>
                 }) }
             </NitroCardTabsView>
             <NitroCardContentView>
-                <Grid>
-                    <Column size={ 9 } overflow="hidden">
+                <div className="grid gap-2 overflow-hidden">
+                    <div className="flex flex-column col-9 overflow-hidden">
                         { ((activeModelKey.length > 0) && (activeModelKey !== AvatarEditorFigureCategory.WARDROBE)) &&
-                            <AvatarEditorModelView name={ activeModelKey } categories={ avatarModels[activeModelKey] } /> }
+                            <AvatarEditorModelView categories={ avatarModels[activeModelKey] } name={ activeModelKey } /> }
                         { (activeModelKey === AvatarEditorFigureCategory.WARDROBE) &&
                             <AvatarEditorWardrobeView /> }
-                    </Column>
-                    <Column size={ 3 } overflow="hidden">
+                    </div>
+                    <div className="flex flex-column col-3 overflow-hidden gap-1">
                         <AvatarEditorFigurePreviewView />
-                        <Column grow gap={ 1 }>
-                            <ButtonGroup>
+                        <div className="flex flex-column flex-grow-1 gap-1">
+                            <div className="btn-group">
                                 <Button variant="secondary" onClick={ event => processAction(AvatarEditorAction.ACTION_RESET) }>
                                     <FaRedo className="fa-icon" />
                                 </Button>
@@ -109,13 +109,13 @@ export const AvatarEditorView: FC<{}> = props =>
                                 <Button variant="secondary" onClick={ event => processAction(AvatarEditorAction.ACTION_RANDOMIZE) }>
                                     <FaDice className="fa-icon" />
                                 </Button>
-                            </ButtonGroup>
+                            </div>
                             <Button className="w-100" variant="success" onClick={ event => processAction(AvatarEditorAction.ACTION_SAVE) }>
                                 { LocalizeText('avatareditor.save') }
                             </Button>
-                        </Column>
-                    </Column>
-                </Grid>
+                        </div>
+                    </div>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
     );

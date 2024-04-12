@@ -41,8 +41,8 @@ export const FurnitureStickieView: FC<{}> = props =>
     return (
         <DraggableWindow handleSelector=".drag-handler" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
             <div className={ 'nitro-stickie nitro-stickie-image stickie-' + (type == 'post_it' ? getStickieColorName(color) : getStickieTypeName(type)) }>
-                <div className="d-flex align-items-center stickie-header drag-handler">
-                    <div className="d-flex align-items-center flex-grow-1 h-100">
+                <div className="flex items-center stickie-header drag-handler">
+                    <div className="flex items-center flex-grow-1 h-100">
                         { canModify &&
                         <>
                             <div className="nitro-stickie-image stickie-trash header-trash" onClick={ trash }></div>
@@ -50,15 +50,15 @@ export const FurnitureStickieView: FC<{}> = props =>
                                 <>
                                     { STICKIE_COLORS.map(color =>
                                     {
-                                        return <div key={ color } className="stickie-color ms-1" onClick={ event => updateColor(color) } style={ { backgroundColor: ColorUtils.makeColorHex(color) } } />
+                                        return <div key={ color } className="stickie-color ms-1" style={ { backgroundColor: ColorUtils.makeColorHex(color) } } onClick={ event => updateColor(color) } />
                                     }) }
                                 </> }
                         </> }
                     </div>
-                    <div className="d-flex align-items-center nitro-stickie-image stickie-close header-close" onClick={ onClose }></div>
+                    <div className="flex items-center nitro-stickie-image stickie-close header-close" onClick={ onClose }></div>
                 </div>
                 <div className="stickie-context">
-                    { (!isEditing || !canModify) ? <div className="context-text" onClick={ event => (canModify && setIsEditing(true)) }>{ text }</div> : <textarea className="context-text" defaultValue={ text } tabIndex={ 0 } onBlur={ event => updateText(event.target.value) } autoFocus></textarea> }
+                    { (!isEditing || !canModify) ? <div className="context-text" onClick={ event => (canModify && setIsEditing(true)) }>{ text }</div> : <textarea autoFocus className="context-text" defaultValue={ text } tabIndex={ 0 } onBlur={ event => updateText(event.target.value) }></textarea> }
                 </div>
             </div>
         </DraggableWindow>

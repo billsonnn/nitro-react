@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 import { LocalizeText } from '../../../../../api';
-import { Flex, Text } from '../../../../../common';
+import { Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
 
 const MIN_VALUE: number = 1;
@@ -36,11 +36,11 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
     return (
         <>
             <Text>{ LocalizeText('catalog.bundlewidget.spinner.select.amount') }</Text>
-            <Flex alignItems="center" gap={ 1 }>
+            <div className="flex items-center gap-1">
                 <FaCaretLeft className="text-black cursor-pointer fa-icon" onClick={ event => updateQuantity(quantity - 1) } />
-                <input type="number" className="form-control form-control-sm quantity-input" value={ quantity } onChange={ event => updateQuantity(event.target.valueAsNumber) } />
+                <input className="form-control form-control-sm quantity-input" type="number" value={ quantity } onChange={ event => updateQuantity(event.target.valueAsNumber) } />
                 <FaCaretRight className="text-black cursor-pointer fa-icon" onClick={ event => updateQuantity(quantity + 1) } />
-            </Flex>
+            </div>
         </>
     );
 }

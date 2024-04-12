@@ -181,7 +181,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
     if(!roomData) return null;
 
     return (
-        <NitroCardView uniqueKey="nitro-room-settings" className="nitro-room-settings">
+        <NitroCardView className="nitro-room-settings" uniqueKey="nitro-room-settings">
             <NitroCardHeaderView headerText={ LocalizeText('navigator.roomsettings') } onCloseClick={ onClose } />
             <NitroCardTabsView>
                 { TABS.map(tab =>
@@ -191,15 +191,15 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
             </NitroCardTabsView>
             <NitroCardContentView>
                 { (currentTab === TABS[0]) &&
-                    <NavigatorRoomSettingsBasicTabView roomData={ roomData } handleChange={ handleChange } onClose={ onClose } /> }
+                    <NavigatorRoomSettingsBasicTabView handleChange={ handleChange } roomData={ roomData } onClose={ onClose } /> }
                 { (currentTab === TABS[1]) &&
-                    <NavigatorRoomSettingsAccessTabView roomData={ roomData } handleChange={ handleChange } /> }
+                    <NavigatorRoomSettingsAccessTabView handleChange={ handleChange } roomData={ roomData } /> }
                 { (currentTab === TABS[2]) &&
-                    <NavigatorRoomSettingsRightsTabView roomData={ roomData } handleChange={ handleChange } /> }
+                    <NavigatorRoomSettingsRightsTabView handleChange={ handleChange } roomData={ roomData } /> }
                 { (currentTab === TABS[3]) &&
-                    <NavigatorRoomSettingsVipChatTabView roomData={ roomData } handleChange={ handleChange } /> }
+                    <NavigatorRoomSettingsVipChatTabView handleChange={ handleChange } roomData={ roomData } /> }
                 { (currentTab === TABS[4]) &&
-                    <NavigatorRoomSettingsModTabView roomData={ roomData } handleChange={ handleChange } /> }
+                    <NavigatorRoomSettingsModTabView handleChange={ handleChange } roomData={ roomData } /> }
             </NitroCardContentView>
         </NitroCardView>
     );

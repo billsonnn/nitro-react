@@ -1,7 +1,7 @@
 import { GroupBuyComposer, GroupBuyDataComposer, GroupBuyDataEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { HasHabboClub, IGroupData, LocalizeText, SendMessageComposer } from '../../../api';
-import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
+import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
 import { GroupTabBadgeView } from './tabs/GroupTabBadgeView';
 import { GroupTabColorsView } from './tabs/GroupTabColorsView';
@@ -121,42 +121,42 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
         <NitroCardView className="nitro-group-creator" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('group.create.title') } onCloseClick={ onCloseClose } />
             <NitroCardContentView>
-                <Flex center className="creator-tabs">
+                <div className="flex items-center justify-center creator-tabs">
                     { TABS.map((tab, index) =>
                     {
                         return (
-                            <Flex center key={ index } className={ `tab tab-${ ((tab === 1) ? 'blue-flat' : (tab === 4) ? 'yellow' : 'blue-arrow') } ${ (currentTab === tab) ? 'active' : '' }` }>
+                            <Flex key={ index } center className={ `tab tab-${ ((tab === 1) ? 'blue-flat' : (tab === 4) ? 'yellow' : 'blue-arrow') } ${ (currentTab === tab) ? 'active' : '' }` }>
                                 <Text variant="white">{ LocalizeText(`group.create.steplabel.${ tab }`) }</Text>
                             </Flex>
                         );
                     }) }
-                </Flex>
+                </div>
                 <Column overflow="hidden">
-                    <Flex alignItems="center" gap={ 2 }>
-                        <Base className={ `nitro-group-tab-image tab-${ currentTab }` } />
+                    <div className="items-center gap-2">
+                        <div className={ `nitro-group-tab-image tab-${ currentTab }` } />
                         <Column grow gap={ 0 }>
                             <Text bold fontSize={ 4 }>{ LocalizeText(`group.create.stepcaption.${ currentTab }`) }</Text>
                             <Text>{ LocalizeText(`group.create.stepdesc.${ currentTab }`) }</Text>
                         </Column>
-                    </Flex>
+                    </div>
                     <Column overflow="hidden">
                         { (currentTab === 1) &&
-                            <GroupTabIdentityView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } onClose={ null } isCreator={ true } availableRooms={ availableRooms } /> }
+                            <GroupTabIdentityView availableRooms={ availableRooms } groupData={ groupData } isCreator={ true } setCloseAction={ setCloseAction } setGroupData={ setGroupData } onClose={ null } /> }
                         { (currentTab === 2) &&
-                            <GroupTabBadgeView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } /> }
+                            <GroupTabBadgeView groupData={ groupData } setCloseAction={ setCloseAction } setGroupData={ setGroupData } /> }
                         { (currentTab === 3) &&
-                            <GroupTabColorsView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } /> }
+                            <GroupTabColorsView groupData={ groupData } setCloseAction={ setCloseAction } setGroupData={ setGroupData } /> }
                         { (currentTab === 4) &&
-                            <GroupTabCreatorConfirmationView groupData={ groupData } setGroupData={ setGroupData } purchaseCost={ purchaseCost } /> }
+                            <GroupTabCreatorConfirmationView groupData={ groupData } purchaseCost={ purchaseCost } setGroupData={ setGroupData } /> }
                     </Column>
-                    <Flex justifyContent="between">
-                        <Button variant="link" className="text-black" onClick={ previousStep }>
+                    <div className="flex justify-content-between">
+                        <Button className="text-black" variant="link" onClick={ previousStep }>
                             { LocalizeText(currentTab === 1 ? 'generic.cancel' : 'group.create.previousstep') }
                         </Button>
                         <Button disabled={ ((currentTab === 4) && !HasHabboClub()) } variant={ ((currentTab === 4) ? HasHabboClub() ? 'success' : 'danger' : 'primary') } onClick={ nextStep }>
                             { LocalizeText((currentTab === 4) ? HasHabboClub() ? 'group.create.confirm.buy' : 'group.create.confirm.viprequired' : 'group.create.nextstep') }
                         </Button>
-                    </Flex>
+                    </div>
                 </Column>
             </NitroCardContentView>
         </NitroCardView>

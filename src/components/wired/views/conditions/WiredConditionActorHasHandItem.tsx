@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
-import { Column, Text } from '../../../../common';
+import { Text } from '../../../../common';
 import { useWired } from '../../../../hooks';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
@@ -19,8 +19,8 @@ export const WiredConditionActorHasHandItemView: FC<{}> = props =>
     }, [ trigger ]);
 
     return (
-        <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
-            <Column gap={ 1 }>
+        <WiredConditionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.handitem') }</Text>
                 <select className="form-select form-select-sm" value={ handItemId } onChange={ event => setHandItemId(parseInt(event.target.value)) }>
                     { ALLOWED_HAND_ITEM_IDS.map(value =>
@@ -28,7 +28,7 @@ export const WiredConditionActorHasHandItemView: FC<{}> = props =>
                         return <option key={ value } value={ value }>{ LocalizeText(`handitem${ value }`) }</option>
                     }) }
                 </select>
-            </Column>
+            </div>
         </WiredConditionBaseView>
     );
 }

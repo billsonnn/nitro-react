@@ -94,7 +94,7 @@ export const CampaignView: FC<{}> = props =>
     return (
         <>
             { (calendarData && isCalendarOpen) && 
-                <CalendarView onClose={ () => setCalendarOpen(false) } campaignName={ calendarData.campaignName } currentDay={ calendarData.currentDay } numDays={ calendarData.campaignDays } openedDays={ calendarData.openedDays } missedDays={ calendarData.missedDays } openPackage={ openPackage } receivedProducts={ receivedProducts } />
+                <CalendarView campaignName={ calendarData.campaignName } currentDay={ calendarData.currentDay } missedDays={ calendarData.missedDays } numDays={ calendarData.campaignDays } openedDays={ calendarData.openedDays } openPackage={ openPackage } receivedProducts={ receivedProducts } onClose={ () => setCalendarOpen(false) } />
             }
         </>
     )

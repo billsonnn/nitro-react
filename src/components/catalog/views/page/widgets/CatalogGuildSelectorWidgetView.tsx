@@ -1,7 +1,7 @@
 import { CatalogGroupsComposer, StringDataType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
-import { Base, Button, Flex } from '../../../../../common';
+import { Button, Flex } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
 
 export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
@@ -49,27 +49,27 @@ export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
     if(!groups || !groups.length)
     {
         return (
-            <Base className="bg-muted rounded p-1 text-black text-center">
+            <div className="bg-muted rounded p-1 text-black text-center">
                 { LocalizeText('catalog.guild_selector.members_only') }
                 <Button className="mt-1">
                     { LocalizeText('catalog.guild_selector.find_groups') }
                 </Button>
-            </Base>
+            </div>
         );
     }
 
     const selectedGroup = groups[selectedGroupIndex];
 
     return (
-        <Flex gap={ 1 }>
+        <div className="flex gap-1">
             { !!selectedGroup &&
-                <Flex overflow="hidden" className="rounded border">
-                    <Base fullHeight style={ { width: '20px', backgroundColor: '#' + selectedGroup.colorA } } />
-                    <Base fullHeight style={ { width: '20px', backgroundColor: '#' + selectedGroup.colorB } } />
+                <Flex className="rounded border" overflow="hidden">
+                    <div className="h-100" style={ { width: '20px', backgroundColor: '#' + selectedGroup.colorA } } />
+                    <div className="h-100" style={ { width: '20px', backgroundColor: '#' + selectedGroup.colorB } } />
                 </Flex> }
             <select className="form-select form-select-sm" value={ selectedGroupIndex } onChange={ event => setSelectedGroupIndex(parseInt(event.target.value)) }>
                 { groups.map((group, index) => <option key={ index } value={ index }>{ group.groupName }</option>) }
             </select>
-        </Flex>
+        </div>
     );
 }

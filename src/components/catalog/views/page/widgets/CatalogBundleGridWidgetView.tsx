@@ -21,8 +21,8 @@ export const CatalogBundleGridWidgetView: FC<CatalogBundleGridWidgetViewProps> =
     if(!currentOffer) return null;
 
     return (
-        <AutoGrid innerRef={ elementRef } columnCount={ 5 } { ...rest }>
-            { currentOffer.products && (currentOffer.products.length > 0) && currentOffer.products.map((product, index) => <LayoutGridItem key={ index } itemImage={ product.getIconUrl() } itemCount={ product.productCount } />) }
+        <AutoGrid columnCount={ 5 } innerRef={ elementRef } { ...rest }>
+            { currentOffer.products && (currentOffer.products.length > 0) && currentOffer.products.map((product, index) => <LayoutGridItem key={ index } itemCount={ product.productCount } itemImage={ product.getIconUrl() } />) }
             { children }
         </AutoGrid>
     );

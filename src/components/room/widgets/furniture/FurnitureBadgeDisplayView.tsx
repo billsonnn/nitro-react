@@ -8,5 +8,5 @@ export const FurnitureBadgeDisplayView: FC<{}> = props =>
 
     if(objectId === -1) return null;
 
-    return <LayoutTrophyView color={ color } message={ badgeDesc } date={ date } senderName={ senderName } customTitle={ badgeName } onCloseClick={ onClose } />;
+    return <LayoutTrophyView color={ color } customTitle={ badgeName } date={ date } message={ badgeDesc } senderName={ senderName } onCloseClick={ onClose } />;
 }

@@ -15,9 +15,9 @@ export const InfoStandWidgetUserRelationshipsView: FC<InfoStandWidgetUserRelatio
 
     return (
         <>
-            <InfoStandWidgetUserRelationshipsRelationshipItemView type={ RelationshipStatusEnum.HEART } relationship={ relationships.relationshipStatusMap.getValue(RelationshipStatusEnum.HEART) } />
-            <InfoStandWidgetUserRelationshipsRelationshipItemView type={ RelationshipStatusEnum.SMILE } relationship={ relationships.relationshipStatusMap.getValue(RelationshipStatusEnum.SMILE) } />
-            <InfoStandWidgetUserRelationshipsRelationshipItemView type={ RelationshipStatusEnum.BOBBA } relationship={ relationships.relationshipStatusMap.getValue(RelationshipStatusEnum.BOBBA) } />
+            <InfoStandWidgetUserRelationshipsRelationshipItemView relationship={ relationships.relationshipStatusMap.getValue(RelationshipStatusEnum.HEART) } type={ RelationshipStatusEnum.HEART } />
+            <InfoStandWidgetUserRelationshipsRelationshipItemView relationship={ relationships.relationshipStatusMap.getValue(RelationshipStatusEnum.SMILE) } type={ RelationshipStatusEnum.SMILE } />
+            <InfoStandWidgetUserRelationshipsRelationshipItemView relationship={ relationships.relationshipStatusMap.getValue(RelationshipStatusEnum.BOBBA) } type={ RelationshipStatusEnum.BOBBA } />
         </>
     );
 }

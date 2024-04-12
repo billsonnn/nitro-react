@@ -1,9 +1,9 @@
 import { GetAssetManager, GetAvatarRenderManager, GetCommunication, GetConfiguration, GetLocalizationManager, GetRoomCameraWidgetManager, GetRoomEngine, GetRoomSessionManager, GetSessionDataManager, GetSoundManager, GetStage, GetTexturePool, GetTicker, HabboWebTools, LegacyExternalInterface, LoadGameUrlEvent, NitroLogger, NitroVersion, PrepareRenderer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetUIVersion } from './api';
-import { Base } from './common';
+import { classNames } from './common';
+import { MainView } from './components/MainView';
 import { LoadingView } from './components/loading/LoadingView';
-import { MainView } from './components/main/MainView';
 import { useMessageEvent } from './hooks';
 
 NitroVersion.UI_VERSION = GetUIVersion();
@@ -34,7 +34,9 @@ export const App: FC<{}> = props =>
                     height,
                     autoDensity: true,
                     backgroundAlpha: 0,
-                    preference: 'webgl'
+                    preference: 'webgl',
+                    eventMode: 'none',
+                    failIfMajorPerformanceCaveat: false
                 });
 
                 await GetConfiguration().init();
@@ -56,12 +58,12 @@ export const App: FC<{}> = props =>
                         GetSoundManager().init(),
                         GetSessionDataManager().init(),
                         GetRoomSessionManager().init(),
-                        GetRoomCameraWidgetManager().init()
+                        GetRoomCameraWidgetManager().init(),
+                        GetCommunication().init()
                     ]
                 );
 
                 await GetRoomEngine().init();
-                await GetCommunication().init();
 
                 // new GameMessageHandler();
 
@@ -91,11 +93,11 @@ export const App: FC<{}> = props =>
     }, []);
     
     return (
-        <Base fit overflow="hidden" className={ !(window.devicePixelRatio % 1) && 'image-rendering-pixelated' }>
+        <div className={ classNames('w-full h-full overflow-hidden', !(window.devicePixelRatio % 1) && '[image-rendering:pixelated]' ) }>
             { !isReady &&
                 <LoadingView /> }
             { isReady && <MainView /> }
-            <Base id="draggable-windows-container" />
-        </Base>
+            <div id="draggable-windows-container" />
+        </div>
     );
 }

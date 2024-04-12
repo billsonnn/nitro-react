@@ -1,7 +1,7 @@
 import { GetStage, GetTicker, NitroRectangle, NitroTicker, RoomObjectType } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FixedSizeStack, GetRoomObjectBounds, GetRoomObjectScreenLocation, GetRoomSession } from '../../../../api';
-import { Base, BaseProps } from '../../../../common';
+import { BaseProps } from '../../../../common';
 import { ContextMenuCaretView } from './ContextMenuCaretView';
 
 interface ContextMenuViewProps extends BaseProps<HTMLDivElement>
@@ -27,7 +27,7 @@ let FADE_TIME = 1;
 
 export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 {
-    const { objectId = -1, category = -1, userType = -1, fades = false, onClose = null, position = 'absolute', classNames = [], style = {}, children = null, collapsable = false, ...rest } = props;
+    const { objectId = -1, category = -1, userType = -1, fades = false, onClose = null, classNames = [], style = {}, children = null, collapsable = false, ...rest } = props;
     const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: null, y: null });
     const [ opacity, setOpacity ] = useState(1);
     const [ isFading, setIsFading ] = useState(false);
@@ -94,7 +94,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'nitro-context-menu' ];
+        const newClassNames: string[] = [ 'nitro-context-menu', 'position-absolute' ];
         
         if (isCollapsed) newClassNames.push('menu-hidden');
 
@@ -163,8 +163,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         FADE_TIME = 1;
     }, []);
     
-    return <Base innerRef={ elementRef } position={ position } classNames={ getClassNames } style={ getStyle } { ...rest }>
+    return <div ref={ elementRef } className={ getClassNames.join(' ') } style={ getStyle } { ...rest }>
         { !(collapsable && COLLAPSED) && children }
-        { collapsable && <ContextMenuCaretView onClick={ () => setIsCollapsed(!isCollapsed) } collapsed={ isCollapsed } /> }
-    </Base>;
+        { collapsable && <ContextMenuCaretView collapsed={ isCollapsed } onClick={ () => setIsCollapsed(!isCollapsed) } /> }
+    </div>;
 }

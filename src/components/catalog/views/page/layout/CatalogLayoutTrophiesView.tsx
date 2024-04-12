@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Column, Flex, Grid, Text } from '../../../../../common';
+import { Column, Grid, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
 import { CatalogItemGridWidgetView } from '../widgets/CatalogItemGridWidgetView';
 import { CatalogPurchaseWidgetView } from '../widgets/CatalogPurchaseWidgetView';
@@ -29,11 +29,11 @@ export const CatalogLayoutTrophiesView: FC<CatalogLayoutProps> = props =>
 
     return (
         <Grid>
-            <Column size={ 7 } overflow="hidden">
+            <Column overflow="hidden" size={ 7 }>
                 <CatalogItemGridWidgetView />
                 <textarea className="flex-grow-1 form-control w-100" defaultValue={ trophyText || '' } onChange={ event => setTrophyText(event.target.value) } />
             </Column>
-            <Column center={ !currentOffer } size={ 5 } overflow="hidden">
+            <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
                 { !currentOffer &&
                     <>
                         { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
@@ -44,9 +44,9 @@ export const CatalogLayoutTrophiesView: FC<CatalogLayoutProps> = props =>
                         <CatalogViewProductWidgetView />
                         <Column grow gap={ 1 }>
                             <Text grow truncate>{ currentOffer.localizationName }</Text>
-                            <Flex justifyContent="end">
+                            <div className="flex justify-content-end">
                                 <CatalogTotalPriceWidget alignItems="end" />
-                            </Flex>
+                            </div>
                             <CatalogPurchaseWidgetView />
                         </Column>
                     </> }

@@ -84,16 +84,16 @@ export const CatalogViewProductWidgetView: FC<{}> = props =>
     if(currentOffer.pricingModel === Offer.PRICING_MODEL_BUNDLE)
     {
         return (
-            <Column fit overflow="hidden" className="bg-muted p-2 rounded">
-                <AutoGrid fullWidth columnCount={ 4 } className="nitro-catalog-layout-bundle-grid">
+            <Column fit className="bg-muted p-2 rounded" overflow="hidden">
+                <AutoGrid fullWidth className="nitro-catalog-layout-bundle-grid" columnCount={ 4 }>
                     { (currentOffer.products.length > 0) && currentOffer.products.map((product, index) =>
                     {
-                        return <LayoutGridItem key={ index } itemImage={ product.getIconUrl(currentOffer) } itemCount={ product.productCount } />;
+                        return <LayoutGridItem key={ index } itemCount={ product.productCount } itemImage={ product.getIconUrl(currentOffer) } />;
                     }) }
                 </AutoGrid>
             </Column>
         );
     }
     
-    return <LayoutRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />;
+    return <LayoutRoomPreviewerView height={ 140 } roomPreviewer={ roomPreviewer } />;
 }

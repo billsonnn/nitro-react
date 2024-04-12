@@ -52,10 +52,10 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
     },[ daysRequired ]);
 
     return (
-        <LayoutGridItem center={ false } column={ false } alignItems="center" className="p-1">
+        <LayoutGridItem alignItems="center" center={ false } className="p-1" column={ false }>
             <LayoutImage imageUrl={ getImageUrlForOffer() } />
             <Text grow fontWeight="bold">{ getItemTitle() }</Text>
-            <Button variant="secondary" onClick={ () => onSelect(offer.localizationId) } disabled={ !isAvailable }>
+            <Button disabled={ !isAvailable } variant="secondary" onClick={ () => onSelect(offer.localizationId) }>
                 { LocalizeText('catalog.club_gift.select') }
             </Button>
         </LayoutGridItem>

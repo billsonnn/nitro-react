@@ -39,12 +39,12 @@ export const Flex: FC<FlexProps> = props =>
 
         if(justifyContent) newClassNames.push('justify-content-' + justifyContent);
 
-        if(!alignItems && !justifyContent && center) newClassNames.push('align-items-center', 'justify-content-center');
+        if(!alignItems && !justifyContent && center) newClassNames.push('items-center', 'justify-center');
 
         if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ column, reverse, gap, center, alignSelf, alignItems, justifyContent, classNames ]);
 
-    return <Base display={ display } classNames={ getClassNames } { ...rest } />;
+    return <Base classNames={ getClassNames } display={ display } { ...rest } />;
 }

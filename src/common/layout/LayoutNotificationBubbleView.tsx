@@ -45,8 +45,8 @@ export const LayoutNotificationBubbleView: FC<LayoutNotificationBubbleViewProps>
     }, [ fadesOut, timeoutMs, onClose ]);
 
     return (
-        <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isVisible } timeout={ 300 }>
-            <Flex overflow={ overflow } classNames={ getClassNames } onClick={ onClose } { ...rest } />
+        <TransitionAnimation inProp={ isVisible } timeout={ 300 } type={ TransitionAnimationTypes.FADE_IN }>
+            <Flex classNames={ getClassNames } overflow={ overflow } onClick={ onClose } { ...rest } />
         </TransitionAnimation>
     );
 }

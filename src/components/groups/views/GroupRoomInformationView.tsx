@@ -2,7 +2,7 @@ import { DesktopViewEvent, GetGuestRoomResultEvent, GetSessionDataManager, Group
 import { FC, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { GetGroupInformation, GetGroupManager, GroupMembershipType, GroupType, LocalizeText, SendMessageComposer, TryJoinGroup } from '../../../api';
-import { Base, Button, Column, Flex, LayoutBadgeImageView, Text } from '../../../common';
+import { Button, Flex, LayoutBadgeImageView, Text } from '../../../common';
 import { useMessageEvent, useNotification } from '../../../hooks';
 
 export const GroupRoomInformationView: FC<{}> = props =>
@@ -105,9 +105,9 @@ export const GroupRoomInformationView: FC<{}> = props =>
     if(!groupInformation) return null;
 
     return (
-        <Base className="nitro-notification-bubble rounded">
-            <Column>
-                <Flex alignItems="center" justifyContent="between" pointer onClick={ event => setIsOpen(value => !value) }>
+        <div className="nitro-notification-bubble rounded">
+            <div className="flex flex-column">
+                <Flex pointer alignItems="center" justifyContent="between" onClick={ event => setIsOpen(value => !value) }>
                     <Text variant="white">{ LocalizeText('group.homeroominfo.title') }</Text>
                     { isOpen && <FaChevronUp className="fa-icon" /> }
                     { !isOpen && <FaChevronDown className="fa-icon" /> }
@@ -115,18 +115,18 @@ export const GroupRoomInformationView: FC<{}> = props =>
                 { isOpen &&
                     <>
                         <Flex pointer alignItems="center" gap={ 2 } onClick={ event => GetGroupInformation(groupInformation.id) }>
-                            <Base className="group-badge">
+                            <div className="group-badge">
                                 <LayoutBadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } />
-                            </Base>
+                            </div>
                             <Text variant="white">{ groupInformation.title }</Text>
                         </Flex>
                         { (groupInformation.type !== GroupType.PRIVATE || isRealOwner) && 
-                            <Button fullWidth variant="success" disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) } onClick={ handleButtonClick }>
+                            <Button fullWidth disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) } variant="success" onClick={ handleButtonClick }>
                                 { LocalizeText(getButtonText()) }
                             </Button>
                         }
                     </> }
-            </Column>
-        </Base>
+            </div>
+        </div>
     );
 };

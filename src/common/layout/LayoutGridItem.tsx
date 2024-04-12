@@ -59,7 +59,7 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
     }, [ style, itemImage, itemColor, itemUniqueSoldout, itemUniqueNumber ]);
 
     return (
-        <Column center={ center } pointer position={ position } overflow={ overflow } column={ column } classNames={ getClassNames } style={ getStyle } { ...rest }>
+        <Column pointer center={ center } classNames={ getClassNames } column={ column } overflow={ overflow } position={ position } style={ getStyle } { ...rest }>
             { (itemCount > itemCountMinimum) &&
                 <LayoutItemCountView count={ itemCount } /> }
             { (itemUniqueNumber > 0) && 

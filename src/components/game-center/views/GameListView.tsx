@@ -1,6 +1,5 @@
 import { GameConfigurationData } from '@nitrots/nitro-renderer';
 import { LocalizeText } from '../../../api';
-import { Base, Flex } from '../../../common';
 import { useGameCenter } from '../../../hooks';
 
 export const GameListView = () => 
@@ -21,12 +20,12 @@ export const GameListView = () =>
         return `url(${ game.assetUrl }${ game.gameNameId }_icon.png)`
     }
 
-    return <Base fullWidth className="gameList-container bg-dark p-1">
+    return <div className="gameList-container bg-dark p-1 w-100">
         { LocalizeText('gamecenter.game_list_title') }
-        <Flex gap={ 3 }>
+        <div className="flex gap-3">
             { games && games.map((game,index) => 
-                <Base key={ index } className={ getClasses(game) } onClick={ evt => setSelectedGame(game) } style={ { backgroundImage: getIconImage(game) } }/>
+                <div key={ index } className={ getClasses(game) } style={ { backgroundImage: getIconImage(game) } } onClick={ evt => setSelectedGame(game) }/>
             ) }
-        </Flex>
-    </Base>
+        </div>
+    </div>
 }

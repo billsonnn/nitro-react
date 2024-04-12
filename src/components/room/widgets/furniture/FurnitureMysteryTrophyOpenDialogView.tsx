@@ -1,7 +1,7 @@
 import { OpenMysteryTrophyMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../api';
-import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 
 interface FurnitureMysteryTrophyOpenDialogViewProps
 {
@@ -26,24 +26,24 @@ export const FurnitureMysteryTrophyOpenDialogView: FC<FurnitureMysteryTrophyOpen
         <NitroCardView className="nitro-mysterytrophy-dialog no-resize" theme="primary-slim">
             <NitroCardHeaderView center headerText={ LocalizeText('mysterytrophy.header.title') } onCloseClick={ onClose } />
             <NitroCardContentView>
-                <Flex className="mysterytrophy-dialog-top p-3">
+                <div className="flex mysterytrophy-dialog-top p-3">
                     <div className="mysterytrophy-image flex-shrink-0"></div>
                     <div className="m-2">
-                        <Text variant="white" className="mysterytrophy-text-big">{ LocalizeText('mysterytrophy.header.description') }</Text>
+                        <Text className="mysterytrophy-text-big" variant="white">{ LocalizeText('mysterytrophy.header.description') }</Text>
                     </div>
-                </Flex>
-                <Flex className="mysterytrophy-dialog-bottom p-2">
-                    <Column gap={ 1 }>
-                        <Flex alignItems="center" className="bg-white rounded py-1 px-2 input-mysterytrophy-dialog">
+                </div>
+                <div className="flex mysterytrophy-dialog-bottom p-2">
+                    <div className="flex flex-column gap-1">
+                        <div className="flex items-center bg-white rounded py-1 px-2 input-mysterytrophy-dialog">
                             <textarea className="form-control form-control-sm input-mysterytrophy" value={ description } onChange={ event => setDescription(event.target.value) } />
                             <div className="mysterytrophy-pencil-image flex-shrink-0 small fa-icon"></div>
-                        </Flex>
-                        <Flex className="mt-2" gap={ 5 } display="flex" justifyContent="center" alignItems="center">
+                        </div>
+                        <div className="flex items-center mt-2 gap-5 justify-center">
                             <Text pointer className="text-decoration" onClick={ () => onClose() }>{ LocalizeText('cancel') }</Text>
                             <Button variant="success" onClick={ () => onConfirm() }>{ LocalizeText('generic.ok') }</Button>
-                        </Flex>
-                    </Column>
-                </Flex>
+                        </div>
+                    </div>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
     );

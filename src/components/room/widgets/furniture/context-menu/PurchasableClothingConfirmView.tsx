@@ -1,7 +1,7 @@
 import { AvatarFigurePartType, GetAvatarRenderManager, GetSessionDataManager, RedeemItemClothingComposer, RoomObjectCategory, UserFigureComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { FurniCategory, GetFurnitureDataForRoomObject, LocalizeText, SendMessageComposer } from '../../../../../api';
-import { Base, Button, Column, Flex, LayoutAvatarImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
+import { Button, Column, LayoutAvatarImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
 import { useRoom } from '../../../../../hooks';
 
 interface PurchasableClothingConfirmViewProps
@@ -81,23 +81,23 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
         <NitroCardView className="nitro-use-product-confirmation">
             <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title.bind_clothing') } onCloseClick={ onClose } />
             <NitroCardContentView center>
-                <Flex gap={ 2 } overflow="hidden">
-                    <Column>
-                        <Base className="mannequin-preview">
-                            <LayoutAvatarImageView figure={ newFigure } direction={ 2 } />
-                        </Base>
-                    </Column>
-                    <Column justifyContent="between" overflow="auto">
+                <div className="flex overflow-hidden gap-2">
+                    <div className="flex flex-column">
+                        <div className="mannequin-preview">
+                            <LayoutAvatarImageView direction={ 2 } figure={ newFigure } />
+                        </div>
+                    </div>
+                    <div className="flex flex-column justify-content-between overflow-auto">
                         <Column gap={ 2 }>
                             <Text>{ LocalizeText('useproduct.widget.text.bind_clothing') }</Text>
                             <Text>{ LocalizeText('useproduct.widget.info.bind_clothing') }</Text>
                         </Column>
-                        <Flex alignItems="center" justifyContent="between">
+                        <div className="flex items-center justify-content-between">
                             <Button variant="danger" onClick={ onClose }>{ LocalizeText('useproduct.widget.cancel') }</Button>
                             <Button variant="success" onClick={ useProduct }>{ LocalizeText('useproduct.widget.bind_clothing') }</Button>
-                        </Flex>
-                    </Column>
-                </Flex>
+                        </div>
+                    </div>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
     );

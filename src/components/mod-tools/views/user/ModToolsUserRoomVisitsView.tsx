@@ -1,7 +1,7 @@
 import { GetRoomVisitsMessageComposer, RoomVisitsData, RoomVisitsEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { SendMessageComposer, TryVisitRoom } from '../../../../api';
-import { Base, Column, DraggableWindowPosition, Grid, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { Column, DraggableWindowPosition, Grid, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useMessageEvent } from '../../../../hooks';
 
 interface ModToolsUserRoomVisitsViewProps
@@ -37,22 +37,22 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
             <NitroCardContentView className="text-black" gap={ 1 }>
                 <Column fullHeight gap={ 0 } overflow="hidden">
                     <Column gap={ 2 }>
-                        <Grid gap={ 1 } className="text-black fw-bold border-bottom pb-1">
-                            <Base className="g-col-2">Time</Base>
-                            <Base className="g-col-7">Room name</Base>
-                            <Base className="g-col-3">Visit</Base>
+                        <Grid className="text-black fw-bold border-bottom pb-1" gap={ 1 }>
+                            <div className="g-col-2">Time</div>
+                            <div className="g-col-7">Room name</div>
+                            <div className="g-col-3">Visit</div>
                         </Grid>
                     </Column>
-                    <InfiniteScroll rows={ roomVisitData?.rooms ?? [] } rowRender={ row =>
+                    <InfiniteScroll rowRender={ row =>
                     {
                         return (
-                            <Grid fullHeight={ false } gap={ 1 } alignItems="center" className="text-black py-1 border-bottom">
+                            <Grid alignItems="center" className="text-black py-1 border-bottom" fullHeight={ false } gap={ 1 }>
                                 <Text className="g-col-2">{ row.enterHour.toString().padStart(2, '0') }: { row.enterMinute.toString().padStart(2, '0') }</Text>
                                 <Text className="g-col-7">{ row.roomName }</Text>
-                                <Text bold underline pointer variant="primary" className="g-col-3" onClick={ event => TryVisitRoom(row.roomId) }>Visit Room</Text>
+                                <Text bold pointer underline className="g-col-3" variant="primary" onClick={ event => TryVisitRoom(row.roomId) }>Visit Room</Text>
                             </Grid>
                         );
-                    } } />
+                    } } rows={ roomVisitData?.rooms ?? [] } />
                 </Column>
             </NitroCardContentView>
         </NitroCardView>

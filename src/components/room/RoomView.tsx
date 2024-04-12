@@ -1,7 +1,7 @@
 import { GetRenderer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef } from 'react';
 import { DispatchMouseEvent, DispatchTouchEvent } from '../../api';
-import { Base } from '../../common';
+import { classNames } from '../../common';
 import { useRoom } from '../../hooks';
 import { RoomSpectatorView } from './spectator/RoomSpectatorView';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
@@ -35,12 +35,12 @@ export const RoomView: FC<{}> = props =>
     }, []);
 
     return (
-        <Base fit innerRef={ elementRef } className={ (!roomSession && 'd-none') }>
+        <div ref={ elementRef } className={ classNames('size-full', (!roomSession && 'd-none')) }>
             { roomSession &&
                 <>
                     <RoomWidgetsView />
                     { roomSession.isSpectator && <RoomSpectatorView /> }
                 </> }
-        </Base>
+        </div>
     );
 }

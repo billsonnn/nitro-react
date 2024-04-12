@@ -11,7 +11,7 @@ export const WordQuizWidgetView: FC<{}> = props =>
     return (
         <>
             { question &&
-                <WordQuizQuestionView question={ question.content } canVote={ !answerSent } vote={ vote } noVotes={ answerCounts.get(VALUE_KEY_DISLIKE) || 0 } yesVotes={ answerCounts.get(VALUE_KEY_LIKE) || 0 } /> }
+                <WordQuizQuestionView canVote={ !answerSent } noVotes={ answerCounts.get(VALUE_KEY_DISLIKE) || 0 } question={ question.content } vote={ vote } yesVotes={ answerCounts.get(VALUE_KEY_LIKE) || 0 } /> }
             { userAnswers &&
                 Array.from(userAnswers.entries()).map(([ key, value ], index) => <WordQuizVoteView key={ index } userIndex={ key } vote={ value.value } />) }
         </>

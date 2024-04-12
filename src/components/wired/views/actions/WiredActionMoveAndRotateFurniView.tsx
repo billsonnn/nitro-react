@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredFurniType } from '../../../../api';
-import { Column, Flex, Text } from '../../../../common';
+import { Text } from '../../../../common';
 import { useWired } from '../../../../hooks';
 import { WiredActionBaseView } from './WiredActionBaseView';
 
@@ -48,35 +48,35 @@ export const WiredActionMoveAndRotateFurniView: FC<{}> = props =>
     }, [ trigger ]);
 
     return (
-        <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_BY_TYPE_OR_FROM_CONTEXT } hasSpecialInput={ true } save={ save }>
-            <Column gap={ 1 }>
+        <WiredActionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_BY_TYPE_OR_FROM_CONTEXT } save={ save }>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.startdir') }</Text>
-                <Flex gap={ 1 }>
+                <div className="flex gap-1">
                     { directionOptions.map(option =>
                     {
                         return (
-                            <Flex key={ option.value } alignItems="center" gap={ 1 }>
-                                <input className="form-check-input" type="radio" name="movement" id={ `movement${ option.value }` } checked={ (movement === option.value) } onChange={ event => setMovement(option.value) } />
+                            <div key={ option.value } className="flex items-center gap-1">
+                                <input checked={ (movement === option.value) } className="form-check-input" id={ `movement${ option.value }` } name="movement" type="radio" onChange={ event => setMovement(option.value) } />
                                 <Text>
                                     <i className={ `icon icon-${ option.icon }` } />
                                 </Text>
-                            </Flex>
+                            </div>
                         )
                     }) }
-                </Flex>
-            </Column>
-            <Column gap={ 1 }>
+                </div>
+            </div>
+            <div className="flex flex-column gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.turn') }</Text>
                 { rotationOptions.map(option =>
                 {
                     return (
-                        <Flex key={ option } alignItems="center" gap={ 1 }>
-                            <input className="form-check-input" type="radio" name="rotation" id={ `rotation${ option }` } checked={ (rotation === option) } onChange={ event => setRotation(option) } />
+                        <div key={ option } className="flex items-center gap-1">
+                            <input checked={ (rotation === option) } className="form-check-input" id={ `rotation${ option }` } name="rotation" type="radio" onChange={ event => setRotation(option) } />
                             <Text>{ LocalizeText(`wiredfurni.params.turn.${ option }`) }</Text>
-                        </Flex>
+                        </div>
                     )
                 }) }
-            </Column>
+            </div>
         </WiredActionBaseView>
     );
 }

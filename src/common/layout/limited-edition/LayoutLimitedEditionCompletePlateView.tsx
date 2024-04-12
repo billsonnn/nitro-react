@@ -2,7 +2,6 @@ import { FC, useMemo } from 'react';
 import { LocalizeText } from '../../../api';
 import { Base, BaseProps } from '../../Base';
 import { Column } from '../../Column';
-import { Flex } from '../../Flex';
 import { LayoutLimitedEditionStyledNumberView } from './LayoutLimitedEditionStyledNumberView';
 
 interface LayoutLimitedEditionCompletePlateViewProps extends BaseProps<HTMLDivElement>
@@ -27,14 +26,14 @@ export const LayoutLimitedEditionCompletePlateView: FC<LayoutLimitedEditionCompl
     return (
         <Base classNames={ getClassNames } { ...rest }>
             <Column className="plate-container" gap={ 0 }>
-                <Flex justifyContent="between" alignItems="center">
+                <div className="flex justify-content-between items-center">
                     { LocalizeText('unique.items.left') }
                     <div><LayoutLimitedEditionStyledNumberView value={ uniqueLimitedItemsLeft } /></div>
-                </Flex>
-                <Flex justifyContent="between" alignItems="center">
+                </div>
+                <div className="flex justify-content-between items-center">
                     { LocalizeText('unique.items.number.sold') }
                     <div><LayoutLimitedEditionStyledNumberView value={ uniqueLimitedSeriesSize } /></div>
-                </Flex>
+                </div>
             </Column>
         </Base>
     );

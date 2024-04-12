@@ -20,12 +20,12 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
     return (
         <>
             <Grid>
-                <Column size={ 7 } overflow="hidden">
+                <Column overflow="hidden" size={ 7 }>
                     { GetConfigurationValue('catalog.headers') &&
                         <CatalogHeaderView imageUrl={ currentPage.localization.getImage(0) }/> }
                     <CatalogItemGridWidgetView />
                 </Column>
-                <Column center={ !currentOffer } size={ 5 } overflow="hidden">
+                <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
                     { !currentOffer &&
                         <>
                             { !!page.localization.getImage(1) && 
@@ -43,14 +43,14 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
                                 { (currentOffer.product.productType === ProductTypeEnum.BADGE) && <CatalogAddOnBadgeWidgetView className="scale-2" /> }
                             </Flex>
                             <Column grow gap={ 1 }>
-                                <CatalogLimitedItemWidgetView fullWidth />
+                                <CatalogLimitedItemWidgetView />
                                 <Text grow truncate>{ currentOffer.localizationName }</Text>
-                                <Flex justifyContent="between">
-                                    <Column gap={ 1 }>
+                                <div className="flex justify-content-between">
+                                    <div className="flex flex-column gap-1">
                                         <CatalogSpinnerWidgetView />
-                                    </Column>
-                                    <CatalogTotalPriceWidget justifyContent="end" alignItems="end" />
-                                </Flex>
+                                    </div>
+                                    <CatalogTotalPriceWidget alignItems="end" justifyContent="end" />
+                                </div>
                                 <CatalogPurchaseWidgetView />
                             </Column>
                         </> }

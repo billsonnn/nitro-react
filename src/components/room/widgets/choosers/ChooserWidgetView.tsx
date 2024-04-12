@@ -35,16 +35,16 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
     return (
         <NitroCardView className="nitro-chooser-widget" theme="primary-slim">
             <NitroCardHeaderView headerText={ title } onCloseClick={ onClose } />
-            <NitroCardContentView overflow="hidden" gap={ 2 }>
-                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
-                <InfiniteScroll rows={ filteredItems } rowRender={ row =>
+            <NitroCardContentView gap={ 2 } overflow="hidden">
+                <input className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } type="text" value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
+                <InfiniteScroll rowRender={ row =>
                 {
                     return (
-                        <Flex alignItems="center" className={ classNames('rounded p-1', (selectedItem === row) && 'bg-muted') } pointer onClick={ event => setSelectedItem(row) }>
+                        <Flex pointer alignItems="center" className={ classNames('rounded p-1', (selectedItem === row) && 'bg-muted') } onClick={ event => setSelectedItem(row) }>
                             <Text truncate>{ row.name } { canSeeId && (' - ' + row.id) }</Text>
                         </Flex>
                     );
-                } } />
+                } } rows={ filteredItems } />
             </NitroCardContentView>
         </NitroCardView>
     );

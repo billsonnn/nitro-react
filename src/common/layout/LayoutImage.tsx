@@ -9,5 +9,5 @@ export const LayoutImage: FC<LayoutImageProps> = props =>
 {
     const { imageUrl = null, className = '', ...rest } = props;
 
-    return <img src={ imageUrl } className={ 'no-select ' + className } alt="" { ...rest } />;
+    return <img alt="" className={ 'no-select ' + className } src={ imageUrl } { ...rest } />;
 }

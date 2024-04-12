@@ -1,7 +1,7 @@
 import { CreateLinkEvent, GroupDeleteComposer, GroupSaveInformationComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { IGroupData, LocalizeText, SendMessageComposer } from '../../../../api';
-import { Base, Button, Column, Flex, Text } from '../../../../common';
+import { Button, Column, Text } from '../../../../common';
 import { useNotification } from '../../../../hooks';
 
 interface GroupTabIdentityViewProps
@@ -81,36 +81,36 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
 
     return (
         <Column justifyContent="between" overflow="auto">
-            <Column gap={ 1 }>
-                <Flex alignItems="center" gap={ 1 }>
+            <div className="flex flex-column gap-1">
+                <div className="flex items-center gap-1">
                     <Text center className="col-3">{ LocalizeText('group.edit.name') }</Text>
-                    <input type="text" className="form-control form-control-sm" value={ groupName } maxLength={ 29 } onChange={ event => setGroupName(event.target.value) } />
-                </Flex>
-                <Flex alignItems="center" gap={ 1 }>
+                    <input className="form-control form-control-sm" maxLength={ 29 } type="text" value={ groupName } onChange={ event => setGroupName(event.target.value) } />
+                </div>
+                <div className="flex items-center gap-1">
                     <Text center className="col-3">{ LocalizeText('group.edit.desc') }</Text>
-                    <textarea className="form-control form-control-sm" value={ groupDescription } maxLength={ 254 } onChange={ event => setGroupDescription(event.target.value) } />
-                </Flex>
+                    <textarea className="form-control form-control-sm" maxLength={ 254 } value={ groupDescription } onChange={ event => setGroupDescription(event.target.value) } />
+                </div>
                 { isCreator &&
                     <>
-                        <Flex alignItems="center" gap={ 1 }>
+                        <div className="flex items-center gap-1">
                             <Text center className="col-3">{ LocalizeText('group.edit.base') }</Text>
                             <Column fullWidth gap={ 1 }>
                                 <select className="form-select form-select-sm" value={ groupHomeroomId } onChange={ event => setGroupHomeroomId(parseInt(event.target.value)) }>
-                                    <option value={ -1 } disabled>{ LocalizeText('group.edit.base.select.room') }</option>
+                                    <option disabled value={ -1 }>{ LocalizeText('group.edit.base.select.room') }</option>
                                     { availableRooms && availableRooms.map((room, index) => <option key={ index } value={ room.id }>{ room.name }</option>) }
                                 </select>
                             </Column>
-                        </Flex>
-                        <Flex gap={ 1 }>
-                            <Base className="col-3">&nbsp;</Base>
+                        </div>
+                        <div className="flex gap-1">
+                            <div className="col-3">&nbsp;</div>
                             <Text small>{ LocalizeText('group.edit.base.warning') }</Text>
-                        </Flex>
+                        </div>
                     </> }
-            </Column>
+            </div>
             { !isCreator &&
                 <Button variant="danger" onClick={ deleteGroup }>{ LocalizeText('group.delete') }</Button> }
             { isCreator &&
-                <Text underline center fullWidth pointer onClick={ event => CreateLinkEvent('navigator/create') }>{ LocalizeText('group.createroom') }</Text> }
+                <Text center fullWidth pointer underline onClick={ event => CreateLinkEvent('navigator/create') }>{ LocalizeText('group.createroom') }</Text> }
         </Column>
     );
 };

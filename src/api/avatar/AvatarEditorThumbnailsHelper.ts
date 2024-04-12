@@ -82,7 +82,11 @@ export class AvatarEditorThumbnailsHelper
                     }
                 }
 
-                if(!hasAsset) continue;
+                if(!hasAsset)
+                {
+                    console.log(`${ AvatarFigurePartType.SCALE }_${ AvatarFigurePartType.STD }_${ part.type }_${ part.id }`);
+                    continue;
+                }
 
                 const x = asset.offsetX;
                 const y = asset.offsetY;

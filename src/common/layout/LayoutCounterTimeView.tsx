@@ -1,7 +1,6 @@
 import { FC, useMemo } from 'react';
 import { LocalizeText } from '../../api';
 import { Base, BaseProps } from '../Base';
-import { Flex } from '../Flex';
 
 interface LayoutCounterTimeViewProps extends BaseProps<HTMLDivElement>
 {
@@ -25,19 +24,19 @@ export const LayoutCounterTimeView: FC<LayoutCounterTimeViewProps> = props =>
     }, [ classNames ]);
 
     return (
-        <Flex gap={ 1 }>
+        <div className="flex gap-1 top-2 end-2">
             <Base classNames={ getClassNames } { ...rest }>
                 <div>{ day != '00' ? day : hour }{ day != '00' ? LocalizeText('countdown_clock_unit_days') : LocalizeText('countdown_clock_unit_hours') }</div>
             </Base>
-            <Base style={ { marginTop: '3px' } }>:</Base>
-            <Base classNames={ getClassNames } { ...rest }>
+            <div style={ { marginTop: '3px' } }>:</div>
+            <Base className="nitro-counter-time" { ...rest }>
                 <div>{ minutes }{ LocalizeText('countdown_clock_unit_minutes') }</div>
             </Base>
             <Base style={ { marginTop: '3px' } }>:</Base>
-            <Base classNames={ getClassNames } { ...rest }>
+            <Base className="nitro-counter-time" { ...rest }>
                 <div>{ seconds }{ LocalizeText('countdown_clock_unit_seconds') }</div>
             </Base>
             { children }
-        </Flex>
+        </div>
     );
 }

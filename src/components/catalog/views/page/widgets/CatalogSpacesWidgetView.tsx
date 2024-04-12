@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { IPurchasableOffer, LocalizeText, Offer, ProductTypeEnum } from '../../../../../api';
-import { AutoGrid, AutoGridProps, Button, ButtonGroup } from '../../../../../common';
+import { AutoGrid, AutoGridProps, Button } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';
 import { CatalogGridOfferView } from '../common/CatalogGridOfferView';
 
@@ -103,10 +103,10 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
 
     return (
         <>
-            <ButtonGroup>
+            <div className="btn-group">
                 { SPACES_GROUP_NAMES.map((name, index) => <Button key={ index } active={ (selectedGroupIndex === index) } onClick={ event => setSelectedGroupIndex(index) }>{ LocalizeText(`catalog.spaces.tab.${ name }`) }</Button>) }
-            </ButtonGroup>
-            <AutoGrid innerRef={ elementRef } columnCount={ columnCount } { ...rest }>
+            </div>
+            <AutoGrid columnCount={ columnCount } innerRef={ elementRef } { ...rest }>
                 { offers && (offers.length > 0) && offers.map((offer, index) => <CatalogGridOfferView key={ index } itemActive={ (currentOffer && (currentOffer === offer)) } offer={ offer } selectOffer={ offer => setSelectedOffer(offer) } />) }
                 { children }
             </AutoGrid>

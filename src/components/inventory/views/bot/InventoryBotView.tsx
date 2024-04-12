@@ -64,21 +64,21 @@ export const InventoryBotView: FC<InventoryBotViewProps> = props =>
         return () => setIsVisible(false);
     }, []);
 
-    if(!botItems || !botItems.length) return <InventoryCategoryEmptyView title={ LocalizeText('inventory.empty.bots.title') } desc={ LocalizeText('inventory.empty.bots.desc') } />;
+    if(!botItems || !botItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.bots.desc') } title={ LocalizeText('inventory.empty.bots.title') } />;
 
     return (
         <Grid>
-            <Column size={ 7 } overflow="hidden">
+            <Column overflow="hidden" size={ 7 }>
                 <AutoGrid columnCount={ 5 }>
                     { botItems && (botItems.length > 0) && botItems.map(item => <InventoryBotItemView key={ item.botData.id } botItem={ item } />) }
                 </AutoGrid>
             </Column>
-            <Column size={ 5 } overflow="auto">
+            <Column overflow="auto" size={ 5 }>
                 <Column overflow="hidden" position="relative">
-                    <LayoutRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />
+                    <LayoutRoomPreviewerView height={ 140 } roomPreviewer={ roomPreviewer } />
                 </Column>
                 { selectedBot &&
-                    <Column grow justifyContent="between" gap={ 2 }>
+                    <Column grow gap={ 2 } justifyContent="between">
                         <Text grow truncate>{ selectedBot.botData.name }</Text>
                         { !!roomSession &&
                             <Button variant="success" onClick={ event => attemptBotPlacement(selectedBot) }>

@@ -1,6 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { FC, Fragment, ReactElement, useEffect, useRef } from 'react';
-import { Base } from './Base';
 import { Flex } from './Flex';
 
 interface InfiniteGridProps<T = any>
@@ -34,7 +33,7 @@ export const InfiniteGrid: FC<InfiniteGridProps> = props =>
     const items = virtualizer.getVirtualItems();
 
     return (
-        <Base innerRef={ parentRef } fit position="relative" style={ { overflowY: 'auto' } }>
+        <div ref={ parentRef } className="size-full position-relative" style={ { overflowY: 'auto' } }>
             <div
                 style={ {
                     height: virtualizer.getTotalSize(),
@@ -54,8 +53,8 @@ export const InfiniteGrid: FC<InfiniteGridProps> = props =>
                     { items.map(virtualRow => (
                         <div
                             key={ virtualRow.key + 'a' }
-                            data-index={ virtualRow.index }
                             ref={ virtualizer.measureElement }
+                            data-index={ virtualRow.index }
                             style={ {
                                 display: 'grid',
                                 gap: '0.25rem',
@@ -79,6 +78,6 @@ export const InfiniteGrid: FC<InfiniteGridProps> = props =>
                     )) }
                 </Flex>
             </div>
-        </Base>
+        </div>
     );
 }

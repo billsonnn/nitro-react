@@ -1,7 +1,7 @@
 import { GroupBadgePart, GroupInformationEvent, GroupSettingsEvent } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { IGroupData, LocalizeText } from '../../../api';
-import { Base, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../common';
+import { Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
 import { GroupTabBadgeView } from './tabs/GroupTabBadgeView';
 import { GroupTabColorsView } from './tabs/GroupTabColorsView';
@@ -96,22 +96,22 @@ export const GroupManagerView: FC<{}> = props =>
                 }) }
             </NitroCardTabsView>
             <NitroCardContentView>
-                <Flex alignItems="center" gap={ 2 }>
-                    <Base className={ `nitro-group-tab-image tab-${ currentTab }` } />
+                <div className="items-center gap-2">
+                    <div className={ `nitro-group-tab-image tab-${ currentTab }` } />
                     <Column grow gap={ 0 }>
                         <Text bold fontSize={ 4 }>{ LocalizeText(`group.edit.tabcaption.${ currentTab }`) }</Text>
                         <Text>{ LocalizeText(`group.edit.tabdesc.${ currentTab }`) }</Text>
                     </Column>
-                </Flex>
+                </div>
                 <Column grow overflow="hidden">
                     { (currentTab === 1) &&
-                        <GroupTabIdentityView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } onClose={ onClose } /> }
+                        <GroupTabIdentityView groupData={ groupData } setCloseAction={ setCloseAction } setGroupData={ setGroupData } onClose={ onClose } /> }
                     { (currentTab === 2) &&
-                        <GroupTabBadgeView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } skipDefault={ true } /> }
+                        <GroupTabBadgeView groupData={ groupData } setCloseAction={ setCloseAction } setGroupData={ setGroupData } skipDefault={ true } /> }
                     { (currentTab === 3) &&
-                        <GroupTabColorsView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } /> }
+                        <GroupTabColorsView groupData={ groupData } setCloseAction={ setCloseAction } setGroupData={ setGroupData } /> }
                     { (currentTab === 5) &&
-                        <GroupTabSettingsView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } /> }
+                        <GroupTabSettingsView groupData={ groupData } setCloseAction={ setCloseAction } setGroupData={ setGroupData } /> }
                 </Column>
             </NitroCardContentView>
         </NitroCardView>

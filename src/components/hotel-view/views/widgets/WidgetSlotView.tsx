@@ -14,7 +14,7 @@ export const WidgetSlotView: FC<WidgetSlotViewProps> = props =>
     
     return (
         <div className={ `widget-slot slot-${ widgetSlot } ${ (className || '') }` } { ...rest }>
-            <GetWidgetLayout widgetType={ widgetType } slot={ widgetSlot } widgetConf={ widgetConf } />
+            <GetWidgetLayout slot={ widgetSlot } widgetConf={ widgetConf } widgetType={ widgetType } />
         </div>
     );
 }

@@ -2,7 +2,7 @@ import { ClubOfferData, GetClubOffersMessageComposer, PurchaseFromCatalogCompose
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { CatalogPurchaseState, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { AutoGrid, Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, LayoutLoadingSpinnerView, Text } from '../../../../../common';
-import { CatalogEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent } from '../../../../../events';
+import { CatalogEvent, CatalogPurchaseFailureEvent, CatalogPurchasedEvent } from '../../../../../events';
 import { useCatalog, usePurse, useUiEvent } from '../../../../../hooks';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
@@ -114,9 +114,9 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
             case CatalogPurchaseState.CONFIRM:
                 return <Button fullWidth variant="warning" onClick={ purchaseSubscription }>{ LocalizeText('catalog.marketplace.confirm_title') }</Button>;
             case CatalogPurchaseState.PURCHASE:
-                return <Button fullWidth variant="primary" disabled><LayoutLoadingSpinnerView /></Button>;
+                return <Button disabled fullWidth variant="primary"><LayoutLoadingSpinnerView /></Button>;
             case CatalogPurchaseState.FAILED:
-                return <Button fullWidth variant="danger" disabled>{ LocalizeText('generic.failed') }</Button>;
+                return <Button disabled fullWidth variant="danger">{ LocalizeText('generic.failed') }</Button>;
             case CatalogPurchaseState.NONE:
             default:
                 return <Button fullWidth variant="success" onClick={ () => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('buy') }</Button>;
@@ -130,23 +130,23 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
 
     return (
         <Grid>
-            <Column fullHeight size={ 7 } overflow="hidden" justifyContent="between">
-                <AutoGrid columnCount={ 1 } className="nitro-catalog-layout-vip-buy-grid">
+            <Column fullHeight justifyContent="between" overflow="hidden" size={ 7 }>
+                <AutoGrid className="nitro-catalog-layout-vip-buy-grid" columnCount={ 1 }>
                     { clubOffers && (clubOffers.length > 0) && clubOffers.map((offer, index) =>
                     {
                         return (
-                            <LayoutGridItem key={ index } column={ false } center={ false } alignItems="center" justifyContent="between" itemActive={ pendingOffer === offer } className="p-1" onClick={ () => setOffer(offer) }>
+                            <LayoutGridItem key={ index } alignItems="center" center={ false } className="p-1" column={ false } itemActive={ pendingOffer === offer } justifyContent="between" onClick={ () => setOffer(offer) }>
                                 <i className="icon-hc-banner" />
-                                <Column justifyContent="end" gap={ 0 }>
+                                <Column gap={ 0 } justifyContent="end">
                                     <Text textEnd>{ getOfferText(offer) }</Text>
-                                    <Flex justifyContent="end" gap={ 1 }>
+                                    <Flex gap={ 1 } justifyContent="end">
                                         { (offer.priceCredits > 0) &&
-                                        <Flex alignItems="center" justifyContent="end" gap={ 1 }>
+                                        <Flex alignItems="center" gap={ 1 } justifyContent="end">
                                             <Text>{ offer.priceCredits }</Text>
                                             <LayoutCurrencyIcon type={ -1 } />
                                         </Flex> }
                                         { (offer.priceActivityPoints > 0) &&
-                                        <Flex alignItems="center" justifyContent="end" gap={ 1 }>
+                                        <Flex alignItems="center" gap={ 1 } justifyContent="end">
                                             <Text>{ offer.priceActivityPoints }</Text>
                                             <LayoutCurrencyIcon type={ offer.priceActivityPointsType } />
                                         </Flex> }
@@ -158,10 +158,10 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
                 </AutoGrid>
                 <Text center dangerouslySetInnerHTML={ { __html: LocalizeText('catalog.vip.buy.hccenter') } }></Text>
             </Column>
-            <Column size={ 5 } overflow="hidden">
-                <Column fullHeight center overflow="hidden">
+            <Column overflow="hidden" size={ 5 }>
+                <Column center fullHeight overflow="hidden">
                     { currentPage.localization.getImage(1) && <img alt="" src={ currentPage.localization.getImage(1) } /> }
-                    <Text center overflow="auto" dangerouslySetInnerHTML={ { __html: getSubscriptionDetails } } />
+                    <Text center dangerouslySetInnerHTML={ { __html: getSubscriptionDetails } } overflow="auto" />
                 </Column>
                 { pendingOffer &&
                     <Column fullWidth grow justifyContent="end">
@@ -170,18 +170,18 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
                                 <Text fontWeight="bold">{ getPurchaseHeader() }</Text>
                                 <Text>{ getPurchaseValidUntil() }</Text>
                             </Column>
-                            <Column gap={ 1 }>
+                            <div className="flex flex-column gap-1">
                                 { (pendingOffer.priceCredits > 0) &&
-                                    <Flex alignItems="center" justifyContent="end" gap={ 1 }>
+                                    <Flex alignItems="center" gap={ 1 } justifyContent="end">
                                         <Text>{ pendingOffer.priceCredits }</Text>
                                         <LayoutCurrencyIcon type={ -1 } />
                                     </Flex> }
                                 { (pendingOffer.priceActivityPoints > 0) &&
-                                    <Flex alignItems="center" justifyContent="end" gap={ 1 }>
+                                    <Flex alignItems="center" gap={ 1 } justifyContent="end">
                                         <Text>{ pendingOffer.priceActivityPoints }</Text>
                                         <LayoutCurrencyIcon type={ pendingOffer.priceActivityPointsType } />
                                     </Flex> }
-                            </Column>
+                            </div>
                         </Flex>
                         { getPurchaseButton() }
                     </Column> }

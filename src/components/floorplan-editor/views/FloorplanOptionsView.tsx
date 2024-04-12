@@ -3,9 +3,9 @@ import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 import ReactSlider from 'react-slider';
 import { LocalizeText } from '../../../api';
 import { Column, Flex, LayoutGridItem, Text } from '../../../common';
+import { useFloorplanEditorContext } from '../FloorplanEditorContext';
 import { COLORMAP, FloorAction } from '../common/Constants';
 import { FloorplanEditor } from '../common/FloorplanEditor';
-import { useFloorplanEditorContext } from '../FloorplanEditorContext';
 
 const MIN_WALL_HEIGHT: number = 0;
 const MAX_WALL_HEIGHT: number = 16;
@@ -115,27 +115,27 @@ export const FloorplanOptionsView: FC<{}> = props =>
     }
 
     return (
-        <Column>
-            <Flex gap={ 1 }>
-                <Column size={ 5 } gap={ 1 }>
+        <div className="flex flex-column">
+            <div className="flex gap-1">
+                <Column gap={ 1 } size={ 5 }>
                     <Text bold>{ LocalizeText('floor.plan.editor.draw.mode') }</Text>
                     <Flex gap={ 3 }>
-                        <Flex gap={ 1 }>
+                        <div className="flex gap-1">
                             <LayoutGridItem itemActive={ (floorAction === FloorAction.SET) } onClick={ event => selectAction(FloorAction.SET) }>
                                 <i className="icon icon-set-tile" />
                             </LayoutGridItem>
                             <LayoutGridItem itemActive={ (floorAction === FloorAction.UNSET) } onClick={ event => selectAction(FloorAction.UNSET) }>
                                 <i className="icon icon-unset-tile" />
                             </LayoutGridItem>
-                        </Flex>
-                        <Flex gap={ 1 }>
+                        </div>
+                        <div className="flex gap-1">
                             <LayoutGridItem itemActive={ (floorAction === FloorAction.UP) } onClick={ event => selectAction(FloorAction.UP) }>
                                 <i className="icon icon-increase-height" />
                             </LayoutGridItem>
                             <LayoutGridItem itemActive={ (floorAction === FloorAction.DOWN) } onClick={ event => selectAction(FloorAction.DOWN) }>
                                 <i className="icon icon-decrease-height" />
                             </LayoutGridItem>
-                        </Flex>
+                        </div>
                         <LayoutGridItem itemActive={ (floorAction === FloorAction.DOOR) } onClick={ event => selectAction(FloorAction.DOOR) }>
                             <i className="icon icon-set-door" />
                         </LayoutGridItem>
@@ -147,28 +147,28 @@ export const FloorplanOptionsView: FC<{}> = props =>
                 </Column>
                 <Column size={ 3 }>
                     <Text bold>{ LocalizeText('floor.editor.wall.height') }</Text>
-                    <Flex alignItems="center" gap={ 1 }>
+                    <div className="flex items-center gap-1">
                         <FaCaretLeft className="cursor-pointer fa-icon" onClick={ decreaseWallHeight } />
-                        <input type="number" className="form-control form-control-sm quantity-input" value={ visualizationSettings.wallHeight } onChange={ event => onWallHeightChange(event.target.valueAsNumber) } />
+                        <input className="form-control form-control-sm quantity-input" type="number" value={ visualizationSettings.wallHeight } onChange={ event => onWallHeightChange(event.target.valueAsNumber) } />
                         <FaCaretRight className="cursor-pointer fa-icon" onClick={ increaseWallHeight } />
-                    </Flex>
+                    </div>
                 </Column>
-            </Flex>
-            <Flex gap={ 1 }>
+            </div>
+            <div className="flex gap-1">
                 <Column size={ 6 }>
                     <Text bold>{ LocalizeText('floor.plan.editor.tile.height') }: { floorHeight }</Text>
                     <ReactSlider
                         className="nitro-slider"
-                        min={ MIN_FLOOR_HEIGHT }
                         max={ MAX_FLOOR_HEIGHT }
+                        min={ MIN_FLOOR_HEIGHT }
+                        renderThumb={ ({ style, ...rest }, state) => <div style={ { backgroundColor: `#${ COLORMAP[state.valueNow.toString(33)] }`, ...style } } { ...rest }>{ state.valueNow }</div> }
                         step={ 1 }
                         value={ floorHeight }
-                        onChange={ event => onFloorHeightChange(event) }
-                        renderThumb={ ({ style, ...rest }, state) => <div style={ { backgroundColor: `#${ COLORMAP[state.valueNow.toString(33)] }`, ...style } } { ...rest }>{ state.valueNow }</div> } />
+                        onChange={ event => onFloorHeightChange(event) } />
                 </Column>
                 <Column size={ 6 }>
                     <Text bold>{ LocalizeText('floor.plan.editor.room.options') }</Text>
-                    <Flex className="align-items-center">
+                    <Flex className="items-center">
                         <select className="form-control form-control-sm" value={ visualizationSettings.thicknessWall } onChange={ event => onWallThicknessChange(parseInt(event.target.value)) }>
                             <option value={ 0 }>{ LocalizeText('navigator.roomsettings.wall_thickness.thinnest') }</option>
                             <option value={ 1 }>{ LocalizeText('navigator.roomsettings.wall_thickness.thin') }</option>
@@ -183,7 +183,7 @@ export const FloorplanOptionsView: FC<{}> = props =>
                         </select>
                     </Flex>
                 </Column>
-            </Flex>
-        </Column>
+            </div>
+        </div>
     );
 }

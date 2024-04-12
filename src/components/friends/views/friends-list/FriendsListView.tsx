@@ -121,9 +121,9 @@ export const FriendsListView: FC<{}> = props =>
 
     return (
         <>
-            <NitroCardView className="nitro-friends" uniqueKey="nitro-friends" theme="primary-slim">
+            <NitroCardView className="nitro-friends" theme="primary-slim" uniqueKey="nitro-friends">
                 <NitroCardHeaderView headerText={ LocalizeText('friendlist.friends') } onCloseClick={ event => setIsVisible(false) } />
-                <NitroCardContentView overflow="hidden" gap={ 1 } className="text-black p-0">
+                <NitroCardContentView className="text-black p-0" gap={ 1 } overflow="hidden">
                     <NitroCardAccordionView fullHeight overflow="hidden">
                         <NitroCardAccordionSetView headerText={ LocalizeText('friendlist.friends') + ` (${ onlineFriends.length })` } isExpanded={ true }>
                             <FriendsListGroupView list={ onlineFriends } selectedFriendsIds={ selectedFriendsIds } selectFriend={ selectFriend } />
@@ -135,16 +135,16 @@ export const FriendsListView: FC<{}> = props =>
                         <FriendsSearchView headerText={ LocalizeText('people.search.title') } />
                     </NitroCardAccordionView>
                     { selectedFriendsIds && selectedFriendsIds.length > 0 &&
-                        <Flex gap={ 1 } className="p-1">
+                        <Flex className="p-1" gap={ 1 }>
                             <Button fullWidth onClick={ () => setShowRoomInvite(true) }>{ LocalizeText('friendlist.tip.invite') }</Button>
                             <Button fullWidth variant="danger" onClick={ event => setShowRemoveFriendsConfirmation(true) }>{ LocalizeText('generic.delete') }</Button>
                         </Flex> } 
                 </NitroCardContentView>
             </NitroCardView>
             { showRoomInvite &&
-                <FriendsRoomInviteView selectedFriendsIds={ selectedFriendsIds } onCloseClick={ () => setShowRoomInvite(false) } sendRoomInvite={ sendRoomInvite } /> }
+                <FriendsRoomInviteView selectedFriendsIds={ selectedFriendsIds } sendRoomInvite={ sendRoomInvite } onCloseClick={ () => setShowRoomInvite(false) } /> }
             { showRemoveFriendsConfirmation && 
-                <FriendsRemoveConfirmationView selectedFriendsIds={ selectedFriendsIds } removeFriendsText={ removeFriendsText } onCloseClick={ () => setShowRemoveFriendsConfirmation(false) } removeSelectedFriends={ removeSelectedFriends } /> }
+                <FriendsRemoveConfirmationView removeFriendsText={ removeFriendsText } removeSelectedFriends={ removeSelectedFriends } selectedFriendsIds={ selectedFriendsIds } onCloseClick={ () => setShowRemoveFriendsConfirmation(false) } /> }
         </>
     );
 };

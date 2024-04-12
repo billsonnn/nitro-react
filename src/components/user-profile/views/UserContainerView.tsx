@@ -1,7 +1,7 @@
 import { GetSessionDataManager, RequestFriendComposer, UserProfileParser } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { FriendlyTime, LocalizeText, SendMessageComposer } from '../../../api';
-import { Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
+import { LayoutAvatarImageView, Text } from '../../../common';
 
 interface UserContainerViewProps
 {
@@ -28,16 +28,16 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
     }, [ userProfile ])
 
     return (
-        <Flex gap={ 2 }>
-            <Column center className="avatar-container">
-                <LayoutAvatarImageView figure={ userProfile.figure } direction={ 2 } />
-            </Column>
-            <Column>
-                <Column gap={ 0 }>
+        <div className="flex gap-2">
+            <div className="flex flex-column justify-center items-center avatar-container">
+                <LayoutAvatarImageView direction={ 2 } figure={ userProfile.figure } />
+            </div>
+            <div className="flex flex-column">
+                <div className="flex flex-column gap-0">
                     <Text bold>{ userProfile.username }</Text>
-                    <Text italics textBreak small>{ userProfile.motto }&nbsp;</Text>
-                </Column>
-                <Column gap={ 1 }>
+                    <Text italics small textBreak>{ userProfile.motto }&nbsp;</Text>
+                </div>
+                <div className="flex flex-column gap-1">
                     <Text small>
                         <b>{ LocalizeText('extendedprofile.created') }</b> { userProfile.registration }
                     </Text>
@@ -47,15 +47,15 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
                     <Text small>
                         <b>{ LocalizeText('extendedprofile.achievementscore') }</b> { userProfile.achievementPoints }
                     </Text>
-                </Column>
-                <Flex gap={ 1 }>
+                </div>
+                <div className="flex gap-1">
                     { userProfile.isOnline &&
                         <i className="icon icon-pf-online" /> }
                     { !userProfile.isOnline &&
                         <i className="icon icon-pf-offline" /> }
-                    <Flex alignItems="center" gap={ 1 }>
+                    <div className="flex items-center gap-1">
                         { canSendFriendRequest &&
-                            <Text small underline pointer onClick={ addFriend }>{ LocalizeText('extendedprofile.addasafriend') }</Text> }
+                            <Text pointer small underline onClick={ addFriend }>{ LocalizeText('extendedprofile.addasafriend') }</Text> }
                         { !canSendFriendRequest &&
                             <>
                                 <i className="icon icon-pf-tick" />
@@ -66,9 +66,9 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
                                 { (requestSent || userProfile.requestSent) &&
                                     <Text>{ LocalizeText('extendedprofile.friendrequestsent') }</Text> }
                             </> }
-                    </Flex>
-                </Flex>
-            </Column>
-        </Flex>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }

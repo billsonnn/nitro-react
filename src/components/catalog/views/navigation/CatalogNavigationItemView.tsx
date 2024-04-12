@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
 import { ICatalogNode } from '../../../../api';
-import { Base, LayoutGridItem, Text } from '../../../../common';
+import { LayoutGridItem, Text } from '../../../../common';
 import { useCatalog } from '../../../../hooks';
 import { CatalogIconView } from '../catalog-icon/CatalogIconView';
 import { CatalogNavigationSetView } from './CatalogNavigationSetView';
@@ -18,10 +18,10 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
     const { activateNode = null } = useCatalog();
     
     return (
-        <Base className="nitro-catalog-navigation-section">
-            <LayoutGridItem gap={ 1 } column={ false } itemActive={ node.isActive } onClick={ event => activateNode(node) } className={ child ? 'inset' : '' }>
+        <div className="nitro-catalog-navigation-section">
+            <LayoutGridItem className={ child ? 'inset' : '' } column={ false } gap={ 1 } itemActive={ node.isActive } onClick={ event => activateNode(node) }>
                 <CatalogIconView icon={ node.iconId } />
-                <Text grow truncate>{ node.localization }</Text>
+                <Text truncate className="flex-grow-1">{ node.localization }</Text>
                 { node.isBranch &&
                     <>
                         { node.isOpen && <FaCaretUp className="fa-icon" /> }
@@ -29,7 +29,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
                     </> }
             </LayoutGridItem>
             { node.isOpen && node.isBranch &&
-                <CatalogNavigationSetView node={ node } child={ true } /> }
-        </Base>
+                <CatalogNavigationSetView child={ true } node={ node } /> }
+        </div>
     );
 }

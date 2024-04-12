@@ -1,6 +1,6 @@
 import { FC, MouseEvent, useEffect, useState } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
-import { Base, Flex, Grid, NitroCardContentView } from '../../../../common';
+import { Flex, Grid, NitroCardContentView } from '../../../../common';
 
 interface ChatInputStyleSelectorViewProps
 {
@@ -44,18 +44,18 @@ export const ChatInputStyleSelectorView: FC<ChatInputStyleSelectorViewProps> = p
 
     return (
         <>
-            <Base pointer className="icon chatstyles-icon" onClick={ toggleSelector } />
-            <Overlay show={ selectorVisible } target={ target } placement="top">
+            <div className="icon chatstyles-icon cursor-pointer" onClick={ toggleSelector } />
+            <Overlay placement="top" show={ selectorVisible } target={ target }>
                 <Popover className="nitro-chat-style-selector-container image-rendering-pixelated">
-                    <NitroCardContentView overflow="hidden" className="bg-transparent">
+                    <NitroCardContentView className="bg-transparent" overflow="hidden">
                         <Grid columnCount={ 3 } overflow="auto">
                             { chatStyleIds && (chatStyleIds.length > 0) && chatStyleIds.map((styleId) =>
                             {
                                 return (
-                                    <Flex center pointer key={ styleId } className="bubble-parent-container" onClick={ event => selectStyle(styleId) }>
-                                        <Base key={ styleId } className="bubble-container">
-                                            <Base className={ `chat-bubble bubble-${ styleId }` }>&nbsp;</Base>
-                                        </Base>
+                                    <Flex key={ styleId } center pointer className="bubble-parent-container" onClick={ event => selectStyle(styleId) }>
+                                        <div key={ styleId } className="bubble-container">
+                                            <div className={ `chat-bubble bubble-${ styleId }` }>&nbsp;</div>
+                                        </div>
                                     </Flex>
                                 );
                             }) }

@@ -106,13 +106,13 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
     }, [ setCloseAction, saveBadge ]);
     
     return (
-        <Grid overflow="hidden" gap={ 1 }>
+        <Grid gap={ 1 } overflow="hidden">
             <Column size={ 2 }>
                 <Flex center className="bg-muted rounded p-1">
                     <LayoutBadgeImageView badgeCode={ getModifiedBadgeCode() } isGroup={ true } />
                 </Flex>
             </Column>
-            <Column size={ 10 } overflow="auto">
+            <Column overflow="auto" size={ 10 }>
                 <GroupBadgeCreatorView badgeParts={ badgeParts } setBadgeParts={ setBadgeParts } />
             </Column>
         </Grid>
