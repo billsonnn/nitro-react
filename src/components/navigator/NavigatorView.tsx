@@ -1,8 +1,9 @@
+import { NitroCard, NitroCardTabs } from '@layout/NitroCard';
 import { AddLinkEventTracker, ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorInitComposer, NavigatorSearchComposer, RemoveLinkEventTracker, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { LocalizeText, SendMessageComposer, TryVisitRoom } from '../../api';
-import { Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
+import { Column, NitroCardTabsItemView } from '../../common';
 import { useNavigator, useNitroEvent } from '../../hooks';
 import { NavigatorDoorStateView } from './views/NavigatorDoorStateView';
 import { NavigatorRoomCreatorView } from './views/NavigatorRoomCreatorView';
@@ -196,24 +197,28 @@ export const NavigatorView: FC<{}> = props =>
     return (
         <>
             { isVisible &&
-                <NitroCardView className="nitro-navigator" uniqueKey="navigator">
-                    <NitroCardHeaderView headerText={ LocalizeText(isCreatorOpen ? 'navigator.createroom.title' : 'navigator.title') } onCloseClick={ event => setIsVisible(false) } />
-                    <NitroCardTabsView>
+                <NitroCard.Main
+                    className="w-navigator h-navigator"
+                    uniqueKey="navigator">
+                    <NitroCard.Header
+                        headerText={ LocalizeText(isCreatorOpen ? 'navigator.createroom.title' : 'navigator.title') }
+                        onCloseClick={ event => setIsVisible(false) } />
+                    <NitroCardTabs.Main>
                         { topLevelContexts && (topLevelContexts.length > 0) && topLevelContexts.map((context, index) =>
                         {
                             return (
-                                <NitroCardTabsItemView key={ index } isActive={ ((topLevelContext === context) && !isCreatorOpen) } onClick={ event => sendSearch('', context.code) }>
+                                <NitroCardTabs.Item key={ index } isActive={ ((topLevelContext === context) && !isCreatorOpen) } onClick={ event => sendSearch('', context.code) }>
                                     { LocalizeText(('navigator.toplevelview.' + context.code)) }
-                                </NitroCardTabsItemView>
+                                </NitroCardTabs.Item>
                             );
                         }) }
                         <NitroCardTabsItemView isActive={ isCreatorOpen } onClick={ event => setCreatorOpen(true) }>
                             <FaPlus className="fa-icon" />
                         </NitroCardTabsItemView>
-                    </NitroCardTabsView>
-                    <NitroCardContentView position="relative">
+                    </NitroCardTabs.Main>
+                    <NitroCard.Content>
                         { isLoading &&
-                            <div className="position-absolute size-full top-0 start-0 z-index-1 bg-muted opacity-0-5" /> }
+                            <div className="top-0 position-absolute size-full start-0 z-index-1 bg-muted opacity-0-5" /> }
                         { !isCreatorOpen &&
                             <>
                                 <NavigatorSearchView sendSearch={ sendSearch } />
@@ -222,8 +227,8 @@ export const NavigatorView: FC<{}> = props =>
                                 </Column>
                             </> }
                         { isCreatorOpen && <NavigatorRoomCreatorView /> }
-                    </NitroCardContentView>
-                </NitroCardView> }
+                    </NitroCard.Content>
+                </NitroCard.Main> }
             <NavigatorDoorStateView />
             { isRoomInfoOpen && <NavigatorRoomInfoView onCloseClick={ () => setRoomInfoOpen(false) } /> }
             { isRoomLinkOpen && <NavigatorRoomLinkView onCloseClick={ () => setRoomLinkOpen(false) } /> }

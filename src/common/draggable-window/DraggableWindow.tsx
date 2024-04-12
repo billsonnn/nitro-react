@@ -1,7 +1,6 @@
 import { MouseEventType, TouchEventType } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, Key, MouseEvent as ReactMouseEvent, ReactNode, TouchEvent as ReactTouchEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Base } from '..';
 import { GetLocalStorage, SetLocalStorage, WindowSaveOptions } from '../../api';
 import { DraggableWindowPosition } from './DraggableWindowPosition';
 
@@ -263,8 +262,8 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
 
     return (
         createPortal(
-            <Base className="draggable-window" innerRef={ elementRef } position="absolute" style={ dragStyle } onMouseDownCapture={ onMouseDown } onTouchStartCapture={ onTouchStart }>
+            <div ref={ elementRef } className="absolute draggable-window" style={ dragStyle } onMouseDownCapture={ onMouseDown } onTouchStartCapture={ onTouchStart }>
                 { children }
-            </Base>, document.getElementById('draggable-windows-container'))
+            </div>, document.getElementById('draggable-windows-container'))
     );
 }
