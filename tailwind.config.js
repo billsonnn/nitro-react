@@ -1,11 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 
+const { generateShades } = require('./css-utils/CSSColorUtils');
+
 const colors = {
-    'toolbar': 'rgba(28, 28, 32, .95)'
+    'toolbar': '#555555',
 };
 
 const boxShadow = {
+    'inner1px': 'inset 0 0 0 1px rgba(255,255,255,.3)'
 };
+
 
 module.exports = {
     theme: {
@@ -13,7 +17,7 @@ module.exports = {
             fontFamily: {
                 sans: [ 'Ubuntu', 'sans-serif' ],
             },
-            colors,
+            colors: generateShades(colors),
             boxShadow,
             height: {
                 'toolbar': '55px'
