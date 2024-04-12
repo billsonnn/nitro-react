@@ -92,18 +92,18 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
                         { isInRoom &&
                             <ToolbarItemView icon="camera" onClick={ event => CreateLinkEvent('camera/toggle') } /> }
                         { isMod &&
-                            <div className="cursor-pointer nitro-icon icon-modtools" onClick={ event => CreateLinkEvent('mod-tools/toggle') } /> }
+                            <ToolbarItemView icon="modtools" onClick={ event => CreateLinkEvent('mod-tools/toggle') } /> }
                     </div>
                     <div className="flex items-center" id="toolbar-chat-input-container" />
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="flex gap-2">
-                        <div className="cursor-pointer nitro-icon icon-friendall" onClick={ event => CreateLinkEvent('friends/toggle') }>
+                        <ToolbarItemView icon="friendall" onClick={ event => CreateLinkEvent('friends/toggle') }>
                             { (requests.length > 0) &&
                                 <LayoutItemCountView count={ requests.length } /> }
-                        </div>
+                        </ToolbarItemView>
                         { ((iconState === MessengerIconState.SHOW) || (iconState === MessengerIconState.UNREAD)) &&
-                            <div className={ `nitro-icon icon-message cursor-pointer ${ (iconState === MessengerIconState.UNREAD) && 'is-unseen' }` } onClick={ event => OpenMessengerChat() } /> }
+                            <ToolbarItemView className={ (iconState === MessengerIconState.UNREAD) && 'is-unseen' } icon="message" onClick={ event => OpenMessengerChat() } /> }
                     </div>
                     <div className="hidden lg:block" id="toolbar-friend-bar-container" />
                 </div>
