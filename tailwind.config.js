@@ -19,8 +19,12 @@ module.exports = {
             },
             colors: generateShades(colors),
             boxShadow,
+            width: {
+                'navigator': '420px'
+            },
             height: {
-                'toolbar': '55px'
+                'toolbar': '55px',
+                'navigator': '440px'
             },
             zIndex: {
                 'toolbar': ''
