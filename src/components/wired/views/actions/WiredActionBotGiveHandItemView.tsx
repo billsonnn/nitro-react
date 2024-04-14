@@ -26,11 +26,11 @@ export const WiredActionBotGiveHandItemView: FC<{}> = props =>
 
     return (
         <WiredActionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.bot.name') }</Text>
                 <input className="form-control form-control-sm" maxLength={ 32 } type="text" value={ botName } onChange={ event => setBotName(event.target.value) } />
             </div>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.handitem') }</Text>
                 <select className="form-select form-select-sm" value={ handItemId } onChange={ event => setHandItemId(parseInt(event.target.value)) }>
                     <option value="0">------</option>

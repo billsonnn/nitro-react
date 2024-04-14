@@ -63,12 +63,12 @@ export const MonsterPlantSeedConfirmView: FC<MonsterPlantSeedConfirmViewProps> =
             <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title.plant_seed', [ 'name' ], [ furniData.name ]) } onCloseClick={ onClose } />
             <NitroCardContentView center>
                 <div className="flex gap-2 overflow-hidden">
-                    <div className="flex flex-column">
+                    <div className="flex flex-col">
                         <div className="product-preview">
                             <div className="monsterplant-image" />
                         </div>
                     </div>
-                    <div className="flex flex-column justify-content-between overflow-auto">
+                    <div className="flex flex-col justify-content-between overflow-auto">
                         <Column gap={ 2 }>
                             <Text>{ LocalizeText('useproduct.widget.text.plant_seed', [ 'productName' ], [ furniData.name ] ) }</Text>
                             <Text>{ LocalizeText('useproduct.widget.info.plant_seed') }</Text>

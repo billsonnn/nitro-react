@@ -115,7 +115,7 @@ export const FloorplanOptionsView: FC<{}> = props =>
     }
 
     return (
-        <div className="flex flex-column">
+        <div className="flex flex-col">
             <div className="flex gap-1">
                 <Column gap={ 1 } size={ 5 }>
                     <Text bold>{ LocalizeText('floor.plan.editor.draw.mode') }</Text>

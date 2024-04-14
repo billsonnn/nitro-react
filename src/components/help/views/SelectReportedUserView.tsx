@@ -52,7 +52,7 @@ export const SelectReportedUserView: FC<{}> = props =>
 
     return (
         <>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text fontSize={ 4 }>{ LocalizeText('help.emergency.main.step.two.title') }</Text>
                 { (availableUsers.length > 0) &&
                     <Text>{ LocalizeText('report.user.pick.user') }</Text> }

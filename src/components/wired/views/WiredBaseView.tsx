@@ -90,7 +90,7 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
         <NitroCardView className="nitro-wired" theme="primary-slim" uniqueKey="nitro-wired">
             <NitroCardHeaderView headerText={ LocalizeText('wiredfurni.title') } onCloseClick={ onClose } />
             <NitroCardContentView>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-1">
                         <i className={ `icon icon-wired-${ wiredType }` } />
                         <Text bold>{ wiredName }</Text>

@@ -27,7 +27,7 @@ export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = p
                 <Flex center className="user-relationship">
                     <i className={ `nitro-friends-spritesheet icon-${ relationshipName }` } />
                 </Flex>
-                <div className="flex flex-column flex-grow-1 gap-0">
+                <div className="flex flex-col flex-grow-1 gap-0">
                     <Flex alignItems="center" className="bg-white rounded px-2 py-1 user-relationship" justifyContent="between">
                         <Text pointer small underline onClick={ event => (relationshipInfo && (relationshipInfo.randomFriendId >= 1) && GetUserProfile(relationshipInfo.randomFriendId)) }>
                             { (!relationshipInfo || (relationshipInfo.friendCount === 0)) &&

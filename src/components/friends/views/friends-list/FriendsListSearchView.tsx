@@ -42,7 +42,7 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
     return (
         <NitroCardAccordionSetView { ...rest }>
             <input className="search-input form-control form-control-sm w-100 rounded-0" maxLength={ 50 } placeholder={ LocalizeText('generic.search') } type="text" value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
-            <div className="flex flex-column">
+            <div className="flex flex-col">
                 { friendResults &&
                     <>
                         { (friendResults.length === 0) &&

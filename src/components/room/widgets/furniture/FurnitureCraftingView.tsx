@@ -56,7 +56,7 @@ export const FurnitureCraftingView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('crafting.title') } onCloseClick={ onClose } />
             <NitroCardContentView>
                 <div className="flex flex-grow-1 gap-2 overflow-hidden">
-                    <div className="flex flex-column w-100 gap-2">
+                    <div className="flex flex-col w-100 gap-2">
                         <Column fullHeight overflow="hidden">
                             <div className="bg-muted rounded py-1 text-center">{ LocalizeText('crafting.title.products') }</div>
                             <AutoGrid columnCount={ 5 }>
@@ -70,10 +70,10 @@ export const FurnitureCraftingView: FC<{}> = props =>
                             </AutoGrid>
                         </Column>
                     </div>
-                    <div className="flex flex-column w-100 gap-2">
+                    <div className="flex flex-col w-100 gap-2">
                         { !selectedRecipe && <Column center fullHeight className="text-black text-center">{ LocalizeText('crafting.info.start') }</Column> }
                         { selectedRecipe && <>
-                            <div className="flex flex-column h-100 overflow-hidden">
+                            <div className="flex flex-col h-100 overflow-hidden">
                                 <div className="bg-muted rounded py-1 text-center">{ LocalizeText('crafting.current_recipe') }</div>
                                 <AutoGrid columnCount={ 5 }>
                                     { !!requiredIngredients && (requiredIngredients.length > 0) && requiredIngredients.map(ingredient =>
@@ -91,11 +91,11 @@ export const FurnitureCraftingView: FC<{}> = props =>
                                     }) }
                                 </AutoGrid>
                             </div>
-                            <div className="flex flex-column h-100 gap-2">
-                                <div className="flex flex-column h-100 bg-muted rounded gap-2">
+                            <div className="flex flex-col h-100 gap-2">
+                                <div className="flex flex-col h-100 bg-muted rounded gap-2">
                                     <div className="py-1 text-center">{ LocalizeText('crafting.result') }</div>
-                                    <div className="flex items-center justify-center flex-column h-100 pb-1 gap-1">
-                                        <div className="flex flex-column h-100">
+                                    <div className="flex items-center justify-center flex-col h-100 pb-1 gap-1">
+                                        <div className="flex flex-col h-100">
                                             <img src={ selectedRecipe.iconUrl } />
                                         </div>
                                         <div className="text-black">{ selectedRecipe.localizedName }</div>

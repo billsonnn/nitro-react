@@ -81,8 +81,8 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
     }
 
     if(thumbnail) return (
-        <Column pointer alignItems="center" className="navigator-item p-1 bg-light rounded-3 small mb-1 flex-column border border-muted" gap={ 0 } overflow="hidden" onClick={ visitRoom } { ...rest }>
-            <LayoutRoomThumbnailView className="flex flex-column items-center justify-content-end mb-1" customUrl={ roomData.officialRoomPicRef } roomId={ roomData.roomId }>
+        <Column pointer alignItems="center" className="navigator-item p-1 bg-light rounded-3 small mb-1 flex-col border border-muted" gap={ 0 } overflow="hidden" onClick={ visitRoom } { ...rest }>
+            <LayoutRoomThumbnailView className="flex flex-col items-center justify-content-end mb-1" customUrl={ roomData.officialRoomPicRef } roomId={ roomData.roomId }>
                 { roomData.habboGroupId > 0 && <LayoutBadgeImageView badgeCode={ roomData.groupBadgeCode } className={ 'position-absolute top-0 start-0 m-1' } isGroup={ true } /> }
                 <Flex center className={ 'badge p-1 position-absolute m-1 ' + getUserCounterColor() } gap={ 1 }>
                     <FaUser className="fa-icon" />

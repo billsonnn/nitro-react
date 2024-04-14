@@ -162,7 +162,7 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
                             <CatalogLimitedItemWidgetView />
                             <Text truncate className="flex-grow-1">{ currentOffer.localizationName }</Text>
                             <div className="flex justify-content-between">
-                                <div className="flex flex-column gap-1">
+                                <div className="flex flex-col gap-1">
                                     <CatalogSpinnerWidgetView />
                                 </div>
                                 <CatalogTotalPriceWidget alignItems="end" justifyContent="end" />

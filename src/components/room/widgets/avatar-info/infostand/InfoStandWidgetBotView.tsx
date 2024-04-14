@@ -18,14 +18,14 @@ export const InfoStandWidgetBotView: FC<InfoStandWidgetBotViewProps> = props =>
     return (
         <Column className="nitro-infostand rounded">
             <Column className="container-fluid content-area" gap={ 1 } overflow="visible">
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Flex alignItems="center" gap={ 1 } justifyContent="between">
                         <Text small wrap variant="white">{ avatarInfo.name }</Text>
                         <FaTimes className="cursor-pointer fa-icon" onClick={ onClose } />
                     </Flex>
                     <hr className="m-0" />
                 </div>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <div className="flex gap-1">
                         <Column fullWidth className="body-image bot">
                             <LayoutAvatarImageView direction={ 4 } figure={ avatarInfo.figure } />
@@ -43,7 +43,7 @@ export const InfoStandWidgetBotView: FC<InfoStandWidgetBotViewProps> = props =>
                     <Text fullWidth small textBreak wrap className="motto-content" variant="white">{ avatarInfo.motto }</Text>
                 </Flex>
                 { (avatarInfo.carryItem > 0) &&
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <hr className="m-0" />
                         <Text small wrap variant="white">
                             { LocalizeText('infostand.text.handitem', [ 'item' ], [ LocalizeText('handitem' + avatarInfo.carryItem) ]) }

@@ -23,8 +23,8 @@ export const Flex: FC<FlexProps> = props =>
 
         if(column)
         {
-            if(reverse) newClassNames.push('flex-column-reverse');
-            else newClassNames.push('flex-column');
+            if(reverse) newClassNames.push('flex-col-reverse');
+            else newClassNames.push('flex-col');
         }
         else
         {

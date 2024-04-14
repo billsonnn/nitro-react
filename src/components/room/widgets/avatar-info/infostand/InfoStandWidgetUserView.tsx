@@ -125,7 +125,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
     return (
         <Column className="nitro-infostand rounded">
             <Column className="container-fluid content-area" gap={ 1 } overflow="visible">
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-content-between">
                         <div className="flex items-center gap-1">
                             <UserProfileIconView userId={ avatarInfo.webID } />
@@ -135,7 +135,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                     </div>
                     <hr className="m-0" />
                 </div>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <div className="flex gap-1">
                         <Column fullWidth className="body-image" onClick={ event => GetUserProfile(avatarInfo.webID) }>
                             <LayoutAvatarImageView direction={ 4 } figure={ avatarInfo.figure } />
@@ -170,7 +170,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                     </div>
                     <hr className="m-0" />
                 </div>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Flex alignItems="center" className="bg-light-dark rounded py-1 px-2">
                         { (avatarInfo.type !== AvatarInfoUser.OWN_USER) &&
                             <Flex grow alignItems="center" className="motto-content">
@@ -189,7 +189,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                     </Flex>
                     <hr className="m-0" />
                 </div>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Text small wrap variant="white">
                         { LocalizeText('infostand.text.achievement_score') + ' ' + avatarInfo.achievementScore }
                     </Text>
@@ -201,7 +201,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                             </Text>
                         </> }
                 </div>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <InfoStandWidgetUserRelationshipsView relationships={ relationships } />
                 </div>
                 { GetConfigurationValue('user.tags.enabled') &&

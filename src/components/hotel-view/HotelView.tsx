@@ -41,7 +41,7 @@ export const HotelView: FC<{}> = props =>
         <div className="nitro-hotel-view" style={ (backgroundColor && backgroundColor) ? { background: backgroundColor } : {} }>
             <div className="container h-100 py-3 overflow-hidden landing-widgets">
                 <div className="row h-100">
-                    <div className="col-9 h-100 flex flex-column">
+                    <div className="col-9 h-100 flex flex-col">
                         <WidgetSlotView
                             className="col-6"
                             widgetConf={ GetConfigurationValue('hotelview')['widgets']['slot.' + 1 + '.conf'] }

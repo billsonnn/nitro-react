@@ -44,7 +44,7 @@ export const FurnitureStackHeightView: FC<{}> = props =>
                         onChange={ event => updateHeight(event) } />
                     <input className="show-number-arrows" max={ maxHeight } min={ 0 } style={ { width: 50 } } type="number" value={ tempHeight } onChange={ event => updateTempHeight(event.target.value) } />
                 </div>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Button onClick={ event => SendMessageComposer(new FurnitureStackHeightComposer(objectId, -100)) }>
                         { LocalizeText('furniture.above.stack') }
                     </Button>

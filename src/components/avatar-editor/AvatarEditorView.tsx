@@ -90,15 +90,15 @@ export const AvatarEditorView: FC<{}> = props =>
             </NitroCardTabsView>
             <NitroCardContentView>
                 <div className="grid gap-2 overflow-hidden">
-                    <div className="flex flex-column col-9 overflow-hidden">
+                    <div className="flex flex-col col-9 overflow-hidden">
                         { ((activeModelKey.length > 0) && (activeModelKey !== AvatarEditorFigureCategory.WARDROBE)) &&
                             <AvatarEditorModelView categories={ avatarModels[activeModelKey] } name={ activeModelKey } /> }
                         { (activeModelKey === AvatarEditorFigureCategory.WARDROBE) &&
                             <AvatarEditorWardrobeView /> }
                     </div>
-                    <div className="flex flex-column col-3 overflow-hidden gap-1">
+                    <div className="flex flex-col col-3 overflow-hidden gap-1">
                         <AvatarEditorFigurePreviewView />
-                        <div className="flex flex-column flex-grow-1 gap-1">
+                        <div className="flex flex-col flex-grow-1 gap-1">
                             <div className="btn-group">
                                 <Button variant="secondary" onClick={ event => processAction(AvatarEditorAction.ACTION_RESET) }>
                                     <FaRedo className="fa-icon" />

@@ -27,15 +27,15 @@ export const RoomPromoteEditWidgetView: FC<RoomPromoteEditWidgetViewProps> = pro
         <NitroCardView className="nitro-guide-tool" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('navigator.eventsettings.editcaption') } onCloseClick={ () => setIsEditingPromote(false) } />
             <NitroCardContentView className="text-black">
-                <div className="flex flex-column">
+                <div className="flex flex-col">
                     <Text bold>{ LocalizeText('navigator.eventsettings.name') }</Text>
                     <input className="form-control form-control-sm" maxLength={ 64 } placeholder={ LocalizeText('navigator.eventsettings.name') } type="text" value={ newEventName } onChange={ event => setNewEventName(event.target.value) } />
                 </div>
-                <div className="flex flex-column">
+                <div className="flex flex-col">
                     <Text bold>{ LocalizeText('navigator.eventsettings.desc') }</Text>
                     <textarea className="form-control form-control-sm" maxLength={ 64 } placeholder={ LocalizeText('navigator.eventsettings.desc') } value={ newEventDescription } onChange={ event => setNewEventDescription(event.target.value) }></textarea>
                 </div>
-                <div className="flex flex-column">
+                <div className="flex flex-col">
                     <Button fullWidth disabled={ !newEventName || !newEventDescription } variant={ (!newEventName || !newEventDescription) ? 'danger' : 'success' } onClick={ event => updatePromote() }>{ LocalizeText('navigator.eventsettings.edit') }</Button>
                 </div>
             </NitroCardContentView>

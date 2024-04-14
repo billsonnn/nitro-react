@@ -24,7 +24,7 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
                 </Text>
             </Column>
             <Column fullWidth justifyContent="center" overflow="hidden">
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Text truncate fontWeight="bold">
                         { LocalizeBadgeName(AchievementUtilities.getAchievementBadgeCode(achievement)) }
                     </Text>
@@ -33,7 +33,7 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
                     </Text>
                 </div>
                 { ((achievement.levelRewardPoints > 0) || (achievement.scoreLimit > 0)) &&
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         { (achievement.levelRewardPoints > 0) &&
                             <div className="flex items-center gap-1">
                                 <Text truncate className="small">

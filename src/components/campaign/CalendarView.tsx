@@ -104,7 +104,7 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                     <Column size={ 1 } />
                     <Column size={ 10 }>
                         <div className="flex items-center gap-1 justify-content-between">
-                            <div className="flex flex-column gap-1">
+                            <div className="flex flex-col gap-1">
                                 <Text fontSize={ 3 }>{ LocalizeText('campaign.calendar.heading.day', [ 'number' ], [ (selectedDay + 1).toString() ]) }</Text>
                                 <Text>{ dayMessage(selectedDay) }</Text>
                             </div>

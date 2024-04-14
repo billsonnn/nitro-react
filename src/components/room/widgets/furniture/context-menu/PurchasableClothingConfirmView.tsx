@@ -82,12 +82,12 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
             <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title.bind_clothing') } onCloseClick={ onClose } />
             <NitroCardContentView center>
                 <div className="flex overflow-hidden gap-2">
-                    <div className="flex flex-column">
+                    <div className="flex flex-col">
                         <div className="mannequin-preview">
                             <LayoutAvatarImageView direction={ 2 } figure={ newFigure } />
                         </div>
                     </div>
-                    <div className="flex flex-column justify-content-between overflow-auto">
+                    <div className="flex flex-col justify-content-between overflow-auto">
                         <Column gap={ 2 }>
                             <Text>{ LocalizeText('useproduct.widget.text.bind_clothing') }</Text>
                             <Text>{ LocalizeText('useproduct.widget.info.bind_clothing') }</Text>

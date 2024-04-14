@@ -124,7 +124,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                 </div>
                 { !publishDisabled &&
                 <div className="flex items-center justify-content-between bg-muted rounded p-2">
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Text bold>
                             { LocalizeText(wasPicturePublished ? 'camera.publish.successful' : 'camera.publish.explanation') }
                         </Text>

@@ -81,7 +81,7 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
 
     return (
         <Column justifyContent="between" overflow="auto">
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-1">
                     <Text center className="col-3">{ LocalizeText('group.edit.name') }</Text>
                     <input className="form-control form-control-sm" maxLength={ 29 } type="text" value={ groupName } onChange={ event => setGroupName(event.target.value) } />

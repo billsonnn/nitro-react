@@ -27,7 +27,7 @@ export const WiredActionBaseView: FC<PropsWithChildren<WiredActionBaseViewProps>
         <WiredBaseView hasSpecialInput={ hasSpecialInput } requiresFurni={ requiresFurni } save={ save } wiredType="action">
             { children }
             { !!children && <hr className="m-0 bg-dark" /> }
-            <div className="flex flex-column">
+            <div className="flex flex-col">
                 <Text bold>{ LocalizeText('wiredfurni.params.delay', [ 'seconds' ], [ GetWiredTimeLocale(actionDelay) ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }

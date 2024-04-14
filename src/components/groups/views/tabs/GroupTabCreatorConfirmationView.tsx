@@ -51,8 +51,8 @@ export const GroupTabCreatorConfirmationView: FC<GroupTabCreatorConfirmationView
                 </Column>
             </Column>
             <Column justifyContent="between" size={ 9 }>
-                <div className="flex flex-column">
-                    <div className="flex flex-column gap-1">
+                <div className="flex flex-col">
+                    <div className="flex flex-col gap-1">
                         <Text bold>{ groupData.groupName }</Text>
                         <Text>{ groupData.groupDescription }</Text>
                     </div>

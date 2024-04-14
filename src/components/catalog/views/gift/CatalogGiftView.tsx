@@ -236,7 +236,7 @@ export const CatalogGiftView: FC<{}> = props =>
                         <div className="gift-preview">
                             <LayoutFurniImageView extraData={ boxExtraData } productClassId={ colourId } productType={ ProductTypeEnum.FLOOR } />
                         </div> }
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <div className="flex gap-2">
                             <div className="btn-group">
                                 <Button variant="primary" onClick={ () => handleAction('prev_box') }>
@@ -246,7 +246,7 @@ export const CatalogGiftView: FC<{}> = props =>
                                     <FaChevronRight className="fa-icon" />
                                 </Button>
                             </div>
-                            <div className="flex flex-column gap-1">
+                            <div className="flex flex-col gap-1">
                                 <Text fontWeight="bold">{ LocalizeText(boxName) }</Text>
                                 <div className="flex items-center gap-1">
                                     { LocalizeText(priceText, [ 'price' ], [ giftConfiguration.price.toString() ]) }

@@ -19,7 +19,7 @@ export const WiredConditionTimeElapsedMoreView: FC<{}> = props =>
     
     return (
         <WiredConditionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.allowafter', [ 'seconds' ], [ GetWiredTimeLocale(time) ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }

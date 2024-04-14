@@ -63,18 +63,18 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
     }, []);
 
     return (
-        <div className="flex flex-column overflow-auto">
+        <div className="flex flex-col overflow-auto">
             <Grid overflow="hidden">
-                <div className="flex flex-column gap-1 overflow-auto col-6">
-                    <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1 overflow-auto col-6">
+                    <div className="flex flex-col gap-1">
                         <Text>{ LocalizeText('navigator.createroom.roomnameinfo') }</Text>
                         <input className="form-control form-control-sm" maxLength={ 60 } placeholder={ LocalizeText('navigator.createroom.roomnameinfo') } type="text" onChange={ event => setName(event.target.value) } />
                     </div>
-                    <div className="flex flex-column flex-grow-1 gap-1">
+                    <div className="flex flex-col flex-grow-1 gap-1">
                         <Text>{ LocalizeText('navigator.createroom.roomdescinfo') }</Text>
                         <textarea className="flex-grow-1 form-control form-control-sm w-100" maxLength={ 255 } placeholder={ LocalizeText('navigator.createroom.roomdescinfo') } onChange={ event => setDescription(event.target.value) } />
                     </div>
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Text>{ LocalizeText('navigator.category') }</Text>
                         <select className="form-select form-select-sm" onChange={ event => setCategory(Number(event.target.value)) }>
                             { categories && (categories.length > 0) && categories.map(category =>
@@ -83,7 +83,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                             }) }
                         </select>
                     </div>
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Text>{ LocalizeText('navigator.maxvisitors') }</Text>
                         <select className="form-select form-select-sm" onChange={ event => setVisitorsCount(Number(event.target.value)) }>
                             { maxVisitorsList && maxVisitorsList.map(value =>
@@ -92,7 +92,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                             }) }
                         </select>
                     </div>
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Text>{ LocalizeText('navigator.tradesettings') }</Text>
                         <select className="form-select form-select-sm" onChange={ event => setTradesSetting(Number(event.target.value)) }>
                             <option value="0">{ LocalizeText('navigator.roomsettings.trade_not_allowed') }</option>
@@ -101,7 +101,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                         </select>
                     </div>
                 </div>
-                <div className="flex flex-column gap-1 overflow-auto col-6">
+                <div className="flex flex-col gap-1 overflow-auto col-6">
                     {
                         roomModels.map((model, index )=>
                         {

@@ -29,9 +29,9 @@ export const NameChangeConfirmationView:FC<NameChangeLayoutViewProps> = props =>
     });
 
     return (
-        <div className="flex flex-column gap-4 h-100">
+        <div className="flex flex-col gap-4 h-100">
             <div className="bg-muted rounded p-2 text-center">{ LocalizeText('tutorial.name_change.info.confirm') }</div>
-            <div className="flex flex-column items-center gap-1 h-100">
+            <div className="flex flex-col items-center gap-1 h-100">
                 <div>{ LocalizeText('tutorial.name_change.confirm') }</div>
                 <div className="fw-bold">{ username }</div>
             </div>

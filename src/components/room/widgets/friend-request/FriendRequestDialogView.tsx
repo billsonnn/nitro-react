@@ -12,7 +12,7 @@ export const FriendRequestDialogView: FC<{ roomIndex: number, request: Messenger
     return (
         <ObjectLocationView category={ RoomObjectCategory.UNIT } objectId={ roomIndex }>
             <div className="nitro-friend-request-dialog nitro-context-menu p-2">
-                <div className="flex flex-column">
+                <div className="flex flex-col">
                     <div className="flex items-center gap-2 justify-content-between">
                         <Text fontSize={ 6 } variant="white">{ LocalizeText('widget.friendrequest.from', [ 'username' ], [ request.name ]) }</Text>
                         <FaTimes className="cursor-pointer fa-icon" onClick={ event => hideFriendRequest(request.requesterUserId) } />

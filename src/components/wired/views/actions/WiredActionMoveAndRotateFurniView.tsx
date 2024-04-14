@@ -49,7 +49,7 @@ export const WiredActionMoveAndRotateFurniView: FC<{}> = props =>
 
     return (
         <WiredActionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_BY_TYPE_OR_FROM_CONTEXT } save={ save }>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.startdir') }</Text>
                 <div className="flex gap-1">
                     { directionOptions.map(option =>
@@ -65,7 +65,7 @@ export const WiredActionMoveAndRotateFurniView: FC<{}> = props =>
                     }) }
                 </div>
             </div>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.turn') }</Text>
                 { rotationOptions.map(option =>
                 {

@@ -13,10 +13,10 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
         <NitroCardView className="nitro-room-widget-toner" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('widget.backgroundcolor.title') } onCloseClick={ onClose } />
             <NitroCardContentView justifyContent="between" overflow="hidden">
-                <div className="flex flex-column gap-1 overflow-auto">
+                <div className="flex flex-col gap-1 overflow-auto">
                     <input className="form-control" type="color" value={ ColorUtils.makeColorNumberHex(color) } onChange={ event => setColor(ColorUtils.convertFromHex(event.target.value)) } />
                 </div>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Button fullWidth variant="primary" onClick={ toggleToner }>
                         { LocalizeText('widget.backgroundcolor.button.on') }
                     </Button>

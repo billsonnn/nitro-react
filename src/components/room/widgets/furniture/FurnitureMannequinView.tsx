@@ -85,7 +85,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
             <NitroCardHeaderView headerText={ LocalizeText('mannequin.widget.title') } onCloseClick={ onClose } />
             <NitroCardContentView center>
                 <div className="flex w-100 gap-2 overflow-hidden">
-                    <div className="flex flex-column">
+                    <div className="flex flex-col">
                         <div className="position-relative mannequin-preview">
                             <LayoutAvatarImageView direction={ 2 } figure={ renderedFigure } position="absolute" />
                             { (clubLevel > 0) &&
@@ -96,7 +96,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
                         { (mode === MODE_CONTROLLER) &&
                             <>
                                 <input className="form-control form-control-sm" type="text" value={ name } onBlur={ saveName } onChange={ event => setName(event.target.value) } />
-                                <div className="flex flex-column gap-1">
+                                <div className="flex flex-col gap-1">
                                     <Button variant="success" onClick={ event => setMode(MODE_UPDATE) }>
                                         { LocalizeText('mannequin.widget.style') }
                                     </Button>
@@ -107,7 +107,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
                             </> }
                         { (mode === MODE_UPDATE) &&
                             <>
-                                <div className="flex flex-column gap-1">
+                                <div className="flex flex-col gap-1">
                                     <Text bold>{ name }</Text>
                                     <Text wrap>{ LocalizeText('mannequin.widget.savetext') }</Text>
                                 </div>
@@ -122,7 +122,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
                             </> }
                         { (mode === MODE_PEER) &&
                             <>
-                                <div className="flex flex-column gap-1">
+                                <div className="flex flex-col gap-1">
                                     <Text bold>{ name }</Text>
                                     <Text>{ LocalizeText('mannequin.widget.weartext') }</Text>
                                 </div>

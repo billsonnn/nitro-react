@@ -61,7 +61,7 @@ export const WiredActionMoveFurniView: FC<{}> = props =>
 
     return (
         <WiredActionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_BY_TYPE_OR_FROM_CONTEXT } save={ save }>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.movefurni') }</Text>
                 <div className="flex items-center gap-1">
                     <input checked={ (movement === 0) } className="form-check-input" id="movement0" name="selectedTeam" type="radio" onChange={ event => setMovement(0) } />
@@ -80,7 +80,7 @@ export const WiredActionMoveFurniView: FC<{}> = props =>
                     <div className="col" />
                 </div>
             </div>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.rotatefurni') }</Text>
                 { rotationOptions.map(option =>
                 {

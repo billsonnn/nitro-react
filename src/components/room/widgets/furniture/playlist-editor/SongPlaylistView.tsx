@@ -33,7 +33,7 @@ export const SongPlaylistView: FC<SongPlaylistViewProps> = props =>
             <h2 className="ms-4">{ LocalizeText('playlist.editor.playlist') }</h2>
         </div>
         <div className="h-100 overflow-y-scroll py-2">
-            <div className="flex flex-column gap-2">
+            <div className="flex flex-col gap-2">
                 { playlist && playlist.map( (songInfo, index) =>
                 {
                     return <div key={ index } className={ 'flex gap-1 items-center text-black cursor-pointer ' + (selectedItem === index ? 'border border-muted border-2 rounded' : 'border-2') } onClick={ () => setSelectedItem(prev => prev === index ? -1 : index) }>
@@ -63,7 +63,7 @@ export const SongPlaylistView: FC<SongPlaylistViewProps> = props =>
                         <Button variant="danger" onClick={ () => playPause(furniId, selectedItem) }>
                             <div className="pause-song"/>
                         </Button>
-                        <div className="flex flex-column">
+                        <div className="flex flex-col">
                             <Text bold display="block">{ LocalizeText('playlist.editor.text.now.playing.in.your.room') }</Text>
                             <Text>
                                 { playlist[currentPlayingIndex]?.name + ' - ' + playlist[currentPlayingIndex]?.creator }

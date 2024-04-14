@@ -1,7 +1,8 @@
+import { InfiniteGrid } from '@layout/InfiniteGrid';
 import { GetRoomEngine, GetSessionDataManager, IRoomSession, RoomObjectVariable, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { DispatchUiEvent, FurniCategory, GroupItem, LocalizeText, UnseenItemCategory, attemptItemPlacement } from '../../../../api';
-import { AutoGrid, Button, Column, Grid, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, LayoutRoomPreviewerView, Text } from '../../../../common';
+import { Button, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, LayoutRoomPreviewerView } from '../../../../common';
 import { CatalogPostMarketplaceOfferEvent } from '../../../../events';
 import { useInventoryFurni, useInventoryUnseenTracker } from '../../../../hooks';
 import { InventoryCategoryEmptyView } from '../InventoryCategoryEmptyView';
@@ -111,25 +112,26 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
     if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.desc') } title={ LocalizeText('inventory.empty.title') } />;
 
     return (
-        <Grid>
-            <Column overflow="hidden" size={ 7 }>
+        <div className="grid grid-cols-12 gap-2">
+            <div className="flex flex-col col-span-7 overflow-hidden">
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
-                <AutoGrid columnCount={ 5 }>
-                    { filteredGroupItems && (filteredGroupItems.length > 0) && filteredGroupItems.map((item, index) => <InventoryFurnitureItemView key={ index } groupItem={ item } />) }
-                </AutoGrid>
-            </Column>
-            <Column overflow="auto" size={ 5 }>
-                <Column overflow="hidden" position="relative">
+                <InfiniteGrid<GroupItem>
+                    columnCount={ 5 }
+                    itemRender={ item => <InventoryFurnitureItemView groupItem={ item } /> }
+                    items={ filteredGroupItems } />
+            </div>
+            <div className="flex flex-col col-span-5 overflow-hidden">
+                <div className="relative flex flex-col overflow-hidden">
                     <LayoutRoomPreviewerView height={ 140 } roomPreviewer={ roomPreviewer } />
                     { selectedItem && selectedItem.stuffData.isUnique &&
                         <LayoutLimitedEditionCompactPlateView className="top-2 end-2" position="absolute" uniqueNumber={ selectedItem.stuffData.uniqueNumber } uniqueSeries={ selectedItem.stuffData.uniqueSeries } /> }
                     { (selectedItem && selectedItem.stuffData.rarityLevel > -1) &&
                         <LayoutRarityLevelView className="top-2 end-2" level={ selectedItem.stuffData.rarityLevel } position="absolute" /> }
-                </Column>
+                </div>
                 { selectedItem &&
-                    <Column grow gap={ 2 } justifyContent="between">
-                        <Text grow truncate>{ selectedItem.name }</Text>
-                        <div className="flex flex-column gap-1">
+                    <div className="flex flex-col justify-between gap-2 grow">
+                        <span className="truncate grow">{ selectedItem.name }</span>
+                        <div className="flex flex-col gap-1">
                             { !!roomSession &&
                                 <Button variant="success" onClick={ event => attemptItemPlacement(selectedItem) }>
                                     { LocalizeText('inventory.furni.placetoroom') }
@@ -139,8 +141,8 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                                     { LocalizeText('inventory.marketplace.sell') }
                                 </Button> }
                         </div>
-                    </Column> }
-            </Column>
-        </Grid>
+                    </div> }
+            </div>
+        </div>
     );
 }

@@ -226,7 +226,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
             <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title', [ 'name' ], [ petData.name ]) } onCloseClick={ onClose } />
             <NitroCardContentView center>
                 <Flex gap={ 2 } overflow="hidden">
-                    <div className="flex flex-column">
+                    <div className="flex flex-col">
                         <div className="product-preview cursor-pointer" onClick={ selectRoomObject }>
                             { getPetImage }
                         </div>

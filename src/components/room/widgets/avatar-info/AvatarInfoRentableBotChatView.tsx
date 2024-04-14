@@ -39,11 +39,11 @@ export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProp
                     { LocalizeText('bot.skill.chatter.configuration.title') }
                 </ContextMenuHeaderView>
                 <Column className="p-1">
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Text variant="white">{ LocalizeText('bot.skill.chatter.configuration.chat.text') }</Text>
                         <textarea className="form-control form-control-sm" placeholder={ LocalizeText('bot.skill.chatter.configuration.text.placeholder') } rows={ 7 } value={ newText } onChange={ e => setNewText(e.target.value) } />
                     </div>
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Flex alignItems="center" gap={ 1 } justifyContent="between">
                             <Text fullWidth variant="white">{ LocalizeText('bot.skill.chatter.configuration.automatic.chat') }</Text>
                             <input checked={ automaticChat } className="form-check-input" type="checkbox" onChange={ event => setAutomaticChat(event.target.checked) } />

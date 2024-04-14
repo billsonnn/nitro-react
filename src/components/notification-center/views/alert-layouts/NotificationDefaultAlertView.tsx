@@ -29,7 +29,7 @@ export const NotificationDefaultAlertView: FC<NotificationDefaultAlertViewProps>
                 {
                     setImageFailed(true) 
                 } } /> }
-                <div className={ [ 'notification-text overflow-y-auto flex flex-column w-100', (item.clickUrl && !hasFrank) ? 'justify-center' : '' ].join(' ') }>
+                <div className={ [ 'notification-text overflow-y-auto flex flex-col w-100', (item.clickUrl && !hasFrank) ? 'justify-center' : '' ].join(' ') }>
                     { (item.messages.length > 0) && item.messages.map((message, index) =>
                     {
                         const htmlText = message.replace(/\r\n|\r|\n/g, '<br />');

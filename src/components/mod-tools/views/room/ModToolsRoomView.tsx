@@ -87,7 +87,7 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
                             <Text>{ ownerInRoom ? 'Yes' : 'No' }</Text>
                         </div>
                     </Column>
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Button onClick={ event => TryVisitRoom(roomId) }>Visit Room</Button>
                         <Button onClick={ event => CreateLinkEvent(`mod-tools/open-room-chatlog/${ roomId }`) }>Chatlog</Button>
                     </div>

@@ -29,7 +29,7 @@ export const WiredConditionUserCountInRoomView: FC<{}> = props =>
     
     return (
         <WiredConditionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.usercountmin', [ 'value' ], [ min.toString() ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }
@@ -38,7 +38,7 @@ export const WiredConditionUserCountInRoomView: FC<{}> = props =>
                     value={ min }
                     onChange={ event => setMin(event) } />
             </div>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.usercountmax', [ 'value' ], [ max.toString() ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }

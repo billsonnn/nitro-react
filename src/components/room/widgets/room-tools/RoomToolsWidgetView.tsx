@@ -72,18 +72,18 @@ export const RoomToolsWidgetView: FC<{}> = props =>
 
     return (
         <div className="flex gap-2 nitro-room-tools-container">
-            <div className="flex flex-column justify-center items-center nitro-room-tools p-2">
+            <div className="flex flex-col justify-center items-center nitro-room-tools p-2">
                 <div className="icon icon-cog cursor-pointer" title={ LocalizeText('room.settings.button.text') } onClick={ () => handleToolClick('settings') } />
                 <div className={ classNames('cursor-pointer', 'icon', (!isZoomedIn && 'icon-zoom-less'), (isZoomedIn && 'icon-zoom-more')) } title={ LocalizeText('room.zoom.button.text') } onClick={ () => handleToolClick('zoom') } />
                 <div className="icon icon-chat-history cursor-pointer" title={ LocalizeText('room.chathistory.button.text') } onClick={ () => handleToolClick('chat_history') } />
                 { navigatorData.canRate &&
                     <div className="icon icon-like-room cursor-pointer" title={ LocalizeText('room.like.button.text') } onClick={ () => handleToolClick('like_room') } /> }
             </div>
-            <div className="flex flex-column justify-center">
+            <div className="flex flex-col justify-center">
                 <TransitionAnimation inProp={ isOpen } timeout={ 300 } type={ TransitionAnimationTypes.SLIDE_LEFT }>
-                    <div className="flex flex-column justify-center items-center">
-                        <div className="flex flex-column nitro-room-tools-info rounded py-2 px-3">
-                            <div className="flex flex-column gap-1">
+                    <div className="flex flex-col justify-center items-center">
+                        <div className="flex flex-col nitro-room-tools-info rounded py-2 px-3">
+                            <div className="flex flex-col gap-1">
                                 <Text wrap fontSize={ 4 } variant="white">{ roomName }</Text>
                                 <Text fontSize={ 5 } variant="muted">{ roomOwner }</Text>
                             </div>

@@ -77,7 +77,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
         <Column alignItems="end" gap={ 1 }>
             <Column className="nitro-infostand rounded">
                 <Column className="container-fluid content-area" gap={ 1 } overflow="visible">
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Flex alignItems="center" gap={ 1 } justifyContent="between">
                             <Text small wrap variant="white">{ avatarInfo.name }</Text>
                             <FaTimes className="cursor-pointer fa-icon" onClick={ onClose } />
@@ -91,7 +91,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                                 <LayoutPetImageView direction={ 4 } figure={ avatarInfo.petFigure } posture={ avatarInfo.posture } />
                                 <hr className="m-0" />
                             </Column>
-                            <div className="flex flex-column gap-2">
+                            <div className="flex flex-col gap-2">
                                 { !avatarInfo.dead &&
                                     <Column alignItems="center" gap={ 1 }>
                                         <Text center small wrap variant="white">{ LocalizeText('pet.level', [ 'level', 'maxlevel' ], [ avatarInfo.level.toString(), avatarInfo.maximumLevel.toString() ]) }</Text>
@@ -116,14 +116,14 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                                 </Column>
                                 <hr className="m-0" />
                             </div>
-                            <div className="flex flex-column gap-1">
+                            <div className="flex flex-col gap-1">
                                 <Text small wrap variant="white">{ LocalizeText('pet.age', [ 'age' ], [ avatarInfo.age.toString() ]) }</Text>
                                 <hr className="m-0" />
                             </div>
                         </> }
                     { (avatarInfo.petType !== PetType.MONSTERPLANT) &&
                         <>
-                            <div className="flex flex-column gap-1">
+                            <div className="flex flex-col gap-1">
                                 <div className="flex gap-1">
                                     <Column fullWidth className="body-image pet p-1" overflow="hidden">
                                         <LayoutPetImageView direction={ 4 } figure={ avatarInfo.petFigure } posture={ avatarInfo.posture } />
@@ -161,14 +161,14 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                                 </div>
                                 <hr className="m-0" />
                             </div>
-                            <div className="flex flex-column gap-1">
+                            <div className="flex flex-col gap-1">
                                 { (avatarInfo.petType !== PetType.MONSTERPLANT) &&
                                     <Text small wrap variant="white">{ LocalizeText('infostand.text.petrespect', [ 'count' ], [ avatarInfo.respect.toString() ]) }</Text> }
                                 <Text small wrap variant="white">{ LocalizeText('pet.age', [ 'age' ], [ avatarInfo.age.toString() ]) }</Text>
                                 <hr className="m-0" />
                             </div>
                         </> }
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-1">
                             <UserProfileIconView userId={ avatarInfo.ownerId } />
                             <Text small wrap variant="white">

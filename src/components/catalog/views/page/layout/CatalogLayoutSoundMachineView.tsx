@@ -98,7 +98,7 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props =>
                                 { songId > -1 && <Button onClick={ () => previewSong(songId) }>{ LocalizeText('play_preview_button') }</Button>
                                 }
                                 <div className="flex justify-content-between">
-                                    <div className="flex flex-column gap-1">
+                                    <div className="flex flex-col gap-1">
                                         <CatalogSpinnerWidgetView />
                                     </div>
                                     <CatalogTotalPriceWidget alignItems="end" justifyContent="end" />

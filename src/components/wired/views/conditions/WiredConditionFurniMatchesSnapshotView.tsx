@@ -22,7 +22,7 @@ export const WiredConditionFurniMatchesSnapshotView: FC<{}> = props =>
     
     return (
         <WiredConditionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } save={ save }>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.conditions') }</Text>
                 <div className="flex items-center gap-1">
                     <input checked={ !!stateFlag } className="form-check-input" id="stateFlag" type="checkbox" onChange={ event => setStateFlag(event.target.checked ? 1 : 0) } />

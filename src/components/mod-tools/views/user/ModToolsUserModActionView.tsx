@@ -162,7 +162,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                     <option disabled value={ -1 }>Sanction Type</option>
                     { MOD_ACTION_DEFINITIONS.map((action, index) => <option key={ index } value={ index }>{ action.name }</option>) }
                 </select>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Text small>Optional message type, overrides default</Text>
                     <textarea className="form-control" value={ message } onChange={ event => setMessage(event.target.value) }/>
                 </div>

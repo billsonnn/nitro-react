@@ -113,7 +113,7 @@ export const FriendsMessengerView: FC<{}> = props =>
                     <Column overflow="hidden" size={ 4 }>
                         <Text bold>{ LocalizeText('toolbar.icon.label.messenger') }</Text>
                         <Column fit overflow="auto">
-                            <div className="flex flex-column">
+                            <div className="flex flex-col">
                                 { visibleThreads && (visibleThreads.length > 0) && visibleThreads.map(thread =>
                                 {
                                     return (

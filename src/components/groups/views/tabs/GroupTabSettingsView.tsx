@@ -58,14 +58,14 @@ export const GroupTabSettingsView: FC<GroupTabSettingsViewProps> = props =>
     }, [ setCloseAction, saveSettings ]);
     
     return (
-        <div className="flex flex-column overflow-auto">
-            <div className="flex flex-column">
+        <div className="flex flex-col overflow-auto">
+            <div className="flex flex-col">
                 { STATES.map((state, index) =>
                 {
                     return (
                         <Flex key={ index } alignItems="center" gap={ 1 }>
                             <input checked={ (groupState === index) } className="form-check-input" name="groupState" type="radio" onChange={ event => setGroupState(index) } />
-                            <div className="flex flex-column gap-0">
+                            <div className="flex flex-col gap-0">
                                 <div className="flex gap-1">
                                     <i className={ `icon icon-group-type-${ index }` } />
                                     <Text bold>{ LocalizeText(`group.edit.settings.type.${ state }.label`) }</Text>
@@ -79,7 +79,7 @@ export const GroupTabSettingsView: FC<GroupTabSettingsViewProps> = props =>
             <HorizontalRule />
             <div className="flex items-center gap-1">
                 <input checked={ groupDecorate } className="form-check-input" type="checkbox" onChange={ event => setGroupDecorate(prevValue => !prevValue) } />
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Text bold>{ LocalizeText('group.edit.settings.rights.caption') }</Text>
                     <Text>{ LocalizeText('group.edit.settings.rights.members.help') }</Text>
                 </div>

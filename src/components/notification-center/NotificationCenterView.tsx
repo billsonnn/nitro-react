@@ -66,7 +66,7 @@ export const NotificationCenterView: FC<{}> = props =>
 
     return (
         <>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 { getBubbleAlerts }
             </div>
             { getConfirms }

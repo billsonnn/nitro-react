@@ -66,7 +66,7 @@ export const NavigatorDoorStateView: FC<{}> = props =>
         <NitroCardView className="nitro-navigator-doorbell" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText(isDoorbell ? 'navigator.doorbell.title' : 'navigator.password.title') } onCloseClick={ onClose } />
             <NitroCardContentView>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Text bold>{ doorData && doorData.roomInfo && doorData.roomInfo.roomName }</Text>
                     { (doorData.state === DoorStateType.START_DOORBELL) &&
                         <Text>{ LocalizeText('navigator.doorbell.info') }</Text> }
@@ -80,7 +80,7 @@ export const NavigatorDoorStateView: FC<{}> = props =>
                         <Text>{ LocalizeText('navigator.password.retryinfo') }</Text> }
                 </div>
                 { isDoorbell &&
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         { (doorData.state === DoorStateType.START_DOORBELL) &&
                             <Button variant="success" onClick={ ring }>
                                 { LocalizeText('navigator.doorbell.button.ring') }
@@ -91,11 +91,11 @@ export const NavigatorDoorStateView: FC<{}> = props =>
                     </div> }
                 { !isDoorbell &&
                     <>
-                        <div className="flex flex-column gap-1">
+                        <div className="flex flex-col gap-1">
                             <Text>{ LocalizeText('navigator.password.enter') }</Text>
                             <input className="form-control form-control-sm" type="password" onChange={ event => setPassword(event.target.value) } />
                         </div>
-                        <div className="flex flex-column gap-1">
+                        <div className="flex flex-col gap-1">
                             <Button variant="success" onClick={ tryEntering }>
                                 { LocalizeText('navigator.password.button.try') }
                             </Button>

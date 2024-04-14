@@ -71,6 +71,19 @@ body {
         @apply pointer-events-none relative h-[130px] w-[90px] bg-[center_-8px] bg-no-repeat;
     }
 
+    .ubuntu-close-button {
+        @apply inline-block h-[20px] w-[19px] bg-transparent bg-[0px_0px] bg-no-repeat outline-0;
+        background-image: url("@/assets/images/ui/ubuntu-close-buttons.png");
+
+        &:hover {
+            @apply bg-[-38px];
+        }
+
+        &:active {
+            @apply bg-[-19px];
+        }
+    }
+
     .nitro-icon {
         @apply inline-block bg-transparent bg-center bg-no-repeat outline-0;
 

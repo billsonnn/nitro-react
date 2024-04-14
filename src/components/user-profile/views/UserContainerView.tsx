@@ -29,15 +29,15 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
 
     return (
         <div className="flex gap-2">
-            <div className="flex flex-column justify-center items-center avatar-container">
+            <div className="flex flex-col justify-center items-center avatar-container">
                 <LayoutAvatarImageView direction={ 2 } figure={ userProfile.figure } />
             </div>
-            <div className="flex flex-column">
-                <div className="flex flex-column gap-0">
+            <div className="flex flex-col">
+                <div className="flex flex-col gap-0">
                     <Text bold>{ userProfile.username }</Text>
                     <Text italics small textBreak>{ userProfile.motto }&nbsp;</Text>
                 </div>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Text small>
                         <b>{ LocalizeText('extendedprofile.created') }</b> { userProfile.registration }
                     </Text>

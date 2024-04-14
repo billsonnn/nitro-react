@@ -44,7 +44,7 @@ export const SearchFormView: FC<SearchFormViewProps> = props =>
     }, [ onSearch, searchType, sortTypes ]);
 
     return (
-        <div className="flex flex-column gap-1">
+        <div className="flex flex-col gap-1">
             <div className="flex items-center gap-1">
                 <Text className="col-3">{ LocalizeText('catalog.marketplace.sort_order') }</Text>
                 <select className="form-select form-select-sm" value={ sortType } onChange={ event => onSortTypeChange(parseInt(event.target.value)) }>

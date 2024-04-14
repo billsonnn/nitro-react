@@ -18,7 +18,7 @@ export const WiredTriggerBotReachedStuffView: FC<{}> = props =>
     
     return (
         <WiredTriggerBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_OR_BY_TYPE } save={ save }>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.bot.name') }</Text>
                 <input className="form-control form-control-sm" maxLength={ 32 } type="text" value={ botName } onChange={ event => setBotName(event.target.value) } />
             </div>

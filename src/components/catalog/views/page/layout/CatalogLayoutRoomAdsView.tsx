@@ -82,22 +82,22 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
                         { categories && categories.map((cat, index) => <option key={ index } value={ cat.id }>{ LocalizeText(cat.name) }</option>) }
                     </select>
                 </Column>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Text bold>{ LocalizeText('roomad.catalog_name') }</Text>
                     <input className="form-control form-control-sm" maxLength={ 64 } readOnly={ extended } type="text" value={ eventName } onChange={ event => setEventName(event.target.value) } />
                 </div>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Text bold>{ LocalizeText('roomad.catalog_description') }</Text>
                     <textarea className="form-control form-control-sm" maxLength={ 64 } readOnly={ extended } value={ eventDesc } onChange={ event => setEventDesc(event.target.value) } />
                 </div>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Text bold>{ LocalizeText('roomad.catalog_roomname') }</Text>
                     <select className="form-select form-select-sm" disabled={ extended } value={ roomId } onChange={ event => setRoomId(parseInt(event.target.value)) }>
                         <option disabled value={ -1 }>{ LocalizeText('roomad.catalog_roomname') }</option>
                         { availableRooms && availableRooms.map((room, index) => <option key={ index } value={ room.roomId }>{ room.roomName }</option>) }
                     </select>
                 </div>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Button disabled={ (!eventName || !eventDesc || roomId === -1) } variant={ (!eventName || !eventDesc || roomId === -1) ? 'danger' : 'success' } onClick={ purchaseAd }>{ extended ? LocalizeText('roomad.extend.event') : LocalizeText('buy') }</Button>
                 </div>
             </div>

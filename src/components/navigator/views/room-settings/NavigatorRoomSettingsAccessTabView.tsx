@@ -32,12 +32,12 @@ export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabView
 
     return (
         <>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('navigator.roomsettings.roomaccess.caption') }</Text>
                 <Text>{ LocalizeText('navigator.roomsettings.roomaccess.info') }</Text>
             </div>
             <div className="overflow-auto">
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Text bold>{ LocalizeText('navigator.roomsettings.doormode') }</Text>
                     <div className="flex items-center gap-1">
                         <input checked={ (roomData.lockState === RoomDataParser.OPEN_STATE) && !isTryingPassword } className="form-check-input" name="lockState" type="radio" onChange={ event => handleChange('lock_state', RoomDataParser.OPEN_STATE) } />
@@ -56,7 +56,7 @@ export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabView
                         { !isTryingPassword && (roomData.lockState !== RoomDataParser.PASSWORD_STATE) &&
                             <Text>{ LocalizeText('navigator.roomsettings.doormode.password') }</Text> }
                         { (isTryingPassword || (roomData.lockState === RoomDataParser.PASSWORD_STATE)) &&
-                            <div className="flex flex-column gap-1">
+                            <div className="flex flex-col gap-1">
                                 <Text>{ LocalizeText('navigator.roomsettings.doormode.password') }</Text>
                                 <input className="form-control form-control-sm col-4" placeholder={ LocalizeText('navigator.roomsettings.password') } type="password" value={ password } onChange={ event => setPassword(event.target.value) } onFocus={ event => setIsTryingPassword(true) } />
                                 { isTryingPassword && (password.length <= 0) &&
@@ -71,7 +71,7 @@ export const NavigatorRoomSettingsAccessTabView: FC<NavigatorRoomSettingsTabView
                             </div> }
                     </div>
                 </div>
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <Text bold>{ LocalizeText('navigator.roomsettings.pets') }</Text>
                     <div className="flex items-center gap-1">
                         <input checked={ roomData.allowPets } className="form-check-input" type="checkbox" onChange={ event => handleChange('allow_pets', event.target.checked) } />

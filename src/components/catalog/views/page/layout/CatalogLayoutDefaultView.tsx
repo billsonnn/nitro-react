@@ -46,7 +46,7 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
                                 <CatalogLimitedItemWidgetView />
                                 <Text grow truncate>{ currentOffer.localizationName }</Text>
                                 <div className="flex justify-content-between">
-                                    <div className="flex flex-column gap-1">
+                                    <div className="flex flex-col gap-1">
                                         <CatalogSpinnerWidgetView />
                                     </div>
                                     <CatalogTotalPriceWidget alignItems="end" justifyContent="end" />

@@ -23,7 +23,7 @@ export const GuideToolUserCreateRequestView: FC<GuideToolUserCreateRequestViewPr
     }
 
     return (
-        <div className="flex flex-column">
+        <div className="flex flex-col">
             <Text>{ LocalizeText('guide.help.request.user.create.help') }</Text>
             <textarea className="request-message" maxLength={ 140 } placeholder={ LocalizeText('guide.help.request.user.create.input.help') } value={ userRequest } onChange={ event => setUserRequest(event.target.value) }></textarea>
             <Button fullWidth disabled={ (userRequest.length < MIN_REQUEST_LENGTH) || isPending } variant="success" onClick={ sendRequest }>{ LocalizeText('guide.help.request.user.create.input.button') }</Button>

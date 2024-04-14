@@ -27,7 +27,7 @@ export const AvatarEditorFigurePreviewView: FC<{}> = props =>
     }
 
     return (
-        <div className="flex flex-column figure-preview-container overflow-hidden position-relative">
+        <div className="flex flex-col figure-preview-container overflow-hidden position-relative">
             <LayoutAvatarImageView direction={ direction } figure={ getFigureString } scale={ 2 } />
             <AvatarEditorIcon className="avatar-spotlight" icon="spotlight" />
             <div className="avatar-shadow" />

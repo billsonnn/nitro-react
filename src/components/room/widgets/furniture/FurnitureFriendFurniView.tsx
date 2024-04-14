@@ -46,8 +46,8 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                             <LayoutAvatarImageView direction={ 4 } figure={ figures[1] } />
                         </div>
                     </div>
-                    <div className="flex flex-column mt-1 justify-content-between">
-                        <div className="flex flex-column items-center gap-1 justify-center">
+                    <div className="flex flex-col mt-1 justify-content-between">
+                        <div className="flex flex-col items-center gap-1 justify-center">
                             <div>
                                 { (type === 0) && LocalizeText('lovelock.engraving.caption') }
                                 { (type === 3) && LocalizeText('wildwest.engraving.caption') }

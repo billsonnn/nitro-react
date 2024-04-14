@@ -16,13 +16,13 @@ export const GuideToolUserPendingView: FC<GuideToolUserPendingViewProps> = props
     const cancelRequest = () => SendMessageComposer(new GuideSessionRequesterCancelsMessageComposer());
 
     return (
-        <div className="flex flex-column">
+        <div className="flex flex-col">
             <Column className="bg-muted rounded p-2" gap={ 0 }>
                 <Text bold>{ LocalizeText('guide.help.request.guide.accept.request.title') }</Text>
                 <Text variant="muted">{ LocalizeText('guide.help.request.type.1') }</Text>
                 <Text textBreak wrap>{ helpRequestDescription }</Text>
             </Column>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('guide.help.request.user.pending.info.title') }</Text>
                 <Text>{ LocalizeText('guide.help.request.user.pending.info.message') }</Text>
                 <Text>{ LocalizeText('guide.help.request.user.pending.info.waiting', [ 'waitingtime' ], [ helpRequestAverageTime.toString() ]) }</Text>

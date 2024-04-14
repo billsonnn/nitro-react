@@ -22,7 +22,7 @@ export const RoomPromotesWidgetView: FC<{}> = props =>
         <>
             { promoteInformation.data.adId !== -1 &&
                 <div className="nitro-notification-bubble rounded">
-                    <div className="flex flex-column">
+                    <div className="flex flex-col">
                         <Flex pointer alignItems="center" justifyContent="between" onClick={ event => setIsOpen(value => !value) }>
                             <Text overflow="hidden" variant="white">{ promoteInformation.data.eventName }</Text>
                             { isOpen && <FaChevronUp className="fa-icon" /> }

@@ -132,7 +132,7 @@ export const HcCenterView: FC<{}> = props =>
         <NitroCardView className="nitro-hc-center" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('generic.hccenter') } onCloseClick={ () => setIsVisible(false) } />
             <Flex className="bg-muted p-2" position="relative">
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <div className="hc-logo" />
                     <Flex>
                         <Button variant="success" onClick={ event => CreateLinkEvent('catalog/open/' + GetConfigurationValue('catalog.links')['hc.buy_hc']) }>
@@ -169,7 +169,7 @@ export const HcCenterView: FC<{}> = props =>
                             { clubStatus === ClubStatus.ACTIVE &&
                                 <div className="pe-3">
                                     <h5 className="ms-2 mb-1 bolder">{ LocalizeText('hccenter.special.amount.title') }</h5>
-                                    <div className="flex flex-column">
+                                    <div className="flex flex-col">
                                         <div className="w-100 text-center ms-4n">{ getHcPaydayAmount() }</div>
                                         <OverlayTrigger overlay={ popover } placement="left" trigger={ [ 'hover', 'focus' ] }>
                                             <div className="btn btn-link align-self-end text-primary">

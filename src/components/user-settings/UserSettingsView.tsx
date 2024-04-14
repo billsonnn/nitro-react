@@ -129,7 +129,7 @@ export const UserSettingsView: FC<{}> = props =>
         <NitroCardView className="user-settings-window" theme="primary-slim" uniqueKey="user-settings">
             <NitroCardHeaderView headerText={ LocalizeText('widget.memenu.settings.title') } onCloseClick={ event => processAction('close_view') } />
             <NitroCardContentView className="text-black">
-                <div className="flex flex-column gap-1">
+                <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-1">
                         <input checked={ userSettings.oldChat } className="form-check-input" type="checkbox" onChange={ event => processAction('oldchat', event.target.checked) } />
                         <Text>{ LocalizeText('memenu.settings.chat.prefer.old.chat') }</Text>
@@ -151,9 +151,9 @@ export const UserSettingsView: FC<{}> = props =>
                         <Text>{ LocalizeText('memenu.settings.other.skip.purchase.confirmation') }</Text>
                     </div>
                 </div>
-                <div className="flex flex-column">
+                <div className="flex flex-col">
                     <Text bold>{ LocalizeText('widget.memenu.settings.volume') }</Text>
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Text>{ LocalizeText('widget.memenu.settings.volume.ui') }</Text>
                         <div className="flex items-center gap-1">
                             { (userSettings.volumeSystem === 0) && <FaVolumeMute className={ classNames((userSettings.volumeSystem >= 50) && 'text-muted', 'fa-icon') } /> }
@@ -162,7 +162,7 @@ export const UserSettingsView: FC<{}> = props =>
                             <FaVolumeUp className={ classNames((userSettings.volumeSystem < 50) && 'text-muted', 'fa-icon') } />
                         </div>
                     </div>
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Text>{ LocalizeText('widget.memenu.settings.volume.furni') }</Text>
                         <div className="flex items-center gap-1">
                             { (userSettings.volumeFurni === 0) && <FaVolumeMute className={ classNames((userSettings.volumeFurni >= 50) && 'text-muted', 'fa-icon') } /> }
@@ -171,7 +171,7 @@ export const UserSettingsView: FC<{}> = props =>
                             <FaVolumeUp className={ classNames((userSettings.volumeFurni < 50) && 'text-muted', 'fa-icon') } />
                         </div>
                     </div>
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Text>{ LocalizeText('widget.memenu.settings.volume.trax') }</Text>
                         <div className="flex items-center gap-1">
                             { (userSettings.volumeTrax === 0) && <FaVolumeMute className={ classNames((userSettings.volumeTrax >= 50) && 'text-muted', 'fa-icon') } /> }

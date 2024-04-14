@@ -1,9 +1,8 @@
-import { NitroCard, NitroCardTabs } from '@layout/NitroCard';
+import { NitroCard } from '@layout/NitroCard';
 import { AddLinkEventTracker, ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorInitComposer, NavigatorSearchComposer, RemoveLinkEventTracker, RoomSessionEvent } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { LocalizeText, SendMessageComposer, TryVisitRoom } from '../../api';
-import { Column, NitroCardTabsItemView } from '../../common';
 import { useNavigator, useNitroEvent } from '../../hooks';
 import { NavigatorDoorStateView } from './views/NavigatorDoorStateView';
 import { NavigatorRoomCreatorView } from './views/NavigatorRoomCreatorView';
@@ -197,38 +196,41 @@ export const NavigatorView: FC<{}> = props =>
     return (
         <>
             { isVisible &&
-                <NitroCard.Main
-                    className="w-navigator h-navigator"
+                <NitroCard
+                    className="w-navigator-w h-navigator-h min-w-navigator-w min-h-navigator-h"
                     uniqueKey="navigator">
                     <NitroCard.Header
                         headerText={ LocalizeText(isCreatorOpen ? 'navigator.createroom.title' : 'navigator.title') }
                         onCloseClick={ event => setIsVisible(false) } />
-                    <NitroCardTabs.Main>
+                    <NitroCard.Tabs>
                         { topLevelContexts && (topLevelContexts.length > 0) && topLevelContexts.map((context, index) =>
                         {
                             return (
-                                <NitroCardTabs.Item key={ index } isActive={ ((topLevelContext === context) && !isCreatorOpen) } onClick={ event => sendSearch('', context.code) }>
+                                <NitroCard.TabItem
+                                    key={ index }
+                                    isActive={ ((topLevelContext === context) && !isCreatorOpen) }
+                                    onClick={ event => sendSearch('', context.code) }>
                                     { LocalizeText(('navigator.toplevelview.' + context.code)) }
-                                </NitroCardTabs.Item>
+                                </NitroCard.TabItem>
                             );
                         }) }
-                        <NitroCardTabsItemView isActive={ isCreatorOpen } onClick={ event => setCreatorOpen(true) }>
+                        <NitroCard.TabItem
+                            isActive={ isCreatorOpen }
+                            onClick={ event => setCreatorOpen(true) }>
                             <FaPlus className="fa-icon" />
-                        </NitroCardTabsItemView>
-                    </NitroCardTabs.Main>
-                    <NitroCard.Content>
-                        { isLoading &&
-                            <div className="top-0 position-absolute size-full start-0 z-index-1 bg-muted opacity-0-5" /> }
+                        </NitroCard.TabItem>
+                    </NitroCard.Tabs>
+                    <NitroCard.Content isLoading={ isLoading }>
                         { !isCreatorOpen &&
                             <>
                                 <NavigatorSearchView sendSearch={ sendSearch } />
-                                <Column innerRef={ elementRef } overflow="auto">
+                                <div ref={ elementRef } className="flex flex-col overflow-auto">
                                     { (searchResult && searchResult.results.map((result, index) => <NavigatorSearchResultView key={ index } searchResult={ result } />)) }
-                                </Column>
+                                </div>
                             </> }
                         { isCreatorOpen && <NavigatorRoomCreatorView /> }
                     </NitroCard.Content>
-                </NitroCard.Main> }
+                </NitroCard> }
             <NavigatorDoorStateView />
             { isRoomInfoOpen && <NavigatorRoomInfoView onCloseClick={ () => setRoomInfoOpen(false) } /> }
             { isRoomLinkOpen && <NavigatorRoomLinkView onCloseClick={ () => setRoomLinkOpen(false) } /> }

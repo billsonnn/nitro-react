@@ -30,7 +30,7 @@ export const SelectTopicView: FC<{}> = props =>
 
     return (
         <>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text fontSize={ 4 }>{ LocalizeText('help.emergency.chat_report.subtitle') }</Text>
                 <Text>{ LocalizeText('help.cfh.pick.topic') }</Text>
             </div>

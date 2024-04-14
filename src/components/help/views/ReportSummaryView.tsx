@@ -45,7 +45,7 @@ export const ReportSummaryView: FC<{}> = props =>
 
     return (
         <>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text fontSize={ 4 }>{ LocalizeText('help.cfh.button.send') }</Text>
                 <Text>{ LocalizeText('help.main.summary') }</Text>
             </div>

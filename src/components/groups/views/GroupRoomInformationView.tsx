@@ -106,7 +106,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
 
     return (
         <div className="nitro-notification-bubble rounded">
-            <div className="flex flex-column">
+            <div className="flex flex-col">
                 <Flex pointer alignItems="center" justifyContent="between" onClick={ event => setIsOpen(value => !value) }>
                     <Text variant="white">{ LocalizeText('group.homeroominfo.title') }</Text>
                     { isOpen && <FaChevronUp className="fa-icon" /> }

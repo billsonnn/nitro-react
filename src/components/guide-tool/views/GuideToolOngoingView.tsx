@@ -112,7 +112,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                     <div ref={ scrollDiv } />
                 </Column>
             </Column>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <div className="flex gap-1">
                     <input className="form-control form-control-sm" placeholder={ LocalizeText('guide.help.request.guide.ongoing.input.empty', [ 'name' ], [ userName ]) } type="text" value={ messageText } onChange={ event => setMessageText(event.target.value) } onKeyDown={ onKeyDown } />
                     <Button variant="success" onClick={ sendMessage }>

@@ -31,7 +31,7 @@ export const CatalogLayoutSingleBundleView: FC<CatalogLayoutProps> = props =>
                         <CatalogAddOnBadgeWidgetView className="bg-muted rounded bottom-0 start-0" position="absolute" />
                         <CatalogSimplePriceWidgetView />
                     </Column>
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <CatalogPurchaseWidgetView />
                     </div>
                 </Column>

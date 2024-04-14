@@ -85,7 +85,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewPr
                             <div className="empty-video size-full justify-center items-center flex">{ LocalizeText('widget.furni.video_viewer.no_videos') }</div>
                         }
                     </div>
-                    <div className="playlist-container col-3 flex flex-column">
+                    <div className="playlist-container col-3 flex flex-col">
                         <span className="playlist-controls justify-center flex">
                             <i className="icon icon-youtube-prev cursor-pointer" onClick={ previous } />
                             <i className="icon icon-youtube-next cursor-pointer" onClick={ next } />

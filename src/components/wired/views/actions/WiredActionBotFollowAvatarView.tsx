@@ -24,11 +24,11 @@ export const WiredActionBotFollowAvatarView: FC<{}> = props =>
 
     return (
         <WiredActionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.bot.name') }</Text>
                 <input className="form-control form-control-sm" maxLength={ 32 } type="text" value={ botName } onChange={ event => setBotName(event.target.value) } />
             </div>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-1">
                     <input checked={ (followMode === 1) } className="form-check-input" id="followMode1" name="followMode" type="radio" onChange={ event => setFollowMode(1) } />
                     <Text>{ LocalizeText('wiredfurni.params.start.following') }</Text>

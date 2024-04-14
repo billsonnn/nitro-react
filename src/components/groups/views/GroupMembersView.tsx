@@ -175,7 +175,7 @@ export const GroupMembersView: FC<{}> = props =>
                                     { (member.rank !== GroupRank.REQUESTED) &&
                                     <Text italics small variant="muted">{ LocalizeText('group.members.since', [ 'date' ], [ member.joinedAt ]) }</Text> }
                                 </Column>
-                                <div className="flex flex-column gap-1">
+                                <div className="flex flex-col gap-1">
                                     { (member.rank !== GroupRank.REQUESTED) &&
                                     <div className="flex items-center justify-center">
                                         <div className={ classNames(`icon icon-group-small-${ ((member.rank === GroupRank.OWNER) ? 'owner' : (member.rank === GroupRank.ADMIN) ? 'admin' : (membersData.admin && (member.rank === GroupRank.MEMBER)) ? 'not-admin' : '') }`, membersData.admin && 'cursor-pointer') } title={ LocalizeText(getRankDescription(member)) } onClick={ event => toggleAdmin(member) } />

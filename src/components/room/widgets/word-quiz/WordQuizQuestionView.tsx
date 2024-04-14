@@ -28,7 +28,7 @@ export const WordQuizQuestionView: FC<WordQuizQuestionViewProps> = props =>
                     </div>
                 </div> }
             { canVote &&
-                <div className="flex flex-column">
+                <div className="flex flex-col">
                     <Text center textBreak variant="white">{ question }</Text>
                     <div className="flex w-100 gap-1 justify-center">
                         <Flex center pointer className="bg-danger rounded p-1" onClick={ event => vote(VALUE_KEY_DISLIKE) }>

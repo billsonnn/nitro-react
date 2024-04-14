@@ -63,7 +63,7 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
                         <Text>{ LocalizeText('catalog.marketplace.offer_count', [ 'count' ], [ offerData.offerCount.toString() ]) }</Text>
                     </> }
             </Column>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 { ((type === OWN_OFFER) && (offerData.status !== MarketPlaceOfferState.SOLD)) &&
                     <Button variant="secondary" onClick={ () => onClick(offerData) }>
                         { LocalizeText('catalog.marketplace.offer.pick') }

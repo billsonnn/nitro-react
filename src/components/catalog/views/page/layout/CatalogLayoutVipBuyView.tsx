@@ -170,7 +170,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
                                 <Text fontWeight="bold">{ getPurchaseHeader() }</Text>
                                 <Text>{ getPurchaseValidUntil() }</Text>
                             </Column>
-                            <div className="flex flex-column gap-1">
+                            <div className="flex flex-col gap-1">
                                 { (pendingOffer.priceCredits > 0) &&
                                     <Flex alignItems="center" gap={ 1 } justifyContent="end">
                                         <Text>{ pendingOffer.priceCredits }</Text>

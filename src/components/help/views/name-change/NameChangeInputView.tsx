@@ -72,7 +72,7 @@ export const NameChangeInputView:FC<NameChangeLayoutViewProps> = props =>
     });
 
     return (
-        <div className="flex flex-column gap-3 h-100">
+        <div className="flex flex-col gap-3 h-100">
             <div>{ LocalizeText('tutorial.name_change.info.select') }</div>
             <div className="flex gap-2">
                 <input className="form-control form-control-sm" type="text" value={ newUsername } onChange={ event => handleUsernameChange(event.target.value) } />
@@ -85,7 +85,7 @@ export const NameChangeInputView:FC<NameChangeLayoutViewProps> = props =>
             { canProceed &&
                 <div className="bg-success rounded p-2 text-center text-white">{ LocalizeText('help.tutorial.name.available', [ 'name' ], [ newUsername ]) }</div> }
             { suggestions &&
-                <div className="flex flex-column gap-2">
+                <div className="flex flex-col gap-2">
                     { suggestions.map((suggestion, index) => <div key={ index } className="col bg-muted rounded p-1 cursor-pointer" onClick={ () => handleUsernameChange(suggestion) }>{ suggestion }</div>) }
                 </div> }
             <div className="flex gap-2">

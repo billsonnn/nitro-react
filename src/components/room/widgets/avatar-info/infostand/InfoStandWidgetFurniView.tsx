@@ -330,14 +330,14 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
         <Column alignItems="end" gap={ 1 }>
             <Column className="nitro-infostand rounded">
                 <Column className="container-fluid content-area" gap={ 1 } overflow="visible">
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Flex alignItems="center" gap={ 1 } justifyContent="between">
                             <Text small wrap variant="white">{ avatarInfo.name }</Text>
                             <FaTimes className="cursor-pointer fa-icon" onClick={ onClose } />
                         </Flex>
                         <hr className="m-0" />
                     </div>
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Flex gap={ 1 } position="relative">
                             { avatarInfo.stuffData.isUnique &&
                                 <div className="position-absolute end-0">
@@ -353,11 +353,11 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                         </Flex>
                         <hr className="m-0" />
                     </div>
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <Text fullWidth small textBreak wrap variant="white">{ avatarInfo.description }</Text>
                         <hr className="m-0" />
                     </div>
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-1">
                             <UserProfileIconView userId={ avatarInfo.ownerId } />
                             <Text small wrap variant="white">
@@ -372,7 +372,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                             </Flex> }
                     </div>
                     { (isJukeBox || isSongDisk) &&
-                        <div className="flex flex-column gap-1">
+                        <div className="flex flex-col gap-1">
                             <hr className="m-0" />
                             { (songId === -1) &&
                                 <Text small wrap variant="white">
@@ -393,7 +393,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                                     </Text>
                                 </div> }
                         </div> }
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         { isCrackable &&
                             <>
                                 <hr className="m-0" />
@@ -414,7 +414,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                                 { (furniKeys.length > 0) &&
                                     <>
                                         <hr className="m-0"/>
-                                        <div className="flex flex-column gap-1">
+                                        <div className="flex flex-col gap-1">
                                             { furniKeys.map((key, index) =>
                                             {
                                                 return (
@@ -429,7 +429,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                         { (customKeys.length > 0) &&
                             <>
                                 <hr className="m-0 my-1"/>
-                                <div className="flex flex-column gap-1">
+                                <div className="flex flex-col gap-1">
                                     { customKeys.map((key, index) =>
                                     {
                                         return (

@@ -114,9 +114,9 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                 </Column>
                 { getRoleIcon() }
             </Column>
-            <div className="flex flex-column justify-content-between overflow-auto col-9">
-                <div className="flex flex-column overflow-hidden">
-                    <div className="flex flex-column gap-1">
+            <div className="flex flex-col justify-content-between overflow-auto col-9">
+                <div className="flex flex-col overflow-hidden">
+                    <div className="flex flex-col gap-1">
                         <div className="items-center gap-2">
                             <Text bold>{ groupInformation.title }</Text>
                             <div className="flex gap-1">
@@ -129,8 +129,8 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                     </div>
                     <Text small className="group-description" overflow="auto">{ groupInformation.description }</Text>
                 </div>
-                <div className="flex flex-column">
-                    <div className="flex flex-column gap-1">
+                <div className="flex flex-col">
+                    <div className="flex flex-col gap-1">
                         <Text pointer small underline onClick={ () => handleAction('homeroom') }>{ LocalizeText('group.linktobase') }</Text>
                         <Text pointer small underline onClick={ () => handleAction('furniture') }>{ LocalizeText('group.buyfurni') }</Text>
                         <Text pointer small underline onClick={ () => handleAction('popular_groups') }>{ LocalizeText('group.showgroups') }</Text>

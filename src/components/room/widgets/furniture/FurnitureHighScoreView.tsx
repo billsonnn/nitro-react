@@ -24,7 +24,7 @@ export const FurnitureHighScoreView: FC<{}> = props =>
                                 { LocalizeText('high.score.display.caption', [ 'scoretype', 'cleartype' ], [ LocalizeText(`high.score.display.scoretype.${ getScoreType(stuffData.scoreType) }`), LocalizeText(`high.score.display.cleartype.${ getClearType(stuffData.clearType) }`) ]) }
                             </ContextMenuHeaderView>
                             <ContextMenuListView className="h-100" gap={ 1 } overflow="hidden">
-                                <div className="flex flex-column gap-1">
+                                <div className="flex flex-col gap-1">
                                     <div className="flex items-center">
                                         <Text bold center className="col-8" variant="white">
                                             { LocalizeText('high.score.display.users.header') }

@@ -33,7 +33,7 @@ export const FurnitureMysteryTrophyOpenDialogView: FC<FurnitureMysteryTrophyOpen
                     </div>
                 </div>
                 <div className="flex mysterytrophy-dialog-bottom p-2">
-                    <div className="flex flex-column gap-1">
+                    <div className="flex flex-col gap-1">
                         <div className="flex items-center bg-white rounded py-1 px-2 input-mysterytrophy-dialog">
                             <textarea className="form-control form-control-sm input-mysterytrophy" value={ description } onChange={ event => setDescription(event.target.value) } />
                             <div className="mysterytrophy-pencil-image flex-shrink-0 small fa-icon"></div>

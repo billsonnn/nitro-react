@@ -25,7 +25,7 @@ export const WiredActionMuteUserView: FC<{}> = props =>
 
     return (
         <WiredActionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.length.minutes', [ 'minutes' ], [ time.toString() ]) }</Text>
                 <ReactSlider
                     className={ 'nitro-slider' }
@@ -34,7 +34,7 @@ export const WiredActionMuteUserView: FC<{}> = props =>
                     value={ time }
                     onChange={ event => setTime(event) } />
             </div>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>{ LocalizeText('wiredfurni.params.message') }</Text>
                 <input className="form-control form-control-sm" maxLength={ GetConfigurationValue<number>('wired.action.mute.user.max.length', 100) } type="text" value={ message } onChange={ event => setMessage(event.target.value) } />
             </div>

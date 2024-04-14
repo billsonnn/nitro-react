@@ -109,7 +109,7 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
                     value={ rewardsLimit }
                     onChange={ event => setRewardsLimit(event) } /> }
             <hr className="m-0 bg-dark" />
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 <Text bold>How often can a user be rewarded?</Text>
                 <div className="flex gap-1">
                     <select className="form-select form-select-sm w-100" value={ rewardTime } onChange={ (e) => setRewardTime(Number(e.target.value)) }>
@@ -136,7 +136,7 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
                     <FaPlus className="fa-icon" />
                 </Button>
             </div>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-col gap-1">
                 { rewards && rewards.map((reward, index) =>
                 {
                     return (
