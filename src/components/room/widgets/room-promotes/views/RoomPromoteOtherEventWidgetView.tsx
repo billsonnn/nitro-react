@@ -18,8 +18,8 @@ export const RoomPromoteOtherEventWidgetView: FC<RoomPromoteOtherEventWidgetView
             </Flex>
             <br /><br />
             <Column alignItems="center" gap={ 1 }>
-                <div className="bg-light-dark rounded position-relative overflow-hidden w-100">
-                    <div className="flex justify-center items-center size-full position-absolute">
+                <div className="bg-light-dark rounded relative overflow-hidden w-100">
+                    <div className="flex justify-center items-center size-full absolute">
                         <Text center variant="white">{ LocalizeText('navigator.eventinprogress') }</Text>
                     </div>
                     <Text>&nbsp;</Text>

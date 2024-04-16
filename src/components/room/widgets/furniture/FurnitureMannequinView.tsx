@@ -86,10 +86,10 @@ export const FurnitureMannequinView: FC<{}> = props =>
             <NitroCardContentView center>
                 <div className="flex w-100 gap-2 overflow-hidden">
                     <div className="flex flex-col">
-                        <div className="position-relative mannequin-preview">
+                        <div className="relative mannequin-preview">
                             <LayoutAvatarImageView direction={ 2 } figure={ renderedFigure } position="absolute" />
                             { (clubLevel > 0) &&
-                                <LayoutCurrencyIcon className="position-absolute end-2 bottom-2" type="hc" /> }
+                                <LayoutCurrencyIcon className="absolute end-2 bottom-2" type="hc" /> }
                         </div>
                     </div>
                     <Column grow justifyContent="between" overflow="auto">

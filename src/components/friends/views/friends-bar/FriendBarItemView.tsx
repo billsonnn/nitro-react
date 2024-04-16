@@ -34,7 +34,7 @@ export const FriendBarItemView: FC<{ friend: MessengerFriend }> = props =>
     {
         return (
             <div ref={ elementRef } className="btn btn-primary friend-bar-item friend-bar-search">
-                <div className="friend-bar-item-head position-absolute"/>
+                <div className="friend-bar-item-head absolute"/>
                 <div className="text-truncate">{ LocalizeText('friend.bar.find.title') }</div>
             </div>
         );
@@ -42,7 +42,7 @@ export const FriendBarItemView: FC<{ friend: MessengerFriend }> = props =>
 
     return (
         <div ref={ elementRef } className={ 'btn btn-success friend-bar-item ' + (isVisible ? 'friend-bar-item-active' : '') } onClick={ event => setVisible(prevValue => !prevValue) }>
-            <div className={ `friend-bar-item-head position-absolute ${ friend.id > 0 ? 'avatar': 'group' }` }>
+            <div className={ `friend-bar-item-head absolute ${ friend.id > 0 ? 'avatar': 'group' }` }>
                 { (friend.id > 0) && <LayoutAvatarImageView direction={ 2 } figure={ friend.figure } headOnly={ true } /> }
                 { (friend.id <= 0) && <LayoutBadgeImageView badgeCode={ friend.figure } isGroup={ true } /> } 
             </div>

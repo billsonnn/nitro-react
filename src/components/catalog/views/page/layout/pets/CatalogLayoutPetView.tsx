@@ -216,7 +216,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
                     </> }
                 { currentOffer &&
                     <>
-                        <div className="position-relative overflow-hidden">
+                        <div className="relative overflow-hidden">
                             <CatalogViewProductWidgetView />
                             <CatalogAddOnBadgeWidgetView className="bg-muted rounded bottom-1 end-1" position="absolute" />
                             { ((petIndex > -1) && (petIndex <= 7)) &&

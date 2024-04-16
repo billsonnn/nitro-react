@@ -2,8 +2,9 @@ import { AddLinkEventTracker, ILinkEventTracker, NitroSettingsEvent, RemoveLinkE
 import { FC, useEffect, useState } from 'react';
 import { FaVolumeDown, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 import { DispatchMainEvent, DispatchUiEvent, LocalizeText, SendMessageComposer } from '../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, classNames } from '../../common';
+import { NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { useCatalogPlaceMultipleItems, useCatalogSkipPurchaseConfirmation, useMessageEvent } from '../../hooks';
+import { classNames } from '../../layout';
 
 export const UserSettingsView: FC<{}> = props =>
 {

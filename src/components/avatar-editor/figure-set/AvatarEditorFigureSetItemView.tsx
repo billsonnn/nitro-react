@@ -1,8 +1,9 @@
 import { AvatarFigurePartType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { AvatarEditorThumbnailsHelper, GetConfigurationValue, IAvatarEditorCategoryPartItem } from '../../../api';
-import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../common';
+import { LayoutCurrencyIcon, LayoutGridItemProps } from '../../../common';
 import { useAvatarEditor } from '../../../hooks';
+import { InfiniteGrid } from '../../../layout';
 import { AvatarEditorIcon } from '../AvatarEditorIcon';
 
 export const AvatarEditorFigureSetItemView: FC<{
@@ -46,10 +47,10 @@ export const AvatarEditorFigureSetItemView: FC<{
     if(!partItem) return null;
 
     return (
-        <LayoutGridItem itemActive={ isSelected } itemImage={ (partItem.isClear ? undefined : assetUrl) } style={ { flex: '1', backgroundPosition: (setType === AvatarFigurePartType.HEAD) ? 'center -35px' : 'center' } } { ...rest }>
-            { !partItem.isClear && isHC && <LayoutCurrencyIcon className="position-absolute end-1 bottom-1" type="hc" /> }
+        <InfiniteGrid.Item itemActive={ isSelected } itemImage={ (partItem.isClear ? undefined : assetUrl) } style={ { flex: '1', backgroundPosition: (setType === AvatarFigurePartType.HEAD) ? 'center -35px' : 'center' } } { ...rest }>
+            { !partItem.isClear && isHC && <LayoutCurrencyIcon className="absolute end-1 bottom-1" type="hc" /> }
             { partItem.isClear && <AvatarEditorIcon icon="clear" /> }
-            { !partItem.isClear && partItem.partSet.isSellable && <AvatarEditorIcon className="end-1 bottom-1 position-absolute" icon="sellable" /> }
-        </LayoutGridItem>
+            { !partItem.isClear && partItem.partSet.isSellable && <AvatarEditorIcon className="end-1 bottom-1 absolute" icon="sellable" /> }
+        </InfiniteGrid.Item>
     );
 }

@@ -57,5 +57,5 @@ export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
         }
     }, [ objectId, category, noFollow ]);
 
-    return <div ref={ elementRef } className="object-location position-absolute" style={ { left: pos.x, top: pos.y, visibility: ((pos.x + (elementRef.current ? elementRef.current.offsetWidth : 0)) > -1) ? 'visible' : 'hidden' } } { ...rest } />;
+    return <div ref={ elementRef } className="object-location absolute" style={ { left: pos.x, top: pos.y, visibility: ((pos.x + (elementRef.current ? elementRef.current.offsetWidth : 0)) > -1) ? 'visible' : 'hidden' } } { ...rest } />;
 }

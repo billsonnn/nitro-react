@@ -1,7 +1,8 @@
 import { GetSessionDataManager } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { LocalizeText, RoomObjectItem } from '../../../../api';
-import { Flex, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, classNames } from '../../../../common';
+import { Flex, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { classNames } from '../../../../layout';
 
 interface ChooserWidgetViewProps
 {

@@ -80,8 +80,8 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
     }, [ roomPreviewer, elementRef, height ]);
 
     return (
-        <div className="room-preview-container">
-            <div ref={ elementRef } className="room-preview-image" style={ { height } } onClick={ onClick } />
+        <div className="relative w-full">
+            <div ref={ elementRef } className="rounded-md shadow" style={ { height } } onClick={ onClick } />
             { children }
         </div>
     );

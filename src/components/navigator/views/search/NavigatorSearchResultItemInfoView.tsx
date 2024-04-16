@@ -44,9 +44,9 @@ export const NavigatorSearchResultItemInfoView: FC<{
                         <Flex gap={ 2 } overflow="hidden">
                             <LayoutRoomThumbnailView className="flex flex-col items-center mb-1 justify-content-end" customUrl={ roomData.officialRoomPicRef } roomId={ roomData.roomId }>
                                 { roomData.habboGroupId > 0 && (
-                                    <LayoutBadgeImageView badgeCode={ roomData.groupBadgeCode } className={ 'position-absolute top-0 start-0 m-1 ' } isGroup={ true }/>) }
+                                    <LayoutBadgeImageView badgeCode={ roomData.groupBadgeCode } className={ 'absolute top-0 start-0 m-1 ' } isGroup={ true }/>) }
                                 { roomData.doorMode !== RoomDataParser.OPEN_STATE && (
-                                    <i className={ 'position-absolute end-0 mb-1 me-1 icon icon-navigator-room-' + (roomData.doorMode === RoomDataParser.DOORBELL_STATE ? 'locked' : roomData.doorMode === RoomDataParser.PASSWORD_STATE ? 'password' : roomData.doorMode === RoomDataParser.INVISIBLE_STATE ? 'invisible' : '') }/> ) }
+                                    <i className={ 'absolute end-0 mb-1 me-1 icon icon-navigator-room-' + (roomData.doorMode === RoomDataParser.DOORBELL_STATE ? 'locked' : roomData.doorMode === RoomDataParser.PASSWORD_STATE ? 'password' : roomData.doorMode === RoomDataParser.INVISIBLE_STATE ? 'invisible' : '') }/> ) }
                             </LayoutRoomThumbnailView>
                             <div className="flex flex-col gap-1">
                                 <Text bold truncate className="flex-grow-1" style={ { maxHeight: 13 } }>
@@ -64,7 +64,7 @@ export const NavigatorSearchResultItemInfoView: FC<{
                                 <Text className="flex-grow-1">
                                     { roomData.description }
                                 </Text>
-                                <Flex className={ 'badge p-1 position-absolute m-1 bottom-0 end-0 m-2 ' + getUserCounterColor() } gap={ 1 }>
+                                <Flex className={ 'badge p-1 absolute m-1 bottom-0 end-0 m-2 ' + getUserCounterColor() } gap={ 1 }>
                                     <FaUser className="fa-icon" />
                                     { roomData.userCount }
                                 </Flex>

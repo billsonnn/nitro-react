@@ -1,8 +1,9 @@
 import { GetAvatarRenderManager, IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback } from 'react';
 import { GetClubMemberLevel, GetConfigurationValue, LocalizeText, SendMessageComposer } from '../../api';
-import { Button, InfiniteGrid, LayoutAvatarImageView, LayoutCurrencyIcon, LayoutGridItem } from '../../common';
+import { Button, LayoutAvatarImageView, LayoutCurrencyIcon } from '../../common';
 import { useAvatarEditor } from '../../hooks';
+import { InfiniteGrid } from '../../layout';
 
 export const AvatarEditorWardrobeView: FC<{}> = props =>
 {
@@ -43,18 +44,18 @@ export const AvatarEditorWardrobeView: FC<{}> = props =>
             if(figureContainer) clubLevel = GetAvatarRenderManager().getFigureClubLevel(figureContainer, gender);
 
             return (
-                <LayoutGridItem className="nitro-avatar-editor-wardrobe-figure-preview" overflow="hidden" position="relative">
+                <InfiniteGrid.Item className="nitro-avatar-editor-wardrobe-figure-preview">
                     { figureContainer &&
                     <LayoutAvatarImageView direction={ 2 } figure={ figureContainer.getFigureString() } gender={ gender } /> }
                     <div className="avatar-shadow" />
-                    { !hcDisabled && (clubLevel > 0) && <LayoutCurrencyIcon className="position-absolute top-1 start-1" type="hc" /> }
+                    { !hcDisabled && (clubLevel > 0) && <LayoutCurrencyIcon className="absolute top-1 start-1" type="hc" /> }
                     <div className="flex gap-1 button-container">
                         <Button fullWidth variant="link" onClick={ event => saveFigureAtWardrobeIndex(index) }>{ LocalizeText('avatareditor.wardrobe.save') }</Button>
                         { figureContainer &&
                         <Button fullWidth disabled={ (clubLevel > GetClubMemberLevel()) } variant="link" onClick={ event => wearFigureAtIndex(index) }>{ LocalizeText('widget.generic_usable.button.use') }</Button> }
                     </div>
-                </LayoutGridItem>
+                </InfiniteGrid.Item>
             )
-        } } overscan={ 5 } rows={ savedFigures } />
+        } } items={ savedFigures } overscan={ 5 } />
     );
 }

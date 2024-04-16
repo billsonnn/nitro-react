@@ -2,9 +2,10 @@ import { GetSessionDataManager, GiftReceiverNotFoundEvent, PurchaseFromCatalogAs
 import { ChangeEvent, FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { ColorUtils, LocalizeText, MessengerFriend, ProductTypeEnum, SendMessageComposer } from '../../../../api';
-import { Button, Column, Flex, FormGroup, LayoutCurrencyIcon, LayoutFurniImageView, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, classNames } from '../../../../common';
+import { Button, Column, Flex, FormGroup, LayoutCurrencyIcon, LayoutFurniImageView, LayoutGiftTagView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { CatalogEvent, CatalogInitGiftEvent, CatalogPurchasedEvent } from '../../../../events';
 import { useCatalog, useFriends, useMessageEvent, useUiEvent } from '../../../../hooks';
+import { classNames } from '../../../../layout';
 
 export const CatalogGiftView: FC<{}> = props =>
 {
@@ -275,7 +276,7 @@ export const CatalogGiftView: FC<{}> = props =>
                         { colors.map(color => <Button key={ color.id } active={ (color.id === selectedColorId) } disabled={ !isColorable } style={ { backgroundColor: color.color } } variant="dark" onClick={ () => setSelectedColorId(color.id) } />) }
                     </div>
                 </Column>
-                <div className="flex justify-content-between items-center">
+                <div className="flex items-center justify-content-between">
                     <Button className="text-black" variant="link" onClick={ onClose }>
                         { LocalizeText('cancel') }
                     </Button>

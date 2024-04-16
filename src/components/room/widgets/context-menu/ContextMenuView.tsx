@@ -94,7 +94,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'nitro-context-menu', 'position-absolute' ];
+        const newClassNames: string[] = [ 'nitro-context-menu', 'absolute' ];
         
         if (isCollapsed) newClassNames.push('menu-hidden');
 

@@ -1,5 +1,6 @@
 import { DetailedHTMLProps, forwardRef, HTMLAttributes, MouseEvent, PropsWithChildren } from 'react';
-import { classNames, DraggableWindow, DraggableWindowPosition, DraggableWindowProps } from '../common';
+import { DraggableWindow, DraggableWindowPosition, DraggableWindowProps } from '../common';
+import { classNames } from './classNames';
 import { NitroItemCountBadge } from './NitroItemCountBadge';
 
 const NitroCardRoot = forwardRef<HTMLDivElement, PropsWithChildren<{
@@ -57,7 +58,7 @@ const NitroCardContent = forwardRef<HTMLDivElement, {
         <div
             ref={ ref }
             className={ classNames(
-                'overflow-auto bg-card-content-area p-2 h-full',
+                'flex flex-col overflow-auto bg-card-content-area p-2 h-full',
                 className
             ) }
             { ...rest }>

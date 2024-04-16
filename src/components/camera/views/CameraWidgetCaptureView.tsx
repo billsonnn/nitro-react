@@ -62,13 +62,13 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
             <Column center className="nitro-camera-capture" gap={ 0 }>
                 { selectedPicture && <img alt="" className="camera-area" src={ selectedPicture.imageUrl } /> }
                 <div className="camera-canvas drag-handler">
-                    <div className="position-absolute header-close" onClick={ onClose }>
+                    <div className="absolute header-close" onClick={ onClose }>
                         <FaTimes className="fa-icon" />
                     </div>
                     { !selectedPicture && <div ref={ elementRef } className="camera-area camera-view-finder" /> }
                     { selectedPicture && 
                         <div className="camera-area camera-frame">
-                            <div className="camera-frame-preview-actions w-100 position-absolute bottom-0 py-2 text-center">
+                            <div className="camera-frame-preview-actions w-100 absolute bottom-0 py-2 text-center">
                                 <button className="btn btn-success me-3" title={ LocalizeText('camera.editor.button.tooltip') } onClick={ onEdit }>{ LocalizeText('camera.editor.button.text') }</button>
                                 <button className="btn btn-danger" onClick={ onDelete }>{ LocalizeText('camera.delete.button.text') }</button>
                             </div>

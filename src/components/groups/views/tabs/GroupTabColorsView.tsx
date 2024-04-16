@@ -1,8 +1,9 @@
 import { GroupSaveColorsComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { IGroupData, LocalizeText, SendMessageComposer } from '../../../../api';
-import { AutoGrid, Column, Grid, Text, classNames } from '../../../../common';
+import { AutoGrid, Column, Grid, Text } from '../../../../common';
 import { useGroup } from '../../../../hooks';
+import { classNames } from '../../../../layout';
 
 interface GroupTabColorsViewProps
 {
@@ -99,7 +100,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
             <Column gap={ 1 } size={ 2 }>
                 <Text bold>{ LocalizeText('group.edit.color.guild.color') }</Text>
                 { groupData.groupColors && (groupData.groupColors.length > 0) &&
-                    <div className="flex overflow-hidden rounded border">
+                    <div className="flex overflow-hidden border rounded">
                         <div className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(0) } } />
                         <div className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(1) } } />
                     </div> }

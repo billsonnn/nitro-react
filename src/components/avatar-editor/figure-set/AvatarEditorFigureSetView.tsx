@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { IAvatarEditorCategory, IAvatarEditorCategoryPartItem } from '../../../api';
-import { InfiniteGrid } from '../../../common';
 import { useAvatarEditor } from '../../../hooks';
+import { InfiniteGrid } from '../../../layout';
 import { AvatarEditorFigureSetItemView } from './AvatarEditorFigureSetItemView';
 
 export const AvatarEditorFigureSetView: FC<{
@@ -29,13 +29,13 @@ export const AvatarEditorFigureSetView: FC<{
     }
 
     return (
-        <InfiniteGrid columnCount={ columnCount } itemRender={ (item: IAvatarEditorCategoryPartItem) =>
+        <InfiniteGrid<IAvatarEditorCategoryPartItem> columnCount={ columnCount } itemRender={ (item: IAvatarEditorCategoryPartItem) =>
         {
             if(!item) return null;
 
             return (
                 <AvatarEditorFigureSetItemView isSelected={ isPartItemSelected(item) } partItem={ item } setType={ category.setType } width={ `calc(100% / ${ columnCount }` } onClick={ event => selectEditorPart(category.setType, item.partSet?.id ?? -1) } />
             )
-        } } overscan={ columnCount } rows={ category.partItems } />
+        } } items={ category.partItems } overscan={ columnCount } />
     );
 }

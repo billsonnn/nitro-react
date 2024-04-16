@@ -10,7 +10,11 @@ const colors = {
     'card-border': '#283F5D',
     'card-tab-item': '#B6BEC5',
     'card-tab-item-active': '#DFDFDF',
-    'card-content-area': '#DFDFDF'
+    'card-content-area': '#DFDFDF',
+    'card-grid-item': '#CDD3D9',
+    'card-grid-item-active': '#ECECEC',
+    'card-grid-item-border': '#B6BEC5',
+    'card-grid-item-border-active': '#FFFFFF',
 };
 
 const boxShadow = {
@@ -39,6 +43,20 @@ module.exports = {
             }
         },
     },
+    safelist: [
+        'grid-cols-1',
+        'grid-cols-2',
+        'grid-cols-3',
+        'grid-cols-4',
+        'grid-cols-5',
+        'grid-cols-6',
+        'grid-cols-7',
+        'grid-cols-8',
+        'grid-cols-9',
+        'grid-cols-10',
+        'grid-cols-11',
+        'grid-cols-12'
+    ],
     darkMode: 'class',
     plugins: [
         require('@tailwindcss/forms'),

@@ -1,5 +1,5 @@
 import { DetailedHTMLProps, forwardRef, HTMLAttributes, PropsWithChildren } from 'react';
-import { classNames } from '../../common';
+import { classNames } from '../../layout';
 
 export const ToolbarItemView = forwardRef<HTMLDivElement, PropsWithChildren<{
     icon: string;

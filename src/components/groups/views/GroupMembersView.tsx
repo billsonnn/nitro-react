@@ -2,8 +2,9 @@ import { AddLinkEventTracker, GetSessionDataManager, GroupAdminGiveComposer, Gro
 import { FC, useCallback, useEffect, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { GetUserProfile, LocalizeText, SendMessageComposer } from '../../../api';
-import { Button, classNames, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
+import { Button, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { useMessageEvent, useNotification } from '../../../hooks';
+import { classNames } from '../../../layout';
 
 export const GroupMembersView: FC<{}> = props =>
 {
@@ -166,8 +167,8 @@ export const GroupMembersView: FC<{}> = props =>
                     { membersData.result.map((member, index) =>
                     {
                         return (
-                            <Flex key={ index } alignItems="center" className="member-list-item bg-white rounded p-2" gap={ 2 } overflow="hidden">
-                                <div className="avatar-head cursor-pointer" onClick={ () => GetUserProfile(member.id) }>
+                            <Flex key={ index } alignItems="center" className="p-2 bg-white rounded member-list-item" gap={ 2 } overflow="hidden">
+                                <div className="cursor-pointer avatar-head" onClick={ () => GetUserProfile(member.id) }>
                                     <LayoutAvatarImageView direction={ 2 } figure={ member.figure } headOnly={ true } />
                                 </div>
                                 <Column grow gap={ 1 }>
@@ -182,11 +183,11 @@ export const GroupMembersView: FC<{}> = props =>
                                     </div> }
                                     { membersData.admin && (member.rank === GroupRank.REQUESTED) &&
                                     <Flex alignItems="center">
-                                        <div className="nitro-friends-spritesheet icon-accept cursor-pointer" title={ LocalizeText('group.members.accept') } onClick={ event => acceptMembership(member) } />
+                                        <div className="cursor-pointer nitro-friends-spritesheet icon-accept" title={ LocalizeText('group.members.accept') } onClick={ event => acceptMembership(member) } />
                                     </Flex> }
                                     { membersData.admin && (member.rank !== GroupRank.OWNER) && (member.id !== GetSessionDataManager().userId) &&
                                     <Flex alignItems="center">
-                                        <div className="nitro-friends-spritesheet icon-deny cursor-pointer" title={ LocalizeText(member.rank === GroupRank.REQUESTED ? 'group.members.reject' : 'group.members.kick') } onClick={ event => removeMemberOrDeclineMembership(member) } />
+                                        <div className="cursor-pointer nitro-friends-spritesheet icon-deny" title={ LocalizeText(member.rank === GroupRank.REQUESTED ? 'group.members.reject' : 'group.members.kick') } onClick={ event => removeMemberOrDeclineMembership(member) } />
                                     </Flex> }
                                 </div>
                             </Flex>

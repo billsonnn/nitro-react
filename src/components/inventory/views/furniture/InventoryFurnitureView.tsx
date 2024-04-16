@@ -112,11 +112,11 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
     if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.desc') } title={ LocalizeText('inventory.empty.title') } />;
 
     return (
-        <div className="grid grid-cols-12 gap-2">
-            <div className="flex flex-col col-span-7 overflow-hidden">
+        <div className="grid h-full grid-cols-12 gap-2 overflow-hidden">
+            <div className="flex flex-col col-span-7 gap-1 overflow-hidden">
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                 <InfiniteGrid<GroupItem>
-                    columnCount={ 5 }
+                    columnCount={ 6 }
                     itemRender={ item => <InventoryFurnitureItemView groupItem={ item } /> }
                     items={ filteredGroupItems } />
             </div>

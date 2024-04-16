@@ -1,5 +1,5 @@
 import { DetailedHTMLProps, HTMLAttributes, PropsWithChildren, forwardRef } from 'react';
-import { classNames } from '../../common';
+import { classNames } from '../../layout';
 
 type AvatarIconType = 'male' | 'female' | 'clear' | 'sellable' | string;
 

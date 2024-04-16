@@ -140,7 +140,7 @@ export const HcCenterView: FC<{}> = props =>
                         </Button>
                     </Flex>
                 </div>
-                <div className="end-0 p-4 top-0 habbo-avatar position-absolute">
+                <div className="end-0 p-4 top-0 habbo-avatar absolute">
                     <LayoutAvatarImageView direction={ 4 } figure={ userFigure } scale={ 2 } />
                 </div>
             </Flex>

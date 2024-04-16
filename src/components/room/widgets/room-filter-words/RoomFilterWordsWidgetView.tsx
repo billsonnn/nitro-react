@@ -1,8 +1,9 @@
 import { UpdateRoomFilterMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../api';
-import { Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, classNames } from '../../../../common';
+import { Button, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useFilterWordsWidget, useNavigator } from '../../../../hooks';
+import { classNames } from '../../../../layout';
 
 export const RoomFilterWordsWidgetView: FC<{}> = props =>
 {
@@ -51,7 +52,7 @@ export const RoomFilterWordsWidgetView: FC<{}> = props =>
         <NitroCardView className="nitro-guide-tool no-resize" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('navigator.roomsettings.roomfilter') } onCloseClick={ () => onClose() } />
             <NitroCardContentView className="text-black">
-                <Grid className="flex items-center justify-content-end gap-2">
+                <Grid className="flex items-center gap-2 justify-content-end">
                     <input className="form-control form-control-sm" maxLength={ 255 } type="text" value={ word } onChange={ event => onTyping(event.target.value) } />
                     <Button onClick={ () => processAction(true) }>{ LocalizeText('navigator.roomsettings.roomfilter.addword') }</Button>
                 </Grid>
@@ -65,7 +66,7 @@ export const RoomFilterWordsWidgetView: FC<{}> = props =>
                         )
                     }) }
                 </Column>
-                <Grid className="flex items-center justify-content-end gap-2">
+                <Grid className="flex items-center gap-2 justify-content-end">
                     <Button disabled={ wordsFilter.length === 0 || !isSelectingWord } variant="danger" onClick={ () => processAction(false) }>{ LocalizeText('navigator.roomsettings.roomfilter.removeword') }</Button>
                 </Grid>
             </NitroCardContentView>

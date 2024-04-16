@@ -1,8 +1,9 @@
 import { CreateLinkEvent, GetGuestRoomResultEvent, GetRoomEngine, NavigatorSearchComposer, RateFlatMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../api';
-import { Text, TransitionAnimation, TransitionAnimationTypes, classNames } from '../../../../common';
+import { Text, TransitionAnimation, TransitionAnimationTypes } from '../../../../common';
 import { useMessageEvent, useNavigator, useRoom } from '../../../../hooks';
+import { classNames } from '../../../../layout';
 
 export const RoomToolsWidgetView: FC<{}> = props =>
 {
@@ -72,24 +73,24 @@ export const RoomToolsWidgetView: FC<{}> = props =>
 
     return (
         <div className="flex gap-2 nitro-room-tools-container">
-            <div className="flex flex-col justify-center items-center nitro-room-tools p-2">
-                <div className="icon icon-cog cursor-pointer" title={ LocalizeText('room.settings.button.text') } onClick={ () => handleToolClick('settings') } />
+            <div className="flex flex-col items-center justify-center p-2 nitro-room-tools">
+                <div className="cursor-pointer icon icon-cog" title={ LocalizeText('room.settings.button.text') } onClick={ () => handleToolClick('settings') } />
                 <div className={ classNames('cursor-pointer', 'icon', (!isZoomedIn && 'icon-zoom-less'), (isZoomedIn && 'icon-zoom-more')) } title={ LocalizeText('room.zoom.button.text') } onClick={ () => handleToolClick('zoom') } />
-                <div className="icon icon-chat-history cursor-pointer" title={ LocalizeText('room.chathistory.button.text') } onClick={ () => handleToolClick('chat_history') } />
+                <div className="cursor-pointer icon icon-chat-history" title={ LocalizeText('room.chathistory.button.text') } onClick={ () => handleToolClick('chat_history') } />
                 { navigatorData.canRate &&
-                    <div className="icon icon-like-room cursor-pointer" title={ LocalizeText('room.like.button.text') } onClick={ () => handleToolClick('like_room') } /> }
+                    <div className="cursor-pointer icon icon-like-room" title={ LocalizeText('room.like.button.text') } onClick={ () => handleToolClick('like_room') } /> }
             </div>
             <div className="flex flex-col justify-center">
                 <TransitionAnimation inProp={ isOpen } timeout={ 300 } type={ TransitionAnimationTypes.SLIDE_LEFT }>
-                    <div className="flex flex-col justify-center items-center">
-                        <div className="flex flex-col nitro-room-tools-info rounded py-2 px-3">
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="flex flex-col px-3 py-2 rounded nitro-room-tools-info">
                             <div className="flex flex-col gap-1">
                                 <Text wrap fontSize={ 4 } variant="white">{ roomName }</Text>
                                 <Text fontSize={ 5 } variant="muted">{ roomOwner }</Text>
                             </div>
                             { roomTags && roomTags.length > 0 &&
                                 <div className="flex gap-2">
-                                    { roomTags.map((tag, index) => <Text key={ index } pointer small className="rounded bg-primary p-1" variant="white" onClick={ () => handleToolClick('navigator_search_tag', tag) }>#{ tag }</Text>) }
+                                    { roomTags.map((tag, index) => <Text key={ index } pointer small className="p-1 rounded bg-primary" variant="white" onClick={ () => handleToolClick('navigator_search_tag', tag) }>#{ tag }</Text>) }
                                 </div> }
                         </div>
                     </div>

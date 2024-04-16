@@ -1,8 +1,9 @@
 import { GetSessionDataManager, GuideSessionGetRequesterRoomMessageComposer, GuideSessionInviteRequesterMessageComposer, GuideSessionMessageMessageComposer, GuideSessionRequesterRoomMessageEvent, GuideSessionResolvedMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { GuideToolMessageGroup, LocalizeText, SendMessageComposer, TryVisitRoom } from '../../../api';
-import { Button, Column, Flex, LayoutAvatarImageView, Text, classNames } from '../../../common';
+import { Button, Column, Flex, LayoutAvatarImageView, Text } from '../../../common';
 import { useMessageEvent } from '../../../hooks';
+import { classNames } from '../../../layout';
 
 interface GuideToolOngoingViewProps
 {
@@ -72,7 +73,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
 
     return (
         <Column fullHeight>
-            <Flex alignItems="center" className="bg-muted p-2 rounded" gap={ 1 } justifyContent="between">
+            <Flex alignItems="center" className="p-2 rounded bg-muted" gap={ 1 } justifyContent="between">
                 { isGuide &&
                     <div className="btn-group">
                         <Button onClick={ visit }>{ LocalizeText('guide.help.request.guide.ongoing.visit.button') }</Button>
@@ -85,13 +86,13 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                     </Column> }
                 <Button disabled variant="danger">{ LocalizeText('guide.help.common.report.link') }</Button>
             </Flex>
-            <Column className="bg-muted rounded chat-messages p-2" gap={ 1 } overflow="hidden">
+            <Column className="p-2 rounded bg-muted chat-messages" gap={ 1 } overflow="hidden">
                 <Column overflow="auto">
                     { messageGroups.map((group, index) =>
                     {
                         return (
                             <Flex key={ index } fullWidth gap={ 2 } justifyContent={ isOwnChat(group.userId) ? 'end' : 'start' }>
-                                <div className="message-avatar flex-shrink-0">
+                                <div className="flex-shrink-0 message-avatar">
                                     { (!isOwnChat(group.userId)) &&
                                     <LayoutAvatarImageView direction={ 2 } figure={ userFigure } /> }
                                 </div>
@@ -103,7 +104,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
                                     { group.messages.map((chat, index) => <div key={ index } className={ classNames(chat.roomId ? 'text-break text-underline' : 'text-break', 'chat.roomId' && 'cursor-pointer') } onClick={ () => chat.roomId ? TryVisitRoom(chat.roomId) : null }>{ chat.message }</div>) }
                                 </div>
                                 { (isOwnChat(group.userId)) &&
-                                <div className="message-avatar flex-shrink-0">
+                                <div className="flex-shrink-0 message-avatar">
                                     <LayoutAvatarImageView direction={ 4 } figure={ GetSessionDataManager().figure } />
                                 </div> }
                             </Flex>

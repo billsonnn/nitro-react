@@ -1,8 +1,8 @@
 import { GetRenderer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef } from 'react';
 import { DispatchMouseEvent, DispatchTouchEvent } from '../../api';
-import { classNames } from '../../common';
 import { useRoom } from '../../hooks';
+import { classNames } from '../../layout';
 import { RoomSpectatorView } from './spectator/RoomSpectatorView';
 import { RoomWidgetsView } from './widgets/RoomWidgetsView';
 

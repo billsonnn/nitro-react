@@ -35,7 +35,7 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutProps> = props =>
                         </> }
                     { currentOffer &&
                         <>
-                            <div className="position-relative overflow-hidden">
+                            <div className="relative overflow-hidden">
                                 <CatalogViewProductWidgetView />
                             </div>
                             <Column className="flex-grow-1" gap={ 1 }>

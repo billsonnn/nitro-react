@@ -45,7 +45,7 @@ export const OfferWindowView = (props: { offer: TargetedOfferData, setOpen: Disp
 
     return <NitroCardView className="nitro-targeted-offer" theme="primary-slim" uniqueKey="targeted-offer">
         <NitroCardHeaderView headerText={ LocalizeText(offer.title) } onCloseClick={ event => setOpen(false) } />
-        <div className="container-fluid p-1 position-relative justify-center items-center cursor-pointer gap-3 bg-danger">
+        <div className="container-fluid p-1 relative justify-center items-center cursor-pointer gap-3 bg-danger">
             { LocalizeText('targeted.offer.timeleft',[ 'timeleft' ],[ expirationTime() ]) }
         </div>
         <NitroCardContentView gap={ 1 }>
@@ -68,7 +68,7 @@ export const OfferWindowView = (props: { offer: TargetedOfferData, setOpen: Disp
                 </Flex>
                 <div className="w-50 h-100" style={ { background: `url(${ GetConfigurationValue('image.library.url') + offer.imageUrl }) no-repeat center` } } />
             </Flex>
-            <Flex column alignItems="center" className="price-ray position-absolute" justifyContent="center">
+            <Flex column alignItems="center" className="price-ray absolute" justifyContent="center">
                 <Text>{ LocalizeText('targeted.offer.price.label') }</Text>
                 { offer.priceInCredits > 0 &&
                     <div className="flex gap-1">

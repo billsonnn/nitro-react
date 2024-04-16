@@ -1,8 +1,8 @@
 import { IPartColor } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { IAvatarEditorCategory } from '../../../api';
-import { InfiniteGrid } from '../../../common';
 import { useAvatarEditor } from '../../../hooks';
+import { InfiniteGrid } from '../../../layout';
 import { AvatarEditorPaletteSetItem } from './AvatarEditorPaletteSetItemView';
 
 export const AvatarEditorPaletteSetView: FC<{
@@ -24,13 +24,13 @@ export const AvatarEditorPaletteSetView: FC<{
     }
 
     return (
-        <InfiniteGrid columnCount={ columnCount } itemRender={ (item: IPartColor) =>
+        <InfiniteGrid<IPartColor> columnCount={ columnCount } itemRender={ (item: IPartColor) =>
         {
             if(!item) return null;
 
             return (
                 <AvatarEditorPaletteSetItem isSelected={ isPartColorSelected(item) } partColor={ item } setType={ category.setType } width={ `calc(100% / ${ columnCount }` } onClick={ event => selectEditorColor(category.setType, paletteIndex, item.id) } />
             )
-        } } overscan={ columnCount } rows={ category.colorItems[paletteIndex] } />
+        } } items={ category.colorItems[paletteIndex] } overscan={ columnCount } />
     );
 }

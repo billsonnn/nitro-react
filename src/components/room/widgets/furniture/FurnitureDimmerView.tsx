@@ -2,8 +2,9 @@ import { RoomEngineTriggerWidgetEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { ColorUtils, FurnitureDimmerUtilities, GetConfigurationValue, LocalizeText } from '../../../../api';
-import { Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text, classNames } from '../../../../common';
+import { Button, Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../common';
 import { useFurnitureDimmerWidget, useNitroEvent } from '../../../../hooks';
+import { classNames } from '../../../../layout';
 
 export const FurnitureDimmerView: FC<{}> = props =>
 {
@@ -41,7 +42,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
                 { (dimmerState === 0) &&
                     <Column alignItems="center">
                         <div className="dimmer-banner" />
-                        <Text center className="bg-muted rounded p-1">{ LocalizeText('widget.dimmer.info.off') }</Text>
+                        <Text center className="p-1 rounded bg-muted">{ LocalizeText('widget.dimmer.info.off') }</Text>
                         <Button fullWidth variant="success" onClick={ () => FurnitureDimmerUtilities.changeState() }>{ LocalizeText('widget.dimmer.button.on') }</Button>
                     </Column> }
                 { (dimmerState === 1) &&

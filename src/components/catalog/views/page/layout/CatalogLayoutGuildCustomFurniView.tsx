@@ -27,7 +27,7 @@ export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutProps> = props =>
                     </> }
                 { currentOffer &&
                     <>
-                        <div className="position-relative overflow-hidden">
+                        <div className="relative overflow-hidden">
                             <CatalogViewProductWidgetView />
                             <CatalogGuildBadgeWidgetView className="bottom-1 end-1" position="absolute" />
                         </div>

@@ -150,7 +150,7 @@ export const CatalogLayoutColorGroupingView : FC<CatalogLayoutColorGroupViewProp
                     </> }
                 { currentOffer &&
                     <>
-                        <div className="position-relative overflow-hidden">
+                        <div className="relative overflow-hidden">
                             <CatalogViewProductWidgetView />
                             <CatalogAddOnBadgeWidgetView className="bg-muted rounded bottom-1 end-1" position="absolute" />
                             { currentOffer.product.furnitureData.hasIndexedColor &&

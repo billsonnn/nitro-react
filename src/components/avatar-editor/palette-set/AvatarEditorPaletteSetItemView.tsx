@@ -1,7 +1,8 @@
 import { ColorConverter, IPartColor } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
 import { GetConfigurationValue } from '../../../api';
-import { LayoutCurrencyIcon, LayoutGridItem, LayoutGridItemProps } from '../../../common';
+import { LayoutCurrencyIcon, LayoutGridItemProps } from '../../../common';
+import { InfiniteGrid } from '../../../layout';
 
 export const AvatarEditorPaletteSetItem: FC<{
     setType: string;
@@ -17,8 +18,8 @@ export const AvatarEditorPaletteSetItem: FC<{
     const isHC = !GetConfigurationValue<boolean>('hc.disabled', false) && (partColor.clubLevel > 0);
 
     return (
-        <LayoutGridItem itemHighlight className="clear-bg" itemActive={ isSelected } itemColor={ ColorConverter.int2rgb(partColor.rgb) } { ...rest }>
-            { isHC && <LayoutCurrencyIcon className="position-absolute end-1 bottom-1" type="hc" /> }
-        </LayoutGridItem>
+        <InfiniteGrid.Item itemHighlight className="clear-bg" itemActive={ isSelected } itemColor={ ColorConverter.int2rgb(partColor.rgb) } { ...rest }>
+            { isHC && <LayoutCurrencyIcon className="absolute end-1 bottom-1" type="hc" /> }
+        </InfiniteGrid.Item>
     );
 }

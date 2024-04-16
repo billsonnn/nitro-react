@@ -2,9 +2,10 @@ import { CreateLinkEvent, GetCustomRoomFilterMessageComposer, GetSessionDataMana
 import { FC, useEffect, useState } from 'react';
 import { FaLink } from 'react-icons/fa';
 import { DispatchUiEvent, GetGroupInformation, LocalizeText, ReportType, SendMessageComposer } from '../../../api';
-import { Button, Column, Flex, LayoutBadgeImageView, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, UserProfileIconView, classNames } from '../../../common';
+import { Button, Column, Flex, LayoutBadgeImageView, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, UserProfileIconView } from '../../../common';
 import { RoomWidgetThumbnailEvent } from '../../../events';
 import { useHelp, useNavigator } from '../../../hooks';
+import { classNames } from '../../../layout';
 
 export class NavigatorRoomInfoViewProps
 {
@@ -106,7 +107,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                     <>
                         <Flex gap={ 2 } overflow="hidden">
                             <LayoutRoomThumbnailView customUrl={ navigatorData.enteredGuestRoom.officialRoomPicRef } roomId={ navigatorData.enteredGuestRoom.roomId }>
-                                { hasPermission('settings') && <i className="icon icon-camera-small position-absolute b-0 r-0 m-1 cursor-pointer top-0" onClick={ () => processAction('open_room_thumbnail_camera') } /> }
+                                { hasPermission('settings') && <i className="top-0 m-1 cursor-pointer icon icon-camera-small absolute b-0 r-0" onClick={ () => processAction('open_room_thumbnail_camera') } /> }
                             </LayoutRoomThumbnailView>
                             <Column grow gap={ 1 } overflow="hidden">
                                 <div className="flex gap-1">
@@ -131,13 +132,13 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                             <div className="flex items-center gap-1">
                                                 { navigatorData.enteredGuestRoom.tags.map(tag =>
                                                 {
-                                                    return <Text key={ tag } pointer className="bg-muted rounded p-1" onClick={ event => processAction('navigator_search_tag', tag) }>#{ tag }</Text>
+                                                    return <Text key={ tag } pointer className="p-1 rounded bg-muted" onClick={ event => processAction('navigator_search_tag', tag) }>#{ tag }</Text>
                                                 }) }
                                             </div> }
                                     </Column>
                                     <Column alignItems="center" gap={ 1 }>
                                         { hasPermission('settings') &&
-                                            <i className="icon icon-cog cursor-pointer" title={ LocalizeText('navigator.room.popup.info.room.settings') } onClick={ event => processAction('open_room_settings') } /> }
+                                            <i className="cursor-pointer icon icon-cog" title={ LocalizeText('navigator.room.popup.info.room.settings') } onClick={ event => processAction('open_room_settings') } /> }
                                         <FaLink className="cursor-pointer fa-icon" title={ LocalizeText('navigator.embed.caption') } onClick={ event => CreateLinkEvent('navigator/toggle-room-link') } />
                                     </Column>
                                 </div>

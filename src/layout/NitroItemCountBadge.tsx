@@ -1,5 +1,5 @@
 import { DetailedHTMLProps, forwardRef, HTMLAttributes, PropsWithChildren } from 'react';
-import { classNames } from '../common';
+import { classNames } from './classNames';
 
 const classes = {
     base: 'top-2 right-2 py-0.5 px-[3px] z-[1] rounded border',

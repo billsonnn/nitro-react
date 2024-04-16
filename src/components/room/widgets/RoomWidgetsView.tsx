@@ -154,11 +154,13 @@ export const RoomWidgetsView: FC<{}> = props =>
 
     return (
         <>
+            <div className="absolute top-0 left-0 pointer-events-none size-full">
+                <FurnitureWidgetsView />
+            </div>
             <AvatarInfoWidgetView />
             <ChatWidgetView />
             <ChatInputView />
             <DoorbellWidgetView />
-            <FurnitureWidgetsView />
             <RoomToolsWidgetView />
             <RoomFilterWordsWidgetView />
             <RoomThumbnailWidgetView />

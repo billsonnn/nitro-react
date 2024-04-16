@@ -30,7 +30,7 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutProps> = props =>
                     </> }
                 { currentOffer &&
                     <>
-                        <div className="position-relative overflow-hidden">
+                        <div className="relative overflow-hidden">
                             <CatalogViewProductWidgetView />
                         </div>
                         <Column grow gap={ 1 }>

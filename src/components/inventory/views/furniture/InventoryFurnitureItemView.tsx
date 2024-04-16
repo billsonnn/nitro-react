@@ -1,8 +1,8 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, useState } from 'react';
-import { attemptItemPlacement, GroupItem } from '../../../../api';
-import { LayoutGridItem } from '../../../../common';
+import { GroupItem, attemptItemPlacement } from '../../../../api';
 import { useInventoryFurni } from '../../../../hooks';
+import { InfiniteGrid, classNames } from '../../../../layout';
 
 export const InventoryFurnitureItemView: FC<{ groupItem: GroupItem }> = props =>
 {
@@ -34,5 +34,5 @@ export const InventoryFurnitureItemView: FC<{ groupItem: GroupItem }> = props =>
 
     const count = groupItem.getUnlockedCount();
 
-    return <LayoutGridItem className={ !count ? 'opacity-0-5 ' : '' } itemActive={ (groupItem === selectedItem) } itemCount={ groupItem.getUnlockedCount() } itemImage={ groupItem.iconUrl } itemUniqueNumber={ groupItem.stuffData.uniqueNumber } itemUnseen={ groupItem.hasUnseenItems } onDoubleClick={ onMouseEvent } onMouseDown={ onMouseEvent } onMouseOut={ onMouseEvent } onMouseUp={ onMouseEvent } { ...rest } />;
+    return <InfiniteGrid.Item className={ classNames(!count && 'opacity-50') } itemActive={ (groupItem === selectedItem) } itemCount={ groupItem.getUnlockedCount() } itemImage={ groupItem.iconUrl } itemUniqueNumber={ groupItem.stuffData.uniqueNumber } itemUnseen={ groupItem.hasUnseenItems } onDoubleClick={ onMouseEvent } onMouseDown={ onMouseEvent } onMouseOut={ onMouseEvent } onMouseUp={ onMouseEvent } />
 }

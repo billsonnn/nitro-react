@@ -98,8 +98,8 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                                     </Column> }
                                 <Column alignItems="center" gap={ 1 }>
                                     <Text small truncate variant="white">{ LocalizeText('infostand.pet.text.wellbeing') }</Text>
-                                    <div className="bg-light-dark rounded position-relative overflow-hidden w-100">
-                                        <div className="flex justify-center items-center size-full position-absolute">
+                                    <div className="bg-light-dark rounded relative overflow-hidden w-100">
+                                        <div className="flex justify-center items-center size-full absolute">
                                             <Text small variant="white">{ avatarInfo.dead ? '00:00:00' : ConvertSeconds((remainingTimeToLive == 0 ? avatarInfo.remainingTimeToLive : remainingTimeToLive)).split(':')[1] + ':' + ConvertSeconds((remainingTimeToLive == null || remainingTimeToLive == undefined ? 0 : remainingTimeToLive)).split(':')[2] + ':' + ConvertSeconds((remainingTimeToLive == null || remainingTimeToLive == undefined ? 0 : remainingTimeToLive)).split(':')[3] }</Text>
                                         </div>
                                         <div className="bg-success rounded pet-stats" style={ { width: avatarInfo.dead ? '0' : Math.round((avatarInfo.maximumTimeToLive * 100) / (remainingTimeToLive)).toString() } } />
@@ -132,8 +132,8 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                                         <Text center small wrap variant="white">{ LocalizeText('pet.level', [ 'level', 'maxlevel' ], [ avatarInfo.level.toString(), avatarInfo.maximumLevel.toString() ]) }</Text>
                                         <Column alignItems="center" gap={ 1 }>
                                             <Text small truncate variant="white">{ LocalizeText('infostand.pet.text.happiness') }</Text>
-                                            <div className="bg-light-dark rounded position-relative overflow-hidden w-100">
-                                                <div className="flex justify-center items-center size-full position-absolute">
+                                            <div className="bg-light-dark rounded relative overflow-hidden w-100">
+                                                <div className="flex justify-center items-center size-full absolute">
                                                     <Text small variant="white">{ avatarInfo.happyness + '/' + avatarInfo.maximumHappyness }</Text>
                                                 </div>
                                                 <div className="bg-info rounded pet-stats" style={ { width: (avatarInfo.happyness / avatarInfo.maximumHappyness) * 100 + '%' } } />
@@ -141,8 +141,8 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                                         </Column>
                                         <Column alignItems="center" gap={ 1 }>
                                             <Text small truncate variant="white">{ LocalizeText('infostand.pet.text.experience') }</Text>
-                                            <div className="bg-light-dark rounded position-relative overflow-hidden w-100">
-                                                <div className="flex justify-center items-center size-full position-absolute">
+                                            <div className="bg-light-dark rounded relative overflow-hidden w-100">
+                                                <div className="flex justify-center items-center size-full absolute">
                                                     <Text small variant="white">{ avatarInfo.experience + '/' + avatarInfo.levelExperienceGoal }</Text>
                                                 </div>
                                                 <div className="bg-purple rounded pet-stats" style={ { width: (avatarInfo.experience / avatarInfo.levelExperienceGoal) * 100 + '%' } } />
@@ -150,8 +150,8 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                                         </Column>
                                         <Column alignItems="center" gap={ 1 }>
                                             <Text small truncate variant="white">{ LocalizeText('infostand.pet.text.energy') }</Text>
-                                            <div className="bg-light-dark rounded position-relative overflow-hidden w-100">
-                                                <div className="flex justify-center items-center size-full position-absolute">
+                                            <div className="bg-light-dark rounded relative overflow-hidden w-100">
+                                                <div className="flex justify-center items-center size-full absolute">
                                                     <Text small variant="white">{ avatarInfo.energy + '/' + avatarInfo.maximumEnergy }</Text>
                                                 </div>
                                                 <div className="bg-success rounded pet-stats" style={ { width: (avatarInfo.energy / avatarInfo.maximumEnergy) * 100 + '%' } } />

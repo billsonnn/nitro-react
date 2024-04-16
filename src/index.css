@@ -22,12 +22,20 @@ body {
     width: 0.25rem;
 }
 
+::-webkit-scrollbar-track {
+    @apply rounded-md;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply rounded-md;
+}
+
 ::-webkit-scrollbar:horizontal {
-    height: 0.25rem;
+    @apply h-1;
 }
 
 ::-webkit-scrollbar:not(:horizontal) {
-    width: 0.25rem;
+    @apply h-1;
 }
 
 ::-webkit-scrollbar-track:horizontal {
@@ -689,6 +697,15 @@ body {
             background-image: url("@/assets/images/icons/user.png");
             width: 18px;
             height: 19px;
+        }
+
+        &.icon-loading {
+            background-image: url("@/assets/images/ui/loading_icon.png");
+
+            &.with-size {
+                width: 16px;
+                height: 16px;
+            }
         }
     }
 }

@@ -47,7 +47,7 @@ export const AchievementsView: FC<{}> = props =>
         <NitroCardView className="nitro-achievements" theme="primary-slim" uniqueKey="achievements">
             <NitroCardHeaderView headerText={ LocalizeText('inventory.achievements') } onCloseClick={ event => setIsVisible(false) } />
             { selectedCategory &&
-                <div className="position-relative gap-3 justify-center items-center cursor-pointer">
+                <div className="relative gap-3 justify-center items-center cursor-pointer">
                     <div className="nitro-achievements-back-arrow" onClick={ event => setSelectedCategoryCode(null) } />
                     <Column className="flex-grow-1" gap={ 0 }>
                         <Text className="text-small" fontSize={ 4 } fontWeight="bold">{ LocalizeText(`quests.${ selectedCategory.code }.name`) }</Text>

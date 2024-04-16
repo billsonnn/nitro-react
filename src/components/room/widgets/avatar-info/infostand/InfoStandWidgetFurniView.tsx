@@ -340,11 +340,11 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                     <div className="flex flex-col gap-1">
                         <Flex gap={ 1 } position="relative">
                             { avatarInfo.stuffData.isUnique &&
-                                <div className="position-absolute end-0">
+                                <div className="absolute end-0">
                                     <LayoutLimitedEditionCompactPlateView uniqueNumber={ avatarInfo.stuffData.uniqueNumber } uniqueSeries={ avatarInfo.stuffData.uniqueSeries } />
                                 </div> }
                             { (avatarInfo.stuffData.rarityLevel > -1) &&
-                                <div className="position-absolute end-0">
+                                <div className="absolute end-0">
                                     <LayoutRarityLevelView level={ avatarInfo.stuffData.rarityLevel } />
                                 </div> }
                             <Flex center fullWidth>

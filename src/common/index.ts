@@ -1,4 +1,4 @@
-export * from '../layout/InfiniteGrid';
+
 export * from './AutoGrid';
 export * from './Base';
 export * from './Button';
@@ -13,7 +13,6 @@ export * from './Text';
 export * from './card';
 export * from './card/accordion';
 export * from './card/tabs';
-export * from './classNames';
 export * from './draggable-window';
 export * from './layout';
 export * from './layout/limited-edition';

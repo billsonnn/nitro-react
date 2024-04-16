@@ -1,10 +1,10 @@
 import { GetAssetManager, GetAvatarRenderManager, GetCommunication, GetConfiguration, GetLocalizationManager, GetRoomCameraWidgetManager, GetRoomEngine, GetRoomSessionManager, GetSessionDataManager, GetSoundManager, GetStage, GetTexturePool, GetTicker, HabboWebTools, LegacyExternalInterface, LoadGameUrlEvent, NitroLogger, NitroVersion, PrepareRenderer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetUIVersion } from './api';
-import { classNames } from './common';
 import { MainView } from './components/MainView';
 import { LoadingView } from './components/loading/LoadingView';
 import { useMessageEvent } from './hooks';
+import { classNames } from './layout';
 
 NitroVersion.UI_VERSION = GetUIVersion();
 
