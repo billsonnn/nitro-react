@@ -1,6 +1,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { DetailedHTMLProps, Fragment, HTMLAttributes, ReactElement, forwardRef, useEffect, useRef, useState } from 'react';
 import { classNames } from './classNames';
+import { NitroLimitedEditionStyledNumberView } from './limited-edition';
 import { styleNames } from './styleNames';
 
 type Props<T> = {
@@ -143,6 +144,9 @@ const InfiniteGridItem = forwardRef<HTMLDivElement, {
                 'flex flex-col items-center justify-center cursor-pointer overflow-hidden relative bg-center bg-no-repeat w-full rounded-md border-2',
                 (!backgroundImageUrl || !backgroundImageUrl.length) && 'nitro-icon icon-loading',
                 itemActive ? 'border-card-grid-item-active bg-card-grid-item-active' : 'border-card-grid-item-border bg-card-grid-item',
+                (itemUniqueSoldout || (itemUniqueNumber > 0)) && 'unique-item',
+                itemUniqueSoldout && 'sold-out',
+                itemUnseen && ' bg-green-500 bg-opacity-40',
                 className
             ) }
             style={ styleNames(
@@ -152,6 +156,19 @@ const InfiniteGridItem = forwardRef<HTMLDivElement, {
                 style
             ) }
             { ...rest }>
+            { (itemCount > itemCountMinimum) &&
+                <div className="absolute align-middle rounded bg-red-700 bg-opacity-80 text-white border-black border top-[2px] right-[2px] text-[9.5px] p-[2px] z-[1] leading-[8px]">{ itemCount }</div> }
+            { (itemUniqueNumber > 0) && 
+                <>
+                    <div
+                        className="size-full unique-bg-override"
+                        style={ {
+                            backgroundImage: `url(${ backgroundImageUrl })`
+                        } } />
+                    <div className="absolute bottom-0 unique-item-counter">
+                        <NitroLimitedEditionStyledNumberView value={ itemUniqueNumber } />
+                    </div>
+                </> }
             { children }
         </div>
     );

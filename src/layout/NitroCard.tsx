@@ -13,7 +13,7 @@ const NitroCardRoot = forwardRef<HTMLDivElement, PropsWithChildren<{
             <div
                 ref={ ref }
                 className={ classNames(
-                    'flex flex-col rounded-md shadow border border-card-border overflow-hidden min-w-full min-h-full max-w-full max-h-full',
+                    'flex flex-col rounded-md shadow border-2 border-card-border overflow-hidden min-w-full min-h-full max-w-full max-h-full',
                     className
                 ) }
                 { ...rest } />

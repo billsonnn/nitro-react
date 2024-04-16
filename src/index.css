@@ -75,18 +75,27 @@ body {
 }
 
 @layer components {
-
     @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0; }
-      }
-      
-      @keyframes scale {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.5); }
-      }
-      
-      .dot {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes scale {
+        0%,
+        100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.5);
+        }
+    }
+
+    .dot {
         position: absolute;
         width: 2px;
         height: 2px;
@@ -117,7 +126,7 @@ body {
             position: absolute;
             background-color: currentColor;
 
-            &:nth-child(1){
+            &:nth-child(1) {
                 top: 0;
                 left: 50%;
                 width: 1px;
@@ -137,7 +146,8 @@ body {
 
     .connecting-duck {
         @apply absolute inset-0 m-auto;
-        background: url('@/assets/images/loading/connecting-duck-spritesheet.png') no-repeat top left;
+        background: url("@/assets/images/loading/connecting-duck-spritesheet.png")
+            no-repeat top left;
         width: 235px;
         height: 127px;
         animation: connecting-duck 1.5s infinite step-end;
@@ -146,42 +156,42 @@ body {
 
     @keyframes connecting-duck {
         0% {
-          background-position: 0 0;
-          width: 235px;
-          height: 127px;
+            background-position: 0 0;
+            width: 235px;
+            height: 127px;
         }
         15% {
-          background-position: 0 -132px;
-          width: 280px;
-          height: 151px;
+            background-position: 0 -132px;
+            width: 280px;
+            height: 151px;
         }
         30% {
-          background-position: 0 -288px;
-          width: 326px;
-          height: 174px;
+            background-position: 0 -288px;
+            width: 326px;
+            height: 174px;
         }
         45% {
-          background-position: 0 -467px;
-          width: 235px;
-          height: 127px;
+            background-position: 0 -467px;
+            width: 235px;
+            height: 127px;
         }
         60% {
-          background-position: 0 -599px;
-          width: 280px;
-          height: 151px;
+            background-position: 0 -599px;
+            width: 280px;
+            height: 151px;
         }
         75% {
-          background-position: 0 -755px;
-          width: 326px;
-          height: 174px;
+            background-position: 0 -755px;
+            width: 326px;
+            height: 174px;
         }
         90% {
-          background-position: 0 -934px;
-          width: 190px;
-          height: 104px;
+            background-position: 0 -934px;
+            width: 190px;
+            height: 104px;
         }
     }
-    
+
     .avatar-image {
         @apply pointer-events-none relative h-[130px] w-[90px] bg-[center_-8px] bg-no-repeat;
     }
@@ -819,5 +829,149 @@ body {
                 height: 16px;
             }
         }
+    }
+}
+
+.unique-item {
+    .unique-bg-override {
+        @apply z-[2] bg-center bg-no-repeat;
+    }
+
+    &:before {
+        @apply absolute z-[1] size-full bg-center bg-no-repeat [content:""];
+        background-image: url("@/assets/images/unique/grid-bg.png");
+    }
+
+    &:after {
+        @apply absolute bottom-0 z-[4] size-full bg-center bg-no-repeat [content:""];
+        background-image: url("@/assets/images/unique/grid-bg-glass.png");
+    }
+
+    &.sold-out:after {
+        @apply bg-center bg-no-repeat;
+        background-image: url("@/assets/images/unique/grid-bg-sold-out.png"),
+            url("@/assets/images/unique/grid-bg-glass.png");
+    }
+
+    .unique-item-counter {
+        background-image: url("@/assets/images/unique/grid-count-bg.png");
+        @apply bottom-[1px] z-[3] mx-auto my-0 flex h-[9px] w-full items-center justify-center bg-center bg-no-repeat;
+    }
+}
+
+.unique-sold-out-blocker {
+    width: 364px;
+    height: 30px;
+    background: url("@/assets/images/unique/catalog-info-sold-out.png");
+
+    div {
+        float: right;
+        width: 140px;
+        text-align: center;
+        font-weight: bold;
+        margin-top: 5px;
+        margin-right: 17px;
+        color: #000;
+    }
+}
+
+.unique-compact-plate {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    right: 16px;
+    width: 34px;
+    height: 37px;
+    background: url("@/assets/images/unique/inventory-info-amount-bg.png");
+
+    div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 9.5px;
+    }
+}
+
+.unique-complete-plate {
+    width: 170px;
+    height: 29px;
+    background: url("@/assets/images/unique/catalog-info-amount-bg.png")
+        no-repeat center;
+    z-index: 1;
+    padding-top: 3px;
+
+    .plate-container {
+        margin-left: 45px;
+        width: 100px;
+        font-size: 10px;
+        color: black;
+
+        > :first-child {
+            margin-bottom: 2px;
+        }
+    }
+}
+
+.limited-edition-number {
+    display: inline-block;
+    outline: 0;
+    height: 5px;
+    margin-right: 1px;
+    background-image: url("@/assets/images/unique/numbers.png");
+    background-repeat: no-repeat;
+
+    &:last-child {
+        margin-right: 0px;
+    }
+
+    &.n-0 {
+        width: 4px;
+        background-position: -1px 0px;
+    }
+
+    &.n-1 {
+        width: 2px;
+        background-position: -6px 0px;
+    }
+
+    &.n-2 {
+        width: 4px;
+        background-position: -9px 0px;
+    }
+
+    &.n-3 {
+        width: 4px;
+        background-position: -14px 0px;
+    }
+
+    &.n-4 {
+        width: 4px;
+        background-position: -19px 0px;
+    }
+
+    &.n-5 {
+        width: 4px;
+        background-position: -24px 0px;
+    }
+
+    &.n-6 {
+        width: 4px;
+        background-position: -29px 0px;
+    }
+
+    &.n-7 {
+        width: 4px;
+        background-position: -34px 0px;
+    }
+
+    &.n-8 {
+        width: 4px;
+        background-position: -39px 0px;
+    }
+
+    &.n-9 {
+        width: 4px;
+        background-position: -44px 0px;
     }
 }
