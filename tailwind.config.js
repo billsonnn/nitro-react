@@ -15,6 +15,7 @@ const colors = {
     'card-grid-item-active': '#ECECEC',
     'card-grid-item-border': '#B6BEC5',
     'card-grid-item-border-active': '#FFFFFF',
+    'loading': '#393A85'
 };
 
 const boxShadow = {
@@ -39,8 +40,9 @@ module.exports = {
                 'inventory-h': '320px'
             },
             zIndex: {
-                'toolbar': ''
-            }
+                'toolbar': '',
+                'loading': '100'
+            },
         },
     },
     safelist: [
