@@ -19,46 +19,44 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
     const { iconState = MessengerIconState.HIDDEN } = useMessenger();
     const isMod = GetSessionDataManager().isModerator;
     
-    useMessageEvent<PerkAllowancesMessageEvent>(PerkAllowancesMessageEvent, event =>
+    useMessageEvent<PerkAllowancesMessageEvent>(PerkAllowancesMessageEvent, event => 
     {
-        const parser = event.getParser();
-
-        setUseGuideTool(parser.isAllowed(PerkEnum.USE_GUIDE_TOOL));
+        setUseGuideTool(event.getParser().isAllowed(PerkEnum.USE_GUIDE_TOOL));
     });
 
-    useNitroEvent<NitroToolbarAnimateIconEvent>(NitroToolbarAnimateIconEvent.ANIMATE_ICON, event =>
+    useNitroEvent<NitroToolbarAnimateIconEvent>(NitroToolbarAnimateIconEvent.ANIMATE_ICON, event => 
     {
         const animationIconToToolbar = (iconName: string, image: HTMLImageElement, x: number, y: number) =>
         {
             const target = (document.body.getElementsByClassName(iconName)[0] as HTMLElement);
-
+    
             if(!target) return;
-            
+                
             image.className = 'toolbar-icon-animation';
             image.style.visibility = 'visible';
             image.style.left = (x + 'px');
             image.style.top = (y + 'px');
-
+    
             document.body.append(image);
-
+    
             const targetBounds = target.getBoundingClientRect();
             const imageBounds = image.getBoundingClientRect();
-
+    
             const left = (imageBounds.x - targetBounds.x);
             const top = (imageBounds.y - targetBounds.y);
             const squared = Math.sqrt(((left * left) + (top * top)));
             const wait = (500 - Math.abs(((((1 / squared) * 100) * 500) * 0.5)));
             const height = 20;
-
+    
             const motionName = (`ToolbarBouncing[${ iconName }]`);
-
+    
             if(!Motions.getMotionByTag(motionName))
             {
                 Motions.runMotion(new Queue(new Wait((wait + 8)), new DropBounce(target, 400, 12))).tag = motionName;
             }
-
+    
             const motion = new Queue(new EaseOut(new JumpBy(image, wait, ((targetBounds.x - imageBounds.x) + height), (targetBounds.y - imageBounds.y), 100, 1), 1), new Dispose(image));
-
+    
             Motions.runMotion(motion);
         }
 
@@ -70,7 +68,7 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
             <TransitionAnimation inProp={ isMeExpanded } timeout={ 300 } type={ TransitionAnimationTypes.FADE_IN }>
                 <ToolbarMeView setMeExpanded={ setMeExpanded } unseenAchievementCount={ getTotalUnseen } useGuideTool={ useGuideTool } />
             </TransitionAnimation>
-            <div className="absolute bottom-0 left-0 flex items-center justify-between w-full gap-2 px-3 py-1 z-toolbar bg-toolbar h-toolbar">
+            <div className="absolute bottom-0 left-0 flex items-center justify-between w-full gap-2 px-3 py-1 border-t border-black z-toolbar bg-toolbar bg-toolbar-gradient shadow-inner1px">
                 <div className="flex items-center gap-2">
                     <div className="flex items-center gap-2">
                         <div className={ classNames('flex justify-center items-center w-[50px] h-[45px] overflow-hidden cursor-pointer *:ml-[-5px] *:mt-[25px]', isMeExpanded && 'active') } onClick={ event => setMeExpanded(!isMeExpanded) }>

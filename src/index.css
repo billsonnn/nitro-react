@@ -212,6 +212,14 @@ body {
     .nitro-icon {
         @apply inline-block bg-transparent bg-center bg-no-repeat outline-0;
 
+        &:hover {
+            @apply translate-x-[-1px] translate-y-[-1px] drop-shadow-hover
+        }
+
+        &:active {
+            @apply transform-none filter-none
+        }
+
         &.icon-nitro-light {
             background-image: url("@/assets/images/nitro/nitro-n-light.svg");
         }

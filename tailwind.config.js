@@ -34,6 +34,7 @@ module.exports = {
             boxShadow,
             backgroundImage: {
                 'button-gradient-gray': 'linear-gradient(to bottom, #e2e2e2 50%, #c8c8c8 50%)',
+                'toolbar-gradient': 'linear-gradient(to bottom, #363636 50%, #2a2a2a 50%)',
             },
             spacing: {
                 'card-header': '33px',
@@ -47,6 +48,9 @@ module.exports = {
                 'toolbar': '',
                 'loading': '100',
                 'chat-zindex': '20'
+            },
+            dropShadow: {
+                'hover': '2px 2px 0 rgba(0,0,0,0.8)'
             },
         },
     },
