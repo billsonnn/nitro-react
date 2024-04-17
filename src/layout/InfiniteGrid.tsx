@@ -69,9 +69,10 @@ const InfiniteGridRoot = <T,>(props: Props<T>) =>
                     <div
                         key={ virtualRow.key + 'a' }
                         ref={ virtualizer.measureElement }
-                        className={ `grid grid-cols-${ columnCount } gap-1 absolute top-0 left-0 h-[45px] last:pb-0 w-full` }
+                        className={ `grid grid-cols-${ columnCount } gap-1 absolute top-0 left-0 last:pb-0 w-full` }
                         data-index={ virtualRow.index }
                         style={ {
+                            height: virtualRow.size,
                             transform: `translateY(${ virtualRow.start }px)`
                         } }>
                         { Array.from(Array(columnCount)).map((e,i) => 
@@ -142,7 +143,7 @@ const InfiniteGridItem = forwardRef<HTMLDivElement, {
             ref={ ref }
             className={ classNames(
                 'flex flex-col items-center justify-center cursor-pointer overflow-hidden relative bg-center bg-no-repeat w-full rounded-md border-2',
-                (!backgroundImageUrl || !backgroundImageUrl.length) && 'nitro-icon icon-loading',
+                (itemImage && (!backgroundImageUrl || !backgroundImageUrl.length)) && 'nitro-icon icon-loading',
                 itemActive ? 'border-card-grid-item-active bg-card-grid-item-active' : 'border-card-grid-item-border bg-card-grid-item',
                 (itemUniqueSoldout || (itemUniqueNumber > 0)) && 'unique-item',
                 itemUniqueSoldout && 'sold-out',

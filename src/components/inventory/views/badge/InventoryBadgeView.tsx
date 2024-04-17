@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeBadgeName, LocalizeText, UnseenItemCategory } from '../../../../api';
-import { AutoGrid, Button, Column, Grid, LayoutBadgeImageView, Text } from '../../../../common';
+import { LayoutBadgeImageView } from '../../../../common';
 import { useInventoryBadges, useInventoryUnseenTracker } from '../../../../hooks';
+import { InfiniteGrid, NitroButton } from '../../../../layout';
 import { InventoryBadgeItemView } from './InventoryBadgeItemView';
 
 export const InventoryBadgeView: FC<{}> = props =>
@@ -34,33 +35,36 @@ export const InventoryBadgeView: FC<{}> = props =>
     }, []);
 
     return (
-        <Grid>
-            <Column overflow="hidden" size={ 7 }>
-                <AutoGrid columnCount={ 4 }>
-                    { badgeCodes && (badgeCodes.length > 0) && badgeCodes.map((badgeCode, index) =>
-                    {
-                        if(isWearingBadge(badgeCode)) return null;
-
-                        return <InventoryBadgeItemView key={ index } badgeCode={ badgeCode } />
-                    }) }
-                </AutoGrid>
-            </Column>
-            <Column className="justify-content-between" overflow="auto" size={ 5 }>
-                <Column gap={ 2 } overflow="hidden">
-                    <Text>{ LocalizeText('inventory.badges.activebadges') }</Text>
-                    <AutoGrid columnCount={ 3 }>
-                        { activeBadgeCodes && (activeBadgeCodes.length > 0) && activeBadgeCodes.map((badgeCode, index) => <InventoryBadgeItemView key={ index } badgeCode={ badgeCode } />) }
-                    </AutoGrid>
-                </Column>
+        <div className="grid h-full grid-cols-12 gap-2">
+            <div className="flex flex-col col-span-7 gap-1 overflow-hidden">
+                <InfiniteGrid<string>
+                    columnCount={ 5 }
+                    estimateSize={ 50 }
+                    itemRender={ item => <InventoryBadgeItemView badgeCode={ item } /> }
+                    items={ badgeCodes.filter(code => !isWearingBadge(code)) } />
+            </div>
+            <div className="flex flex-col justify-between col-span-5 overflow-auto">
+                <div className="flex flex-col gap-2 overflow-hidden">
+                    <span className="text-sm truncate grow">{ LocalizeText('inventory.badges.activebadges') }</span>
+                    <InfiniteGrid<string>
+                        columnCount={ 3 }
+                        estimateSize={ 50 }
+                        itemRender={ item => <InventoryBadgeItemView badgeCode={ item } /> }
+                        items={ activeBadgeCodes } />
+                </div>
                 { !!selectedBadgeCode &&
-                    <Column grow gap={ 2 } justifyContent="end">
+                    <div className="flex flex-col gap-2">
                         <div className="items-center gap-2">
                             <LayoutBadgeImageView shrink badgeCode={ selectedBadgeCode } />
-                            <Text>{ LocalizeBadgeName(selectedBadgeCode) }</Text>
+                            <span className="text-sm truncate grow">{ LocalizeBadgeName(selectedBadgeCode) }</span>
                         </div>
-                        <Button disabled={ !isWearingBadge(selectedBadgeCode) && !canWearBadges() } variant={ (isWearingBadge(selectedBadgeCode) ? 'danger' : 'success') } onClick={ event => toggleBadge(selectedBadgeCode) }>{ LocalizeText(isWearingBadge(selectedBadgeCode) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>
-                    </Column> }
-            </Column>
-        </Grid>
+                        <NitroButton
+                            disabled={ !isWearingBadge(selectedBadgeCode) && !canWearBadges() }
+                            onClick={ event => toggleBadge(selectedBadgeCode) }>
+                            { LocalizeText(isWearingBadge(selectedBadgeCode) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }
+                        </NitroButton>
+                    </div> }
+            </div>
+        </div>
     );
 }

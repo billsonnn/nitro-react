@@ -2,18 +2,13 @@ import { InfiniteGrid } from '@layout/InfiniteGrid';
 import { GetRoomEngine, GetSessionDataManager, IRoomSession, RoomObjectVariable, RoomPreviewer, Vector3d } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { DispatchUiEvent, FurniCategory, GroupItem, LocalizeText, UnseenItemCategory, attemptItemPlacement } from '../../../../api';
-import { Button, LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, LayoutRoomPreviewerView } from '../../../../common';
+import { LayoutLimitedEditionCompactPlateView, LayoutRarityLevelView, LayoutRoomPreviewerView } from '../../../../common';
 import { CatalogPostMarketplaceOfferEvent } from '../../../../events';
 import { useInventoryFurni, useInventoryUnseenTracker } from '../../../../hooks';
+import { NitroButton } from '../../../../layout';
 import { InventoryCategoryEmptyView } from '../InventoryCategoryEmptyView';
 import { InventoryFurnitureItemView } from './InventoryFurnitureItemView';
 import { InventoryFurnitureSearchView } from './InventoryFurnitureSearchView';
-
-interface InventoryFurnitureViewProps
-{
-    roomSession: IRoomSession;
-    roomPreviewer: RoomPreviewer;
-}
 
 const attemptPlaceMarketplaceOffer = (groupItem: GroupItem) =>
 {
@@ -26,7 +21,10 @@ const attemptPlaceMarketplaceOffer = (groupItem: GroupItem) =>
     DispatchUiEvent(new CatalogPostMarketplaceOfferEvent(item));
 }
 
-export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
+export const InventoryFurnitureView: FC<{
+    roomSession: IRoomSession;
+    roomPreviewer: RoomPreviewer;
+}> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
     const [ isVisible, setIsVisible ] = useState(false);
@@ -112,7 +110,7 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
     if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.desc') } title={ LocalizeText('inventory.empty.title') } />;
 
     return (
-        <div className="grid h-full grid-cols-12 gap-2 overflow-hidden">
+        <div className="grid h-full grid-cols-12 gap-2">
             <div className="flex flex-col col-span-7 gap-1 overflow-hidden">
                 <InventoryFurnitureSearchView groupItems={ groupItems } setGroupItems={ setFilteredGroupItems } />
                 <InfiniteGrid<GroupItem>
@@ -120,8 +118,8 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                     itemRender={ item => <InventoryFurnitureItemView groupItem={ item } /> }
                     items={ filteredGroupItems } />
             </div>
-            <div className="flex flex-col col-span-5 overflow-hidden">
-                <div className="relative flex flex-col overflow-hidden">
+            <div className="flex flex-col col-span-5">
+                <div className="relative flex flex-col">
                     <LayoutRoomPreviewerView height={ 140 } roomPreviewer={ roomPreviewer } />
                     { selectedItem && selectedItem.stuffData.isUnique &&
                         <LayoutLimitedEditionCompactPlateView className="top-2 end-2" position="absolute" uniqueNumber={ selectedItem.stuffData.uniqueNumber } uniqueSeries={ selectedItem.stuffData.uniqueSeries } /> }
@@ -130,16 +128,16 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                 </div>
                 { selectedItem &&
                     <div className="flex flex-col justify-between gap-2 grow">
-                        <span className="truncate grow">{ selectedItem.name }</span>
+                        <span className="text-sm truncate grow">{ selectedItem.name }</span>
                         <div className="flex flex-col gap-1">
                             { !!roomSession &&
-                                <Button variant="success" onClick={ event => attemptItemPlacement(selectedItem) }>
+                                <NitroButton onClick={ event => attemptItemPlacement(selectedItem) }>
                                     { LocalizeText('inventory.furni.placetoroom') }
-                                </Button> }
+                                </NitroButton> }
                             { (selectedItem && selectedItem.isSellable) &&
-                                <Button onClick={ event => attemptPlaceMarketplaceOffer(selectedItem) }>
+                                <NitroButton onClick={ event => attemptPlaceMarketplaceOffer(selectedItem) }>
                                     { LocalizeText('inventory.marketplace.sell') }
-                                </Button> }
+                                </NitroButton> }
                         </div>
                     </div> }
             </div>

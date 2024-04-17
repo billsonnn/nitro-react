@@ -1,10 +1,13 @@
-import { GetEventDispatcher, NitroToolbarAnimateIconEvent, TextureUtils, ToolbarIconEnum } from '@nitrots/nitro-renderer';
+import { GetEventDispatcher, NitroToolbarAnimateIconEvent, RoomPreviewer, TextureUtils, ToolbarIconEnum } from '@nitrots/nitro-renderer';
 import { FC, useRef } from 'react';
-import { LayoutRoomPreviewerView, LayoutRoomPreviewerViewProps } from '../../../../common';
+import { LayoutRoomPreviewerView } from '../../../../common';
 import { CatalogPurchasedEvent } from '../../../../events';
 import { useUiEvent } from '../../../../hooks';
 
-export const CatalogRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =>
+export const CatalogRoomPreviewerView: FC<{
+    roomPreviewer: RoomPreviewer;
+    height?: number;
+}> = props =>
 {
     const { roomPreviewer = null } = props;
     const elementRef = useRef<HTMLDivElement>(null);

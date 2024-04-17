@@ -1,8 +1,9 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, MouseEvent, PropsWithChildren, useState } from 'react';
-import { attemptPetPlacement, IPetItem, UnseenItemCategory } from '../../../../api';
-import { LayoutGridItem, LayoutPetImageView } from '../../../../common';
+import { IPetItem, UnseenItemCategory, attemptPetPlacement } from '../../../../api';
+import { LayoutPetImageView } from '../../../../common';
 import { useInventoryPets, useInventoryUnseenTracker } from '../../../../hooks';
+import { InfiniteGrid } from '../../../../layout';
 
 export const InventoryPetItemView: FC<PropsWithChildren<{ petItem: IPetItem }>> = props =>
 {
@@ -35,9 +36,9 @@ export const InventoryPetItemView: FC<PropsWithChildren<{ petItem: IPetItem }>> 
     }
 
     return (
-        <LayoutGridItem itemActive={ (petItem === selectedPet) } itemUnseen={ unseen } onDoubleClick={ onMouseEvent } onMouseDown={ onMouseEvent } onMouseOut={ onMouseEvent } onMouseUp={ onMouseEvent } { ...rest }>
+        <InfiniteGrid.Item itemActive={ (petItem === selectedPet) } itemUnseen={ unseen } onDoubleClick={ onMouseEvent } onMouseDown={ onMouseEvent } onMouseOut={ onMouseEvent } onMouseUp={ onMouseEvent } { ...rest }>
             <LayoutPetImageView direction={ 3 } figure={ petItem.petData.figureData.figuredata } headOnly={ true } />
             { children }
-        </LayoutGridItem>
+        </InfiniteGrid.Item>
     );
 }

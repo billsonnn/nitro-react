@@ -1,18 +1,16 @@
 import { GetRoomEngine, IRoomSession, RoomObjectVariable, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { LocalizeText, UnseenItemCategory, attemptBotPlacement } from '../../../../api';
-import { AutoGrid, Button, Column, Grid, LayoutRoomPreviewerView, Text } from '../../../../common';
+import { IBotItem, LocalizeText, UnseenItemCategory, attemptBotPlacement } from '../../../../api';
+import { LayoutRoomPreviewerView } from '../../../../common';
 import { useInventoryBots, useInventoryUnseenTracker } from '../../../../hooks';
+import { InfiniteGrid, NitroButton } from '../../../../layout';
 import { InventoryCategoryEmptyView } from '../InventoryCategoryEmptyView';
 import { InventoryBotItemView } from './InventoryBotItemView';
 
-interface InventoryBotViewProps
-{
+export const InventoryBotView: FC<{
     roomSession: IRoomSession;
     roomPreviewer: RoomPreviewer;
-}
-
-export const InventoryBotView: FC<InventoryBotViewProps> = props =>
+}> = props =>
 {
     const { roomSession = null, roomPreviewer = null } = props;
     const [ isVisible, setIsVisible ] = useState(false);
@@ -67,25 +65,26 @@ export const InventoryBotView: FC<InventoryBotViewProps> = props =>
     if(!botItems || !botItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.bots.desc') } title={ LocalizeText('inventory.empty.bots.title') } />;
 
     return (
-        <Grid>
-            <Column overflow="hidden" size={ 7 }>
-                <AutoGrid columnCount={ 5 }>
-                    { botItems && (botItems.length > 0) && botItems.map(item => <InventoryBotItemView key={ item.botData.id } botItem={ item } />) }
-                </AutoGrid>
-            </Column>
-            <Column overflow="auto" size={ 5 }>
-                <Column overflow="hidden" position="relative">
+        <div className="grid h-full grid-cols-12 gap-2">
+            <div className="flex flex-col col-span-7 gap-1 overflow-hidden">
+                <InfiniteGrid<IBotItem>
+                    columnCount={ 6 }
+                    itemRender={ item => <InventoryBotItemView botItem={ item } /> }
+                    items={ botItems } />
+            </div>
+            <div className="flex flex-col col-span-5">
+                <div className="relative flex flex-col">
                     <LayoutRoomPreviewerView height={ 140 } roomPreviewer={ roomPreviewer } />
-                </Column>
+                </div>
                 { selectedBot &&
-                    <Column grow gap={ 2 } justifyContent="between">
-                        <Text grow truncate>{ selectedBot.botData.name }</Text>
+                    <div className="flex flex-col justify-between gap-2 grow">
+                        <span className="truncate grow">{ selectedBot.botData.name }</span>
                         { !!roomSession &&
-                            <Button variant="success" onClick={ event => attemptBotPlacement(selectedBot) }>
+                            <NitroButton onClick={ event => attemptBotPlacement(selectedBot) }>
                                 { LocalizeText('inventory.furni.placetoroom') }
-                            </Button> }
-                    </Column> }
-            </Column>
-        </Grid>
+                            </NitroButton> }
+                    </div> }
+            </div>
+        </div>
     );
 }

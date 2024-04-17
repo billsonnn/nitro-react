@@ -4,7 +4,9 @@ import { GroupItem, attemptItemPlacement } from '../../../../api';
 import { useInventoryFurni } from '../../../../hooks';
 import { InfiniteGrid, classNames } from '../../../../layout';
 
-export const InventoryFurnitureItemView: FC<{ groupItem: GroupItem }> = props =>
+export const InventoryFurnitureItemView: FC<{
+    groupItem: GroupItem
+}> = props =>
 {
     const { groupItem = null, ...rest } = props;
     const [ isMouseDown, setMouseDown ] = useState(false);

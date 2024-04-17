@@ -19,7 +19,8 @@ const colors = {
 };
 
 const boxShadow = {
-    'inner1px': 'inset 0 0 0 1px rgba(255,255,255,.3)'
+    'inner1px': 'inset 0 0 0 1px rgba(255,255,255,.3)',
+    'room-previewer': '-2px -2px rgba(0, 0, 0, 0.4), inset 3px 3px rgba(0, 0, 0, 0.2);'
 };
 
 
@@ -31,6 +32,9 @@ module.exports = {
             },
             colors: generateShades(colors),
             boxShadow,
+            backgroundImage: {
+                'button-gradient-gray': 'linear-gradient(to bottom, #e2e2e2 50%, #c8c8c8 50%)',
+            },
             spacing: {
                 'card-header': '33px',
                 'card-tabs': '33px',

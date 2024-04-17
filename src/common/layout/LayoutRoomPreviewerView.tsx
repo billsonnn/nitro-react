@@ -1,16 +1,12 @@
 import { GetRenderer, GetTicker, NitroTicker, RoomPreviewer, TextureUtils } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, ReactNode, useEffect, useRef } from 'react';
+import { FC, MouseEvent, useEffect, useRef } from 'react';
 
-export interface LayoutRoomPreviewerViewProps
-{
+export const LayoutRoomPreviewerView: FC<{
     roomPreviewer: RoomPreviewer;
     height?: number;
-    children?: ReactNode;
-}
-
-export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =>
+}> = props =>
 {
-    const { roomPreviewer = null, height = 0, children = null } = props;
+    const { roomPreviewer = null, height = 0 } = props;
     const elementRef = useRef<HTMLDivElement>();
 
     const onClick = (event: MouseEvent<HTMLDivElement>) =>
@@ -80,9 +76,14 @@ export const LayoutRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =
     }, [ roomPreviewer, elementRef, height ]);
 
     return (
-        <div className="relative w-full">
-            <div ref={ elementRef } className="rounded-md shadow" style={ { height } } onClick={ onClick } />
-            { children }
-        </div>
+        <div
+            ref={ elementRef }
+            className="relative w-full rounded-md shadow-room-previewer"
+            style={ {
+                height,
+                minHeight: height,
+                maxHeight: height
+            } }
+            onClick={ onClick } />
     );
 }

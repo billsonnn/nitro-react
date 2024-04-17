@@ -1,7 +1,8 @@
 import { FC, PropsWithChildren } from 'react';
 import { UnseenItemCategory } from '../../../../api';
-import { LayoutBadgeImageView, LayoutGridItem } from '../../../../common';
+import { LayoutBadgeImageView } from '../../../../common';
 import { useInventoryBadges, useInventoryUnseenTracker } from '../../../../hooks';
+import { InfiniteGrid } from '../../../../layout';
 
 export const InventoryBadgeItemView: FC<PropsWithChildren<{ badgeCode: string }>> = props =>
 {
@@ -11,9 +12,9 @@ export const InventoryBadgeItemView: FC<PropsWithChildren<{ badgeCode: string }>
     const unseen = isUnseen(UnseenItemCategory.BADGE, getBadgeId(badgeCode));
 
     return (
-        <LayoutGridItem itemActive={ (selectedBadgeCode === badgeCode) } itemUnseen={ unseen } onDoubleClick={ event => toggleBadge(selectedBadgeCode) } onMouseDown={ event => setSelectedBadgeCode(badgeCode) } { ...rest }>
+        <InfiniteGrid.Item itemActive={ (selectedBadgeCode === badgeCode) } itemUnseen={ unseen } onDoubleClick={ event => toggleBadge(selectedBadgeCode) } onMouseDown={ event => setSelectedBadgeCode(badgeCode) } { ...rest }>
             <LayoutBadgeImageView badgeCode={ badgeCode } />
             { children }
-        </LayoutGridItem>
+        </InfiniteGrid.Item>
     );
 }
