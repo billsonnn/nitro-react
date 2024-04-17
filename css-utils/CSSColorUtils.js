@@ -20,6 +20,29 @@ const lightenHexColor = (hex, percent) =>
     return '#' + result.padStart(6, '0');
 }
 
+const darkenHexColor = (hex, percent) => 
+{
+    // Remove the hash symbol if present
+    hex = hex.replace(/^#/, '');
+
+    // Convert hex to RGB
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+
+    // Calculate the darkened RGB values
+    r = Math.round(Math.max(0, r - 255 * percent));
+    g = Math.round(Math.max(0, g - 255 * percent));
+    b = Math.round(Math.max(0, b - 255 * percent));
+
+    // Convert RGB back to hex
+    const result = ((r << 16) | (g << 8) | b).toString(16);
+
+    // Make sure result has 6 digits
+    return '#' + result.padStart(6, '0');
+};
+
+
 const generateShades = (colors) => 
 {
     for (let color in colors) 
@@ -31,7 +54,8 @@ const generateShades = (colors) =>
         for (let i = 0; i < shades.length; i++) 
         {
             let shade = shades[i];
-            extended[shade] = lightenHexColor(hex, shades[(shades.length - 1 - i) ] / 1000);
+            extended[shade] = lightenHexColor(hex, shades[(shades.length - 1 - i) ] / 950);
+            extended[-shade] = darkenHexColor(hex, shades[(shades.length - 1 - i) ] / 950)
         }
 
         colors[color] = {
@@ -39,6 +63,8 @@ const generateShades = (colors) =>
             ...extended
         }
     }
+
+    console.log(colors)
 
     return colors;
 }
