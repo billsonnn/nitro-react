@@ -45,7 +45,8 @@ module.exports = {
             },
             zIndex: {
                 'toolbar': '',
-                'loading': '100'
+                'loading': '100',
+                'chat-zindex': '20'
             },
         },
     },

@@ -235,10 +235,10 @@ export const ChatInputView: FC<{}> = props =>
 
     return (
         createPortal(
-            <div className="nitro-chat-input-container">
-                <div className="input-sizer items-center">
+            <div className="nitro-chat-input-container flex justify-center items-center relative h-10 border-2 border-black bg-gray-200 pr-2.5 w-full overflow-hidden rounded-lg">
+                <div className="items-center input-sizer">
                     { !floodBlocked &&
-                    <input ref={ inputRef } className="chat-input" maxLength={ maxChatLength } placeholder={ LocalizeText('widgets.chatinput.default') } type="text" value={ chatValue } onChange={ event => updateChatInput(event.target.value) } onMouseDown={ event => setInputFocus() } /> }
+                    <input ref={ inputRef } className="bg-transparent border-none" maxLength={ maxChatLength } placeholder={ LocalizeText('widgets.chatinput.default') } type="text" value={ chatValue } onChange={ event => updateChatInput(event.target.value) } onMouseDown={ event => setInputFocus() } /> }
                     { floodBlocked &&
                     <Text variant="danger">{ LocalizeText('chat.input.alert.flood', [ 'time' ], [ floodBlockedSeconds.toString() ]) } </Text> }
                 </div>
