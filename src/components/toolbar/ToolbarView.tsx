@@ -68,7 +68,7 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
             <TransitionAnimation inProp={ isMeExpanded } timeout={ 300 } type={ TransitionAnimationTypes.FADE_IN }>
                 <ToolbarMeView setMeExpanded={ setMeExpanded } unseenAchievementCount={ getTotalUnseen } useGuideTool={ useGuideTool } />
             </TransitionAnimation>
-            <div className="absolute bottom-0 left-0 flex items-center justify-between w-full gap-2 px-3 py-1 border-t border-black z-toolbar bg-toolbar bg-toolbar-gradient shadow-inner1px">
+            <div className="absolute bottom-0 left-0 flex items-center justify-between w-full gap-2 px-3 py-1 border-t border-gray-800 z-toolbar bg-toolbar-gradient toolbar">
                 <div className="flex items-center gap-2">
                     <div className="flex items-center gap-2">
                         <div className={ classNames('flex justify-center items-center w-[50px] h-[45px] overflow-hidden cursor-pointer *:ml-[-5px] *:mt-[25px]', isMeExpanded && 'active') } onClick={ event => setMeExpanded(!isMeExpanded) }>
