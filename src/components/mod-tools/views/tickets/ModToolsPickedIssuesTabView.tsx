@@ -10,29 +10,29 @@ interface ModToolsPickedIssuesTabViewProps
 export const ModToolsPickedIssuesTabView: FC<ModToolsPickedIssuesTabViewProps> = props =>
 {
     const { pickedIssues = null } = props;
-    
+
     return (
-        <Column gap={ 0 } overflow="hidden">
-            <Column gap={ 2 }>
-                <Grid className="text-black fw-bold border-bottom pb-1" gap={ 1 }>
-                    <div className="g-col-2">Type</div>
-                    <div className="g-col-3">Room/Player</div>
-                    <div className="g-col-4">Opened</div>
-                    <div className="g-col-3">Picker</div>
+        <Column gap={0} overflow="hidden">
+            <Column gap={2}>
+                <Grid className="text-black fw-bold border-bottom pb-1" gap={1}>
+                    <div className="g-col-span-2">Type</div>
+                    <div className="g-col-span-3">Room/Player</div>
+                    <div className="g-col-span-4">Opened</div>
+                    <div className="g-col-span-3">Picker</div>
                 </Grid>
             </Column>
-            <Column className="striped-children" gap={ 0 } overflow="auto">
-                { pickedIssues && (pickedIssues.length > 0) && pickedIssues.map(issue =>
+            <Column className="striped-children" gap={0} overflow="auto">
+                {pickedIssues && (pickedIssues.length > 0) && pickedIssues.map(issue =>
                 {
                     return (
-                        <Grid key={ issue.issueId } alignItems="center" className="text-black py-1 border-bottom" gap={ 1 }>
-                            <div className="g-col-2">{ issue.categoryId }</div>
-                            <div className="g-col-3">{ issue.reportedUserName }</div>
-                            <div className="g-col-4">{ new Date(Date.now() - issue.issueAgeInMilliseconds).toLocaleTimeString() }</div>
-                            <div className="g-col-3">{ issue.pickerUserName }</div>
+                        <Grid key={issue.issueId} alignItems="center" className="text-black py-1 border-bottom" gap={1}>
+                            <div className="g-col-span-2">{issue.categoryId}</div>
+                            <div className="g-col-span-3">{issue.reportedUserName}</div>
+                            <div className="g-col-span-4">{new Date(Date.now() - issue.issueAgeInMilliseconds).toLocaleTimeString()}</div>
+                            <div className="g-col-span-3">{issue.pickerUserName}</div>
                         </Grid>
                     );
-                }) }
+                })}
             </Column>
         </Column>
     );

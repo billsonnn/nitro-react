@@ -10,12 +10,12 @@ import { CatalogLayoutProps } from './CatalogLayout.types';
 export const CatalogLayoutTrophiesView: FC<CatalogLayoutProps> = props =>
 {
     const { page = null } = props;
-    const [ trophyText, setTrophyText ] = useState<string>('');
+    const [trophyText, setTrophyText] = useState<string>('');
     const { currentOffer = null, setPurchaseOptions = null } = useCatalog();
 
     useEffect(() =>
     {
-        if(!currentOffer) return;
+        if (!currentOffer) return;
 
         setPurchaseOptions(prevValue =>
         {
@@ -25,31 +25,31 @@ export const CatalogLayoutTrophiesView: FC<CatalogLayoutProps> = props =>
 
             return newValue;
         });
-    }, [ currentOffer, trophyText, setPurchaseOptions ]);
+    }, [currentOffer, trophyText, setPurchaseOptions]);
 
     return (
         <Grid>
-            <Column overflow="hidden" size={ 7 }>
+            <Column overflow="hidden" size={7}>
                 <CatalogItemGridWidgetView />
-                <textarea className="flex-grow-1 form-control w-100" defaultValue={ trophyText || '' } onChange={ event => setTrophyText(event.target.value) } />
+                <textarea className="flex-grow-1 form-control w-full" defaultValue={trophyText || ''} onChange={event => setTrophyText(event.target.value)} />
             </Column>
-            <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
-                { !currentOffer &&
+            <Column center={!currentOffer} overflow="hidden" size={5}>
+                {!currentOffer &&
                     <>
-                        { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
-                        <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
-                    </> }
-                { currentOffer &&
+                        {!!page.localization.getImage(1) && <img alt="" src={page.localization.getImage(1)} />}
+                        <Text center dangerouslySetInnerHTML={{ __html: page.localization.getText(0) }} />
+                    </>}
+                {currentOffer &&
                     <>
                         <CatalogViewProductWidgetView />
-                        <Column grow gap={ 1 }>
-                            <Text grow truncate>{ currentOffer.localizationName }</Text>
+                        <Column grow gap={1}>
+                            <Text grow truncate>{currentOffer.localizationName}</Text>
                             <div className="flex justify-content-end">
                                 <CatalogTotalPriceWidget alignItems="end" />
                             </div>
                             <CatalogPurchaseWidgetView />
                         </Column>
-                    </> }
+                    </>}
             </Column>
         </Grid>
     );

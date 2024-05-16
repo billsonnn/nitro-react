@@ -5,12 +5,12 @@ import { useHelp } from '../../../hooks';
 
 export const DescribeReportView: FC<{}> = props =>
 {
-    const [ message, setMessage ] = useState('');
+    const [message, setMessage] = useState('');
     const { activeReport = null, setActiveReport = null } = useHelp();
 
     const submitMessage = () =>
     {
-        if(message.length < 15) return;
+        if (message.length < 15) return;
 
         setActiveReport(prevValue =>
         {
@@ -31,16 +31,16 @@ export const DescribeReportView: FC<{}> = props =>
     return (
         <>
             <div className="flex flex-col gap-1">
-                <Text fontSize={ 4 }>{ LocalizeText('help.emergency.chat_report.subtitle') }</Text>
-                <Text>{ LocalizeText('help.cfh.input.text') }</Text>
+                <Text fontSize={4}>{LocalizeText('help.emergency.chat_report.subtitle')}</Text>
+                <Text>{LocalizeText('help.cfh.input.text')}</Text>
             </div>
-            <textarea className="form-control h-100" value={ message } onChange={ event => setMessage(event.target.value) } />
-            <Flex gap={ 2 } justifyContent="between">
-                <Button disabled={ !(activeReport.reportType === ReportType.BULLY || activeReport.reportType === ReportType.EMERGENCY) } variant="secondary" onClick={ back }>
-                    { LocalizeText('generic.back') }
+            <textarea className="form-control h-full" value={message} onChange={event => setMessage(event.target.value)} />
+            <Flex gap={2} justifyContent="between">
+                <Button disabled={!(activeReport.reportType === ReportType.BULLY || activeReport.reportType === ReportType.EMERGENCY)} variant="secondary" onClick={back}>
+                    {LocalizeText('generic.back')}
                 </Button>
-                <Button disabled={ (message.length < 15) } onClick={ submitMessage }>
-                    { LocalizeText('help.emergency.main.submit.button') }
+                <Button disabled={(message.length < 15)} onClick={submitMessage}>
+                    {LocalizeText('help.emergency.main.submit.button')}
                 </Button>
             </Flex>
         </>

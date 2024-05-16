@@ -14,59 +14,59 @@ import { CatalogLayoutProps } from '../CatalogLayout.types';
 export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 {
     const { page = null } = props;
-    const [ petIndex, setPetIndex ] = useState(-1);
-    const [ sellablePalettes, setSellablePalettes ] = useState<SellablePetPaletteData[]>([]);
-    const [ selectedPaletteIndex, setSelectedPaletteIndex ] = useState(-1);
-    const [ sellableColors, setSellableColors ] = useState<number[][]>([]);
-    const [ selectedColorIndex, setSelectedColorIndex ] = useState(-1);
-    const [ colorsShowing, setColorsShowing ] = useState(false);
-    const [ petName, setPetName ] = useState('');
-    const [ approvalPending, setApprovalPending ] = useState(true);
-    const [ approvalResult, setApprovalResult ] = useState(-1);
+    const [petIndex, setPetIndex] = useState(-1);
+    const [sellablePalettes, setSellablePalettes] = useState<SellablePetPaletteData[]>([]);
+    const [selectedPaletteIndex, setSelectedPaletteIndex] = useState(-1);
+    const [sellableColors, setSellableColors] = useState<number[][]>([]);
+    const [selectedColorIndex, setSelectedColorIndex] = useState(-1);
+    const [colorsShowing, setColorsShowing] = useState(false);
+    const [petName, setPetName] = useState('');
+    const [approvalPending, setApprovalPending] = useState(true);
+    const [approvalResult, setApprovalResult] = useState(-1);
     const { currentOffer = null, setCurrentOffer = null, setPurchaseOptions = null, catalogOptions = null, roomPreviewer = null } = useCatalog();
     const { petPalettes = null } = catalogOptions;
 
     const getColor = useMemo(() =>
     {
-        if(!sellableColors.length || (selectedColorIndex === -1)) return 0xFFFFFF;
+        if (!sellableColors.length || (selectedColorIndex === -1)) return 0xFFFFFF;
 
         return sellableColors[selectedColorIndex][0];
-    }, [ sellableColors, selectedColorIndex ]);
+    }, [sellableColors, selectedColorIndex]);
 
     const petBreedName = useMemo(() =>
     {
-        if((petIndex === -1) || !sellablePalettes.length || (selectedPaletteIndex === -1)) return '';
+        if ((petIndex === -1) || !sellablePalettes.length || (selectedPaletteIndex === -1)) return '';
 
-        return LocalizeText(`pet.breed.${ petIndex }.${ sellablePalettes[selectedPaletteIndex].breedId }`);
-    }, [ petIndex, sellablePalettes, selectedPaletteIndex ]);
+        return LocalizeText(`pet.breed.${petIndex}.${sellablePalettes[selectedPaletteIndex].breedId}`);
+    }, [petIndex, sellablePalettes, selectedPaletteIndex]);
 
     const petPurchaseString = useMemo(() =>
     {
-        if(!sellablePalettes.length || (selectedPaletteIndex === -1)) return '';
+        if (!sellablePalettes.length || (selectedPaletteIndex === -1)) return '';
 
         const paletteId = sellablePalettes[selectedPaletteIndex].paletteId;
 
         let color = 0xFFFFFF;
 
-        if(petIndex <= 7)
+        if (petIndex <= 7)
         {
-            if(selectedColorIndex === -1) return '';
+            if (selectedColorIndex === -1) return '';
 
             color = sellableColors[selectedColorIndex][0];
         }
 
         let colorString = color.toString(16).toUpperCase();
 
-        while(colorString.length < 6) colorString = ('0' + colorString);
+        while (colorString.length < 6) colorString = ('0' + colorString);
 
-        return `${ paletteId }\n${ colorString }`;
-    }, [ sellablePalettes, selectedPaletteIndex, petIndex, sellableColors, selectedColorIndex ]);
+        return `${paletteId}\n${colorString}`;
+    }, [sellablePalettes, selectedPaletteIndex, petIndex, sellableColors, selectedColorIndex]);
 
     const validationErrorMessage = useMemo(() =>
     {
         let key: string = '';
 
-        switch(approvalResult)
+        switch (approvalResult)
         {
             case 1:
                 key = 'catalog.alert.petname.long';
@@ -82,27 +82,27 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
                 break;
         }
 
-        if(!key || !key.length) return '';
+        if (!key || !key.length) return '';
 
         return LocalizeText(key);
-    }, [ approvalResult ]);
+    }, [approvalResult]);
 
     const purchasePet = useCallback(() =>
     {
-        if(approvalResult === -1)
+        if (approvalResult === -1)
         {
             SendMessageComposer(new ApproveNameMessageComposer(petName, 1));
 
             return;
         }
 
-        if(approvalResult === 0)
+        if (approvalResult === 0)
         {
-            SendMessageComposer(new PurchaseFromCatalogComposer(page.pageId, currentOffer.offerId, `${ petName }\n${ petPurchaseString }`, 1));
+            SendMessageComposer(new PurchaseFromCatalogComposer(page.pageId, currentOffer.offerId, `${petName}\n${petPurchaseString}`, 1));
 
             return;
         }
-    }, [ page, currentOffer, petName, petPurchaseString, approvalResult ]);
+    }, [page, currentOffer, petName, petPurchaseString, approvalResult]);
 
     useMessageEvent<ApproveNameMessageEvent>(ApproveNameMessageEvent, event =>
     {
@@ -110,47 +110,47 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
         setApprovalResult(parser.result);
 
-        if(parser.result === 0) purchasePet();
+        if (parser.result === 0) purchasePet();
         else DispatchUiEvent(new CatalogPurchaseFailureEvent(-1));
     });
 
     useEffect(() =>
     {
-        if(!page || !page.offers.length) return;
+        if (!page || !page.offers.length) return;
 
         const offer = page.offers[0];
 
         setCurrentOffer(offer);
         setPetIndex(GetPetIndexFromLocalization(offer.localizationId));
         setColorsShowing(false);
-    }, [ page, setCurrentOffer ]);
+    }, [page, setCurrentOffer]);
 
     useEffect(() =>
     {
-        if(!currentOffer) return;
+        if (!currentOffer) return;
 
         const productData = currentOffer.product.productData;
 
-        if(!productData) return;
+        if (!productData) return;
 
-        if(petPalettes)
+        if (petPalettes)
         {
-            for(const paletteData of petPalettes)
+            for (const paletteData of petPalettes)
             {
-                if(paletteData.breed !== productData.type) continue;
-    
+                if (paletteData.breed !== productData.type) continue;
+
                 const palettes: SellablePetPaletteData[] = [];
-    
-                for(const palette of paletteData.palettes)
+
+                for (const palette of paletteData.palettes)
                 {
-                    if(!palette.sellable) continue;
-    
+                    if (!palette.sellable) continue;
+
                     palettes.push(palette);
                 }
-    
+
                 setSelectedPaletteIndex((palettes.length ? 0 : -1));
                 setSellablePalettes(palettes);
-    
+
                 return;
             }
         }
@@ -159,84 +159,84 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
         setSellablePalettes([]);
 
         SendMessageComposer(new GetSellablePetPalettesComposer(productData.type));
-    }, [ currentOffer, petPalettes ]);
+    }, [currentOffer, petPalettes]);
 
     useEffect(() =>
     {
-        if(petIndex === -1) return;
+        if (petIndex === -1) return;
 
         const colors = GetPetAvailableColors(petIndex, sellablePalettes);
 
         setSelectedColorIndex((colors.length ? 0 : -1));
         setSellableColors(colors);
-    }, [ petIndex, sellablePalettes ]);
+    }, [petIndex, sellablePalettes]);
 
     useEffect(() =>
     {
-        if(!roomPreviewer) return;
-        
+        if (!roomPreviewer) return;
+
         roomPreviewer.reset(false);
 
-        if((petIndex === -1) || !sellablePalettes.length || (selectedPaletteIndex === -1)) return;
+        if ((petIndex === -1) || !sellablePalettes.length || (selectedPaletteIndex === -1)) return;
 
-        let petFigureString = `${ petIndex } ${ sellablePalettes[selectedPaletteIndex].paletteId }`;
+        let petFigureString = `${petIndex} ${sellablePalettes[selectedPaletteIndex].paletteId}`;
 
-        if(petIndex <= 7) petFigureString += ` ${ getColor.toString(16) }`;
+        if (petIndex <= 7) petFigureString += ` ${getColor.toString(16)}`;
 
         roomPreviewer.addPetIntoRoom(petFigureString);
-    }, [ roomPreviewer, petIndex, sellablePalettes, selectedPaletteIndex, getColor ]);
+    }, [roomPreviewer, petIndex, sellablePalettes, selectedPaletteIndex, getColor]);
 
     useEffect(() =>
     {
         setApprovalResult(-1);
-    }, [ petName ]);
+    }, [petName]);
 
-    if(!currentOffer) return null;
+    if (!currentOffer) return null;
 
     return (
         <Grid>
-            <Column overflow="hidden" size={ 7 }>
-                <AutoGrid columnCount={ 5 }>
-                    { !colorsShowing && (sellablePalettes.length > 0) && sellablePalettes.map((palette, index) =>
+            <Column overflow="hidden" size={7}>
+                <AutoGrid columnCount={5}>
+                    {!colorsShowing && (sellablePalettes.length > 0) && sellablePalettes.map((palette, index) =>
                     {
                         return (
-                            <LayoutGridItem key={ index } itemActive={ (selectedPaletteIndex === index) } onClick={ event => setSelectedPaletteIndex(index) }>
-                                <LayoutPetImageView direction={ 2 } headOnly={ true } paletteId={ palette.paletteId } typeId={ petIndex } />
+                            <LayoutGridItem key={index} itemActive={(selectedPaletteIndex === index)} onClick={event => setSelectedPaletteIndex(index)}>
+                                <LayoutPetImageView direction={2} headOnly={true} paletteId={palette.paletteId} typeId={petIndex} />
                             </LayoutGridItem>
                         );
-                    }) }
-                    { colorsShowing && (sellableColors.length > 0) && sellableColors.map((colorSet, index) => <LayoutGridItem key={ index } itemHighlight className="clear-bg" itemActive={ (selectedColorIndex === index) } itemColor={ ColorConverter.int2rgb(colorSet[0]) } onClick={ event => setSelectedColorIndex(index) } />) }
+                    })}
+                    {colorsShowing && (sellableColors.length > 0) && sellableColors.map((colorSet, index) => <LayoutGridItem key={index} itemHighlight className="clear-bg" itemActive={(selectedColorIndex === index)} itemColor={ColorConverter.int2rgb(colorSet[0])} onClick={event => setSelectedColorIndex(index)} />)}
                 </AutoGrid>
             </Column>
-            <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
-                { !currentOffer &&
+            <Column center={!currentOffer} overflow="hidden" size={5}>
+                {!currentOffer &&
                     <>
-                        { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
-                        <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
-                    </> }
-                { currentOffer &&
+                        {!!page.localization.getImage(1) && <img alt="" src={page.localization.getImage(1)} />}
+                        <Text center dangerouslySetInnerHTML={{ __html: page.localization.getText(0) }} />
+                    </>}
+                {currentOffer &&
                     <>
                         <div className="relative overflow-hidden">
                             <CatalogViewProductWidgetView />
                             <CatalogAddOnBadgeWidgetView className="bg-muted rounded bottom-1 end-1" position="absolute" />
-                            { ((petIndex > -1) && (petIndex <= 7)) &&
-                                <Button className="bottom-1 start-1" position="absolute" onClick={ event => setColorsShowing(!colorsShowing) }>
+                            {((petIndex > -1) && (petIndex <= 7)) &&
+                                <Button className="bottom-1 start-1" position="absolute" onClick={event => setColorsShowing(!colorsShowing)}>
                                     <FaFillDrip className="fa-icon" />
-                                </Button> }
+                                </Button>}
                         </div>
-                        <Column grow gap={ 1 }>
-                            <Text truncate>{ petBreedName }</Text>
-                            <Column grow gap={ 1 }>
-                                <input className="form-control form-control-sm w-100" placeholder={ LocalizeText('widgets.petpackage.name.title') } type="text" value={ petName } onChange={ event => setPetName(event.target.value) } />
-                                { (approvalResult > 0) &&
-                                    <div className="invalid-feedback d-block m-0">{ validationErrorMessage }</div> }
+                        <Column grow gap={1}>
+                            <Text truncate>{petBreedName}</Text>
+                            <Column grow gap={1}>
+                                <input className="form-control form-control-sm w-full" placeholder={LocalizeText('widgets.petpackage.name.title')} type="text" value={petName} onChange={event => setPetName(event.target.value)} />
+                                {(approvalResult > 0) &&
+                                    <div className="invalid-feedback d-block m-0">{validationErrorMessage}</div>}
                             </Column>
                             <div className="flex justify-content-end">
                                 <CatalogTotalPriceWidget alignItems="end" justifyContent="end" />
                             </div>
-                            <CatalogPurchaseWidgetView purchaseCallback={ purchasePet } />
+                            <CatalogPurchaseWidgetView purchaseCallback={purchasePet} />
                         </Column>
-                    </> }
+                    </>}
             </Column>
         </Grid>
     );

@@ -13,43 +13,43 @@ const MODE_WRONG_GENDER: number = 4;
 
 export const FurnitureMannequinView: FC<{}> = props =>
 {
-    const [ renderedFigure, setRenderedFigure ] = useState<string>(null);
-    const [ mode, setMode ] = useState(MODE_NONE);
+    const [renderedFigure, setRenderedFigure] = useState<string>(null);
+    const [mode, setMode] = useState(MODE_NONE);
     const { objectId = -1, figure = null, gender = null, clubLevel = HabboClubLevelEnum.NO_CLUB, name = null, setName = null, saveFigure = null, wearFigure = null, saveName = null, onClose = null } = useFurnitureMannequinWidget();
 
     useEffect(() =>
     {
-        if(objectId === -1) return;
+        if (objectId === -1) return;
 
         const roomSession = GetRoomSession();
 
-        if(roomSession.isRoomOwner || (roomSession.controllerLevel >= RoomControllerLevel.GUEST) || GetSessionDataManager().isModerator)
+        if (roomSession.isRoomOwner || (roomSession.controllerLevel >= RoomControllerLevel.GUEST) || GetSessionDataManager().isModerator)
         {
             setMode(MODE_CONTROLLER);
 
             return;
         }
-        
-        if(GetSessionDataManager().gender.toLowerCase() !== gender.toLowerCase())
+
+        if (GetSessionDataManager().gender.toLowerCase() !== gender.toLowerCase())
         {
             setMode(MODE_WRONG_GENDER);
 
             return;
         }
 
-        if(GetClubMemberLevel() < clubLevel)
+        if (GetClubMemberLevel() < clubLevel)
         {
             setMode(MODE_NO_CLUB);
 
             return;
         }
-        
+
         setMode(MODE_PEER);
-    }, [ objectId, gender, clubLevel ]);
+    }, [objectId, gender, clubLevel]);
 
     useEffect(() =>
     {
-        switch(mode)
+        switch (mode)
         {
             case MODE_CONTROLLER:
             case MODE_WRONG_GENDER: {
@@ -76,66 +76,66 @@ export const FurnitureMannequinView: FC<{}> = props =>
                 break;
             }
         }
-    }, [ mode, figure, clubLevel ]);
+    }, [mode, figure, clubLevel]);
 
-    if(objectId === -1) return null;
+    if (objectId === -1) return null;
 
     return (
         <NitroCardView className="nitro-mannequin no-resize" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('mannequin.widget.title') } onCloseClick={ onClose } />
+            <NitroCardHeaderView headerText={LocalizeText('mannequin.widget.title')} onCloseClick={onClose} />
             <NitroCardContentView center>
-                <div className="flex w-100 gap-2 overflow-hidden">
+                <div className="flex w-full gap-2 overflow-hidden">
                     <div className="flex flex-col">
                         <div className="relative mannequin-preview">
-                            <LayoutAvatarImageView direction={ 2 } figure={ renderedFigure } position="absolute" />
-                            { (clubLevel > 0) &&
-                                <LayoutCurrencyIcon className="absolute end-2 bottom-2" type="hc" /> }
+                            <LayoutAvatarImageView direction={2} figure={renderedFigure} position="absolute" />
+                            {(clubLevel > 0) &&
+                                <LayoutCurrencyIcon className="absolute end-2 bottom-2" type="hc" />}
                         </div>
                     </div>
                     <Column grow justifyContent="between" overflow="auto">
-                        { (mode === MODE_CONTROLLER) &&
+                        {(mode === MODE_CONTROLLER) &&
                             <>
-                                <input className="form-control form-control-sm" type="text" value={ name } onBlur={ saveName } onChange={ event => setName(event.target.value) } />
+                                <input className="form-control form-control-sm" type="text" value={name} onBlur={saveName} onChange={event => setName(event.target.value)} />
                                 <div className="flex flex-col gap-1">
-                                    <Button variant="success" onClick={ event => setMode(MODE_UPDATE) }>
-                                        { LocalizeText('mannequin.widget.style') }
+                                    <Button variant="success" onClick={event => setMode(MODE_UPDATE)}>
+                                        {LocalizeText('mannequin.widget.style')}
                                     </Button>
-                                    <Button variant="success" onClick={ wearFigure }>
-                                        { LocalizeText('mannequin.widget.wear') }
+                                    <Button variant="success" onClick={wearFigure}>
+                                        {LocalizeText('mannequin.widget.wear')}
                                     </Button>
                                 </div>
-                            </> }
-                        { (mode === MODE_UPDATE) &&
+                            </>}
+                        {(mode === MODE_UPDATE) &&
                             <>
                                 <div className="flex flex-col gap-1">
-                                    <Text bold>{ name }</Text>
-                                    <Text wrap>{ LocalizeText('mannequin.widget.savetext') }</Text>
+                                    <Text bold>{name}</Text>
+                                    <Text wrap>{LocalizeText('mannequin.widget.savetext')}</Text>
                                 </div>
                                 <div className="flex items-center justify-content-between">
-                                    <Text pointer underline onClick={ event => setMode(MODE_CONTROLLER) }>
-                                        { LocalizeText('mannequin.widget.back') }
+                                    <Text pointer underline onClick={event => setMode(MODE_CONTROLLER)}>
+                                        {LocalizeText('mannequin.widget.back')}
                                     </Text>
-                                    <Button variant="success" onClick={ saveFigure }>
-                                        { LocalizeText('mannequin.widget.save') }
+                                    <Button variant="success" onClick={saveFigure}>
+                                        {LocalizeText('mannequin.widget.save')}
                                     </Button>
                                 </div>
-                            </> }
-                        { (mode === MODE_PEER) &&
+                            </>}
+                        {(mode === MODE_PEER) &&
                             <>
                                 <div className="flex flex-col gap-1">
-                                    <Text bold>{ name }</Text>
-                                    <Text>{ LocalizeText('mannequin.widget.weartext') }</Text>
+                                    <Text bold>{name}</Text>
+                                    <Text>{LocalizeText('mannequin.widget.weartext')}</Text>
                                 </div>
-                                <Button variant="success" onClick={ wearFigure }>
-                                    { LocalizeText('mannequin.widget.wear') }
+                                <Button variant="success" onClick={wearFigure}>
+                                    {LocalizeText('mannequin.widget.wear')}
                                 </Button>
-                            </> }
-                        { (mode === MODE_NO_CLUB) &&
+                            </>}
+                        {(mode === MODE_NO_CLUB) &&
                             <div className="flex justify-center items-center flex-grow-1">
-                                <Text>{ LocalizeText('mannequin.widget.clubnotification') }</Text>
-                            </div> }
-                        { (mode === MODE_WRONG_GENDER) &&
-                            <Text>{ LocalizeText('mannequin.widget.wronggender') }</Text> }
+                                <Text>{LocalizeText('mannequin.widget.clubnotification')}</Text>
+                            </div>}
+                        {(mode === MODE_WRONG_GENDER) &&
+                            <Text>{LocalizeText('mannequin.widget.wronggender')}</Text>}
                     </Column>
                 </div>
             </NitroCardContentView>

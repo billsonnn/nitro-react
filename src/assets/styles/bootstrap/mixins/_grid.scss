@@ -12,7 +12,7 @@
   margin-left: calc(var(--#{$variable-prefix}gutter-x) * -.5); // stylelint-disable-line function-disallowed-list
 }
 
-@mixin make-col-ready($gutter: $grid-gutter-width) {
+@mixin make-col-span-ready($gutter: $grid-gutter-width) {
   // Add box sizing if only the grid is loaded
   box-sizing: if(variable-exists(include-column-box-sizing) and $include-column-box-sizing, border-box, null);
   // Prevent columns from becoming too narrow when at smaller grid tiers by
@@ -20,7 +20,7 @@
   // later on to override this initial width.
   flex-shrink: 0;
   width: 100%;
-  max-width: 100%; // Prevent `.col-auto`, `.col` (& responsive variants) from breaking out the grid
+  max-width: 100%; // Prevent `.col-span-auto`, `.col` (& responsive variants) from breaking out the grid
   padding-right: calc(var(--#{$variable-prefix}gutter-x) * .5); // stylelint-disable-line function-disallowed-list
   padding-left: calc(var(--#{$variable-prefix}gutter-x) * .5); // stylelint-disable-line function-disallowed-list
   margin-top: var(--#{$variable-prefix}gutter-y);
@@ -37,12 +37,12 @@
   }
 }
 
-@mixin make-col-auto() {
+@mixin make-col-span-auto() {
   flex: 0 0 auto;
   width: auto;
 }
 
-@mixin make-col-offset($size, $columns: $grid-columns) {
+@mixin make-col-span-offset($size, $columns: $grid-columns) {
   $num: divide($size, $columns);
   margin-left: if($num == 0, 0, percentage($num));
 }
@@ -69,13 +69,13 @@
     $infix: breakpoint-infix($breakpoint, $breakpoints);
 
     @include media-breakpoint-up($breakpoint, $breakpoints) {
-      // Provide basic `.col-{bp}` classes for equal-width flexbox columns
+      // Provide basic `.col-span-{bp}` classes for equal-width flexbox columns
       .col#{$infix} {
         flex: 1 0 0%; // Flexbugs #4: https://github.com/philipwalton/flexbugs#flexbug-4
       }
 
       .row-cols#{$infix}-auto > * {
-        @include make-col-auto();
+        @include make-col-span-auto();
       }
 
       @if $grid-row-columns > 0 {
@@ -87,7 +87,7 @@
       }
 
       .col#{$infix}-auto {
-        @include make-col-auto();
+        @include make-col-span-auto();
       }
 
       @if $columns > 0 {
@@ -101,7 +101,7 @@
         @for $i from 0 through ($columns - 1) {
           @if not ($infix == "" and $i == 0) { // Avoid emitting useless .offset-0
             .offset#{$infix}-#{$i} {
-              @include make-col-offset($i, $columns);
+              @include make-col-span-offset($i, $columns);
             }
           }
         }

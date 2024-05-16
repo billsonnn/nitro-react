@@ -11,80 +11,80 @@ export const InventoryBotView: FC<{
     roomSession: IRoomSession;
     roomPreviewer: RoomPreviewer;
 }> = props =>
-{
-    const { roomSession = null, roomPreviewer = null } = props;
-    const [ isVisible, setIsVisible ] = useState(false);
-    const { botItems = [], selectedBot = null, activate = null, deactivate = null } = useInventoryBots();
-    const { isUnseen = null, removeUnseen = null } = useInventoryUnseenTracker();
-
-    useEffect(() =>
     {
-        if(!selectedBot || !roomPreviewer) return;
+        const { roomSession = null, roomPreviewer = null } = props;
+        const [isVisible, setIsVisible] = useState(false);
+        const { botItems = [], selectedBot = null, activate = null, deactivate = null } = useInventoryBots();
+        const { isUnseen = null, removeUnseen = null } = useInventoryUnseenTracker();
 
-        const botData = selectedBot.botData;
+        useEffect(() =>
+        {
+            if (!selectedBot || !roomPreviewer) return;
 
-        const roomEngine = GetRoomEngine();
+            const botData = selectedBot.botData;
 
-        let wallType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_WALL_TYPE);
-        let floorType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_FLOOR_TYPE);
-        let landscapeType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_LANDSCAPE_TYPE);
+            const roomEngine = GetRoomEngine();
 
-        wallType = (wallType && wallType.length) ? wallType : '101';
-        floorType = (floorType && floorType.length) ? floorType : '101';
-        landscapeType = (landscapeType && landscapeType.length) ? landscapeType : '1.1';
+            let wallType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_WALL_TYPE);
+            let floorType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_FLOOR_TYPE);
+            let landscapeType = roomEngine.getRoomInstanceVariable<string>(roomEngine.activeRoomId, RoomObjectVariable.ROOM_LANDSCAPE_TYPE);
 
-        roomPreviewer.reset(false);
-        roomPreviewer.updateRoomWallsAndFloorVisibility(true, true);
-        roomPreviewer.updateObjectRoom(floorType, wallType, landscapeType);
-        roomPreviewer.addAvatarIntoRoom(botData.figure, 0);
-    }, [ roomPreviewer, selectedBot ]);
+            wallType = (wallType && wallType.length) ? wallType : '101';
+            floorType = (floorType && floorType.length) ? floorType : '101';
+            landscapeType = (landscapeType && landscapeType.length) ? landscapeType : '1.1';
 
-    useEffect(() =>
-    {
-        if(!selectedBot || !isUnseen(UnseenItemCategory.BOT, selectedBot.botData.id)) return;
+            roomPreviewer.reset(false);
+            roomPreviewer.updateRoomWallsAndFloorVisibility(true, true);
+            roomPreviewer.updateObjectRoom(floorType, wallType, landscapeType);
+            roomPreviewer.addAvatarIntoRoom(botData.figure, 0);
+        }, [roomPreviewer, selectedBot]);
 
-        removeUnseen(UnseenItemCategory.BOT, selectedBot.botData.id);
-    }, [ selectedBot, isUnseen, removeUnseen ]);
+        useEffect(() =>
+        {
+            if (!selectedBot || !isUnseen(UnseenItemCategory.BOT, selectedBot.botData.id)) return;
 
-    useEffect(() =>
-    {
-        if(!isVisible) return;
+            removeUnseen(UnseenItemCategory.BOT, selectedBot.botData.id);
+        }, [selectedBot, isUnseen, removeUnseen]);
 
-        const id = activate();
+        useEffect(() =>
+        {
+            if (!isVisible) return;
 
-        return () => deactivate(id);
-    }, [ isVisible, activate, deactivate ]);
+            const id = activate();
 
-    useEffect(() =>
-    {
-        setIsVisible(true);
+            return () => deactivate(id);
+        }, [isVisible, activate, deactivate]);
 
-        return () => setIsVisible(false);
-    }, []);
+        useEffect(() =>
+        {
+            setIsVisible(true);
 
-    if(!botItems || !botItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.bots.desc') } title={ LocalizeText('inventory.empty.bots.title') } />;
+            return () => setIsVisible(false);
+        }, []);
 
-    return (
-        <div className="grid h-full grid-cols-12 gap-2">
-            <div className="flex flex-col col-span-7 gap-1 overflow-hidden">
-                <InfiniteGrid<IBotItem>
-                    columnCount={ 6 }
-                    itemRender={ item => <InventoryBotItemView botItem={ item } /> }
-                    items={ botItems } />
-            </div>
-            <div className="flex flex-col col-span-5">
-                <div className="relative flex flex-col">
-                    <LayoutRoomPreviewerView height={ 140 } roomPreviewer={ roomPreviewer } />
+        if (!botItems || !botItems.length) return <InventoryCategoryEmptyView desc={LocalizeText('inventory.empty.bots.desc')} title={LocalizeText('inventory.empty.bots.title')} />;
+
+        return (
+            <div className="grid h-full grid-cols-12 gap-2">
+                <div className="flex flex-col col-span-7 gap-1 overflow-hidden">
+                    <InfiniteGrid<IBotItem>
+                        columnCount={6}
+                        itemRender={item => <InventoryBotItemView botItem={item} />}
+                        items={botItems} />
                 </div>
-                { selectedBot &&
-                    <div className="flex flex-col justify-between gap-2 grow">
-                        <span className="truncate grow">{ selectedBot.botData.name }</span>
-                        { !!roomSession &&
-                            <NitroButton onClick={ event => attemptBotPlacement(selectedBot) }>
-                                { LocalizeText('inventory.furni.placetoroom') }
-                            </NitroButton> }
-                    </div> }
+                <div className="flex flex-col col-span-5">
+                    <div className="relative flex flex-col">
+                        <LayoutRoomPreviewerView height={140} roomPreviewer={roomPreviewer} />
+                    </div>
+                    {selectedBot &&
+                        <div className="flex flex-col justify-between gap-2 grow">
+                            <span className="truncate grow">{selectedBot.botData.name}</span>
+                            {!!roomSession &&
+                                <NitroButton onClick={event => attemptBotPlacement(selectedBot)}>
+                                    {LocalizeText('inventory.furni.placetoroom')}
+                                </NitroButton>}
+                        </div>}
+                </div>
             </div>
-        </div>
-    );
-}
+        );
+    }

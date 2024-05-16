@@ -19,28 +19,28 @@ export const Column: FC<ColumnProps> = props =>
     {
         const newClassNames: string[] = [];
 
-        if(size)
+        if (size)
         {
-            let colClassName = `col-${ size }`;
+            let colClassName = `col-span-${size}`;
 
-            if(isCssGrid) colClassName = `g-${ colClassName }`;
+            if (isCssGrid) colClassName = `g-${colClassName}`;
 
             newClassNames.push(colClassName);
         }
 
-        if(offset)
+        if (offset)
         {
-            let colClassName = `offset-${ offset }`;
+            let colClassName = `offset-${offset}`;
 
-            if(isCssGrid) colClassName = `g-start-${ offset }`;
+            if (isCssGrid) colClassName = `g-start-${offset}`;
 
             newClassNames.push(colClassName);
         }
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ size, offset, isCssGrid, classNames ]);
+    }, [size, offset, isCssGrid, classNames]);
 
-    return <Flex classNames={ getClassNames } column={ column } gap={ gap } { ...rest } />;
+    return <Flex classNames={getClassNames} column={column} gap={gap} {...rest} />;
 }

@@ -204,7 +204,7 @@ $orange-700: shade-color($orange, 40%) !default;
 $orange-800: shade-color($orange, 60%) !default;
 $orange-900: shade-color($orange, 80%) !default;
 
-$yellow-100: tint-color($yellow, 80%) !default;
+$yellow-full: tint-color($yellow, 80%) !default;
 $yellow-200: tint-color($yellow, 60%) !default;
 $yellow-300: tint-color($yellow, 40%) !default;
 $yellow-400: tint-color($yellow, 20%) !default;
@@ -317,7 +317,7 @@ $oranges: (
 ) !default;
 
 $yellows: (
-  "yellow-100": $yellow-100,
+  "yellow-full": $yellow-full,
   "yellow-200": $yellow-200,
   "yellow-300": $yellow-300,
   "yellow-400": $yellow-400,

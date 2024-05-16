@@ -23,28 +23,28 @@ export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = p
         const relationshipName = RelationshipStatusEnum.RELATIONSHIP_NAMES[type].toLocaleLowerCase();
 
         return (
-            <div className="flex w-100 gap-1">
+            <div className="flex w-full gap-1">
                 <Flex center className="user-relationship">
-                    <i className={ `nitro-friends-spritesheet icon-${ relationshipName }` } />
+                    <i className={`nitro-friends-spritesheet icon-${relationshipName}`} />
                 </Flex>
                 <div className="flex flex-col flex-grow-1 gap-0">
                     <Flex alignItems="center" className="bg-white rounded px-2 py-1 user-relationship" justifyContent="between">
-                        <Text pointer small underline onClick={ event => (relationshipInfo && (relationshipInfo.randomFriendId >= 1) && GetUserProfile(relationshipInfo.randomFriendId)) }>
-                            { (!relationshipInfo || (relationshipInfo.friendCount === 0)) &&
-                                LocalizeText('extendedprofile.add.friends') }
-                            { (relationshipInfo && (relationshipInfo.friendCount >= 1)) &&
-                                relationshipInfo.randomFriendName }
+                        <Text pointer small underline onClick={event => (relationshipInfo && (relationshipInfo.randomFriendId >= 1) && GetUserProfile(relationshipInfo.randomFriendId))}>
+                            {(!relationshipInfo || (relationshipInfo.friendCount === 0)) &&
+                                LocalizeText('extendedprofile.add.friends')}
+                            {(relationshipInfo && (relationshipInfo.friendCount >= 1)) &&
+                                relationshipInfo.randomFriendName}
                         </Text>
-                        { (relationshipInfo && (relationshipInfo.friendCount >= 1)) &&
+                        {(relationshipInfo && (relationshipInfo.friendCount >= 1)) &&
                             <div className="flex items-center justify-center avatar-image-container p-relative">
-                                <LayoutAvatarImageView direction={ 4 } figure={ relationshipInfo.randomFriendFigure } headOnly={ true } />
-                            </div> }
+                                <LayoutAvatarImageView direction={4} figure={relationshipInfo.randomFriendFigure} headOnly={true} />
+                            </div>}
                     </Flex>
                     <Text italics small className="user-relationship-count">
-                        { (!relationshipInfo || (relationshipInfo.friendCount === 0)) &&
-                            LocalizeText('extendedprofile.no.friends.in.this.category') }
-                        { (relationshipInfo && (relationshipInfo.friendCount > 1)) &&
-                            LocalizeText(`extendedprofile.relstatus.others.${ relationshipName }`, [ 'count' ], [ (relationshipInfo.friendCount - 1).toString() ]) }
+                        {(!relationshipInfo || (relationshipInfo.friendCount === 0)) &&
+                            LocalizeText('extendedprofile.no.friends.in.this.category')}
+                        {(relationshipInfo && (relationshipInfo.friendCount > 1)) &&
+                            LocalizeText(`extendedprofile.relstatus.others.${relationshipName}`, ['count'], [(relationshipInfo.friendCount - 1).toString()])}
                         &nbsp;
                     </Text>
                 </div>
@@ -54,9 +54,9 @@ export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = p
 
     return (
         <>
-            <RelationshipComponent type={ RelationshipStatusEnum.HEART } />
-            <RelationshipComponent type={ RelationshipStatusEnum.SMILE } />
-            <RelationshipComponent type={ RelationshipStatusEnum.BOBBA } />
+            <RelationshipComponent type={RelationshipStatusEnum.HEART} />
+            <RelationshipComponent type={RelationshipStatusEnum.SMILE} />
+            <RelationshipComponent type={RelationshipStatusEnum.BOBBA} />
         </>
     );
 }

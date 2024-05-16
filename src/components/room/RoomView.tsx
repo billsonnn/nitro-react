@@ -15,7 +15,7 @@ export const RoomView: FC<{}> = props =>
     {
         const canvas = GetRenderer().canvas;
 
-        if(!canvas) return;
+        if (!canvas) return;
 
         canvas.onclick = event => DispatchMouseEvent(event);
         canvas.onmousemove = event => DispatchMouseEvent(event);
@@ -29,18 +29,18 @@ export const RoomView: FC<{}> = props =>
 
         const element = elementRef.current;
 
-        if(!element) return;
+        if (!element) return;
 
         element.appendChild(canvas);
     }, []);
 
     return (
-        <div ref={ elementRef } className={ classNames('size-full', (!roomSession && 'd-none')) }>
-            { roomSession &&
+        <div ref={elementRef} className={classNames('size-full', (!roomSession && 'hidden'))}>
+            {roomSession &&
                 <>
                     <RoomWidgetsView />
-                    { roomSession.isSpectator && <RoomSpectatorView /> }
-                </> }
+                    {roomSession.isSpectator && <RoomSpectatorView />}
+                </>}
         </div>
     );
 }

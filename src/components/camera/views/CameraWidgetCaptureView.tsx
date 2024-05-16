@@ -25,16 +25,16 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
 
     const getCameraBounds = () =>
     {
-        if(!elementRef || !elementRef.current) return null;
+        if (!elementRef || !elementRef.current) return null;
 
         const frameBounds = elementRef.current.getBoundingClientRect();
-        
+
         return new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height));
     }
 
     const takePicture = async () =>
     {
-        if(selectedPictureIndex > -1)
+        if (selectedPictureIndex > -1)
         {
             setSelectedPictureIndex(-1);
             return;
@@ -42,9 +42,9 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
 
         const texture = GetRoomEngine().createTextureFromRoom(GetRoomSession().roomId, 1, getCameraBounds());
 
-        const clone = [ ...cameraRoll ];
+        const clone = [...cameraRoll];
 
-        if(clone.length >= CAMERA_ROLL_LIMIT)
+        if (clone.length >= CAMERA_ROLL_LIMIT)
         {
             simpleAlert(LocalizeText('camera.full.body'));
 
@@ -59,31 +59,31 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
 
     return (
         <DraggableWindow uniqueKey="nitro-camera-capture">
-            <Column center className="nitro-camera-capture" gap={ 0 }>
-                { selectedPicture && <img alt="" className="camera-area" src={ selectedPicture.imageUrl } /> }
+            <Column center className="nitro-camera-capture" gap={0}>
+                {selectedPicture && <img alt="" className="camera-area" src={selectedPicture.imageUrl} />}
                 <div className="camera-canvas drag-handler">
-                    <div className="absolute header-close" onClick={ onClose }>
+                    <div className="absolute header-close" onClick={onClose}>
                         <FaTimes className="fa-icon" />
                     </div>
-                    { !selectedPicture && <div ref={ elementRef } className="camera-area camera-view-finder" /> }
-                    { selectedPicture && 
+                    {!selectedPicture && <div ref={elementRef} className="camera-area camera-view-finder" />}
+                    {selectedPicture &&
                         <div className="camera-area camera-frame">
-                            <div className="camera-frame-preview-actions w-100 absolute bottom-0 py-2 text-center">
-                                <button className="btn btn-success me-3" title={ LocalizeText('camera.editor.button.tooltip') } onClick={ onEdit }>{ LocalizeText('camera.editor.button.text') }</button>
-                                <button className="btn btn-danger" onClick={ onDelete }>{ LocalizeText('camera.delete.button.text') }</button>
+                            <div className="camera-frame-preview-actions w-full absolute bottom-0 py-2 text-center">
+                                <button className="btn btn-success me-3" title={LocalizeText('camera.editor.button.tooltip')} onClick={onEdit}>{LocalizeText('camera.editor.button.text')}</button>
+                                <button className="btn btn-danger" onClick={onDelete}>{LocalizeText('camera.delete.button.text')}</button>
                             </div>
-                        </div> }
+                        </div>}
                     <div className="flex justify-center">
-                        <div className="camera-button" title={ LocalizeText('camera.take.photo.button.tooltip') } onClick={ takePicture } />
+                        <div className="camera-button" title={LocalizeText('camera.take.photo.button.tooltip')} onClick={takePicture} />
                     </div>
                 </div>
-                { (cameraRoll.length > 0) &&
+                {(cameraRoll.length > 0) &&
                     <div className="camera-roll flex justify-center py-2">
-                        { cameraRoll.map((picture, index) =>
+                        {cameraRoll.map((picture, index) =>
                         {
-                            return <img key={ index } alt="" src={ picture.imageUrl } onClick={ event => setSelectedPictureIndex(index) } />;
-                        }) }
-                    </div> }
+                            return <img key={index} alt="" src={picture.imageUrl} onClick={event => setSelectedPictureIndex(index)} />;
+                        })}
+                    </div>}
             </Column>
         </DraggableWindow>
     );

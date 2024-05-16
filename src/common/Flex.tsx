@@ -21,30 +21,30 @@ export const Flex: FC<FlexProps> = props =>
     {
         const newClassNames: string[] = [];
 
-        if(column)
+        if (column)
         {
-            if(reverse) newClassNames.push('flex-col-reverse');
+            if (reverse) newClassNames.push('flex-col-span-reverse');
             else newClassNames.push('flex-col');
         }
         else
         {
-            if(reverse) newClassNames.push('flex-row-reverse');
+            if (reverse) newClassNames.push('flex-row-reverse');
         }
 
-        if(gap) newClassNames.push('gap-' + gap);
+        if (gap) newClassNames.push('gap-' + gap);
 
-        if(alignSelf) newClassNames.push('align-self-' + alignSelf);
+        if (alignSelf) newClassNames.push('align-self-' + alignSelf);
 
-        if(alignItems) newClassNames.push('align-items-' + alignItems);
+        if (alignItems) newClassNames.push('align-items-' + alignItems);
 
-        if(justifyContent) newClassNames.push('justify-content-' + justifyContent);
+        if (justifyContent) newClassNames.push('justify-content-' + justifyContent);
 
-        if(!alignItems && !justifyContent && center) newClassNames.push('items-center', 'justify-center');
+        if (!alignItems && !justifyContent && center) newClassNames.push('items-center', 'justify-center');
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ column, reverse, gap, center, alignSelf, alignItems, justifyContent, classNames ]);
+    }, [column, reverse, gap, center, alignSelf, alignItems, justifyContent, classNames]);
 
-    return <Base classNames={ getClassNames } display={ display } { ...rest } />;
+    return <Base classNames={getClassNames} display={display} {...rest} />;
 }

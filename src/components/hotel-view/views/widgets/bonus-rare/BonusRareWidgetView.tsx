@@ -4,14 +4,14 @@ import { SendMessageComposer } from '../../../../../api';
 import { useMessageEvent } from '../../../../../hooks';
 
 export interface BonusRareWidgetViewProps
-{}
+{ }
 
 export const BonusRareWidgetView: FC<BonusRareWidgetViewProps> = props =>
 {
-    const [ productType, setProductType ] = useState<string>(null);
-    const [ productClassId, setProductClassId ] = useState<number>(null);
-    const [ totalCoinsForBonus, setTotalCoinsForBonus ] = useState<number>(null);
-    const [ coinsStillRequiredToBuy, setCoinsStillRequiredToBuy ] = useState<number>(null);
+    const [productType, setProductType] = useState<string>(null);
+    const [productClassId, setProductClassId] = useState<number>(null);
+    const [totalCoinsForBonus, setTotalCoinsForBonus] = useState<number>(null);
+    const [coinsStillRequiredToBuy, setCoinsStillRequiredToBuy] = useState<number>(null);
 
     useMessageEvent<BonusRareInfoMessageEvent>(BonusRareInfoMessageEvent, event =>
     {
@@ -28,14 +28,14 @@ export const BonusRareWidgetView: FC<BonusRareWidgetViewProps> = props =>
         SendMessageComposer(new GetBonusRareInfoMessageComposer());
     }, []);
 
-    if(!productType) return null;
+    if (!productType) return null;
 
     return (
         <div className="bonus-rare widget flex">
-            { productType }
+            {productType}
             <div className="bg-light-dark rounded overflow-hidden relative bonus-bar-container">
-                <div className="flex justify-center items-center size-full absolute small top-0">{ (totalCoinsForBonus - coinsStillRequiredToBuy) + '/' + totalCoinsForBonus }</div>
-                <div className="small bg-info rounded absolute top-0 h-100" style={ { width: ((totalCoinsForBonus - coinsStillRequiredToBuy) / totalCoinsForBonus) * 100 + '%' } }></div>
+                <div className="flex justify-center items-center size-full absolute small top-0">{(totalCoinsForBonus - coinsStillRequiredToBuy) + '/' + totalCoinsForBonus}</div>
+                <div className="small bg-info rounded absolute top-0 h-full" style={{ width: ((totalCoinsForBonus - coinsStillRequiredToBuy) / totalCoinsForBonus) * 100 + '%' }}></div>
             </div>
         </div>
     );

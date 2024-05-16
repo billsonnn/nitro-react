@@ -10,71 +10,71 @@ export const AvatarEditorModelView: FC<{
     name: string,
     categories: IAvatarEditorCategory[]
 }> = props =>
-{
-    const { name = '', categories = [] } = props;
-    const [ didChange, setDidChange ] = useState<boolean>(false);
-    const [ activeSetType, setActiveSetType ] = useState<string>('');
-    const { maxPaletteCount = 1, gender = null, setGender = null, selectedColorParts = null, getFirstSelectableColor = null, selectEditorColor = null } = useAvatarEditor();
-
-    const activeCategory = useMemo(() =>
     {
-        return categories.find(category => category.setType === activeSetType) ?? null;
-    }, [ categories, activeSetType ]);
+        const { name = '', categories = [] } = props;
+        const [didChange, setDidChange] = useState<boolean>(false);
+        const [activeSetType, setActiveSetType] = useState<string>('');
+        const { maxPaletteCount = 1, gender = null, setGender = null, selectedColorParts = null, getFirstSelectableColor = null, selectEditorColor = null } = useAvatarEditor();
 
-    const selectSet = useCallback((setType: string) =>
-    {
-        const selectedPalettes = selectedColorParts[setType];
+        const activeCategory = useMemo(() =>
+        {
+            return categories.find(category => category.setType === activeSetType) ?? null;
+        }, [categories, activeSetType]);
 
-        if(!selectedPalettes || !selectedPalettes.length) selectEditorColor(setType, 0, getFirstSelectableColor(setType));
+        const selectSet = useCallback((setType: string) =>
+        {
+            const selectedPalettes = selectedColorParts[setType];
 
-        setActiveSetType(setType);
-    }, [ getFirstSelectableColor, selectEditorColor, selectedColorParts ]);
+            if (!selectedPalettes || !selectedPalettes.length) selectEditorColor(setType, 0, getFirstSelectableColor(setType));
 
-    useEffect(() =>
-    {
-        if(!categories || !categories.length || !didChange) return;
+            setActiveSetType(setType);
+        }, [getFirstSelectableColor, selectEditorColor, selectedColorParts]);
 
-        selectSet(categories[0]?.setType);
-        setDidChange(false);
-    }, [ categories, didChange, selectSet ]);
+        useEffect(() =>
+        {
+            if (!categories || !categories.length || !didChange) return;
 
-    useEffect(() =>
-    {
-        setDidChange(true);
-    }, [ categories ]);
+            selectSet(categories[0]?.setType);
+            setDidChange(false);
+        }, [categories, didChange, selectSet]);
 
-    if(!activeCategory) return null;
+        useEffect(() =>
+        {
+            setDidChange(true);
+        }, [categories]);
 
-    return (
-        <div className="flex gap-2 overflow-hidden">
-            <div className="flex flex-col col-2">
-                { (name === AvatarEditorFigureCategory.GENERIC) &&
-                    <>
-                        <div className="category-item items-center justify-center cursor-pointer flex" onClick={ event => setGender(AvatarFigurePartType.MALE) }>
-                            <AvatarEditorIcon icon="male" selected={ gender === FigureDataContainer.MALE } />
-                        </div>
-                        <div className="category-item items-center justify-center cursor-pointer flex" onClick={ event => setGender(AvatarFigurePartType.FEMALE) }>
-                            <AvatarEditorIcon icon="female" selected={ gender === FigureDataContainer.FEMALE } />
-                        </div>
-                    </> }
-                { (name !== AvatarEditorFigureCategory.GENERIC) && (categories.length > 0) && categories.map(category =>
-                {
-                    return (
-                        <div key={ category.setType } className="category-item items-center justify-center cursor-pointer flex" onClick={ event => selectSet(category.setType) }>
-                            <AvatarEditorIcon icon={ category.setType } selected={ (activeSetType === category.setType) } />
-                        </div>
-                    );
-                }) }
+        if (!activeCategory) return null;
+
+        return (
+            <div className="flex gap-2 overflow-hidden">
+                <div className="flex flex-col col-span-2">
+                    {(name === AvatarEditorFigureCategory.GENERIC) &&
+                        <>
+                            <div className="category-item items-center justify-center cursor-pointer flex" onClick={event => setGender(AvatarFigurePartType.MALE)}>
+                                <AvatarEditorIcon icon="male" selected={gender === FigureDataContainer.MALE} />
+                            </div>
+                            <div className="category-item items-center justify-center cursor-pointer flex" onClick={event => setGender(AvatarFigurePartType.FEMALE)}>
+                                <AvatarEditorIcon icon="female" selected={gender === FigureDataContainer.FEMALE} />
+                            </div>
+                        </>}
+                    {(name !== AvatarEditorFigureCategory.GENERIC) && (categories.length > 0) && categories.map(category =>
+                    {
+                        return (
+                            <div key={category.setType} className="category-item items-center justify-center cursor-pointer flex" onClick={event => selectSet(category.setType)}>
+                                <AvatarEditorIcon icon={category.setType} selected={(activeSetType === category.setType)} />
+                            </div>
+                        );
+                    })}
+                </div>
+                <div className="flex flex-col overflow-hidden col-span-5">
+                    <AvatarEditorFigureSetView category={activeCategory} columnCount={3} />
+                </div>
+                <div className="flex flex-col overflow-hidden col-span-5">
+                    {(maxPaletteCount >= 1) &&
+                        <AvatarEditorPaletteSetView category={activeCategory} columnCount={3} paletteIndex={0} />}
+                    {(maxPaletteCount === 2) &&
+                        <AvatarEditorPaletteSetView category={activeCategory} columnCount={3} paletteIndex={1} />}
+                </div>
             </div>
-            <div className="flex flex-col overflow-hidden col-5">
-                <AvatarEditorFigureSetView category={ activeCategory } columnCount={ 3 } />
-            </div>
-            <div className="flex flex-col overflow-hidden col-5">
-                { (maxPaletteCount >= 1) &&
-                    <AvatarEditorPaletteSetView category={ activeCategory } columnCount={ 3 } paletteIndex={ 0 } /> }
-                { (maxPaletteCount === 2) &&
-                    <AvatarEditorPaletteSetView category={ activeCategory } columnCount={ 3 } paletteIndex={ 1 } /> }
-            </div>
-        </div>
-    );
-}
+        );
+    }

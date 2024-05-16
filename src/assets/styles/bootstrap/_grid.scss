@@ -7,7 +7,7 @@
     @include make-row();
 
     > * {
-      @include make-col-ready();
+      @include make-col-span-ready();
     }
   }
 }
