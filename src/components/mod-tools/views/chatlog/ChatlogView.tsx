@@ -64,9 +64,9 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
             <Column fit gap={0} overflow="hidden">
                 <Column gap={2}>
                     <Grid className="text-black fw-bold border-bottom pb-1" gap={1}>
-                        <div className="g-col-span-2">Time</div>
-                        <div className="g-col-span-3">User</div>
-                        <div className="g-col-span-7">Message</div>
+                        <div className="col-span-2">Time</div>
+                        <div className="col-span-3">User</div>
+                        <div className="col-span-7">Message</div>
                     </Grid>
                 </Column>
                 {(records && (records.length > 0)) &&
@@ -78,9 +78,9 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                                     <RoomInfo roomId={row.roomId} roomName={row.roomName} />}
                                 {!row.isRoomInfo &&
                                     <Grid alignItems="center" className="log-entry py-1 border-bottom" fullHeight={false} gap={1}>
-                                        <Text className="g-col-span-2">{row.timestamp}</Text>
-                                        <Text bold pointer underline className="g-col-span-3" onClick={event => CreateLinkEvent(`mod-tools/open-user-info/${row.habboId}`)}>{row.username}</Text>
-                                        <Text textBreak wrap className="g-col-span-7">{row.message}</Text>
+                                        <Text className="col-span-2">{row.timestamp}</Text>
+                                        <Text bold pointer underline className="col-span-3" onClick={event => CreateLinkEvent(`mod-tools/open-user-info/${row.habboId}`)}>{row.username}</Text>
+                                        <Text textBreak wrap className="col-span-7">{row.message}</Text>
                                     </Grid>}
                             </>
                         );

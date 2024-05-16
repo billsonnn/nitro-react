@@ -420,7 +420,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                                                 return (
                                                     <Flex key={index} alignItems="center" gap={1}>
                                                         <Text small wrap align="end" className="col-span-4" variant="white">{key}</Text>
-                                                        <input className="form-control form-control-sm" type="text" value={furniValues[index]} onChange={event => onFurniSettingChange(index, event.target.value)} />
+                                                        <NitroInput type="text" value={furniValues[index]} onChange={event => onFurniSettingChange(index, event.target.value)} />
                                                     </Flex>);
                                             })}
                                         </div>
@@ -435,7 +435,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
                                         return (
                                             <Flex key={index} alignItems="center" gap={1}>
                                                 <Text small wrap align="end" className="col-span-4" variant="white">{key}</Text>
-                                                <input className="form-control form-control-sm" type="text" value={customValues[index]} onChange={event => onCustomVariableChange(index, event.target.value)} />
+                                                <NitroInput type="text" value={customValues[index]} onChange={event => onCustomVariableChange(index, event.target.value)} />
                                             </Flex>);
                                     })}
                                 </div>

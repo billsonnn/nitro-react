@@ -17,7 +17,7 @@ export const NotificationClubGiftBubbleView: FC<NotificationClubGiftBubbleViewPr
                 <LayoutCurrencyIcon className="flex-shrink-0" type="hc" />
                 <span className="ms-1">{LocalizeText('notifications.text.club_gift')}</span>
             </div>
-            <div className="flex items-center justify-content-end gap-2">
+            <div className="flex items-center justify-end gap-2">
                 <button className="btn btn-success w-full btn-sm" type="button" onClick={() => OpenUrl(item.linkUrl)}>{LocalizeText('notifications.button.show_gift_list')}</button>
                 <span className="text-decoration-underline cursor-pointer text-nowrap" onClick={onClose}>{LocalizeText('notifications.button.later')}</span>
             </div>

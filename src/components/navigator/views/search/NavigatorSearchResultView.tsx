@@ -88,7 +88,7 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
         //     <div className="flex flex-col">
         //         <div className="flex items-center px-2 py-1 text-black">
         //             <i className={ 'text-secondary fas ' + (isExtended ? 'fa-minus' : 'fa-plus') } onClick={ toggleExtended }></i>
-        //             <div className="ms-2 flex-grow-1">{ LocalizeText(getResultTitle()) }</div>
+        //             <div className="ms-2 !flex-grow">{ LocalizeText(getResultTitle()) }</div>
         //             <i className={ 'text-secondary fas ' + classNames({ 'fa-bars': (displayMode === NavigatorSearchResultViewDisplayMode.LIST), 'fa-th': displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS })}></i>
         //         </div>
         //         { isExtended &&

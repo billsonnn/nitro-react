@@ -29,7 +29,7 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
     {
         const newClassNames: string[] = [];
 
-        if (display && display.length) newClassNames.push('d-' + display);
+        if (display && display.length) newClassNames.push(display);
 
         if (fit || fullWidth) newClassNames.push('w-full');
 
@@ -37,13 +37,13 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
 
         if (fitV) newClassNames.push('vw-full', 'vh-full');
 
-        if (grow) newClassNames.push('flex-grow-1');
+        if (grow) newClassNames.push('!flex-grow');
 
-        if (shrink) newClassNames.push('flex-shrink-0');
+        if (shrink) newClassNames.push('!flex-shrink-0');
 
         if (overflow) newClassNames.push('overflow-' + overflow);
 
-        if (position) newClassNames.push('position-' + position);
+        if (position) newClassNames.push(position);
 
         if (float) newClassNames.push('float-' + float);
 

@@ -276,7 +276,7 @@ export const CatalogGiftView: FC<{}> = props =>
                         {colors.map(color => <Button key={color.id} active={(color.id === selectedColorId)} disabled={!isColorable} style={{ backgroundColor: color.color }} variant="dark" onClick={() => setSelectedColorId(color.id)} />)}
                     </div>
                 </Column>
-                <div className="flex items-center justify-content-between">
+                <div className="flex items-center justify-between">
                     <Button className="text-black" variant="link" onClick={onClose}>
                         {LocalizeText('cancel')}
                     </Button>

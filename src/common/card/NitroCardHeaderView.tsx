@@ -1,5 +1,5 @@
-import { FC, MouseEvent, useMemo } from 'react';
-import { FaFlag, FaTimes } from 'react-icons/fa';
+import { FC, MouseEvent } from 'react';
+import { FaFlag } from 'react-icons/fa';
 import { Base, Column, ColumnProps, Flex } from '..';
 
 interface NitroCardHeaderViewProps extends ColumnProps
@@ -15,14 +15,7 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
 {
     const { headerText = null, isGalleryPhoto = false, noCloseButton = false, onReportPhoto = null, onCloseClick = null, justifyContent = 'center', alignItems = 'center', classNames = [], children = null, ...rest } = props;
 
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames: string[] = [ 'drag-handler', 'container-fluid', 'nitro-card-header' ];
 
-        if(classNames.length) newClassNames.push(...classNames);
-
-        return newClassNames;
-    }, [ classNames ]);
 
     const onMouseDown = (event: MouseEvent<HTMLDivElement>) =>
     {
@@ -31,17 +24,20 @@ export const NitroCardHeaderView: FC<NitroCardHeaderViewProps> = props =>
     }
 
     return (
-        <Column center classNames={ getClassNames } position="relative" { ...rest }>
+        <Column center className={"relative flex items-center justify-center flex-col drag-handler min-h-card-header max-h-card-header bg-card-header"} {...rest}>
             <Flex center fullWidth>
-                <span className="nitro-card-header-text">{ headerText }</span>
-                { isGalleryPhoto &&
-                    <Base className="end-4 nitro-card-header-report-camera" position="absolute" onClick={ onReportPhoto }>
+                <span className="text-xl text-white drop-shadow-lg">{headerText}</span>
+
+                {isGalleryPhoto &&
+                    <Base className="end-4 nitro-card-header-report-camera" position="absolute" onClick={onReportPhoto}>
                         <FaFlag className="fa-icon" />
                     </Base>
                 }
-                <Flex center className="end-2 nitro-card-header-close" position="absolute" onClick={ onCloseClick } onMouseDownCapture={ onMouseDown }>
-                    <FaTimes className="fa-icon w-12 h-12" />
-                </Flex>
+
+
+                <div className="absolute flex items-center justify-center cursor-pointer right-2 p-[2px] ubuntu-close-button" onClick={onCloseClick} onMouseDownCapture={onMouseDown}>
+                </div>
+
             </Flex>
         </Column>
     );

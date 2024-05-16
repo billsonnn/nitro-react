@@ -200,7 +200,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                     <Column alignItems="end" gap={1}>
                         <Grid overflow="hidden">
                             <Column overflow="hidden" size={6}>
-                                <input className="form-control form-control-sm quantity-input" disabled={!groupItem} placeholder={LocalizeText('catalog.bundlewidget.spinner.select.amount')} type="number" value={quantity} onChange={event => setQuantity(event.target.valueAsNumber)} />
+                                <input className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm quantity-input" disabled={!groupItem} placeholder={LocalizeText('catalog.bundlewidget.spinner.select.amount')} type="number" value={quantity} onChange={event => setQuantity(event.target.valueAsNumber)} />
                             </Column>
                             <Column overflow="hidden" size={6}>
                                 <Button disabled={!groupItem} variant="secondary" onClick={event => changeCount(groupItem.getUnlockedCount())}>{LocalizeText('inventory.trading.areoffering')}</Button>
@@ -215,7 +215,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
             <Column overflow="hidden" size={8}>
                 <Grid overflow="hidden">
                     <Column overflow="hidden" size={6}>
-                        <div className="flex justify-content-between items-center">
+                        <div className="flex justify-between items-center">
                             <Text>{LocalizeText('inventory.trading.you')} {LocalizeText('inventory.trading.areoffering')}:</Text>
                             {getLockIcon(ownUser.accepts)}
                         </div>
@@ -241,7 +241,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                         </div>
                     </Column>
                     <Column overflow="hidden" size={6}>
-                        <div className="flex justify-content-between items-center">
+                        <div className="flex justify-between items-center">
                             <Text>{otherUser.userName} {LocalizeText('inventory.trading.isoffering')}:</Text>
                             {getLockIcon(otherUser.accepts)}
                         </div>
@@ -260,7 +260,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                         </div>
                     </Column>
                 </Grid>
-                <div className="flex flex-grow-1 justify-content-between">
+                <div className="flex !flex-grow justify-between">
                     <Button variant="danger" onClick={cancelTrade}>{LocalizeText('generic.cancel')}</Button>
                     {(tradeState === TradeState.TRADING_STATE_READY) &&
                         <Button disabled={(!ownUser.itemCount && !otherUser.itemCount)} variant="secondary" onClick={progressTrade}>{LocalizeText('inventory.trading.accept')}</Button>}

@@ -31,7 +31,7 @@ export const CatalogLayoutTrophiesView: FC<CatalogLayoutProps> = props =>
         <Grid>
             <Column overflow="hidden" size={7}>
                 <CatalogItemGridWidgetView />
-                <textarea className="flex-grow-1 form-control w-full" defaultValue={trophyText || ''} onChange={event => setTrophyText(event.target.value)} />
+                <textarea className="!flex-grow form-control w-full" defaultValue={trophyText || ''} onChange={event => setTrophyText(event.target.value)} />
             </Column>
             <Column center={!currentOffer} overflow="hidden" size={5}>
                 {!currentOffer &&
@@ -44,7 +44,7 @@ export const CatalogLayoutTrophiesView: FC<CatalogLayoutProps> = props =>
                         <CatalogViewProductWidgetView />
                         <Column grow gap={1}>
                             <Text grow truncate>{currentOffer.localizationName}</Text>
-                            <div className="flex justify-content-end">
+                            <div className="flex justify-end">
                                 <CatalogTotalPriceWidget alignItems="end" />
                             </div>
                             <CatalogPurchaseWidgetView />

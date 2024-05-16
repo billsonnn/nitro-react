@@ -106,8 +106,8 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
                         <Text small>Change room name</Text>
                     </div>
                 </Column>
-                <textarea className="form-control" placeholder="Type a mandatory message to the users in this text box..." value={message} onChange={event => setMessage(event.target.value)}></textarea>
-                <div className="flex justify-content-between">
+                <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem]" placeholder="Type a mandatory message to the users in this text box..." value={message} onChange={event => setMessage(event.target.value)}></textarea>
+                <div className="flex justify-between">
                     <Button variant="danger" onClick={event => handleClick('send_message')}>Send Caution</Button>
                     <Button onClick={event => handleClick('alert_only')}>Send Alert only</Button>
                 </div>

@@ -19,10 +19,10 @@ export const CatalogView: FC<{}> = props =>
             linkReceived: (url: string) =>
             {
                 const parts = url.split('/');
-        
-                if(parts.length < 2) return;
-        
-                switch(parts[1])
+
+                if (parts.length < 2) return;
+
+                switch (parts[1])
                 {
                     case 'show':
                         setIsVisible(true);
@@ -34,11 +34,11 @@ export const CatalogView: FC<{}> = props =>
                         setIsVisible(prevValue => !prevValue);
                         return;
                     case 'open':
-                        if(parts.length > 2)
+                        if (parts.length > 2)
                         {
-                            if(parts.length === 4)
+                            if (parts.length === 4)
                             {
-                                switch(parts[2])
+                                switch (parts[2])
                                 {
                                     case 'offerId':
                                         openPageByOfferId(parseInt(parts[3]));
@@ -54,7 +54,7 @@ export const CatalogView: FC<{}> = props =>
                         {
                             setIsVisible(true);
                         }
-        
+
                         return;
                 }
             },
@@ -64,46 +64,46 @@ export const CatalogView: FC<{}> = props =>
         AddLinkEventTracker(linkTracker);
 
         return () => RemoveLinkEventTracker(linkTracker);
-    }, [ setIsVisible, openPageByOfferId, openPageByName ]);
+    }, [setIsVisible, openPageByOfferId, openPageByName]);
 
     return (
         <>
-            { isVisible &&
-                <NitroCardView className="nitro-catalog" style={ GetConfigurationValue('catalog.headers') ? { width: 710 } : {} } uniqueKey="catalog">
-                    <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => setIsVisible(false) } />
+            {isVisible &&
+                <NitroCardView className="w-[630px] h-[400px]" style={GetConfigurationValue('catalog.headers') ? { width: 710 } : {}} uniqueKey="catalog">
+                    <NitroCardHeaderView headerText={LocalizeText('catalog.title')} onCloseClick={event => setIsVisible(false)} />
                     <NitroCardTabsView>
-                        { rootNode && (rootNode.children.length > 0) && rootNode.children.map(child =>
+                        {rootNode && (rootNode.children.length > 0) && rootNode.children.map(child =>
                         {
-                            if(!child.isVisible) return null;
+                            if (!child.isVisible) return null;
 
                             return (
-                                <NitroCardTabsItemView key={ child.pageId } isActive={ child.isActive } onClick={ event =>
+                                <NitroCardTabsItemView key={child.pageId} isActive={child.isActive} onClick={event =>
                                 {
-                                    if(searchResult) setSearchResult(null);
+                                    if (searchResult) setSearchResult(null);
 
                                     activateNode(child);
-                                } } >
-                                    <div className={ `flex items-center gap-${ GetConfigurationValue('catalog.tab.icons') ? 1 : 0 }` }>
-                                        { GetConfigurationValue('catalog.tab.icons') && <CatalogIconView icon={ child.iconId } /> }
-                                        { child.localization }
+                                }} >
+                                    <div className={`flex items-center gap-${GetConfigurationValue('catalog.tab.icons') ? 1 : 0}`}>
+                                        {GetConfigurationValue('catalog.tab.icons') && <CatalogIconView icon={child.iconId} />}
+                                        {child.localization}
                                     </div>
                                 </NitroCardTabsItemView>
                             );
-                        }) }
+                        })}
                     </NitroCardTabsView>
                     <NitroCardContentView>
                         <Grid>
-                            { !navigationHidden &&
-                                <Column overflow="hidden" size={ 3 }>
-                                    { activeNodes && (activeNodes.length > 0) &&
-                                        <CatalogNavigationView node={ activeNodes[0] } /> }
-                                </Column> }
-                            <Column overflow="hidden" size={ !navigationHidden ? 9 : 12 }>
-                                { GetCatalogLayout(currentPage, () => setNavigationHidden(true)) }
+                            {!navigationHidden &&
+                                <Column overflow="hidden" size={3}>
+                                    {activeNodes && (activeNodes.length > 0) &&
+                                        <CatalogNavigationView node={activeNodes[0]} />}
+                                </Column>}
+                            <Column overflow="hidden" size={!navigationHidden ? 9 : 12}>
+                                {GetCatalogLayout(currentPage, () => setNavigationHidden(true))}
                             </Column>
                         </Grid>
                     </NitroCardContentView>
-                </NitroCardView> }
+                </NitroCardView>}
             <CatalogGiftView />
             <MarketplacePostOfferView />
         </>

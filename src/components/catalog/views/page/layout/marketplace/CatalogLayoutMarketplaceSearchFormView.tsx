@@ -1,6 +1,7 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { IMarketplaceSearchOptions, LocalizeText, MarketplaceSearchType } from '../../../../../../api';
 import { Button, Text } from '../../../../../../common';
+import { NitroInput } from '../../../../../../layout';
 
 export interface SearchFormViewProps
 {
@@ -55,13 +56,30 @@ export const SearchFormView: FC<SearchFormViewProps> = props =>
                 <>
                     <div className="flex items-center gap-1">
                         <Text className="col-span-3">{LocalizeText('catalog.marketplace.search_name')}</Text>
-                        <input className="form-control form-control-sm" type="text" value={searchQuery} onChange={event => setSearchQuery(event.target.value)} />
+
+                        <NitroInput
+                            value={searchQuery}
+                            onChange={event => setSearchQuery(event.target.value)} />
+
                     </div>
                     <div className="flex items-center gap-1">
                         <Text className="col-span-3">{LocalizeText('catalog.marketplace.search_price')}</Text>
                         <div className="flex w-full gap-1">
-                            <input className="form-control form-control-sm" min={0} type="number" value={min} onChange={event => setMin(event.target.valueAsNumber)} />
-                            <input className="form-control form-control-sm" min={0} type="number" value={max} onChange={event => setMax(event.target.valueAsNumber)} />
+
+                            <NitroInput
+                                type="number"
+                                min={0}
+                                value={min}
+                                onChange={event => setMin(event.target.valueAsNumber)} />
+
+
+                            <NitroInput
+                                type="number"
+                                min={0}
+                                value={max}
+                                onChange={event => setMax(event.target.valueAsNumber)} />
+
+
                         </div>
                     </div>
                     <Button className="mx-auto" variant="secondary" onClick={onClickSearch}>{LocalizeText('generic.search')}</Button>

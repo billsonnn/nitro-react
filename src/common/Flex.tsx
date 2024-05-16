@@ -33,11 +33,11 @@ export const Flex: FC<FlexProps> = props =>
 
         if (gap) newClassNames.push('gap-' + gap);
 
-        if (alignSelf) newClassNames.push('align-self-' + alignSelf);
+        if (alignSelf) newClassNames.push('self-' + alignSelf);
 
-        if (alignItems) newClassNames.push('align-items-' + alignItems);
+        if (alignItems) newClassNames.push('items-' + alignItems);
 
-        if (justifyContent) newClassNames.push('justify-content-' + justifyContent);
+        if (justifyContent) newClassNames.push('justify-' + justifyContent);
 
         if (!alignItems && !justifyContent && center) newClassNames.push('items-center', 'justify-center');
 

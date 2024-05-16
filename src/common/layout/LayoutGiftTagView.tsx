@@ -27,7 +27,7 @@ export const LayoutGiftTagView: FC<LayoutGiftTagViewProps> = props =>
                 </div>}
             </div>
             <Flex className="w-full pt-4 pb-4 pe-4 ps-3" overflow="hidden">
-                <Column className="flex-grow-1" justifyContent="between" overflow="auto">
+                <Column className="!flex-grow" justifyContent="between" overflow="auto">
                     {!editable &&
                         <Text textBreak className="gift-message">{message}</Text>}
                     {editable && (onChange !== null) &&

@@ -14,24 +14,24 @@ export const LayoutRoomThumbnailView: FC<LayoutRoomThumbnailViewProps> = props =
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'room-thumbnail', 'rounded', 'border' ];
+        const newClassNames: string[] = ['room-thumbnail', 'rounded', '!border-[1px] !border-[solid] !border-[#283F5D]'];
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ classNames ]);
+    }, [classNames]);
 
     const getImageUrl = useMemo(() =>
     {
-        if(customUrl && customUrl.length) return (GetConfigurationValue<string>('image.library.url') + customUrl);
+        if (customUrl && customUrl.length) return (GetConfigurationValue<string>('image.library.url') + customUrl);
 
         return (GetConfigurationValue<string>('thumbnails.url').replace('%thumbnail%', roomId.toString()));
-    }, [ customUrl, roomId ]);
+    }, [customUrl, roomId]);
 
     return (
-        <Base classNames={ getClassNames } overflow={ overflow } shrink={ shrink } { ...rest }>
-            { getImageUrl && <img alt="" src={ getImageUrl } /> }
-            { children }
+        <Base classNames={getClassNames} overflow={overflow} shrink={shrink} {...rest}>
+            {getImageUrl && <img alt="" src={getImageUrl} />}
+            {children}
         </Base>
     );
 }

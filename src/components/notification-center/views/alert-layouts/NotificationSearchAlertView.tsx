@@ -11,13 +11,13 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
 {
     const { item = null, title = ((props.item && props.item.title) || ''), onClose = null, ...rest } = props;
 
-    const [ searchValue, setSearchValue ] = useState('');
-    const [ results, setResults ] = useState<string[]>([]);
+    const [searchValue, setSearchValue] = useState('');
+    const [results, setResults] = useState<string[]>([]);
 
     const visitUrl = () =>
     {
         OpenUrl(item.clickUrl);
-        
+
         onClose();
     }
 
@@ -28,33 +28,33 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
         setResults(res.filter((val: string) => val.includes(value)));
         setSearchValue(value);
     }
-    
+
     useEffect(() =>
     {
         setResults(JSON.parse(item.messages[0]));
-    }, [ item ]);
+    }, [item]);
 
     const isAction = (item.clickUrl && item.clickUrl.startsWith('event:'));
 
     return (
-        <LayoutNotificationAlertView title={ title } onClose={ onClose } { ...rest }>
+        <LayoutNotificationAlertView title={title} onClose={onClose} {...rest}>
             <Flex fullWidth alignItems="center" position="relative">
-                <input className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } type="text" value={ searchValue } onChange={ event => updateSearchValue(event.target.value) } />
+                <NitroInput placeholder={LocalizeText('generic.search')} type="text" value={searchValue} onChange={event => updateSearchValue(event.target.value)} />
             </Flex>
             <Column fullHeight className="py-1" overflow="hidden">
-                <AutoGrid columnCount={ 1 } gap={ 1 }>
-                    { results && results.map((n, index) =>
-                    { 
-                        return <span key={ index }>{ n }</span>
-                    }) }
+                <AutoGrid columnCount={1} gap={1}>
+                    {results && results.map((n, index) =>
+                    {
+                        return <span key={index}>{n}</span>
+                    })}
                 </AutoGrid>
             </Column>
-            <hr className="my-2"/>
-            <Column center alignItems="center" gap={ 1 }>
-                { !isAction && !item.clickUrl &&
-                    <Button onClick={ onClose }>{ LocalizeText('generic.close') }</Button> }
-                { item.clickUrl && (item.clickUrl.length > 0) &&
-                    <Button onClick={ visitUrl }>{ LocalizeText(item.clickUrlText) }</Button> }
+            <hr className="my-2" />
+            <Column center alignItems="center" gap={1}>
+                {!isAction && !item.clickUrl &&
+                    <Button onClick={onClose}>{LocalizeText('generic.close')}</Button>}
+                {item.clickUrl && (item.clickUrl.length > 0) &&
+                    <Button onClick={visitUrl}>{LocalizeText(item.clickUrlText)}</Button>}
             </Column>
         </LayoutNotificationAlertView>
     );

@@ -41,7 +41,7 @@ export const FloorplanImportExportView: FC<FloorplanImportExportViewProps> = pro
             <NitroCardHeaderView headerText={LocalizeText('floor.plan.editor.import.export')} onCloseClick={onCloseClick} />
             <NitroCardContentView>
                 <textarea className="h-full" value={map} onChange={event => setMap(event.target.value)} />
-                <div className="flex justify-content-between">
+                <div className="flex justify-between">
                     <Button onClick={event => setMap(ConvertTileMapToString(originalFloorplanSettings.tilemap))}>
                         {LocalizeText('floor.plan.editor.revert.to.last.received.map')}
                     </Button>

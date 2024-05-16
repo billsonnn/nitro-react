@@ -101,7 +101,7 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
             <div className="flex items-center gap-1">
                 <Text className="col-span-3">{LocalizeText('navigator.roomname')}</Text>
                 <Column fullWidth gap={0}>
-                    <input className="form-control form-control-sm" maxLength={ROOM_NAME_MAX_LENGTH} value={roomName} onBlur={saveRoomName} onChange={event => setRoomName(event.target.value)} />
+                    <NitroInput maxLength={ROOM_NAME_MAX_LENGTH} value={roomName} onBlur={saveRoomName} onChange={event => setRoomName(event.target.value)} />
                     {(roomName.length < ROOM_NAME_MIN_LENGTH) &&
                         <Text bold small variant="danger">
                             {LocalizeText('navigator.roomsettings.roomnameismandatory')}
@@ -110,7 +110,7 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
             </div>
             <div className="flex items-center gap-1">
                 <Text className="col-span-3">{LocalizeText('navigator.roomsettings.desc')}</Text>
-                <textarea className="form-control form-control-sm" maxLength={DESC_MAX_LENGTH} value={roomDescription} onBlur={saveRoomDescription} onChange={event => setRoomDescription(event.target.value)} />
+                <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm" maxLength={DESC_MAX_LENGTH} value={roomDescription} onBlur={saveRoomDescription} onChange={event => setRoomDescription(event.target.value)} />
             </div>
             <div className="flex items-center gap-1">
                 <Text className="col-span-3">{LocalizeText('navigator.category')}</Text>
@@ -135,7 +135,7 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
             <div className="flex items-center gap-1">
                 <Text className="col-span-3">{LocalizeText('navigator.tags')}</Text>
                 <Column fullWidth gap={0}>
-                    <input className="form-control form-control-sm" value={roomTag1} onBlur={() => saveTags(0)} onChange={event => setRoomTag1(event.target.value)} />
+                    <NitroInput value={roomTag1} onBlur={() => saveTags(0)} onChange={event => setRoomTag1(event.target.value)} />
                     {(roomTag1.length > TAGS_MAX_LENGTH) &&
                         <Text bold small variant="danger">
                             {LocalizeText('navigator.roomsettings.toomanycharacters')}
@@ -146,7 +146,7 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
                         </Text>}
                 </Column>
                 <Column fullWidth gap={0}>
-                    <input className="form-control form-control-sm" value={roomTag2} onBlur={() => saveTags(1)} onChange={event => setRoomTag2(event.target.value)} />
+                    <NitroInput value={roomTag2} onBlur={() => saveTags(1)} onChange={event => setRoomTag2(event.target.value)} />
                     {(roomTag2.length > TAGS_MAX_LENGTH) &&
                         <Text bold small variant="danger">
                             {LocalizeText('navigator.roomsettings.toomanycharacters')}

@@ -26,38 +26,38 @@ export const Text: FC<TextProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'd-inline' ];
+        const newClassNames: string[] = ['inline'];
 
-        if(variant) newClassNames.push('text-' + variant);
+        if (variant) newClassNames.push('text-' + variant);
 
-        if(bold) newClassNames.push('fw-bold');
+        if (bold) newClassNames.push('fw-bold');
 
-        if(fontWeight) newClassNames.push('fw-' + fontWeight);
+        if (fontWeight) newClassNames.push('fw-' + fontWeight);
 
-        if(fontSize) newClassNames.push('fs-' + fontSize);
+        if (fontSize) newClassNames.push('fs-' + fontSize);
 
-        if(align) newClassNames.push('text-' + align);
+        if (align) newClassNames.push('text-' + align);
 
-        if(underline) newClassNames.push('text-decoration-underline');
+        if (underline) newClassNames.push('text-decoration-underline');
 
-        if(italics) newClassNames.push('fst-italic');
+        if (italics) newClassNames.push('fst-italic');
 
-        if(truncate) newClassNames.push('text-truncate');
+        if (truncate) newClassNames.push('text-truncate');
 
-        if(center) newClassNames.push('text-center');
+        if (center) newClassNames.push('text-center');
 
-        if(textEnd) newClassNames.push('text-end');
+        if (textEnd) newClassNames.push('text-end');
 
-        if(small) newClassNames.push('small');
+        if (small) newClassNames.push('small');
 
-        if(wrap) newClassNames.push('text-wrap');
+        if (wrap) newClassNames.push('text-wrap');
 
-        if(noWrap) newClassNames.push('text-nowrap');
+        if (noWrap) newClassNames.push('text-nowrap');
 
-        if(textBreak) newClassNames.push('text-break');
+        if (textBreak) newClassNames.push('text-break');
 
         return newClassNames;
-    }, [ variant, fontWeight, fontSize, align, bold, underline, italics, truncate, center, textEnd, small, wrap, noWrap, textBreak ]);
+    }, [variant, fontWeight, fontSize, align, bold, underline, italics, truncate, center, textEnd, small, wrap, noWrap, textBreak]);
 
-    return <Base classNames={ getClassNames } { ...rest } />;
+    return <Base classNames={getClassNames} {...rest} />;
 }

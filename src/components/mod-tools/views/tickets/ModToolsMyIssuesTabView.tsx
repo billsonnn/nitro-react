@@ -17,11 +17,11 @@ export const ModToolsMyIssuesTabView: FC<ModToolsMyIssuesTabViewProps> = props =
         <Column gap={0} overflow="hidden">
             <Column gap={2}>
                 <Grid className="text-black fw-bold border-bottom pb-1" gap={1}>
-                    <div className="g-col-span-2">Type</div>
-                    <div className="g-col-span-3">Room/Player</div>
-                    <div className="g-col-span-3">Opened</div>
-                    <div className="g-col-span-2"></div>
-                    <div className="g-col-span-2"></div>
+                    <div className="col-span-2">Type</div>
+                    <div className="col-span-3">Room/Player</div>
+                    <div className="col-span-3">Opened</div>
+                    <div className="col-span-2"></div>
+                    <div className="col-span-2"></div>
                 </Grid>
             </Column>
             <Column className="striped-children" gap={0} overflow="auto">
@@ -29,13 +29,13 @@ export const ModToolsMyIssuesTabView: FC<ModToolsMyIssuesTabViewProps> = props =
                 {
                     return (
                         <Grid key={issue.issueId} alignItems="center" className="text-black py-1 border-bottom" gap={1}>
-                            <div className="g-col-span-2">{issue.categoryId}</div>
-                            <div className="g-col-span-3">{issue.reportedUserName}</div>
-                            <div className="g-col-span-3">{new Date(Date.now() - issue.issueAgeInMilliseconds).toLocaleTimeString()}</div>
-                            <div className="g-col-span-2">
+                            <div className="col-span-2">{issue.categoryId}</div>
+                            <div className="col-span-3">{issue.reportedUserName}</div>
+                            <div className="col-span-3">{new Date(Date.now() - issue.issueAgeInMilliseconds).toLocaleTimeString()}</div>
+                            <div className="col-span-2">
                                 <Button variant="primary" onClick={event => handleIssue(issue.issueId)}>Handle</Button>
                             </div>
-                            <div className="g-col-span-2">
+                            <div className="col-span-2">
                                 <Button variant="danger" onClick={event => SendMessageComposer(new ReleaseIssuesMessageComposer([issue.issueId]))}>Release</Button>
                             </div>
                         </Grid>

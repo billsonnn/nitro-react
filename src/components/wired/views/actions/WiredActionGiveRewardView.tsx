@@ -118,7 +118,7 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
                         <option value="2">Once every {limitationInterval} hours</option>
                         <option value="1">Once every {limitationInterval} days</option>
                     </select>
-                    {(rewardTime > 0) && <input className="form-control form-control-sm" type="number" value={limitationInterval} onChange={event => setLimitationInterval(Number(event.target.value))} />}
+                    {(rewardTime > 0) && <NitroInput type="number" value={limitationInterval} onChange={event => setLimitationInterval(Number(event.target.value))} />}
                 </div>
             </div>
             <hr className="m-0 bg-dark" />
@@ -130,7 +130,7 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
                 If checked each reward will be given once to each user. This will disable the probabilities option.
             </Text>
             <hr className="m-0 bg-dark" />
-            <div className="flex justify-content-between items-center">
+            <div className="flex justify-between items-center">
                 <Text bold>Rewards</Text>
                 <Button variant="success" onClick={addReward}>
                     <FaPlus className="fa-icon" />
@@ -145,8 +145,8 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
                                 <input checked={reward.isBadge} className="form-check-input" type="checkbox" onChange={(e) => updateReward(index, e.target.checked, reward.itemCode, reward.probability)} />
                                 <Text small>Badge?</Text>
                             </div>
-                            <input className="form-control form-control-sm" placeholder="Item Code" type="text" value={reward.itemCode} onChange={e => updateReward(index, reward.isBadge, e.target.value, reward.probability)} />
-                            <input className="form-control form-control-sm" placeholder="Probability" type="number" value={reward.probability} onChange={e => updateReward(index, reward.isBadge, reward.itemCode, Number(e.target.value))} />
+                            <NitroInput placeholder="Item Code" type="text" value={reward.itemCode} onChange={e => updateReward(index, reward.isBadge, e.target.value, reward.probability)} />
+                            <NitroInput placeholder="Probability" type="number" value={reward.probability} onChange={e => updateReward(index, reward.isBadge, reward.itemCode, Number(e.target.value))} />
                             {(index > 0) &&
                                 <Button variant="danger" onClick={event => removeReward(index)}>
                                     <FaTrash className="fa-icon" />

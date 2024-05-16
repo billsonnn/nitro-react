@@ -16,20 +16,27 @@ export const Button: FC<ButtonProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'btn' ];
+        const newClassNames: string[] = ['btn'];
 
-        if(variant) newClassNames.push('btn-' + variant);
+        if (variant)
+        {
+            newClassNames.push('text-[#fff] bg-[#1e7295] border-[#1e7295] [box-shadow:inset_0_2px_#ffffff26,_inset_0_-2px_#0000001a,_0_1px_#0000001a]');
+        }
 
-        if(size) newClassNames.push('btn-' + size);
+        if (size)
+        {
 
-        if(active) newClassNames.push('active');
+            newClassNames.push('px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem]');
+        }
 
-        if(disabled) newClassNames.push('disabled');
+        if (active) newClassNames.push('active');
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if (disabled) newClassNames.push('disabled');
+
+        if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ variant, size, active, disabled, classNames ]);
+    }, [variant, size, active, disabled, classNames]);
 
-    return <Flex center classNames={ getClassNames } { ...rest } />;
+    return <Flex center classNames={getClassNames} {...rest} />;
 }

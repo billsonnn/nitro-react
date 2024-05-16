@@ -42,7 +42,7 @@ export const FurnitureStickieView: FC<{}> = props =>
         <DraggableWindow handleSelector=".drag-handler" windowPosition={DraggableWindowPosition.TOP_LEFT}>
             <div className={'nitro-stickie nitro-stickie-image stickie-' + (type == 'post_it' ? getStickieColorName(color) : getStickieTypeName(type))}>
                 <div className="flex items-center stickie-header drag-handler">
-                    <div className="flex items-center flex-grow-1 h-full">
+                    <div className="flex items-center !flex-grow h-full">
                         {canModify &&
                             <>
                                 <div className="nitro-stickie-image stickie-trash header-trash" onClick={trash}></div>

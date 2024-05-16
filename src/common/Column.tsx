@@ -23,7 +23,7 @@ export const Column: FC<ColumnProps> = props =>
         {
             let colClassName = `col-span-${size}`;
 
-            if (isCssGrid) colClassName = `g-${colClassName}`;
+            if (isCssGrid) colClassName = `${colClassName}`;
 
             newClassNames.push(colClassName);
         }

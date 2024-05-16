@@ -21,8 +21,8 @@ export const DoorbellWidgetView: FC<{}> = props =>
             <NitroCardContentView gap={0} overflow="hidden">
                 <Column gap={2}>
                     <Grid className="text-black fw-bold border-bottom px-1 pb-1" gap={1}>
-                        <div className="g-col-span-6">{LocalizeText('generic.username')}</div>
-                        <div className="g-col-span-6" />
+                        <div className="col-span-6">{LocalizeText('generic.username')}</div>
+                        <div className="col-span-6" />
                     </Grid>
                 </Column>
                 <Column className="striped-children" gap={0} overflow="auto">
@@ -30,9 +30,9 @@ export const DoorbellWidgetView: FC<{}> = props =>
                     {
                         return (
                             <Grid key={userName} alignItems="center" className="text-black border-bottom p-1" gap={1}>
-                                <div className="g-col-span-6">{userName}</div>
-                                <div className="g-col-span-6">
-                                    <div className="flex items-center gap-1 justify-content-end">
+                                <div className="col-span-6">{userName}</div>
+                                <div className="col-span-6">
+                                    <div className="flex items-center gap-1 justify-end">
                                         <Button variant="success" onClick={() => answer(userName, true)}>
                                             {LocalizeText('generic.accept')}
                                         </Button>

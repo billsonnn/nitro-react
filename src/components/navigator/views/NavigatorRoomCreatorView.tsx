@@ -4,6 +4,7 @@ import { FC, useEffect, useState } from 'react';
 import { GetClubMemberLevel, GetConfigurationValue, IRoomModel, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../common';
 import { useNavigator } from '../../../hooks';
+import { NitroInput } from '../../../layout';
 
 export const NavigatorRoomCreatorView: FC<{}> = props =>
 {
@@ -68,11 +69,11 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                 <div className="flex flex-col gap-1 overflow-auto col-span-6">
                     <div className="flex flex-col gap-1">
                         <Text>{LocalizeText('navigator.createroom.roomnameinfo')}</Text>
-                        <input className="form-control form-control-sm" maxLength={60} placeholder={LocalizeText('navigator.createroom.roomnameinfo')} type="text" onChange={event => setName(event.target.value)} />
+                        <NitroInput maxLength={60} placeholder={LocalizeText('navigator.createroom.roomnameinfo')} type="text" onChange={event => setName(event.target.value)} />
                     </div>
-                    <div className="flex flex-col flex-grow-1 gap-1">
+                    <div className="flex flex-col !flex-grow gap-1">
                         <Text>{LocalizeText('navigator.createroom.roomdescinfo')}</Text>
-                        <textarea className="flex-grow-1 form-control form-control-sm w-full" maxLength={255} placeholder={LocalizeText('navigator.createroom.roomdescinfo')} onChange={event => setDescription(event.target.value)} />
+                        <textarea className="!flex-grow form-control form-control-sm w-full" maxLength={255} placeholder={LocalizeText('navigator.createroom.roomdescinfo')} onChange={event => setDescription(event.target.value)} />
                     </div>
                     <div className="flex flex-col gap-1">
                         <Text>{LocalizeText('navigator.category')}</Text>

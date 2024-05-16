@@ -155,7 +155,7 @@ export const GroupMembersView: FC<{}> = props =>
                         <LayoutBadgeImageView badgeCode={membersData.badge} className="mx-auto d-block" isGroup={true} />
                     </Flex>
                     <Column fullWidth gap={1}>
-                        <input className="form-control form-control-sm w-full" placeholder={LocalizeText('group.members.searchinfo')} type="text" value={searchQuery} onChange={event => setSearchQuery(event.target.value)} />
+                        <input className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm w-full" placeholder={LocalizeText('group.members.searchinfo')} type="text" value={searchQuery} onChange={event => setSearchQuery(event.target.value)} />
                         <select className="form-select form-select-sm w-full" value={levelId} onChange={event => setLevelId(parseInt(event.target.value))}>
                             <option value="0">{LocalizeText('group.members.search.all')}</option>
                             <option value="1">{LocalizeText('group.members.search.admins')}</option>

@@ -13,35 +13,35 @@ export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutProps> = props =>
 {
     const { page = null } = props;
     const { currentOffer = null } = useCatalog();
-    
+
     return (
         <Grid>
-            <Column overflow="hidden" size={ 7 }>
+            <Column overflow="hidden" size={7}>
                 <CatalogItemGridWidgetView />
             </Column>
-            <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
-                { !currentOffer &&
+            <Column center={!currentOffer} overflow="hidden" size={5}>
+                {!currentOffer &&
                     <>
-                        { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
-                        <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
-                    </> }
-                { currentOffer &&
+                        {!!page.localization.getImage(1) && <img alt="" src={page.localization.getImage(1)} />}
+                        <Text center dangerouslySetInnerHTML={{ __html: page.localization.getText(0) }} />
+                    </>}
+                {currentOffer &&
                     <>
                         <div className="relative overflow-hidden">
                             <CatalogViewProductWidgetView />
                             <CatalogGuildBadgeWidgetView className="bottom-1 end-1" position="absolute" />
                         </div>
-                        <Column grow gap={ 1 }>
-                            <Text truncate>{ currentOffer.localizationName }</Text>
-                            <div className="flex-grow-1">
+                        <Column grow gap={1}>
+                            <Text truncate>{currentOffer.localizationName}</Text>
+                            <div className="!flex-grow">
                                 <CatalogGuildSelectorWidgetView />
                             </div>
-                            <div className="flex justify-content-end">
+                            <div className="flex justify-end">
                                 <CatalogTotalPriceWidget alignItems="end" />
                             </div>
                             <CatalogPurchaseWidgetView />
                         </Column>
-                    </> }
+                    </>}
             </Column>
         </Grid>
     );

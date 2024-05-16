@@ -114,7 +114,7 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                 </Column>
                 {getRoleIcon()}
             </Column>
-            <div className="flex flex-col justify-content-between overflow-auto col-span-9">
+            <div className="flex flex-col justify-between overflow-auto col-span-9">
                 <div className="flex flex-col overflow-hidden">
                     <div className="flex flex-col gap-1">
                         <div className="items-center gap-2">

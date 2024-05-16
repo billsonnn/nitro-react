@@ -27,7 +27,7 @@ export const RoomPromoteMyOwnEventWidgetView: FC<RoomPromoteMyOwnEventWidgetView
                 <Text variant="white">{eventDescription}</Text>
             </Flex>
             <br /><br />
-            <Grid className="flex items-center justify-content-end gap-2">
+            <Grid className="flex items-center justify-end gap-2">
                 <Button className="btn btn-primary w-full btn-sm" onClick={event => setIsEditingPromote(true)}>{LocalizeText('navigator.roominfo.editevent')}</Button>
                 <Button className="btn btn-success w-full btn-sm" onClick={event => extendPromote()}>{LocalizeText('roomad.extend.event')}</Button>
             </Grid>

@@ -24,52 +24,54 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'layout-grid-item', 'border', 'border-2', 'border-muted', 'rounded' ];
+        const newClassNames: string[] = ['bg-center bg-no-repeat', 'border-2', '!border-[#b6bec5]', 'rounded'];
 
-        if(itemActive) newClassNames.push('active');
+        newClassNames.push('h-[40px] bg-[#cdd3d9]');
 
-        if(itemUniqueSoldout || (itemUniqueNumber > 0)) newClassNames.push('unique-item');
+        if (itemActive) newClassNames.push('!bg-[#ececec] !border-[#fff]');
 
-        if(itemUniqueSoldout) newClassNames.push('sold-out');
+        if (itemUniqueSoldout || (itemUniqueNumber > 0)) newClassNames.push('unique-item');
 
-        if(itemUnseen) newClassNames.push('unseen');
+        if (itemUniqueSoldout) newClassNames.push('sold-out');
 
-        if(itemHighlight) newClassNames.push('has-highlight');
+        if (itemUnseen) newClassNames.push('unseen');
 
-        if(disabled) newClassNames.push('disabled')
+        if (itemHighlight) newClassNames.push('has-highlight');
 
-        if(itemImage === null) newClassNames.push('icon', 'loading-icon');
+        if (disabled) newClassNames.push('disabled')
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if (itemImage === null) newClassNames.push('icon', 'loading-icon');
+
+        if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ itemActive, itemUniqueSoldout, itemUniqueNumber, itemUnseen, itemHighlight, disabled, itemImage, classNames ]);
+    }, [itemActive, itemUniqueSoldout, itemUniqueNumber, itemUnseen, itemHighlight, disabled, itemImage, classNames]);
 
     const getStyle = useMemo(() =>
     {
         let newStyle = { ...style };
 
-        if(itemImage && !(itemUniqueSoldout || (itemUniqueNumber > 0))) newStyle.backgroundImage = `url(${ itemImage })`;
+        if (itemImage && !(itemUniqueSoldout || (itemUniqueNumber > 0))) newStyle.backgroundImage = `url(${itemImage})`;
 
-        if(itemColor) newStyle.backgroundColor = itemColor;
+        if (itemColor) newStyle.backgroundColor = itemColor;
 
-        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
+        if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [ style, itemImage, itemColor, itemUniqueSoldout, itemUniqueNumber ]);
+    }, [style, itemImage, itemColor, itemUniqueSoldout, itemUniqueNumber]);
 
     return (
-        <Column pointer center={ center } classNames={ getClassNames } column={ column } overflow={ overflow } position={ position } style={ getStyle } { ...rest }>
-            { (itemCount > itemCountMinimum) &&
-                <LayoutItemCountView count={ itemCount } /> }
-            { (itemUniqueNumber > 0) && 
+        <Column pointer center={center} classNames={getClassNames} column={column} overflow={overflow} position={position} style={getStyle} {...rest}>
+            {(itemCount > itemCountMinimum) &&
+                <LayoutItemCountView count={itemCount} />}
+            {(itemUniqueNumber > 0) &&
                 <>
-                    <Base fit className="unique-bg-override" style={ { backgroundImage: `url(${ itemImage })` } } />
+                    <Base fit className="unique-bg-override" style={{ backgroundImage: `url(${itemImage})` }} />
                     <div className="absolute bottom-0 unique-item-counter">
-                        <LayoutLimitedEditionStyledNumberView value={ itemUniqueNumber } />
+                        <LayoutLimitedEditionStyledNumberView value={itemUniqueNumber} />
                     </div>
-                </> }
-            { children }
+                </>}
+            {children}
         </Column>
     );
 }

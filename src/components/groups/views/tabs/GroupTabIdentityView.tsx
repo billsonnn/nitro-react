@@ -84,11 +84,11 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
             <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-1">
                     <Text center className="col-span-3">{LocalizeText('group.edit.name')}</Text>
-                    <input className="form-control form-control-sm" maxLength={29} type="text" value={groupName} onChange={event => setGroupName(event.target.value)} />
+                    <NitroInput maxLength={29} type="text" value={groupName} onChange={event => setGroupName(event.target.value)} />
                 </div>
                 <div className="flex items-center gap-1">
                     <Text center className="col-span-3">{LocalizeText('group.edit.desc')}</Text>
-                    <textarea className="form-control form-control-sm" maxLength={254} value={groupDescription} onChange={event => setGroupDescription(event.target.value)} />
+                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm" maxLength={254} value={groupDescription} onChange={event => setGroupDescription(event.target.value)} />
                 </div>
                 {isCreator &&
                     <>

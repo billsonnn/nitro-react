@@ -16,8 +16,8 @@ import { CatalogLayoutProps } from './CatalogLayout.types';
 export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props =>
 {
     const { page = null } = props;
-    const [ songId, setSongId ] = useState(-1);
-    const [ officialSongId, setOfficialSongId ] = useState('');
+    const [songId, setSongId] = useState(-1);
+    const [officialSongId, setOfficialSongId] = useState('');
     const { currentOffer = null, currentPage = null } = useCatalog();
 
     const previewSong = (previewSongId: number) => GetSoundManager().musicController?.playSong(previewSongId, MusicPriorities.PRIORITY_PURCHASE_PREVIEW, 15, 0, 0, 0);
@@ -26,24 +26,24 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props =>
     {
         const parser = event.getParser();
 
-        if(parser.officialSongId !== officialSongId) return;
+        if (parser.officialSongId !== officialSongId) return;
 
         setSongId(parser.songId);
     });
 
     useEffect(() =>
     {
-        if(!currentOffer) return;
+        if (!currentOffer) return;
 
         const product = currentOffer.product;
 
-        if(!product) return;
+        if (!product) return;
 
-        if(product.extraParam.length > 0)
+        if (product.extraParam.length > 0)
         {
             const id = parseInt(product.extraParam);
 
-            if(id > 0)
+            if (id > 0)
             {
                 setSongId(id);
             }
@@ -60,7 +60,7 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props =>
         }
 
         return () => GetSoundManager().musicController?.stop(MusicPriorities.PRIORITY_PURCHASE_PREVIEW);
-    }, [ currentOffer ]);
+    }, [currentOffer]);
 
     useEffect(() =>
     {
@@ -70,34 +70,34 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props =>
     return (
         <>
             <Grid>
-                <Column overflow="hidden" size={ 7 }>
-                    { GetConfigurationValue('catalog.headers') &&
-                        <CatalogHeaderView imageUrl={ currentPage.localization.getImage(0) }/> }
+                <Column overflow="hidden" size={7}>
+                    {GetConfigurationValue('catalog.headers') &&
+                        <CatalogHeaderView imageUrl={currentPage.localization.getImage(0)} />}
                     <CatalogItemGridWidgetView />
                 </Column>
-                <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
-                    { !currentOffer &&
+                <Column center={!currentOffer} overflow="hidden" size={5}>
+                    {!currentOffer &&
                         <>
-                            { !!page.localization.getImage(1) &&
-                                <LayoutImage imageUrl={ page.localization.getImage(1) } /> }
-                            <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
-                        </> }
-                    { currentOffer &&
+                            {!!page.localization.getImage(1) &&
+                                <LayoutImage imageUrl={page.localization.getImage(1)} />}
+                            <Text center dangerouslySetInnerHTML={{ __html: page.localization.getText(0) }} />
+                        </>}
+                    {currentOffer &&
                         <>
-                            <div className="flex items-center justify-center overflow-hidden" style={ { height: 140 } }>
-                                { (currentOffer.product.productType !== ProductTypeEnum.BADGE) &&
+                            <div className="flex items-center justify-center overflow-hidden" style={{ height: 140 }}>
+                                {(currentOffer.product.productType !== ProductTypeEnum.BADGE) &&
                                     <>
                                         <CatalogViewProductWidgetView />
                                         <CatalogAddOnBadgeWidgetView className="bg-muted rounded bottom-1 end-1" />
-                                    </> }
-                                { (currentOffer.product.productType === ProductTypeEnum.BADGE) && <CatalogAddOnBadgeWidgetView className="scale-2" /> }
+                                    </>}
+                                {(currentOffer.product.productType === ProductTypeEnum.BADGE) && <CatalogAddOnBadgeWidgetView className="scale-2" />}
                             </div>
-                            <Column grow gap={ 1 }>
+                            <Column grow gap={1}>
                                 <CatalogLimitedItemWidgetView />
-                                <Text grow truncate>{ currentOffer.localizationName }</Text>
-                                { songId > -1 && <Button onClick={ () => previewSong(songId) }>{ LocalizeText('play_preview_button') }</Button>
+                                <Text grow truncate>{currentOffer.localizationName}</Text>
+                                {songId > -1 && <Button onClick={() => previewSong(songId)}>{LocalizeText('play_preview_button')}</Button>
                                 }
-                                <div className="flex justify-content-between">
+                                <div className="flex justify-between">
                                     <div className="flex flex-col gap-1">
                                         <CatalogSpinnerWidgetView />
                                     </div>
@@ -105,7 +105,7 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props =>
                                 </div>
                                 <CatalogPurchaseWidgetView />
                             </Column>
-                        </> }
+                        </>}
                 </Column>
             </Grid>
         </>

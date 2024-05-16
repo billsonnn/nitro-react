@@ -38,18 +38,18 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
                 <Column fullHeight gap={0} overflow="hidden">
                     <Column gap={2}>
                         <Grid className="text-black fw-bold border-bottom pb-1" gap={1}>
-                            <div className="g-col-span-2">Time</div>
-                            <div className="g-col-span-7">Room name</div>
-                            <div className="g-col-span-3">Visit</div>
+                            <div className="col-span-2">Time</div>
+                            <div className="col-span-7">Room name</div>
+                            <div className="col-span-3">Visit</div>
                         </Grid>
                     </Column>
                     <InfiniteScroll rowRender={row =>
                     {
                         return (
                             <Grid alignItems="center" className="text-black py-1 border-bottom" fullHeight={false} gap={1}>
-                                <Text className="g-col-span-2">{row.enterHour.toString().padStart(2, '0')}: {row.enterMinute.toString().padStart(2, '0')}</Text>
-                                <Text className="g-col-span-7">{row.roomName}</Text>
-                                <Text bold pointer underline className="g-col-span-3" variant="primary" onClick={event => TryVisitRoom(row.roomId)}>Visit Room</Text>
+                                <Text className="col-span-2">{row.enterHour.toString().padStart(2, '0')}: {row.enterMinute.toString().padStart(2, '0')}</Text>
+                                <Text className="col-span-7">{row.roomName}</Text>
+                                <Text bold pointer underline className="col-span-3" variant="primary" onClick={event => TryVisitRoom(row.roomId)}>Visit Room</Text>
                             </Grid>
                         );
                     }} rows={roomVisitData?.rooms ?? []} />

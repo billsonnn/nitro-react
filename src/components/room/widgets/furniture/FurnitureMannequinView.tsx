@@ -95,7 +95,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
                     <Column grow justifyContent="between" overflow="auto">
                         {(mode === MODE_CONTROLLER) &&
                             <>
-                                <input className="form-control form-control-sm" type="text" value={name} onBlur={saveName} onChange={event => setName(event.target.value)} />
+                                <NitroInput type="text" value={name} onBlur={saveName} onChange={event => setName(event.target.value)} />
                                 <div className="flex flex-col gap-1">
                                     <Button variant="success" onClick={event => setMode(MODE_UPDATE)}>
                                         {LocalizeText('mannequin.widget.style')}
@@ -111,7 +111,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
                                     <Text bold>{name}</Text>
                                     <Text wrap>{LocalizeText('mannequin.widget.savetext')}</Text>
                                 </div>
-                                <div className="flex items-center justify-content-between">
+                                <div className="flex items-center justify-between">
                                     <Text pointer underline onClick={event => setMode(MODE_CONTROLLER)}>
                                         {LocalizeText('mannequin.widget.back')}
                                     </Text>
@@ -131,7 +131,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
                                 </Button>
                             </>}
                         {(mode === MODE_NO_CLUB) &&
-                            <div className="flex justify-center items-center flex-grow-1">
+                            <div className="flex justify-center items-center !flex-grow">
                                 <Text>{LocalizeText('mannequin.widget.clubnotification')}</Text>
                             </div>}
                         {(mode === MODE_WRONG_GENDER) &&

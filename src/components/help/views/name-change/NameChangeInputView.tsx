@@ -75,7 +75,7 @@ export const NameChangeInputView: FC<NameChangeLayoutViewProps> = props =>
         <div className="flex flex-col gap-3 h-full">
             <div>{LocalizeText('tutorial.name_change.info.select')}</div>
             <div className="flex gap-2">
-                <input className="form-control form-control-sm" type="text" value={newUsername} onChange={event => handleUsernameChange(event.target.value)} />
+                <NitroInput type="text" value={newUsername} onChange={event => handleUsernameChange(event.target.value)} />
                 <button className="btn btn-primary" disabled={newUsername === '' || isChecking} onClick={check}>{LocalizeText('tutorial.name_change.check')}</button>
             </div>
             {!errorCode && !canProceed &&

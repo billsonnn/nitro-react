@@ -163,7 +163,7 @@ export const FriendsMessengerView: FC<{}> = props =>
                                     </Column>
                                 </Column>
                                 <div className="flex gap-1">
-                                    <input className="form-control form-control-sm" maxLength={255} placeholder={LocalizeText('messenger.window.input.default', ['FRIEND_NAME'], [activeThread.participant.name])} type="text" value={messageText} onChange={event => setMessageText(event.target.value)} onKeyDown={onKeyDown} />
+                                    <NitroInput maxLength={255} placeholder={LocalizeText('messenger.window.input.default', ['FRIEND_NAME'], [activeThread.participant.name])} type="text" value={messageText} onChange={event => setMessageText(event.target.value)} onKeyDown={onKeyDown} />
                                     <Button variant="success" onClick={send}>
                                         {LocalizeText('widgets.chatinput.say')}
                                     </Button>

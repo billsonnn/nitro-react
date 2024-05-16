@@ -3,28 +3,28 @@ import { CreateRoomSession, DoorStateType, GoToDesktop, LocalizeText } from '../
 import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
 import { useNavigator } from '../../../hooks';
 
-const VISIBLE_STATES = [ DoorStateType.START_DOORBELL, DoorStateType.STATE_WAITING, DoorStateType.STATE_NO_ANSWER, DoorStateType.START_PASSWORD, DoorStateType.STATE_WRONG_PASSWORD ];
-const DOORBELL_STATES = [ DoorStateType.START_DOORBELL, DoorStateType.STATE_WAITING, DoorStateType.STATE_NO_ANSWER ];
-const PASSWORD_STATES = [ DoorStateType.START_PASSWORD, DoorStateType.STATE_WRONG_PASSWORD ];
+const VISIBLE_STATES = [DoorStateType.START_DOORBELL, DoorStateType.STATE_WAITING, DoorStateType.STATE_NO_ANSWER, DoorStateType.START_PASSWORD, DoorStateType.STATE_WRONG_PASSWORD];
+const DOORBELL_STATES = [DoorStateType.START_DOORBELL, DoorStateType.STATE_WAITING, DoorStateType.STATE_NO_ANSWER];
+const PASSWORD_STATES = [DoorStateType.START_PASSWORD, DoorStateType.STATE_WRONG_PASSWORD];
 
 export const NavigatorDoorStateView: FC<{}> = props =>
 {
-    const [ password, setPassword ] = useState('');
+    const [password, setPassword] = useState('');
     const { doorData = null, setDoorData = null } = useNavigator();
 
     const onClose = () =>
     {
-        if(doorData && (doorData.state === DoorStateType.STATE_WAITING)) GoToDesktop();
+        if (doorData && (doorData.state === DoorStateType.STATE_WAITING)) GoToDesktop();
 
         setDoorData(null);
     }
 
     const ring = () =>
     {
-        if(!doorData || !doorData.roomInfo) return;
+        if (!doorData || !doorData.roomInfo) return;
 
         CreateRoomSession(doorData.roomInfo.roomId);
-        
+
         setDoorData(prevValue =>
         {
             const newValue = { ...prevValue };
@@ -37,7 +37,7 @@ export const NavigatorDoorStateView: FC<{}> = props =>
 
     const tryEntering = () =>
     {
-        if(!doorData || !doorData.roomInfo) return;
+        if (!doorData || !doorData.roomInfo) return;
 
         CreateRoomSession(doorData.roomInfo.roomId, password);
 
@@ -53,57 +53,57 @@ export const NavigatorDoorStateView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if(!doorData || (doorData.state !== DoorStateType.STATE_NO_ANSWER)) return;
+        if (!doorData || (doorData.state !== DoorStateType.STATE_NO_ANSWER)) return;
 
         GoToDesktop();
-    }, [ doorData ]);
+    }, [doorData]);
 
-    if(!doorData || (doorData.state === DoorStateType.NONE) || (VISIBLE_STATES.indexOf(doorData.state) === -1)) return null;
+    if (!doorData || (doorData.state === DoorStateType.NONE) || (VISIBLE_STATES.indexOf(doorData.state) === -1)) return null;
 
     const isDoorbell = (DOORBELL_STATES.indexOf(doorData.state) >= 0);
 
     return (
         <NitroCardView className="nitro-navigator-doorbell" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText(isDoorbell ? 'navigator.doorbell.title' : 'navigator.password.title') } onCloseClick={ onClose } />
+            <NitroCardHeaderView headerText={LocalizeText(isDoorbell ? 'navigator.doorbell.title' : 'navigator.password.title')} onCloseClick={onClose} />
             <NitroCardContentView>
                 <div className="flex flex-col gap-1">
-                    <Text bold>{ doorData && doorData.roomInfo && doorData.roomInfo.roomName }</Text>
-                    { (doorData.state === DoorStateType.START_DOORBELL) &&
-                        <Text>{ LocalizeText('navigator.doorbell.info') }</Text> }
-                    { (doorData.state === DoorStateType.STATE_WAITING) &&
-                        <Text>{ LocalizeText('navigator.doorbell.waiting') }</Text> }
-                    { (doorData.state === DoorStateType.STATE_NO_ANSWER) &&
-                        <Text>{ LocalizeText('navigator.doorbell.no.answer') }</Text> }
-                    { (doorData.state === DoorStateType.START_PASSWORD) &&
-                        <Text>{ LocalizeText('navigator.password.info') }</Text> }
-                    { (doorData.state === DoorStateType.STATE_WRONG_PASSWORD) &&
-                        <Text>{ LocalizeText('navigator.password.retryinfo') }</Text> }
+                    <Text bold>{doorData && doorData.roomInfo && doorData.roomInfo.roomName}</Text>
+                    {(doorData.state === DoorStateType.START_DOORBELL) &&
+                        <Text>{LocalizeText('navigator.doorbell.info')}</Text>}
+                    {(doorData.state === DoorStateType.STATE_WAITING) &&
+                        <Text>{LocalizeText('navigator.doorbell.waiting')}</Text>}
+                    {(doorData.state === DoorStateType.STATE_NO_ANSWER) &&
+                        <Text>{LocalizeText('navigator.doorbell.no.answer')}</Text>}
+                    {(doorData.state === DoorStateType.START_PASSWORD) &&
+                        <Text>{LocalizeText('navigator.password.info')}</Text>}
+                    {(doorData.state === DoorStateType.STATE_WRONG_PASSWORD) &&
+                        <Text>{LocalizeText('navigator.password.retryinfo')}</Text>}
                 </div>
-                { isDoorbell &&
+                {isDoorbell &&
                     <div className="flex flex-col gap-1">
-                        { (doorData.state === DoorStateType.START_DOORBELL) &&
-                            <Button variant="success" onClick={ ring }>
-                                { LocalizeText('navigator.doorbell.button.ring') }
-                            </Button> }
-                        <Button variant="danger" onClick={ onClose }>
-                            { LocalizeText('generic.cancel') }
+                        {(doorData.state === DoorStateType.START_DOORBELL) &&
+                            <Button variant="success" onClick={ring}>
+                                {LocalizeText('navigator.doorbell.button.ring')}
+                            </Button>}
+                        <Button variant="danger" onClick={onClose}>
+                            {LocalizeText('generic.cancel')}
                         </Button>
-                    </div> }
-                { !isDoorbell &&
+                    </div>}
+                {!isDoorbell &&
                     <>
                         <div className="flex flex-col gap-1">
-                            <Text>{ LocalizeText('navigator.password.enter') }</Text>
-                            <input className="form-control form-control-sm" type="password" onChange={ event => setPassword(event.target.value) } />
+                            <Text>{LocalizeText('navigator.password.enter')}</Text>
+                            <NitroInput type="password" onChange={event => setPassword(event.target.value)} />
                         </div>
                         <div className="flex flex-col gap-1">
-                            <Button variant="success" onClick={ tryEntering }>
-                                { LocalizeText('navigator.password.button.try') }
+                            <Button variant="success" onClick={tryEntering}>
+                                {LocalizeText('navigator.password.button.try')}
                             </Button>
-                            <Button variant="danger" onClick={ onClose }>
-                                { LocalizeText('generic.cancel') }
+                            <Button variant="danger" onClick={onClose}>
+                                {LocalizeText('generic.cancel')}
                             </Button>
                         </div>
-                    </> }
+                    </>}
             </NitroCardContentView>
         </NitroCardView>
     );

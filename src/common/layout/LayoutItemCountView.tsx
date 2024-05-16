@@ -12,17 +12,17 @@ export const LayoutItemCountView: FC<LayoutItemCountViewProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'badge', 'border', 'border-black', 'bg-danger', 'px-1', 'nitro-item-count' ];
+        const newClassNames: string[] = ['badge', '!border-[1px] !border-[solid] !border-[#283F5D]', 'border-black', 'bg-danger', 'px-1', 'nitro-item-count'];
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ classNames ]);
+    }, [classNames]);
 
     return (
-        <Base classNames={ getClassNames } position="absolute" { ...rest }>
-            { count }
-            { children }
+        <Base classNames={getClassNames} position="absolute" {...rest}>
+            {count}
+            {children}
         </Base>
     );
 }

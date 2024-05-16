@@ -55,7 +55,7 @@ export const FurnitureCraftingView: FC<{}> = props =>
         <NitroCardView className="nitro-widget-crafting" theme="primary-slim">
             <NitroCardHeaderView headerText={LocalizeText('crafting.title')} onCloseClick={onClose} />
             <NitroCardContentView>
-                <div className="flex flex-grow-1 gap-2 overflow-hidden">
+                <div className="flex !flex-grow gap-2 overflow-hidden">
                     <div className="flex flex-col w-full gap-2">
                         <Column fullHeight overflow="hidden">
                             <div className="bg-muted rounded py-1 text-center">{LocalizeText('crafting.title.products')}</div>

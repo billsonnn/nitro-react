@@ -13,34 +13,34 @@ interface GroupCreatorViewProps
     onClose: () => void;
 }
 
-const TABS: number[] = [ 1, 2, 3, 4 ];
+const TABS: number[] = [1, 2, 3, 4];
 
 export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
 {
     const { onClose = null } = props;
-    const [ currentTab, setCurrentTab ] = useState<number>(1);
-    const [ closeAction, setCloseAction ] = useState<{ action: () => boolean }>(null);
-    const [ groupData, setGroupData ] = useState<IGroupData>(null);
-    const [ availableRooms, setAvailableRooms ] = useState<{ id: number, name: string }[]>(null);
-    const [ purchaseCost, setPurchaseCost ] = useState<number>(0);
+    const [currentTab, setCurrentTab] = useState<number>(1);
+    const [closeAction, setCloseAction] = useState<{ action: () => boolean }>(null);
+    const [groupData, setGroupData] = useState<IGroupData>(null);
+    const [availableRooms, setAvailableRooms] = useState<{ id: number, name: string }[]>(null);
+    const [purchaseCost, setPurchaseCost] = useState<number>(0);
 
     const onCloseClose = () =>
     {
         setCloseAction(null);
         setGroupData(null);
 
-        if(onClose) onClose();
+        if (onClose) onClose();
     }
 
     const buyGroup = () =>
     {
-        if(!groupData) return;
+        if (!groupData) return;
 
         const badge = [];
 
         groupData.groupBadgeParts.forEach(part =>
         {
-            if(part.code)
+            if (part.code)
             {
                 badge.push(part.key);
                 badge.push(part.color);
@@ -53,12 +53,12 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
 
     const previousStep = () =>
     {
-        if(closeAction && closeAction.action)
+        if (closeAction && closeAction.action)
         {
-            if(!closeAction.action()) return;
+            if (!closeAction.action()) return;
         }
 
-        if(currentTab === 1)
+        if (currentTab === 1)
         {
             onClose();
 
@@ -70,12 +70,12 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
 
     const nextStep = () =>
     {
-        if(closeAction && closeAction.action)
+        if (closeAction && closeAction.action)
         {
-            if(!closeAction.action()) return;
+            if (!closeAction.action()) return;
         }
 
-        if(currentTab === 4)
+        if (currentTab === 4)
         {
             buyGroup();
 
@@ -111,50 +111,50 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
             groupColors: null,
             groupBadgeParts: null
         });
-        
-        SendMessageComposer(new GroupBuyDataComposer());
-    }, [ setGroupData ]);
 
-    if(!groupData) return null;
+        SendMessageComposer(new GroupBuyDataComposer());
+    }, [setGroupData]);
+
+    if (!groupData) return null;
 
     return (
         <NitroCardView className="nitro-group-creator" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('group.create.title') } onCloseClick={ onCloseClose } />
+            <NitroCardHeaderView headerText={LocalizeText('group.create.title')} onCloseClick={onCloseClose} />
             <NitroCardContentView>
                 <div className="flex items-center justify-center creator-tabs">
-                    { TABS.map((tab, index) =>
+                    {TABS.map((tab, index) =>
                     {
                         return (
-                            <Flex key={ index } center className={ `tab tab-${ ((tab === 1) ? 'blue-flat' : (tab === 4) ? 'yellow' : 'blue-arrow') } ${ (currentTab === tab) ? 'active' : '' }` }>
-                                <Text variant="white">{ LocalizeText(`group.create.steplabel.${ tab }`) }</Text>
+                            <Flex key={index} center className={`tab tab-${((tab === 1) ? 'blue-flat' : (tab === 4) ? 'yellow' : 'blue-arrow')} ${(currentTab === tab) ? 'active' : ''}`}>
+                                <Text variant="white">{LocalizeText(`group.create.steplabel.${tab}`)}</Text>
                             </Flex>
                         );
-                    }) }
+                    })}
                 </div>
                 <Column overflow="hidden">
                     <div className="items-center gap-2">
-                        <div className={ `nitro-group-tab-image tab-${ currentTab }` } />
-                        <Column grow gap={ 0 }>
-                            <Text bold fontSize={ 4 }>{ LocalizeText(`group.create.stepcaption.${ currentTab }`) }</Text>
-                            <Text>{ LocalizeText(`group.create.stepdesc.${ currentTab }`) }</Text>
+                        <div className={`nitro-group-tab-image tab-${currentTab}`} />
+                        <Column grow gap={0}>
+                            <Text bold fontSize={4}>{LocalizeText(`group.create.stepcaption.${currentTab}`)}</Text>
+                            <Text>{LocalizeText(`group.create.stepdesc.${currentTab}`)}</Text>
                         </Column>
                     </div>
                     <Column overflow="hidden">
-                        { (currentTab === 1) &&
-                            <GroupTabIdentityView availableRooms={ availableRooms } groupData={ groupData } isCreator={ true } setCloseAction={ setCloseAction } setGroupData={ setGroupData } onClose={ null } /> }
-                        { (currentTab === 2) &&
-                            <GroupTabBadgeView groupData={ groupData } setCloseAction={ setCloseAction } setGroupData={ setGroupData } /> }
-                        { (currentTab === 3) &&
-                            <GroupTabColorsView groupData={ groupData } setCloseAction={ setCloseAction } setGroupData={ setGroupData } /> }
-                        { (currentTab === 4) &&
-                            <GroupTabCreatorConfirmationView groupData={ groupData } purchaseCost={ purchaseCost } setGroupData={ setGroupData } /> }
+                        {(currentTab === 1) &&
+                            <GroupTabIdentityView availableRooms={availableRooms} groupData={groupData} isCreator={true} setCloseAction={setCloseAction} setGroupData={setGroupData} onClose={null} />}
+                        {(currentTab === 2) &&
+                            <GroupTabBadgeView groupData={groupData} setCloseAction={setCloseAction} setGroupData={setGroupData} />}
+                        {(currentTab === 3) &&
+                            <GroupTabColorsView groupData={groupData} setCloseAction={setCloseAction} setGroupData={setGroupData} />}
+                        {(currentTab === 4) &&
+                            <GroupTabCreatorConfirmationView groupData={groupData} purchaseCost={purchaseCost} setGroupData={setGroupData} />}
                     </Column>
-                    <div className="flex justify-content-between">
-                        <Button className="text-black" variant="link" onClick={ previousStep }>
-                            { LocalizeText(currentTab === 1 ? 'generic.cancel' : 'group.create.previousstep') }
+                    <div className="flex justify-between">
+                        <Button className="text-black" variant="link" onClick={previousStep}>
+                            {LocalizeText(currentTab === 1 ? 'generic.cancel' : 'group.create.previousstep')}
                         </Button>
-                        <Button disabled={ ((currentTab === 4) && !HasHabboClub()) } variant={ ((currentTab === 4) ? HasHabboClub() ? 'success' : 'danger' : 'primary') } onClick={ nextStep }>
-                            { LocalizeText((currentTab === 4) ? HasHabboClub() ? 'group.create.confirm.buy' : 'group.create.confirm.viprequired' : 'group.create.nextstep') }
+                        <Button disabled={((currentTab === 4) && !HasHabboClub())} variant={((currentTab === 4) ? HasHabboClub() ? 'success' : 'danger' : 'primary')} onClick={nextStep}>
+                            {LocalizeText((currentTab === 4) ? HasHabboClub() ? 'group.create.confirm.buy' : 'group.create.confirm.viprequired' : 'group.create.nextstep')}
                         </Button>
                     </div>
                 </Column>
