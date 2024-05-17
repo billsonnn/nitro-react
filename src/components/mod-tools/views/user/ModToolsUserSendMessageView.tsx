@@ -37,7 +37,7 @@ export const ModToolsUserSendMessageView: FC<ModToolsUserSendMessageViewProps> =
             <NitroCardHeaderView headerText={'Send Message'} onCloseClick={() => onCloseClick()} />
             <NitroCardContentView className="text-black">
                 <Text>Message To: {user.username}</Text>
-                <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem]" value={message} onChange={event => setMessage(event.target.value)}></textarea>
+                <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem]" value={message} onChange={event => setMessage(event.target.value)}></textarea>
                 <Button fullWidth onClick={sendMessage}>Send message</Button>
             </NitroCardContentView>
         </NitroCardView>

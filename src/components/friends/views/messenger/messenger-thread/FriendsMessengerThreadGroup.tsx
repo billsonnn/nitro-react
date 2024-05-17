@@ -58,7 +58,7 @@ export const FriendsMessengerThreadGroup: FC<{ thread: MessengerThread, group: M
                     <LayoutAvatarImageView direction={2} figure={groupChatData.figure} />}
             </Base>
             <Base className={'bg-light text-black border-radius mb-2 rounded py-1 px-2 messages-group-' + (isOwnChat ? 'right' : 'left')}>
-                <Base className="fw-bold">
+                <Base className="font-bold	">
                     {isOwnChat && GetSessionDataManager().userName}
                     {!isOwnChat && (groupChatData ? groupChatData.username : thread.participant.name)}
                 </Base>

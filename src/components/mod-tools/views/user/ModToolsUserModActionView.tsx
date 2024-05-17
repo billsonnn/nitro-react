@@ -164,7 +164,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                 </select>
                 <div className="flex flex-col gap-1">
                     <Text small>Optional message type, overrides default</Text>
-                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem]" value={message} onChange={event => setMessage(event.target.value)} />
+                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem]" value={message} onChange={event => setMessage(event.target.value)} />
                 </div>
                 <Flex gap={1} justifyContent="between">
                     <Button variant="primary" onClick={sendDefaultSanction}>Default Sanction</Button>

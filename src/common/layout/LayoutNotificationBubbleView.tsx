@@ -12,16 +12,16 @@ export interface LayoutNotificationBubbleViewProps extends FlexProps
 export const LayoutNotificationBubbleView: FC<LayoutNotificationBubbleViewProps> = props =>
 {
     const { fadesOut = true, timeoutMs = 8000, onClose = null, overflow = 'hidden', classNames = [], ...rest } = props;
-    const [ isVisible, setIsVisible ] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'nitro-notification-bubble', 'rounded' ];
+        const newClassNames: string[] = ['bg-[#1c1c20f2] px-[5px] py-[6px] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599] ', 'rounded'];
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ classNames ]);
+    }, [classNames]);
 
     useEffect(() =>
     {
@@ -32,7 +32,7 @@ export const LayoutNotificationBubbleView: FC<LayoutNotificationBubbleViewProps>
 
     useEffect(() =>
     {
-        if(!fadesOut) return;
+        if (!fadesOut) return;
 
         const timeout = setTimeout(() =>
         {
@@ -42,11 +42,11 @@ export const LayoutNotificationBubbleView: FC<LayoutNotificationBubbleViewProps>
         }, timeoutMs);
 
         return () => clearTimeout(timeout);
-    }, [ fadesOut, timeoutMs, onClose ]);
+    }, [fadesOut, timeoutMs, onClose]);
 
     return (
-        <TransitionAnimation inProp={ isVisible } timeout={ 300 } type={ TransitionAnimationTypes.FADE_IN }>
-            <Flex classNames={ getClassNames } overflow={ overflow } onClick={ onClose } { ...rest } />
+        <TransitionAnimation inProp={isVisible} timeout={300} type={TransitionAnimationTypes.FADE_IN}>
+            <Flex classNames={getClassNames} overflow={overflow} onClick={onClose} {...rest} />
         </TransitionAnimation>
     );
 }

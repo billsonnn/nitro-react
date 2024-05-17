@@ -140,7 +140,7 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                                         <LayoutCurrencyIcon type={5} />
                                     </div>
                                 </div>}
-                            {(publishCooldown > 0) && <div className="mt-1 text-center fw-bold">{LocalizeText('camera.publish.wait', ['minutes'], [Math.ceil(publishCooldown / 60).toString()])}</div>}
+                            {(publishCooldown > 0) && <div className="mt-1 text-center font-bold	">{LocalizeText('camera.publish.wait', ['minutes'], [Math.ceil(publishCooldown / 60).toString()])}</div>}
                         </div>
                         {!wasPicturePublished &&
                             <div className="flex align-items-end">

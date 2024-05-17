@@ -200,7 +200,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                     <Column alignItems="end" gap={1}>
                         <Grid overflow="hidden">
                             <Column overflow="hidden" size={6}>
-                                <input className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm quantity-input" disabled={!groupItem} placeholder={LocalizeText('catalog.bundlewidget.spinner.select.amount')} type="number" value={quantity} onChange={event => setQuantity(event.target.valueAsNumber)} />
+                                <input className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm quantity-input" disabled={!groupItem} placeholder={LocalizeText('catalog.bundlewidget.spinner.select.amount')} type="number" value={quantity} onChange={event => setQuantity(event.target.valueAsNumber)} />
                             </Column>
                             <Column overflow="hidden" size={6}>
                                 <Button disabled={!groupItem} variant="secondary" onClick={event => changeCount(groupItem.getUnlockedCount())}>{LocalizeText('inventory.trading.areoffering')}</Button>

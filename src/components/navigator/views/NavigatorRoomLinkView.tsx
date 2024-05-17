@@ -24,7 +24,7 @@ export const NavigatorRoomLinkView: FC<NavigatorRoomLinkViewProps> = props =>
                     <div className="flex flex-col">
                         <Text bold fontSize={5}>{LocalizeText('navigator.embed.headline')}</Text>
                         <Text>{LocalizeText('navigator.embed.info')}</Text>
-                        <input readOnly className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm" type="text" value={LocalizeText('navigator.embed.src', ['roomId'], [navigatorData.enteredGuestRoom.roomId.toString()]).replace('${url.prefix}', GetConfigurationValue<string>('url.prefix', ''))} />
+                        <input readOnly className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm" type="text" value={LocalizeText('navigator.embed.src', ['roomId'], [navigatorData.enteredGuestRoom.roomId.toString()]).replace('${url.prefix}', GetConfigurationValue<string>('url.prefix', ''))} />
                     </div>
                 </div>
             </NitroCardContentView>

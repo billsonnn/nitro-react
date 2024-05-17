@@ -15,7 +15,42 @@ const colors = {
     'card-grid-item-active': '#ECECEC',
     'card-grid-item-border': '#B6BEC5',
     'card-grid-item-border-active': '#FFFFFF',
-    'loading': '#393A85'
+    'loading': '#393A85',
+    'muted': 'rgba(182, 190, 197)',
+    'blue': '#0d6efd',
+    'indigo': '#6610f2',
+    'pink': '#d63384',
+    'red': '#a81a12',
+    'orange': '#fd7e14',
+    'yellow': '#ffc107',
+    'green': '#00800b',
+    'teal': '#20c997',
+    'cyan': '#0dcaf0',
+    'gray': '#6c757d',
+    'gray-dark': '#343a40',
+    'gray-100': '#f8f9fa',
+    'gray-200': '#e9ecef',
+    'gray-300': '#dee2e6',
+    'gray-400': '#ced4da',
+    'gray-500': '#adb5bd',
+    'gray-600': '#6c757d',
+    'gray-700': '#495057',
+    'gray-800': '#343a40',
+    'gray-900': '#212529',
+    'primary': '#1E7295',
+    'secondary': '#185D79',
+    'success': '#00800b',
+    'info': '#0dcaf0',
+    'warning': '#ffc107',
+    'danger': '#a81a12',
+    'light': '#DFDFDF',
+    'dark': 'rgba(28, 28, 32, .9803921569)',
+    'light-dark': '#343a40',
+    'white': '#fff',
+    'black': '#000',
+    'muted': '#B6BEC5',
+    'purple': '#6f42c1',
+    'gainsboro': '#d9d9d9'
 };
 
 const boxShadow = {
@@ -30,6 +65,7 @@ module.exports = {
    
     theme: {
         extend: {
+            
             fontFamily: {
                 sans: [ 'Ubuntu', 'sans-serif' ],
             },
@@ -46,6 +82,11 @@ module.exports = {
                 'inventory-w': '528px',
                 'inventory-h': '320px'
             },
+            borderRadius: {
+               
+                '3': '0.3rem',
+             
+              },
             zIndex: {
                 'toolbar': '',
                 'loading': '100',

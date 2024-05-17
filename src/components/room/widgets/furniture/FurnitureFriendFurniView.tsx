@@ -15,7 +15,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
             <NitroCardView className="nitro-engraving-lock" theme="primary-slim">
                 <NitroCardHeaderView headerText={LocalizeText('friend.furniture.confirm.lock.caption')} onCloseClick={onClose} />
                 <NitroCardContentView>
-                    <h5 className="text-black text-center fw-bold mt-2 mb-2">
+                    <h5 className="text-black text-center font-bold	 mt-2 mb-2">
                         {LocalizeText('friend.furniture.confirm.lock.subtitle')}
                     </h5>
                     <div className="flex justify-center mb-2">

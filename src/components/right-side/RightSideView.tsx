@@ -10,12 +10,12 @@ import { RoomPromotesWidgetView } from '../room/widgets/room-promotes/RoomPromot
 export const RightSideView: FC<{}> = props =>
 {
     return (
-        <div className="nitro-right-side">
-            <Column gap={ 1 } position="relative">
+        <div className="absolute top-[0] right-[10px] min-w-[200px] max-w-[200px] h-[calc(100%-55px)] pointer-events-none">
+            <Column gap={1} position="relative">
                 <PurseView />
                 <GroupRoomInformationView />
                 <MysteryBoxExtensionView />
-                <OfferView/>
+                <OfferView />
                 <RoomPromotesWidgetView />
                 <NotificationCenterView />
             </Column>

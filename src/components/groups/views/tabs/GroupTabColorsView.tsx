@@ -15,12 +15,12 @@ interface GroupTabColorsViewProps
 export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
 {
     const { groupData = null, setGroupData = null, setCloseAction = null } = props;
-    const [ colors, setColors ] = useState<number[]>(null);
+    const [colors, setColors] = useState<number[]>(null);
     const { groupCustomize = null } = useGroup();
 
     const getGroupColor = (colorIndex: number) =>
     {
-        if(colorIndex === 0) return groupCustomize.groupColorsA.find(color => (color.id === colors[colorIndex])).color;
+        if (colorIndex === 0) return groupCustomize.groupColorsA.find(color => (color.id === colors[colorIndex])).color;
 
         return groupCustomize.groupColorsB.find(color => (color.id === colors[colorIndex])).color;
     }
@@ -29,7 +29,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
     {
         setColors(prevValue =>
         {
-            const newColors = [ ...prevValue ];
+            const newColors = [...prevValue];
 
             newColors[colorIndex] = colorId;
 
@@ -39,88 +39,88 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
 
     const saveColors = useCallback(() =>
     {
-        if(!groupData || !colors || !colors.length) return false;
+        if (!groupData || !colors || !colors.length) return false;
 
-        if(groupData.groupColors === colors) return true;
+        if (groupData.groupColors === colors) return true;
 
-        if(groupData.groupId <= 0)
+        if (groupData.groupId <= 0)
         {
             setGroupData(prevValue =>
             {
                 const newValue = { ...prevValue };
 
-                newValue.groupColors = [ ...colors ];
+                newValue.groupColors = [...colors];
 
                 return newValue;
             });
 
             return true;
         }
-        
+
         SendMessageComposer(new GroupSaveColorsComposer(groupData.groupId, colors[0], colors[1]));
 
         return true;
-    }, [ groupData, colors, setGroupData ]);
+    }, [groupData, colors, setGroupData]);
 
     useEffect(() =>
     {
-        if(!groupCustomize.groupColorsA || !groupCustomize.groupColorsB || groupData.groupColors) return;
+        if (!groupCustomize.groupColorsA || !groupCustomize.groupColorsB || groupData.groupColors) return;
 
-        const groupColors = [ groupCustomize.groupColorsA[0].id, groupCustomize.groupColorsB[0].id ];
+        const groupColors = [groupCustomize.groupColorsA[0].id, groupCustomize.groupColorsB[0].id];
 
         setGroupData(prevValue =>
         {
             return { ...prevValue, groupColors };
         });
-    }, [ groupCustomize, groupData.groupColors, setGroupData ]);
+    }, [groupCustomize, groupData.groupColors, setGroupData]);
 
     useEffect(() =>
     {
-        if(groupData.groupId <= 0)
+        if (groupData.groupId <= 0)
         {
-            setColors(groupData.groupColors ? [ ...groupData.groupColors ] : null);
+            setColors(groupData.groupColors ? [...groupData.groupColors] : null);
 
             return;
         }
-        
+
         setColors(groupData.groupColors);
-    }, [ groupData ]);
+    }, [groupData]);
 
     useEffect(() =>
     {
         setCloseAction({ action: saveColors });
 
         return () => setCloseAction(null);
-    }, [ setCloseAction, saveColors ]);
+    }, [setCloseAction, saveColors]);
 
-    if(!colors) return null;
-    
+    if (!colors) return null;
+
     return (
         <Grid overflow="hidden">
-            <Column gap={ 1 } size={ 2 }>
-                <Text bold>{ LocalizeText('group.edit.color.guild.color') }</Text>
-                { groupData.groupColors && (groupData.groupColors.length > 0) &&
+            <Column gap={1} size={2}>
+                <Text bold>{LocalizeText('group.edit.color.guild.color')}</Text>
+                {groupData.groupColors && (groupData.groupColors.length > 0) &&
                     <div className="flex overflow-hidden border rounded">
-                        <div className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(0) } } />
-                        <div className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(1) } } />
-                    </div> }
+                        <div className="w-[30px] h-[40px]" style={{ backgroundColor: '#' + getGroupColor(0) }} />
+                        <div className="w-[30px] h-[40px]" style={{ backgroundColor: '#' + getGroupColor(1) }} />
+                    </div>}
             </Column>
-            <Column gap={ 1 } overflow="hidden" size={ 5 }>
-                <Text bold>{ LocalizeText('group.edit.color.primary.color') }</Text>
-                <AutoGrid columnCount={ 7 } columnMinHeight={ 16 } columnMinWidth={ 16 } gap={ 1 }>
-                    { groupData.groupColors && groupCustomize.groupColorsA && groupCustomize.groupColorsA.map((item, index) =>
+            <Column gap={1} overflow="hidden" size={5}>
+                <Text bold>{LocalizeText('group.edit.color.primary.color')}</Text>
+                <AutoGrid columnCount={7} columnMinHeight={16} columnMinWidth={16} gap={1}>
+                    {groupData.groupColors && groupCustomize.groupColorsA && groupCustomize.groupColorsA.map((item, index) =>
                     {
-                        return <div key={ index } className={ classNames('group-badge-color-swatch cursor-pointer', ((groupData.groupColors[0] === item.id) && 'active')) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(0, item.id) }></div>
-                    }) }
+                        return <div key={index} className={classNames('relative rounded-[.25rem] w-[16px] h-[16px] bg-[#fff] border-[2px] border-[solid] border-[#fff] [box-shadow:inset_3px_3px_#0000001a] [box-shadow:inset_2px_2px_#0003] cursor-pointer', ((groupData.groupColors[0] === item.id) && 'bg-primary [box-shadow:none]'))} style={{ backgroundColor: '#' + item.color }} onClick={() => selectColor(0, item.id)}></div>
+                    })}
                 </AutoGrid>
             </Column>
-            <Column gap={ 1 } overflow="hidden" size={ 5 }>
-                <Text bold>{ LocalizeText('group.edit.color.secondary.color') }</Text>
-                <AutoGrid columnCount={ 7 } columnMinHeight={ 16 } columnMinWidth={ 16 } gap={ 1 }>
-                    { groupData.groupColors && groupCustomize.groupColorsB && groupCustomize.groupColorsB.map((item, index) =>
+            <Column gap={1} overflow="hidden" size={5}>
+                <Text bold>{LocalizeText('group.edit.color.secondary.color')}</Text>
+                <AutoGrid columnCount={7} columnMinHeight={16} columnMinWidth={16} gap={1}>
+                    {groupData.groupColors && groupCustomize.groupColorsB && groupCustomize.groupColorsB.map((item, index) =>
                     {
-                        return <div key={ index } className={ classNames('group-badge-color-swatch cursor-pointer', ((groupData.groupColors[1] === item.id) && 'active')) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(1, item.id) }></div>
-                    }) }
+                        return <div key={index} className={classNames('relative rounded-[.25rem] w-[16px] h-[16px] bg-[#fff] border-[2px] border-[solid] border-[#fff] [box-shadow:inset_3px_3px_#0000001a] [box-shadow:inset_2px_2px_#0003] cursor-pointer', ((groupData.groupColors[1] === item.id) && 'bg-primary [box-shadow:none]'))} style={{ backgroundColor: '#' + item.color }} onClick={() => selectColor(1, item.id)}></div>
+                    })}
                 </AutoGrid>
             </Column>
         </Grid>

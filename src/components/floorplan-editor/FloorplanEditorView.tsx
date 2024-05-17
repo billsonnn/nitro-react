@@ -138,14 +138,14 @@ export const FloorplanEditorView: FC<{}> = props =>
     return (
         <FloorplanEditorContextProvider value={{ originalFloorplanSettings: originalFloorplanSettings, setOriginalFloorplanSettings: setOriginalFloorplanSettings, visualizationSettings: visualizationSettings, setVisualizationSettings: setVisualizationSettings }}>
             {isVisible &&
-                <NitroCardView className="nitro-floorplan-editor" theme="primary-slim" uniqueKey="floorpan-editor">
+                <NitroCardView className="w-[760px] h-[500px]" theme="primary-slim" uniqueKey="floorpan-editor">
                     <NitroCardHeaderView headerText={LocalizeText('floor.plan.editor.title')} onCloseClick={() => setIsVisible(false)} />
                     <NitroCardContentView overflow="hidden">
                         <FloorplanOptionsView />
                         <FloorplanCanvasView overflow="hidden" />
                         <div className="flex justify-between">
                             <Button onClick={revertChanges}>{LocalizeText('floor.plan.editor.reload')}</Button>
-                            <div className="btn-group">
+                            <div className="relative inline-flex align-middle">
                                 <Button disabled={true}>{LocalizeText('floor.plan.editor.preview')}</Button>
                                 <Button onClick={event => setImportExportVisible(true)}>{LocalizeText('floor.plan.editor.import.export')}</Button>
                                 <Button onClick={saveFloorChanges}>{LocalizeText('floor.plan.editor.save')}</Button>

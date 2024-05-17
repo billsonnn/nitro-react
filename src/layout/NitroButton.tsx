@@ -5,7 +5,7 @@ const classes = {
     base: 'inline-flex justify-center items-center gap-2 transition-[background-color] duration-300 transform tracking-wide rounded-md',
     disabled: '',
     size: {
-        default: 'px-2 py-0.5 text-sm font-medium',
+        default: 'px-2 py-0.5  font-medium',
         lg: 'px-5 py-3 text-base font-medium',
         xl: 'px-6 py-3.5 text-base font-medium',
     },
@@ -27,17 +27,17 @@ export const NitroButton = forwardRef<HTMLButtonElement, PropsWithChildren<{
 
     return (
         <button
-            ref={ ref }
-            className={ classNames(
+            ref={ref}
+            className={classNames(
                 classes.base,
                 classes.size[size],
                 outline ? classes.outline[color] : classes.color[color],
                 disabled && classes.disabled,
                 className
-            ) }
-            disabled={ disabled }
-            type={ type }
-            { ...rest } />
+            )}
+            disabled={disabled}
+            type={type}
+            {...rest} />
     );
 });
 

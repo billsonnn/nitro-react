@@ -56,7 +56,7 @@ export const RoomFilterWordsWidgetView: FC<{}> = props =>
                     <NitroInput maxLength={255} type="text" value={word} onChange={event => onTyping(event.target.value)} />
                     <Button onClick={() => processAction(true)}>{LocalizeText('navigator.roomsettings.roomfilter.addword')}</Button>
                 </Grid>
-                <Column className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm" gap={0} overflow="auto" style={{ height: '100px' }}>
+                <Column className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm" gap={0} overflow="auto" style={{ height: '100px' }}>
                     {wordsFilter && (wordsFilter.length > 0) && wordsFilter.map((word, index) =>
                     {
                         return (

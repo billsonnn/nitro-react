@@ -214,7 +214,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                                 </Column>}
                         </Column>
                         <div className="flex justify-between">
-                            <div className="btn-group">
+                            <div className="relative inline-flex align-middle">
                                 <Button onClick={event => processAction('clear_effects')}>
                                     <FaTrash className="fa-icon" />
                                 </Button>

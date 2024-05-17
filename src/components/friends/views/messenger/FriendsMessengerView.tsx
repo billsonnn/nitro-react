@@ -141,7 +141,7 @@ export const FriendsMessengerView: FC<{}> = props =>
                                 <Text bold center>{LocalizeText('messenger.window.separator', ['FRIEND_NAME'], [activeThread.participant.name])}</Text>
                                 <Flex alignItems="center" gap={1} justifyContent="between">
                                     <div className="flex gap-1">
-                                        <div className="btn-group">
+                                        <div className="relative inline-flex align-middle">
                                             <Button onClick={followFriend}>
                                                 <div className="nitro-friends-spritesheet icon-follow" />
                                             </Button>

@@ -75,7 +75,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
         <Column fullHeight>
             <Flex alignItems="center" className="p-2 rounded bg-muted" gap={1} justifyContent="between">
                 {isGuide &&
-                    <div className="btn-group">
+                    <div className="relative inline-flex align-middle">
                         <Button onClick={visit}>{LocalizeText('guide.help.request.guide.ongoing.visit.button')}</Button>
                         <Button onClick={invite}>{LocalizeText('guide.help.request.guide.ongoing.invite.button')}</Button>
                     </div>}

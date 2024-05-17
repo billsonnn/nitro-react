@@ -20,7 +20,7 @@ export const DoorbellWidgetView: FC<{}> = props =>
             <NitroCardHeaderView headerText={LocalizeText('navigator.doorbell.title')} onCloseClick={event => setIsVisible(false)} />
             <NitroCardContentView gap={0} overflow="hidden">
                 <Column gap={2}>
-                    <Grid className="text-black fw-bold border-bottom px-1 pb-1" gap={1}>
+                    <Grid className="text-black font-bold	 border-bottom px-1 pb-1" gap={1}>
                         <div className="col-span-6">{LocalizeText('generic.username')}</div>
                         <div className="col-span-6" />
                     </Grid>

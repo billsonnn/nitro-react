@@ -142,27 +142,27 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                         </Column>
                         <Column grow alignItems="center" gap={0}>
                             <div className="flex gap-1">
-                                <div className="flex items-center justify-center badge-image">
+                                <div className="flex items-center justify-center relative w-[40px] h-[40px] bg-no-repeat bg-center">
                                     {avatarInfo.badges[0] && <LayoutBadgeImageView badgeCode={avatarInfo.badges[0]} showInfo={true} />}
                                 </div>
-                                <Flex center className="badge-image" pointer={(avatarInfo.groupId > 0)} onClick={event => GetGroupInformation(avatarInfo.groupId)}>
+                                <Flex center className="relative w-[40px] h-[40px] bg-no-repeat bg-center" pointer={(avatarInfo.groupId > 0)} onClick={event => GetGroupInformation(avatarInfo.groupId)}>
                                     {avatarInfo.groupId > 0 &&
                                         <LayoutBadgeImageView badgeCode={avatarInfo.groupBadgeId} customTitle={avatarInfo.groupName} isGroup={true} showInfo={true} />}
                                 </Flex>
                             </div>
                             <Flex center gap={1}>
-                                <div className="flex items-center justify-center badge-image">
+                                <div className="flex items-center justify-center relative w-[40px] h-[40px] bg-no-repeat bg-center">
                                     {avatarInfo.badges[1] && <LayoutBadgeImageView badgeCode={avatarInfo.badges[1]} showInfo={true} />}
                                 </div>
-                                <div className="flex items-center justify-center badge-image">
+                                <div className="flex items-center justify-center relative w-[40px] h-[40px] bg-no-repeat bg-center">
                                     {avatarInfo.badges[2] && <LayoutBadgeImageView badgeCode={avatarInfo.badges[2]} showInfo={true} />}
                                 </div>
                             </Flex>
                             <Flex center gap={1}>
-                                <div className="flex items-center justify-center badge-image">
+                                <div className="flex items-center justify-center relative w-[40px] h-[40px] bg-no-repeat bg-center">
                                     {avatarInfo.badges[3] && <LayoutBadgeImageView badgeCode={avatarInfo.badges[3]} showInfo={true} />}
                                 </div>
-                                <div className="flex items-center justify-center badge-image">
+                                <div className="flex items-center justify-center relative w-[40px] h-[40px] bg-no-repeat bg-center">
                                     {avatarInfo.badges[4] && <LayoutBadgeImageView badgeCode={avatarInfo.badges[4]} showInfo={true} />}
                                 </div>
                             </Flex>

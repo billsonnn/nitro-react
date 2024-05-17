@@ -110,7 +110,7 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
             </div>
             <div className="flex items-center gap-1">
                 <Text className="col-span-3">{LocalizeText('navigator.roomsettings.desc')}</Text>
-                <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm" maxLength={DESC_MAX_LENGTH} value={roomDescription} onBlur={saveRoomDescription} onChange={event => setRoomDescription(event.target.value)} />
+                <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm" maxLength={DESC_MAX_LENGTH} value={roomDescription} onBlur={saveRoomDescription} onChange={event => setRoomDescription(event.target.value)} />
             </div>
             <div className="flex items-center gap-1">
                 <Text className="col-span-3">{LocalizeText('navigator.category')}</Text>

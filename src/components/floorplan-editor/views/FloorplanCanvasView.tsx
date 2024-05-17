@@ -169,26 +169,26 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
     return (
         <Column gap={gap} {...rest}>
             <Grid gap={1} overflow="hidden">
-                <Column center className="d-mhidden" size={1}>
-                    <Button className="d-mhidden" onClick={event => onClickArrowButton('left')}>
+                <Column center className="hidden" size={1}>
+                    <Button className="hidden" onClick={event => onClickArrowButton('left')}>
                         <FaArrowLeft className="fa-icon" />
                     </Button>
                 </Column>
                 <Column gap={1} overflow="hidden" size={isSmallScreen() ? 10 : 12}>
-                    <div className="flex d-mhidden justify-content-enter" >
+                    <div className="flex hidden justify-content-enter" >
                         <Button shrink onClick={event => onClickArrowButton('up')}>
                             <FaArrowUp className="fa-icon" />
                         </Button>
                     </div>
                     <div ref={elementRef} className="overflow-auto" />
-                    <div className="flex d-mhidden justify-center">
+                    <div className="flex hidden justify-center">
                         <Button shrink onClick={event => onClickArrowButton('down')}>
                             <FaArrowDown className="fa-icon" />
                         </Button>
                     </div>
                 </Column>
-                <Column center className="d-mhidden" size={1}>
-                    <Button className="d-mhidden" onClick={event => onClickArrowButton('right')}>
+                <Column center className="hidden" size={1}>
+                    <Button className="hidden" onClick={event => onClickArrowButton('right')}>
                         <FaArrowRight className="fa-icon" />
                     </Button>
                 </Column>

@@ -2,6 +2,7 @@ import { EditEventMessageComposer } from '@nitrots/nitro-renderer';
 import { FC, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';
+import { NitroInput } from '../../../../../layout';
 
 interface RoomPromoteEditWidgetViewProps
 {
@@ -33,7 +34,7 @@ export const RoomPromoteEditWidgetView: FC<RoomPromoteEditWidgetViewProps> = pro
                 </div>
                 <div className="flex flex-col">
                     <Text bold>{LocalizeText('navigator.eventsettings.desc')}</Text>
-                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm" maxLength={64} placeholder={LocalizeText('navigator.eventsettings.desc')} value={newEventDescription} onChange={event => setNewEventDescription(event.target.value)}></textarea>
+                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm" maxLength={64} placeholder={LocalizeText('navigator.eventsettings.desc')} value={newEventDescription} onChange={event => setNewEventDescription(event.target.value)}></textarea>
                 </div>
                 <div className="flex flex-col">
                     <Button fullWidth disabled={!newEventName || !newEventDescription} variant={(!newEventName || !newEventDescription) ? 'danger' : 'success'} onClick={event => updatePromote()}>{LocalizeText('navigator.eventsettings.edit')}</Button>

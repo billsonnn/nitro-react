@@ -94,7 +94,7 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
                 </div>
                 <div className="flex flex-col gap-1">
                     <Text bold>{LocalizeText('roomad.catalog_description')}</Text>
-                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm" maxLength={64} readOnly={extended} value={eventDesc} onChange={event => setEventDesc(event.target.value)} />
+                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm" maxLength={64} readOnly={extended} value={eventDesc} onChange={event => setEventDesc(event.target.value)} />
                 </div>
                 <div className="flex flex-col gap-1">
                     <Text bold>{LocalizeText('roomad.catalog_roomname')}</Text>

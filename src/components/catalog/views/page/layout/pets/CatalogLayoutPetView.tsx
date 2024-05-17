@@ -227,7 +227,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
                         <Column grow gap={1}>
                             <Text truncate>{petBreedName}</Text>
                             <Column grow gap={1}>
-                                <input className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm w-full" placeholder={LocalizeText('widgets.petpackage.name.title')} type="text" value={petName} onChange={event => setPetName(event.target.value)} />
+                                <input className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm w-full" placeholder={LocalizeText('widgets.petpackage.name.title')} type="text" value={petName} onChange={event => setPetName(event.target.value)} />
                                 {(approvalResult > 0) &&
                                     <div className="invalid-feedback d-block m-0">{validationErrorMessage}</div>}
                             </Column>

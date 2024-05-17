@@ -33,7 +33,7 @@ export const NameChangeConfirmationView: FC<NameChangeLayoutViewProps> = props =
             <div className="bg-muted rounded p-2 text-center">{LocalizeText('tutorial.name_change.info.confirm')}</div>
             <div className="flex flex-col items-center gap-1 h-full">
                 <div>{LocalizeText('tutorial.name_change.confirm')}</div>
-                <div className="fw-bold">{username}</div>
+                <div className="font-bold	">{username}</div>
             </div>
             <div className="flex gap-2">
                 <button className="btn btn-success w-full" disabled={isConfirming} onClick={confirm}>{LocalizeText('generic.ok')}</button>

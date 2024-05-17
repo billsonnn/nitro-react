@@ -20,18 +20,38 @@ export const Button: FC<ButtonProps> = props =>
 
         if (variant)
         {
-            newClassNames.push('text-[#fff] bg-[#1e7295] border-[#1e7295] [box-shadow:inset_0_2px_#ffffff26,_inset_0_-2px_#0000001a,_0_1px_#0000001a]');
+            newClassNames.push('bg-' + variant);
+            newClassNames.push('border-' + variant);
+
+            if (variant == 'primary')
+            {
+                newClassNames.push('text-white');
+                newClassNames.push('[box-shadow:inset_0_2px_#ffffff26,_inset_0_-2px_#0000001a,_0_1px_#0000001a]');
+            }
+
+
+            if (variant == 'success')
+            {
+                newClassNames.push('text-white');
+                newClassNames.push('[box-shadow:inset_0_2px_#ffffff26,_inset_0_-2px_#0000001a,_0_1px_#0000001a]');
+            }
+
+
+
         }
+
 
         if (size)
         {
-
-            newClassNames.push('px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem]');
+            if (size == 'sm')
+            {
+                newClassNames.push('px-[.5rem] py-[.25rem] rounded-[.2rem]');
+            }
         }
 
         if (active) newClassNames.push('active');
 
-        if (disabled) newClassNames.push('disabled');
+        if (disabled) newClassNames.push('pointer-events-none opacity-[.65] [box-shadow:none]');
 
         if (classNames.length) newClassNames.push(...classNames);
 

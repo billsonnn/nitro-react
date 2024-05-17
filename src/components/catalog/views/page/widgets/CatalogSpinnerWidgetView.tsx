@@ -38,7 +38,7 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
             <Text>{LocalizeText('catalog.bundlewidget.spinner.select.amount')}</Text>
             <div className="flex items-center gap-1">
                 <FaCaretLeft className="text-black cursor-pointer fa-icon" onClick={event => updateQuantity(quantity - 1)} />
-                <input className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none min-h-[17px] h-[17px] w-[28px] px-[4px] py-[0] text-right text-[.7875rem] rounded-[.2rem]" type="number" value={quantity} onChange={event => updateQuantity(event.target.valueAsNumber)} />
+                <input className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none min-h-[17px] h-[17px] w-[28px] px-[4px] py-[0] text-right  rounded-[.2rem]" type="number" value={quantity} onChange={event => updateQuantity(event.target.valueAsNumber)} />
                 <FaCaretRight className="text-black cursor-pointer fa-icon" onClick={event => updateQuantity(quantity + 1)} />
             </div>
         </>

@@ -15,7 +15,7 @@ export const ModToolsOpenIssuesTabView: FC<ModToolsOpenIssuesTabViewProps> = pro
     return (
         <Column gap={0} overflow="hidden">
             <Column gap={2}>
-                <Grid className="text-black fw-bold border-bottom pb-1" gap={1}>
+                <Grid className="text-black font-bold	 border-bottom pb-1" gap={1}>
                     <div className="col-span-2">Type</div>
                     <div className="col-span-3">Room/Player</div>
                     <div className="col-span-4">Opened</div>

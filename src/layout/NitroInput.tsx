@@ -5,7 +5,7 @@ const classes = {
     base: 'block w-full placeholder-gray-400 border border-gray-300 shadow-sm appearance-none',
     disabled: '',
     size: {
-        default: 'px-2 py-2 text-sm font-medium',
+        default: 'px-2 py-2  font-medium',
     },
     rounded: 'rounded-md',
     color: {
@@ -23,19 +23,19 @@ export const NitroInput = forwardRef<HTMLInputElement, PropsWithChildren<{
 
     return (
         <input
-            ref={ ref }
-            autoComplete={ autoComplete }
-            className={ classNames(
+            ref={ref}
+            autoComplete={autoComplete}
+            className={classNames(
                 classes.base,
                 classes.size[inputSize],
                 rounded && classes.rounded,
                 classes.color[color],
                 disabled && classes.disabled,
                 className
-            ) }
-            disabled={ disabled }
-            type={ type }
-            { ...rest } />
+            )}
+            disabled={disabled}
+            type={type}
+            {...rest} />
     );
 });
 

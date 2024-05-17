@@ -118,22 +118,23 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
     if (!groupData) return null;
 
     return (
-        <NitroCardView className="nitro-group-creator" theme="primary-slim">
+        <NitroCardView className="h-[355px] w-[390px] border-[1px] border-[solid] border-[#283F5D]        " theme="primary-slim">
             <NitroCardHeaderView headerText={LocalizeText('group.create.title')} onCloseClick={onCloseClose} />
             <NitroCardContentView>
                 <div className="flex items-center justify-center creator-tabs">
                     {TABS.map((tab, index) =>
                     {
                         return (
-                            <Flex key={index} center className={`tab tab-${((tab === 1) ? 'blue-flat' : (tab === 4) ? 'yellow' : 'blue-arrow')} ${(currentTab === tab) ? 'active' : ''}`}>
+                            <Flex key={index} center className={`relative -ml-[6px] bg-[url('@/assets/images/groups/creator_tabs.png')] bg-no-repeat ${((tab === 1) ? 'w-[84px] h-[24px] bg-[0px_0px]' : (tab === 4) ? 'w-[133px] h-[28px] bg-[0px_-104px]' : 'w-[83px] h-[24px] bg-[0px_-52px]')} ${(currentTab === tab) ? 'active' : ''}`}>
                                 <Text variant="white">{LocalizeText(`group.create.steplabel.${tab}`)}</Text>
                             </Flex>
                         );
                     })}
                 </div>
                 <Column overflow="hidden">
-                    <div className="items-center gap-2">
-                        <div className={`nitro-group-tab-image tab-${currentTab}`} />
+                    <div className="flex items-center gap-2">
+                        <div className={`bg-no-repeat w-[122px] h-[68px] bg-[url('@/assets/images/groups/creator_images.png')] ${currentTab === 1 && 'bg-[0px_0px] !w-[99px] !h-[50px]'} 
+                        ${currentTab == 2 && '!bg-[-99px_0px] !w-[98px] !h-[62px]'}  ${currentTab === 3 && '!bg-[0px_-50px] !w-[96px] !h-[45px]'} ${currentTab === 4 || currentTab === 5 && '!bg-[0px_-95px] !w-[114px] !h-[61px]'}  `} />
                         <Column grow gap={0}>
                             <Text bold fontSize={4}>{LocalizeText(`group.create.stepcaption.${currentTab}`)}</Text>
                             <Text>{LocalizeText(`group.create.stepdesc.${currentTab}`)}</Text>

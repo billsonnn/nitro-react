@@ -38,7 +38,7 @@ export const PromoArticleWidgetView: FC<{}> = props =>
                     <div className="col-span-1 flex flex-col h-full">
                         <h3 className="my-0">{articles[index].title}</h3>
                         <b>{articles[index].bodyText}</b>
-                        <button className="w-1/2 mt-auto px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] text-[#000] bg-[#d9d9d9] border-[#d9d9d9] [box-shadow:inset_0_2px_#ffffff26,_inset_0_-2px_#0000001a,_0_1px_#0000001a]" onClick={event => OpenUrl(articles[index].linkContent)}>{articles[index].buttonText}</button>
+                        <button className="w-1/2 mt-auto px-[.5rem] py-[.25rem]  rounded-[.2rem] text-[#000] bg-[#d9d9d9] border-[#d9d9d9] [box-shadow:inset_0_2px_#ffffff26,_inset_0_-2px_#0000001a,_0_1px_#0000001a]" onClick={event => OpenUrl(articles[index].linkContent)}>{articles[index].buttonText}</button>
                     </div>
                 </div>}
         </div>

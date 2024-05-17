@@ -23,7 +23,7 @@ export const PetPackageWidgetView: FC<{}> = props =>
                         <div className="flex pet-package-container-bottom p-2">
                             <div className="flex flex-col gap-1">
                                 <div className="flex items-center bg-white rounded py-1 px-2 input-pet-package-container">
-                                    <input className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm input-pet-package" maxLength={GetConfigurationValue('pet.package.name.max.length')} placeholder={objectType === 'gnome_box' ? LocalizeText('widgets.gnomepackage.name.select') : LocalizeText('widgets.petpackage.name.title')} type="text" value={petName} onChange={event => onChangePetName(event.target.value)} />
+                                    <input className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm input-pet-package" maxLength={GetConfigurationValue('pet.package.name.max.length')} placeholder={objectType === 'gnome_box' ? LocalizeText('widgets.gnomepackage.name.select') : LocalizeText('widgets.petpackage.name.title')} type="text" value={petName} onChange={event => onChangePetName(event.target.value)} />
                                     <div className="package-pencil-image flex-shrink-0 small fa-icon"></div>
                                 </div>
                                 {(errorResult.length > 0) &&

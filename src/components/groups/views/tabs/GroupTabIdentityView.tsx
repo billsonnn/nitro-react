@@ -3,6 +3,7 @@ import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from '
 import { IGroupData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Text } from '../../../../common';
 import { useNotification } from '../../../../hooks';
+import { NitroInput } from '../../../../layout';
 
 interface GroupTabIdentityViewProps
 {
@@ -88,7 +89,7 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
                 </div>
                 <div className="flex items-center gap-1">
                     <Text center className="col-span-3">{LocalizeText('group.edit.desc')}</Text>
-                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm" maxLength={254} value={groupDescription} onChange={event => setGroupDescription(event.target.value)} />
+                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm" maxLength={254} value={groupDescription} onChange={event => setGroupDescription(event.target.value)} />
                 </div>
                 {isCreator &&
                     <>

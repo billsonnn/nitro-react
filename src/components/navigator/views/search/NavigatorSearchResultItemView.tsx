@@ -84,7 +84,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
         <Column pointer alignItems="center" className="navigator-item p-1 bg-light rounded-3 small mb-1 flex-col border border-muted" gap={0} overflow="hidden" onClick={visitRoom} {...rest}>
             <LayoutRoomThumbnailView className="flex flex-col items-center justify-end mb-1" customUrl={roomData.officialRoomPicRef} roomId={roomData.roomId}>
                 {roomData.habboGroupId > 0 && <LayoutBadgeImageView badgeCode={roomData.groupBadgeCode} className={'absolute top-0 start-0 m-1'} isGroup={true} />}
-                <Flex center className={'badge p-1 absolute m-1 ' + getUserCounterColor()} gap={1}>
+                <Flex center className={'inline-block px-[.65em] py-[.35em] text-[.75em] font-bold leading-none text-[#fff] text-center whitespace-nowrap align-baseline rounded-[.25rem] p-1 absolute m-1 ' + getUserCounterColor()} gap={1}>
                     <FaUser className="fa-icon" />
                     {roomData.userCount}
                 </Flex>
@@ -104,7 +104,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
 
     return (
         <Flex pointer alignItems="center" className="navigator-item px-2 py-1 small" gap={2} overflow="hidden" onClick={visitRoom} {...rest}>
-            <Flex center className={'badge p-1 ' + getUserCounterColor()} gap={1}>
+            <Flex center className={'inline-block px-[.65em] py-[.35em] text-[.75em] font-bold leading-none text-[#fff] text-center whitespace-nowrap align-baseline rounded-[.25rem] p-1 ' + getUserCounterColor()} gap={1}>
                 <FaUser className="fa-icon" />
                 {roomData.userCount}
             </Flex>

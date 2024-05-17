@@ -64,7 +64,7 @@ export const NavigatorSearchResultItemInfoView: FC<{
                                     <Text className="!flex-grow">
                                         {roomData.description}
                                     </Text>
-                                    <Flex className={'badge p-1 absolute m-1 bottom-0 end-0 m-2 ' + getUserCounterColor()} gap={1}>
+                                    <Flex className={'inline-block px-[.65em] py-[.35em] text-[.75em] font-bold leading-none text-[#fff] text-center whitespace-nowrap align-baseline rounded-[.25rem] p-1 absolute m-1 bottom-0 end-0 m-2 ' + getUserCounterColor()} gap={1}>
                                         <FaUser className="fa-icon" />
                                         {roomData.userCount}
                                     </Flex>

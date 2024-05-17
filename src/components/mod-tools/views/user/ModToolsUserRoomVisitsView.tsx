@@ -37,7 +37,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
             <NitroCardContentView className="text-black" gap={1}>
                 <Column fullHeight gap={0} overflow="hidden">
                     <Column gap={2}>
-                        <Grid className="text-black fw-bold border-bottom pb-1" gap={1}>
+                        <Grid className="text-black font-bold	 border-bottom pb-1" gap={1}>
                             <div className="col-span-2">Time</div>
                             <div className="col-span-7">Room name</div>
                             <div className="col-span-3">Visit</div>

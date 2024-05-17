@@ -41,7 +41,7 @@ export const AvatarInfoRentableBotChatView: FC<AvatarInfoRentableBotChatViewProp
                 <Column className="p-1">
                     <div className="flex flex-col gap-1">
                         <Text variant="white">{LocalizeText('bot.skill.chatter.configuration.chat.text')}</Text>
-                        <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] form-control-sm" placeholder={LocalizeText('bot.skill.chatter.configuration.text.placeholder')} rows={7} value={newText} onChange={e => setNewText(e.target.value)} />
+                        <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm" placeholder={LocalizeText('bot.skill.chatter.configuration.text.placeholder')} rows={7} value={newText} onChange={e => setNewText(e.target.value)} />
                     </div>
                     <div className="flex flex-col gap-1">
                         <Flex alignItems="center" gap={1} justifyContent="between">

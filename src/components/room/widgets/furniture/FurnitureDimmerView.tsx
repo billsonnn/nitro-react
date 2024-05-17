@@ -50,7 +50,7 @@ export const FurnitureDimmerView: FC<{}> = props =>
                         <div className="flex flex-col gap-1">
                             <Text fontWeight="bold">{LocalizeText('widget.backgroundcolor.hue')}</Text>
                             {isFreeColorMode &&
-                                <input className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem]" type="color" value={ColorUtils.makeColorNumberHex(selectedColor)} onChange={event => setSelectedColor(ColorUtils.convertFromHex(event.target.value))} />}
+                                <input className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem]" type="color" value={ColorUtils.makeColorNumberHex(selectedColor)} onChange={event => setSelectedColor(ColorUtils.convertFromHex(event.target.value))} />}
                             {!isFreeColorMode &&
                                 <Grid columnCount={7} gap={1}>
                                     {FurnitureDimmerUtilities.AVAILABLE_COLORS.map((color, index) =>

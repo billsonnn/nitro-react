@@ -239,7 +239,7 @@ export const CatalogGiftView: FC<{}> = props =>
                         </div>}
                     <div className="flex flex-col gap-1">
                         <div className="flex gap-2">
-                            <div className="btn-group">
+                            <div className="relative inline-flex align-middle">
                                 <Button variant="primary" onClick={() => handleAction('prev_box')}>
                                     <FaChevronLeft className="fa-icon" />
                                 </Button>
@@ -256,7 +256,7 @@ export const CatalogGiftView: FC<{}> = props =>
                             </div>
                         </div>
                         <Flex alignItems="center" className={isColorable ? '' : 'opacity-50 pointer-events-none'} gap={2}>
-                            <div className="btn-group">
+                            <div className="relative inline-flex align-middle">
                                 <Button variant="primary" onClick={() => handleAction('prev_ribbon')}>
                                     <FaChevronLeft className="fa-icon" />
                                 </Button>
@@ -272,7 +272,7 @@ export const CatalogGiftView: FC<{}> = props =>
                     <Text fontWeight="bold">
                         {LocalizeText('catalog.gift_wrapping.pick_color')}
                     </Text>
-                    <div className="btn-group w-full">
+                    <div className="relative inline-flex align-middle w-full">
                         {colors.map(color => <Button key={color.id} active={(color.id === selectedColorId)} disabled={!isColorable} style={{ backgroundColor: color.color }} variant="dark" onClick={() => setSelectedColorId(color.id)} />)}
                     </div>
                 </Column>
