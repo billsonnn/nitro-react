@@ -37,7 +37,7 @@ export const NavigatorSearchResultItemInfoView: FC<{
 
         return (
             <>
-                <div ref={elementRef} className="cursor-pointer icon icon-navigator-info" onMouseLeave={event => setIsVisible(false)} onMouseOver={event => setIsVisible(true)} />
+                <div ref={elementRef} className="cursor-pointer nitro-icon icon-navigator-info" onMouseLeave={event => setIsVisible(false)} onMouseOver={event => setIsVisible(true)} />
                 <Overlay placement="right" show={isVisible} target={elementRef.current}>
                     <Popover>
                         <NitroCardContentView className="bg-transparent room-info image-rendering-pixelated" overflow="hidden">

@@ -111,9 +111,9 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
             <Text grow truncate>{roomData.roomName}</Text>
             <Flex reverse alignItems="center" gap={1}>
                 <NavigatorSearchResultItemInfoView roomData={roomData} />
-                {roomData.habboGroupId > 0 && <i className="icon icon-navigator-room-group" />}
+                {roomData.habboGroupId > 0 && <i className="nitro-icon icon-navigator-room-group" />}
                 {(roomData.doorMode !== RoomDataParser.OPEN_STATE) &&
-                    <i className={('icon icon-navigator-room-' + ((roomData.doorMode === RoomDataParser.DOORBELL_STATE) ? 'locked' : (roomData.doorMode === RoomDataParser.PASSWORD_STATE) ? 'password' : (roomData.doorMode === RoomDataParser.INVISIBLE_STATE) ? 'invisible' : ''))} />}
+                    <i className={('nitro-icon icon-navigator-room-' + ((roomData.doorMode === RoomDataParser.DOORBELL_STATE) ? 'locked' : (roomData.doorMode === RoomDataParser.PASSWORD_STATE) ? 'password' : (roomData.doorMode === RoomDataParser.INVISIBLE_STATE) ? 'invisible' : ''))} />}
             </Flex>
             {children}
         </Flex>

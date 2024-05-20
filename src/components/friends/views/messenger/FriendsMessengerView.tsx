@@ -4,6 +4,7 @@ import { FaTimes } from 'react-icons/fa';
 import { GetUserProfile, LocalizeText, ReportType, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, Grid, LayoutAvatarImageView, LayoutBadgeImageView, LayoutGridItem, LayoutItemCountView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { useHelp, useMessenger } from '../../../../hooks';
+import { NitroInput } from '../../../../layout';
 import { FriendsMessengerThreadView } from './messenger-thread/FriendsMessengerThreadView';
 
 export const FriendsMessengerView: FC<{}> = props =>

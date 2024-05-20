@@ -16,7 +16,7 @@ export const LayoutNotificationBubbleView: FC<LayoutNotificationBubbleViewProps>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = ['bg-[#1c1c20f2] px-[5px] py-[6px] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599] ', 'rounded'];
+        const newClassNames: string[] = ['text-sm bg-[#1c1c20f2] px-[5px] py-[6px] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599] ', 'rounded'];
 
         if (classNames.length) newClassNames.push(...classNames);
 

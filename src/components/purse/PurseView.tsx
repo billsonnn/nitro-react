@@ -62,7 +62,7 @@ export const PurseView: FC<{}> = props =>
     if (!purse) return null;
 
     return (
-        <Column alignItems="end" className="pointer-events-auto" gap={1}>
+        <Column alignItems="end" className="pointer-events-auto text-sm" gap={1}>
             <Flex className="bg-[#1c1c20f2] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599] rounded-b p-1">
                 <Grid fullWidth gap={1}>
                     <Column gap={0} justifyContent="center" size={hcDisabled ? 10 : 6}>

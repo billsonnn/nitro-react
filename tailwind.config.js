@@ -65,9 +65,18 @@ module.exports = {
    
     theme: {
         extend: {
-            
+            fontSize: {
+                base: '0.9rem',
+                sm: '0.7875rem',
+                xl: '1.25rem',
+                '2xl': '1.563rem',
+                '3xl': '1.953rem',
+                '4xl': '2.441rem',
+                '5xl': '3.052rem',
+              },
+          
             fontFamily: {
-                sans: [ 'Ubuntu', 'sans-serif' ],
+                sans: [ 'Ubuntu'],
             },
             colors: generateShades(colors),
             boxShadow,
@@ -146,7 +155,8 @@ module.exports = {
       },
     plugins: [
         require('@tailwindcss/forms'),
-        require('@headlessui/tailwindcss')({ prefix: 'ui' })
+        require('@headlessui/tailwindcss')({ prefix: 'ui' }),
+        require('rfs')
     ],
     content: [
         './index.html',

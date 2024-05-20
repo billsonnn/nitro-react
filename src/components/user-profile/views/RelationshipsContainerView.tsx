@@ -24,11 +24,11 @@ export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = p
 
         return (
             <div className="flex w-full gap-1">
-                <Flex center className="user-relationship">
+                <Flex center className="h-[25px]">
                     <i className={`nitro-friends-spritesheet icon-${relationshipName}`} />
                 </Flex>
                 <div className="flex flex-col !flex-grow gap-0">
-                    <Flex alignItems="center" className="bg-white rounded px-2 py-1 user-relationship" justifyContent="between">
+                    <Flex alignItems="center" className="bg-white rounded px-2 py-1 h-[25px]" justifyContent="between">
                         <Text pointer small underline onClick={event => (relationshipInfo && (relationshipInfo.randomFriendId >= 1) && GetUserProfile(relationshipInfo.randomFriendId))}>
                             {(!relationshipInfo || (relationshipInfo.friendCount === 0)) &&
                                 LocalizeText('extendedprofile.add.friends')}
@@ -36,11 +36,11 @@ export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = p
                                 relationshipInfo.randomFriendName}
                         </Text>
                         {(relationshipInfo && (relationshipInfo.friendCount >= 1)) &&
-                            <div className="flex items-center justify-center avatar-image-container p-relative">
+                            <div className="flex items-center justify-center w-[50px] h-[50px] top-[20px] -right-[8px] relative">
                                 <LayoutAvatarImageView direction={4} figure={relationshipInfo.randomFriendFigure} headOnly={true} />
                             </div>}
                     </Flex>
-                    <Text italics small className="user-relationship-count">
+                    <Text italics small className="mt-[2px] ml-[5px] !text-[#939392]">
                         {(!relationshipInfo || (relationshipInfo.friendCount === 0)) &&
                             LocalizeText('extendedprofile.no.friends.in.this.category')}
                         {(relationshipInfo && (relationshipInfo.friendCount > 1)) &&

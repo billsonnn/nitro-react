@@ -10,13 +10,13 @@ NitroVersion.UI_VERSION = GetUIVersion();
 
 export const App: FC<{}> = props =>
 {
-    const [ isReady, setIsReady ] = useState(false);
+    const [isReady, setIsReady] = useState(false);
 
     useMessageEvent<LoadGameUrlEvent>(LoadGameUrlEvent, event =>
     {
         const parser = event.getParser();
 
-        if(!parser) return;
+        if (!parser) return;
 
         LegacyExternalInterface.callGame('showGame', parser.url);
     });
@@ -27,7 +27,7 @@ export const App: FC<{}> = props =>
         {
             try
             {
-                if(!window.NitroConfig) throw new Error('NitroConfig is not defined!');
+                if (!window.NitroConfig) throw new Error('NitroConfig is not defined!');
 
                 const renderer = await PrepareRenderer({
                     width,
@@ -67,7 +67,7 @@ export const App: FC<{}> = props =>
 
                 // new GameMessageHandler();
 
-                if(LegacyExternalInterface.available) LegacyExternalInterface.call('legacyTrack', 'authentication', 'authok', []);
+                if (LegacyExternalInterface.available) LegacyExternalInterface.call('legacyTrack', 'authentication', 'authok', []);
 
                 HabboWebTools.sendHeartBeat();
 
@@ -83,7 +83,7 @@ export const App: FC<{}> = props =>
                 //canvas.addEventListener('webglcontextlost', () => instance.events.dispatchEvent(new NitroEvent(Nitro.WEBGL_CONTEXT_LOST)));
             }
 
-            catch(err)
+            catch (err)
             {
                 NitroLogger.error(err);
             }
@@ -91,12 +91,12 @@ export const App: FC<{}> = props =>
 
         prepare(window.innerWidth, window.innerHeight);
     }, []);
-    
+
     return (
-        <div className={ classNames('w-full h-full overflow-hidden', !(window.devicePixelRatio % 1) && '[image-rendering:pixelated]' ) }>
-            { !isReady &&
-                <LoadingView /> }
-            { isReady && <MainView /> }
+        <div className={classNames('w-full h-full overflow-hidden text-base', !(window.devicePixelRatio % 1) && '[image-rendering:pixelated]')}>
+            {!isReady &&
+                <LoadingView />}
+            {isReady && <MainView />}
             <div id="draggable-windows-container" />
         </div>
     );

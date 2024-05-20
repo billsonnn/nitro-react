@@ -44,11 +44,11 @@ export const AchievementsView: FC<{}> = props =>
     if (!isVisible) return null;
 
     return (
-        <NitroCardView className="nitro-achievements" theme="primary-slim" uniqueKey="achievements">
+        <NitroCardView className="w-[375px] h-[405px]" theme="primary-slim" uniqueKey="achievements">
             <NitroCardHeaderView headerText={LocalizeText('inventory.achievements')} onCloseClick={event => setIsVisible(false)} />
             {selectedCategory &&
-                <div className="relative gap-3 justify-center items-center cursor-pointer">
-                    <div className="nitro-achievements-back-arrow" onClick={event => setSelectedCategoryCode(null)} />
+                <div className="flex relative gap-3 justify-center container-fluid p-1 bg-muted items-center cursor-pointer">
+                    <div className="bg-[url('@/assets/images/achievements/back-arrow.png')] bg-center no-repeat w-[33px] h-[34px]" onClick={event => setSelectedCategoryCode(null)} />
                     <Column className="!flex-grow" gap={0}>
                         <Text className="text-small" fontSize={4} fontWeight="bold">{LocalizeText(`quests.${selectedCategory.code}.name`)}</Text>
                         <Text>{LocalizeText('achievements.details.categoryprogress', ['progress', 'limit'], [selectedCategory.getProgress().toString(), selectedCategory.getMaxProgress().toString()])}</Text>

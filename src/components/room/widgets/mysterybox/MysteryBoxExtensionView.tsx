@@ -38,7 +38,7 @@ export const MysteryBoxExtensionView: FC<{}> = props =>
     if (keyColor === '' && boxColor === '') return null;
 
     return (
-        <div className="px-[5px] py-[6px] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599]  bg-[#1c1c20f2] rounded mysterybox-extension">
+        <div className="px-[5px] py-[6px] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599]  text-sm bg-[#1c1c20f2] rounded mysterybox-extension">
             <div className="flex flex-col">
                 <Flex pointer alignItems="center" justifyContent="between" onClick={event => setIsOpen(value => !value)}>
                     <Text variant="white">{LocalizeText('mysterybox.tracker.title')}</Text>

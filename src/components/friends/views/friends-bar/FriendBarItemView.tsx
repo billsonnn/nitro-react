@@ -1,7 +1,7 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useRef, useState } from 'react';
 import { GetUserProfile, LocalizeText, MessengerFriend, OpenMessengerChat } from '../../../../api';
-import { LayoutAvatarImageView, LayoutBadgeImageView } from '../../../../common';
+import { Button, LayoutAvatarImageView, LayoutBadgeImageView } from '../../../../common';
 import { useFriends } from '../../../../hooks';
 
 export const FriendBarItemView: FC<{ friend: MessengerFriend }> = props =>
@@ -33,16 +33,16 @@ export const FriendBarItemView: FC<{ friend: MessengerFriend }> = props =>
     if (!friend)
     {
         return (
-            <div ref={elementRef} className="border border-black w-[130px] mx-1 rounded cursor-pointer z-0 text-sm py-2.5 px-1 relative pl-[38px] text-left friend-bar-search">
-                <div className="absolute friend-bar-item-head" />
-                <div className="text-truncate">{LocalizeText('friend.bar.find.title')}</div>
-            </div>
+            <Button size='md' className="border w-[130px] mx-[3px] my-[0] z-0 relative pl-[37px] text-left friend-bar-search">
+                <div className="absolute -top-[3px] left-[5px] w-[31px] h-[34px] bg-[url('@/assets/images/toolbar/friend-search.png')]" />
+                <div className="truncate">{LocalizeText('friend.bar.find.title')}</div>
+            </Button>
         );
     }
 
     return (
-        <div ref={elementRef} className={'border border-black rounded cursor-pointer text-sm w-[130px] mx-1 z-0 py-2.5 px-1 relative pl-[38px] text-left' + (isVisible ? 'mb-[21px]' : '')} onClick={event => setVisible(prevValue => !prevValue)}>
-            <div className={`absolute ${friend.id > 0 ? 'top-[-30px] left-[-30px]' : 'top-0 left-[-5px]'}`}>
+        <Button size='md' variant={'success'} className={'block w-[130px] mx-[3px] my-[0] z-0 relative pl-[37px] text-left' + (isVisible ? 'mb-[21px]' : '')} onClick={event => setVisible(prevValue => !prevValue)}>
+            <div className={`friend-bar-item-head absolute ${friend.id > 0 ? '-top-[30px] -left-[30px]' : '-top-[5px] -left-[3.5px]'}`}>
                 {(friend.id > 0) && <LayoutAvatarImageView direction={2} figure={friend.figure} headOnly={true} />}
                 {(friend.id <= 0) && <LayoutBadgeImageView badgeCode={friend.figure} isGroup={true} />}
             </div>
@@ -54,6 +54,6 @@ export const FriendBarItemView: FC<{ friend: MessengerFriend }> = props =>
                         <div className="cursor-pointer nitro-friends-spritesheet icon-friendbar-visit" onClick={event => followFriend(friend)} />}
                     <div className="cursor-pointer nitro-friends-spritesheet icon-profile" onClick={event => GetUserProfile(friend.id)} />
                 </div>}
-        </div>
+        </Button>
     );
 }

@@ -19,7 +19,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
 
     return (
         <div className={child ? 'pl-[5px] border-s-2 border-[#b6bec5]' : ''}>
-            <LayoutGridItem className={' !h-[23px] bg-[#cdd3d9] !border-[0] px-[3px] py-px'} column={false} gap={1} itemActive={node.isActive} onClick={event => activateNode(node)}>
+            <LayoutGridItem className={' !h-[23px] bg-[#cdd3d9] !border-[0] px-[3px] py-px text-sm'} column={false} gap={1} itemActive={node.isActive} onClick={event => activateNode(node)}>
                 <CatalogIconView icon={node.iconId} />
                 <Text truncate className="!flex-grow">{node.localization}</Text>
                 {node.isBranch &&

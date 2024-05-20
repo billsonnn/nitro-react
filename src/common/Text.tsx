@@ -32,15 +32,15 @@ export const Text: FC<TextProps> = props =>
 
         if (bold) newClassNames.push('font-bold	');
 
-        if (fontWeight) newClassNames.push('fw-' + fontWeight);
+        if (fontWeight) newClassNames.push('font-' + fontWeight);
 
         if (fontSize) newClassNames.push('fs-' + fontSize);
 
         if (align) newClassNames.push('text-' + align);
 
-        if (underline) newClassNames.push('text-decoration-underline');
+        if (underline) newClassNames.push('underline');
 
-        if (italics) newClassNames.push('fst-italic');
+        if (italics) newClassNames.push('italic');
 
         if (truncate) newClassNames.push('text-truncate');
 
@@ -48,7 +48,7 @@ export const Text: FC<TextProps> = props =>
 
         if (textEnd) newClassNames.push('text-end');
 
-        if (small) newClassNames.push('small');
+        if (small) newClassNames.push('text-sm');
 
         if (wrap) newClassNames.push('text-wrap');
 

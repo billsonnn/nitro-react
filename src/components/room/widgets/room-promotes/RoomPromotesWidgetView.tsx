@@ -21,7 +21,7 @@ export const RoomPromotesWidgetView: FC<{}> = props =>
     return (
         <>
             {promoteInformation.data.adId !== -1 &&
-                <div className="px-[5px] py-[6px] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599]   bg-[#1c1c20f2] rounded">
+                <div className="px-[5px] py-[6px] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599] text-sm  bg-[#1c1c20f2] rounded">
                     <div className="flex flex-col">
                         <Flex pointer alignItems="center" justifyContent="between" onClick={event => setIsOpen(value => !value)}>
                             <Text overflow="hidden" variant="white">{promoteInformation.data.eventName}</Text>

@@ -84,7 +84,7 @@ export const ChatHistoryView: FC<{}> = props =>
                                 </div>}
                             {(row.type === ChatEntryType.TYPE_ROOM_INFO) &&
                                 <>
-                                    <i className="icon icon-small-room" />
+                                    <i className="nitro-icon icon-small-room" />
                                     <Text grow textBreak wrap>{row.name}</Text>
                                 </>}
                         </Flex>

@@ -147,15 +147,15 @@ export const GroupMembersView: FC<{}> = props =>
     if ((groupId === -1) || !membersData) return null;
 
     return (
-        <NitroCardView className="nitro-group-members" theme="primary-slim">
+        <NitroCardView className="w-[400px] max-h-[380px]        " theme="primary-slim">
             <NitroCardHeaderView headerText={LocalizeText('group.members.title', ['groupName'], [membersData ? membersData.groupTitle : ''])} onCloseClick={event => setGroupId(-1)} />
             <NitroCardContentView overflow="hidden">
                 <div className="flex gap-2">
                     <Flex center className="group-badge">
-                        <LayoutBadgeImageView badgeCode={membersData.badge} className="mx-auto d-block" isGroup={true} />
+                        <LayoutBadgeImageView badgeCode={membersData.badge} className="mx-auto block" isGroup={true} />
                     </Flex>
                     <Column fullWidth gap={1}>
-                        <input className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm w-full" placeholder={LocalizeText('group.members.searchinfo')} type="text" value={searchQuery} onChange={event => setSearchQuery(event.target.value)} />
+                        <input className="min-h-[calc(1.5em+.5rem+2px)] px-[.5rem] py-[.25rem] text-[.7875rem] rounded-[.2rem] w-full" placeholder={LocalizeText('group.members.searchinfo')} type="text" value={searchQuery} onChange={event => setSearchQuery(event.target.value)} />
                         <select className="form-select form-select-sm w-full" value={levelId} onChange={event => setLevelId(parseInt(event.target.value))}>
                             <option value="0">{LocalizeText('group.members.search.all')}</option>
                             <option value="1">{LocalizeText('group.members.search.admins')}</option>
@@ -167,9 +167,9 @@ export const GroupMembersView: FC<{}> = props =>
                     {membersData.result.map((member, index) =>
                     {
                         return (
-                            <Flex key={index} alignItems="center" className="p-2 bg-white rounded member-list-item" gap={2} overflow="hidden">
-                                <div className="cursor-pointer avatar-head" onClick={() => GetUserProfile(member.id)}>
-                                    <LayoutAvatarImageView direction={2} figure={member.figure} headOnly={true} />
+                            <Flex key={index} alignItems="center" className="p-2 bg-white rounded h-[50px] max-h-[50px]" gap={2} overflow="hidden">
+                                <div className="cursor-pointer relative overflow-hidden w-[40px] h-[50px]" onClick={() => GetUserProfile(member.id)}>
+                                    <LayoutAvatarImageView className='absolute -left-[25px] -top-[20px]' direction={2} figure={member.figure} headOnly={true} />
                                 </div>
                                 <Column grow gap={1}>
                                     <Text bold pointer small onClick={event => GetUserProfile(member.id)}>{member.name}</Text>
@@ -179,7 +179,7 @@ export const GroupMembersView: FC<{}> = props =>
                                 <div className="flex flex-col gap-1">
                                     {(member.rank !== GroupRank.REQUESTED) &&
                                         <div className="flex items-center justify-center">
-                                            <div className={classNames(`icon icon-group-small-${((member.rank === GroupRank.OWNER) ? 'owner' : (member.rank === GroupRank.ADMIN) ? 'admin' : (membersData.admin && (member.rank === GroupRank.MEMBER)) ? 'not-admin' : '')}`, membersData.admin && 'cursor-pointer')} title={LocalizeText(getRankDescription(member))} onClick={event => toggleAdmin(member)} />
+                                            <div className={classNames(`nitro-icon icon-group-small-${((member.rank === GroupRank.OWNER) ? 'owner' : (member.rank === GroupRank.ADMIN) ? 'admin' : (membersData.admin && (member.rank === GroupRank.MEMBER)) ? 'not-admin' : '')}`, membersData.admin && 'cursor-pointer')} title={LocalizeText(getRankDescription(member))} onClick={event => toggleAdmin(member)} />
                                         </div>}
                                     {membersData.admin && (member.rank === GroupRank.REQUESTED) &&
                                         <Flex alignItems="center">
