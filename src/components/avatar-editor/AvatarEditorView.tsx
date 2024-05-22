@@ -2,7 +2,7 @@ import { AddLinkEventTracker, AvatarEditorFigureCategory, GetSessionDataManager,
 import { FC, useEffect, useState } from 'react';
 import { FaDice, FaRedo, FaTrash } from 'react-icons/fa';
 import { AvatarEditorAction, LocalizeText, SendMessageComposer } from '../../api';
-import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
+import { Button, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { useAvatarEditor } from '../../hooks';
 import { AvatarEditorFigurePreviewView } from './AvatarEditorFigurePreviewView';
 import { AvatarEditorModelView } from './AvatarEditorModelView';
@@ -74,7 +74,7 @@ export const AvatarEditorView: FC<{}> = props =>
     if (!isVisible) return null;
 
     return (
-        <NitroCardView className="nitro-avatar-editor" uniqueKey="avatar-editor">
+        <NitroCardView className="w-[620px] h-[374px]" uniqueKey="avatar-editor">
             <NitroCardHeaderView headerText={LocalizeText('avatareditor.title')} onCloseClick={event => setIsVisible(false)} />
             <NitroCardTabsView>
                 {Object.keys(avatarModels).map(modelKey =>
@@ -89,7 +89,7 @@ export const AvatarEditorView: FC<{}> = props =>
                 })}
             </NitroCardTabsView>
             <NitroCardContentView>
-                <div className="grid gap-2 overflow-hidden">
+                <Grid className="grid gap-2 overflow-hidden">
                     <div className="flex flex-col col-span-9 overflow-hidden">
                         {((activeModelKey.length > 0) && (activeModelKey !== AvatarEditorFigureCategory.WARDROBE)) &&
                             <AvatarEditorModelView categories={avatarModels[activeModelKey]} name={activeModelKey} />}
@@ -115,7 +115,7 @@ export const AvatarEditorView: FC<{}> = props =>
                             </Button>
                         </div>
                     </div>
-                </div>
+                </Grid>
             </NitroCardContentView>
         </NitroCardView>
     );

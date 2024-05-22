@@ -184,12 +184,12 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
     }, [picture, selectedEffects, isZoomed]);
 
     return (
-        <NitroCardView className="nitro-camera-editor">
+        <NitroCardView className="w-[600px] h-[500px]">
             <NitroCardHeaderView headerText={LocalizeText('camera.editor.button.text')} onCloseClick={event => processAction('close')} />
             <NitroCardTabsView>
                 {TABS.map(tab =>
                 {
-                    return <NitroCardTabsItemView key={tab} isActive={currentTab === tab} onClick={event => processAction('change_tab', tab)}><i className={'icon icon-camera-' + tab}></i></NitroCardTabsItemView>
+                    return <NitroCardTabsItemView key={tab} isActive={currentTab === tab} onClick={event => processAction('change_tab', tab)}><i className={'nitro-icon icon-camera-' + tab}></i></NitroCardTabsItemView>
                 })}
             </NitroCardTabsView>
             <NitroCardContentView>
@@ -199,7 +199,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                     </Column>
                     <Column justifyContent="between" overflow="hidden" size={7}>
                         <Column center>
-                            <LayoutImage className="picture-preview" imageUrl={currentPictureUrl} />
+                            <LayoutImage className="w-[320px] h-[320px]" imageUrl={currentPictureUrl} />
                             {selectedEffectName &&
                                 <Column center fullWidth gap={1}>
                                     <Text>{LocalizeText('camera.effect.name.' + selectedEffectName)}</Text>
