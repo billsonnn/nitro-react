@@ -1,7 +1,6 @@
 import { FC } from 'react';
-import { Button } from 'react-bootstrap';
 import { GetConfigurationValue, LocalizeText } from '../../../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { usePetPackageWidget } from '../../../../hooks';
 
 export const PetPackageWidgetView: FC<{}> = props =>

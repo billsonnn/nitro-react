@@ -1,6 +1,5 @@
 import { AddLinkEventTracker, ClubGiftInfoEvent, CreateLinkEvent, GetClubGiftInfo, ILinkEventTracker, RemoveLinkEventTracker, ScrGetKickbackInfoMessageComposer, ScrKickbackData, ScrSendKickbackInfoMessageEvent } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { ClubStatus, FriendlyTime, GetClubBadge, GetConfigurationValue, LocalizeText, SendMessageComposer } from '../../api';
 import { Button, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
 import { useInventoryBadges, useMessageEvent, usePurse, useSessionInfo } from '../../hooks';
@@ -113,19 +112,17 @@ export const HcCenterView: FC<{}> = props =>
     if (!isVisible) return null;
 
     const popover = (
-        <Popover id="popover-basic">
-            <Popover.Body className="text-black py-2 px-3">
-                <h5>{LocalizeText('hccenter.breakdown.title')}</h5>
-                <div>{LocalizeText('hccenter.breakdown.creditsspent', ['credits'], [kickbackData?.totalCreditsSpent.toString()])}</div>
-                <div>{LocalizeText('hccenter.breakdown.paydayfactor.percent', ['percent'], [(kickbackData?.kickbackPercentage * 100).toString()])}</div>
-                <div>{LocalizeText('hccenter.breakdown.streakbonus', ['credits'], [kickbackData?.creditRewardForStreakBonus.toString()])}</div>
-                <hr className="w-full text-black my-1" />
-                <div>{LocalizeText('hccenter.breakdown.total', ['credits', 'actual'], [getHcPaydayAmount(), ((((kickbackData?.kickbackPercentage * kickbackData?.totalCreditsSpent) + kickbackData?.creditRewardForStreakBonus) * 100) / 100).toString()])}</div>
-                <div className="btn btn-link text-primary p-0" onClick={() => CreateLinkEvent('habbopages/' + GetConfigurationValue('hc.center')['payday.habbopage'])}>
-                    {LocalizeText('hccenter.special.infolink')}
-                </div>
-            </Popover.Body>
-        </Popover>
+        <>
+            <h5>{LocalizeText('hccenter.breakdown.title')}</h5>
+            <div>{LocalizeText('hccenter.breakdown.creditsspent', ['credits'], [kickbackData?.totalCreditsSpent.toString()])}</div>
+            <div>{LocalizeText('hccenter.breakdown.paydayfactor.percent', ['percent'], [(kickbackData?.kickbackPercentage * 100).toString()])}</div>
+            <div>{LocalizeText('hccenter.breakdown.streakbonus', ['credits'], [kickbackData?.creditRewardForStreakBonus.toString()])}</div>
+            <hr className="w-full text-black my-1" />
+            <div>{LocalizeText('hccenter.breakdown.total', ['credits', 'actual'], [getHcPaydayAmount(), ((((kickbackData?.kickbackPercentage * kickbackData?.totalCreditsSpent) + kickbackData?.creditRewardForStreakBonus) * 100) / 100).toString()])}</div>
+            <div className="btn btn-link text-primary p-0" onClick={() => CreateLinkEvent('habbopages/' + GetConfigurationValue('hc.center')['payday.habbopage'])}>
+                {LocalizeText('hccenter.special.infolink')}
+            </div>
+        </>
     );
 
     return (
@@ -171,11 +168,9 @@ export const HcCenterView: FC<{}> = props =>
                                     <h5 className="ms-2 mb-1 bolder">{LocalizeText('hccenter.special.amount.title')}</h5>
                                     <div className="flex flex-col">
                                         <div className="w-full text-center ms-4n">{getHcPaydayAmount()}</div>
-                                        <OverlayTrigger overlay={popover} placement="left" trigger={['hover', 'focus']}>
-                                            <div className="btn btn-link align-self-end text-primary">
-                                                {LocalizeText('hccenter.breakdown.infolink')}
-                                            </div>
-                                        </OverlayTrigger>
+                                        <div className="btn btn-link align-self-end text-primary">
+                                            {LocalizeText('hccenter.breakdown.infolink')}
+                                        </div>
                                     </div>
                                 </div>}
                         </div>

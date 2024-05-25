@@ -1,5 +1,4 @@
 import { FC, MouseEvent, useEffect, useState } from 'react';
-import { Overlay, Popover } from 'react-bootstrap';
 import { Flex, Grid, NitroCardContentView } from '../../../../common';
 
 interface ChatInputStyleSelectorViewProps
@@ -45,24 +44,20 @@ export const ChatInputStyleSelectorView: FC<ChatInputStyleSelectorViewProps> = p
     return (
         <>
             <div className="cursor-pointer nitro-icon chatstyles-icon" onClick={toggleSelector} />
-            <Overlay placement="top" show={selectorVisible} target={target}>
-                <Popover className="nitro-chat-style-selector-container image-rendering-pixelated">
-                    <NitroCardContentView className="bg-transparent" overflow="hidden">
-                        <Grid columnCount={3} overflow="auto">
-                            {chatStyleIds && (chatStyleIds.length > 0) && chatStyleIds.map((styleId) =>
-                            {
-                                return (
-                                    <Flex key={styleId} center pointer className="bubble-parent-container" onClick={event => selectStyle(styleId)}>
-                                        <div key={styleId} className="bubble-container">
-                                            <div className={`chat-bubble bubble-${styleId}`}>&nbsp;</div>
-                                        </div>
-                                    </Flex>
-                                );
-                            })}
-                        </Grid>
-                    </NitroCardContentView>
-                </Popover>
-            </Overlay>
+            <NitroCardContentView className="bg-transparent" overflow="hidden">
+                <Grid columnCount={3} overflow="auto">
+                    {chatStyleIds && (chatStyleIds.length > 0) && chatStyleIds.map((styleId) =>
+                    {
+                        return (
+                            <Flex key={styleId} center pointer className="bubble-parent-container" onClick={event => selectStyle(styleId)}>
+                                <div key={styleId} className="bubble-container">
+                                    <div className={`chat-bubble bubble-${styleId}`}>&nbsp;</div>
+                                </div>
+                            </Flex>
+                        );
+                    })}
+                </Grid>
+            </NitroCardContentView>
         </>
     );
 }

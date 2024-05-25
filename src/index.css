@@ -3,8 +3,6 @@
     src: url("@/assets/webfonts/Ubuntu-C.ttf");
 }
 
-
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

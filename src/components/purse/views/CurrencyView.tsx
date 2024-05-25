@@ -1,5 +1,4 @@
 import { FC, useMemo } from 'react';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { LocalizeFormattedNumber, LocalizeShortNumber } from '../../../api';
 import { Flex, LayoutCurrencyIcon, Text } from '../../../common';
 
@@ -26,14 +25,6 @@ export const CurrencyView: FC<CurrencyViewProps> = props =>
     if (!short) return element;
 
     return (
-        <OverlayTrigger
-            overlay={
-                <Tooltip id={`tooltip-${type}`}>
-                    {LocalizeFormattedNumber(amount)}
-                </Tooltip>
-            }
-            placement="left">
-            {element}
-        </OverlayTrigger>
+        <></>
     );
 }
