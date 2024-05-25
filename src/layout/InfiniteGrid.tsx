@@ -28,11 +28,11 @@ const InfiniteGridRoot = <T,>(props: Props<T>) =>
     {
         const element = parentRef.current;
 
-        if(!element || !items) return;
+        if (!element || !items) return;
 
         const checkAndApplyPadding = () =>
         {
-            if(!element) return;
+            if (!element) return;
 
             element.style.paddingRight = (element.scrollHeight > element.clientHeight) ? '0.25rem' : '0';
         }
@@ -45,51 +45,51 @@ const InfiniteGridRoot = <T,>(props: Props<T>) =>
         {
             window.removeEventListener('resize', checkAndApplyPadding);
         }
-    }, [ items ]);
+    }, [items]);
 
     useEffect(() =>
     {
-        if(!items || !items.length) return;
+        if (!items || !items.length) return;
 
         virtualizer.scrollToIndex(0);
-    }, [ items, virtualizer ]);
+    }, [items, virtualizer]);
 
     const virtualItems = virtualizer.getVirtualItems();
 
     return (
         <div
-            ref={ parentRef }
+            ref={parentRef}
             className="overflow-y-auto size-full">
             <div
                 className="flex flex-col w-full *:pb-1 relative"
-                style={ {
+                style={{
                     height: virtualizer.getTotalSize()
-                } }>
-                { virtualItems.map(virtualRow => (
+                }}>
+                {virtualItems.map(virtualRow => (
                     <div
-                        key={ virtualRow.key + 'a' }
-                        ref={ virtualizer.measureElement }
-                        className={ `grid grid-cols-${ columnCount } gap-1 absolute top-0 left-0 last:pb-0 w-full` }
-                        data-index={ virtualRow.index }
-                        style={ {
+                        key={virtualRow.key + 'a'}
+                        ref={virtualizer.measureElement}
+                        className={`grid grid-cols-${columnCount} gap-1 absolute top-0 left-0 last:pb-0 w-full`}
+                        data-index={virtualRow.index}
+                        style={{
                             height: virtualRow.size,
-                            transform: `translateY(${ virtualRow.start }px)`
-                        } }>
-                        { Array.from(Array(columnCount)).map((e,i) => 
+                            transform: `translateY(${virtualRow.start}px)`
+                        }}>
+                        {Array.from(Array(columnCount)).map((e, i) => 
                         {
                             const item = items[i + (virtualRow.index * columnCount)];
 
-                            if(!item) return <Fragment
-                                key={ virtualRow.index + i + 'b' } />;
+                            if (!item) return <Fragment
+                                key={virtualRow.index + i + 'b'} />;
 
                             return (
-                                <Fragment key={ i }>
-                                    { itemRender(item, i) }
+                                <Fragment key={i}>
+                                    {itemRender(item, i)}
                                 </Fragment>
                             );
-                        }) }
+                        })}
                     </div>
-                )) }
+                ))}
             </div>
         </div>
     );
@@ -109,24 +109,24 @@ const InfiniteGridItem = forwardRef<HTMLDivElement, {
 } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>>((props, ref) =>
 {
     const { itemImage = undefined, itemColor = undefined, itemActive = false, itemCount = 1, itemCountMinimum = 1, itemUniqueSoldout = false, itemUniqueNumber = -2, itemUnseen = false, itemHighlight = false, disabled = false, className = null, style = {}, children = null, ...rest } = props;
-    const [ backgroundImageUrl, setBackgroundImageUrl ] = useState<string>(null);
+    const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(null);
     const disposed = useRef<boolean>(false);
 
     useEffect(() =>
     {
-        if(!itemImage || !itemImage.length) return;
+        if (!itemImage || !itemImage.length) return;
 
         const image = new Image();
 
         image.onload = () =>
         {
-            if(disposed.current) return;
+            if (disposed.current) return;
 
             setBackgroundImageUrl(image.src);
         }
 
         image.src = itemImage;
-    }, [ itemImage ]);
+    }, [itemImage]);
 
     useEffect(() =>
     {
@@ -140,8 +140,8 @@ const InfiniteGridItem = forwardRef<HTMLDivElement, {
 
     return (
         <div
-            ref={ ref }
-            className={ classNames(
+            ref={ref}
+            className={classNames(
                 'flex flex-col items-center justify-center cursor-pointer overflow-hidden relative bg-center bg-no-repeat w-full rounded-md border-2',
                 (itemImage && (!backgroundImageUrl || !backgroundImageUrl.length)) && 'nitro-icon icon-loading',
                 itemActive ? 'border-card-grid-item-active bg-card-grid-item-active' : 'border-card-grid-item-border bg-card-grid-item',
@@ -149,28 +149,31 @@ const InfiniteGridItem = forwardRef<HTMLDivElement, {
                 itemUniqueSoldout && 'sold-out',
                 itemUnseen && ' bg-green-500 bg-opacity-40',
                 className
-            ) }
-            style={ styleNames(
+            )}
+            style={styleNames(
                 backgroundImageUrl && backgroundImageUrl.length && !(itemUniqueSoldout || (itemUniqueNumber > 0)) && {
-                    backgroundImage: `url(${ backgroundImageUrl })`
+                    backgroundImage: `url(${backgroundImageUrl})`
+                },
+                itemColor && {
+                    backgroundColor: itemColor
                 },
                 style
-            ) }
-            { ...rest }>
-            { (itemCount > itemCountMinimum) &&
-                <div className="absolute align-middle rounded bg-red-700 bg-opacity-80 text-white border-black border top-[2px] right-[2px] text-[9.5px] p-[2px] z-[1] leading-[8px]">{ itemCount }</div> }
-            { (itemUniqueNumber > 0) && 
+            )}
+            {...rest}>
+            {(itemCount > itemCountMinimum) &&
+                <div className="absolute align-middle rounded bg-red-700 bg-opacity-80 text-white border-black border top-[2px] right-[2px] text-[9.5px] p-[2px] z-[1] leading-[8px]">{itemCount}</div>}
+            {(itemUniqueNumber > 0) &&
                 <>
                     <div
                         className="size-full unique-bg-override"
-                        style={ {
-                            backgroundImage: `url(${ backgroundImageUrl })`
-                        } } />
+                        style={{
+                            backgroundImage: `url(${backgroundImageUrl})`
+                        }} />
                     <div className="absolute bottom-0 unique-item-counter">
-                        <NitroLimitedEditionStyledNumberView value={ itemUniqueNumber } />
+                        <NitroLimitedEditionStyledNumberView value={itemUniqueNumber} />
                     </div>
-                </> }
-            { children }
+                </>}
+            {children}
         </div>
     );
 });

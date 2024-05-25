@@ -74,7 +74,7 @@ export const AvatarEditorView: FC<{}> = props =>
     if (!isVisible) return null;
 
     return (
-        <NitroCardView className="w-[620px] h-[374px]" uniqueKey="avatar-editor">
+        <NitroCardView className="w-[620px] h-[374px] nitro-avatar-editor" uniqueKey="avatar-editor">
             <NitroCardHeaderView headerText={LocalizeText('avatareditor.title')} onCloseClick={event => setIsVisible(false)} />
             <NitroCardTabsView>
                 {Object.keys(avatarModels).map(modelKey =>
@@ -100,13 +100,13 @@ export const AvatarEditorView: FC<{}> = props =>
                         <AvatarEditorFigurePreviewView />
                         <div className="flex flex-col !flex-grow gap-1">
                             <div className="relative inline-flex align-middle">
-                                <Button variant="secondary" onClick={event => processAction(AvatarEditorAction.ACTION_RESET)}>
+                                <Button className='flex-auto ' variant="secondary" onClick={event => processAction(AvatarEditorAction.ACTION_RESET)}>
                                     <FaRedo className="fa-icon" />
                                 </Button>
-                                <Button variant="secondary" onClick={event => processAction(AvatarEditorAction.ACTION_CLEAR)}>
+                                <Button className='flex-auto' variant="secondary" onClick={event => processAction(AvatarEditorAction.ACTION_CLEAR)}>
                                     <FaTrash className="fa-icon" />
                                 </Button>
-                                <Button variant="secondary" onClick={event => processAction(AvatarEditorAction.ACTION_RANDOMIZE)}>
+                                <Button className='flex-auto' variant="secondary" onClick={event => processAction(AvatarEditorAction.ACTION_RANDOMIZE)}>
                                     <FaDice className="fa-icon" />
                                 </Button>
                             </div>

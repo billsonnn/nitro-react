@@ -97,7 +97,7 @@ export const HotelView: FC<{}> = props =>
             <div className="right-repeat absolute w-full h-full right-[0] top-[0] bg-no-repeat bg-right-top" style={(rightRepeat && rightRepeat.length) ? { backgroundImage: `url(${rightRepeat})` } : {}} />
             <div className="right absolute w-full h-full right-[0] bottom-[0] [animation-iteration-count:1] [animation-name:slideUp] [animation-duration:1s] bg-no-repeat bg-right-bottom" style={(right && right.length) ? { backgroundImage: `url(${right})` } : {}} />
             {GetConfigurationValue('hotelview')['show.avatar'] && (
-                <div className="avatar-image">
+                <div>
                     <LayoutAvatarImageView direction={2} figure={userFigure} />
                 </div>
             )}

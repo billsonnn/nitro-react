@@ -22,7 +22,7 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = ['relative w-[90px] h-[130px] bg-no-repeat bg-[center_-8px] pointer-events-none'];
+        const newClassNames: string[] = ['avatar-image relative w-[90px] h-[130px] bg-no-repeat bg-[center_-8px] pointer-events-none'];
 
         if (classNames.length) newClassNames.push(...classNames);
 

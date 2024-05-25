@@ -46,7 +46,7 @@ export const AvatarEditorModelView: FC<{
         if (!activeCategory) return null;
 
         return (
-            <div className="flex gap-2 overflow-hidden">
+            <div className="grid grid-cols-12 gap-2 overflow-hidden">
                 <div className="flex flex-col col-span-2">
                     {(name === AvatarEditorFigureCategory.GENERIC) &&
                         <>
@@ -71,9 +71,9 @@ export const AvatarEditorModelView: FC<{
                 </div>
                 <div className="flex flex-col overflow-hidden col-span-5">
                     {(maxPaletteCount >= 1) &&
-                        <AvatarEditorPaletteSetView category={activeCategory} columnCount={3} paletteIndex={0} />}
+                        <AvatarEditorPaletteSetView category={activeCategory} columnCount={5} paletteIndex={0} />}
                     {(maxPaletteCount === 2) &&
-                        <AvatarEditorPaletteSetView category={activeCategory} columnCount={3} paletteIndex={1} />}
+                        <AvatarEditorPaletteSetView category={activeCategory} columnCount={5} paletteIndex={1} />}
                 </div>
             </div>
         );

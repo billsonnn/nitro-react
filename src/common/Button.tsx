@@ -38,6 +38,11 @@ export const Button: FC<ButtonProps> = props =>
 
             if (variant == 'black')
                 newClassNames.push('text-[#fff] bg-[#000] border-[#000] [box-shadow:inset_0_2px_#ffffff26,inset_0_-2px_#0000001a,0_1px_#0000001a] hover:text-[#fff] hover:bg-[#000] hover:border-[#000]')
+
+
+            if (variant == 'secondary')
+                newClassNames.push('text-[#fff] bg-[#185d79] border-[#185d79] [box-shadow:inset_0_2px_#ffffff26,_inset_0_-2px_#0000001a,_0_1px_#0000001a]  hover:text-[#fff] hover:bg-[#144f67] hover:border-[#134a61]            ')
+
         }
 
         if (size)

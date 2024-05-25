@@ -10,6 +10,7 @@ export const AvatarEditorIcon = forwardRef<HTMLDivElement, PropsWithChildren<{
 {
     const { icon = null, selected = false, className = null, ...rest } = props;
 
+    /*
     switch (icon)
     {
         case 'male':
@@ -26,10 +27,11 @@ export const AvatarEditorIcon = forwardRef<HTMLDivElement, PropsWithChildren<{
             break;
 
     }
-
+*/
     return (
         <div
             ref={ref}
+
             className={classNames(
                 'nitro-avatar-editor-spritesheet',
                 'cursor-pointer',

@@ -62,7 +62,6 @@ const boxShadow = {
 module.exports = {
 
 
-   
     theme: {
         extend: {
             fontSize: {
@@ -155,8 +154,7 @@ module.exports = {
       },
     plugins: [
         require('@tailwindcss/forms'),
-        require('@headlessui/tailwindcss')({ prefix: 'ui' }),
-        require('rfs')
+        require('@headlessui/tailwindcss')({ prefix: 'ui' })
     ],
     content: [
         './index.html',

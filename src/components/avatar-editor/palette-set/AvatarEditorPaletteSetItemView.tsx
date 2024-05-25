@@ -10,16 +10,16 @@ export const AvatarEditorPaletteSetItem: FC<{
     isSelected: boolean;
     width?: string;
 } & LayoutGridItemProps> = props =>
-{
-    const { setType = null, partColor = null, isSelected = false, width = '100%', ...rest } = props;
+    {
+        const { setType = null, partColor = null, isSelected = false, width = '100%', ...rest } = props;
 
-    if(!partColor) return null;
-    
-    const isHC = !GetConfigurationValue<boolean>('hc.disabled', false) && (partColor.clubLevel > 0);
+        if (!partColor) return null;
 
-    return (
-        <InfiniteGrid.Item itemHighlight className="clear-bg" itemActive={ isSelected } itemColor={ ColorConverter.int2rgb(partColor.rgb) } { ...rest }>
-            { isHC && <LayoutCurrencyIcon className="absolute end-1 bottom-1" type="hc" /> }
-        </InfiniteGrid.Item>
-    );
-}
+        const isHC = !GetConfigurationValue<boolean>('hc.disabled', false) && (partColor.clubLevel > 0);
+
+        return (
+            <InfiniteGrid.Item itemHighlight className="clear-bg" itemActive={isSelected} itemColor={ColorConverter.int2rgb(partColor.rgb)} {...rest}>
+                {isHC && <LayoutCurrencyIcon className="absolute end-1 bottom-1" type="hc" />}
+            </InfiniteGrid.Item>
+        );
+    }
