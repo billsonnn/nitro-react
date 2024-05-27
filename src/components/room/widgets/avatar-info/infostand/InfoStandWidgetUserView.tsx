@@ -123,8 +123,8 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
     if (!avatarInfo) return null;
 
     return (
-        <Column className="nitro-infostand rounded">
-            <Column className="container-fluid content-area" gap={1} overflow="visible">
+        <Column className="relative min-w-[190px] max-w-[190px] z-30 pointer-events-auto bg-[rgba(28,_28,_32,_.95)] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599] rounded">
+            <Column className="h-full p-[8px] overflow-auto" gap={1} overflow="visible">
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1">
@@ -133,11 +133,11 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                         </div>
                         <FaTimes className="cursor-pointer fa-icon" onClick={onClose} />
                     </div>
-                    <hr className="m-0" />
+                    <hr className="m-0 bg-[#0003] border-[0] opacity-[.5] h-px" />
                 </div>
                 <div className="flex flex-col gap-1">
                     <div className="flex gap-1">
-                        <Column fullWidth className="body-image" onClick={event => GetUserProfile(avatarInfo.webID)}>
+                        <Column fullWidth className="flex items-center justify-center bg-[#343a40] w-full max-w-[68px] rounded-[.25rem]" onClick={event => GetUserProfile(avatarInfo.webID)}>
                             <LayoutAvatarImageView direction={4} figure={avatarInfo.figure} />
                         </Column>
                         <Column grow alignItems="center" gap={0}>
@@ -168,26 +168,26 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                             </Flex>
                         </Column>
                     </div>
-                    <hr className="m-0" />
+                    <hr className="m-0 bg-[#0003] border-[0] opacity-[.5] h-px" />
                 </div>
                 <div className="flex flex-col gap-1">
                     <Flex alignItems="center" className="bg-light-dark rounded py-1 px-2">
                         {(avatarInfo.type !== AvatarInfoUser.OWN_USER) &&
-                            <Flex grow alignItems="center" className="motto-content">
+                            <Flex grow alignItems="center" className="min-h-[18px]">
                                 <Text fullWidth pointer small textBreak wrap variant="white">{motto}</Text>
                             </Flex>}
                         {avatarInfo.type === AvatarInfoUser.OWN_USER &&
                             <Flex grow alignItems="center" gap={2}>
                                 <FaPencilAlt className="small fa-icon" />
-                                <Flex grow alignItems="center" className="motto-content">
+                                <Flex grow alignItems="center" className="min-h-[18px]">
                                     {!isEditingMotto &&
                                         <Text fullWidth pointer small textBreak wrap variant="white" onClick={event => setIsEditingMotto(true)}>{motto}&nbsp;</Text>}
                                     {isEditingMotto &&
-                                        <input autoFocus={true} className="motto-input" maxLength={GetConfigurationValue<number>('motto.max.length', 38)} type="text" value={motto} onBlur={onMottoBlur} onChange={event => setMotto(event.target.value)} onKeyDown={onMottoKeyDown} />}
+                                        <input autoFocus={true} className="w-full h-full text-[12px] p-0 outline-[0] border-[0] text-[#fff] relative bg-transparent resize-none                 focus:italic     border-transparent focus:border-transparent focus:ring-0	  " maxLength={GetConfigurationValue<number>('motto.max.length', 38)} type="text" value={motto} onBlur={onMottoBlur} onChange={event => setMotto(event.target.value)} onKeyDown={onMottoKeyDown} />}
                                 </Flex>
                             </Flex>}
                     </Flex>
-                    <hr className="m-0" />
+                    <hr className="m-0 bg-[#0003] border-[0] opacity-[.5] h-px" />
                 </div>
                 <div className="flex flex-col gap-1">
                     <Text small wrap variant="white">
@@ -195,7 +195,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                     </Text>
                     {(avatarInfo.carryItem > 0) &&
                         <>
-                            <hr className="m-0" />
+                            <hr className="m-0 bg-[#0003] border-[0] opacity-[.5] h-px" />
                             <Text small wrap variant="white">
                                 {LocalizeText('infostand.text.handitem', ['item'], [LocalizeText('handitem' + avatarInfo.carryItem)])}
                             </Text>

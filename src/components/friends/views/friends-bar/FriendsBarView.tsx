@@ -13,7 +13,7 @@ export const FriendBarView: FC<{ onlineFriends: MessengerFriend[] }> = props =>
     const elementRef = useRef<HTMLDivElement>();
 
     return (
-        <div ref={elementRef} className="flex items-center">
+        <div ref={elementRef} className="flex items-center       ">
             <Button className="z-[2] cursor-pointer" disabled={(indexOffset <= 0)} variant="black" onClick={event => setIndexOffset(indexOffset - 1)}>
                 <FaChevronLeft className="fa-icon" />
             </Button>

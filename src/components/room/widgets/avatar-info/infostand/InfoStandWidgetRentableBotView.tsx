@@ -54,7 +54,7 @@ export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewPr
                     </div>
                     <div className="flex flex-col gap-1">
                         <Flex alignItems="center" className="bg-light-dark rounded py-1 px-2">
-                            <Text fullWidth small textBreak wrap className="motto-content" variant="white">{avatarInfo.motto}</Text>
+                            <Text fullWidth small textBreak wrap className="min-h-[18px]" variant="white">{avatarInfo.motto}</Text>
                         </Flex>
                         <hr className="m-0" />
                     </div>

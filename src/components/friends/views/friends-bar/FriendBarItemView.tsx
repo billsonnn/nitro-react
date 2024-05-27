@@ -41,7 +41,7 @@ export const FriendBarItemView: FC<{ friend: MessengerFriend }> = props =>
     }
 
     return (
-        <Button size='md' variant={'success'} className={'block w-[130px] mx-[3px] my-[0] z-0 relative pl-[37px] text-left' + (isVisible ? 'mb-[21px]' : '')} onClick={event => setVisible(prevValue => !prevValue)}>
+        <Button size='md' justifyContent='start' variant={'success'} className={' block w-[130px] mx-[3px] my-[0] z-0 relative pl-[37px] text-left' + (isVisible ? 'mb-[21px]' : '')} onClick={event => setVisible(prevValue => !prevValue)}>
             <div className={`friend-bar-item-head absolute ${friend.id > 0 ? '-top-[30px] -left-[30px]' : '-top-[5px] -left-[3.5px]'}`}>
                 {(friend.id > 0) && <LayoutAvatarImageView direction={2} figure={friend.figure} headOnly={true} />}
                 {(friend.id <= 0) && <LayoutBadgeImageView badgeCode={friend.figure} isGroup={true} />}
