@@ -12,13 +12,15 @@ const MODE_CHECKOUT: number = 3;
 
 export const CameraWidgetView: FC<{}> = props =>
 {
-    const [ mode, setMode ] = useState<number>(MODE_NONE);
-    const [ base64Url, setSavedPictureUrl ] = useState<string>(null);
-    const { availableEffects = [], selectedPictureIndex = -1, cameraRoll = [], setCameraRoll = null, myLevel = 0, price = { credits: 0, duckets: 0, publishDucketPrice: 0 }} = useCamera();
+    const [mode, setMode] = useState<number>(MODE_NONE);
+    const [base64Url, setSavedPictureUrl] = useState<string>(null);
+    const { availableEffects = [], selectedPictureIndex = -1, cameraRoll = [], setCameraRoll = null, myLevel = 0, price = { credits: 0, duckets: 0, publishDucketPrice: 0 } } = useCamera();
 
+
+    console.log(availableEffects + 'bastardxasasasasficken');
     const processAction = (type: string) =>
     {
-        switch(type)
+        switch (type)
         {
             case 'close':
                 setMode(MODE_NONE);
@@ -29,7 +31,7 @@ export const CameraWidgetView: FC<{}> = props =>
             case 'delete':
                 setCameraRoll(prevValue =>
                 {
-                    const clone = [ ...prevValue ];
+                    const clone = [...prevValue];
 
                     clone.splice(selectedPictureIndex, 1);
 
@@ -56,10 +58,10 @@ export const CameraWidgetView: FC<{}> = props =>
             linkReceived: (url: string) =>
             {
                 const parts = url.split('/');
-        
-                if(parts.length < 2) return;
-        
-                switch(parts[1])
+
+                if (parts.length < 2) return;
+
+                switch (parts[1])
                 {
                     case 'show':
                         setMode(MODE_CAPTURE);
@@ -70,7 +72,7 @@ export const CameraWidgetView: FC<{}> = props =>
                     case 'toggle':
                         setMode(prevValue =>
                         {
-                            if(!prevValue) return MODE_CAPTURE;
+                            if (!prevValue) return MODE_CAPTURE;
                             else return MODE_NONE;
                         });
                         return;
@@ -84,13 +86,13 @@ export const CameraWidgetView: FC<{}> = props =>
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);
 
-    if(mode === MODE_NONE) return null;
+    if (mode === MODE_NONE) return null;
 
     return (
         <>
-            { (mode === MODE_CAPTURE) && <CameraWidgetCaptureView onClose={ () => processAction('close') } onDelete={ () => processAction('delete') } onEdit={ () => processAction('edit') } /> }
-            { (mode === MODE_EDITOR) && <CameraWidgetEditorView availableEffects={ availableEffects } myLevel={ myLevel } picture={ cameraRoll[selectedPictureIndex] } onCancel={ () => processAction('editor_cancel') } onCheckout={ checkoutPictureUrl } onClose={ () => processAction('close') } /> }
-            { (mode === MODE_CHECKOUT) && <CameraWidgetCheckoutView base64Url={ base64Url } price={ price } onCancelClick={ () => processAction('editor_cancel') } onCloseClick={ () => processAction('close') }></CameraWidgetCheckoutView> }
+            {(mode === MODE_CAPTURE) && <CameraWidgetCaptureView onClose={() => processAction('close')} onDelete={() => processAction('delete')} onEdit={() => processAction('edit')} />}
+            {(mode === MODE_EDITOR) && <CameraWidgetEditorView availableEffects={availableEffects} myLevel={myLevel} picture={cameraRoll[selectedPictureIndex]} onCancel={() => processAction('editor_cancel')} onCheckout={checkoutPictureUrl} onClose={() => processAction('close')} />}
+            {(mode === MODE_CHECKOUT) && <CameraWidgetCheckoutView base64Url={base64Url} price={price} onCancelClick={() => processAction('editor_cancel')} onCloseClick={() => processAction('close')}></CameraWidgetCheckoutView>}
         </>
     );
 }

@@ -33,7 +33,7 @@ export const FriendBarItemView: FC<{ friend: MessengerFriend }> = props =>
     if (!friend)
     {
         return (
-            <Button size='md' className="border w-[130px] mx-[3px] my-[0] z-0 relative pl-[37px] text-left friend-bar-search">
+            <Button size='md' justifyContent='start' className="border w-[130px] mx-[3px] my-[0] z-0 relative pl-[37px] text-left friend-bar-search">
                 <div className="absolute -top-[3px] left-[5px] w-[31px] h-[34px] bg-[url('@/assets/images/toolbar/friend-search.png')]" />
                 <div className="truncate">{LocalizeText('friend.bar.find.title')}</div>
             </Button>

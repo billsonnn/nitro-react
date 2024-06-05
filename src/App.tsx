@@ -52,14 +52,15 @@ export const App: FC<{}> = props =>
 
                 await Promise.all(
                     [
+                        GetRoomCameraWidgetManager().init(),
                         GetAssetManager().downloadAssets(assetUrls),
                         GetLocalizationManager().init(),
                         GetAvatarRenderManager().init(),
                         GetSoundManager().init(),
                         GetSessionDataManager().init(),
                         GetRoomSessionManager().init(),
-                        GetRoomCameraWidgetManager().init(),
-                        GetCommunication().init()
+                        GetCommunication().init(),
+
                     ]
                 );
 
